@@ -166,3 +166,36 @@ h1,h2,h3,p{margin-top:0}h1,h2,h3{letter-spacing:-.035em;line-height:1.17}h1{font
 .section-intro{max-width:780px;margin:-6px 0 25px;font-size:15px;line-height:1.75;color:var(--muted)}
 #learning-companions{scroll-margin-top:24px}
 @media(max-width:850px){.home-philosophy{margin-top:24px;padding-top:19px}}
+
+/* Quiet but clearer visual hierarchy across the public pages. */
+.site-nav details[open]>summary{color:var(--accent-ink)}
+.site-nav details[open]>summary:before{content:"";position:absolute;inset:1px -7px;background:var(--accent-light);border-radius:8px;z-index:-1}
+.site-nav .site-dropdown{box-shadow:0 18px 44px rgba(31,41,55,.17)}
+.home-icon{display:grid;place-items:center;width:45px;height:45px;border-radius:13px;margin-bottom:15px}
+.home-icon svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.home-option--learn .home-icon{background:#fff0de;color:#ad5a14}
+.home-option--sim .home-icon{background:#e2f3ed;color:#1a756c}
+.home-option--questions .home-icon{background:#eeebf9;color:#6554a0}
+.home-option .home-links a span[aria-hidden]{width:22px;height:22px;display:grid;place-items:center;border-radius:50%;background:rgba(220,119,44,.09);transition:background-color .15s}
+.home-option .home-links a:hover span[aria-hidden]{background:rgba(220,119,44,.2)}
+.study-card--gcse .symbol{background:#e4f2eb;color:#22745a}
+.study-card--alevel .symbol{background:#e7efff;color:#3563a4}
+.study-card--human .symbol{background:#f3eafa;color:#7a4ea1}
+.study-card .card-foot{color:#315f5c}
+.sim-card{position:relative;min-height:176px;padding:21px 22px;gap:12px;border-left:4px solid transparent}
+.sim-card--kinetics{border-left-color:#ca7c35}
+.sim-card--inhibition{border-left-color:#6657a1}
+.sim-card--molecular{border-left-color:#2a8a79}
+.sim-card--energy{border-left-color:#af7924}
+.sim-card--cardiac{border-left-color:#ad5272}
+.sim-card-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:#f5ede5;color:#a65c19}
+.sim-card--inhibition .sim-card-icon{background:#efeafa;color:#6657a1}
+.sim-card--molecular .sim-card-icon{background:#e1f2ee;color:#2a8070}
+.sim-card--energy .sim-card-icon{background:#fbf0d8;color:#a87319}
+.sim-card--cardiac .sim-card-icon{background:#f9e9ee;color:#a13e63}
+.sim-card-icon svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.sim-card .card-foot{padding-top:0;display:flex;justify-content:flex-end}
+.sim-card-go{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line);border-radius:50%;background:var(--bg);color:var(--ink);transition:background-color .16s,border-color .16s,transform .16s}
+.sim-card-go svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sim-card:hover .sim-card-go,.sim-card:focus-visible .sim-card-go{background:var(--accent-light);border-color:#d9aa85;transform:translateX(2px)}
+@media(prefers-reduced-motion:reduce){.home-option .home-links a span[aria-hidden],.sim-card-go{transition:none}.sim-card:hover .sim-card-go,.sim-card:focus-visible .sim-card-go{transform:none}}

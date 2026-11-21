@@ -397,6 +397,8 @@ body.onhome{background:radial-gradient(circle at 100% 0,rgba(92,207,196,.18),tra
 @media(max-width:520px){.companion-entry>a.btn{width:100%}}
 </style>
 <link rel="stylesheet" href="/assets/spaced-review.css">
+<link rel="stylesheet" href="/assets/catchup-visuals.css">
+<script src="/assets/catchup-visuals.js"></script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
 <body>
@@ -6214,6 +6216,7 @@ function showCatchup(t,c,step,focus){
  var ready=isUnlocked(t,c);
  var h='<p class="crumb"><a href="#catchup">← Catch-up topics</a></p><p class="spec">Catch-up companion · '+esc(DATA[t].code)+' · Step '+(step+1)+' of '+total+'</p><h1>'+esc(c.title)+'</h1>';
  h+='<section class="key companion-key" aria-label="Key knowledge"><h2>Key idea</h2><ul>'+notes.slice(step*2,step*2+2).map(function(k){return '<li>'+rich(k)+'</li>';}).join('')+'</ul>'+(c.gate&&step===total-1?'<p class="gate"><strong>Why it matters:</strong> '+fmt(c.gate)+'</p>':'')+'</section>';
+ if(window.KeystoneCatchupVisuals)h+=window.KeystoneCatchupVisuals.render(t,c.id);
  h+='<div class="actions companion-lesson-actions">'+(step>0?'<a class="btn" href="#catchup-'+t+'-'+c.id+'-'+(step-1)+'">Previous</a>':'')+
  (step<total-1?'<a class="btn primary" href="#catchup-'+t+'-'+c.id+'-'+(step+1)+'">Next key idea →</a>':'')+
  (ready?'<a class="btn'+(step===total-1?' primary':'')+'" href="#lesson-'+t+'-'+c.id+'">Start questions</a>':'<a class="btn" href="#topic-'+t+'">Review prerequisites</a>')+'</div>';

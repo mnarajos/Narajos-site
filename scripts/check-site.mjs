@@ -78,11 +78,33 @@ for(const p of sharedHeaderPages){
  requireTrue(!nav.includes("Science Revision"),"Outdated science revision menu label in "+p);
 }
 const teachingOverview=read("teaching/index.html");
-const learnerCards=[...teachingOverview.matchAll(/<a class="app-card" href="(\/[^"]+)"/g)].map(m=>m[1]);
+const learnerCards=[...teachingOverview.matchAll(/<a class="app-card[^"]*" href="(\/[^"]+)"/g)].map(m=>m[1]);
 requireTrue(learnerCards.join(",")==="/gcse/,/alevel/,/human-biology/","Teaching overview must show all three learner apps before educator tools");
 requireTrue(teachingOverview.includes('href="/teacher/"')&&teachingOverview.includes("For educators"),"Focused Questions needs a separate educator section");
 requireTrue(home.includes("complement classroom teaching rather than replace it"),"Homepage missing teacher-complement rationale");
 requireTrue(home.includes("easy to access"),"Homepage missing free-access rationale");
+requireTrue(home.includes("GCSE Combined Science (AQA)"),"Homepage must name AQA after GCSE Combined Science");
+requireTrue((home.match(/class="home-icon"/g)||[]).length===3,"Homepage must give each resource type a distinctive icon");
+const simulated=read("teaching/simulations/index.html");
+requireTrue((simulated.match(/class="app-card sim-card sim-card--/g)||[]).length===5,"Simulation catalogue should have five fully clickable cards");
+requireTrue(!simulated.includes("Open simulation"),"Simulation cards should not repeat Open simulation as a label");
+for(const p of sharedHeaderPages)requireTrue(read(p).includes('src="/assets/site-nav.js"'),"Shared dropdown behaviour is not loaded in "+p);
+requireTrue(existsSync(path.join(root,"assets/site-nav.js")),"Site nav script missing");
+requireTrue(existsSync(path.join(root,"assets/catchup-visuals.css")),"Catch-up diagram styles missing");
+requireTrue(alevel.includes('src="/assets/catchup-visuals.js"')&&alevel.includes("KeystoneCatchupVisuals.render(t,c.id)"),"A-level catch-up visuals not wired");
+requireTrue(humanIndex.includes('src="/assets/catchup-visuals.js"')&&read("human-biology/companion.js").includes("KeystoneCatchupVisuals.render(unit,id)"),"Human Biology catch-up visuals not wired");
+try{
+ const visualSandbox=vm.createContext({window:{}});
+ vm.runInContext(read("assets/catchup-visuals.js"),visualSandbox);
+ const visual=visualSandbox.window.KeystoneCatchupVisuals;
+ for(const [u,id,expected] of [["a1","enzfactors","enzyme-kinetics"],["a4","transcription","molecular-biology"],["a3","heart","cardiac-cycle"],["f170","2.1.2","cardiac-cycle"]]){
+  requireTrue(visual.render(u,id).includes("/teaching/simulations/"+expected+"/"),"Missing curated simulation cross-link "+u+"/"+id);
+ }
+ for(const [u,id] of [["a1","monopoly"],["a2","osmosis"],["a5","chemios"],["f170","3.2.1"],["f171","3.2.2"],["f175","a1"]]){
+  requireTrue(visual.render(u,id).includes('role="img"'),"Missing accessible catch-up diagram "+u+"/"+id);
+ }
+ requireTrue(visual.render("f175","a1").indexOf("kc-simulation-link")<0,"Unrelated simulation link in F175 knowledge recap");
+}catch(e){failures.push("Catch-up visual script failed to parse or render: "+e.message);}
 requireTrue(teacher.includes('href="/" aria-label="Return to Narajos homepage"'),"Focused Questions return link missing");
 requireTrue(teacher.includes("function saveDraft()")&&teacher.includes("function restoreDraft()"),"Focused Questions draft recovery missing");
 requireTrue(teacher.includes("function printSheet(answers)"),"Focused Questions print option missing");
