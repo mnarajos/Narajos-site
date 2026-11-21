@@ -12,6 +12,7 @@
  <link rel="stylesheet" href="/assets/home-link.css">
  <link rel="stylesheet" href="/assets/science-practice.css">
  <script defer src="/assets/paragraph-drafts.js"></script>
+ <script defer src="/assets/writing-feedback.js"></script>
 </head>
 <body>
  <a class="skip" href="#main">Skip to main content</a>
@@ -34,9 +35,9 @@
    <details class="writing-step">
     <summary>See a worked example</summary>
     <p><strong>Example question:</strong> Why does heating air in a closed, hard-sided bottle increase the pressure inside?</p>
-    <p><strong>Topic sentence.</strong> Air pressure rises when a closed, hard-sided bottle is warmed.</p>
-    <p><strong>Notes.</strong> same space → faster particles → more hits on walls → greater push on walls</p>
-    <p><strong>Closing link.</strong> The walls feel a greater push per unit area. That means higher pressure.</p>
+    <p><strong>Topic sentence:</strong> Air pressure rises when a closed, hard-sided bottle is warmed.</p>
+    <p><strong>Supporting notes:</strong> same space → faster particles → more hits on walls → greater push on walls</p>
+    <p><strong>Concluding sentence:</strong> The walls feel a greater push per unit area. That means higher pressure.</p>
     <p class="model">Air pressure rises when a closed, hard-sided bottle is warmed. The bottle stays the same size and no air escapes. When the air gets warmer, its particles move faster on average. They hit the walls more often. The faster hits also have a greater effect on the walls. This increases the force on each square centimetre of wall, so the pressure rises.</p>
 
    </details>
@@ -45,17 +46,60 @@
     <p>Write the main idea in one sentence. Jot down what happens first and next. Finish by linking your ideas back to the question.</p>
     <p><strong>Topic sentence to start with:</strong> Food colouring spreads faster through warm water.</p>
     <details><summary>Help ordering your notes</summary><p>Warmer water → dye particles move faster on average → colour spreads faster. Try the starter “When the water is warmer, the dye particles …”</p></details>
-    <label for="ks3-topic">Topic sentence</label><textarea id="ks3-topic" data-draft rows="2"></textarea>
-   <label for="ks3-plan">Notes on particle movement and temperature</label><textarea id="ks3-plan" data-draft rows="4"></textarea>
-   <label for="ks3-close">Closing sentence</label><textarea id="ks3-close" data-draft rows="2"></textarea>
+    <div class="writing-field-heading">
+     <label for="ks3-topic">Topic sentence:</label>
+     <details class="writing-help">
+      <summary aria-label="Help with topic sentence">Help</summary>
+      <p>Start with the main idea. Which beaker shows the colour spreading faster? Try: “Food colouring spreads faster through …”</p>
+     </details>
+    </div>
+    <textarea id="ks3-topic" data-draft rows="2"></textarea>
+    <div class="writing-field-heading">
+     <label for="ks3-plan">Supporting notes:</label>
+     <details class="writing-help">
+      <summary aria-label="Help with supporting notes">Help</summary>
+      <p>Use short notes. Start with warmer water. What happens to how fast the tiny dye particles move? How does that change the way the colour spreads?</p>
+     </details>
+    </div>
+    <textarea id="ks3-plan" data-draft rows="4"></textarea>
+    <div class="writing-field-heading">
+     <label for="ks3-close">Concluding sentence:</label>
+     <details class="writing-help">
+      <summary aria-label="Help with concluding sentence">Help</summary>
+      <p>Finish by linking your explanation back to the question. Try: “This is why the colour …”</p>
+     </details>
+    </div>
+    <textarea id="ks3-close" data-draft rows="2"></textarea>
 
    </details>
    <details class="writing-step">
     <summary>Write your paragraph</summary>
-    <label for="ks3-paragraph">Your paragraph</label><textarea id="ks3-paragraph" data-draft rows="6"></textarea>
+    <div class="writing-field-heading">
+     <label for="ks3-paragraph">Your paragraph:</label>
+     <details class="writing-help">
+      <summary aria-label="Help with your paragraph">Help</summary>
+      <p>Use your first sentence, then turn your notes into sentences. Use “because” or “so” to show why a change happens. Put the sentences together in one paragraph.</p>
+     </details>
+    </div>
+    <textarea id="ks3-paragraph" data-draft rows="6"></textarea>
+    <div class="writing-check" data-writing-check="ks3-paragraph" hidden>
+     <button type="button">Check my paragraph</button>
+     <p role="status"></p>
+     <div class="writing-report" data-writing-report hidden>
+      <p>Use these prompts to check what your sentences mean. The checker looks for words or values in your draft.</p>
+      <ul></ul>
+     </div>
+    </div>
     <p class="tiny">Your draft stays in this tab.</p>
    </details>
-   <details class="writing-step"><summary>Compare your explanation</summary><p>First check your main idea: the colour spreads further in warm water in the same time. Explain that the dye particles move randomly and move faster on average in warm water. Overall, more dye moves away from where it is crowded than moves back towards it. This spreading from a higher to a lower concentration is called diffusion.</p></details>
+   <details class="writing-step">
+    <summary>Compare your explanation</summary>
+    <ul class="writing-key">
+     <li data-look-for="[&quot;\\b(?:warm(?:er)?|hot(?:ter)?)\\b&quot;, &quot;\\b(?:further|farther|faster)\\b&quot;]">Did you say that the colour spread further in warm water in the same time?</li>
+     <li data-look-for="[&quot;\\bparticles?\\b&quot;, &quot;\\brandom\\w*\\b&quot;]">Did you explain that the dye particles move randomly and faster on average in warmer water?</li>
+     <li data-look-for="[&quot;\\bdiffusion\\b&quot;, &quot;\\bconcentration\\b&quot;]">Did you connect their movement to the overall spread from where there is more dye to where there is less dye? This is diffusion.</li>
+    </ul>
+   </details>
   </article>
  </main>
  <footer class="footer"><div class="wrap footer-inner"><p>© 2026 Narajos</p><a href="/privacy/">Privacy</a></div></footer>
