@@ -1252,21 +1252,21 @@ window.KeystoneHumanChallenges={
       "section": "5.3",
       "type": "written",
       "level": "stretch",
-      "stem": "A small GP practice is considering replacing its paper patient records with an electronic record system shared across local services. Staff expect faster access to information, but are worried about cost, outages and confidentiality. Evaluate whether the practice should introduce the system.",
+      "stem": "A community respiratory clinic is considering an electronic record system that could securely share information with nearby hospitals. Staff expect faster access to results, but are concerned about setup costs, cybersecurity and the system being unavailable during outages. Discuss whether the clinic should introduce the new system.",
       "markPoints": [
         "Explain how faster access to records could improve continuity or coordination of care.",
         "Explain how appropriate sharing across services might reduce duplicated testing or communication errors.",
         "Consider a limitation such as implementation cost, training demands or staff workload during transition.",
         "Consider risks to confidentiality, cybersecurity, availability during outages or unequal patient access.",
         "Discuss practical mitigations such as role-based access, backups, audits and staff training.",
-        "Apply the benefits and risks to a small GP practice and reach a justified recommendation with conditions."
+        "Discuss the relative importance of the benefits and risks for this clinic, and reach a justified judgement with conditions."
       ],
-      "model": "A digital system could improve continuity and reduce delays, particularly when patients use several local services. However, setup, training, cybersecurity and downtime create important costs and risks for a small practice. A phased rollout with appropriate permissions, secure backups, training and auditing would be a defensible recommendation if these safeguards are affordable and effective.",
+      "model": "Electronic records could reduce delays and help clinicians share relevant results when patients move between services. However, training, cost, confidentiality and downtime are substantial practical issues. A phased rollout with access controls, secure backups, staff training and auditing may be justified if the clinic can sustain those safeguards; a different conclusion could be reasonable if supported.",
       "explain": "Strong evaluation weighs advantages against limitations, applies both to the scenario and reaches a supported judgement. There is no single mandatory conclusion.",
       "misconception": "'Digital is always better' is not an evaluation.",
       "samAligned": true,
       "marks": 9,
-      "levelsNote": "Extended 9-mark practice: present a balanced evaluation using several contextualised benefits and limitations and finish with a reasoned judgement. This is independent guidance, not an OCR mark scheme."
+      "levelsNote": "For OCR-style 9-mark DISCUSS practice, consider both sides in context, evaluate their relative importance and conclude with a reasoned judgement. This is not OCR's official mark scheme."
     },
     {
       "id": "health-parkinsons-therapy",
@@ -1275,7 +1275,7 @@ window.KeystoneHumanChallenges={
       "section": "2.3",
       "type": "written",
       "level": "stretch",
-      "stem": "A patient with early Parkinson's disease experiences hand tremor, slower movement and increasing anxiety about maintaining independence. Compare how drug treatment and at least one non-drug therapy could be used, considering likely benefits and limitations for this patient.",
+      "stem": "A patient with early Parkinson's disease experiences hand tremor, slower movement and anxiety about maintaining independence. Analyse how medication and non-drug therapies might affect the patient's symptoms and day-to-day functioning.",
       "markPoints": [
         "Identify an appropriate medication option as a possible way of managing motor symptoms.",
         "Explain a plausible benefit for tremor, rigidity or bradykinesia, while noting individual response varies.",
@@ -1289,7 +1289,7 @@ window.KeystoneHumanChallenges={
       "misconception": "Do not equate supportive therapy with a lack of biological effect.",
       "samAligned": true,
       "marks": 6,
-      "levelsNote": "Extended 6-mark practice: link several valid points to this patient, compare the approaches and acknowledge limitations. This is a self-assessment checklist, not an OCR mark scheme."
+      "levelsNote": "For OCR-style 6-mark ANALYSE practice, develop causal links between treatments, effects, benefits and limitations in the given context. This is not OCR's official mark scheme."
     },
     {
       "id": "health-immunisation",
