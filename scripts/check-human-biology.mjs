@@ -35,6 +35,7 @@ for(const a of D.areas)for(const s of a.sections){
 for(const a of D.areas)assert(a.sections.length>=5,"Area has too few sections: "+a.id);
 const required=["1.1.1","1.1.2","1.1.3","1.1.4","1.1.5","1.2.1","1.2.2","1.2.3","2.1.1","2.1.2","2.1.3","2.1.4","2.2.1","2.2.2","2.2.3","3.1.1","3.1.2","3.2.1","3.2.2","3.3.1","3.3.2","3.3.3","4.1.1","4.1.2","4.1.3","4.1.4","4.1.5","4.2"];
 assert.deepEqual([...sectionIds].sort(),required.slice().sort(),"F170 specification subtopic map differs");
+assert(D.areas[3].sections.some(s=>s.id==="4.1.2"&&s.cards.some(c=>c.a==="Tinea pedis")),"Fungal infection naming correction missing");
 assert(!JSON.stringify(D).match(/set assignment task|complete.*coursework|submit.*NEA/i),"Coursework content detected");
 load("human-biology/app.js");
 assert.equal(window.KeystoneHumanApp.stats().cards,112);
@@ -53,5 +54,10 @@ location.hash="#cards/area-4";listeners.hashchange();
 assert(main.innerHTML.includes("Recall the biology"),"Flashcard session failed to start");
 assert(memory.has("narajos-human-biology-session-v1"),"Flashcard session is not saved");
 assert.equal(window.KeystoneHumanApp.stats().seen,0,"New cards should not be marked completed");
+const current=JSON.parse(memory.get("narajos-human-biology-session-v1"));
+load("human-biology/app.js"); // Simulate refreshing inside the same hash route.
+const resumed=JSON.parse(memory.get("narajos-human-biology-session-v1"));
+assert.deepEqual(resumed.queue,current.queue,"Refresh must resume the existing flashcard queue, not create a new random set");
+assert.equal(resumed.scope,current.scope,"Refresh must retain the topic scope");
 assert.notEqual(window.KeystoneReview.open("ocr-human-biology-f170").storageKey,window.KeystoneReview.open("aqa-alevel-biology-7402").storageKey,"Course review histories must be isolated");
 console.log("Human Biology checks passed: 4 topic areas, 28 sections, 112 cards, 28 original application prompts; routes, progress isolation and session storage verified.");
