@@ -214,3 +214,9 @@ h1{font-size:clamp(1.65rem,3.5vw,2.2rem);letter-spacing:-.028em}
 .k-sort-choices input:checked+span{border-color:var(--brand);background:#e0f2ed;color:#185b56}
 .k-sort-choices input:focus-visible+span{outline:3px solid var(--ring);outline-offset:3px}
 @media(max-width:560px){.k-knowledge-tile{min-height:84px}.k-sort-row{padding:10px}}
+
+/* Diagram answers show the same figure with one concise annotation, not a dense paragraph. */
+.k-figure{display:flex;flex-direction:column;align-items:stretch}
+.k-diagram-answer{margin:4px 5px 8px;padding:9px 12px;border-left:4px solid #0e776b;background:#ecf8f3;border-radius:5px;color:#21524b;font-size:.85rem;line-height:1.5}
+.k-feedback .k-figure{background:#fff;margin:0 0 15px;border-color:#c1d5cd}
+.k-feedback .k-figure svg{max-height:185px}
