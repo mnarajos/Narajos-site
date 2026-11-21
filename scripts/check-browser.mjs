@@ -48,7 +48,7 @@ try{
  await desktop.locator('a[href="#catchup-a1"]').first().click();
  await desktop.waitForURL("**/alevel/#catchup-a1");
  const firstConcept=desktop.locator('a[href^="#catchup-a1-"]').first();
- assert(await firstConcept.count(),"A-level topic has no concept catch-up link");
+ await firstConcept.waitFor({state:"visible",timeout:10000}).catch(async()=>{throw new Error("A-level catch-up concepts not rendered: "+(await desktop.locator("main").innerText()).slice(0,700));});
  await firstConcept.click();
  assert((await desktop.locator("main").innerText()).includes("Key idea"),"A-level key knowledge step not visible");
  await screen(desktop,"alevel-catchup");
