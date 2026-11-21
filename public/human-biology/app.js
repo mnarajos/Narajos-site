@@ -27,7 +27,7 @@ function restoreSession(){try{var old=JSON.parse(localStorage.getItem(sessionKey
  if(old.type==="practice"&&!old.queue.every(function(id){return !!bySection[id];}))return null;
  return old;}catch(_){return null;}}
 function render(html){main.innerHTML=html;window.scrollTo(0,0);main.focus({preventScroll:true});updateNav();}
-function updateNav(){var here=previousRoute.split("/")[0]||"home";document.querySelectorAll(".nav a").forEach(function(a){var r=a.getAttribute("href").slice(1);if((r==="home"&&here==="home")||(r==="topics"&&(here==="area"||here==="learn"||here==="topics"))||(r==="flashcards"&&(here==="flashcards"||here==="cards"||here==="review"))||(r==="practice"&&here==="practice"))a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});}
+function updateNav(){var here=previousRoute.split("/")[0]||"home";document.querySelectorAll(".nav a").forEach(function(a){var r=a.getAttribute("href").slice(1);if((r==="home"&&here==="home")||(r==="topics"&&(here==="area"||here==="learn"||here==="topics"))||(r==="flashcards"&&(here==="flashcards"||here==="cards"||here==="review"))||(r==="practice"&&here==="practice")||(r==="challenge"&&here==="challenge"))a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});}
 function link(h,label,cls){return '<a class="button '+(cls||"secondary")+'" href="#'+esc(h)+'">'+esc(label)+'</a>';}
 function metric(n,label){return '<div class="metric"><strong>'+esc(n)+'</strong><span>'+esc(label)+'</span></div>';}
 function stats(){var ids=cards.map(function(c){return c.id;}),r=review.stats(ids);var done=Object.keys(progress).filter(function(id){return progress[id]&&progress[id].good>0;}).length;
