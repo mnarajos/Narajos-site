@@ -6467,6 +6467,7 @@ function backTo(dflt){var h=BACK||dflt,lab="Back";
  else if(h==="#practice")lab="Back to Skills practice";else if(h==="#practicals")lab="Back to Required practicals";
  return {href:h||"#",label:lab};}
 function route(focus){
+ siteLeaveAllowed=false;
  LIVE=null;RV=null;closeLeave();
  var cf=document.querySelector(".confetti");if(cf&&cf.parentNode)cf.parentNode.removeChild(cf);var gr=document.getElementById("gear");if(gr)gr.open=false;
  var h=location.hash.slice(1),m;
