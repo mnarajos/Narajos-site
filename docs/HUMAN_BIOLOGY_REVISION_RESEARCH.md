@@ -56,7 +56,7 @@ Each question must have:
 - Alternatives/synonyms where precise meaning supports them; never unsafe fuzzy acceptance of biologically distinct terms.
 - For extended response, a reasonable model and criteria reflecting the demands of analyse/discuss, with no fictitious numeric automated award.
 
-Mixed sets deliberately sample across available question formats and topic areas. The feedback directs students toward missed areas; spaced flashcard history is kept separate from the AQA products.
+Quick Mix is a **confidence-first mixed set**: two accessible warm-ups (on-ramp), two core questions, followed by application. It diversifies topics and formats within each stage, but does not shuffle difficulty indiscriminately. After difficult early answers it can insert extra core practice, and only upgrades its final question to Stretch after strong independent performance. Quick checks must test the same specification subtopic at no greater difficulty; where no appropriate question exists, the missed or hint-assisted item returns later instead of falsely implying reteaching. Spaced flashcard history is kept separate from the AQA products.
 
 ## Current bank and remaining coverage gaps
 
@@ -73,6 +73,12 @@ As of this revision:
 Prioritise **untested specification coverage**, **transferable exam skills**, **representative data and clinical contexts**, then add variety within high-impact areas. Do not overfit to sample-paper topics: OCR explicitly samples across its topic areas. Keep F172–F177 out of assessed coursework assistance; teaching their underlying *biological knowledge* is appropriate, but there must be no generation, marking or coaching of live NEA assignments. Do not republish copyrighted OCR question stems, diagrams or mark schemes verbatim.
 
 Avoid claiming any question is from a live OCR examination, is guaranteed to appear, or predicts future frequency.
+
+### Confidence-first Quick Mix (21 November 2026)
+
+After testing the app as a first-time student, the former Quick Mix was judged too abrupt because it shuffled questions across difficulty levels. The default now begins with two explicitly selected, GCSE-accessible recall questions, followed by two core-knowledge questions and then progressively harder application. Randomness varies topics and formats *within* these stages, never putting an application or advanced reproductive question first. After early difficulty, the question engine can substitute an additional core item before proceeding. A Stretch finale is only selected after at least six of the first seven base questions were correct independently; low early success instead leads to another core question. Responses are still checked deterministically or self-rated, and only local progress is used. Existing unattempted Quick Mix sessions are migrated to the new order; started sessions remain resumable.
+
+This arrangement supports early successes without confusing a simple warm-up with demonstrated mastery. Avoid treating the first two correct answers as a secure skill claim. Difficult questions remain available in Exam-style focus and Challenge modes.
 
 ## Oracle pedagogy implementation (21 November 2026)
 
