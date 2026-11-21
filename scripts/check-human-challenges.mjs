@@ -24,7 +24,7 @@ assert.equal(db.questions.filter(q=>q.unit==="f171").length,29);
 for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,12,u+" knowledge bank missing");
 assert.deepEqual([...new Set(db.questions.map(q=>q.type))].sort(),["best","diagram","match","multi","number","order","short","single","sort","written"].sort());
 const ids=new Set();
-const validUnits=new Set(["f170","f171"]);
+const validUnits=new Set(["f170","f171","f172","f173","f174","f175","f176","f177"]);
 const map=window.KeystoneHumanData.areas.flatMap(a=>a.sections.map(s=>s.id));
 for(const q of db.questions){
  assert(!ids.has(q.id),"Duplicate question ID: "+q.id);ids.add(q.id);
@@ -42,7 +42,7 @@ for(const q of db.questions){
  if(q.type==="written")assert(q.markPoints.length>=2,"Unscaffolded written response: "+q.id);
  if(q.marks)assert(q.type==="written"&&(q.marks===6||q.marks===9),"Unexpected extended-answer mark count: "+q.id);
 }
-assert.equal(db.questions.filter(q=>q.warmup).length,11,"Warm-up coverage");
+assert.equal(db.questions.filter(q=>q.warmup).length,23,"Warm-up coverage");
 assert.equal(db.questions.filter(q=>q.type==="best").length,6,"Two-step reasoning coverage");
 assert.equal(db.questions.filter(q=>q.subtype==="error").length,4,"Misconception correction coverage");
 assert.equal(db.questions.find(q=>q.id==="health-parkinsons-therapy").marks,6);
@@ -132,6 +132,12 @@ assert.equal(stageSequence[0],0,"Area practice must begin with an accessible war
 assert(stageSequence.every((stage,i)=>i===0||stage>=stageSequence[i-1]),"Area practice must progress from recall to application");
 assert(main.innerHTML.includes("<svg"),"Expected in-app SVG icons");
 assert(typeof mainEvents.click==="function","Practice input handler missing");
+function unlockHintClock(){
+ const saved=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+ saved.hintReadyAt=0;data.set("narajos-human-challenge-v2-session",JSON.stringify(saved));
+ app.pause();app.route(saved.route,html=>{main.innerHTML=html;});
+}
+unlockHintClock();
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"hint"}}:null;}}});
 assert(main.innerHTML.includes("Hint 1"),"A learner-controlled hint should appear");
 assert(JSON.parse(data.get("narajos-human-challenge-v2-session")).hintsUsed[record.queue[0]]===1,"Hint use should be recorded on the local session");
@@ -163,7 +169,7 @@ assert(main.innerHTML.includes("Correct")&&main.innerHTML.includes("Expected ans
 assert(JSON.parse(data.get("narajos-human-challenge-v2-progress"))[best.id].independent===1,"Correct independent reasoning should be counted");
 const warm=forcedQuestion("warm-f170-cells");
 main.querySelector=()=>null;main.querySelectorAll=()=>[{value:String(warm.correct)}];
-clickAction("hint");assert(main.innerHTML.includes("Hint 1"),"Warm-up should offer a hint");
+unlockHintClock();clickAction("hint");assert(main.innerHTML.includes("Hint 1"),"Warm-up should offer a hint");
 clickAction("check");
 const guided=JSON.parse(data.get("narajos-human-challenge-v2-progress"))[warm.id];
 assert.equal(guided.guided,1,"Guided success must be recorded as guided");
@@ -187,4 +193,5 @@ const html=read("human-biology/index.html");
 assert(!html.includes("fonts.googleapis.com"),"Human Biology should not request remote fonts");
 assert(!/\b(?:fetch\(|sendBeacon\(|XMLHttpRequest\(|WebSocket\()/.test(read("human-biology/challenge.js")),"No network upload API should be used in this revision app");
 assert(!read("human-biology/challenge.js").includes("openai.com"),"No remote AI marking");
+assert(read("human-biology/index.html").includes("content-knowledge.js"),"Knowledge bank script not linked");
 console.log("Human Biology checks passed: 163 original questions across eight units, ten answer formats, private deterministic marking, and Quick Mix progression.");
