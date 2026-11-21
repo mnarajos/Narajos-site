@@ -257,7 +257,7 @@ var curated={
  "f171/a3":{diagram:"vaccines"},
  "f171/3.2.2":{diagram:"vaccines"},
  "f172/a1":{diagram:"dna"},
- "f175/a1":{diagram:"reproduction"}
+ "f175/a1":{}
 };
 function render(course,id){
  var item=curated[course+"/"+id];
