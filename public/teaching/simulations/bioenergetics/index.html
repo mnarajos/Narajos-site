@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta charset="UTF-8">
@@ -95,13 +95,14 @@
     .toptabs{margin-left:0;width:100%}
   }
 </style>
+<link rel="stylesheet" href="/assets/simulation-shell.css">
 </head>
-<body>
-<a href="/teaching/simulations/" style="display:block;padding:7px 16px;font:600 12px system-ui;color:#24323e;background:#faf9f6;text-decoration:none;position:relative;z-index:20">← All simulations</a>
+<body class="sim-fullscreen">
+<nav class="sim-utility-nav" aria-label="Simulation navigation"><a href="/teaching/simulations/">← All simulations</a><a class="sim-site-link" href="/" aria-label="Narajos main homepage"><img src="/favicon.svg" alt="">Narajos</a></nav>
 <header>
   <div class="top">
     <div class="brand">
-      <div class="t">Bioenergetics</div>
+      <h1 class="t">Bioenergetics</h1>
       <div class="s">Photosynthesis &amp; respiration — AQA 3.5</div>
     </div>
     <div class="toptabs" role="group" aria-label="Choose a process">
@@ -131,7 +132,7 @@
     <div class="btn-row">
       <button class="act primary" id="btn-run"><span id="run-ic">▶</span><span id="run-tx">Play</span></button>
       <button class="act ghost" id="btn-step">⏭ Step</button>
-      <button class="act ghost" id="btn-reset" title="Back to the start">↺</button>
+      <button class="act ghost" id="btn-reset" title="Back to the start" aria-label="Reset simulation to the beginning">↺</button>
     </div>
     <button class="act" id="btn-light" style="display:none;background:#f0c030;color:#3a2e00">☀ Shine light</button>
     <button class="act" id="btn-dark" style="display:none;background:#2c3a4a;color:#dbe7f0">🌙 Switch to dark</button>
