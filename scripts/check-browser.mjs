@@ -197,17 +197,29 @@ try{
  await desktop.locator(".kc-simulation-link").waitFor({state:"visible"});
  assert((await desktop.locator(".kc-simulation-link").getAttribute("href"))==="/teaching/simulations/cardiac-cycle/","Heart concept should link to cardiac-cycle simulation");
  await screen(desktop,"human-cardiac-visual");
+ await desktop.goto(base+"/human-biology/#catchup/f170/3.3.1",{waitUntil:"load"});
+ const reproductiveOverview=desktop.locator(".kc-visual-art svg");
+ await reproductiveOverview.getByText("Cervical canal",{exact:true}).waitFor();
+ assert(await reproductiveOverview.getByText("Vagina",{exact:true}).isVisible());
  await desktop.emulateMedia({reducedMotion:"reduce"});
  await desktop.goto(base+"/human-biology/#catchup/f175/a1/2",{waitUntil:"load"});
  await desktop.locator("#krp-model").waitFor({state:"visible",timeout:10000});
  assert(await desktop.locator(".krp-diagram").isVisible(),"F175 anatomy simulation missing");
+ assert(await desktop.locator(".krp-diagram").getByText("Cervix",{exact:true}).isVisible());
+ assert(await desktop.locator(".krp-diagram").getByText("Cervical canal",{exact:true}).isVisible());
+ assert(await desktop.locator(".krp-diagram").getByText("Vagina",{exact:true}).isVisible());
+ await desktop.getByText("Look closer at the cervix",{exact:true}).click();
+ assert(await desktop.getByText(/The cervix is the narrow lower part of the uterus/).isVisible());
  assert(await desktop.locator('[data-krp="lh"]').isHidden(),"LH should not appear before follicle maturation");
  await screen(desktop,"human-f175-anatomy");
  await desktop.locator('[data-krp="fsh"]').click();
  await desktop.locator('[data-krp="lh"]').waitFor({state:"visible",timeout:8000});
  assert((await desktop.locator(".krp-status").innerText()).includes("LH surge"),"Mature follicle should introduce LH surge");
  await desktop.locator('[data-krp="lh"]').click();
- await desktop.locator('[data-krp="sperm"]').click();
+ const spermEntry=desktop.getByRole("button",{name:"Sperm entry on the diagram"});
+ await spermEntry.focus();
+ await desktop.keyboard.press("Enter");
+ assert.equal(await spermEntry.getAttribute("aria-disabled"),"true");
  await desktop.locator('[data-krp="fert"]').waitFor({state:"visible",timeout:8000});
  assert((await desktop.locator(".krp-status").innerText()).includes("Fertilisation")||(await desktop.locator(".krp-status").innerText()).includes("Sperm and secondary"),"Gamete meeting explanation missing");
  await desktop.locator('[data-krp="fert"]').click();
@@ -411,6 +423,26 @@ try{
  }
  await navPage.goto(base+"/teaching/focused-writing/gcse/");
  await navPage.getByText("Plan your paragraph",{exact:true}).click();
+ const outlineCheck=navPage.getByRole("button",{name:"Check my outline",exact:true});
+ const outlineReview=navPage.locator(".writing-outline-review");
+ await outlineCheck.click();
+ await outlineReview.getByRole("status").filter({hasText:"Still to add: topic sentence, supporting notes, concluding sentence."}).waitFor();
+ const opening=navPage.getByLabel("Topic sentence:",{exact:true});
+ const supports=navPage.getByLabel("Supporting notes:",{exact:true});
+ const concluding=navPage.getByLabel("Concluding sentence:",{exact:true});
+ await opening.fill("The potato mass changed.");
+ await supports.fill("The potato gained 17%.");
+ await concluding.fill("The potato mass changed!");
+ await outlineCheck.click();
+ await outlineReview.getByRole("status").filter({hasText:"Your opening and ending repeat each other."}).waitFor();
+ assert(await outlineReview.getByText("Look for 7% and 9%",{exact:false}).isVisible());
+ await supports.fill("+7% in dilute and -9% in concentrated");
+ assert(await outlineReview.locator(".writing-report").isHidden(),"Outline feedback should reset when the learner revises");
+ await concluding.fill("Test more sugar concentrations between the starting values.");
+ await outlineCheck.click();
+ assert(await outlineReview.getByText("Both figures appear",{exact:false}).isVisible());
+ await outlineReview.getByText("See a possible outline",{exact:true}).click();
+ assert(await outlineReview.getByText("I would test intermediate sugar concentrations",{exact:false}).isVisible());
  const notesHelp=navPage.locator('summary[aria-label="Help with supporting notes"]');
  await notesHelp.focus();
  await navPage.keyboard.press("Enter");
@@ -447,6 +479,34 @@ try{
   assert.equal(await navPage.getByLabel("Your paragraph:",{exact:true}).inputValue(),"");
   assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"GCSE writing task overflows at phone width");
  }
+ await navPage.goto(base+"/teaching/focused-writing/order/");
+ const oneParagraph=navPage.locator('[data-writing-order="ramp"]');
+ await oneParagraph.getByRole("button",{name:"Check the order",exact:true}).click();
+ await oneParagraph.getByRole("status").filter({hasText:"Choose 4 more sentences"}).waitFor();
+ for(const start of ["Changing the car","To test ramp","If both","Keeping the car"]){
+  await oneParagraph.locator(".writing-order-options").getByRole("button",{name:new RegExp("^"+start)}).click();
+ }
+ await oneParagraph.getByRole("button",{name:"Check the order",exact:true}).click();
+ await oneParagraph.getByRole("status").filter({hasText:"sentence 1"}).waitFor();
+ await oneParagraph.locator(".writing-order-group").getByRole("button",{name:/^Changing the car/}).click();
+ assert.equal(await oneParagraph.locator(".writing-order-options button").count(),4);
+ for(const start of ["To test ramp","Changing the car","If both","Keeping the car"]){
+  await oneParagraph.locator(".writing-order-options").getByRole("button",{name:new RegExp("^"+start)}).click();
+ }
+ await oneParagraph.getByRole("button",{name:"Check the order",exact:true}).click();
+ await oneParagraph.getByRole("status").filter({hasText:"Correct."}).waitFor();
+ await oneParagraph.getByText("Read the completed paragraph",{exact:true}).click();
+ assert(await oneParagraph.locator(".model").isVisible());
+ await navPage.getByText("Build two paragraphs",{exact:true}).click();
+ const twoParagraphs=navPage.locator('[data-writing-order="rocks"]');
+ assert.equal(await twoParagraphs.locator(".writing-order-options button").count(),10);
+ for(const start of ["The layers","First, loose","As more","Minerals then","Together","The interlocking","First, the molten","As it cooled","The crystals grew","That is how"]){
+  await twoParagraphs.locator(".writing-order-options").getByRole("button",{name:new RegExp("^"+start)}).click();
+ }
+ await twoParagraphs.getByRole("button",{name:"Check the order",exact:true}).click();
+ await twoParagraphs.getByRole("status").filter({hasText:"Correct."}).waitFor();
+ assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Sentence ordering overflows at phone width");
+ await screen(navPage,"writing-sentence-order-mobile");
  await navPage.goto(base+"/ks3/");
  const ks3Menu7=navPage.locator("#year-7");
  const ks3Menu8=navPage.locator("#year-8");
@@ -463,7 +523,19 @@ try{
   await navPage.getByRole("heading",{name:"Check your understanding",exact:true}).waitFor();
   const firstCheck=navPage.locator("[data-catchup-check]").first();
   assert.equal(await navPage.locator("[data-catchup-check]").count(),2);
-  assert(await navPage.locator(".ks3-lesson figure,.ks3-lesson table").isVisible(),"KS3 lesson is missing a visual prompt");
+  assert(await navPage.locator(".ks3-lesson figure,.ks3-lesson table").first().isVisible(),"KS3 lesson is missing a visual prompt");
+  const pictures=navPage.locator(".ks3-illustration img");
+  for(const picture of await pictures.all()){
+   await picture.evaluate(img=>img.decode());
+   assert(await picture.evaluate(img=>img.naturalWidth>0&&img.alt.length>20));
+  }
+  const atHome=navPage.locator(".ks3-home-activity");
+  assert.equal(await atHome.count(),1);
+  assert.equal(await atHome.evaluate(el=>el.open),false);
+  await atHome.getByText("Try at home (optional)",{exact:true}).click();
+  assert(await atHome.getByText("Think about it.",{exact:true}).isVisible());
+  await atHome.getByText("Check your idea",{exact:true}).click();
+  assert(await atHome.locator("details p").isVisible());
   const firstOption=firstCheck.getByRole("button").first();
   await firstOption.focus();
   await navPage.keyboard.press("Enter");

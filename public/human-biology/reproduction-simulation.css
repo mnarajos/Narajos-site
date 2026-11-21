@@ -26,3 +26,11 @@
 
 .krp-swipe{display:none;margin:.45rem 0 .35rem;color:var(--muted,#58646d);font-size:.79rem;line-height:1.45}
 @media(max-width:650px){.krp-swipe{display:block}}
+
+
+.krp-entry{cursor:pointer}
+.krp-entry:hover rect,.krp-entry:focus-visible rect{stroke:#23668a;stroke-width:3}
+.krp-entry[aria-disabled=true]{cursor:default;opacity:.65}
+.krp-anatomy-note{margin:.55rem 0 .25rem}
+.krp-anatomy-note summary{min-height:36px;padding:.35rem 0;cursor:pointer;color:#264e68;font-weight:700}
+.krp-anatomy-note p{margin:.25rem 0 .65rem;max-width:68ch}
