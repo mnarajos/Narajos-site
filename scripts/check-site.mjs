@@ -67,6 +67,22 @@ requireTrue(home.includes('href="/human-biology/"'),"Human Biology link missing 
 requireTrue(read("human-biology/index.html").includes('/human-biology/app.js'),"Human Biology application script missing");
 requireTrue(read("human-biology/index.html").includes('href="/" id="site-home"'),"Human Biology site return link missing");
 requireTrue(home.includes("Focused Questions"),"Teacher tool not discoverable from homepage");
+const sharedHeaderPages=["index.html","teaching/index.html","teaching/simulations/index.html","privacy/index.html"];
+for(const p of sharedHeaderPages){
+ const html=read(p);
+ const nav=/<nav class="site-nav"[^>]*>([\s\S]*?)<\/nav>/.exec(html)?.[1]||"";
+ requireTrue(nav.includes("Learning companions"),"Learning-companion navigation label missing from "+p);
+ for(const href of ["/gcse/","/alevel/","/human-biology/"]){
+  requireTrue(nav.includes('href="'+href+'"'),"Missing learner app "+href+" in "+p+" header");
+ }
+ requireTrue(!nav.includes("Science Revision"),"Outdated science revision menu label in "+p);
+}
+const teachingOverview=read("teaching/index.html");
+const learnerCards=[...teachingOverview.matchAll(/<a class="app-card" href="(\/[^"]+)"/g)].map(m=>m[1]);
+requireTrue(learnerCards.join(",")==="/gcse/,/alevel/,/human-biology/","Teaching overview must show all three learner apps before educator tools");
+requireTrue(teachingOverview.includes('href="/teacher/"')&&teachingOverview.includes("For educators"),"Focused Questions needs a separate educator section");
+requireTrue(home.includes("complement classroom teaching rather than replace it"),"Homepage missing teacher-complement rationale");
+requireTrue(home.includes("easy to access"),"Homepage missing free-access rationale");
 requireTrue(teacher.includes('href="/" aria-label="Return to Narajos homepage"'),"Focused Questions return link missing");
 requireTrue(teacher.includes("function saveDraft()")&&teacher.includes("function restoreDraft()"),"Focused Questions draft recovery missing");
 requireTrue(teacher.includes("function printSheet(answers)"),"Focused Questions print option missing");
