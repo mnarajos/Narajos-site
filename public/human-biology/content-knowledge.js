@@ -1,6 +1,6 @@
 /* Original, standalone biological knowledge checks for OCR F172–F177. No set assignment tasks or submissions. */
 window.KeystoneHumanKnowledge={
-  "version": "2026-11-v1",
+  "version": "2026-11-v2-diagrams",
   "units": [
     {
       "id": "f172",
@@ -1870,6 +1870,144 @@ window.KeystoneHumanKnowledge={
       "explain": "A medicine can have rare harms that require wider monitoring.",
       "misconception": "An absence of observed harm does not prove zero risk.",
       "hintCue": "What is the probability of observing a rare event in a tiny sample?",
+      "samAligned": false,
+      "knowledgeOnly": true
+    },
+    {
+      "id": "f172-diagram-alleles",
+      "unit": "f172",
+      "area": 1,
+      "section": "1.2",
+      "type": "diagram",
+      "level": "apply",
+      "stem": "The same position on two chromosomes is marked A and a. What do these letters represent?",
+      "figure": "hb-alleles",
+      "options": [
+        "Two alleles of the same gene",
+        "Two different types of cell",
+        "Two different chromosomes in a gamete",
+        "Two copies of the whole genome"
+      ],
+      "correct": 0,
+      "model": "Two alleles of the same gene",
+      "explain": "The genes occupy matching loci on homologous chromosomes; A and a represent different alleles.",
+      "misconception": "An allele is a version of a gene, not a complete chromosome.",
+      "hintCue": "Notice that the two letters occur at corresponding positions on the chromosome pair.",
+      "samAligned": false,
+      "knowledgeOnly": true
+    },
+    {
+      "id": "f173-diagram-blood",
+      "unit": "f173",
+      "area": 2,
+      "section": "2.2",
+      "type": "diagram",
+      "level": "core",
+      "stem": "In the simplified blood film, what type of cell is labelled B?",
+      "figure": "hb-blood",
+      "options": [
+        "Leukocyte (white blood cell)",
+        "Erythrocyte (red blood cell)",
+        "Platelet",
+        "Bacterial cell"
+      ],
+      "correct": 0,
+      "model": "Leukocyte (white blood cell)",
+      "explain": "The large nucleated cell is a leukocyte; mature human erythrocytes lack nuclei.",
+      "misconception": "A platelet is a small cell fragment, not a large nucleated cell.",
+      "hintCue": "Compare the size of B and whether it has a visible nucleus.",
+      "samAligned": false,
+      "knowledgeOnly": true
+    },
+    {
+      "id": "f174-diagram-glucose",
+      "unit": "f174",
+      "area": 3,
+      "section": "3.2",
+      "type": "diagram",
+      "level": "apply",
+      "stem": "Blood glucose rises after a meal, then falls. Which response helps explain the fall?",
+      "figure": "hb-glucose",
+      "options": [
+        "Insulin promotes glucose uptake and storage",
+        "Glucagon causes immediate glucose release",
+        "ADH removes glucose through the kidneys",
+        "Thyroxine prevents glucose entering cells"
+      ],
+      "correct": 0,
+      "model": "Insulin promotes glucose uptake and storage",
+      "explain": "Higher glucose stimulates insulin release, helping cells take up and store glucose.",
+      "misconception": "Glucagon generally supports a rise in plasma glucose rather than the post-meal decrease.",
+      "hintCue": "Think about the pancreas's response to high blood glucose.",
+      "samAligned": false,
+      "knowledgeOnly": true
+    },
+    {
+      "id": "f175-diagram-oviduct",
+      "unit": "f175",
+      "area": 1,
+      "section": "1.2",
+      "type": "diagram",
+      "level": "core",
+      "stem": "Which structure is labelled A in this simplified reproductive-system diagram?",
+      "figure": "hb-oviduct",
+      "options": [
+        "Oviduct",
+        "Cervix",
+        "Ovary",
+        "Vagina"
+      ],
+      "correct": 0,
+      "model": "Oviduct",
+      "explain": "Oviducts extend from near the ovaries towards the uterus; fertilisation commonly occurs here.",
+      "misconception": "The oviduct is distinct from the ovary and from the cervix beneath the uterus.",
+      "hintCue": "The labelled tube connects the region near an ovary with the uterus.",
+      "samAligned": false,
+      "knowledgeOnly": true
+    },
+    {
+      "id": "f176-diagram-brain",
+      "unit": "f176",
+      "area": 1,
+      "section": "1.1",
+      "type": "diagram",
+      "level": "core",
+      "stem": "Which brain region is labelled A?",
+      "figure": "hb-brain",
+      "options": [
+        "Cerebellum",
+        "Cerebrum",
+        "Hypothalamus",
+        "Medulla oblongata"
+      ],
+      "correct": 0,
+      "model": "Cerebellum",
+      "explain": "The cerebellum lies below the posterior cerebrum and helps coordinate movement.",
+      "misconception": "The large upper region is the cerebrum; the small posterior-lower region is the cerebellum.",
+      "hintCue": "Look at the smaller, folded region near the back and base of the brain.",
+      "samAligned": false,
+      "knowledgeOnly": true
+    },
+    {
+      "id": "f177-diagram-randomise",
+      "unit": "f177",
+      "area": 2,
+      "section": "2.3",
+      "type": "diagram",
+      "level": "apply",
+      "stem": "Participants are allocated randomly to two groups. What is the main purpose?",
+      "figure": "hb-trial",
+      "options": [
+        "Reduce selection bias between the groups",
+        "Guarantee the treatment works",
+        "Remove the need for consent",
+        "Ensure every participant receives the drug"
+      ],
+      "correct": 0,
+      "model": "Reduce selection bias between the groups",
+      "explain": "Random allocation helps make the groups comparable and reduces selection bias; it does not guarantee identical groups.",
+      "misconception": "Random allocation does not remove the need for informed consent or prove effectiveness.",
+      "hintCue": "Ask whether researchers can choose which people enter the treatment group.",
       "samAligned": false,
       "knowledgeOnly": true
     }
