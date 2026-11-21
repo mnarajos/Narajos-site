@@ -273,6 +273,8 @@ try{
  assert(await navPage.locator("#ecg").evaluate(c=>c.width>100&&c.height>80),"Visible ECG canvas has no useful size");
  const heartBox=await navPage.locator(".heartbox").boundingBox(),ecgBox=await ecg.boundingBox();
  assert(ecgBox.x>=heartBox.x+heartBox.width,"Desktop ECG must sit beside heart");
+ const pressureBox=await navPage.locator("#graph").boundingBox(),pressurePanel=await mechanical.boundingBox();
+ assert(pressureBox.y+pressureBox.height<=pressurePanel.y+pressurePanel.height+1,"Pressure graph is clipped inside its panel");
  await screen(navPage,"cardiac-optional-ecg");
  await navPage.locator('button[data-scene="elec"]').click();assert(await ecg.isVisible());assert(await mechanical.isHidden());
  await navPage.locator("#hide-ecg").click();assert(await ecg.isHidden());
@@ -294,6 +296,7 @@ try{
  assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Optional ECG overflows phone width");
  const phoneHeart=await navPage.locator(".heartbox").boundingBox(),phoneEcg=await ecg.boundingBox();
  assert(phoneEcg.y>phoneHeart.y,"Phone ECG should stack below the heart");
+ await ecg.scrollIntoViewIfNeeded();
  await screen(navPage,"cardiac-optional-ecg-mobile");
  await navPage.setViewportSize({width:1280,height:900});
  await navPage.goto(base+"/human-biology/#challenge/f170/build");
@@ -305,6 +308,7 @@ try{
  const secondGroup=navPage.locator(".k-progression-area").nth(1);
  assert(await secondGroup.locator(".k-skill-card").first().isHidden());
  await secondGroup.locator("summary").click();assert(await secondGroup.locator(".k-skill-card").first().isVisible());
+ await navPage.evaluate(()=>scrollTo(0,0));
  await screen(navPage,"human-progressive-menu");
  const route="/human-biology/#challenge/f170/p-cell-stage-metaphase";
  await navPage.goto(base+route);
