@@ -83,10 +83,18 @@ function create(env){
   ids=withReverse(ids);
   return shuffle(ids).map(function(c){return c.id;});
  }
+ function applyTier(session){
+  if(!session)return session;
+  var allowed=function(id){return valid(card(id));};
+  session.queue=session.queue.filter(allowed);
+  session.original=session.original.filter(allowed);
+  session.complete=Math.min(session.complete,session.original.length);
+  return session;
+ }
  function session(route){
-  var prior=restored();
-  if(route==="flashresume"){if(!prior)return empty("There is no unfinished flashcard session.");active=prior;if(E.pushGuard)E.pushGuard();return show();}
-  if(prior&&prior.route===route){active=prior;if(E.pushGuard)E.pushGuard();return show();}
+  var prior=applyTier(restored());
+  if(route==="flashresume"){if(!prior||!prior.queue.length)return empty("There is no unfinished flashcard session compatible with your current tier.");active=prior;if(E.pushGuard)E.pushGuard();return show();}
+  if(prior&&prior.route===route&&prior.queue.length){active=prior;if(E.pushGuard)E.pushGuard();return show();}
   var ids=select(route);
   if(!ids.length)return empty(route==="flashreview"?"No reviews are due yet. Choose a topic to learn new cards.":route==="flashweak"?"No weak cards recorded yet. Practise some flashcards first.":"No cards are available for this selection.");
   active={route:route,original:ids.slice(),queue:ids.slice(),first:{},attempts:{},complete:0,started:Date.now(),over:false,
@@ -100,7 +108,7 @@ function create(env){
  }
  function show(){
   if(!active||!active.queue.length)return finished();
-  var c=card(active.queue[0]);if(!c){active.queue.shift();saveActive();return show();}
+  var c=card(active.queue[0]);if(!c||!valid(c)){active.queue.shift();active.original=active.original.filter(function(id){return id!==active.queue[0];});saveActive();return show();}
   var s=active,completed=s.complete,total=s.original.length;
   var h='<p class="crumb"><a href="#flashcards">✕ Leave flashcards</a></p>'+
    '<h1>Flashcard review</h1><p class="kr-subtle">'+E.esc((topicInfo[c.topic]||{}).name||"Mixed science")+' · '+completed+' of '+total+' cards completed · '+s.queue.length+' remaining in queue</p>'+
