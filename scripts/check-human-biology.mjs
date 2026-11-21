@@ -49,7 +49,7 @@ assert(/nodes of Ranvier/i.test(main.innerHTML)&&main.innerHTML.includes("Apply 
 location.hash="#flashcards";listeners.hashchange();
 assert(main.innerHTML.includes("Review due cards")&&main.innerHTML.includes("Learn new cards"));
 location.hash="#practice";listeners.hashchange();
-assert(main.innerHTML.includes("Start mixed practice"));
+assert(main.innerHTML.includes("Varied exam questions")&&main.innerHTML.includes("Explanation-only practice"));
 location.hash="#cards/area-4";listeners.hashchange();
 assert(main.innerHTML.includes("Recall the biology"),"Flashcard session failed to start");
 assert(memory.has("narajos-human-biology-session-v1"),"Flashcard session is not saved");
