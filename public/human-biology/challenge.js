@@ -414,6 +414,7 @@ function drawQuestion(){
   if((!correct||helped)&&session.lastPlannedCheck)h+='<p class="k-quick-note">A related quick check is next, so you can try the idea again independently.</p>';
   if(q.levelsNote)h+='<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>';
   if(!correct&&!unknown&&q.misconception)h+='<div class="k-misconception"><strong>Watch out</strong><p>'+esc(q.misconception)+'</p></div>';
+  if(!correct||helped||unknown){var cu=window.KeystoneHumanCatchup&&window.KeystoneHumanCatchup.linkFor(q);if(cu)h+='<p class="k-catchup-after"><a href="#'+esc(cu)+'">Need more help? Catch up on this idea</a></p>';}
   h+='</div>';
  }
  if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points":"Check answer")+' →</button>'+(used<availableHints.length?'<button class="button secondary k-hint-button" type="button" data-k-action="hint">'+(used?'More help':'Hint')+'</button>':'')+'<button class="button quiet" type="button" data-k-action="skip">I don’t know · show me</button></div>';
