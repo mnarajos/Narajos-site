@@ -946,6 +946,7 @@ function drawElec(){
   }
   if(S.block){ heartLabel(hx,258,248,"✗ AVN blocked",11); }
 }
+function ecgVentricularPhase(phi){return S.scene==="elec"&&S.block?S.ventPhi+(phi-S.phi)*(38/S.hr):phi;}
 function drawGraphECG(){
   const graph=ecgCanvas,gx=ex;
   const w=graph.getBoundingClientRect().width,h=graph.getBoundingClientRect().height;
@@ -978,13 +979,13 @@ function drawGraphECG(){
   const amp=(h-T-B)*0.40;
   gx.beginPath();
   for(let i=0;i<=360;i++){const phi=i/360;
-    const y=mid-ecgValue(phi,S.scene==="elec"&&S.block?(phi*(S.hr/38)):phi)*amp;
+    const y=mid-ecgValue(phi,ecgVentricularPhase(phi))*amp;
     i?gx.lineTo(pxX(phi),y):gx.moveTo(pxX(phi),y);}
   gx.strokeStyle="#c0334d";gx.lineWidth=2;gx.stroke();
 
   // --- cardiac-cycle phase bar: ties the ECG to the mechanical phases ---
   const by=h-B+8, bh=15;
-  const bands=[[0,CROSS.avClose,"Atrial systole","#f4e3ca"],
+  const bands=S.scene==="elec"&&S.block?[]:[[0,CROSS.avClose,"Atrial systole","#f4e3ca"],
                [CROSS.avClose,CROSS.slClose,"Ventricular systole","#f2d3d9"],
                [CROSS.slClose,1,"Diastole","#d5e9de"]];
   gx.textBaseline="middle";
@@ -997,7 +998,7 @@ function drawGraphECG(){
     if(gx.measureText(t).width<=x1-x0-2) gx.fillText(t,(x0+x1)/2,by+bh/2);
   }
   gx.fillStyle="#5c7082";gx.font="600 8px system-ui";gx.textAlign="left";gx.textBaseline="top";
-  gx.fillText("→ cardiac cycle phase",L,by+bh+2);
+  gx.fillText(S.scene==="elec"&&S.block?"Independent ventricular escape rhythm":"→ cardiac cycle phase",L,by+bh+2);
 
   // time cursor
   const cx=pxX(((S.phi%1)+1)%1);

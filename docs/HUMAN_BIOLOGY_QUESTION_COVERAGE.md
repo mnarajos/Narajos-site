@@ -26,7 +26,7 @@ Each row has three new questions plus a three-version core family. These are del
 | F170 | 2.1.2 | Relate the cardiac septum to separation of the circulations | `phys-heart-septum` |
 | F170 | 2.1.3 | Choose an investigation matched to the biological property measured | `phys-bone-dexa` |
 | F170 | 2.1.4 | Explain immune rejection as a limitation of transplantation | `phys-transplant` |
-| F170 | 2.2.1 | Link a specialised cell to its tissue, organ and organ system | `phys-tissue-order` |
+| F170 | 2.2.1 | Explain an organ system as organs contributing to a shared function | `phys-tissue-order` |
 | F170 | 2.2.2 | Explain cooperation of respiratory and circulatory systems during exercise | `phys-homeostasis-cross` |
 | F170 | 2.2.3 | Explain valid technique and recording of peak expiratory flow | `phys-peakflow-technique` |
 | F170 | 3.1.1 | Explain insulin action as negative feedback after a rise in glucose | `endo-insulin-loop` |

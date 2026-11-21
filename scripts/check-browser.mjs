@@ -275,8 +275,8 @@ try{
   if(i===0){chosenCore=state.queue[2];assert((await navPage.locator(".k-sequence-note").innerText()).includes("1 ·"));}
   const task=await navPage.evaluate(id=>window.KeystoneHumanChallenges.questions.find(q=>q.id===id),state.queue[state.index]);
   if(task.type==="written"){
-   await navPage.locator("#k-written").fill("Anaphase: sister chromatids have separated and are moving to opposite poles.");
-   await navPage.locator('[data-k-action="check"]').click();
+   await navPage.locator("#k-written").fill("Sister chromatids separate to opposite poles. Each pole receives one copy of each of the 46 chromosomes, so each daughter cell receives 46.");
+   await navPage.locator('[data-k-action="reveal"]').click();
    await navPage.locator('[data-k-action="self-good"]').click();
   }else{
    await navPage.locator('input[name="kchoice"][value="'+task.correct+'"]').check();
@@ -309,7 +309,11 @@ try{
  await navPage.evaluate(()=>setRunning(false));
  const canvas=await navPage.locator("#ecg").boundingBox();
  await navPage.mouse.click(canvas.x+canvas.width*.6,canvas.y+canvas.height*.5);
- const phase=await navPage.evaluate(()=>S.phi);assert(phase>.4&&phase<.8,"ECG scrubbing did not change the shared heart clock");
+ const scrubbedPhase=await navPage.evaluate(()=>S.phi);assert(scrubbedPhase>.4&&scrubbedPhase<.8,"ECG scrubbing did not change the shared heart clock");
+ await navPage.evaluate(()=>{S.block=true;S.ventPhi=.4;S.phi=.2;});
+ assert(await navPage.evaluate(()=>Math.abs(ecgVentricularPhase(S.phi)-S.ventPhi)<1e-9),"ECG cursor must share the ventricular clock during block");
+ await navPage.evaluate(()=>{S.block=false;});
+
  await navPage.setViewportSize({width:1280,height:720});
  await navPage.locator('[data-scene="mech"]').click();
  assert(await ecg.isVisible());assert((await navPage.locator("#ecg").boundingBox()).height>80);
