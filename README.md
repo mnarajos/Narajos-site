@@ -11,7 +11,7 @@ Source files for [narajos.com](https://narajos.com/).
 - `public/gcse/flashcards-app.js` — GCSE topic, paper, mixed, weak and due-card review modes
 - `public/alevel/index.html` — A-level Biology revision
 - `public/alevel/spaced-review-app.js` — spaced-review dashboard built on its existing flashcard bank
-- `public/human-biology/` — Cambridge OCR AAQ revision app: paper-first F170/F171 navigation, original diagram, calculation and application challenges, and separate recall cards. F170 has 28 learning sections, 112 flashcards and 28 explanation-only prompts; exam-question bank currently has 62 F170 and 27 F171 challenges (nine formats, including two-step scientific reasoning). F171 remains an early preview.
+- `public/human-biology/` — Cambridge OCR AAQ revision app: paper-first F170/F171 navigation, original diagram, calculation and application challenges, and separate recall cards. F170 has 28 learning sections, 112 flashcards and 28 explanation-only prompts; exam-question bank currently has 62 F170 and 29 F171 challenges (nine formats, including two-step scientific reasoning). F171 remains an early preview.
 - `docs/HUMAN_BIOLOGY_REVISION_RESEARCH.md` — OCR specification / sample-material research, high-yield priority rationale, content-quality checklist and coverage gaps.
 - `docs/ORACLE_KEYSTONE_PEDAGOGY.md` — pedagogical and privacy standard for all Keystone apps: explicit sequencing, retrieval, scaffold fading, diagnostic reteach, transferable application and strictly local progress (no AI marking or learner telemetry).
 - `public/teacher/index.html` — Focused Questions for teachers
