@@ -11,9 +11,51 @@ function text(x,y,string,size,weight,colour,anchor){
  return '<text x="'+x+'" y="'+y+'" font-family="system-ui, sans-serif" font-size="'+(size||17)+'" font-weight="'+(weight||600)+'" fill="'+(colour||"#233e4c")+'" text-anchor="'+(anchor||"middle")+'">'+string+'</text>';
 }
 function arrow(x1,y1,x2,y2,color){
- return '<path d="M'+x1+' '+y1+' L'+x2+' '+y2+'" stroke="'+(color||"#477184")+'" stroke-width="2.8" fill="none" stroke-linecap="round"/><path d="M'+(x2-8)+' '+(y2-5)+' L'+x2+' '+y2+' L'+(x2-8)+' '+(y2+5)+'" fill="none" stroke="'+(color||"#477184")+'" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>';
+ var dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy)||1,ux=dx/len,uy=dy/len,px=-uy,py=ux;
+ var ax=(x2-9*ux+5*px).toFixed(1),ay=(y2-9*uy+5*py).toFixed(1);
+ var bx=(x2-9*ux-5*px).toFixed(1),by=(y2-9*uy-5*py).toFixed(1);
+ return '<path d="M'+x1+' '+y1+' L'+x2+' '+y2+'" stroke="'+(color||"#477184")+'" stroke-width="2.8" fill="none" stroke-linecap="round"/><path d="M'+ax+' '+ay+' L'+x2+' '+y2+' L'+bx+' '+by+'" fill="none" stroke="'+(color||"#477184")+'" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>';
 }
 var diagrams={
+ osmosis:{
+  label:"Osmosis and water potential",
+  caption:"Water crosses a partially permeable membrane in both directions, but the net movement is from higher to lower water potential.",
+  image:svg("Two compartments separated by a partially permeable membrane; the left has higher water potential and fewer solute particles. Net water movement is left to right, towards lower water potential.",
+   box(12,48,215,118,"#eaf5fb")+box(253,48,215,118,"#f8eaf4")+
+   '<path d="M240 35V173" stroke="#45677c" stroke-width="7" stroke-dasharray="9 9"/>'+
+   '<g fill="#7a56a6"><circle cx="77" cy="108" r="6"/><circle cx="138" cy="85" r="6"/><circle cx="175" cy="133" r="6"/>'+
+   '<circle cx="290" cy="84" r="6"/><circle cx="317" cy="123" r="6"/><circle cx="350" cy="95" r="6"/><circle cx="395" cy="120" r="6"/><circle cx="420" cy="83" r="6"/><circle cx="436" cy="138" r="6"/></g>'+
+   text(121,29,"Higher water potential",14,700)+text(364,29,"Lower water potential",14,700)+
+   '<path d="M167 111H310" stroke="#15796f" stroke-width="4" stroke-linecap="round"/>'+arrow(285,111,310,111,palettes.teal)+
+   text(240,194,"Net movement of water →",15,700,palettes.teal)+
+   text(240,217,"Membrane allows water through; purple dots represent solute.",12,500),
+   239)
+ },
+ chemiosmosis:{
+  label:"Proton gradient and ATP synthase",
+  caption:"H⁺ moves down its electrochemical gradient through ATP synthase, providing energy to make ATP from ADP and phosphate.",
+  image:svg("A membrane separates a high proton concentration from a lower proton concentration. Protons move through ATP synthase; ADP and inorganic phosphate are converted to ATP.",
+   box(16,13,448,78,"#e7f3fc")+box(16,137,448,79,"#edf6e8")+
+   '<path d="M17 116H210M275 116H463" stroke="#a5aab3" stroke-width="10" stroke-linecap="round"/>'+
+   '<rect x="208" y="96" width="69" height="40" rx="15" fill="#efd9ad" stroke="#b67b23" stroke-width="3"/>'+
+   text(243,120,"ATP",14,800,palettes.orange)+text(116,40,"High H⁺",18,800)+text(362,181,"Low H⁺",18,800)+
+   '<g fill="#396da8"><circle cx="90" cy="69" r="7"/><circle cx="144" cy="69" r="7"/><circle cx="200" cy="61" r="7"/><circle cx="272" cy="65" r="7"/><circle cx="351" cy="64" r="7"/><circle cx="430" cy="67" r="7"/><circle cx="120" cy="187" r="7"/><circle cx="205" cy="191" r="7"/></g>'+
+   arrow(242,78,242,149,palettes.blue)+text(240,239,"ADP + Pi → ATP",15,700,palettes.teal),
+   256)
+ },
+ glucose:{
+  label:"Blood-glucose negative feedback",
+  caption:"Insulin and glucagon act in opposing directions to return blood glucose towards the regulated range.",
+  image:svg("Raised blood glucose stimulates insulin secretion, encouraging glucose uptake and storage, lowering glucose. Low blood glucose stimulates glucagon, promoting glucose release from liver glycogen and raising glucose.",
+   box(11,12,458,92,"#e8f3eb")+box(11,121,458,92,"#fff0e0")+
+   text(93,43,"Raised glucose",17,700)+text(241,43,"Insulin",18,800,palettes.teal)+text(389,43,"Glucose falls",17,700)+
+   arrow(151,56,190,56)+arrow(292,56,328,56)+
+   text(240,83,"More glucose uptake and storage",13,500)+
+   text(93,152,"Low glucose",17,700)+text(241,152,"Glucagon",18,800,palettes.orange)+text(389,152,"Glucose rises",17,700)+
+   arrow(151,165,190,165)+arrow(292,165,328,165)+
+   text(240,194,"Liver releases glucose",13,500),
+   230)
+ },
  organisation:{
   label:"Levels of biological organisation",
   caption:"Cells form tissues; different tissues together form an organ. Organs cooperate in organ systems.",
@@ -160,20 +202,25 @@ var curated={
  "a1/enzfactors":{diagram:"enzyme",links:["kinetics","inhibition"]},
  "a1/enzfactors2":{diagram:"enzyme",links:["inhibition"]},
  "a1/replication":{diagram:"dna",links:["molecular"]},
+ "a2/osmosis":{diagram:"osmosis"},
+ "a2/membrane":{diagram:"osmosis"},
  "a4/transcription":{diagram:"expression",links:["molecular"]},
  "a4/translation":{diagram:"expression",links:["molecular"]},
  "a5/lightdep":{diagram:"photosynthesis",links:["bioenergetics"]},
  "a5/calvin":{diagram:"photosynthesis",links:["bioenergetics"]},
- "a5/chemios":{links:["bioenergetics"]},
+ "a5/chemios":{diagram:"chemiosmosis",links:["bioenergetics"]},
  "a5/glycolysis":{diagram:"respiration",links:["bioenergetics"]},
  "a5/krebs":{diagram:"respiration",links:["bioenergetics"]},
- "a5/oxphos":{diagram:"respiration",links:["bioenergetics"]},
+ "a5/oxphos":{diagram:"chemiosmosis",links:["bioenergetics"]},
  "a3/heart":{diagram:"heart",links:["cardiac"]},
  "a6/heartrate":{diagram:"heart",links:["cardiac"]},
  "a6/hrcontrol":{links:["cardiac"]},
  "a6/reflex":{diagram:"reflex"},
+ "a6/glucose":{diagram:"glucose"},
  "a2/vaccines":{diagram:"vaccines"},
  "f170/1.1.5":{diagram:"dna",links:["molecular"]},
+ "f170/1.1.4":{diagram:"osmosis"},
+ "f170/3.1.1":{diagram:"glucose"},
  "f170/1.2.1":{diagram:"organisation"},
  "f170/2.1.2":{diagram:"heart",links:["cardiac"]},
  "f170/2.2.1":{diagram:"heart",links:["cardiac"]},
