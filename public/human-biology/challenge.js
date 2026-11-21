@@ -102,6 +102,38 @@ function quickMixQueue(unit,limit){
  while(chosen.length<limit){if(!choose(pool,["single","short","match","order","diagram","multi","number","best","written"]))break;}
  return chosen.slice(0,limit).map(function(q){return q.id;});
 }
+function adaptQuickMixMiddle(){
+ if(!session||session.scope!=="all"||!session.quickMixBase)return;
+ var slot=session.quickMixBase.indexOf(session.queue[session.index]);
+ if(slot!==4&&slot!==5)return;
+ session.quickMixMiddleChecked=session.quickMixMiddleChecked||{};
+ if(session.quickMixMiddleChecked[slot])return;
+ var early=session.quickMixBase.slice(0,4);
+ if(!early.every(function(id){return Object.prototype.hasOwnProperty.call(session.first,id);}))return;
+ var secure=early.filter(function(id){return session.first[id]===true;}).length;
+ session.quickMixMiddleChecked[slot]=true;
+ // Two or more early difficulties: put another familiar/core step before
+ // applying the ideas. Three difficulties: offer two core steps.
+ if((slot===4&&secure<=2)||(slot===5&&secure<=1)){
+  var candidates=all.filter(function(q){
+   return q.unit===session.unit&&q.level==="core"&&
+    ["single","short","order","diagram"].indexOf(q.type)>=0&&
+    session.queue.indexOf(q.id)<0&&
+    !Object.prototype.hasOwnProperty.call(session.first,q.id);
+  });
+  if(candidates.length){
+   candidates=shuffle(candidates);
+   candidates.sort(function(a,b){
+    var p1=progress[a.id]||{},p2=progress[b.id]||{};
+    return (p1.seen||0)-(p2.seen||0);
+   });
+   session.queue[session.index]=candidates[0].id;
+   session.quickMixBase[slot]=candidates[0].id;
+   session.quickMixSoftened=true;
+  }
+ }
+ save();
+}
 function adaptQuickMixEnd(){
  if(!session||session.scope!=="all"||session.quickMixAdjusted||!session.quickMixFinalId)return;
  if(session.queue[session.index]!==session.quickMixFinalId)return;
@@ -258,6 +290,7 @@ function showNextHint(){
 }
 function drawQuestion(){
  if(!session||!isActive())return;
+ adaptQuickMixMiddle();
  adaptQuickMixEnd();
  visible=true;var q=current(),a=currentAnswer();
  var sub=q.unit==="f171"?"F171 · Health and disease":"F170 · Fundamentals",num=session.index+1,max=session.queue.length;
@@ -306,9 +339,16 @@ function validateAnswer(q,a){
 function planQuickCheck(q){
  if(!session||isQuickCheck(q)||(session.quickChecksPlanned||0)>=2)return null;
  var seen=session.first||{};
+ var rank={warmup:0,core:1,apply:2,stretch:3};
  var candidates=all.filter(function(x){
-  return x.id!==q.id&&x.unit===q.unit&&x.area===q.area&&!(x.id in seen)&&!(session.quickCheckIds||{})[x.id]&&["single","multi","diagram","match","best"].indexOf(x.type)>=0;
+  return x.id!==q.id&&x.unit===q.unit&&x.section===q.section&&
+   (rank[x.level]||0)<=(rank[q.level]||0)&&
+   !(x.id in seen)&&!(session.quickCheckIds||{})[x.id]&&
+   ["single","diagram","match","best"].indexOf(x.type)>=0;
  });
+ // If this idea has no appropriate independent follow-up, retry it later
+ // rather than springing an unrelated or more difficult question.
+
  if(!candidates.length)return null;
  // Prefer the same specification subtopic and a manageable core question.
  candidates.sort(function(a,b){
