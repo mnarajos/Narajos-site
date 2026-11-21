@@ -42,7 +42,10 @@ try{
  const desktop=await browser.newPage({viewport:{width:1280,height:900}});
  await desktop.goto(base+"/",{waitUntil:"load"});
  assert(await desktop.title(),"Homepage title missing");
- assert(await desktop.getByRole("heading",{name:"Learning companions"}).isVisible(),"Learning companions missing from homepage");
+ assert.equal(await desktop.title(),"Science Resources | Narajos");
+ assert(await desktop.getByRole("heading",{name:"Science Resources",exact:true}).isVisible());
+ assert(await desktop.getByRole("heading",{name:"Biology Simulations",exact:true}).isVisible());
+ assert(await desktop.getByRole("heading",{name:"Learning Companions"}).isVisible(),"Learning Companions missing from homepage");
  assert((await desktop.locator(".home-philosophy").innerText()).includes("complement classroom teaching"),"Public purpose statement missing");
  const homeMenu=desktop.locator(".site-nav details").first();
  await homeMenu.locator("summary").click();
@@ -85,6 +88,14 @@ try{
  const settingsLink=desktop.locator(".settings-shortcut");
  assert(await settingsLink.isVisible(),"Settings shortcut missing from A-level header");
  assert((await settingsLink.boundingBox()).x>600,"Settings should sit at the right-hand side of the header");
+ assert((await settingsLink.boundingBox()).width<=46,"Settings should be a compact icon on desktop");
+ assert(await settingsLink.getAttribute("aria-label"),"Icon-only Settings needs an accessible name");
+ for(const width of [1024,1280]){
+  await desktop.setViewportSize({width,height:900});
+  const gear=await settingsLink.boundingBox();
+  const flash=await desktop.locator('.top-inner a[href="#flashcards"]').boundingBox();
+  if(flash)assert(gear.x>=flash.x+flash.width+8||gear.y>=flash.y+flash.height||flash.y>=gear.y+gear.height,"Settings overlaps or crowds Flashcards on a laptop");
+ }
  await desktop.locator('a[href="#catchup-a1"]').first().click();
  await desktop.waitForURL("**/alevel/#catchup-a1");
  const firstConcept=desktop.locator('a[href^="#catchup-a1-"]').first();
@@ -100,6 +111,29 @@ try{
  await screen(desktop,"alevel-enzyme-visual");
 
  await checkPage(desktop,"human-biology");
+ assert(await desktop.getByRole("heading",{name:"Other ways to revise F170",exact:true}).isVisible());
+ assert(await desktop.getByRole("heading",{name:"Other ways to revise F171",exact:true}).isVisible());
+ assert(await desktop.locator('.k-home-actions a[href="#skills/f171"]').isVisible());
+ assert.equal(await desktop.locator("main").evaluate(el=>getComputedStyle(el).outlineStyle),"none","Main-content focus outline should not frame the whole app");
+ // Quiet hints: an interaction restarts the inactivity delay, then keyboard
+ // activation reveals the conceptual prompt without stealing navigation.
+ await desktop.goto(base+"/human-biology/#skills/f170/units");
+ await desktop.getByRole("button",{name:"Now try one"}).click();
+ const quietHint=desktop.locator('[data-k-action="hint"]');
+ assert(await quietHint.isHidden(),"Hint must initially be hidden");
+ await desktop.waitForTimeout(6000);
+ await desktop.locator('input[name="kchoice"]').first().focus();
+ await desktop.keyboard.press("Space");
+ await desktop.waitForTimeout(4200);
+ assert(await quietHint.isHidden(),"Changing an answer should restart the inactivity delay");
+ await quietHint.waitFor({state:"visible",timeout:8000});
+ assert.equal(await quietHint.innerText(),"Hint");
+ await quietHint.focus();await desktop.keyboard.press("Enter");
+ await desktop.locator(".k-hint-box").waitFor();
+ assert(await quietHint.isHidden(),"More help should wait quietly after the first hint");
+ await desktop.getByRole("link",{name:"← Leave this set"}).click();
+ await desktop.locator("#leave-confirm").click();
+ await desktop.getByRole("link",{name:"← Home",exact:true}).click();
  // Generated skills use the same real DOM checker and navigation protection.
  await desktop.getByRole("link",{name:"Skills practice",exact:true}).first().click();
  await desktop.getByRole("heading",{name:"Skills practice",exact:true}).waitFor();
@@ -176,7 +210,7 @@ try{
  await desktop.goto(base+"/human-biology/#challenge/f171/a3",{waitUntil:"load"});
  await desktop.locator(".k-question-view").waitFor({state:"visible"});
  const count=await desktop.evaluate(()=>window.KeystoneHumanChallenge?.questionCount);
- assert.equal(count,194,"Live engine did not load all questions");
+ assert.equal(count,364,"Live engine did not load all questions");
  assert((await desktop.locator("main").innerText()).length>90,"Question activity is blank");
  await desktop.locator("#site-home").click();
  const dialog=desktop.locator("#leave-dialog");
@@ -220,7 +254,7 @@ try{
  await mobile.close();
  await desktop.close();
  assert.deepEqual(errors,[],"Uncaught page errors: "+errors.join("; "));
- console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 194 questions and mobile layout.");
+ console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 364 questions and mobile layout.");
 }finally{
  await browser.close();await new Promise(done=>server.close(done));
 }

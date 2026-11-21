@@ -4,14 +4,23 @@
 var db=window.KeystoneHumanChallenges,main=document.getElementById("main");
 if(!db||!main)return;
 if(window.KeystoneHumanKnowledge){db.units=db.units.concat(window.KeystoneHumanKnowledge.units);db.questions=db.questions.concat(window.KeystoneHumanKnowledge.questions);}
-var K="narajos-human-challenge-v2-",SK=K+"session",PK=K+"progress",session=null,progress={};
+var K="narajos-human-challenge-v2-",SK=K+"session",PK=K+"progress",RK=K+"rotation",session=null,progress={},rotation={};
 try{var r=JSON.parse(localStorage.getItem(PK)||"{}");if(r&&typeof r==="object"&&!Array.isArray(r))progress=r;}catch(_){}
+try{var rr=JSON.parse(localStorage.getItem(RK)||"{}");if(rr&&typeof rr==="object"&&!Array.isArray(rr))rotation=rr;}catch(_){}
 var all=db.questions,byId={},skills=window.KeystoneHumanSkills;all.forEach(function(q){byId[q.id]=q;});
 var render=null,visible=false,lastRoute="",skillExampleStem="";
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(a){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[a];});}
 function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=b[i];b[i]=b[j];b[j]=t;}return b;}
 function save(){try{if(session)localStorage.setItem(SK,JSON.stringify(session));else localStorage.removeItem(SK);}catch(_){}}
 function saveProgress(){try{localStorage.setItem(PK,JSON.stringify(progress));}catch(_){}}
+function rotatePool(list){
+ var groups={},keys=[];list.forEach(function(q){var key=q.family||q.id;if(!groups[key]){groups[key]=[];keys.push(key);}groups[key].push(q);});
+ return keys.map(function(key){var group=shuffle(groups[key]),recent=rotation[key]||[];
+  group.sort(function(a,b){var ai=recent.indexOf(a.id),bi=recent.indexOf(b.id);return (ai<0?-1:ai)-(bi<0?-1:bi);});return group[0];
+ });
+}
+function rememberVersions(ids){ids.forEach(function(id){var q=byId[id];if(!q||!q.family)return;var past=rotation[q.family]||[];rotation[q.family]=past.filter(function(x){return x!==id;}).concat(id).slice(-2);});try{localStorage.setItem(RK,JSON.stringify(rotation));}catch(_){}}
+function familyInQueue(q){return session&&session.queue.some(function(id){var x=byId[id];return x&&(x.family||x.id)===(q.family||q.id);});}
 function restore(){try{var x=JSON.parse(localStorage.getItem(SK)||"null");if(x&&x.skillId){if(!skills||x.skillsVersion!==skills.version||!skills.get(x.skillId)||!Array.isArray(x.generated)||x.generated.length>10)return null;x.generated.forEach(function(g){var q=skills.generate(x.skillId,g.level,g.seed);byId[q.id]=q;});}if(x&&Array.isArray(x.queue)&&x.queue.length&&x.queue.every(function(id){return !!byId[id];})&&x.index<x.queue.length&&!x.complete&&x.route&&x.unit){x.hintsUsed=x.hintsUsed||{};x.quickCheckIds=x.quickCheckIds||{};x.quickCheckLinks=x.quickCheckLinks||{};x.guidedFirst=x.guidedFirst||0;x.quickChecksSeen=x.quickChecksSeen||0;x.quickChecksPassed=x.quickChecksPassed||0;return x;}}catch(_){}return null;}
 function isActive(){return !!session&&session.index<session.queue.length;}
 function pause(){stopHintTimer();session=null;visible=false;} // Preserve the unfinished set in localStorage.
@@ -87,8 +96,9 @@ function landing(){
    Selection and grading are entirely deterministic and remain in this browser. */
 function quickMixQueue(unit,limit){
  var pool=all.filter(function(q){return q.unit===unit;}),chosen=[],taken={};
+ pool=pool.filter(function(q){var recent=rotation[q.family]||[];return !q.family||q.id!==recent[recent.length-1];});
  function choose(candidates,preferredTypes){
-  candidates=candidates.filter(function(q){return !taken[q.id];});
+  candidates=candidates.filter(function(q){return !taken[q.id]&&!chosen.some(function(c){return (c.family||c.id)===(q.family||q.id);});});
   if(!candidates.length)return null;
   candidates=shuffle(candidates).sort(function(a,b){return score(a)-score(b);});
   var q=candidates[0];chosen.push(q);taken[q.id]=true;return q;
@@ -96,7 +106,8 @@ function quickMixQueue(unit,limit){
    var prior=progress[q.id]||{},areas=chosen.filter(function(c){return c.area===q.area;}).length;
    var types=chosen.filter(function(c){return c.type===q.type;}).length;
    var pref=preferredTypes?preferredTypes.indexOf(q.type):-1;
-   return areas*7+types*3+(prior.seen||0)*2+(pref===-1?10:pref*2);
+   var recent=rotation[q.family]||[],last=recent.indexOf(q.id),rotationCost=last<0?0:10+last;
+   return areas*7+types*100+rotationCost+Math.min(20,(prior.seen||0)*2)+(pref===-1?10:pref*2);
   }
  }
  var warm=pool.filter(function(q){return q.warmup||q.level==="warmup";});
@@ -129,19 +140,19 @@ function adaptQuickMixMiddle(){
  // Two or more early difficulties: put another familiar/core step before
  // applying the ideas. Three difficulties: offer two core steps.
  if((slot===4&&secure<=2)||(slot===5&&secure<=1)){
-  var candidates=all.filter(function(q){
+  var candidates=rotatePool(all.filter(function(q){
    return q.unit===session.unit&&q.level==="core"&&
     ["single","short","order","diagram"].indexOf(q.type)>=0&&
     session.queue.indexOf(q.id)<0&&
-    !Object.prototype.hasOwnProperty.call(session.first,q.id);
-  });
+    !Object.prototype.hasOwnProperty.call(session.first,q.id)&&!familyInQueue(q);
+  }));
   if(candidates.length){
    candidates=shuffle(candidates);
    candidates.sort(function(a,b){
     var p1=progress[a.id]||{},p2=progress[b.id]||{};
     return (p1.seen||0)-(p2.seen||0);
    });
-   session.queue[session.index]=candidates[0].id;
+   session.queue[session.index]=candidates[0].id;rememberVersions([candidates[0].id]);
    session.quickMixBase[slot]=candidates[0].id;
    session.quickMixSoftened=true;
   }
@@ -157,11 +168,11 @@ function adaptQuickMixEnd(){
  // question after difficulty, and offer an optional stretch after strong recall.
  var correct=completed.filter(function(id){return session.first[id]===true;}).length;
  var target=correct>=6&&completed.length>=7?"stretch":correct<=3?"core":"apply";
- var candidates=all.filter(function(q){
+ var candidates=rotatePool(all.filter(function(q){
   return q.unit===session.unit&&q.level===target&&
    session.queue.indexOf(q.id)<0&&!session.first.hasOwnProperty(q.id)&&
-   !q.warmup;
- });
+   !q.warmup&&!familyInQueue(q);
+ }));
  // Prefer previously unseen cards and a topic not already over-represented.
  if(candidates.length&&target!=="apply"){
   candidates=shuffle(candidates);
@@ -169,13 +180,13 @@ function adaptQuickMixEnd(){
    var p1=progress[a.id]||{},p2=progress[b.id]||{};
    return (p1.seen||0)-(p2.seen||0);
   });
-  session.queue[session.index]=candidates[0].id;
+  session.queue[session.index]=candidates[0].id;rememberVersions([candidates[0].id]);
  }
  session.quickMixAdjusted=true;
  save();
 }
 function makeSession(unit,scope,route){
- var selected=filter(unit,scope);if(!selected.length){show('<div class="k-wrap"><p class="crumb"><a href="#challenge/'+unit+'">← Exam unit</a></p><div class="paper panel"><h1>No questions here yet</h1><p>Try a mixed set or choose another area.</p><a class="button primary" href="#challenge/'+unit+'/all">Start mixed questions</a></div></div>');return;}
+ var selected=rotatePool(filter(unit,scope));if(!selected.length){show('<div class="k-wrap"><p class="crumb"><a href="#challenge/'+unit+'">← Exam unit</a></p><div class="paper panel"><h1>No questions here yet</h1><p>Try a mixed set or choose another area.</p><a class="button primary" href="#challenge/'+unit+'/all">Start mixed questions</a></div></div>');return;}
  var size=scope==="all"?8:scope==="sam"?10:scope==="stretch"?6:8;
  // Mixed sessions deliberately span question formats; the sample-informed mode
  // also spreads questions across topic areas where the bank permits.
@@ -209,7 +220,7 @@ function makeSession(unit,scope,route){
   ids=arr.sort(function(a,b){return stage(a)-stage(b);}).map(function(q){return q.id;});
  }else ids=shuffle(chosen).map(function(x){return x.id;});
  session={unit:unit,scope:scope,route:route,queue:ids,index:0,first:{},correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,quickMixVersion:scope==="all"?2:null,quickMixBase:scope==="all"?ids.slice():null,quickMixFinalId:scope==="all"?ids[ids.length-1]:null,quickMixAdjusted:false,complete:false,started:Date.now()};
- save();drawQuestion();
+ rememberVersions(ids);save();drawQuestion();
 }
 function current(){return session&&byId[session.queue[session.index]];}
 /* Skills reuse the question engine. Store seeds, not a second bank of answers.
@@ -352,10 +363,9 @@ function answerKey(q){
  return '<div class="k-criteria"><p>'+esc(q.model)+'</p><strong>Key points to look for</strong><ul>'+q.markPoints.map(function(p){return '<li>'+esc(p)+'</li>';}).join("")+'</ul></div>';
 }
 function currentAnswer(){var q=current();return q&&(session.answers[q.id]||{});}
-/* 10-second cooldown, following the A-level app's timed support.
-   A rung is strategy -> authored conceptual cue -> one eliminated distractor. */
+/* Quiet inactivity delay; optional least-help-first conceptual scaffolds. */
 var HINT_DELAY=10000,hintTimer=null;
-function stopHintTimer(){if(hintTimer!==null&&typeof clearInterval==="function")clearInterval(hintTimer);hintTimer=null;}
+function stopHintTimer(){if(hintTimer!==null&&typeof clearTimeout==="function")clearTimeout(hintTimer);hintTimer=null;}
 function hintStrategy(q){
  var v={
   number:"Write the calculation and check the units before you use the numbers.",
@@ -378,8 +388,8 @@ function excludedOption(q){
  return wrong.length?wrong[wrong.length-1]:null;
 }
 function hintsFor(q){
- var items=[hintStrategy(q)];
- if(typeof q.hintCue==="string"&&q.hintCue.trim())items.push(q.hintCue);
+ var items=Array.isArray(q.hints)&&q.hints.length?q.hints.slice(0,2):[hintStrategy(q)];
+ if(!q.hints&&typeof q.hintCue==="string"&&q.hintCue.trim())items.push(q.hintCue);
  if(["single","diagram","multi"].indexOf(q.type)>=0&&q.options&&q.options.length===4){
   var i=session.hintExcluded&&session.hintExcluded[q.id];
   if(!Number.isInteger(i))i=excludedOption(q);
@@ -400,17 +410,18 @@ function hintRemaining(){return session?Math.max(0,(session.hintReadyAt||0)-Date
 function updateHintButton(){
  if(!session||session.phase!=="ask"){stopHintTimer();return;}
  var b=main.querySelector('[data-k-action="hint"]');if(!b){stopHintTimer();return;}
- var rem=hintRemaining(),fraction=1-Math.min(1,rem/HINT_DELAY);
- b.disabled=rem>0;b.classList.toggle("hint-wait",rem>0);
- b.style.setProperty("--hint-progress",fraction.toFixed(3));
+ b.hidden=hintRemaining()>0;b.disabled=false;
  var label=session.hintsUsed&&session.hintsUsed[current().id]?"More help":"Hint";
- b.textContent=rem>0?label+" · "+Math.ceil(rem/1000)+"s":label;
- b.setAttribute("aria-label",rem>0?label+" available in "+Math.ceil(rem/1000)+" seconds":label);
- if(rem===0)stopHintTimer();
+ b.textContent=label;b.setAttribute("aria-label",label);
 }
 function startHintTimer(){
  stopHintTimer();updateHintButton();
- if(hintRemaining()>0&&typeof setInterval==="function")hintTimer=setInterval(updateHintButton,150);
+ var remaining=hintRemaining();
+ if(remaining>0&&typeof setTimeout==="function")hintTimer=setTimeout(function(){hintTimer=null;updateHintButton();},remaining+5);
+}
+function noteAnswerActivity(){
+ if(!session||session.phase!=="ask"||!visible)return;
+ session.hintReadyAt=Date.now()+HINT_DELAY;save();startHintTimer();
 }
 function showNextHint(){
  if(!session||session.phase!=="ask"||hintRemaining()>0)return;
@@ -459,7 +470,7 @@ function drawQuestion(){
   if(!correct||helped||unknown){var cu=window.KeystoneHumanCatchup&&window.KeystoneHumanCatchup.linkFor(q);if(cu)h+='<p class="k-catchup-after"><a href="#'+esc(cu)+'">Need more help? Catch up on this idea</a></p>';}
   h+='</div>';
  }
- if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points":"Check answer")+' →</button>'+(used<availableHints.length?'<button class="button secondary k-hint-button" type="button" data-k-action="hint">'+(used?'More help':'Hint')+'</button>':'')+'<button class="button quiet" type="button" data-k-action="skip">I don’t know · show me</button></div>';
+ if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points":"Check answer")+' →</button>'+(used<availableHints.length?'<button class="button secondary k-hint-button" type="button" data-k-action="hint"'+(hintRemaining()>0?' hidden':'')+'>'+(used?'More help':'Hint')+'</button>':'')+'<button class="button quiet" type="button" data-k-action="skip">I don’t know · show me</button></div>';
  else if(!session.wasSkipped&&(q.type==="written"||session.lastResult===null))h+='<div class="k-foot-actions"><button class="button primary" data-k-action="self-good" type="button">I included the key ideas</button><button class="button secondary" data-k-action="self-weak" type="button">I need more practice</button></div>';
  else h+='<div class="k-foot-actions"><button class="button primary k-cta" data-k-action="next" type="button">'+(session.lastPlannedCheck?'Try a quick check':'Next question')+' →</button></div>';
  h+='</div><p class="k-question-footer">Topic '+q.area+' · '+esc(areaName(q.unit,q.area))+(q.knowledgeOnly?' · Knowledge practice only':q.samAligned?' · Skills reflected in OCR sample material':' · Specification coverage')+' · Original question</p></div>';
@@ -499,9 +510,9 @@ function planQuickCheck(q){
  // Prefer the same specification subtopic and a manageable core question.
  candidates.sort(function(a,b){
   function rank(x){return (x.section===q.section?0:20)+(x.level==="warmup"?0:x.level==="core"?1:x.level==="apply"?3:6);}
-  return rank(a)-rank(b);
+  return ((a.family&&a.family===q.family)?-10:0)+rank(a)-((b.family&&b.family===q.family)?-10:0)-rank(b);
  });
- var choice=candidates[0],at=session.queue.indexOf(choice.id);
+ var choice=candidates[0],at=session.queue.indexOf(choice.id);rememberVersions([choice.id]);
  if(at>=0&&at<=session.index)return null;
  if(at>session.index)session.queue.splice(at,1);
  session.queue.splice(session.index+1,0,choice.id);
@@ -593,6 +604,7 @@ function route(r,renderer){
  return makeSession(unit,scope,r);
 }
 main.addEventListener("change",function(e){
+ noteAnswerActivity();
  if(!session||session.phase!=="ask"||!visible)return;
  if(e.target.matches('input[name="kbest"],input[name="kreason"]')){readForm();}
  else if(e.target.matches('input[name="kchoice"]')){
@@ -624,10 +636,12 @@ function pointerQuickTap(e){
  },110);
 }
 main.addEventListener("input",function(e){
+ noteAnswerActivity();
  if(!session||session.phase!=="ask"||!visible)return;
  if(e.target.matches("#k-number, #k-text, #k-written")){var q=current(),a=session.answers[q.id]||{};a.text=e.target.value;session.answers[q.id]=a;save();}
 });
 main.addEventListener("click",function(e){
+ var help=e.target.closest("[data-k-action]");if(!help||help.dataset.kAction!=="hint")noteAnswerActivity();
  var start=e.target.closest("[data-start-skill]");
  if(start&&skills){var sk=skills.get(start.getAttribute("data-start-skill"));if(sk&&lastRoute==="skills/"+sk.unit+"/"+sk.id)return startSkill(sk,lastRoute);}
  if(!session||!visible)return;
@@ -647,6 +661,7 @@ main.addEventListener("click",function(e){
  if(btn.dataset.kAction==="self-good")gradeSelf(true);
  if(btn.dataset.kAction==="self-weak")gradeSelf(false);
 });
+main.addEventListener("keydown",function(e){if(e.target&&e.target.closest&&e.target.closest('[data-k-action="hint"]'))return;if(e.key!=="Tab"&&e.key!=="Shift")noteAnswerActivity();});
 window.addEventListener("beforeunload",function(e){if(isActive()){e.preventDefault();e.returnValue="";}});
 window.KeystoneHumanChallenge={route:route,isActive:isActive,discard:discard,pause:pause,stats:unitStats,questionCount:all.length,types:Array.from(new Set(all.map(function(q){return q.type;}))),icon:icon,hasResume:function(){return !!restore();},resumeRoute:function(){var old=restore();return old?old.route:null;}};
 })();

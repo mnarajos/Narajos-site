@@ -397,10 +397,12 @@ body.onhome{background:radial-gradient(circle at 100% 0,rgba(92,207,196,.18),tra
 @media(max-width:520px){.companion-entry>a.btn{width:100%}}
 
 /* Settings is an independent header control, not a third bottom-navigation tab. */
-.top-inner{position:relative;padding-right:6.85rem}
+.top-inner{position:relative;padding-right:4.8rem}
 .settings-shortcut{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;position:absolute;top:.58rem;right:1rem;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--card);padding:.35rem .65rem;color:var(--ink);font-size:.84rem;font-weight:700;text-decoration:none;white-space:nowrap}
 .settings-shortcut:hover,.settings-shortcut[aria-current="page"]{background:var(--acc-soft);color:var(--acc);border-color:var(--acc)}
 .settings-shortcut-icon,.settings-shortcut-icon svg{display:inline-flex;width:21px;height:21px;flex:none}
+.settings-shortcut{width:44px;min-width:44px;padding:.4rem}
+.settings-shortcut-label{position:absolute;width:1px;height:1px;clip:rect(0,0,0,0);overflow:hidden;white-space:nowrap}
 .settings-shortcut:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 @media(max-width:899px){
  .top-inner{padding-right:4.4rem}
@@ -7090,3 +7092,4 @@ route(false);
 </script>
 </body>
 </html>
+

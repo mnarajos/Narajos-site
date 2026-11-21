@@ -71,7 +71,7 @@ const sharedHeaderPages=["index.html","teaching/index.html","teaching/simulation
 for(const p of sharedHeaderPages){
  const html=read(p);
  const nav=/<nav class="site-nav"[^>]*>([\s\S]*?)<\/nav>/.exec(html)?.[1]||"";
- requireTrue(nav.includes("Learning companions"),"Learning-companion navigation label missing from "+p);
+ requireTrue(nav.includes("Learning Companions"),"Learning-companion navigation label missing from "+p);
  for(const href of ["/gcse/","/alevel/","/human-biology/"]){
   requireTrue(nav.includes('href="'+href+'"'),"Missing learner app "+href+" in "+p+" header");
  }
@@ -128,3 +128,4 @@ if(failures.length){
 }else{
  console.log("Website check passed: "+htmlFiles.length+" pages, "+scriptCount+" inline scripts parsed, "+linkCount+" local links checked.");
 }
+
