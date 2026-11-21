@@ -6189,16 +6189,23 @@ function showTopic(t,focus){
 /* Optional stepwise catch-up from already authored AQA concept notes.
    Existing question progression and post-error reteaching remain unchanged. */
 function showCatchupIndex(focus){
- L=null;var h='<p class="crumb"><a href="#">← Home</a></p><div class="hb-hero"><h1>Catch up on a concept</h1><p>Select a topic, read its key ideas in small steps, then practise. This is a companion to your lessons, not a replacement for taught practical work.</p></div>';
+ L=null;
+ var h='<p class="crumb"><a href="#">← Home</a></p><div class="hb-hero"><h1>Catch up on a concept</h1><p>Choose a topic, then a concept. Read a few key ideas before trying questions.</p></div><ul class="topics">';
  ['a1','a2','a3','a4','a5','a6','a7','a8'].forEach(function(t){
   var T=DATA[t];if(!T)return;
-  h+='<section class="stage"><h2>'+esc(T.code)+': '+esc(T.title)+'</h2><ul class="concepts">';
-  T.concepts.filter(avail).forEach(function(c){
-   h+='<li class="concept ready"><div class="chead"><h3>'+esc(c.title)+'</h3></div><div class="companion-lesson-actions"><a class="btn" href="#catchup-'+t+'-'+c.id+'">Catch up</a>'+(isUnlocked(t,c)?'<a class="btn" href="#lesson-'+t+'-'+c.id+'">Questions</a>':'<a class="btn" href="#topic-'+t+'">Prerequisites</a>')+'</div></li>';
-  });
-  h+='</ul></section>';
+  var count=T.concepts.filter(avail).length;
+  h+='<li><a class="topic" href="#catchup-'+t+'"><span class="code">'+esc(T.code)+'</span><span class="tname">'+esc(T.title)+'</span><span class="tprog">'+count+' concepts</span></a></li>';
  });
- render(h,focus);
+ render(h+'</ul>',focus);
+}
+function showCatchupTopic(t,focus){
+ L=null;
+ var T=DATA[t];if(!T)return showCatchupIndex(focus);
+ var h='<p class="crumb"><a href="#catchup">← Catch-up topics</a></p><h1>'+esc(T.code)+': '+esc(T.title)+'</h1><p class="lead">Select one concept to revisit, or start practising straight away.</p><ul class="concepts">';
+ T.concepts.filter(avail).forEach(function(c){
+  h+='<li class="concept ready"><div class="chead"><h3>'+esc(c.title)+'</h3></div><div class="companion-lesson-actions"><a class="btn" href="#catchup-'+t+'-'+c.id+'">Catch up</a>'+(isUnlocked(t,c)?'<a class="btn" href="#lesson-'+t+'-'+c.id+'">Questions</a>':'<a class="btn" href="#topic-'+t+'">Prerequisites</a>')+'</div></li>';
+ });
+ render(h+'</ul>',focus);
 }
 function showCatchup(t,c,step,focus){
  L=null;
@@ -6941,6 +6948,7 @@ function route(focus){
  var h=location.hash.slice(1),m;
  setOrigin(h);
  if(h==="catchup")return showCatchupIndex(focus);
+ if((m=/^catchup-([a-z0-9]+)$/.exec(h))&&DATA[m[1]])return showCatchupTopic(m[1],focus);
  if((m=/^catchup-([a-z0-9]+)-([a-z0-9]+)(?:-(\d+))?$/.exec(h))&&DATA[m[1]]){
   var cc=DATA[m[1]].byId[m[2]];
   if(cc)return showCatchup(m[1],cc,m[3],focus);
