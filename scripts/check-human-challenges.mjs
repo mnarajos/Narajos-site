@@ -15,12 +15,14 @@ function load(p){vm.runInContext(read(p),c,{filename:p});}
 load("assets/spaced-review.js");
 load("human-biology/content-f170.js");
 load("human-biology/challenge-bank.js");
+load("human-biology/content-knowledge.js");
 load("human-biology/challenge.js");
 const db=window.KeystoneHumanChallenges,app=window.KeystoneHumanChallenge;
-assert.equal(db.questions.length,91);
+assert.equal(db.questions.length,163);
 assert.equal(db.questions.filter(q=>q.unit==="f170").length,62);
 assert.equal(db.questions.filter(q=>q.unit==="f171").length,29);
-assert.deepEqual([...new Set(db.questions.map(q=>q.type))].sort(),["best","diagram","match","multi","number","order","short","single","written"].sort());
+for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,12,u+" knowledge bank missing");
+assert.deepEqual([...new Set(db.questions.map(q=>q.type))].sort(),["best","diagram","match","multi","number","order","short","single","sort","written"].sort());
 const ids=new Set();
 const validUnits=new Set(["f170","f171"]);
 const map=window.KeystoneHumanData.areas.flatMap(a=>a.sections.map(s=>s.id));
@@ -30,11 +32,12 @@ for(const q of db.questions){
  assert(q.area>0&&q.area<=(q.unit==="f170"?4:5),"Incorrect topic area: "+q.id);
  if(q.unit==="f170")assert(map.includes(q.section),"Question not mapped to current F170 section: "+q.id);
  assert(q.model&&q.explain&&q.misconception,"Missing explanatory feedback: "+q.id);
- if(q.type==="number")assert(Number.isFinite(q.correct)&&q.answerUnit,"Missing numeric answer and units: "+q.id);
+ if(q.type==="number")assert(Number.isFinite(q.correct)&&q.answerUnit!==undefined,"Missing numeric answer and units: "+q.id);
  if(q.type==="best")assert(q.options.length>=2&&q.reasons.length>=3&&q.correct>=0&&q.correct<q.options.length&&q.reasonCorrect>=0&&q.reasonCorrect<q.reasons.length,"Invalid two-step answer: "+q.id);
  if(q.warmup)assert(q.level==="warmup"&&q.type==="single","Warm-up should be a low-load single-answer question");
  if(q.type==="multi")assert(Array.isArray(q.correct)&&q.correct.length>=2,"Invalid multi-answer: "+q.id);
  if(q.type==="match")assert(q.pairs.length>=2,"Too few match pairs: "+q.id);
+ if(q.type==="sort")assert(q.groups.length>=2&&q.rows.length>=4&&q.rows.every(r=>Number.isInteger(r[1])&&r[1]>=0&&r[1]<q.groups.length),"Invalid sort: "+q.id);
  if(q.type==="order")assert(q.items.length>=3,"Too short sequence: "+q.id);
  if(q.type==="written")assert(q.markPoints.length>=2,"Unscaffolded written response: "+q.id);
  if(q.marks)assert(q.type==="written"&&(q.marks===6||q.marks===9),"Unexpected extended-answer mark count: "+q.id);
@@ -47,6 +50,7 @@ assert.equal(db.questions.find(q=>q.id==="health-care-records").marks,9);
 assert(!JSON.stringify(db).match(/complete.*coursework|draft.*NEA|submit.*assignment/i),"NEA task assistance present");
 load("human-biology/app.js");
 assert(main.innerHTML.includes("Ready to revise?"));
+
 function route(hash){location.hash="#"+hash;events.hashchange();
  const modal=elem("leave-dialog");
  if(!modal.hidden&&typeof elem("leave-confirm").onclick==="function"){elem("leave-confirm").onclick();events.hashchange();}
@@ -142,7 +146,7 @@ assert(window.KeystoneHumanChallenge.stats("f170").weak>=1,"Not sure should reco
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"next"}}:null;}}});
 record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert(record.index>=1,"Question did not advance");
-assert.equal(window.KeystoneHumanChallenge.questionCount,91);
+assert.equal(window.KeystoneHumanChallenge.questionCount,163);
 // Verify the entire deterministic answer flow, not merely presence of new item types.
 function forcedQuestion(id){
  const q=db.questions.find(x=>x.id===id);assert(q,"Unknown forced test item: "+id);
@@ -183,4 +187,4 @@ const html=read("human-biology/index.html");
 assert(!html.includes("fonts.googleapis.com"),"Human Biology should not request remote fonts");
 assert(!/\b(?:fetch\(|sendBeacon\(|XMLHttpRequest\(|WebSocket\()/.test(read("human-biology/challenge.js")),"No network upload API should be used in this revision app");
 assert(!read("human-biology/challenge.js").includes("openai.com"),"No remote AI marking");
-console.log("Oracle challenge checks passed: 91 original F170/F171 questions, 9 formats, Quick Mix confidence ladder, graded hints, reteach/quick check, local-only state and no AI grading.");
+console.log("Human Biology checks passed: 163 original questions across eight units, ten answer formats, private deterministic marking, and Quick Mix progression.");
