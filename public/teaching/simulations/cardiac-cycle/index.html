@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cardiac Cycle — A-level</title>
+<style>
+  :root{
+    --bg:#eaeef1; --card:#ffffff; --ink:#111e2b; --muted:#5c7082; --line:#d4dde4;
+    --accent:#c0334d; --accent-deep:#97223a;
+    --oxy:#d6394f; --deoxy:#3f77c4;
+    --lv:#c0334d; --atr:#d98a45; --aorta:#8a3ffb; --vol:#1a9e8f;
+    --radius:14px; --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;
+    display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+  header{padding:9px 16px;background:var(--card);border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .brand .t{font-weight:800;font-size:17px;letter-spacing:-.02em}
+  .brand .s{font-size:10.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+
+  .tabs{display:flex;gap:6px}
+  .tab{border:1.5px solid var(--line);background:#f5f8f9;color:var(--ink);padding:8px 14px;border-radius:10px;
+    cursor:pointer;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
+  .tab:hover{border-color:var(--accent)}
+  .tab[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .tab .yr{font-size:9.5px;font-weight:700;background:var(--accent);color:#fff;padding:1px 6px;border-radius:6px}
+  .tab[aria-pressed="true"] .yr{background:#fff;color:var(--ink)}
+
+  .level-group{margin-left:auto;display:flex;align-items:center;gap:8px}
+  .level-group>span{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+  .level-seg{display:flex;background:#eef2f5;border:1px solid var(--line);border-radius:10px;padding:3px}
+  .level-seg button{border:0;background:transparent;padding:6px 11px;border-radius:7px;cursor:pointer;
+    font-size:12.5px;font-weight:700;color:var(--muted)}
+  .level-seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+
+  main{flex:1;display:flex;min-height:0}
+  .stage{flex:1;display:flex;flex-direction:column;min-width:0;padding:11px 12px 8px;gap:9px}
+  .viz{flex:1;display:flex;gap:10px;min-height:0}
+  .heartbox,.graphbox{position:relative;border-radius:var(--radius);overflow:hidden;box-shadow:0 6px 20px rgba(17,30,43,.22)}
+  .heartbox{flex:1.05;min-width:0;background:#0f1f2c}
+  .graphbox{flex:1;min-width:0;background:#fff;display:flex;flex-direction:column}
+  canvas#heart{display:block;width:100%;height:100%}
+  .graphbox .ghead{padding:7px 11px 3px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .graphbox .ghead .t{font-size:12.5px;font-weight:800}
+  .graphbox .ghead .s{font-size:10px;color:var(--muted);font-weight:600}
+  canvas#graph{flex:1;width:100%;display:block}
+
+  .phasebar{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);
+    border-radius:11px;padding:8px 13px}
+  .phasebar .ph{font-size:15px;font-weight:800}
+  .phasebar .clock{font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:700}
+  .phasebar .sound{margin-left:auto;font-weight:800;font-size:15px;opacity:0;transition:opacity .1s}
+  .phasebar .sound.on{opacity:1}
+
+  .chips{display:flex;gap:7px;flex-wrap:wrap}
+  .chip{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--line);
+    border-radius:10px;padding:6px 10px;font-size:12px;font-weight:600}
+  .chip b{font-family:var(--mono)}
+  .chip .dot{width:11px;height:11px;border-radius:3px;flex:none}
+  .chip.open{border-color:#a9d9b6;background:#f1fbf4}
+  .chip.shut{border-color:#e6c3c9;background:#fdf1f3}
+
+  .status{display:flex;gap:8px;flex-wrap:wrap}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:6px 11px;min-width:96px;flex:1}
+  .stat .k{font-size:9.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);font-weight:700}
+  .stat .v{font-family:var(--mono);font-size:18px;font-weight:700;margin-top:1px}
+  .stat .v small{font-size:10px;color:var(--muted)}
+  .msg{background:#fdeff1;border:1px solid #f2ccd3;color:#8a2c3d;border-radius:11px;padding:7px 11px;
+    font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:8px;flex:2.4;min-width:230px}
+  .msg .ic{font-size:15px}
+
+  .panel{width:322px;flex:none;background:var(--card);border-left:1px solid var(--line);
+    padding:15px;overflow-y:auto;display:flex;flex-direction:column;gap:13px}
+  .btn-row{display:flex;gap:8px}
+  button.act{flex:1;border:0;border-radius:10px;padding:11px;font-size:14px;font-weight:700;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:7px}
+  button.act.primary{background:var(--accent);color:#fff}
+  button.act.primary:hover{background:var(--accent-deep)}
+  button.act.ghost{background:#eef2f5;color:var(--ink);border:1px solid var(--line)}
+  button.act.ghost:hover{border-color:var(--accent)}
+  .ctrl .head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .ctrl .head label{font-size:13.5px;font-weight:700}
+  .ctrl .head .read{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--accent-deep)}
+  .ctrl .sub{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.4}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:7px;border-radius:5px;background:#dde5ec;outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;
+    background:var(--accent);border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.28);cursor:pointer}
+  input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--accent);
+    border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.28);cursor:pointer}
+  input[type=range]:focus-visible{box-shadow:0 0 0 3px rgba(192,51,77,.4)}
+  .toggle-row{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600}
+  .switch{position:relative;width:38px;height:21px;flex:none}
+  .switch input{opacity:0;width:0;height:0}
+  .slider-ui{position:absolute;inset:0;background:#cdd9dc;border-radius:999px;transition:.15s;cursor:pointer}
+  .slider-ui:before{content:"";position:absolute;width:15px;height:15px;border-radius:50%;background:#fff;left:3px;top:3px;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+  .switch input:checked + .slider-ui{background:var(--accent)}
+  .switch input:checked + .slider-ui:before{transform:translateX(17px)}
+  .sectlabel{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .ln-key{width:16px;height:3px;border-radius:2px;flex:none;display:inline-block}
+  .focus-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .focus-btn{border:1.5px solid var(--line);background:#f5f8f9;color:var(--ink);padding:8px 6px;border-radius:9px;
+    cursor:pointer;font-size:11.5px;font-weight:700;line-height:1.15}
+  .focus-btn:hover{border-color:var(--accent)}
+  .focus-btn[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .focus-btn.full{grid-column:1 / -1;background:#eef2f5}
+  .focus-btn.full[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .legend{display:flex;flex-direction:column;gap:5px;font-size:11.5px;color:var(--muted)}
+  .legend .row{display:flex;align-items:center;gap:8px}
+  .legend .row .sw{width:20px;height:4px;border-radius:2px;flex:none}
+  .legend .row .bx{width:13px;height:13px;border-radius:3px;flex:none}
+  details.notes{border-top:1px solid var(--line);padding-top:11px}
+  details.notes summary{font-size:12.5px;font-weight:700;cursor:pointer;color:var(--accent-deep)}
+  details.notes p{font-size:12px;color:var(--muted);line-height:1.45}
+
+  body.booting .lvl2,body.booting .lvl3{display:none}
+  .scene-elec{display:none}
+  body[data-scene="elec"] .scene-mech{display:none}
+  body[data-scene="elec"] .scene-elec{display:flex}
+  body[data-scene="elec"] .scene-elec.block{display:block}
+  .hint-strip{font-size:11px;color:var(--muted);text-align:center}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media (max-width:1000px){
+    main{flex-direction:column;overflow-y:auto}
+    .panel{width:auto;border-left:0;border-top:1px solid var(--line)}
+    .viz{flex-direction:column}
+    .heartbox{min-height:320px}.graphbox{min-height:240px}
+    .level-group{margin-left:0}
+  }
+</style>
+</head>
+<body class="booting" data-scene="mech" data-level="1">
+<a href="/teaching/simulations/" style="display:block;padding:7px 16px;font:600 12px system-ui;color:#24323e;background:#faf9f6;text-decoration:none;position:relative;z-index:20">← All simulations</a>
+
+<header>
+  <div class="brand">
+    <div class="t">The Cardiac Cycle</div>
+    <div class="s">Pressure · volume · valves · sounds — AQA 3.4.1</div>
+  </div>
+  <div class="tabs" role="group" aria-label="Choose a view">
+    <button class="tab" data-scene="mech" aria-pressed="true">🫀 Cardiac cycle</button>
+    <button class="tab" data-scene="elec" aria-pressed="false">⚡ Electrical conduction <span class="yr">Y13</span></button>
+  </div>
+  <div class="level-group">
+    <span>Detail</span>
+    <div class="level-seg" role="group" aria-label="Complexity level">
+      <button data-level="1" aria-pressed="true">1 · Explore</button>
+      <button data-level="2" aria-pressed="false">2 · Investigate</button>
+      <button data-level="3" aria-pressed="false">3 · Analyse</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="stage">
+    <div class="viz">
+      <div class="heartbox"><canvas id="heart"></canvas></div>
+      <div class="graphbox">
+        <div class="ghead">
+          <span class="t" id="graph-title">Pressure &amp; volume against time</span>
+          <span class="s" id="graph-sub">one cardiac cycle</span>
+        </div>
+        <canvas id="graph"></canvas>
+      </div>
+    </div>
+
+    <div class="phasebar">
+      <span class="ph" id="phase-name">—</span>
+      <span class="clock" id="phase-clock"></span>
+      <span class="sound" id="sound-flash"></span>
+    </div>
+
+    <div class="chips" id="chips"></div>
+
+    <div class="status" id="status"></div>
+
+    <div class="hint-strip" id="hint">Valves open when the pressure behind them is higher than the pressure in front. Every crossing point on the graph is a valve opening or closing.</div>
+  </section>
+
+  <aside class="panel">
+    <div class="btn-row">
+      <button class="act primary" id="btn-run"><span id="run-ic">▶</span><span id="run-tx">Start</span></button>
+      <button class="act ghost" id="btn-step" title="Advance one small step while paused">⏭ Step</button>
+    </div>
+
+    <div class="ctrl">
+      <div class="head"><label for="s-hr">Heart rate</label><span class="read" id="r-hr">75 bpm</span></div>
+      <input type="range" id="s-hr" min="40" max="180" value="75" step="1">
+      <div class="sub">Sets the length of one cycle. Cardiac output = stroke volume × heart rate.</div>
+    </div>
+
+    <div class="ctrl">
+      <div class="head"><label for="s-speed">Playback speed</label><span class="read" id="r-speed">0.5×</span></div>
+      <input type="range" id="s-speed" min="10" max="150" value="50" step="5">
+      <div class="sub">Slows the animation down so you can follow each phase. It does not change the heart rate.</div>
+    </div>
+
+    <!-- MECHANICAL controls -->
+    <div class="scene-mech" style="display:flex;flex-direction:column;gap:11px">
+      <div class="sectlabel">Show on the heart</div>
+      <label class="toggle-row"><span class="switch"><input type="checkbox" id="t-labels" checked><span class="slider-ui"></span></span> Labels</label>
+      <label class="toggle-row"><span class="switch"><input type="checkbox" id="t-flow" checked><span class="slider-ui"></span></span> Blood flow arrows</label>
+      <label class="toggle-row"><span class="switch"><input type="checkbox" id="t-press"><span class="slider-ui"></span></span> Pressure values on chambers</label>
+      <label class="toggle-row"><span class="switch"><input type="checkbox" id="t-sound"><span class="slider-ui"></span></span> 🔊 Heart sounds (audio)</label>
+      <label class="toggle-row"><span class="switch"><input type="checkbox" id="t-whoosh"><span class="slider-ui"></span></span> 🌊 Blood-flow whoosh (audio)</label>
+      <label class="toggle-row lvl3"><span class="switch"><input type="checkbox" id="t-pvloop"><span class="slider-ui"></span></span> Show pressure–volume loop</label>
+
+      <div class="sectlabel" style="margin-top:3px">Lines on the graph</div>
+      <label class="toggle-row"><span class="switch"><input type="checkbox" id="l-pv" checked><span class="slider-ui"></span></span> <span class="ln-key" style="background:#c0334d"></span> Ventricular pressure</label>
+      <label class="toggle-row"><span class="switch"><input type="checkbox" id="l-ao" checked><span class="slider-ui"></span></span> <span class="ln-key" style="background:#8a3ffb"></span> Aortic pressure</label>
+      <label class="toggle-row"><span class="switch"><input type="checkbox" id="l-atr" checked><span class="slider-ui"></span></span> <span class="ln-key" style="background:#d98a45"></span> Atrial pressure</label>
+      <label class="toggle-row"><span class="switch"><input type="checkbox" id="l-vol" checked><span class="slider-ui"></span></span> <span class="ln-key" style="background:#1a9e8f"></span> Ventricular volume</label>
+      <label class="toggle-row"><span class="switch"><input type="checkbox" id="l-mark" checked><span class="slider-ui"></span></span> Valve-event markers</label>
+
+      <div class="sectlabel" style="margin-top:3px">Play one phase (slowly, on a loop)</div>
+      <div class="focus-grid">
+        <button class="focus-btn" data-focus="0" aria-pressed="false">Atrial systole</button>
+        <button class="focus-btn" data-focus="1" aria-pressed="false">Ventricular systole</button>
+        <button class="focus-btn" data-focus="2" aria-pressed="false">Diastole</button>
+        <button class="focus-btn full" data-focus="all" aria-pressed="true">▶ Full cycle</button>
+      </div>
+    </div>
+
+    <!-- ELECTRICAL controls -->
+    <div class="scene-elec block" style="flex-direction:column;gap:11px">
+      <div class="sectlabel">Conduction</div>
+      <label class="toggle-row"><span class="switch"><input type="checkbox" id="e-labels" checked><span class="slider-ui"></span></span> Labels</label>
+      <label class="toggle-row lvl2"><span class="switch"><input type="checkbox" id="e-ecg" checked><span class="slider-ui"></span></span> Show ECG trace</label>
+      <div class="ctrl lvl3">
+        <div class="head"><label for="e-avn">AVN delay</label><span class="read" id="r-avn">normal</span></div>
+        <input type="range" id="e-avn" min="0" max="100" value="40" step="1">
+        <div class="sub">The AVN delays the impulse so the atria finish emptying before the ventricles contract. This delay is the PR interval on the ECG.</div>
+      </div>
+      <label class="toggle-row lvl3"><span class="switch"><input type="checkbox" id="e-block"><span class="slider-ui"></span></span> Complete heart block (AVN)</label>
+      <div class="sub lvl3" style="font-size:11px;color:var(--muted)">With the AVN blocked, the impulse can't reach the ventricles. They fall back on a slow escape rhythm, so the atria and ventricles beat independently.</div>
+    </div>
+
+    <div class="legend" id="legend"></div>
+
+    <details class="notes">
+      <summary>The science behind the model</summary>
+      <div id="notes-mech" class="scene-mech" style="display:block">
+        <p><b>Valves follow pressure.</b> A valve opens when the pressure behind it is greater than the pressure in front, and closes when the pressure in front is greater. So each crossing of two pressure lines on the graph is a valve opening or closing.</p>
+        <p><b>Heart sounds.</b> The first sound (“lub”, S1) is the atrioventricular valves closing at the start of ventricular systole. The second (“dub”, S2) is the semilunar valves closing at the start of diastole.</p>
+        <p><b>Isovolumetric phases.</b> Just after the AV valves close and just after the SL valves close, all four valves are shut. Pressure changes sharply but volume stays constant because no blood can enter or leave.</p>
+        <p><b>Filling is mostly passive.</b> About 80% of ventricular filling happens passively before the atria contract; atrial systole tops up the rest (the “atrial kick”).</p>
+      </div>
+      <div id="notes-elec" class="scene-elec block" style="display:none">
+        <p><b>The SAN is the pacemaker.</b> It sets the rhythm and sends a wave of depolarisation across both atria, making them contract (the P wave on the ECG).</p>
+        <p><b>The AVN delays the impulse</b> by about 0.1 s so the atria finish emptying before the ventricles contract. Non-conducting tissue between the atria and ventricles stops the impulse spreading directly, so the AVN is the only route.</p>
+        <p><b>His → Purkinje.</b> The impulse travels down the bundle of His through the septum, then the Purkinje fibres carry it up through the ventricle walls, so the ventricles contract from the apex upwards (the QRS complex). The T wave is the ventricles repolarising.</p>
+        <p><b>Electrical precedes mechanical.</b> Each wave of the ECG comes just before the contraction it causes.</p>
+      </div>
+    </details>
+  </aside>
+</main>
+
+<script>
+"use strict";
+/* =======================================================================
+   THE CARDIAC CYCLE — A-level. Self-contained, offline, single file.
+   Two tabs share ONE cardiac clock (phi in [0,1)):
+     • Cardiac cycle  — pressure, volume, valves, heart sounds, flow, contraction
+     • Electrical conduction (Y13) — SAN/AVN/His/Purkinje + ECG, synced to phi
+   Valve state is DERIVED from pressure crossings, exactly as the spec expects.
+   ======================================================================= */
+
+/* ---------- cardiac model (left heart, mmHg / mL) ---------- */
+/* keyframes: [phi, value]; interpolated with smoothstep for smooth curves  */
+const K_VENT =[[0,8],[0.09,9],[0.13,11],[0.155,40],[0.175,84],[0.30,122],[0.44,106],[0.475,92],[0.505,45],[0.525,12],[0.55,6],[0.75,5],[1,8]];
+const K_AORTA=[[0,84],[0.13,80],[0.175,84],[0.30,120],[0.44,104],[0.475,92],[0.505,88],[0.57,96],[0.75,90],[1,84]];
+const K_ATR  =[[0,8.5],[0.05,15],[0.11,13.5],[0.13,12.5],[0.20,7],[0.35,9],[0.47,12],[0.51,10.5],[0.55,9.5],[0.72,7],[1,8.5]];
+let K_VOL=[[0,112],[0.5,58],[1,112]];         // rebuilt from valve crossings in computeModel()
+let K_ATRVOL=[[0,0.85],[0.5,0.6],[1,0.85]];   // atrial fill fraction, rebuilt in computeModel()
+let PHASES=[];
+let CORE=[];        // the three A-level phases: atrial systole, ventricular systole, diastole
+let CROSS={avClose:0.093,slOpen:0.18,slClose:0.44,avOpen:0.50};
+let VEVENTS=[];
+
+function smoothstep(t){return t*t*(3-2*t);}
+function interp(K,phi){
+  phi=((phi%1)+1)%1;
+  for(let i=0;i<K.length-1;i++){
+    if(phi>=K[i][0]&&phi<=K[i+1][0]){
+      const t=(phi-K[i][0])/(K[i+1][0]-K[i][0]||1e-9);
+      return K[i][1]+(K[i+1][1]-K[i][1])*smoothstep(t);
+    }
+  }
+  return K[K.length-1][1];
+}
+function model(phi){
+  const pv=interp(K_VENT,phi), pao=interp(K_AORTA,phi), pa=interp(K_ATR,phi), vol=interp(K_VOL,phi);
+  return {pv,pao,pa,vol,
+    avOpen: pa>=pv,            // atrioventricular: open while atrium ≥ ventricle
+    slOpen: pv>=pao};          // semilunar:       open while ventricle ≥ aorta
+}
+function phaseOf(phi){phi=((phi%1)+1)%1;for(const p of PHASES)if(phi>=p.a&&phi<p.b)return p;return PHASES[0];}
+const EDV=130, ESV=58, SV=EDV-ESV;
+/* valve state from pressures only (no volume dependence, so no circularity) */
+function valvesAt(phi){const pv=interp(K_VENT,phi),pao=interp(K_AORTA,phi),pa=interp(K_ATR,phi);return {av:pa>=pv,sl:pv>=pao};}
+/* Measure the four valve events, then build phases, volume plateaus and event
+   markers from them. This guarantees the graph's crossings, the phase bands,
+   the heart sounds and the constant-volume (isovolumetric) windows all align. */
+function computeModel(){
+  let prev=valvesAt(0.99995), c={};
+  for(let i=0;i<=4000;i++){const phi=i/4000,v=valvesAt(phi);
+    if(prev.av&&!v.av)c.avClose=phi;
+    if(!prev.av&&v.av)c.avOpen=phi;
+    if(!prev.sl&&v.sl)c.slOpen=phi;
+    if(prev.sl&&!v.sl)c.slClose=phi;
+    prev=v;}
+  CROSS=c;
+  PHASES=[
+    {n:"Atrial systole",a:0,b:c.avClose,short:"Atria contract — the ‘atrial kick’ tops up the ventricles."},
+    {n:"Isovolumetric contraction",a:c.avClose,b:c.slOpen,short:"All valves shut. Pressure shoots up; volume can’t change."},
+    {n:"Ventricular ejection",a:c.slOpen,b:c.slClose,short:"SL valves open; blood is forced into the aorta and pulmonary artery."},
+    {n:"Isovolumetric relaxation",a:c.slClose,b:c.avOpen,short:"All valves shut again. Pressure falls fast; volume stays constant."},
+    {n:"Ventricular filling",a:c.avOpen,b:1.001,short:"AV valves open; blood flows passively into the ventricles."}
+  ];
+  K_VOL=[[0,112],[c.avClose,EDV],[c.slOpen,EDV],[c.slClose,ESV],[c.avOpen,ESV],
+         [Math.min(c.avOpen+0.06,0.97),ESV+24],[Math.min(c.avOpen+0.26,0.99),EDV-20],[1,112]];
+  // Atrial fill fraction: full before atrial systole, empties as the atria
+  // contract, then refills from the veins while the AV valves are shut, dips as
+  // it drains into the ventricle when they open, then tops up again.
+  K_ATRVOL=[[0,0.88],[c.avClose,0.30],[c.slClose,0.86],
+            [Math.min(c.avOpen+0.05,0.7),0.55],[0.88,0.72],[1,0.88]];
+  VEVENTS=[[c.avClose,"AV shut","S1"],[c.slOpen,"SL open",""],[c.slClose,"SL shut","S2"],[c.avOpen,"AV open",""]];
+  // The three A-level phases (ventricular systole spans the isovolumetric
+  // contraction + ejection; diastole spans isovolumetric relaxation + filling).
+  CORE=[
+    {n:"Atrial systole",a:0,b:c.avClose,short:"The atria contract, pushing the last of the blood into the ventricles."},
+    {n:"Ventricular systole",a:c.avClose,b:c.slClose,short:"The ventricles contract: pressure rises, the AV valves shut, then blood is ejected."},
+    {n:"Diastole",a:c.slClose,b:1.001,short:"The heart relaxes: the SL valves shut, then the ventricles fill again."}
+  ];
+}
+function corePhaseOf(phi){phi=((phi%1)+1)%1;for(const p of CORE)if(phi>=p.a&&phi<p.b)return p;return CORE[0];}
+/* Banner text: the A-level phase, with the isovolumetric detail added only at Analyse level. */
+function mechPhaseLabel(){
+  const cp=corePhaseOf(S.phi), p=((S.phi%1)+1)%1;
+  if(S.level>=3){
+    if(p>=CROSS.avClose&&p<CROSS.slOpen) return cp.n+" — isovolumetric contraction";
+    if(p>=CROSS.slClose&&p<CROSS.avOpen) return cp.n+" — isovolumetric relaxation";
+  }
+  return cp.n;
+}
+
+/* ---------- state ---------- */
+const S={
+  scene:"mech", level:1, running:false,
+  phi:0, hr:75, speed:0.5,
+  mLabels:true, flow:true, pressOnHeart:false, audio:false, whoosh:false, pvloop:false,
+  showPV:true, showAo:true, showAtr:true, showVol:true, showMarkers:true,
+  focus:null, gmap:{L:44,R:12,w:400}, scrubbing:false,
+  eLabels:true, ecg:true, avn:0.40, block:false,
+  prevAV:true, prevSL:false, soundT:0, soundKind:"",
+  avEase:1, slEase:0, // eased valve openness for smooth leaflet motion
+  ventPhi:0,          // ventricular clock (diverges from phi under heart block)
+  pvTrail:[]
+};
+
+/* ---------- canvases ---------- */
+const heart=document.getElementById("heart"), hx=heart.getContext("2d");
+const graph=document.getElementById("graph"), gx=graph.getContext("2d");
+let DPR=1;
+const WW=520, WH=520; let HW=520,HH=520,HVS=1,HOX=0,HOY=0;
+function sizeCanvas(){
+  DPR=Math.min(window.devicePixelRatio||1,2);
+  const hr=heart.parentElement.getBoundingClientRect();
+  HW=Math.max(280,hr.width);HH=Math.max(240,hr.height);
+  heart.width=HW*DPR;heart.height=HH*DPR;heart.style.width=HW+"px";heart.style.height=HH+"px";
+  hx.setTransform(DPR,0,0,DPR,0,0);
+  HVS=Math.min(HW/WW,HH/WH);HOX=(HW-WW*HVS)/2;HOY=(HH-WH*HVS)/2;
+  const gr=graph.getBoundingClientRect();
+  graph.width=Math.max(1,gr.width)*DPR;graph.height=Math.max(1,gr.height)*DPR;
+  gx.setTransform(DPR,0,0,DPR,0,0);
+}
+window.addEventListener("resize",sizeCanvas);
+function hEnter(){hx.setTransform(DPR,0,0,DPR,0,0);hx.translate(HOX,HOY);hx.scale(HVS,HVS);}
+function hExit(){hx.setTransform(DPR,0,0,DPR,0,0);}
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+/* ---------- heart geometry (schematic front view) ---------- */
+/* chamber centres/sizes in world coords. Viewer's left = patient's right. */
+const GEO={
+  RA:{x:166,y:170,rx:60,ry:58}, LA:{x:354,y:170,rx:60,ry:58},
+  RV:{x:172,y:340,rx:78,ry:96}, LV:{x:344,y:340,rx:84,ry:110}
+};
+function contraction(kind,phi){         // 0 relaxed .. 1 fully contracted
+  phi=((phi%1)+1)%1;
+  if(kind==="atria"){ const b=CROSS.avClose; return phi<b ? Math.sin((phi/b)*Math.PI)*0.9 : 0; }
+  // ventricle contracts from AV closing through to AV opening (systole + IVR)
+  const a=CROSS.avClose, b=CROSS.avOpen;
+  if(phi>=a&&phi<b){ const t=(phi-a)/(b-a); return Math.sin(t*Math.PI)*1.0; }
+  return 0;
+}
+function roundedBlob(c,g,squeeze){
+  const rx=g.rx*(1-0.16*squeeze), ry=g.ry*(1-0.20*squeeze);
+  c.beginPath();c.ellipse(g.x,g.y,rx,ry,0,0,6.29);return {rx,ry};
+}
+
+/* ---------- audio (heart sounds) ---------- */
+let actx=null;
+function beep(kind){
+  if(!S.audio)return;
+  try{
+    if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();
+    if(actx.state==="suspended")actx.resume();
+    const o=actx.createOscillator(),gn=actx.createGain(),t=actx.currentTime;
+    o.type="sine";o.frequency.value=kind==="S1"?42:58;
+    gn.gain.setValueAtTime(0.0001,t);
+    gn.gain.exponentialRampToValueAtTime(kind==="S1"?0.5:0.34,t+0.012);
+    gn.gain.exponentialRampToValueAtTime(0.0001,t+(kind==="S1"?0.16:0.11));
+    o.connect(gn).connect(actx.destination);o.start(t);o.stop(t+0.2);
+  }catch(e){}
+}
+/* Blood-flow whoosh: looped filtered noise whose loudness (and brightness)
+   tracks the rate of blood flow — louder for larger, faster flow. */
+let whoosh=null;
+function ensureWhoosh(){
+  try{
+    if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();
+    if(actx.state==="suspended")actx.resume();
+    if(whoosh)return;
+    const n=Math.floor(actx.sampleRate*2), buf=actx.createBuffer(1,n,actx.sampleRate), d=buf.getChannelData(0);
+    for(let i=0;i<n;i++)d[i]=Math.random()*2-1;
+    const src=actx.createBufferSource();src.buffer=buf;src.loop=true;
+    const filt=actx.createBiquadFilter();filt.type="bandpass";filt.frequency.value=480;filt.Q.value=0.7;
+    const g=actx.createGain();g.gain.value=0;
+    src.connect(filt).connect(g).connect(actx.destination);src.start();
+    whoosh={src,filt,g};
+  }catch(e){}
+}
+function updateWhoosh(flow){            // flow 0..1
+  if(!whoosh)return;
+  try{
+    const t=actx.currentTime, target=S.whoosh?Math.min(0.30,flow*0.36):0;
+    whoosh.g.gain.setTargetAtTime(target,t,0.04);
+    whoosh.filt.frequency.setTargetAtTime(300+flow*560,t,0.06);   // brighter with more flow
+  }catch(e){}
+}
+
+/* ---------- MECHANICAL scene drawing ---------- */
+const OPENCOL="#2fc36f", SHUTCOL="#e5484d";
+/* A valve drawn so the state is unmistakable:
+   SHUT = a solid red barrier sealing the orifice, domed against the backflow
+          it prevents. OPEN = green leaflets swung fully aside, orifice clear.
+   open01 (0..1) is eased so the leaflets visibly swing.  flowDown = blood
+   direction through the valve (true for AV valves, false for semilunar).      */
+function drawValve(c,cx,cy,open01,flowDown,w){
+  const half=w/2, dir=flowDown?1:-1, t=performance.now()/1000;
+  c.save();c.translate(cx,cy);
+  // annulus posts (fixed frame of the opening)
+  c.fillStyle="#0a1620";
+  c.beginPath();c.roundRect(-half-6,-5,8,10,2);c.roundRect(half-2,-5,8,10,2);c.fill();
+
+  if(open01<0.5){                      // ---- SHUT: sealed barrier ----
+    const seal=1-open01*2;             // 1 fully shut
+    const apex=-dir*(3+7*seal);        // leaflets meet, bulged against backflow
+    c.beginPath();
+    c.moveTo(-half,0);
+    c.quadraticCurveTo(-half*0.5,apex,0,apex);
+    c.quadraticCurveTo(half*0.5,apex,half,0);
+    c.lineTo(half,0);c.quadraticCurveTo(0,dir*2,-half,0);c.closePath();
+    c.fillStyle="rgba(229,72,77,"+(0.35+0.4*seal)+")";c.fill();
+    c.lineWidth=5;c.lineJoin="round";c.lineCap="round";c.strokeStyle=SHUTCOL;
+    c.beginPath();c.moveTo(-half,0);c.quadraticCurveTo(-half*0.5,apex,0,apex);
+    c.quadraticCurveTo(half*0.5,apex,half,0);c.stroke();
+    // seam where the leaflets meet
+    c.fillStyle="#a01f2b";c.beginPath();c.arc(0,apex,3.2,0,6.29);c.fill();
+  } else {                             // ---- OPEN: leaflets folded aside ----
+    const o=(open01-0.5)*2;            // 0..1 openness
+    const len=14+16*o, tuck=half*(0.92-0.15*o);
+    const pulse=0.5+0.5*Math.sin(t*4); // gentle flow shimmer in the channel
+    // open channel highlight
+    c.strokeStyle="rgba(47,195,111,"+(0.25+0.25*pulse)+")";c.lineWidth=w*0.5;c.lineCap="round";
+    c.beginPath();c.moveTo(0,-dir*3);c.lineTo(0,dir*(len*0.7));c.stroke();
+    // leaflets swung to the sides in the flow direction
+    c.strokeStyle=OPENCOL;c.lineWidth=5.5;c.lineCap="round";c.lineJoin="round";
+    c.beginPath();
+    c.moveTo(-half,0);c.quadraticCurveTo(-tuck,dir*len*0.5,-tuck*0.9,dir*len);
+    c.moveTo( half,0);c.quadraticCurveTo( tuck,dir*len*0.5, tuck*0.9,dir*len);
+    c.stroke();
+  }
+  c.restore();
+}
+function valveBadge(c,x,y,open){
+  const txt=open?"OPEN":"SHUT", col=open?OPENCOL:SHUTCOL;
+  c.save();c.font="800 11px system-ui,sans-serif";
+  const w=c.measureText(txt).width+15;
+  c.fillStyle=col;c.beginPath();c.roundRect(x-w/2,y-9.5,w,19,7);c.fill();
+  c.fillStyle="#fff";c.textAlign="center";c.textBaseline="middle";
+  c.fillText(txt,x,y+0.5);c.restore();
+}
+function arrow(c,x1,y1,x2,y2,col,wobble){
+  c.save();c.strokeStyle=col;c.fillStyle=col;c.lineWidth=5;c.lineCap="round";
+  c.setLineDash([9,7]);c.lineDashOffset=-wobble;
+  c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();c.setLineDash([]);
+  const a=Math.atan2(y2-y1,x2-x1);
+  c.beginPath();c.moveTo(x2,y2);
+  c.lineTo(x2-Math.cos(a-0.5)*13,y2-Math.sin(a-0.5)*13);
+  c.lineTo(x2-Math.cos(a+0.5)*13,y2-Math.sin(a+0.5)*13);c.closePath();c.fill();
+  c.restore();
+}
+function chamberFill(kind){
+  // blood fill fraction for the visual
+  if(kind==="LV"||kind==="RV") return clamp((interp(K_VOL,S.phi)-40)/(135-40),0.12,1);
+  let f=interp(K_ATRVOL,S.phi);                       // atria empty and refill through the cycle
+  const p=((S.phi%1)+1)%1;
+  if(S.hr>110 && p>=CROSS.avOpen){                    // above ~110 bpm filling time is short,
+    const t=Math.min(1,(S.hr-110)/70);                // so the atria drain less into the ventricles
+    f += (0.82-f)*0.6*t;
+  }
+  return clamp(f,0.1,0.95);
+}
+function heartLabel(c,x,y,txt,sz){
+  c.save();c.font="700 "+(sz||12)+"px system-ui,sans-serif";
+  const w=c.measureText(txt).width+10;
+  c.fillStyle="rgba(9,20,30,.72)";
+  c.beginPath();c.roundRect(x-w/2,y-9,w,17,5);c.fill();
+  c.fillStyle="#eaf4ff";c.textAlign="center";c.textBaseline="middle";c.fillText(txt,x,y);
+  c.restore();
+}
+/* Great vessels share one wall colour; the lumen is a darker shade of it.
+   Veins = thin wall / wide lumen; arteries = thick wall / narrow lumen.
+   Aorta is wider than the pulmonary artery. Drawn behind the chambers so the
+   roots tuck under the muscle.  build() issues the path (moveTo/curveTo). */
+const VWALL="#8196a9", VLUMEN="#3a4f61";
+/* Vessel centre-lines as quadratic segments {p0,c,p2}. Shared by the vessel
+   drawing and the curved flow arrows so they follow the same curve. */
+const VES={
+  vc:   [{p0:[68,48], c:[96,108], p2:[140,150]}],
+  pv:   [{p0:[452,48],c:[424,108],p2:[380,150]}],
+  aorta:[{p0:[296,230],c:[272,128],p2:[280,46]}],
+  pa:   [{p0:[222,232],c:[242,150],p2:[240,92]},{p0:[240,92],c:[244,60],p2:[186,70]}]
+};
+function qAt(s,t){const a=(1-t)*(1-t),b=2*(1-t)*t,c=t*t;return [a*s.p0[0]+b*s.c[0]+c*s.p2[0],a*s.p0[1]+b*s.c[1]+c*s.p2[1]];}
+function qRange(seg,t0,t1,n){n=n||12;const o=[];for(let i=0;i<=n;i++)o.push(qAt(seg,t0+(t1-t0)*i/n));return o;}
+/* Wall then lumen, both with BUTT caps so the free end reads as an open, cut
+   tube (dark lumen showing) instead of a rounded wall cap. */
+function vessel(build,outerW,lumenW){
+  hx.lineJoin="round";hx.lineCap="butt";
+  hx.strokeStyle=VWALL;hx.lineWidth=outerW;hx.beginPath();build();hx.stroke();
+  hx.strokeStyle=VLUMEN;hx.lineWidth=lumenW;hx.beginPath();build();hx.stroke();
+}
+function drawVes(segs,outer,lumen){
+  vessel(()=>{hx.moveTo(segs[0].p0[0],segs[0].p0[1]);
+    for(const s of segs)hx.quadraticCurveTo(s.c[0],s.c[1],s.p2[0],s.p2[1]);},outer,lumen);
+}
+/* A bold, animated flow arrow that follows a poly-line (so it can curve along a
+   vessel). pts = array of [x,y]; width controls thickness. */
+function curvedArrow(c,pts,col,width,dash){
+  c.save();c.strokeStyle=col;c.fillStyle=col;c.lineWidth=width;c.lineCap="round";c.lineJoin="round";
+  c.setLineDash([width*1.7,width*1.25]);c.lineDashOffset=-dash;
+  c.beginPath();c.moveTo(pts[0][0],pts[0][1]);
+  for(let i=1;i<pts.length;i++)c.lineTo(pts[i][0],pts[i][1]);c.stroke();
+  c.setLineDash([]);
+  const a=pts[pts.length-1],b=pts[pts.length-2],ang=Math.atan2(a[1]-b[1],a[0]-b[0]),hs=width*2.2;
+  c.beginPath();c.moveTo(a[0],a[1]);
+  c.lineTo(a[0]-Math.cos(ang-0.5)*hs,a[1]-Math.sin(ang-0.5)*hs);
+  c.lineTo(a[0]-Math.cos(ang+0.5)*hs,a[1]-Math.sin(ang+0.5)*hs);c.closePath();c.fill();
+  c.restore();
+}
+function drawHeartBase(m){
+  hExit();
+  const g=hx.createLinearGradient(0,0,0,HH);g.addColorStop(0,"#12283a");g.addColorStop(1,"#0b1a26");
+  hx.fillStyle=g;hx.fillRect(0,0,HW,HH);
+  hEnter();
+  const cA=contraction("atria",S.phi), cV=contraction("ventricle", S.scene==="elec"?S.ventPhi:S.phi);
+
+  // --- great vessels (behind chambers) ---
+  drawVes(VES.vc,30,20);      // vena cava -> RA (vein: wide lumen)
+  drawVes(VES.pv,30,20);      // pulmonary vein -> LA (vein)
+  drawVes(VES.aorta,34,12);   // aorta <- LV (artery: narrow lumen, widest)
+  drawVes(VES.pa,27,9);       // pulmonary artery <- RV (artery, narrower)
+
+  // chambers
+  const chamber=(g,kind,squeeze,oxy)=>{
+    const base=oxy?"#7a2233":"#243f66", blood=oxy?"#d6394f":"#3f77c4";
+    hx.save();
+    const dims=roundedBlob(hx,g,squeeze);
+    hx.fillStyle=base;hx.fill();
+    // blood fill
+    const f=chamberFill(kind);
+    hx.save();hx.clip();
+    hx.fillStyle=blood;
+    const top=g.y+ (g.ry)*(1-2*f);
+    hx.fillRect(g.x-g.rx,top,g.rx*2,g.ry*2);
+    hx.restore();
+    hx.lineWidth=oxy?9:6;hx.strokeStyle=oxy?"#b8425a":"#3d5f8f";
+    roundedBlob(hx,g,squeeze);hx.stroke();
+    hx.restore();
+  };
+  chamber(GEO.RA,"atria",cA,false);
+  chamber(GEO.LA,"atria",cA,true);
+  chamber(GEO.RV,"RV",cV,false);
+  chamber(GEO.LV,"LV",cV,true);
+
+  // septum
+  hx.strokeStyle="#16303f";hx.lineWidth=10;
+  hx.beginPath();hx.moveTo(258,250);hx.lineTo(258,430);hx.stroke();
+}
+function drawMechOverlay(m){
+  // ease valve openness towards the target state so the leaflets visibly swing
+  const avT=m.avOpen?1:0, slT=m.slOpen?1:0;
+  S.avEase += (avT-S.avEase)*0.28;
+  S.slEase += (slT-S.slEase)*0.28;
+
+  // valves, positioned on the annulus between the chambers they guard
+  drawValve(hx,348,254,S.avEase,true,48);    // left AV (mitral): LA -> LV
+  drawValve(hx,170,254,S.avEase,true,46);    // right AV (tricuspid): RA -> RV
+  drawValve(hx,296,230,S.slEase,false,40);   // aortic SL: LV -> aorta (medial)
+  drawValve(hx,222,234,S.slEase,false,36);   // pulmonary SL: RV -> pulmonary artery (medial)
+
+  // flow arrows through open valves — bold; vessel arrows follow the vessel curve
+  if(S.flow){
+    const dl=performance.now()/13;
+    if(m.avOpen){
+      curvedArrow(hx,[[352,146],[350,204],[346,258]],"#e8677b",9,dl);   // LA -> LV
+      curvedArrow(hx,[[168,146],[170,204],[172,258]],"#5f8cd0",9,dl);   // RA -> RV
+    }
+    if(m.slOpen){
+      curvedArrow(hx,qRange(VES.aorta[0],0.05,0.55),"#c884f0",9,dl);    // LV -> aorta (curves up)
+      curvedArrow(hx,qRange(VES.pa[0],0.05,0.95),"#5f9ad0",9,dl);       // RV -> pulmonary artery
+    }
+    if(m.avOpen && phaseOf(S.phi).n==="Ventricular filling"){
+      curvedArrow(hx,qRange(VES.pv[0],0.15,0.96),"#e8677b",9,dl);       // pulmonary vein -> LA
+      curvedArrow(hx,qRange(VES.vc[0],0.15,0.96),"#5f8cd0",9,dl);       // vena cava -> RA
+    }
+  }
+
+  if(S.mLabels){
+    heartLabel(hx,166,164,"RA");heartLabel(hx,354,164,"LA");
+    heartLabel(hx,172,352,"RV");heartLabel(hx,344,362,"LV");
+    // vessel labels sit in clear gaps, not over the vessels or chambers
+    heartLabel(hx,96,34,"vena cava",10);
+    heartLabel(hx,412,34,"pulmonary vein",9);
+    heartLabel(hx,314,42,"aorta",10);
+    heartLabel(hx,150,54,"pulmonary artery",9);
+    // clear colour-coded state badges beside each valve set
+    valveBadge(hx,436,254,m.avOpen); heartLabel(hx,436,235,"AV valves",9);
+    valveBadge(hx,436,204,m.slOpen); heartLabel(hx,436,185,"SL valves",9);
+  }
+  if(S.pressOnHeart){
+    heartLabel(hx,354,172,Math.round(m.pa)+" mmHg",11);
+    heartLabel(hx,344,340,Math.round(m.pv)+" mmHg",12);
+    heartLabel(hx,300,90,Math.round(m.pao)+" mmHg",11);
+  }
+}
+
+/* ---------- Wiggers graph ---------- */
+function traceLine(c,fn,col,pxX,pyY,width){
+  c.beginPath();
+  for(let i=0;i<=240;i++){const phi=i/240;const y=fn(phi);i?c.lineTo(pxX(phi),pyY(y)):c.moveTo(pxX(phi),pyY(y));}
+  c.strokeStyle=col;c.lineWidth=width||2.2;c.lineJoin="round";c.stroke();
+}
+function drawGraphMech(){
+  const w=graph.getBoundingClientRect().width,h=graph.getBoundingClientRect().height;
+  if(w<20||h<20)return;
+  gx.clearRect(0,0,w,h);gx.fillStyle="#fff";gx.fillRect(0,0,w,h);
+
+  if(S.pvloop && S.level>=3){ drawPVloop(w,h); return; }
+
+  const L=44,R=12,T=14,Bpv=0.60;              // pressure area on top 60%
+  const pTop=T,pBot=T+(h-T-26)*Bpv, vTop=pBot+16,vBot=h-26;
+  const pMax=130, vMax=140;
+  const pxX=phi=>L+phi*(w-L-R);
+  const pyP=v=>pBot-(v/pMax)*(pBot-pTop);
+  const pyV=v=>vBot-(v/vMax)*(vBot-vTop);
+  S.gmap={L,R,w};                             // so click-to-scrub matches the axes
+
+  // phase bands — the three A-level phases (focused phase highlighted, rest dimmed)
+  const bandcol=["#fbf0e2","#fbecef","#eef7f2"];
+  CORE.forEach((p,i)=>{
+    const focused = S.focus===i;
+    gx.globalAlpha = (S.focus==null||focused)?1:0.35;
+    gx.fillStyle=focused?"#fff4c9":bandcol[i];
+    gx.fillRect(pxX(p.a),T,pxX(Math.min(p.b,1))-pxX(p.a),vBot-T);
+    if(focused){gx.strokeStyle="#e0a92a";gx.lineWidth=1.5;gx.strokeRect(pxX(p.a),T,pxX(Math.min(p.b,1))-pxX(p.a),vBot-T);}
+  });
+  gx.globalAlpha=1;
+  // grid + axes
+  gx.strokeStyle="#e7eef4";gx.lineWidth=1;
+  for(let v=0;v<=120;v+=40){gx.beginPath();gx.moveTo(L,pyP(v));gx.lineTo(w-R,pyP(v));gx.stroke();}
+  gx.strokeStyle="#9fb3c6";gx.lineWidth=1.2;
+  gx.beginPath();gx.moveTo(L,T);gx.lineTo(L,vBot);gx.lineTo(w-R,vBot);gx.stroke();
+  gx.beginPath();gx.moveTo(L,vTop);gx.lineTo(w-R,vTop);gx.stroke();
+
+  gx.fillStyle="#5c7082";gx.font="600 9px system-ui,sans-serif";gx.textAlign="right";gx.textBaseline="middle";
+  for(let v=0;v<=120;v+=40)gx.fillText(v,L-5,pyP(v));
+  gx.fillText(EDV,L-5,pyV(EDV));gx.fillText(ESV,L-5,pyV(ESV));
+  gx.save();gx.translate(11,(T+pBot)/2);gx.rotate(-Math.PI/2);gx.textAlign="center";
+  gx.fillText("Pressure / mmHg",0,0);gx.restore();
+  gx.save();gx.translate(11,(vTop+vBot)/2);gx.rotate(-Math.PI/2);gx.textAlign="center";
+  gx.fillText("Volume / mL",0,0);gx.restore();
+
+  // traces (toggleable, thin so overlaps are visible)
+  if(S.showAo)  traceLine(gx,phi=>interp(K_AORTA,phi),"#8a3ffb",pxX,pyP,1.6);
+  if(S.showPV)  traceLine(gx,phi=>interp(K_VENT,phi),"#c0334d",pxX,pyP,1.8);
+  if(S.showAtr) traceLine(gx,phi=>interp(K_ATR,phi),"#d98a45",pxX,pyP,1.6);
+  if(S.showVol) traceLine(gx,phi=>interp(K_VOL,phi),"#1a9e8f",pxX,pyV,1.8);
+
+  // valve-event markers at pressure crossings (labels staggered so close
+  // events — AV-shut/SL-open and SL-shut/AV-open — don't overlap)
+  if(S.showMarkers){
+    gx.setLineDash([3,3]);
+    VEVENTS.forEach(([ph,lab,snd],i)=>{
+      const top = (i%2===0);                 // alternate rows
+      const ly = top ? T+2 : T+22;
+      gx.strokeStyle=snd?"#111e2b":"#b0c0cf";gx.lineWidth=snd?1.2:0.9;
+      gx.beginPath();gx.moveTo(pxX(ph),T);gx.lineTo(pxX(ph),vBot);gx.stroke();
+      gx.font="700 8.5px system-ui,sans-serif";gx.textAlign="center";gx.textBaseline="top";
+      gx.fillStyle="#39485a";gx.fillText(lab,pxX(ph),ly);
+      if(snd){gx.fillStyle="#111e2b";gx.fillText(snd,pxX(ph),ly+10);}
+    });
+    gx.setLineDash([]);
+  }
+  // isovolumetric labels (analyse)
+  if(S.level>=3){
+    gx.fillStyle="#7a5b1a";gx.font="italic 700 8.5px system-ui,sans-serif";gx.textAlign="center";
+    gx.fillText("IVC",pxX((CROSS.avClose+CROSS.slOpen)/2),pyP(60));
+    gx.fillText("IVR",pxX((CROSS.slClose+CROSS.avOpen)/2),pyP(55));
+  }
+
+  // moving time cursor
+  const cx=pxX(S.phi);
+  gx.strokeStyle="#111e2b";gx.lineWidth=1.4;
+  gx.beginPath();gx.moveTo(cx,T);gx.lineTo(cx,vBot);gx.stroke();
+  const m=model(S.phi);
+  if(S.showPV) dot(gx,cx,pyP(m.pv),"#c0334d");
+  if(S.showAo) dot(gx,cx,pyP(m.pao),"#8a3ffb");
+  if(S.showAtr)dot(gx,cx,pyP(m.pa),"#d98a45");
+  if(S.showVol)dot(gx,cx,pyV(m.vol),"#1a9e8f");
+
+  gx.fillStyle="#5c7082";gx.font="600 9px system-ui,sans-serif";gx.textAlign="center";gx.textBaseline="top";
+  gx.fillText("click the graph to jump to a time point →",(L+w-R)/2,vBot+6);
+}
+function dot(c,x,y,col){c.beginPath();c.arc(x,y,3.2,0,6.29);c.fillStyle=col;c.fill();c.strokeStyle="#fff";c.lineWidth=1.3;c.stroke();}
+
+function drawPVloop(w,h){
+  const L=52,R=16,T=16,B=30;
+  const pxX=v=>L+((v-40)/(140-40))*(w-L-R);
+  const pyY=p=>h-B-(p/130)*(h-T-B);
+  gx.strokeStyle="#e7eef4";gx.lineWidth=1;
+  for(let p=0;p<=120;p+=40){gx.beginPath();gx.moveTo(L,pyY(p));gx.lineTo(w-R,pyY(p));gx.stroke();}
+  gx.strokeStyle="#9fb3c6";gx.lineWidth=1.2;gx.beginPath();gx.moveTo(L,T);gx.lineTo(L,h-B);gx.lineTo(w-R,h-B);gx.stroke();
+  gx.fillStyle="#5c7082";gx.font="600 9px system-ui,sans-serif";
+  gx.textAlign="right";gx.textBaseline="middle";for(let p=0;p<=120;p+=40)gx.fillText(p,L-5,pyY(p));
+  gx.textAlign="center";gx.textBaseline="top";gx.fillText("Ventricular volume / mL",(L+w-R)/2,h-14);
+  gx.save();gx.translate(12,(T+h-B)/2);gx.rotate(-Math.PI/2);gx.fillText("Ventricular pressure / mmHg",0,0);gx.restore();
+  // full loop
+  gx.beginPath();
+  for(let i=0;i<=240;i++){const phi=i/240;const v=interp(K_VOL,phi),p=interp(K_VENT,phi);
+    i?gx.lineTo(pxX(v),pyY(p)):gx.moveTo(pxX(v),pyY(p));}
+  gx.closePath();gx.strokeStyle="#c0334d";gx.lineWidth=2.4;gx.stroke();
+  gx.fillStyle="rgba(192,51,77,.07)";gx.fill();
+  // current point
+  const m=model(S.phi);dot(gx,pxX(m.vol),pyY(m.pv),"#111e2b");
+  gx.fillStyle="#39485a";gx.font="700 9px system-ui,sans-serif";gx.textAlign="left";gx.textBaseline="middle";
+  gx.fillText("← filling",pxX(120),pyY(6));
+  gx.fillText("ejection →",pxX(95),pyY(110));
+  gx.textAlign="center";gx.fillText("area of loop = work done by the ventricle",(L+w-R)/2,T+6);
+}
+
+/* ---------- ELECTRICAL scene ---------- */
+/* Conduction geometry. Bundle of His is a thick mass in the septal wall; the
+   Purkinje fibres run from the apex UP the ventricle walls. */
+const COND={
+  san:{x:202,y:132}, avn:{x:258,y:246},
+  hisTop:{x:258,y:252}, hisBot:{x:258,y:344},
+  apex:{x:272,y:450}
+};
+const PURK=[  // fibres from the apex, fanning up the ventricle walls (tips near the top)
+  {c:[356,432],tip:[360,392]},{c:[406,398],tip:[414,336]},
+  {c:[414,334],tip:[416,286]},{c:[372,296],tip:[388,256]},
+  {c:[192,432],tip:[196,394]},{c:[122,402],tip:[112,342]},
+  {c:[106,340],tip:[106,292]},{c:[142,300],tip:[132,266]}
+];
+/* distinct colours per conduction component (base, bright-when-active) */
+const ECOL={
+  san:"#34d399", sanHi:"#6ee7b7",     // SAN — green
+  avn:"#fb923c", avnHi:"#fdba74",     // AVN — orange
+  his:"#a78bfa", hisHi:"#c4b5fd",     // bundle of His / branches — violet
+  purk:"#38bdf8", purkHi:"#7dd3fc"    // Purkinje fibres — cyan
+};
+/* QRS onset sits just before AV closure. The base offset is small so the AVN
+   delay (the PR gap) is a touch longer for teaching clarity. Slider shifts it. */
+function qOnset(){ return clamp(CROSS.avClose-0.012+(S.avn-0.40)*0.10, 0.02, 0.30); }
+function atrialDepol(phi){ phi=((phi%1)+1)%1;
+  if(phi<0.07) return smoothstep(phi/0.07);           // wave spreads across atria
+  if(phi<0.20) return 1;                              // atrial muscle depolarised
+  if(phi<0.27) return 1-smoothstep((phi-0.20)/0.07);  // repolarise
+  return 0;
+}
+function ventDepol(vp){ vp=((vp%1)+1)%1;
+  const q=qOnset();
+  if(vp<q) return 0;
+  if(vp<q+0.05) return smoothstep((vp-q)/0.05);       // depolarisation spreads (QRS)
+  if(vp<0.42) return 1;                               // ventricles depolarised (systole)
+  if(vp<0.48) return 1-smoothstep((vp-0.42)/0.06);    // repolarise (T wave)
+  return 0;
+}
+/* wavefront of ventricular depolarisation, 0 at the apex .. 1 fully spread up */
+function ventWave(vp){ vp=((vp%1)+1)%1;
+  const q=qOnset();
+  if(vp<q) return 0;
+  if(vp<q+0.05) return smoothstep((vp-q)/0.05);       // spreading apex -> base
+  if(vp<0.42) return 1;
+  if(vp<0.48) return 1-smoothstep((vp-0.42)/0.06);
+  return 0;
+}
+/* atrial muscle shading: d = depolarised (yellow) intensity, r = repolarising
+   flash intensity. During repolarisation the yellow fades and r flashes. */
+function atrialShade(phi){ phi=((phi%1)+1)%1;
+  if(phi<0.07) return {d:smoothstep(phi/0.07),r:0};   // depolarising (spread)
+  if(phi<0.20) return {d:1,r:0};                       // depolarised
+  if(phi<0.27){const t=(phi-0.20)/0.07; return {d:Math.max(0,1-t*2),r:Math.sin(t*Math.PI)};}
+  return {d:0,r:0};
+}
+function ecgValue(phi,vp){
+  phi=((phi%1)+1)%1;
+  const g=(c,w,x)=>Math.exp(-Math.pow((phi-c)/w,2))*x;
+  let e=g(0.02,0.020,0.15);                            // P wave (atrial depolarisation)
+  const q=qOnset();
+  const gv=(c,w,x)=>Math.exp(-Math.pow(((((vp%1)+1)%1)-c)/w,2))*x;
+  const Q=gv(q-0.004,0.008,-0.10), Rr=gv(q+0.010,0.010,1.0), Sd=gv(q+0.034,0.010,-0.22), Tw=gv(0.38,0.045,0.30);
+  e+=Q+Rr+Sd+Tw;                                       // QRS + T (ventricles)
+  return e;
+}
+function drawElec(){
+  drawHeartBase(model(S.phi));
+  const aD=atrialDepol(S.phi), vD=ventDepol(S.ventPhi), wv=ventWave(S.ventPhi);
+  const p=((S.phi%1)+1)%1, q=qOnset(), vp=((S.ventPhi%1)+1)%1;
+  const REPOL="#4d94e8";   // repolarising-muscle flash — cool, distinct from the yellow depolarisation
+
+  const shadeChambers=(list,col,a)=>{if(a<=0.001)return;hx.save();hx.globalAlpha=a;hx.fillStyle=col;
+    for(const g of list){hx.beginPath();hx.ellipse(g.x,g.y,g.rx,g.ry,0,0,6.29);hx.fill();}hx.restore();};
+
+  // atrial muscle: depolarised (yellow) then a repolarising flash (blue)
+  const aSh=atrialShade(S.phi);
+  shadeChambers([GEO.RA,GEO.LA],"#ffe14d",0.45*aSh.d);
+  shadeChambers([GEO.RA,GEO.LA],REPOL,0.5*aSh.r);
+
+  // ventricular muscle: depolarisation rises FROM THE APEX (yellow);
+  // repolarisation is a separate blue flash
+  if(vp>=q && vp<0.42){
+    if(wv>0){hx.save();hx.globalAlpha=0.5;hx.fillStyle="#ffcf3d";
+      for(const g of [GEO.RV,GEO.LV]){hx.save();hx.beginPath();hx.ellipse(g.x,g.y,g.rx,g.ry,0,0,6.29);hx.clip();
+        const bottom=g.y+g.ry, top=bottom-2*g.ry*wv;hx.fillRect(g.x-g.rx,top,g.rx*2,bottom-top);hx.restore();}
+      hx.restore();}
+  } else if(vp>=0.42 && vp<0.48){
+    const t=(vp-0.42)/0.06, dFade=Math.max(0,1-t*2), rFlash=Math.sin(t*Math.PI);
+    shadeChambers([GEO.RV,GEO.LV],"#ffcf3d",0.5*dFade);
+    shadeChambers([GEO.RV,GEO.LV],REPOL,0.55*rFlash);
+  }
+
+  // non-conducting tissue (annulus fibrosus) between atria and ventricles
+  hx.strokeStyle="#0c1b26";hx.lineWidth=7;hx.setLineDash([5,5]);
+  hx.beginPath();hx.moveTo(110,244);hx.lineTo(406,244);hx.stroke();hx.setLineDash([]);
+
+  // internodal path SAN -> AVN (SAN's impulse crossing the atria)
+  hx.strokeStyle=ECOL.san;hx.lineWidth=3;hx.setLineDash([4,4]);
+  hx.beginPath();hx.moveTo(COND.san.x,COND.san.y);hx.quadraticCurveTo(238,182,COND.avn.x,COND.avn.y);hx.stroke();
+  hx.setLineDash([]);
+
+  // bundle of His — a thick MASS of fibres inside the septal wall (violet)
+  const hisActive=(p>=q-0.005 && p<q+0.05);
+  hx.save();hx.lineCap="round";
+  hx.strokeStyle=hisActive?ECOL.hisHi:ECOL.his;hx.lineWidth=17;
+  hx.beginPath();hx.moveTo(COND.hisTop.x,COND.hisTop.y);hx.lineTo(COND.hisBot.x,COND.hisBot.y);hx.stroke();
+  hx.strokeStyle=hisActive?"#7c5ccf":"#5b45a3";hx.lineWidth=1.4;   // striations = many fibres
+  for(const dx of [-5.5,-2,2,5.5]){hx.beginPath();hx.moveTo(COND.hisTop.x+dx,COND.hisTop.y+4);hx.lineTo(COND.hisBot.x+dx,COND.hisBot.y-4);hx.stroke();}
+  hx.restore();
+
+  // bundle branches: His bottom -> apex, down each side of the septum (violet)
+  hx.strokeStyle=(vD>0.1)?ECOL.hisHi:ECOL.his;hx.lineWidth=4.5;hx.lineCap="round";
+  hx.beginPath();
+  hx.moveTo(COND.hisBot.x,COND.hisBot.y);hx.quadraticCurveTo(298,404,COND.apex.x,COND.apex.y);
+  hx.moveTo(COND.hisBot.x,COND.hisBot.y);hx.quadraticCurveTo(220,404,COND.apex.x,COND.apex.y);hx.stroke();
+
+  // Purkinje fibres (cyan): from the APEX, up the ventricle walls; the bright
+  // activation travels apex -> tips as the wavefront (wv) rises
+  for(const f of PURK){
+    hx.strokeStyle="#2b7a97";hx.lineWidth=2.4;hx.lineCap="round";
+    hx.beginPath();hx.moveTo(COND.apex.x,COND.apex.y);hx.quadraticCurveTo(f.c[0],f.c[1],f.tip[0],f.tip[1]);hx.stroke();
+    if(wv>0.01){
+      hx.save();hx.strokeStyle=ECOL.purkHi;hx.lineWidth=3.4;hx.lineCap="round";hx.shadowColor=ECOL.purk;hx.shadowBlur=8*wv;
+      const n=12, upto=Math.max(1,Math.round(n*Math.min(1,wv*1.1)));
+      hx.beginPath();hx.moveTo(COND.apex.x,COND.apex.y);
+      for(let i=1;i<=upto;i++){const t=i/n,a=(1-t)*(1-t),b=2*(1-t)*t,c=t*t;
+        hx.lineTo(a*COND.apex.x+b*f.c[0]+c*f.tip[0], a*COND.apex.y+b*f.c[1]+c*f.tip[1]);}
+      hx.stroke();
+      if(wv>0.92){hx.fillStyle=ECOL.purkHi;hx.beginPath();hx.arc(f.tip[0],f.tip[1],3,0,6.29);hx.fill();}
+      hx.restore();
+    }
+  }
+
+  // node glows (SAN green, AVN orange, apex = Purkinje origin cyan)
+  const glow=(node,active,col)=>{hx.save();hx.globalAlpha=0.3+0.7*active;
+    hx.beginPath();hx.arc(node.x,node.y,8+7*active,0,6.29);
+    hx.fillStyle=col;hx.shadowColor=col;hx.shadowBlur=18*active;hx.fill();hx.restore();};
+  glow(COND.san, p<0.06?1:0.15, ECOL.san);
+  const avnActive=(p>=0.05&&p<q)?1:0.15;
+  glow(COND.avn, avnActive, ECOL.avn);
+  glow(COND.apex, (wv>0&&wv<1)?1:0.12, ECOL.purk);
+
+  if(S.eLabels){
+    heartLabel(hx,196,104,"SAN (pacemaker)",11);
+    heartLabel(hx,306,242,"AVN",11);
+    heartLabel(hx,318,296,"bundle of His",9);
+    heartLabel(hx,356,406,"Purkinje fibres",10);
+    heartLabel(hx,108,230,"non-conducting tissue",9);
+    heartLabel(hx,300,456,"apex",9);
+    if(avnActive>0.5 && p<q) heartLabel(hx,258,224,"…AVN delay…",10);
+  }
+  if(S.block){ heartLabel(hx,258,248,"✗ AVN blocked",11); }
+}
+function drawGraphECG(){
+  const w=graph.getBoundingClientRect().width,h=graph.getBoundingClientRect().height;
+  if(w<20||h<20)return;
+  gx.clearRect(0,0,w,h);gx.fillStyle="#fff";gx.fillRect(0,0,w,h);
+  if(!S.ecg && S.level>=2){gx.fillStyle="#9fb3c6";gx.font="600 12px system-ui";gx.textAlign="center";
+    gx.fillText("ECG hidden",(w)/2,h/2);return;}
+  const L=20,R=14,T=26,B=46, mid=(T+h-B)*0.54;
+  S.gmap={L,R,w};
+  const pxX=phi=>L+phi*(w-L-R);
+  const q=qOnset();
+
+  // --- electrical-event section bands (label the ECG waves) ---
+  const sections=[
+    {a:0,       b:0.05,  lab:"P",   col:"#e8f7ef"},
+    {a:0.05,    b:q,     lab:"PR",  col:"#fdf0e4"},
+    {a:q,       b:q+0.05,lab:"QRS", col:"#eef0fc"},
+    {a:q+0.05,  b:0.35,  lab:"ST",  col:"#f5f7f6"},
+    {a:0.35,    b:0.46,  lab:"T",   col:"#f4ecfb"},
+    {a:0.46,    b:1.0,   lab:"",    col:"#f6f8f7"}
+  ];
+  for(const s of sections){gx.fillStyle=s.col;gx.fillRect(pxX(s.a),T,pxX(s.b)-pxX(s.a),(h-B)-T);}
+  gx.strokeStyle="rgba(224,120,130,.22)";gx.lineWidth=1;
+  for(let x=L;x<w-R;x+=18){gx.beginPath();gx.moveTo(x,T);gx.lineTo(x,h-B);gx.stroke();}
+  gx.textAlign="center";gx.textBaseline="alphabetic";
+  for(const s of sections){
+    if(s.a>0){gx.strokeStyle="#d3dce4";gx.setLineDash([2,3]);gx.beginPath();gx.moveTo(pxX(s.a),T);gx.lineTo(pxX(s.a),h-B);gx.stroke();gx.setLineDash([]);}
+    if(s.lab){gx.fillStyle="#4a5c6c";gx.font="700 9px system-ui";gx.fillText(s.lab,(pxX(s.a)+pxX(s.b))/2,T-4);}
+  }
+
+  // --- ECG trace ---
+  const amp=(h-T-B)*0.40;
+  gx.beginPath();
+  for(let i=0;i<=360;i++){const phi=i/360;
+    const y=mid-ecgValue(phi,S.block?(phi*(S.hr/38)):phi)*amp;
+    i?gx.lineTo(pxX(phi),y):gx.moveTo(pxX(phi),y);}
+  gx.strokeStyle="#c0334d";gx.lineWidth=2;gx.stroke();
+
+  // --- cardiac-cycle phase bar: ties the ECG to the mechanical phases ---
+  const by=h-B+8, bh=15;
+  const bands=[[0,CROSS.avClose,"Atrial systole","#f4e3ca"],
+               [CROSS.avClose,CROSS.slClose,"Ventricular systole","#f2d3d9"],
+               [CROSS.slClose,1,"Diastole","#d5e9de"]];
+  gx.textBaseline="middle";
+  for(const [a,b,lab,col] of bands){
+    const x0=pxX(a),x1=pxX(b);
+    gx.fillStyle=col;gx.fillRect(x0,by,x1-x0,bh);
+    gx.strokeStyle="#fff";gx.lineWidth=1;gx.strokeRect(x0,by,x1-x0,bh);
+    gx.fillStyle="#39485a";gx.font="700 8.5px system-ui";gx.textAlign="center";
+    let t=lab; if(gx.measureText(t).width>x1-x0-4)t=lab.split(" ")[0];
+    if(gx.measureText(t).width<=x1-x0-2) gx.fillText(t,(x0+x1)/2,by+bh/2);
+  }
+  gx.fillStyle="#5c7082";gx.font="600 8px system-ui";gx.textAlign="left";gx.textBaseline="top";
+  gx.fillText("→ cardiac cycle phase",L,by+bh+2);
+
+  // time cursor
+  const cx=pxX(((S.phi%1)+1)%1);
+  gx.strokeStyle="#111e2b";gx.lineWidth=1.5;gx.beginPath();gx.moveTo(cx,T);gx.lineTo(cx,h-10);gx.stroke();
+}
+
+/* ---------- chips / status / coach ---------- */
+function updatePanels(){
+  const m=model(S.phi), cp=corePhaseOf(S.phi);
+  document.getElementById("phase-name").textContent = S.scene==="mech" ? mechPhaseLabel() : elecPhaseName();
+  document.getElementById("phase-clock").textContent =
+    (S.phi*(60/S.hr)*1000|0)+" ms / "+(60/S.hr*1000|0)+" ms";
+
+  const chips=document.getElementById("chips");
+  if(S.scene==="mech"){
+    chips.innerHTML=
+      chipHTML(m.avOpen?"open":"shut","#ffd36b","AV valves "+(m.avOpen?"OPEN":"SHUT"))+
+      chipHTML(m.slOpen?"open":"shut","#b98bff","SL valves "+(m.slOpen?"OPEN":"SHUT"))+
+      chipHTML("", "#c0334d","LV "+Math.round(m.pv)+" mmHg")+
+      chipHTML("", "#8a3ffb","Aorta "+Math.round(m.pao)+" mmHg")+
+      chipHTML("", "#d98a45","LA "+Math.round(m.pa)+" mmHg");
+    const co=(SV*S.hr/1000);
+    document.getElementById("status").innerHTML=
+      stat("Ventricular volume",Math.round(m.vol),"mL")+
+      stat("EDV",EDV,"mL",2)+stat("ESV",ESV,"mL",2)+
+      stat("Stroke volume",SV,"mL",2)+
+      stat("Cardiac output",co.toFixed(1),"L/min",2)+
+      msg(cp.short);
+  } else {
+    chips.innerHTML=
+      chipHTML(atrialDepol(S.phi)>0.3?"open":"","#ffe14d","Atria "+(atrialDepol(S.phi)>0.5?"depolarised":"resting"))+
+      chipHTML(ventDepol(S.ventPhi)>0.3?"open":"","#ffcf3d","Ventricles "+(ventDepol(S.ventPhi)>0.5?"depolarised":"resting"))+
+      chipHTML("","#f0c235", S.block?"AVN blocked":"AVN conducting");
+    document.getElementById("status").innerHTML= msg(elecCoach());
+  }
+  // sound flash
+  const sf=document.getElementById("sound-flash");
+  if(performance.now()-S.soundT<260){sf.classList.add("on");sf.textContent=S.soundKind==="S1"?"🔊 “lub” (S1)":"🔊 “dup” (S2)";}
+  else sf.classList.remove("on");
+}
+function chipHTML(cls,col,txt){return '<div class="chip '+cls+'"><span class="dot" style="background:'+col+'"></span>'+txt+'</div>';}
+function stat(k,v,u,lvl){const c=lvl?' lvl'+lvl:'';return '<div class="stat'+c+'"><div class="k">'+k+'</div><div class="v">'+v+' <small>'+u+'</small></div></div>';}
+function msg(t){return '<div class="msg"><span class="ic">💡</span><span>'+t+'</span></div>';}
+function elecPhaseName(){const p=((S.phi%1)+1)%1,q=qOnset();
+  if(p<0.07)return "Atrial depolarisation (P wave)";
+  if(p<q)return "AVN delay";
+  if(p<q+0.06)return "Ventricular depolarisation (QRS)";
+  if(p<0.34)return "Ventricles contracting";
+  if(p<0.46)return "Ventricular repolarisation (T wave)";
+  return "Ventricles relaxed — filling";}
+function elecCoach(){const p=((S.phi%1)+1)%1,q=qOnset();
+  if(S.block)return "AVN blocked: P waves keep coming from the SAN, but they don't reach the ventricles, which beat on their own slow escape rhythm.";
+  if(p<0.07)return "The SAN fires. Depolarisation spreads across both atria (the P wave), making them contract.";
+  if(p<q)return "The impulse is held at the AVN. This delay lets the atria finish emptying before the ventricles contract.";
+  if(p<q+0.06)return "The impulse races down the bundle of His and Purkinje fibres — the ventricles depolarise (the QRS complex).";
+  if(p<0.46)return "The ventricles contract, then repolarise (the T wave).";
+  return "The heart is resting before the SAN fires again.";}
+function elecPhaseNameShort(){return elecPhaseName();}
+
+/* ---------- loop ---------- */
+let last=performance.now();
+function frame(now){
+  const dt=(now-last)/1000; last=now;
+  if(S.running){
+    if(S.focus!=null && CORE[S.focus]){       // play just one phase, slowly, on a loop
+      const ph=CORE[S.focus], span=Math.min(ph.b,1)-ph.a, secs=3.2;
+      S.phi += dt*(span/secs);
+      if(S.phi>=Math.min(ph.b,1)-0.0005 || S.phi<ph.a) S.phi=ph.a;
+      S.ventPhi=S.phi;
+      detectSounds();
+    } else {
+      const cyclesPerSec = (S.hr/60) * S.speed;
+      S.phi=(S.phi+dt*cyclesPerSec)%1;
+      if(S.scene==="elec" && S.block){ S.ventPhi=(S.ventPhi+dt*(38/60)*S.speed)%1; }
+      else S.ventPhi=S.phi;
+      detectSounds();
+    }
+  }
+  if(S.scene==="mech"){ const m=model(S.phi); drawHeartBase(m); drawMechOverlay(m); drawGraphMech(); }
+  else { drawElec(); drawGraphECG(); }
+  // blood-flow whoosh: loudness tracks how fast ventricular volume is changing
+  if(S.whoosh && S.scene==="mech" && S.running){
+    const d=0.004, dVol=Math.abs(interp(K_VOL,S.phi+d)-interp(K_VOL,S.phi-d))/(2*d);
+    updateWhoosh(Math.min(1,dVol/260));
+  } else updateWhoosh(0);
+  updatePanels();
+  requestAnimationFrame(frame);
+}
+function detectSounds(){
+  const m=model(S.phi);
+  if(S.prevAV && !m.avOpen){ S.soundT=performance.now(); S.soundKind="S1"; beep("S1"); }
+  if(S.prevSL && !m.slOpen){ S.soundT=performance.now(); S.soundKind="S2"; beep("S2"); }
+  S.prevAV=m.avOpen; S.prevSL=m.slOpen;
+}
+
+/* ---------- wiring ---------- */
+function setScene(sc){
+  S.scene=sc;document.body.dataset.scene=sc;
+  document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-pressed",b.dataset.scene===sc));
+  document.getElementById("notes-mech").style.display=sc==="mech"?"block":"none";
+  document.getElementById("notes-elec").style.display=sc==="elec"?"block":"none";
+  document.getElementById("graph-title").textContent= sc==="mech"?"Pressure & volume against time":"ECG (electrocardiogram)";
+  document.getElementById("graph-sub").textContent= sc==="mech"?"one cardiac cycle — every crossing is a valve event":"P = atria depolarise · QRS = ventricles depolarise · T = ventricles repolarise";
+  document.getElementById("hint").textContent= sc==="mech"
+    ? "Valves open when the pressure behind them is higher than in front. Every crossing point on the graph is a valve opening or closing."
+    : "The impulse starts at the SAN, is delayed at the AVN, then spreads through the His–Purkinje system. Electrical events come just before the contractions they cause.";
+  buildLegend();applyLevel();
+}
+function applyLevel(){
+  const n=S.level;
+  document.querySelectorAll(".lvl2").forEach(el=>el.style.display=n>=2?"":"none");
+  document.querySelectorAll(".lvl3").forEach(el=>el.style.display=n>=3?"":"none");
+  // scene-specific elements hidden when not in that scene
+  document.querySelectorAll(".scene-mech").forEach(el=>{ if(S.scene!=="mech") el.style.display="none"; });
+  document.querySelectorAll(".scene-elec").forEach(el=>{ if(S.scene!=="elec") el.style.display="none"; });
+  document.body.classList.remove("booting");
+}
+function setLevel(n){
+  S.level=n;document.body.dataset.level=n;
+  document.querySelectorAll(".level-seg button").forEach(b=>b.setAttribute("aria-pressed",(+b.dataset.level)===n));
+  applyLevel();sizeCanvas();
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>setScene(b.dataset.scene)));
+document.querySelectorAll(".level-seg button").forEach(b=>b.addEventListener("click",()=>setLevel(+b.dataset.level)));
+function setRunning(on){
+  S.running=on;
+  if(on && S.audio && actx && actx.state==="suspended") actx.resume();
+  document.getElementById("run-ic").textContent=on?"⏸":"▶";
+  document.getElementById("run-tx").textContent=on?"Pause":"Start";
+}
+document.getElementById("btn-run").addEventListener("click",()=>setRunning(!S.running));
+document.getElementById("btn-step").addEventListener("click",()=>{
+  S.phi=(S.phi+0.01)%1; if(!(S.scene==="elec"&&S.block))S.ventPhi=S.phi; detectSounds();
+});
+
+/* ---- click / drag on the graph to jump to a time point (and pause) ---- */
+function scrubTo(clientX){
+  if(S.pvloop && S.scene==="mech" && S.level>=3) return;   // PV loop isn't a time axis
+  const r=graph.getBoundingClientRect(), {L,R,w}=S.gmap;
+  let phi=(clientX-r.left-L)/(w-L-R);
+  phi=Math.max(0,Math.min(0.9995,phi));
+  S.phi=phi; if(!(S.scene==="elec"&&S.block)) S.ventPhi=phi;
+  S.focus=null; syncFocusButtons();
+  detectSounds();
+}
+graph.style.cursor="ew-resize";
+graph.addEventListener("pointerdown",e=>{S.scrubbing=true;setRunning(false);scrubTo(e.clientX);graph.setPointerCapture(e.pointerId);});
+graph.addEventListener("pointermove",e=>{if(S.scrubbing)scrubTo(e.clientX);});
+graph.addEventListener("pointerup",e=>{S.scrubbing=false;});
+
+/* ---- focus on one phase: play just that section slowly, looping ---- */
+function setFocus(i){
+  S.focus=i;
+  if(i!=null && CORE[i]) S.phi=CORE[i].a;
+  syncFocusButtons(); setRunning(i!=null ? true : S.running);
+}
+function syncFocusButtons(){
+  document.querySelectorAll("[data-focus]").forEach(b=>{
+    const v=b.dataset.focus;
+    b.setAttribute("aria-pressed", (v==="all"? S.focus==null : (+v)===S.focus));
+  });
+}
+
+const sHR=document.getElementById("s-hr");
+sHR.addEventListener("input",()=>{S.hr=+sHR.value;document.getElementById("r-hr").textContent=S.hr+" bpm";});
+const sSpd=document.getElementById("s-speed");
+sSpd.addEventListener("input",()=>{S.speed=+sSpd.value/100;document.getElementById("r-speed").textContent=(S.speed).toFixed(1)+"×";});
+const bind=(id,prop,fn)=>{const el=document.getElementById(id);if(el)el.addEventListener("change",e=>{S[prop]=e.target.checked;if(fn)fn();});};
+bind("t-labels","mLabels");bind("t-flow","flow");bind("t-press","pressOnHeart");
+bind("t-sound","audio",()=>{if(S.audio){try{if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();actx.resume();}catch(e){}}});
+bind("t-whoosh","whoosh",()=>{if(S.whoosh)ensureWhoosh(); else updateWhoosh(0);});
+bind("t-pvloop","pvloop");
+bind("l-pv","showPV");bind("l-ao","showAo");bind("l-atr","showAtr");bind("l-vol","showVol");bind("l-mark","showMarkers");
+bind("e-labels","eLabels");bind("e-ecg","ecg");
+document.getElementById("e-block").addEventListener("change",e=>{S.block=e.target.checked;if(!S.block)S.ventPhi=S.phi;});
+document.getElementById("e-avn").addEventListener("input",e=>{S.avn=+e.target.value/100;
+  document.getElementById("r-avn").textContent = S.avn<0.25?"short":S.avn>0.6?"long":"normal";});
+document.querySelectorAll("[data-focus]").forEach(b=>b.addEventListener("click",()=>{
+  const v=b.dataset.focus; setFocus(v==="all"?null:+v);
+}));
+
+function buildLegend(){
+  const box=document.getElementById("legend");
+  if(S.scene==="mech"){
+    box.innerHTML=
+      lg("sw","#c0334d","Ventricular pressure")+
+      lg("sw","#8a3ffb","Aortic pressure")+
+      lg("sw","#d98a45","Atrial pressure")+
+      lg("sw","#1a9e8f","Ventricular volume")+
+      lg("bx","#d6394f","Oxygenated blood (left)")+
+      lg("bx","#3f77c4","Deoxygenated blood (right)");
+  } else {
+    box.innerHTML=
+      lg("bx","#34d399","SAN (pacemaker)")+
+      lg("bx","#fb923c","AVN")+
+      lg("bx","#a78bfa","Bundle of His")+
+      lg("bx","#38bdf8","Purkinje fibres")+
+      lg("bx","#ffd94d","Depolarising muscle")+
+      lg("bx","#4d94e8","Repolarising muscle")+
+      lg("sw","#c0334d","ECG trace");
+  }
+}
+function lg(t,col,txt){const s=t==="sw"?'<span class="sw" style="background:'+col+'"></span>':'<span class="bx" style="background:'+col+'"></span>';
+  return '<div class="row">'+s+'<span>'+txt+'</span></div>';}
+
+if(!CanvasRenderingContext2D.prototype.roundRect){
+  CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);
+    this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);return this;};
+}
+function boot(){computeModel();sizeCanvas();buildLegend();setScene("mech");setLevel(1);requestAnimationFrame(frame);}
+boot();
+</script>
+</body>
+</html>
