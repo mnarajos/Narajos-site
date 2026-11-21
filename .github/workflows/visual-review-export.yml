@@ -1,0 +1,21 @@
+name: Temporary visual review source export
+on:
+  pull_request:
+    paths:
+      - 'public/**'
+      - 'scripts/check-browser.mjs'
+      - '.github/workflows/visual-review-export.yml'
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: visual-review-public-source
+          path: |
+            public/
+            scripts/check-browser.mjs
+          retention-days: 1
