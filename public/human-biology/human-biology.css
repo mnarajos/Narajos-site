@@ -157,3 +157,22 @@ h1{font-size:clamp(1.65rem,3.5vw,2.2rem);letter-spacing:-.028em}
  .k-continue{align-items:flex-start;flex-direction:column;gap:9px}
 }
 @media(prefers-reduced-motion:reduce){.k-action,.k-option{transition:none}.k-action:hover{transform:none}}
+
+
+/* Oracle-oriented concise support: signposted reasoning and optional hints. */
+.k-step-num{display:inline-grid;place-items:center;width:26px;height:26px;background:#e0f2ed;color:#115e58;border-radius:50%;font-weight:800;font-size:.8rem;margin-right:8px}
+.k-justify{display:grid;gap:16px}
+.k-justify fieldset{border:0;padding:0;margin:0;min-width:0}
+.k-justify legend{font-size:.92rem;font-weight:750;color:var(--ink);margin-bottom:10px;padding:0;line-height:1.5}
+.k-justify .k-options{margin-bottom:6px}
+.k-hint-box{background:#f6f0fc;border:1px solid #d5c3ee;color:#49316d;padding:13px 17px;border-radius:12px;margin:16px 0 0}
+.k-hint-box strong{font-size:.84rem}
+.k-hint-box p{margin:3px 0 0;font-size:.88rem;line-height:1.52}
+.k-level.warmup{background:#e8f4ec;color:#1b6b42}
+.k-quick-label{font-size:.88rem;padding:10px 12px;border-left:4px solid #147b76;background:#edf7f5;border-radius:4px;margin:0 0 16px}
+.k-quick-note,.k-diagnostic-note{font-size:.88rem;border-left:3px solid #9c6ec9;background:#fbf7ff;padding:8px 11px;border-radius:4px}
+.k-quick-note{border-color:#1b7a72;background:#f0f8f5}
+.k-level-guidance{font-size:.89rem;line-height:1.55;border-top:1px solid #c5cdd5;padding-top:11px}
+.k-feedback.pending{color:#233f5a}
+.k-options .k-option:has(input:checked){border-color:var(--brand);background:#eff8f5}
+@media (max-width:560px){.k-foot-actions{gap:8px}.k-foot-actions .button{padding:10px 13px}.k-justify fieldset{width:100%}}
