@@ -131,18 +131,19 @@ function drawQuestion(){
  var sub=q.unit==="f171"?"F171 · Health and disease":"F170 · Fundamentals",num=session.index+1,max=session.queue.length;
  var prog=(100*(session.index/max)).toFixed(1),showing=session.phase==="feedback";
  var h='<div class="k-wrap k-question-view"><p class="crumb"><a href="#challenge/'+q.unit+'">← Leave this set</a></p><div class="k-question-meta"><span>'+esc(sub)+'</span><span>'+num+' of '+max+'</span></div><div class="progress-track" role="progressbar" aria-label="Questions completed" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+session.index+'"><div style="width:'+prog+'%"></div></div>';
- h+='<div class="k-question-paper"><div class="k-question-tags"><span class="k-type">'+icon(iconFor(q))+esc(labelType(q))+'</span><span class="k-level '+esc(q.level)+'">'+esc(q.level==="core"?"Core knowledge":q.level==="apply"?"Application":"Challenge")+'</span></div><h1>'+esc(q.stem)+'</h1>';
+ h+='<div class="k-question-paper"><div class="k-question-tags"><span class="k-type">'+icon(iconFor(q))+esc(labelType(q))+'</span><span class="k-level '+esc(q.level)+'">'+esc(q.level==="core"?"Core knowledge":q.level==="apply"?"Application":"Challenge")+'</span>'+(q.marks?'<span class="k-level stretch">'+q.marks+'-mark response</span>':'')+'</div><h1>'+esc(q.stem)+'</h1>';
  if(q.figure)h+=figure(q.figure);
  if(!showing)h+=inputForm(q,a);
  else{
-  var correct=session.lastResult===true,subjective=session.lastResult===null||q.type==="written";
+  var correct=session.lastResult===true,subjective=!session.wasSkipped&&(session.lastResult===null||q.type==="written");
   h+='<div class="k-feedback '+(subjective?"pending":correct?"correct":"incorrect")+'"><div class="k-feedback-head">'+icon(subjective?"book":correct?"check":"alert")+'<strong>'+(subjective?"Check your explanation":correct?"Correct":"Not quite")+'</strong></div>';
   h+='<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p>'+esc(q.explain)+'</p>';
+  if(q.levelsNote)h+='<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>';
   if(!correct&&q.misconception)h+='<div class="k-misconception"><strong>Watch out</strong><p>'+esc(q.misconception)+'</p></div>';
   h+='</div>';
  }
  if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points":"Check answer")+' →</button><button class="button quiet" type="button" data-k-action="skip">Not sure · show answer</button></div>';
- else if(q.type==="written"||session.lastResult===null)h+='<div class="k-foot-actions"><button class="button primary" data-k-action="self-good" type="button">I included the key ideas</button><button class="button secondary" data-k-action="self-weak" type="button">I need more practice</button></div>';
+ else if(!session.wasSkipped&&(q.type==="written"||session.lastResult===null))h+='<div class="k-foot-actions"><button class="button primary" data-k-action="self-good" type="button">I included the key ideas</button><button class="button secondary" data-k-action="self-weak" type="button">I need more practice</button></div>';
  else h+='<div class="k-foot-actions"><button class="button primary k-cta" data-k-action="next" type="button">Next question →</button></div>';
  h+='</div><p class="k-question-footer">Topic '+q.area+' · '+esc(areaName(q.unit,q.area))+(q.samAligned?' · Skills reflected in OCR sample material':' · Specification coverage')+' · Original question</p></div>';
  show(h);
@@ -179,17 +180,17 @@ function check(skip){
  var q=current();if(!q||session.phase==="feedback")return;
  var a=readForm()||{},v=validateAnswer(q,a);
  if(!skip&&!v.ready){var msg=main.querySelector(".k-error");if(!msg){msg=document.createElement("p");msg.className="k-error";msg.setAttribute("role","alert");main.querySelector(".k-foot-actions").prepend(msg);}msg.textContent=v.msg||"Choose an answer before checking.";return;}
- session.lastResult=skip?null:v.correct;
- if(q.type==="short"&&session.lastResult===false)session.lastResult=null; // allow accurate unlisted biological synonyms to be self-assessed
+ session.lastResult=skip?false:v.correct;
+ session.wasSkipped=!!skip;
+ if(!skip&&q.type==="short"&&session.lastResult===false)session.lastResult=null; // allow scientifically equivalent synonyms to be self-assessed
  session.phase="feedback";
- if(skip&&q.type!=="written")session.lastResult=null;
  if(session.lastResult!==null)record(q,session.lastResult);
  save();drawQuestion();
 }
 function gradeSelf(got){var q=current();if(!q)return;record(q,got);next();}
 function next(){
  if(!session)return;
- session.index++;session.phase="ask";session.lastResult=undefined;save();
+ session.index++;session.phase="ask";session.lastResult=undefined;session.wasSkipped=false;save();
  if(session.index>=session.queue.length)finish();else drawQuestion();
 }
 function finish(){
