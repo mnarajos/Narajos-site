@@ -77,9 +77,10 @@ function makeSession(unit,scope,route){
 function current(){return session&&byId[session.queue[session.index]];}
 function formChoice(q,answer){
  var selected=answer&&Array.isArray(answer.selected)?answer.selected:[];
- return '<div class="k-options" role="group" aria-label="Answer choices">'+q.options.map(function(o,i){
+ if(!answer.optionOrder){answer.optionOrder=shuffle(q.options.map(function(_,i){return i;}));session.answers[q.id]=answer;save();}
+ return '<div class="k-options" role="group" aria-label="Answer choices">'+answer.optionOrder.map(function(i,pos){var o=q.options[i];
   var checked=selected.indexOf(i)!==-1;
-  return '<label class="k-option'+(checked?" selected":"")+'"><input type="'+(q.type==="multi"?"checkbox":"radio")+'" name="kchoice" value="'+i+'"'+(checked?" checked":"")+'><span class="k-option-letter">'+String.fromCharCode(65+i)+'</span><span>'+esc(o)+'</span></label>';
+  return '<label class="k-option'+(checked?" selected":"")+'"><input type="'+(q.type==="multi"?"checkbox":"radio")+'" name="kchoice" value="'+i+'"'+(checked?" checked":"")+'><span class="k-option-letter">'+String.fromCharCode(65+pos)+'</span><span>'+esc(o)+'</span></label>';
  }).join("")+'</div>';
 }
 function orderForm(q,answer){
@@ -90,9 +91,10 @@ function orderForm(q,answer){
  }).join("")+'</ol><p class="k-hint">Use the arrows to put the steps in order.</p>';
 }
 function matchForm(q,answer){
- var vals=answer&&Array.isArray(answer.match)?answer.match:[],dest=shuffle(q.pairs.map(function(p){return p[1];}));
+ var vals=answer&&Array.isArray(answer.match)?answer.match:[];
+ if(!answer.targetOrder){answer.targetOrder=shuffle(q.pairs.map(function(_,i){return i;}));session.answers[q.id]=answer;save();}
  return '<div class="k-matches">'+q.pairs.map(function(p,i){
- return '<label class="k-match"><span>'+esc(p[0])+'</span><select data-match="'+i+'" aria-label="Match for '+esc(p[0])+'"><option value="">Choose a match</option>'+q.pairs.map(function(e,j){return '<option value="'+j+'"'+(String(vals[i])===String(j)?" selected":"")+'>'+esc(e[1])+'</option>';}).join("")+'</select></label>';
+ return '<label class="k-match"><span>'+esc(p[0])+'</span><select data-match="'+i+'" aria-label="Match for '+esc(p[0])+'"><option value="">Choose a match</option>'+answer.targetOrder.map(function(j){return '<option value="'+j+'"'+(String(vals[i])===String(j)?" selected":"")+'>'+esc(q.pairs[j][1])+'</option>';}).join("")+'</select></label>';
  }).join("")+'</div>';
 }
 function figure(name){
@@ -133,7 +135,7 @@ function drawQuestion(){
  if(q.figure)h+=figure(q.figure);
  if(!showing)h+=inputForm(q,a);
  else{
-  var correct=session.lastResult===true,subjective=q.type==="written"||q.type==="short"&&session.lastResult===null;
+  var correct=session.lastResult===true,subjective=session.lastResult===null||q.type==="written";
   h+='<div class="k-feedback '+(subjective?"pending":correct?"correct":"incorrect")+'"><div class="k-feedback-head">'+icon(subjective?"book":correct?"check":"alert")+'<strong>'+(subjective?"Check your explanation":correct?"Correct":"Not quite")+'</strong></div>';
   h+='<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p>'+esc(q.explain)+'</p>';
   if(!correct&&q.misconception)h+='<div class="k-misconception"><strong>Watch out</strong><p>'+esc(q.misconception)+'</p></div>';
@@ -177,7 +179,9 @@ function check(skip){
  var q=current();if(!q||session.phase==="feedback")return;
  var a=readForm()||{},v=validateAnswer(q,a);
  if(!skip&&!v.ready){var msg=main.querySelector(".k-error");if(!msg){msg=document.createElement("p");msg.className="k-error";msg.setAttribute("role","alert");main.querySelector(".k-foot-actions").prepend(msg);}msg.textContent=v.msg||"Choose an answer before checking.";return;}
- session.lastResult=skip?null:v.correct;session.phase="feedback";
+ session.lastResult=skip?null:v.correct;
+ if(q.type==="short"&&session.lastResult===false)session.lastResult=null; // allow accurate unlisted biological synonyms to be self-assessed
+ session.phase="feedback";
  if(skip&&q.type!=="written")session.lastResult=null;
  if(session.lastResult!==null)record(q,session.lastResult);
  save();drawQuestion();
@@ -237,5 +241,5 @@ main.addEventListener("click",function(e){
  if(btn.dataset.kAction==="self-weak")gradeSelf(false);
 });
 window.addEventListener("beforeunload",function(e){if(isActive()){e.preventDefault();e.returnValue="";}});
-window.KeystoneHumanChallenge={route:route,isActive:isActive,discard:discard,stats:unitStats,questionCount:all.length,types:Array.from(new Set(all.map(function(q){return q.type;})))};
+window.KeystoneHumanChallenge={route:route,isActive:isActive,discard:discard,stats:unitStats,questionCount:all.length,types:Array.from(new Set(all.map(function(q){return q.type;}))),icon:icon,hasResume:function(){return !!restore();}};
 })();
