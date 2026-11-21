@@ -203,18 +203,23 @@ var diagrams={
  },
  reproduction:{
   label:"Female reproductive anatomy (schematic)",
-  caption:"The oviduct (Fallopian tube) extends from the uterus towards the ovary; fertilisation usually occurs in an oviduct.",
-  image:svg("Schematic frontal view of a uterus, cervix and vagina, with oviducts curving towards the two ovaries. The oviducts open near the ovaries rather than attaching directly to them.",
-   '<path d="M188 88C168 66 126 60 91 78M293 88C312 65 361 64 390 81" stroke="#bb6c8e" stroke-width="12" stroke-linecap="round" fill="none"/>'+
-   '<circle cx="83" cy="101" r="17" fill="#e9adcb" stroke="#a85d7e" stroke-width="3"/><circle cx="396" cy="103" r="17" fill="#e9adcb" stroke="#a85d7e" stroke-width="3"/>'+
-   '<path d="M184 82Q240 55 296 82Q307 137 265 178H215Q173 137 184 82Z" fill="#f4cbd8" stroke="#ab5778" stroke-width="4"/>'+
-   '<path d="M206 92Q240 75 274 92L260 156H220Z" fill="#fff0f4" stroke="#c58ba0" stroke-width="2"/>'+
-   '<path d="M226 170V213H254V170" fill="#f4cbd8" stroke="#ab5778" stroke-width="3"/>'+
-   text(53,35,"Ovary",14,600)+arrow(66,40,79,80)+
-   text(360,33,"Oviduct",14,600)+arrow(361,41,344,66)+
-   text(240,36,"Uterus",14,600)+arrow(240,41,240,72)+
-   text(306,211,"Cervix / vagina below",13,500,"#344958"),
-   239)
+  caption:"The oviducts open near the ovaries. The cervix is the lower part of the uterus, with a canal that opens into the vagina.",
+  image:svg("Frontal section. The uterus opens into the central cervical canal. The cervix projects into the upper vagina. An oviduct curves from either side of the uterus to an opening near an ovary.",
+   '<path d="M190 86C169 66 126 60 92 78M290 86C311 66 354 60 389 78" stroke="#aa617e" stroke-width="13" stroke-linecap="round" fill="none"/>'+
+   '<path d="M190 86C169 66 126 60 92 78M290 86C311 66 354 60 389 78" stroke="#fff3f7" stroke-width="5" stroke-linecap="round" fill="none"/>'+
+   '<ellipse cx="77" cy="105" rx="20" ry="14" fill="#e9adcb" stroke="#a85d7e" stroke-width="3"/><ellipse cx="403" cy="105" rx="20" ry="14" fill="#e9adcb" stroke="#a85d7e" stroke-width="3"/>'+
+   '<path d="M216 183Q190 192 202 223L207 274H273L278 223Q290 192 264 183Z" fill="#edc4d5" stroke="#a35a78" stroke-width="3"/>'+
+   '<path d="M220 197Q200 193 214 220Q222 244 223 274H257Q258 244 266 220Q280 193 260 197Z" fill="#fff9fc" stroke="#bf7b99" stroke-width="2"/>'+
+   '<path d="M183 82Q240 51 297 82Q305 114 271 164Q260 180 262 201Q271 227 247 230H233Q209 227 218 201Q220 180 209 164Q175 114 183 82Z" fill="#f2bfd1" stroke="#98476c" stroke-width="3.5"/>'+
+   '<path d="M218 176Q240 183 262 176L262 201Q271 227 247 230H233Q209 227 218 201Z" fill="#de96b6" stroke="#aa5b81" stroke-width="2"/>'+
+   '<path d="M191 85Q240 79 289 85Q263 110 251 145Q244 168 244 188Q247 203 243 216L248 229H232L237 216Q233 203 236 188Q236 168 229 145Q217 110 191 85Z" fill="#fff9fc" stroke="#ad6080" stroke-width="1.8"/>'+
+   text(45,40,"Ovary",15,650)+arrow(53,46,70,88)+
+   text(381,36,"Oviduct",15,650)+arrow(370,42,350,65)+
+   text(241,32,"Uterus",15,650)+arrow(240,39,240,64)+
+   text(346,190,"Cervix",16,650)+arrow(312,185,262,190)+
+   text(90,209,"Cervical canal",15,650)+arrow(148,204,237,203)+
+   text(345,251,"Vagina",16,650)+arrow(308,246,276,243),
+   290)
  }
 };
 var simulations={
@@ -279,3 +284,4 @@ function render(course,id){
 }
 window.KeystoneCatchupVisuals={render:render,has:function(course,id){return !!curated[course+"/"+id];}};
 })();
+
