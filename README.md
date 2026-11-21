@@ -11,8 +11,9 @@ Source files for [narajos.com](https://narajos.com/).
 - `public/gcse/flashcards-app.js` — GCSE topic, paper, mixed, weak and due-card review modes
 - `public/alevel/index.html` — A-level Biology revision
 - `public/alevel/spaced-review-app.js` — spaced-review dashboard built on its existing flashcard bank
-- `public/human-biology/` — Cambridge OCR AAQ revision app: paper-first F170/F171 navigation, original diagram, calculation and application challenges, and separate recall cards. F170 has 28 learning sections, 112 flashcards and 28 explanation-only prompts; exam-question bank currently has 51 F170 and 19 F171 challenges (eight formats). F171 remains an early preview.
+- `public/human-biology/` — Cambridge OCR AAQ revision app: paper-first F170/F171 navigation, original diagram, calculation and application challenges, and separate recall cards. F170 has 28 learning sections, 112 flashcards and 28 explanation-only prompts; exam-question bank currently has 62 F170 and 27 F171 challenges (nine formats, including two-step scientific reasoning). F171 remains an early preview.
 - `docs/HUMAN_BIOLOGY_REVISION_RESEARCH.md` — OCR specification / sample-material research, high-yield priority rationale, content-quality checklist and coverage gaps.
+- `docs/ORACLE_KEYSTONE_PEDAGOGY.md` — pedagogical and privacy standard for all Keystone apps: explicit sequencing, retrieval, scaffold fading, diagnostic reteach, transferable application and strictly local progress (no AI marking or learner telemetry).
 - `public/teacher/index.html` — Focused Questions for teachers
 - `public/teaching/simulations/` — simulation catalogue and five interactive models
 - `public/assets/site.css` — shared main-site styles
@@ -41,7 +42,7 @@ Run `node scripts/check-site.mjs`, `node scripts/check-flashcards.mjs`, `node sc
 - GCSE card bank coverage across all 24 Trilogy topics, per-card structure and tier metadata
 - Spaced-review scheduling, missed-card retry logic, explicit answer aliases and both review-app interfaces
 
-The Human Biology app now has eight exam-question formats and an F171 preview alongside the original F170 bank. It is **not yet a complete statement-by-statement specification resource**. It includes no NEA assignment writing or marking. Sample-paper alignment indicates question *style*, not reliable predictions of future examination frequency. Source: Cambridge OCR Human Biology specification version 8 (October 2026).
+The Human Biology app now has nine exam-question formats, a warm-up-first progression within topic areas, optional hints, related quick checks, and an F171 preview alongside the original F170 bank. It is **not yet a complete statement-by-statement specification resource**. It includes no NEA assignment writing or marking. Sample-paper alignment indicates question *style*, not reliable predictions of future examination frequency. Source: Cambridge OCR Human Biology specification version 8 (October 2026).
 
 These checks are not a replacement for browser testing.
 
