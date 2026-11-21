@@ -49,22 +49,31 @@ function areaHtml(a){
  return '<article class="paper area-card"><span class="number">TOPIC AREA '+a.number+'</span><h3>'+esc(a.title)+'</h3><p>'+esc(a.intro)+'</p><p class="summary">'+a.sections.length+' learning sections · '+count+' flashcards</p><div class="area-actions">'+link("area/"+a.id,"Explore topics","primary")+link("cards/"+a.id,"Flashcards")+link("practice/"+a.id,"Practice")+'</div></article>';
 }
 function showHome(){
- var st=stats(),old=restoreSession();
- var html='<section class="hero"><div class="eyebrow">Narajos Keystone · Cambridge Advanced National</div><h1>Human Biology</h1><p class="lead">Build your understanding of the human body with short explanations, active recall, spaced flashcards and independent practice.</p><p class="sub">Cambridge OCR AAQ · F170 Fundamentals of human biology</p></section>';
- html+='<aside class="pilot"><strong>F170 learning pilot.</strong> All four topic areas are represented, but this is a curated first bank, not yet complete statement-by-statement specification coverage. F171 and the learning-only parts of other units will follow. No coursework generation or assessment is provided.</aside>';
- if(old)html+='<section class="paper panel"><h2>Continue your session</h2><p>Your unfinished '+(old.type==="cards"?"flashcard":"practice")+' set is saved in this browser.</p>'+link("resume","Resume where you left off","primary")+'</section>';
- html+='<div class="section-head"><h2>Your revision at a glance</h2></div><div class="stats">'+metric(st.cards,"Original flashcards")+metric(st.seen,"Practised cards")+metric(st.due,"Due for review")+metric(st.done,"Topics practised successfully")+'</div>';
- html+='<div class="section-head"><h2>Choose a topic area</h2>'+link("topics","See all sections")+'</div><div class="grid">'+areas.map(areaHtml).join("")+'</div>';
- html+='<div class="section-head"><h2>Quick revision</h2></div><div class="two-actions"><div class="paper"><h3>Spaced flashcard review</h3><p>Return to earlier material at increasing intervals; retry missed cards.</p>'+link("flashcards","Choose a flashcard set","primary")+'</div><div class="paper"><h3>Apply your knowledge</h3><p>Answer original prompts, reveal a suggested response and evaluate your understanding.</p>'+link("practice","Choose practice","primary")+'</div></div>'+sourceNote();
- render(html);
+ var st=stats(),old=restoreSession(),E=window.KeystoneHumanChallenge,fs=E?E.stats("f170"):null,hs=E?E.stats("f171"):null;
+ var h='<div class="k-wrap"><section class="k-home-hero"><span class="k-eyebrow">Narajos Keystone · Cambridge OCR AAQ</span><h1>Ready to revise?</h1><p>Choose an exam unit, then practise the biology.</p></section>';
+ h+='<section class="k-home-units" aria-label="Choose your exam unit">';
+ h+='<a class="k-home-unit teal" href="#challenge/f170"><span class="k-unit-symbol">🧬</span><span class="k-unit-copy"><small>F170 · Exam unit</small><strong>Fundamentals of human biology</strong><em>'+(fs?fs.questions:0)+' varied questions · '+(fs?fs.seen:0)+' attempted</em></span><span class="k-unit-chev">›</span></a>';
+ h+='<a class="k-home-unit blue" href="#challenge/f171"><span class="k-unit-symbol">🩺</span><span class="k-unit-copy"><small>F171 · Exam unit · Preview</small><strong>Health and disease</strong><em>'+(hs?hs.questions:0)+' original questions · '+(hs?hs.seen:0)+' attempted</em></span><span class="k-unit-chev">›</span></a>';
+ h+='</section>';
+ h+='<h2 class="k-subhead">Other ways to revise F170</h2><section class="k-home-actions">';
+ h+='<a href="#flashcards" class="k-mini-action flash"><span class="k-mini-symbol">▤</span><strong>Flashcards</strong><small>Recall and spaced review</small></a>';
+ h+='<a href="#topics" class="k-mini-action learn"><span class="k-mini-symbol">▣</span><strong>Learn a topic</strong><small>Short explanations</small></a>';
+ h+='<a href="#challenge/f170/weak" class="k-mini-action fix"><span class="k-mini-symbol">↻</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
+ h+='</section>';
+ if(old)h+='<section class="k-continue"><div><strong>Unfinished flashcards or explanation practice</strong><p>Continue your saved set.</p></div>'+link("resume","Resume","primary")+'</section>';
+ var savedChallenge=E&&E.isActive();
+ if(savedChallenge)h+='<p class="k-small-note">An exam-question set is in progress. Return to it from your exam-unit page.</p>';
+ h+='<p class="k-small-note">F170 covers the four topic areas in this first learning bank; F171 exam questions are an initial selection. This is not yet complete specification coverage. Original questions only; no coursework assistance.</p></div>';
+ render(h);
 }
 function showTopics(){render(crumb("home","Overview")+'<div class="hero"><div class="eyebrow">F170 topic map</div><h1>Explore the specification</h1><p class="lead">Select an area to study its learning sections. This pilot does not yet cover every individual breadth-and-depth statement.</p></div><div class="grid">'+areas.map(areaHtml).join("")+'</div>'+sourceNote());}
 function showArea(id){
  var a=areaById[id];if(!a)return notFound();
- var h=crumb("topics","All topic areas")+'<div class="hero"><div class="eyebrow">F170 · Topic Area '+a.number+'</div><h1>'+esc(a.title)+'</h1><p class="lead">'+esc(a.intro)+'</p><div class="actions">'+link("cards/"+a.id,"Revise flashcards","primary")+link("practice/"+a.id,"Apply knowledge")+'</div></div>';
- h+='<div class="section-head"><h2>Learning sections</h2></div><div class="lesson-list">';
- a.sections.forEach(function(s){var p=progress[s.id]||{};h+='<article class="paper lesson"><div><span class="num">'+esc(s.id)+'</span><h3>'+esc(s.title)+'</h3><p>'+esc(s.summary)+'</p></div><div class="right">'+(p.good?'<span class="pill">Practised</span>':'')+link("learn/"+s.id,"Learn","primary")+link("cards/"+s.id,"Cards")+'</div></article>';});
- render(h+'</div>'+sourceNote());
+ var h=crumb("topics","All topic areas")+'<div class="k-compact-hero"><div class="eyebrow">F170 · Topic Area '+a.number+'</div><h1>'+esc(a.title)+'</h1></div>';
+ h+='<div class="k-quick-buttons"><a class="k-shortcut primary" href="#challenge/f170/a'+a.number+'"><span class="k-mini-symbol">⚡</span><span><strong>Practise questions</strong><small>Different formats and feedback</small></span></a><a class="k-shortcut secondary" href="#cards/'+a.id+'"><span class="k-mini-symbol">▤</span><span><strong>Flashcards</strong><small>Active recall</small></span></a></div>';
+ h+='<h2 class="k-subhead">Learn a specific topic</h2><div class="lesson-list">';
+ a.sections.forEach(function(s){h+='<article class="paper lesson"><div><span class="num">'+esc(s.id)+'</span><h3>'+esc(s.title)+'</h3></div><div class="right">'+link("learn/"+s.id,"Open topic")+'</div></article>';});
+ render('<div class="k-wrap">'+h+'</div></div>');
 }
 function showLearn(id){
  var s=bySection[id];if(!s)return notFound();
@@ -91,12 +100,15 @@ function chooserOptions(mode){
 }
 function showFlashMenu(){
  var st=stats();
- var h=crumb("home","Overview")+'<div class="hero"><div class="eyebrow">Active recall</div><h1>Flashcards</h1><p class="lead">Type an answer, reveal the expected wording, then decide whether you recalled the essential biology. Answers are not graded solely by exact text matching.</p></div><div class="stats">'+metric(st.due,"Due now")+metric(st.weak,"Previously missed")+metric(st.newCards,"Not yet practised")+metric(st.seen,"Practised before")+'</div><div class="section-head"><h2>Recommended review</h2></div><div class="actions">'+link("cards/due","Review due cards","primary")+link("cards/weak","Review weak cards")+link("cards/new","Learn new cards")+link("cards/all","Mixed F170 cards")+'</div><div class="section-head"><h2>Choose a topic area</h2></div>'+chooserOptions("cards")+sourceNote();
- render(h);
+ var h=crumb("home","Overview")+'<div class="k-compact-hero"><div class="eyebrow">F170 · Active recall</div><h1>Flashcards</h1></div>';
+ h+='<div class="k-mini-stats"><span><strong>'+st.due+'</strong> due today</span><span><strong>'+st.weak+'</strong> previously missed</span><span><strong>'+st.newCards+'</strong> new</span></div>';
+ h+='<div class="k-action-grid"><a class="k-action teal" href="#cards/due"><span class="k-mini-symbol">↻</span><span><strong>Review due cards</strong><small>Spaced practice</small></span><span>›</span></a><a class="k-action orange" href="#cards/weak"><span class="k-mini-symbol">!</span><span><strong>Weak cards</strong><small>Revisit errors</small></span><span>›</span></a><a class="k-action blue" href="#cards/new"><span class="k-mini-symbol">＋</span><span><strong>Learn new cards</strong><small>Try unfamiliar terms</small></span><span>›</span></a><a class="k-action purple" href="#cards/all"><span class="k-mini-symbol">▤</span><span><strong>Mixed revision</strong><small>Across F170</small></span><span>›</span></a></div>';
+ h+='<h2 class="k-subhead">By topic</h2>'+chooserOptions("cards")+'<p class="k-small-note">Type first, reveal, then self-assess equivalent scientific wording. Your review progress remains in this browser.</p>';
+ render('<div class="k-wrap">'+h+'</div>');
 }
 function showPracticeMenu(){
  var st=stats();
- render(crumb("home","Overview")+'<div class="hero"><div class="eyebrow">Apply your knowledge</div><h1>Practice</h1><p class="lead">Original application prompts with a suggested response. Your answer is self-assessed: there is no unreliable automatic judgement of longer biological explanations.</p></div><div class="paper panel"><h2>Practice across F170</h2><p>'+st.sections+' independently authored prompts covering all four topic areas. The full statement-by-statement question bank is still being developed.</p>'+link("practice/all","Start mixed practice","primary")+'</div><div class="section-head"><h2>Choose a topic area</h2></div>'+chooserOptions("practice")+sourceNote());
+ render('<div class="k-wrap">'+crumb("home","Overview")+'<div class="k-compact-hero"><div class="eyebrow">F170 · Explanation practice</div><h1>Explain the biology</h1><p>Write a short answer, then check the key points.</p></div><div class="k-quick-buttons"><a class="k-shortcut primary" href="#challenge/f170/all"><span class="k-mini-symbol">⚡</span><span><strong>Varied exam questions</strong><small>Choose, order, calculate and explain</small></span></a><a class="k-shortcut secondary" href="#practice/all"><span class="k-mini-symbol">✎</span><span><strong>Explanation-only practice</strong><small>'+st.sections+' independent prompts</small></span></a></div><h2 class="k-subhead">Choose a topic</h2>'+chooserOptions("practice")+'</div>');
 }
 function createSession(type,scope){
  var selected=type==="cards"?cardsFor(scope).map(function(x){return x.id;}):sectionsFor(scope).map(function(x){return x.id;});
@@ -160,6 +172,7 @@ function notFound(){render('<div class="empty"><h1>Topic not found</h1><p>Try th
 function runRoute(){
  var r=decodeURIComponent(location.hash.replace(/^#/,""))||"home";previousRoute=r;
  if(r==="home"){showHome();return;}
+ if(r==="challenge"||r.startsWith("challenge/")){if(window.KeystoneHumanChallenge)return window.KeystoneHumanChallenge.route(r,render);return notFound();}
  if(r==="topics"){showTopics();return;}
  if(r==="flashcards"){showFlashMenu();return;}
  if(r==="practice"){showPracticeMenu();return;}
@@ -176,13 +189,13 @@ function showLeave(callback){
  var keep=document.getElementById("leave-stay"),go=document.getElementById("leave-confirm");
  keep.focus();
  keep.onclick=function(){modal.hidden=true;pending=null;};
- go.onclick=function(){var cb=pending;pending=null;modal.hidden=true;active=null;if(cb)cb();};
+ go.onclick=function(){var cb=pending;pending=null;modal.hidden=true;active=null;if(window.KeystoneHumanChallenge)window.KeystoneHumanChallenge.discard();if(cb)cb();};
 }
 document.addEventListener("keydown",function(e){if(e.key==="Escape"){var m=document.getElementById("leave-dialog");if(!m.hidden){m.hidden=true;pending=null;document.getElementById("leave-stay").blur();}}});
 document.addEventListener("click",function(e){
  var action=e.target.closest("[data-action]");
  if(action){if(action.getAttribute("data-action")==="reveal")reveal(false);if(action.getAttribute("data-action")==="again")rate(false);if(action.getAttribute("data-action")==="got-it")rate(true);return;}
- var a=e.target.closest("a[href]");if(!a||!active)return;
+ var a=e.target.closest("a[href]");if(!a||(!active&&!(window.KeystoneHumanChallenge&&window.KeystoneHumanChallenge.isActive())))return;
  var href=a.getAttribute("href")||"";
  if(href.startsWith("#")&&href.replace(/^#/,"")===previousRoute)return;
  if(href.startsWith("#")||href.startsWith("/")){
@@ -192,14 +205,14 @@ document.addEventListener("click",function(e){
 });
 window.addEventListener("hashchange",function(){
  var next=decodeURIComponent(location.hash.replace(/^#/,""))||"home";
- if(active&&next!==previousRoute&&!allowRoute){
+ if((active||(window.KeystoneHumanChallenge&&window.KeystoneHumanChallenge.isActive()))&&next!==previousRoute&&!allowRoute){
   var restore=previousRoute;location.hash="#"+restore;
   showLeave(function(){allowRoute=true;location.hash="#"+next;});
   return;
  }
  allowRoute=false;runRoute();
 });
-window.addEventListener("beforeunload",function(e){if(active){e.preventDefault();e.returnValue="";}});
+window.addEventListener("beforeunload",function(e){if(active||(window.KeystoneHumanChallenge&&window.KeystoneHumanChallenge.isActive())){e.preventDefault();e.returnValue="";}});
 window.KeystoneHumanApp={stats:stats,content:function(){return {areas:areas.length,sections:sections.length,cards:cards.length};}};
 runRoute();
 })();
