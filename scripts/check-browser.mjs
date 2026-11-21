@@ -329,8 +329,11 @@ try{
  await navPage.getByRole("heading",{name:"Sequence complete",exact:true}).waitFor();
  await navPage.getByRole("button",{name:"Repeat this idea"}).click();
  assert.notEqual(await navPage.evaluate(()=>JSON.parse(localStorage.getItem("narajos-human-challenge-v2-session")).queue[2]),chosenCore);
+ await navPage.getByRole("link",{name:"← Leave this set"}).click();
+ await navPage.locator("#leave-confirm").click();
  await navPage.setViewportSize({width:390,height:844});
  await navPage.goto(base+"/human-biology/#challenge/f171/build");
+ await navPage.getByRole("heading",{name:"Build understanding",exact:true}).waitFor();
  assert.equal(await navPage.locator("[href^='#challenge/f171/p-']").count(),18);
  assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Progression menu overflows phone width");
  await screen(navPage,"human-progressive-mobile");
