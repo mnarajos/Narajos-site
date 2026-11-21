@@ -1004,8 +1004,7 @@ window.KeystoneHumanChallenges={
       "level": "core",
       "stem": "What is the medical term for athlete's foot?",
       "accepted": [
-        "Tinea pedis",
-        "Athlete's foot"
+        "Tinea pedis"
       ],
       "model": "Tinea pedis",
       "explain": "This is a fungal skin infection commonly caused by dermatophytes such as Trichophyton.",
@@ -1262,7 +1261,9 @@ window.KeystoneHumanChallenges={
       "model": "Electronic records may improve access and information sharing, but demand privacy safeguards, infrastructure and staff training.",
       "explain": "Balance the practice's context; the best recommendation depends on trade-offs.",
       "misconception": "'Digital is always better' is not an evaluation.",
-      "samAligned": true
+      "samAligned": true,
+      "marks": 9,
+      "levelsNote": "For a 9-mark evaluation, weigh several benefits and limitations against the case details, then reach a supported recommendation. These are revision cues, not an OCR mark scheme."
     },
     {
       "id": "health-parkinsons-therapy",
@@ -1280,7 +1281,9 @@ window.KeystoneHumanChallenges={
       "model": "Medication can reduce motor symptoms; rehabilitation and practical support can improve mobility, function and independence.",
       "explain": "Parkinson's disease is progressive; treatment is typically symptom management, not cure.",
       "misconception": "Do not equate supportive therapy with a lack of biological effect.",
-      "samAligned": true
+      "samAligned": true,
+      "marks": 6,
+      "levelsNote": "For an extended 6-mark response, link interventions to the patient's symptoms and daily life; consider limitations. These are revision cues, not an OCR mark scheme."
     },
     {
       "id": "health-immunisation",
