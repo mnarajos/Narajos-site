@@ -209,15 +209,20 @@ function drawQuestion(){
  }
  else{
   var correct=session.lastResult===true,subjective=!session.wasSkipped&&(session.lastResult===null||q.type==="written");
-  h+='<div class="k-feedback '+(subjective?"pending":correct?"correct":"incorrect")+'"><div class="k-feedback-head">'+icon(subjective?"book":correct?"check":"alert")+'<strong>'+(subjective?"Check your explanation":correct?"Correct":"Not quite")+'</strong></div>';
-  h+='<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p>'+esc(q.explain)+'</p>';
+  var helped=!!used,unknown=!!session.wasSkipped,quick=isQuickCheck(q);
+  var neutral=unknown||subjective||(correct&&helped);
+  var header=unknown?"Here’s how it works":subjective?"Check your explanation":correct&&helped?"Correct with a hint":correct&&quick?"Quick check passed":correct?"Correct":"Not yet";
+  h+='<div class="k-feedback '+(neutral?"pending":correct?"correct":"incorrect")+'"><div class="k-feedback-head">'+icon(neutral?"book":correct?"check":"alert")+'<strong>'+header+'</strong></div>';
+  h+='<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p><strong>'+(correct&&!helped?'Why it works':unknown?'Explanation':'Quick reteach')+':</strong> '+esc(q.explain)+'</p>';
+  if(q.type==='best'&&!correct&&!unknown){var partial=session.answers[q.id]||{};if(partial.choice===q.correct&&partial.reason!==q.reasonCorrect)h+='<p class="k-diagnostic-note">You chose the correct explanation; now focus on why it is correct.</p>';}
+  if((!correct||helped)&&session.lastPlannedCheck)h+='<p class="k-quick-note">A related quick check is next, so you can try the idea again independently.</p>';
   if(q.levelsNote)h+='<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>';
-  if(!correct&&q.misconception)h+='<div class="k-misconception"><strong>Watch out</strong><p>'+esc(q.misconception)+'</p></div>';
+  if(!correct&&!unknown&&q.misconception)h+='<div class="k-misconception"><strong>Watch out</strong><p>'+esc(q.misconception)+'</p></div>';
   h+='</div>';
  }
  if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points":"Check answer")+' →</button>'+(used<availableHints.length?'<button class="button secondary" type="button" data-k-action="hint">'+(used?'More help':'Hint')+'</button>':'')+'<button class="button quiet" type="button" data-k-action="skip">I don’t know · show me</button></div>';
  else if(!session.wasSkipped&&(q.type==="written"||session.lastResult===null))h+='<div class="k-foot-actions"><button class="button primary" data-k-action="self-good" type="button">I included the key ideas</button><button class="button secondary" data-k-action="self-weak" type="button">I need more practice</button></div>';
- else h+='<div class="k-foot-actions"><button class="button primary k-cta" data-k-action="next" type="button">Next question →</button></div>';
+ else h+='<div class="k-foot-actions"><button class="button primary k-cta" data-k-action="next" type="button">'+(session.lastPlannedCheck?'Try a quick check':'Next question')+' →</button></div>';
  h+='</div><p class="k-question-footer">Topic '+q.area+' · '+esc(areaName(q.unit,q.area))+(q.samAligned?' · Skills reflected in OCR sample material':' · Specification coverage')+' · Original question</p></div>';
  show(h);
 }
