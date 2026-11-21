@@ -78,6 +78,7 @@ try{
  await desktop.locator('a[href="#catchup"]').first().click();
  await desktop.waitForURL("**/alevel/#catchup");
  const selectorPaperGroups=desktop.locator(".catchup-paper-group");
+ await selectorPaperGroups.first().waitFor({state:"visible",timeout:10000});
  assert.equal(await selectorPaperGroups.count(),2,"A-level catch-up should have Paper 1 and Paper 2 columns");
  assert((await selectorPaperGroups.nth(0).innerText()).includes("Topic 4"),"Left column must contain Topics 1–4");
  assert((await selectorPaperGroups.nth(1).innerText()).includes("Topic 8"),"Right column must contain Topics 5–8");
