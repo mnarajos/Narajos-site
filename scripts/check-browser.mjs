@@ -389,6 +389,28 @@ try{
  await navPage.locator("#btn-run").click();
  await navPage.locator("#graph-readout summary").click();
  await navPage.waitForFunction(()=>document.querySelector("#rate-rows td")?.textContent==="1");
+ // Force only the final step of accumulated stress, then observe the real model feedback.
+ await navPage.evaluate(()=>{
+  S.running=false;
+  S.ph=2;
+  S.temp=37;
+  resetRun();
+  const affected=S.enzymes.find(e=>e.type===SUBS.starch.enzyme);
+  affected.stress=.999;
+  step();
+ });
+ await navPage.waitForFunction(()=>document.querySelector("#coach-text").textContent.includes("Some enzymes have denatured by extreme pH"));
+ await navPage.evaluate(()=>{S.ph=7;});
+ assert(!(await navPage.locator("#coach-text").innerText()).includes("cooling"));
+ for(const [temperature,pH,expected] of [[65,7,"by heat"],[65,2,"by heat and extreme pH"]]){
+  await navPage.evaluate(([t,p])=>{
+   S.temp=t;S.ph=p;
+   resetRun();
+   S.enzymes.forEach(e=>{e.stress=.999;});
+   step();
+  },[temperature,pH]);
+  await navPage.waitForFunction(suffix=>document.querySelector("#coach-text").textContent.includes("All enzymes have denatured "+suffix+"."),expected);
+ }
  await navPage.getByRole("link",{name:"Return to the follow-up question"}).click();
  await navPage.getByRole("heading",{name:"GCSE · Compare two temperatures"}).waitFor();
  await navPage.close();
