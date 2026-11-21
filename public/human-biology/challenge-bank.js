@@ -120,7 +120,7 @@ window.KeystoneHumanChallenges={
     },
     {
       "id": "cell-magnification",
-      "unit": "×",
+      "unit": "f170",
       "area": 1,
       "section": "1.1.2",
       "type": "number",
@@ -131,11 +131,12 @@ window.KeystoneHumanChallenges={
       "model": "×3000",
       "explain": "36 mm = 36 000 µm; 36 000 ÷ 12 = 3000.",
       "misconception": "Convert image size and actual size to the same unit first.",
-      "samAligned": true
+      "samAligned": true,
+      "answerUnit": "×"
     },
     {
       "id": "cell-actual-width",
-      "unit": "µm",
+      "unit": "f170",
       "area": 1,
       "section": "1.1.2",
       "type": "number",
@@ -146,7 +147,8 @@ window.KeystoneHumanChallenges={
       "model": "4 µm",
       "explain": "24 mm = 24 000 µm; actual size = 24 000 ÷ 6000 = 4 µm.",
       "misconception": "Do not multiply image size by magnification.",
-      "samAligned": false
+      "samAligned": false,
+      "answerUnit": "µm"
     },
     {
       "id": "cell-microscope-method",
@@ -391,7 +393,7 @@ window.KeystoneHumanChallenges={
     },
     {
       "id": "phys-ventilation",
-      "unit": "L min⁻¹",
+      "unit": "f170",
       "area": 2,
       "section": "2.2.3",
       "type": "number",
@@ -402,7 +404,8 @@ window.KeystoneHumanChallenges={
       "model": "6.3 L min⁻¹",
       "explain": "Ventilation = 14 × 0.45 = 6.3 L min⁻¹.",
       "misconception": "Do not confuse minute ventilation with oxygen uptake.",
-      "samAligned": true
+      "samAligned": true,
+      "answerUnit": "L min⁻¹"
     },
     {
       "id": "phys-vsd",
@@ -653,7 +656,7 @@ window.KeystoneHumanChallenges={
     },
     {
       "id": "endo-percent",
-      "unit": "%",
+      "unit": "f170",
       "area": 3,
       "section": "3.1.2",
       "type": "number",
@@ -664,7 +667,8 @@ window.KeystoneHumanChallenges={
       "model": "18%",
       "explain": "Percentage increase = (118 − 100) ÷ 100 × 100 = 18%.",
       "misconception": "Divide by the reference value, not the result.",
-      "samAligned": true
+      "samAligned": true,
+      "answerUnit": "%"
     },
     {
       "id": "endo-closed-loop",
@@ -905,7 +909,7 @@ window.KeystoneHumanChallenges={
     },
     {
       "id": "micro-doublings",
-      "unit": "cells",
+      "unit": "f170",
       "area": 4,
       "section": "4.1.4",
       "type": "number",
@@ -916,11 +920,12 @@ window.KeystoneHumanChallenges={
       "model": "400 cells",
       "explain": "25 × 2⁴ = 25 × 16 = 400.",
       "misconception": "Four doublings multiply by 16, not by 4.",
-      "samAligned": true
+      "samAligned": true,
+      "answerUnit": "cells"
     },
     {
       "id": "micro-growth-rate",
-      "unit": "log10 units h⁻¹",
+      "unit": "f170",
       "area": 4,
       "section": "4.1.4",
       "type": "number",
@@ -931,7 +936,8 @@ window.KeystoneHumanChallenges={
       "model": "0.5 log10 units h⁻¹",
       "explain": "Gradient = (7 − 3) ÷ 8 = 0.5 log10 units h⁻¹.",
       "misconception": "This is a log-scale gradient, not a change of 0.5 cells per hour.",
-      "samAligned": true
+      "samAligned": true,
+      "answerUnit": "log10 units h⁻¹"
     },
     {
       "id": "micro-culture-phases",
@@ -1226,7 +1232,7 @@ window.KeystoneHumanChallenges={
     },
     {
       "id": "health-count-mean",
-      "unit": "given units",
+      "unit": "f171",
       "area": 4,
       "section": "4.2",
       "type": "number",
@@ -1237,7 +1243,8 @@ window.KeystoneHumanChallenges={
       "model": "100",
       "explain": "Total = 500; divide by 5 = 100.",
       "misconception": "Count observations and retain any requested units/precision.",
-      "samAligned": true
+      "samAligned": true,
+      "answerUnit": "given units"
     },
     {
       "id": "health-care-records",
