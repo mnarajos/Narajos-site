@@ -6065,7 +6065,7 @@ FIGS.wpGraph=function(){var x0=-800,x1=0,top=20,bot=-20,g='',P=[[-800,-16],[-600
 function navMark(){var hh=location.hash.slice(1),menu=!L&&/^(|home|paper-p[123]|ptopics-p[123]|prac-p[123]|pskills-p[123]|topic-[a-z0-9]+|flashcards|flash-p[123]|settings|practice|practicals)$/.test(hh);
  if(menu)document.body.setAttribute("data-nav","1");else document.body.removeAttribute("data-nav");
  var cur=/^(flashcards|flash-)/.test(hh)?"flash":hh==="settings"?"settings":"home";
- $("#bnav a, .settings-shortcut").forEach(function(a){if(a.dataset.n===cur)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});}
+ $$("#bnav a, .settings-shortcut").forEach(function(a){if(a.dataset.n===cur)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});}
 /* Number ranges stay on one line: "Topics 1–4", "Required practicals 1–6", "1 to 6". */
 function keepRanges(root){if(!root||!document.createTreeWalker)return;var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n,list=[];while((n=w.nextNode()))if(/\d\s*(–|—|to)\s*\d/.test(n.nodeValue))list.push(n);
  list.forEach(function(t){var v=t.nodeValue.replace(/(\d)\s*([–—])\s*(?=\d)/g,"$1⁠$2⁠").replace(/(\d) to (?=\d)/g,"$1 to ").replace(/([A-Za-z]) (\d+(?:\.\d+)?(?:⁠[–—]⁠| to )\d)/g,"$1 $2");if(v!==t.nodeValue)t.nodeValue=v;});}
