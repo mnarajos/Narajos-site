@@ -60,6 +60,7 @@ function markup(){
  return '<section class="krp-root" id="krp-model" aria-label="Interactive ovulation and sperm transport model">'+
  '<div class="krp-intro"><h2>Explore ovulation and fertilisation</h2><p>Choose an ovary or press FSH, then follow the sequence.</p></div>'+
  '<div class="krp-view" role="region" aria-label="Scrollable reproductive anatomy diagram" tabindex="0">'+svg()+'</div>'+
+ '<p class="krp-swipe">On a phone, swipe sideways across the diagram to see the other ovary and the labels.</p>'+
  '<div class="krp-controls">'+
  '<button class="krp-btn krp-fsh" data-krp="fsh" type="button">FSH <small>Develop follicle</small></button>'+
  '<button class="krp-btn krp-lh" data-krp="lh" type="button" hidden>LH surge <small>Trigger ovulation</small></button>'+
