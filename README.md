@@ -1,21 +1,23 @@
 # Narajos website
 
-Website source files for [narajos.com](https://narajos.com/).
+Website files for [narajos.com](https://narajos.com/).
 
-The homepage links to the Narajos Keystone teaching tools. The GCSE Trilogy, A-level Biology, and Focused Questions applications are static HTML pages.
+## Website files
 
-## File structure
+The site is in the **`public/`** folder:
 
-- `index.html` — homepage
-- `teaching/index.html` — teaching tools directory
-- `gcse/index.html` — GCSE app
-- `alevel/index.html` — A-level Biology app
-- `teacher/index.html` — Focused Questions app
-- `assets/site.css` — shared styles
-- `privacy/index.html` — privacy information
+- `public/index.html` — homepage
+- `public/teaching/index.html` — Keystone teaching tools
+- `public/gcse/index.html` — GCSE Trilogy app
+- `public/alevel/index.html` — A-level Biology app
+- `public/teacher/index.html` — Focused Questions app
+- `public/assets/site.css` — shared styles
+- `public/privacy/index.html` — privacy information
+
+The website has no donation or payment features.
 
 ## Publishing
 
-Cloudflare will publish this repository after the existing Cloudflare Worker is connected to GitHub and its build configuration is verified. Do **not** create another Worker or change the domain to update the website.
+The `public/` folder is ready to be connected to your **existing** Cloudflare Worker or Pages project. Do not create a new domain mapping or change DNS. Connecting GitHub to Cloudflare will let changes to this repository trigger an automatic deployment.
 
-There are currently no payment links or donation features.
+The ZIP file at the repository root is the one-time import; routine future changes should edit the website files directly rather than uploading ZIP files.
