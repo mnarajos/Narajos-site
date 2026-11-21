@@ -38,7 +38,7 @@ var diagrams={
    box(16,13,448,78,"#e7f3fc")+box(16,137,448,79,"#edf6e8")+
    '<path d="M17 116H210M275 116H463" stroke="#a5aab3" stroke-width="10" stroke-linecap="round"/>'+
    '<rect x="208" y="96" width="69" height="40" rx="15" fill="#efd9ad" stroke="#b67b23" stroke-width="3"/>'+
-   text(243,120,"ATP",14,800,palettes.orange)+text(116,40,"High H⁺",18,800)+text(362,181,"Low H⁺",18,800)+
+   text(243,114,"ATP",12,800,palettes.orange)+text(243,128,"synthase",10,700,palettes.orange)+text(116,40,"High H⁺",18,800)+text(362,181,"Low H⁺",18,800)+
    '<g fill="#396da8"><circle cx="90" cy="69" r="7"/><circle cx="144" cy="69" r="7"/><circle cx="200" cy="61" r="7"/><circle cx="272" cy="65" r="7"/><circle cx="351" cy="64" r="7"/><circle cx="430" cy="67" r="7"/><circle cx="120" cy="187" r="7"/><circle cx="205" cy="191" r="7"/></g>'+
    arrow(242,78,242,149,palettes.blue)+text(240,239,"ADP + Pi → ATP",15,700,palettes.teal),
    256)
