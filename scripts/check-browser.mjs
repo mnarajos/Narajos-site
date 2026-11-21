@@ -59,7 +59,7 @@ try{
  await desktop.keyboard.press("Escape");
  await desktop.waitForFunction(()=>!document.querySelector(".site-nav details").open);
  assert(await menus.nth(0).locator("summary").evaluate(el=>document.activeElement===el),"Escape did not return focus to menu summary");
- assert((await desktop.locator(".home-links").innerText()).includes("GCSE Combined Science (AQA)"),"Missing AQA on homepage");
+ assert((await desktop.locator(".home-option--learn .home-links").innerText()).includes("GCSE Combined Science (AQA)"),"Missing AQA on homepage");
  await screen(desktop,"home-structure");
  await checkPage(desktop,"teaching");
  const companionCards=desktop.locator('a.app-card[href="/gcse/"],a.app-card[href="/alevel/"],a.app-card[href="/human-biology/"]');
