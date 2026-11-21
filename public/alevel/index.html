@@ -6909,7 +6909,7 @@ function route(focus){
   if(c&&isUnlocked(m[1],c))return startLesson(m[1],c);
   return showTopic(m[1],focus);
  }
- if(h==="spaced"||/^spaced-(?:due|new|weak|reverse|resume)$/.test(h))return KSReview.route(h);
+ if(h==="spaced"||/^spaced-(?:due|new|weak|reverse|resume)$/.test(h)){L=null;stopTimer();return KSReview.route(h);}
  if((m=/^cards-([a-z0-9]+)$/.exec(h))&&CARDS[m[1]])return startCards(m[1]);
  if((m=/^rev-([a-z0-9]+)$/.exec(h))&&CARDS[m[1]]&&DATA[m[1]])return startRev(m[1]);
  if(h==="brain")return showBrainMenu();

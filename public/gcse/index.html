@@ -6486,6 +6486,7 @@ function route(focus){
  var cf=document.querySelector(".confetti");if(cf&&cf.parentNode)cf.parentNode.removeChild(cf);var gr=document.getElementById("gear");if(gr)gr.open=false;
  var h=location.hash.slice(1),m;
  if(h==="flashcards"||/^flash(?:review|weak|mixed|resume)$/.test(h)||/^cards-[bcp]\d+$/.test(h)||/^paperflash-[bcp]\d$/.test(h)){
+  L=null;LIVE=null;RV=null;
   document.body.dataset.view=h==="flashcards"?"page":"lesson";
   document.body.dataset.sci=/^cards-([bcp])/.test(h)?h.charAt(6):"";
   return KGFC.route(h);
