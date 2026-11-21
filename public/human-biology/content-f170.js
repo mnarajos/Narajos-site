@@ -1184,7 +1184,7 @@ window.KeystoneHumanData={
           "points": [
             "Fungal walls contain chitin. Hyphae extend through substrates; branching hyphae form a mycelium. Septa can subdivide hyphae.",
             "Fungal extracellular enzymes digest material outside cells. Saprotrophs use non-living material; parasites obtain resources from hosts.",
-            "Relevant diseases include aspergillosis, Candida-associated candidiasis and athlete's foot caused by dermatophyte fungi (including Tinea)."
+            "Relevant diseases include aspergillosis, Candida-associated candidiasis and athlete's foot (tinea pedis), typically caused by dermatophytes such as Trichophyton. OCR lists 'Tinea sp.', but tinea names the infection rather than a fungal genus."
           ],
           "cards": [
             {
@@ -1212,11 +1212,10 @@ window.KeystoneHumanData={
             },
             {
               "id": "4.1.2-04",
-              "q": "Fungal infection commonly causing athlete's foot",
-              "a": "Tinea",
+              "q": "Medical term for athlete's foot",
+              "a": "Tinea pedis",
               "aliases": [
-                "Tinea species",
-                "Tinea sp."
+                "Athlete's foot"
               ],
               "explain": ""
             }
