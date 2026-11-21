@@ -65,7 +65,7 @@ function showHome(){
  if(old)h+='<section class="k-continue"><div><strong>Unfinished flashcards or explanation practice</strong><p>Continue your saved set.</p></div>'+link("resume","Resume","primary")+'</section>';
  var savedChallenge=E&&E.hasResume();
  if(savedChallenge){var route=E.resumeRoute();h+='<section class="k-continue"><div><strong>Exam-question set in progress</strong><p>Return to your unfinished questions.</p></div>'+link(route,"Resume questions","primary")+'</section>';}
- h+='<p class="k-small-note">F170 covers the four topic areas in this first learning bank; F171 exam questions are an initial selection. This is not yet complete specification coverage. Original questions only; no coursework assistance.</p></div>';
+ h+='<p class="k-small-note">F170 covers the four topic areas in this first learning bank; F171 exam questions are an initial selection. This is not yet complete specification coverage. Original questions only; no coursework assistance.</p><p class="k-privacy-small">Your progress stays in this browser. <button class="k-local-reset" id="clear-human-bio" type="button">Clear progress on this device</button></p></div>';
  render(h);
 }
 function showTopics(){render(crumb("home","Overview")+'<div class="hero"><div class="eyebrow">F170 topic map</div><h1>Explore the specification</h1><p class="lead">Select an area to study its learning sections. This pilot does not yet cover every individual breadth-and-depth statement.</p></div><div class="grid">'+areas.map(areaHtml).join("")+'</div>'+sourceNote());}
@@ -193,6 +193,13 @@ function showLeave(callback){
  keep.onclick=function(){modal.hidden=true;pending=null;};
  go.onclick=function(){var cb=pending;pending=null;modal.hidden=true;active=null;if(window.KeystoneHumanChallenge)window.KeystoneHumanChallenge.pause();if(cb)cb();};
 }
+document.addEventListener("click",function(e){
+ var btn=e.target.closest("#clear-human-bio");if(!btn)return;
+ if(!window.confirm("Clear all Human Biology revision progress and unfinished sets saved in this browser? This cannot be undone."))return;
+ var keys=["narajos-human-challenge-v2-session","narajos-human-challenge-v2-progress","narajos-human-biology-session-v1","narajos-human-biology-practice-v1","narajos-keystone-review-v1-ocr-human-biology-f170"];
+ keys.forEach(function(k){try{localStorage.removeItem(k);}catch(_){}});
+ location.reload();
+});
 document.addEventListener("keydown",function(e){if(e.key==="Escape"){var m=document.getElementById("leave-dialog");if(!m.hidden){m.hidden=true;pending=null;document.getElementById("leave-stay").blur();}}});
 document.addEventListener("click",function(e){
  var action=e.target.closest("[data-action]");
