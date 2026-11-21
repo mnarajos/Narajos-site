@@ -5,13 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Focused Questions – Narajos Keystone</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap">
 <style>
 :root{
   /* Layout: set-up column on the left, question list on the right; full-screen present mode for the board. */
   --ink:#1F2937; --muted:#566a6d; --paper:#F8F7F3; --card:#ffffff; --line:#d5dfdd;
   --brand:#0a6b66; --brand-ink:#ffffff; --brand-soft:#e3f2ef; --gold:#c9891a; --warn:#b4471f; --ok:#1e7d36;
   --need:#9a4d00; --need-bg:#fde7c4; --need-soft:#fff8ec; --recent:#1d5fae; --recent-bg:#dde9fb; --older:#6b3fa8; --older-bg:#ece3fa; --today:#1a6f30; --today-bg:#dcf2e1; --skill:#0a6b66; --skill-bg:#d9f0ec;
-  --display:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; --body:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --display:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; --body:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
@@ -171,12 +172,23 @@ dialog textarea{width:100%;height:260px;font:14px/1.4 ui-monospace,Menlo,Consola
 
 /* Prevent intrinsic grid item overflow on narrow phone screens. */
 .panel,.results{min-width:0}
+/* Small, consistent return link and compact print options. */
+header.brand .narajos-return{margin-left:auto;color:var(--muted);font:600 .83rem/1.2 var(--display);text-decoration:none;white-space:nowrap;padding:10px 11px;border:1px solid var(--line);border-radius:9px}
+header.brand .narajos-return:hover{border-color:var(--brand);color:var(--brand)}
+.print-menu{position:relative;border:0;padding:0}
+.print-menu summary{display:inline-flex;align-items:center;min-height:40px;cursor:pointer;border:1.5px solid var(--brand);color:var(--brand);border-radius:10px;padding:8px 13px;font-weight:700}
+.print-menu summary:hover{background:var(--brand-soft)}
+.print-menu-options{position:absolute;right:0;top:calc(100% + 5px);z-index:8;min-width:170px;padding:6px;background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 32px #0002}
+.print-menu-options button{display:block;width:100%;text-align:left;background:transparent;border:0;padding:10px;font-size:.85rem;cursor:pointer;border-radius:7px}
+.print-menu-options button:hover{background:var(--brand-soft)}
+@media(max-width:640px){header.brand{flex-wrap:wrap}header.brand .narajos-return{font-size:.78rem}.sumbar .actions{width:100%;margin-left:0}.sumbar .actions .btn{font-size:.86rem}}
 </style>
 </head>
 <body>
 <header class="brand">
   <svg class="logo" viewBox="4 12 92 60" aria-hidden="true" focusable="false"><path class="lg-arch" stroke-width="2.6" stroke-linejoin="round" d="M6 70 A44 44 0 0 1 7.7 57.9 L28 65.1 A22.5 22.5 0 0 0 27.5 70 ZM92.3 57.9 A44 44 0 0 1 94 70 L72.5 70 A22.5 22.5 0 0 0 72 65.1 ZM9.5 52.8 A44 44 0 0 1 14.4 44.1 L31.1 57.9 A22.5 22.5 0 0 0 29.9 60 ZM85.6 44.1 A44 44 0 0 1 90.5 52.8 L70.2 60 A22.5 22.5 0 0 0 69 57.9 ZM17.8 40 A44 44 0 0 1 25.1 33.8 L36.2 52.2 A22.5 22.5 0 0 0 34.5 53.7 ZM74.9 33.8 A44 44 0 0 1 82.2 40 L65.5 53.7 A22.5 22.5 0 0 0 63.8 52.2 Z"/><path fill="#F97316" stroke="#F97316" stroke-width="2.6" stroke-linejoin="round" d="M26.6 21 Q50 13 73.4 21 L61.6 48 L38.4 48 Z"/><circle cx="42.4" cy="38.6" r="5.2" fill="none" stroke="#fff" stroke-width="3.9"/><path d="M46.3 35.1 L58 24.6" stroke="#fff" stroke-width="3.9" stroke-linecap="round"/><path d="M53.2 28.8 l2.9 3.3" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><path d="M56.7 25.8 l2.9 3.3" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/></svg>
   <h1><span class="eyebrow">Narajos Keystone</span>Focused Questions</h1>
+  <a class="narajos-return" href="/" aria-label="Return to Narajos homepage">Narajos home ↗</a>
 </header>
 
 <main>
@@ -187,8 +199,9 @@ dialog textarea{width:100%;height:260px;font:14px/1.4 ui-monospace,Menlo,Consola
       <div class="hint" id="yearhint"></div>
     </div>
     <div class="step">
-      <h2><label for="lesson">Today’s lesson</label></h2>
+      <h2><label for="lesson">Topic you’re teaching</label></h2>
       <select id="lesson"></select>
+      <div class="hint" id="coverage" aria-live="polite"></div>
     </div>
     <div class="step">
       <h2>Make a</h2>
@@ -226,6 +239,7 @@ dialog textarea{width:100%;height:260px;font:14px/1.4 ui-monospace,Menlo,Consola
         <button class="btn" id="newset">New set</button>
         <button class="btn" id="copyq">Copy questions</button>
         <button class="btn" id="copyms">Copy mark scheme</button>
+        <details class="print-menu" id="print-menu"><summary>Print</summary><div class="print-menu-options"><button type="button" id="printq">Question sheet</button><button type="button" id="printms">Answer sheet</button></div></details>
         <button class="btn solid" id="start">Start</button>
       </div>
     </div>
@@ -2531,6 +2545,16 @@ const $=s=>document.querySelector(s);
 const S={year:10,lesson:null,mode:"donow",types:["R"],know:"mixed",seq:"ind",cls:"expected",ext:false};
 let sugg=[];      // current suggestions
 let extQ=null;    // current extension question
+const FQ_STORAGE_KEY="narajos-focused-questions-current-v1";
+function saveDraft(){try{localStorage.setItem(FQ_STORAGE_KEY,JSON.stringify({config:S,questions:sugg,extension:extQ}));}catch(_){/* Storage may be disabled. */}}
+function restoreDraft(){
+ try{const d=JSON.parse(localStorage.getItem(FQ_STORAGE_KEY)||"null");if(!d||!d.config||![7,8,9,10,11].includes(d.config.year)||!TODAY[d.config.year])return false;
+  const c=d.config; S.year=c.year; S.lesson=TODAY[S.year].includes(c.lesson)?c.lesson:null;
+  S.mode=c.mode==="quiz"?"quiz":"donow"; S.types=Array.isArray(c.types)?c.types.filter(t=>"RPCA".includes(t)):["R"];if(!S.types.length)S.types=["R"];
+  S.know=["mixed","recent","older"].includes(c.know)?c.know:"mixed";S.cls=["basics","expected","high"].includes(c.cls)?c.cls:"expected";S.seq=S.mode==="quiz"?"build":"ind";S.ext=!!c.ext;
+  if(Array.isArray(d.questions)&&d.questions.length&&d.questions.length<40){sugg=d.questions.filter(q=>q&&typeof q.q==="string"&&typeof q.l==="string"&&typeof q.on==="boolean");extQ=d.extension||null;return !!sugg.length;}return false;
+ }catch(_){return false;}
+}
 const SECS={short:20,tf:35,mcq:30,error:30,who:40,explain:75,calc:60};
 const CLSF={basics:1.3,expected:1,high:.85};
 const CAPS={mcq:1,tf:2,error:2,who:2}; // at most this many of each format among the ticked five
@@ -2551,24 +2575,17 @@ function initYears(){
   [7,8,9,10,11].forEach(y=>{const b=document.createElement("button");b.className="pill";b.textContent="Year "+y;b.setAttribute("aria-pressed",y===S.year);
     if(!TODAY[y]){b.disabled=true;b.title="Coming soon";}
     b.addEventListener("click",()=>{S.year=y;initYears();initLessons();sugg=generate();render();});box.appendChild(b);});
-  $("#yearhint").textContent=[7,8,9,10,11].some(y=>!TODAY[y])?"Other years coming soon.":"";
+  $("#yearhint").textContent="Choose a year, then select the topic you are teaching.";
 }
-function suggestedLesson(){
-  // today's lesson from the timetable: find the block running this month and how far through it we are
-  const t=TODAY[S.year], b=BLOCKS[S.year], d=new Date();
-  const m=(d.getMonth()-10+12)%12; // 0 = November, 1 = December, 2 = January …
-  if(m>8) return t[0];             // September–October: before the first block
-  const now=b.filter(x=>m>=x.from&&m<x.from+x.months);
-  if(now.length){const x=now[now.length-1]; const f=((m-x.from)*30+d.getDate()-1)/(x.months*30); return x.keys[Math.min(x.keys.length-1,Math.floor(f*x.keys.length))];}
-  const past=b.filter(x=>m>=x.from+x.months); return past.length?past[past.length-1].keys.slice(-1)[0]:t[0];
-}
+function suggestedLesson(){return TODAY[S.year][0];} // No assumption about another school’s current timetable
 function initLessons(){
-  const sel=$("#lesson"); const sug=suggestedLesson(); sel.innerHTML="";
+  const sel=$("#lesson"); const sug=S.lesson&&TODAY[S.year].includes(S.lesson)?S.lesson:suggestedLesson(); sel.innerHTML="";
   let og=null,unit=null;
   TODAY[S.year].forEach(k=>{const l=lessonOf(k);
     if(l.unit!==unit){unit=l.unit;og=document.createElement("optgroup");og.label="Year "+S.year+" · "+unit;sel.appendChild(og);}
     const o=document.createElement("option");o.value=k;o.textContent=l.name;og.appendChild(o);});
   sel.value=sug; S.lesson=sug; lessonHint();
+  const coverage=$("#coverage");if(coverage)coverage.textContent=TODAY[S.year].length+" available topic sets. Coverage is still developing; review questions against your teaching sequence.";
   if(!sel._bound){sel.addEventListener("change",()=>{S.lesson=sel.value;lessonHint();regen();});sel._bound=true;}
 }
 function lessonHint(){
@@ -2581,7 +2598,7 @@ function lessonHint(){
   thisYear.filter(u=>u!==cur).forEach(u=>bits.push(u));
   if(thisYear.includes(cur)) bits.push("earlier "+cur+" lessons");
   if(S.year===7) bits.unshift("KS2");
-  const h=$("#lessonhint"); if(h) h.textContent="Taught so far: "+(bits.length?bits.join(", "):"nothing yet")+".";
+  const h=$("#lessonhint"); if(h) h.textContent="Previous topics in this example sequence: "+(bits.length?bits.join(", "):"none yet")+".";
 }
 function bindPills(id,key,after){
   document.querySelectorAll("#"+id+" [data-v]").forEach(b=>b.addEventListener("click",()=>{
@@ -2806,7 +2823,7 @@ function extCard(){
     <div class="ans">Look for: <b>${esc(extQ.a)}</b></div>
     <div class="meta"><span class="chip c-ext">${ICON.ext}Extension</span></div></div>
     <div class="side"><button class="more" ${S.ext?"":"hidden"}>Swap for similar</button></div>`;
-  li.querySelector("input").addEventListener("change",e=>{S.ext=e.target.checked;$("#useext").checked=S.ext;li.classList.toggle("on",S.ext);li.querySelector(".more").hidden=!S.ext;});
+  li.querySelector("input").addEventListener("change",e=>{S.ext=e.target.checked;$("#useext").checked=S.ext;li.classList.toggle("on",S.ext);li.querySelector(".more").hidden=!S.ext;summary();});
   li.querySelector(".more").addEventListener("click",()=>{pickExt(extQ);render();});
   return li;
 }
@@ -2829,6 +2846,19 @@ function summary(){
   $("#total").innerHTML=`${c.length} ticked${useExt()?" + extension":""} <small>· ${fmtRange(most,all)}</small>${over?' <span class="warn">· over 5 min</span>':""}`;
   ["#copyq","#copyms","#start"].forEach(s=>$(s).disabled=!c.length);
   $("#start").textContent=S.mode==="quiz"?"Start MWB quiz":"Start Do Now";
+  saveDraft();
+}
+
+// ---------- printable question and answer sheets ----------
+function printSheet(answers){
+ const items=chosen();if(!items.length){toast("Choose some questions first.");return;}
+ const title=heading()+(answers?" — Answer sheet":" — Question sheet");
+ const li=items.map((q,i)=>'<li><div>'+esc(answers?ansText(q):q.q)+'</div>'+(answers?(q.acc?'<div class="note">Also accept: '+esc(q.acc)+'</div>':'')+(q.why?'<div class="note">'+esc(q.why)+'</div>':''):(q.o?'<ol type="A">'+q.o.map(o=>'<li>'+esc(o)+'</li>').join('')+'</ol>':''))+'</li>').join('');
+ const extension=useExt()?'<div class="extension"><strong>Extension</strong><p>'+esc(answers?extQ.a:extQ.q)+'</p></div>':'';
+ const doc='<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><title>'+esc(title)+'</title><style>body{font:15px/1.5 Arial,sans-serif;max-width:820px;margin:25mm auto;color:#17252b}h1{font-size:21px;margin-bottom:16px}ol{padding-left:26px}ol>li{margin:0 0 17px;break-inside:avoid}.note{font-size:13px;color:#45555f;margin:4px 0}.extension{border-top:1px solid #bbb;margin-top:22px;padding-top:12px}@page{size:A4;margin:18mm}@media print{body{margin:0}}</style></head><body><h1>'+esc(title)+'</h1><ol>'+li+'</ol>'+extension+'</body></html>';
+ const w=window.open("","_blank");if(!w){toast("Allow pop-ups to print the sheet.");return;}
+ w.document.write(doc);w.document.close();w.focus();w.addEventListener("load",()=>w.print(),{once:true});
+ $("#print-menu").open=false;
 }
 
 // ---------- copy ----------
@@ -3003,19 +3033,25 @@ function syncMode(){
   S.seq=S.mode==="quiz"?"build":"ind"; // Do Now: separate questions; quiz: builds to a challenge
   regen();
 }
+const recovered=restoreDraft();
 initYears(); initLessons(); bindTypes();
+setPill("modes",S.mode);setPill("know",S.know);setPill("cls",S.cls);
+document.querySelectorAll("#types [data-v]").forEach(b=>b.setAttribute("aria-pressed",S.types.includes(b.dataset.v)));
+$("#useext").checked=S.ext;$("#extstep").hidden=S.mode==="quiz";
 bindPills("modes","mode",syncMode);
 bindPills("know","know",regen); bindPills("cls","cls",regen);
 $("#useext").addEventListener("change",e=>{S.ext=e.target.checked; if(sugg.length) render();});
 $("#newset").addEventListener("click",regen);
 $("#copyq").addEventListener("click",()=>copy(qText(),"Questions"));
 $("#copyms").addEventListener("click",()=>copy(msText(),"Mark scheme"));
+$("#printq").addEventListener("click",()=>printSheet(false));
+$("#printms").addEventListener("click",()=>printSheet(true));
 $("#start").addEventListener("click",start);
 $("#close").addEventListener("click",closeStage);
 $("#copyclose").addEventListener("click",()=>$("#copydlg").close());
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("#stage").classList.contains("open"))closeStage();});
-// open in a realistic working state
-sugg=generate(); render();
+// Recover the last locally saved question set, or offer a new one.
+if(!recovered)sugg=generate(); render();
 </script>
 </body>
 </html>
