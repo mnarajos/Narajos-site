@@ -148,7 +148,7 @@ try{
    const s=JSON.parse(localStorage.getItem("narajos-human-challenge-v2-session"));
    const g=s.generated[s.index];return window.KeystoneHumanSkills.generate(s.skillId,g.level,g.seed);
   });
-  if(task.type==="single")await desktop.locator('input[name="kchoice"][value="'+task.correct+'"]').check();
+  if(task.type==="single"){await desktop.locator('input[name="kchoice"][value="'+task.correct+'"]').focus();await desktop.keyboard.press("Space");}
   else await desktop.locator("#k-number").fill(String(task.correct));
   if(await desktop.locator('[data-k-action="check"]').count())await desktop.locator('[data-k-action="check"]').click();
   await desktop.locator(".k-feedback.correct").waitFor();
@@ -262,39 +262,6 @@ try{
   const style=await control.evaluate(el=>{const s=getComputedStyle(el);return [s.fontSize,s.fontWeight,s.color,s.backgroundColor,s.borderRadius,s.minHeight];});
   if(!standard)standard=style;else assert.deepEqual(style,standard,"Homepage control style differs: "+path);
  }
- await navPage.goto(base+"/human-biology/#challenge/f170/build");
- await navPage.getByRole("heading",{name:"Build understanding",exact:true}).waitFor();
- assert.equal(await navPage.locator("[href^='#challenge/f170/p-']").count(),28);
- assert.equal(await navPage.locator(".k-progression-area").count(),4);
- const labelledLink=navPage.locator("[href^='#challenge/f170/p-']").first();
- assert((await labelledLink.locator(".sr-only").boundingBox()).width<=1,"Accessible label must not repeat visibly in the button");
- const secondGroup=navPage.locator(".k-progression-area").nth(1);
- assert(await secondGroup.locator(".k-skill-card").first().isHidden());
- await secondGroup.locator("summary").click();assert(await secondGroup.locator(".k-skill-card").first().isVisible());
- await screen(navPage,"human-progressive-menu");
- const route="/human-biology/#challenge/f170/p-cell-stage-metaphase";
- await navPage.goto(base+route);
- let chosenCore;
- for(let i=0;i<4;i++){
-  await navPage.locator(".k-question-view").waitFor();
-  const state=await navPage.evaluate(()=>JSON.parse(localStorage.getItem("narajos-human-challenge-v2-session")));
-  if(i===0){chosenCore=state.queue[2];assert((await navPage.locator(".k-sequence-note").innerText()).includes("1 ·"));}
-  const task=await navPage.evaluate(id=>window.KeystoneHumanChallenges.questions.find(q=>q.id===id),state.queue[state.index]);
-  if(task.type==="written"){
-   await navPage.locator("#k-written").fill("Sister chromatids separate to opposite poles. Each pole receives one copy of each of the 46 chromosomes, so each daughter cell receives 46.");
-   await navPage.locator('[data-k-action="reveal"]').click();
-   await navPage.locator('[data-k-action="self-good"]').click();
-  }else{
-   await navPage.locator('input[name="kchoice"][value="'+task.correct+'"]').check();
-   if(await navPage.locator('[data-k-action="check"]').count())await navPage.locator('[data-k-action="check"]').click();
-   await navPage.locator(".k-feedback.correct").waitFor();
-   if(i===1){await navPage.reload();await navPage.locator(".k-feedback.correct").waitFor();}
-   await navPage.locator('[data-k-action="next"]').click();
-  }
- }
- await navPage.getByRole("heading",{name:"Sequence complete",exact:true}).waitFor();
- await navPage.getByRole("button",{name:"Repeat this idea"}).click();
- assert.notEqual(await navPage.evaluate(()=>JSON.parse(localStorage.getItem("narajos-human-challenge-v2-session")).queue[2]),chosenCore);
  await navPage.goto(base+"/teaching/simulations/cardiac-cycle/");
  await navPage.locator("body:not(.booting)").waitFor();
  const ecg=navPage.locator("#ecg-panel"),mechanical=navPage.locator("#mechanical-graph-panel");
@@ -328,6 +295,41 @@ try{
  const phoneHeart=await navPage.locator(".heartbox").boundingBox(),phoneEcg=await ecg.boundingBox();
  assert(phoneEcg.y>phoneHeart.y,"Phone ECG should stack below the heart");
  await screen(navPage,"cardiac-optional-ecg-mobile");
+ await navPage.setViewportSize({width:1280,height:900});
+ await navPage.goto(base+"/human-biology/#challenge/f170/build");
+ await navPage.getByRole("heading",{name:"Build understanding",exact:true}).waitFor();
+ assert.equal(await navPage.locator("[href^='#challenge/f170/p-']").count(),28);
+ assert.equal(await navPage.locator(".k-progression-area").count(),4);
+ const labelledLink=navPage.locator("[href^='#challenge/f170/p-']").first();
+ assert((await labelledLink.locator(".sr-only").boundingBox()).width<=1,"Accessible label must not repeat visibly in the button");
+ const secondGroup=navPage.locator(".k-progression-area").nth(1);
+ assert(await secondGroup.locator(".k-skill-card").first().isHidden());
+ await secondGroup.locator("summary").click();assert(await secondGroup.locator(".k-skill-card").first().isVisible());
+ await screen(navPage,"human-progressive-menu");
+ const route="/human-biology/#challenge/f170/p-cell-stage-metaphase";
+ await navPage.goto(base+route);
+ let chosenCore;
+ for(let i=0;i<4;i++){
+  await navPage.locator(".k-question-view").waitFor();
+  const state=await navPage.evaluate(()=>JSON.parse(localStorage.getItem("narajos-human-challenge-v2-session")));
+  if(i===0){chosenCore=state.queue[2];assert((await navPage.locator(".k-sequence-note").innerText()).includes("1 ·"));}
+  const task=await navPage.evaluate(id=>window.KeystoneHumanChallenges.questions.find(q=>q.id===id),state.queue[state.index]);
+  if(task.type==="written"){
+   await navPage.locator("#k-written").fill("Sister chromatids separate to opposite poles. Each pole receives one copy of each of the 46 chromosomes, so each daughter cell receives 46.");
+   await navPage.locator('[data-k-action="reveal"]').click();
+   await navPage.locator('[data-k-action="self-good"]').click();
+  }else{
+   await navPage.locator('input[name="kchoice"][value="'+task.correct+'"]').focus();await navPage.keyboard.press("Space");
+   if(await navPage.locator('[data-k-action="check"]').count())await navPage.locator('[data-k-action="check"]').click();
+   await navPage.locator(".k-feedback.correct").waitFor();
+   if(i===1){await navPage.reload();await navPage.locator(".k-feedback.correct").waitFor();}
+   await navPage.locator('[data-k-action="next"]').click();
+  }
+ }
+ await navPage.getByRole("heading",{name:"Sequence complete",exact:true}).waitFor();
+ await navPage.getByRole("button",{name:"Repeat this idea"}).click();
+ assert.notEqual(await navPage.evaluate(()=>JSON.parse(localStorage.getItem("narajos-human-challenge-v2-session")).queue[2]),chosenCore);
+ await navPage.setViewportSize({width:390,height:844});
  await navPage.goto(base+"/human-biology/#challenge/f171/build");
  assert.equal(await navPage.locator("[href^='#challenge/f171/p-']").count(),18);
  assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Progression menu overflows phone width");
