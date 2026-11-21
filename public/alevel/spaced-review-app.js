@@ -49,8 +49,8 @@ function create(E){
  }
  function start(route){
   var old=restore();
-  if(route==="spaced-resume"){if(!old)return empty("There is no unfinished set.");active=old;return show();}
-  if(old&&old.route===route){active=old;return show();}
+  if(route==="spaced-resume"){if(!old)return empty("There is no unfinished set.");active=old;if(E.guardOn)E.guardOn();return show();}
+  if(old&&old.route===route){active=old;if(E.guardOn)E.guardOn();return show();}
   var ids=pick(route);
   if(!ids.length)return empty(route==="spaced-due"?"No reviews are due today. You can study new cards instead.":route==="spaced-weak"?"You have no recorded weak cards yet.":"No cards available in this selection.");
   active={route:route,original:ids.slice(),queue:ids.slice(),first:{},complete:0,over:false,phase:"front"};
