@@ -48,12 +48,32 @@ try{
  await homeMenu.locator("summary").click();
  assert(await homeMenu.locator('a[href="/human-biology/"]').isVisible(),"Human Biology missing from homepage dropdown");
  await homeMenu.locator("summary").click();
+ const menus=desktop.locator(".site-nav details");
+ await menus.nth(0).locator("summary").click();
+ await menus.nth(1).locator("summary").click();
+ await desktop.waitForFunction(()=>!document.querySelectorAll(".site-nav details")[0].open);
+ assert(await menus.nth(1).evaluate(el=>el.open),"Second dropdown did not open");
+ await desktop.locator("h1").click();
+ await desktop.waitForFunction(()=>![...document.querySelectorAll(".site-nav details")].some(el=>el.open));
+ await menus.nth(0).locator("summary").click();
+ await desktop.keyboard.press("Escape");
+ await desktop.waitForFunction(()=>!document.querySelector(".site-nav details").open);
+ assert(await menus.nth(0).locator("summary").evaluate(el=>document.activeElement===el),"Escape did not return focus to menu summary");
+ assert((await desktop.locator(".home-links").innerText()).includes("GCSE Combined Science (AQA)"),"Missing AQA on homepage");
  await screen(desktop,"home-structure");
  await checkPage(desktop,"teaching");
  const companionCards=desktop.locator('a.app-card[href="/gcse/"],a.app-card[href="/alevel/"],a.app-card[href="/human-biology/"]');
  assert.equal(await companionCards.count(),3,"Teaching overview must show three learner applications");
  assert(await desktop.locator('a[href="/teacher/"]').count(),"Teaching tool should remain discoverable");
  await screen(desktop,"teaching-overview");
+ await checkPage(desktop,"teaching/simulations");
+ const simulationCards=desktop.locator(".simulation-list a.sim-card");
+ assert.equal(await simulationCards.count(),5,"Simulation catalogue does not contain five clickable cards");
+ assert(!(await simulationCards.first().innerText()).includes("Open simulation"),"Redundant simulation CTA is still visible");
+ await simulationCards.first().click();
+ await desktop.waitForURL("**/teaching/simulations/enzyme-kinetics/");
+ await desktop.goBack();
+ await screen(desktop,"simulation-catalogue");
  await checkPage(desktop,"alevel");
  await desktop.locator('a[href="#catchup"]').first().click();
  await desktop.waitForURL("**/alevel/#catchup");
@@ -65,6 +85,11 @@ try{
  await desktop.locator("section.companion-key").waitFor({state:"visible",timeout:10000});
  assert((await desktop.locator("main").innerText()).includes("Key idea"),"A-level key knowledge step not visible");
  await screen(desktop,"alevel-catchup");
+ await desktop.goto(base+"/alevel/#catchup-a1-enzfactors",{waitUntil:"load"});
+ await desktop.locator(".kc-visual-art svg").waitFor({state:"visible"});
+ assert.equal(await desktop.locator(".kc-simulation-link").count(),2,"Enzyme catch-up should link to both relevant simulations");
+ assert((await desktop.locator(".kc-visual-art svg").getAttribute("aria-label")).includes("reaction rate"),"Accessible enzyme schematic missing");
+ await screen(desktop,"alevel-enzyme-visual");
 
  await checkPage(desktop,"human-biology");
  await desktop.goto(base+"/human-biology/#catchup/f171",{waitUntil:"load"});
@@ -75,6 +100,13 @@ try{
  await desktop.getByRole("heading",{name:"Key idea 2"}).waitFor({state:"visible",timeout:10000});
  assert((await desktop.locator("main").innerText()).includes("Key idea 2"),"Catch-up step did not advance");
  await screen(desktop,"human-vaccines");
+ await desktop.goto(base+"/human-biology/#catchup/f170/3.2.1",{waitUntil:"load"});
+ await desktop.locator(".kc-visual-art svg").waitFor({state:"visible"});
+ assert((await desktop.locator(".kc-visual-art svg").getAttribute("aria-label")).includes("Reflex arc"),"Human Biology reflex diagram missing");
+ await desktop.goto(base+"/human-biology/#catchup/f170/2.1.2",{waitUntil:"load"});
+ await desktop.locator(".kc-simulation-link").waitFor({state:"visible"});
+ assert((await desktop.locator(".kc-simulation-link").getAttribute("href"))==="/teaching/simulations/cardiac-cycle/","Heart concept should link to cardiac-cycle simulation");
+ await screen(desktop,"human-cardiac-visual");
 
  await desktop.goto(base+"/human-biology/#challenge/f171/a3",{waitUntil:"load"});
  await desktop.locator(".k-question-view").waitFor({state:"visible"});
@@ -107,7 +139,7 @@ try{
  await mobile.close();
  await desktop.close();
  assert.deepEqual(errors,[],"Uncaught page errors: "+errors.join("; "));
- console.log("Browser smoke checks passed: unified three-app navigation, homepage and hub, A-level/Human Biology catch-up, 194 questions, leave dialog and mobile viewport overflow.");
+ console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 194 questions and mobile layout.");
 }finally{
  await browser.close();await new Promise(done=>server.close(done));
 }
