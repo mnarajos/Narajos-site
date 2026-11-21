@@ -17,6 +17,16 @@ Fundamental approach: **secure knowledge, organise it, retrieve it, explain and 
 - **No coursework-writing, marking, feedback or submission coaching** for OCR AAQ NEA units. Generic biological content learning is different from assisting with a live assignment.
 - **Accessibility and clarity first:** visible labels, keyboard controls, accessible diagrams, low-text overview, clear choices, readable typography and semantic feedback (not colour alone).
 
+## Shared companion model: revision, catch-up and reteach
+
+The student-facing role of Keystone is a **companion to classroom learning**, in both AQA A-level Biology and Cambridge OCR Human Biology. These modes have different purposes:
+
+- **Revise (default):** answer deliberately sequenced questions, retrieve taught knowledge, receive short diagnostic feedback, and revisit prior misconceptions.
+- **Catch up (opt-in):** if a lesson was missed or a concept was not understood, show a small number of carefully authored key ideas in short steps, with diagrams/worked examples when educationally useful; then return to ordinary independent practice. This is not an automated substitute for teacher-led first instruction or required practical work.
+- **Reteach (triggered by difficulty):** explain one missing principle with focused guidance after a wrong, unknown or hint-assisted answer; provide a genuinely related opportunity to check understanding. Do not force all users to read a full lesson.
+
+The three functions should **share the same underlying scientific concepts** but need not be identical across qualifications. Preserve existing working A-level question, hint and retest systems; do not duplicate them with a second scoring engine. Both apps operate with only browser-local progress and deterministic answer checking.
+
 ## Curriculum structure
 
 1. **Mapping:** each question maps to the specification, with actual demand and misconceptions recorded. Coverage across every eligible statement comes before chasing a speculative idea of 'high yield'. Do not conflate public sample-assessment examples with repeated live-exam frequencies.
