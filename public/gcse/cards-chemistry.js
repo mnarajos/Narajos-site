@@ -35,7 +35,7 @@ window.KeystoneGcseDecks=Object.assign(window.KeystoneGcseDecks||{},{
  ["What is the Avogadro constant approximately?","6.02 × 10²³ mol⁻¹",["6.02 x 10^23 per mol"],"H"],
  ["How do you calculate concentration in g/dm³?","Mass of solute (g) ÷ volume of solution (dm³)"],
  ["What is a limiting reactant?","The reactant used up first, which limits the amount of product formed",[],"H"],
- ["What does atom economy measure?","The percentage of reactant atoms ending up in the desired product",[],"H"]
+ ["Why must a reaction system be closed when checking conservation of mass?","To prevent substances entering or escaping"]
  ],
  c4:[
  ["What is produced when an acid reacts with a metal?","A salt and hydrogen"],
@@ -59,7 +59,7 @@ window.KeystoneGcseDecks=Object.assign(window.KeystoneGcseDecks||{},{
  ["Is energy absorbed or released when bonds form?","Released"],
  ["How can bond energies estimate overall energy change?","Energy needed to break bonds − energy released forming bonds",[],"H"],
  ["What stores energy in a chemical cell?","Chemical reactants"],
- ["What is a fuel cell's main chemical product when supplied with hydrogen and oxygen?","Water",[],"H"]
+ ["What does a negative overall energy change indicate?","An exothermic reaction"]
  ],
  c6:[
  ["Define rate of reaction","Change in amount of reactant used or product formed per unit time",[]],
