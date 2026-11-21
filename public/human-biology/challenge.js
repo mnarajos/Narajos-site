@@ -13,8 +13,8 @@ function save(){try{if(session)localStorage.setItem(SK,JSON.stringify(session));
 function saveProgress(){try{localStorage.setItem(PK,JSON.stringify(progress));}catch(_){}}
 function restore(){try{var x=JSON.parse(localStorage.getItem(SK)||"null");if(x&&Array.isArray(x.queue)&&x.queue.length&&x.queue.every(function(id){return !!byId[id];})&&x.index<x.queue.length&&!x.complete&&x.route&&x.unit){x.hintsUsed=x.hintsUsed||{};x.quickCheckIds=x.quickCheckIds||{};x.quickCheckLinks=x.quickCheckLinks||{};x.guidedFirst=x.guidedFirst||0;x.quickChecksSeen=x.quickChecksSeen||0;x.quickChecksPassed=x.quickChecksPassed||0;return x;}}catch(_){}return null;}
 function isActive(){return !!session&&session.index<session.queue.length;}
-function pause(){session=null;visible=false;} // Preserve the unfinished set in localStorage.
-function discard(){session=null;visible=false;save();}
+function pause(){stopHintTimer();session=null;visible=false;} // Preserve the unfinished set in localStorage.
+function discard(){stopHintTimer();session=null;visible=false;save();}
 function icon(name){
  var paths={
  brain:'<path d="M12 18V5a4 4 0 0 0-7.5-1.9A4 4 0 0 0 3 10a4 4 0 0 0 1 7.5A4 4 0 0 0 12 18ZM12 18V5a4 4 0 0 1 7.5-1.9A4 4 0 0 1 21 10a4 4 0 0 1-1 7.5A4 4 0 0 1 12 18Z" transform="translate(0 2) scale(1 .9)"/>',
@@ -262,37 +262,85 @@ function answerKey(q){
  return '<div class="k-criteria"><p>'+esc(q.model)+'</p><strong>Key points to look for</strong><ul>'+q.markPoints.map(function(p){return '<li>'+esc(p)+'</li>';}).join("")+'</ul></div>';
 }
 function currentAnswer(){var q=current();return q&&(session.answers[q.id]||{});}
+/* 10-second cooldown, following the A-level app's timed support.
+   A rung is strategy -> authored conceptual cue -> one eliminated distractor. */
+var HINT_DELAY=10000,hintTimer=null;
+function stopHintTimer(){if(hintTimer!==null&&typeof clearInterval==="function")clearInterval(hintTimer);hintTimer=null;}
+function hintStrategy(q){
+ var v={
+  number:"Write the calculation and check the units before you use the numbers.",
+  order:"Find the first and final steps, then connect the events between them.",
+  match:"Find the easiest pair first. For the others, think about function.",
+  written:"Give a cause, explain how it works, then state the effect.",
+  short:"Recall the exact term, not just a related word.",
+  best:"First decide which statement is true. Then ask which reason explains it.",
+  diagram:"Use the parts you recognise to identify the labelled structure.",
+  multi:"Decide whether each option is true before selecting the two that fit."
+ };
+ return v[q.type]||(q.subtype==="error"?"Find the biological word or claim that makes the pupil's statement wrong.":"Cover the choices. Recall the idea first, then choose.");
+}
+function excludedOption(q){
+ if(!q.options||q.options.length!==4)return null;
+ var correct=Array.isArray(q.correct)?q.correct:[q.correct],
+ chosen=(session.answers[q.id]||{}).selected||[];
+ var wrong=q.options.map(function(_,i){return i;}).filter(function(i){return correct.indexOf(i)<0&&chosen.indexOf(i)<0;});
+ return wrong.length?wrong[wrong.length-1]:null;
+}
 function hintsFor(q){
- var authored=Array.isArray(q.hints)?q.hints.filter(function(x){return typeof x==="string"&&x.trim();}).slice(0,3):[];
- if(authored.length)return authored;
- var strategy={
-  number:"Write the relationship needed. Use consistent units and check what is being asked.",
-  order:"Find the first event, then ask which event must happen next.",
-  match:"Say what each term means before selecting its partner.",
-  written:"Identify the biological cause, the mechanism and its consequence in this context.",
-  short:"Recall the exact scientific term before checking spelling.",
-  best:"Decide which explanation is accurate, then identify the scientific reason.",
-  diagram:"Identify the structures you recognise before deciding on the labelled feature.",
-  multi:"Evaluate each choice separately; there may be more than one correct answer."
- }[q.type]||"Recall the biological principle before looking at the answer choices.";
- var out=[strategy];
- if((q.type==="single"||q.type==="diagram"||q.type==="multi")&&q.options&&q.options.length>=4){
-  var correct=Array.isArray(q.correct)?q.correct:[q.correct],wrong=q.options.findIndex(function(_,i){return correct.indexOf(i)<0;});
-  if(wrong>=0)out.push("One option you can rule out is: "+q.options[wrong]+".");
+ var items=[hintStrategy(q)];
+ if(typeof q.hintCue==="string"&&q.hintCue.trim())items.push(q.hintCue);
+ if(["single","diagram","multi"].indexOf(q.type)>=0&&q.options&&q.options.length===4){
+  var i=session.hintExcluded&&session.hintExcluded[q.id];
+  if(!Number.isInteger(i))i=excludedOption(q);
+  if(i!==null)items.push("You can rule out: "+q.options[i]+".");
  }
- return out;
+ return items;
+}
+function ensureHintClock(q){
+ if(!session||session.phase!=="ask")return;
+ var key=q.id+"@"+session.index;
+ if(session.hintQuestionId!==key){
+  session.hintQuestionId=key;
+  session.hintReadyAt=Date.now()+HINT_DELAY;
+  save();
+ }
+}
+function hintRemaining(){return session?Math.max(0,(session.hintReadyAt||0)-Date.now()):0;}
+function updateHintButton(){
+ if(!session||session.phase!=="ask"){stopHintTimer();return;}
+ var b=main.querySelector('[data-k-action="hint"]');if(!b){stopHintTimer();return;}
+ var rem=hintRemaining(),fraction=1-Math.min(1,rem/HINT_DELAY);
+ b.disabled=rem>0;b.classList.toggle("hint-wait",rem>0);
+ b.style.setProperty("--hint-progress",fraction.toFixed(3));
+ var label=session.hintsUsed&&session.hintsUsed[current().id]?"More help":"Hint";
+ b.textContent=rem>0?label+" · "+Math.ceil(rem/1000)+"s":label;
+ b.setAttribute("aria-label",rem>0?label+" available in "+Math.ceil(rem/1000)+" seconds":label);
+ if(rem===0)stopHintTimer();
+}
+function startHintTimer(){
+ stopHintTimer();updateHintButton();
+ if(hintRemaining()>0&&typeof setInterval==="function")hintTimer=setInterval(updateHintButton,150);
 }
 function showNextHint(){
- if(!session||session.phase!=="ask")return;
+ if(!session||session.phase!=="ask"||hintRemaining()>0)return;
  var q=current(),h=hintsFor(q),n=session.hintsUsed[q.id]||0;
  if(n>=h.length)return;
- readForm();session.hintsUsed[q.id]=n+1;save();drawQuestion();
+ readForm();
+ if(n===2){
+  var idx=excludedOption(q);
+  if(idx!==null){session.hintExcluded=session.hintExcluded||{};session.hintExcluded[q.id]=idx;}
+ }
+ session.hintsUsed[q.id]=n+1;
+ session.hintReadyAt=Date.now()+HINT_DELAY;
+ save();drawQuestion();
 }
 function drawQuestion(){
  if(!session||!isActive())return;
+ stopHintTimer();
  adaptQuickMixMiddle();
  adaptQuickMixEnd();
  visible=true;var q=current(),a=currentAnswer();
+ if(session.phase==="ask")ensureHintClock(q);
  var sub=q.unit==="f171"?"F171 · Health and disease":"F170 · Fundamentals",num=session.index+1,max=session.queue.length;
  var prog=(100*(session.index/max)).toFixed(1),showing=session.phase==="feedback";
  var used=session.hintsUsed&&session.hintsUsed[q.id]||0,availableHints=hintsFor(q);
@@ -301,7 +349,7 @@ function drawQuestion(){
  if(q.figure)h+=figure(q.figure);
  if(isQuickCheck(q))h+='<p class="k-quick-label"><strong>Quick check:</strong> Apply the same idea independently.</p>';
  if(!showing){h+=inputForm(q,a);
-  if(used)h+='<div class="k-hint-box" role="note"><strong>Hint '+used+' of '+availableHints.length+'</strong><p>'+esc(availableHints[used-1])+'</p></div>';
+  if(used)h+='<div class="k-hint-box" role="note"><strong>Hint '+used+' of '+availableHints.length+'</strong>'+availableHints.slice(0,used).map(function(t){return '<p>'+esc(t)+'</p>';}).join('')+'</div>';
  }
  else{
   var correct=session.lastResult===true,subjective=!session.wasSkipped&&(session.lastResult===null||q.type==="written");
@@ -316,11 +364,12 @@ function drawQuestion(){
   if(!correct&&!unknown&&q.misconception)h+='<div class="k-misconception"><strong>Watch out</strong><p>'+esc(q.misconception)+'</p></div>';
   h+='</div>';
  }
- if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points":"Check answer")+' →</button>'+(used<availableHints.length?'<button class="button secondary" type="button" data-k-action="hint">'+(used?'More help':'Hint')+'</button>':'')+'<button class="button quiet" type="button" data-k-action="skip">I don’t know · show me</button></div>';
+ if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points":"Check answer")+' →</button>'+(used<availableHints.length?'<button class="button secondary k-hint-button" type="button" data-k-action="hint">'+(used?'More help':'Hint')+'</button>':'')+'<button class="button quiet" type="button" data-k-action="skip">I don’t know · show me</button></div>';
  else if(!session.wasSkipped&&(q.type==="written"||session.lastResult===null))h+='<div class="k-foot-actions"><button class="button primary" data-k-action="self-good" type="button">I included the key ideas</button><button class="button secondary" data-k-action="self-weak" type="button">I need more practice</button></div>';
  else h+='<div class="k-foot-actions"><button class="button primary k-cta" data-k-action="next" type="button">'+(session.lastPlannedCheck?'Try a quick check':'Next question')+' →</button></div>';
  h+='</div><p class="k-question-footer">Topic '+q.area+' · '+esc(areaName(q.unit,q.area))+(q.samAligned?' · Skills reflected in OCR sample material':' · Specification coverage')+' · Original question</p></div>';
  show(h);
+ if(!showing&&used<availableHints.length)startHintTimer();
 }
 function norm(s){return String(s||"").normalize("NFKC").trim().toLowerCase().replace(/[’‘]/g,"'").replace(/[.!?]+$/,"").replace(/\s+/g," ");}
 function validateAnswer(q,a){
@@ -409,11 +458,11 @@ function gradeSelf(got){var q=current();if(!q)return;record(q,got);next();}
 function next(){
  if(!session)return;
  var previous=current();if(previous&&session.answers)delete session.answers[previous.id]; // Do not retain free-text answers beyond feedback.
- session.index++;session.phase="ask";session.lastResult=undefined;session.wasSkipped=false;session.lastPlannedCheck=null;save();
+ session.index++;session.phase="ask";session.lastResult=undefined;session.wasSkipped=false;session.lastPlannedCheck=null;session.quickTapAttempted=false;save();
  if(session.index>=session.queue.length)finish();else drawQuestion();
 }
 function finish(){
- if(!session)return;var old=session;session=null;save();
+ stopHintTimer();if(!session)return;var old=session;session=null;save();
  var repeat=Object.keys(old.retries).length,done=old.queue.length;
  var h='<div class="k-wrap k-done"><p class="crumb"><a href="#challenge/'+old.unit+'">← Unit overview</a></p><div class="k-done-icon">'+icon("check")+'</div><h1>Practice complete</h1><p class="lead">'+old.correctFirst+' of '+Object.keys(old.first).length+' questions recalled independently on first attempt.</p>';
  h+='<div class="k-mini-stats"><span><strong>'+Object.keys(old.first).length+'</strong> unique questions</span><span><strong>'+repeat+'</strong> revisited</span><span><strong>'+(old.guidedFirst||0)+'</strong> answered with help</span><span><strong>'+(old.quickChecksPassed||0)+'/'+(old.quickChecksSeen||0)+'</strong> quick checks without help</span></div><div class="k-action-grid"><a class="k-action teal" href="#challenge/'+old.unit+'/weak"><span class="k-icon">'+icon("rotate")+'</span><span><strong>Fix weak areas</strong><small>Practise questions you missed</small></span></a><a class="k-action blue" href="#challenge/'+old.unit+'"><span class="k-icon">'+icon("grid")+'</span><span><strong>Choose another set</strong><small>Topic or mixed practice</small></span></a></div></div>';show(h);
