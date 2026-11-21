@@ -381,7 +381,7 @@ try{
  const exactOsmosis=navPage.getByRole("link",{name:"Practise questions: Osmosis (part 1)",exact:true});
  await exactOsmosis.click();
  await navPage.waitForURL("**/#lesson-b1-osmosis");
- await navPage.getByRole("heading",{name:/Osmosis/,level:1}).first().waitFor();
+ await navPage.locator(".ltop").waitFor();
  await navPage.goto(base+"/gcse/");
  await query.fill("amylase");
  const biologyResult=navPage.getByRole("link",{name:"Learn and practise: Organisation",exact:true});
@@ -608,8 +608,8 @@ try{
  assert(await navPage.locator("#btn-std").isHidden());
  assert(await navPage.locator("#s-temp").isHidden());
  await navPage.getByRole("button",{name:/Investigate/}).click();
- const standard=navPage.locator("#btn-std");
- assert((await standard.boundingBox()).height<65,"Standard conditions button is oversized");
+ const standardConditions=navPage.locator("#btn-std");
+ assert((await standardConditions.boundingBox()).height<65,"Standard conditions button is oversized");
  await navPage.goto(base+"/teaching/simulations/enzyme-kinetics/?activity=gcse");
  await navPage.getByRole("heading",{name:"Compare temperatures",exact:true}).waitFor();
  await navPage.locator("#btn-run").click();
