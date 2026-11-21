@@ -18,7 +18,7 @@ function walk(directory){
 walk(root);
 const htmlFiles=fileList.filter(f=>f.endsWith(".html"));
 const required=[
- "index.html","gcse/index.html","alevel/index.html","teacher/index.html",
+ "index.html","gcse/index.html","alevel/index.html","human-biology/index.html","teacher/index.html",
  "teaching/index.html","teaching/simulations/index.html","privacy/index.html"
 ];
 for(const p of required)requireTrue(existsSync(path.join(root,p)),"Missing public page: "+p);
@@ -58,6 +58,9 @@ for(const full of htmlFiles){
 const home=read("index.html"),teacher=read("teacher/index.html");
 const alevel=read("alevel/index.html"),gcse=read("gcse/index.html");
 requireTrue(home.includes("nav-short"),"Homepage mobile labels missing");
+requireTrue(home.includes('href="/human-biology/"'),"Human Biology link missing from homepage");
+requireTrue(read("human-biology/index.html").includes('/human-biology/app.js'),"Human Biology application script missing");
+requireTrue(read("human-biology/index.html").includes('href="/" id="site-home"'),"Human Biology site return link missing");
 requireTrue(home.includes("Focused Questions"),"Teacher tool not discoverable from homepage");
 requireTrue(teacher.includes('href="/" aria-label="Return to Narajos homepage"'),"Focused Questions return link missing");
 requireTrue(teacher.includes("function saveDraft()")&&teacher.includes("function restoreDraft()"),"Focused Questions draft recovery missing");
