@@ -40,7 +40,7 @@ function filter(unit,scope){
  if(/^a[1-5]$/.test(scope))list=list.filter(function(q){return q.area===Number(scope.slice(1));});
  else if(scope==="core"||scope==="apply"||scope==="stretch")list=list.filter(function(q){return q.level===scope;});
  else if(scope==="sam")list=list.filter(function(q){return q.samAligned;});
- else if(scope==="weak")list=list.filter(function(q){var p=progress[q.id];return p&&(p.wrong>0&&(p.lastCorrect===false||p.good/Math.max(1,p.seen)<.75));});
+ else if(scope==="weak")list=list.filter(function(q){var p=progress[q.id];return p&&(((p.wrong>0&&(p.lastCorrect===false||p.good/Math.max(1,p.seen)<.75)||((p.guided||0)>0&&(p.independent||0)===0))||((p.guided||0)>0&&(p.independent||0)===0)));});
  return list;
 }
 function unitStats(u){var qs=filter(u,"all"),seen=0,weak=0;
@@ -235,11 +235,44 @@ function validateAnswer(q,a){
  if(q.type==="short"){if(!String(a.text||"").trim())return {ready:false,msg:"Enter an answer first, or choose Not sure."};return {ready:true,correct:q.accepted.some(function(x){return norm(x)===norm(a.text);})};}
  return {ready:true,correct:null};
 }
+function planQuickCheck(q){
+ if(!session||isQuickCheck(q)||(session.quickChecksPlanned||0)>=2)return null;
+ var seen=session.first||{};
+ var candidates=all.filter(function(x){
+  return x.id!==q.id&&x.unit===q.unit&&x.area===q.area&&!(x.id in seen)&&!(session.quickCheckIds||{})[x.id]&&["single","multi","diagram","match","best"].indexOf(x.type)>=0;
+ });
+ if(!candidates.length)return null;
+ // Prefer the same specification subtopic and a manageable core question.
+ candidates.sort(function(a,b){
+  function rank(x){return (x.section===q.section?0:20)+(x.level==="warmup"?0:x.level==="core"?1:x.level==="apply"?3:6);}
+  return rank(a)-rank(b);
+ });
+ var choice=candidates[0],at=session.queue.indexOf(choice.id);
+ if(at>=0&&at<=session.index)return null;
+ if(at>session.index)session.queue.splice(at,1);
+ session.queue.splice(session.index+1,0,choice.id);
+ session.quickCheckIds[choice.id]=true;
+ session.quickCheckLinks[choice.id]=q.id;
+ session.quickChecksPlanned=(session.quickChecksPlanned||0)+1;
+ session.lastPlannedCheck=choice.id;
+ return choice.id;
+}
 function record(q,got){
- var p=progress[q.id]||{seen:0,good:0,wrong:0};p.seen++;
- if(got){p.good++;p.lastCorrect=true;}else{p.wrong++;p.lastCorrect=false;}p.last=Date.now();progress[q.id]=p;saveProgress();
- if(!(q.id in session.first)){session.first[q.id]=got;if(got)session.correctFirst++;}
+ var helped=!!(session.hintsUsed&&session.hintsUsed[q.id]);
+ var independent=!!got&&!helped&&!session.wasSkipped;
+ var p=progress[q.id]||{seen:0,good:0,wrong:0,independent:0,guided:0};p.seen++;
+ if(got){p.good++;if(helped)p.guided=(p.guided||0)+1;else p.independent=(p.independent||0)+1;p.lastCorrect=true;}
+ else{p.wrong++;p.lastCorrect=false;}
+ p.last=Date.now();progress[q.id]=p;saveProgress();
+ if(!(q.id in session.first)){
+  session.first[q.id]=independent;
+  if(independent)session.correctFirst++;
+  if(got&&!independent)session.guidedFirst=(session.guidedFirst||0)+1;
+ }
+ if(isQuickCheck(q)){session.quickChecksSeen=(session.quickChecksSeen||0)+1;if(independent)session.quickChecksPassed=(session.quickChecksPassed||0)+1;}
+ session.lastPlannedCheck=null;
  if(!got&&(session.retries[q.id]||0)<1){session.queue.push(q.id);session.retries[q.id]=(session.retries[q.id]||0)+1;}
+ if(!got||helped)planQuickCheck(q);
  save();
 }
 function readForm(){
@@ -265,14 +298,15 @@ function check(skip){
 function gradeSelf(got){var q=current();if(!q)return;record(q,got);next();}
 function next(){
  if(!session)return;
- session.index++;session.phase="ask";session.lastResult=undefined;session.wasSkipped=false;save();
+ var previous=current();if(previous&&session.answers)delete session.answers[previous.id]; // Do not retain free-text answers beyond feedback.
+ session.index++;session.phase="ask";session.lastResult=undefined;session.wasSkipped=false;session.lastPlannedCheck=null;save();
  if(session.index>=session.queue.length)finish();else drawQuestion();
 }
 function finish(){
  if(!session)return;var old=session;session=null;save();
  var repeat=Object.keys(old.retries).length,done=old.queue.length;
- var h='<div class="k-wrap k-done"><p class="crumb"><a href="#challenge/'+old.unit+'">← Unit overview</a></p><div class="k-done-icon">'+icon("check")+'</div><h1>Practice complete</h1><p class="lead">'+old.correctFirst+' of '+Object.keys(old.first).length+' questions answered confidently on first attempt.</p>';
- h+='<div class="k-mini-stats"><span><strong>'+Object.keys(old.first).length+'</strong> unique questions</span><span><strong>'+repeat+'</strong> revisited</span></div><div class="k-action-grid"><a class="k-action teal" href="#challenge/'+old.unit+'/weak"><span class="k-icon">'+icon("rotate")+'</span><span><strong>Fix weak areas</strong><small>Practise questions you missed</small></span></a><a class="k-action blue" href="#challenge/'+old.unit+'"><span class="k-icon">'+icon("grid")+'</span><span><strong>Choose another set</strong><small>Topic or mixed practice</small></span></a></div></div>';show(h);
+ var h='<div class="k-wrap k-done"><p class="crumb"><a href="#challenge/'+old.unit+'">← Unit overview</a></p><div class="k-done-icon">'+icon("check")+'</div><h1>Practice complete</h1><p class="lead">'+old.correctFirst+' of '+Object.keys(old.first).length+' questions recalled independently on first attempt.</p>';
+ h+='<div class="k-mini-stats"><span><strong>'+Object.keys(old.first).length+'</strong> unique questions</span><span><strong>'+repeat+'</strong> revisited</span><span><strong>'+(old.guidedFirst||0)+'</strong> answered with help</span><span><strong>'+(old.quickChecksPassed||0)+'/'+(old.quickChecksSeen||0)+'</strong> quick checks without help</span></div><div class="k-action-grid"><a class="k-action teal" href="#challenge/'+old.unit+'/weak"><span class="k-icon">'+icon("rotate")+'</span><span><strong>Fix weak areas</strong><small>Practise questions you missed</small></span></a><a class="k-action blue" href="#challenge/'+old.unit+'"><span class="k-icon">'+icon("grid")+'</span><span><strong>Choose another set</strong><small>Topic or mixed practice</small></span></a></div></div>';show(h);
 }
 function route(r,renderer){
  render=renderer;lastRoute=r;
