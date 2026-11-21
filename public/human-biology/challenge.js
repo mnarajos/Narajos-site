@@ -216,7 +216,8 @@ function formChoice(q,answer){
  if(!answer.optionOrder){answer.optionOrder=shuffle(q.options.map(function(_,i){return i;}));session.answers[q.id]=answer;save();}
  return '<div class="k-options" role="group" aria-label="Answer choices">'+answer.optionOrder.map(function(i,pos){var o=q.options[i];
   var checked=selected.indexOf(i)!==-1;
-  return '<label class="k-option'+(checked?" selected":"")+'"><input type="'+(q.type==="multi"?"checkbox":"radio")+'" name="kchoice" value="'+i+'"'+(checked?" checked":"")+'><span class="k-option-letter">'+String.fromCharCode(65+pos)+'</span><span>'+esc(o)+'</span></label>';
+  var excluded=session.hintExcluded&&session.hintExcluded[q.id]===i&&(session.hintsUsed[q.id]||0)>=3;
+  return '<label class="k-option'+(checked?" selected":"")+(excluded?" k-option-out":"")+'"><input type="'+(q.type==="multi"?"checkbox":"radio")+'" name="kchoice" value="'+i+'"'+(checked?" checked":"")+(excluded?' disabled':'')+'><span class="k-option-letter">'+String.fromCharCode(65+pos)+'</span><span>'+esc(o)+'</span>'+(excluded?'<span class="k-ruled-out">Ruled out</span>':'')+'</label>';
  }).join("")+'</div>';
 }
 function bestForm(q,answer){
@@ -241,7 +242,7 @@ function sortForm(q,answer){
  return '<div class="k-sort"><p class="k-hint">Choose one group for each statement.</p>'+
  q.rows.map(function(row,i){
   return '<fieldset class="k-sort-row"><legend>'+esc(row[0])+'</legend><div class="k-sort-choices">'+q.groups.map(function(group,j){
-   return '<label><input type="radio" name="ksort-'+i+'" value="'+j+'" data-sort-row="'+i+'"'+(Number(selected[i])===j&&selected[i]!==undefined?' checked':'')+'><span>'+esc(group)+'</span></label>';
+   return '<label><input type="radio" name="ksort-'+i+'" value="'+j+'" data-sort-row="'+i+'"'+(selected[i]!==undefined&&selected[i]!==''&&Number(selected[i])===j?' checked':'')+'><span>'+esc(group)+'</span></label>';
   }).join("")+'</div></fieldset>';
  }).join("")+'</div>';
 }
