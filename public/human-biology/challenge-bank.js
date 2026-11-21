@@ -1,7 +1,7 @@
 /* Independently written high-yield questions informed by OCR specification v8 and public SAMPLE assessments.
    Sample alignment does not establish live-exam frequency. No copied OCR exam stems or mark schemes. */
 window.KeystoneHumanChallenges={
-  "version": "2026-11-21-v2",
+  "version": "2026-11-21-oracle-pilot",
   "units": [
     {
       "id": "f170",
@@ -1457,6 +1457,499 @@ window.KeystoneHumanChallenges={
       "model": "Possible distortion from a truncated axis",
       "explain": "Counts on a bar chart can look more different if the vertical axis does not start at zero.",
       "misconception": "Check the numeric values and axes before interpreting patterns.",
+      "samAligned": false
+    },
+    {
+      "id": "warm-f170-cells",
+      "unit": "f170",
+      "area": 1,
+      "section": "1.1.1",
+      "type": "single",
+      "level": "warmup",
+      "warmup": true,
+      "stem": "Which structure controls movement into and out of a human cell?",
+      "options": [
+        "Cell-surface membrane",
+        "Nuclear envelope",
+        "Ribosome",
+        "Nucleolus"
+      ],
+      "correct": 0,
+      "model": "Cell-surface membrane",
+      "explain": "Its lipid bilayer and proteins support selective exchange.",
+      "misconception": "Distinguish the defining function from related but different biological ideas.",
+      "hints": [
+        "Recall the main function before checking the options.",
+        "Think about the boundary between the whole cell and its environment."
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "warm-f170-physiology",
+      "unit": "f170",
+      "area": 2,
+      "section": "2.2.1",
+      "type": "single",
+      "level": "warmup",
+      "warmup": true,
+      "stem": "Which organ pumps blood through the human circulatory system?",
+      "options": [
+        "Heart",
+        "Liver",
+        "Kidney",
+        "Lung"
+      ],
+      "correct": 0,
+      "model": "Heart",
+      "explain": "Cardiac muscle contracts to move blood through pulmonary and systemic vessels.",
+      "misconception": "Distinguish the defining function from related but different biological ideas.",
+      "hints": [
+        "Recall the main function before checking the options.",
+        "Which organ contains myocardium?"
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "warm-f170-endocrine",
+      "unit": "f170",
+      "area": 3,
+      "section": "3.1.1",
+      "type": "single",
+      "level": "warmup",
+      "warmup": true,
+      "stem": "Which hormone lowers blood glucose after a meal?",
+      "options": [
+        "Insulin",
+        "Glucagon",
+        "Adrenaline",
+        "ADH"
+      ],
+      "correct": 0,
+      "model": "Insulin",
+      "explain": "Pancreatic beta cells secrete insulin as blood glucose rises.",
+      "misconception": "Distinguish the defining function from related but different biological ideas.",
+      "hints": [
+        "Recall the main function before checking the options.",
+        "Think of the hormone made by pancreatic beta cells."
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "warm-f170-microbes",
+      "unit": "f170",
+      "area": 4,
+      "section": "4.1.5",
+      "type": "single",
+      "level": "warmup",
+      "warmup": true,
+      "stem": "Which structure is absent from a virus particle?",
+      "options": [
+        "Ribosomes",
+        "Protein capsid",
+        "Genetic material",
+        "Lipid envelope in some viruses"
+      ],
+      "correct": 0,
+      "model": "Ribosomes",
+      "explain": "Viruses rely on host cells to synthesise viral proteins.",
+      "misconception": "Distinguish the defining function from related but different biological ideas.",
+      "hints": [
+        "Recall the main function before checking the options.",
+        "Think about why a virus cannot independently translate proteins."
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "warm-f171-disease",
+      "unit": "f171",
+      "area": 1,
+      "section": "1.1",
+      "type": "single",
+      "level": "warmup",
+      "warmup": true,
+      "stem": "Which is a symptom rather than a sign?",
+      "options": [
+        "Pain reported by a patient",
+        "A measured pulse rate",
+        "An observed rash",
+        "A measured fever"
+      ],
+      "correct": 0,
+      "model": "Pain reported by a patient",
+      "explain": "Symptoms are experiences reported by patients; signs can be observed or measured.",
+      "misconception": "Distinguish the defining function from related but different biological ideas.",
+      "hints": [
+        "Recall the main function before checking the options.",
+        "Ask whether the information was reported or measured."
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "warm-f171-therapy",
+      "unit": "f171",
+      "area": 2,
+      "section": "2.1",
+      "type": "single",
+      "level": "warmup",
+      "warmup": true,
+      "stem": "Which is an example of supportive treatment?",
+      "options": [
+        "Physiotherapy to maintain function in progressive disease",
+        "Antibiotics eliminating a susceptible bacterial infection",
+        "Surgery removing a localised tumour",
+        "Vaccination to prevent infection"
+      ],
+      "correct": 0,
+      "model": "Physiotherapy to maintain function",
+      "explain": "Supportive treatment can improve symptoms and independence without necessarily removing the underlying disorder.",
+      "misconception": "Distinguish the defining function from related but different biological ideas.",
+      "hints": [
+        "Recall the main function before checking the options.",
+        "Which option focuses primarily on daily function?"
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "warm-f171-immunity",
+      "unit": "f171",
+      "area": 3,
+      "section": "3.1",
+      "type": "single",
+      "level": "warmup",
+      "warmup": true,
+      "stem": "Which cells can become antibody-secreting plasma cells?",
+      "options": [
+        "B lymphocytes",
+        "Erythrocytes",
+        "Platelets",
+        "Ciliated epithelial cells"
+      ],
+      "correct": 0,
+      "model": "B lymphocytes",
+      "explain": "Activated B lymphocytes can differentiate into plasma cells that secrete antibodies.",
+      "misconception": "Distinguish the defining function from related but different biological ideas.",
+      "hints": [
+        "Recall the main function before checking the options.",
+        "Which lymphocytes mediate the humoral immune response?"
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "warm-f171-diagnostics",
+      "unit": "f171",
+      "area": 4,
+      "section": "4.1",
+      "type": "single",
+      "level": "warmup",
+      "warmup": true,
+      "stem": "Which test records the electrical activity of the heart?",
+      "options": [
+        "ECG",
+        "Spirometry",
+        "Peak-flow measurement",
+        "DEXA scanning"
+      ],
+      "correct": 0,
+      "model": "ECG",
+      "explain": "An electrocardiogram records changes in electrical potential associated with cardiac activity.",
+      "misconception": "Distinguish the defining function from related but different biological ideas.",
+      "hints": [
+        "Recall the main function before checking the options.",
+        "Which instrument records a voltage-time trace?"
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "warm-f171-data",
+      "unit": "f171",
+      "area": 5,
+      "section": "5.1",
+      "type": "single",
+      "level": "warmup",
+      "warmup": true,
+      "stem": "What is a principal reason to minimise identifying information in a clinical dataset?",
+      "options": [
+        "To protect patient privacy",
+        "To increase instrument resolution",
+        "To remove statistical variation",
+        "To guarantee no further privacy risks"
+      ],
+      "correct": 0,
+      "model": "To protect patient privacy",
+      "explain": "De-identification reduces risk but does not always eliminate re-identification possibilities.",
+      "misconception": "Distinguish the defining function from related but different biological ideas.",
+      "hints": [
+        "Recall the main function before checking the options.",
+        "This concerns confidentiality, not the quality of instruments."
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "best-f170-magnification",
+      "unit": "f170",
+      "area": 1,
+      "section": "1.1.2",
+      "type": "best",
+      "level": "apply",
+      "stem": "Which calculation explanation is correct, and which reason supports it?",
+      "options": [
+        "Magnification equals image size divided by actual size, using consistent units.",
+        "Magnification equals actual size divided by image size, using consistent units."
+      ],
+      "correct": 0,
+      "reasons": [
+        "Magnification is the ratio of image dimensions to the object's actual dimensions.",
+        "Microscope magnification depends only on the eyepiece lens.",
+        "Consistent units mean either quantity can be used as the numerator."
+      ],
+      "reasonCorrect": 0,
+      "model": "Magnification = image size ÷ actual size.",
+      "explain": "Both sizes must be in the same unit before calculating a dimensionless ratio.",
+      "misconception": "Dividing actual size by image size produces the reciprocal.",
+      "hints": [
+        "Decide which explanation is scientifically accurate before looking at the reasons.",
+        "Recheck which dimension is made larger in the image."
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "best-f170-insulin",
+      "unit": "f170",
+      "area": 3,
+      "section": "3.1.1",
+      "type": "best",
+      "level": "apply",
+      "stem": "Which account of insulin action is biologically accurate? Select the best supporting reason.",
+      "options": [
+        "Insulin acts on target cells to increase glucose uptake or storage, lowering blood glucose.",
+        "Insulin acts as an enzyme that directly destroys glucose molecules circulating in plasma."
+      ],
+      "correct": 0,
+      "reasons": [
+        "Insulin is a hormone that binds receptors and modifies target-cell activity.",
+        "Insulin hydrolyses glucose because it contains an enzyme active site.",
+        "Insulin changes blood glucose by raising the secretion of glucagon."
+      ],
+      "reasonCorrect": 0,
+      "model": "Insulin affects cells through receptor-mediated signalling.",
+      "explain": "It is not an enzyme that chemically digests glucose in the circulation.",
+      "misconception": "Hormones are not necessarily catalysts.",
+      "hints": [
+        "Decide which explanation is scientifically accurate before looking at the reasons.",
+        "How does a hormone signal to a target cell?"
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "best-f170-myelin",
+      "unit": "f170",
+      "area": 3,
+      "section": "3.2.1",
+      "type": "best",
+      "level": "apply",
+      "stem": "Which statement best describes how myelin improves impulse conduction?",
+      "options": [
+        "Myelin insulates the axon, supporting rapid impulse propagation between nodes of Ranvier.",
+        "Myelin contains fluid that conducts impulses down the centre of the sheath."
+      ],
+      "correct": 0,
+      "reasons": [
+        "Action potentials are regenerated at specialised sites on the axon membrane.",
+        "The sheath produces electrical impulses independently of the neuron.",
+        "The sheath replaces synapses between each pair of neurons."
+      ],
+      "reasonCorrect": 0,
+      "model": "Myelin supports saltatory conduction along an axon.",
+      "explain": "Impulse propagation depends on membrane excitability, especially at nodes.",
+      "misconception": "The sheath is not a hollow channel for impulses.",
+      "hints": [
+        "Decide which explanation is scientifically accurate before looking at the reasons.",
+        "Where are action potentials regenerated?"
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "best-f170-culture",
+      "unit": "f170",
+      "area": 4,
+      "section": "4.1.4",
+      "type": "best",
+      "level": "apply",
+      "stem": "Which interpretation of the stationary phase of a bacterial growth curve is most defensible?",
+      "options": [
+        "Cell division may continue while the number of cells dying approximately balances new cells.",
+        "Every bacterial cell permanently stops dividing once the culture reaches stationary phase."
+      ],
+      "correct": 0,
+      "reasons": [
+        "Stationary describes an approximately constant net population, not necessarily total inactivity.",
+        "Binary fission cannot occur in a closed container of nutrient broth.",
+        "An unchanged total cell number proves that no cell has died."
+      ],
+      "reasonCorrect": 0,
+      "model": "Population stability can coexist with individual cell division and death.",
+      "explain": "In a closed culture, growth can become limited as nutrient supply changes and waste accumulates.",
+      "misconception": "Stationary does not mean all cells are dormant.",
+      "hints": [
+        "Decide which explanation is scientifically accurate before looking at the reasons.",
+        "What does the graph tell you about the net count, rather than each cell?"
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "best-f171-antibiotics",
+      "unit": "f171",
+      "area": 2,
+      "section": "2.1",
+      "type": "best",
+      "level": "apply",
+      "stem": "Which clinical conclusion follows from a large zone of inhibition around an antibiotic disc?",
+      "options": [
+        "Growth was inhibited under the test conditions; treatment choice requires further clinical evidence.",
+        "The antibiotic is guaranteed to cure infections caused by every strain of that species."
+      ],
+      "correct": 0,
+      "reasons": [
+        "A zone is influenced by testing conditions and does not directly establish clinical effectiveness.",
+        "The agar and all human tissues maintain the same antibiotic concentration.",
+        "All strains of one bacterial species respond identically to the same drug."
+      ],
+      "reasonCorrect": 0,
+      "model": "An agar result supports a limited laboratory conclusion.",
+      "explain": "Drug distribution, safety, susceptibility and the clinical context also affect treatment.",
+      "misconception": "Do not infer guaranteed patient outcomes from a single agar result.",
+      "hints": [
+        "Decide which explanation is scientifically accurate before looking at the reasons.",
+        "What is actually measured on the agar plate?"
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "best-f171-screening",
+      "unit": "f171",
+      "area": 4,
+      "section": "4.3",
+      "type": "best",
+      "level": "apply",
+      "stem": "Which interpretation of a positive screening result is justified?",
+      "options": [
+        "The result may require diagnostic confirmation because false positives can occur.",
+        "A positive screen definitively establishes disease regardless of prevalence."
+      ],
+      "correct": 0,
+      "reasons": [
+        "Predictive value depends partly on test sensitivity, specificity and condition prevalence.",
+        "All screening tests have complete specificity.",
+        "A screening result is always the same as a definitive diagnosis."
+      ],
+      "reasonCorrect": 0,
+      "model": "Screening is distinct from confirming a diagnosis.",
+      "explain": "Even useful screening tests can produce false-positive results.",
+      "misconception": "A test's positive predictive value depends on context.",
+      "hints": [
+        "Decide which explanation is scientifically accurate before looking at the reasons.",
+        "What would happen if a test occasionally misclassified a healthy patient?"
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "error-f170-sphase",
+      "unit": "f170",
+      "area": 1,
+      "section": "1.1.5",
+      "type": "single",
+      "subtype": "error",
+      "level": "apply",
+      "stem": "A pupil writes: ‘Mitosis is the stage of the cell cycle when DNA is copied.’ Which correction is appropriate?",
+      "options": [
+        "DNA replication takes place during S phase of interphase.",
+        "DNA replication normally takes place during metaphase.",
+        "DNA replication is the same event as cytokinesis.",
+        "DNA replication normally takes place after telophase."
+      ],
+      "correct": 0,
+      "model": "DNA replicates in S phase of interphase.",
+      "explain": "Mitosis divides a nucleus and is not the DNA synthesis phase.",
+      "misconception": "Interphase contains several phases; S phase is the precise answer.",
+      "hints": [
+        "Identify the statement that contradicts the underlying biological mechanism.",
+        "Check whether the student's wording confuses a process with a related but different process."
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "error-f170-adh",
+      "unit": "f170",
+      "area": 3,
+      "section": "3.1.1",
+      "type": "single",
+      "subtype": "error",
+      "level": "apply",
+      "stem": "A student writes: ‘ADH increases urine volume by reducing the permeability of collecting ducts to water.’ Which correction makes the mechanism accurate?",
+      "options": [
+        "ADH increases collecting-duct water permeability and reduces urine volume.",
+        "ADH decreases collecting-duct water permeability and reduces urine volume.",
+        "ADH makes water move by active transport directly into the urine.",
+        "ADH acts only in the bladder, where the urine is stored."
+      ],
+      "correct": 0,
+      "model": "ADH increases reabsorption of water by the collecting ducts.",
+      "explain": "It reduces urine volume in response to a fall in blood water potential.",
+      "misconception": "Water reabsorption occurs by osmosis, not ATP-driven pumping of water.",
+      "hints": [
+        "Identify the statement that contradicts the underlying biological mechanism.",
+        "Check whether the student's wording confuses a process with a related but different process."
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "error-f170-viral-ribosomes",
+      "unit": "f170",
+      "area": 4,
+      "section": "4.1.5",
+      "type": "single",
+      "subtype": "error",
+      "level": "apply",
+      "stem": "A pupil claims that a virus makes proteins using its own ribosomes. Which statement is correct?",
+      "options": [
+        "Viral proteins are synthesised using host-cell machinery.",
+        "Viruses use 80S ribosomes enclosed within their capsid.",
+        "Viral proteins are produced by bacterial binary fission.",
+        "The viral lipid envelope acts as a ribosome."
+      ],
+      "correct": 0,
+      "model": "Viruses require host ribosomes for protein synthesis.",
+      "explain": "Viruses contain nucleic acid and a capsid, but have no ribosomes.",
+      "misconception": "Do not confuse viruses with cellular microorganisms.",
+      "hints": [
+        "Identify the statement that contradicts the underlying biological mechanism.",
+        "Check whether the student's wording confuses a process with a related but different process."
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "error-f171-peakflow",
+      "unit": "f171",
+      "area": 4,
+      "section": "4.1",
+      "type": "single",
+      "subtype": "error",
+      "level": "apply",
+      "stem": "A student records three technically acceptable peak-flow attempts: 380, 430 and 405 L/min. Which value should usually be recorded?",
+      "options": [
+        "430 L/min, the highest technically acceptable reading.",
+        "405 L/min, the final reading in the sequence.",
+        "380 L/min, the lowest valid reading.",
+        "405 L/min, because the middle value is most representative."
+      ],
+      "correct": 0,
+      "model": "430 L/min.",
+      "explain": "Peak flow usually records the highest technically acceptable effort rather than the mean, lowest or final value.",
+      "misconception": "The middle or final reading is not automatically the correct result.",
+      "hints": [
+        "Identify the statement that contradicts the underlying biological mechanism.",
+        "Check whether the student's wording confuses a process with a related but different process."
+      ],
       "samAligned": false
     }
   ]
