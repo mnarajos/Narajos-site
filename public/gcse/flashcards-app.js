@@ -108,7 +108,7 @@ function create(env){
  }
  function show(){
   if(!active||!active.queue.length)return finished();
-  var c=card(active.queue[0]);if(!c||!valid(c)){active.queue.shift();active.original=active.original.filter(function(id){return id!==active.queue[0];});saveActive();return show();}
+  var c=card(active.queue[0]);if(!c||!valid(c)){var excluded=active.queue.shift();active.original=active.original.filter(function(id){return id!==excluded;});saveActive();return show();}
   var s=active,completed=s.complete,total=s.original.length;
   var h='<p class="crumb"><a href="#flashcards">✕ Leave flashcards</a></p>'+
    '<h1>Flashcard review</h1><p class="kr-subtle">'+E.esc((topicInfo[c.topic]||{}).name||"Mixed science")+' · '+completed+' of '+total+' cards completed · '+s.queue.length+' remaining in queue</p>'+
