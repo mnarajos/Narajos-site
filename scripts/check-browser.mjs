@@ -349,7 +349,7 @@ try{
  await query.fill("amylase");
  const biologyResult=navPage.getByRole("link",{name:"Learn and practise: Organisation",exact:true});
  await biologyResult.click();
- await navPage.getByRole("heading",{name:/Organisation/}).waitFor();
+ await navPage.getByRole("heading",{name:/Organisation/,level:1}).waitFor();
  await navPage.goto(base+"/gcse/");
  assert.equal(await tier.inputValue(),"F","GCSE tier choice did not persist");
  await query.fill("this topic does not exist");

@@ -6,6 +6,27 @@ var root=window.KeystoneHumanData,bank=window.KeystoneHumanChallenges,other=wind
 if(!root||!bank||!other)return;
 var notes={
   "f171": {
+    "2.1": {
+      "title": "Choosing a treatment",
+      "lines": [
+        "A cast immobilises the injured part to protect alignment while bone heals. Plaster moulds closely; fibreglass is generally lighter and more durable. A waterproof outer shell does not make the entire cast waterproof.",
+        "Surgery can treat a local tumour or relieve pressure at its site. A systemic drug can reach cancer cells at several sites. Treatment decisions consider the location of disease, likely response, adverse effects and recovery time."
+      ]
+    },
+    "2.3": {
+      "title": "Prevention and early detection",
+      "lines": [
+        "Reducing exposure to a risk factor aims to reduce the chance of developing disease. Screening can identify people without symptoms who may already have disease or a precursor.",
+        "A screen can produce a false positive or false negative. Diagnostic follow-up helps establish whether the condition is present. Earlier detection helps when appropriate care can follow."
+      ]
+    },
+    "4.2.2": {
+      "title": "Taking repeat measurements for monitoring",
+      "lines": [
+        "Monitoring uses a series of readings to identify a change over time. Comparisons are more meaningful when devices are suitable and measurement conditions are consistent.",
+        "A measurement can be repeatable but inaccurate. A missing reading is unknown, so it cannot be treated as a normal value. Consider measurement quality and access before using trends to prioritise follow-up."
+      ]
+    },
     "3.2.1": {
       "title": "Immune dysfunction and clinical immunology",
       "lines": [
@@ -288,6 +309,12 @@ function showUnit(unit,render){
    h+='</div></section>';
   }else{
    h+='<a class="k-area k-catchup-area" href="#catchup/'+unit+'/'+a.code+'"><span class="k-area-num">'+a.code.slice(1)+'</span><span class="k-area-label"><strong>'+esc(a.title)+'</strong><small>Short key ideas</small></span><span aria-hidden="true">›</span></a>';
+   if(unit==="f171"&&a.code==="a2"){
+    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/2.1">Choosing a treatment</a><a class="button secondary" href="#catchup/f171/2.3">Prevention and early detection</a></div>';
+   }
+   if(unit==="f171"&&a.code==="a4"){
+    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/4.2.2">Taking repeat measurements</a></div>';
+   }
    if(unit==="f171"&&a.code==="a3"){
     h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/3.2.1">Immune dysfunction</a><a class="button secondary" href="#catchup/f171/3.2.2">Vaccine types</a></div>';
    }
