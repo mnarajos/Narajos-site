@@ -34,8 +34,8 @@ function icon(name){
  };
  return '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+(paths[name]||paths.target)+'</svg>';
 }
-function labelType(q){if(q.subtype==="error")return "Spot the error";return {single:"Choose one",multi:"Choose two",order:"Put in order",match:"Match pairs",number:"Calculate",written:"Explain and check",short:"Short answer",diagram:"Use the diagram",best:"Choose and justify"}[q.type]||"Question";}
-function iconFor(q){return {single:"target",multi:"check",order:"layers",match:"grid",number:"graph",written:"book",short:"bolt",diagram:"target",best:"brain"}[q.type]||"target";}
+function labelType(q){if(q.subtype==="error")return "Spot the error";return {single:"Choose one",multi:"Choose two",order:"Put in order",match:"Match pairs",sort:"Sort statements",number:"Calculate",written:"Explain and check",short:"Short answer",diagram:"Use the diagram",best:"Choose and justify"}[q.type]||"Question";}
+function iconFor(q){return {single:"target",multi:"check",order:"layers",match:"grid",sort:"grid",number:"graph",written:"book",short:"bolt",diagram:"target",best:"brain"}[q.type]||"target";}
 function isKnowledge(unit){return /^f17[2-7]$/.test(unit);}
 function unitMeta(unit){return db.units.filter(function(x){return x.id===unit;})[0]||null;}
 function areaName(unit,area){var F=["","Human cells and tissues","Physiology and organ systems","Endocrinology, nerves and reproduction","Microbiology"];var H=["","Causes and effects of disease","Treatment and prevention","Immunology","Diagnosis and monitoring","Research and confidentiality"];var U=unitMeta(unit);return (unit==="f170"?F:unit==="f171"?H:U&&U.areas||[])[area]||"Topic";}
@@ -236,6 +236,15 @@ function orderForm(q,answer){
  return '<li><span class="k-order-num">'+(pos+1)+'</span><span>'+esc(q.items[idx])+'</span><span class="k-order-controls"><button class="k-small-btn" type="button" data-move="up" data-pos="'+pos+'" aria-label="Move step '+(pos+1)+' up" '+(pos===0?"disabled":"")+'>↑</button><button class="k-small-btn" type="button" data-move="down" data-pos="'+pos+'" aria-label="Move step '+(pos+1)+' down" '+(pos===current.length-1?"disabled":"")+'>↓</button></span></li>';
  }).join("")+'</ol><p class="k-hint">Use the arrows to put the steps in order.</p>';
 }
+function sortForm(q,answer){
+ var selected=answer&&Array.isArray(answer.sort)?answer.sort:[];
+ return '<div class="k-sort"><p class="k-hint">Choose one group for each statement.</p>'+
+ q.rows.map(function(row,i){
+  return '<fieldset class="k-sort-row"><legend>'+esc(row[0])+'</legend><div class="k-sort-choices">'+q.groups.map(function(group,j){
+   return '<label><input type="radio" name="ksort-'+i+'" value="'+j+'" data-sort-row="'+i+'"'+(Number(selected[i])===j&&selected[i]!==undefined?' checked':'')+'><span>'+esc(group)+'</span></label>';
+  }).join("")+'</div></fieldset>';
+ }).join("")+'</div>';
+}
 function matchForm(q,answer){
  var vals=answer&&Array.isArray(answer.match)?answer.match:[];
  if(!answer.targetOrder){answer.targetOrder=shuffle(q.pairs.map(function(_,i){return i;}));session.answers[q.id]=answer;save();}
@@ -258,6 +267,7 @@ function inputForm(q,answer){
  if(q.type==="best")return bestForm(q,answer);
  if(q.type==="single"||q.type==="diagram"||q.type==="multi")return formChoice(q,answer);
  if(q.type==="order")return orderForm(q,answer);
+ if(q.type==="sort")return sortForm(q,answer);
  if(q.type==="match")return matchForm(q,answer);
  if(q.type==="number")return '<label class="k-field">Your calculation'+(q.answerUnit?' · '+esc(q.answerUnit):'')+'<input id="k-number" type="text" inputmode="decimal" autocomplete="off" placeholder="Enter the number" value="'+esc(answer.text||"")+'"></label>';
  if(q.type==="short")return '<label class="k-field">Your answer<input id="k-text" type="text" autocomplete="off" spellcheck="false" placeholder="Type your answer" value="'+esc(answer.text||"")+'"></label>';
@@ -268,6 +278,7 @@ function answerKey(q){
  if(q.type==="single"||q.type==="diagram")return '<strong>'+esc(q.options[q.correct])+'</strong>';
  if(q.type==="multi")return '<strong>'+q.correct.map(function(i){return esc(q.options[i]);}).join("; ")+'</strong>';
  if(q.type==="order")return '<ol>'+q.items.map(function(i){return '<li>'+esc(i)+'</li>';}).join("")+'</ol>';
+ if(q.type==="sort")return '<ul>'+q.rows.map(function(row){return '<li>'+esc(row[0])+' → '+esc(q.groups[row[1]])+'</li>';}).join("")+'</ul>';
  if(q.type==="match")return '<ul>'+q.pairs.map(function(p){return '<li>'+esc(p[0])+' → '+esc(p[1])+'</li>';}).join("")+'</ul>';
  if(q.type==="number")return '<strong>'+esc(q.model)+'</strong>';
  if(q.type==="short")return '<strong>'+esc(q.model)+'</strong>';
@@ -283,6 +294,7 @@ function hintStrategy(q){
   number:"Write the calculation and check the units before you use the numbers.",
   order:"Find the first and final steps, then connect the events between them.",
   match:"Find the easiest pair first. For the others, think about function.",
+  sort:"Read each statement separately. Which group describes it?",
   written:"Give a cause, explain how it works, then state the effect.",
   short:"Recall the exact term, not just a related word.",
   best:"First decide which statement is true. Then ask which reason explains it.",
@@ -393,6 +405,7 @@ function validateAnswer(q,a){
   return {ready:true,correct:q.type==="multi"?(a.selected.slice().sort().join(",")===q.correct.slice().sort().join(",")):a.selected[0]===q.correct};
  }
  if(q.type==="order")return {ready:true,correct:a.order&&a.order.every(function(v,i){return v===i;})};
+ if(q.type==="sort"){if(!a.sort||a.sort.length!==q.rows.length||a.sort.some(function(v){return v===""||v==null;}))return {ready:false,msg:"Choose a group for each statement."};return {ready:true,correct:a.sort.every(function(v,i){return +v===q.rows[i][1];})};}
  if(q.type==="match"){if(!a.match||a.match.length!==q.pairs.length||a.match.some(function(v){return v===""||v==null;}))return {ready:false,msg:"Choose a match for each row."};return {ready:true,correct:a.match.every(function(v,i){return +v===i;})};}
  if(q.type==="number"){var val=String(a.text||"").trim().replace(/,/g,"").replace(/^×\s*/,"");if(!/^[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[-+]?\d+)?$/i.test(val))return {ready:false,msg:"Enter a number only. The expected unit is shown above the box."};return {ready:true,correct:Math.abs(Number(val)-q.correct)<=(q.tolerance||1e-9)};}
  if(q.type==="short"){if(!String(a.text||"").trim())return {ready:false,msg:"Enter an answer first, or choose Not sure."};return {ready:true,correct:q.accepted.some(function(x){return norm(x)===norm(a.text);})};}
@@ -453,6 +466,7 @@ function readForm(){
  if(q.type==="best"){var chosen=main.querySelector('input[name="kbest"]:checked'),reason=main.querySelector('input[name="kreason"]:checked');a.choice=chosen?Number(chosen.value):undefined;a.reason=reason?Number(reason.value):undefined;}
  else if(q.type==="single"||q.type==="diagram"||q.type==="multi")a.selected=Array.from(main.querySelectorAll('input[name="kchoice"]:checked')).map(function(x){return Number(x.value);});
  else if(q.type==="match")a.match=Array.from(main.querySelectorAll("[data-match]")).map(function(x){return x.value;});
+ else if(q.type==="sort")a.sort=q.rows.map(function(_,i){var el=main.querySelector('input[name="ksort-'+i+'"]:checked');return el?el.value:"";});
  else if(q.type==="number"||q.type==="short"||q.type==="written"){input=main.querySelector("#k-number, #k-text, #k-written");a.text=input?input.value:"";}
  session.answers[q.id]=a;save();return a;
 }
@@ -505,7 +519,7 @@ main.addEventListener("change",function(e){
   else a.selected=[Number(e.target.value)];
   session.answers[q.id]=a;save();
   main.querySelectorAll(".k-option").forEach(function(l){l.classList.toggle("selected",!!l.querySelector("input").checked);});
- }else if(e.target.matches("[data-match]")){readForm();}
+ }else if(e.target.matches("[data-match], [data-sort-row]")){readForm();}
 });
 /* Quick tap from the A-level tool: a correct first physical tap checks immediately.
    A first wrong tap produces no visible grading, disables further auto-checks,
