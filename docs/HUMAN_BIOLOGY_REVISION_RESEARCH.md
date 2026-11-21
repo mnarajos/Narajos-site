@@ -1,6 +1,8 @@
 # Human Biology (Cambridge OCR H049/H149): evidence-informed revision design
 
-Updated: 21 November 2026. This is an internal content-quality and product-development note, **not** a student learning page.
+Updated: 21 November 2026.
+
+**Latest expansion:** see [Exam evidence and resource decisions](HUMAN_BIOLOGY_EXAM_EVIDENCE.md). The current bank is 364 questions (156 F170, 130 F171, 78 knowledge-only), including 170 alternatives in 85 three-version families. The inventory below describes the earlier starter stage. Public QP/MS and annotated SAMs were reviewed; no publicly accessible unit examiner report was located, and secure Teach Cambridge materials were not inspected. This is an internal content-quality and product-development note, **not** a student learning page.
 
 ## Authoritative sources
 - [OCR specification, latest published version 8 (October 2026)](https://www.ocr.org.uk/Images/697578-specification-cambridge-advanced-national-in-human-biology.pdf)
@@ -97,3 +99,4 @@ The previous screen-reader labels on six diagrams disclosed the expected answer;
 ## Companion roles (November 2026)
 
 The Human Biology application now provides an optional [Catch up](/human-biology/#catchup) pathway. F170 recaps are built from the 28 separately authored F170 section notes; F171 now also has dedicated recaps for immune dysfunction (3.2.1) and vaccine types (3.2.2), while F171 and F172–F177 retain short general topic-area notes (not complete teaching courses). An uncertain/wrong response may link to the appropriate short concept or area explanation. This supports general subject understanding and independent revision, not any live NEA task. AQA A-level Biology also now offers a catch-up route from its homepage and concept list using its pre-existing concept key ideas; its existing question feedback, local progress and reteach system remain the primary learning workflow.
+

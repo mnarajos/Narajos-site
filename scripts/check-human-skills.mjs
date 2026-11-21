@@ -12,7 +12,7 @@ function fixture(data=new Map()){
  const window={scrollTo(){},addEventListener(n,fn){events[n]=fn;}};
  let seed=42;const math=Object.create(Math);math.random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
  const c=vm.createContext({window,document,Math:math,Date,console,localStorage:{getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,v),removeItem:k=>data.delete(k)},setInterval:()=>1,clearInterval(){}});
- for(const file of ["challenge-bank.js","content-knowledge.js","challenge-extension.js","skills.js","challenge.js"])vm.runInContext(read(file),c,{filename:file});
+ for(const file of ["challenge-bank.js","content-knowledge.js","challenge-extension.js","question-families.js","skills.js","challenge.js"])vm.runInContext(read(file),c,{filename:file});
  const api=window.KeystoneHumanChallenge,skills=window.KeystoneHumanSkills;
  function route(r){api.route(r,h=>main.innerHTML=h);}
  function action(key){mainEvents.click({target:{closest:sel=>sel==="[data-k-action]"?{dataset:{kAction:key}}:null}});}
@@ -78,6 +78,6 @@ assert.equal(progress["skill:magnification"].seen,10);
 fresh.start("magnification");assert.equal(fresh.state().index,0,"Repeat practice should start a fresh set");
 assert.notEqual(fresh.state().queue[0],before.queue[0]);
 fresh.api.pause();fresh.route("skills");assert(fresh.main.innerHTML.includes("Resume practice"));
-assert.equal(fresh.api.questionCount,194,"Fixed knowledge bank count must remain honest");
+assert.equal(fresh.api.questionCount,364,"Fixed knowledge bank count must remain honest");
 assert.equal(fresh.api.stats("f170").seen,0,"Skill performance must stay separate from topic coverage");
 console.log("Human Biology skills checks passed: 14 families, 22,400 seeded tasks, arithmetic, adaptive support, full reload/resume, ten-question sets and separate local history.");

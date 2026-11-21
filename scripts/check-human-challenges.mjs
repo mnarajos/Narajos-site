@@ -17,6 +17,7 @@ load("human-biology/content-f170.js");
 load("human-biology/challenge-bank.js");
 load("human-biology/content-knowledge.js");
 load("human-biology/challenge-extension.js");
+load("human-biology/question-families.js");
 load("human-biology/challenge.js");
 load("human-biology/companion.js");
 const db=window.KeystoneHumanChallenges,app=window.KeystoneHumanChallenge,companion=window.KeystoneHumanCatchup;
@@ -40,9 +41,9 @@ assert(help.includes("Vaccine types")&&help.includes("Key idea 1"),"Vaccine type
 companion.route("catchup/f171",h=>{help=h;});
 assert(help.includes("Immune dysfunction")&&help.includes("Vaccine types"),"Missing F171 subsections from catch-up navigation");
 
-assert.equal(db.questions.length,194);
-assert.equal(db.questions.filter(q=>q.unit==="f170").length,64);
-assert.equal(db.questions.filter(q=>q.unit==="f171").length,52);
+assert.equal(db.questions.length,364);
+assert.equal(db.questions.filter(q=>q.unit==="f170").length,156);
+assert.equal(db.questions.filter(q=>q.unit==="f171").length,130);
 for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,13,u+" knowledge bank missing");
 assert.deepEqual([...new Set(db.questions.map(q=>q.type))].sort(),["best","diagram","match","multi","number","order","short","single","sort","written"].sort());
 const ids=new Set();
@@ -82,7 +83,7 @@ for(const q of db.questions){
  if(q.type==="written")assert(q.markPoints.length>=2,"Unscaffolded written response: "+q.id);
  if(q.marks)assert(q.type==="written"&&(q.marks===6||q.marks===9),"Unexpected extended-answer mark count: "+q.id);
 }
-assert.equal(db.questions.filter(q=>q.warmup).length,23,"Warm-up coverage");
+assert.equal(db.questions.filter(q=>q.warmup).length,37,"Warm-up coverage");
 assert.equal(db.questions.filter(q=>q.type==="best").length,7,"Two-step reasoning coverage");
 assert.equal(db.questions.filter(q=>q.subtype==="error").length,4,"Misconception correction coverage");
 assert.equal(db.questions.find(q=>q.id==="health-parkinsons-therapy").marks,6);
@@ -131,7 +132,7 @@ for(const unit of ["f170","f171"]){
   assert(selected[0].level==="warmup"&&selected[1].level==="warmup",unit+" lost the easy start");
   assert(selected[2].level==="core"&&selected[3].level==="core",unit+" skipped the core level");
   assert(selected.slice(4).every(q=>q.level==="apply"),unit+" included an early stretch");
-  assert(new Set(selected.map(q=>q.type)).size>=6,unit+" lacks question format variety");
+  assert(new Set(selected.map(q=>q.type)).size>=6,unit+" lacks question format variety: "+selected.map(q=>q.id+"/"+q.type+"/"+q.level).join(", "));
  }
 }
 // Difficulty must soften at the first application step after poor early recall.
@@ -189,14 +190,14 @@ mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?
 assert(main.innerHTML.includes("Expected answer"),"Answer reveal failed");
 assert(main.innerHTML.includes("Here’s how it works"),"Unknown answers should not be treated as punitive errors");
 const afterSkip=JSON.parse(data.get("narajos-human-challenge-v2-session"));
-assert.equal(Object.keys(afterSkip.quickCheckIds).length,0,"An unrelated or harder item must not be inserted after a missed warm-up");
+for(const id of Object.keys(afterSkip.quickCheckIds)){const next=db.questions.find(q=>q.id===id),missed=db.questions.find(q=>q.id===record.queue[0]);assert.equal(next.family,missed.family,"A warm-up follow-up must test the same idea");assert.equal(next.level,"warmup","A missed warm-up must not trigger a harder follow-up");}
 assert(afterSkip.queue.includes(record.queue[0]),"Missed warm-up should be returned to later");
-assert(!main.innerHTML.includes("Try a quick check"),"App must not promise an unrelated quick check");
+assert.equal(main.innerHTML.includes("Try a quick check"),Object.keys(afterSkip.quickCheckIds).length>0,"Quick-check promise must match an actual related item");
 assert(window.KeystoneHumanChallenge.stats("f170").weak>=1,"Not sure should record an area for re-practice");
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"next"}}:null;}}});
 record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert(record.index>=1,"Question did not advance");
-assert.equal(window.KeystoneHumanChallenge.questionCount,194);
+assert.equal(window.KeystoneHumanChallenge.questionCount,364);
 // Verify the entire deterministic answer flow, not merely presence of new item types.
 function forcedQuestion(id){
  const q=db.questions.find(x=>x.id===id);assert(q,"Unknown forced test item: "+id);
@@ -220,13 +221,13 @@ assert.equal(guided.guided,1,"Guided success must be recorded as guided");
 assert.equal(guided.independent,0,"Guided success must not be scored as independent retrieval");
 const state=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert.equal(state.correctFirst,0,"Hints must not inflate independent first-attempt score");
-assert.equal(Object.keys(state.quickCheckIds).length,0,"Guided warm-up should not trigger an unrelated check");
-assert(state.retries[warm.id]===1,"A guided answer with no related quick check should return later for unaided retrieval");
+assert.equal(Object.keys(state.quickCheckIds).length,1,"A guided answer should now have an independent same-family alternative");
+assert.equal(db.questions.find(q=>q.id===Object.keys(state.quickCheckIds)[0]).family,warm.family);
 // For a related core concept, a quick check can follow immediately.
 forcedQuestion("cell-ser");main.querySelector=()=>null;main.querySelectorAll=()=>[];
 clickAction("skip");
 const linked=JSON.parse(data.get("narajos-human-challenge-v2-session"));
-assert(linked.quickCheckIds["cell-mito-ribosomes"]===true,"Related quick checks must target the same subtopic");
+assert.equal(db.questions.find(q=>q.id===Object.keys(linked.quickCheckIds)[0]).family,"cell-ser","Prefer the same objective over a different organelle in the same subtopic");
 forcedQuestion("cell-magnification");
 main.querySelector=selector=>selector===".k-error"?{textContent:""}:selector==="#k-number, #k-text, #k-written"?{value:"3000xyz"}:null;
 main.querySelectorAll=()=>[];
@@ -281,4 +282,55 @@ assert(!/\b(?:fetch\(|sendBeacon\(|XMLHttpRequest\(|WebSocket\()/.test(read("hum
 assert(!read("human-biology/challenge.js").includes("openai.com"),"No remote AI marking");
 assert(read("human-biology/index.html").includes("content-knowledge.js"),"Knowledge bank script not linked");
 assert(read("human-biology/index.html").includes("challenge-extension.js"),"Exam extension not loaded");
-console.log("Human Biology checks passed: 194 original questions across eight units, ten answer formats, visual feedback and deterministic local marking.");
+// A normal new set contains one variant per family. Repeated visits avoid the
+// immediately previous version, while a resumed set keeps its exact queue.
+assert.equal(db.families.length,85);
+for(const family of db.families){
+ assert.equal(family.members.length,3);
+ const members=family.members.map(id=>db.questions.find(q=>q.id===id));
+ assert.equal(new Set(members.map(q=>q.stem)).size,3,"Alternatives need distinct tasks: "+family.id);
+ assert(members.every(q=>q.section===family.section&&q.objective===family.objective&&q.level===members[0].level),"Alternatives must preserve mapping and broad demand");
+ assert(members.every(q=>Array.isArray(q.hints)&&q.hints.length===2&&q.hints.every(h=>h.length>30)),"Missing authored conceptual hints: "+family.id);
+}
+const recentVersions={};
+for(const unit of ["f170","f171"]){
+ for(let i=0;i<80;i++){
+  app.discard();const scope=i%2?"all":"a"+(i%(unit==="f170"?4:5)+1);
+  app.route("challenge/"+unit+"/"+scope,html=>main.innerHTML=html);
+  const s=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+  const qs=s.queue.map(id=>db.questions.find(q=>q.id===id));
+  assert.equal(new Set(qs.map(q=>q.family||q.id)).size,qs.length,"Normal sets must not repeat one objective's alternatives");
+  for(const q of qs.filter(q=>q.family)){
+   assert.notEqual(q.id,recentVersions[q.family],"Repeated task immediately reused a family version: "+q.id);
+   recentVersions[q.family]=q.id;
+  }
+  app.pause();app.route(s.route,html=>main.innerHTML=html);
+  assert.deepEqual(JSON.parse(data.get("narajos-human-challenge-v2-session")).queue,s.queue,"Resume rotated an unfinished set");
+ }
+}
+// Deterministic clock checks: no countdown/fill, genuine inactivity reset,
+// learner-controlled conceptual hints and keyboard access to a visible hint.
+let fakeNow=Date.now(),nextTimer=1;const timers=new Map();
+class ClockDate extends Date {static now(){return fakeNow;}}
+c.Date=ClockDate;c.setTimeout=(fn,delay=0)=>{const id=nextTimer++;timers.set(id,{fn,at:fakeNow+delay});return id;};c.clearTimeout=id=>timers.delete(id);
+function tick(ms){fakeNow+=ms;for(const [id,t] of [...timers])if(t.at<=fakeNow){timers.delete(id);t.fn();}}
+const hintButton={hidden:false,disabled:false,textContent:"",setAttribute(){}};
+main.querySelector=sel=>sel==='[data-k-action="hint"]'?hintButton:null;
+main.querySelectorAll=()=>[];
+forcedQuestion("cell-ser");
+assert(hintButton.hidden,"Hint must initially be invisible");
+assert(!main.innerHTML.includes("hint-wait")&&!main.innerHTML.includes("--hint-progress"),"Countdown/fill styling returned");
+tick(9999);assert(hintButton.hidden);
+mainEvents.input({target:{matches:()=>true,value:"starting an answer"}});
+tick(20);assert(hintButton.hidden,"Activity must reset the ten-second inactivity period");
+tick(10000);assert(!hintButton.hidden,"Hint must appear after inactivity");
+assert.equal(hintButton.textContent,"Hint");
+mainEvents.keydown({key:"Enter",target:{closest:()=>({})}});
+assert(!hintButton.hidden,"Keyboard activation must not hide the hint before its click");
+clickAction("hint");
+assert(main.innerHTML.includes("A new cell membrane needs material"),"First hint must use the authored prompt");
+assert(hintButton.hidden,"More help must wait for another inactive interval");
+tick(10010);clickAction("hint");
+assert(main.innerHTML.includes("Separate the production of membrane lipids"),"Second hint must teach the prerequisite principle");
+console.log("Human Biology checks passed: 364 questions, 85 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
+

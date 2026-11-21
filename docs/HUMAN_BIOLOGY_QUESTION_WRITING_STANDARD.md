@@ -52,7 +52,7 @@ Keep a short lesson to around 6–12 purposeful questions. Never require long ty
 2. **Clue:** one authored, question-specific cue pointing to the key discriminating principle, not the complete answer.
 3. **Narrow:** remove **one** wrong option from a four-choice question, give a first step of a long sequence or another small portion of support. Never reveal every missing word, the correct choice or a full model answer.
 
-Like the A-level app, show **Hint** after a ten-second delay, and **More help** after another ten seconds. The independent "I don't know — show me" action remains available immediately. Correct first *physical* taps on ordinary four-choice questions may auto-check; an initial wrong tap shows no correction, and pupils then press Check. Keyboard selection should not auto-check.
+Use the A-level least-help-first structure as the exemplar, with authored first-principles cues. Show **Hint** only after ten seconds without an answer interaction, and **More help** after another inactive ten seconds. Typing, selecting and ordering reset the delay. Keep the control hidden during the wait: no filling bar, countdown or attention animation. The independent "I don't know — show me" action remains available immediately. Correct first *physical* taps on ordinary four-choice questions may auto-check; an initial wrong tap shows no correction, and pupils then press Check. Keyboard selection should not auto-check.
 
 ## 6. Diagrams as questions and feedback
 

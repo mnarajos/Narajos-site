@@ -65,6 +65,11 @@ function showHome(){
  h+='<a href="#topics" class="k-mini-action learn"><span class="k-mini-symbol">'+kIcon("book")+'</span><strong>Learn a topic</strong><small>Short explanations</small></a>';
  h+='<a href="#challenge/f170/weak" class="k-mini-action fix"><span class="k-mini-symbol">'+kIcon("rotate")+'</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
  h+='</section>';
+ h+='<h2 class="k-subhead">Other ways to revise F171</h2><section class="k-home-actions">';
+ h+='<a href="#catchup/f171" class="k-mini-action learn"><span class="k-mini-symbol">'+kIcon("book")+'</span><strong>Catch up</strong><small>Key ideas and explanations</small></a>';
+ h+='<a href="#skills/f171" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("calc")+'</span><strong>Skills practice</strong><small>Calculations, data and evidence</small></a>';
+ h+='<a href="#challenge/f171/weak" class="k-mini-action fix"><span class="k-mini-symbol">'+kIcon("rotate")+'</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
+ h+='</section>';
  if(old)h+='<section class="k-continue"><div><strong>Unfinished flashcards or explanation practice</strong><p>Continue your saved set.</p></div>'+link("resume","Resume","primary")+'</section>';
  var savedChallenge=E&&E.hasResume();
  if(savedChallenge){var route=E.resumeRoute();h+='<section class="k-continue"><div><strong>Revision questions in progress</strong><p>Return to your unfinished questions.</p></div>'+link(route,"Resume questions","primary")+'</section>';}
@@ -200,7 +205,7 @@ function showLeave(callback){
 document.addEventListener("click",function(e){
  var btn=e.target.closest("#clear-human-bio");if(!btn)return;
  if(!window.confirm("Clear all Human Biology revision progress and unfinished sets saved in this browser? This cannot be undone."))return;
- var keys=["narajos-human-challenge-v2-session","narajos-human-challenge-v2-progress","narajos-human-biology-session-v1","narajos-human-biology-practice-v1","narajos-keystone-review-v1-ocr-human-biology-f170"];
+ var keys=["narajos-human-challenge-v2-session","narajos-human-challenge-v2-progress","narajos-human-challenge-v2-rotation","narajos-human-biology-session-v1","narajos-human-biology-practice-v1","narajos-keystone-review-v1-ocr-human-biology-f170"];
  keys.forEach(function(k){try{localStorage.removeItem(k);}catch(_){}});
  location.reload();
 });
