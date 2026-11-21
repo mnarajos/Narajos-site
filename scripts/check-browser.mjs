@@ -50,14 +50,17 @@ try{
  const firstConcept=desktop.locator('a[href^="#catchup-a1-"]').first();
  await firstConcept.waitFor({state:"visible",timeout:10000}).catch(async()=>{throw new Error("A-level catch-up concepts not rendered: "+(await desktop.locator("main").innerText()).slice(0,700));});
  await firstConcept.click();
+ await desktop.locator("section.companion-key").waitFor({state:"visible",timeout:10000});
  assert((await desktop.locator("main").innerText()).includes("Key idea"),"A-level key knowledge step not visible");
  await screen(desktop,"alevel-catchup");
 
  await checkPage(desktop,"human-biology");
  await desktop.goto(base+"/human-biology/#catchup/f171",{waitUntil:"load"});
  await desktop.locator('a[href="#catchup/f171/3.2.2"]').first().click();
+ await desktop.locator(".k-catchup-concept").waitFor({state:"visible",timeout:10000});
  assert((await desktop.locator("main").innerText()).includes("Vaccine types"),"F171 vaccine catch-up not visible");
  await desktop.locator('a[href="#catchup/f171/3.2.2/1"]').first().click();
+ await desktop.getByRole("heading",{name:"Key idea 2"}).waitFor({state:"visible",timeout:10000});
  assert((await desktop.locator("main").innerText()).includes("Key idea 2"),"Catch-up step did not advance");
  await screen(desktop,"human-vaccines");
 
