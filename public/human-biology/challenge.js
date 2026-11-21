@@ -13,7 +13,8 @@ function save(){try{if(session)localStorage.setItem(SK,JSON.stringify(session));
 function saveProgress(){try{localStorage.setItem(PK,JSON.stringify(progress));}catch(_){}}
 function restore(){try{var x=JSON.parse(localStorage.getItem(SK)||"null");if(x&&Array.isArray(x.queue)&&x.queue.length&&x.queue.every(function(id){return !!byId[id];})&&x.index<x.queue.length&&!x.complete&&x.route&&x.unit)return x;}catch(_){}return null;}
 function isActive(){return !!session&&session.index<session.queue.length;}
-function discard(){session=null;save();}
+function pause(){session=null;visible=false;} // Preserve the unfinished set in localStorage.
+function discard(){session=null;visible=false;save();}
 function icon(name){
  var paths={
  brain:'<path d="M12 18V5a4 4 0 0 0-7.5-1.9A4 4 0 0 0 3 10a4 4 0 0 0 1 7.5A4 4 0 0 0 12 18ZM12 18V5a4 4 0 0 1 7.5-1.9A4 4 0 0 1 21 10a4 4 0 0 1-1 7.5A4 4 0 0 1 12 18Z" transform="translate(0 2) scale(1 .9)"/>',
@@ -260,5 +261,5 @@ main.addEventListener("click",function(e){
  if(btn.dataset.kAction==="self-weak")gradeSelf(false);
 });
 window.addEventListener("beforeunload",function(e){if(isActive()){e.preventDefault();e.returnValue="";}});
-window.KeystoneHumanChallenge={route:route,isActive:isActive,discard:discard,stats:unitStats,questionCount:all.length,types:Array.from(new Set(all.map(function(q){return q.type;}))),icon:icon,hasResume:function(){return !!restore();}};
+window.KeystoneHumanChallenge={route:route,isActive:isActive,discard:discard,pause:pause,stats:unitStats,questionCount:all.length,types:Array.from(new Set(all.map(function(q){return q.type;}))),icon:icon,hasResume:function(){return !!restore();},resumeRoute:function(){var old=restore();return old?old.route:null;}};
 })();
