@@ -16,6 +16,7 @@ load("assets/spaced-review.js");
 load("human-biology/content-f170.js");
 load("human-biology/challenge-bank.js");
 load("human-biology/content-knowledge.js");
+load("human-biology/challenge-extension.js");
 load("human-biology/challenge.js");
 load("human-biology/companion.js");
 const db=window.KeystoneHumanChallenges,app=window.KeystoneHumanChallenge,companion=window.KeystoneHumanCatchup;
@@ -32,15 +33,26 @@ companion.route("catchup/f175/a1",h=>{help=h;});
 assert(help.includes("oviduct")&&help.includes("Fallopian tube"),"F175 terminology catch-up missing");
 assert.equal(companion.linkFor({unit:"f170",section:"1.1.1",area:1}),"catchup/f170/1.1.1","Concept-specific reteach link missing");
 assert.equal(companion.linkFor({unit:"f175",section:"1.1",area:1}),"catchup/f175/a1","NEA unit knowledge catch-up route missing");
+assert.equal(companion.linkFor({unit:"f171",section:"3.2.1",area:3}),"catchup/f171/3.2.1","Immune dysfunction reteach route missing");
+assert.equal(companion.linkFor({unit:"f171",section:"3.2.2",area:3}),"catchup/f171/3.2.2","Vaccine types reteach route missing");
+companion.route("catchup/f171/3.2.2",h=>{help=h;});
+assert(help.includes("Vaccine types")&&help.includes("Key idea 1"),"Vaccine type catch-up lesson missing");
+companion.route("catchup/f171",h=>{help=h;});
+assert(help.includes("Immune dysfunction")&&help.includes("Vaccine types"),"Missing F171 subsections from catch-up navigation");
 
-assert.equal(db.questions.length,169);
-assert.equal(db.questions.filter(q=>q.unit==="f170").length,62);
-assert.equal(db.questions.filter(q=>q.unit==="f171").length,29);
+assert.equal(db.questions.length,186);
+assert.equal(db.questions.filter(q=>q.unit==="f170").length,64);
+assert.equal(db.questions.filter(q=>q.unit==="f171").length,44);
 for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,13,u+" knowledge bank missing");
 assert.deepEqual([...new Set(db.questions.map(q=>q.type))].sort(),["best","diagram","match","multi","number","order","short","single","sort","written"].sort());
 const ids=new Set();
 const validUnits=new Set(["f170","f171","f172","f173","f174","f175","f176","f177"]);
 const map=window.KeystoneHumanData.areas.flatMap(a=>a.sections.map(s=>s.id));
+assert(db.questions.some(q=>q.unit==="f170"&&q.section==="1.2.1"),"F170 tissue hierarchy gap remains");
+assert(db.questions.some(q=>q.unit==="f170"&&q.section==="2.1.1"),"F170 physiology gap remains");
+for(const section of ["3.1","3.2.1","3.2.2"]){
+ assert(db.questions.filter(q=>q.unit==="f171"&&q.section===section).length>=3,"F171 immunology topic needs several question checks: "+section);
+}
 for(const q of db.questions){
  assert(!ids.has(q.id),"Duplicate question ID: "+q.id);ids.add(q.id);
  assert(validUnits.has(q.unit),"Missing/incorrect unit: "+q.id);
@@ -171,7 +183,7 @@ assert(window.KeystoneHumanChallenge.stats("f170").weak>=1,"Not sure should reco
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"next"}}:null;}}});
 record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert(record.index>=1,"Question did not advance");
-assert.equal(window.KeystoneHumanChallenge.questionCount,169);
+assert.equal(window.KeystoneHumanChallenge.questionCount,186);
 // Verify the entire deterministic answer flow, not merely presence of new item types.
 function forcedQuestion(id){
  const q=db.questions.find(x=>x.id===id);assert(q,"Unknown forced test item: "+id);
@@ -255,4 +267,5 @@ assert(!html.includes("fonts.googleapis.com"),"Human Biology should not request 
 assert(!/\b(?:fetch\(|sendBeacon\(|XMLHttpRequest\(|WebSocket\()/.test(read("human-biology/challenge.js")),"No network upload API should be used in this revision app");
 assert(!read("human-biology/challenge.js").includes("openai.com"),"No remote AI marking");
 assert(read("human-biology/index.html").includes("content-knowledge.js"),"Knowledge bank script not linked");
-console.log("Human Biology checks passed: 169 original questions across eight units, ten answer formats, visual feedback and deterministic local marking.");
+assert(read("human-biology/index.html").includes("challenge-extension.js"),"Exam extension not loaded");
+console.log("Human Biology checks passed: 186 original questions across eight units, ten answer formats, visual feedback and deterministic local marking.");
