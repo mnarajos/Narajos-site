@@ -190,3 +190,27 @@ h1{font-size:clamp(1.65rem,3.5vw,2.2rem);letter-spacing:-.028em}
 .k-calculator-note svg{width:19px;height:19px;flex:none}
 .k-hint-box p+p{margin-top:8px;padding-top:8px;border-top:1px solid #dfd2f2}
 @media(prefers-reduced-motion:reduce){.k-hint-button.hint-wait::before{transition:none}}
+
+
+/* Separate examined units from standalone NEA-unit science knowledge. */
+.k-more-units{display:flex;gap:13px;align-items:center;margin:4px 0 24px;padding:16px 18px;background:#fff;border:1px solid #c8d6d4;border-left:4px solid #7d68ac;border-radius:12px;text-decoration:none;color:var(--ink)}
+.k-more-units>span:nth-child(2){flex:1;display:flex;flex-direction:column;gap:2px}
+.k-more-units strong{font:700 .95rem/1.4 Poppins,system-ui}
+.k-more-units small{color:var(--muted);font-size:.78rem}
+.k-more-units svg{width:25px;height:25px;color:#7357a1}
+.k-more-units>span:last-child{font-size:1.6rem;color:#7357a1}
+.k-more-units:hover{text-decoration:none;border-color:#8d7db4;background:#fcfaff}
+.k-knowledge-tile{background:#615783!important;min-height:95px;padding:15px 19px}
+.k-knowledge-tile .k-icon{background:#ffffff29}
+.k-knowledge-tile strong{font-size:1.06rem}
+.k-knowledge-tile em{font-size:.77rem}
+.k-sort{display:grid;gap:10px}
+.k-sort-row{margin:0;padding:12px;border:1px solid #d4dedb;background:#fbfcfb;border-radius:12px;min-width:0}
+.k-sort-row legend{padding:0 4px;font-size:.93rem;font-weight:650}
+.k-sort-choices{display:flex;gap:7px;flex-wrap:wrap}
+.k-sort-choices label{cursor:pointer;display:inline-flex;position:relative;min-width:0}
+.k-sort-choices input{position:absolute;opacity:0;width:1px;height:1px}
+.k-sort-choices span{padding:8px 10px;border:2px solid #cdd9d4;border-radius:10px;color:#36515a;background:#fff;font-size:.82rem;font-weight:650;line-height:1.25}
+.k-sort-choices input:checked+span{border-color:var(--brand);background:#e0f2ed;color:#185b56}
+.k-sort-choices input:focus-visible+span{outline:3px solid var(--ring);outline-offset:3px}
+@media(max-width:560px){.k-knowledge-tile{min-height:84px}.k-sort-row{padding:10px}}
