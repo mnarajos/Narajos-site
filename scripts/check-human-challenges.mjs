@@ -10,7 +10,7 @@ const document={getElementById:elem,querySelectorAll(){return[];},addEventListen
 const location={hash:"#home",assign(x){this.hash=x;}};
 const window={addEventListener(name,fn){events[name]=fn;},scrollTo(){}};
 const store={getItem(k){return data.get(k)||null;},setItem(k,v){data.set(k,String(v));},removeItem(k){data.delete(k);}};
-const c=vm.createContext({window,document,location,localStorage:store,Date,Math,console});
+const c=vm.createContext({window,document,location,localStorage:store,Date,Math,console,setTimeout:fn=>fn()});
 function load(p){vm.runInContext(read(p),c,{filename:p});}
 load("assets/spaced-review.js");
 load("human-biology/content-f170.js");
@@ -33,7 +33,7 @@ for(const q of db.questions){
  if(q.unit==="f170")assert(map.includes(q.section),"Question not mapped to current F170 section: "+q.id);
  assert(q.model&&q.explain&&q.misconception,"Missing explanatory feedback: "+q.id);
  if(q.type==="number")assert(Number.isFinite(q.correct)&&q.answerUnit!==undefined,"Missing numeric answer and units: "+q.id);
- if(q.type==="best")assert(q.options.length>=2&&q.reasons.length>=3&&q.correct>=0&&q.correct<q.options.length&&q.reasonCorrect>=0&&q.reasonCorrect<q.reasons.length,"Invalid two-step answer: "+q.id);
+ if(q.type==="best")assert(q.options.length===4&&q.reasons.length===4&&q.correct>=0&&q.correct<q.options.length&&q.reasonCorrect>=0&&q.reasonCorrect<q.reasons.length,"Two-stage reasoning needs four options in both steps: "+q.id);
  if(q.warmup)assert(q.level==="warmup"&&q.type==="single","Warm-up should be a low-load single-answer question");
  if(q.type==="multi")assert(Array.isArray(q.correct)&&q.correct.length>=2,"Invalid multi-answer: "+q.id);
  if(q.type==="match")assert(q.pairs.length>=2,"Too few match pairs: "+q.id);
@@ -193,6 +193,48 @@ main.querySelectorAll=()=>[];
 clickAction("check");
 assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-session")).phase,"ask","Malformed numeric input must not be credited");
 
+// Timed hints are not available immediately and require another wait after a rung.
+const delayed=forcedQuestion("warm-f171-heart");
+const initialTimer=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert(initialTimer.hintReadyAt>Date.now(),"Hint should initially have a ten-second delay");
+clickAction("hint");
+assert.equal(Object.keys(JSON.parse(data.get("narajos-human-challenge-v2-session")).hintsUsed).length,0,"Premature hint tap must do nothing");
+unlockHintClock();clickAction("hint");
+let afterHint=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.equal(afterHint.hintsUsed[delayed.id],1,"Timed hint should reveal one rung");
+assert(afterHint.hintReadyAt>Date.now(),"More help should have another ten-second delay");
+clickAction("hint");
+assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-session")).hintsUsed[delayed.id],1,"One tap must not reveal two rungs");
+
+// Simulate physical pointer taps, separately from keyboard selections.
+const physical=forcedQuestion("warm-f170-cells");
+main.querySelector=selector=>selector==='input[name="kchoice"]:checked'?{value:String(physical.correct)}:null;
+main.querySelectorAll=selector=>selector==='input[name="kchoice"]:checked'?[{value:String(physical.correct)}]:[];
+mainEvents.click({detail:1,target:{closest(selector){return selector===".k-option"?{}:null;}}});
+assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-session")).phase,"feedback","First correct physical tap should auto-check");
+const falseFirst=forcedQuestion("warm-f170-physiology");
+main.querySelector=selector=>selector==='input[name="kchoice"]:checked'?{value:String((falseFirst.correct+1)%4)}:null;
+main.querySelectorAll=()=>[{value:String((falseFirst.correct+1)%4)}];
+mainEvents.click({detail:1,target:{closest(selector){return selector===".k-option"?{}:null;}}});
+let wrongState=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.equal(wrongState.phase,"ask","First wrong tap should remain unanswered");
+assert.equal(wrongState.quickTapAttempted,true,"Wrong first tap must disable further automatic grading");
+main.querySelector=selector=>selector==='input[name="kchoice"]:checked'?{value:String(falseFirst.correct)}:null;
+main.querySelectorAll=()=>[{value:String(falseFirst.correct)}];
+mainEvents.click({detail:1,target:{closest(selector){return selector===".k-option"?{}:null;}}});
+assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-session")).phase,"ask","Correcting an earlier wrong tap should require Check");
+clickAction("check");
+assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-session")).phase,"feedback","Check should credit the corrected answer");
+
+// Each new schematic must support feedback, without disclosing an answer in alt text.
+for(const id of ["f172-diagram-alleles","f173-diagram-blood","f174-diagram-glucose","f175-diagram-oviduct","f176-diagram-brain","f177-diagram-randomise"]){
+ const question=forcedQuestion(id);
+ assert(main.innerHTML.includes("<svg")&&!main.innerHTML.includes("Look again:"),"Diagram should appear without worked caption on the question");
+ main.querySelectorAll=()=>[{value:String(question.correct)}];
+ main.querySelector=()=>null;
+ clickAction("skip");
+ assert(main.innerHTML.includes("Look again:"),"Feedback should include an annotated diagram");
+}
 const html=read("human-biology/index.html");
 assert(!html.includes("fonts.googleapis.com"),"Human Biology should not request remote fonts");
 assert(!/\b(?:fetch\(|sendBeacon\(|XMLHttpRequest\(|WebSocket\()/.test(read("human-biology/challenge.js")),"No network upload API should be used in this revision app");
