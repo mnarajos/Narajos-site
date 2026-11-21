@@ -160,3 +160,9 @@ h1,h2,h3,p{margin-top:0}h1,h2,h3{letter-spacing:-.035em;line-height:1.17}h1{font
   .site-nav details:nth-of-type(2) .site-dropdown{right:-45px}
   .home-option>p:not(.home-overline){max-width:48ch}
 }
+
+/* Short explanation of the independent-study philosophy, kept below the tools. */
+.home-philosophy{max-width:800px;margin:34px 0 0;padding-top:22px;border-top:1px solid var(--line);font-size:14px;line-height:1.75;color:var(--muted)}
+.section-intro{max-width:780px;margin:-6px 0 25px;font-size:15px;line-height:1.75;color:var(--muted)}
+#learning-companions{scroll-margin-top:24px}
+@media(max-width:850px){.home-philosophy{margin-top:24px;padding-top:19px}}
