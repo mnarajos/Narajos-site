@@ -1,0 +1,21 @@
+name: Check Narajos website
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'public/**'
+      - 'scripts/check-site.mjs'
+      - '.github/workflows/site-checks.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check HTML links, JavaScript syntax and key revision functions
+        run: node scripts/check-site.mjs
