@@ -379,8 +379,10 @@ function record(q,got){
  }
  if(isQuickCheck(q)){session.quickChecksSeen=(session.quickChecksSeen||0)+1;if(independent)session.quickChecksPassed=(session.quickChecksPassed||0)+1;}
  session.lastPlannedCheck=null;
- if(!got&&(session.retries[q.id]||0)<1){session.queue.push(q.id);session.retries[q.id]=(session.retries[q.id]||0)+1;}
- if(!got||helped)planQuickCheck(q);
+ var checkId=(!got||helped)?planQuickCheck(q):null;
+ // When no suitable same-concept question exists, a guided response returns
+ // later in the set for another unaided attempt rather than being counted secure.
+ if((!got||(helped&&!checkId))&&(session.retries[q.id]||0)<1){session.queue.push(q.id);session.retries[q.id]=(session.retries[q.id]||0)+1;}
  save();
 }
 function readForm(){
