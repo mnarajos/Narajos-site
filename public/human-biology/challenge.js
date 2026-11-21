@@ -70,7 +70,25 @@ function landing(){
 function makeSession(unit,scope,route){
  var selected=filter(unit,scope);if(!selected.length){show('<div class="k-wrap"><p class="crumb"><a href="#challenge/'+unit+'">← Exam unit</a></p><div class="paper panel"><h1>No questions here yet</h1><p>Try a mixed set or choose another area.</p><a class="button primary" href="#challenge/'+unit+'/all">Start mixed questions</a></div></div>');return;}
  var size=scope==="all"?8:scope==="sam"?10:scope==="stretch"?6:8;
- var ids=shuffle(selected).slice(0,size).map(function(x){return x.id;});
+ // Mixed sessions deliberately span question formats; the sample-informed mode
+ // also spreads questions across topic areas where the bank permits.
+ var pool=shuffle(selected),chosen=[];
+ if(scope==="all"||scope==="sam"){
+  var types=shuffle(Array.from(new Set(pool.map(function(q){return q.type;}))));
+  types.forEach(function(t){
+   if(chosen.length>=size)return;
+   var candidates=pool.filter(function(q){return q.type===t&&chosen.indexOf(q)<0;});
+   candidates.sort(function(a,b){return chosen.filter(function(z){return z.area===a.area;}).length-chosen.filter(function(z){return z.area===b.area;}).length;});
+   if(candidates.length)chosen.push(candidates[0]);
+  });
+ }
+ while(chosen.length<size&&chosen.length<selected.length){
+  var next=pool.filter(function(q){return chosen.indexOf(q)<0;}).sort(function(a,b){
+   var areaA=chosen.filter(function(z){return z.area===a.area;}).length,areaB=chosen.filter(function(z){return z.area===b.area;}).length;
+   return areaA-areaB;
+  })[0];if(!next)break;chosen.push(next);
+ }
+ var ids=shuffle(chosen).map(function(x){return x.id;});
  session={unit:unit,scope:scope,route:route,queue:ids,index:0,first:{},correctFirst:0,phase:"ask",answers:{},retries:{},complete:false,started:Date.now()};
  save();drawQuestion();
 }
