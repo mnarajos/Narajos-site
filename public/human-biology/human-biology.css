@@ -176,3 +176,5 @@ h1{font-size:clamp(1.65rem,3.5vw,2.2rem);letter-spacing:-.028em}
 .k-feedback.pending{color:#233f5a}
 .k-options .k-option:has(input:checked){border-color:var(--brand);background:#eff8f5}
 @media (max-width:560px){.k-foot-actions{gap:8px}.k-foot-actions .button{padding:10px 13px}.k-justify fieldset{width:100%}}
+
+.k-privacy-small{color:var(--muted);font-size:.79rem;line-height:1.5;margin:15px 0 0}.k-local-reset{border:0;background:none;text-decoration:underline;text-underline-offset:2px;color:var(--brand);font-size:inherit;padding:3px;cursor:pointer}.k-local-reset:focus-visible{outline:3px solid var(--ring);border-radius:5px}
