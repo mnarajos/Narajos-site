@@ -42,6 +42,18 @@ try{
  const desktop=await browser.newPage({viewport:{width:1280,height:900}});
  await desktop.goto(base+"/",{waitUntil:"load"});
  assert(await desktop.title(),"Homepage title missing");
+ assert(await desktop.getByRole("heading",{name:"Learning companions"}).isVisible(),"Learning companions missing from homepage");
+ assert((await desktop.locator(".home-philosophy").innerText()).includes("complement classroom teaching"),"Public purpose statement missing");
+ const homeMenu=desktop.locator(".site-nav details").first();
+ await homeMenu.locator("summary").click();
+ assert(await homeMenu.locator('a[href="/human-biology/"]').isVisible(),"Human Biology missing from homepage dropdown");
+ await homeMenu.locator("summary").click();
+ await screen(desktop,"home-structure");
+ await checkPage(desktop,"teaching");
+ const companionCards=desktop.locator('a.app-card[href="/gcse/"],a.app-card[href="/alevel/"],a.app-card[href="/human-biology/"]');
+ assert.equal(await companionCards.count(),3,"Teaching overview must show three learner applications");
+ assert(await desktop.locator('a[href="/teacher/"]').count(),"Teaching tool should remain discoverable");
+ await screen(desktop,"teaching-overview");
  await checkPage(desktop,"alevel");
  await desktop.locator('a[href="#catchup"]').first().click();
  await desktop.waitForURL("**/alevel/#catchup");
@@ -81,11 +93,21 @@ try{
  await screen(desktop,"homepage");
 
  const mobile=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
- for(const name of ["alevel","human-biology"]){await checkPage(mobile,name);await screen(mobile,name+"-mobile");}
+ await mobile.goto(base+"/",{waitUntil:"load"});
+ await mobile.locator(".home-philosophy").waitFor({state:"visible"});
+ const mobileMenu=mobile.locator(".site-nav details").first();
+ await mobileMenu.locator("summary").click();
+ assert(await mobileMenu.locator('a[href="/human-biology/"]').isVisible(),"Human Biology missing from mobile homepage dropdown");
+ assert((await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth))<=3,"Mobile homepage has horizontal overflow");
+ await screen(mobile,"home-mobile");
+ for(const name of ["teaching","teaching/simulations","privacy","alevel","human-biology"]){
+  await checkPage(mobile,name);
+  if(name==="teaching"||name==="alevel"||name==="human-biology")await screen(mobile,name.replaceAll("/","-")+"-mobile");
+ }
  await mobile.close();
  await desktop.close();
  assert.deepEqual(errors,[],"Uncaught page errors: "+errors.join("; "));
- console.log("Browser smoke checks passed: A-level and Human Biology catch-up, 194 questions, real leave dialog, homepage navigation and mobile viewport overflow.");
+ console.log("Browser smoke checks passed: unified three-app navigation, homepage and hub, A-level/Human Biology catch-up, 194 questions, leave dialog and mobile viewport overflow.");
 }finally{
  await browser.close();await new Promise(done=>server.close(done));
 }
