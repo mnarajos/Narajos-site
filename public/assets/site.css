@@ -125,3 +125,23 @@ h1,h2,h3,p{margin-top:0}h1,h2,h3{letter-spacing:-.035em;line-height:1.17}h1{font
 .simulation-group .simulation-list .app-card{min-height:150px;gap:8px}
 .simulation-group .simulation-list .app-card p{line-height:1.5}
 .simulation-group .simulation-list .app-card .card-foot{padding-top:4px}
+
+/* Home: three quiet columns rather than large cards. */
+.home-simple{padding:82px 0 90px}
+.home-simple .lead{margin-bottom:48px}
+.home-options{gap:0}
+.home-option{background:transparent;box-shadow:none;border:0;border-right:1px solid var(--line);border-radius:0;padding:0 26px;min-height:135px}
+.home-option:first-child{padding-left:0}
+.home-option:last-child{border-right:0;padding-right:0}
+.home-option h2{font-size:20px;margin:0 0 18px}
+.home-option .home-links{margin-top:0}
+.home-option .home-links a{font-size:14px}
+@media(max-width:850px){
+.home-options{grid-template-columns:1fr}
+.home-option,.home-option:first-child,.home-option:last-child{padding:18px 0;border-right:0;border-bottom:1px solid var(--line);min-height:0}
+.home-option:first-child{padding-top:0}
+.home-option:last-child{border-bottom:0}
+.home-option h2{margin-bottom:8px}
+.home-simple{padding:48px 0 62px}
+.home-simple .lead{margin-bottom:26px}
+}
