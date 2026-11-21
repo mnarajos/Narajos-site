@@ -57,6 +57,11 @@ for(const full of htmlFiles){
 }
 const home=read("index.html"),teacher=read("teacher/index.html");
 const alevel=read("alevel/index.html"),gcse=read("gcse/index.html");
+const humanIndex=read("human-biology/index.html");
+requireTrue(humanIndex.includes('/human-biology/companion.js'),"Human Biology companion not loaded");
+requireTrue(alevel.includes("function showCatchupIndex(")&&alevel.includes("function showCatchup("),"A-level catch-up route implementation missing");
+requireTrue(alevel.includes('href="#catchup-')&&alevel.includes('href="#catchup"'),"A-level catch-up navigation missing");
+requireTrue(alevel.includes("function showReteach("),"Existing A-level error-feedback reteach missing");
 requireTrue(home.includes("nav-short"),"Homepage mobile labels missing");
 requireTrue(home.includes('href="/human-biology/"'),"Human Biology link missing from homepage");
 requireTrue(read("human-biology/index.html").includes('/human-biology/app.js'),"Human Biology application script missing");
