@@ -1,0 +1,30 @@
+/* Shared presentation for Keystone spaced flashcard reviews. */
+.kr-entry{border:1px solid var(--line);background:var(--card);border-radius:17px;padding:18px 20px;margin:14px 0 22px}
+.kr-entry h2{font-size:1.23rem;margin:0 0 8px}
+.kr-entry p{margin:0 0 14px;color:var(--muted)}
+.kr-entry .kr-actions,.kr-actions{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+.kr-subtle{color:var(--muted);font-size:.9rem}
+.kr-metrics{display:flex;flex-wrap:wrap;gap:10px 18px;font-size:.85rem;color:var(--muted);margin-bottom:15px}
+.kr-section{margin:20px 0}
+.kr-section h2{font-size:1.23rem}
+.kr-decks{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:10px}
+.kr-deck{display:block;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 16px}
+.kr-deck:hover,.kr-deck:focus-visible{border-color:var(--acc);color:var(--ink)}
+.kr-deck strong{display:block;font-size:.97rem}
+.kr-deck small{color:var(--muted);font-size:.79rem}
+.kr-choice{display:flex;flex-wrap:wrap;gap:15px;align-items:center;margin:12px 0;font-size:.94rem}
+.kr-choice label{display:inline-flex;gap:8px;align-items:center;cursor:pointer}
+.kr-choice input{accent-color:var(--acc);width:18px;height:18px}
+.kr-review-card{border:1px solid var(--line);border-radius:18px;background:var(--card);padding:clamp(20px,5vw,36px);margin:18px 0;min-height:235px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:16px;text-align:center}
+.kr-review-card .kr-question{font-size:clamp(1.35rem,3.2vw,2.05rem);font-weight:700;line-height:1.35;max-width:740px;margin:0}
+.kr-review-card .kr-answer{font-size:clamp(1.25rem,2.8vw,1.8rem);font-weight:650;line-height:1.4;max-width:740px;margin:0;white-space:pre-line}
+.kr-review-card .kr-label{font-size:.74rem;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;font-weight:700;margin:0}
+.kr-result{padding-top:15px;border-top:1px solid var(--line);width:100%;max-width:740px}
+.kr-typed{width:min(100%,540px);border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:12px;font:inherit}
+.kr-typed:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.kr-typed-feedback{font-size:.9rem;margin:0;color:var(--muted)}
+.kr-review-card .kr-grade{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.kr-progress{background:var(--line);border-radius:999px;height:8px;overflow:hidden;margin:10px 0}
+.kr-progress div{height:100%;background:var(--acc);transition:width .15s}
+.kr-empty{padding:23px;border:1px dashed var(--line);border-radius:14px;text-align:center}
+@media(prefers-reduced-motion:reduce){.kr-progress div{transition:none}}
