@@ -59,3 +59,7 @@ The examples above describe the response demands; our app questions and scenario
 170 new original alternatives join 85 three-version question families. Every F170/F171 subtopic heading now has at least one such family. The fixed bank is 364 questions: 156 F170, 130 F171 and 78 knowledge-only F172–F177 questions. The count includes alternatives, not 364 distinct learning objectives. The separate 14 generated skill families remain available.
 
 Normal new sets select one variant of a family, and recent local selection history discourages immediate repeats. Unfinished sets restore their original version. Wrong or guided answers prefer a same-objective check before another question merely sharing the subtopic. Families have authored two-step prompts/principles; eligible four-choice questions can then offer limited narrowing. Full statement-by-statement coverage and additional clinical/graph contexts remain ongoing content work.
+
+## Subsequent scaffolded expansion
+
+The next release adds 46 selected teaching-idea progressions and 144 questions (138 foundation/diagnostic/challenge tasks and six additional core alternatives). The current fixed bank is 508 questions, with 88 rotating core families. See [the coverage and progression audit](HUMAN_BIOLOGY_QUESTION_COVERAGE.md) for the exact ideas covered and remaining scope. Every listed subtopic has one sequence; this remains different from complete coverage of its teaching statements.

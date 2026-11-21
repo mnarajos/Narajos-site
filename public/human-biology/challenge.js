@@ -7,7 +7,7 @@ if(window.KeystoneHumanKnowledge){db.units=db.units.concat(window.KeystoneHumanK
 var K="narajos-human-challenge-v2-",SK=K+"session",PK=K+"progress",RK=K+"rotation",session=null,progress={},rotation={};
 try{var r=JSON.parse(localStorage.getItem(PK)||"{}");if(r&&typeof r==="object"&&!Array.isArray(r))progress=r;}catch(_){}
 try{var rr=JSON.parse(localStorage.getItem(RK)||"{}");if(rr&&typeof rr==="object"&&!Array.isArray(rr))rotation=rr;}catch(_){}
-var all=db.questions,byId={},skills=window.KeystoneHumanSkills;all.forEach(function(q){byId[q.id]=q;});
+var all=db.questions,byId={},skills=window.KeystoneHumanSkills,ladders=window.KeystoneHumanProgressions;all.forEach(function(q){byId[q.id]=q;});
 var render=null,visible=false,lastRoute="",skillExampleStem="";
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(a){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[a];});}
 function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=b[i];b[i]=b[j];b[j]=t;}return b;}
@@ -77,6 +77,7 @@ function intro(unit){
  h+='<div class="k-mini-stats"><span><strong>'+stats.questions+'</strong> original questions</span><span><strong>'+stats.seen+'</strong> attempted</span><span><strong>'+stats.weak+'</strong> to revisit</span></div>';
  h+='<h2 class="k-subhead">Start practising</h2><div class="k-action-grid">';
  var tiles=[
+  ...(!knowledge&&ladders?[["build","Build understanding","One idea, four progressive steps","layers","teal"]]:[]),
   ["all","Quick mix","Start easy, then build up","bolt","teal"],
   [knowledge?"core":"sam",knowledge?"Core knowledge":"Exam-style focus",knowledge?"Learn the essentials":"Skills found in OCR samples","target","blue"],
   ["weak","Fix mistakes","Revisit questions you missed","rotate","orange"],
@@ -186,6 +187,9 @@ function adaptQuickMixEnd(){
  save();
 }
 function makeSession(unit,scope,route){
+ if(ladders&&scope==="build")return progressionMenu(unit);
+ var point=ladders&&ladders.get(scope);
+ if(point&&point.unit!==unit)return intro(unit);
  var selected=rotatePool(filter(unit,scope));if(!selected.length){show('<div class="k-wrap"><p class="crumb"><a href="#challenge/'+unit+'">← Exam unit</a></p><div class="paper panel"><h1>No questions here yet</h1><p>Try a mixed set or choose another area.</p><a class="button primary" href="#challenge/'+unit+'/all">Start mixed questions</a></div></div>');return;}
  var size=scope==="all"?8:scope==="sam"?10:scope==="stretch"?6:8;
  // Mixed sessions deliberately span question formats; the sample-informed mode
@@ -207,7 +211,8 @@ function makeSession(unit,scope,route){
   })[0];if(!next)break;chosen.push(next);
  }
  var ids;
- if(scope==="all"){ids=quickMixQueue(unit,size);}
+ if(point){ids=[point.foundation,rotatePool(point.core.map(function(id){return byId[id];}))[0].id];ids=[ids[0],point.diagnostic,ids[1],point.challenge];}
+ else if(scope==="all"){ids=quickMixQueue(unit,size);}
  else if(/^a[1-5]$/.test(scope)){
   // Topic practice is instructionally sequenced; unlike the mixed revision mode,
   // it must not begin with the hardest randomly selected application task.
@@ -220,7 +225,15 @@ function makeSession(unit,scope,route){
   ids=arr.sort(function(a,b){return stage(a)-stage(b);}).map(function(q){return q.id;});
  }else ids=shuffle(chosen).map(function(x){return x.id;});
  session={unit:unit,scope:scope,route:route,queue:ids,index:0,first:{},correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,quickMixVersion:scope==="all"?2:null,quickMixBase:scope==="all"?ids.slice():null,quickMixFinalId:scope==="all"?ids[ids.length-1]:null,quickMixAdjusted:false,complete:false,started:Date.now()};
+ if(point)session.point=point.id;
  rememberVersions(ids);save();drawQuestion();
+}
+function progressionMenu(unit){
+ visible=false;var points=ladders.points.filter(function(p){return p.unit===unit;});
+ var h='<div class="k-wrap"><p class="crumb"><a href="#challenge/'+unit+'">← Unit overview</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+unit.toUpperCase()+' · Step by step</div><h1>Build understanding</h1><p>Choose one idea. Start with prior knowledge, check a misconception, try a rotating exam-focused question, then tackle a challenge. Read the explanation after each step.</p></div><p class="k-source">'+points.length+' selected teaching ideas, one in each listed subtopic. Each section contains further required content: this is not yet complete statement-by-statement coverage. Repeats rotate the third question; the supporting steps currently stay the same.</p>';
+ var area=0;points.forEach(function(p){if(area!==p.area){if(area)h+='</div></details>';area=p.area;h+='<details class="k-progression-area"'+(area===1?' open':'')+'><summary>'+esc(areaName(unit,area))+'</summary><div class="k-progression-list">';}
+  h+='<article class="paper k-skill-card"><small>'+unit.toUpperCase()+' · '+esc(p.section)+'</small><h3>'+esc(p.statement)+'</h3><p>Foundation → misconception → exam focus → challenge</p><a class="button primary" href="#challenge/'+unit+'/'+p.id+'">Start sequence<span class="sr-only">: '+esc(p.statement)+'</span></a></article>';
+ });if(area)h+='</div></details>';show(h+source()+'</div>');
 }
 function current(){return session&&byId[session.queue[session.index]];}
 /* Skills reuse the question engine. Store seeds, not a second bank of answers.
@@ -447,6 +460,7 @@ function drawQuestion(){
  var prog=(100*(session.index/max)).toFixed(1),showing=session.phase==="feedback";
  var used=session.hintsUsed&&session.hintsUsed[q.id]||0,availableHints=hintsFor(q);
  var h='<div class="k-wrap k-question-view"><p class="crumb"><a href="#'+(session.skillId?'skills/'+q.unit:'challenge/'+q.unit)+'">← Leave this set</a></p><div class="k-question-meta"><span>'+esc(sub)+'</span><span>'+num+' of '+max+'</span></div><div class="progress-track" role="progressbar" aria-label="Questions completed" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+session.index+'"><div style="width:'+prog+'%"></div></div>';
+ if(session.point){var point=ladders.get(session.point);h+='<p class="k-sequence-note"><strong>'+esc(point.statement)+'</strong><br>'+esc(q.stage==="foundation"?"1 · Activate prior knowledge":q.stage==="diagnostic"?"2 · Check a misconception":q.stage==="challenge"?"4 · Transfer and challenge":"3 · Use the idea")+'</p>';}
  h+='<div class="k-question-paper"><div class="k-question-tags"><span class="k-type">'+icon(iconFor(q))+esc(labelType(q))+'</span><span class="k-level '+esc(q.level)+'">'+esc(q.level==="warmup"?"Warm-up":q.level==="core"?"Core knowledge":q.level==="apply"?"Application":"Challenge")+'</span>'+(q.marks?'<span class="k-level stretch">'+q.marks+'-mark response</span>':'')+'</div><h1>'+esc(q.stem)+'</h1>';
  if(q.type==="number"||q.calculator)h+='<div class="k-calculator-note">'+icon("calc")+'<span>Calculator may help</span></div>';
  if(q.figure&&!showing)h+=figure(q.figure);
@@ -493,11 +507,12 @@ function validateAnswer(q,a){
  return {ready:true,correct:null};
 }
 function planQuickCheck(q){
- if(session&&session.skillId)return null;
+ if(session&&(session.skillId||session.point))return null; // Keep authored point sequences in their intended order.
  if(!session||isQuickCheck(q)||(session.quickChecksPlanned||0)>=2)return null;
  var seen=session.first||{};
  var rank={warmup:0,core:1,apply:2,stretch:3};
  var candidates=all.filter(function(x){
+  if(q.point&&x.point!==q.point&&ladders.get(q.point).core.indexOf(x.id)<0)return false;
   return x.id!==q.id&&x.unit===q.unit&&x.section===q.section&&
    (rank[x.level]||0)<=(rank[q.level]||0)&&
    !(x.id in seen)&&!(session.quickCheckIds||{})[x.id]&&
@@ -584,6 +599,7 @@ function finish(){
   show('<div class="k-wrap k-done"><h1>Skills set complete</h1><p class="lead">'+old.correctFirst+' of 10 answered independently on first attempt.</p><p>'+old.guidedFirst+' answered with help. Highest practice step: '+old.maxSkillLevel+' of 4.</p><p>Try another set with new values or another authored context. This records practice, not proven mastery.</p><div class="actions"><button class="button primary" type="button" data-start-skill="'+sk.id+'">Practise this skill again</button><a class="button secondary" href="#skills/'+sk.unit+'">Choose another skill</a><a class="button secondary" href="#challenge/'+sk.unit+'">Apply to topic questions</a></div></div>');return;
  }
  var repeat=Object.keys(old.retries).length,done=old.queue.length;
+ if(old.point){var p=ladders.get(old.point);show('<div class="k-wrap k-done"><h1>Sequence complete</h1><p class="lead">'+esc(p.statement)+'</p><p>'+old.correctFirst+' of '+Object.keys(old.first).length+' questions answered independently on first attempt. '+old.guidedFirst+' answered with help. This is practice evidence, not proof of lasting mastery.</p><div class="actions"><a class="button primary" href="#challenge/'+old.unit+'/build">Choose another idea</a><button class="button secondary" type="button" data-repeat-point="'+p.id+'">Repeat this idea</button><a class="button secondary" href="#catchup/'+old.unit+'/'+p.section+'">Revisit the explanation</a></div></div>');return;}
  var h='<div class="k-wrap k-done"><p class="crumb"><a href="#challenge/'+old.unit+'">← Unit overview</a></p><div class="k-done-icon">'+icon("check")+'</div><h1>Practice complete</h1><p class="lead">'+old.correctFirst+' of '+Object.keys(old.first).length+' questions recalled independently on first attempt.</p>';
  h+='<div class="k-mini-stats"><span><strong>'+Object.keys(old.first).length+'</strong> unique questions</span><span><strong>'+repeat+'</strong> revisited</span><span><strong>'+(old.guidedFirst||0)+'</strong> answered with help</span><span><strong>'+(old.quickChecksPassed||0)+'/'+(old.quickChecksSeen||0)+'</strong> quick checks without help</span></div><div class="k-action-grid"><a class="k-action teal" href="#challenge/'+old.unit+'/weak"><span class="k-icon">'+icon("rotate")+'</span><span><strong>Fix weak areas</strong><small>Practise questions you missed</small></span></a><a class="k-action blue" href="#challenge/'+old.unit+'"><span class="k-icon">'+icon("grid")+'</span><span><strong>Choose another set</strong><small>Topic or mixed practice</small></span></a></div></div>';show(h);
 }
@@ -643,6 +659,7 @@ main.addEventListener("input",function(e){
 main.addEventListener("click",function(e){
  var help=e.target.closest("[data-k-action]");if(!help||help.dataset.kAction!=="hint")noteAnswerActivity();
  var start=e.target.closest("[data-start-skill]");
+ var repeatPoint=e.target.closest("[data-repeat-point]");if(repeatPoint&&ladders){var point=ladders.get(repeatPoint.getAttribute("data-repeat-point"));if(point)return makeSession(point.unit,point.id,'challenge/'+point.unit+'/'+point.id);}
  if(start&&skills){var sk=skills.get(start.getAttribute("data-start-skill"));if(sk&&lastRoute==="skills/"+sk.unit+"/"+sk.id)return startSkill(sk,lastRoute);}
  if(!session||!visible)return;
  pointerQuickTap(e);

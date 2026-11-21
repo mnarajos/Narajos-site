@@ -28,6 +28,8 @@ let scriptCount=0,linkCount=0;
 for(const full of htmlFiles){
  const relative=path.relative(root,full).replaceAll(path.sep,"/");
  const html=readFileSync(full,"utf8");
+ requireTrue(html.includes('href="/assets/home-link.css"'),"Shared homepage control styles missing: "+relative);
+ requireTrue(html.includes('href="/" id="site-home" class="narajos-home" aria-label="Narajos homepage"'),"Canonical homepage control missing: "+relative);
  requireTrue(/<html\b[^>]*lang="en(?:-GB)?"/i.test(html),"Missing English language attribute: "+relative);
  requireTrue(/<title>[^<]+<\/title>/i.test(html),"Missing page title: "+relative);
  requireTrue(/<meta[^>]*name="viewport"/i.test(html),"Missing viewport meta: "+relative);
@@ -107,13 +109,13 @@ try{
  requireTrue(humanIndex.includes("reproduction-simulation.js")&&humanIndex.includes("reproduction-simulation.css"),"F175 interactive model assets missing");
  requireTrue(read("human-biology/reproduction-simulation.js").includes("LH surge")&&read("human-biology/companion.js").includes("KeystoneReproductionSimulation.mount"),"F175 hormone-sequence model must be available in catch-up");
 }catch(e){failures.push("Catch-up visual script failed to parse or render: "+e.message);}
-requireTrue(teacher.includes('href="/" aria-label="Return to Narajos homepage"'),"Focused Questions return link missing");
+requireTrue(teacher.includes('class="narajos-home" aria-label="Narajos homepage"'),"Focused Questions return link missing");
 requireTrue(teacher.includes("function saveDraft()")&&teacher.includes("function restoreDraft()"),"Focused Questions draft recovery missing");
 requireTrue(teacher.includes("function printSheet(answers)"),"Focused Questions print option missing");
 requireTrue(teacher.includes("Topic you’re teaching"),"Teacher topic label missing");
 requireTrue(teacher.includes("No assumption about another school"),"Incorrect date-based default topic");
 for(const [name,html] of [["GCSE",gcse],["A-level",alevel]]){
- requireTrue(html.includes('class="site-home"'),name+" main site return link missing");
+ requireTrue(html.includes('class="narajos-home"'),name+" main site return link missing");
  requireTrue(html.includes("function siteLeavePrompt("),name+" leave confirmation missing");
  requireTrue(html.includes("beforeunload"),name+" browser exit protection missing");
 }
