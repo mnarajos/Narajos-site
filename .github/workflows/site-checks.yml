@@ -7,6 +7,7 @@ on:
       - 'public/**'
       - 'scripts/check-site.mjs'
       - 'scripts/check-flashcards.mjs'
+      - 'scripts/check-human-biology.mjs'
       - '.github/workflows/site-checks.yml'
   workflow_dispatch:
 
@@ -22,3 +23,4 @@ jobs:
         run: |
           node scripts/check-site.mjs
           node scripts/check-flashcards.mjs
+          node scripts/check-human-biology.mjs
