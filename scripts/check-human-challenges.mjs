@@ -45,6 +45,12 @@ assert(main.innerHTML.includes("Ready to revise?"));
 function route(hash){location.hash="#"+hash;events.hashchange();}
 route("challenge/f170");
 assert(main.innerHTML.includes("Exam-style focus")&&main.innerHTML.includes("Fix mistakes"),"F170 mode chooser missing");
+route("challenge/f170/all");
+const mixed=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.equal(mixed.queue.length,8,"Mixed set should have eight questions");
+const selectedTypes=new Set(mixed.queue.map(id=>db.questions.find(q=>q.id===id).type));
+assert(selectedTypes.size>=6,"Mixed sessions must deliberately use varied question types");
+assert(new Set(mixed.queue.map(id=>db.questions.find(q=>q.id===id).area)).size>=3,"Mixed session should span multiple topic areas");
 route("challenge/f171");
 assert(main.innerHTML.includes("Health and disease")&&main.innerHTML.includes("Diagnosis and monitoring"),"F171 chooser missing");
 route("challenge/f170/a1");
