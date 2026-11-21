@@ -113,7 +113,7 @@ export const curriculum = {
       "The second lamp transfers 4 J usefully instead of 3 J, with the same input. A greater fraction of its input is useful, so it is more efficient."),
     lesson("reproduction", "Human and Plant Reproduction", "What is the difference between pollination and fertilisation?",
       { type: "flow", caption: "A flowering plant forms seeds", panels: ["Pollen reaches a stigma", "A male sex cell reaches an ovule", "Sex cells join", "A seed develops"] },
-      "Which stage shows pollen moving between parts of a flower? Which shows sex cells joining?",
+      "Follow the arrow from anther to stigma. Now find the ovule, where the sex cells can join.",
       ["Pollination is the transfer of pollen from an anther to a stigma. It may happen with help from insects or wind.",
        "Fertilisation is the joining of a male and female sex cell. In flowering plants this can happen in an ovule. In humans fertilisation also involves two sex cells joining, a sperm cell and an egg cell."],
       [
@@ -237,7 +237,7 @@ export const curriculum = {
     { unit: "Adaptation and Inheritance", title: "Adaptation and variation", href: "/ks3/adaptation/" },
     lesson("separating-techniques", "Separating Techniques", "Why does a filter catch sand but let dissolved salt through?",
       { type: "flow", caption: "Salt water containing sand passes through a filter", panels: ["Sand + salt water", "Filter paper", "Sand stays in the paper. Salt solution passes through."] },
-      "Trace what stays in the filter and what reaches the container below.",
+      "Trace what stays in the filter and what collects in the container.",
       ["Sand stays as tiny grains in water. The grains are too large to pass through the holes in the filter paper.",
        "Dissolved salt is spread through the water at particle level, so it passes through with the water. If water evaporates from the solution, salt crystals can form."],
       [
@@ -305,7 +305,7 @@ export const curriculum = {
       "The grains settle in layers. More sediment piles on top and compacts them. Minerals can cement the grains together into solid rock."),
     lesson("photosynthesis", "Photosynthesis", "Where does a plant get its glucose?",
       { type: "flow", caption: "A leaf exposed to light", panels: ["Carbon dioxide + water", "Leaf in light", "Glucose + oxygen"] },
-      "Point to what goes in and what comes out. What reaches the leaf from the Sun?",
+      "Point to the arrows for what reaches the leaf and what leaves it. Find the substance made in the leaf.",
       ["Plants use energy transferred by light to make glucose from carbon dioxide and water. This process is photosynthesis and it also makes oxygen.",
        "Chlorophyll in leaf cells absorbs light. Plants can use glucose in respiration or use it to build other substances."],
       [
@@ -339,7 +339,7 @@ export const curriculum = {
       "Closing the switch completes the circuit. Current in the coil makes a magnetic field that attracts iron. Opening the switch breaks the circuit, so the field from the current disappears and the object can fall."),
     lesson("metals", "Metals and their Reactions", "What can a displacement reaction tell you?",
       { type: "flow", caption: "An iron strip is placed in copper sulfate solution", panels: ["Grey iron in blue solution", "A reddish copper coating appears", "Iron enters the solution"] },
-      "What new solid coating is observed?",
+      "Find the new solid coating. What changed about the metal strip?",
       ["A more reactive metal can displace a less reactive metal from a compound in solution.",
        "Here iron displaces copper from copper sulfate solution. Copper metal forms and iron sulfate remains in solution. The reaction is evidence that iron is more reactive."],
       [

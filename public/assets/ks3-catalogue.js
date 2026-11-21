@@ -1,4 +1,16 @@
 import { curriculum } from "./ks3-lessons.js";
+import { homeActivity } from "./ks3-home-activities.js";
+
+const illustrations = {
+  "fair-tests": ["ramps", "A green toy car on a low ramp and a blue car on a higher ramp."],
+  "the-body": ["oxygen-route", "Arrows run from a pair of lungs to a blood vessel, then to muscle cells."],
+  reproduction: ["flower", "Cross-section of a flower showing pollen moving from an anther to a stigma, with an ovule below."],
+  "chemical-reactions": ["reaction-flask", "A flask with a stopper in place before mixing and while gas bubbles form. Both pictures show a closed flask."],
+  "separating-techniques": ["filtration", "A mixture of sand and salt water is poured through filter paper. Sand collects in the paper. The salt solution passes through into the beaker."],
+  "earth-structure": ["rock-samples", "Sample A has bands with separate rounded grains. Sample B has interlocking angular crystals."],
+  photosynthesis: ["photosynthesis", "Light, carbon dioxide and water reach the leaf. The leaf makes glucose. Oxygen leaves."],
+  metals: ["displacement", "A grey iron strip in blue solution. A reddish coating appears on the immersed part of the strip and the solution becomes paler."]
+};
 
 function element(tag, text, className) {
   const node = document.createElement(tag);
@@ -102,6 +114,16 @@ function svgCircuit(closed) {
   draw("circle", { cx: 136, cy: 46, r: 11, fill: "#f7faf8", stroke: "currentColor", "stroke-width": 2 });
   draw("path", { d: "M128 38L144 54 M128 54L144 38", fill: "none", stroke: "currentColor", "stroke-width": 2 });
   return svg;
+}
+
+function renderIllustration(id) {
+  const figure = element("figure", "", "ks3-illustration");
+  const [file, description] = illustrations[id];
+  const image = element("img");
+  image.src = "/assets/ks3-diagrams/" + file + ".svg";
+  image.alt = description;
+  figure.append(image);
+  return figure;
 }
 
 function renderVisual(visual) {
@@ -227,7 +249,10 @@ function renderLesson(lesson, year, index) {
   const cue = element("p");
   cue.append(element("strong", "Start here. "), lesson.notice);
   const explanation = disclosure("Read the explanation", ...lesson.explain.map((sentence) => element("p", sentence)));
-  teaching.append(title, renderVisual(lesson.visual), cue, explanation);
+  teaching.append(title);
+  if (illustrations[lesson.id]) teaching.append(renderIllustration(lesson.id));
+  if (!illustrations[lesson.id] || lesson.visual.headers) teaching.append(renderVisual(lesson.visual));
+  teaching.append(cue, explanation);
   if (lesson.related) {
     const more = element("p");
     more.append(link(lesson.related.title, lesson.related.href));
@@ -245,5 +270,5 @@ function renderLesson(lesson, year, index) {
   checks.append(transfer);
   const finish = element("p", "", "catchup-finish");
   finish.append(link("Choose another Year " + year + " topic", yearLink.href));
-  lessonRoot.replaceChildren(teaching, checks, finish);
+  lessonRoot.replaceChildren(teaching, checks, homeActivity(lesson.id), finish);
 }

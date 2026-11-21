@@ -133,3 +133,23 @@
 .ks3-insect{position:absolute;top:.7rem;width:1.25rem;height:1.52rem;border:1px solid #503e33;border-radius:60% 49% 46% 48%;transform:rotate(25deg)}
 .ks3-insect-light{left:25%;background:#e2c9a7}
 .ks3-insect-dark{left:63%;background:#564135}
+
+details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
+.ks3-home-activity h2{font-size:1.12rem;margin:.15rem 0 .6rem}
+.ks3-home-activity p{margin:0 0 .65rem}
+.ks3-home-activity > details{padding:0}
+.ks3-illustration{margin:.6rem 0 .75rem}
+.ks3-illustration img{display:block;width:min(100%,32rem);height:auto}
+
+.writing-outline-review .writing-report details{padding-block:.25rem;margin-top:.6rem}
+.writing-order-groups{display:grid;gap:.5rem}
+.writing-order-group{background:#f0f7f4;border-radius:8px;padding:.65rem .8rem}
+.writing-order-group h3,[data-writing-order] h3{font-size:1rem;margin:.2rem 0 .45rem}
+.writing-order-group ol{margin:.3rem 0;padding-left:1.15rem}
+.writing-order-group li{margin:.2rem 0}
+.writing-order-group li>span{color:#4f6166}
+.writing-order-group li button{text-align:left}
+.writing-order-controls{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem}
+.writing-order-controls button,.writing-order-group button{min-height:44px;border:1px solid #a1b5af;border-radius:7px;background:#fff;padding:.35rem .6rem;color:#24343b;font:inherit;cursor:pointer}
+.writing-order-controls button:first-child{background:#eef7f3;border-color:#276a62;font-weight:650}
+.writing-order-controls button:focus-visible,.writing-order-group button:focus-visible{outline:3px solid #c9611f;outline-offset:2px}
