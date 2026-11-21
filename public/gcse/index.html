@@ -419,6 +419,7 @@ table.eqs-t{width:auto;border-collapse:collapse}table.eqs-t th{text-align:left;f
 .navleave-actions .primary{background:var(--acc,#146c69);color:var(--acc-ink,#fff);border-color:transparent}
 
 </style>
+<link rel="stylesheet" href="/assets/spaced-review.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -437,7 +438,7 @@ table.eqs-t{width:auto;border-collapse:collapse}table.eqs-t th{text-align:left;f
     </fieldset>
       <label><input type="checkbox" id="opt-big"> Larger text</label>
       <label><input type="checkbox" id="opt-sound"> Play a soft chime for correct answers</label>
-      <p class="small">Only these settings are saved, in this browser. Scores and progress are not saved. There is no login and nothing is sent anywhere.</p>
+      <p class="small">Settings and flashcard review progress are saved in this browser. Lesson scores are not saved. There is no login and no upload of your answers.</p>
     </div></details>
   </div>
 </header>
@@ -449,6 +450,11 @@ table.eqs-t{width:auto;border-collapse:collapse}table.eqs-t th{text-align:left;f
 </footer>
 <div id="live" class="sr-only" role="status" aria-live="polite"></div>
 
+<script src="/assets/spaced-review.js"></script>
+<script src="/gcse/cards-biology.js"></script>
+<script src="/gcse/cards-chemistry.js"></script>
+<script src="/gcse/cards-physics.js"></script>
+<script src="/gcse/flashcards-app.js"></script>
 <script>
 (function(){
 "use strict";
@@ -4564,6 +4570,7 @@ function showPaper(p,focus){
  L=null;
  var tot=0;p.topics.forEach(function(t){tot+=availList(t).length;});
  var h='<p class="crumb"><a href="#">← Home</a></p><h1>'+esc(p.name)+'</h1><p class="spec">'+p.topics.length+' topics · '+tot+' concepts</p>';
+ h+='<div class="kr-actions" style="margin:10px 0 18px"><a class="btn" href="#paperflash-'+p.id+'">Flashcards for this paper</a></div>';
  h+='<section aria-labelledby="pp-t"><h2 id="pp-t">Topics</h2><ul class="topics">'+p.topics.map(topicCard).join("")+'</ul></section>';
  var sk=SKILLS.filter(function(x){return (x.all||p.topics.indexOf(x.t)>-1)&&!(x.ht&&S.tier==="F");});
  if(sk.length)h+='<section aria-labelledby="pp-s"><h2 id="pp-s">Skills practice</h2><p class="sklinks">'+sk.map(function(x){return '<a class="btn" href="#practice-'+x.id+'">'+esc(x.name)+'</a>';}).join("")+'</p></section>';
@@ -5970,6 +5977,8 @@ function render(h,focus){
  if(focus!==false){var f=$("h1",main);if(f){f.setAttribute("tabindex","-1");f.focus({preventScroll:true});}}
 }
 
+var KGFC=window.KeystoneGcseFlash.create({render:render,esc:esc,SCI:SCI,PAPERS:PAPERS,getTier:function(){return S.tier;},pushGuard:pushGuard});
+
 /* ---------- Views ---------- */
 
 function showHome(focus){
@@ -5980,7 +5989,7 @@ function showHome(focus){
   var k=sci.topics[0][0].charAt(0);
   h+='<section class="hsci '+k+'" aria-labelledby="hs-'+k+'"><h2 id="hs-'+k+'">'+sci.name+'</h2><div class="two">'+PAPERS.filter(function(p){return p.id.charAt(0)===k;}).map(function(p){return '<a class="btn" href="#paper-'+p.id+'" aria-label="'+esc(p.name)+'">'+esc(p.name.replace(sci.name+" ",""))+'</a>';}).join("")+'</div></section>';
  });
- h+='</div>';
+ h+='</div><section class="kr-entry"><h2>Flashcards and spaced revision</h2><p>Recall essential knowledge across Biology, Chemistry and Physics. Review missed cards again after a delay.</p><div class="kr-actions"><a class="btn primary" href="#flashcards">Open flashcards</a><a class="btn" href="#flashreview">Review for today</a></div></section>';
  render(h,focus);
 }
 
@@ -5990,6 +5999,7 @@ function showTopic(t,focus){
  var pp=PAPERS.filter(function(p){return p.topics.indexOf(t)>-1;})[0];
  var h='<p class="crumb"><a href="#">← Home</a>'+(pp?' · <a href="#paper-'+pp.id+'">'+esc(pp.name)+'</a>':'')+'</p><h1>'+T.code+' '+esc(T.title)+'</h1><p class="spec">'+esc(T.paper)+' · '+n+' concepts</p>';
  h+='<p class="lead">Start anywhere. The stages go from the basics to exam technique.</p>';
+ h+='<div class="kr-actions" style="margin:12px 0 17px"><a class="btn" href="#cards-'+t+'">Flashcards for this topic</a></div>';
  if(pp)h+='<div class="modebar"><p><strong>Mixed practice:</strong> questions from across this topic, all mixed up. They start easy and get harder.</p><p class="sklinks"><a class="btn" href="#mix-'+pp.id+'-'+t+'">Mixed practice: this topic</a></p></div>';
  var sks=SKILLS.filter(function(x){return x.t===t&&!(x.ht&&S.tier==="F");});
  if(sks.length)h+='<div class="modebar"><p><strong>Skills practice:</strong> unlimited questions with new values each time.</p><p class="sklinks">'+sks.map(function(x){return '<a class="btn" href="#practice-'+x.id+'">'+esc(x.name)+'</a>';}).join("")+'</p></div>';
@@ -6350,11 +6360,12 @@ function askLeave(onKeep){closeLeave();var P=LIVE||L,what=P&&P.slop?"practice":"
  document.getElementById("lvkeep").onclick=keep;document.getElementById("lvgo").onclick=function(){closeLeave();leaveNow();};
  box.onclick=function(e){if(e.target===box)keep();};box.onkeydown=function(e){if(e.key==="Escape"){e.preventDefault();keep();}};
  document.getElementById("lvkeep").focus();}
-function onBrowserBack(){if(document.getElementById("leavebox")){closeLeave();pushGuard();return;}
+function onBrowserBack(){if(KGFC.isActive()){pushGuard();siteLeavePrompt(function(){location.hash="#flashcards";});return;}
+ if(document.getElementById("leavebox")){closeLeave();pushGuard();return;}
  if(goBack()){pushGuard();return;}
  var P=LIVE||L;if(P&&P.slop&&answered()){pushGuard();if(RV)restoreLive();finishSlop();return;}
  if(P&&!P.over)askLeave(function(){pushGuard();});else leaveNow();}
-window.addEventListener("popstate",function(e){var st=e.state;if(!(st&&(st.kl||st.kg)))return;if(!L&&!LIVE)return;if(document.body.dataset.view!=="lesson")return;onBrowserBack();});
+window.addEventListener("popstate",function(e){var st=e.state;if(!(st&&(st.kl||st.kg)))return;if(!L&&!LIVE&&!KGFC.isActive())return;if(document.body.dataset.view!=="lesson")return;onBrowserBack();});
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".qback");if(b){e.preventDefault();goBack();return;}
  var a=e.target.closest&&e.target.closest("a.exit");if(a&&!a.classList.contains("finpr")&&answered()){e.preventDefault();askLeave();}});
 document.addEventListener("keydown",function(e){if(e.altKey||e.ctrlKey||e.metaKey||e.shiftKey||e.isComposing)return;if(e.key!=="ArrowLeft"&&e.key!=="ArrowRight")return;
@@ -6474,6 +6485,11 @@ function route(focus){
  LIVE=null;RV=null;closeLeave();
  var cf=document.querySelector(".confetti");if(cf&&cf.parentNode)cf.parentNode.removeChild(cf);var gr=document.getElementById("gear");if(gr)gr.open=false;
  var h=location.hash.slice(1),m;
+ if(h==="flashcards"||/^flash(?:review|weak|mixed|resume)$/.test(h)||/^cards-[bcp]\d+$/.test(h)||/^paperflash-[bcp]\d$/.test(h)){
+  document.body.dataset.view=h==="flashcards"?"page":"lesson";
+  document.body.dataset.sci=/^cards-([bcp])/.test(h)?h.charAt(6):"";
+  return KGFC.route(h);
+ }
  var sm=/^(?:topic|lesson|paper|mix)-([bcp])/.exec(h),sk0=/^practice-([a-z]+)$/.exec(h);
  if(!sm&&sk0){var sk1=SKILLS.filter(function(x){return x.id===sk0[1];})[0];if(sk1&&sk1.t)sm=[0,sk1.t.charAt(0)];}
  if(!/^(lesson|practice|mix)-/.test(h))BACK="#"+h;
@@ -6520,13 +6536,13 @@ snd.onchange=function(){setSound(snd.checked);if(snd.checked)chime();};
 var siteLeaveAllowed=false;
 function siteWorkActive(){
  var p=LIVE||L;
- return !!(p&&!p.over&&(document.body.dataset.view==="lesson"||!!document.querySelector(".ltop")));
+ return KGFC.isActive()||!!(p&&!p.over&&(document.body.dataset.view==="lesson"||!!document.querySelector(".ltop")));
 }
 function siteLeavePrompt(onLeave){
  if(document.querySelector(".navleave-overlay"))return;
  var previous=document.activeElement,cover=document.createElement("div");
  cover.className="navleave-overlay";
- cover.innerHTML='<div class="navleave-card" role="dialog" aria-modal="true" aria-labelledby="site-leave-title" aria-describedby="site-leave-help"><h2 id="site-leave-title">Leave this activity?</h2><p id="site-leave-help">Your answers so far will not be saved.</p><div class="navleave-actions"><button class="primary" type="button" id="site-leave-stay">Keep going</button><button type="button" id="site-leave-confirm">Leave</button></div></div>';
+ cover.innerHTML='<div class="navleave-card" role="dialog" aria-modal="true" aria-labelledby="site-leave-title" aria-describedby="site-leave-help"><h2 id="site-leave-title">Leave this activity?</h2><p id="site-leave-help">'+(KGFC.isActive()?'Your completed card reviews are saved, and you can resume this set later.':'Your answers so far will not be saved.')+'</p><div class="navleave-actions"><button class="primary" type="button" id="site-leave-stay">Keep going</button><button type="button" id="site-leave-confirm">Leave</button></div></div>';
  document.body.appendChild(cover);
  function stay(){cover.remove();if(previous&&previous.focus)previous.focus();}
  cover.querySelector("#site-leave-stay").onclick=stay;
