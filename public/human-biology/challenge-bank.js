@@ -33,7 +33,8 @@ window.KeystoneHumanChallenges={
       "model": "Smooth endoplasmic reticulum",
       "explain": "Smooth ER synthesises lipids, including phospholipids, used to build membranes.",
       "misconception": "Rough ER is mainly associated with proteins translated on bound ribosomes.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Which cell compartment is associated with lipid synthesis rather than ribosomes making polypeptides?"
     },
     {
       "id": "cell-protein-route",
@@ -52,7 +53,8 @@ window.KeystoneHumanChallenges={
       "model": "Rough ER ribosome → ER/vesicles → Golgi → exocytosis.",
       "explain": "Follow the protein through the secretory pathway rather than memorising an unordered list.",
       "misconception": "The Golgi does not synthesise the polypeptide.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Think about where a protein is first made and how it is then processed before leaving the cell."
     },
     {
       "id": "cell-mito-ribosomes",
@@ -72,7 +74,8 @@ window.KeystoneHumanChallenges={
       "model": "Mitochondrion",
       "explain": "Mitochondria contain ribosomes, mitochondrial DNA and enzymes for parts of aerobic respiration.",
       "misconception": "Lysosomes and Golgi do not contain independent protein-synthesis machinery.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Which energy-transferring organelle retains its own genetic material and translation machinery?"
     },
     {
       "id": "cell-identify-membrane",
@@ -93,7 +96,8 @@ window.KeystoneHumanChallenges={
       "model": "Cell-surface membrane",
       "explain": "The thin boundary encloses the cytoplasm and regulates exchange with the environment.",
       "misconception": "A nuclear envelope surrounds the nucleus, not the entire cell.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Follow the arrow to the precise boundary of the whole cell, not the boundary of its nucleus."
     },
     {
       "id": "cell-stem-benefits",
@@ -116,7 +120,8 @@ window.KeystoneHumanChallenges={
       "model": "Reduced rejection risk; avoids harvesting embryonic stem cells.",
       "explain": "Both benefits are conditional: autologous cells may be better matched but are not risk-free.",
       "misconception": "Stem cell culture still requires safety and effectiveness checks.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Focus on how closely the donated cells match the recipient and where the original cells came from."
     },
     {
       "id": "cell-magnification",
@@ -132,7 +137,8 @@ window.KeystoneHumanChallenges={
       "explain": "36 mm = 36 000 µm; 36 000 ÷ 12 = 3000.",
       "misconception": "Convert image size and actual size to the same unit first.",
       "samAligned": true,
-      "answerUnit": "×"
+      "answerUnit": "×",
+      "hintCue": "Convert the image measurement into micrometres before using image size divided by actual size."
     },
     {
       "id": "cell-actual-width",
@@ -148,7 +154,8 @@ window.KeystoneHumanChallenges={
       "explain": "24 mm = 24 000 µm; actual size = 24 000 ÷ 6000 = 4 µm.",
       "misconception": "Do not multiply image size by magnification.",
       "samAligned": false,
-      "answerUnit": "µm"
+      "answerUnit": "µm",
+      "hintCue": "Rearrange image size = magnification × actual size; convert millimetres to micrometres first."
     },
     {
       "id": "cell-microscope-method",
@@ -175,7 +182,8 @@ window.KeystoneHumanChallenges={
       "model": "Light microscope → live/stained cells; TEM → internal ultrastructure; SEM → surface detail.",
       "explain": "Resolution, specimen preparation and whether the sample can be living distinguish these methods.",
       "misconception": "TEM does not normally provide a live-cell image.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "One method reveals surfaces, another internal thin sections; only one routinely examines living cells."
     },
     {
       "id": "cell-stage-metaphase",
@@ -195,7 +203,8 @@ window.KeystoneHumanChallenges={
       "model": "Metaphase",
       "explain": "Alignment at the equatorial region is the key structural evidence.",
       "misconception": "Do not identify a stage from chromosome visibility alone.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Notice the position of the chromosomes: have they separated to opposite poles yet?"
     },
     {
       "id": "cell-stage-anaphase",
@@ -215,7 +224,8 @@ window.KeystoneHumanChallenges={
       "model": "Anaphase",
       "explain": "In anaphase, sister chromatids separate and move towards opposite poles.",
       "misconception": "Cytokinesis divides the cytoplasm and is distinct from nuclear division.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Use what the chromatids are physically doing, rather than simply whether they are visible."
     },
     {
       "id": "cell-s-phase",
@@ -234,7 +244,8 @@ window.KeystoneHumanChallenges={
       "model": "S phase of interphase",
       "explain": "DNA replication occurs during S phase of interphase, before mitosis.",
       "misconception": "Interphase includes G1, S and G2; 'interphase' is less precise.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "DNA synthesis occurs before nuclear division, during a particular part of interphase."
     },
     {
       "id": "cell-bone-repair",
@@ -257,7 +268,8 @@ window.KeystoneHumanChallenges={
       "model": "Glucose and calcium ions",
       "explain": "Glucose supports ATP production; calcium contributes to bone mineral.",
       "misconception": "Human tissues do not use starch directly as a bone-building substrate.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Think of one circulating fuel for ATP generation and one ion needed for mineralised tissue."
     },
     {
       "id": "cell-epithelium",
@@ -284,7 +296,8 @@ window.KeystoneHumanChallenges={
       "model": "Squamous → diffusion; ciliated → surface transport; cuboidal → secretion/absorption.",
       "explain": "Link histological structure to function rather than learning labels alone.",
       "misconception": "A thin exchange epithelium is not usually thickly layered.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Relate tissue thickness, movement over the surface, and secretion to three distinct epithelial shapes."
     },
     {
       "id": "cell-organoid",
@@ -301,7 +314,8 @@ window.KeystoneHumanChallenges={
       "model": "Whole-body effects and interactions are not reproduced; further evidence is required.",
       "explain": "A three-dimensional organoid models selected features of a tissue, not the entire patient.",
       "misconception": "Do not claim organoids are simply identical miniature organs.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Ask which effects depend on blood circulation, immune responses or other organs outside the culture."
     },
     {
       "id": "cell-membrane-transport",
@@ -321,7 +335,8 @@ window.KeystoneHumanChallenges={
       "model": "Active transport",
       "explain": "Transport against a concentration gradient requires energy; some transporters use ATP directly.",
       "misconception": "Facilitated diffusion is passive.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Use both facts: ATP is consumed, and the ions move against their concentration gradient."
     },
     {
       "id": "cell-culture-safety",
@@ -341,7 +356,8 @@ window.KeystoneHumanChallenges={
       "model": "It omits some whole-body physiology",
       "explain": "Cell models may miss the effects of other organs, circulation and immune responses.",
       "misconception": "In vitro results can be useful without being conclusive.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "A cell culture is not the same as testing the medicine within an interacting whole body."
     },
     {
       "id": "phys-heart-septum",
@@ -362,7 +378,8 @@ window.KeystoneHumanChallenges={
       "model": "Interventricular septum",
       "explain": "The septum divides the two ventricles and limits mixing of ventricular blood.",
       "misconception": "A septal defect is a hole in the partition, not the heart's outer wall.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Identify whether the line separates chambers, surrounds the heart or controls blood flow between chambers."
     },
     {
       "id": "phys-diagnosis-tools",
@@ -389,7 +406,8 @@ window.KeystoneHumanChallenges={
       "model": "ECG → electrical activity; echocardiography → heart structure; spirometry → lung function.",
       "explain": "Decide what is being measured before naming an instrument.",
       "misconception": "ECG alone does not image a hole in the ventricular septum.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Separate electrical recordings, ultrasound images and tests measuring air movement."
     },
     {
       "id": "phys-ventilation",
@@ -405,7 +423,8 @@ window.KeystoneHumanChallenges={
       "explain": "Ventilation = 14 × 0.45 = 6.3 L min⁻¹.",
       "misconception": "Do not confuse minute ventilation with oxygen uptake.",
       "samAligned": true,
-      "answerUnit": "L min⁻¹"
+      "answerUnit": "L min⁻¹",
+      "hintCue": "Multiply the volume of one breath by the number of breaths in one minute."
     },
     {
       "id": "phys-vsd",
@@ -422,7 +441,8 @@ window.KeystoneHumanChallenges={
       "model": "Increased blood flow towards the lungs can increase cardiac work and contribute to breathlessness.",
       "explain": "Small defects may cause few symptoms; severity and physiology vary.",
       "misconception": "A VSD does not always cause severe symptoms.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Consider what happens if blood flows through an opening between the high- and low-pressure ventricles."
     },
     {
       "id": "phys-peakflow-technique",
@@ -445,7 +465,8 @@ window.KeystoneHumanChallenges={
       "model": "Tight lip seal; blow hard and fast after a deep breath.",
       "explain": "Peak flow requires a maximum effort and suitable technique.",
       "misconception": "Typically record the highest of three technically acceptable attempts.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "A good attempt needs an airtight seal and a maximal, forceful exhalation."
     },
     {
       "id": "phys-peakflow-record",
@@ -465,7 +486,8 @@ window.KeystoneHumanChallenges={
       "model": "430 L/min",
       "explain": "The highest technically acceptable of three attempts is usually recorded.",
       "misconception": "Taking the mean is not the standard peak-flow recording convention.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "This test aims to measure maximal flow on a technically valid attempt, rather than an average."
     },
     {
       "id": "phys-tissue-order",
@@ -484,7 +506,8 @@ window.KeystoneHumanChallenges={
       "model": "Cell → tissue → organ → organ system.",
       "explain": "Each higher level organises multiple components into coordinated functions.",
       "misconception": "An organ is made of several tissue types.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Each level contains the preceding level; start from the smallest living component."
     },
     {
       "id": "phys-hepatic-blood",
@@ -504,7 +527,8 @@ window.KeystoneHumanChallenges={
       "model": "Nutrient-rich venous blood from the gut",
       "explain": "The portal vein connects digestive capillary beds to the liver.",
       "misconception": "The hepatic artery, not the portal vein, provides much of the liver's oxygenated arterial supply.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Consider what reaches the liver immediately after nutrients have crossed the intestinal wall."
     },
     {
       "id": "phys-ecg-explanation",
@@ -521,7 +545,8 @@ window.KeystoneHumanChallenges={
       "model": "An ECG records electrical activity and allows heart rhythm and intervals to be assessed.",
       "explain": "The ECG does not directly measure blood flow or the diameter of a valve.",
       "misconception": "Do not claim an ECG is a photographic image of the heart.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "The suspected problem is electrical timing; which investigation records voltage changes?"
     },
     {
       "id": "phys-bone-dexa",
@@ -541,7 +566,8 @@ window.KeystoneHumanChallenges={
       "model": "DEXA scan",
       "explain": "DEXA estimates bone mineral density; it can contribute to diagnosis of osteoporosis.",
       "misconception": "Heart and lung tests do not directly assess bone mineral density.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Think about a measurement of mineral content rather than the lung or cardiac electrical activity."
     },
     {
       "id": "phys-transplant",
@@ -564,7 +590,8 @@ window.KeystoneHumanChallenges={
       "model": "Rejection risk and donor-organ availability.",
       "explain": "Immunosuppression and matching reduce rejection risk, not abolish it.",
       "misconception": "A successful transplant can restore substantial organ function.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Consider whether the recipient's immune system recognises foreign tissue and whether organs are available."
     },
     {
       "id": "phys-homeostasis-cross",
@@ -582,7 +609,8 @@ window.KeystoneHumanChallenges={
       "model": "Increased ventilation supports gas exchange while increased blood flow supplies active muscles and removes carbon dioxide.",
       "explain": "A complete explanation links functions across systems.",
       "misconception": "Avoid saying the lungs pump oxygen directly into muscles.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Connect ventilation in the lungs to the delivery and removal work of blood in muscle capillaries."
     },
     {
       "id": "endo-insulin-loop",
@@ -601,7 +629,8 @@ window.KeystoneHumanChallenges={
       "model": "Rise in glucose → insulin secretion → uptake/storage → fall towards normal range.",
       "explain": "This negative-feedback sequence opposes the original glucose change.",
       "misconception": "Glucagon is not the main hormone released in response to high glucose.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Begin with the stimulus detected by the pancreas, then the signal, effector response and correction."
     },
     {
       "id": "endo-hormone-match",
@@ -632,7 +661,8 @@ window.KeystoneHumanChallenges={
       "model": "Insulin → glucose regulation; ADH → water; EPO → red cells; thyroxine → metabolism.",
       "explain": "A hormone acts through cells bearing its receptors.",
       "misconception": "ADH does not directly lower glucose.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Which hormone acts on the kidneys, which acts on blood glucose, and which stimulates marrow?"
     },
     {
       "id": "endo-type1",
@@ -652,7 +682,8 @@ window.KeystoneHumanChallenges={
       "model": "Autoimmune destruction of beta cells",
       "explain": "Loss of beta-cell function causes marked insulin deficiency.",
       "misconception": "Type 2 diabetes is not defined by autoimmune beta-cell destruction.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "The key defect originates in the insulin-secreting cells rather than kidney water regulation."
     },
     {
       "id": "endo-percent",
@@ -668,7 +699,8 @@ window.KeystoneHumanChallenges={
       "explain": "Percentage increase = (118 − 100) ÷ 100 × 100 = 18%.",
       "misconception": "Divide by the reference value, not the result.",
       "samAligned": true,
-      "answerUnit": "%"
+      "answerUnit": "%",
+      "hintCue": "Find the difference first; divide that difference by the original reference value."
     },
     {
       "id": "endo-closed-loop",
@@ -685,7 +717,8 @@ window.KeystoneHumanChallenges={
       "model": "Continuous monitoring and automated adjustment can improve control, but devices still need checks and can fail.",
       "explain": "A closed-loop system uses a sensor, algorithm and insulin delivery mechanism.",
       "misconception": "Not every system automatically manages food intake without user input.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Think about how frequently a sensor can sample and what could happen if the sensor or delivery system fails."
     },
     {
       "id": "endo-ms-myelin",
@@ -706,7 +739,8 @@ window.KeystoneHumanChallenges={
       "model": "Saltatory conduction",
       "explain": "Myelin helps impulses travel rapidly between nodes of Ranvier; damage reduces efficient conduction.",
       "misconception": "Myelin is not a lumen through which impulses flow.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Look at which insulating covering has gaps where the electrical signal is regenerated."
     },
     {
       "id": "endo-reflex-arc",
@@ -725,7 +759,8 @@ window.KeystoneHumanChallenges={
       "model": "Receptor → sensory neuron → CNS relay → motor neuron → effector.",
       "explain": "The withdrawal pathway is coordinated through the spinal cord.",
       "misconception": "Conscious perception is not always required before the withdrawal begins.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "A signal starts at a receptor, passes to the CNS and then travels to an effector."
     },
     {
       "id": "endo-neuron",
@@ -745,7 +780,8 @@ window.KeystoneHumanChallenges={
       "model": "Motor neuron",
       "explain": "Motor neurons transmit CNS signals towards effectors such as muscles.",
       "misconception": "Sensory neurons transmit impulses towards the CNS.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Does the signal travel towards the central nervous system, or away from it?"
     },
     {
       "id": "endo-brain",
@@ -772,7 +808,8 @@ window.KeystoneHumanChallenges={
       "model": "Cerebellum → coordination; hypothalamus → homeostasis; medulla → vital autonomic centres.",
       "explain": "Functional descriptions are simplified; these brain regions interact.",
       "misconception": "A brain function need not be completely confined to one structure.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Distinguish movement coordination from internal-state regulation and automatic respiratory control."
     },
     {
       "id": "endo-repro-hormones",
@@ -803,7 +840,8 @@ window.KeystoneHumanChallenges={
       "model": "FSH → gamete support; LH → ovulation/Leydig cells; progesterone → endometrium; testosterone → male-typical traits.",
       "explain": "These hormones have different functions and feedback relationships.",
       "misconception": "LH is not the same hormone as progesterone.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Separate the hormones released by the pituitary from steroids acting on reproductive tissues."
     },
     {
       "id": "endo-gametes",
@@ -823,7 +861,8 @@ window.KeystoneHumanChallenges={
       "model": "Epididymis",
       "explain": "Sperm transit and mature within the epididymis.",
       "misconception": "The ureter carries urine from kidney to bladder.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "The sperm leave their site of production before they are fully mature."
     },
     {
       "id": "endo-menopause",
@@ -841,7 +880,8 @@ window.KeystoneHumanChallenges={
       "model": "Changes in ovarian hormone secretion alter menstrual cycling and can affect hypothalamic thermoregulation.",
       "explain": "Symptoms vary and clinical management depends on context.",
       "misconception": "Menopause is not caused by complete absence of all sex hormones.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Link declining ovarian steroid secretion both to changes in the endometrium and to temperature control."
     },
     {
       "id": "micro-gram",
@@ -861,7 +901,8 @@ window.KeystoneHumanChallenges={
       "model": "Outer membrane plus relatively thin peptidoglycan",
       "explain": "Gram-negative bacteria have an outer membrane containing lipopolysaccharide.",
       "misconception": "Both groups typically have ribosomes; bacteria lack nuclei.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Focus on the layers outside the bacterial cell membrane, not structures unique to eukaryotes."
     },
     {
       "id": "micro-virus",
@@ -884,7 +925,8 @@ window.KeystoneHumanChallenges={
       "model": "Host dependence and protein capsid",
       "explain": "A virus has a DNA or RNA genome enclosed by capsid proteins; some have envelopes.",
       "misconception": "Viruses lack ribosomes.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Think about which cell machinery viruses lack, and what encloses their nucleic acid."
     },
     {
       "id": "micro-growth-curve",
@@ -905,7 +947,8 @@ window.KeystoneHumanChallenges={
       "model": "Exponential growth",
       "explain": "During this phase, cells divide rapidly and the population rises steeply.",
       "misconception": "A flat section can be a stationary phase, not exponential growth.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Which labelled segment rises most rapidly while nutrients still support repeated doubling?"
     },
     {
       "id": "micro-doublings",
@@ -921,7 +964,8 @@ window.KeystoneHumanChallenges={
       "explain": "25 × 2⁴ = 25 × 16 = 400.",
       "misconception": "Four doublings multiply by 16, not by 4.",
       "samAligned": true,
-      "answerUnit": "cells"
+      "answerUnit": "cells",
+      "hintCue": "A doubling means multiply by two each generation, starting from the original population."
     },
     {
       "id": "micro-growth-rate",
@@ -937,7 +981,8 @@ window.KeystoneHumanChallenges={
       "explain": "Gradient = (7 − 3) ÷ 8 = 0.5 log10 units h⁻¹.",
       "misconception": "This is a log-scale gradient, not a change of 0.5 cells per hour.",
       "samAligned": true,
-      "answerUnit": "log10 units h⁻¹"
+      "answerUnit": "log10 units h⁻¹",
+      "hintCue": "On a log scale, find the change in log units and divide by elapsed time."
     },
     {
       "id": "micro-culture-phases",
@@ -956,7 +1001,8 @@ window.KeystoneHumanChallenges={
       "model": "Lag → exponential → stationary → decline.",
       "explain": "Populations tend to stop increasing as nutrient availability, waste accumulation and mortality change.",
       "misconception": "Stationary does not mean that all bacteria have stopped dividing.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "The population first adjusts, then divides quickly, then plateaus as resources become limiting."
     },
     {
       "id": "micro-aseptic",
@@ -973,7 +1019,8 @@ window.KeystoneHumanChallenges={
       "model": "Avoid contamination of the culture and reduce exposure or spread.",
       "explain": "Laboratory procedures need a risk assessment for the organisms and materials involved.",
       "misconception": "A Bunsen flame alone does not make every microbial procedure safe.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Consider both the validity of the culture results and protecting people or the surroundings."
     },
     {
       "id": "micro-hypha",
@@ -993,7 +1040,8 @@ window.KeystoneHumanChallenges={
       "model": "A network of hyphae",
       "explain": "Hyphae are branching filaments that help fungi grow through and absorb nutrients from substrates.",
       "misconception": "A mycelium is not one large viral particle.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Look for the name of an interconnected network rather than an individual fungal filament."
     },
     {
       "id": "micro-fungus",
@@ -1009,7 +1057,8 @@ window.KeystoneHumanChallenges={
       "model": "Tinea pedis",
       "explain": "This is a fungal skin infection commonly caused by dermatophytes such as Trichophyton.",
       "misconception": "Tinea is the infection name, not a genus of fungi.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "The diagnosis is a named fungal skin condition; the term has two words, the second refers to the foot."
     },
     {
       "id": "micro-microbiota",
@@ -1032,7 +1081,8 @@ window.KeystoneHumanChallenges={
       "model": "Colonisation resistance and some vitamin synthesis.",
       "explain": "Microbes can compete for nutrients and make useful metabolites.",
       "misconception": "Human plasma cells produce antibodies, not bacteria.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Think of useful substances microbes can make and how resident organisms affect incoming pathogens."
     },
     {
       "id": "micro-probiotics",
@@ -1049,7 +1099,8 @@ window.KeystoneHumanChallenges={
       "model": "Claims need controlled evidence; microbiota interventions may be variable or have risks.",
       "explain": "Do not extrapolate from a laboratory microbiota change to proven benefit in patients.",
       "misconception": "Recurrent C. difficile treatment should not be conflated with treating obesity.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Separate a claimed biological mechanism from evidence that it improves outcomes in real patients."
     },
     {
       "id": "health-sign-symptom",
@@ -1076,7 +1127,8 @@ window.KeystoneHumanChallenges={
       "model": "Sign → measured/observed; symptom → patient-reported; disease → pathological condition.",
       "explain": "Classification depends on how the information is obtained.",
       "misconception": "Pain is usually a symptom, whereas a measured fever is a sign.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "One term refers to something a patient experiences; the other to what can be observed or measured."
     },
     {
       "id": "health-copd",
@@ -1099,7 +1151,8 @@ window.KeystoneHumanChallenges={
       "model": "Impaired airway clearance and chronic tissue injury.",
       "explain": "Damage increases susceptibility to infection and reduces efficient airflow/gas exchange.",
       "misconception": "Smoking does not improve alveolar diffusion surface area.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Think about what smoke does to airway clearance and to the walls separating alveoli."
     },
     {
       "id": "health-disease",
@@ -1119,7 +1172,8 @@ window.KeystoneHumanChallenges={
       "model": "A measured raised blood pressure",
       "explain": "Signs can be objectively observed or measured by an examiner.",
       "misconception": "Subjective sensations reported by patients are symptoms.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Could another person measure the finding directly, without relying on the patient's description?"
     },
     {
       "id": "health-antibiotic-zones",
@@ -1140,7 +1194,8 @@ window.KeystoneHumanChallenges={
       "model": "Disc B",
       "explain": "A larger clear zone suggests stronger inhibition under the test conditions.",
       "misconception": "An inhibition zone alone does not establish the best treatment for every patient.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Compare the clear area around each disc, not the diameter of the discs themselves."
     },
     {
       "id": "health-antibiotic-control",
@@ -1160,7 +1215,8 @@ window.KeystoneHumanChallenges={
       "model": "To check for an effect of the solvent",
       "explain": "A negative control can help attribute inhibition to the antibiotic rather than its carrier.",
       "misconception": "Without a control, an observed effect may have an alternative explanation.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Ask whether the liquid used to deliver the drug could itself have an effect."
     },
     {
       "id": "health-antibody",
@@ -1181,7 +1237,8 @@ window.KeystoneHumanChallenges={
       "model": "Antigen-binding region",
       "explain": "The tips of the Y-shaped antibody contain variable regions that bind specific antigens.",
       "misconception": "The stem is the Fc region, not the antigen-binding site.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Identify the region that makes specific contact with an antigen rather than the constant stem."
     },
     {
       "id": "health-bp-repeat",
@@ -1204,7 +1261,8 @@ window.KeystoneHumanChallenges={
       "model": "Rest and appropriate cuff size",
       "explain": "Standardised technique helps reduce preventable measurement error.",
       "misconception": "A single high clinic reading is not always sufficient for a final diagnosis.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Measurement conditions should remain stable, with the correct cuff for the patient's arm."
     },
     {
       "id": "health-peakflow",
@@ -1227,7 +1285,8 @@ window.KeystoneHumanChallenges={
       "model": "Inconsistent posture and poor mouthpiece seal",
       "explain": "A poor seal lets air escape; position and effort affect measurements.",
       "misconception": "Choose a technically valid, maximal reading.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Think about actions that cause air to escape elsewhere or change the way the test is performed."
     },
     {
       "id": "health-count-mean",
@@ -1243,7 +1302,8 @@ window.KeystoneHumanChallenges={
       "explain": "Total = 500; divide by 5 = 100.",
       "misconception": "Count observations and retain any requested units/precision.",
       "samAligned": true,
-      "answerUnit": "given units"
+      "answerUnit": "given units",
+      "hintCue": "Add the five values and divide by the number of measurements."
     },
     {
       "id": "health-care-records",
@@ -1266,7 +1326,8 @@ window.KeystoneHumanChallenges={
       "misconception": "'Digital is always better' is not an evaluation.",
       "samAligned": true,
       "marks": 9,
-      "levelsNote": "For OCR-style 9-mark DISCUSS practice, consider both sides in context, evaluate their relative importance and conclude with a reasoned judgement. This is not OCR's official mark scheme."
+      "levelsNote": "For OCR-style 9-mark DISCUSS practice, consider both sides in context, evaluate their relative importance and conclude with a reasoned judgement. This is not OCR's official mark scheme.",
+      "hintCue": "Use the specific clinic context: access to results, training, security, continuity and outages."
     },
     {
       "id": "health-parkinsons-therapy",
@@ -1289,7 +1350,8 @@ window.KeystoneHumanChallenges={
       "misconception": "Do not equate supportive therapy with a lack of biological effect.",
       "samAligned": true,
       "marks": 6,
-      "levelsNote": "For OCR-style 6-mark ANALYSE practice, develop causal links between treatments, effects, benefits and limitations in the given context. This is not OCR's official mark scheme."
+      "levelsNote": "For OCR-style 6-mark ANALYSE practice, develop causal links between treatments, effects, benefits and limitations in the given context. This is not OCR's official mark scheme.",
+      "hintCue": "Compare how a medicine and a supportive intervention affect both motor signs and daily independence."
     },
     {
       "id": "health-immunisation",
@@ -1309,7 +1371,8 @@ window.KeystoneHumanChallenges={
       "model": "Faster secondary immune response",
       "explain": "Memory lymphocytes can support a more rapid specific response to the same antigen.",
       "misconception": "Immunity is not always sterilising or lifelong.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Think about why later exposure can evoke a more rapid antibody response."
     },
     {
       "id": "health-casts",
@@ -1332,7 +1395,8 @@ window.KeystoneHumanChallenges={
       "model": "Typically lighter and more water resistant.",
       "explain": "Material characteristics affect use; padding and fitting still matter.",
       "misconception": "Fibreglass casts are not automatically completely waterproof.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "Compare typical mass and moisture resistance, without assuming either material removes clinical risks."
     },
     {
       "id": "health-screening",
@@ -1349,7 +1413,8 @@ window.KeystoneHumanChallenges={
       "model": "A positive screen indicates further assessment may be necessary; it does not establish a diagnosis.",
       "explain": "Distinguish screening from a definitive diagnostic test.",
       "misconception": "A positive result is not a diagnosis in every context.",
-      "samAligned": true
+      "samAligned": true,
+      "hintCue": "A positive test can occur even in someone who does not have the condition."
     },
     {
       "id": "health-infection-control",
@@ -1369,7 +1434,8 @@ window.KeystoneHumanChallenges={
       "model": "Selection of resistant variants",
       "explain": "Antibiotic pressure favours bacteria carrying resistance determinants.",
       "misconception": "Resistance arises by genetic change or acquisition; antibiotics do not create purposeful adaptive mutations.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Consider what happens to bacterial variants that were already less susceptible to the drug."
     },
     {
       "id": "health-therapy-categories",
@@ -1396,7 +1462,8 @@ window.KeystoneHumanChallenges={
       "model": "Preventative → reduce risk; curative → eliminate disease; supportive → maintain function/comfort.",
       "explain": "A real intervention can have more than one purpose.",
       "misconception": "Supportive treatment is not the same as doing nothing.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Ask whether each intervention prevents disease, removes its cause or supports the person's function."
     },
     {
       "id": "health-therapy-eval",
@@ -1414,7 +1481,8 @@ window.KeystoneHumanChallenges={
       "model": "Compare benefits and harms using evidence, then support a decision reflecting patient goals and informed choice.",
       "explain": "Risk-benefit decisions vary by patient and treatment context.",
       "misconception": "A treatment should not be adopted purely because it is new.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Compare likely improvement in function with the severity and probability of harms for this patient."
     },
     {
       "id": "health-ethics-data",
@@ -1437,7 +1505,8 @@ window.KeystoneHumanChallenges={
       "model": "Access control and data minimisation",
       "explain": "Appropriate permissions, security and governance protect confidential information.",
       "misconception": "Anonymisation must be assessed; stripping names alone may not prevent re-identification.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Consider whether identifying information is essential and who needs permission to view it."
     },
     {
       "id": "health-review-charts",
@@ -1457,7 +1526,8 @@ window.KeystoneHumanChallenges={
       "model": "A truncated y-axis can exaggerate the visual differences between counts.",
       "explain": "The numerical values remain unchanged, but the displayed bar-height differences can be misleading.",
       "misconception": "Bar charts representing counts are usually most interpretable when the vertical scale starts at zero.",
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "If zero is hidden from a count axis, small numeric differences can occupy much more visual space."
     },
     {
       "id": "warm-f170-cells",
@@ -1483,7 +1553,8 @@ window.KeystoneHumanChallenges={
         "Think about the boundary between the whole cell and its environment."
       ],
       "samAligned": false,
-      "onRamp": true
+      "onRamp": true,
+      "hintCue": "Imagine the cell as a room: which structure controls what crosses between inside and outside?"
     },
     {
       "id": "warm-f170-physiology",
@@ -1509,7 +1580,8 @@ window.KeystoneHumanChallenges={
         "Which organ contains myocardium?"
       ],
       "samAligned": false,
-      "onRamp": true
+      "onRamp": true,
+      "hintCue": "Which muscular organ contracts to produce a pulse in the arteries?"
     },
     {
       "id": "warm-f170-endocrine",
@@ -1534,7 +1606,8 @@ window.KeystoneHumanChallenges={
         "Recall the main function before checking the options.",
         "Think of the hormone made by pancreatic beta cells."
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Which hormone is released when the pancreas detects a rise in plasma glucose?"
     },
     {
       "id": "warm-f170-microbes",
@@ -1559,7 +1632,8 @@ window.KeystoneHumanChallenges={
         "Recall the main function before checking the options.",
         "Think about why a virus cannot independently translate proteins."
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Think about the machinery a virus must borrow from a living host to build proteins."
     },
     {
       "id": "warm-f171-disease",
@@ -1584,7 +1658,8 @@ window.KeystoneHumanChallenges={
         "Recall the main function before checking the options.",
         "Ask whether the information was reported or measured."
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Ask whether this information can be directly measured by the examiner."
     },
     {
       "id": "warm-f171-therapy",
@@ -1609,7 +1684,8 @@ window.KeystoneHumanChallenges={
         "Recall the main function before checking the options.",
         "Which option focuses primarily on daily function?"
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Look for an intervention aimed at maintaining function rather than eliminating the disease."
     },
     {
       "id": "warm-f171-immunity",
@@ -1634,7 +1710,8 @@ window.KeystoneHumanChallenges={
         "Recall the main function before checking the options.",
         "Which lymphocytes mediate the humoral immune response?"
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Which type of lymphocyte is involved in the humoral rather than cellular immune response?"
     },
     {
       "id": "warm-f171-diagnostics",
@@ -1659,7 +1736,8 @@ window.KeystoneHumanChallenges={
         "Recall the main function before checking the options.",
         "Which instrument records a voltage-time trace?"
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Which test produces a trace of voltage changes rather than an image or airflow reading?"
     },
     {
       "id": "warm-f171-data",
@@ -1684,7 +1762,8 @@ window.KeystoneHumanChallenges={
         "Recall the main function before checking the options.",
         "This concerns confidentiality, not the quality of instruments."
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Identifying data could expose confidential information about a patient."
     },
     {
       "id": "best-f170-magnification",
@@ -1715,7 +1794,8 @@ window.KeystoneHumanChallenges={
         "Decide which explanation is scientifically accurate before looking at the reasons.",
         "Recheck which dimension is made larger in the image."
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "The numerator of the ratio is the length measured on the image, not the specimen itself."
     },
     {
       "id": "best-f170-insulin",
@@ -1746,7 +1826,8 @@ window.KeystoneHumanChallenges={
         "Decide which explanation is scientifically accurate before looking at the reasons.",
         "How does a hormone signal to a target cell?"
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "The signal must bind to a receptor; hormones are not enzymes that digest blood glucose."
     },
     {
       "id": "best-f170-myelin",
@@ -1777,7 +1858,8 @@ window.KeystoneHumanChallenges={
         "Decide which explanation is scientifically accurate before looking at the reasons.",
         "Where are action potentials regenerated?"
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Focus on electrical activity at the gaps between insulating segments along the axon."
     },
     {
       "id": "best-f170-culture",
@@ -1808,7 +1890,8 @@ window.KeystoneHumanChallenges={
         "Decide which explanation is scientifically accurate before looking at the reasons.",
         "What does the graph tell you about the net count, rather than each cell?"
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "A flat population graph describes a net total, not whether any individual bacterium is dividing."
     },
     {
       "id": "best-f171-antibiotics",
@@ -1839,7 +1922,8 @@ window.KeystoneHumanChallenges={
         "Decide which explanation is scientifically accurate before looking at the reasons.",
         "What is actually measured on the agar plate?"
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "What can you conclude about microbial growth on agar, and what remains unknown about a patient?"
     },
     {
       "id": "best-f171-screening",
@@ -1870,7 +1954,8 @@ window.KeystoneHumanChallenges={
         "Decide which explanation is scientifically accurate before looking at the reasons.",
         "What would happen if a test occasionally misclassified a healthy patient?"
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Screening performance and how common a disease is both affect what a positive result means."
     },
     {
       "id": "error-f170-sphase",
@@ -1895,7 +1980,8 @@ window.KeystoneHumanChallenges={
         "Identify the statement that contradicts the underlying biological mechanism.",
         "Check whether the student's wording confuses a process with a related but different process."
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "DNA must be copied before chromatids can be separated at nuclear division."
     },
     {
       "id": "error-f170-adh",
@@ -1920,7 +2006,8 @@ window.KeystoneHumanChallenges={
         "Identify the statement that contradicts the underlying biological mechanism.",
         "Check whether the student's wording confuses a process with a related but different process."
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Think about whether more water returns to the blood or remains in the urine."
     },
     {
       "id": "error-f170-viral-ribosomes",
@@ -1945,7 +2032,8 @@ window.KeystoneHumanChallenges={
         "Identify the statement that contradicts the underlying biological mechanism.",
         "Check whether the student's wording confuses a process with a related but different process."
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Viruses require host cells to translate the proteins encoded by their genetic material."
     },
     {
       "id": "error-f171-peakflow",
@@ -1970,7 +2058,8 @@ window.KeystoneHumanChallenges={
         "Identify the statement that contradicts the underlying biological mechanism.",
         "Check whether the student's wording confuses a process with a related but different process."
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "This clinical test records the maximum technically acceptable effort, not the latest reading."
     },
     {
       "id": "warm-f171-influenza",
@@ -1996,7 +2085,8 @@ window.KeystoneHumanChallenges={
         "Recall the type of microorganism associated with influenza.",
         "This infectious agent does not have its own ribosomes."
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "The organism must replicate inside host cells and is not susceptible to ordinary antibacterial treatment."
     },
     {
       "id": "warm-f171-heart",
@@ -2022,7 +2112,8 @@ window.KeystoneHumanChallenges={
         "Think of the organ whose muscle contracts rhythmically.",
         "It contains atria and ventricles."
       ],
-      "samAligned": false
+      "samAligned": false,
+      "hintCue": "Which organ's chambers contract in sequence to move blood through vessels?"
     }
   ]
 };
