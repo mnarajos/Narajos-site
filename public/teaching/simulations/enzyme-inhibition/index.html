@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enzyme Inhibition — A-level</title>
+<style>
+  :root{
+    --bg:#e9edf2; --card:#ffffff; --ink:#101f2e; --muted:#5b6f82; --line:#d2dbe4;
+    --accent:#2f7fd6; --accent-deep:#1d5b9e;
+    --sub:#3fa35a; --comp:#e0566b; --non:#8b5cf6;
+    --radius:14px; --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;
+    display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+  header{padding:9px 16px;background:var(--card);border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .brand .t{font-weight:800;font-size:17px;letter-spacing:-.02em}
+  .brand .s{font-size:10.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+  .level-group{margin-left:auto;display:flex;align-items:center;gap:8px}
+  .level-group>span{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+  .level-seg{display:flex;background:#eef2f6;border:1px solid var(--line);border-radius:10px;padding:3px}
+  .level-seg button{border:0;background:transparent;padding:6px 11px;border-radius:7px;cursor:pointer;
+    font-size:12.5px;font-weight:700;color:var(--muted)}
+  .level-seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+
+  main{flex:1;display:flex;min-height:0}
+  .stage{flex:1;display:flex;flex-direction:column;min-width:0;padding:12px 12px 8px;gap:9px}
+  .chamber-wrap{position:relative;flex:1;border-radius:var(--radius);overflow:hidden;
+    box-shadow:0 6px 22px rgba(16,31,46,.28);min-height:230px}
+  canvas#chamber{display:block;width:100%;height:100%}
+  .env{position:absolute;top:11px;left:11px;right:11px;display:flex;gap:8px;pointer-events:none;flex-wrap:wrap}
+  .env .pill{background:rgba(8,20,32,.62);color:#e9f3ff;border:1px solid rgba(140,190,240,.28);
+    border-radius:10px;padding:6px 10px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:7px}
+  .env .pill b{font-family:var(--mono);font-weight:700}
+
+  .chips{display:flex;gap:7px;flex-wrap:wrap}
+  .chip{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--line);
+    border-radius:10px;padding:6px 10px;font-size:12px;font-weight:600}
+  .chip b{font-family:var(--mono);font-size:13px}
+  .chip .sw{width:12px;height:12px;border-radius:3px;flex:none}
+
+  .status{display:flex;gap:8px;flex-wrap:wrap}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:7px 11px;min-width:104px;flex:1}
+  .stat .k{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700}
+  .stat .v{font-family:var(--mono);font-size:19px;font-weight:700;margin-top:2px}
+  .stat .v small{font-size:10.5px;color:var(--muted);font-weight:600}
+  .msg{background:#eef6ff;border:1px solid #c2ddf5;color:#1c4f7c;border-radius:11px;padding:7px 11px;
+    font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:8px;flex:2.4;min-width:220px}
+  .msg .ic{font-size:15px}
+
+  /* ---- analysis area (level 3) ---- */
+  .analysis{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:10px 12px;display:flex;gap:12px;height:322px;flex:none}
+  .analysis .plotbox{flex:1;min-width:0;display:flex;flex-direction:column}
+  .analysis .plothead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px}
+  .analysis .plothead .t{font-size:13px;font-weight:800}
+  .analysis .plothead .s{font-size:10.5px;color:var(--muted);font-weight:600}
+  canvas#plot{flex:1;width:100%;display:block}
+  .analysis .side{width:236px;flex:none;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+  .sectlabel{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .serieslist{display:flex;flex-direction:column;gap:4px}
+  .sitem{display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:600;
+    border:1px solid var(--line);border-radius:9px;padding:5px 7px}
+  .sitem .sw{width:16px;height:4px;border-radius:2px;flex:none}
+  .sitem .lb{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .sitem input{accent-color:var(--accent);flex:none}
+  .sitem button.del{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:14px;padding:0 2px}
+  .sitem button.del:hover{color:var(--comp)}
+  .minibtn{border:1px solid var(--line);background:#f2f6fa;border-radius:9px;padding:7px;
+    font-size:11.5px;font-weight:700;cursor:pointer;color:var(--ink)}
+  .minibtn:hover{border-color:var(--accent);color:var(--accent-deep)}
+  .optrow{display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:600;color:var(--muted)}
+  .optrow input{accent-color:var(--accent)}
+  .readout{background:#f4f8fc;border:1px solid #d8e6f2;border-radius:9px;padding:7px 9px;
+    font-size:11.5px;color:#26506f;line-height:1.45}
+  .readout b{font-family:var(--mono)}
+
+  /* ---- control panel ---- */
+  .panel{width:330px;flex:none;background:var(--card);border-left:1px solid var(--line);
+    padding:15px;overflow-y:auto;display:flex;flex-direction:column;gap:13px}
+  .ctrl .head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .ctrl .head label{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:7px}
+  .ctrl .head label .sw{width:13px;height:13px;border-radius:4px;flex:none}
+  .ctrl .head .read{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--accent-deep)}
+  .ctrl .sub{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.4}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:7px;border-radius:5px;background:#dde5ec;outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;
+    background:var(--accent);border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.28);cursor:pointer}
+  input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--accent);
+    border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.28);cursor:pointer}
+  input[type=range]:focus-visible{box-shadow:0 0 0 3px rgba(47,127,214,.4)}
+  input#s-comp::-webkit-slider-thumb{background:var(--comp)} input#s-comp::-moz-range-thumb{background:var(--comp)}
+  input#s-non::-webkit-slider-thumb{background:var(--non)}  input#s-non::-moz-range-thumb{background:var(--non)}
+  .track-temp{background:linear-gradient(90deg,#7fb2e6,#8fd98f 42%,#f4c14a 62%,#e0632e)}
+  .track-ph{background:linear-gradient(90deg,#e0632e,#f4c14a 22%,#8fd98f 50%,#7fb2e6 78%,#8f7fe6)}
+
+  .btn-row{display:flex;gap:8px}
+  button.act{flex:1;border:0;border-radius:10px;padding:11px;font-size:14px;font-weight:700;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:7px}
+  button.act.primary{background:var(--accent);color:#fff}
+  button.act.primary:hover{background:var(--accent-deep)}
+  button.act.ghost{background:#eef2f6;color:var(--ink);border:1px solid var(--line)}
+  button.act.ghost:hover{border-color:var(--accent)}
+
+  .inhtoggle{display:flex;gap:8px}
+  .inhtoggle button{flex:1;border:1.5px solid var(--line);background:#f6f9fb;border-radius:11px;
+    padding:9px 8px;font-size:12px;font-weight:700;cursor:pointer;color:var(--ink);
+    display:flex;flex-direction:column;align-items:center;gap:5px}
+  .inhtoggle button canvas{width:30px;height:24px}
+  .inhtoggle button[aria-pressed="true"][data-k="comp"]{border-color:var(--comp);background:#fdf0f2;color:#a52e40}
+  .inhtoggle button[aria-pressed="true"][data-k="non"]{border-color:var(--non);background:#f4f0ff;color:#5b34ac}
+
+  .legend{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)}
+  .legend .row{display:flex;align-items:center;gap:8px}
+  .legend .row canvas{width:34px;height:26px;flex:none}
+  details.notes{border-top:1px solid var(--line);padding-top:11px}
+  details.notes summary{font-size:12.5px;font-weight:700;cursor:pointer;color:var(--accent-deep)}
+  details.notes p{font-size:12px;color:var(--muted);line-height:1.45}
+  body.booting .lvl2,body.booting .lvl3{display:none}
+  .hint-strip{font-size:11px;color:var(--muted);text-align:center}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media (max-width:1000px){
+    main{flex-direction:column;overflow-y:auto}
+    .panel{width:auto;border-left:0;border-top:1px solid var(--line)}
+    .chamber-wrap{min-height:320px}
+    .analysis{flex-direction:column;height:auto}
+    .analysis .side{width:auto}
+    canvas#plot{height:240px;flex:none}
+    .level-group{margin-left:0}
+  }
+</style>
+</head>
+<body class="booting" data-level="1">
+<a href="/teaching/simulations/" style="display:block;padding:7px 16px;font:600 12px system-ui;color:#24323e;background:#faf9f6;text-decoration:none;position:relative;z-index:20">← All simulations</a>
+
+<header>
+  <div class="brand">
+    <div class="t">Enzyme Inhibition</div>
+    <div class="s">Competitive &amp; non-competitive · AQA A-level 1.4.2</div>
+  </div>
+  <div class="level-group">
+    <span>Detail</span>
+    <div class="level-seg" role="group" aria-label="Complexity level">
+      <button data-level="1" aria-pressed="true">1 · Explore</button>
+      <button data-level="2" aria-pressed="false">2 · Investigate</button>
+      <button data-level="3" aria-pressed="false">3 · Analyse</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="stage">
+    <div class="chamber-wrap">
+      <canvas id="chamber"></canvas>
+      <div class="env">
+        <div class="pill">🌡️ <b id="env-temp">37°C</b></div>
+        <div class="pill lvl2">⚗️ pH <b id="env-ph">7.0</b></div>
+        <div class="pill">Rate <b id="env-rate">0.00</b> AU</div>
+      </div>
+    </div>
+
+    <div class="chips" id="chips"></div>
+
+    <div class="status">
+      <div class="stat"><div class="k">Substrate left</div><div class="v" id="v-sub">0</div></div>
+      <div class="stat"><div class="k">Product made</div><div class="v" id="v-prod">0</div></div>
+      <div class="stat lvl2"><div class="k">Rate now</div><div class="v"><span id="v-rate">0.00</span> <small>AU</small></div></div>
+      <div class="stat lvl2"><div class="k">V<sub>max</sub> now</div><div class="v"><span id="v-vmax">1.00</span> <small>AU</small></div></div>
+      <div class="msg" id="coach"><span class="ic">💡</span><span id="coach-text">Press Start. Watch substrate bind the active site and be converted to product.</span></div>
+    </div>
+
+    <div class="analysis lvl3">
+      <div class="plotbox">
+        <div class="plothead">
+          <span class="t">Initial rate of reaction against substrate concentration</span>
+          <span class="s">initial rate — measured before substrate runs out</span>
+        </div>
+        <canvas id="plot"></canvas>
+      </div>
+      <div class="side">
+        <div>
+          <div class="sectlabel">Curves to plot</div>
+          <div class="serieslist" id="series"></div>
+        </div>
+        <button class="minibtn" id="btn-snap">＋ Snapshot current settings</button>
+        <button class="minibtn" id="btn-mark">📍 Mark current [S] on curves</button>
+        <div>
+          <div class="sectlabel">Overlays</div>
+          <label class="optrow"><input type="checkbox" id="o-vmax" checked> Show V<sub>max</sub> lines</label>
+          <label class="optrow"><input type="checkbox" id="o-km"> Show K<sub>m</sub> construction</label>
+          <label class="optrow"><input type="checkbox" id="o-mark" checked> Show [S] markers</label>
+        </div>
+        <div class="readout" id="analysis-read"></div>
+      </div>
+    </div>
+
+    <div class="hint-strip" id="hint">A competitive inhibitor is a similar shape to the substrate, so it fits the active site. A non-competitive inhibitor fits the allosteric site instead.</div>
+  </section>
+
+  <aside class="panel">
+    <div class="btn-row">
+      <button class="act primary" id="btn-run"><span id="run-ic">▶</span><span id="run-tx">Start</span></button>
+      <button class="act ghost" id="btn-reset">↻ Restart</button>
+    </div>
+
+    <div class="ctrl">
+      <div class="head"><label for="s-sub"><span class="sw" style="background:var(--sub)"></span>Substrate concentration</label><span class="read" id="r-sub">20</span></div>
+      <input type="range" id="s-sub" min="0" max="50" value="20" step="1">
+      <div class="sub">Fixed chamber volume, so this is a true concentration. Raising it is the key test for telling the two inhibitors apart.</div>
+    </div>
+
+    <div class="ctrl">
+      <div class="head"><label for="s-enz">Enzyme concentration</label><span class="read" id="r-enz">4</span></div>
+      <input type="range" id="s-enz" min="1" max="8" value="4" step="1">
+      <div class="sub">More enzyme means more active sites, so V<sub>max</sub> rises.</div>
+    </div>
+
+    <!-- Explore: simple on/off. Investigate & Analyse: variable quantity. -->
+    <div class="lvl1only">
+      <div class="sectlabel" style="margin-bottom:6px">Add inhibitor</div>
+      <div class="inhtoggle">
+        <button data-k="comp" aria-pressed="false"><canvas></canvas>Competitive</button>
+        <button data-k="non" aria-pressed="false"><canvas></canvas>Non-competitive</button>
+      </div>
+      <div class="sub" style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.4">
+        Watch where each one binds, then try raising the substrate concentration with each in turn.
+      </div>
+    </div>
+
+    <div class="ctrl lvl2">
+      <div class="head"><label for="s-comp"><span class="sw" style="background:var(--comp)"></span>Competitive inhibitor</label><span class="read" id="r-comp">0</span></div>
+      <input type="range" id="s-comp" min="0" max="16" value="0" step="1">
+      <div class="sub">Similar shape to the substrate, so it competes for the active site. Binding is reversible — it is not used up.</div>
+    </div>
+
+    <div class="ctrl lvl2">
+      <div class="head"><label for="s-non"><span class="sw" style="background:var(--non)"></span>Non-competitive inhibitor</label><span class="read" id="r-non">0</span></div>
+      <input type="range" id="s-non" min="0" max="16" value="0" step="1">
+      <div class="sub">Binds the allosteric site, changing the shape of the active site so substrate no longer fits. Also reversible.</div>
+    </div>
+
+    <div class="ctrl lvl2">
+      <div class="head"><label for="s-temp">Temperature</label><span class="read" id="r-temp">37 °C</span></div>
+      <input type="range" id="s-temp" class="track-temp" min="0" max="80" value="37" step="1">
+    </div>
+    <div class="ctrl lvl2">
+      <div class="head"><label for="s-ph">pH</label><span class="read" id="r-ph">7.0</span></div>
+      <input type="range" id="s-ph" class="track-ph" min="1" max="14" value="7" step="0.5">
+    </div>
+
+    <label class="optrow" style="font-size:13px;color:var(--ink)"><input type="checkbox" id="t-labels"> Show labels on molecules</label>
+
+    <div class="legend" id="legend"></div>
+
+    <details class="notes lvl2">
+      <summary>The science behind the model</summary>
+      <p><b>Competitive inhibition.</b> The inhibitor is a similar shape to the substrate and is complementary to part of the active site, so the two compete for it. Only one can occupy the site at a time, so fewer enzyme–substrate complexes form. Raising the substrate concentration means substrate wins the competition more often, so the inhibition is overcome and the same V<sub>max</sub> is still reached — it just takes more substrate.</p>
+      <p><b>Non-competitive inhibition.</b> The inhibitor binds the allosteric site, a site other than the active site. This changes the tertiary structure, so the active site is no longer complementary to the substrate and no enzyme–substrate complex can form. Adding more substrate cannot help, because substrate and inhibitor are not competing for the same site, so V<sub>max</sub> is lowered.</p>
+      <p><b>Both are reversible here.</b> Each inhibitor stays bound only for a while and then leaves, free to bind again. Inhibitors are not used up and do not denature the enzyme.</p>
+      <p><b>What the chamber shows and what the graph computes.</b> The chamber illustrates the <em>mechanism</em> — which molecule binds where, and what is turned away. The rate readout and the graphs come from the kinetic model above, so they are exact and repeatable rather than depending on the luck of individual collisions. Counting products by eye over a few seconds will be noisy, exactly as a real experiment is.</p>
+      <p><b>Arbitrary units.</b> Rate is scaled so 1.00 AU is V<sub>max</sub> for 4 enzymes at 37 °C and optimum pH with no inhibitor — the rate approached when every active site is saturated with substrate.</p>
+    </details>
+  </aside>
+</main>
+
+<script>
+"use strict";
+/* ============================================================
+   ENZYME INHIBITION — A-level extension. Self-contained, offline.
+   Models AQA 1.4.2: effect of enzyme conc, substrate conc, and the
+   concentration of competitive and non-competitive inhibitors, plus
+   pH and temperature, on the rate of an enzyme-controlled reaction.
+   ============================================================ */
+
+/* ---------- constants ---------- */
+const WW=900, WH=560;                 // fixed chamber volume
+const KM0=5;                          // Km with no inhibitor (small enough that the
+                                      // plateau is reachable within the settable range)
+/* Inhibitor constants calibrated against the particle model, so the fraction of
+   enzymes you can SEE inhibited matches the Vmax / Km shift on the graph. */
+const KIC=7, KIN=12;
+const ACT_HALF=0.90, ALLO_HALF=0.45;  // angular half-width of each site
+const R_ENZ=34;
+const STD={enz:4, sub:20, temp:37, ph:7};
+
+const S={
+  level:1, running:false, showLabels:false,
+  temp:37, ph:7, subN:20, enzN:4, compN:0, nonN:0,
+  enzymes:[], mols:[], products:[],
+  productCount:0, rateEMA:0,
+  series:[], snapCount:0, markS:[],
+  optVmax:true, optKm:false, optMark:true
+};
+
+/* ---------- canvas ---------- */
+const chamber=document.getElementById("chamber"), ctx=chamber.getContext("2d");
+const plot=document.getElementById("plot"), pctx=plot.getContext("2d");
+let W=800,H=500,DPR=1,VS=1,VOX=0,VOY=0;
+function sizeCanvas(){
+  const r=chamber.parentElement.getBoundingClientRect();
+  DPR=Math.min(window.devicePixelRatio||1,2);
+  W=Math.max(320,r.width); H=Math.max(220,r.height);
+  chamber.width=W*DPR; chamber.height=H*DPR;
+  chamber.style.width=W+"px"; chamber.style.height=H+"px";
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  VS=Math.min(W/WW,H/WH); VOX=(W-WW*VS)/2; VOY=(H-WH*VS)/2;
+  const p=plot.getBoundingClientRect();
+  plot.width=Math.max(1,p.width)*DPR; plot.height=Math.max(1,p.height)*DPR;
+  pctx.setTransform(DPR,0,0,DPR,0,0);
+}
+window.addEventListener("resize",sizeCanvas);
+function enterWorld(){ctx.setTransform(DPR,0,0,DPR,0,0);ctx.translate(VOX,VOY);ctx.scale(VS,VS);}
+function exitWorld(){ctx.setTransform(DPR,0,0,DPR,0,0);}
+
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const rand=(a,b)=>a+Math.random()*(b-a);
+const gauss=(x,mu,s)=>{const d=(x-mu)/s;return Math.exp(-d*d);};
+
+/* ---------- rate model ----------
+   Vmax        = (enzymes/4) x k
+   competitive : raises apparent Km  -> same Vmax, needs more [S]
+   non-comp    : lowers Vmax         -> cannot be outcompeted by [S]      */
+function tempFactor(){return Math.pow(2,(S.temp-37)/10);}
+function phFit(){return gauss(S.ph,7,1.9);}
+function kCat(){return clamp(tempFactor()*phFit(),0,2.5);}
+function workingEnz(){return S.enzymes.filter(e=>!e.denatured).length;}
+function vmaxOf(nEnz,k,In){return (nEnz/4)*k/(1+In/KIN);}
+function kmOf(Ic){return KM0*(1+Ic/KIC);}
+function rateOf(Sc,Ic,In,nEnz,k){
+  if(Sc<=0) return 0;
+  return vmaxOf(nEnz,k,In)*Sc/(kmOf(Ic)+Sc);
+}
+const speedFactor=()=>0.35+S.temp/60;
+
+/* ---------- site geometry ----------
+   Active site  : TWO round pockets, complementary to the two-lobed substrate.
+                  A competitive inhibitor is one lobe, so it fits ONE pocket.
+   Allosteric   : a triangular notch on the opposite face — a completely
+                  different shape, so only the non-competitive inhibitor fits. */
+/* The active site has TWO shapes and eases between them.
+   morph = 0 : two deep round pockets, complementary to the two-lobed substrate
+   morph = 1 : the pockets have collapsed into a single shallow off-centre dent,
+               so the substrate's two lobes can no longer fit at all.
+   A non-competitive inhibitor on the allosteric site drives morph -> 1. */
+function actProfile(t,morph){
+  morph=morph||0;
+  const normal =3+10*Math.min(1,Math.exp(-Math.pow((t-0.25)/0.13,2))+Math.exp(-Math.pow((t-0.75)/0.13,2)));
+  const changed=1.5+4.5*Math.exp(-Math.pow((t-0.60)/0.26,2));
+  return normal*(1-morph)+changed*morph;
+}
+function alloProfile(t){ return 12*(1-Math.abs(2*t-1)); }
+function notchPts(r,centre,half,profile,distort,phase,morph){
+  const N=34,pts=[],u=r/R_ENZ;
+  for(let i=0;i<=N;i++){
+    const t=i/N;
+    let d=profile(t,morph)*u*(1-0.5*distort);
+    let a=centre-half+2*half*t;
+    if(distort>0.01){ d*=1+distort*0.5*Math.sin(phase+t*7); a+=distort*0.13*Math.sin(phase*1.2+t*5); }
+    pts.push({x:(r-d)*Math.cos(a),y:(r-d)*Math.sin(a)});
+  }
+  return pts;
+}
+function enzymePath(c,r,distort,phase,morph){
+  c.beginPath();
+  c.arc(0,0,r,ACT_HALF,Math.PI-ALLO_HALF,false);
+  for(const p of notchPts(r,Math.PI,ALLO_HALF,alloProfile,0,phase,0)) c.lineTo(p.x,p.y);
+  c.arc(0,0,r,Math.PI+ALLO_HALF,Math.PI*2-ACT_HALF,false);
+  for(const p of notchPts(r,0,ACT_HALF,actProfile,distort,phase,morph)) c.lineTo(p.x,p.y);
+  c.closePath();
+}
+
+/* ---------- particles ---------- */
+function makeEnzyme(){
+  return {x:rand(90,WW-90),y:rand(80,WH-80),vx:rand(-.25,.25),vy:rand(-.25,.25),
+    face:rand(0,6.28),turn:rand(-.004,.004),r:R_ENZ,
+    act:null,allo:null,timer:0,dwell:0,alloDwell:0,
+    denatured:false,stress:0,cause:null,wobble:0,reject:0,rejA:0,rejWhy:"",morph:0};
+}
+function makeMol(kind){
+  return {kind,x:rand(30,WW-30),y:rand(30,WH-30),vx:rand(-1,1),vy:rand(-1,1),
+    r:kind==="sub"?15:9,state:"free",rot:rand(0,6.28),spin:rand(-.03,.03),cool:0};
+}
+function countMol(kind){return S.mols.filter(m=>m.kind===kind).length;}
+function syncEnzymes(){
+  while(S.enzymes.length<S.enzN) S.enzymes.push(makeEnzyme());
+  while(S.enzymes.length>S.enzN){
+    const e=S.enzymes.pop();
+    if(e.act){e.act.state="free";} if(e.allo){e.allo.state="free";}
+  }
+}
+function syncMol(kind,target){
+  let n=countMol(kind);
+  while(n<target){S.mols.push(makeMol(kind));n++;}
+  while(n>target){
+    const i=S.mols.findIndex(m=>m.kind===kind&&m.state==="free");
+    if(i<0)break;
+    S.mols.splice(i,1);n--;
+  }
+}
+function fillSubstrate(){syncMol("sub",S.subN);}
+function syncInhibitors(){syncMol("comp",S.compN);syncMol("non",S.nonN);}
+
+/* ---------- simulation ---------- */
+function step(){
+  const spd=speedFactor(), k=kCat(), fit=phFit();
+  for(const m of S.mols){
+    if(m.state!=="free")continue;
+    if(m.cool>0)m.cool--;                    // just dissociated — diffusing away
+    m.x+=m.vx*spd;m.y+=m.vy*spd;m.rot+=m.spin;
+    m.vx+=rand(-.08,.08);m.vy+=rand(-.08,.08);
+    m.vx=clamp(m.vx,-2.2,2.2);m.vy=clamp(m.vy,-2.2,2.2);
+    if(m.x<m.r){m.x=m.r;m.vx*=-1;} if(m.x>WW-m.r){m.x=WW-m.r;m.vx*=-1;}
+    if(m.y<m.r){m.y=m.r;m.vy*=-1;} if(m.y>WH-m.r){m.y=WH-m.r;m.vy*=-1;}
+  }
+  let den=0;
+  for(const en of S.enzymes){
+    if(!en.denatured){
+      const dph=Math.abs(S.ph-7);
+      let add=0,cause=null;
+      if(S.temp>38){add+=Math.pow(S.temp-38,1.6)/700;cause="heat";}
+      if(dph>3.5){const a=(dph-3.5)/1200;if(a>add)cause="pH";add+=a;}
+      if(add>0){en.stress+=add;if(!en.cause)en.cause=cause;
+        if(en.stress>1){en.denatured=true;en.cause=cause||en.cause;
+          if(en.act){en.act.state="free";en.act=null;}
+          if(en.allo){en.allo.state="free";en.allo=null;}}}
+    }
+    if(en.denatured)den++;
+    if(en.reject>0)en.reject--;
+    // ease the active site between its two shapes so the change is visible
+    en.morph+=((en.allo?1:0)-en.morph)*0.07;
+
+    en.x+=en.vx*(0.4+spd*0.3);en.y+=en.vy*(0.4+spd*0.3);
+    en.vx+=rand(-.02,.02);en.vy+=rand(-.02,.02);
+    en.vx=clamp(en.vx,-.7,.7);en.vy=clamp(en.vy,-.7,.7);
+    if(en.x<en.r){en.x=en.r;en.vx*=-1;} if(en.x>WW-en.r){en.x=WW-en.r;en.vx*=-1;}
+    if(en.y<en.r){en.y=en.r;en.vy*=-1;} if(en.y>WH-en.r){en.y=WH-en.r;en.vy*=-1;}
+    if(en.denatured){en.wobble*=0.9;continue;}
+
+    /* steer the active site toward the nearest free substrate */
+    if(!en.act){
+      let best=null,bd=1e9;
+      for(const m of S.mols){
+        if(m.state!=="free"||m.kind==="non"||m.cool>0)continue;  // not chased while dissociating
+        const d=(m.x-en.x)**2+(m.y-en.y)**2;
+        if(d<bd){bd=d;best=m;}
+      }
+      if(best&&bd<230*230){
+        const want=Math.atan2(best.y-en.y,best.x-en.x);
+        let diff=((want-en.face+Math.PI*3)%(Math.PI*2))-Math.PI;
+        en.face+=clamp(diff,-0.055,0.055);
+      } else en.face+=en.turn;
+    } else en.face+=en.turn*0.5;
+
+    const ax=en.x+Math.cos(en.face)*(en.r*0.80), ay=en.y+Math.sin(en.face)*(en.r*0.80);
+    const bx=en.x-Math.cos(en.face)*(en.r*0.80), by=en.y-Math.sin(en.face)*(en.r*0.80);
+
+    /* ---- allosteric site: non-competitive inhibitor, reversible ---- */
+    if(en.allo){
+      en.alloDwell--;
+      if(en.alloDwell<=0){
+        const m=en.allo;m.state="free";
+        const a=en.face+Math.PI+rand(-0.6,0.6);
+        const d=en.r+m.r+26;                 // clear of the capture radius
+        m.x=en.x+Math.cos(a)*d;m.y=en.y+Math.sin(a)*d;
+        m.vx=Math.cos(a)*2.3;m.vy=Math.sin(a)*2.3;
+        m.cool=Math.round(rand(110,240));    // free diffusion before it can rebind
+        en.allo=null;
+      }
+    } else if(!en.act){
+      for(const m of S.mols){
+        if(m.state!=="free"||m.kind!=="non"||m.cool>0)continue;
+        if(Math.hypot(m.x-en.x,m.y-en.y)<en.r+m.r+8&&Math.random()<0.26){
+          m.state="bound";en.allo=m;en.alloDwell=Math.round(rand(260,520));break;
+        }
+      }
+    }
+
+    /* ---- active site ---- */
+    const distorted=!!en.allo||en.morph>0.35;   // wrong shape -> nothing binds
+    if(en.act){
+      if(en.act.kind==="sub"){
+        en.wobble=Math.sin(performance.now()/60)*0.13;
+        en.timer--;
+        if(en.timer<=0){
+          spawnProducts(ax,ay);
+          const i=S.mols.indexOf(en.act);if(i>=0)S.mols.splice(i,1);
+          en.act=null;S.productCount++;
+        }
+      } else {                       /* competitive inhibitor: reversible */
+        en.dwell--;
+        if(en.dwell<=0){
+          const m=en.act;m.state="free";
+          const a=en.face+rand(-0.6,0.6);
+          const d=en.r+m.r+26;               // clear of the active-site capture radius
+          m.x=en.x+Math.cos(a)*d;m.y=en.y+Math.sin(a)*d;
+          m.vx=Math.cos(a)*2.3;m.vy=Math.sin(a)*2.3;
+          m.cool=Math.round(rand(110,240));
+          en.act=null;
+        }
+      }
+    } else {
+      for(const m of S.mols){
+        if(m.state!=="free"||m.cool>0)continue;
+        if(m.kind==="non")continue;
+        const d=Math.hypot(m.x-ax,m.y-ay);
+        if(d>en.r*0.72+m.r)continue;
+        if(distorted){ reject(en,m,"active site changed shape"); continue; }
+        if(m.kind==="sub"&&Math.random()<0.34*fit){
+          m.state="bound";en.act=m;en.timer=Math.round(rand(40,60)/clamp(k,0.08,2.5));break;
+        } else if(m.kind==="comp"&&Math.random()<0.34){
+          m.state="bound";en.act=m;en.dwell=Math.round(rand(55,120));break;
+        }
+      }
+    }
+    /* substrate arriving at an occupied active site is turned away */
+    if(en.act&&en.act.kind==="comp"){
+      for(const m of S.mols){
+        if(m.state!=="free"||m.kind!=="sub")continue;
+        if(Math.hypot(m.x-ax,m.y-ay)<en.r*0.72+m.r) reject(en,m,"active site blocked");
+      }
+    }
+    if(!en.act&&distorted) en.wobble*=0.85;
+  }
+
+  for(const p of S.products){
+    p.x+=p.vx;p.y+=p.vy;p.rot+=p.spin;p.vx*=0.985;p.vy*=0.985;p.life-=0.006;
+    if(p.x<p.r||p.x>WW-p.r)p.vx*=-1;
+    if(p.y<p.r||p.y>WH-p.r)p.vy*=-1;
+  }
+  S.products=S.products.filter(p=>p.life>0);
+  syncEnzymes();syncInhibitors();
+
+  /* readout rate: the model above, evaluated at the substrate still present */
+  const freeS=S.mols.filter(m=>m.kind==="sub").length;
+  const raw=rateOf(freeS,S.compN,S.nonN,workingEnz(),k);
+  S.rateEMA+=(raw-S.rateEMA)*0.08;
+  return {den};
+}
+function reject(en,m,why){
+  if(en.reject>0)return;
+  const a=Math.atan2(m.y-en.y,m.x-en.x);
+  m.vx=Math.cos(a)*2.7;m.vy=Math.sin(a)*2.7;
+  m.x=en.x+Math.cos(a)*(en.r+m.r+3);m.y=en.y+Math.sin(a)*(en.r+m.r+3);
+  m.spin=(Math.random()<0.5?-1:1)*0.12;
+  en.vx-=Math.cos(a)*0.4;en.vy-=Math.sin(a)*0.4;
+  en.reject=36;en.rejA=a;en.rejWhy=why;
+}
+function spawnProducts(x,y){
+  for(let i=0;i<2;i++){
+    const a=rand(0,6.28),sp=rand(1.2,2.2);
+    S.products.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,r:7,life:1,rot:rand(0,6.28),spin:rand(-.06,.06)});
+  }
+}
+
+/* ---------- drawing ---------- */
+function roundRect(c,x,y,w,h,r,fill,edge){
+  c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);
+  c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();
+  if(fill){c.fillStyle=fill;c.fill();} if(edge){c.lineWidth=2;c.strokeStyle=edge;c.stroke();}
+}
+function drawChamber(){
+  exitWorld();ctx.fillStyle="#06131f";ctx.fillRect(0,0,W,H);enterWorld();
+  const g=ctx.createRadialGradient(WW/2,WH*0.42,60,WW/2,WH/2,Math.max(WW,WH)*0.75);
+  g.addColorStop(0,"#173c5c");g.addColorStop(1,"#0a1f30");
+  ctx.fillStyle=g;ctx.fillRect(0,0,WW,WH);
+  ctx.strokeStyle="rgba(130,190,235,.06)";ctx.lineWidth=1;ctx.beginPath();
+  for(let x=0;x<WW;x+=45){ctx.moveTo(x,0);ctx.lineTo(x,WH);}
+  for(let y=0;y<WH;y+=45){ctx.moveTo(0,y);ctx.lineTo(WW,y);}
+  ctx.stroke();
+}
+/* molecules, drawn so the shapes explain the mechanism */
+function drawMolOn(c,kind,scale){
+  c.save();c.scale(scale,scale);
+  if(kind==="sub"){                       /* two lobes joined by a bar */
+    c.strokeStyle="#2c7d45";c.lineWidth=4;c.lineCap="round";
+    c.beginPath();c.moveTo(-12,0);c.lineTo(12,0);c.stroke();
+    for(const x of [-12,12]){c.beginPath();c.arc(x,0,7,0,6.29);
+      c.fillStyle="#3fa35a";c.fill();c.lineWidth=2.2;c.strokeStyle="#26663a";c.stroke();}
+  } else if(kind==="comp"){               /* ONE lobe — fits one pocket */
+    c.strokeStyle="#a8384a";c.lineWidth=4;c.lineCap="round";
+    c.beginPath();c.moveTo(0,0);c.lineTo(9,0);c.stroke();
+    c.beginPath();c.arc(0,0,7,0,6.29);
+    c.fillStyle="#e0566b";c.fill();c.lineWidth=2.2;c.strokeStyle="#a8384a";c.stroke();
+  } else {                                 /* triangle — fits the allosteric site */
+    c.beginPath();c.moveTo(-9,0);c.lineTo(5,-9.5);c.lineTo(5,9.5);c.closePath();
+    c.fillStyle="#8b5cf6";c.fill();c.lineWidth=2.2;c.lineJoin="round";c.strokeStyle="#5f3bb0";c.stroke();
+  }
+  c.restore();
+}
+function drawMol(m){
+  ctx.save();ctx.translate(m.x,m.y);ctx.rotate(m.rot);drawMolOn(ctx,m.kind,1);ctx.restore();
+  if(S.showLabels&&m.state==="free"){
+    label(m.x,m.y-m.r-9, m.kind==="sub"?"substrate":(m.kind==="comp"?"competitive inhibitor":"non-competitive inhibitor"));
+  }
+}
+function drawProduct(p){
+  ctx.save();ctx.translate(p.x,p.y);ctx.globalAlpha=clamp(p.life,0,1);
+  ctx.beginPath();ctx.arc(0,0,6.5,0,6.29);ctx.fillStyle="#9fe0b0";ctx.fill();
+  ctx.lineWidth=2;ctx.strokeStyle="#63b87e";ctx.stroke();ctx.globalAlpha=1;ctx.restore();
+}
+function drawEnzyme(en){
+  const warp=en.denatured?1:clamp(1-phFit(),0,1);   // pH / denaturation warp
+  const phase=performance.now()/420+en.x*0.01;
+  ctx.save();ctx.translate(en.x,en.y);ctx.rotate(en.face);
+  ctx.save();ctx.scale(1+en.wobble*0.08,1-en.wobble*0.06);
+  enzymePath(ctx,en.r,warp,phase,en.morph);
+  ctx.restore();
+  ctx.fillStyle=en.denatured?"#8e9aa6":"#edb04a";
+  ctx.fill();
+  ctx.lineWidth=3;ctx.strokeStyle=en.denatured?"#68747f":(en.morph>0.4?"#7c4fd0":"#b8801f");
+  ctx.stroke();
+  ctx.restore();
+
+  if(en.morph>0.15){                 /* highlight the changed active site */
+    ctx.save();ctx.globalAlpha=0.55*en.morph;
+    ctx.beginPath();
+    ctx.arc(en.x,en.y,en.r+6,en.face-ACT_HALF,en.face+ACT_HALF);
+    ctx.strokeStyle="#a97bf5";ctx.lineWidth=3.5;ctx.stroke();ctx.restore();
+  }
+  if(en.act&&en.act.kind==="sub"&&!en.denatured){
+    ctx.beginPath();ctx.arc(en.x,en.y,en.r+7,0,6.29);
+    ctx.strokeStyle="rgba(160,235,180,.45)";ctx.lineWidth=3;ctx.stroke();
+  }
+  if(en.reject>0){
+    const t=clamp(en.reject/36,0,1);
+    const cx=en.x+Math.cos(en.rejA)*(en.r+10), cy=en.y+Math.sin(en.rejA)*(en.r+10);
+    ctx.save();
+    ctx.globalAlpha=t*0.85;ctx.beginPath();ctx.arc(cx,cy,5+(1-t)*17,0,6.29);
+    ctx.strokeStyle="#ff7a5c";ctx.lineWidth=2.5;ctx.stroke();
+    ctx.globalAlpha=Math.min(1,t*1.5);
+    ctx.strokeStyle="#ff5b3a";ctx.lineWidth=4.5;ctx.lineCap="round";
+    ctx.beginPath();ctx.moveTo(cx-8,cy-8);ctx.lineTo(cx+8,cy+8);
+    ctx.moveTo(cx+8,cy-8);ctx.lineTo(cx-8,cy+8);ctx.stroke();ctx.restore();
+    if(S.showLabels&&t>0.4) label(cx,cy-22,en.rejWhy);
+  }
+  if(S.showLabels){
+    let t=en.denatured?"denatured":
+      (en.act&&en.act.kind==="sub")?"enzyme–substrate complex":
+      (en.act&&en.act.kind==="comp")?"enzyme–inhibitor complex":
+      en.morph>0.4?"active site changed shape":"active site";
+    label(en.x,en.y-en.r-12,t);
+    if(en.allo) label(en.x-Math.cos(en.face)*(en.r+20),en.y-Math.sin(en.face)*(en.r+20),"allosteric site");
+  }
+}
+/* bound molecules are seated INTO their sites */
+function drawBound(en){
+  if(en.act){
+    const m=en.act;
+    if(m.kind==="sub"){
+      m.x=en.x+Math.cos(en.face)*25; m.y=en.y+Math.sin(en.face)*25; m.rot=en.face+Math.PI/2;
+    } else {
+      const a=en.face-0.45;
+      m.x=en.x+Math.cos(a)*26; m.y=en.y+Math.sin(a)*26; m.rot=en.face;
+    }
+    drawMol(m);
+  }
+  if(en.allo){
+    const m=en.allo, a=en.face+Math.PI;
+    m.x=en.x+Math.cos(a)*27; m.y=en.y+Math.sin(a)*27; m.rot=a+Math.PI;
+    drawMol(m);
+  }
+}
+function label(x,y,txt){
+  ctx.save();ctx.font="600 11px system-ui,sans-serif";
+  const w=ctx.measureText(txt).width+10;
+  roundRect(ctx,x-w/2,y-9,w,16,5,"rgba(6,20,32,.78)",null);
+  ctx.fillStyle="#dceeff";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(txt,x,y-1);
+  ctx.restore();
+}
+function drawIcon(cv,kind){
+  const c=cv.getContext("2d"),dpr=Math.min(window.devicePixelRatio||1,2);
+  const w=cv.clientWidth||30,h=cv.clientHeight||24;
+  cv.width=w*dpr;cv.height=h*dpr;c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+  c.save();c.translate(w/2,h/2);
+  if(kind==="enz"){enzymePath(c,Math.min(w,h)/2-2,0,0,0);c.fillStyle="#edb04a";c.fill();
+    c.lineWidth=2;c.strokeStyle="#b8801f";c.stroke();}
+  else drawMolOn(c,kind,kind==="sub"?0.62:0.9);
+  c.restore();
+}
+
+/* ---------- status chips ---------- */
+function updateChips(){
+  const es=S.enzymes.filter(e=>e.act&&e.act.kind==="sub").length;
+  const ei=S.enzymes.filter(e=>e.act&&e.act.kind==="comp").length;
+  const al=S.enzymes.filter(e=>e.allo&&!e.denatured).length;
+  const fr=S.enzymes.filter(e=>!e.act&&!e.allo&&!e.denatured).length;
+  const dn=S.enzymes.filter(e=>e.denatured).length;
+  const rows=[
+    ["#3fa35a","Enzyme–substrate complexes",es],
+    ["#e0566b","Enzyme–inhibitor complexes (active site)",ei],
+    ["#8b5cf6","Allosteric site occupied",al],
+    ["#edb04a","Free enzymes",fr]
+  ];
+  if(dn>0) rows.push(["#8e9aa6","Denatured",dn]);
+  const box=document.getElementById("chips");
+  box.innerHTML=rows.map(r=>
+    '<div class="chip"><span class="sw" style="background:'+r[0]+'"></span>'+r[1]+' <b>'+r[2]+'</b></div>').join("");
+}
+
+/* ---------- coaching ---------- */
+function coach(){
+  const c=document.getElementById("coach"),t=document.getElementById("coach-text");
+  const freeS=S.mols.filter(m=>m.kind==="sub").length;
+  let ic="💡",msg;
+  if(!S.running) msg="Press Start. Watch substrate bind the active site and be converted to product.";
+  else if(workingEnz()===0) msg="All enzymes are denatured. Press Restart.";
+  else if(freeS===0) msg="All substrate has been converted. The enzymes and inhibitors are unchanged — press Restart.";
+  else if(S.nonN>0&&S.compN>0) msg="Both inhibitors present. Raise the substrate concentration: it will overcome the competitive one, but not the non-competitive one.";
+  else if(S.nonN>0){ic="🟣";msg="The non-competitive inhibitor binds the allosteric site and changes the active site's shape, so substrate is turned away. Adding more substrate will NOT help — Vmax is lowered.";}
+  else if(S.compN>0){ic="🔴";msg="The competitive inhibitor is competing for the active site. Raise the substrate concentration and substrate wins more often — the same Vmax is still reachable.";}
+  else msg="No inhibitor. Note the rate as you raise substrate concentration — it plateaus once the enzymes are saturated.";
+  t.textContent=msg;c.querySelector(".ic").textContent=ic;
+}
+
+/* ---------- main UI ---------- */
+function updateUI(info){
+  document.getElementById("env-temp").textContent=S.temp+"°C";
+  document.getElementById("env-ph").textContent=S.ph.toFixed(1);
+  const freeS=S.mols.filter(m=>m.kind==="sub").length;
+  document.getElementById("v-sub").textContent=freeS;
+  document.getElementById("v-prod").textContent=S.productCount;
+  document.getElementById("v-rate").textContent=S.rateEMA.toFixed(2);
+  document.getElementById("env-rate").textContent=S.rateEMA.toFixed(2);
+  document.getElementById("v-vmax").textContent=vmaxOf(workingEnz(),kCat(),S.nonN).toFixed(2);
+  updateChips();coach();
+  if(S.level>=3) drawPlot();
+}
+
+/* ---------- rate vs [S] analysis ---------- */
+function builtinSeries(){
+  const k=kCat(), n=S.enzN;
+  return [
+    {id:"none",label:"No inhibitor",color:"#2f7fd6",Ic:0,In:0,n:n,k:k,vis:true},
+    {id:"comp",label:"Competitive ("+S.compN+")",color:"#e0566b",Ic:Math.max(S.compN,1),In:0,n:n,k:k,vis:true},
+    {id:"non",label:"Non-competitive ("+S.nonN+")",color:"#8b5cf6",Ic:0,In:Math.max(S.nonN,1),n:n,k:k,vis:true}
+  ];
+}
+let builtinVis={none:true,comp:true,non:true};
+function allSeries(){
+  const b=builtinSeries().map(s=>({...s,vis:builtinVis[s.id]}));
+  return b.concat(S.series);
+}
+function buildSeriesList(){
+  const box=document.getElementById("series");box.innerHTML="";
+  for(const s of allSeries()){
+    const row=document.createElement("div");row.className="sitem";
+    const cb=document.createElement("input");cb.type="checkbox";cb.checked=s.vis;
+    cb.addEventListener("change",()=>{
+      if(s.snap) s.vis=cb.checked; else builtinVis[s.id]=cb.checked;
+      drawPlot();
+    });
+    const sw=document.createElement("span");sw.className="sw";sw.style.background=s.color;
+    const lb=document.createElement("span");lb.className="lb";lb.textContent=s.label;lb.title=s.label;
+    row.append(cb,sw,lb);
+    if(s.snap){
+      const del=document.createElement("button");del.className="del";del.textContent="✕";
+      del.title="Remove this curve";
+      del.addEventListener("click",()=>{S.series=S.series.filter(x=>x!==s);buildSeriesList();drawPlot();});
+      row.append(del);
+    }
+    box.appendChild(row);
+  }
+}
+const SNAPCOLS=["#0f9d8f","#d97706","#7c3aed","#be185d","#0369a1","#4d7c0f"];
+function snapshot(){
+  S.snapCount++;
+  const bits=["E="+S.enzN];
+  if(S.compN)bits.push("comp="+S.compN);
+  if(S.nonN)bits.push("non="+S.nonN);
+  if(S.temp!==37)bits.push(S.temp+"°C");
+  if(S.ph!==7)bits.push("pH"+S.ph);
+  S.series.push({snap:true,id:"s"+S.snapCount,label:bits.join(", "),
+    color:SNAPCOLS[(S.snapCount-1)%SNAPCOLS.length],
+    Ic:S.compN,In:S.nonN,n:S.enzN,k:kCat(),vis:true});
+  buildSeriesList();drawPlot();
+}
+function drawPlot(){
+  const w=plot.getBoundingClientRect().width,h=plot.getBoundingClientRect().height;
+  if(w<10||h<10)return;
+  pctx.clearRect(0,0,w,h);pctx.fillStyle="#fbfdff";pctx.fillRect(0,0,w,h);
+  const L=46,R=10,T=12,B=34;
+  const px=v=>L+(v/50)*(w-L-R);
+  const maxY=1.15*Math.max(0.6,...allSeries().filter(s=>s.vis).map(s=>vmaxOf(s.n,s.k,s.In)),0.6);
+  const py=v=>h-B-(v/maxY)*(h-T-B);
+
+  pctx.strokeStyle="#e7eef5";pctx.lineWidth=1;
+  for(let i=0;i<=4;i++){const y=T+(h-T-B)*i/4;pctx.beginPath();pctx.moveTo(L,y);pctx.lineTo(w-R,y);pctx.stroke();}
+  for(let i=0;i<=5;i++){const x=L+(w-L-R)*i/5;pctx.beginPath();pctx.moveTo(x,T);pctx.lineTo(x,h-B);pctx.stroke();}
+  pctx.strokeStyle="#9fb3c6";pctx.lineWidth=1.4;
+  pctx.beginPath();pctx.moveTo(L,T);pctx.lineTo(L,h-B);pctx.lineTo(w-R,h-B);pctx.stroke();
+
+  pctx.fillStyle="#5b6f82";pctx.font="600 10px system-ui,sans-serif";
+  pctx.textAlign="center";pctx.textBaseline="top";
+  for(let i=0;i<=5;i++) pctx.fillText(String(i*10),px(i*10),h-B+6);
+  pctx.fillText("Substrate concentration / AU",(L+w-R)/2,h-14);
+  pctx.textAlign="right";pctx.textBaseline="middle";
+  for(let i=0;i<=4;i++){const v=maxY*i/4;pctx.fillText(v.toFixed(2),L-6,py(v));}
+  pctx.save();pctx.translate(12,(T+h-B)/2);pctx.rotate(-Math.PI/2);
+  pctx.textAlign="center";pctx.textBaseline="middle";
+  pctx.fillText("Initial rate / AU",0,0);pctx.restore();
+
+  const vis=allSeries().filter(s=>s.vis);
+  /* Vmax guides */
+  if(S.optVmax){
+    pctx.setLineDash([4,4]);pctx.lineWidth=1.3;
+    const seen=new Set();
+    for(const s of vis){
+      const v=vmaxOf(s.n,s.k,s.In);const key=v.toFixed(3);
+      if(seen.has(key))continue;seen.add(key);
+      pctx.strokeStyle=s.color+"88";
+      pctx.beginPath();pctx.moveTo(L,py(v));pctx.lineTo(w-R,py(v));pctx.stroke();
+      pctx.fillStyle=s.color;pctx.font="700 9px system-ui,sans-serif";
+      pctx.textAlign="left";pctx.textBaseline="bottom";
+      pctx.fillText("Vmax "+v.toFixed(2),L+4,py(v)-2);
+    }
+    pctx.setLineDash([]);
+  }
+  /* Km construction */
+  if(S.optKm){
+    pctx.setLineDash([2,3]);pctx.lineWidth=1.2;
+    for(const s of vis){
+      const v=vmaxOf(s.n,s.k,s.In), km=kmOf(s.Ic);
+      if(km>50)continue;
+      pctx.strokeStyle=s.color+"aa";
+      pctx.beginPath();pctx.moveTo(L,py(v/2));pctx.lineTo(px(km),py(v/2));
+      pctx.lineTo(px(km),h-B);pctx.stroke();
+      pctx.fillStyle=s.color;pctx.font="700 9px system-ui,sans-serif";
+      pctx.textAlign="center";pctx.textBaseline="top";
+      pctx.fillText("Km "+km.toFixed(0),px(km),h-B-13);
+    }
+    pctx.setLineDash([]);
+  }
+  /* curves */
+  for(const s of vis){
+    pctx.beginPath();
+    for(let i=0;i<=160;i++){
+      const x=50*i/160, y=rateOf(x,s.Ic,s.In,s.n,s.k);
+      i?pctx.lineTo(px(x),py(y)):pctx.moveTo(px(x),py(y));
+    }
+    pctx.strokeStyle=s.color;pctx.lineWidth=2.4;pctx.lineJoin="round";pctx.stroke();
+  }
+  /* markers at chosen [S] */
+  if(S.optMark){
+    for(const sc of S.markS){
+      pctx.setLineDash([3,3]);pctx.strokeStyle="#b8c6d4";pctx.lineWidth=1;
+      pctx.beginPath();pctx.moveTo(px(sc),T);pctx.lineTo(px(sc),h-B);pctx.stroke();pctx.setLineDash([]);
+      for(const s of vis){
+        const y=rateOf(sc,s.Ic,s.In,s.n,s.k);
+        pctx.beginPath();pctx.arc(px(sc),py(y),4,0,6.29);
+        pctx.fillStyle=s.color;pctx.fill();pctx.strokeStyle="#fff";pctx.lineWidth=1.5;pctx.stroke();
+      }
+    }
+  }
+  /* live readout */
+  const k=kCat();
+  const r0=rateOf(S.subN,0,0,S.enzN,k);
+  const rc=rateOf(S.subN,S.compN,0,S.enzN,k);
+  const rn=rateOf(S.subN,0,S.nonN,S.enzN,k);
+  document.getElementById("analysis-read").innerHTML=
+    "At [S] = <b>"+S.subN+"</b>:<br>no inhibitor <b>"+r0.toFixed(2)+"</b> AU"+
+    (S.compN?"<br>competitive <b>"+rc.toFixed(2)+"</b> AU":"")+
+    (S.nonN?"<br>non-competitive <b>"+rn.toFixed(2)+"</b> AU":"")+
+    "<br><span style='color:#5b6f82'>Vmax is the plateau each curve approaches.</span>";
+}
+
+/* ---------- frame ---------- */
+function frame(){
+  let info={den:S.enzymes.filter(e=>e.denatured).length};
+  if(S.running) info=step();
+  drawChamber();
+  for(const m of S.mols) if(m.state==="free") drawMol(m);
+  for(const en of S.enzymes) drawEnzyme(en);
+  for(const en of S.enzymes) drawBound(en);
+  for(const p of S.products) drawProduct(p);
+  updateUI(info);
+  requestAnimationFrame(frame);
+}
+
+/* ---------- wiring ---------- */
+function setLevel(n){
+  S.level=n;document.body.dataset.level=n;
+  document.querySelectorAll(".level-seg button").forEach(b=>b.setAttribute("aria-pressed",(+b.dataset.level)===n));
+  document.querySelectorAll(".lvl2").forEach(el=>el.style.display=n>=2?"":"none");
+  document.querySelectorAll(".lvl3").forEach(el=>el.style.display=n>=3?"":"none");
+  document.querySelectorAll(".lvl1only").forEach(el=>el.style.display=n===1?"":"none");
+  document.body.classList.remove("booting");
+  document.getElementById("hint").textContent = n>=3
+    ? "Compare the curves: a competitive inhibitor reaches the same Vmax at higher [S]; a non-competitive inhibitor lowers Vmax whatever the [S]."
+    : "A competitive inhibitor is a similar shape to the substrate, so it fits the active site. A non-competitive inhibitor fits the allosteric site instead.";
+  sizeCanvas();
+  if(n>=3){buildSeriesList();drawPlot();}
+}
+function resetRun(){
+  S.products.length=0;S.productCount=0;S.rateEMA=0;
+  S.mols.length=0;S.enzymes.length=0;
+  syncEnzymes();fillSubstrate();syncInhibitors();
+}
+document.querySelectorAll(".level-seg button").forEach(b=>b.addEventListener("click",()=>setLevel(+b.dataset.level)));
+document.getElementById("btn-run").addEventListener("click",()=>{
+  S.running=!S.running;
+  document.getElementById("run-ic").textContent=S.running?"⏸":"▶";
+  document.getElementById("run-tx").textContent=S.running?"Pause":"Start";
+});
+document.getElementById("btn-reset").addEventListener("click",()=>{
+  resetRun();
+  S.running=true;                              // restart means restart
+  document.getElementById("run-ic").textContent="⏸";
+  document.getElementById("run-tx").textContent="Pause";
+});
+
+const sSub=document.getElementById("s-sub"),sEnz=document.getElementById("s-enz");
+const sComp=document.getElementById("s-comp"),sNon=document.getElementById("s-non");
+const sTemp=document.getElementById("s-temp"),sPH=document.getElementById("s-ph");
+sSub.addEventListener("input",()=>{S.subN=+sSub.value;document.getElementById("r-sub").textContent=S.subN;
+  fillSubstrate();if(S.level>=3){buildSeriesList();drawPlot();}});
+sEnz.addEventListener("input",()=>{S.enzN=+sEnz.value;document.getElementById("r-enz").textContent=S.enzN;
+  syncEnzymes();if(S.level>=3){buildSeriesList();drawPlot();}});
+sComp.addEventListener("input",()=>{S.compN=+sComp.value;document.getElementById("r-comp").textContent=S.compN;
+  syncInhibitors();syncInhToggles();if(S.level>=3){buildSeriesList();drawPlot();}});
+sNon.addEventListener("input",()=>{S.nonN=+sNon.value;document.getElementById("r-non").textContent=S.nonN;
+  syncInhibitors();syncInhToggles();if(S.level>=3){buildSeriesList();drawPlot();}});
+sTemp.addEventListener("input",()=>{S.temp=+sTemp.value;document.getElementById("r-temp").textContent=S.temp+" °C";
+  if(S.level>=3)drawPlot();});
+sPH.addEventListener("input",()=>{S.ph=+sPH.value;document.getElementById("r-ph").textContent=S.ph.toFixed(1);
+  if(S.level>=3)drawPlot();});
+document.getElementById("t-labels").addEventListener("change",e=>{S.showLabels=e.target.checked;});
+
+/* Explore-level inhibitor on/off buttons */
+document.querySelectorAll(".inhtoggle button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    const k=b.dataset.k;
+    if(k==="comp"){S.compN=S.compN>0?0:10;sComp.value=S.compN;document.getElementById("r-comp").textContent=S.compN;}
+    else{S.nonN=S.nonN>0?0:10;sNon.value=S.nonN;document.getElementById("r-non").textContent=S.nonN;}
+    syncInhibitors();syncInhToggles();
+  });
+});
+function syncInhToggles(){
+  document.querySelectorAll(".inhtoggle button").forEach(b=>{
+    b.setAttribute("aria-pressed", b.dataset.k==="comp" ? S.compN>0 : S.nonN>0);
+  });
+}
+document.getElementById("btn-snap").addEventListener("click",snapshot);
+document.getElementById("btn-mark").addEventListener("click",()=>{
+  if(!S.markS.includes(S.subN)) S.markS.push(S.subN);
+  if(S.markS.length>4)S.markS.shift();
+  drawPlot();
+});
+document.getElementById("o-vmax").addEventListener("change",e=>{S.optVmax=e.target.checked;drawPlot();});
+document.getElementById("o-km").addEventListener("change",e=>{S.optKm=e.target.checked;drawPlot();});
+document.getElementById("o-mark").addEventListener("change",e=>{S.optMark=e.target.checked;drawPlot();});
+
+/* legend */
+function buildLegend(){
+  const rows=[["enz","Enzyme — active site (front) and allosteric site (back)"],
+    ["sub","Substrate — two lobes"],
+    ["comp","Competitive inhibitor — one lobe, fits part of the active site"],
+    ["non","Non-competitive inhibitor — fits the allosteric site only"]];
+  const box=document.getElementById("legend");box.innerHTML="";
+  for(const [k,txt] of rows){
+    const row=document.createElement("div");row.className="row";
+    const cv=document.createElement("canvas");cv.style.width="34px";cv.style.height="26px";
+    const sp=document.createElement("span");sp.textContent=txt;
+    row.append(cv,sp);box.appendChild(row);drawIcon(cv,k);
+  }
+  document.querySelectorAll(".inhtoggle button").forEach(b=>drawIcon(b.querySelector("canvas"),b.dataset.k));
+}
+function boot(){
+  sizeCanvas();buildLegend();syncInhToggles();setLevel(1);resetRun();
+  requestAnimationFrame(frame);
+}
+boot();
+</script>
+</body>
+</html>
