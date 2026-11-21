@@ -77,8 +77,8 @@ function create(env){
  }
  function session(route){
   var prior=restored();
-  if(route==="flashresume"){if(!prior)return empty("There is no unfinished flashcard session.");active=prior;return show();}
-  if(prior&&prior.route===route){active=prior;return show();}
+  if(route==="flashresume"){if(!prior)return empty("There is no unfinished flashcard session.");active=prior;if(E.pushGuard)E.pushGuard();return show();}
+  if(prior&&prior.route===route){active=prior;if(E.pushGuard)E.pushGuard();return show();}
   var ids=select(route);
   if(!ids.length)return empty(route==="flashreview"?"No reviews are due yet. Choose a topic to learn new cards.":route==="flashweak"?"No weak cards recorded yet. Practise some flashcards first.":"No cards are available for this selection.");
   active={route:route,original:ids.slice(),queue:ids.slice(),first:{},attempts:{},complete:0,started:Date.now(),over:false,
