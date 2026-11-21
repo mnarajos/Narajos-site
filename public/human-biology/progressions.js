@@ -204,5 +204,89 @@ T("health-ethics-data","Explain data minimisation and the limits of de-identific
  C("Which item directly identifies a patient?",["Their full name","An unlabelled group mean","The sample's total size","A published age-group percentage"],"A name directly identifies a person; aggregated statistics usually have a different disclosure risk."),
  C("Names are removed but exact birth dates, postcodes and rare diagnoses remain. Which claim is incorrect?",["No one could possibly identify any participant","Combinations of details may allow re-identification","Access controls can still be needed","Only necessary details should be retained"],"Removing names alone may leave a unique combination of indirect identifiers."),
  W("Researchers need to compare outcomes by broad age group. Explain why supplying full birth dates and home addresses may be unnecessary, and identify a further confidentiality safeguard.",["Broad age categories may answer the question while reducing identifying detail; data minimisation limits unnecessary disclosure.","Restricting access to authorised users, secure storage and appropriate governance reduce risk further; removing direct identifiers alone is insufficient."],"Choose data to fit the research purpose and add protection for the data that remain."));
+/* F171 treatment and prevention. The core item rotates independently of the three scaffold stages. */
+function treatment(id,section,objective,principle,foundation,diagnostic,core,challenge){
+ const members=core.map((question,index)=>{
+  const key=id+(index?"-v"+(index+1):"");
+  const entry=Object.assign(question,{
+   id:key,unit:"f171",section,area:2,level:"apply",family:id,objective,
+   hints:[principle,foundation.explain],misconception:diagnostic.explain
+  });
+  db.questions.push(entry);
+  byId[key]=entry;
+  return key;
+ });
+ db.families.push({id,unit:"f171",section,objective,members});
+ T(id,objective,principle,foundation,diagnostic,challenge);
+}
+treatment("f171-cast-selection","2.1","Compare plaster and fibreglass casts for a given patient",
+ "A cast limits movement so fracture fragments can stay aligned during healing. Consider which material properties matter at this stage.",
+ C("What is the main purpose of a cast during fracture healing?",["To hold the injured part still and maintain alignment","To increase movement at the break","To repair the break by replacing bone cells","To remove all pain from the injured area"],"A cast supports and immobilises the injured part while bone tissue heals."),
+ C("Which claim about fibreglass casts needs correcting?",["Any fibreglass cast can be submerged because the entire cast is waterproof","Fibreglass is generally lighter than plaster","The lining can affect whether a cast may get wet","Plaster can be moulded closely to fit the limb"],"The outer shell and padded lining have different properties. Waterproofing cannot be assumed from the outer shell alone."),
+ [
+  W("A stable wrist fracture must remain supported for several weeks. Explain one benefit of a lighter fibreglass cast and one circumstance where plaster may be preferred.",["A lighter cast can be easier to carry during daily activities.","Plaster can be moulded closely where shaping the cast to support alignment matters."],"Connect the material property to the needs of the patient and the fracture."),
+  W("A clinician wants to mould a cast closely around a limb. Another patient with a stable fracture finds a heavy cast awkward. Suggest a material for each and explain.",["Plaster can be moulded to fit the limb closely.","Fibreglass is generally lighter, which can make it less cumbersome for the second patient."],"A material is suitable because its properties address the problem in the scenario."),
+  W("Compare one property of plaster and one property of fibreglass relevant to a cast used during recovery.",["Plaster is easy to mould around the injured limb.","Fibreglass is usually lighter and more durable, which may help over several weeks of wear."],"Name a property, then explain its practical benefit.")
+ ],
+ W("A patient wants their cast to be light and assumes a fibreglass cast is safe for swimming. Explain the benefit they identified and why the second conclusion needs checking.",["Fibreglass can make the cast less cumbersome while still supporting the fracture.","The padding or lining may absorb water even if the outer shell resists water. Whether it is safe to get wet depends on the specific construction and advice."],"Distinguish the properties of the shell from those of the complete cast.")
+);
+treatment("f171-local-systemic","2.1","Compare surgery and chemotherapy using the location of cancer",
+ "A local treatment acts in one place. A systemic treatment reaches many parts of the body.",
+ C("What does surgery aim to do when a localised tumour can be removed?",["Remove the tumour from its site","Carry a drug around the bloodstream","Make every tumour cell divide faster","Prevent all future cancers in the patient"],"Surgery acts locally and can remove an accessible tumour with a surrounding margin where appropriate."),
+ C("Why might removing a primary tumour alone be insufficient after cells have spread?",["Cancer cells may remain at sites elsewhere in the body","A tumour is only present when it is visible from outside the body","Surgery moves all remaining cancer cells to the same site","Chemotherapy treats only the precise area where surgery occurred"],"Local surgery only affects tissue removed or treated at that location."),
+ [
+  W("For one patient, a tumour is localised and operable. For another, cancer cells are present at several sites. Compare the potential purpose of surgery and systemic chemotherapy in these cases.",["Surgery can remove the localised tumour where it can be reached safely.","Systemic chemotherapy can expose cancer cells at multiple sites to the drug, with effects on healthy tissues as well."],"Use the distribution of the disease to explain each approach."),
+  W("A patient has surgery and the scan shows no visible tumour. Explain why their team might still consider chemotherapy.",["Microscopic cancer cells can remain even when a scan shows no visible tumour.","A systemic drug can reach cells beyond the surgical site, so treatment may reduce the risk of recurrence in some situations."],"The two approaches can have complementary purposes."),
+  W("Explain why chemotherapy delivered into the bloodstream can affect a tumour away from the injection site and also cause unwanted effects elsewhere.",["The circulation distributes the drug throughout the body, including to distant tumour sites.","A drug that targets dividing cells can also affect rapidly dividing healthy cells."],"Connect distribution to both benefit and risk.")
+ ],
+ W("An operable tumour lies close to a structure needed for speech. A proposed drug may shrink it, but the response varies between people. Analyse how these facts affect the choice and timing of treatment.",["Removing the tumour locally may help control disease, but damage to nearby tissue could affect speech.","Drug treatment first might shrink the tumour and make a later operation less extensive if the tumour responds.","Side effects and variable response matter. Decisions depend on the tumour and the individual's priorities, with reassessment after treatment."],"Explain the effect of each fact on the decision and qualify uncertain benefits.")
+);
+treatment("f171-treatment-prevention","2.3","Distinguish prevention, early detection and treatment",
+ "Follow the timeline. A programme can reduce the chance of disease, identify possible disease earlier, or treat a condition that is already present.",
+ C("What is the immediate aim of screening people without symptoms?",["Identify people who may need further investigation","Treat every person tested","Confirm every positive result as a diagnosis","Ensure the disease cannot develop"],"Screening sorts people by possible need for more investigation. Its immediate purpose is early detection."),
+ C("A result from a screening programme is positive. Which statement is justified?",["The person needs appropriate follow-up to find out whether the condition is present","Everyone with a positive result definitely has the condition","The test has already treated the condition","The result tells us the cause without any follow-up"],"A screening programme can give false positive results. Follow-up distinguishes these from true cases."),
+ [
+  W("A council offers a programme that reduces exposure to a risk factor and a clinic invites symptom-free adults for screening. Explain the different immediate purposes.",["Reducing exposure aims to lower the probability of developing the disease.","Screening seeks possible existing disease or precursors earlier so positive results can receive further assessment."],"Separate incidence from early detection."),
+  W("A positive screening result is followed by a diagnostic test and then an intervention. Distinguish the purpose of all three stages.",["Screening identifies possible cases.","Diagnostic assessment investigates whether the condition is present.","Treatment then addresses the diagnosed condition or its effects."],"The three stages can form one pathway but have different functions."),
+  W("A programme invites a higher-risk group for checks even if their members feel well. Explain why testing people before symptoms can help and why a positive result is followed up.",["Finding disease or a precursor earlier may allow intervention before progression.","A positive screen alone can be a false positive, so assessment is needed before diagnosis or treatment."],"Consider benefits and limits in the same explanation.")
+ ],
+ W("A screening programme finds possible cases early, but only half of the people with a positive screen attend follow-up. Explain why the overall health benefit depends on what happens after screening.",["The initial screen identifies possible cases; without follow-up, some true cases may remain undiagnosed and miss timely intervention.","Some positive results may be false positives, so treating everyone on the basis of screening alone could cause unnecessary harm.","Effective follow-up and access to appropriate care are part of converting earlier detection into a better outcome."],"Evaluate the entire pathway from identifying risk to achieving a health benefit.")
+);
+
+function clinicalCase(id,section,title,marks,stem,markPoints,model,explain,hints){
+ db.questions.push({
+  id,unit:"f171",section,area:Number(section.charAt(0)),type:"written",level:"stretch",
+  caseTitle:title,marks,stem,markPoints,model,explain,
+  misconception:"Generic benefits or limitations earn little without a link to evidence in the case.",
+  hints,samAligned:true,
+  levelsNote:marks===6
+   ?"Link each feature of the case to a consequence and explain how the consequences interact."
+   :"Weigh benefits and limitations using the case details, then make a justified judgement."
+ });
+}
+clinicalCase("case-cast-choice","2.1","Cast materials and recovery",6,
+ "A person has a stable bone fracture that needs support for four more weeks. A fibreglass cast would be lighter and more durable than plaster, but costs more. The person works at a desk and needs to travel by public transport. Analyse how the material could affect their recovery and daily routine.",
+ ["A cast must immobilise the fracture and maintain alignment; a cast that fits well provides support while healing progresses.","A lighter and more durable cast could make travel and desk work more manageable and reduce disruption if it stays intact.","Plaster may be cheaper and is easily moulded. Cost and fit must be balanced against convenience, and the lining determines whether water exposure is appropriate."],
+ "A well-fitted cast limits movement of the wrist, maintaining alignment while the bone heals. Plaster can mould closely to the limb, which helps with support, and its lower cost may matter. For this person, a lighter fibreglass cast may make it easier to travel and hold the arm in a comfortable position at the desk. Its durability could also reduce disruption if the person needs to wear it daily for four weeks. If either material would provide suitable immobilisation, the extra cost of fibreglass must be weighed against those practical benefits.",
+ "Analyse a balance of effects for this individual. Keep healing, day-to-day function and costs distinct.",
+ ["Start with why the fracture needs a cast.","Link each property to a specific consequence during travel or work."]);
+clinicalCase("case-treatment-spread","2.1","Local and systemic treatment",9,
+ "A case study describes a tumour that can be removed surgically, with evidence of small deposits at distant sites. Surgery could relieve pressure from the main tumour, but recovery may delay other treatment. Chemotherapy reaches distant sites but may have significant adverse effects. Discuss the treatment considerations for this person.",
+ ["Local surgery can relieve pressure from the main tumour or remove local disease, but it cannot remove all distant deposits.","Systemic chemotherapy can act at multiple sites. A response is uncertain and harm to healthy tissue or tolerability may limit its use.","Urgency of the pressure symptoms, treatment recovery, likely drug response and the person's priorities affect timing. A justified conclusion weighs the benefits of local relief against the need to address distributed disease."],
+ "Removing the main tumour could relieve pressure locally, which matters if pressure symptoms are severe or worsening. However, surgery would leave deposits elsewhere. A drug carried in the bloodstream can reach those sites, so it may help control disease more widely. Adverse effects and uncertainty about tumour response may limit its benefit. Surgery could delay systemic treatment during recovery. If pressure is urgent, local relief may need to take priority; if symptoms can be controlled while treatment starts, addressing distant disease first may be preferable. The decision also depends on likely drug response and what matters most to the person.",
+ "Use the scenario to justify priorities and explain what information would change your judgement.",
+ ["Compare local effects with effects at distant sites.","Weigh the urgency of symptoms against the chance and consequences of delay."]);
+clinicalCase("case-screening-data","4.2.1","Follow-up after screening",6,
+ "A clinic screened 500 people. Sixty had a positive result. Forty-five attended diagnostic follow-up, and 15 of those 45 were confirmed to have the condition. Analyse what these results show and what the clinic still needs to find out.",
+ ["15 of 45 followed-up positives were confirmed, one third. The other 30 people who attended did not have a confirmed diagnosis.","Fifteen positive screens had no follow-up, so the outcome for them is unknown. The one-third figure applies only to attendees.","The data do not establish how many screened-negative people have the condition. Follow-up data and information on missed cases are needed to appraise the programme."],
+ "Of the 45 people who attended follow-up, 15 had the condition confirmed. That is one third of attendees. The remaining 30 attendees were not confirmed to have the condition. However, we cannot infer the result for the 15 people with a positive screen who did not attend. Nor can we tell from this report whether any of the 440 people with a negative screen actually had the condition. Both groups matter when evaluating how well the programme identifies people who need care.",
+ "Keep the denominators tied to the people actually tested. Distinguish possible missed cases from cases not yet confirmed.",
+ ["Draw the pathway from 500 to 60 to 45 to 15.","Ask which people had a screen and which had a diagnostic outcome."]);
+clinicalCase("case-home-monitoring","4.2.2","Home monitoring and clinic checks",9,
+ "A clinic is considering offering home blood-pressure monitors. Home readings could show patterns between appointments, but some patients may struggle to fit the cuff or transmit readings. The clinic has limited appointments and wants to avoid missing people needing review. Discuss how the clinic should use the readings.",
+ ["Repeated home readings can show trends between visits and may help prioritise review if measurements are reliable.","Incorrect cuff position, unsuitable cuff size or missing reports can produce misleading patterns and inequitable access.","Teaching measurement technique, using validated devices and offering routes for phone or in-person review can reduce risks. Make a qualified judgement on when readings should prompt clinical assessment rather than making decisions from one reading alone."],
+ "Reliable measurements taken at home can show repeated changes between appointments. This may help the clinic identify who needs review sooner and avoid relying on an isolated result. However, an ill-fitting cuff can shift the readings, and an absent report may reflect access difficulties rather than stable blood pressure. The clinic could offer a suitable validated cuff, teach the technique and provide a telephone or in-person alternative. I would use verified patterns to help prioritise reviews, while following up absent or unexpectedly high readings by a method the person can access.",
+ "Weigh a practical benefit against measurement quality and access, then justify which patients need follow-up.",
+ ["Consider why a pattern can be more informative than an isolated reading.","Think about whether an absent result is evidence of a normal result."]);
 window.KeystoneHumanProgressions={points:points,get:function(id){return points.filter(function(p){return p.id===id;})[0]||null;}};
 })();

@@ -157,6 +157,13 @@
     .chamber-wrap{min-height:330px}
     .level-group{margin-left:0}
   }
+  .guided-task{border:1px solid #b0d8d2;background:#eff8f6;border-radius:12px;padding:12px;color:#163b3c}
+  .guided-task h2{font-size:1rem;margin:0 0 .35rem}
+  .guided-task p{font-size:.85rem;line-height:1.5;margin:0 0 .45rem}
+  .guided-task a{display:inline-flex;align-items:center;min-height:44px;color:#145f5b;font-weight:700}
+  .graph-readout summary{cursor:pointer;min-height:38px;padding-block:8px;font-size:12px;font-weight:700}
+  .graph-readout table{border-collapse:collapse;width:100%;font-size:12px}
+  .graph-readout :is(th,td){text-align:left;padding:4px 6px;border-bottom:1px solid #d1dadd}
 </style>
 <link rel="stylesheet" href="/assets/simulation-shell.css">
 <link rel="stylesheet" href="/assets/home-link.css">
@@ -225,6 +232,9 @@
   </section>
 
   <aside class="panel">
+    <section class="guided-task" id="guided-task" hidden>
+      <h2 id="guided-title"></h2><p id="guided-steps"></p><a id="guided-return" href="/science-practice/#enzymes">Return to the follow-up question</a>
+    </section>
     <div class="btn-row">
       <button class="act primary" id="btn-run"><span id="run-ic">▶</span><span id="run-tx">Start</span></button>
       <button class="act ghost" id="btn-reset" title="Clear everything and run again from the start">↻ Restart</button>
@@ -259,8 +269,11 @@
 
     <div class="graph-card lvl2">
       <div class="head"><span class="k">Reaction rate over time</span><span class="pk" id="g-max"></span></div>
-      <canvas id="graph"></canvas>
+      <canvas id="graph" role="img" aria-label="Reaction rate over time. Open the table for the recorded rates."></canvas>
       <div class="gcap"><b>Height</b> = rate of reaction in arbitrary units, where <b>1.00 AU</b> is the rate under standard conditions (20 substrate, 4 enzymes, 37 °C, optimum pH). <b>Left to right</b> = time since Start. The rate begins high and falls as substrate is used up.</div>
+      <details class="graph-readout" id="graph-readout"><summary>Recorded rates as a table</summary>
+        <table><thead><tr><th scope="col">Sample</th><th scope="col">Rate / AU</th></tr></thead><tbody id="rate-rows"></tbody></table>
+      </details>
     </div>
 
     <div class="predict lvl2">
@@ -331,7 +344,7 @@ const S = {
   counts:{amylase:4, protease:0, lipase:0},
   running:false, showLabels:false,
   enzymes:[], substrates:[], products:[],
-  productCount:0, rateStamps:[], rateSamples:[], peak:0, rateEMA:0, occEMA:0
+  productCount:0, rateStamps:[], rateSamples:[], sampleCount:0, peak:0, rateEMA:0, occEMA:0
 };
 
 /* ---------- Canvas ---------- */
@@ -429,7 +442,7 @@ function enzymeBodyPath(c,r,type,distort,phase){
 function makeEnzyme(type){
   return {type, x:rand(80,WW-80), y:rand(60,WH-60), vx:rand(-.25,.25), vy:rand(-.25,.25),
           face:rand(0,6.28), turn:rand(-.004,.004), r:30, state:"free", timer:0, sub:null,
-          denatured:false, stress:0, cause:null, wobble:0, reject:0, rejA:0};
+          denatured:false, stress:0, heatStress:false, pHStress:false, wobble:0, reject:0, rejA:0};
 }
 function makeSubstrate(){
   return {x:rand(30,WW-30),y:rand(30,WH-30),vx:rand(-1,1),vy:rand(-1,1),r:14,
@@ -478,22 +491,17 @@ function step(){
   }
   let denCount=0;
   for(const en of S.enzymes){
-    /* PERMANENT denaturation. Two causes, both irreversible:
-       - heat above ~52 C
-       - extreme pH (far from this enzyme's optimum)
-       Mild/moderate pH shifts only reduce activity (reversible) via activityOf(). */
+    // Track which stresses contributed in this run so feedback survives a change of conditions.
     if(!en.denatured){
       const dph=Math.abs(S.ph-ENZ[en.type].optPH);
-      let add=0, cause=null;
-      if(S.temp>38){ add+=Math.pow(S.temp-38,1.6)/700; cause="heat"; }
-      if(dph>3.5){ const a=(dph-3.5)/1200; if(a>add||!cause)cause=(a>add?"pH":cause); add+=a; }
-      if(add>0){
-        en.stress+=add;
-        if(!en.cause) en.cause=cause;
-        if(en.stress>1){
-          en.denatured=true; en.cause=cause||en.cause;
+      const heat=S.temp>38?Math.pow(S.temp-38,1.6)/700:0;
+      const acidity=dph>3.5?(dph-3.5)/1200:0;
+      en.stress+=heat+acidity;
+      if(heat>0)en.heatStress=true;
+      if(acidity>0)en.pHStress=true;
+      if(en.stress>1){
+          en.denatured=true;
           if(en.sub){en.sub.state="free";en.sub=null;} en.state="free";
-        }
       }
     }
     if(en.denatured)denCount++;
@@ -750,6 +758,14 @@ function buildChips(){
     drawEnzymeIcon(cv,k);
   }
 }
+function denaturationCause(enzymes){
+  const heat=enzymes.some(e=>e.denatured&&e.heatStress);
+  const pH=enzymes.some(e=>e.denatured&&e.pHStress);
+  if(heat&&pH)return " by heat and extreme pH";
+  if(pH)return " by extreme pH";
+  if(heat)return " by heat";
+  return "";
+}
 function updateChips(){
   const matching=SUBS[S.subKey].enzyme;
   document.querySelectorAll("#chips .chip").forEach(ch=>{
@@ -759,8 +775,7 @@ function updateChips(){
     const act=activityOf(k), fitk=fitOf(k);
     let txt,cls;
     if(grp.length&&dead===grp.length){
-      const byPH=grp.filter(e=>e.cause==="pH").length;
-      txt=byPH>dead/2?"denatured by extreme pH":"denatured by heat";cls="no";}
+      txt="denatured"+denaturationCause(grp);cls="no";}
     else if(k!==matching){txt="✗ wrong shape, can't fit";cls="no";}
     else if(fitOf(k)<0.12){txt="active site distorted by pH";cls="no";}
     else if(act<0.45){txt="working slowly";cls="warnc";}
@@ -787,9 +802,9 @@ function updateUI(info){
   coach(info.denCount,free,rate);
   if(S.running){
     sampleTimer++;
-    if(sampleTimer>=12){sampleTimer=0;S.rateSamples.push(rate);if(S.rateSamples.length>90)S.rateSamples.shift();}
+    if(sampleTimer>=12){sampleTimer=0;S.rateSamples.push(rate);S.sampleCount++;if(S.rateSamples.length>90)S.rateSamples.shift();}
   }
-  if(S.level>=2)drawGraph();
+  if(S.level>=2){drawGraph();refreshRateTable();}
 }
 function coach(dead,free,rate){
   const c=document.getElementById("coach"),t=document.getElementById("coach-text");
@@ -799,13 +814,15 @@ function coach(dead,free,rate){
   const bound=S.enzymes.filter(e=>e.state==="bound").length;
   const total=S.enzymes.length;
   c.className="msg";let ic="💡",msg;
-  if(!S.running){msg="Press Start. Watch a substrate slot into a matching active site, get cut, and leave as product.";}
+  if(dead>0){
+    c.className="msg hot";
+    ic="⚠";
+    msg=(dead===total?"All enzymes have denatured":"Some enzymes have denatured")+denaturationCause(S.enzymes)+
+      ". In this model, restoring the original conditions does not restore those enzymes’ active sites. Restart for a fresh mixture.";
+  }
+  else if(!S.running){msg="Press Start. Watch a substrate slot into a matching active site, get cut, and leave as product.";}
   else if(total===0){msg="There are no enzymes in the mixture. Add some using the steppers on the right.";}
   else if(wrongOnly){c.className="msg hot";ic="🔒";msg="None of these enzymes has an active site shaped to fit "+d.label.toLowerCase()+", so nothing is digested. Add "+ENZ[matching].name.toLowerCase()+".";}
-  else if(dead>=total&&dead>0){c.className="msg hot";ic="🔥";
-    const byPH=S.enzymes.filter(e=>e.cause==="pH").length>dead/2;
-    msg="Every enzyme is denatured"+(byPH?" by the extreme pH":" by the heat")+" — the active sites are wrecked and will not recover, even if you put the conditions back. Enzymes aren't alive, so they don't 'die', but they are ruined. Press Restart.";}
-  else if(dead>0){c.className="msg hot";ic="🔥";msg="Some enzymes have denatured. Once the shape is ruined it stays ruined — cooling down will not fix them.";}
   else if(S.temp<=14){c.className="msg cold";ic="❄️";msg="It's cold, so molecules move slowly and collide less often. The enzyme is NOT damaged — warm it up and it works again.";}
   else if(fitOf(matching)<0.12){c.className="msg hot";ic="⚗️";msg="The pH is far from the optimum for "+ENZ[matching].name.toLowerCase()+", so its active site is distorted and the substrate can't fit.";}
   else if(free===0&&bound===0){msg="All the substrate has been used up — the reaction is finished. The enzymes are unharmed and could carry on. Press Restart or add more substrate.";}
@@ -895,8 +912,20 @@ function setLevel(n){
   if(n===1)autoPH();
   sizeCanvas();
 }
+const rateReadout=document.getElementById("graph-readout");
+const rateRows=document.getElementById("rate-rows");
+let displayedSampleCount=-1;
+function refreshRateTable(){
+  if(!rateReadout.open||displayedSampleCount===S.sampleCount)return;
+  displayedSampleCount=S.sampleCount;
+  rateRows.innerHTML=S.rateSamples.map((rate,i)=>
+    "<tr><td>"+(S.sampleCount-S.rateSamples.length+i+1)+"</td><td>"+rate.toFixed(2)+"</td></tr>"
+  ).join("");
+  if(!S.rateSamples.length)rateRows.innerHTML='<tr><td colspan="2">Start a run to record rates.</td></tr>';
+}
+rateReadout.addEventListener("toggle",refreshRateTable);
 function resetRun(){
-  S.products.length=0;S.productCount=0;S.rateStamps.length=0;S.rateSamples.length=0;S.peak=0;S.rateEMA=0;S.occEMA=0;
+  S.products.length=0;S.productCount=0;S.rateStamps.length=0;S.rateSamples.length=0;S.sampleCount=0;S.peak=0;S.rateEMA=0;S.occEMA=0;
   S.substrates.length=0;S.enzymes.length=0;syncEnzymes();fillSubstrate();
 }
 document.querySelectorAll(".stab").forEach(b=>{
@@ -939,8 +968,22 @@ function frame(){
   updateUI(info);
   requestAnimationFrame(frame);
 }
+const guidedTasks={
+  ks3:{level:1,title:"Which enzyme digests starch?",steps:"Predict what will happen. Compare four protease molecules with four amylase molecules in separate runs. Keep starch selected. Pause before restarting each run and compare the product counts."},
+  gcse:{level:2,title:"Compare temperatures",steps:"Predict first. Set standard conditions before each run and change only the temperature. Compare 20 °C and 37 °C. Record the peak rate, and repeat to check how consistent your results are."},
+  alevel:{level:2,title:"Test for saturation",steps:"Predict the shape of the initial-rate curve. Reset to standard conditions before each run, then vary starting substrate between 5, 20 and 40. Keep enzyme concentration, pH and temperature fixed. Pause each run and compare its peak modelled rate."}
+};
 function boot(){
-  sizeCanvas();buildMix();setSubstrate("starch");setLevel(1);resetRun();
+  const activity=new URLSearchParams(location.search).get("activity");
+  const task=Object.hasOwn(guidedTasks,activity)?guidedTasks[activity]:null;
+  sizeCanvas();buildMix();setSubstrate("starch");setLevel(task?task.level:1);resetRun();
+  if(task){
+    document.getElementById("guided-title").textContent=task.title;
+    document.getElementById("guided-steps").textContent=task.steps;
+    document.getElementById("guided-return").href="/science-practice/#enzyme-"+activity;
+    document.getElementById("guided-task").hidden=false;
+    sizeCanvas();
+  }
   requestAnimationFrame(frame);
 }
 boot();

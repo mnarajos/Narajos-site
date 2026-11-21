@@ -52,6 +52,7 @@ function filter(unit,scope){
  var list=all.filter(function(q){return q.unit===unit;});
  if(/^a[1-5]$/.test(scope))list=list.filter(function(q){return q.area===Number(scope.slice(1));});
  else if(scope==="core"||scope==="apply"||scope==="stretch")list=list.filter(function(q){return q.level===scope;});
+ else if(scope.startsWith("case-"))list=list.filter(q=>q.id===scope&&q.caseTitle);
  else if(scope==="sam")list=list.filter(function(q){return q.samAligned;});
  else if(scope==="weak")list=list.filter(function(q){var p=progress[q.id];return p&&(((p.wrong>0&&(p.lastCorrect===false||p.good/Math.max(1,p.seen)<.75)||((p.guided||0)>0&&(p.independent||0)===0))||((p.guided||0)>0&&(p.independent||0)===0)));});
  return list;
@@ -78,6 +79,7 @@ function intro(unit){
  h+='<h2 class="k-subhead">Start practising</h2><div class="k-action-grid">';
  var tiles=[
   ...(!knowledge&&ladders?[["build","Build understanding","One idea, four progressive steps","layers","teal"]]:[]),
+  ...(unit==="f171"?[["clinical","Clinical case questions","Practise 6-mark and 9-mark responses","book","blue"]]:[]),
   ["all","Quick mix","Start easy, then build up","bolt","teal"],
   [knowledge?"core":"sam",knowledge?"Core knowledge":"Exam-style focus",knowledge?"Learn the essentials":"Skills found in OCR samples","target","blue"],
   ["weak","Fix mistakes","Revisit questions you missed","rotate","orange"],
@@ -188,6 +190,7 @@ function adaptQuickMixEnd(){
 }
 function makeSession(unit,scope,route){
  if(ladders&&scope==="build")return progressionMenu(unit);
+ if(unit==="f171"&&scope==="clinical")return showClinicalCases();
  var point=ladders&&ladders.get(scope);
  if(point&&point.unit!==unit)return intro(unit);
  var selected=rotatePool(filter(unit,scope));if(!selected.length){show('<div class="k-wrap"><p class="crumb"><a href="#challenge/'+unit+'">← Exam unit</a></p><div class="paper panel"><h1>No questions here yet</h1><p>Try a mixed set or choose another area.</p><a class="button primary" href="#challenge/'+unit+'/all">Start mixed questions</a></div></div>');return;}
@@ -228,9 +231,15 @@ function makeSession(unit,scope,route){
  if(point)session.point=point.id;
  rememberVersions(ids);save();drawQuestion();
 }
+function showClinicalCases(){
+ visible=false;
+ const cases=all.filter(q=>q.unit==="f171"&&q.caseTitle);
+ const links=cases.map(q=>'<a class="k-action blue" href="#challenge/f171/'+esc(q.id)+'"><span class="k-icon">'+icon("book")+'</span><span><strong>'+esc(q.caseTitle)+'</strong><small>'+q.marks+' marks · '+(q.marks===6?"Analyse":"Discuss")+'</small></span></a>');
+ show('<div class="k-wrap"><p class="crumb"><a href="#challenge/f171">← F171</a></p><div class="k-unit-hero"><h1>Clinical case questions</h1><p>Write an answer, then compare your reasoning with an example and the key points.</p></div><div class="k-action-grid">'+links.join("")+'</div></div>');
+}
 function progressionMenu(unit){
  visible=false;var points=ladders.points.filter(function(p){return p.unit===unit;});
- var h='<div class="k-wrap"><p class="crumb"><a href="#challenge/'+unit+'">← Unit overview</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+unit.toUpperCase()+' · Step by step</div><h1>Build understanding</h1><p>Choose one idea. Start with prior knowledge, check a misconception, try a rotating exam-focused question, then tackle a challenge. Read the explanation after each step.</p></div><p class="k-source">'+points.length+' selected teaching ideas, one in each listed subtopic. Each section contains further required content: this is not yet complete statement-by-statement coverage. Repeats rotate the third question; the supporting steps currently stay the same.</p>';
+ var h='<div class="k-wrap"><p class="crumb"><a href="#challenge/'+unit+'">← Unit overview</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+unit.toUpperCase()+' · Step by step</div><h1>Build understanding</h1><p>Choose one idea. Start with prior knowledge, check a misconception, try a rotating exam-focused question, then tackle a challenge. Read the explanation after each step.</p></div><p class="k-source">'+points.length+' selected teaching ideas across the unit. Each section contains further required content: this is not yet complete statement-by-statement coverage. Repeats rotate the third question; the supporting steps currently stay the same.</p>';
  var area=0;points.forEach(function(p){if(area!==p.area){if(area)h+='</div></details>';area=p.area;h+='<details class="k-progression-area"'+(area===1?' open':'')+'><summary>'+esc(areaName(unit,area))+'</summary><div class="k-progression-list">';}
   h+='<article class="paper k-skill-card"><small>'+unit.toUpperCase()+' · '+esc(p.section)+'</small><h3>'+esc(p.statement)+'</h3><p>Foundation → misconception → exam focus → challenge</p><a class="button primary" href="#challenge/'+unit+'/'+p.id+'">Start sequence<span class="sr-only">: '+esc(p.statement)+'</span></a></article>';
  });if(area)h+='</div></details>';show(h+source()+'</div>');
