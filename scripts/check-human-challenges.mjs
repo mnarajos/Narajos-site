@@ -18,10 +18,10 @@ load("human-biology/challenge-bank.js");
 load("human-biology/content-knowledge.js");
 load("human-biology/challenge.js");
 const db=window.KeystoneHumanChallenges,app=window.KeystoneHumanChallenge;
-assert.equal(db.questions.length,163);
+assert.equal(db.questions.length,169);
 assert.equal(db.questions.filter(q=>q.unit==="f170").length,62);
 assert.equal(db.questions.filter(q=>q.unit==="f171").length,29);
-for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,12,u+" knowledge bank missing");
+for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,13,u+" knowledge bank missing");
 assert.deepEqual([...new Set(db.questions.map(q=>q.type))].sort(),["best","diagram","match","multi","number","order","short","single","sort","written"].sort());
 const ids=new Set();
 const validUnits=new Set(["f170","f171","f172","f173","f174","f175","f176","f177"]);
@@ -47,7 +47,11 @@ assert.equal(db.questions.filter(q=>q.type==="best").length,7,"Two-step reasonin
 assert.equal(db.questions.filter(q=>q.subtype==="error").length,4,"Misconception correction coverage");
 assert.equal(db.questions.find(q=>q.id==="health-parkinsons-therapy").marks,6);
 assert.equal(db.questions.find(q=>q.id==="health-care-records").marks,9);
-assert(!JSON.stringify(db).match(/complete.*coursework|draft.*NEA|submit.*assignment/i),"NEA task assistance present");
+const knowledgeQuestions=db.questions.filter(q=>/^f17[2-7]$/.test(q.unit));
+assert(knowledgeQuestions.every(q=>q.knowledgeOnly),"Knowledge-only unit item missing safety scope");
+assert(!knowledgeQuestions.some(q=>/draft|complete the coursework|report for your assignment|submit your assignment|meet the assessment criteria/i.test(q.stem)),"Assessment-writing task leaked into knowledge bank");
+assert(knowledgeQuestions.filter(q=>q.figure).length>=6,"Each NEA-unit knowledge bank needs visual understanding checks");
+assert(db.questions.filter(q=>["single","diagram","best"].includes(q.type)).every(q=>q.options.length===4),"Four-option rule not met");
 load("human-biology/app.js");
 assert(main.innerHTML.includes("Ready to revise?"));
 
@@ -152,7 +156,7 @@ assert(window.KeystoneHumanChallenge.stats("f170").weak>=1,"Not sure should reco
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"next"}}:null;}}});
 record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert(record.index>=1,"Question did not advance");
-assert.equal(window.KeystoneHumanChallenge.questionCount,163);
+assert.equal(window.KeystoneHumanChallenge.questionCount,169);
 // Verify the entire deterministic answer flow, not merely presence of new item types.
 function forcedQuestion(id){
  const q=db.questions.find(x=>x.id===id);assert(q,"Unknown forced test item: "+id);
@@ -194,4 +198,4 @@ assert(!html.includes("fonts.googleapis.com"),"Human Biology should not request 
 assert(!/\b(?:fetch\(|sendBeacon\(|XMLHttpRequest\(|WebSocket\()/.test(read("human-biology/challenge.js")),"No network upload API should be used in this revision app");
 assert(!read("human-biology/challenge.js").includes("openai.com"),"No remote AI marking");
 assert(read("human-biology/index.html").includes("content-knowledge.js"),"Knowledge bank script not linked");
-console.log("Human Biology checks passed: 163 original questions across eight units, ten answer formats, private deterministic marking, and Quick Mix progression.");
+console.log("Human Biology checks passed: 169 original questions across eight units, ten answer formats, visual feedback and deterministic local marking.");
