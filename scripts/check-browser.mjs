@@ -414,6 +414,13 @@ try{
  await navPage.goto(base+"/science-practice/#ks3-cells");
  await navPage.waitForURL(base+"/ks3/cells/");
  await navPage.getByRole("heading",{name:"Cells and microscopes",exact:true}).waitFor();
+ await navPage.getByRole("button",{name:"Cell membrane",exact:true}).click();
+ await navPage.getByRole("status").filter({hasText:"firm layer outside it is the cell wall"}).waitFor();
+ await navPage.getByRole("button",{name:"Cell wall",exact:true}).click();
+ await navPage.getByRole("status").filter({hasText:"Correct. The cell wall gives the cell support"}).waitFor();
+ await navPage.getByText("Compare your explanation",{exact:true}).click();
+ assert(await navPage.getByText(/The cell wall supports the plant cell/).isVisible());
+
  await navPage.goto(base+"/teaching/simulations/enzyme-kinetics/?activity=gcse");
  await navPage.getByRole("heading",{name:"Compare temperatures",exact:true}).waitFor();
  await navPage.locator("#btn-run").click();

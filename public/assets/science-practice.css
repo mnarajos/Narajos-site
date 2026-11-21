@@ -34,3 +34,17 @@
 .writing-prompt{font-size:1.06rem}
 .writing-step summary{margin:0}
 .writing-step summary:hover{color:#086965}
+
+.ks3-lesson h2,.ks3-checks h2{font-size:clamp(1.2rem,3vw,1.5rem);margin:0 0 .6rem}
+.ks3-lesson h3{font-size:1rem;margin:.7rem 0 .15rem}
+.ks3-lesson p{margin:0 0 .8rem}
+.ks3-checks{display:grid;gap:.75rem;margin-top:1.5rem}
+.ks3-checks h2{margin-bottom:0}
+.ks3-checks h3{font-size:1.05rem}
+.ks3-choices{display:grid;gap:.45rem;margin:0;padding:0;list-style:none}
+.ks3-choices button{display:block;width:100%;min-height:44px;text-align:left;background:white;color:#24343b;border:1px solid #a1b5af;border-radius:8px;padding:.5rem .75rem;font:inherit;cursor:pointer}
+.ks3-choices button:hover,.ks3-choices button[aria-pressed=true]{background:#e9f6f3;border-color:#478d83}
+.ks3-choices button:focus-visible{outline:3px solid #c9611f;outline-offset:3px}
+.ks3-feedback{margin:.65rem 0 0;background:#f0f7f4;border-radius:8px;padding:.5rem .7rem}
+.ks3-feedback:empty{padding:0;margin:0}
+.catchup-finish{margin:1rem 0 0}
