@@ -63,6 +63,15 @@ try{
  await desktop.waitForFunction(()=>!document.querySelector(".site-nav details").open);
  assert(await menus.nth(0).locator("summary").evaluate(el=>document.activeElement===el),"Escape did not return focus to menu summary");
  assert((await desktop.locator(".home-option--learn .home-links").innerText()).includes("GCSE Combined Science (AQA)"),"Missing AQA on homepage");
+ const teacherMenu=desktop.locator(".site-nav .teacher-menu");
+ await teacherMenu.locator("summary").click();
+ assert(await teacherMenu.getByRole("link",{name:"Focused Writing",exact:true}).isVisible());
+ assert(await teacherMenu.getByRole("link",{name:"Focused Questions",exact:true}).isVisible());
+ await teacherMenu.getByRole("link",{name:"Focused Writing",exact:true}).click();
+ await desktop.getByRole("heading",{name:"Focused Writing",exact:true,level:1}).waitFor();
+ assert.equal(await desktop.locator("main textarea").count(),0,"The chooser should contain links to activities");
+ await screen(desktop,"focused-writing");
+ await desktop.goto(base+"/");
  await screen(desktop,"home-structure");
  await checkPage(desktop,"teaching");
  const companionCards=desktop.locator('a.app-card[href="/gcse/"],a.app-card[href="/alevel/"],a.app-card[href="/human-biology/"]');
@@ -376,14 +385,35 @@ try{
  await navPage.getByRole("link",{name:"← Flashcards",exact:true}).click();
  await navPage.locator("#leave-confirm").click();
  await navPage.getByRole("heading",{name:"F171 flashcards",exact:true}).waitFor();
- await navPage.goto(base+"/science-practice/#ks3-writing");
+ await navPage.goto(base+"/");
+ const phoneTeacherMenu=navPage.locator(".site-nav .teacher-menu");
+ await phoneTeacherMenu.locator("summary").click();
+ assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Teacher Tools dropdown overflows the phone viewport");
+ assert(await phoneTeacherMenu.getByRole("link",{name:"Focused Questions",exact:true}).isVisible());
+ await phoneTeacherMenu.getByRole("link",{name:"Focused Writing",exact:true}).click();
+ await navPage.getByRole("link",{name:/KS3 · Explain a change/}).click();
+ await navPage.getByRole("heading",{name:"KS3 · Explain a change",exact:true}).waitFor();
  const outline=navPage.getByLabel("Notes on particle movement and temperature");
+ await navPage.getByText("Plan your paragraph",{exact:true}).click();
  await outline.fill("warmer → faster random movement → quicker spread");
  await navPage.reload();
+ if(!await outline.isVisible())await navPage.getByText("Plan your paragraph",{exact:true}).click();
  assert.equal(await outline.inputValue(),"warmer → faster random movement → quicker spread");
- await navPage.locator("#ks3-writing summary").first().click();
- assert(await navPage.locator("#ks3-writing .model").isVisible());
- assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Science practice overflows at phone width");
+ await navPage.getByText("See a worked example",{exact:true}).click();
+ assert(await navPage.locator(".writing-card .model").isVisible());
+ for(const [level,visual] of [["ks3","dye-spread"],["gcse","osmosis-results"],["alevel","glucose-cotransport"]]){
+  await navPage.goto(base+"/teaching/focused-writing/"+level+"/");
+  assert.equal(await navPage.locator("main .writing-card").count(),1,"Share links should show one writing activity");
+  const image=navPage.locator('img[src$="/'+visual+'.png"]');
+  assert(await image.evaluate(img=>img.complete&&img.naturalWidth>0&&img.alt.length>20),"Writing prompt image or alternative text missing");
+  assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Writing activity overflows at phone width");
+  await screen(navPage,"focused-writing-"+level+"-mobile");
+ }
+ await navPage.goto(base+"/science-practice/#gcse-writing");
+ await navPage.waitForURL(base+"/teaching/focused-writing/gcse/");
+ await navPage.goto(base+"/science-practice/#ks3-cells");
+ await navPage.waitForURL(base+"/ks3/cells/");
+ await navPage.getByRole("heading",{name:"Cells and microscopes",exact:true}).waitFor();
  await navPage.goto(base+"/teaching/simulations/enzyme-kinetics/?activity=gcse");
  await navPage.getByRole("heading",{name:"Compare temperatures",exact:true}).waitFor();
  await navPage.locator("#btn-run").click();
@@ -412,6 +442,7 @@ try{
   await navPage.waitForFunction(suffix=>document.querySelector("#coach-text").textContent.includes("All enzymes have denatured "+suffix+"."),expected);
  }
  await navPage.getByRole("link",{name:"Return to the follow-up question"}).click();
+ await navPage.waitForURL(base+"/teaching/enzyme-investigations/gcse/");
  await navPage.getByRole("heading",{name:"GCSE · Compare two temperatures"}).waitFor();
  await navPage.close();
  await mobile.close();

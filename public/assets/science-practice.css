@@ -1,7 +1,4 @@
-.practice-index,.practice-cards{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(min(16rem,100%),1fr))}
-.practice-index a{display:flex;align-items:center;min-height:44px;font-weight:700}
-.practice-section{padding-block:2rem;border-top:1px solid #d4dcd8;scroll-margin-top:1rem}
-.practice-section h2{margin-top:0}
+.practice-cards{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(min(16rem,100%),1fr))}
 .practice-card{border:1px solid #d4dcd8;border-radius:14px;background:white;padding:clamp(.85rem,2.5vw,1.4rem);min-width:0}
 .practice-card h3{margin-top:0}
 .practice-card details{border-top:1px solid #d4dcd8;padding:.6rem 0}
@@ -15,4 +12,25 @@
 .practice-card textarea{display:block;width:100%;color:#172b31;background:white;border:1px solid #879993;border-radius:8px;padding:.6rem;font:inherit;resize:vertical}
 .practice-card :is(a,summary,textarea):focus-visible{outline:3px solid #c9611f;outline-offset:3px}
 .practice-card a{font-weight:650;text-underline-offset:3px}
-.practice-divider{margin:1rem 0;border:0;border-top:1px solid #d4dcd8}
+
+.practice-page{max-width:58rem;padding-bottom:2.5rem}
+.practice-page .page-hero{padding-block:1.5rem 1rem}
+.practice-page .page-hero .breadcrumb{margin:0 0 .6rem}
+.practice-page .page-hero .lead{margin-bottom:.4rem}
+.practice-choices{list-style:none;margin:0;padding:0;display:grid;gap:.65rem}
+.practice-choices a{display:grid;border:1px solid #d4dcd8;border-radius:12px;background:#fff;padding:.8rem 1rem;min-height:44px;text-decoration:none;color:#24343b}
+.practice-choices a:hover{border-color:#478d83;background:#f5fbf9}
+.practice-choices a:focus-visible,.teacher-note summary:focus-visible{outline:3px solid #c9611f;outline-offset:3px}
+.practice-choices a span{color:#4f6166;font-size:.9rem}
+.practice-choices a span:empty{display:none}
+.practice-stack{display:grid;gap:1rem}
+.teacher-note{margin-top:1.5rem;border-top:1px solid #d4dcd8;padding:.75rem 0}
+.teacher-note summary{cursor:pointer;font-weight:700;min-height:44px}
+.writing-card{max-width:48rem}
+.writing-visual{margin:0}
+.writing-visual img{display:block;max-width:100%;max-height:21rem;object-fit:contain;height:auto;margin-inline:auto;border-radius:8px}
+.writing-visual figcaption a{white-space:nowrap}
+.writing-visual figcaption{color:#485a60;margin:.5rem 0 0;font-size:.9rem}
+.writing-prompt{font-size:1.06rem}
+.writing-step summary{margin:0}
+.writing-step summary:hover{color:#086965}

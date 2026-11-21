@@ -233,7 +233,7 @@
 
   <aside class="panel">
     <section class="guided-task" id="guided-task" hidden>
-      <h2 id="guided-title"></h2><p id="guided-steps"></p><a id="guided-return" href="/science-practice/#enzymes">Return to the follow-up question</a>
+      <h2 id="guided-title"></h2><p id="guided-steps"></p><a id="guided-return" href="/teaching/enzyme-investigations/">Return to the follow-up question</a>
     </section>
     <div class="btn-row">
       <button class="act primary" id="btn-run"><span id="run-ic">▶</span><span id="run-tx">Start</span></button>
@@ -980,7 +980,7 @@ function boot(){
   if(task){
     document.getElementById("guided-title").textContent=task.title;
     document.getElementById("guided-steps").textContent=task.steps;
-    document.getElementById("guided-return").href="/science-practice/#enzyme-"+activity;
+    document.getElementById("guided-return").href="/teaching/enzyme-investigations/"+activity+"/";
     document.getElementById("guided-task").hidden=false;
     sizeCanvas();
   }
