@@ -1696,13 +1696,16 @@ window.KeystoneHumanChallenges={
       "stem": "Which calculation explanation is correct, and which reason supports it?",
       "options": [
         "Magnification equals image size divided by actual size, using consistent units.",
-        "Magnification equals actual size divided by image size, using consistent units."
+        "Magnification equals actual size divided by image size, using consistent units.",
+        "Magnification is the sum of image size and actual size, in matching units.",
+        "Magnification is image size multiplied by actual size, after unit conversion."
       ],
       "correct": 0,
       "reasons": [
         "Magnification is the ratio of image dimensions to the object's actual dimensions.",
         "Microscope magnification depends only on the eyepiece lens.",
-        "Consistent units mean either quantity can be used as the numerator."
+        "Consistent units mean either quantity can be used as the numerator.",
+        "Magnification compares the image and specimen by adding their lengths."
       ],
       "reasonCorrect": 0,
       "model": "Magnification = image size ÷ actual size.",
@@ -1724,13 +1727,16 @@ window.KeystoneHumanChallenges={
       "stem": "Which account of insulin action is biologically accurate? Select the best supporting reason.",
       "options": [
         "Insulin acts on target cells to increase glucose uptake or storage, lowering blood glucose.",
-        "Insulin acts as an enzyme that directly destroys glucose molecules circulating in plasma."
+        "Insulin acts as an enzyme that directly destroys glucose molecules circulating in plasma.",
+        "Insulin is released from pancreatic alpha cells and raises plasma glucose.",
+        "Insulin is produced by kidney cells and changes glucose filtration directly."
       ],
       "correct": 0,
       "reasons": [
         "Insulin is a hormone that binds receptors and modifies target-cell activity.",
         "Insulin hydrolyses glucose because it contains an enzyme active site.",
-        "Insulin changes blood glucose by raising the secretion of glucagon."
+        "Insulin changes blood glucose by raising the secretion of glucagon.",
+        "Insulin stimulates the liver to convert glycogen into glucose for release."
       ],
       "reasonCorrect": 0,
       "model": "Insulin affects cells through receptor-mediated signalling.",
@@ -1752,13 +1758,16 @@ window.KeystoneHumanChallenges={
       "stem": "Which statement best describes how myelin improves impulse conduction?",
       "options": [
         "Myelin insulates axons so impulses travel rapidly between nodes of Ranvier.",
-        "Myelin contains fluid that conducts impulses down the centre of the sheath."
+        "Myelin contains fluid that conducts impulses down the centre of the sheath.",
+        "Myelin acts as a chemical neurotransmitter between adjacent nerve cells.",
+        "Myelin increases speed by creating extra synapses along the same axon."
       ],
       "correct": 0,
       "reasons": [
         "Action potentials are regenerated at specialised sites on the axon membrane.",
         "The sheath produces electrical impulses independently of the neuron.",
-        "The sheath replaces synapses between each pair of neurons."
+        "The sheath replaces synapses between each pair of neurons.",
+        "More synapses along an axon increase the speed of impulse propagation."
       ],
       "reasonCorrect": 0,
       "model": "Myelin supports saltatory conduction along an axon.",
@@ -1780,13 +1789,16 @@ window.KeystoneHumanChallenges={
       "stem": "Which interpretation of the stationary phase of a bacterial growth curve is most defensible?",
       "options": [
         "Cell division may continue while the number of cells dying approximately balances new cells.",
-        "Every bacterial cell permanently stops dividing once the culture reaches stationary phase."
+        "Every bacterial cell permanently stops dividing once the culture reaches stationary phase.",
+        "The population stops rising because all bacterial cells have been destroyed.",
+        "The total number rises steadily but the graph appears flat because time stops."
       ],
       "correct": 0,
       "reasons": [
         "Stationary describes an approximately constant net population, not necessarily total inactivity.",
         "Binary fission cannot occur in a closed container of nutrient broth.",
-        "An unchanged total cell number proves that no cell has died."
+        "An unchanged total cell number proves that no cell has died.",
+        "In stationary phase the population grows exponentially but the graph conceals it."
       ],
       "reasonCorrect": 0,
       "model": "Population stability can coexist with individual cell division and death.",
@@ -1808,13 +1820,16 @@ window.KeystoneHumanChallenges={
       "stem": "Which clinical conclusion follows from a large zone of inhibition around an antibiotic disc?",
       "options": [
         "Growth was inhibited under test conditions; treating a patient needs more evidence.",
-        "The antibiotic is guaranteed to cure infections caused by every strain of that species."
+        "The antibiotic is guaranteed to cure infections caused by every strain of that species.",
+        "The largest zone proves that the disc contains the greatest dose of drug.",
+        "The zone confirms the exact antibiotic dose needed for every patient."
       ],
       "correct": 0,
       "reasons": [
         "A zone is influenced by testing conditions and does not directly establish clinical effectiveness.",
         "The agar and all human tissues maintain the same antibiotic concentration.",
-        "All strains of one bacterial species respond identically to the same drug."
+        "All strains of one bacterial species respond identically to the same drug.",
+        "A zone directly measures the safe dose of a drug in the patient's bloodstream."
       ],
       "reasonCorrect": 0,
       "model": "An agar result supports a limited laboratory conclusion.",
@@ -1836,13 +1851,16 @@ window.KeystoneHumanChallenges={
       "stem": "Which interpretation of a positive screening result is justified?",
       "options": [
         "The result may require diagnostic confirmation because false positives can occur.",
-        "A positive screen definitively establishes disease regardless of prevalence."
+        "A positive screen definitively establishes disease regardless of prevalence.",
+        "A positive screening result has no value until symptoms develop.",
+        "A positive screening result is proof that treatment must start immediately."
       ],
       "correct": 0,
       "reasons": [
         "Predictive value depends partly on test sensitivity, specificity and condition prevalence.",
         "All screening tests have complete specificity.",
-        "A screening result is always the same as a definitive diagnosis."
+        "A screening result is always the same as a definitive diagnosis.",
+        "Screening identifies all affected people without any diagnostic uncertainty."
       ],
       "reasonCorrect": 0,
       "model": "Screening is distinct from confirming a diagnosis.",
