@@ -447,6 +447,34 @@ try{
   assert.equal(await navPage.getByLabel("Your paragraph:",{exact:true}).inputValue(),"");
   assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"GCSE writing task overflows at phone width");
  }
+ await navPage.goto(base+"/ks3/");
+ const ks3Menu7=navPage.locator("#year-7");
+ const ks3Menu8=navPage.locator("#year-8");
+ await ks3Menu7.locator("summary").click();
+ assert.equal(await ks3Menu7.getByRole("link").count(),12);
+ assert(!(await ks3Menu8.locator("ul").isVisible()),"Year 8 topics should stay collapsed when choosing Year 7");
+ const year7Paths=await ks3Menu7.getByRole("link").evaluateAll(links=>links.map(link=>link.href));
+ await ks3Menu8.locator("summary").click();
+ assert.equal(await ks3Menu8.getByRole("link").count(),11);
+ assert(!(await ks3Menu7.locator("ul").isVisible()),"Only one year list should open at a time");
+ const year8Paths=await ks3Menu8.getByRole("link").evaluateAll(links=>links.map(link=>link.href));
+ for(const path of [...year7Paths,...year8Paths]){
+  await navPage.goto(path);
+  await navPage.getByRole("heading",{name:"Check your understanding",exact:true}).waitFor();
+  const firstCheck=navPage.locator("[data-catchup-check]").first();
+  assert.equal(await navPage.locator("[data-catchup-check]").count(),2);
+  assert(await navPage.locator(".ks3-lesson figure,.ks3-lesson table").isVisible(),"KS3 lesson is missing a visual prompt");
+  const firstOption=firstCheck.getByRole("button").first();
+  await firstOption.focus();
+  await navPage.keyboard.press("Enter");
+  await firstCheck.getByRole("status").filter({hasText:/\S/}).waitFor();
+  assert.equal(await firstOption.getAttribute("aria-pressed"),"true");
+  assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"KS3 catch-up lesson overflows at phone width");
+ }
+ await navPage.goto(year8Paths[10]);
+ await navPage.getByRole("link",{name:"Choose another Year 8 topic"}).click();
+ await navPage.waitForURL(base+"/ks3/#year-8");
+ await ks3Menu8.locator("ul").waitFor();
  await navPage.goto(base+"/ks3/particles/");
  const gasModel=navPage.locator("[data-gas-pressure]");
  await gasModel.getByRole("button",{name:"Start motion"}).click();
