@@ -62,7 +62,7 @@ Quick Mix is a **confidence-first mixed set**: two accessible warm-ups (on-ramp)
 
 As of this revision:
 - F170: **28 learning sections** across four topic areas, **112 recall cards**, and **62 varied challenge questions** (including one accessible area warm-up per area).
-- F171: **27 varied challenge questions** across all five topic areas, including one original 6-mark analyse and one 9-mark discuss example. This is a **preview**, not an exhaustive revision course.
+- F171: **29 varied challenge questions** across all five topic areas, including one original 6-mark analyse and one 9-mark discuss example. This is a **preview**, not an exhaustive revision course.
 - Formats: one-answer selection, select-two, ordering, matching, numerical calculation, short written recall, extended writing with self-check, original schematic/graph interpretation, and **choose the better explanation then justify**.
 - The new F170 challenge bank does not yet include a dedicated varied-format question tagged to **1.2.1** or **2.1.1**. Existing F170 learning/review content still covers these concepts.
 - F171 immunology, data-rich interpretation and extended responses require substantial expansion.
