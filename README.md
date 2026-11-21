@@ -42,7 +42,7 @@ Run `node scripts/check-site.mjs`, `node scripts/check-flashcards.mjs`, `node sc
 - GCSE card bank coverage across all 24 Trilogy topics, per-card structure and tier metadata
 - Spaced-review scheduling, missed-card retry logic, explicit answer aliases and both review-app interfaces
 
-The Human Biology app now has nine exam-question formats, a warm-up-first progression within topic areas, optional hints, related quick checks, and an F171 preview alongside the original F170 bank. It is **not yet a complete statement-by-statement specification resource**. It includes no NEA assignment writing or marking. Sample-paper alignment indicates question *style*, not reliable predictions of future examination frequency. Source: Cambridge OCR Human Biology specification version 8 (October 2026).
+The Human Biology app now has nine exam-question formats, a confidence-first Quick Mix (two easy warm-ups, two core questions, then application with a gated final stretch), progressive topic practice, optional hints, tightly matched quick checks, and an F171 preview alongside the original F170 bank. It is **not yet a complete statement-by-statement specification resource**. It includes no NEA assignment writing or marking. Sample-paper alignment indicates question *style*, not reliable predictions of future examination frequency. Source: Cambridge OCR Human Biology specification version 8 (October 2026).
 
 These checks are not a replacement for browser testing.
 
