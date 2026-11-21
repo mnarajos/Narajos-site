@@ -1,0 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap");
+/* Shared wayfinding and accessibility for standalone biological simulations. */
+.sim-utility-nav{
+  position:relative;z-index:20;display:flex;align-items:center;justify-content:space-between;
+  gap:12px;min-height:40px;padding:0 14px;background:#faf9f6;color:#24323e;
+  border-bottom:1px solid #e3e4e2;font:600 13px/1.3 "Poppins",system-ui,sans-serif;
+}
+.sim-utility-nav a{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:4px 3px;color:inherit;text-decoration:none}
+.sim-utility-nav a:hover{text-decoration:underline;color:#a84a13}
+.sim-utility-nav a:focus-visible{outline:3px solid #dc772c;outline-offset:0;border-radius:4px}
+.sim-utility-nav img{display:block;width:18px;height:18px}
+.sim-utility-nav .sim-site-link{white-space:nowrap}
+.brand h1.t{margin:0;line-height:1.15}
+@supports(height:100dvh){body.sim-fullscreen{height:100dvh}}
+@media(max-width:600px){
+ .sim-utility-nav{font-size:12px;padding:0 10px;min-height:42px}
+ .sim-utility-nav a{min-height:42px}
+}
