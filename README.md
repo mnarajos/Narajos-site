@@ -9,9 +9,10 @@ Source files for [narajos.com](https://narajos.com/).
 - `public/gcse/index.html` — GCSE Combined Science revision, including flashcard navigation
 - `public/gcse/cards-*.js` — curated Biology, Chemistry and Physics recall-card banks (241 starter cards, 24 topics)
 - `public/gcse/flashcards-app.js` — GCSE topic, paper, mixed, weak and due-card review modes
-- `public/alevel/index.html` — A-level Biology revision
+- `public/alevel/index.html` — A-level Biology revision, plus an optional stepwise catch-up companion using the already-authored AQA concept notes (existing question progression and post-error reteach preserved)
 - `public/alevel/spaced-review-app.js` — spaced-review dashboard built on its existing flashcard bank
 - `public/human-biology/` — Cambridge OCR AAQ revision app: paper-first F170/F171 navigation, original diagram, calculation and application challenges, and separate recall cards. F170 has 28 learning sections, 112 flashcards and 28 explanation-only prompts; exam-question bank currently has 62 F170 and 29 F171 challenges. The independent F172–F177 pathway has 78 introductory knowledge checks (13 per unit), including original diagram questions. Across the eight units the app supports ten answer formats. These are starter banks, not complete specification coverage.
+- `public/human-biology/companion.js` — optional short catch-up recaps for F170–F177, without accounts or assessed coursework support
 - `docs/HUMAN_BIOLOGY_REVISION_RESEARCH.md` — OCR specification / sample-material research, high-yield priority rationale, content-quality checklist and coverage gaps.
 - `docs/HUMAN_BIOLOGY_QUESTION_WRITING_STANDARD.md` — accessible, misconception-focused question and diagram standard with strict limits on coursework-unit support.
 - `docs/ORACLE_KEYSTONE_PEDAGOGY.md` — pedagogical and privacy standard for all Keystone apps: explicit sequencing, retrieval, scaffold fading, diagnostic reteach, transferable application and strictly local progress (no AI marking or learner telemetry).
@@ -61,3 +62,7 @@ These checks are not a replacement for browser testing.
 **Content status:** The GCSE flashcard decks are an initial curated recall selection, not a complete card-by-card representation of every specification statement. Further expansion and examiner-report review are recommended before describing them as comprehensive.
 
 The website's presentation is deliberately restrained. Keep the main navigation and visual conventions coherent, while allowing subject-specific simulation colours.
+
+### Companion use: revision · catch-up · reteach
+
+In both A-level Biology and Human Biology, **questions remain the default**. The optional **Catch up** route provides small, sequenced chunks of already authored key knowledge, then links back to the existing question modes. **Reteach** means a timely, short explanation after a mistake, not a separate full teaching course: A-level retains its existing targeted correction and quick-check logic; Human Biology links from uncertain/error feedback to relevant brief concept or topic notes. Students are not forced to read before practising. Neither catch-up pathway collects new learner data, uses AI marking, or substitutes for teacher-led practical lessons. In Human Biology, the F172–F177 notes are general scientific knowledge and must never become coursework assessment coaching.
