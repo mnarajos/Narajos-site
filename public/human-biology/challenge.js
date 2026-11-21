@@ -89,11 +89,23 @@ function makeSession(unit,scope,route){
    return areaA-areaB;
   })[0];if(!next)break;chosen.push(next);
  }
- var ids=shuffle(chosen).map(function(x){return x.id;});
- session={unit:unit,scope:scope,route:route,queue:ids,index:0,first:{},correctFirst:0,phase:"ask",answers:{},retries:{},complete:false,started:Date.now()};
+ var ids;
+ if(/^a[1-5]$/.test(scope)){
+  // Topic practice is instructionally sequenced; unlike the mixed revision mode,
+  // it must not begin with the hardest randomly selected application task.
+  var buckets=[[],[],[],[]],quota=[1,2,3,2],arr=[];
+  function stage(q){return q.warmup||q.level==="warmup"?0:q.level==="core"?1:q.level==="apply"?2:3;}
+  selected.forEach(function(q){buckets[stage(q)].push(q);});
+  buckets=buckets.map(shuffle);
+  quota.forEach(function(n,i){for(var j=0;j<n&&buckets[i].length;j++)arr.push(buckets[i].shift());});
+  for(var b=0;b<buckets.length&&arr.length<size;b++)while(buckets[b].length&&arr.length<size)arr.push(buckets[b].shift());
+  ids=arr.sort(function(a,b){return stage(a)-stage(b);}).map(function(q){return q.id;});
+ }else ids=shuffle(chosen).map(function(x){return x.id;});
+ session={unit:unit,scope:scope,route:route,queue:ids,index:0,first:{},correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,complete:false,started:Date.now()};
  save();drawQuestion();
 }
 function current(){return session&&byId[session.queue[session.index]];}
+function isQuickCheck(q){return !!(session&&session.quickCheckIds&&q&&session.quickCheckIds[q.id]);}
 function formChoice(q,answer){
  var selected=answer&&Array.isArray(answer.selected)?answer.selected:[];
  if(!answer.optionOrder){answer.optionOrder=shuffle(q.options.map(function(_,i){return i;}));session.answers[q.id]=answer;save();}
