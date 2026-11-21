@@ -64,8 +64,16 @@ function create(env){
  }
  function select(route){
   var base=pool(),ids=[];
-  if(route==="flashreview")ids=base.filter(function(c){return engine.due(c.id);});
-  else if(route==="flashweak")ids=base.filter(function(c){return engine.weak(c.id);});
+  if(route==="flashreview"){
+   ids=base.filter(function(c){return engine.due(c.id);});
+   if(pref.reverse)return shuffle(ids.concat(base.map(reverseCard).filter(function(c){return c&&engine.due(c.id);}))).map(function(c){return c.id;});
+   return shuffle(ids).map(function(c){return c.id;});
+  }
+  else if(route==="flashweak"){
+   ids=base.filter(function(c){return engine.weak(c.id);});
+   if(pref.reverse)return shuffle(ids.concat(base.map(reverseCard).filter(function(c){return c&&engine.weak(c.id);}))).map(function(c){return c.id;});
+   return shuffle(ids).map(function(c){return c.id;});
+  }
   else if(route==="flashmixed")ids=shuffle(base.filter(function(c){return !engine.get(c.id);})).slice(0,15);
   else if(/^cards-[bcp]\d+$/.test(route))ids=base.filter(function(c){return c.topic===route.slice(6);});
   else if(/^paperflash-[bcp]\d$/.test(route)){
