@@ -56,7 +56,7 @@ function intro(unit){
  h+='<div class="k-mini-stats"><span><strong>'+stats.questions+'</strong> original questions</span><span><strong>'+stats.seen+'</strong> attempted</span><span><strong>'+stats.weak+'</strong> to revisit</span></div>';
  h+='<h2 class="k-subhead">Start practising</h2><div class="k-action-grid">';
  var tiles=[
-  ["all","Quick mix","A variety of question types","bolt","teal"],
+  ["all","Quick mix","Start easy, then build up","bolt","teal"],
   ["sam","Exam-style focus","Skills found in OCR samples","target","blue"],
   ["weak","Fix mistakes","Revisit questions you missed","rotate","orange"],
   ["stretch","Challenge","Application and explanation","brain","purple"]];
@@ -67,6 +67,66 @@ function intro(unit){
 }
 function landing(){
  var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">Keystone Human Biology</div><h1>Choose an exam unit</h1><p>Short, varied questions first. See an explanation when you need it.</p></div><div class="k-unit-tiles">'+["f170","f171"].map(function(u){var s=unitStats(u);return '<a href="#challenge/'+u+'" class="k-unit-tile '+(u==="f170"?"teal":"blue")+'"><span class="k-icon">'+icon(u==="f170"?"brain":"flask")+'</span><span><small>'+u.toUpperCase()+' · 60-mark paper</small><strong>'+esc(u==="f170"?"Fundamentals of human biology":"Health and disease")+'</strong><em>'+s.questions+' questions · '+s.seen+' attempted'+(u==="f171"?" · preview":"")+'</em></span>'+icon("chevron")+'</a>';}).join("")+'</div>'+source()+'</div>';show(h);
+}
+/* Quick Mix is a short confidence ladder, not a randomly ordered mini-exam.
+   Deliberately accessible entry -> core retrieval -> application -> conditional stretch.
+   Selection and grading are entirely deterministic and remain in this browser. */
+function quickMixQueue(unit,limit){
+ var pool=all.filter(function(q){return q.unit===unit;}),chosen=[],taken={};
+ function choose(candidates,preferredTypes){
+  candidates=candidates.filter(function(q){return !taken[q.id];});
+  if(!candidates.length)return null;
+  candidates=shuffle(candidates).sort(function(a,b){return score(a)-score(b);});
+  var q=candidates[0];chosen.push(q);taken[q.id]=true;return q;
+  function score(q){
+   var prior=progress[q.id]||{},areas=chosen.filter(function(c){return c.area===q.area;}).length;
+   var types=chosen.filter(function(c){return c.type===q.type;}).length;
+   var pref=preferredTypes?preferredTypes.indexOf(q.type):-1;
+   return areas*7+types*3+(prior.seen||0)*2+(pref===-1?10:pref*2);
+  }
+ }
+ var warm=pool.filter(function(q){return q.warmup||q.level==="warmup";});
+ // Always establish confidence with two familiar, low-barrier retrieval items.
+ choose(warm.filter(function(q){return q.onRamp;}),["single"]);
+ choose(warm,["single"]);
+ // Next recover core vocabulary and a core concept. Avoid difficult written work here.
+ for(var i=0;i<2;i++)choose(pool.filter(function(q){return q.level==="core";}),i===0?["single","short","diagram","order","match"]:["short","single","order","match","diagram"]);
+ // Application starts with supported recognition, then gradually demands more.
+ var preferences=[["single","multi","diagram","match","order","best","number","written"],
+  ["diagram","match","order","multi","single","number","best","written"],
+  ["number","best","order","match","multi","diagram","single","written"]];
+ preferences.forEach(function(types){choose(pool.filter(function(q){return q.level==="apply";}),types);});
+ // Keep a reasonable application task as the final default. A stretch can be
+ // substituted only if independent performance during the set warrants it.
+ choose(pool.filter(function(q){return q.level==="apply";}),["best","written","number","order","diagram","match","single","multi"]);
+ while(chosen.length<limit){if(!choose(pool,["single","short","match","order","diagram","multi","number","best","written"]))break;}
+ return chosen.slice(0,limit).map(function(q){return q.id;});
+}
+function adaptQuickMixEnd(){
+ if(!session||session.scope!=="all"||session.quickMixAdjusted||!session.quickMixFinalId)return;
+ if(session.queue[session.index]!==session.quickMixFinalId)return;
+ var coreIds=(session.quickMixBase||[]).slice(0,7);
+ var completed=coreIds.filter(function(id){return Object.prototype.hasOwnProperty.call(session.first,id);});
+ // No speculative inference of mastery: simply avoid pitching a harder
+ // question after difficulty, and offer an optional stretch after strong recall.
+ var correct=completed.filter(function(id){return session.first[id]===true;}).length;
+ var target=correct>=6&&completed.length>=7?"stretch":correct<=3?"core":"apply";
+ var candidates=all.filter(function(q){
+  return q.unit===session.unit&&q.level===target&&
+   session.queue.indexOf(q.id)<0&&!session.first.hasOwnProperty(q.id)&&
+   !q.warmup;
+ });
+ // Prefer previously unseen cards and a topic not already over-represented.
+ if(candidates.length&&target!=="apply"){
+  candidates=shuffle(candidates);
+  candidates.sort(function(a,b){
+   var p1=progress[a.id]||{},p2=progress[b.id]||{};
+   return (p1.seen||0)-(p2.seen||0);
+  });
+  session.queue[session.index]=candidates[0].id;
+ }
+ session.quickMixAdjusted=true;
+ save();
 }
 function makeSession(unit,scope,route){
  var selected=filter(unit,scope);if(!selected.length){show('<div class="k-wrap"><p class="crumb"><a href="#challenge/'+unit+'">← Exam unit</a></p><div class="paper panel"><h1>No questions here yet</h1><p>Try a mixed set or choose another area.</p><a class="button primary" href="#challenge/'+unit+'/all">Start mixed questions</a></div></div>');return;}
@@ -90,7 +150,8 @@ function makeSession(unit,scope,route){
   })[0];if(!next)break;chosen.push(next);
  }
  var ids;
- if(/^a[1-5]$/.test(scope)){
+ if(scope==="all"){ids=quickMixQueue(unit,size);}
+ else if(/^a[1-5]$/.test(scope)){
   // Topic practice is instructionally sequenced; unlike the mixed revision mode,
   // it must not begin with the hardest randomly selected application task.
   var buckets=[[],[],[],[]],quota=[1,2,3,2],arr=[];
@@ -101,7 +162,7 @@ function makeSession(unit,scope,route){
   for(var b=0;b<buckets.length&&arr.length<size;b++)while(buckets[b].length&&arr.length<size)arr.push(buckets[b].shift());
   ids=arr.sort(function(a,b){return stage(a)-stage(b);}).map(function(q){return q.id;});
  }else ids=shuffle(chosen).map(function(x){return x.id;});
- session={unit:unit,scope:scope,route:route,queue:ids,index:0,first:{},correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,complete:false,started:Date.now()};
+ session={unit:unit,scope:scope,route:route,queue:ids,index:0,first:{},correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,quickMixVersion:scope==="all"?2:null,quickMixBase:scope==="all"?ids.slice():null,quickMixFinalId:scope==="all"?ids[ids.length-1]:null,quickMixAdjusted:false,complete:false,started:Date.now()};
  save();drawQuestion();
 }
 function current(){return session&&byId[session.queue[session.index]];}
@@ -196,7 +257,9 @@ function showNextHint(){
  readForm();session.hintsUsed[q.id]=n+1;save();drawQuestion();
 }
 function drawQuestion(){
- if(!session||!isActive())return;visible=true;var q=current(),a=currentAnswer();
+ if(!session||!isActive())return;
+ adaptQuickMixEnd();
+ visible=true;var q=current(),a=currentAnswer();
  var sub=q.unit==="f171"?"F171 · Health and disease":"F170 · Fundamentals",num=session.index+1,max=session.queue.length;
  var prog=(100*(session.index/max)).toFixed(1),showing=session.phase==="feedback";
  var used=session.hintsUsed&&session.hintsUsed[q.id]||0,availableHints=hintsFor(q);
@@ -321,7 +384,10 @@ function route(r,renderer){
  var unit=m[1],scope=m[2]||null;
  if(!scope){visible=false;return intro(unit);}
  var old=session||restore();
- if(old&&old.route===r){session=old;return drawQuestion();}
+ if(old&&old.route===r){
+  // An unstarted legacy Quick Mix may still open on a random hard question.
+  if(scope==="all"&&!old.quickMixVersion&&old.index===0&&old.phase==="ask"&&!Object.keys(old.first||{}).length)return makeSession(unit,scope,r);
+  session=old;return drawQuestion();}
  return makeSession(unit,scope,r);
 }
 main.addEventListener("change",function(e){
