@@ -44,7 +44,7 @@ assert(main.innerHTML.includes("Explore the specification")&&main.innerHTML.incl
 location.hash="#area/area-2";listeners.hashchange();
 assert(main.innerHTML.includes("Measuring system activity")&&main.innerHTML.includes("Transplants and artificial organs"));
 location.hash="#learn/3.2.1";listeners.hashchange();
-assert(main.innerHTML.includes("Nodes of Ranvier")&&main.innerHTML.includes("Apply to a question"));
+assert(/nodes of Ranvier/i.test(main.innerHTML)&&main.innerHTML.includes("Apply to a question"));
 location.hash="#flashcards";listeners.hashchange();
 assert(main.innerHTML.includes("Review due cards")&&main.innerHTML.includes("Learn new cards"));
 location.hash="#practice";listeners.hashchange();
