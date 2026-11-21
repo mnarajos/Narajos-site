@@ -1,0 +1,75 @@
+# Human Biology (Cambridge OCR H049/H149): evidence-informed revision design
+
+Updated: 21 November 2026. This is an internal content-quality and product-development note, **not** a student learning page.
+
+## Authoritative sources
+- [OCR specification, latest published version 8 (October 2026)](https://www.ocr.org.uk/Images/697578-specification-cambridge-advanced-national-in-human-biology.pdf)
+- [OCR October 2026 specification amendments](https://www.ocr.org.uk/administration/support-and-tools/subject-updates/can-human-biology-spec-update-764886/)
+- [F170 sample question paper and mark scheme](https://www.ocr.org.uk/Images/697850-fundamentals-of-human-biology.pdf)
+- [F171 sample question paper and mark scheme](https://www.ocr.org.uk/Images/697856-health-and-disease.pdf)
+- [F171 annotated assessment guide](https://www.ocr.org.uk/Images/722893-exploring-our-exams-a-guide-to-our-sample-assessment-material-f171.pdf)
+- [OCR Human Biology qualification/assessment page](https://www.ocr.org.uk/qualifications/cambridge-advanced-nationals/human-biology-level-3-h049-h149/assessment/)
+
+OCR's October 2026 amendment corrected **Tenia sp** to **Tinea sp** in F170. The learning resource distinguishes **tinea** (a type of fungal infection) from a fungal genus, avoiding the scientifically misleading wording in the specification.
+
+## What “high-yield” means here
+
+This is a **new qualification**. The public materials presently support three different types of evidence, which must not be conflated:
+
+1. **Mandatory/eligible specification content:** every relevant specification statement can be examined, even if it is absent from the sample paper. No subject should be excluded merely because it is not in the SAM.
+2. **Demonstrated assessment *format*:** OCR's SAM and annotated guide establish that diagrams, calculations, data interpretation, objective questions, short explanations and longer analysis/evaluation are part of the intended approach.
+3. **Illustrative sample-paper content:** the topics appearing in SAMs are good starting points for practice, but do not establish how frequently those same topics will be examined in future live series.
+
+The app therefore uses **“sample-informed”**, not “most frequently examined”, and does not claim item frequency estimates. The current revised content bank is still only a pilot.
+
+## Exam-level assessment design
+
+Both F170 and F171 have 60-mark examinations lasting 75 minutes. OCR's F171 assessment guide describes knowledge (PO1), application (PO2), and analysis/evaluation (PO3), and notes that examination questions sample all five topic areas. F171 includes a 6-mark **analyse** and a 9-mark **discuss** question using levels of response. For these longer questions the app supplies a model and a checklist for *self-assessment*, not purported automatic essay marks or an official OCR mark scheme.
+
+The default app journey is deliberately **choose examined unit → choose a mode/topic → answer → get precise feedback → revisit misconceptions**. The 'Learn' material is optional support rather than mandatory reading ahead of every question.
+
+## Current priority matrix
+
+| Unit/area | Illustrative sample-informed or transferable high-value skills | Good practice formats | Quality risks to check |
+|---|---|---|---|
+| **F170/1: Cells and tissues** | Labelling organelles; cell differentiation and stem cells; microscope capabilities; mitosis; magnification and tissue structure | SVG-labelled diagrams, image interpretation, short answer, calculation, sequence | Magnification unit conversions; confusion about interphase/S phase; oversimplified stem-cell claims |
+| **F170/2: Physiology** | Heart and organ structures; disease consequences; ECG/echocardiography; ventilation calculations and peak-flow technique | Diagram identification, paired technique selection, numerical application, system linkage | Conflating structural imaging with electrical testing; assuming physiological effects are identical in all patients |
+| **F170/3: Endocrine, nervous and reproductive systems** | Negative feedback and insulin; glucose testing; nerve/myelin physiology; reproductive anatomy and hormones | Causal sequencing, diagram-based questions, matching, calculation, contextual explanation | Type 1 vs type 2 diabetes; confusing myelin with axoplasm; not linking hormones to effects |
+| **F170/4: Microbiology** | Microbial structure; bacteria vs viruses vs fungi; culture controls; growth curves and logarithms; microbiota claims | Growth-curve diagrams, doubling/logarithm calculations, sorting, evidence evaluation | Log scale misreading, species/genus inaccuracies, overclaiming probiotic effectiveness |
+| **F171/1: Disease** | Signs vs symptoms; causes and consequences of disease; modifiable risks, COPD and antimicrobial selection | Comparison, medical case data, diagnostic definitions, short explanations | Signs ≠ symptoms; susceptibility vs causation |
+| **F171/2: Management/prevention** | Therapeutic categories; antibiotics and agar diffusion with controls; risk/benefit of supportive vs curative interventions | Diagram interpretation, experimental controls, scenario-based analysis and decision making | Antibiotic sensitivity does not guarantee best patient treatment; antibiotics belong in the management topic area |
+| **F171/3: Immunology** | Antibody specificity, vaccination and memory response, immunological investigations | Antibody-labelled SVG, sequence, applied interpretation, matching | Antigen-binding vs constant regions; immune response ≠ guaranteed sterilising immunity |
+| **F171/4: Diagnostics and monitoring** | Blood pressure and peak-flow measurement; assay interpretation; repeated/standardised measurements; means and limitations | Technique checks, calculation, graphs, error-spotting | Peak flow usually records highest suitable effort; screening is not a diagnosis |
+| **F171/5: Reporting, research and confidentiality** | Evidence appraisal, chart axes, medical records, data protection and care coordination; 9-mark discussion | Chart reading, benefit/risk evaluation, contextualised 9-mark discussion | A “list of pros and cons” is not reasoned discussion; personal information must be protected |
+
+This matrix describes **revision design priorities**, not predictions of topic occurrence or official marks by topic.
+
+## Question design and acceptance criteria
+
+Each question must have:
+- One unambiguous, scientifically defensible expected answer, or an explicit self-assessment checklist for genuinely open responses.
+- A clear specification unit and topic-area mapping, and a meaningful reason for selecting its format.
+- An explanation of *why* the answer works, not just a repetition of the answer.
+- A specific plausible misconception that explains why a distractor is wrong.
+- For numeracy, correct values, unit conversions, acceptable precision, and input handling that avoids crediting malformed responses.
+- For labelled diagrams, accessible descriptive text and an original, well-aligned illustration.
+- Alternatives/synonyms where precise meaning supports them; never unsafe fuzzy acceptance of biologically distinct terms.
+- For extended response, a reasonable model and criteria reflecting the demands of analyse/discuss, with no fictitious numeric automated award.
+
+Mixed sets deliberately sample across available question formats and topic areas. The feedback directs students toward missed areas; spaced flashcard history is kept separate from the AQA products.
+
+## Current bank and remaining coverage gaps
+
+As of this revision:
+- F170: **28 learning sections** across four topic areas, **112 recall cards**, and **51 varied challenge questions**.
+- F171: **19 varied challenge questions** across all five topic areas, including one original 6-mark analyse and one 9-mark discuss example. This is a **preview**, not an exhaustive revision course.
+- Formats: one-answer selection, select-two, ordering, matching, numerical calculation, short written recall, extended writing with self-check, and original schematic/graph interpretation.
+- The new F170 challenge bank does not yet include a dedicated varied-format question tagged to **1.2.1** or **2.1.1**. Existing F170 learning/review content still covers these concepts.
+- F171 immunology, data-rich interpretation and extended responses require substantial expansion.
+- The whole bank still needs an independent, statement-by-statement specification audit and live browser/visual/accessibility testing. A passing syntax or smoke test is not a scientific peer review.
+
+## Next expansion policy
+
+Prioritise **untested specification coverage**, **transferable exam skills**, **representative data and clinical contexts**, then add variety within high-impact areas. Do not overfit to sample-paper topics: OCR explicitly samples across its topic areas. Keep F172–F177 out of assessed coursework assistance; teaching their underlying *biological knowledge* is appropriate, but there must be no generation, marking or coaching of live NEA assignments. Do not republish copyrighted OCR question stems, diagrams or mark schemes verbatim.
+
+Avoid claiming any question is from a live OCR examination, is guaranteed to appear, or predicts future frequency.
