@@ -853,9 +853,9 @@ window.KeystoneHumanChallenges={
       "stem": "Which structural feature distinguishes many Gram-negative bacteria from Gram-positive bacteria?",
       "options": [
         "Outer membrane surrounding a thin peptidoglycan layer",
-        "Nucleus bounded by a membrane",
-        "Mitochondria in cytoplasm",
-        "Absence of ribosomes"
+        "A membrane-bound nucleus containing linear chromosomes",
+        "Numerous mitochondria in the cytoplasm producing ATP",
+        "A complete absence of cytoplasmic ribosomes in the cell"
       ],
       "correct": 0,
       "model": "Outer membrane plus relatively thin peptidoglycan",
@@ -1111,9 +1111,9 @@ window.KeystoneHumanChallenges={
       "stem": "Which example is a sign rather than a symptom?",
       "options": [
         "A measured blood pressure of 165/100 mmHg",
-        "Patient reports feeling dizzy",
-        "Patient reports nausea",
-        "Patient describes pain"
+        "A patient reporting persistent episodes of dizziness",
+        "A patient describing nausea after eating a meal",
+        "A patient reporting intermittent pain in their leg"
       ],
       "correct": 0,
       "model": "A measured raised blood pressure",
@@ -1152,9 +1152,9 @@ window.KeystoneHumanChallenges={
       "stem": "Why include a disc containing only solvent in an agar diffusion test?",
       "options": [
         "To check whether the solvent itself affects bacterial growth",
-        "To ensure every antibiotic works",
-        "To force the bacteria to grow faster",
-        "To identify bacterial DNA"
+        "To confirm every antibiotic is equally powerful in the culture",
+        "To accelerate bacterial growth around the antibiotic discs",
+        "To identify the resistance genes carried by each bacterium"
       ],
       "correct": 0,
       "model": "To check for an effect of the solvent",
@@ -1361,9 +1361,9 @@ window.KeystoneHumanChallenges={
       "stem": "Which process most directly selects for existing antibiotic-resistant bacteria during antibiotic exposure?",
       "options": [
         "Susceptible bacteria die while resistant variants survive and multiply",
-        "All bacteria deliberately mutate to become resistant",
-        "Antibiotics turn viruses into bacteria",
-        "Immune cells transfer resistance to microbes"
+        "Every bacterium deliberately mutates its DNA until it becomes resistant",
+        "Antibiotic exposure changes viruses into antibiotic-resistant bacterial cells",
+        "Immune cells transfer genes for antibiotic resistance into bacterial genomes"
       ],
       "correct": 0,
       "model": "Selection of resistant variants",
@@ -1446,17 +1446,17 @@ window.KeystoneHumanChallenges={
       "section": "5.2",
       "type": "single",
       "level": "apply",
-      "stem": "A bar chart comparing disease counts has a y-axis that begins well above zero. What should the reader check?",
+      "stem": "How could a bar chart's y-axis starting well above zero affect the visual interpretation of counts?",
       "options": [
-        "Whether the truncated axis exaggerates visual differences",
-        "Whether bars are colourful enough",
-        "Whether all bars are equally dark",
-        "Whether the title contains a logo"
+        "It may make differences between counts appear much larger than they are",
+        "It makes the smallest count on the chart become equal to zero",
+        "It converts the original observed counts into percentages",
+        "It removes random variation from the values used for each bar"
       ],
       "correct": 0,
-      "model": "Possible distortion from a truncated axis",
-      "explain": "Counts on a bar chart can look more different if the vertical axis does not start at zero.",
-      "misconception": "Check the numeric values and axes before interpreting patterns.",
+      "model": "A truncated y-axis can exaggerate the visual differences between counts.",
+      "explain": "The numerical values remain unchanged, but the displayed bar-height differences can be misleading.",
+      "misconception": "Bar charts representing counts are usually most interpretable when the vertical scale starts at zero.",
       "samAligned": false
     },
     {
@@ -1749,7 +1749,7 @@ window.KeystoneHumanChallenges={
       "level": "apply",
       "stem": "Which statement best describes how myelin improves impulse conduction?",
       "options": [
-        "Myelin insulates the axon, supporting rapid impulse propagation between nodes of Ranvier.",
+        "Myelin insulates axons so impulses travel rapidly between nodes of Ranvier.",
         "Myelin contains fluid that conducts impulses down the centre of the sheath."
       ],
       "correct": 0,
@@ -1805,7 +1805,7 @@ window.KeystoneHumanChallenges={
       "level": "apply",
       "stem": "Which clinical conclusion follows from a large zone of inhibition around an antibiotic disc?",
       "options": [
-        "Growth was inhibited under the test conditions; treatment choice requires further clinical evidence.",
+        "Growth was inhibited under test conditions; treating a patient needs more evidence.",
         "The antibiotic is guaranteed to cure infections caused by every strain of that species."
       ],
       "correct": 0,
