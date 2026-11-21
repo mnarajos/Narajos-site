@@ -1,0 +1,2159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bioenergetics — A-level</title>
+<style>
+  :root{
+    --bg:#eef1f4; --card:#ffffff; --ink:#13202b; --muted:#5b6f7e; --line:#d6dee5;
+    --photo:#2f9e5f; --resp:#c85a2b; --anaer:#8a5cc8;
+    --atp:#e0a021; --nad:#7b57d6; --fad:#159b8a; --co2:#7a8a96; --o2:#3d8fd6; --carbon:#38566a;
+    --radius:14px; --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;
+    display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+  header{background:var(--card);border-bottom:1px solid var(--line)}
+  .top{padding:9px 16px 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .brand .t{font-weight:800;font-size:17px;letter-spacing:-.02em}
+  .brand .s{font-size:10.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+  .toptabs{display:flex;gap:6px;margin-left:auto}
+  .toptab{border:1.5px solid var(--line);background:#f5f8f9;color:var(--ink);padding:8px 14px;border-radius:10px 10px 0 0;
+    cursor:pointer;font-size:13px;font-weight:700}
+  .toptab:hover{border-color:var(--photo)}
+  .toptab[data-top="photosynthesis"][aria-pressed="true"]{background:var(--photo);color:#fff;border-color:var(--photo)}
+  .toptab[data-top="aerobic"][aria-pressed="true"]{background:var(--resp);color:#fff;border-color:var(--resp)}
+  .toptab[data-top="anaerobic"][aria-pressed="true"]{background:var(--anaer);color:#fff;border-color:var(--anaer)}
+  .subtabs{padding:8px 16px;display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid var(--line);background:#f8fafb}
+  .subtab{border:1.5px solid var(--line);background:#fff;color:var(--muted);padding:6px 13px;border-radius:999px;
+    cursor:pointer;font-size:12.5px;font-weight:700}
+  .subtab:hover{border-color:var(--ink);color:var(--ink)}
+  .subtab[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+  main{flex:1;display:flex;min-height:0}
+  .stage{flex:1;display:flex;flex-direction:column;min-width:0;padding:11px 12px;gap:9px}
+  .vizwrap{flex:1;position:relative;border-radius:var(--radius);overflow:hidden;
+    box-shadow:0 6px 22px rgba(19,32,43,.22);background:#0f1e29;min-height:0}
+  canvas#viz{display:block;width:100%;height:100%}
+  .loc{position:absolute;top:12px;left:14px;display:flex;align-items:center;gap:8px;
+    background:rgba(11,26,36,.72);border:1px solid rgba(255,255,255,.14);border-radius:999px;
+    padding:6px 12px;font-size:12px;font-weight:700;color:#dce9f2}
+  .loc .pin{width:9px;height:9px;border-radius:50%}
+  .equation{position:absolute;bottom:12px;left:14px;right:14px;text-align:center;
+    font-size:12px;font-weight:600;color:#9fb8c9;font-family:var(--mono)}
+
+  .stepbar{display:flex;align-items:center;gap:11px;background:var(--card);border:1px solid var(--line);
+    border-radius:12px;padding:9px 13px}
+  .stepbar .num{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap}
+  .stepbar .desc{font-size:13.5px;font-weight:600;line-height:1.35}
+  .stepbar .turn{margin-left:auto;font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;
+    background:#eef2f5;border-radius:8px;padding:4px 9px}
+
+  aside{width:320px;flex:none;background:var(--card);border-left:1px solid var(--line);
+    padding:15px;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+  .sectlabel{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .tally{display:flex;flex-direction:column;gap:7px}
+  .trow{display:flex;align-items:center;gap:9px;font-size:13px}
+  .trow .ic{width:26px;height:26px;border-radius:7px;flex:none;display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:800;color:#fff}
+  .trow .nm{font-weight:600;flex:1}
+  .trow .ct{font-family:var(--mono);font-weight:700;font-size:16px;min-width:34px;text-align:right}
+  .trow.spent .ct{color:var(--muted)}
+  .trow.zero{opacity:.32}
+  .summary{background:#f6f9fb;border:1px solid var(--line);border-radius:12px;padding:11px 12px;
+    font-size:12.5px;line-height:1.5;color:#2a3d4a}
+  .summary b{color:var(--ink)}
+  .facts{display:flex;flex-direction:column;gap:7px}
+  .fact{display:flex;gap:8px;font-size:12.5px;line-height:1.4;color:#33475580}
+  .fact{color:#374956}
+  .fact .b{color:var(--photo);font-weight:800;flex:none}
+  .btn-row{display:flex;gap:8px}
+  button.act{flex:1;border:0;border-radius:10px;padding:11px;font-size:14px;font-weight:700;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:7px}
+  button.act.primary{background:var(--ink);color:#fff}
+  button.act.primary:hover{filter:brightness(1.15)}
+  button.act.ghost{background:#eef2f5;color:var(--ink);border:1px solid var(--line)}
+  button.act.ghost:hover{border-color:var(--ink)}
+  .ctrl .head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .ctrl .head label{font-size:13px;font-weight:700}
+  .ctrl .head .read{font-family:var(--mono);font-size:13px;font-weight:700}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:7px;border-radius:5px;background:#dde5ec;outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;
+    background:var(--ink);border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.28);cursor:pointer}
+  input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--ink);border:3px solid #fff;cursor:pointer}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media (max-width:1000px){
+    main{flex-direction:column;overflow-y:auto}
+    aside{width:auto;border-left:0;border-top:1px solid var(--line)}
+    .vizwrap{min-height:340px}
+    .toptabs{margin-left:0;width:100%}
+  }
+</style>
+</head>
+<body>
+<a href="/teaching/simulations/" style="display:block;padding:7px 16px;font:600 12px system-ui;color:#24323e;background:#faf9f6;text-decoration:none;position:relative;z-index:20">← All simulations</a>
+<header>
+  <div class="top">
+    <div class="brand">
+      <div class="t">Bioenergetics</div>
+      <div class="s">Photosynthesis &amp; respiration — AQA 3.5</div>
+    </div>
+    <div class="toptabs" role="group" aria-label="Choose a process">
+      <button class="toptab" data-top="photosynthesis" aria-pressed="true">🌱 Photosynthesis</button>
+      <button class="toptab" data-top="aerobic" aria-pressed="false">🔥 Aerobic respiration</button>
+      <button class="toptab" data-top="anaerobic" aria-pressed="false">💤 Anaerobic respiration</button>
+    </div>
+  </div>
+  <div class="subtabs" id="subtabs"></div>
+</header>
+
+<main>
+  <section class="stage">
+    <div class="vizwrap">
+      <canvas id="viz"></canvas>
+      <div class="loc" id="loc"><span class="pin"></span><span id="loc-txt"></span></div>
+      <div class="equation" id="equation"></div>
+    </div>
+    <div class="stepbar">
+      <span class="num" id="step-num"></span>
+      <span class="desc" id="step-desc"></span>
+      <span class="turn" id="turn-note"></span>
+    </div>
+  </section>
+
+  <aside>
+    <div class="btn-row">
+      <button class="act primary" id="btn-run"><span id="run-ic">▶</span><span id="run-tx">Play</span></button>
+      <button class="act ghost" id="btn-step">⏭ Step</button>
+      <button class="act ghost" id="btn-reset" title="Back to the start">↺</button>
+    </div>
+    <button class="act" id="btn-light" style="display:none;background:#f0c030;color:#3a2e00">☀ Shine light</button>
+    <button class="act" id="btn-dark" style="display:none;background:#2c3a4a;color:#dbe7f0">🌙 Switch to dark</button>
+    <button class="act" id="btn-co2" style="display:none;background:#3a3126;color:#f0d7b6">🚫 Remove CO₂</button>
+    <button class="act" id="btn-glyall" style="display:none;background:#26323a;color:#cfe2ee">🔬 All substrates in position</button>
+    <button class="act" id="btn-noo2" style="display:none;background:#26323a;color:#cfe2ee">🚫 No oxygen</button>
+    <button class="act" id="btn-cn" style="display:none;background:#3a2222;color:#f5b8b8">☠ Add cyanide</button>
+    <div class="ctrl" id="wrap-glytime" style="display:none">
+      <div class="head"><label for="s-glytime">Timeline</label><span class="read" id="r-glytime">0%</span></div>
+      <input type="range" id="s-glytime" min="0" max="1000" value="0" step="1">
+    </div>
+    <div class="ctrl">
+      <div class="head"><label for="s-speed">Speed</label><span class="read" id="r-speed">1.0×</span></div>
+      <input type="range" id="s-speed" min="20" max="220" value="100" step="10">
+    </div>
+    <div class="ctrl" id="wrap-light" style="display:none">
+      <div class="head"><label for="s-light">Light intensity</label><span class="read" id="r-light">50%</span></div>
+      <input type="range" id="s-light" min="10" max="120" value="50" step="5">
+    </div>
+
+    <div>
+      <div class="sectlabel" id="tally-label">Products so far</div>
+      <div class="tally" id="tally"></div>
+    </div>
+
+    <div>
+      <div class="sectlabel">The bottom line</div>
+      <div class="summary" id="summary"></div>
+    </div>
+
+    <div>
+      <div class="sectlabel">Key points</div>
+      <div class="facts" id="facts"></div>
+    </div>
+  </aside>
+</main>
+
+<script>
+"use strict";
+/* =======================================================================
+   BIOENERGETICS — A-level (AQA 3.5). Self-contained, offline, single file.
+   Nested tabs: Photosynthesis (LDR, Calvin) · Aerobic respiration
+   (glycolysis, link, Krebs, oxidative phosphorylation) · Anaerobic
+   respiration (animals — lactate; plants & fungi — ethanol).
+   Pathway stages animate as a guided walkthrough with a running tally;
+   the two membrane stages animate chemiosmosis (shared mechanism).
+   ======================================================================= */
+
+const cv=document.getElementById("viz"), ctx=cv.getContext("2d");
+let DPR=1, VW=940, VH=560, VS=1, OX=0, OY=0, CW=940, CH=560;
+function size(){
+  DPR=Math.min(window.devicePixelRatio||1,2);
+  const r=cv.parentElement.getBoundingClientRect();
+  CW=Math.max(320,r.width); CH=Math.max(260,r.height);
+  cv.width=CW*DPR; cv.height=CH*DPR; cv.style.width=CW+"px"; cv.style.height=CH+"px";
+  VS=Math.min(CW/VW,CH/VH); OX=(CW-VW*VS)/2; OY=(CH-VH*VS)/2;
+}
+window.addEventListener("resize",size);
+function enter(){ctx.setTransform(DPR,0,0,DPR,0,0);ctx.clearRect(0,0,CW,CH);
+  const g=ctx.createLinearGradient(0,0,0,CH);g.addColorStop(0,"#14252f");g.addColorStop(1,"#0d1a24");
+  ctx.fillStyle=g;ctx.fillRect(0,0,CW,CH);ctx.translate(OX,OY);ctx.scale(VS,VS);}
+if(!CanvasRenderingContext2D.prototype.roundRect){
+  CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){this.beginPath();this.moveTo(x+r,y);
+    this.arcTo(x+w,y,x+w,y+h,r);this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);return this;};
+}
+
+/* colours for molecule types */
+const COL={atp:"#e0a021",nad:"#7b57d6",nadp:"#7b57d6",fad:"#159b8a",co2:"#7a8a96",o2:"#3d8fd6",
+  h2o:"#3d8fd6",carbon:"#5c93b0",lac:"#c05a8a",eth:"#c07a2b",gluc:"#e0a021"};
+
+/* ---------- drawing helpers ---------- */
+function molBox(x,y,w,h,name,carbons,o){
+  o=o||{};
+  ctx.save();
+  ctx.fillStyle=o.hl?"#ffffff":(o.fill||"#e9f0f5");
+  ctx.strokeStyle=o.hl?(o.accent||"#e0a021"):"#8aa6b6";
+  ctx.lineWidth=o.hl?3:1.6;
+  ctx.beginPath();ctx.roundRect(x-w/2,y-h/2,w,h,11);ctx.fill();ctx.stroke();
+  ctx.fillStyle="#12303f";ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.font="700 "+(o.fs||14)+"px system-ui,sans-serif";
+  const ty = carbons!=null ? y-9 : y;
+  wrapText(name,x,ty,w-12,15);
+  if(carbons!=null) drawCarbons(x, y+13, carbons);
+  ctx.restore();
+}
+function wrapText(t,x,y,maxw,lh){
+  const words=t.split(" ");let line="",yy=y,lines=[];
+  for(const wd of words){const test=line?line+" "+wd:wd;
+    if(ctx.measureText(test).width>maxw&&line){lines.push(line);line=wd;}else line=test;}
+  lines.push(line);
+  const start=y-(lines.length-1)*lh/2;
+  lines.forEach((l,i)=>ctx.fillText(l,x,start+i*lh));
+}
+function drawCarbons(cx,cy,n){
+  const r=4.2, gap=11, tot=(n-1)*gap, x0=cx-tot/2;
+  for(let i=0;i<n;i++){ctx.beginPath();ctx.arc(x0+i*gap,cy,r,0,6.29);ctx.fillStyle=COL.carbon;ctx.fill();
+    ctx.strokeStyle="#2c4a5c";ctx.lineWidth=1;ctx.stroke();}
+}
+function arrow(x1,y1,x2,y2,o){
+  o=o||{};ctx.save();
+  const col=o.hl?(o.col||"#f0c030"):"#4a6272";
+  ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=o.hl?3.5:2.2;ctx.lineCap="round";
+  if(o.hl&&o.flow!=null){ctx.setLineDash([9,7]);ctx.lineDashOffset=-o.flow*32;}
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.setLineDash([]);
+  const a=Math.atan2(y2-y1,x2-x1),s=o.hl?12:9;
+  ctx.beginPath();ctx.moveTo(x2,y2);
+  ctx.lineTo(x2-Math.cos(a-0.5)*s,y2-Math.sin(a-0.5)*s);
+  ctx.lineTo(x2-Math.cos(a+0.5)*s,y2-Math.sin(a+0.5)*s);ctx.closePath();ctx.fill();
+  ctx.restore();
+}
+/* small labelled token that flies off toward the tally when a step fires */
+function sideLabel(x,y,txt,col,align){
+  ctx.save();ctx.font="700 12px system-ui,sans-serif";ctx.textBaseline="middle";
+  const w=ctx.measureText(txt).width+16;
+  align=align||"center";
+  const bx = align==="left"?x : align==="right"?x-w : x-w/2;
+  ctx.fillStyle=col;ctx.beginPath();ctx.roundRect(bx,y-11,w,22,8);ctx.fill();
+  ctx.fillStyle="#fff";ctx.textAlign="center";ctx.fillText(txt,bx+w/2,y+0.5);
+  ctx.restore();
+}
+function inOut(x,y,ins,outs,hl){ // ins consumed (red), outs produced (green), stacked labels near an arrow
+  ctx.save();ctx.font="700 11.5px system-ui,sans-serif";ctx.textBaseline="middle";ctx.textAlign="center";
+  let yy=y;
+  for(const t of ins){ const w=ctx.measureText(t).width+14;
+    ctx.globalAlpha=hl?1:.5;ctx.fillStyle="#d64c5a";ctx.beginPath();ctx.roundRect(x-w/2,yy-9,w,18,7);ctx.fill();
+    ctx.fillStyle="#fff";ctx.fillText(t,x,yy+0.5);yy-=21;}
+  yy=y+ (ins.length?21:0);
+  for(const t of outs){ const w=ctx.measureText(t).width+14;
+    ctx.globalAlpha=hl?1:.5;ctx.fillStyle="#2f9e5f";ctx.beginPath();ctx.roundRect(x-w/2,yy-9,w,18,7);ctx.fill();
+    ctx.fillStyle="#fff";ctx.fillText(t,x,yy+0.5);yy+=21;}
+  ctx.restore();
+}
+function title(txt,sub){
+  ctx.save();ctx.textAlign="center";
+  ctx.fillStyle="#e7f1f8";ctx.font="800 20px system-ui,sans-serif";ctx.fillText(txt,VW/2,40);
+  if(sub){ctx.fillStyle="#7fa0b4";ctx.font="600 12.5px system-ui,sans-serif";ctx.fillText(sub,VW/2,62);}
+  ctx.restore();
+}
+
+/* =======================================================================
+   STAGE DEFINITIONS
+   Each stage: {top, loc, locColor, equation, summary, facts[],
+     type:'path'|'membrane', steps:[{desc, yield:{}}], turnNote, draw(f)}
+   'yield' keys: atp,nad,nadp,fad,co2,o2,h2o,acetyl,pyr,lactate,ethanol,glucose,tp
+   Positive = produced; negative = used. 'spent' keys shown as "used".
+   ======================================================================= */
+const STAGES={};
+
+/* ---- GLYCOLYSIS ---- */
+STAGES.glycolysis={
+  top:"aerobic", loc:"Cytosol", locColor:"#c85a2b", equation:"",
+  summary:"<b>Net 2 ATP</b>, <b>2 reduced NAD</b> and <b>2 pyruvate</b> per glucose. 2 ATP are used to phosphorylate the sugar and 4 are made, so the net gain is 2. Happens in the cytosol and needs no oxygen \u2014 the shared first stage of aerobic <em>and</em> anaerobic respiration.",
+  facts:["Phosphorylation of glucose to glucose phosphate, using ATP.",
+    "A second phosphorylation gives an unstable 6C sugar with two phosphates.",
+    "This splits to produce two triose phosphate molecules.",
+    "Oxidation of triose phosphate to pyruvate: net gain of ATP and reduced NAD."],
+  type:"glyco"
+};
+
+/* ---- LINK REACTION ---- */
+STAGES.link={
+  top:"aerobic", loc:"Mitochondrial matrix", locColor:"#c85a2b", equation:"",
+  summary:"Per pyruvate: <b>1 CO\u2082</b>, <b>1 reduced NAD</b> and <b>1 acetyl coenzyme A</b>. <b>No ATP</b> is made. It runs <b>twice per glucose</b>, because glycolysis produced two pyruvate, so per glucose: 2 CO\u2082, 2 reduced NAD and 2 acetyl CoA.",
+  facts:["Decarboxylation: a carbon is removed from pyruvate as CO\u2082.",
+    "Dehydrogenation: hydrogen passes to NAD \u2192 reduced NAD.",
+    "The 2C acetate joins coenzyme A to form acetyl coenzyme A.",
+    "No ATP is produced; it links glycolysis to the Krebs cycle."],
+  type:"linkr"
+};
+
+/* ---- KREBS CYCLE ---- */
+STAGES.krebs={
+  top:"aerobic", loc:"Mitochondrial matrix", locColor:"#c85a2b", equation:"",
+  summary:"Per turn: <b>2 CO\u2082</b>, <b>3 reduced NAD</b> and <b>1 ATP</b>. Acetyl CoA (2C) joins oxaloacetate (4C) to make citrate (6C); two decarboxylations and three oxidations return it to 4C, <b>regenerating oxaloacetate</b>. The cycle turns <b>twice per glucose</b>.",
+  facts:["Acetyl CoA (2C) + oxaloacetate (4C) \u2192 citrate (6C); coenzyme A is released and reused.",
+    "Two decarboxylations release 2 CO\u2082 per turn (6C \u2192 5C \u2192 4C).",
+    "Three oxidations load 3 reduced NAD per turn.",
+    "1 ATP is made by substrate-level phosphorylation; oxaloacetate is regenerated."],
+  type:"krebs"
+};
+
+/* ---- OXIDATIVE PHOSPHORYLATION (membrane) ---- */
+STAGES.oxphos={
+  top:"aerobic", loc:"Inner mitochondrial membrane (cristae)", locColor:"#c85a2b",
+  equation:"reduced NAD / FAD → e⁻ → H⁺ gradient → ATP    ·    O₂ + e⁻ + H⁺ → H₂O",
+  summary:"Reduced NAD and FAD deliver electrons to the electron transport chain. Their energy pumps <b>H⁺</b> into the intermembrane space; H⁺ flow back through <b>ATP synthase</b> (chemiosmosis) making most of the cell's ATP. <b>Oxygen is the final electron acceptor</b>, forming water. Theoretical yield ≈ 38 ATP per glucose (AQA accepts 30–32).",
+  facts:["Reduced NAD is oxidised to NAD, releasing electrons and H⁺.","Complexes I, III and IV pump H⁺ into the intermembrane space.","Chemiosmosis: H⁺ diffuse back through ATP synthase → ATP.","O₂ + 4e⁻ + 4H⁺ → 2H₂O at complex IV. Block it and the whole chain stops."],
+  type:"chemi"
+};
+
+/* ---- LIGHT-DEPENDENT REACTION (membrane) ---- */
+STAGES.ldr={
+  top:"photosynthesis", loc:"Thylakoid membrane", locColor:"#2f9e5f",
+  equation:"light → e⁻ (from chlorophyll)   ·   2H₂O → 4H⁺ + 4e⁻ + O₂   ·   H⁺ gradient → ATP   ·   NADP → reduced NADP",
+  summary:"Light excites and ejects electrons from chlorophyll (<b>photoionisation</b>). Electrons pass along the chain, pumping <b>H⁺</b> into the thylakoid space; H⁺ flow back through ATP synthase → <b>ATP</b>. <b>Photolysis of water</b> replaces those electrons and releases H⁺ and <b>O₂</b>. Electrons and H⁺ reduce NADP → <b>reduced NADP</b>.",
+  facts:["Photoionisation: light ejects electrons from chlorophyll in the photosystems.","Photolysis of water gives electrons, H⁺ and O₂ (a by-product).","Carriers pump H⁺ into the thylakoid lumen; H⁺ flow back through ATP synthase.","NADP is the final electron acceptor → reduced NADP diffuses into the stroma."],
+  type:"chemi"
+};
+
+/* ---- CALVIN CYCLE ---- */
+STAGES.calvin={
+  top:"photosynthesis", loc:"Stroma of the chloroplast", locColor:"#2f9e5f",
+  equation:"",
+  summary:"Per turn: 1 CO\u2082 is fixed, using <b>3 ATP</b> and <b>2 reduced NADP</b> from the light-dependent reaction. <b>6 turns make one glucose</b> (18 ATP, 12 reduced NADP). 1 in 6 triose phosphate leaves the cycle; the rest regenerate RuBP. In the stroma.",
+  facts:["Fixation: CO\u2082 + RuBP (5C) \u2192 2 GP (3C), catalysed by rubisco.",
+    "Reduction: each GP \u2192 TP using 1 ATP and 1 reduced NADP.",
+    "Regeneration: 5 TP + 3 ATP \u2192 3 RuBP, so the cycle continues.",
+    "2 TP leave per glucose \u2014 that is 1 in every 6 made."],
+  type:"calvin"
+};
+
+/* ---- ANAEROBIC: ANIMALS (lactate) ---- */
+STAGES["anaer-animal"]={
+  top:"anaerobic", loc:"Cytosol (no oxygen)", locColor:"#8a5cc8", equation:"",
+  summary:"Only <b>glycolysis</b> makes ATP: <b>net 2 ATP per glucose</b>. Pyruvate accepts hydrogen from reduced NAD to form <b>lactate</b>, which <b>regenerates oxidised NAD</b> so glycolysis can keep running. The reaction is <b>reversible</b> \u2014 lactate is carried to the liver and converted back to pyruvate when oxygen is available.",
+  facts:["No O\u2082 \u2192 the electron transport chain cannot reoxidise reduced NAD.",
+    "Pyruvate is the hydrogen acceptor, becoming lactate.",
+    "This regenerates NAD, so glycolysis can continue.",
+    "Only 2 ATP per glucose \u2014 far less than aerobic respiration."],
+  type:"anaer", variant:"animal"
+};
+
+STAGES["anaer-plant"]={
+  top:"anaerobic", loc:"Cytosol (no oxygen)", locColor:"#8a5cc8", equation:"",
+  summary:"<b>Net 2 ATP per glucose</b> from glycolysis only. Pyruvate is decarboxylated to <b>ethanal</b>, releasing CO\u2082; ethanal then accepts hydrogen from reduced NAD to form <b>ethanol</b>, <b>regenerating oxidised NAD</b>. This reaction is <b>irreversible</b>.",
+  facts:["No O\u2082 \u2192 reduced NAD must be reoxidised without the chain.",
+    "Pyruvate is decarboxylated to ethanal, releasing CO\u2082.",
+    "Ethanal accepts hydrogen \u2192 ethanol, regenerating NAD.",
+    "Irreversible \u2014 the CO\u2082 has been lost."],
+  type:"anaer", variant:"plant"
+};
+
+/* ---- MEMBRANE renderer (LDR & oxidative phosphorylation) ---- */
+/* ======================================================================
+   SHARED CHEMIOSMOSIS ENGINE — used by BOTH the light-dependent reaction
+   and oxidative phosphorylation, so the two stages share shapes, symbols
+   and colour coding. Pale = oxidised/spent carrier; vivid purple = the
+   energy-rich products.
+   ====================================================================== */
+const LG={ topY:78, memTop:236, memY:286, memBot:336, botY:506,
+  ovalRx:34, ovalRy:52,
+  carriers:[{x:300,y:260},{x:356,y:266},{x:412,y:272}],
+  enz:{x:590,y:294,w:52,h:72}, pocket:{x:590,y:312},
+  synth:{x:748,y:286}, rotorY:390, rayTop:90 };
+const PALE="#cfc6e6", VIVID="#4c1d95", ATPV="#7c3aed", PROT="#e0637a";
+const RAY_TILT=17*Math.PI/180;
+const CH_CFG={
+  ldr:{ title:"The light-dependent reaction", sub:"Photophosphorylation and photolysis",
+    topLabel:"THYLAKOID LUMEN", botLabel:"STROMA", light:true, memLabel:["thylakoid","membrane"],
+    ovals:[{x:214,lab:"PSII"},{x:474,lab:"PSI"}], showCarriers:true, enzX:590,
+    pumpX:[300,356,412],
+    epath:[[176,404],[214,344],[214,240],[300,260],[356,266],[412,272],[474,280],[524,248],[590,300]],
+    enzLab:["NADP","reductase"], subName:"NADP", prodName:"reduced NADP",
+    needE:1, needH:1, outN:1, termH:"high", donorE:1,
+    waters:[{x:156,y:410},{x:196,y:418}],
+    tally:[["atp","ATP made",ATPV],["term","reduced NADP made",VIVID],["byp","O\u2082 released","#3d8fd6"],["lum","H\u207a in lumen",PROT]] },
+  oxphos:{ title:"Oxidative phosphorylation", sub:"Inner mitochondrial membrane (cristae) \u00b7 oxidative phosphorylation \u00b7 chemiosmosis",
+    topLabel:"INTERMEMBRANE SPACE", botLabel:"MATRIX", light:false, memLabel:["inner","membrane"],
+    ovals:[{x:214,lab:"I"},{x:356,lab:"II"},{x:498,lab:"III"}], showCarriers:false, enzX:640,
+    pumpX:[214,498,640],
+    epath:[[214,244],[356,258],[498,272],[640,290]],
+    enzLab:["IV"], subName:"O\u2082", prodName:"H\u2082O",
+    needE:4, needH:4, outN:2, termH:"low", donorE:2,
+    donors:[{kind:"reduced NAD",at:0},{kind:"reduced NAD",at:1}],
+    tally:[["atp","ATP made",ATPV],["term","H\u2082O made","#3d8fd6"],["byp","NAD reoxidised",PALE],["lum","H\u207a in intermembrane space",PROT]] }
+};
+function makeChemi(cfg){ return { electrons:[], protons:[], byp:[], curls:[], products:[], donorEv:[],
+  waters:(cfg.waters||[]).map(w=>({x:w.x,y:w.y,gone:false,regen:0})), stuck:0, backlog:0, flow:0, pumpCd:[0,0,0],
+  split:null, sub:null, atp:null, flash:0, fireTimer:0, pullTimer:0, redPull:0, darkAcc:{n:0,a:0,t:0},
+  totals:{atp:0,term:0,byp:0} }; }
+const CHEMI={};
+function chemiBlocked(cfg){ return !cfg.light && (S.noO2 || S.cyanide); }
+function chemiOf(){ const k=S.sub; if(!CHEMI[k]) CHEMI[k]=makeChemi(CH_CFG[k]); return CHEMI[k]; }
+function resetChemi(k){ CHEMI[k]=makeChemi(CH_CFG[k]); }
+function newSub(cfg){ return {state:"approach", x:LG.enz.x-76, y:LG.botY-74, charge:0, e:0, h:0, t:0}; }
+function newATP(){ return {phase:"gather", adp:{x:LG.synth.x-36,y:LG.botY-44}, pi:{x:LG.synth.x-8,y:LG.botY-18},
+  count:0, rotor:0, rotorTarget:0, t:0 }; }
+function hexRgb(h){h=h.replace("#","");return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];}
+function lerpCol(c1,c2,t){const a=hexRgb(c1),b=hexRgb(c2);return "rgb("+Math.round(a[0]+(b[0]-a[0])*t)+","+Math.round(a[1]+(b[1]-a[1])*t)+","+Math.round(a[2]+(b[2]-a[2])*t)+")";}
+function alongPath(path,t){ t=Math.max(0,Math.min(1,t));
+  const seg=t*(path.length-1),i=Math.min(Math.floor(seg),path.length-2),fr=seg-i;
+  return [path[i][0]+(path[i+1][0]-path[i][0])*fr, path[i][1]+(path[i+1][1]-path[i][1])*fr]; }
+/* --- trigger: light (LDR) or arrival of a reduced coenzyme (oxphos) --- */
+function firePhotolysis(){
+  const cfg=CH_CFG[S.sub], C=chemiOf(); if(!cfg) return;
+  if(cfg.light){
+    if(S.dark) return;
+    C.flash=1;
+    if(C.split) return;                       // one split at a time so it stays readable
+    let ws=C.waters.filter(w=>!w.gone); if(ws.length<2){ C.waters.forEach(w=>{w.gone=false;}); ws=C.waters; }
+    for(const w of ws) w.gone=true;
+    const mx=(ws[0].x+ws[1].x)/2, my=(ws[0].y+ws[1].y)/2;
+    C.split={t:0, x:mx, y:my, released:false};   // slow, visible 2H2O -> 4H+ + 4e- + O2
+  } else {
+    if(chemiBlocked(cfg) && C.electrons.length>=6) return;   // carriers all reduced: nothing more can be oxidised
+    const d=cfg.donors[Math.floor(Math.random()*cfg.donors.length)];
+    C.donorEv.push({kind:d.kind, at:d.at, phase:"approach",
+      x:ovalAt(cfg.ovals[d.at].x).x-96, y:LG.botY-56, t:0});
+  }
+}
+function updateChemi(dt){
+  const cfg=CH_CFG[S.sub], C=chemiOf(), sp=S.speed, LI=S.lightI;
+  LG.enz.x=cfg.enzX; LG.pocket.x=cfg.enzX;
+  if(!cfg.light && !chemiBlocked(cfg)) C.flow=(C.flow+dt*sp*0.10)%1;
+  if(cfg.light){ if(S.dark) C.flash=0; else if(C.flash>0) C.flash=Math.max(0,C.flash-dt*0.30);
+    // In the dark the LDR consumes nothing, so its substrates pile up in the stroma
+    const D2=C.darkAcc; D2.t-=dt*sp;
+    if(D2.t<=0){ D2.t=S.dark?1.3:0.7;
+      if(S.dark){ D2.n=Math.min(5,D2.n+1); D2.a=Math.min(5,D2.a+1); }
+      else { D2.n=Math.max(0,D2.n-1); D2.a=Math.max(0,D2.a-1); } } }
+  if(S.playing){ C.fireTimer-=dt*sp;
+    if(C.fireTimer<=0){ firePhotolysis(); C.fireTimer = cfg.light ? 1.9/Math.max(0.15,LI) : 1.5; } }
+  // free H+ always present on the low-concentration side, ready to be pumped
+  while(C.protons.filter(q=>q.state==="low").length<7)
+    C.protons.push({state:"low",x:120+Math.random()*420,y:LG.memBot+44+Math.random()*46,dr:Math.random()*6.28});
+  // ---- slow photolysis: water visibly becomes 4H+ + 4e- + O2 ----
+  if(C.split){ const S2=C.split; S2.t+=dt*sp*0.5;                  // ~2 s
+    if(S2.t>=1 && !S2.released){ S2.released=true;
+      for(let i=0;i<4;i++) C.protons.push({state:"low",x:S2.x-30+i*20,y:S2.y+26,dr:Math.random()*6.28});
+      for(let i=0;i<4;i++) C.electrons.push({t:-0.10*i,pumped:cfg.pumpX.map(()=>false),from:0});
+      C.byp.push({x:S2.x,y:S2.y+4,vx:-0.9,vy:0.45,life:2.6,label:"O\u2082",col:"#3d8fd6"}); C.totals.byp++;
+      C.split=null; for(const w of C.waters){ w.gone=true; w.regen=1.4; } } }
+  for(const w of C.waters){ if(w.gone && w.regen>0){ w.regen-=dt*sp; if(w.regen<=0) w.gone=false; } }
+  // ---- oxphos donors: reduced coenzyme docks, gives up electrons, leaves pale ----
+  for(const d of C.donorEv){ d.t+=dt*sp;
+    const ov=ovalAt(cfg.ovals[d.at].x);
+    if(d.phase==="approach"){ const tx=ov.x, ty=LG.memBot+2;    // right up against the complex
+      d.x+=(tx-d.x)*Math.min(1,dt*sp*2.4); d.y+=(ty-d.y)*Math.min(1,dt*sp*2.4);
+      if(Math.hypot(tx-d.x,ty-d.y)<6){ d.phase="dock"; d.t=0; C.curls.push({x:ov.x+26,y:LG.memBot+8,age:0}); } }
+    else if(d.phase==="dock"){ if(d.t>0.5){ d.phase="leave"; d.t=0;
+        for(let k=0;k<(cfg.donorE||1);k++)
+          C.electrons.push({t:d.at/(cfg.epath.length-1)-0.02-k*0.09, pumped:cfg.pumpX.map(()=>false), from:d.at});
+        C.protons.push({state:"low",x:ov.x+20,y:LG.memBot+46,dr:Math.random()*6.28});
+        C.totals.byp++; } }
+    else if(d.phase==="leave"){ d.x-=dt*sp*76; d.y+=dt*sp*20; } }   // heads back out to the Krebs cycle
+  C.donorEv=C.donorEv.filter(d=>d.x>-30);
+  // ---- electrons ----
+  const stalled=chemiBlocked(cfg);
+  for(let i=0;i<C.pumpCd.length;i++) C.pumpCd[i]-=dt*sp;
+  for(const e of C.electrons){
+    if(stalled) continue;                       // no complete circuit -> no electron flow anywhere
+    e.t += dt*sp*0.24; if(e.t<=0) continue;
+    const pos=alongPath(cfg.epath,e.t);
+    if(cfg.light) for(let ci=0;ci<cfg.pumpX.length;ci++){
+      if(!e.pumped[ci] && pos[0]>=cfg.pumpX[ci] && pos[1]<LG.memBot){ e.pumped[ci]=true;
+        const free=C.protons.find(q=>q.state==="low");
+        if(free){ free.state="toPump"; free.px=cfg.pumpX[ci]; free.ty=LG.memTop-24-Math.random()*46;
+          C.curls.push({x:cfg.pumpX[ci]+22,y:LG.memY-24,age:0}); } } }
+    if(e.t>=1 && !e.done){ e.done=true;
+      if(C.sub && C.sub.state==="bound") C.sub.e++; } }
+  C.electrons=C.electrons.filter(e=>e.t<1.05);
+  // ---- protons ----
+  C.pullTimer-=dt*sp;
+  const nHigh=C.protons.filter(q=>q.state==="high").length;
+  const nLow=C.protons.filter(q=>q.state==="low").length;
+  const grad=nHigh-nLow;                               // ATP synthase is PASSIVE: no gradient, no flow
+  const flowRate=105+Math.min(150,Math.max(0,grad)*2.6);
+  const maxTransit=grad<=0?0:Math.min(6, 1+Math.floor(grad/9));
+  let transit=C.protons.filter(q=>q.state==="through"||q.state==="entering").length;
+  for(const p of C.protons){
+    if(p.state==="low"){                                  // drifts about the matrix, just like the IMS
+      p.age=(p.age||0)+dt*sp;
+      if(p.age>5.9){ p.dead=true; continue; }              // used up making water elsewhere
+      if(p.hd==null){ p.hd=Math.random()*6.283; p.spd=95+Math.random()*55; }
+      p.hd += (Math.random()-0.5)*2.0*dt*sp;
+      p.x += Math.cos(p.hd)*p.spd*dt*sp; p.y += Math.sin(p.hd)*p.spd*dt*sp;
+      const xLo=cfg.light?110:118, xHi=cfg.light?470:834;
+      if(p.x<xLo){p.x=xLo;p.hd=Math.PI-p.hd;} if(p.x>xHi){p.x=xHi;p.hd=Math.PI-p.hd;}
+      if(p.y<LG.memBot+26){p.y=LG.memBot+26;p.hd=-p.hd;} if(p.y>LG.botY-28){p.y=LG.botY-28;p.hd=-p.hd;}
+      // reaching a pumping complex is what gets it pumped, and only while electrons are flowing
+      if(!cfg.light && !stalled && C.electrons.length>0){
+        for(let ci=0;ci<cfg.pumpX.length;ci++){
+          if(Math.abs(p.x-cfg.pumpX[ci])<34 && p.y<LG.memBot+86 && C.pumpCd[ci]<=0){
+            p.state="toPump"; p.px=cfg.pumpX[ci]; p.ty=LG.memTop-24-Math.random()*46;
+            C.pumpCd[ci]=0.5; C.curls.push({x:cfg.pumpX[ci]+22,y:LG.memY-24,age:0});
+            for(const e of C.electrons) e.t+=0.02;        // pumping is coupled to electron movement
+            break; } } } }
+    else if(p.state==="toPump"){                       // slide along the matrix to sit under the complex
+      p.x+=(p.px-p.x)*Math.min(1,dt*sp*3.4); p.y+=((LG.memBot+18)-p.y)*Math.min(1,dt*sp*3.4);
+      if(Math.abs(p.x-p.px)<3 && Math.abs(p.y-(LG.memBot+18))<4){ p.state="pumping"; p.x=p.px; } }
+    else if(p.state==="pumping"){                       // then straight UP through the complex
+      p.x=p.px; p.y+=(p.ty-p.y)*Math.min(1,dt*sp*3.0);
+      if(Math.abs(p.y-p.ty)<5){ p.state="high"; p.hd=Math.random()*6.283; p.spd=95+Math.random()*55; } }
+    else if(p.state==="high"){
+      p.hd += (Math.random()-0.5)*2.0*dt*sp;
+      p.x += Math.cos(p.hd)*p.spd*dt*sp; p.y += Math.sin(p.hd)*p.spd*dt*sp;
+      const d=LG.synth.x-p.x, ad=Math.abs(d);
+      if(ad<330) p.x += Math.sign(d)*((330-ad)/330)*58*dt*sp;
+      if(p.x<108){p.x=108;p.hd=Math.PI-p.hd;} if(p.x>832){p.x=832;p.hd=Math.PI-p.hd;}
+      if(p.y<96){p.y=96;p.hd=-p.hd;} if(p.y>LG.memTop-14){p.y=LG.memTop-14;p.hd=-p.hd;}
+      if(grad>0 && ad<46 && transit<maxTransit && C.pullTimer<=0){ p.state="entering"; transit++;
+        C.pullTimer=Math.max(0.20, 0.70-grad*0.013); } }
+    else if(p.state==="entering"){ p.x+=(LG.synth.x-p.x)*Math.min(1,dt*sp*6.0); p.y+=((LG.memTop-6)-p.y)*Math.min(1,dt*sp*6.0);
+      if(Math.abs(p.x-LG.synth.x)<3&&Math.abs(p.y-(LG.memTop-6))<4){ p.state="through"; p.x=LG.synth.x; } }
+    else if(p.state==="through"){ p.y+=dt*sp*flowRate;
+      if(p.y>LG.memBot+30){ const a=C.atp; if(a){ a.count++; a.rotorTarget+=Math.PI*2/3; }
+        p.state="low"; p.age=0; p.hd=Math.random()*6.283; p.spd=95+Math.random()*55; } }
+    else if(p.state==="toEnz"){ p.x+=((LG.pocket.x-16)-p.x)*Math.min(1,dt*sp*3.4); p.y+=(LG.pocket.y-p.y)*Math.min(1,dt*sp*3.4);
+      if(Math.hypot(LG.pocket.x-16-p.x,LG.pocket.y-p.y)<6){ p.dead=true;
+        if(C.sub&&C.sub.state==="bound") C.sub.h++; } }
+  }
+  C.protons=C.protons.filter(p=>!p.dead);
+  { const lows=C.protons.filter(p=>p.state==="low").sort((a,b)=>(b.age||0)-(a.age||0));
+    for(let i=0;i<lows.length-12;i++) lows[i].age=Math.max(lows[i].age||0,5.0); }   // keep the screen legible
+  const high=C.protons.filter(p=>p.state==="high");
+  C.redPull-=dt*sp;
+  const inTransit=C.protons.filter(p=>p.state==="toEnz").length;
+  if(C.redPull<=0 && C.sub && C.sub.state==="bound" && (C.sub.h+inTransit)<cfg.needH && !chemiBlocked(cfg)){
+    // complex IV draws its protons from the MATRIX; the LDR reductase from the lumen
+    const pool=C.protons.filter(p=>p.state===(cfg.termH==="low"?"low":"high"));
+    const near=pool.slice().sort((a,b)=>Math.abs(a.x-LG.enz.x)-Math.abs(b.x-LG.enz.x))[0];
+    if(near){ near.state="toEnz"; C.redPull=0.45; } }
+  // ---- substrate at the terminal enzyme: enters bottom-LEFT, leaves bottom-RIGHT ----
+  if(!C.sub && !chemiBlocked(cfg)) C.sub=newSub(cfg);
+  if(chemiBlocked(cfg)) C.sub=null;
+  const n=C.sub;
+  if(!n){}                                        // blocked: nothing bound at the terminal complex
+  else if(n.state==="approach"){ const dx=LG.pocket.x-n.x, dy=LG.pocket.y-n.y;
+    n.x+=dx*Math.min(1,dt*sp*2.6); n.y+=dy*Math.min(1,dt*sp*2.6);
+    if(Math.hypot(dx,dy)<5){ n.state="bound"; n.x=LG.pocket.x; n.y=LG.pocket.y; } }
+  else if(n.state==="bound"){ if(n.e>=cfg.needE && n.h>=cfg.needH){ n.state="charging"; n.t=0; C.curls.push({x:LG.enz.x+30,y:LG.memBot+6,age:0}); } }
+  else if(n.state==="charging"){ n.t+=dt*sp; n.charge=Math.min(1,n.t*3.2);
+    if(n.charge>=1){ n.state="leaving"; C.totals.term+=cfg.outN; C.sub=null;
+      for(let k=0;k<cfg.outN;k++) C.products.push({kind:"term",x:n.x+(k?26:-26),y:n.y,st:0,hold:0}); } }
+  // products travel to the lower-right and only fade at the boundary
+  for(const pr of C.products){
+    const tx = pr.kind==="term" ? LG.enz.x+58 : LG.synth.x+120, ty=LG.botY-16;
+    if(pr.st===0){ pr.x+=(tx-pr.x)*Math.min(1,dt*sp*2.0); pr.y+=(ty-pr.y)*Math.min(1,dt*sp*1.3);
+      if(pr.y>LG.botY-30){ pr.st=1; pr.hold=4.0; } }                 // linger before drifting away
+    else if(pr.hold>0){ pr.hold-=dt*sp; }
+    else { pr.x+=dt*sp*20; pr.y+=dt*sp*14; }
+  }
+  C.products=C.products.filter(pr=>pr.y<LG.botY+4 && pr.x<900);
+  // ---- ATP synthase: ADP + Pi in from lower-left, ATP out to lower-right ----
+  if(!C.atp) C.atp=newATP();
+  const a=C.atp; a.rotor += (a.rotorTarget-a.rotor)*Math.min(1,dt*sp*5);
+  if(a.phase==="gather"){
+    const ax=LG.synth.x-17, ay=LG.rotorY+2, px=LG.synth.x+19, py=LG.rotorY+2;
+    a.adp.x+=(ax-a.adp.x)*Math.min(1,dt*sp*5.0); a.adp.y+=(ay-a.adp.y)*Math.min(1,dt*sp*5.0);
+    a.pi.x+=(px-a.pi.x)*Math.min(1,dt*sp*5.0);   a.pi.y+=(py-a.pi.y)*Math.min(1,dt*sp*5.0);
+    if(Math.hypot(ax-a.adp.x,ay-a.adp.y)<5&&Math.hypot(px-a.pi.x,py-a.pi.y)<5) a.phase="docked";
+  } else if(a.phase==="docked"){ if(a.count>=3){ a.count-=3; a.phase="form"; a.t=0; C.curls.push({x:LG.synth.x,y:LG.rotorY,age:0}); } }
+  else if(a.phase==="form"){ a.t+=dt*sp; if(a.t>0.22){
+      C.products.push({kind:"atp",x:LG.synth.x+44,y:LG.rotorY+26,st:0}); C.totals.atp++;
+      const carry=a.count, rot=a.rotor, rt=a.rotorTarget; C.atp=newATP();
+      C.atp.count=carry; C.atp.rotor=rot; C.atp.rotorTarget=rt; } }
+  for(const o of C.byp){ o.x+=o.vx*sp; o.y+=o.vy*sp; o.life-=dt*sp*0.7; } C.byp=C.byp.filter(o=>o.life>0);
+  for(const c of C.curls) c.age+=dt*sp*1.5; C.curls=C.curls.filter(c=>c.age<1);
+}
+/* ---------------- shared drawing ---------------- */
+function pill(x,y,txt,col,fs,dark){ ctx.save();ctx.font="700 "+(fs||12)+"px system-ui";ctx.textBaseline="middle";
+  const w=ctx.measureText(txt).width+14;ctx.fillStyle=col;ctx.beginPath();ctx.roundRect(x-w/2,y-10,w,20,7);ctx.fill();
+  ctx.fillStyle=dark?"#2a2140":"#fff";ctx.textAlign="center";ctx.fillText(txt,x,y+0.5);ctx.restore(); }
+function drawProtonC(x,y){ ctx.save();ctx.fillStyle=PROT;ctx.strokeStyle="#a02b43";ctx.lineWidth=1.2;
+  ctx.beginPath();ctx.arc(x,y,7,0,6.29);ctx.fill();ctx.stroke();
+  ctx.fillStyle="#fff";ctx.font="800 9px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("H\u207a",x,y+0.5);ctx.restore(); }
+function electronDot(x,y){ ctx.save();ctx.fillStyle="#ffe14d";ctx.strokeStyle="#b58a00";ctx.lineWidth=1.2;
+  ctx.beginPath();ctx.arc(x,y,6.5,0,6.29);ctx.fill();ctx.stroke();
+  ctx.fillStyle="#6a4e00";ctx.font="800 8px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("e\u207b",x,y+0.5);ctx.restore(); }
+function drawOval(ps,label,flash){
+  ctx.save();ctx.fillStyle="#245f3e";ctx.strokeStyle=flash>0.3?"#8ef0b0":"#4aa876";ctx.lineWidth=flash>0.3?4:2.6;
+  ctx.beginPath();ctx.ellipse(ps.x,ps.y,ps.rx,ps.ry,0,0,6.29);ctx.fill();ctx.stroke();
+  ctx.fillStyle="#eafff2";ctx.font="800 "+(label.length<=3?20:14)+"px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(label,ps.x,ps.y-4);
+  ctx.restore(); }
+function drawRaySet(tx,ty,al){
+  const dx=Math.sin(RAY_TILT), dy=Math.cos(RAY_TILT), nx=-dy, ny=dx, len=(ty-LG.rayTop)/dy;
+  ctx.save();ctx.strokeStyle="rgba(240,216,74,"+al+")";ctx.fillStyle="rgba(240,216,74,"+al+")";
+  ctx.lineWidth=3.2;ctx.lineCap="round";
+  for(let i=-1;i<=1;i++){ const ex=tx+nx*i*13, ey=ty+ny*i*13, sx=ex-dx*len, sy=ey-dy*len;
+    ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(ex-dx*11,ey-dy*11);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(ex-dx*12+nx*6,ey-dy*12+ny*6);
+    ctx.lineTo(ex-dx*12-nx*6,ey-dy*12-ny*6);ctx.closePath();ctx.fill(); }
+  ctx.restore(); }
+function drawSynthase(x,rotor){
+  ctx.save();ctx.fillStyle="#2f6f52";ctx.strokeStyle="#57b487";ctx.lineWidth=2;
+  ctx.beginPath();ctx.roundRect(x-23,LG.memTop-4,46,LG.memBot-LG.memTop+8,10);ctx.fill();ctx.stroke();
+  ctx.strokeStyle="#16382a";ctx.lineWidth=11;ctx.lineCap="butt";
+  ctx.beginPath();ctx.moveTo(x,LG.memTop-2);ctx.lineTo(x,LG.memBot+2);ctx.stroke();
+  ctx.strokeStyle="#57b487";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(x,LG.memBot+4);ctx.lineTo(x,LG.rotorY-26);ctx.stroke();
+  ctx.beginPath();ctx.arc(x,LG.rotorY,26,0,6.29);ctx.fillStyle="#3a8f68";ctx.fill();ctx.stroke();
+  ctx.strokeStyle="#bde9d2";ctx.lineWidth=2.4;
+  for(let k=0;k<3;k++){const ang=rotor+k*Math.PI*2/3;
+    ctx.beginPath();ctx.moveTo(x,LG.rotorY);ctx.lineTo(x+Math.cos(ang)*20,LG.rotorY+Math.sin(ang)*20);ctx.stroke();}
+  ctx.fillStyle="#bfe9d3";ctx.font="700 11px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText("ATP synthase",x,LG.rotorY+44);ctx.restore(); }
+function drawCurl(x,y,age){ ctx.save();ctx.globalAlpha=Math.sin(age*Math.PI);
+  ctx.strokeStyle="#ffd36b";ctx.lineWidth=2.6;ctx.lineCap="round";
+  ctx.beginPath();ctx.arc(x,y,13,-Math.PI*0.55,Math.PI*0.95);ctx.stroke();
+  const a1=Math.PI*0.95,ex=x+Math.cos(a1)*13,ey=y+Math.sin(a1)*13,ta=a1+Math.PI/2;
+  ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(ex-Math.cos(ta-0.5)*7,ey-Math.sin(ta-0.5)*7);
+  ctx.lineTo(ex-Math.cos(ta+0.5)*7,ey-Math.sin(ta+0.5)*7);ctx.closePath();ctx.fillStyle="#ffd36b";ctx.fill();ctx.restore(); }
+function drawChemi(){
+  const cfg=CH_CFG[S.sub], C=chemiOf();
+  LG.enz.x=cfg.enzX; LG.pocket.x=cfg.enzX;
+  title(cfg.title,cfg.sub);
+  const x0=80,x1=862;
+  ctx.fillStyle="rgba(224,120,74,.09)";ctx.fillRect(x0,LG.topY,x1-x0,LG.memTop-LG.topY);
+  ctx.fillStyle="rgba(47,158,95,.08)";ctx.fillRect(x0,LG.memBot,x1-x0,LG.botY-LG.memBot);
+  ctx.textBaseline="middle";ctx.textAlign="left";
+  ctx.fillStyle="#243b49";ctx.strokeStyle="#3a5a6d";ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.roundRect(x0,LG.memTop,x1-x0,LG.memBot-LG.memTop,8);ctx.fill();ctx.stroke();
+  if(cfg.memLabel){                       // drawn AFTER the band so it is visible on it
+    ctx.fillStyle="#a8c0d0";ctx.font="800 9.5px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillText(cfg.memLabel[0],818,LG.memY-8); ctx.fillText(cfg.memLabel[1],818,LG.memY+6);
+    ctx.textAlign="left"; }
+  if(cfg.light && C.flash>0.02){ const al=0.28+0.55*C.flash;
+    const ws=C.waters.filter(w=>!w.gone);
+    const wx=ws.length?ws.reduce((a,w)=>a+w.x,0)/ws.length:(C.split?C.split.x:176);
+    const wy=ws.length?ws.reduce((a,w)=>a+w.y,0)/ws.length:(C.split?C.split.y:414);
+    drawRaySet(wx,wy-16,al); for(const ov of cfg.ovals) drawRaySet(ov.x,LG.memY-LG.ovalRy-8,al);
+    ctx.fillStyle="rgba(245,224,96,"+(0.45+0.5*C.flash)+")";ctx.font="800 14px system-ui";ctx.textAlign="right";
+    ctx.fillText("\u2600 light",x1-8,LG.topY+14); }
+  // compartment labels sit IN FRONT of the light rays, on a half-opaque
+  // backdrop in the background colour so they stay readable
+  ctx.save();ctx.textAlign="left";ctx.textBaseline="middle";ctx.font="800 12px system-ui";
+  for(const [txt,ty,col] of [[cfg.topLabel,LG.topY+14,"#e0a878"],[cfg.botLabel,LG.botY-14,"#7fd0a0"]]){
+    const w=ctx.measureText(txt).width;
+    ctx.fillStyle="rgba(20,37,47,.5)";
+    ctx.beginPath();ctx.roundRect(x0+2,ty-11,w+12,22,6);ctx.fill();
+    ctx.fillStyle=col;ctx.fillText(txt,x0+8,ty); }
+  ctx.restore();
+  // water + the slow visible split
+  for(const w of C.waters){ if(w.gone) continue;
+    ctx.fillStyle="#7fb8e0";ctx.font="800 13px system-ui";ctx.textAlign="center";ctx.fillText("H\u2082O",w.x,w.y); }
+  if(C.split){ const t=C.split.t, sx=C.split.x, sy=C.split.y;
+    ctx.save();ctx.globalAlpha=Math.max(0,1-t*1.6);
+    ctx.fillStyle="#9ad2f5";ctx.font="800 13px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillText("H\u2082O",sx-20,sy); ctx.fillText("H\u2082O",sx+20,sy+8); ctx.restore();
+    ctx.save();ctx.globalAlpha=Math.min(1,t*1.7);
+    for(let i=0;i<4;i++) drawProtonC(sx-42+i*24, sy+30+t*16);
+    for(let i=0;i<4;i++) electronDot(sx-30+i*20, sy-26-t*20);
+    ctx.globalAlpha=Math.min(1,t*1.4); pill(sx-72,sy+4,"O\u2082","#3d8fd6",11);
+    ctx.restore(); }
+  for(const p of C.protons){ if(p.state!=="low"&&p.state!=="high") continue;
+    const a=(p.state==="low"&&p.age>5)?Math.max(0,1-(p.age-5)/0.9):1;
+    ctx.globalAlpha=a; drawProtonC(p.x,p.y); ctx.globalAlpha=1; }
+  ctx.strokeStyle="#41647a";ctx.lineWidth=2;ctx.beginPath();
+  cfg.epath.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();
+  if(!cfg.light){                                   // the electron "current" running along the chain
+    const stalled=chemiBlocked(cfg), n=18;
+    ctx.save();ctx.fillStyle=stalled?"#7d6f2a":"#ffe14d";
+    ctx.strokeStyle=stalled?"#4d451c":"#b58a00";ctx.lineWidth=1;
+    for(let i=0;i<n;i++){ const t=((i/n)+C.flow)%1, p=alongPath(cfg.epath,t);
+      ctx.beginPath();ctx.arc(p[0],p[1],3.4,0,6.29);ctx.fill();ctx.stroke(); }
+    ctx.restore();
+    if(stalled){ ctx.save();ctx.fillStyle="#c98b8b";ctx.font="800 10px system-ui";
+      ctx.textAlign="center";ctx.textBaseline="middle";
+      ctx.fillText("electron flow has STOPPED \u2014 no H\u207a can be pumped",420,LG.memTop-14);ctx.restore(); } }
+  if(cfg.showCarriers){ for(const c of LG.carriers){ctx.fillStyle="#31576b";ctx.strokeStyle="#6fa6c0";ctx.lineWidth=2;
+      ctx.beginPath();ctx.arc(c.x,c.y,14,0,6.29);ctx.fill();ctx.stroke();}
+    ctx.fillStyle="#9fc4d6";ctx.font="700 9.5px system-ui";ctx.textAlign="center";ctx.fillText("electron carriers",356,LG.memBot-14); }
+  for(const ov of cfg.ovals) drawOval(ovalAt(ov.x),ov.lab,C.flash);
+  // terminal enzyme (rounded rectangle) with a binding pocket
+  ctx.fillStyle="#3a6f8f";ctx.strokeStyle="#7fc0e0";ctx.lineWidth=2;
+  ctx.beginPath();ctx.roundRect(LG.enz.x-LG.enz.w/2,LG.enz.y-LG.enz.h/2,LG.enz.w,LG.enz.h,9);ctx.fill();ctx.stroke();
+  ctx.fillStyle="#0f2a38";ctx.beginPath();ctx.arc(LG.pocket.x,LG.pocket.y,15,0,6.29);ctx.fill();
+  ctx.fillStyle="#e6f4fb";ctx.font="700 9px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+  if(cfg.enzLab.length===1){ ctx.font="800 20px system-ui";ctx.fillText(cfg.enzLab[0],LG.enz.x,LG.enz.y-22); }
+  else { ctx.fillText(cfg.enzLab[0],LG.enz.x,LG.enz.y-27);ctx.fillText(cfg.enzLab[1],LG.enz.x,LG.enz.y-12); }
+  drawSynthase(LG.synth.x, C.atp?C.atp.rotor:0);
+  for(const p of C.protons){ if(p.state!=="low"&&p.state!=="high") drawProtonC(p.x,p.y); }   // in front of the complexes
+  // substrate bound in the enzyme (pale) -> vivid product
+  const n=C.sub;
+  if(n){ const col=lerpCol(PALE,VIVID,n.charge), lab=n.charge>0.55?cfg.prodName:cfg.subName;
+    pill(n.x,n.y,lab,col,10,n.charge<0.4);
+    if(n.state==="bound"){ ctx.font="800 10.5px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+      ctx.fillStyle=n.e>=cfg.needE?"#ffe14d":"#7d93a3"; ctx.fillText("e\u207b "+n.e+"/"+cfg.needE, n.x-38, n.y+24);
+      ctx.fillStyle=n.h>=cfg.needH?PROT:"#7d93a3"; ctx.fillText("H\u207a "+n.h+"/"+cfg.needH, n.x+38, n.y+24); } }
+  // oxphos donors
+  for(const d of C.donorEv){ ctx.globalAlpha=d.phase==="leave"?Math.max(0,Math.min(1,(d.x-14)/96)):1;
+    const pale=(d.phase==="leave");
+    pill(d.x,d.y, pale? d.kind.replace("reduced ","") : d.kind, pale?PALE:VIVID, 10, pale); ctx.globalAlpha=1; }
+  // ADP + Pi and the products
+  const a=C.atp;
+  if(a && a.phase!=="form"){ pill(a.adp.x,a.adp.y,"ADP","#8a6a10",10); pill(a.pi.x,a.pi.y,"Pi","#6a7a10",10); }
+  if(a && a.phase==="form"){ pill(LG.synth.x,LG.rotorY,"ADP+Pi","#a07a12",10); }
+  for(const pr of C.products){
+    const fade = pr.y>LG.botY-26 ? Math.max(0,(LG.botY+2-pr.y)/28) : 1;
+    ctx.globalAlpha=fade;
+    if(pr.kind==="atp") pill(pr.x,pr.y,"ATP",ATPV,11); else pill(pr.x,pr.y,cfg.prodName,VIVID,10.5);
+    ctx.globalAlpha=1; }
+  for(const c of C.curls) drawCurl(c.x,c.y,c.age);
+  for(const e of C.electrons){ if(e.t<0)continue; const pos=alongPath(cfg.epath,e.t); electronDot(pos[0],pos[1]); }
+  for(const o of C.byp){ ctx.globalAlpha=Math.max(0,Math.min(1,o.life)); pill(o.x,o.y,o.label,o.col,11); ctx.globalAlpha=1; }
+  if(!cfg.light){ ctx.save();ctx.fillStyle="#93a7b4";ctx.font="700 10.5px system-ui";
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillText("reduced NAD  \u2192  NAD  +  H\u207a  +  e\u207b",300,LG.botY-14);ctx.restore();
+    if(S.cyanide){                                            // cyanide bound in the complex IV pocket
+      ctx.save();ctx.fillStyle="#d94848";ctx.strokeStyle="#ffb0b0";ctx.lineWidth=2;
+      ctx.beginPath();ctx.arc(LG.pocket.x,LG.pocket.y,15,0,6.29);ctx.fill();ctx.stroke();
+      ctx.fillStyle="#fff";ctx.font="800 10px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+      ctx.fillText("CN\u207b",LG.pocket.x,LG.pocket.y);ctx.restore(); }
+    if(chemiBlocked(cfg)) drawOxBlocked(); }
+  if(cfg.light && (C.darkAcc.n>0||C.darkAcc.a>0)) drawDarkBuildup(C.darkAcc);
+  if(cfg.light && S.dark) drawDarkPanel();
+}
+function drawOxBlocked(){
+  const bx=286, by=96, bw=380, bh=94;
+  ctx.save();ctx.fillStyle="rgba(8,16,24,.92)";ctx.strokeStyle=S.cyanide?"#a03535":"#3d5262";ctx.lineWidth=1.6;
+  ctx.beginPath();ctx.roundRect(bx,by,bw,bh,10);ctx.fill();ctx.stroke();
+  ctx.textAlign="left";ctx.textBaseline="middle";
+  ctx.fillStyle=S.cyanide?"#f0a0a0":"#9fb8c9";ctx.font="800 12px system-ui";
+  ctx.fillText(S.cyanide?"\u2620  CYANIDE BOUND TO COMPLEX IV":"\u{1F6AB}  NO OXYGEN",bx+14,by+16);
+  ctx.font="600 10.5px system-ui";ctx.fillStyle="#c3d4e0";
+  [S.cyanide?"Electrons cannot pass to oxygen":"No final electron acceptor",
+   "Electrons back up \u2014 H\u207a pumping stops",
+   "The gradient collapses, so ATP stops",
+   "\u2192 reduced NAD builds up; Krebs stops too"].forEach((t,i)=>
+    ctx.fillText((i<3?"\u2022  ":"    ")+t,bx+14,by+38+i*15));
+  ctx.restore();
+}
+function drawDarkBuildup(D2){
+  const bx=236, by=420, bw=376, bh=76;
+  ctx.save();
+  ctx.fillStyle="rgba(10,20,28,.86)";ctx.strokeStyle="#3d5262";ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.roundRect(bx,by,bw,bh,10);ctx.fill();ctx.stroke();
+  ctx.fillStyle="#93a7b4";ctx.font="700 9.5px system-ui";ctx.textAlign="left";ctx.textBaseline="middle";
+  ctx.fillText("unused substrates building up in the stroma",bx+14,by+14);
+  for(let i=0;i<D2.n;i++) pill(bx+42+i*62, by+36, "NADP", NADP_GREY, 9.5);
+  for(let i=0;i<D2.a;i++) pill(bx+42+i*62, by+60, "ADP+Pi", ADP_GREY, 9.5);
+  ctx.restore();
+}
+function drawDarkPanel(){
+  const bx=316, by=94, bw=530, bh=112;
+  ctx.save();
+  ctx.fillStyle="rgba(8,16,24,.90)";ctx.strokeStyle="#3d5262";ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.roundRect(bx,by,bw,bh,10);ctx.fill();ctx.stroke();
+  ctx.textAlign="left";ctx.textBaseline="middle";
+  ctx.fillStyle="#9fb8c9";ctx.font="800 12px system-ui";ctx.fillText("\u{1F319}  IN THE DARK",bx+14,by+16);
+  ctx.font="600 10.5px system-ui";ctx.fillStyle="#c3d4e0";
+  const lines=["No photoionisation \u2014 chlorophyll releases no electrons",
+    "No photolysis \u2014 water is not split, so no e\u207b, H\u207a or O\u2082",
+    "Carriers have no electrons to pump H\u207a \u2192 gradient collapses",
+    "No chemiosmosis \u2192 no ATP;  NADP is never reduced",
+    "So the Calvin cycle stalls: no ATP or reduced NADP to reduce GP"];
+  lines.forEach((t,i)=>ctx.fillText("\u2022  "+t, bx+14, by+38+i*17));
+  ctx.restore();
+}
+
+/* ======================================================================
+   CALVIN CYCLE — molecules are drawn as linked circles and physically move
+   round the cycle, so the stoichiometry is carried by the NUMBER of
+   molecules, not by an equation.
+     RuBP = P + 5 grey C + P      (phosphorylated at both ends)
+     GP   = 3 grey C + P
+     TP   = 3 purple C + P        (purple = reduced, energy-rich)
+     CO2  = 1 grey C
+   Balance used (all carbon-balanced):
+     fixation      1 CO2 + 1 RuBP            -> 2 GP
+     reduction     1 GP + 1 ATP + 1 rNADP    -> 1 TP
+     regeneration  5 TP + 3 ATP              -> 3 RuBP
+     output        2 TP                      -> 1 glucose
+   Over 6 turns that is 18 ATP and 12 reduced NADP per glucose.
+   ====================================================================== */
+const CG={ cx:440, cy:290, rx:230, ry:115,
+  rubp:[213,270], rubisco:[440,140], gp:[656,251], tp:[440,405],
+  bindRuBP:[418,182], bindCO2:[478,182],
+  co2:[250,96], glu:[664,488], gluLabel:[830,488], tpLabel:[440,480] };
+const C_FIX="#e0a021", C_RED="#7c3aed", C_REG="#159b8a", C_OUT="#2f9e5f";
+const ATP_BLUE="#8ecbf5", ADP_GREY="#7d8f99", NADP_ORG="#f5b774", NADP_GREY="#9c8d7e";
+const CARB="#93a3b0", CARBR="#7c3aed", PHOS="#ec4899";
+/* Supply of ATP and reduced NADP from the LDR: individual molecules that
+   accumulate in the top-right corner, then move off one at a time to be used.
+   Baby blue = ATP, light orange = reduced NADP; the spent forms (ADP, NADP)
+   are desaturated. Purple is reserved for the key end product. */
+const SUP={
+  atp:{ox:786,oy:88,cols:3,dx:38,dy:21,max:9,col:"#8fd3f4",spentCol:"#8098a6",lab:"ATP",spentLab:"ADP"},
+  nadp:{ox:786,oy:160,cols:2,dx:80,dy:21,max:6,col:"#f6c48a",spentCol:"#a89681",lab:"reduced NADP",spentLab:"NADP"} };
+function slotPos(k,i){ const s=SUP[k], c=i%s.cols, r=Math.floor(i/s.cols);
+  return [s.ox+(c-(s.cols-1)/2)*s.dx, s.oy+r*s.dy]; }
+let CAL=null;
+function makeCalvin(){ return { pools:{co2:1,rubp:6,gp:2,tp:0,glucose:0,atp:0,nadph:0},
+  fixed:0, tpMade:0, ev:[], supply:[], curls:[], co2in:[], rubCO2:null, t:{co2:0,sup:0,fix:0,red:0,reg:0,out:0} }; }
+function calvin(){ if(!CAL) CAL=makeCalvin(); return CAL; }
+/* Remove CO2: every CO2 on screen goes — the pool, the ones diffusing in,
+   the one bound to rubisco, and any fixation already under way. */
+function calvinClearCO2(){ const C=calvin();
+  C.pools.co2=0; C.co2in=[]; C.rubCO2=null;
+  C.ev=C.ev.filter(e=>e.k!=="fix");
+  C.t.co2=0; C.t.fix=0; }
+function newTok(k,delay){ return {k, st:"in", x:986+Math.random()*46, y:56+Math.random()*170,
+  t:0, delay:delay||0, rate:1.7+Math.random()*1.3, slot:0}; }
+function idleCount(C,k){ return C.supply.filter(t=>t.k===k&&t.st==="idle").length; }
+function takeToken(C,k,tgt,delay,ev){
+  const t=C.supply.find(z=>z.k===k&&z.st==="idle"); if(!t) return null;
+  t.st="use"; t.tgt=tgt; t.t=-(delay||0); t.delay=0; t.dur=0.9+Math.random()*0.35;
+  t.ox=(Math.random()-0.5)*100; t.oy=(Math.random()-0.5)*80; t.rate=2.0+Math.random()*1.5; t.ev=ev; return t; }
+function ellPt(a){ return [CG.cx+CG.rx*Math.cos(a), CG.cy+CG.ry*Math.sin(a)]; }
+const D=Math.PI/180, A_RUBP=190*D, A_RUBI=270*D, A_GP=340*D, A_TP=90*D;
+function arcPath(a0,a1,n){ const o=[]; let d=a1-a0; while(d<0)d+=6.283;
+  for(let i=0;i<=n;i++) o.push(ellPt(a0+d*i/n)); return o; }
+function walk(path,t){ t=Math.max(0,Math.min(1,t));
+  const seg=t*(path.length-1), i=Math.min(Math.floor(seg),path.length-2), f=seg-i;
+  return [path[i][0]+(path[i+1][0]-path[i][0])*f, path[i][1]+(path[i+1][1]-path[i][1])*f]; }
+const P_FIX=arcPath(A_RUBP,A_RUBI,10).concat([CG.bindRuBP]), P_GP=arcPath(A_RUBI,A_GP,10),
+      P_RED=arcPath(A_GP,A_TP,14), P_REG=arcPath(A_TP,A_RUBP,14);
+const P_OUT=[[484,432],[560,452],[632,470]];      // TP -> glucose, straight out to the right
+function updateCalvin(dt){
+  const C=calvin(), sp=S.speed*0.6, P=C.pools;   // slower by default
+  if(!S.playing) { for(const c of C.curls) c.age+=dt*sp*1.5; C.curls=C.curls.filter(c=>c.age<1); return; }
+  // CO2 drifts in from above into a small waiting pool
+  C.t.co2-=dt*sp;
+  if(S.noCO2 && (P.co2>0||C.co2in.length||C.rubCO2)) calvinClearCO2();
+  if(C.t.co2<=0 && !S.noCO2 && P.co2+C.co2in.length<5){ C.t.co2=1.5;
+    C.co2in.push({x:-22, y:CG.co2[1]-10+Math.random()*20, t:0}); }   // diffuses in from the LEFT
+  for(const c of C.co2in){ c.t+=dt*sp*0.7; c.x=-22+(CG.co2[0]+22)*Math.min(1,c.t);
+    if(c.t>=1&&!c.done){ c.done=true; P.co2++; } }
+  C.co2in=C.co2in.filter(c=>!c.done);
+  // A CO2 binds rubisco first, then waits there for RuBP to arrive
+  if(!C.rubCO2 && P.co2>=1){ P.co2--; C.rubCO2={t:0,bound:false}; }
+  if(C.rubCO2 && !C.rubCO2.bound){ C.rubCO2.t+=dt*sp*0.85;
+    if(C.rubCO2.t>=1){ C.rubCO2.bound=true; C.rubCO2.t=1; } }
+  // ATP + reduced NADP arrive from the light-dependent reaction (3 ATP : 2 rNADP)
+  C.t.sup-=dt*sp;
+  if(C.t.sup<=0 && !S.dark){ C.t.sup=2.6/Math.max(0.15,S.lightI);
+    const held=k=>C.supply.filter(t=>t.k===k&&(t.st==="in"||t.st==="idle")).length;
+    for(let i=0;i<3;i++) if(held("atp")<SUP.atp.max)  C.supply.push(newTok("atp",i*0.24));
+    for(let i=0;i<2;i++) if(held("nadp")<SUP.nadp.max) C.supply.push(newTok("nadp",0.14+i*0.32)); }
+  // ---- trigger events ----
+  C.t.fix-=dt*sp; C.t.red-=dt*sp; C.t.reg-=dt*sp; C.t.out-=dt*sp;
+  const busy=k=>C.ev.filter(e=>e.k===k).length;
+  // Fixation needs no ATP (so it still runs in the dark), but its rate is set
+  // by how fast RuBP is regenerated, which is ATP-limited -> tie it to light.
+  if(C.t.fix<=0 && C.rubCO2 && C.rubCO2.bound && P.rubp>=1 && P.gp<=13 && busy("fix")<1){
+    C.rubCO2.used=true; P.rubp--; C.t.fix=2.7/Math.max(0.15,S.lightI); C.ev.push({k:"fix",ph:"in",t:0}); }
+  if(C.t.red<=0 && P.gp>=1 && idleCount(C,"atp")>=1 && idleCount(C,"nadp")>=1 && busy("red")<3){
+    P.gp--; C.t.red=0.9;
+    const evR={k:"red",ph:"move",t:0,prog:0,hasA:false,hasN:false,w:0,cv:0}; C.ev.push(evR);
+    takeToken(C,"atp","red",0,evR); takeToken(C,"nadp","red",0.24,evR); }
+  if(C.t.reg<=0 && P.tp>=5 && idleCount(C,"atp")>=3 && busy("reg")===0){
+    P.tp-=5; C.t.reg=2.2;
+    const evG={k:"reg",ph:"move",t:0}; C.ev.push(evG);
+    for(let i=0;i<3;i++) takeToken(C,"atp","reg",i*0.32,evG); }
+  // Exactly 1 TP in 6 leaves the cycle: 12 TP made per 2 exported = 1 glucose
+  // per 6 turns, which is the textbook stoichiometry.
+  if(C.t.out<=0 && P.tp>=2 && busy("out")===0 && C.tpMade>=12*(P.glucose+1)){
+    P.tp-=2; C.t.out=1.4; C.ev.push({k:"out",ph:"move",t:0}); }
+  // ---- advance events ----
+  for(const e of C.ev){ e.t+=dt*sp;
+    if(e.k==="fix"){
+      if(e.ph==="in" && e.t>=1){ e.ph="react"; e.t=0; C.curls.push({x:CG.rubisco[0]+46,y:176,age:0}); }
+      else if(e.ph==="react" && e.t>=0.55){ e.ph="out"; e.t=0; C.rubCO2=null; }   // CO2 consumed here
+      else if(e.ph==="out" && e.t>=1){ e.done=true; P.gp+=2; C.fixed++; } }
+    else if(e.k==="red"){
+      if(e.ph==="move"){ e.prog=Math.min(0.5,e.prog+dt*sp*0.9); if(e.prog>=0.5) e.ph="wait"; }
+      else if(e.ph==="wait"){ e.w+=dt*sp;                       // holds until BOTH have made contact
+        if((e.hasA&&e.hasN)||e.w>6){ e.ph="pause"; e.cv=0;
+          C.curls.push({x:walk(P_RED,e.prog)[0]+28,y:walk(P_RED,e.prog)[1],age:0}); } }
+      else if(e.ph==="pause"){ e.cv+=dt*sp; if(e.cv>=0.5) e.ph="out"; }   // half-second pause, then it converts
+      else { e.prog=Math.min(1,e.prog+dt*sp*0.9);
+        if(e.prog>=1){ e.done=true; P.tp++; C.tpMade++; } } }
+    else if(e.k==="reg"){
+      if(!e.mid && e.t>=0.6){ e.mid=true; C.curls.push({x:walk(P_REG,0.55)[0],y:walk(P_REG,0.55)[1]-26,age:0}); }
+      if(e.t>=1.5){ e.done=true; P.rubp+=3; } }
+    else if(e.k==="out"){ if(e.t>=1.2){ e.done=true; P.glucose++; } } }
+  C.ev=C.ev.filter(e=>!e.done);
+  // waiting molecules re-pack into the corner grid as others are taken
+  let ia=0, ib=0;
+  for(const t of C.supply) if(t.st==="in"||t.st==="idle") t.slot = (t.k==="atp"? ia++ : ib++);
+  for(const t of C.supply){ t.t+=dt*sp;
+    if(t.t < (t.delay||0)) continue;
+    if(t.st==="in"||t.st==="idle"){
+      const q=slotPos(t.k,t.slot);
+      t.x+=(q[0]-t.x)*Math.min(1,dt*sp*t.rate); t.y+=(q[1]-t.y)*Math.min(1,dt*sp*t.rate);
+      if(t.st==="in" && Math.hypot(q[0]-t.x,q[1]-t.y)<5) t.st="idle"; }
+    else if(t.st==="use"){                                  // travels on its own arc to the reaction
+      const e=t.ev;
+      const base = t.tgt==="red" ? walk(P_RED, e?e.prog:0.5)
+                                 : walk(P_REG, e?Math.min(1,e.t/1.5):0.55);
+      const f=Math.min(1,Math.max(0,t.t)/t.dur);
+      const dx=base[0]+t.ox*(1-f), dy=base[1]+t.oy*(1-f);
+      t.x+=(dx-t.x)*Math.min(1,dt*sp*t.rate); t.y+=(dy-t.y)*Math.min(1,dt*sp*t.rate);
+      if(f>=1){ t.st="spent"; t.t=0;                        // now ADP / NADP
+        if(e){ if(t.k==="atp") e.hasA=true; else e.hasN=true; }
+        t.bx=t.x+(Math.random()-0.5)*90; t.by=t.y+56+Math.random()*54; } }
+    else { t.x+=(t.bx-t.x)*Math.min(1,dt*sp*1.2); t.y+=(t.by-t.y)*Math.min(1,dt*sp*1.2);
+      if(t.t>1.6) t.done=true; } }
+  C.supply=C.supply.filter(t=>!t.done);
+  P.atp=idleCount(C,"atp"); P.nadph=idleCount(C,"nadp");
+  for(const c of C.curls) c.age+=dt*sp*1.5; C.curls=C.curls.filter(c=>c.age<1);
+}
+/* ---------- molecule glyphs: linked circles ---------- */
+function molSpec(kind){
+  const C6=[[CARB,""],[CARB,""],[CARB,""],[CARB,""],[CARB,""],[CARB,""]];
+  if(kind==="glucose") return C6;                                   // 6C
+  if(kind==="g1p")     return C6.concat([[PHOS,"P"]]);              // glucose phosphate
+  if(kind==="hbp")     return [[PHOS,"P"]].concat(C6,[[PHOS,"P"]]); // 2 phosphates (unlabelled)
+  if(kind==="tp3")     return [[CARB,""],[CARB,""],[CARB,""],[PHOS,"P"]];
+  if(kind==="lact")    return [["#c05a8a",""],["#c05a8a",""],["#c05a8a",""]];
+  if(kind==="ethanal") return [[CARB,""],[CARB,""]];
+  if(kind==="ethanol") return [["#c07a2b",""],["#c07a2b",""]];
+  if(kind==="oaa")     return [["#f0e08a",""],["#f0e08a",""],["#f0e08a",""],["#f0e08a",""]];  // regenerated oxaloacetate
+  if(kind==="cit6")    return [["#22aaf5",""],["#22aaf5",""],["#22aaf5",""],["#22aaf5",""],["#22aaf5",""],["#22aaf5",""]];
+  if(kind==="c4")      return [[CARB,""],[CARB,""],[CARB,""],[CARB,""]];
+  if(kind==="c5")      return [[CARB,""],[CARB,""],[CARB,""],[CARB,""],[CARB,""]];
+  if(kind==="c6")      return [[CARB,""],[CARB,""],[CARB,""],[CARB,""],[CARB,""],[CARB,""]];
+  if(kind==="acetB")   return [["#6cbdf0",""],["#6cbdf0",""]];              // acetyl group arriving
+  if(kind==="pyrIn")   return [["#6cbdf0",""],["#6cbdf0",""],["#6cbdf0",""]];  // substrate, not the product
+  if(kind==="acet")    return [[CARB,""],[CARB,""]];                       // 2C acetate
+  if(kind==="acetY")   return [["#f0e08a",""],["#f0e08a",""]];              // acetate once NAD has been reduced
+  if(kind==="acetP")   return [["#6d28d9",""],["#6d28d9",""]];              // acetate once bound to CoA
+  if(kind==="tpL")     return [[PHOS,"P"],[CARB,""],[CARB,""],[CARB,""]];   // left half of the split
+  if(kind==="tp3b")    return [[PHOS,"P"],[CARB,""],[CARB,""],[CARB,""],[PHOS,"P"]];  // during oxidation
+  if(kind==="pyr")     return [["#6d28d9",""],["#6d28d9",""],["#6d28d9",""]];        // darkest purple = key product
+  if(kind==="rubp") return [[PHOS,"P"],[CARB,""],[CARB,""],[CARB,""],[CARB,""],[CARB,""],[PHOS,"P"]];
+  if(kind==="gp")   return [[CARB,""],[CARB,""],[CARB,""],[PHOS,"P"]];
+  if(kind==="tp")   return [[CARBR,""],[CARBR,""],[CARBR,""],[PHOS,"P"]];
+  return [[CARB,""]];                       // CO2 = one carbon
+}
+function drawMol(x,y,kind,sc){
+  sc=sc||1; const spec=molSpec(kind), n=spec.length, r=6.4*sc, gap=14.5*sc;
+  const x0=x-(n-1)*gap/2;
+  ctx.save();
+  if(n>1){ ctx.strokeStyle="rgba(210,225,235,.55)";ctx.lineWidth=3.4*sc;ctx.lineCap="round";
+    ctx.beginPath();ctx.moveTo(x0,y);ctx.lineTo(x0+(n-1)*gap,y);ctx.stroke(); }
+  for(let i=0;i<n;i++){ const cx=x0+i*gap;
+    ctx.beginPath();ctx.arc(cx,y,r,0,6.29);ctx.fillStyle=spec[i][0];ctx.fill();
+    ctx.strokeStyle="rgba(10,25,35,.55)";ctx.lineWidth=1.1*sc;ctx.stroke();
+    if(spec[i][1]){ ctx.fillStyle="#fff";ctx.font="800 "+(8*sc)+"px system-ui";
+      ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(spec[i][1],cx,y+0.5); } }
+  ctx.restore();
+}
+function nameBubble(x,y,txt,col,fs){ fs=fs||11; ctx.save();ctx.font="800 "+fs+"px system-ui";ctx.textBaseline="middle";
+  const w=ctx.measureText(txt).width+18, hh=fs*1.9;
+  ctx.fillStyle="rgba(12,26,36,.92)";ctx.strokeStyle=col;ctx.lineWidth=1.6;
+  ctx.beginPath();ctx.roundRect(x-w/2,y-hh/2,w,hh,8);ctx.fill();ctx.stroke();
+  ctx.fillStyle="#e9f3fa";ctx.textAlign="center";ctx.fillText(txt,x,y+0.5);ctx.restore(); }
+function nameCount(x,y,txt,col,n){
+  ctx.save();ctx.font="800 11px system-ui";
+  const w=ctx.measureText(txt).width+18;ctx.restore();
+  nameBubble(x,y,txt,col);
+  countBadge(x-w/2-14,y,n,col);
+}
+function countBadge(x,y,n,col){ ctx.save();ctx.beginPath();ctx.arc(x,y,11,0,6.29);
+  ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="rgba(8,20,28,.6)";ctx.lineWidth=1.2;ctx.stroke();
+  ctx.fillStyle="#fff";ctx.font="800 11px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText(String(n),x,y+0.5);ctx.restore(); }
+function drawPool(pos,kind,count,maxShow){
+  const show=Math.min(count,maxShow||5), sp=17, y0=pos[1]-(show-1)*sp/2;
+  for(let i=0;i<show;i++) drawMol(pos[0],y0+i*sp,kind,0.86);
+}
+function drawArcArrows(path,col,nArrow){
+  ctx.save();ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.setLineDash([7,7]);
+  ctx.beginPath();path.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=col;
+  for(let k=1;k<=nArrow;k++){ const t=k/(nArrow+1);
+    const a=walk(path,Math.max(0,t-0.01)), b=walk(path,Math.min(1,t+0.01));
+    const ang=Math.atan2(b[1]-a[1],b[0]-a[0]), px=b[0], py=b[1];
+    ctx.beginPath();ctx.moveTo(px+Math.cos(ang)*8,py+Math.sin(ang)*8);
+    ctx.lineTo(px-Math.cos(ang-0.55)*8,py-Math.sin(ang-0.55)*8);
+    ctx.lineTo(px-Math.cos(ang+0.55)*8,py-Math.sin(ang+0.55)*8);ctx.closePath();ctx.fill(); }
+  ctx.restore(); }
+function drawRubisco(x,y,hot){
+  ctx.save();
+  ctx.fillStyle=hot?"#f0c357":"#8a6a1e";ctx.strokeStyle=C_FIX;ctx.lineWidth=2.6;
+  ctx.beginPath();ctx.roundRect(x-52,y-28,104,56,16);ctx.fill();ctx.stroke();
+  ctx.fillStyle="rgba(10,24,32,.5)";                       // active site opening, facing the substrates
+  ctx.beginPath();ctx.ellipse(x+16,y+28,26,9,0,0,6.29);ctx.fill();
+  ctx.fillStyle=hot?"#3a2a00":"#f2e2b8";ctx.font="800 13px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText("rubisco",x-14,y-2);ctx.restore(); }
+function drawHexGlucose(x,y,sc){
+  sc=sc||1; const r=17*sc;
+  ctx.save();
+  ctx.beginPath();
+  for(let i=0;i<6;i++){ const a=(i*60-90)*Math.PI/180, px=x+Math.cos(a)*r, py=y+Math.sin(a)*r;
+    i?ctx.lineTo(px,py):ctx.moveTo(px,py); }
+  ctx.closePath();
+  ctx.fillStyle="#2f9e5f";ctx.fill();ctx.strokeStyle="#8ff0bb";ctx.lineWidth=2*sc;ctx.stroke();
+  ctx.fillStyle="#eafff2";ctx.font="800 "+(9*sc)+"px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText("6C",x,y+0.5);
+  ctx.restore();
+}
+function drawCalvin(){
+  const C=calvin(), P=C.pools;
+  title("The Calvin Cycle","Stroma");
+  // coloured, arrowed cycle
+  drawArcArrows(P_FIX,C_FIX,2); drawArcArrows(P_GP,C_FIX,2);
+  drawArcArrows(P_RED,C_RED,3); drawArcArrows(P_REG,C_REG,3);
+  drawArcArrows(P_OUT,C_OUT,1);
+  ctx.textBaseline="middle";ctx.textAlign="center";
+  ctx.font="800 13.5px system-ui";
+  ctx.fillStyle=C_FIX;ctx.fillText("1  FIXATION",300,156);
+  ctx.fillStyle=C_RED;ctx.fillText("2  REDUCTION",714,374);
+  ctx.fillStyle=C_REG;ctx.fillText("3  REGENERATION",196,440);
+  // supply arriving from the LDR, top-right (next to where it is used)
+  ctx.fillStyle="#8fa8b8";ctx.font="700 9.5px system-ui";ctx.textAlign="right";
+  ctx.fillText(S.dark?"nothing arriving \u2014 dark":"arriving from the light-dependent reaction",914,62);
+  // (the individual ATP / reduced NADP molecules themselves are drawn further down)
+  // CO2 waiting pool (fades in from the top)
+  nameBubble(CG.co2[0],CG.co2[1]-34,"CO\u2082",C_FIX);
+  const nco2=Math.min(P.co2,5);
+  for(let i=0;i<nco2;i++) drawMol(CG.co2[0]-(nco2-1)*11.5+i*23,CG.co2[1],"co2",0.9);
+  ctx.fillStyle="#7d8b96";ctx.font="italic 600 9.5px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText("diffuses in from the air",176,CG.co2[1]+28);
+  for(const c of C.co2in){ ctx.globalAlpha=Math.min(1,c.t*1.6); drawMol(c.x,c.y,"co2",0.9); ctx.globalAlpha=1; }
+
+  // rubisco at the top of the cycle
+  drawRubisco(CG.rubisco[0],CG.rubisco[1],C.ev.some(e=>e.k==="fix"&&e.ph==="react"));
+  // the CO2 bound in front of rubisco, drawn ON TOP of the enzyme so it stays visible
+  if(C.rubCO2){ const f=C.rubCO2.t;
+    const bx=CG.co2[0]+(CG.bindCO2[0]-CG.co2[0])*f, by=CG.co2[1]+(CG.bindCO2[1]-CG.co2[1])*f;
+    if(C.rubCO2.bound){ ctx.strokeStyle=C_FIX;ctx.lineWidth=1.8;
+      ctx.beginPath();ctx.arc(CG.bindCO2[0],CG.bindCO2[1],12,0,6.29);ctx.stroke(); }
+    drawMol(bx,by,"co2",0.9); }
+  // pools — count badge sits to the LEFT of each set of molecules
+  nameCount(158,200,"RuBP (5C)",C_REG,P.rubp);   drawPool(CG.rubp,"rubp",P.rubp,5);
+  nameCount(CG.gp[0],CG.gp[1]-84,"GP (3C)",C_FIX,P.gp);           drawPool(CG.gp,"gp",P.gp,5);
+  drawPool(CG.tp,"tp",P.tp,6); nameCount(CG.tp[0],CG.tp[1]+76,"triose phosphate (3C)",C_RED,P.tp);
+  // output: glucose hexagon, then the label
+  drawHexGlucose(CG.glu[0],CG.glu[1],1);
+  nameCount(CG.gluLabel[0],CG.gluLabel[1],"glucose, amino acids, lipids",C_OUT,P.glucose);
+  // moving molecules
+  for(const e of C.ev){
+    if(e.k==="fix"){
+      if(e.ph==="in"){ const f=Math.min(1,e.t);
+        const a=walk(P_FIX,f); drawMol(a[0],a[1],"rubp",0.86); }
+      else if(e.ph==="react"){ drawMol(448,182,"gp",0.72); }
+      else { const f=Math.min(1,e.t), a=walk(P_GP,f);
+        drawMol(a[0],a[1]-10,"gp",0.86); drawMol(a[0],a[1]+10,"gp",0.86); } }
+    else if(e.k==="red"){ const a=walk(P_RED,e.prog);
+      drawMol(a[0],a[1], (e.ph==="out")?"tp":"gp", 0.86); }
+    else if(e.k==="reg"){ const f=Math.min(1,e.t/1.5), a=walk(P_REG,f);
+      if(f<0.6){ for(let i=0;i<5;i++) drawMol(a[0],a[1]-32+i*16,"tp",0.62); }
+      else { for(let i=0;i<3;i++) drawMol(a[0],a[1]-18+i*18,"rubp",0.72); } }
+    else if(e.k==="out"){ const f=Math.min(1,e.t/1.2), a=walk(P_OUT,f);
+      if(f<0.8){ drawMol(a[0],a[1]-9,"tp",0.7); drawMol(a[0],a[1]+9,"tp",0.7); }
+      else { ctx.globalAlpha=Math.min(1,(f-0.8)*5); drawHexGlucose(a[0],a[1],0.8); ctx.globalAlpha=1; } } }
+  for(const t of C.supply){ const s=SUP[t.k], spent=(t.st==="spent");
+    ctx.globalAlpha = spent ? Math.max(0,1-t.t/1.6) : 1;
+    pill(t.x, t.y, spent?s.spentLab:s.lab, spent?s.spentCol:s.col, 9.5, !spent);
+    ctx.globalAlpha=1; }
+  for(const c of C.curls) drawCurl(c.x,c.y,c.age);
+  if(S.dark) drawCalvinDark(); else if(S.noCO2) drawCalvinNoCO2();
+}
+function drawCalvinNoCO2(){
+  const bx=302, by=242, bw=292, bh=96;
+  ctx.save();ctx.fillStyle="rgba(8,16,24,.92)";ctx.strokeStyle="#3d5262";ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.roundRect(bx,by,bw,bh,10);ctx.fill();ctx.stroke();
+  ctx.textAlign="left";ctx.textBaseline="middle";
+  ctx.fillStyle="#e0b07a";ctx.font="800 12px system-ui";ctx.fillText("\u{1F6AB}  NO CO\u2082",bx+14,by+16);
+  ctx.font="600 10.5px system-ui";ctx.fillStyle="#c3d4e0";
+  ["Rubisco has nothing to fix",
+   "No RuBP is used up",
+   "TP still regenerates RuBP:",
+   "\u2192 RuBP RISES, GP FALLS to zero"].forEach((t,i)=>
+    ctx.fillText((i<3?"\u2022  ":"    ")+t,bx+14,by+40+i*16));
+  ctx.restore();
+}
+function drawCalvinDark(){
+  const bx=302, by=242, bw=292, bh=96;
+  ctx.save();ctx.fillStyle="rgba(8,16,24,.92)";ctx.strokeStyle="#3d5262";ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.roundRect(bx,by,bw,bh,10);ctx.fill();ctx.stroke();
+  ctx.textAlign="left";ctx.textBaseline="middle";
+  ctx.fillStyle="#9fb8c9";ctx.font="800 12px system-ui";ctx.fillText("\u{1F319}  IN THE DARK",bx+14,by+16);
+  ctx.font="600 10.5px system-ui";ctx.fillStyle="#c3d4e0";
+  ["No ATP or reduced NADP arrives",
+   "Reduction and regeneration halt",
+   "Fixation needs no ATP, so it goes on:",
+   "\u2192 GP RISES, RuBP FALLS to zero"].forEach((t,i)=>
+    ctx.fillText((i<3?"\u2022  ":"    ")+t,bx+14,by+40+i*16));
+  ctx.restore();
+}
+
+/* ======================================================================
+   GLYCOLYSIS — the substrate physically travels from station to station,
+   being converted as it goes, with individual ATP / ADP / NAD / reduced
+   NAD molecules moving in and out. AQA stages: phosphorylation of glucose
+   to glucose phosphate using ATP; production of triose phosphate;
+   oxidation of triose phosphate to pyruvate with a net gain of ATP and
+   reduced NAD. The hexose bisphosphate is shown but left unlabelled.
+   ====================================================================== */
+const GG={ molY:270, lblY:316, A:96, B:262, C:428, D:592, E:754, splitFrom:[500,270],
+  rowA:{mol:170, lbl:126, band:222, dir:1, idx:0},
+  rowB:{mol:370, lbl:414, band:318, dir:-1, idx:1},
+  prod:{x:880, hdr:[880,120],
+        rnad:[[880,152],[880,184]], atp:[[880,216],[880,248],[880,280],[880,312]],
+        pyr:[[880,344],[880,376]]} };
+const C_ATP="#8b5cf6", C_ADP="#7d8f9c", C_NAD="#cfc6e6", C_RNAD="#6b21a8", C_ARROW="#e0a021";
+const GSTEPS=[
+  {d:1.0, t:"Glucose, a 6-carbon sugar, is in the cytosol. Two ATP are ready to phosphorylate it."},
+  {d:3.0, t:"Phosphorylation: an ATP transfers a phosphate group to glucose \u2192 glucose phosphate. The ATP is left as ADP."},
+  {d:3.0, t:"A second ATP transfers another phosphate, giving hexose bisphosphate \u2014 6C with a phosphate at each end."},
+  {d:2.8, t:"The hexose bisphosphate breaks in half, giving two triose phosphate molecules \u2014 each 3C with ONE phosphate."},
+  {d:2.6, t:"NAD and an inorganic phosphate move in close to the triose phosphate."},
+  {d:3.4, t:"Hydrogen passes to NAD \u2192 reduced NAD, which leaves to the right. At that same moment the inorganic phosphate joins the substrate, making a 3C bisphosphate."},
+  {d:4.0, t:"Two ADP move in. Each takes one phosphate group straight off the substrate, becoming ATP \u2014 substrate-level phosphorylation."},
+  {d:2.6, t:"With both phosphates gone the substrate is pyruvate (3C). The reduced NAD and ATP wait to the right."},
+  {d:2.8, t:"The 2 pyruvate pass into the mitochondria for the link reaction."}
+];
+let GLY=null;
+function makeGly(){ return {step:0,t:0,glucose:1,tot:{used:0,made:0,rnad:0,pyr:0},
+  cum:{atp:0,rnad:0,pyr:0,done:0},curls:[],
+  queue:[{x:110,y:396}]}; }                       // glucose waiting, fed in from the left
+const GQ={x:110, y0:382, dy:25, shown:4};
+function glySlot(i){ return [GQ.x, GQ.y0+Math.min(i,GQ.shown-1)*GQ.dy]; }
+function gly(){ if(!GLY) GLY=makeGly(); return GLY; }
+function ez(f){ f=Math.max(0,Math.min(1,f)); return f*f*(3-2*f); }
+function seg(f,a,b){ return ez((f-a)/(b-a)); }
+function glyTotals(st){ return { used: st>=3?2: st>=2?1:0, made: st>=7?4:0,
+  rnad: st>=6?2:0, pyr: st>=7?2:0 }; }
+function glyTotalTime(){ return GSTEPS.reduce((a,s)=>a+s.d,0); }
+function glyElapsed(){ const G=gly(); let t=G.t; for(let i=0;i<G.step;i++) t+=GSTEPS[i].d; return t; }
+function glySeek(frac){ const G=gly(); let t=Math.max(0,Math.min(1,frac))*glyTotalTime();
+  for(let i=0;i<GSTEPS.length;i++){ if(t<GSTEPS[i].d||i===GSTEPS.length-1){ G.step=i; G.t=Math.min(t,GSTEPS[i].d-0.001); break; } t-=GSTEPS[i].d; }
+  G.tot=glyTotals(G.step); }
+function glyRate(){ const G=gly(); return Math.min(3.2, 0.85+0.35*Math.max(1,G.queue.length)); }
+function updateGly(dt){ const G=gly(), sp=S.speed*glyRate();
+  if(S.playing){ G.t+=dt*sp;
+    if(G.t>=GSTEPS[G.step].d){ G.t=0; G.step++;
+      if(G.step>=GSTEPS.length){ G.step=0;                       // a whole glucose finished
+        const n=Math.max(1,G.queue.length);
+        G.cum.atp+=2*n; G.cum.rnad+=2*n; G.cum.pyr+=2*n; G.cum.done+=n;
+        G.queue.shift(); G.queue.push({x:-56,y:GQ.y0+(GQ.shown-1)*GQ.dy}); } } }   // next one streams in
+  for(let i=0;i<G.queue.length;i++){ const q=G.queue[i], t=glySlot(i);
+    q.x += (t[0]-q.x)*Math.min(1,dt*sp*1.9);
+    q.y += (t[1]-q.y)*Math.min(1,dt*sp*2.6); }
+  G.tot=glyTotals(G.step);
+  for(const c of G.curls) c.age+=dt*sp*1.4; G.curls=G.curls.filter(c=>c.age<1); }
+function drawRedProton(x,y){ ctx.save();
+  ctx.beginPath();ctx.arc(x,y,6.6,0,6.29);ctx.fillStyle="#e03a2f";ctx.fill();
+  ctx.strokeStyle="#ff9d95";ctx.lineWidth=1.3;ctx.stroke();
+  ctx.fillStyle="#fff";ctx.font="800 8px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText("H\u207a",x,y+0.5);ctx.restore(); }
+function drawP(x,y,sc,al){ sc=sc||1; ctx.save(); if(al!=null)ctx.globalAlpha=al;
+  ctx.beginPath();ctx.arc(x,y,6.4*sc,0,6.29);ctx.fillStyle=PHOS;ctx.fill();
+  ctx.strokeStyle="rgba(10,25,35,.55)";ctx.lineWidth=1.1;ctx.stroke();
+  ctx.fillStyle="#fff";ctx.font="800 "+(8*sc)+"px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText("P",x,y+0.5);ctx.restore(); }
+function arrowG(x1,y1,x2,y2,hot){
+  ctx.save();const col=hot?C_ARROW:"#4a6272";ctx.strokeStyle=col;ctx.fillStyle=col;
+  ctx.lineWidth=hot?3:2.2;ctx.lineCap="round";
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  const a=Math.atan2(y2-y1,x2-x1),h=hot?11:9;
+  ctx.beginPath();ctx.moveTo(x2,y2);
+  ctx.lineTo(x2-Math.cos(a-0.5)*h,y2-Math.sin(a-0.5)*h);
+  ctx.lineTo(x2-Math.cos(a+0.5)*h,y2-Math.sin(a+0.5)*h);ctx.closePath();ctx.fill();ctx.restore(); }
+function drawGly(){
+  if(S.glyAll){ drawGlyAll(); return; }
+  const G=gly(), st=G.step, f=Math.min(1,G.t/GSTEPS[st].d);
+  const MY=GG.molY, LY=GG.lblY, RA=GG.rowA, RB=GG.rowB, L=(p,q,u)=>p+(q-p)*u;
+  title("Glycolysis","Cytosol \u00b7 substrate-level phosphorylation");
+  arrowG(133,LY,194,LY,st===1);
+  arrowG(330,LY,354,LY,st===2);
+  arrowG(GG.splitFrom[0],GG.splitFrom[1],546,RA.lbl+22,st===3);     // symmetric pair
+  arrowG(GG.splitFrom[0],GG.splitFrom[1],546,RB.lbl-22,st===3);
+  arrowG(658,RA.lbl,714,RA.lbl,st>=4); arrowG(658,RB.lbl,714,RB.lbl,st>=4);
+  nameBubble(GG.A,LY,"glucose",C_ARROW);
+  nameBubble(GG.B,LY,"glucose phosphate",C_ARROW);
+  nameBubble(GG.C,LY,"hexose bisphosphate",C_ARROW);
+  nameBubble(GG.D,RA.lbl,"triose phosphate","#159b8a");
+  nameBubble(GG.D,RB.lbl,"triose phosphate","#159b8a");
+  nameBubble(GG.E,RA.lbl,"pyruvate","#6d28d9");
+  nameBubble(GG.E,RB.lbl,"pyruvate","#6d28d9");
+  if(st===0){ pill(170,214,"ATP",C_ATP,10); pill(346,214,"ATP",C_ATP,10);
+    ctx.fillStyle="#8fa8b8";ctx.font="italic 600 9.5px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillText("ready to phosphorylate",285,180); }
+  if(st>=2) pill(150,214,"ADP",C_ADP,10);
+  if(st>=3) pill(332,214,"ADP",C_ADP,10);
+  if(st===0) drawMol(GG.A,MY,"glucose",0.9);
+  else if(st===1){ const u=ez(f), x=L(GG.A,GG.B,u);
+    drawMol(x,MY, f<0.55?"glucose":"g1p",0.9);
+    pill(346,214,"ATP",C_ATP,10);
+    if(f<0.5) pill(170,214,"ATP",C_ATP,10);
+    else { const pu=seg(f,0.5,0.72);
+      if(pu<1) drawP(L(176,x+30,pu), L(214,MY,pu), 0.95);
+      pill(L(170,126,seg(f,0.5,0.9)),214,"ADP",C_ADP,10); } }
+  else if(st===2){ const u=ez(f), x=L(GG.B,GG.C,u);
+    drawMol(x,MY, f<0.55?"g1p":"hbp",0.9);
+    if(f<0.5) pill(346,214,"ATP",C_ATP,10);
+    else { const pu=seg(f,0.5,0.72);
+      if(pu<1) drawP(L(352,x-34,pu), L(214,MY,pu), 0.95);
+      pill(L(346,302,seg(f,0.5,0.9)),214,"ADP",C_ADP,10); } }
+  else if(st===3){                                   // hexose bisphosphate breaks in half
+    const sepU=seg(f,0.05,0.30), mv=seg(f,0.30,1);
+    const lx0=401.7-16*sepU, rx0=453.9+16*sepU;
+    const xa = mv<0.42 ? L(lx0,540,mv/0.42) : L(540,GG.D,(mv-0.42)/0.58);
+    const xb = mv<0.42 ? L(rx0,540,mv/0.42) : L(540,GG.D,(mv-0.42)/0.58);
+    const ya = mv<0.42 ? MY : L(MY,RA.mol,(mv-0.42)/0.58);
+    const yb = mv<0.42 ? MY : L(MY,RB.mol,(mv-0.42)/0.58);
+    drawMol(xa,ya,"tpL",0.9); drawMol(xb,yb,"tp3",0.9); }
+  else { drawOxRow(st,f,RA); drawOxRow(st,f,RB); }
+  if(st===8){ ctx.fillStyle="#9fb8c9";ctx.font="italic 700 11px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillText("\u2192 into the mitochondria for the link reaction",640,462); }
+  if(st>=5){ ctx.save();ctx.fillStyle="#8fa8b8";ctx.font="700 9.5px system-ui";
+    ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("products",GG.prod.hdr[0],GG.prod.hdr[1]);ctx.restore(); }
+  for(const c of G.curls) drawCurl(c.x,c.y,c.age);
+  ctx.save();ctx.textAlign="left";ctx.textBaseline="middle";ctx.font="700 10.5px system-ui";
+  ctx.fillStyle="#8fa8b8";
+  ctx.fillText("this glucose \u2014 ATP used "+G.tot.used+"   made "+G.tot.made+"   net +"+(G.tot.made-G.tot.used)+
+    "   reduced NAD "+G.tot.rnad+"   pyruvate "+G.tot.pyr, 76, 528);
+  ctx.fillStyle="#c3d4e0";
+  ctx.fillText("completed "+G.cum.done+
+    "   \u2192 running totals: ATP "+G.cum.atp+"   reduced NAD "+G.cum.rnad+"   pyruvate "+G.cum.pyr, 76, 548);
+  ctx.restore(); }
+/* One row from the split onwards, in the order requested:
+   NAD + Pi arrive -> NAD reduced and leaves AS the Pi joins -> 2 ADP each
+   take a phosphate off -> substrate finally becomes pyruvate. */
+function drawOxRow(st,f,R){
+  const L=(p,q,u)=>p+(q-p)*u, D=GG.D, d=R.dir, B=R.band, G=gly();
+  const nadNear=[D, R.mol+d*17], piNear=[D-62, R.mol];      // close enough to TOUCH the substrate
+  const PR=GG.prod, rn=PR.rnad[R.idx], pa=[PR.atp[R.idx*2], PR.atp[R.idx*2+1]];
+  if(st===4){ const u=seg(f,0,0.55);
+    ctx.globalAlpha=Math.min(1,f*2.2);
+    pill(L(700,nadNear[0],u), L(B,nadNear[1],u), "NAD", C_NAD, 10, true);
+    pill(L(470,piNear[0],u), L(B,piNear[1],u), "Pi", PHOS, 9.5);
+    ctx.globalAlpha=1;
+    drawMol(D,R.mol,"tp3",0.9); return; }
+  if(st===5){ const molX=L(D,D+44,ez(f));
+    if(f<0.52){ pill(nadNear[0],nadNear[1],"NAD",C_NAD,10,true); pill(piNear[0],piNear[1],"Pi",PHOS,9.5);
+      drawMol(molX,R.mol,"tp3",0.9);
+      if(f>=0.22){ const hu=seg(f,0.22,0.48);                       // a proton crosses from substrate to NAD
+        drawRedProton(L(molX+14,nadNear[0]-4,hu), L(R.mol+d*7,nadNear[1]-d*8,hu)); }
+      if(f>0.48&&f<0.52) G.curls.push({x:molX+26,y:R.mol+d*14,age:0.5}); }
+    else { const u=seg(f,0.52,0.98);                                // only NOW does it become reduced NAD
+      pill(L(nadNear[0],rn[0],u), L(nadNear[1],rn[1],u), "reduced NAD", C_RNAD, 10);
+      const pu=seg(f,0.52,0.72);
+      if(pu<1){ drawMol(molX,R.mol,"tp3",0.9); drawP(L(piNear[0],molX-32,pu), R.mol, 0.95); }
+      else drawMol(molX,R.mol,"tp3b",0.9); }
+    return; }
+  if(st===6){ const molX=L(D+44,D+124,ez(f));
+    pill(rn[0],rn[1],"reduced NAD",C_RNAD,10);
+    drawMol(molX,R.mol, f<0.42?"tp3b":f<0.74?"tp3":"pyr", 0.9);
+    const slots=[{in0:0.02,in1:0.18,p0:0.24,p1:0.42,o0:0.44,o1:0.68,to:pa[0],dx:-38},
+                 {in0:0.30,in1:0.46,p0:0.54,p1:0.74,o0:0.76,o1:0.98,to:pa[1],dx:38}];
+    slots.forEach(sl=>{
+      if(f<sl.o0){ const ia=Math.min(1,seg(f,sl.in0,sl.in1));
+        ctx.globalAlpha=ia; pill(molX+sl.dx, R.mol+d*42, "ADP", C_ADP, 10); ctx.globalAlpha=1;
+        if(f>=sl.p0&&f<sl.p1){ const u=seg(f,sl.p0,sl.p1);          // phosphate comes off the substrate
+          drawP(L(molX+sl.dx*0.45, molX+sl.dx, u), L(R.mol, R.mol+d*42, u), 0.95); } }
+      else { const u=seg(f,sl.o0,sl.o1);                            // and floats to the product list
+        pill(L(molX+sl.dx,sl.to[0],u), L(R.mol+d*42,sl.to[1],u), "ATP", C_ATP, 10); } });
+    return; }
+  // steps 7-8: the products sit listed down the right edge
+  pill(rn[0],rn[1],"reduced NAD",C_RNAD,10);
+  for(const a of pa) pill(a[0],a[1],"ATP",C_ATP,10);
+  const py=GG.prod.pyr[R.idx];
+  if(st===7){ drawMol(L(D+124,GG.E,ez(f)),R.mol,"pyr",0.9); }
+  else { const u=ez(f);                                             // joins the product list and stays
+    drawMol(L(GG.E,py[0],u), L(R.mol,py[1],u), "pyr", 0.9); }
+}
+/* "All substrates in position": the ordinary frame, but with the substrate
+   shown at the end of every step at the same time. */
+function drawGlyAll(){
+  const RA=GG.rowA, RB=GG.rowB, MY=GG.molY, LY=GG.lblY, PR=GG.prod;
+  title("Glycolysis","Cytosol \u00b7 every stage shown at once");
+  arrowG(133,LY,194,LY,true); arrowG(330,LY,354,LY,true);
+  arrowG(GG.splitFrom[0],GG.splitFrom[1],546,RA.lbl+22,true);
+  arrowG(GG.splitFrom[0],GG.splitFrom[1],546,RB.lbl-22,true);
+  arrowG(658,RA.lbl,714,RA.lbl,true); arrowG(658,RB.lbl,714,RB.lbl,true);
+  nameBubble(GG.A,LY,"glucose",C_ARROW);
+  nameBubble(GG.B,LY,"glucose phosphate",C_ARROW);
+  nameBubble(GG.C,LY,"hexose bisphosphate",C_ARROW);
+  nameBubble(GG.D,RA.lbl,"triose phosphate","#159b8a");
+  nameBubble(GG.D,RB.lbl,"triose phosphate","#159b8a");
+  nameBubble(GG.E,RA.lbl,"pyruvate","#6d28d9");
+  nameBubble(GG.E,RB.lbl,"pyruvate","#6d28d9");
+  // the substrate at the end of every step, all at once
+  drawMol(GG.A,MY,"glucose",0.9);
+  drawMol(GG.B,MY,"g1p",0.9);
+  drawMol(GG.C,MY,"hbp",0.9);
+  for(const R of [RA,RB]){ drawMol(GG.D,R.mol,"tp3b",0.9); drawMol(GG.E,R.mol,"pyr",0.9); }
+  for(const q of PR.pyr) drawMol(q[0],q[1],"pyr",0.9);
+  // the coenzymes at the points where they act
+  pill(170,214,"ATP",C_ATP,10); pill(346,214,"ATP",C_ATP,10);
+  for(const R of [RA,RB]){ const d=R.dir;
+    pill(GG.D,R.mol+d*38,"NAD",C_NAD,10,true);
+    pill(GG.D-62,R.mol,"Pi",PHOS,9.5);
+    pill(GG.D+86,R.mol+d*42,"ADP",C_ADP,10); }
+  ctx.save();ctx.fillStyle="#8fa8b8";ctx.font="700 9.5px system-ui";
+  ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("products",PR.hdr[0],PR.hdr[1]);ctx.restore();
+  for(const r of PR.rnad) pill(r[0],r[1],"reduced NAD",C_RNAD,10);
+  for(const a of PR.atp) pill(a[0],a[1],"ATP",C_ATP,10);
+  ctx.save();ctx.textAlign="left";ctx.textBaseline="middle";ctx.font="700 11px system-ui";
+  ctx.fillStyle="#c3d4e0";
+  ctx.fillText("Per glucose:  2 ATP used  \u00b7  4 ATP made (net +2)  \u00b7  2 reduced NAD  \u00b7  2 pyruvate",76,548);
+  ctx.restore();
+}
+function curveArrow(x1,y1,cx,cy,x2,y2,col){
+  ctx.save();ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=2.4;ctx.lineCap="round";
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.quadraticCurveTo(cx,cy,x2,y2);ctx.stroke();
+  const a=Math.atan2(y2-cy,x2-cx),h=9;
+  ctx.beginPath();ctx.moveTo(x2,y2);
+  ctx.lineTo(x2-Math.cos(a-0.5)*h,y2-Math.sin(a-0.5)*h);
+  ctx.lineTo(x2-Math.cos(a+0.5)*h,y2-Math.sin(a+0.5)*h);ctx.closePath();ctx.fill();ctx.restore(); }
+/* "All substrates in position": a single static reference diagram of the
+   oxidation of one triose phosphate, with curly arrows for the formation of
+   reduced NAD and ATP. */
+
+/* ======================================================================
+   THE LINK REACTION — one pathway shown. The pyruvate physically loses a
+   carbon as CO2, meets NAD (which is reduced on contact and leaves), then
+   the 2C acetate joins coenzyme A and the whole thing turns purple.
+   ====================================================================== */
+const LK={ molY:262, lblY:322,
+  xStart:170, xDecarb:340, xNad:500, xCoA:690, xEnd:812,
+  co2Up:[352,150], nadFrom:[452,118], nadY:248, rnadTo:[712,432],
+  coaFrom:[742,118], coaGap:39,
+  q:{x:110,y0:382,dy:25,shown:4} };
+const LSTEPS=[
+  {d:1.2, t:"Pyruvate (3C) enters the mitochondrial matrix."},
+  {d:2.6, t:"NAD moves in and makes contact with the pyruvate."},
+  {d:3.6, t:"Decarboxylation and oxidation happen together: one carbon leaves as CO\u2082 while hydrogen passes to the NAD. A 2C acetate group is left."},
+  {d:2.6, t:"The reduced NAD leaves the reaction."},
+  {d:3.0, t:"Coenzyme A moves in and joins the 2C acetate."},
+  {d:2.4, t:"Acetyl coenzyme A is formed \u2014 the product of the link reaction. No ATP is made."},
+  {d:2.6, t:"Acetyl CoA passes on into the Krebs cycle."}
+];
+let LNK=null;
+function makeLnk(){ return {step:0,t:0,curls:[],cum:{co2:0,rnad:0,acoa:0,done:0},
+  queue:[{x:LK.q.x,y:LK.q.y0}]}; }
+function lnk(){ if(!LNK) LNK=makeLnk(); return LNK; }
+function lnkSlot(i){ return [LK.q.x, LK.q.y0+Math.min(i,LK.q.shown-1)*LK.q.dy]; }
+function lnkTotals(st){ return { co2: st>=3?1:0, rnad: st>=3?1:0, acoa: st>=5?1:0 }; }
+function lnkTotalTime(){ return LSTEPS.reduce((a,s)=>a+s.d,0); }
+function lnkElapsed(){ const K=lnk(); let t=K.t; for(let i=0;i<K.step;i++) t+=LSTEPS[i].d; return t; }
+function lnkSeek(fr){ const K=lnk(); let t=Math.max(0,Math.min(1,fr))*lnkTotalTime();
+  for(let i=0;i<LSTEPS.length;i++){ if(t<LSTEPS[i].d||i===LSTEPS.length-1){ K.step=i; K.t=Math.min(t,LSTEPS[i].d-0.001); break; } t-=LSTEPS[i].d; } }
+function lnkRate(){ return Math.min(3.2, 0.85+0.35*Math.max(1,lnk().queue.length)); }
+function updateLnk(dt){ const K=lnk(), sp=S.speed*lnkRate();
+  if(S.playing){ K.t+=dt*sp;
+    if(K.t>=LSTEPS[K.step].d){ K.t=0; K.step++;
+      if(K.step>=LSTEPS.length){ K.step=0; const n=Math.max(1,K.queue.length);
+        K.cum.co2+=n; K.cum.rnad+=n; K.cum.acoa+=n; K.cum.done+=n;
+        K.queue.shift(); K.queue.push({x:-56,y:LK.q.y0+(LK.q.shown-1)*LK.q.dy}); } } }
+  for(let i=0;i<K.queue.length;i++){ const q=K.queue[i], t=lnkSlot(i);
+    q.x+=(t[0]-q.x)*Math.min(1,dt*sp*1.9); q.y+=(t[1]-q.y)*Math.min(1,dt*sp*2.6); }
+  for(const c of K.curls) c.age+=dt*sp*1.4; K.curls=K.curls.filter(c=>c.age<1); }
+function drawCoA(x,y,sc,purple){ sc=sc||1; const r=13*sc;
+  ctx.save();
+  ctx.fillStyle=purple?"#6d28d9":"#d94848";ctx.strokeStyle=purple?"#b79bf5":"#f0a0a0";ctx.lineWidth=2*sc;
+  ctx.beginPath();ctx.roundRect(x-r,y-r,r*2,r*2,5*sc);ctx.fill();ctx.stroke();
+  ctx.fillStyle="#fff";ctx.font="800 "+(9.5*sc)+"px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText("CoA",x,y+0.5);ctx.restore(); }
+function drawAcetylCoA(x,y,sc){ sc=sc||1;
+  ctx.save();ctx.strokeStyle="rgba(210,225,235,.55)";ctx.lineWidth=3.4*sc;ctx.lineCap="round";
+  ctx.beginPath();ctx.moveTo(x-14*sc,y);ctx.lineTo(x+22*sc,y);ctx.stroke();ctx.restore();
+  drawMol(x-7*sc,y,"acetP",sc); drawCoA(x+34*sc,y,sc,true); }
+function drawLnk(){
+  const K=lnk(), st=K.step, f=Math.min(1,K.t/LSTEPS[st].d), L=(p,q,u)=>p+(q-p)*u;
+  const MY=LK.molY, LY=LK.lblY;
+  title("The link reaction","Mitochondrial matrix");
+  arrowG(240,LY,365,LY,st===1);
+  arrowG(500,LY,725,LY,st>=4);
+  nameBubble(170,LY,"pyruvate (3C)","#6cbdf0",13);
+  nameBubble(430,LY,"acetate (2C)","#e0a021",13);
+  nameBubble(812,LY,"acetyl coenzyme A","#6d28d9",13);
+  // ---- the substrate ----
+  let x=LK.xStart;
+  if(st===0){ drawMol(x,MY,"pyrIn",1.15); }
+  else if(st===1){ x=L(LK.xStart,LK.xDecarb,ez(f));       // NAD comes down and touches the pyruvate
+    drawMol(x,MY,"pyrIn",1.15);
+    const u=seg(f,0.05,0.92);
+    pill(L(LK.nadFrom[0],x,u), L(LK.nadFrom[1],LK.nadY,u), "NAD", C_NAD, 10, true); }
+  else if(st===2){ x=L(LK.xDecarb,LK.xNad,ez(f));         // CO2 off AND NAD reduced, near-simultaneously
+    const kind = f<0.32 ? "pyrIn" : f<0.50 ? "acetB" : "acetY";
+    drawMol(f<0.32?x:x-8, MY, kind, 1.15);
+    if(f>=0.18){ const u=seg(f,0.18,0.86);
+      const cx=L(x+17,LK.co2Up[0],u), cy=L(MY,LK.co2Up[1],u);
+      ctx.save();ctx.globalAlpha=Math.max(0,1-u*0.3);
+      ctx.beginPath();ctx.arc(cx,cy,7.4,0,6.29);ctx.fillStyle=CARB;ctx.fill();   // only the CO2 is grey
+      ctx.strokeStyle="rgba(10,25,35,.55)";ctx.lineWidth=1.1;ctx.stroke();
+      ctx.fillStyle="#9fc4d6";ctx.font="800 11px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+      ctx.fillText("CO\u2082",cx,cy-20);ctx.restore(); }
+    if(f<0.44) pill(x,LK.nadY,"NAD",C_NAD,10,true);
+    else pill(x,LK.nadY,"reduced NAD",C_RNAD,10);
+    if(f>0.40&&f<0.46) K.curls.push({x:x+34,y:MY+16,age:0.5}); }
+  else if(st===3){ x=LK.xNad; drawMol(x-8,MY,"acetY",1.15); drawCO2Parked();
+    const u=seg(f,0.05,0.95);                              // the reduced NAD leaves below
+    pill(L(x,LK.rnadTo[0],u), L(LK.nadY,LK.rnadTo[1],u), "reduced NAD", C_RNAD, 10); }
+  else if(st===4){ x=L(LK.xNad,LK.xCoA,ez(f)); drawMol(x-8,MY,"acetY",1.15); drawCO2Parked();
+    pill(LK.rnadTo[0],LK.rnadTo[1],"reduced NAD",C_RNAD,10);
+    const u=seg(f,0.15,1);                                 // CoA moves in and touches the acetate
+    drawCoA(L(LK.coaFrom[0],x+LK.coaGap,u), L(LK.coaFrom[1],MY,u), 1.15, false); }
+  else if(st===5){ x=L(LK.xCoA,LK.xEnd,ez(f)); drawCO2Parked();
+    pill(LK.rnadTo[0],LK.rnadTo[1],"reduced NAD",C_RNAD,10);
+    drawAcetylCoA(x,MY,1.15); }                            // now purple: the product
+  else { const u=ez(f), al=Math.max(0,1-Math.max(0,f-0.35)/0.65); drawCO2Parked();
+    pill(LK.rnadTo[0],LK.rnadTo[1],"reduced NAD",C_RNAD,10);
+    ctx.globalAlpha=al; drawAcetylCoA(L(LK.xEnd,946,u),MY,1.15); ctx.globalAlpha=1;
+    ctx.fillStyle="#9fb8c9";ctx.font="italic 700 11px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillText("\u2192 into the Krebs cycle",700,460); }
+  for(const c of K.curls) drawCurl(c.x,c.y,c.age);
+  const t=lnkTotals(st);
+  ctx.save();ctx.textAlign="left";ctx.textBaseline="middle";ctx.font="700 10.5px system-ui";
+  ctx.fillStyle="#8fa8b8";
+  ctx.fillText("this pyruvate \u2014 CO\u2082 "+t.co2+"   reduced NAD "+t.rnad+"   acetyl CoA "+t.acoa+"   ATP 0", 76, 496);
+  ctx.fillStyle="#c3d4e0";
+  ctx.fillText("completed "+K.cum.done+
+    "   \u2192 running totals: CO\u2082 "+K.cum.co2+"   reduced NAD "+K.cum.rnad+"   acetyl CoA "+K.cum.acoa, 76, 516);
+  ctx.restore(); }
+function drawCO2Parked(){ ctx.save();
+  ctx.beginPath();ctx.arc(LK.co2Up[0],LK.co2Up[1],7.4,0,6.29);ctx.fillStyle=CARB;ctx.globalAlpha=0.65;ctx.fill();
+  ctx.globalAlpha=1;ctx.fillStyle="#9fc4d6";ctx.font="800 11px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText("CO\u2082",LK.co2Up[0],LK.co2Up[1]-20);ctx.restore(); }
+
+/* ======================================================================
+   THE KREBS CYCLE — acetyl CoA enters at the TOP, CoA is released and
+   recycled, and the substrate travels round a colour-coded ring losing
+   two carbons as CO2. Purple is reserved for the key products (reduced
+   NAD and ATP); the cycle intermediates stay grey. FAD is left out.
+   ====================================================================== */
+const KG={ cx:470, cy:296, rx:215, ry:126,
+  aOAA:250*Math.PI/180, aWAIT:234*Math.PI/180, aCIT:320*Math.PI/180,
+  aC5:30*Math.PI/180, aC4:130*Math.PI/180,
+  entry:[396,96], coaOut:[812,104],
+  prod:{x:854,y0:152,dy:38}, q:{x0:326,y:84,dx:58,shown:3} };
+const C_OX="#159b8a", C_KREG="#3d8fd6", C_OAA="#e6c84f";
+function ovalAt(x){ return {x, y:LG.memY, rx:LG.ovalRx, ry:LG.ovalRy}; }
+function kPt(a){ return [KG.cx+KG.rx*Math.cos(a), KG.cy+KG.ry*Math.sin(a)]; }
+function kArc(a0,a1,n){ const o=[]; let d=a1-a0; while(d<0)d+=6.283;
+  for(let i=0;i<=n;i++) o.push(kPt(a0+d*i/n)); return o; }
+const KP=[kArc(KG.aOAA,KG.aCIT,14), kArc(KG.aCIT,KG.aC5,12),
+          kArc(KG.aC5,KG.aC4,12), kArc(KG.aC4,KG.aWAIT,14), kArc(KG.aWAIT,KG.aOAA,6)];
+const KSTA=[kPt(KG.aOAA), kPt(KG.aCIT), kPt(KG.aC5), kPt(KG.aC4)], KWAIT=kPt(KG.aWAIT);
+const KSTEPS=[
+  {d:2.4, t:"Acetyl CoA (2C) comes down from the top and touches the oxaloacetate (4C) waiting at the front of the cycle."},
+  {d:2.8, t:"Condensation: the two join to form citrate \u2014 a 6C chain. Coenzyme A is released and reused."},
+  {d:4.2, t:"NAD moves out from the matrix towards the citrate, the 5C and the 4C. ADP and Pi move in on the 4C."},
+  {d:5.4, t:"Two carbons come away as CO\u2082 and drift into the matrix. Three NAD are reduced, and ADP + Pi join on the 4C to make ATP."},
+  {d:3.0, t:"Each molecule moves round to the next position, and the waiting oxaloacetate takes its place at the front."},
+  {d:2.6, t:"The products leave the matrix. Oxaloacetate is regenerated, so the cycle can turn again."}
+];
+let KRB=null;
+function makeKrb(){ return {step:0,t:0,curls:[],cum:{acoa:0,co2:0,rnad:0,atp:0,turns:0},
+  queue:[{x:KG.q.x0,y:KG.q.y},{x:KG.q.x0+KG.q.dx,y:KG.q.y}]}; }
+function krb(){ if(!KRB) KRB=makeKrb(); return KRB; }
+function krbSlot(i){ return [KG.q.x0+Math.min(i,KG.q.shown-1)*KG.q.dx, KG.q.y]; }
+function krbTotalTime(){ return KSTEPS.reduce((a,s)=>a+s.d,0); }
+function krbElapsed(){ const K=krb(); let t=K.t; for(let i=0;i<K.step;i++) t+=KSTEPS[i].d; return t; }
+function krbSeek(fr){ const K=krb(); let t=Math.max(0,Math.min(1,fr))*krbTotalTime();
+  for(let i=0;i<KSTEPS.length;i++){ if(t<KSTEPS[i].d||i===KSTEPS.length-1){ K.step=i; K.t=Math.min(t,KSTEPS[i].d-0.001); break; } t-=KSTEPS[i].d; } }
+function krbRate(){ return Math.min(3.2, 0.85+0.35*Math.max(1,krb().queue.length)); }
+function updateKrb(dt){ const K=krb(), sp=S.speed*krbRate();
+  if(S.playing){ K.t+=dt*sp;
+    if(K.t>=KSTEPS[K.step].d){ K.t=0; K.step++;
+      if(K.step>=KSTEPS.length){ K.step=0; const n=Math.max(1,K.queue.length);
+        K.cum.turns+=n; K.cum.acoa+=n; K.cum.co2+=2*n; K.cum.rnad+=3*n; K.cum.atp+=1*n;
+        K.queue.shift(); K.queue.push({x:krbSlot(KG.q.shown-1)[0],y:-40}); } } }
+  for(let i=0;i<K.queue.length;i++){ const q=K.queue[i], t=krbSlot(i);
+    q.x+=(t[0]-q.x)*Math.min(1,dt*sp*2.2); q.y+=(t[1]-q.y)*Math.min(1,dt*sp*2.2); }
+  for(const c of K.curls) c.age+=dt*sp*1.4; K.curls=K.curls.filter(c=>c.age<1); }
+function kArrows(path,col,n){
+  ctx.save();ctx.strokeStyle=col;ctx.lineWidth=2.6;ctx.setLineDash([7,7]);
+  ctx.beginPath();path.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=col;
+  for(let k=1;k<=n;k++){ const t=k/(n+1);
+    const a=walk(path,Math.max(0,t-0.02)), b=walk(path,Math.min(1,t+0.02));
+    const ang=Math.atan2(b[1]-a[1],b[0]-a[0]);
+    ctx.beginPath();ctx.moveTo(b[0]+Math.cos(ang)*8,b[1]+Math.sin(ang)*8);
+    ctx.lineTo(b[0]-Math.cos(ang-0.55)*8,b[1]-Math.sin(ang-0.55)*8);
+    ctx.lineTo(b[0]-Math.cos(ang+0.55)*8,b[1]-Math.sin(ang+0.55)*8);ctx.closePath();ctx.fill(); }
+  ctx.restore(); }
+function kProdSlot(i){ return [KG.prod.x, KG.prod.y0+i*KG.prod.dy]; }
+/* acetyl CoA drawn with proper bonds joining the symbols */
+function drawAcetylUnit(x,y,sc,blue){ sc=sc||1;
+  const g=14.5*sc, cx1=x-g/2, cx2=x+g/2, sq=x+g/2+20*sc;
+  ctx.save();ctx.strokeStyle="rgba(210,225,235,.7)";ctx.lineWidth=3.2*sc;ctx.lineCap="round";
+  ctx.beginPath();ctx.moveTo(cx1,y);ctx.lineTo(cx2,y);ctx.stroke();          // C–C bond
+  ctx.beginPath();ctx.moveTo(cx2,y);ctx.lineTo(sq-13*sc,y);ctx.stroke();     // bond to CoA
+  ctx.restore();
+  for(const cx of [cx1,cx2]){ ctx.beginPath();ctx.arc(cx,y,6.4*sc,0,6.29);
+    ctx.fillStyle=blue?"#6cbdf0":"#6cbdf0";ctx.fill();
+    ctx.strokeStyle="rgba(10,25,35,.55)";ctx.lineWidth=1.1*sc;ctx.stroke(); }
+  drawCoA(sq,y,sc*0.95,false); }
+function ringKind(i,st,f){
+  if(st>=5) return ["oaa","cit6","c5","c4"][i];             // steady state once everything has moved on
+  const decarb = st===4 || (st===3 && f>=0.12);
+  const regen  = st===4 || (st===3 && f>=0.62);
+  if(i===0) return (st>=2 || (st===1 && f>=0.45)) ? "cit6" : "oaa";
+  if(i===1) return decarb ? "c5" : "cit6";
+  if(i===2) return decarb ? "c4" : "c5";
+  return regen ? "oaa" : "c4";
+}
+function drawKrb(){
+  const K=krb(), st=K.step, f=Math.min(1,K.t/KSTEPS[st].d), L=(p,q,u)=>p+(q-p)*u;
+  title("The Krebs cycle","Mitochondrial matrix \u00b7 substrate-level phosphorylation");
+  kArrows(KP[0],"#e0a021",1); kArrows(KP[1],C_OX,2); kArrows(KP[2],C_OX,2);
+  kArrows(KP[3],C_KREG,2); kArrows(KP[4],C_KREG,1);
+  ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="800 12.5px system-ui";
+  ctx.fillStyle=C_OX;ctx.fillText("DECARBOXYLATION & OXIDATION",646,462);
+  ctx.fillStyle=C_KREG;ctx.fillText("REGENERATION",176,300);
+  ctx.fillStyle=C_ATP;ctx.fillText("SUBSTRATE-LEVEL PHOSPHORYLATION",300,500);
+  nameBubble(286,140,"oxaloacetate (4C)",C_OAA,12);
+  nameBubble(752,190,"citrate (6C)","#22aaf5",12);
+  nameBubble(752,376,"5C",C_OX,12);
+  nameBubble(258,432,"4C",C_OX,12);
+  // products this turn, collecting on the right
+  ctx.save();ctx.fillStyle="#8fa8b8";ctx.font="700 9.5px system-ui";ctx.textAlign="center";
+  ctx.fillText("products this turn",KG.prod.x,KG.prod.y0-28);ctx.restore();
+  drawKrbProducts(st,f);
+  // ---- the five molecules on the ring ----
+  if(st===4){ const u=ez(f);
+    drawMol(...walk(KP[0],u),"cit6",0.95);
+    drawMol(...walk(KP[1],u),"c5",0.95);
+    drawMol(...walk(KP[2],u),"c4",0.95);
+    drawMol(...walk(KP[3],u),"oaa",0.95);
+    drawMol(...walk(KP[4],u),"oaa",0.95); }
+  else {
+    for(let i=0;i<4;i++) drawMol(KSTA[i][0],KSTA[i][1],ringKind(i,st,f),0.95);
+    drawMol(KWAIT[0],KWAIT[1],"oaa",0.95);
+    if(st<=1) drawKrbEntry(st,f);
+    if(st===2||st===3) drawKrbCoenzymes(st,f); }
+  for(const c of K.curls) drawCurl(c.x,c.y,c.age);
+  ctx.save();ctx.textAlign="left";ctx.textBaseline="middle";ctx.font="700 11px system-ui";
+  ctx.fillStyle="#c3d4e0";
+  ctx.fillText("acetyl CoA used "+K.cum.acoa+"    turns completed "+K.cum.turns+
+    "    CO\u2082 "+K.cum.co2+"    reduced NAD "+K.cum.rnad+"    ATP "+K.cum.atp, 76, 552);
+  ctx.restore(); }
+function drawKrbEntry(st,f){
+  const K=krb(), L=(a,b,u)=>a+(b-a)*u, tgt=KSTA[0];
+  if(st===0){ const u=seg(f,0.1,1);
+    drawAcetylUnit(L(KG.entry[0],tgt[0]+2,u), L(KG.entry[1],tgt[1]-30,u), 0.9);
+    if(f>0.92) K.curls.push({x:tgt[0]+30,y:tgt[1]-22,age:0.5}); }
+  else { const u=seg(f,0,0.45);                                   // fuses into the 6C chain
+    if(f<0.45) drawAcetylUnit(L(tgt[0]+2,tgt[0],u), L(tgt[1]-30,tgt[1]-14,u), 0.9);
+    const cu=seg(f,0.45,1);                                        // CoA released to the top right, fading
+    if(f>=0.45){ ctx.globalAlpha=Math.max(0,1-cu); 
+      drawCoA(L(tgt[0]+34,KG.coaOut[0],cu), L(tgt[1]-14,KG.coaOut[1],cu), 0.9, false); ctx.globalAlpha=1; } }
+}
+/* NAD starts in the middle of the ring, touches its molecule, then flies out
+   to the products column. ADP + Pi gather at the 4C and leave as ATP. */
+function drawKrbCoenzymes(st,f){
+  const K=krb(), L=(a,b,u)=>a+(b-a)*u;
+  const home=[[430,250],[430,288],[430,326]], tgt=[KSTA[1],KSTA[2],KSTA[3]], slot=[2,3,4];
+  for(let i=0;i<3;i++){
+    const h=home[i], t=tgt[i], d=kProdSlot(slot[i]);
+    if(st===2){ const u=seg(f,0.06+i*0.09,0.95);                       // slow, clear approach
+      pill(L(h[0],t[0],u), L(h[1],t[1]-22,u), "NAD", C_NAD, 10, true); }
+    else { if(f<0.30){ pill(t[0],t[1]-22,"NAD",C_NAD,10,true);
+        if(f>0.24&&f<0.28) K.curls.push({x:t[0]+28,y:t[1]-18,age:0.5}); }
+      else { const u=seg(f,0.30+i*0.06,0.96);
+        pill(L(t[0],d[0],u), L(t[1]-22,d[1],u), "reduced NAD", C_RNAD, 10); } } }
+  /* CO2: comes away slowly, drifts into the middle of the oval, lingers,
+     then goes to the products one at a time — the citrate's carbon first. */
+  if(st===3){
+    const hold=[[540,262],[540,300]], from=[[KSTA[1][0]+26,KSTA[1][1]],[KSTA[2][0]+22,KSTA[2][1]]];
+    const away=[{a0:0.53,a1:0.78},{a0:0.80,a1:0.98}];
+    for(const i of [0,1]){ const d=kProdSlot(i), w=away[i]; let cx,cy;
+      if(f<0.44){ const u=seg(f,0.08,0.44); cx=L(from[i][0],hold[i][0],u); cy=L(from[i][1],hold[i][1],u); }
+      else if(f<w.a0){ cx=hold[i][0]; cy=hold[i][1]; }                 // lingers in the matrix
+      else { const u=seg(f,w.a0,w.a1); cx=L(hold[i][0],d[0]-30,u); cy=L(hold[i][1],d[1],u); }
+      ctx.save();ctx.beginPath();ctx.arc(cx,cy,7.4,0,6.29);ctx.fillStyle=CARB;ctx.fill();
+      ctx.strokeStyle="rgba(10,25,35,.55)";ctx.lineWidth=1.1;ctx.stroke();
+      ctx.fillStyle="#9fc4d6";ctx.font="800 11px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+      ctx.fillText("CO\u2082",cx,cy-20);ctx.restore(); } }
+  // ADP and Pi move in on the 4C and join there to make ATP
+  const c4=KSTA[3], dA=kProdSlot(5), aL=[c4[0]-36,c4[1]+26], pR=[c4[0]+36,c4[1]+26];
+  if(st===2){ const u=seg(f,0.10,0.95);
+    pill(L(300,aL[0],u), L(474,aL[1],u), "ADP", C_ADP, 10);
+    pill(L(392,pR[0],u), L(474,pR[1],u), "Pi", PHOS, 9.5); }
+  else { if(f<0.44){ pill(aL[0],aL[1],"ADP",C_ADP,10); pill(pR[0],pR[1],"Pi",PHOS,9.5); }
+    else if(f<0.62){ const u=seg(f,0.44,0.62);                          // they come together on the 4C
+      pill(L(aL[0],c4[0]-14,u), L(aL[1],c4[1]+22,u), "ADP", C_ADP, 10);
+      pill(L(pR[0],c4[0]+16,u), L(pR[1],c4[1]+22,u), "Pi", PHOS, 9.5);
+      if(f>0.58&&f<0.62) K.curls.push({x:c4[0],y:c4[1]+18,age:0.5}); }
+    else { const u=seg(f,0.62,0.98);
+      pill(L(c4[0],dA[0],u), L(c4[1]+22,dA[1],u), "ATP", C_ATP, 10); } }
+}
+/* products sit in the column, then drift right and fade at the end of the turn */
+function drawKrbProducts(st,f){
+  const done = st>=4, out = st===5 ? ez(f) : 0;
+  const show = st>=4 || (st===3);
+  if(!show) return;
+  const shift = out*220, al = 1-out;
+  ctx.save();ctx.globalAlpha=Math.max(0,al);
+  for(let i=0;i<2;i++){ const s=kProdSlot(i);
+    if(st===3 && f<0.8) continue;
+    ctx.beginPath();ctx.arc(s[0]-30+shift,s[1],7.4,0,6.29);ctx.fillStyle=CARB;ctx.fill();
+    ctx.strokeStyle="rgba(10,25,35,.55)";ctx.lineWidth=1.1;ctx.stroke();
+    ctx.fillStyle="#9fc4d6";ctx.font="800 11px system-ui";ctx.textAlign="left";ctx.textBaseline="middle";
+    ctx.fillText("CO\u2082",s[0]-16+shift,s[1]); }
+  for(let i=0;i<3;i++){ const s=kProdSlot(2+i);
+    if(st===3 && f<0.95) continue;
+    pill(s[0]+shift,s[1],"reduced NAD",C_RNAD,10); }
+  { const s=kProdSlot(5);
+    if(!(st===3 && f<0.95)) pill(s[0]+shift,s[1],"ATP",C_ATP,10); }
+  ctx.restore(); }
+
+/* ======================================================================
+   ANAEROBIC RESPIRATION — the point of both pathways is REGENERATING NAD
+   so glycolysis can keep making ATP, so that loop is the centrepiece.
+   Glycolysis itself is shown as a small static summary panel on the left.
+   ====================================================================== */
+const AG={ railY:168, molY:232, xGlu:92, xHBP:250, xTP:430, xPyr:640, off:16,
+  atpIn:[[54,300],[54,332]],
+  piFrom:[[214,188],[214,212]], piDock:[[400,198],[462,198]],
+  nadFrom:[[444,280],[496,280]], nadDock:[[400,262],[464,262]],
+  adpDock:[[150,312],[220,312],[290,312],[360,312]],
+  rRailY:498, rMolY:440, rPyr:436, rMid:560, rEnd:672, edgeX:868, co2Up:[[548,336],[624,336]],
+  panel:{x:700,y:76,w:214,h:92}, q:{x0:120,y:100,dx:54,shown:4} };
+/* each glucose gets its own lane so cohorts never stack on top of each other */
+function anaPark(k,i){ return [i?330:200, 380+k*24]; }
+function anaNadRest(k,i){ return [i?330:200, 380+k*24]; }
+function anaAtpRest(k,i){ return [876-k*36, 196+i*30]; }
+const ATP_IN="#e8618c";                                  // the ATP invested is NOT the ATP produced
+const NAD_NEW="#a78bfa";
+const A_CFG={
+  animal:{ title:"Anaerobic respiration \u2014 in animals",
+    prodKind:"lact", prodLab:"lactate", prodCol:"#c05a8a", co2:false,
+    note:"REVERSIBLE \u2014 lactate goes to the liver (aerobic)" },
+  plant:{ title:"Anaerobic respiration \u2014 in plants & fungi",
+    prodKind:"ethanol", prodLab:"ethanol", prodCol:"#c07a2b", co2:true,
+    note:"IRREVERSIBLE \u2014 the CO\u2082 has gone" }
+};
+function anaCfg(){ return A_CFG[STAGES[S.sub].variant]; }
+function anaSteps(){ const c=anaCfg(), S1=[
+  {d:2.0,t:"Glucose is in the cytosol, with 2 ATP waiting below it."},
+  {d:3.4,t:"Investment: the 2 ATP move up to the glucose and donate a phosphate group each, leaving 2 ADP."},
+  {d:2.2,t:"The 6C sugar splits into two triose phosphate molecules."},
+  {d:3.4,t:"NAD and inorganic phosphate arrive together: each triose phosphate gains a second phosphate and NAD is reduced."},
+  {d:6.0,t:"4 ADP appear, and each takes a phosphate group straight off the substrate to become ATP. The substrate is left as pyruvate."},
+  {d:3.2,t:"The pyruvate moves round into the cytosol. The reduced NAD lags behind it."},
+  {d:1.4,t:"The pyruvate waits, with the reduced NAD just above it."}];
+  const MID = c.co2 ? [{d:2.6,t:"Decarboxylation: a carbon leaves each pyruvate as CO\u2082, giving ethanal."}] : [];
+  const S2=[
+  {d:3.4,t:"The reduced NAD drops down and releases a hydrogen, which joins the "+(c.co2?"ethanal \u2192 ethanol":"pyruvate \u2192 lactate")+". NAD is regenerated."},
+  {d:2.8,t:"The "+c.prodLab+" moves away towards the edge of the cell."},
+  {d:6.5,t:"Net 2 ATP per glucose \u2014 all from glycolysis. "+(c.co2?"Irreversible.":"Reversible \u2014 lactate goes to the liver.")}];
+  return S1.concat(MID,S2); }
+function anaIdx(){ const e=anaCfg().co2?1:0;
+  return {glu:0, inv:1, split:2, nadPi:3, adp:4, travel:5, wait:6, co2:e?7:-1, react:7+e, out:8+e, end:9+e}; }
+let ANA=null, ANAV=null;
+function makeAna(){ return {step:0,t:0,curls:[],cum:{glucose:0,atp:0,prod:0,nad:0,co2:0},
+  offs:[0], queue:[{x:AG.q.x0,y:AG.q.y}]}; }
+function ana(){ if(!ANA || ANAV!==S.sub){ ANA=makeAna(); ANAV=S.sub; } return ANA; }
+function anaSlot(i){ return [AG.q.x0+Math.min(i,AG.q.shown-1)*AG.q.dx, AG.q.y]; }
+function anaTotalTime(){ return anaSteps().reduce((a,s)=>a+s.d,0); }
+function anaElapsed(){ const A=ana(); let t=A.t; for(let i=0;i<A.step;i++) t+=anaSteps()[i].d; return t; }
+function anaSeek(fr){ const A=ana(), ST=anaSteps(); let t=Math.max(0,Math.min(1,fr))*anaTotalTime();
+  for(let i=0;i<ST.length;i++){ if(t<ST[i].d||i===ST.length-1){ A.step=i; A.t=Math.min(t,ST[i].d-0.001); break; } t-=ST[i].d; } }
+function anaAt(prog){ const ST=anaSteps(); let t=((prog%1)+1)%1*anaTotalTime();
+  for(let i=0;i<ST.length;i++){ if(t<ST[i].d) return {st:i,f:t/ST[i].d}; t-=ST[i].d; }
+  return {st:ST.length-1,f:1}; }
+function updateAna(dt){ const A=ana(), ST=anaSteps(), sp=S.speed*0.7, cfg=anaCfg();   // slower by default
+  if(S.playing){ A.t+=dt*sp;
+    if(A.t>=ST[A.step].d){ A.t=0; A.step++;
+      if(A.step>=ST.length){ A.step=0; const n=A.offs.length;
+        A.cum.glucose+=n; A.cum.atp+=2*n; A.cum.prod+=2*n; A.cum.nad+=2*n; if(cfg.co2) A.cum.co2+=2*n; } } }
+  for(let i=0;i<A.queue.length;i++){ const q=A.queue[i], t=anaSlot(i);
+    q.x+=(t[0]-q.x)*Math.min(1,dt*sp*2.0); q.y+=(t[1]-q.y)*Math.min(1,dt*sp*2.4); }
+  for(const c of A.curls) c.age+=dt*sp*1.4; A.curls=A.curls.filter(c=>c.age<1); }
+function drawAnaPanel(){ const P=AG.panel;
+  ctx.save();ctx.fillStyle="rgba(10,20,28,.9)";ctx.strokeStyle="#3d5262";ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.roundRect(P.x,P.y,P.w,P.h,10);ctx.fill();ctx.stroke();
+  ctx.textAlign="left";ctx.textBaseline="middle";
+  ctx.fillStyle="#9fb8c9";ctx.font="800 11.5px system-ui";ctx.fillText("\u{1F6AB}  NO OXYGEN",P.x+14,P.y+16);
+  ctx.font="600 10px system-ui";ctx.fillStyle="#c3d4e0";
+  ["No electron transport chain,",
+   "so reduced NAD cannot be",
+   "reoxidised there. Pyruvate",
+   "accepts the hydrogen instead.",
+   "NAD regenerated \u2192 more ATP."].forEach((t,i)=>ctx.fillText(t,P.x+14,P.y+34+i*13));
+  ctx.restore(); }
+function anaLead(){ const A=ana(); return anaAt(anaElapsed()/anaTotalTime()); }
+function drawAna(){
+  const A=ana(), cfg=anaCfg(), I=anaIdx(), isP=cfg.co2, RY=AG.railY, MY=AG.molY;
+  const lead=anaLead();
+  title(cfg.title,"Cytosol \u00b7 substrate-level phosphorylation in glycolysis \u00b7 regeneration of NAD");
+  drawAnaPanel();
+  // this whole first section, glucose through to pyruvate, IS glycolysis
+  ctx.save();ctx.strokeStyle="#7a6a3a";ctx.lineWidth=1.6;
+  ctx.beginPath();ctx.moveTo(60,154);ctx.lineTo(60,146);ctx.lineTo(640,146);ctx.lineTo(640,154);ctx.stroke();
+  ctx.fillStyle="#e0a021";ctx.font="800 12.5px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText("GLYCOLYSIS",350,130);ctx.restore();
+  // short arrows in the gaps, turning yellow while that step is active
+  arrowG(130,RY,172,RY, lead.st===I.inv);
+  arrowG(328,RY,362,RY, lead.st===I.split);
+  arrowG(498,RY,598,RY, lead.st===I.nadPi||lead.st===I.adp);
+  nameBubble(AG.xGlu,RY,"glucose","#e0a021",12);
+  nameBubble(AG.xHBP,RY,"hexose bisphosphate","#e0a021",12);
+  nameBubble(AG.xTP,RY,"triose phosphate","#159b8a",12);
+  nameBubble(AG.xPyr,RY,"pyruvate","#6cbdf0",12);
+  const RR=AG.rRailY;
+  if(isP){ arrowG(478,RR,518,RR, lead.st===I.co2);            // pyruvate -> ethanal
+    arrowG(602,RR,632,RR, lead.st===I.react);                   // ethanal -> ethanol
+    nameBubble(AG.rMid,RR,"ethanal","#e0a021",12); }
+  else arrowG(498,RR,614,RR, lead.st===I.react);
+  nameBubble(AG.rPyr,RR,"pyruvate","#6cbdf0",12);
+  nameBubble(AG.rEnd,RR,cfg.prodLab,cfg.prodCol,12);
+  const l=anaElapsed()/anaTotalTime();
+  for(let k=A.offs.length-1;k>=0;k--) drawAnaCohort(l-A.offs[k], cfg, I, isP, k===0, k);
+  for(const c of A.curls) drawCurl(c.x,c.y,c.age);
+  ctx.save();ctx.textAlign="right";ctx.textBaseline="middle";
+  ctx.fillStyle=cfg.prodCol;ctx.font="800 11px system-ui";ctx.fillText(cfg.note,920,522);
+  ctx.textAlign="left";ctx.fillStyle="#c3d4e0";ctx.font="700 11px system-ui";
+  ctx.fillText("glucose used "+A.cum.glucose+"    ATP made (net) "+A.cum.atp+"    "+
+    (isP?"ethanol":"lactate")+" "+A.cum.prod+"    NAD regenerated "+A.cum.nad+
+    (isP?("    CO\u2082 "+A.cum.co2):""), 76, 546);
+  ctx.restore(); }
+function cPath(u,x0,y0,cx,cy,x1,y1){ const t=1-u;
+  return [(t*t)*x0+2*t*u*cx+(u*u)*x1, (t*t)*y0+2*t*u*cy+(u*u)*y1]; }
+function drawAnaCohort(prog,cfg,I,isP,lead,k){
+  const A=ana(), {st,f}=anaAt(prog), L=(p,q,u)=>p+(q-p)*u, O=AG.off, sc=0.78;
+  const MY=AG.molY, RMY=AG.rMolY, TWO=[0,1], FOUR=[0,1,2,3];
+  const P2=(u,x0,y0,cx,cy,x1,y1)=>cPath(u,x0,y0,cx,cy,x1,y1);
+  if(st===I.glu){ const fi=Math.min(1,f*2.6);                 // glucose and the 2 ATP fade in
+    ctx.globalAlpha=fi; drawMol(AG.xGlu,MY,"glucose",sc);
+    for(const i of TWO) pill(AG.atpIn[i][0],AG.atpIn[i][1],"ATP",ATP_IN,10);
+    ctx.globalAlpha=1;
+    for(const i of TWO) pill(AG.nadFrom[i][0],AG.nadFrom[i][1],"NAD",NAD_NEW,10); }   // carried over
+  else if(st===I.inv){ const u=ez(f), x=L(AG.xGlu,AG.xHBP,u);
+    for(const i of TWO) pill(AG.nadFrom[i][0],AG.nadFrom[i][1],"NAD",NAD_NEW,10);
+    drawMol(x,MY, f<0.55?"glucose":"hbp",sc);
+    for(const i of TWO){ const s0=AG.atpIn[i], tx=AG.xGlu-36+i*80, ty=MY+28;
+      if(f<0.5){ const uu=seg(f,0.04+i*0.08,0.5);             // up and right, touching the glucose
+        pill(L(s0[0],tx,uu), L(s0[1],ty,uu), "ATP", ATP_IN, 10); }
+      else { const pu=seg(f,0.5,0.7);
+        if(pu<1) drawP(L(tx,x,pu), L(ty,MY,pu), 0.9);
+        const du=seg(f,0.5,1);                                  // away down-right as ADP, fading
+        ctx.globalAlpha=Math.max(0,1-du*0.9);
+        pill(L(tx,56,du), L(ty,356+i*32,du), "ADP", C_ADP, 10); ctx.globalAlpha=1; } } }
+  else if(st===I.split){ for(const i of TWO) pill(AG.nadFrom[i][0],AG.nadFrom[i][1],"NAD",NAD_NEW,10);
+    if(f<0.35) drawMol(AG.xHBP,MY,"hbp",sc);
+    else { const u=ez((f-0.35)/0.65);
+      for(const d of [-O,O]) drawMol(L(AG.xHBP,AG.xTP,u),L(MY,MY+d,u),"tp3",sc); } }
+  else if(st===I.nadPi){                                        // Pi and NAD both arrive from the LEFT
+    for(const d of [-O,O]) drawMol(AG.xTP,MY+d, f<0.62?"tp3":"tp3b", sc);
+    const u=seg(f,0.05,0.58);
+    for(const i of TWO){
+      if(f<0.68){ ctx.globalAlpha=f>0.6?Math.max(0,1-(f-0.6)/0.08):1;
+        pill(L(AG.piFrom[i][0],AG.piDock[i][0],u), L(AG.piFrom[i][1],AG.piDock[i][1],u), "Pi", PHOS, 10);
+        ctx.globalAlpha=1; }
+      if(f<0.62) pill(L(AG.nadFrom[i][0],AG.nadDock[i][0],u), L(AG.nadFrom[i][1],AG.nadDock[i][1],u), "NAD", NAD_NEW, 10);
+      else { const du=seg(f,0.62,1);                            // reduced, then eases DOWN out of the way
+        const pk=anaPark(k,i);
+        pill(L(AG.nadDock[i][0],pk[0],du), L(AG.nadDock[i][1],pk[1],du), "reduced NAD", C_RNAD, 10); } }
+    if(f>0.58&&f<0.64&&lead) A.curls.push({x:AG.xTP+44,y:MY+20,age:0.5}); }
+  else if(st===I.adp){                                          // 4 ADP rise from below and take a phosphate each
+    const u=ez(f), sx=L(AG.xTP,AG.xPyr,u);
+    // the top molecule supplies ADP 0 and 2, the bottom supplies ADP 1 and 3;
+    // it loses a phosphate at the moment each one sets off
+    const goneT=(f>=0.16?1:0)+(f>=0.36?1:0), goneB=(f>=0.26?1:0)+(f>=0.46?1:0);
+    const kOf=n=> n===0?"tp3b" : n===1?"tpL" : "pyrIn";
+    drawMol(sx,MY-O,kOf(goneT),sc); drawMol(sx,MY+O,kOf(goneB),sc);
+    ctx.save();ctx.fillStyle=C_ATP;ctx.font="800 12.5px system-ui";
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.globalAlpha=Math.min(1,Math.min(seg(f,0.10,0.24),1-seg(f,0.80,0.96)));
+    ctx.fillText("SUBSTRATE-LEVEL PHOSPHORYLATION",300,468);ctx.restore();
+    for(const i of TWO){ const pk=anaPark(k,i); pill(pk[0],pk[1],"reduced NAD",C_RNAD,10); }
+    for(const i of FOUR){ const a2=0.16+i*0.10, a3=0.34+i*0.10, d=AG.adpDock[i];
+      if(f<a3){ ctx.globalAlpha=Math.min(1,seg(f,0.01+i*0.03,0.13+i*0.03));   // just fades in, no travel
+        pill(d[0],d[1],"ADP",C_ADP,10); ctx.globalAlpha=1;
+        if(f>=a2){ const pu=seg(f,a2,a3);                        // leaves from where it sat on the molecule
+          const px = sx + (i<2 ? 22.6 : -22.6);                  // right-hand P first, then the left
+          drawP(L(px,d[0],pu), L(MY+(i%2?O:-O),d[1],pu), 0.9); } }
+      else { const ou=seg(f,a3,1), ar=anaAtpRest(k,i);           // and drifts away as ATP, slowly
+        pill(L(d[0],ar[0],ou), L(d[1],ar[1],ou), "ATP", C_ATP, 10); } } }
+  else {
+    for(const i of FOUR){ const ar=anaAtpRest(k,i); pill(ar[0],ar[1],"ATP",C_ATP,10); }   // stays put
+    const here = isP ? AG.rMid : AG.rPyr;
+    if(st===I.travel){ const u=ez(f);                            // smooth C down into the cytosol
+      for(const d of [-O,O]){ const p=P2(u,AG.xPyr,MY+d,770,350,AG.rPyr,RMY+d);
+        drawMol(p[0],p[1],"pyrIn",sc); }
+      for(const i of TWO){ const pk=anaPark(k,i); pill(pk[0],pk[1],"reduced NAD",C_RNAD,10); } }
+    else if(st===I.wait){ for(const d of [-O,O]) drawMol(AG.rPyr,RMY+d,"pyrIn",sc);
+      for(const i of TWO){ const pk=anaPark(k,i); pill(pk[0],pk[1],"reduced NAD",C_RNAD,10); } }
+    else if(isP && st===I.co2){ const u=ez(f), x=L(AG.rPyr,AG.rMid,u);
+      for(const d of [-O,O]) drawMol(x,RMY+d, f<0.45?"pyrIn":"ethanal",sc);
+      for(const i of TWO){ const pk=anaPark(k,i); pill(pk[0],pk[1],"reduced NAD",C_RNAD,10); }
+      if(f>=0.3){ const cu=seg(f,0.3,1);
+        for(const i of TWO){ const dst=AG.co2Up[i];              // one CO2 from EACH pyruvate
+          const cx=L(x,dst[0],cu), cy=L(RMY+(i?O:-O),dst[1],cu);
+          ctx.save();ctx.globalAlpha=Math.max(0,1-cu*0.4);
+          ctx.beginPath();ctx.arc(cx,cy,7,0,6.29);ctx.fillStyle=CARB;ctx.fill();
+          ctx.strokeStyle="rgba(10,25,35,.55)";ctx.lineWidth=1.1;ctx.stroke();
+          ctx.fillStyle="#9fc4d6";ctx.font="800 10.5px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+          ctx.fillText("CO\u2082",cx,cy-18);ctx.restore(); } } }
+    else if(st===I.react){ const u=ez(f), cx=L(here,AG.rEnd,u);
+      for(const d of [-O,O]) drawMol(cx,RMY+d, f<0.55?(isP?"ethanal":"pyrIn"):cfg.prodKind, sc);
+      for(const i of TWO){ const d=i?O:-O, pk=anaPark(k,i), nr=anaNadRest(k,i);
+        const mu=seg(f,0.02+i*0.06,0.44);
+        const bx=L(pk[0],cx+(i?34:-34),mu), by=L(pk[1],RMY+d-30,mu);
+        if(f<0.52){ pill(bx,by,"reduced NAD",C_RNAD,10);         // ONE box: becomes NAD in place
+          if(f>0.32){ const hu=seg(f,0.32,0.52); drawProtonC(L(bx,cx,hu), L(by+14,RMY+d,hu)); } }
+        else { const su=seg(f,0.52,1);
+          pill(L(cx+(i?34:-34),nr[0],su), L(RMY+d-30,nr[1],su), "NAD", NAD_NEW, 10); } }
+      if(f>0.48&&f<0.54&&lead) A.curls.push({x:cx+30,y:RMY-24,age:0.5}); }
+    else if(st===I.out){ const u=ez(f);
+      for(const d of [-O,O]) drawMol(L(AG.rEnd,AG.edgeX,u),RMY+d,cfg.prodKind,sc);
+      for(const i of TWO){ const nr=anaNadRest(k,i); pill(nr[0],nr[1],"NAD",NAD_NEW,10); } }
+    else { const al=f<0.77?1:Math.max(0,1-(f-0.77)/0.23);
+      ctx.globalAlpha=al;
+      for(const d of [-O,O]) drawMol(AG.edgeX,RMY+d,cfg.prodKind,sc);
+      ctx.globalAlpha=1;
+      for(const i of TWO){ const nr=anaNadRest(k,i), ru=seg(f,0.45,1);    // recycled back to glycolysis
+        pill(L(nr[0],AG.nadFrom[i][0],ru), L(nr[1],AG.nadFrom[i][1],ru), "NAD", NAD_NEW, 10); } }
+    if(isP && st>I.co2 && I.co2>0){ ctx.save();
+      for(const i of TWO){ const dst=AG.co2Up[i];
+        ctx.beginPath();ctx.arc(dst[0],dst[1],7,0,6.29);ctx.fillStyle=CARB;ctx.globalAlpha=0.6;ctx.fill();
+        ctx.globalAlpha=1;ctx.fillStyle="#9fc4d6";ctx.font="800 10.5px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
+        ctx.fillText("CO\u2082",dst[0],dst[1]-18); }
+      ctx.restore(); } }
+}
+
+/* =======================================================================
+   TABS + STATE
+   ======================================================================= */
+const SUBS={
+  photosynthesis:[["ldr","Light-dependent"],["calvin","Calvin cycle"]],
+  aerobic:[["glycolysis","Glycolysis"],["link","Link reaction"],["krebs","Krebs cycle"],["oxphos","Oxidative phosphorylation"]],
+  anaerobic:[["anaer-animal","In animals"],["anaer-plant","In plants & fungi"]]
+};
+const TALLY_META=[
+  ["atp","ATP","var(--atp)",false],["nad","reduced NAD","var(--nad)",false],
+  ["nadp","reduced NADP","var(--nad)",false],["fad","reduced FAD","var(--fad)",false],
+  ["acetyl","acetyl CoA","var(--fad)",false],["pyr","pyruvate","var(--co2)",false],
+  ["co2","CO₂","var(--co2)",false],["o2","O₂","var(--o2)",false],
+  ["tp","triose phosphate","var(--photo)",false],["lactate","lactate","var(--lac)",false],
+  ["ethanol","ethanol","var(--eth)",false],["glucose","glucose","var(--gluc)",false]
+];
+
+const S={ top:"photosynthesis", sub:"ldr", step:0, frac:0, t:0, playing:true, speed:1.0, dark:false, lightI:0.30, noCO2:false, glyAll:false, noO2:false, cyanide:false, ff:false };
+
+function buildSubtabs(){
+  const box=document.getElementById("subtabs");
+  box.innerHTML="";
+  for(const [id,label] of SUBS[S.top]){
+    const b=document.createElement("button");b.className="subtab";b.textContent=label;b.dataset.sub=id;
+    b.setAttribute("aria-pressed", id===S.sub);
+    b.addEventListener("click",()=>selectSub(id));
+    box.appendChild(b);
+  }
+}
+function selectTop(top){
+  S.top=top;
+  document.querySelectorAll(".toptab").forEach(b=>b.setAttribute("aria-pressed",b.dataset.top===top));
+  S.sub=SUBS[top][0][0];
+  buildSubtabs(); resetStage(); refreshStatic();
+}
+function selectSub(sub){
+  S.sub=sub;
+  document.querySelectorAll(".subtab").forEach(b=>b.setAttribute("aria-pressed",b.dataset.sub===sub));
+  resetStage(); refreshStatic();
+}
+function resetStage(){ S.step=0; S.frac=0; S.t=0; if(CH_CFG[S.sub]) resetChemi(S.sub); if(S.sub==="calvin") CAL=makeCalvin(); if(S.sub==="glycolysis"){ GLY=makeGly(); } if(S.sub==="link"){ LNK=makeLnk(); } if(S.sub==="krebs"){ KRB=makeKrb(); } if(STAGES[S.sub].type==="anaer"){ ANA=makeAna(); ANAV=S.sub; } }
+
+function currentTally(){
+  const st=STAGES[S.sub];
+  const acc={};
+  if(st.type==="path"){
+    for(let i=0;i<S.step;i++){ const y=st.steps[i].yield||{};
+      for(const k in y) acc[k]=(acc[k]||0)+y[k]; }
+  }
+  return acc;
+}
+function refreshStatic(){
+  const st=STAGES[S.sub];
+  document.getElementById("loc-txt").textContent=st.loc;
+  document.querySelector(".loc .pin").style.background=st.locColor;
+  document.getElementById("equation").textContent=st.equation;
+  document.getElementById("equation").style.display = (st.type==="chemi"||st.type==="calvin"||st.type==="glyco"||st.type==="linkr"||st.type==="krebs"||st.type==="anaer") ? "none" : "";
+  document.getElementById("summary").innerHTML=st.summary;
+  const facts=document.getElementById("facts");
+  facts.innerHTML=st.facts.map(f=>'<div class="fact"><span class="b">›</span><span>'+f+'</span></div>').join("");
+  document.getElementById("turn-note").textContent=st.turnNote||"";
+  document.getElementById("turn-note").style.display=st.turnNote?"":"none";
+  document.getElementById("tally-label").textContent = (st.type==="krebs"||st.type==="anaer") ? "Running totals" : st.type==="linkr" ? "Per pyruvate, so far" : st.type==="glyco" ? "Per glucose, so far" : (st.type==="chemi"||st.type==="calvin") ? "Molecules in the cycle" :
+     (st.cyclic ? "Products this turn" : "Products so far");
+  const isLDR = S.sub==="ldr", lightCtl = isLDR || S.sub==="calvin";
+  document.getElementById("btn-light").style.display = isLDR ? "" : "none";
+  document.getElementById("btn-dark").style.display = lightCtl ? "" : "none";
+  document.getElementById("wrap-light").style.display = lightCtl ? "" : "none";
+  document.getElementById("btn-co2").style.display = S.sub==="calvin" ? "" : "none";
+  const isOx = S.sub==="oxphos";
+  const bo=document.getElementById("btn-noo2"), bc=document.getElementById("btn-cn");
+  bo.style.display = isOx ? "" : "none"; bc.style.display = isOx ? "" : "none";
+  bo.textContent = S.noO2 ? "↩ Restore oxygen" : "🚫 No oxygen";
+  bo.style.background = S.noO2 ? "#7fc7f0" : "#26323a"; bo.style.color = S.noO2 ? "#08202c" : "#cfe2ee";
+  bc.textContent = S.cyanide ? "↩ Remove cyanide" : "☠ Add cyanide";
+  bc.style.background = S.cyanide ? "#d94848" : "#3a2222"; bc.style.color = S.cyanide ? "#fff" : "#f5b8b8";
+  const gb=document.getElementById("btn-glyall");
+  gb.style.display = S.sub==="glycolysis" ? "" : "none";
+  gb.textContent = S.glyAll ? "▶ Back to the animation" : "🔬 All substrates in position";
+  const isGly = S.sub==="glycolysis" && !S.glyAll, isLnk = S.sub==="link", isKrb = S.sub==="krebs";
+  const isAna = STAGES[S.sub].type==="anaer";
+  document.getElementById("wrap-glytime").style.display = (isGly||isLnk||isKrb||isAna) ? "" : "none";
+  syncDarkBtn(); syncCO2Btn();
+  document.querySelector(".loc .pin").style.background=st.locColor;
+}
+function renderTally(){
+  const st=STAGES[S.sub];
+  const box=document.getElementById("tally");
+  if(st.type==="anaer"){
+    const A=ana(), isP=anaCfg().co2;
+    const rows=[["G","glucose used","#e0a021",A.cum.glucose],
+      ["\u26a1","ATP made (net)","#8b5cf6",A.cum.atp],
+      [isP?"Et":"La",(isP?"ethanol":"lactate")+" made",anaCfg().prodCol,A.cum.prod],
+      ["N","NAD regenerated","#cfc6e6",A.cum.nad]];
+    if(isP) rows.push(["C","CO\u2082 made","#7a8a96",A.cum.co2]);
+    box.innerHTML=rows.map(([ic,nm,col,v])=>'<div class="trow"><span class="ic" style="background:'+col+'">'+ic+'</span><span class="nm">'+nm+'</span><span class="ct">'+v+'</span></div>').join("");
+    return;
+  }
+  if(st.type==="krebs"){
+    const K=krb();
+    const rows=[["Ac","acetyl CoA used","#6cbdf0",K.cum.acoa],
+      ["\u03a3","turns completed","#e0a021",K.cum.turns],
+      ["C","CO\u2082 made","#7a8a96",K.cum.co2],
+      ["N","reduced NAD made","#6b21a8",K.cum.rnad],
+      ["\u26a1","ATP made","#8b5cf6",K.cum.atp]];
+    box.innerHTML=rows.map(([ic,nm,col,v])=>'<div class="trow"><span class="ic" style="background:'+col+'">'+ic+'</span><span class="nm">'+nm+'</span><span class="ct">'+v+'</span></div>').join("");
+    return;
+  }
+  if(st.type==="linkr"){
+    const K=lnk(), t=lnkTotals(K.step);
+    const rows=[["C","CO\u2082 released","#7a8a96",t.co2],["N","reduced NAD","#6b21a8",t.rnad],
+      ["Ac","acetyl CoA","#6d28d9",t.acoa],["\u26a1","ATP","#7d8f9c",0],
+      ["\u03a3","pyruvate completed","#e0a021",K.cum.done]];
+    box.innerHTML=rows.map(([ic,nm,col,v])=>'<div class="trow"><span class="ic" style="background:'+col+'">'+ic+'</span><span class="nm">'+nm+'</span><span class="ct">'+v+'</span></div>').join("");
+    return;
+  }
+  if(st.type==="glyco"){
+    const G=gly(), t=G.tot;
+    const rows=[["\u26a1","ATP used","#8098a6",t.used],["\u26a1","ATP made","#8fd3f4",t.made],
+      ["=","net ATP gain","#e0a021","+"+(t.made-t.used)],
+      ["N","reduced NAD","#4c1d95",t.rnad],["P","pyruvate","#7c3aed",t.pyr]];
+    box.innerHTML=rows.map(([ic,nm,col,v])=>'<div class="trow"><span class="ic" style="background:'+col+'">'+ic+'</span><span class="nm">'+nm+'</span><span class="ct">'+v+'</span></div>').join("");
+    return;
+  }
+  if(st.type==="calvin"){
+    const C=calvin(), P=C.pools;
+    const rows=[["C","CO\u2082 fixed (turns)","#e0a021",C.fixed],
+      ["R","RuBP (5C)","#159b8a",P.rubp],["G","GP (3C)","#e0a021",P.gp],
+      ["T","triose phosphate","#7c3aed",P.tp],["\u2b50","glucose made","#2f9e5f",P.glucose],
+      ["\u26a1","ATP available","#7c3aed",P.atp],["N","reduced NADP available","#4c1d95",P.nadph]];
+    box.innerHTML=rows.map(([ic,nm,col,v])=>'<div class="trow"><span class="ic" style="background:'+col+'">'+ic+'</span><span class="nm">'+nm+'</span><span class="ct">'+v+'</span></div>').join("");
+    return;
+  }
+  if(st.type==="chemi"){
+    const cfg=CH_CFG[S.sub], C=chemiOf();
+    const val={atp:C.totals.atp, term:C.totals.term, byp:C.totals.byp,
+               lum:C.protons.filter(p=>p.state==="high").length};
+    const ic={atp:"⚡",term:"★",byp:"○",lum:"H⁺"};
+    box.innerHTML=cfg.tally.map(([k,nm,col])=>'<div class="trow"><span class="ic" style="background:'+col+'">'+ic[k]+'</span><span class="nm">'+nm+'</span><span class="ct">'+val[k]+'</span></div>').join("");
+    return;
+  }
+  let data;
+  if(st.type==="membrane"){
+    // fixed theoretical summary
+    data = st===STAGES.oxphos
+      ? {atp:34,o2:6,h2o:12} // per glucose approx (from 10 NAD + 2 FAD; O2 used, water made) — display-oriented
+      : {atp:"ATP",nadp:"✓",o2:"✓"};
+  } else {
+    data=currentTally();
+  }
+  // build rows for meta that appear in this stage
+  const rows=[];
+  const relevant = st.type==="membrane"
+     ? (st===STAGES.oxphos?["atp","o2"]:["atp","nadp","o2"])
+     : TALLY_META.map(m=>m[0]).filter(k=> st.steps.some(s=> s.yield && (k in s.yield)) );
+  for(const [k,name,col] of TALLY_META){
+    if(!relevant.includes(k)) continue;
+    let v = data[k];
+    let spent=false, display;
+    if(st.type==="membrane"){
+      if(st===STAGES.oxphos){ display = k==="atp" ? "≈34" : "→H₂O"; }
+      else { display = k==="o2" ? "released" : "✓"; }
+    } else {
+      if(v==null) v=0;
+      spent = v<0;
+      display = (v>0?"+":"")+v;
+    }
+    const nm = (st===STAGES.calvin && k==="nadp") ? "reduced NADP (used)" :
+               (k==="nad" && st.steps && spent) ? "NAD regenerated" : name;
+    rows.push('<div class="trow '+(spent?"spent":"")+' '+((st.type!=="membrane"&&(!v))?"zero":"")+'">'
+      +'<span class="ic" style="background:'+col+'">'+iconFor(k)+'</span>'
+      +'<span class="nm">'+nm+'</span><span class="ct">'+display+'</span></div>');
+  }
+  box.innerHTML=rows.join("") || '<div class="fact">Watch the animation — this stage is about the mechanism, not a product count.</div>';
+}
+function iconFor(k){
+  return {atp:"⚡",nad:"N",nadp:"N",fad:"F",co2:"C",o2:"O",acetyl:"Ac",pyr:"Py",tp:"TP",lactate:"La",ethanol:"Et",glucose:"G"}[k]||"•";
+}
+
+/* =======================================================================
+   ANIMATION LOOP
+   ======================================================================= */
+function curStepIdx(st){
+  if(st.type==="glyco") return gly().step;
+  if(st.type==="linkr") return lnk().step;
+  if(st.type==="krebs") return krb().step;
+  if(st.type==="anaer") return ana().step;
+  return -1;
+}
+let last=performance.now();
+function frame(now){
+  let dt=(now-last)/1000; last=now;
+  const st=STAGES[S.sub];
+  const ffBefore = S.ff ? curStepIdx(st) : -1;
+  if(S.ff) dt*=6;                                   // Step: race through, then stop at the next one
+  if(S.playing){
+    if(st.type==="path"){
+      S.frac += dt*S.speed/1.5;
+      if(S.frac>=1){ S.frac=0; S.step++; if(S.step>=st.steps.length){ S.step=0; } }
+    } else if(st.type==="membrane"){
+      S.t += dt*S.speed;
+    }
+  }
+  if(st.type==="chemi") updateChemi(dt);
+  else if(st.type==="calvin") updateCalvin(dt);
+  else if(st.type==="anaer"){ updateAna(dt);
+    if(S.playing){ const fr=anaElapsed()/anaTotalTime(), el=document.getElementById("s-glytime");
+      if(el){ el.value=Math.round(fr*1000); document.getElementById("r-glytime").textContent=Math.round(fr*100)+"%"; } } }
+  else if(st.type==="krebs"){ updateKrb(dt);
+    if(S.playing){ const fr=krbElapsed()/krbTotalTime(), el=document.getElementById("s-glytime");
+      if(el){ el.value=Math.round(fr*1000); document.getElementById("r-glytime").textContent=Math.round(fr*100)+"%"; } } }
+  else if(st.type==="linkr"){ updateLnk(dt);
+    if(S.playing){ const fr=lnkElapsed()/lnkTotalTime(), el=document.getElementById("s-glytime");
+      if(el){ el.value=Math.round(fr*1000); document.getElementById("r-glytime").textContent=Math.round(fr*100)+"%"; } } }
+  else if(st.type==="glyco"){ updateGly(dt);
+    if(S.playing && !S.glyAll){ const fr=glyElapsed()/glyTotalTime();
+      const el=document.getElementById("s-glytime");
+      if(el){ el.value=Math.round(fr*1000); document.getElementById("r-glytime").textContent=Math.round(fr*100)+"%"; } } }
+  st.step=S.step; // expose to draw
+  enter();
+  if(st.type==="chemi") drawChemi();
+  else if(st.type==="calvin") drawCalvin();
+  else if(st.type==="glyco") drawGly();
+  else if(st.type==="linkr") drawLnk();
+  else if(st.type==="krebs") drawKrb();
+  else if(st.type==="anaer") drawAna();
+  else st.draw(S.frac);
+  // step bar
+  if(st.type==="path"){
+    document.getElementById("step-num").textContent="Step "+(S.step+1)+" / "+st.steps.length;
+    document.getElementById("step-desc").textContent=st.steps[S.step].desc;
+  } else if(st.type==="anaer"){
+    const A=ana(), ST=anaSteps();
+    document.getElementById("step-num").textContent="Step "+(A.step+1)+" / "+ST.length;
+    document.getElementById("step-desc").textContent=ST[A.step].t;
+  } else if(st.type==="krebs"){
+    const K=krb();
+    document.getElementById("step-num").textContent="Step "+(K.step+1)+" / "+KSTEPS.length;
+    document.getElementById("step-desc").textContent=KSTEPS[K.step].t;
+  } else if(st.type==="linkr"){
+    const K=lnk();
+    document.getElementById("step-num").textContent="Step "+(K.step+1)+" / "+LSTEPS.length;
+    document.getElementById("step-desc").textContent=LSTEPS[K.step].t;
+  } else if(st.type==="glyco"){
+    const G=gly();
+    document.getElementById("step-num").textContent = S.glyAll ? "Reference" : "Step "+(G.step+1)+" / "+GSTEPS.length;
+    document.getElementById("step-desc").textContent = S.glyAll
+      ? "Triose phosphate is oxidised (hydrogen \u2192 NAD) and takes up an inorganic phosphate, so it now carries two. Both phosphates are then passed straight to ADP, making 2 ATP per triose phosphate and leaving pyruvate."
+      : GSTEPS[G.step].t;
+  } else if(st.type==="calvin"){
+    const P=calvin().pools;
+    document.getElementById("step-num").textContent="CO\u2082 fixed: "+calvin().fixed;
+    document.getElementById("step-desc").textContent = S.noCO2
+      ? "With no CO\u2082, rubisco has nothing to fix, so RuBP is no longer used up. Triose phosphate keeps regenerating it, so RuBP builds up while GP falls to zero \u2014 the mirror image of the dark experiment."
+      : S.dark
+      ? "No ATP or reduced NADP is arriving. Reduction and regeneration stop; fixation continues until RuBP runs out, so GP builds up and RuBP falls \u2014 the classic dark experiment."
+      : "Fixation: rubisco joins CO\u2082 to RuBP \u2192 2 GP.  Reduction: each GP + 1 ATP + 1 reduced NADP \u2192 TP (purple).  Regeneration: 5 TP + 3 ATP \u2192 3 RuBP.  Every 6th TP leaves \u2014 2 TP build one glucose.";
+  } else if(st.type==="chemi"){
+    document.getElementById("step-num").textContent = S.sub==="ldr" ? "Photophosphorylation" : "Chemiosmosis";
+    document.getElementById("step-desc").textContent = S.sub!=="ldr"
+      ? (S.cyanide ? "Cyanide is bound in complex IV, so electrons cannot reach oxygen. The chain backs up, H⁺ pumping stops, the gradient collapses and ATP synthesis stops. Reduced NAD cannot be reoxidised, so the Krebs cycle stops too."
+        : S.noO2 ? "With no oxygen there is no final electron acceptor. Electrons back up along the chain, H⁺ pumping stops, the gradient collapses and ATP synthesis stops. Reduced NAD cannot be reoxidised, so the Krebs cycle stops too."
+        : "Reduced NAD is oxidised to NAD, releasing electrons and H⁺. Complexes I, III and IV pump H⁺ into the intermembrane space; H⁺ diffuse back through ATP synthase (3 H⁺ per ATP). At complex IV, O₂ + 4e⁻ + 4H⁺ → 2H₂O.")
+      : (S.dark
+      ? "In the dark there is no photoionisation and no photolysis, so no electrons enter the chain. Nothing pumps H⁺, the gradient collapses, and once the lumen empties no more ATP is made. NADP stays bound to the reductase, unreduced."
+      : "Press ☀ Shine light to split water. Electrons from photoionised chlorophyll travel the carrier chain, pumping H⁺ into the lumen; H⁺ diffuse and pass back down through ATP synthase (3 H⁺ per ATP). PSI passes electrons to NADP reductase → reduced NADP diffuses to the stroma.");
+  } else {
+    document.getElementById("step-num").textContent="Chemiosmosis";
+    document.getElementById("step-desc").textContent = st===STAGES.ldr
+      ? "Electrons from photoionised chlorophyll drive H⁺ into the thylakoid space; H⁺ flow back through ATP synthase to make ATP. Photolysis of water replaces the electrons and releases O₂."
+      : "Reduced NAD and FAD feed electrons into the chain, pumping H⁺ into the intermembrane space; H⁺ flow back through ATP synthase to make ATP. Oxygen accepts the electrons, forming water.";
+  }
+  if(S.ff && curStepIdx(st)!==ffBefore){ S.ff=false; setRun(false); }
+  renderTally();
+  requestAnimationFrame(frame);
+}
+
+/* ---------- controls ---------- */
+function setRun(on){ S.playing=on;
+  document.getElementById("run-ic").textContent=on?"⏸":"▶";
+  document.getElementById("run-tx").textContent=on?"Pause":"Play"; }
+document.getElementById("btn-run").addEventListener("click",()=>setRun(!S.playing));
+document.getElementById("btn-step").addEventListener("click",()=>{
+  const st=STAGES[S.sub];
+  if(st.type==="chemi"){ firePhotolysis(); return; }
+  // Step: run the rest of this step quickly, then pause at the next one
+  if(["glyco","linkr","krebs","anaer"].includes(st.type)){ S.ff=true; setRun(true); return; }
+  setRun(false);
+  if(st.type==="path"){ S.frac=0; S.step=(S.step+1)%st.steps.length; }
+  else { S.t+=0.15; }
+});
+document.getElementById("btn-light").addEventListener("click",()=>firePhotolysis());
+function syncDarkBtn(){
+  const b=document.getElementById("btn-dark"), l=document.getElementById("btn-light");
+  b.textContent = S.dark ? "☀ Switch to light" : "🌙 Switch to dark";
+  b.style.background = S.dark ? "#f0c030" : "#2c3a4a";
+  b.style.color = S.dark ? "#3a2e00" : "#dbe7f0";
+  l.style.opacity = S.dark ? ".4" : "1";
+  l.title = S.dark ? "No light available in the dark" : "";
+}
+function syncCO2Btn(){
+  const b=document.getElementById("btn-co2");
+  b.textContent = S.noCO2 ? "↩ Restore CO₂" : "🚫 Remove CO₂";
+  b.style.background = S.noCO2 ? "#e0a021" : "#3a3126";
+  b.style.color = S.noCO2 ? "#2a2000" : "#f0d7b6";
+}
+document.getElementById("btn-co2").addEventListener("click",()=>{ S.noCO2=!S.noCO2;
+  if(S.noCO2) calvinClearCO2();
+  syncCO2Btn(); refreshStatic(); });
+document.getElementById("btn-glyall").addEventListener("click",()=>{ S.glyAll=!S.glyAll; refreshStatic(); });
+document.getElementById("btn-noo2").addEventListener("click",()=>{ S.noO2=!S.noO2; if(S.noO2) S.cyanide=false; refreshStatic(); });
+document.getElementById("btn-cn").addEventListener("click",()=>{ S.cyanide=!S.cyanide; if(S.cyanide) S.noO2=false; refreshStatic(); });
+const sGT=document.getElementById("s-glytime");
+sGT.addEventListener("input",()=>{ if(STAGES[S.sub].type==="anaer") anaSeek(+sGT.value/1000); else if(S.sub==="krebs") krbSeek(+sGT.value/1000); else if(S.sub==="link") lnkSeek(+sGT.value/1000); else glySeek(+sGT.value/1000);
+  document.getElementById("r-glytime").textContent=Math.round(+sGT.value/10)+"%"; });
+document.getElementById("btn-dark").addEventListener("click",()=>{
+  S.dark=!S.dark; const C=CHEMI[S.sub]; if(S.dark&&C) C.flash=0; syncDarkBtn(); refreshStatic();
+});
+document.getElementById("btn-reset").addEventListener("click",()=>{ resetStage(); });
+const sLit=document.getElementById("s-light");
+sLit.addEventListener("input",()=>{S.lightI=(+sLit.value/100)*0.6;   // dimmer scale: 50% now gives the old 30%
+  document.getElementById("r-light").textContent=sLit.value+"%";});
+const sSpd=document.getElementById("s-speed");
+sSpd.addEventListener("input",()=>{S.speed=+sSpd.value/100;document.getElementById("r-speed").textContent=S.speed.toFixed(1)+"×";});
+document.querySelectorAll(".toptab").forEach(b=>b.addEventListener("click",()=>selectTop(b.dataset.top)));
+
+function boot(){ size(); buildSubtabs(); refreshStatic(); setRun(true); requestAnimationFrame(frame); }
+boot();
+</script>
+</body>
+</html>
