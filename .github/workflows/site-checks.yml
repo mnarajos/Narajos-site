@@ -6,6 +6,7 @@ on:
     paths:
       - 'public/**'
       - 'scripts/check-site.mjs'
+      - 'scripts/check-flashcards.mjs'
       - '.github/workflows/site-checks.yml'
   workflow_dispatch:
 
@@ -18,4 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check HTML links, JavaScript syntax and key revision functions
-        run: node scripts/check-site.mjs
+        run: |
+          node scripts/check-site.mjs
+          node scripts/check-flashcards.mjs
