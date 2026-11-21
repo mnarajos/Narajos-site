@@ -220,3 +220,8 @@ h1{font-size:clamp(1.65rem,3.5vw,2.2rem);letter-spacing:-.028em}
 .k-diagram-answer{margin:4px 5px 8px;padding:9px 12px;border-left:4px solid #0e776b;background:#ecf8f3;border-radius:5px;color:#21524b;font-size:.85rem;line-height:1.5}
 .k-feedback .k-figure{background:#fff;margin:0 0 15px;border-color:#c1d5cd}
 .k-feedback .k-figure svg{max-height:185px}
+
+/* At the third hint rung, a wrong option is visibly eliminated. */
+.k-option-out{background:#f0f2f2!important;border-color:#b7c2bf!important;color:#677675;opacity:.72}
+.k-option-out .k-option-letter{background:#e2e5e5}
+.k-ruled-out{font-size:.7rem;font-weight:750;color:#566a67;margin-left:auto;white-space:nowrap}
