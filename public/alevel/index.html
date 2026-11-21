@@ -6109,8 +6109,7 @@ function showPaper(p,focus){
   '<a class="ptl pt-r" href="#prac-'+p.id+'">'+ICO.r+'<b>Practicals</b><small>Required practicals '+pRange(rp.map(function(r){return r[0];}))+'</small></a>'+
   '<a class="ptl pt-s" href="#pskills-'+p.id+'">'+ICO.s+'<b>Maths Skills</b><small>'+sk.length+' skills</small></a></div>';
  if(p.id==="p3")h+='<ul class="rows">'+
-  rowA("/science-practice/#alevel-writing","Plan an essay paragraph","Use a single-paragraph outline to link a mechanism to the essay title.")+
-  rowA("/science-practice/#alevel-evidence","Evaluate unfamiliar data","Practise selecting evidence and qualifying a scientific conclusion.")+'</ul></div>';
+  rowA("/alevel/evidence/","Evaluate unfamiliar data","Practise selecting evidence and qualifying a scientific conclusion.")+'</ul>';
  var rows="";
  /* Paper 3 (20 November, teacher): the three real sections, marks as small text; extra practice in its own group */
  var sect="";if(p.skills3)p.skills3.forEach(function(x){var T=DATA[x[0]];if(T)sect+=rowA("#topic-"+x[0],T.title,(x[0]==="p3w"?"25 marks":x[0]==="p3e"?"15 marks":"38 marks")+" · "+x[1]);});

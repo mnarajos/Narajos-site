@@ -72,6 +72,7 @@ h1,h2,h3,p{margin-top:0}h1,h2,h3{letter-spacing:-.035em;line-height:1.17}h1{font
 .site-nav summary:hover,.site-nav>a:hover,.site-nav details[open] summary{color:var(--accent-ink)}
 .site-nav summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:5px}
 .site-dropdown{position:absolute;top:calc(100% + 7px);left:-14px;width:250px;max-width:calc(100vw - 32px);padding:8px;z-index:100;background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:0 15px 50px rgba(24,38,47,.12)}
+.site-nav .teacher-menu .site-dropdown{left:auto;right:0}
 .site-dropdown a{display:block;padding:10px 12px;font-size:13px;font-weight:600;color:var(--ink);border-radius:7px;text-decoration:none;line-height:1.35}
 .site-dropdown a:hover,.site-dropdown a:focus-visible{background:#fcf0e7;color:var(--accent-ink)}
 .home-simple{padding:78px 0 96px}
@@ -164,7 +165,7 @@ h1,h2,h3,p{margin-top:0}h1,h2,h3{letter-spacing:-.035em;line-height:1.17}h1{font
 /* Short explanation of the independent-study philosophy, kept below the tools. */
 .home-philosophy{max-width:800px;margin:34px 0 0;padding-top:22px;border-top:1px solid var(--line);font-size:14px;line-height:1.75;color:var(--muted)}
 .section-intro{max-width:780px;margin:-6px 0 25px;font-size:15px;line-height:1.75;color:var(--muted)}
-#learning-companions{scroll-margin-top:24px}
+#learning-companions,#teaching-tools{scroll-margin-top:24px}
 @media(max-width:850px){.home-philosophy{margin-top:24px;padding-top:19px}}
 
 /* Quiet but clearer visual hierarchy across the public pages. */
@@ -199,3 +200,4 @@ h1,h2,h3,p{margin-top:0}h1,h2,h3{letter-spacing:-.035em;line-height:1.17}h1{font
 .sim-card-go svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .sim-card:hover .sim-card-go,.sim-card:focus-visible .sim-card-go{background:var(--accent-light);border-color:#d9aa85;transform:translateX(2px)}
 @media(prefers-reduced-motion:reduce){.home-option .home-links a span[aria-hidden],.sim-card-go{transition:none}.sim-card:hover .sim-card-go,.sim-card:focus-visible .sim-card-go{transform:none}}
+
