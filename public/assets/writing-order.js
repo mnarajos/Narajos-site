@@ -59,6 +59,7 @@ for (const root of document.querySelectorAll("[data-writing-order]")) {
   const groupCounts = paragraphs.map(({ cards }) => cards.length);
   const chosen = elm("div", "", "writing-order-groups");
   const options = elm("ul", "", "ks3-choices writing-order-options");
+  const optionsHeading = elm("h3", "Sentences to choose from");
   const controls = elm("div", "", "writing-order-controls");
   const feedback = elm("p", "", "ks3-feedback");
   feedback.setAttribute("role", "status");
@@ -95,11 +96,13 @@ for (const root of document.querySelectorAll("[data-writing-order]")) {
     options.querySelector("button").focus();
   });
   controls.append(check, reset);
-  root.append(chosen, elm("h3", "Sentences to choose from"), options, controls, feedback, model);
+  root.append(chosen, optionsHeading, options, controls, feedback, model);
 
   function draw() {
     chosen.replaceChildren();
     options.replaceChildren();
+    optionsHeading.hidden = selection.length === bank.length;
+    options.hidden = optionsHeading.hidden;
     feedback.textContent = "";
     model.hidden = true;
     model.open = false;
