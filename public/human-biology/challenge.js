@@ -231,9 +231,9 @@ function makeSession(unit,scope,route){
 function progressionMenu(unit){
  visible=false;var points=ladders.points.filter(function(p){return p.unit===unit;});
  var h='<div class="k-wrap"><p class="crumb"><a href="#challenge/'+unit+'">← Unit overview</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+unit.toUpperCase()+' · Step by step</div><h1>Build understanding</h1><p>Choose one idea. Start with prior knowledge, check a misconception, try a rotating exam-focused question, then tackle a challenge. Read the explanation after each step.</p></div><p class="k-source">'+points.length+' selected teaching ideas, one in each listed subtopic. Each section contains further required content: this is not yet complete statement-by-statement coverage. Repeats rotate the third question; the supporting steps currently stay the same.</p>';
- var area=0;points.forEach(function(p){if(area!==p.area){area=p.area;h+='<h2>'+esc(areaName(unit,area))+'</h2>';}
+ var area=0;points.forEach(function(p){if(area!==p.area){if(area)h+='</div></details>';area=p.area;h+='<details class="k-progression-area"'+(area===1?' open':'')+'><summary>'+esc(areaName(unit,area))+'</summary><div class="k-progression-list">';}
   h+='<article class="paper k-skill-card"><small>'+unit.toUpperCase()+' · '+esc(p.section)+'</small><h3>'+esc(p.statement)+'</h3><p>Foundation → misconception → exam focus → challenge</p><a class="button primary" href="#challenge/'+unit+'/'+p.id+'">Start sequence<span class="sr-only">: '+esc(p.statement)+'</span></a></article>';
- });show(h+source()+'</div>');
+ });if(area)h+='</div></details>';show(h+source()+'</div>');
 }
 function current(){return session&&byId[session.queue[session.index]];}
 /* Skills reuse the question engine. Store seeds, not a second bank of answers.

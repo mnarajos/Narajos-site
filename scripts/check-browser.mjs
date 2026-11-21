@@ -265,6 +265,12 @@ try{
  await navPage.goto(base+"/human-biology/#challenge/f170/build");
  await navPage.getByRole("heading",{name:"Build understanding",exact:true}).waitFor();
  assert.equal(await navPage.locator("[href^='#challenge/f170/p-']").count(),28);
+ assert.equal(await navPage.locator(".k-progression-area").count(),4);
+ const labelledLink=navPage.locator("[href^='#challenge/f170/p-']").first();
+ assert((await labelledLink.locator(".sr-only").boundingBox()).width<=1,"Accessible label must not repeat visibly in the button");
+ const secondGroup=navPage.locator(".k-progression-area").nth(1);
+ assert(await secondGroup.locator(".k-skill-card").first().isHidden());
+ await secondGroup.locator("summary").click();assert(await secondGroup.locator(".k-skill-card").first().isVisible());
  await screen(navPage,"human-progressive-menu");
  const route="/human-biology/#challenge/f170/p-cell-stage-metaphase";
  await navPage.goto(base+route);
@@ -293,7 +299,7 @@ try{
  await navPage.locator("body:not(.booting)").waitFor();
  const ecg=navPage.locator("#ecg-panel"),mechanical=navPage.locator("#mechanical-graph-panel");
  assert(await ecg.isHidden());assert(await mechanical.isVisible());
- for(const level of [1,2,3]){await navPage.locator('[data-level="'+level+'"]').click();assert(await ecg.isHidden(),"Detail level must not reveal optional ECG");}
+ for(const level of [1,2,3]){await navPage.locator('button[data-level="'+level+'"]').click();assert(await ecg.isHidden(),"Detail level must not reveal optional ECG");}
  await navPage.locator("#btn-ecg").click();assert(await ecg.isVisible());assert(await mechanical.isVisible());
  assert.equal(await navPage.locator("#btn-ecg").getAttribute("aria-expanded"),"true");
  await navPage.waitForTimeout(120);
@@ -301,7 +307,7 @@ try{
  const heartBox=await navPage.locator(".heartbox").boundingBox(),ecgBox=await ecg.boundingBox();
  assert(ecgBox.x>=heartBox.x+heartBox.width,"Desktop ECG must sit beside heart");
  await screen(navPage,"cardiac-optional-ecg");
- await navPage.locator('[data-scene="elec"]').click();assert(await ecg.isVisible());assert(await mechanical.isHidden());
+ await navPage.locator('button[data-scene="elec"]').click();assert(await ecg.isVisible());assert(await mechanical.isHidden());
  await navPage.locator("#hide-ecg").click();assert(await ecg.isHidden());
  assert(await navPage.locator("#btn-ecg").evaluate(el=>document.activeElement===el));
  const coreCopy=await navPage.locator(".stage").innerText();assert(!/P wave|QRS|T wave/.test(coreCopy),"Core conduction view still exposes ECG wave labels");
@@ -315,7 +321,7 @@ try{
  await navPage.evaluate(()=>{S.block=false;});
 
  await navPage.setViewportSize({width:1280,height:720});
- await navPage.locator('[data-scene="mech"]').click();
+ await navPage.locator('button[data-scene="mech"]').click();
  assert(await ecg.isVisible());assert((await navPage.locator("#ecg").boundingBox()).height>80);
  await navPage.setViewportSize({width:390,height:844});
  assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Optional ECG overflows phone width");
