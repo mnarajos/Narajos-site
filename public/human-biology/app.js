@@ -27,7 +27,7 @@ function restoreSession(){try{var old=JSON.parse(localStorage.getItem(sessionKey
  if(old.type==="practice"&&!old.queue.every(function(id){return !!bySection[id];}))return null;
  return old;}catch(_){return null;}}
 function render(html){main.innerHTML=html;window.scrollTo(0,0);main.focus({preventScroll:true});updateNav();}
-function updateNav(){var here=previousRoute.split("/")[0]||"home";document.querySelectorAll(".nav a").forEach(function(a){var r=a.getAttribute("href").slice(1);if((r==="home"&&here==="home")||(r==="topics"&&(here==="area"||here==="learn"||here==="topics"))||(r==="flashcards"&&(here==="flashcards"||here==="cards"||here==="review"))||(r==="practice"&&here==="practice")||(r==="challenge"&&here==="challenge")||(r==="knowledge"&&here==="knowledge")||(r==="catchup"&&here==="catchup"))a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});}
+function updateNav(){var here=previousRoute.split("/")[0]||"home";document.querySelectorAll(".nav a").forEach(function(a){var r=a.getAttribute("href").slice(1);if((r==="home"&&here==="home")||(r==="topics"&&(here==="area"||here==="learn"||here==="topics"))||(r==="flashcards"&&(here==="flashcards"||here==="cards"||here==="review"))||(r==="practice"&&here==="practice")||(r==="skills"&&here==="skills")||(r==="challenge"&&here==="challenge")||(r==="knowledge"&&here==="knowledge")||(r==="catchup"&&here==="catchup"))a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});}
 function link(h,label,cls){return '<a class="button '+(cls||"secondary")+'" href="#'+esc(h)+'">'+esc(label)+'</a>';}
 function metric(n,label){return '<div class="metric"><strong>'+esc(n)+'</strong><span>'+esc(label)+'</span></div>';}
 function stats(){var ids=cards.map(function(c){return c.id;}),r=review.stats(ids);var done=Object.keys(progress).filter(function(id){return progress[id]&&progress[id].good>0;}).length;
@@ -59,6 +59,7 @@ function showHome(){
  h+='</section>';
  h+='<section class="k-companion-entry"><div class="k-companion-symbol">'+kIcon("book")+'</div><div><strong>Missed a lesson or feeling unsure?</strong><p>Catch up with a few key ideas, then return to questions.</p></div>'+link("catchup","Catch up","secondary")+'</section>';
  h+='<a class="k-more-units" href="#knowledge"><span>'+kIcon("book")+'</span><span><strong>Other Human Biology units</strong><small>F172–F177 · Knowledge questions only</small></span><span aria-hidden="true">›</span></a>';
+ h+='<a class="k-more-units k-skills-entry" href="#skills"><span>'+kIcon("calc")+'</span><span><strong>Skills practice</strong><small>F170 and F171 · Worked examples and fresh practice sets</small></span><span aria-hidden="true">›</span></a>';
  h+='<h2 class="k-subhead">Other ways to revise F170</h2><section class="k-home-actions">';
  h+='<a href="#flashcards" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("layers")+'</span><strong>Flashcards</strong><small>Recall and spaced review</small></a>';
  h+='<a href="#topics" class="k-mini-action learn"><span class="k-mini-symbol">'+kIcon("book")+'</span><strong>Learn a topic</strong><small>Short explanations</small></a>';
@@ -177,7 +178,7 @@ function runRoute(){
  var r=decodeURIComponent(location.hash.replace(/^#/,""))||"home";previousRoute=r;
  if(r==="home"){showHome();return;}
  if(r==="catchup"||r.startsWith("catchup/")){if(window.KeystoneHumanCatchup)return window.KeystoneHumanCatchup.route(r,render);return notFound();}
- if(r==="knowledge"||r==="challenge"||r.startsWith("challenge/")){if(window.KeystoneHumanChallenge)return window.KeystoneHumanChallenge.route(r,render);return notFound();}
+ if(r==="knowledge"||r==="challenge"||r.startsWith("challenge/")||r==="skills"||r.startsWith("skills/")){if(window.KeystoneHumanChallenge)return window.KeystoneHumanChallenge.route(r,render);return notFound();}
  if(r==="topics"){showTopics();return;}
  if(r==="flashcards"){showFlashMenu();return;}
  if(r==="practice"){showPracticeMenu();return;}

@@ -6,13 +6,13 @@ if(!db||!main)return;
 if(window.KeystoneHumanKnowledge){db.units=db.units.concat(window.KeystoneHumanKnowledge.units);db.questions=db.questions.concat(window.KeystoneHumanKnowledge.questions);}
 var K="narajos-human-challenge-v2-",SK=K+"session",PK=K+"progress",session=null,progress={};
 try{var r=JSON.parse(localStorage.getItem(PK)||"{}");if(r&&typeof r==="object"&&!Array.isArray(r))progress=r;}catch(_){}
-var all=db.questions,byId={};all.forEach(function(q){byId[q.id]=q;});
-var render=null,visible=false,lastRoute="";
+var all=db.questions,byId={},skills=window.KeystoneHumanSkills;all.forEach(function(q){byId[q.id]=q;});
+var render=null,visible=false,lastRoute="",skillExampleStem="";
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(a){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[a];});}
 function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=b[i];b[i]=b[j];b[j]=t;}return b;}
 function save(){try{if(session)localStorage.setItem(SK,JSON.stringify(session));else localStorage.removeItem(SK);}catch(_){}}
 function saveProgress(){try{localStorage.setItem(PK,JSON.stringify(progress));}catch(_){}}
-function restore(){try{var x=JSON.parse(localStorage.getItem(SK)||"null");if(x&&Array.isArray(x.queue)&&x.queue.length&&x.queue.every(function(id){return !!byId[id];})&&x.index<x.queue.length&&!x.complete&&x.route&&x.unit){x.hintsUsed=x.hintsUsed||{};x.quickCheckIds=x.quickCheckIds||{};x.quickCheckLinks=x.quickCheckLinks||{};x.guidedFirst=x.guidedFirst||0;x.quickChecksSeen=x.quickChecksSeen||0;x.quickChecksPassed=x.quickChecksPassed||0;return x;}}catch(_){}return null;}
+function restore(){try{var x=JSON.parse(localStorage.getItem(SK)||"null");if(x&&x.skillId){if(!skills||x.skillsVersion!==skills.version||!skills.get(x.skillId)||!Array.isArray(x.generated)||x.generated.length>10)return null;x.generated.forEach(function(g){var q=skills.generate(x.skillId,g.level,g.seed);byId[q.id]=q;});}if(x&&Array.isArray(x.queue)&&x.queue.length&&x.queue.every(function(id){return !!byId[id];})&&x.index<x.queue.length&&!x.complete&&x.route&&x.unit){x.hintsUsed=x.hintsUsed||{};x.quickCheckIds=x.quickCheckIds||{};x.quickCheckLinks=x.quickCheckLinks||{};x.guidedFirst=x.guidedFirst||0;x.quickChecksSeen=x.quickChecksSeen||0;x.quickChecksPassed=x.quickChecksPassed||0;return x;}}catch(_){}return null;}
 function isActive(){return !!session&&session.index<session.queue.length;}
 function pause(){stopHintTimer();session=null;visible=false;} // Preserve the unfinished set in localStorage.
 function discard(){stopHintTimer();session=null;visible=false;save();}
@@ -73,7 +73,9 @@ function intro(unit){
   ["weak","Fix mistakes","Revisit questions you missed","rotate","orange"],
   ["stretch","Challenge","Apply your understanding","brain","purple"]];
  tiles.forEach(function(t){h+='<a class="k-action '+t[4]+'" href="#challenge/'+unit+'/'+t[0]+'"><span class="k-icon">'+icon(t[3])+'</span><span><strong>'+t[1]+'</strong><small>'+t[2]+'</small></span><span class="k-arrow">'+icon("chevron")+'</span></a>';});
- h+='</div><div class="k-headrow"><h2>Choose a topic</h2><small>'+areas.length+' areas</small></div><div class="k-areas">';
+ h+='</div>';
+ if(skills&&!knowledge)h+='<a class="k-more-units" href="#skills/'+unit+'"><span>'+icon("calc")+'</span><span><strong>Skills practice</strong><small>Worked examples and fresh practice sets</small></span>'+icon("chevron")+'</a>';
+ h+='<div class="k-headrow"><h2>Choose a topic</h2><small>'+areas.length+' areas</small></div><div class="k-areas">';
  areas.forEach(function(a){var n=filter(unit,"a"+a).length;h+='<a href="#challenge/'+unit+'/a'+a+'" class="k-area" style="--topic-color:'+colors[a]+'"><span class="k-area-num">'+a+'</span><span class="k-area-label"><strong>'+esc(areaName(unit,a))+'</strong><small>'+n+' questions</small></span>'+icon("chevron")+'</a>';});
  h+='</div><p class="k-source">'+(knowledge?"Independent knowledge practice only; assignment-specific topic areas are excluded.":f?"Includes all four F170 areas.":"F171 sample bank is not yet a complete specification resource.")+'</p>'+source()+'</div>';show(h);
 }
@@ -210,6 +212,45 @@ function makeSession(unit,scope,route){
  save();drawQuestion();
 }
 function current(){return session&&byId[session.queue[session.index]];}
+/* Skills reuse the question engine. Store seeds, not a second bank of answers.
+   Aggregate history by skill, keeping topic-question scores independent. */
+function skillsMenu(unit){
+ visible=false;
+ if(!skills)return landing();
+ var defs=skills.definitions.filter(function(s){return !unit||s.unit===unit;}),old=restore();
+ var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">Human Biology · Repeated practice</div><h1>Skills practice</h1><p>Choose a method. See a worked example, then try ten questions. Start with choices; build towards independent application.</p></div><div class="actions"><a class="button secondary" href="#skills">All skills</a><a class="button secondary" href="#skills/f170">F170 skills</a><a class="button secondary" href="#skills/f171">F171 skills</a></div>';
+ if(old&&old.skillId)h+='<div class="k-continue"><div><strong>Unfinished skills set</strong><p>'+esc(skills.get(old.skillId).name)+'</p></div><a class="button primary" href="#'+esc(old.route)+'">Resume practice</a></div>';
+ ["f170","f171"].forEach(function(u){var group=defs.filter(function(s){return s.unit===u;});if(!group.length)return;
+  h+='<h2>'+u.toUpperCase()+'</h2><div class="k-skills-grid">';
+  group.forEach(function(s){var p=progress["skill:"+s.id]||{};
+   h+='<article class="paper k-skill-card"><h3>'+esc(s.name)+'</h3><p>'+esc(s.description)+'</p>'+(p.seen?'<p class="k-source">'+(p.independent||0)+' of '+p.seen+' answered without help</p>':'')+'<a class="button primary" href="#skills/'+u+'/'+s.id+'">Practise<span class="sr-only"> '+esc(s.name)+'</span></a></article>';
+  });h+='</div>';
+ });
+ h+='<p class="k-source">Calculations vary numbers and, where appropriate, the unknown quantity. Reasoning questions rotate through authored contexts. Repeats are possible. These skills support F170/F171; they are not complete knowledge coverage.</p>'+source()+'</div>';show(h);
+}
+function skillExample(sk,route){
+ visible=false;var q=skills.generate(sk.id,2,Math.floor(Math.random()*4294967296));skillExampleStem=q.stem+JSON.stringify(q.graph||null);
+ var h='<div class="k-wrap"><p class="crumb"><a href="#skills/'+sk.unit+'">← Skills practice</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+sk.unit.toUpperCase()+' · Skills practice</div><h1>'+esc(sk.name)+'</h1><p>Work through this example. Your practice starts with a different question.</p></div><section class="paper k-skill-example"><h2>Worked example</h2><p>'+esc(q.stem)+'</p>'+skills.graphHTML(q.graph)+'<h3>Method</h3><p>'+esc(q.explain)+'</p><p><strong>'+answerKey(q)+'</strong></p></section><p>Two independent correct answers move you up one step. An error moves the next question down one step. Using help keeps you at the same step.</p><button type="button" class="button primary" data-start-skill="'+sk.id+'">Now try one</button></div>';
+ show(h);
+}
+function addSkillQuestion(){
+ var q,tries=0;
+ do{q=skills.generate(session.skillId,session.skillLevel,Math.floor(Math.random()*4294967296));tries++;}while(((q.stem+JSON.stringify(q.graph||null))===skillExampleStem||session.generated.some(function(g){return byId[g.id]&&(byId[g.id].stem+JSON.stringify(byId[g.id].graph||null))===(q.stem+JSON.stringify(q.graph||null));}))&&tries<50);
+ byId[q.id]=q;session.generated.push({id:q.id,level:q.skillLevel,seed:q.generatedSeed});session.queue.push(q.id);
+ session.maxSkillLevel=Math.max(session.maxSkillLevel||1,session.skillLevel);
+}
+function startSkill(sk,r){
+ session={unit:sk.unit,scope:"skill",route:r,skillId:sk.id,skillsVersion:skills.version,skillLevel:1,maxSkillLevel:1,skillStreak:0,generated:[],queue:[],index:0,first:{},correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,complete:false,started:Date.now()};
+ addSkillQuestion();save();drawQuestion();
+}
+function skillRoute(r){
+ var m=/^skills(?:\/(f17[01]))?(?:\/([a-z]+))?$/.exec(r);
+ if(!m)return skillsMenu();
+ var sk=m[2]&&skills&&skills.get(m[2]);
+ if(!sk||sk.unit!==m[1])return skillsMenu(m[1]);
+ var old=session||restore();if(old&&old.route===r&&old.skillId===sk.id){session=old;return drawQuestion();}
+ return skillExample(sk,r);
+}
 function isQuickCheck(q){return !!(session&&session.quickCheckIds&&q&&session.quickCheckIds[q.id]);}
 function formChoice(q,answer){
  var selected=answer&&Array.isArray(answer.selected)?answer.selected:[];
@@ -391,13 +432,14 @@ function drawQuestion(){
  adaptQuickMixEnd();
  visible=true;var q=current(),a=currentAnswer();
  if(session.phase==="ask")ensureHintClock(q);
- var sub=title(q.unit),num=session.index+1,max=session.queue.length;
+ var sub=session.skillId?skills.get(session.skillId).name:title(q.unit),num=session.index+1,max=session.skillId?10:session.queue.length;
  var prog=(100*(session.index/max)).toFixed(1),showing=session.phase==="feedback";
  var used=session.hintsUsed&&session.hintsUsed[q.id]||0,availableHints=hintsFor(q);
- var h='<div class="k-wrap k-question-view"><p class="crumb"><a href="#challenge/'+q.unit+'">← Leave this set</a></p><div class="k-question-meta"><span>'+esc(sub)+'</span><span>'+num+' of '+max+'</span></div><div class="progress-track" role="progressbar" aria-label="Questions completed" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+session.index+'"><div style="width:'+prog+'%"></div></div>';
+ var h='<div class="k-wrap k-question-view"><p class="crumb"><a href="#'+(session.skillId?'skills/'+q.unit:'challenge/'+q.unit)+'">← Leave this set</a></p><div class="k-question-meta"><span>'+esc(sub)+'</span><span>'+num+' of '+max+'</span></div><div class="progress-track" role="progressbar" aria-label="Questions completed" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+session.index+'"><div style="width:'+prog+'%"></div></div>';
  h+='<div class="k-question-paper"><div class="k-question-tags"><span class="k-type">'+icon(iconFor(q))+esc(labelType(q))+'</span><span class="k-level '+esc(q.level)+'">'+esc(q.level==="warmup"?"Warm-up":q.level==="core"?"Core knowledge":q.level==="apply"?"Application":"Challenge")+'</span>'+(q.marks?'<span class="k-level stretch">'+q.marks+'-mark response</span>':'')+'</div><h1>'+esc(q.stem)+'</h1>';
  if(q.type==="number"||q.calculator)h+='<div class="k-calculator-note">'+icon("calc")+'<span>Calculator may help</span></div>';
  if(q.figure&&!showing)h+=figure(q.figure);
+ if(q.graph&&skills)h+=skills.graphHTML(q.graph);
  if(isQuickCheck(q))h+='<p class="k-quick-label"><strong>Quick check:</strong> Apply the same idea independently.</p>';
  if(!showing){h+=inputForm(q,a);
   if(used)h+='<div class="k-hint-box" role="note"><strong>Hint '+used+' of '+availableHints.length+'</strong>'+availableHints.slice(0,used).map(function(t){return '<p>'+esc(t)+'</p>';}).join('')+'</div>';
@@ -440,6 +482,7 @@ function validateAnswer(q,a){
  return {ready:true,correct:null};
 }
 function planQuickCheck(q){
+ if(session&&session.skillId)return null;
  if(!session||isQuickCheck(q)||(session.quickChecksPlanned||0)>=2)return null;
  var seen=session.first||{};
  var rank={warmup:0,core:1,apply:2,stretch:3};
@@ -471,10 +514,11 @@ function planQuickCheck(q){
 function record(q,got){
  var helped=!!(session.hintsUsed&&session.hintsUsed[q.id]);
  var independent=!!got&&!helped&&!session.wasSkipped;
- var p=progress[q.id]||{seen:0,good:0,wrong:0,independent:0,guided:0};p.seen++;
+ var progressId=session.skillId?"skill:"+session.skillId:q.id;
+ var p=progress[progressId]||{seen:0,good:0,wrong:0,independent:0,guided:0};p.seen++;
  if(got){p.good++;if(helped)p.guided=(p.guided||0)+1;else p.independent=(p.independent||0)+1;p.lastCorrect=true;}
  else{p.wrong++;p.lastCorrect=false;}
- p.last=Date.now();progress[q.id]=p;saveProgress();
+ p.last=Date.now();progress[progressId]=p;saveProgress();
  if(!(q.id in session.first)){
   session.first[q.id]=independent;
   if(independent)session.correctFirst++;
@@ -482,6 +526,11 @@ function record(q,got){
  }
  if(isQuickCheck(q)){session.quickChecksSeen=(session.quickChecksSeen||0)+1;if(independent)session.quickChecksPassed=(session.quickChecksPassed||0)+1;}
  session.lastPlannedCheck=null;
+ if(session.skillId){
+  if(independent){session.skillStreak++;if(session.skillStreak>=2){session.skillLevel=Math.min(4,session.skillLevel+1);session.skillStreak=0;}}
+  else{session.skillStreak=0;if(!got)session.skillLevel=Math.max(1,session.skillLevel-1);}
+  save();return;
+ }
  var checkId=(!got||helped)?planQuickCheck(q):null;
  // When no suitable same-concept question exists, a guided response returns
  // later in the set for another unaided attempt rather than being counted secure.
@@ -514,16 +563,22 @@ function next(){
  if(!session)return;
  var previous=current();if(previous&&session.answers)delete session.answers[previous.id]; // Do not retain free-text answers beyond feedback.
  session.index++;session.phase="ask";session.lastResult=undefined;session.wasSkipped=false;session.lastPlannedCheck=null;session.quickTapAttempted=false;save();
+ if(session.skillId&&session.index<10&&session.index>=session.queue.length){addSkillQuestion();save();}
  if(session.index>=session.queue.length)finish();else drawQuestion();
 }
 function finish(){
  stopHintTimer();if(!session)return;var old=session;session=null;save();
+ if(old.skillId){
+  var sk=skills.get(old.skillId);
+  show('<div class="k-wrap k-done"><h1>Skills set complete</h1><p class="lead">'+old.correctFirst+' of 10 answered independently on first attempt.</p><p>'+old.guidedFirst+' answered with help. Highest practice step: '+old.maxSkillLevel+' of 4.</p><p>Try another set with new values or another authored context. This records practice, not proven mastery.</p><div class="actions"><button class="button primary" type="button" data-start-skill="'+sk.id+'">Practise this skill again</button><a class="button secondary" href="#skills/'+sk.unit+'">Choose another skill</a><a class="button secondary" href="#challenge/'+sk.unit+'">Apply to topic questions</a></div></div>');return;
+ }
  var repeat=Object.keys(old.retries).length,done=old.queue.length;
  var h='<div class="k-wrap k-done"><p class="crumb"><a href="#challenge/'+old.unit+'">← Unit overview</a></p><div class="k-done-icon">'+icon("check")+'</div><h1>Practice complete</h1><p class="lead">'+old.correctFirst+' of '+Object.keys(old.first).length+' questions recalled independently on first attempt.</p>';
  h+='<div class="k-mini-stats"><span><strong>'+Object.keys(old.first).length+'</strong> unique questions</span><span><strong>'+repeat+'</strong> revisited</span><span><strong>'+(old.guidedFirst||0)+'</strong> answered with help</span><span><strong>'+(old.quickChecksPassed||0)+'/'+(old.quickChecksSeen||0)+'</strong> quick checks without help</span></div><div class="k-action-grid"><a class="k-action teal" href="#challenge/'+old.unit+'/weak"><span class="k-icon">'+icon("rotate")+'</span><span><strong>Fix weak areas</strong><small>Practise questions you missed</small></span></a><a class="k-action blue" href="#challenge/'+old.unit+'"><span class="k-icon">'+icon("grid")+'</span><span><strong>Choose another set</strong><small>Topic or mixed practice</small></span></a></div></div>';show(h);
 }
 function route(r,renderer){
  render=renderer;lastRoute=r;
+ if(r==="skills"||r.startsWith("skills/"))return skillRoute(r);
  if(r==="challenge")return landing();
  if(r==="knowledge")return knowledgeLanding();
  var m=/^challenge\/(f17[0-7])(?:\/([a-z0-9-]+))?$/.exec(r);
@@ -573,6 +628,8 @@ main.addEventListener("input",function(e){
  if(e.target.matches("#k-number, #k-text, #k-written")){var q=current(),a=session.answers[q.id]||{};a.text=e.target.value;session.answers[q.id]=a;save();}
 });
 main.addEventListener("click",function(e){
+ var start=e.target.closest("[data-start-skill]");
+ if(start&&skills){var sk=skills.get(start.getAttribute("data-start-skill"));if(sk&&lastRoute==="skills/"+sk.unit+"/"+sk.id)return startSkill(sk,lastRoute);}
  if(!session||!visible)return;
  pointerQuickTap(e);
  var move=e.target.closest("[data-move]");
