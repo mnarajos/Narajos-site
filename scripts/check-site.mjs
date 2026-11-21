@@ -78,7 +78,7 @@ for(const p of sharedHeaderPages){
  requireTrue(!nav.includes("Science Revision"),"Outdated science revision menu label in "+p);
 }
 const teachingOverview=read("teaching/index.html");
-const learnerCards=[...teachingOverview.matchAll(/<a class="app-card" href="(\/[^"]+)"/g)].map(m=>m[1]);
+const learnerCards=[...teachingOverview.matchAll(/<a class="app-card[^"]*" href="(\/[^"]+)"/g)].map(m=>m[1]);
 requireTrue(learnerCards.join(",")==="/gcse/,/alevel/,/human-biology/","Teaching overview must show all three learner apps before educator tools");
 requireTrue(teachingOverview.includes('href="/teacher/"')&&teachingOverview.includes("For educators"),"Focused Questions needs a separate educator section");
 requireTrue(home.includes("complement classroom teaching rather than replace it"),"Homepage missing teacher-complement rationale");
