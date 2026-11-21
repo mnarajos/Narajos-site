@@ -23,7 +23,7 @@ window.KeystoneGcseDecks=Object.assign(window.KeystoneGcseDecks||{},{
  ["In a series circuit, what happens to current at different points?","It is the same at every point"],
  ["In a parallel circuit, what happens to potential difference across each branch?","It is the same across each branch"],
  ["What is the UK's nominal mains frequency?","50 Hz",["50 hertz"]],
- ["Which mains wire is connected to Earth at the electricity supply?","Neutral wire",["neutral"]]
+ ["What is the nominal UK mains potential difference?","230 V",["230 volts"]]
  ],
  p3:[
  ["What is the equation for density?","Density = mass ÷ volume",["ρ = m/V"]],
@@ -80,9 +80,9 @@ window.KeystoneGcseDecks=Object.assign(window.KeystoneGcseDecks||{},{
  ["What is a permanent magnet?","A magnet that produces its own magnetic field"],
  ["What is an induced magnet?","A material that becomes magnetic in a magnetic field"],
  ["How can you make an electromagnet stronger?","Increase current or increase the number of coil turns",["use an iron core"]],
- ["What is the motor effect?","A force acts on a current-carrying wire in a magnetic field",[]],
- ["What is the purpose of the split-ring commutator in a simple DC motor?","Reverse the current every half turn to maintain rotation",[],"H"],
- ["What is electromagnetic induction?","A changing magnetic field through a conductor can induce a potential difference",[]],
- ["What does a step-up transformer do?","Increases potential difference between primary and secondary coils",[],"H"]
+ ["What produces a magnetic field around a conducting wire?","An electric current"],
+ ["What does Fleming’s left-hand rule show?","Relative directions of current, magnetic field and force",[],"H"],
+ ["What happens to the magnetic field strength as you move away from a magnet?","It decreases"],
+ ["In which direction do magnetic field lines point outside a bar magnet?","From north pole to south pole"]
  ]
 });
