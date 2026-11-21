@@ -39,11 +39,11 @@ assert(D.areas[3].sections.some(s=>s.id==="4.1.2"&&s.cards.some(c=>c.a==="Tinea 
 assert(!JSON.stringify(D).match(/set assignment task|complete.*coursework|submit.*NEA/i),"Coursework content detected");
 load("human-biology/app.js");
 assert.equal(window.KeystoneHumanApp.stats().cards,112);
-assert(main.innerHTML.includes("Human Biology")&&main.innerHTML.includes("F170 learning pilot"),"Overview failed");
+assert(main.innerHTML.includes("Ready to revise?")&&main.innerHTML.includes("Fundamentals of human biology"),"Paper-first overview failed");
 location.hash="#topics";listeners.hashchange();
 assert(main.innerHTML.includes("Explore the specification")&&main.innerHTML.includes("Basics of microbiology"));
 location.hash="#area/area-2";listeners.hashchange();
-assert(main.innerHTML.includes("Measuring system activity")&&main.innerHTML.includes("Transplants and artificial organs"));
+assert(main.innerHTML.includes("Measuring system activity")&&main.innerHTML.includes("Practise questions"));
 location.hash="#learn/3.2.1";listeners.hashchange();
 assert(/nodes of Ranvier/i.test(main.innerHTML)&&main.innerHTML.includes("Apply to a question"));
 location.hash="#flashcards";listeners.hashchange();
