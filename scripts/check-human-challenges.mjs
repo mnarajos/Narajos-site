@@ -5,7 +5,7 @@ const read=path=>readFileSync("public/"+path,"utf8");
 const data=new Map(),events={},mainEvents={};
 const main={innerHTML:"",focus(){},addEventListener(name,fn){mainEvents[name]=fn;},querySelector(sel){return null;},querySelectorAll(){return [];}};
 const elements={};
-function elem(id){if(id==="main")return main;return elements[id]||(elements[id]={hidden:false,value:"",readOnly:false,focus(){},blur(){},addEventListener(){},querySelector(){return null;}});}
+function elem(id){if(id==="main")return main;return elements[id]||(elements[id]={hidden:id==="leave-dialog",value:"",readOnly:false,focus(){},blur(){},addEventListener(){},querySelector(){return null;}});}
 const document={getElementById:elem,querySelectorAll(){return[];},addEventListener(name,fn){events["doc:"+name]=fn;},createElement(){return {className:"",setAttribute(){},textContent:""};}};
 const location={hash:"#home",assign(x){this.hash=x;}};
 const window={addEventListener(name,fn){events[name]=fn;},scrollTo(){}};
@@ -42,7 +42,10 @@ assert.equal(db.questions.find(q=>q.id==="health-care-records").marks,9);
 assert(!JSON.stringify(db).match(/complete.*coursework|draft.*NEA|submit.*assignment/i),"NEA task assistance present");
 load("human-biology/app.js");
 assert(main.innerHTML.includes("Ready to revise?"));
-function route(hash){location.hash="#"+hash;events.hashchange();}
+function route(hash){location.hash="#"+hash;events.hashchange();
+ const modal=elem("leave-dialog");
+ if(!modal.hidden&&typeof elem("leave-confirm").onclick==="function"){elem("leave-confirm").onclick();events.hashchange();}
+}
 route("challenge/f170");
 assert(main.innerHTML.includes("Exam-style focus")&&main.innerHTML.includes("Fix mistakes"),"F170 mode chooser missing");
 route("challenge/f170/all");
