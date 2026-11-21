@@ -62,6 +62,8 @@ These checks are not a replacement for browser testing.
 
 **Content status:** The GCSE flashcard decks are an initial curated recall selection, not a complete card-by-card representation of every specification statement. Further expansion and examiner-report review are recommended before describing them as comprehensive.
 
+A separate GitHub Actions **Browser smoke tests** workflow launches headless Chromium against the actual static site on desktop and a 390px mobile viewport. It checks A-level/Human Biology catch-up navigation, live question loading, leaving an active activity, return-home navigation, uncaught page errors and horizontal overflow; screenshots are retained as short-lived workflow artifacts. This is broader than the Node-only checks, but **does not substitute for a human teacher checking every question, diagram, answer and screen reader behaviour**.
+
 The website's presentation is deliberately restrained. Keep the main navigation and visual conventions coherent, while allowing subject-specific simulation colours.
 
 ### Companion use: revision · catch-up · reteach
