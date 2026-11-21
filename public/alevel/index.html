@@ -389,6 +389,7 @@ body.onhome{background:radial-gradient(circle at 100% 0,rgba(92,207,196,.18),tra
 .navleave-actions .primary{background:var(--acc,#146c69);color:var(--acc-ink,#fff);border-color:transparent}
 
 </style>
+<link rel="stylesheet" href="/assets/spaced-review.css">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
 <body>
@@ -436,6 +437,8 @@ body.onhome{background:radial-gradient(circle at 100% 0,rgba(92,207,196,.18),tra
 <div id="ovl" aria-hidden="true"></div>
 <div id="live" class="sr-only" role="status" aria-live="polite"></div>
 
+<script src="/assets/spaced-review.js"></script>
+<script src="/alevel/spaced-review-app.js"></script>
 <script>
 (function(){
 "use strict";
@@ -6043,7 +6046,9 @@ var PDOT={a1:"#5ccfc4",a2:"#7fa8e8",a3:"#e07a8e",a4:"#a78be0",a5:"#7fd38a",a6:"#
 var PCARD={p1:["Molecules, cells, exchange and genetics","Topics 1–4"],p2:["Energy, responses, populations and gene expression","Topics 5–8"],p3:["Topics 1–8, experimental thinking and the 25-mark essay",""]};
 function showHome(focus){
  L=null;
- var h='<div class="hb-hero"><h1>Ready to revise?</h1><p>Pick a paper and smash it!</p></div>';
+ var h='<div class="hb-hero"><h1>Ready to revise?</h1><p>Choose a paper or review what you have studied.</p></div>';
+ var kst=KSReview.progress();
+ h+='<section class="kr-entry"><h2>Review for today</h2><p>Revisit flashcards after a delay. Previously missed cards return for practice.</p><div class="kr-metrics"><span>'+kst.due+' due</span><span>'+kst.seen+' practised</span></div><div class="kr-actions"><a class="btn primary" href="#spaced">Spaced review</a><a class="btn" href="#flashcards">Other flashcard modes</a></div></section>';
  h+='<div class="hpcs">'+PAPERS.map(function(p){var c=PCARD[p.id];
   return '<a class="hpc hpc-'+p.id+'" href="#paper-'+p.id+'"><span class="blob" aria-hidden="true"></span>'+PART[p.id]+'<b>'+esc(p.name)+'</b><span class="pd">'+esc(c[0])+'</span><span class="dots">'+(c[1]?'<span>'+c[1]+'</span>':'')+'</span><span class="tstripe" aria-hidden="true" style="background:'+tStripe(p)+'"></span></a>';}).join("")+'</div>';
  render(h,focus);
@@ -6112,6 +6117,8 @@ function startQuick(sc){var ks,pp=null;
  else if(sc&&(pp=PAPERS.filter(function(p){return p.id===sc;})[0])){ks=pp.id==="p3"?fcSel(pp):pp.topics;}
  if(!ks||!ks.length)ks=["a1","a2","a3","a4","a5","a6","a7","a8"];
  ks=ks.filter(function(k){return CARDS[k];});FCP=pp;startTimed(ks,1);}
+
+var KSReview=window.KeystoneAlevelReview.create({CARDS:CARDS,render:render,esc:esc,fmt:fmt,guardOn:guardOn});
 
 /* ---------- Views ---------- */
 function findNext(){
@@ -6694,6 +6701,7 @@ function topicDecks(){return SCI[0].topics.filter(function(x){return DATA[x[0]]&
 function showFlash(){stopTimer();if(G)G.over=true;L=null;
  if(S.fcTimed)return showTimedMenu();
  var h='<p class="crumb"><a href="#">← Home</a></p><h1>Flashcards</h1><p class="lead">Untimed: cards you miss or pass come back at the end, until you have them all. Timed: ten words against the clock, getting harder as you improve.</p>'+fcToggle(false);
+ h+='<section class="kr-entry"><h2>Spaced review</h2><p>Review terms you previously missed and revisit successful cards after a delay.</p><a class="btn primary" href="#spaced">Open review dashboard</a></section>';
  FC_GROUPS.forEach(function(g){var ks=g[2]||topicDecks();h+='<section class="fcg"><h2>'+esc(g[0])+'</h2><p class="lead">'+esc(g[1])+'</p><p class="sklinks">'+ks.map(function(k){return '<a class="btn" href="#cards-'+k+'">'+esc(DATA[k]?DATA[k].code:deckName(k).split(":")[0])+' <span class="small">('+CARDS[k].length+')</span></a>';}).join("")+'</p></section>';});
  h+='<section class="fcg"><h2>Reverse cards</h2><p class="lead">See the key word and give the definition – say it or write it, then check it and mark yourself honestly. Cards you have not got yet come back at the end.</p><p class="sklinks">'+topicDecks().map(function(k){return '<a class="btn" href="#rev-'+k+'">'+esc(DATA[k].code)+' <span class="small">('+CARDS[k].length+')</span></a>';}).join("")+'</p></section>';
  h+='<section class="fcg"><h2>Name everything</h2><p class="lead">Brainstorm: how many enzymes, proteins, hormones or ions can you name against the clock? Useful for planning essays.</p><p><a class="btn" href="#brain">Brainstorm</a></p></section>';
@@ -6738,8 +6746,8 @@ function showRev(){
  render(h,false);
  $("#revshow").onclick=function(){var a=$("#revans");a.hidden=false;a.className="fb";a.innerHTML='<h2>Definition</h2><p>'+fmt(revDef(RV.cur))+'</p><p class="small">Count it as right if yours has the same key idea, even in different words.</p>';
   $("#revact").innerHTML='<button class="btn primary big" id="revok" type="button">I had it</button><button class="btn big" id="revno" type="button">Not yet</button>';
-  $("#revok").onclick=function(){RV.done++;chime(TIER_CHIME[0]);showRev();};
-  $("#revno").onclick=function(){RV.q.push(RV.cur);showRev();};
+  $("#revok").onclick=function(){KSReview.trackExisting(RV.k,RV.cur,true,true);RV.done++;chime(TIER_CHIME[0]);showRev();};
+  $("#revno").onclick=function(){KSReview.trackExisting(RV.k,RV.cur,false,true);RV.q.push(RV.cur);showRev();};
   $("#revok").focus();};
  $("#revshow").focus();
 }
@@ -6753,7 +6761,7 @@ function showCard(){
  $("#pass").onclick=function(){if(F.phase!=="q")return;FNOTE="";cardResult("pass");};
  $("#fcf").onsubmit=function(e){e.preventDefault();if(F.phase!=="q"){showCard();return;}var v=inp.value.trim();if(!v){$("#msg").textContent="Type an answer, or press Pass.";return;}cardResult(fmatch(v,cardAns(F.cur))||"wrong");};
 }
-function cardResult(r){F.phase="a";F.hist.push({card:F.cur,ok:r==="exact"||r==="near"});var cb=$("#cback");if(cb)cb.hidden=true;var fb=$("#fb"),w=F.cur[1];$("#msg").textContent="";$("#fcin").readOnly=true;$("#pass").hidden=true;
+function cardResult(r){KSReview.trackExisting(F.k,F.cur,r==="exact"||r==="near",false);F.phase="a";F.hist.push({card:F.cur,ok:r==="exact"||r==="near"});var cb=$("#cback");if(cb)cb.hidden=true;var fb=$("#fb"),w=F.cur[1];$("#msg").textContent="";$("#fcin").readOnly=true;$("#pass").hidden=true;
  if(r==="exact"||r==="near"){F.done++;fb.className="fb good";fb.innerHTML='<h2>'+pick(PRAISE)+'</h2>'+(r==="near"?'<p>Check the spelling: <strong>'+esc(w)+'</strong></p>':'')+(FNOTE?'<p>'+esc(FNOTE)+'</p>':'')+(typeof F.cur[3]==="string"?'<p>'+esc(F.cur[3])+'</p>':'');chime(TIER_CHIME[0]);}
  else{F.q.push(F.cur);fb.className="fb bad";fb.innerHTML='<h2>'+(r==="pass"?'The answer':'✗ Not quite')+'</h2>'+(FNOTE&&r!=="pass"?'<p>'+esc(FNOTE)+'</p>':'')+'<p>The key word is <strong>'+esc(w)+'</strong>. This card will come back at the end.</p>'+(typeof F.cur[3]==="string"?'<p>'+esc(F.cur[3])+'</p>':'')+mnemHTML(mnemFind(String(F.cur[0])+" "+F.cur[1],F.k));}
  fb.hidden=false;$("#act").textContent="Next card";$("#act").focus();}
@@ -6848,10 +6856,10 @@ function startTimed0(topics,lv){stopTimer();var tf=tfState();tf.lv=lv;save();
   '<form id="gf" novalidate><h1 class="fcq" id="gq"></h1>'+fcInput()+'<p id="msg" class="msg" aria-live="assertive"></p><div class="actions"><button class="btn primary big" type="submit">Check</button><button class="btn big" type="button" id="gpass">Pass</button></div></form>';
  render(h,false);var me=G;showTimedCard();
  $("#tstop").onclick=function(){goTimedMenu();};
- $("#gpass").onclick=function(){if(me!==G||G.busy||G.over)return;G.log.push({c:G.cur,a:"",r:"pass"});showAns(false);};
+ $("#gpass").onclick=function(){if(me!==G||G.busy||G.over)return;KSReview.trackExisting(null,G.cur,false,false);G.log.push({c:G.cur,a:"",r:"pass"});showAns(false);};
  $("#gf").onsubmit=function(e){e.preventDefault();if(me!==G||G.busy||G.over)return;var v=$("#fcin").value.trim();if(!v)return;var c=G.cur,r=fmatch(v,cardAns(c));
-  if(r){G.got++;G.log.push({c:c,a:v,r:"ok",note:FNOTE||(r==="near"?"Spelling: "+c[1]:"")});chime(TIER_CHIME[Math.min(Math.floor(G.got/3),4)]);$("#msg").textContent=FNOTE?"✓ "+FNOTE:r==="near"?"✓ "+c[1]:"";G.i++;if(G.i>=G.cards.length)return endTimed();showTimedCard();}
-  else{var fn=FNOTE;G.log.push({c:c,a:v,r:"wrong"});showAns(true);if(fn)$("#msg").textContent="✗ "+fn+" Answer: "+c[1];}};
+  if(r){KSReview.trackExisting(null,c,true,false);G.got++;G.log.push({c:c,a:v,r:"ok",note:FNOTE||(r==="near"?"Spelling: "+c[1]:"")});chime(TIER_CHIME[Math.min(Math.floor(G.got/3),4)]);$("#msg").textContent=FNOTE?"✓ "+FNOTE:r==="near"?"✓ "+c[1]:"";G.i++;if(G.i>=G.cards.length)return endTimed();showTimedCard();}
+  else{KSReview.trackExisting(null,c,false,false);var fn=FNOTE;G.log.push({c:c,a:v,r:"wrong"});showAns(true);if(fn)$("#msg").textContent="✗ "+fn+" Answer: "+c[1];}};
  FT=setInterval(function(){if(me!==G||G.over)return;G.left--;var t=$("#tm");if(t){t.textContent=secs(Math.max(G.left,0));t.classList.toggle("low",G.left<=10);$("#tfill").style.width=(100*G.left/LEVELS[G.lv].s)+"%";}if(G.left<=0)endTimed();},1000);}
 function showTimedCard(){G.cur=G.cards[G.i];$("#gq").innerHTML=fmt(G.cur[0]);fcFrame(G.cur);$("#tgot").textContent="Card "+(G.i+1)+" of "+G.cards.length+" · "+G.got+" right";var i=$("#fcin");i.value="";i.readOnly=false;i.focus();}
 function showAns(wrong){var me=G;G.busy=true;$("#msg").textContent=(wrong?"✗ ":"")+"The answer is: "+G.cur[1];$("#fcin").readOnly=true;
@@ -6901,6 +6909,7 @@ function route(focus){
   if(c&&isUnlocked(m[1],c))return startLesson(m[1],c);
   return showTopic(m[1],focus);
  }
+ if(h==="spaced"||/^spaced-(?:due|new|weak|reverse|resume)$/.test(h))return KSReview.route(h);
  if((m=/^cards-([a-z0-9]+)$/.exec(h))&&CARDS[m[1]])return startCards(m[1]);
  if((m=/^rev-([a-z0-9]+)$/.exec(h))&&CARDS[m[1]]&&DATA[m[1]])return startRev(m[1]);
  if(h==="brain")return showBrainMenu();
@@ -6954,6 +6963,7 @@ $("#reset-yes").onclick=function(){S.best={};S.slop={};save();$("#reset-confirm"
 /* Prevent accidental loss of progress when navigating out of unfinished activities. */
 var siteLeaveAllowed=false;
 function siteWorkActive(){
+ if(KSReview.isActive())return true;
  var h=location.hash;
  if(L&&!L.fin&&(/^(#lesson-|#practice-)/.test(h)||!!document.querySelector(".ltop")))return true;
  if(/^#cards-/.test(h)&&F&&!!document.getElementById("fcf"))return true;
@@ -6966,7 +6976,7 @@ function siteLeavePrompt(onStay,onLeave){
  if(document.querySelector(".navleave-overlay"))return;
  var previous=document.activeElement,cover=document.createElement("div");
  cover.className="navleave-overlay";
- cover.innerHTML='<div class="navleave-card" role="dialog" aria-modal="true" aria-labelledby="site-leave-title" aria-describedby="site-leave-help"><h2 id="site-leave-title">Leave this activity?</h2><p id="site-leave-help">Your progress in this activity may be lost.</p><div class="navleave-actions"><button class="primary" type="button" id="site-leave-stay">Keep going</button><button type="button" id="site-leave-confirm">Leave</button></div></div>';
+ cover.innerHTML='<div class="navleave-card" role="dialog" aria-modal="true" aria-labelledby="site-leave-title" aria-describedby="site-leave-help"><h2 id="site-leave-title">Leave this activity?</h2><p id="site-leave-help">'+(KSReview.isActive()?'Your completed reviews are saved, and this set can be resumed later.':'Your progress in this activity may be lost.')+'</p><div class="navleave-actions"><button class="primary" type="button" id="site-leave-stay">Keep going</button><button type="button" id="site-leave-confirm">Leave</button></div></div>';
  document.body.appendChild(cover);
  function stay(){cover.remove();if(onStay)onStay();if(previous&&previous.focus)previous.focus();}
  cover.querySelector("#site-leave-stay").onclick=stay;
