@@ -100,6 +100,45 @@ try{
  await screen(desktop,"alevel-enzyme-visual");
 
  await checkPage(desktop,"human-biology");
+ // Generated skills use the same real DOM checker and navigation protection.
+ await desktop.getByRole("link",{name:"Skills practice",exact:true}).first().click();
+ await desktop.getByRole("heading",{name:"Skills practice",exact:true}).waitFor();
+ assert.equal(await desktop.locator(".k-skill-card").count(),14);
+ await screen(desktop,"human-skills-desktop");
+ await desktop.locator('a[href="#skills/f170/magnification"]').click();
+ await desktop.getByRole("heading",{name:"Worked example",exact:true}).waitFor();
+ await desktop.getByRole("button",{name:"Now try one"}).click();
+ await desktop.locator(".k-question-view").waitFor();
+ for(let i=0;i<10;i++){
+  const task=await desktop.evaluate(()=>{
+   const s=JSON.parse(localStorage.getItem("narajos-human-challenge-v2-session"));
+   const g=s.generated[s.index];return window.KeystoneHumanSkills.generate(s.skillId,g.level,g.seed);
+  });
+  if(task.type==="single")await desktop.locator('input[name="kchoice"][value="'+task.correct+'"]').check();
+  else await desktop.locator("#k-number").fill(String(task.correct));
+  if(await desktop.locator('[data-k-action="check"]').count())await desktop.locator('[data-k-action="check"]').click();
+  await desktop.locator(".k-feedback.correct").waitFor();
+  if(i===2){
+   await desktop.reload();await desktop.locator(".k-feedback.correct").waitFor();
+   await desktop.getByRole("link",{name:"← Leave this set"}).click();
+   await desktop.locator("#leave-dialog").waitFor({state:"visible"});
+   await desktop.locator("#leave-stay").click();
+  }
+  await desktop.locator('[data-k-action="next"]').click();
+ }
+ await desktop.getByRole("heading",{name:"Skills set complete"}).waitFor();
+ await desktop.getByRole("button",{name:"Practise this skill again"}).click();
+ await desktop.locator(".k-question-view").waitFor();
+ await desktop.getByRole("link",{name:"← Leave this set"}).click();
+ await desktop.locator("#leave-confirm").click();
+ await desktop.getByRole("heading",{name:"Skills practice",exact:true}).waitFor();
+ await desktop.getByRole("link",{name:"Resume practice"}).click();
+ await desktop.locator(".k-question-view").waitFor();
+ await desktop.getByRole("link",{name:"← Leave this set"}).click();
+ await desktop.locator("#leave-confirm").click();
+ await desktop.goto(base+"/human-biology/#skills/f171/rate");
+ await desktop.locator(".k-skill-graph svg").waitFor();
+ await screen(desktop,"human-skill-graph");
  await desktop.goto(base+"/human-biology/#catchup/f171",{waitUntil:"load"});
  await desktop.locator('a[href="#catchup/f171/3.2.2"]').first().click();
  await desktop.locator(".k-catchup-concept").waitFor({state:"visible",timeout:10000});
@@ -167,6 +206,17 @@ try{
  assert((await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth))<=3,"F175 diagram must scroll inside its container, not overflow the page");
  assert((await mobile.locator(".krp-view").evaluate(el=>el.scrollWidth>el.clientWidth)),"F175 labelled diagram needs a scrollable phone viewport");
  await screen(mobile,"human-f175-mobile");
+ await mobile.goto(base+"/human-biology/#skills");
+ await mobile.getByRole("heading",{name:"Skills practice",exact:true}).waitFor();
+ assert((await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth))<=3,"Skills menu overflows on phone");
+ assert(await mobile.locator('.nav a[href="#skills"]').getAttribute("aria-current"),"Skills navigation state missing");
+ await screen(mobile,"human-skills-mobile");
+ await mobile.locator('a[href="#skills/f171/rate"]').click();
+ await mobile.locator(".k-skill-graph svg").waitFor();
+ assert((await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth))<=3,"Skills graph overflows on phone");
+ await mobile.getByText("Graph values in a table",{exact:true}).click();
+ assert(await mobile.getByRole("table").isVisible(),"Accessible graph table cannot be opened");
+ await screen(mobile,"human-skills-graph-mobile");
  await mobile.close();
  await desktop.close();
  assert.deepEqual(errors,[],"Uncaught page errors: "+errors.join("; "));
@@ -174,3 +224,4 @@ try{
 }finally{
  await browser.close();await new Promise(done=>server.close(done));
 }
+

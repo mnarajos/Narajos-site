@@ -15,6 +15,8 @@ Source files for [narajos.com](https://narajos.com/).
 - `public/human-biology/companion.js` — optional short catch-up recaps for F170–F177, including dedicated F171 immune dysfunction and vaccine explanations, without accounts or assessed coursework support
 - `public/human-biology/reproduction-simulation.js` and `.css` — optional original F175 knowledge-only interactive model of pituitary FSH-supported follicle growth, LH-triggered ovulation, oocyte/sperm transport and possible fertilisation; a teaching schematic, not a live coursework task or a physiological timing model.
 - `public/human-biology/challenge-extension.js` — additional original examined-unit questions, including all previously missing F170/F171 subtopic headings
+- `public/human-biology/skills.js` — 14 F170/F171 skills with seeded numerical variants, accessible graphs and rotating practical/evidence contexts. Uses the existing challenge checker and feedback. Ten-question adaptive sets, repeat sets, reload/resume and aggregate local skill history stay separate from fixed-question coverage.
+- `docs/QUESTION_BANK_AUDIT_AND_SKILLS.md` — source inventory, skills/knowledge distinction, expansion priorities and limits of the audit.
 - `docs/HUMAN_BIOLOGY_REVISION_RESEARCH.md` — OCR specification / sample-material research, high-yield priority rationale, content-quality checklist and coverage gaps.
 - `docs/HUMAN_BIOLOGY_QUESTION_WRITING_STANDARD.md` — accessible, misconception-focused question and diagram standard with strict limits on coursework-unit support.
 - `docs/ORACLE_KEYSTONE_PEDAGOGY.md` — pedagogical and privacy standard for all Keystone apps: explicit sequencing, retrieval, scaffold fading, diagnostic reteach, transferable application and strictly local progress (no AI marking or learner telemetry).
@@ -36,7 +38,7 @@ The root-level ZIP is a historic one-time import and is **not** used for ongoing
 
 ## Checks
 
-Run `node scripts/check-site.mjs`, `node scripts/check-flashcards.mjs`, `node scripts/check-human-biology.mjs` and `node scripts/check-human-challenges.mjs` from the repository root. GitHub Actions runs both scripts on relevant changes. Checks include:
+Run `node scripts/check-site.mjs`, `node scripts/check-flashcards.mjs`, `node scripts/check-human-biology.mjs`, `node scripts/check-human-challenges.mjs` and `node scripts/check-human-skills.mjs` from the repository root. GitHub Actions runs these scripts on relevant changes. Checks include:
 
 - The existence of major site pages and simulations
 - HTML titles, language attributes and viewport metadata
@@ -70,3 +72,4 @@ The website's presentation is deliberately restrained. Keep the main navigation 
 ### Companion use: revision · catch-up · reteach
 
 In both A-level Biology and Human Biology, **questions remain the default**. The optional **Catch up** route provides small, sequenced chunks of already authored key knowledge, then links back to the existing question modes. **Reteach** means a timely, short explanation after a mistake, not a separate full teaching course: A-level retains its existing targeted correction and quick-check logic; Human Biology links from uncertain/error feedback to relevant brief concept or topic notes. Students are not forced to read before practising. Neither catch-up pathway collects new learner data, uses AI marking, or substitutes for teacher-led practical lessons. In Human Biology, the F172–F177 notes are general scientific knowledge and must never become coursework assessment coaching.
+
