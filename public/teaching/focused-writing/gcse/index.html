@@ -12,6 +12,7 @@
  <link rel="stylesheet" href="/assets/home-link.css">
  <link rel="stylesheet" href="/assets/science-practice.css">
  <script defer src="/assets/paragraph-drafts.js"></script>
+ <script defer src="/assets/writing-feedback.js"></script>
 </head>
 <body>
  <a class="skip" href="#main">Skip to main content</a>
@@ -34,9 +35,9 @@
    <details class="writing-step">
     <summary>See a worked example</summary>
     <p><strong>Example question:</strong> Amylase makes the same amount of product in 80 seconds at 15 °C and in 26 seconds at 35 °C. Everything else stays the same. At which temperature is the reaction faster? Explain why.</p>
-    <p><strong>Topic sentence.</strong> Amylase worked faster at 35 °C across the two temperatures tested.</p>
-    <p><strong>Notes.</strong> 26 s vs 80 s → same amount of product → faster rate → higher kinetic energy → more frequent successful collisions → more enzyme–substrate complexes per second.</p>
-    <p><strong>Closing link.</strong> The comparison does not establish the optimum.</p>
+    <p><strong>Topic sentence:</strong> Amylase worked faster at 35 °C across the two temperatures tested.</p>
+    <p><strong>Supporting notes:</strong> 26 s vs 80 s → same amount of product → faster rate → higher kinetic energy → more frequent successful collisions → more enzyme–substrate complexes per second.</p>
+    <p><strong>Concluding sentence:</strong> The comparison does not establish the optimum.</p>
     <p class="model">Amylase worked faster at 35 °C across the two temperatures tested. The same amount of product formed in 26 seconds at 35 °C and in 80 seconds at 15 °C. Producing the same amount in less time gives a greater mean rate. At the higher temperature the enzyme and substrate molecules move faster on average. This increases the frequency of successful collisions and more enzyme–substrate complexes form per second. We would need results from more temperatures to identify the optimum.</p>
 
    </details>
@@ -44,18 +45,73 @@
     <summary>Plan your paragraph</summary>
     <p>Start with what the results show. In your notes, pair each result with the direction water moved. End with what you would test next.</p>
 
-    <label for="gcse-topic">Topic sentence</label><textarea id="gcse-topic" data-draft rows="2"></textarea>
-   <label for="gcse-plan">Evidence and reasoning in note form</label><textarea id="gcse-plan" data-draft rows="4"></textarea>
-   <label for="gcse-close">Closing sentence</label><textarea id="gcse-close" data-draft rows="2"></textarea>
+    <div class="writing-field-heading">
+     <label for="gcse-topic">Topic sentence:</label>
+     <details class="writing-help">
+      <summary aria-label="Help with topic sentence">Help</summary>
+      <p>This is the first sentence of your paragraph. Say the main idea and link it to the question. Try: “The results show that …”</p>
+     </details>
+    </div>
+    <textarea id="gcse-topic" data-draft rows="2"></textarea>
+    <div class="writing-field-heading">
+     <label for="gcse-plan">Supporting notes:</label>
+     <details class="writing-help">
+      <summary aria-label="Help with supporting notes">Help</summary>
+      <p>Evidence is what you measured or observed. Reasoning is the science that explains why the evidence supports your answer. Jot down a result with its unit, then add an arrow and the reason it matters.</p>
+     </details>
+    </div>
+    <textarea id="gcse-plan" data-draft rows="4"></textarea>
+    <div class="writing-field-heading">
+     <label for="gcse-close">Concluding sentence:</label>
+     <details class="writing-help">
+      <summary aria-label="Help with concluding sentence">Help</summary>
+      <p>Finish by answering the question or saying what your evidence lets you conclude. If the question asks what to do next, name the next test.</p>
+     </details>
+    </div>
+    <textarea id="gcse-close" data-draft rows="2"></textarea>
 
    </details>
    <details class="writing-step">
     <summary>Write your paragraph</summary>
-    <label for="gcse-paragraph">Your paragraph</label><textarea id="gcse-paragraph" data-draft rows="6"></textarea>
+    <div class="writing-field-heading">
+     <label for="gcse-paragraph">Your paragraph:</label>
+     <details class="writing-help">
+      <summary aria-label="Help with your paragraph">Help</summary>
+      <p>Turn your notes into complete sentences. Put your main idea first, then add your supporting sentences. Use links such as “because”, “so” or “however” where they show how ideas fit together. Finish with your concluding sentence. Write it all as one paragraph.</p>
+     </details>
+    </div>
+    <textarea id="gcse-paragraph" data-draft rows="6"></textarea>
+    <div class="writing-check" data-writing-check="gcse-paragraph" hidden>
+     <button type="button">Check my paragraph</button>
+     <p role="status"></p>
+     <div class="writing-report" data-writing-report hidden>
+      <p>Use these prompts to check what your sentences mean. The checker looks for words or values in your draft.</p>
+      <ul></ul>
+     </div>
+    </div>
     <p class="tiny">Your draft stays in this tab.</p>
    </details>
-   <details class="writing-step"><summary>Compare with the key ideas</summary><p>Use both percentages. In the dilute solution, more water moved into the cells than out. In the concentrated solution, more water moved out than in. This net movement of water through partially permeable cell membranes is osmosis. Test sugar concentrations between the two used here to estimate where there is no net change in mass.</p></details>
+   <details class="writing-step">
+    <summary>Compare with the key ideas</summary>
+    <ul class="writing-key">
+     <li data-look-for="[&quot;(?&lt;![\\d.])[-+]?\\s*7\\s*(?:%|per cent|percent)&quot;, &quot;(?&lt;![\\d.])[-+]?\\s*9\\s*(?:%|per cent|percent)&quot;]">Did you use both results? The potato gained 7% in dilute solution and lost 9% in concentrated solution.</li>
+     <li data-look-for="[&quot;\\bwater\\b&quot;, &quot;\\binto\\b&quot;, &quot;\\b(?:out of|leave[sd]?|left)\\b&quot;]">Did you link the gain to net water movement into cells and the loss to net water movement out of cells?</li>
+     <li data-look-for="[&quot;\\bosmosis\\b&quot;, &quot;\\b(?:partially|selectively|semi[ -]?)\\s?permeable\\b&quot;]">Did you explain that osmosis is the net movement of water through a partially permeable membrane from a more dilute to a more concentrated solution?</li>
+     <li data-look-for="[&quot;\\b(?:between|intermediate)\\b&quot;, &quot;\\b(?:no (?:net )?change|stays? the same|zero)\\b&quot;]">Did you suggest testing intermediate sugar concentrations to find where there is no net change in mass?</li>
+    </ul>
+   </details>
   </article>
+  <details class="writing-task-menu" id="more-tasks">
+   <summary>More GCSE writing tasks</summary>
+   <ul>
+    <li><a href="/teaching/focused-writing/gcse/light-and-photosynthesis/">Biology Paper 1 · Explain a photosynthesis pattern</a></li>
+    <li><a href="/teaching/focused-writing/gcse/meadow-biodiversity/">Biology Paper 2 · Evaluate a claim about biodiversity</a></li>
+    <li><a href="/teaching/focused-writing/gcse/temperature-change-method/">Chemistry Paper 1 · Plan a fair temperature test</a></li>
+    <li><a href="/teaching/focused-writing/gcse/compare-bags/">Chemistry Paper 2 · Justify a choice using life-cycle data</a></li>
+    <li><a href="/teaching/focused-writing/gcse/compare-insulation/">Physics Paper 1 · Explain a difference in cooling</a></li>
+    <li><a href="/teaching/focused-writing/gcse/trolley-acceleration/">Physics Paper 2 · Plan a test of force and acceleration</a></li>
+   </ul>
+  </details>
  </main>
  <footer class="footer"><div class="wrap footer-inner"><p>© 2026 Narajos</p><a href="/privacy/">Privacy</a></div></footer>
 </body>

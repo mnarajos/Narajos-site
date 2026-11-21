@@ -4,6 +4,7 @@
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <script defer src="/assets/ks3-check.js"></script>
+ <script defer src="/assets/ks3-gas-pressure.js"></script>
  <title>Particles and gas pressure | Narajos</title>
  <meta name="description" content="Particles and gas pressure">
 
@@ -27,20 +28,45 @@
   </div>
   <section class="practice-card ks3-lesson" aria-labelledby="catchup-lesson">
    <h2 id="catchup-lesson">Why does gas pressure change?</h2>
-   <h3>What causes pressure?</h3><p>Gas particles move randomly. They collide with the walls and exert a force on them. The force per unit area is the gas pressure.</p>
-   <h3>What happens if we heat the gas?</h3><p>Heating increases the particles’ average speed. In a sealed, rigid container they hit the walls more often and transfer more momentum per collision. The pressure rises.</p>
+   <p>Picture air inside a sealed box. The air particles are always moving. Each time a particle hits a wall, it pushes on it. <strong>Pressure</strong> is the force on each unit of area.</p>
+   <div class="gas-model" data-gas-pressure hidden>
+    <p><strong>Try it.</strong> Start the motion and watch a few wall collisions. Predict what will happen to the pressure when you warm the gas, then switch to <strong>Warmer gas</strong>. Next, try <strong>Smaller box</strong> at the starting temperature.</p>
+    <fieldset class="gas-conditions">
+     <legend>Choose one change</legend>
+     <label><input type="radio" name="gas-condition" value="start" checked> Starting box</label>
+     <label><input type="radio" name="gas-condition" value="warm"> Warmer gas</label>
+     <label><input type="radio" name="gas-condition" value="small"> Smaller box</label>
+    </fieldset>
+    <figure class="gas-visual">
+     <canvas width="368" height="173" aria-hidden="true"></canvas>
+     <figcaption>Dots represent gas particles. A dot briefly changes colour when it hits a wall. The bar compares the model’s pressure in each setting.</figcaption>
+    </figure>
+    <button type="button">Start motion</button>
+    <p class="gas-result" role="status">Starting pressure. The particles bounce off the walls.</p>
+   </div>
+   <details>
+    <summary>Read the explanation</summary>
+    <ul>
+     <li><strong>Warm the gas in the same box.</strong> Particles move faster on average. They hit the walls more often and push harder overall, so the pressure rises.</li>
+     <li><strong>Squeeze the gas at the same temperature.</strong> Average particle speed stays the same. The same particles have less space and hit the walls more often, so the pressure rises.</li>
+    </ul>
+   </details>
+   <details>
+    <summary>Explore further with PhET</summary>
+    <p>Open <a href="https://phet.colorado.edu/sims/html/gases-intro/latest/gases-intro_all.html">PhET Gases Intro</a> and choose <strong>Intro</strong>. Add gas with the pump. Leave the walls in place, warm the gas and watch the pressure gauge. Explain what changed using particle collisions.</p>
+   </details>
   </section>
   <section class="ks3-checks" aria-labelledby="catchup-questions">
    <h2 id="catchup-questions">Check your understanding</h2>
    <article class="practice-card" data-catchup-check aria-labelledby="catchup-q1">
     <h3 id="catchup-q1">Two identical sealed, rigid containers hold the same amount of air. Which statement describes the warmer air?</h3>
     <ul class="ks3-choices">
-      <li><button type="button" aria-pressed="false" data-feedback="Correct. Faster movement changes the collisions with the walls, so pressure is higher.">Its particles move faster on average.</button></li>
+      <li><button type="button" aria-pressed="false" data-feedback="Correct. Faster particles hit the walls more often and push harder overall. This raises the pressure.">Its particles move faster on average.</button></li>
       <li><button type="button" aria-pressed="false" data-feedback="The particles stay the same size. Heating increases their average speed.">Its particles get bigger.</button></li>
       <li><button type="button" aria-pressed="false" data-feedback="A sealed container keeps the same amount of gas. The particles move faster on average.">There are more particles.</button></li>
     </ul>
     <p class="ks3-feedback" role="status"></p>
-    <noscript><details><summary>Check the answer</summary><p>Correct. Faster movement changes the collisions with the walls, so pressure is higher.</p></details></noscript>
+    <noscript><details><summary>Check the answer</summary><p>Correct. Faster particles hit the walls more often and push harder overall. This raises the pressure.</p></details></noscript>
    </article>
    <article class="practice-card" data-catchup-check aria-labelledby="catchup-q2">
     <h3 id="catchup-q2">A sealed syringe is squeezed while its gas stays at the same temperature. Why does the pressure rise?</h3>
@@ -55,7 +81,7 @@
    <article class="practice-card">
     <h3>Try it yourself</h3>
     <p>The gas in a sealed, rigid container cools down. Explain why its pressure falls.</p>
-    <details><summary>Compare your explanation</summary><p>Particles move more slowly on average. They collide with the walls less frequently and transfer less momentum per collision on average. The force per area on the walls falls.</p></details>
+    <details><summary>Compare your explanation</summary><p>The particles move more slowly on average. They hit the walls less often and push less hard overall. The force on each unit of area falls, so the pressure goes down.</p></details>
    </article>
   </section>
   <p class="catchup-finish"><a href="/ks3/">Choose another topic</a></p>
