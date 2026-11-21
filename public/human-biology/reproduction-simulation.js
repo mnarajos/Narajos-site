@@ -53,7 +53,7 @@ function svg(){
  '<text x="553" y="382">Cervix</text><path d="M545 375L489 380" stroke="#566e7c" stroke-width="2"/>'+
  '<text x="555" y="485">Vagina</text><path d="M546 477L489 469" stroke="#566e7c" stroke-width="2"/>'+
  '</g><rect x="350" y="536" width="200" height="45" rx="21" fill="#e5f3fb" stroke="#87b2ce"/>'+
- '<text x="450" y="565" text-anchor="middle" font-size="18" font-weight="700" fill="#23668a">Sperm entry ↑</text>'+
+ '<text x="430" y="565" text-anchor="middle" font-size="18" font-weight="700" fill="#23668a">Sperm entry</text><path d="M529 569V545M518 556L529 545L540 556" stroke="#23668a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'+
  '</svg>';
 }
 function markup(){
