@@ -319,7 +319,13 @@ function showConcept(unit,id,step,render){
   var back=window.KeystoneHumanChallenge.resumeRoute();
   if(back)h+='<p class="k-catchup-resume"><a href="#'+esc(back)+'">Return to your unfinished question set</a></p>';
  }
+ if(unit==="f175"&&id==="a1"&&step===points.length-1&&window.KeystoneReproductionSimulation){
+  h+=window.KeystoneReproductionSimulation.render();
+ }
  h+='</div>';render(h);
+ if(unit==="f175"&&id==="a1"&&step===points.length-1&&window.KeystoneReproductionSimulation){
+  window.KeystoneReproductionSimulation.mount(document);
+ }
 }
 window.KeystoneHumanCatchup={route:function(hash,render){
  if(hash==="catchup")return showHome(render);

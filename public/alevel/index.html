@@ -327,7 +327,7 @@ main.pgin{animation:pgin .18s ease-out}@keyframes pgin{from{opacity:0;transform:
 
 /* Option B (20 November): app-style home, paper tiles, icon navigation */
 #bnav{display:none}
-body[data-nav] #bnav{display:grid;grid-template-columns:repeat(3,1fr);position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--card);border-top:1px solid var(--line);padding:.3rem 0 calc(.55rem + env(safe-area-inset-bottom))}
+body[data-nav] #bnav{display:grid;grid-template-columns:repeat(2,1fr);position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--card);border-top:1px solid var(--line);padding:.3rem 0 calc(.55rem + env(safe-area-inset-bottom))}
 body[data-nav]{padding-bottom:calc(4.4rem + env(safe-area-inset-bottom))}
 #bnav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:3.2rem;color:var(--muted);text-decoration:none;font-size:.78rem;font-weight:600}
 #bnav .ni{display:flex;padding:3px 18px;border-radius:99px}
@@ -395,6 +395,26 @@ body.onhome{background:radial-gradient(circle at 100% 0,rgba(92,207,196,.18),tra
 .companion-lesson-actions{display:flex;align-items:center;flex-wrap:wrap;gap:.45rem}
 .companion-key{margin:.9rem 0}.companion-key li{line-height:1.65}.companion-note{color:var(--muted);max-width:640px}
 @media(max-width:520px){.companion-entry>a.btn{width:100%}}
+
+/* Settings is an independent header control, not a third bottom-navigation tab. */
+.top-inner{position:relative;padding-right:6.85rem}
+.settings-shortcut{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;position:absolute;top:.58rem;right:1rem;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--card);padding:.35rem .65rem;color:var(--ink);font-size:.84rem;font-weight:700;text-decoration:none;white-space:nowrap}
+.settings-shortcut:hover,.settings-shortcut[aria-current="page"]{background:var(--acc-soft);color:var(--acc);border-color:var(--acc)}
+.settings-shortcut-icon,.settings-shortcut-icon svg{display:inline-flex;width:21px;height:21px;flex:none}
+.settings-shortcut:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+@media(max-width:899px){
+ .top-inner{padding-right:4.4rem}
+ .settings-shortcut{top:.57rem;right:1rem;width:44px;min-width:44px;padding:.4rem}
+ .settings-shortcut-label{position:absolute;width:1px;height:1px;clip:rect(0,0,0,0);overflow:hidden;white-space:nowrap}
+}
+@media(max-width:370px){.top-inner{padding-right:3.75rem}.settings-shortcut{right:.35rem}}
+/* Paper-aligned catch-up overview: Paper 1 left, Paper 2 right. */
+.catchup-paper-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;align-items:start;margin-top:1.1rem}
+.catchup-paper-group{min-width:0}
+.catchup-paper-group h2{font-size:1.1rem;margin:0 0 .55rem;line-height:1.35}
+.catchup-paper-group .topics{display:grid;grid-template-columns:minmax(0,1fr);gap:.65rem;margin:0;padding:0}
+.catchup-paper-group .topic{min-height:100px}
+@media(max-width:630px){.catchup-paper-grid{grid-template-columns:1fr;gap:1.3rem}}
 </style>
 <link rel="stylesheet" href="/assets/spaced-review.css">
 <link rel="stylesheet" href="/assets/catchup-visuals.css">
@@ -407,7 +427,7 @@ body.onhome{background:radial-gradient(circle at 100% 0,rgba(92,207,196,.18),tra
   <div class="wrap top-inner">
     <a class="brand" href="#" aria-label="A-level Biology revision home"><svg class="logo" viewBox="4 12 92 60" aria-hidden="true" focusable="false"><path class="lg-arch" stroke-width="2.6" stroke-linejoin="round" d="M6 70 A44 44 0 0 1 7.7 57.9 L28 65.1 A22.5 22.5 0 0 0 27.5 70 ZM92.3 57.9 A44 44 0 0 1 94 70 L72.5 70 A22.5 22.5 0 0 0 72 65.1 ZM9.5 52.8 A44 44 0 0 1 14.4 44.1 L31.1 57.9 A22.5 22.5 0 0 0 29.9 60 ZM85.6 44.1 A44 44 0 0 1 90.5 52.8 L70.2 60 A22.5 22.5 0 0 0 69 57.9 ZM17.8 40 A44 44 0 0 1 25.1 33.8 L36.2 52.2 A22.5 22.5 0 0 0 34.5 53.7 ZM74.9 33.8 A44 44 0 0 1 82.2 40 L65.5 53.7 A22.5 22.5 0 0 0 63.8 52.2 Z"/><path fill="#F97316" stroke="#F97316" stroke-width="2.6" stroke-linejoin="round" d="M26.6 21 Q50 13 73.4 21 L61.6 48 L38.4 48 Z"/><circle cx="42.4" cy="38.6" r="5.2" fill="none" stroke="#fff" stroke-width="3.9"/><path d="M46.3 35.1 L58 24.6" stroke="#fff" stroke-width="3.9" stroke-linecap="round"/><path d="M53.2 28.8 l2.9 3.3" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><path d="M56.7 25.8 l2.9 3.3" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/></svg><span class="btxt"><span class="eyebrow">Narajos Keystone</span>AQA A-level&nbsp;Biology</span></a>
     <a class="site-home" href="/" aria-label="Narajos main homepage" title="Back to narajos.com"><img src="/favicon.svg" alt=""><span>Narajos</span></a>
-<nav id="bnav" aria-label="Main"><a href="#" data-n="home"><span class="ni"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>Home</a><a href="#flashcards" data-n="flash"><span class="ni"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 6V4h14v14h-4"/></svg></span>Flashcards</a><a href="#settings" data-n="settings"><span class="ni"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></span>Settings</a></nav>
+<nav id="bnav" aria-label="Main"><a href="#" data-n="home"><span class="ni"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>Home</a><a href="#flashcards" data-n="flash"><span class="ni"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 6V4h14v14h-4"/></svg></span>Flashcards</a></nav>
     <fieldset class="tier" id="tierfs">
       <legend class="sr-only">Tier</legend>
       <div class="seg">
@@ -415,6 +435,7 @@ body.onhome{background:radial-gradient(circle at 100% 0,rgba(92,207,196,.18),tra
         <label><input type="radio" name="tier" value="FH"><span>Core + Stretch</span></label>
       </div>
     </fieldset>
+    <a class="settings-shortcut" href="#settings" data-n="settings" aria-label="Settings" title="Settings"><span class="settings-shortcut-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></span><span class="settings-shortcut-label">Settings</span></a>
   </div>
 </header>
 <main id="main" class="wrap" tabindex="-1"></main>
@@ -6044,7 +6065,7 @@ FIGS.wpGraph=function(){var x0=-800,x1=0,top=20,bot=-20,g='',P=[[-800,-16],[-600
 function navMark(){var hh=location.hash.slice(1),menu=!L&&/^(|home|paper-p[123]|ptopics-p[123]|prac-p[123]|pskills-p[123]|topic-[a-z0-9]+|flashcards|flash-p[123]|settings|practice|practicals)$/.test(hh);
  if(menu)document.body.setAttribute("data-nav","1");else document.body.removeAttribute("data-nav");
  var cur=/^(flashcards|flash-)/.test(hh)?"flash":hh==="settings"?"settings":"home";
- $$("#bnav a").forEach(function(a){if(a.dataset.n===cur)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});}
+ $$("#bnav a, .settings-shortcut").forEach(function(a){if(a.dataset.n===cur)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});}
 /* Number ranges stay on one line: "Topics 1–4", "Required practicals 1–6", "1 to 6". */
 function keepRanges(root){if(!root||!document.createTreeWalker)return;var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n,list=[];while((n=w.nextNode()))if(/\d\s*(–|—|to)\s*\d/.test(n.nodeValue))list.push(n);
  list.forEach(function(t){var v=t.nodeValue.replace(/(\d)\s*([–—])\s*(?=\d)/g,"$1⁠$2⁠").replace(/(\d) to (?=\d)/g,"$1 to ").replace(/([A-Za-z]) (\d+(?:\.\d+)?(?:⁠[–—]⁠| to )\d)/g,"$1 $2");if(v!==t.nodeValue)t.nodeValue=v;});}
@@ -6192,13 +6213,17 @@ function showTopic(t,focus){
    Existing question progression and post-error reteaching remain unchanged. */
 function showCatchupIndex(focus){
  L=null;
- var h='<p class="crumb"><a href="#">← Home</a></p><div class="hb-hero"><h1>Catch up on a concept</h1><p>Choose a topic, then a concept. Read a few key ideas before trying questions.</p></div><ul class="topics">';
- ['a1','a2','a3','a4','a5','a6','a7','a8'].forEach(function(t){
-  var T=DATA[t];if(!T)return;
-  var count=T.concepts.filter(avail).length;
-  h+='<li><a class="topic" href="#catchup-'+t+'"><span class="code">'+esc(T.code)+'</span><span class="tname">'+esc(T.title)+'</span><span class="tprog">'+count+' concepts</span></a></li>';
+ var h='<p class="crumb"><a href="#">← Home</a></p><div class="hb-hero"><h1>Catch up on a concept</h1><p>Choose a topic, then a concept. Read a few key ideas before trying questions.</p></div><div class="catchup-paper-grid">';
+ [['a1','a2','a3','a4'],['a5','a6','a7','a8']].forEach(function(topics,i){
+  h+='<section class="catchup-paper-group" aria-labelledby="catchup-paper-'+(i+1)+'"><h2 id="catchup-paper-'+(i+1)+'">Paper '+(i+1)+' · Topics '+(i===0?'1–4':'5–8')+'</h2><ul class="topics">';
+  topics.forEach(function(t){
+   var T=DATA[t];if(!T)return;
+   var count=T.concepts.filter(avail).length;
+   h+='<li><a class="topic" href="#catchup-'+t+'"><span class="code">'+esc(T.code)+'</span><span class="tname">'+esc(T.title)+'</span><span class="tprog">'+count+' concepts</span></a></li>';
+  });
+  h+='</ul></section>';
  });
- render(h+'</ul>',focus);
+ render(h+'</div>',focus);
 }
 function showCatchupTopic(t,focus){
  L=null;

@@ -1,0 +1,28 @@
+/* F175 interactive physiology model. Accessible, no remote dependencies. */
+.krp-root{margin:1.25rem 0 1.5rem;border:1px solid var(--line,#dce2df);border-radius:16px;padding:16px;background:var(--paper,#fff)}
+.krp-intro{display:flex;gap:.5rem;justify-content:space-between;align-items:flex-start}
+.krp-intro h2{font-size:1.17rem;line-height:1.35;margin:0 0 .3rem}
+.krp-intro p{font-size:.91rem;color:var(--muted,#58646d);margin:0 0 .9rem}
+.krp-view{max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain;border:1px solid #e6dce1;border-radius:12px;background:#fffafb;scrollbar-width:thin}
+.krp-diagram{display:block;width:100%;min-width:650px;height:auto}
+.krp-diagram [hidden]{display:none!important}
+.krp-ovary{cursor:pointer;outline:none;transition:filter .2s ease}
+.krp-ovary:hover,.krp-ovary:focus-visible,.krp-ovary.krp-active{filter:drop-shadow(0 0 5px rgba(175,96,137,.75))}
+.krp-ovary[aria-disabled=true]{cursor:default}
+.krp-controls{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0}
+.krp-btn{min-height:44px;padding:9px 13px;border:1px solid #c5d2dd;border-radius:11px;background:#ecf4fa;color:#264e68;font:700 .92rem/1.3 system-ui,sans-serif;cursor:pointer;display:inline-flex;flex-direction:column;align-items:flex-start;justify-content:center}
+.krp-btn small{font-size:.75rem;font-weight:500}
+.krp-btn:hover,.krp-btn:focus-visible{border-color:#739aaf;background:#dcecf7}
+.krp-btn[hidden]{display:none!important}
+.krp-btn:disabled{opacity:.55;cursor:default}
+.krp-lh{background:#f6e9f8;color:#78458b;border-color:#dab8de}
+.krp-lh:hover,.krp-lh:focus-visible{background:#efdcf2}
+.krp-fert{background:#e7f3eb;color:#226e4c;border-color:#a3cdb1}
+.krp-reset{background:transparent;color:var(--ink,#334653)}
+.krp-status{border-left:4px solid #bb7b38;background:#fff5e8;padding:10px 13px;border-radius:5px 10px 10px 5px;margin:13px 0;font-weight:650;font-size:.91rem;line-height:1.55}
+.krp-note{color:var(--muted,#58646d);font-size:.79rem;line-height:1.55;margin:12px 0 0}
+@media(max-width:600px){.krp-root{padding:12px}.krp-diagram{min-width:650px}.krp-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.krp-btn{font-size:.85rem}}
+@media(prefers-reduced-motion:reduce){.krp-ovary{transition:none}}
+
+.krp-swipe{display:none;margin:.45rem 0 .35rem;color:var(--muted,#58646d);font-size:.79rem;line-height:1.45}
+@media(max-width:650px){.krp-swipe{display:block}}

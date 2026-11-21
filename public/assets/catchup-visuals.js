@@ -19,8 +19,8 @@ function arrow(x1,y1,x2,y2,color){
 var diagrams={
  osmosis:{
   label:"Osmosis and water potential",
-  caption:"Water crosses a partially permeable membrane in both directions, but the net movement is from higher to lower water potential.",
-  image:svg("Two compartments separated by a partially permeable membrane; the left has higher water potential and fewer solute particles. Net water movement is left to right, towards lower water potential.",
+  caption:"At equal pressure, the solution with more dissolved solute has a lower water potential. Water moves in both directions; the net movement is towards the lower water potential.",
+  image:svg("Two solutions at equal pressure separated by a partially permeable membrane; the left has fewer solute particles and higher water potential. Net water movement is left to right, towards lower water potential.",
    box(12,48,215,118,"#eaf5fb")+box(253,48,215,118,"#f8eaf4")+
    '<path d="M240 35V173" stroke="#45677c" stroke-width="7" stroke-dasharray="9 9"/>'+
    '<g fill="#7a56a6"><circle cx="77" cy="108" r="6"/><circle cx="138" cy="85" r="6"/><circle cx="175" cy="133" r="6"/>'+
@@ -28,7 +28,7 @@ var diagrams={
    text(121,29,"Higher water potential",14,700)+text(364,29,"Lower water potential",14,700)+
    '<path d="M167 111H310" stroke="#15796f" stroke-width="4" stroke-linecap="round"/>'+arrow(285,111,310,111,palettes.teal)+
    text(240,194,"Net movement of water →",15,700,palettes.teal)+
-   text(240,217,"Membrane allows water through; purple dots represent solute.",12,500),
+   text(240,217,"Equal pressure; purple dots represent dissolved solute.",12,500),
    239)
  },
  chemiosmosis:{
@@ -77,9 +77,9 @@ var diagrams={
  enzyme:{
   label:"Substrate concentration and enzyme activity",
   caption:"At fixed enzyme concentration, the initial rate eventually levels off as enzyme active sites become saturated.",
-  image:svg("Graph of initial reaction rate against substrate concentration. The rate rises steeply then approaches a plateau at high substrate concentration.",
+  image:svg("Graph of initial reaction rate against substrate concentration. The curve begins at the origin: zero substrate gives zero reaction rate. The rate increases then approaches a plateau at high substrate concentration.",
    '<path d="M65 22V185H455" stroke="#344958" stroke-width="3" fill="none"/>'+
-   '<path d="M78 172C120 120 158 83 217 62S335 46 436 45" stroke="'+palettes.teal+'" stroke-width="5" stroke-linecap="round" fill="none"/>'+
+   '<path d="M65 185C118 112 168 76 217 62S335 46 436 45" stroke="'+palettes.teal+'" stroke-width="5" stroke-linecap="round" fill="none"/>'+
    '<path d="M260 45H439" stroke="'+palettes.orange+'" stroke-width="2" stroke-dasharray="5 5" fill="none"/>'+
    text(280,211,"Substrate concentration",16,600)+
    '<text x="23" y="118" transform="rotate(-90 23 118)" fill="#344958" font-family="system-ui" font-size="15" font-weight="600" text-anchor="middle">Initial rate</text>'+
@@ -139,14 +139,42 @@ var diagrams={
  },
  heart:{
   label:"The cardiac cycle",
-  caption:"Pressure changes open and close valves as the heart passes through atrial systole, ventricular systole and diastole.",
-  image:svg("Cardiac-cycle overview: atrial systole fills ventricles, ventricular systole ejects blood, and diastole allows chambers to relax and refill.",
+  caption:"Atrial systole tops up ventricular filling; ventricular systole ejects blood. Ventricular diastole allows the ventricles to relax and fill. Atrial and ventricular relaxation overlap.",
+  image:svg("Simplified cardiac-cycle sequence: atrial systole tops up ventricular filling; ventricular systole ejects blood; ventricular diastole allows ventricles to relax and fill. Atria and ventricles do not share identical contraction phases.",
    box(8,54,148,95,"#e6f3f0")+box(166,54,148,95,"#fce8eb")+box(324,54,148,95,"#ecedfa")+
    text(82,77,"Atrial",17,700)+text(82,97,"systole",17,700)+text(82,123,"Atria contract",13,500)+
    text(240,77,"Ventricular",17,700)+text(240,97,"systole",17,700)+text(240,123,"Blood ejected",13,500)+
-   text(398,86,"Diastole",17,700)+text(398,115,"Chambers relax",13,500)+
+   text(398,77,"Ventricular",16,700)+text(398,97,"diastole",16,700)+text(398,121,"Relax + fill",13,500)+
    text(240,184,"Valve opening depends on pressure differences.",14,600),
    205)
+ },
+ heartAnatomy:{
+  label:"Heart chambers and septum",
+  caption:"The right side of the heart sends blood towards the lungs and the left towards the body. The interventricular septum separates the ventricles; the myocardium is the muscular wall.",
+  image:svg("Simplified frontal heart-chamber diagram: the anatomical right side is shown on the left of the image. A right atrium sits above a right ventricle, and a left atrium sits above a left ventricle. Arrows show blood passing from each atrium to its corresponding ventricle, and a vertical septum separates the ventricles.",
+   text(240,24,"Front view (anatomical right appears on left)",14,600)+
+   box(23,40,204,65,"#e4f1fc")+box(252,40,204,65,"#fae8eb")+
+   box(23,140,204,65,"#dceaf9")+box(252,140,204,65,"#f5dadd")+
+   text(125,76,"Right atrium",17,700)+text(354,76,"Left atrium",17,700)+
+   text(125,176,"Right ventricle",17,700)+text(354,176,"Left ventricle",17,700)+
+   arrow(125,110,125,136,palettes.blue)+arrow(354,110,354,136,palettes.orange)+
+   '<path d="M240 142V211" stroke="#586575" stroke-width="7" stroke-linecap="round"/>'+
+   text(240,232,"Interventricular septum",14,600)+
+   text(125,261,"To lungs",14,700,palettes.blue)+text(354,261,"To body",14,700,palettes.orange),
+   284)
+ },
+ systems:{
+  label:"Organ systems work together",
+  caption:"Respiratory exchange, digestive absorption and renal regulation are linked through blood circulation. This is a systems overview, not an anatomical illustration.",
+  image:svg("Three organ systems are shown at the top: respiratory system exchanging oxygen and carbon dioxide, digestive system absorbing digested nutrients, and kidneys controlling water, ions and waste. Lines connect each to the circulatory system below because blood transport links their functions.",
+   box(9,33,146,89,"#e5f1fc")+box(167,33,146,89,"#f0ebf9")+box(325,33,146,89,"#e9f3ea")+
+   text(82,59,"Respiratory",16,700)+text(82,79,"O₂ in / CO₂ out",13,500)+
+   text(240,59,"Digestive",16,700)+text(240,79,"Nutrients",13,500)+
+   text(398,59,"Renal",16,700)+text(398,79,"Water and waste",12,500)+
+   '<path d="M82 122L190 168M240 122V161M398 122L290 168" stroke="#6c8795" stroke-width="3" fill="none" stroke-linecap="round"/>'+
+   box(145,166,190,78,"#fff0df")+text(240,193,"Circulatory",18,700)+text(240,216,"Blood transport",14,600)+
+   text(240,267,"Interacting functions, not separate isolated organs",12,500),
+   285)
  },
  reflex:{
   label:"Reflex arc",
@@ -222,14 +250,14 @@ var curated={
  "f170/1.1.4":{diagram:"osmosis"},
  "f170/3.1.1":{diagram:"glucose"},
  "f170/1.2.1":{diagram:"organisation"},
- "f170/2.1.2":{diagram:"heart",links:["cardiac"]},
- "f170/2.2.1":{diagram:"heart",links:["cardiac"]},
+ "f170/2.1.2":{diagram:"heartAnatomy",links:["cardiac"]},
+ "f170/2.2.1":{diagram:"systems"},
  "f170/3.2.1":{diagram:"reflex"},
  "f170/3.3.1":{diagram:"reproduction"},
  "f171/a3":{diagram:"vaccines"},
  "f171/3.2.2":{diagram:"vaccines"},
  "f172/a1":{diagram:"dna"},
- "f175/a1":{diagram:"reproduction"}
+ "f175/a1":{}
 };
 function render(course,id){
  var item=curated[course+"/"+id];

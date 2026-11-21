@@ -77,6 +77,14 @@ try{
  await checkPage(desktop,"alevel");
  await desktop.locator('a[href="#catchup"]').first().click();
  await desktop.waitForURL("**/alevel/#catchup");
+ const selectorPaperGroups=desktop.locator(".catchup-paper-group");
+ await selectorPaperGroups.first().waitFor({state:"visible",timeout:10000});
+ assert.equal(await selectorPaperGroups.count(),2,"A-level catch-up should have Paper 1 and Paper 2 columns");
+ assert((await selectorPaperGroups.nth(0).innerText()).includes("Topic 4"),"Left column must contain Topics 1–4");
+ assert((await selectorPaperGroups.nth(1).innerText()).includes("Topic 8"),"Right column must contain Topics 5–8");
+ const settingsLink=desktop.locator(".settings-shortcut");
+ assert(await settingsLink.isVisible(),"Settings shortcut missing from A-level header");
+ assert((await settingsLink.boundingBox()).x>600,"Settings should sit at the right-hand side of the header");
  await desktop.locator('a[href="#catchup-a1"]').first().click();
  await desktop.waitForURL("**/alevel/#catchup-a1");
  const firstConcept=desktop.locator('a[href^="#catchup-a1-"]').first();
@@ -107,6 +115,24 @@ try{
  await desktop.locator(".kc-simulation-link").waitFor({state:"visible"});
  assert((await desktop.locator(".kc-simulation-link").getAttribute("href"))==="/teaching/simulations/cardiac-cycle/","Heart concept should link to cardiac-cycle simulation");
  await screen(desktop,"human-cardiac-visual");
+ await desktop.emulateMedia({reducedMotion:"reduce"});
+ await desktop.goto(base+"/human-biology/#catchup/f175/a1/2",{waitUntil:"load"});
+ await desktop.locator("#krp-model").waitFor({state:"visible",timeout:10000});
+ assert(await desktop.locator(".krp-diagram").isVisible(),"F175 anatomy simulation missing");
+ assert(await desktop.locator('[data-krp="lh"]').isHidden(),"LH should not appear before follicle maturation");
+ await screen(desktop,"human-f175-anatomy");
+ await desktop.locator('[data-krp="fsh"]').click();
+ await desktop.locator('[data-krp="lh"]').waitFor({state:"visible",timeout:8000});
+ assert((await desktop.locator(".krp-status").innerText()).includes("LH surge"),"Mature follicle should introduce LH surge");
+ await desktop.locator('[data-krp="lh"]').click();
+ await desktop.locator('[data-krp="sperm"]').click();
+ await desktop.locator('[data-krp="fert"]').waitFor({state:"visible",timeout:8000});
+ assert((await desktop.locator(".krp-status").innerText()).includes("Fertilisation")||(await desktop.locator(".krp-status").innerText()).includes("Sperm and secondary"),"Gamete meeting explanation missing");
+ await desktop.locator('[data-krp="fert"]').click();
+ await desktop.waitForFunction(()=>document.querySelector(".krp-status")?.textContent.includes("Early embryo"));
+ await screen(desktop,"human-f175-embryo");
+ await desktop.locator('[data-krp="reset"]').click();
+ assert(await desktop.locator('[data-krp="lh"]').isHidden(),"Reset should hide LH until follicle matures");
 
  await desktop.goto(base+"/human-biology/#challenge/f171/a3",{waitUntil:"load"});
  await desktop.locator(".k-question-view").waitFor({state:"visible"});
@@ -136,6 +162,11 @@ try{
   await checkPage(mobile,name);
   if(name==="teaching"||name==="alevel"||name==="human-biology")await screen(mobile,name.replaceAll("/","-")+"-mobile");
  }
+ await mobile.goto(base+"/human-biology/#catchup/f175/a1/2",{waitUntil:"load"});
+ await mobile.locator("#krp-model").waitFor({state:"visible"});
+ assert((await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth))<=3,"F175 diagram must scroll inside its container, not overflow the page");
+ assert((await mobile.locator(".krp-view").evaluate(el=>el.scrollWidth>el.clientWidth)),"F175 labelled diagram needs a scrollable phone viewport");
+ await screen(mobile,"human-f175-mobile");
  await mobile.close();
  await desktop.close();
  assert.deepEqual(errors,[],"Uncaught page errors: "+errors.join("; "));
