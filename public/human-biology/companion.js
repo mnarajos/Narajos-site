@@ -6,6 +6,25 @@ var root=window.KeystoneHumanData,bank=window.KeystoneHumanChallenges,other=wind
 if(!root||!bank||!other)return;
 var notes={
   "f171": {
+    "3.2.1": {
+      "title": "Immune dysfunction and clinical immunology",
+      "lines": [
+        "Innate defences act broadly. Adaptive B and T lymphocytes make responses to particular antigens; failures and misdirected responses can cause illness.",
+        "Primary immunodeficiencies generally arise from inherited or developmental problems; acquired immunodeficiencies develop later, for example through certain infections or treatments.",
+        "In autoimmune disease, immune responses damage the body\u2019s own tissues. In allergy, an otherwise harmless substance triggers an inappropriate immune reaction.",
+        "Transplant rejection can occur when recipient immune cells recognise donor tissue as foreign. Immunosuppression reduces this risk but can increase vulnerability to infection."
+      ]
+    },
+    "3.2.2": {
+      "title": "Vaccine types and immune memory",
+      "lines": [
+        "Vaccines expose the adaptive immune system to antigens, or instructions to produce them, to stimulate specific responses and immune memory without requiring the person to experience the target disease.",
+        "Inactivated vaccines use killed organisms; live attenuated vaccines contain weakened organisms that can replicate; toxoid vaccines contain inactivated toxins.",
+        "mRNA vaccines deliver instructions for cells to produce an antigen; viral-vector vaccines use modified viruses to deliver genetic instructions; subunit vaccines deliver selected pathogen components.",
+        "A conjugate vaccine links a polysaccharide antigen to a carrier protein, often making the response stronger in young children. A booster can renew or strengthen immune protection.",
+        "Protection varies by vaccine, pathogen and recipient. Live attenuated vaccines may not be suitable for some people with severe immunosuppression."
+      ]
+    },
     "a1": {
       "title": "Causes and effects of disease",
       "lines": [
@@ -267,7 +286,12 @@ function showUnit(unit,render){
    h+='<section class="paper panel"><h2>'+esc(a.title)+'</h2><div class="lesson-list">';
    a.sections.forEach(function(s){h+='<div class="lesson"><div><span class="num">'+esc(s.id)+'</span><h3>'+esc(s.title)+'</h3></div><div class="right"><a class="button secondary" href="#catchup/'+unit+'/'+esc(s.id)+'">Catch up</a></div></div>';});
    h+='</div></section>';
-  }else h+='<a class="k-area k-catchup-area" href="#catchup/'+unit+'/'+a.code+'"><span class="k-area-num">'+a.code.slice(1)+'</span><span class="k-area-label"><strong>'+esc(a.title)+'</strong><small>Short key ideas</small></span><span aria-hidden="true">›</span></a>';
+  }else{
+   h+='<a class="k-area k-catchup-area" href="#catchup/'+unit+'/'+a.code+'"><span class="k-area-num">'+a.code.slice(1)+'</span><span class="k-area-label"><strong>'+esc(a.title)+'</strong><small>Short key ideas</small></span><span aria-hidden="true">›</span></a>';
+   if(unit==="f171"&&a.code==="a3"){
+    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/3.2.1">Immune dysfunction</a><a class="button secondary" href="#catchup/f171/3.2.2">Vaccine types</a></div>';
+   }
+  }
  });
  h+='</div></div>';render(h);
 }
@@ -280,7 +304,7 @@ function showConcept(unit,id,step,render){
   topic=item.section.title;points=item.section.points;practice="cards/"+id;
  }else{
   var item=(notes[unit]||{})[id];if(!item)return showUnit(unit,render);
-  topic=item.title;points=item.lines;practice="challenge/"+unit+"/"+id;
+  topic=item.title;points=item.lines;practice="challenge/"+unit+"/"+(unit==="f171"&&/^3\\.2\\./.test(id)?"a3":id);
  }
  if(!Array.isArray(points)||!points.length)return showUnit(unit,render);
  step=Math.max(0,Math.min(points.length-1,Number(step)||0));
@@ -305,6 +329,7 @@ window.KeystoneHumanCatchup={route:function(hash,render){
 },linkFor:function(q){
  if(!q)return null;
  if(q.unit==="f170"&&sectionById[q.section])return "catchup/f170/"+q.section;
+ if(q.section&&notes[q.unit]&&notes[q.unit][q.section])return "catchup/"+q.unit+"/"+q.section;
  var a="a"+q.area;
  return notes[q.unit]&&notes[q.unit][a]?"catchup/"+q.unit+"/"+a:null;
 },count:function(){return {units:units.length,concepts:Object.values(notes).reduce(function(n,x){return n+Object.keys(x).length;},0)+Object.keys(sectionById).length};}};
