@@ -311,6 +311,7 @@ function showConcept(unit,id,step,render){
  var key="#catchup/"+unit+"/"+id;
  var h='<div class="k-wrap k-catchup-concept">'+crumb("catchup/"+unit,u.title)+'<div class="k-eyebrow">Catch-up · '+(step+1)+' of '+points.length+'</div><h1>'+esc(topic)+'</h1><div class="progress-track" role="progressbar" aria-label="Key ideas reviewed" aria-valuemin="0" aria-valuemax="'+points.length+'" aria-valuenow="'+(step+1)+'"><div style="width:'+(100*(step+1)/points.length)+'%"></div></div>';
  h+='<section class="paper panel"><h2>Key idea '+(step+1)+'</h2><p class="k-catchup-text">'+esc(points[step])+'</p></section>';
+ if(window.KeystoneCatchupVisuals)h+=window.KeystoneCatchupVisuals.render(unit,id);
  h+='<div class="k-catchup-controls">'+(step>0?'<a class="button secondary" href="'+key+'/'+(step-1)+'">Previous</a>':'')+
  (step<points.length-1?'<a class="button primary" href="'+key+'/'+(step+1)+'">Next key idea →</a>':'<a class="button primary" href="#'+practice+'">Try questions →</a>')+'</div>';
  h+='<p class="k-small-note">This is a short recap to support teaching and revision—not a complete first lesson or assessed-coursework guidance.</p>';
