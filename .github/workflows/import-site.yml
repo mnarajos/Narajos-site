@@ -4,7 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'Narajos_Keystone_Updated_Homepage_READY_TO_DEPLOY.zip'
+      - 'Narajos_Keystone_Updated_Homepage_READY_TO_DEPLOY*.zip'
+      - '.github/workflows/import-site.yml'
 
 permissions:
   contents: write
@@ -15,20 +16,28 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Unpack website files
+      - name: Unpack website into public folder
+        shell: bash
         run: |
-          unzip -o Narajos_Keystone_Updated_Homepage_READY_TO_DEPLOY.zip -d .
-          test -f index.html
-          test -f teaching/index.html
-          test -f gcse/index.html
-          test -f alevel/index.html
-          test -f teacher/index.html
-          test -f assets/site.css
-      - name: Save website files
+          shopt -s nullglob
+          files=(Narajos_Keystone_Updated_Homepage_READY_TO_DEPLOY*.zip)
+          if (( ${#files[@]} == 0 )); then
+            echo "No website ZIP found"
+            exit 1
+          fi
+          mkdir -p public
+          unzip -o "${files[0]}" -d public/
+          for file in index.html teaching/index.html gcse/index.html alevel/index.html teacher/index.html assets/site.css; do
+            if [[ ! -f "public/$file" ]]; then
+              echo "Missing site file: $file"
+              exit 1
+            fi
+          done
+      - name: Commit website files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html 404.html robots.txt sitemap.xml assets/ teaching/ gcse/ alevel/ teacher/ privacy/
+          git add public/
           if ! git diff --cached --quiet; then
             git commit -m "Import Narajos website files"
             git push
