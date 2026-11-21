@@ -17,9 +17,9 @@ load("human-biology/content-f170.js");
 load("human-biology/challenge-bank.js");
 load("human-biology/challenge.js");
 const db=window.KeystoneHumanChallenges,app=window.KeystoneHumanChallenge;
-assert.equal(db.questions.length,89);
+assert.equal(db.questions.length,91);
 assert.equal(db.questions.filter(q=>q.unit==="f170").length,62);
-assert.equal(db.questions.filter(q=>q.unit==="f171").length,27);
+assert.equal(db.questions.filter(q=>q.unit==="f171").length,29);
 assert.deepEqual([...new Set(db.questions.map(q=>q.type))].sort(),["best","diagram","match","multi","number","order","short","single","written"].sort());
 const ids=new Set();
 const validUnits=new Set(["f170","f171"]);
@@ -39,7 +39,7 @@ for(const q of db.questions){
  if(q.type==="written")assert(q.markPoints.length>=2,"Unscaffolded written response: "+q.id);
  if(q.marks)assert(q.type==="written"&&(q.marks===6||q.marks===9),"Unexpected extended-answer mark count: "+q.id);
 }
-assert.equal(db.questions.filter(q=>q.warmup).length,9,"Warm-up coverage");
+assert.equal(db.questions.filter(q=>q.warmup).length,11,"Warm-up coverage");
 assert.equal(db.questions.filter(q=>q.type==="best").length,6,"Two-step reasoning coverage");
 assert.equal(db.questions.filter(q=>q.subtype==="error").length,4,"Misconception correction coverage");
 assert.equal(db.questions.find(q=>q.id==="health-parkinsons-therapy").marks,6);
@@ -56,6 +56,13 @@ assert(main.innerHTML.includes("Exam-style focus")&&main.innerHTML.includes("Fix
 route("challenge/f170/all");
 const mixed=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert.equal(mixed.queue.length,8,"Mixed set should have eight questions");
+const stageOf=id=>db.questions.find(q=>q.id===id).level;
+assert(db.questions.find(q=>q.id===mixed.queue[0]).onRamp===true,"Quick Mix must open with an attainable entry question");
+assert.deepEqual(mixed.queue.slice(0,2).map(stageOf),["warmup","warmup"],"Quick Mix must begin with two warm-up questions");
+assert.deepEqual(mixed.queue.slice(2,4).map(stageOf),["core","core"],"Quick Mix must build on warm-ups with core retrieval");
+assert(mixed.queue.slice(4).every(id=>stageOf(id)==="apply"),"Quick Mix application questions must occur after the first four questions");
+assert(mixed.quickMixVersion===2,"New Quick Mix progression version should be recorded for safe session migration");
+
 const selectedTypes=new Set(mixed.queue.map(id=>db.questions.find(q=>q.id===id).type));
 assert(selectedTypes.size>=6,"Mixed sessions must deliberately use varied question types");
 assert(new Set(mixed.queue.map(id=>db.questions.find(q=>q.id===id).area)).size>=3,"Mixed session should span multiple topic areas");
@@ -66,6 +73,33 @@ assert.deepEqual(paused.queue,mixed.queue,"Leaving an unfinished set must preser
 route("challenge/f170/all");
 const resumed=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert.deepEqual(resumed.queue,mixed.queue,"Resume must restore the same shuffled questions");
+// Each exam unit should begin safely over many random selections, not only one seed.
+for(const unit of ["f170","f171"]){
+ for(let i=0;i<25;i++){
+  app.discard();app.route("challenge/"+unit+"/all",html=>{main.innerHTML=html;});
+  const state=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+  const selected=state.queue.map(id=>db.questions.find(q=>q.id===id));
+  assert(selected[0].onRamp===true,unit+" opened on an unexpectedly demanding question");
+  assert(selected[0].level==="warmup"&&selected[1].level==="warmup",unit+" lost the easy start");
+  assert(selected[2].level==="core"&&selected[3].level==="core",unit+" skipped the core level");
+  assert(selected.slice(4).every(q=>q.level==="apply"),unit+" included an early stretch");
+  assert(new Set(selected.map(q=>q.type)).size>=6,unit+" lacks question format variety");
+ }
+}
+// The final question may be a stretch only after strong *independent* responses.
+app.discard();app.route("challenge/f170/all",html=>{main.innerHTML=html;});
+const baseState=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+for(const confident of [true,false]){
+ const simulated=JSON.parse(JSON.stringify(baseState));
+ simulated.index=7;simulated.phase="ask";simulated.quickMixAdjusted=false;
+ simulated.first=Object.fromEntries(simulated.quickMixBase.slice(0,7).map((id,i)=>[id,confident||i<2]));
+ data.set("narajos-human-challenge-v2-session",JSON.stringify(simulated));
+ app.pause();app.route("challenge/f170/all",html=>{main.innerHTML=html;});
+ const after=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+ const finalItem=db.questions.find(q=>q.id===after.queue[after.index]);
+ assert.equal(finalItem.level,confident?"stretch":"core","Final Quick Mix difficulty should respond to unaided performance");
+}
+app.discard();
 route("challenge/f171");
 assert(main.innerHTML.includes("Health and disease")&&main.innerHTML.includes("Diagnosis and monitoring"),"F171 chooser missing");
 route("challenge/f170/a1");
@@ -94,7 +128,7 @@ assert(window.KeystoneHumanChallenge.stats("f170").weak>=1,"Not sure should reco
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"next"}}:null;}}});
 record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert(record.index>=1,"Question did not advance");
-assert.equal(window.KeystoneHumanChallenge.questionCount,89);
+assert.equal(window.KeystoneHumanChallenge.questionCount,91);
 // Verify the entire deterministic answer flow, not merely presence of new item types.
 function forcedQuestion(id){
  const q=db.questions.find(x=>x.id===id);assert(q,"Unknown forced test item: "+id);
@@ -129,4 +163,4 @@ const html=read("human-biology/index.html");
 assert(!html.includes("fonts.googleapis.com"),"Human Biology should not request remote fonts");
 assert(!/\b(?:fetch\(|sendBeacon\(|XMLHttpRequest\(|WebSocket\()/.test(read("human-biology/challenge.js")),"No network upload API should be used in this revision app");
 assert(!read("human-biology/challenge.js").includes("openai.com"),"No remote AI marking");
-console.log("Oracle challenge checks passed: 89 original F170/F171 questions, 9 formats, accessible warm-ups, progressive practice, graded hints, reteach/quick check, local-only state and no AI grading.");
+console.log("Oracle challenge checks passed: 91 original F170/F171 questions, 9 formats, Quick Mix confidence ladder, graded hints, reteach/quick check, local-only state and no AI grading.");
