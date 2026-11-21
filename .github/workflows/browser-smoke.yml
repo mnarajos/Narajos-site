@@ -7,6 +7,11 @@ on:
       - 'public/**'
       - 'scripts/check-browser.mjs'
       - '.github/workflows/browser-smoke.yml'
+  pull_request:
+    paths:
+      - 'public/**'
+      - 'scripts/check-browser.mjs'
+      - '.github/workflows/browser-smoke.yml'
   workflow_dispatch:
 
 permissions:
