@@ -103,7 +103,7 @@ function createSession(type,scope){
  if(!selected.length)return empty("No items are available in this selection. Try another topic or review mode.");
  var n=(areaById[scope]||scope==="all")?10:12;
  selected=shuffle(selected).slice(0,n);
- active={type:type,scope:scope,queue:selected,initial:selected.length,completed:0,phase:"question",first:{},correctFirst:0,started:Date.now()};
+ active={type:type,scope:scope,queue:selected,initial:selected.length,completed:0,phase:"question",draft:"",first:{},correctFirst:0,started:Date.now()};
  saveSession();drawSession();
 }
 function showCard(){
@@ -114,7 +114,7 @@ function showCard(){
  h+='<button class="button primary" type="button" data-action="reveal">Reveal answer</button>';
  h+='<div class="answer-box" id="answer-box" hidden><div class="eyebrow">Expected answer</div><p class="answer">'+esc(c.a)+'</p>'+(c.explain?'<p class="small">'+esc(c.explain)+'</p>':'')+'<p id="comparison" class="feedback" aria-live="polite"></p><div class="action-row"><button class="button secondary" data-action="again" type="button">Not yet · show again</button><button class="button primary" data-action="got-it" type="button">Got it</button></div></div></section>';
  h+='<p class="source-note">Equivalent accurate scientific wording may be acceptable. Use the expected answer to judge the underlying concept, not spelling alone.</p></div>';
- render(h);var input=document.getElementById("typed");if(input){input.focus();input.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();var b=main.querySelector('[data-action="reveal"]');if(b)b.click();}});}
+ render(h);var input=document.getElementById("typed");if(input){input.value=active.draft||"";input.focus();input.addEventListener("input",function(){active.draft=input.value;saveSession();});input.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();var b=main.querySelector('[data-action="reveal"]');if(b)b.click();}});}
  if(active.phase==="answer")reveal(true);
 }
 function showPractice(){
@@ -123,7 +123,7 @@ function showPractice(){
  h+='<section class="paper"><div class="flash-brow"><span>'+esc(s.id)+' · '+esc(s.title)+'</span><span>'+active.completed+' / '+active.initial+' completed</span></div><div class="progress-track" role="progressbar" aria-label="Practice prompts completed" aria-valuemin="0" aria-valuemax="'+active.initial+'" aria-valuenow="'+Math.min(active.completed,active.initial)+'"><div style="width:'+(100*active.completed/active.initial)+'%"></div></div>';
  h+='<div class="eyebrow">Independent question</div><p class="question">'+esc(s.scenario.prompt)+'</p><label class="small muted" for="typed">Write an explanation, then compare it with the suggested response</label><textarea id="typed" class="typed" rows="4" placeholder="Write your explanation before revealing the suggested response"></textarea>';
  h+='<button type="button" class="button primary" data-action="reveal">Compare with suggested response</button><div class="answer-box" id="answer-box" hidden><div class="eyebrow">Suggested response</div><p class="answer">'+esc(s.scenario.answer)+'</p><p>'+esc(s.scenario.explain)+'</p><p class="feedback">Consider whether your answer contains the key biological point. This is not an OCR mark scheme.</p><div class="action-row"><button type="button" class="button secondary" data-action="again">Need more practice</button><button type="button" class="button primary" data-action="got-it">Understood</button></div></div></section></div>';
- render(h);var input=document.getElementById("typed");if(input)input.addEventListener("keydown",function(e){if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault();var b=main.querySelector('[data-action="reveal"]');if(b)b.click();}});
+ render(h);var input=document.getElementById("typed");if(input){input.value=active.draft||"";input.addEventListener("input",function(){active.draft=input.value;saveSession();});input.addEventListener("keydown",function(e){if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault();var b=main.querySelector('[data-action="reveal"]');if(b)b.click();}});}
  if(active.phase==="answer")reveal(true);
 }
 function reveal(restored){
@@ -136,7 +136,7 @@ function reveal(restored){
   var comp=document.getElementById("comparison");
   if(comp)comp.textContent=!field.value.trim()?"No typed answer supplied. Judge your recall after reading the model answer.":exact?"Your response matches an approved wording. Check your understanding before selecting Got it.":"This is not an exact listed wording. A scientifically equivalent answer may still be correct: compare the meaning before grading.";
  }
- field.readOnly=true;box.hidden=false;button.hidden=true;active.phase="answer";saveSession();
+ field.readOnly=true;box.hidden=false;button.hidden=true;active.draft=field.value;active.phase="answer";saveSession();
  if(!restored){var first=box.querySelector("button");if(first)first.focus();}
 }
 function rate(success){
@@ -145,7 +145,7 @@ function rate(success){
  if(active.type==="cards"){review.mark(id,success);}else{var p=progress[id]||{seen:0,good:0};p.seen++;if(success)p.good++;progress[id]=p;storePractice();}
  if(!(id in active.first)){active.first[id]=success;if(success)active.correctFirst++;}
  if(success){active.completed++;}else{active.queue.push(id);}
- active.phase="question";saveSession();drawSession();
+ active.phase="question";active.draft="";saveSession();drawSession();
 }
 function drawSession(){if(!active)return showHome();if(!active.queue.length)return finish();if(active.type==="cards")showCard();else showPractice();}
 function finish(){
@@ -168,7 +168,7 @@ function runRoute(){
  if(!m)return notFound();
  if(m[1]==="area")return showArea(m[2]);
  if(m[1]==="learn")return showLearn(m[2]);
- if(m[1]==="cards"||m[1]==="practice"){if(!active||active.type!==(m[1]==="cards"?"cards":"practice")||active.scope!==m[2])createSession(m[1]==="cards"?"cards":"practice",m[2]);else drawSession();return;}
+ if(m[1]==="cards"||m[1]==="practice"){var type=m[1]==="cards"?"cards":"practice";if(!active){var old=restoreSession();if(old&&old.type===type&&old.scope===m[2])active=old;}if(!active||active.type!==type||active.scope!==m[2])createSession(type,m[2]);else drawSession();return;}
 }
 function showLeave(callback){
  var modal=document.getElementById("leave-dialog");
