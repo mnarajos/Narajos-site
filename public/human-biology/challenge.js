@@ -3,6 +3,7 @@
 "use strict";
 var db=window.KeystoneHumanChallenges,main=document.getElementById("main");
 if(!db||!main)return;
+if(window.KeystoneHumanKnowledge){db.units=db.units.concat(window.KeystoneHumanKnowledge.units);db.questions=db.questions.concat(window.KeystoneHumanKnowledge.questions);}
 var K="narajos-human-challenge-v2-",SK=K+"session",PK=K+"progress",session=null,progress={};
 try{var r=JSON.parse(localStorage.getItem(PK)||"{}");if(r&&typeof r==="object"&&!Array.isArray(r))progress=r;}catch(_){}
 var all=db.questions,byId={};all.forEach(function(q){byId[q.id]=q;});
@@ -35,7 +36,9 @@ function icon(name){
 }
 function labelType(q){if(q.subtype==="error")return "Spot the error";return {single:"Choose one",multi:"Choose two",order:"Put in order",match:"Match pairs",number:"Calculate",written:"Explain and check",short:"Short answer",diagram:"Use the diagram",best:"Choose and justify"}[q.type]||"Question";}
 function iconFor(q){return {single:"target",multi:"check",order:"layers",match:"grid",number:"graph",written:"book",short:"bolt",diagram:"target",best:"brain"}[q.type]||"target";}
-function areaName(unit,area){var F=["","Human cells and tissues","Physiology and organ systems","Endocrinology, nerves and reproduction","Microbiology"];var H=["","Causes and effects of disease","Treatment and prevention","Immunology","Diagnosis and monitoring","Research and confidentiality"];return (unit==="f170"?F:H)[area]||"Topic";}
+function isKnowledge(unit){return /^f17[2-7]$/.test(unit);}
+function unitMeta(unit){return db.units.filter(function(x){return x.id===unit;})[0]||null;}
+function areaName(unit,area){var F=["","Human cells and tissues","Physiology and organ systems","Endocrinology, nerves and reproduction","Microbiology"];var H=["","Causes and effects of disease","Treatment and prevention","Immunology","Diagnosis and monitoring","Research and confidentiality"];var U=unitMeta(unit);return (unit==="f170"?F:unit==="f171"?H:U&&U.areas||[])[area]||"Topic";}
 function filter(unit,scope){
  var list=all.filter(function(q){return q.unit===unit;});
  if(/^a[1-5]$/.test(scope))list=list.filter(function(q){return q.area===Number(scope.slice(1));});
@@ -48,23 +51,31 @@ function unitStats(u){var qs=filter(u,"all"),seen=0,weak=0;
  qs.forEach(function(q){var p=progress[q.id];if(p&&p.seen){seen++;if(p.wrong>0&&(p.lastCorrect===false||p.good/Math.max(1,p.seen)<.75))weak++;}});
  return {questions:qs.length,seen:seen,weak:weak};}
 function source(){return '<p class="k-source">Original revision questions mapped against <a href="https://www.ocr.org.uk/Images/697578-specification-cambridge-advanced-national-in-human-biology.pdf" target="_blank" rel="noopener">OCR specification v8</a> and informed by the <a href="https://www.ocr.org.uk/qualifications/cambridge-advanced-nationals/human-biology-level-3-h049-h149/assessment/" target="_blank" rel="noopener">public sample assessment materials</a>. Examples are not official OCR questions, and sample alignment does not imply exam frequency.</p>';}
-function title(u){return u==="f171"?"F171 · Health and disease":"F170 · Fundamentals";}
+function title(u){var U=unitMeta(u);return u.toUpperCase()+" · "+(U?U.title:"Human Biology");}
 function show(html){if(render)render(html);}
+function knowledgeLanding(){
+ var modules=db.units.filter(function(u){return isKnowledge(u.id);});
+ var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">Cambridge AAQ · Knowledge learning</div><h1>More Human Biology</h1><p>Practice the science from F172–F177. No coursework tasks, drafting or marking.</p></div><div class="k-unit-tiles">';
+ modules.forEach(function(u){var n=filter(u.id,"all").length;
+  h+='<a class="k-unit-tile k-knowledge-tile" href="#challenge/'+u.id+'"><span class="k-icon">'+icon("book")+'</span><span><small>'+u.id.toUpperCase()+' · Knowledge only</small><strong>'+esc(u.title)+'</strong><em>'+n+' short practice questions · starter bank</em></span>'+icon("chevron")+'</a>';
+ });
+ h+='</div><p class="k-source">This page teaches independent biological knowledge; it does not reproduce or assist with Cambridge OCR set assignments.</p></div>';show(h);
+}
 function intro(unit){
- var f=unit==="f170",stats=unitStats(unit);
- var areas=f?[1,2,3,4]:[1,2,3,4,5],colors=["","#58bcb0","#7da8df","#a18bdd","#e2a05c","#e18c96"];
- var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+(f?"F170 · Exam practice":"F171 · Exam practice preview")+'</div><h1>'+esc(f?"Fundamentals of human biology":"Health and disease")+'</h1><p>'+esc(f?"Build speed and accuracy with short exam-focused challenges.":"Apply what you know through clinical decisions, data and explanation. F171 is an early question-bank preview.")+'</p></div>';
+ var f=unit==="f170",knowledge=isKnowledge(unit),meta=unitMeta(unit),stats=unitStats(unit);
+ var areas=knowledge?meta.areas.map(function(_,i){return i;}).filter(function(i){return i>0&&filter(unit,"a"+i).length>0;}):(f?[1,2,3,4]:[1,2,3,4,5]),colors=["","#58bcb0","#7da8df","#a18bdd","#e2a05c","#e18c96"];
+ var h='<div class="k-wrap"><p class="crumb"><a href="'+(knowledge?"#knowledge":"#home")+'">← '+(knowledge?"Other units":"Home")+'</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+(knowledge?unit.toUpperCase()+" · Biological knowledge":f?"F170 · Exam practice":"F171 · Exam practice preview")+'</div><h1>'+esc(meta?meta.title:"Human Biology")+'</h1><p>'+esc(knowledge?"Short science questions only. No coursework help, reports or proposals.":f?"Build speed and accuracy with short exam-focused challenges.":"Apply knowledge in clinical contexts. F171 is an early question-bank preview.")+'</p></div>';
  h+='<div class="k-mini-stats"><span><strong>'+stats.questions+'</strong> original questions</span><span><strong>'+stats.seen+'</strong> attempted</span><span><strong>'+stats.weak+'</strong> to revisit</span></div>';
  h+='<h2 class="k-subhead">Start practising</h2><div class="k-action-grid">';
  var tiles=[
   ["all","Quick mix","Start easy, then build up","bolt","teal"],
-  ["sam","Exam-style focus","Skills found in OCR samples","target","blue"],
+  [knowledge?"core":"sam",knowledge?"Core knowledge":"Exam-style focus",knowledge?"Learn the essentials":"Skills found in OCR samples","target","blue"],
   ["weak","Fix mistakes","Revisit questions you missed","rotate","orange"],
-  ["stretch","Challenge","Application and explanation","brain","purple"]];
+  ["stretch","Challenge","Apply your understanding","brain","purple"]];
  tiles.forEach(function(t){h+='<a class="k-action '+t[4]+'" href="#challenge/'+unit+'/'+t[0]+'"><span class="k-icon">'+icon(t[3])+'</span><span><strong>'+t[1]+'</strong><small>'+t[2]+'</small></span><span class="k-arrow">'+icon("chevron")+'</span></a>';});
  h+='</div><div class="k-headrow"><h2>Choose a topic</h2><small>'+areas.length+' areas</small></div><div class="k-areas">';
  areas.forEach(function(a){var n=filter(unit,"a"+a).length;h+='<a href="#challenge/'+unit+'/a'+a+'" class="k-area" style="--topic-color:'+colors[a]+'"><span class="k-area-num">'+a+'</span><span class="k-area-label"><strong>'+esc(areaName(unit,a))+'</strong><small>'+n+' questions</small></span>'+icon("chevron")+'</a>';});
- h+='</div><p class="k-source">'+(f?"Includes all four F170 areas.":"F171 sample bank is not yet a complete specification resource.")+'</p>'+source()+'</div>';show(h);
+ h+='</div><p class="k-source">'+(knowledge?"Independent knowledge practice only; assignment-specific topic areas are excluded.":f?"Includes all four F170 areas.":"F171 sample bank is not yet a complete specification resource.")+'</p>'+source()+'</div>';show(h);
 }
 function landing(){
  var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">Keystone Human Biology</div><h1>Choose an exam unit</h1><p>Short, varied questions first. See an explanation when you need it.</p></div><div class="k-unit-tiles">'+["f170","f171"].map(function(u){var s=unitStats(u);return '<a href="#challenge/'+u+'" class="k-unit-tile '+(u==="f170"?"teal":"blue")+'"><span class="k-icon">'+icon(u==="f170"?"brain":"flask")+'</span><span><small>'+u.toUpperCase()+' · 60-mark paper</small><strong>'+esc(u==="f170"?"Fundamentals of human biology":"Health and disease")+'</strong><em>'+s.questions+' questions · '+s.seen+' attempted'+(u==="f171"?" · preview":"")+'</em></span>'+icon("chevron")+'</a>';}).join("")+'</div>'+source()+'</div>';show(h);
@@ -342,7 +353,7 @@ function drawQuestion(){
  adaptQuickMixEnd();
  visible=true;var q=current(),a=currentAnswer();
  if(session.phase==="ask")ensureHintClock(q);
- var sub=q.unit==="f171"?"F171 · Health and disease":"F170 · Fundamentals",num=session.index+1,max=session.queue.length;
+ var sub=title(q.unit),num=session.index+1,max=session.queue.length;
  var prog=(100*(session.index/max)).toFixed(1),showing=session.phase==="feedback";
  var used=session.hintsUsed&&session.hintsUsed[q.id]||0,availableHints=hintsFor(q);
  var h='<div class="k-wrap k-question-view"><p class="crumb"><a href="#challenge/'+q.unit+'">← Leave this set</a></p><div class="k-question-meta"><span>'+esc(sub)+'</span><span>'+num+' of '+max+'</span></div><div class="progress-track" role="progressbar" aria-label="Questions completed" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+session.index+'"><div style="width:'+prog+'%"></div></div>';
@@ -369,7 +380,7 @@ function drawQuestion(){
  if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points":"Check answer")+' →</button>'+(used<availableHints.length?'<button class="button secondary k-hint-button" type="button" data-k-action="hint">'+(used?'More help':'Hint')+'</button>':'')+'<button class="button quiet" type="button" data-k-action="skip">I don’t know · show me</button></div>';
  else if(!session.wasSkipped&&(q.type==="written"||session.lastResult===null))h+='<div class="k-foot-actions"><button class="button primary" data-k-action="self-good" type="button">I included the key ideas</button><button class="button secondary" data-k-action="self-weak" type="button">I need more practice</button></div>';
  else h+='<div class="k-foot-actions"><button class="button primary k-cta" data-k-action="next" type="button">'+(session.lastPlannedCheck?'Try a quick check':'Next question')+' →</button></div>';
- h+='</div><p class="k-question-footer">Topic '+q.area+' · '+esc(areaName(q.unit,q.area))+(q.samAligned?' · Skills reflected in OCR sample material':' · Specification coverage')+' · Original question</p></div>';
+ h+='</div><p class="k-question-footer">Topic '+q.area+' · '+esc(areaName(q.unit,q.area))+(q.knowledgeOnly?' · Knowledge practice only':q.samAligned?' · Skills reflected in OCR sample material':' · Specification coverage')+' · Original question</p></div>';
  show(h);
  if(!showing&&used<availableHints.length)startHintTimer();
 }
@@ -472,7 +483,8 @@ function finish(){
 function route(r,renderer){
  render=renderer;lastRoute=r;
  if(r==="challenge")return landing();
- var m=/^challenge\/(f170|f171)(?:\/([a-z0-9-]+))?$/.exec(r);
+ if(r==="knowledge")return knowledgeLanding();
+ var m=/^challenge\/(f17[0-7])(?:\/([a-z0-9-]+))?$/.exec(r);
  if(!m)return landing();
  var unit=m[1],scope=m[2]||null;
  if(!scope){visible=false;return intro(unit);}
