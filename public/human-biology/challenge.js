@@ -169,14 +169,44 @@ function answerKey(q){
  return '<div class="k-criteria"><p>'+esc(q.model)+'</p><strong>Key points to look for</strong><ul>'+q.markPoints.map(function(p){return '<li>'+esc(p)+'</li>';}).join("")+'</ul></div>';
 }
 function currentAnswer(){var q=current();return q&&(session.answers[q.id]||{});}
+function hintsFor(q){
+ var authored=Array.isArray(q.hints)?q.hints.filter(function(x){return typeof x==="string"&&x.trim();}).slice(0,3):[];
+ if(authored.length)return authored;
+ var strategy={
+  number:"Write the relationship needed. Use consistent units and check what is being asked.",
+  order:"Find the first event, then ask which event must happen next.",
+  match:"Say what each term means before selecting its partner.",
+  written:"Identify the biological cause, the mechanism and its consequence in this context.",
+  short:"Recall the exact scientific term before checking spelling.",
+  best:"Decide which explanation is accurate, then identify the scientific reason.",
+  diagram:"Identify the structures you recognise before deciding on the labelled feature.",
+  multi:"Evaluate each choice separately; there may be more than one correct answer."
+ }[q.type]||"Recall the biological principle before looking at the answer choices.";
+ var out=[strategy];
+ if((q.type==="single"||q.type==="diagram"||q.type==="multi")&&q.options&&q.options.length>=4){
+  var correct=Array.isArray(q.correct)?q.correct:[q.correct],wrong=q.options.findIndex(function(_,i){return correct.indexOf(i)<0;});
+  if(wrong>=0)out.push("One option you can rule out is: "+q.options[wrong]+".");
+ }
+ return out;
+}
+function showNextHint(){
+ if(!session||session.phase!=="ask")return;
+ var q=current(),h=hintsFor(q),n=session.hintsUsed[q.id]||0;
+ if(n>=h.length)return;
+ readForm();session.hintsUsed[q.id]=n+1;save();drawQuestion();
+}
 function drawQuestion(){
  if(!session||!isActive())return;visible=true;var q=current(),a=currentAnswer();
  var sub=q.unit==="f171"?"F171 · Health and disease":"F170 · Fundamentals",num=session.index+1,max=session.queue.length;
  var prog=(100*(session.index/max)).toFixed(1),showing=session.phase==="feedback";
+ var used=session.hintsUsed&&session.hintsUsed[q.id]||0,availableHints=hintsFor(q);
  var h='<div class="k-wrap k-question-view"><p class="crumb"><a href="#challenge/'+q.unit+'">← Leave this set</a></p><div class="k-question-meta"><span>'+esc(sub)+'</span><span>'+num+' of '+max+'</span></div><div class="progress-track" role="progressbar" aria-label="Questions completed" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+session.index+'"><div style="width:'+prog+'%"></div></div>';
- h+='<div class="k-question-paper"><div class="k-question-tags"><span class="k-type">'+icon(iconFor(q))+esc(labelType(q))+'</span><span class="k-level '+esc(q.level)+'">'+esc(q.level==="core"?"Core knowledge":q.level==="apply"?"Application":"Challenge")+'</span>'+(q.marks?'<span class="k-level stretch">'+q.marks+'-mark response</span>':'')+'</div><h1>'+esc(q.stem)+'</h1>';
+ h+='<div class="k-question-paper"><div class="k-question-tags"><span class="k-type">'+icon(iconFor(q))+esc(labelType(q))+'</span><span class="k-level '+esc(q.level)+'">'+esc(q.level==="warmup"?"Warm-up":q.level==="core"?"Core knowledge":q.level==="apply"?"Application":"Challenge")+'</span>'+(q.marks?'<span class="k-level stretch">'+q.marks+'-mark response</span>':'')+'</div><h1>'+esc(q.stem)+'</h1>';
  if(q.figure)h+=figure(q.figure);
- if(!showing)h+=inputForm(q,a);
+ if(isQuickCheck(q))h+='<p class="k-quick-label"><strong>Quick check:</strong> Apply the same idea independently.</p>';
+ if(!showing){h+=inputForm(q,a);
+  if(used)h+='<div class="k-hint-box" role="note"><strong>Hint '+used+' of '+availableHints.length+'</strong><p>'+esc(availableHints[used-1])+'</p></div>';
+ }
  else{
   var correct=session.lastResult===true,subjective=!session.wasSkipped&&(session.lastResult===null||q.type==="written");
   h+='<div class="k-feedback '+(subjective?"pending":correct?"correct":"incorrect")+'"><div class="k-feedback-head">'+icon(subjective?"book":correct?"check":"alert")+'<strong>'+(subjective?"Check your explanation":correct?"Correct":"Not quite")+'</strong></div>';
@@ -185,7 +215,7 @@ function drawQuestion(){
   if(!correct&&q.misconception)h+='<div class="k-misconception"><strong>Watch out</strong><p>'+esc(q.misconception)+'</p></div>';
   h+='</div>';
  }
- if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points":"Check answer")+' →</button><button class="button quiet" type="button" data-k-action="skip">Not sure · show answer</button></div>';
+ if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points":"Check answer")+' →</button>'+(used<availableHints.length?'<button class="button secondary" type="button" data-k-action="hint">'+(used?'More help':'Hint')+'</button>':'')+'<button class="button quiet" type="button" data-k-action="skip">I don’t know · show me</button></div>';
  else if(!session.wasSkipped&&(q.type==="written"||session.lastResult===null))h+='<div class="k-foot-actions"><button class="button primary" data-k-action="self-good" type="button">I included the key ideas</button><button class="button secondary" data-k-action="self-weak" type="button">I need more practice</button></div>';
  else h+='<div class="k-foot-actions"><button class="button primary k-cta" data-k-action="next" type="button">Next question →</button></div>';
  h+='</div><p class="k-question-footer">Topic '+q.area+' · '+esc(areaName(q.unit,q.area))+(q.samAligned?' · Skills reflected in OCR sample material':' · Specification coverage')+' · Original question</p></div>';
@@ -280,6 +310,7 @@ main.addEventListener("click",function(e){
   var t=a.order[i];a.order[i]=a.order[j];a.order[j]=t;save();drawQuestion();return;
  }
  var btn=e.target.closest("[data-k-action]");if(!btn)return;
+ if(btn.dataset.kAction==="hint")showNextHint();
  if(btn.dataset.kAction==="check")check(false);
  if(btn.dataset.kAction==="reveal")check(false);
  if(btn.dataset.kAction==="skip")check(true);
