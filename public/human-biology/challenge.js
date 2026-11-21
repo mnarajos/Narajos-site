@@ -11,7 +11,7 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(a){retur
 function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=b[i];b[i]=b[j];b[j]=t;}return b;}
 function save(){try{if(session)localStorage.setItem(SK,JSON.stringify(session));else localStorage.removeItem(SK);}catch(_){}}
 function saveProgress(){try{localStorage.setItem(PK,JSON.stringify(progress));}catch(_){}}
-function restore(){try{var x=JSON.parse(localStorage.getItem(SK)||"null");if(x&&Array.isArray(x.queue)&&x.queue.length&&x.queue.every(function(id){return !!byId[id];})&&x.index<x.queue.length&&!x.complete&&x.route&&x.unit)return x;}catch(_){}return null;}
+function restore(){try{var x=JSON.parse(localStorage.getItem(SK)||"null");if(x&&Array.isArray(x.queue)&&x.queue.length&&x.queue.every(function(id){return !!byId[id];})&&x.index<x.queue.length&&!x.complete&&x.route&&x.unit){x.hintsUsed=x.hintsUsed||{};x.quickCheckIds=x.quickCheckIds||{};x.quickCheckLinks=x.quickCheckLinks||{};x.guidedFirst=x.guidedFirst||0;x.quickChecksSeen=x.quickChecksSeen||0;x.quickChecksPassed=x.quickChecksPassed||0;return x;}}catch(_){}return null;}
 function isActive(){return !!session&&session.index<session.queue.length;}
 function pause(){session=null;visible=false;} // Preserve the unfinished set in localStorage.
 function discard(){session=null;visible=false;save();}
