@@ -86,6 +86,20 @@ for(const unit of ["f170","f171"]){
   assert(new Set(selected.map(q=>q.type)).size>=6,unit+" lacks question format variety");
  }
 }
+// Difficulty must soften at the first application step after poor early recall.
+app.discard();app.route("challenge/f170/all",html=>{main.innerHTML=html;});
+const mids=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+for(const secure of [true,false]){
+ const simulate=JSON.parse(JSON.stringify(mids));
+ simulate.index=4;simulate.phase="ask";
+ simulate.first=Object.fromEntries(simulate.quickMixBase.slice(0,4).map((id,i)=>[id,secure||i===0]));
+ data.set("narajos-human-challenge-v2-session",JSON.stringify(simulate));
+ app.pause();app.route("challenge/f170/all",html=>{main.innerHTML=html;});
+ const adjusted=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+ const question=db.questions.find(q=>q.id===adjusted.queue[adjusted.index]);
+ assert.equal(question.level,secure?"apply":"core","Difficulty must respond to early independent recall");
+}
+app.discard();
 // The final question may be a stretch only after strong *independent* responses.
 app.discard();app.route("challenge/f170/all",html=>{main.innerHTML=html;});
 const baseState=JSON.parse(data.get("narajos-human-challenge-v2-session"));
@@ -121,9 +135,9 @@ mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?
 assert(main.innerHTML.includes("Expected answer"),"Answer reveal failed");
 assert(main.innerHTML.includes("Here’s how it works"),"Unknown answers should not be treated as punitive errors");
 const afterSkip=JSON.parse(data.get("narajos-human-challenge-v2-session"));
-assert(Object.keys(afterSkip.quickCheckIds).length>=1,"Missed warm-up should prompt an independent related quick check");
-assert(afterSkip.quickCheckIds[afterSkip.queue[afterSkip.index+1]],"Related quick check should follow the missed question");
-assert(main.innerHTML.includes("Try a quick check"),"Unknown answer should offer a related independent check");
+assert.equal(Object.keys(afterSkip.quickCheckIds).length,0,"An unrelated or harder item must not be inserted after a missed warm-up");
+assert(afterSkip.queue.includes(record.queue[0]),"Missed warm-up should be returned to later");
+assert(!main.innerHTML.includes("Try a quick check"),"App must not promise an unrelated quick check");
 assert(window.KeystoneHumanChallenge.stats("f170").weak>=1,"Not sure should record an area for re-practice");
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"next"}}:null;}}});
 record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
@@ -152,7 +166,13 @@ assert.equal(guided.guided,1,"Guided success must be recorded as guided");
 assert.equal(guided.independent,0,"Guided success must not be scored as independent retrieval");
 const state=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert.equal(state.correctFirst,0,"Hints must not inflate independent first-attempt score");
-assert(Object.keys(state.quickCheckIds).length>=1,"Guided success must lead to an independent quick check");
+assert.equal(Object.keys(state.quickCheckIds).length,0,"Guided warm-up should not trigger an unrelated check");
+assert(state.retries[warm.id]===1,"A guided answer with no related quick check should return later for unaided retrieval");
+// For a related core concept, a quick check can follow immediately.
+forcedQuestion("cell-ser");main.querySelector=()=>null;main.querySelectorAll=()=>[];
+clickAction("skip");
+const linked=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert(linked.quickCheckIds["cell-mito-ribosomes"]===true,"Related quick checks must target the same subtopic");
 forcedQuestion("cell-magnification");
 main.querySelector=selector=>selector===".k-error"?{textContent:""}:selector==="#k-number, #k-text, #k-written"?{value:"3000xyz"}:null;
 main.querySelectorAll=()=>[];
