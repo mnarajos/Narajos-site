@@ -1124,8 +1124,8 @@ window.KeystoneHumanChallenges={
     {
       "id": "health-antibiotic-zones",
       "unit": "f171",
-      "area": 3,
-      "section": "3.2",
+      "area": 2,
+      "section": "2.1",
       "type": "diagram",
       "level": "apply",
       "stem": "Four antibiotic discs have different clear zones in a culture. Which disc has the largest zone of inhibition?",
@@ -1145,8 +1145,8 @@ window.KeystoneHumanChallenges={
     {
       "id": "health-antibiotic-control",
       "unit": "f171",
-      "area": 3,
-      "section": "3.2",
+      "area": 2,
+      "section": "2.1",
       "type": "single",
       "level": "apply",
       "stem": "Why include a disc containing only solvent in an agar diffusion test?",
@@ -1252,18 +1252,21 @@ window.KeystoneHumanChallenges={
       "section": "5.3",
       "type": "written",
       "level": "stretch",
-      "stem": "A GP practice is considering electronic records. Give TWO benefits and ONE risk it must address.",
+      "stem": "A small GP practice is considering replacing its paper patient records with an electronic record system shared across local services. Staff expect faster access to information, but are worried about cost, outages and confidentiality. Evaluate whether the practice should introduce the system.",
       "markPoints": [
-        "A benefit such as faster retrieval or easier information sharing.",
-        "A second distinct benefit such as reduced physical storage or better accessibility.",
-        "A limitation such as cybersecurity, confidentiality, downtime, cost or staff training."
+        "Explain how faster access to records could improve continuity or coordination of care.",
+        "Explain how appropriate sharing across services might reduce duplicated testing or communication errors.",
+        "Consider a limitation such as implementation cost, training demands or staff workload during transition.",
+        "Consider risks to confidentiality, cybersecurity, availability during outages or unequal patient access.",
+        "Discuss practical mitigations such as role-based access, backups, audits and staff training.",
+        "Apply the benefits and risks to a small GP practice and reach a justified recommendation with conditions."
       ],
-      "model": "Electronic records may improve access and information sharing, but demand privacy safeguards, infrastructure and staff training.",
-      "explain": "Balance the practice's context; the best recommendation depends on trade-offs.",
+      "model": "A digital system could improve continuity and reduce delays, particularly when patients use several local services. However, setup, training, cybersecurity and downtime create important costs and risks for a small practice. A phased rollout with appropriate permissions, secure backups, training and auditing would be a defensible recommendation if these safeguards are affordable and effective.",
+      "explain": "Strong evaluation weighs advantages against limitations, applies both to the scenario and reaches a supported judgement. There is no single mandatory conclusion.",
       "misconception": "'Digital is always better' is not an evaluation.",
       "samAligned": true,
       "marks": 9,
-      "levelsNote": "For a 9-mark evaluation, weigh several benefits and limitations against the case details, then reach a supported recommendation. These are revision cues, not an OCR mark scheme."
+      "levelsNote": "Extended 9-mark practice: present a balanced evaluation using several contextualised benefits and limitations and finish with a reasoned judgement. This is independent guidance, not an OCR mark scheme."
     },
     {
       "id": "health-parkinsons-therapy",
@@ -1272,18 +1275,21 @@ window.KeystoneHumanChallenges={
       "section": "2.3",
       "type": "written",
       "level": "stretch",
-      "stem": "A patient with early Parkinson's disease has tremor, bradykinesia and concerns about daily activities. Explain how TWO different approaches could support the patient.",
+      "stem": "A patient with early Parkinson's disease experiences hand tremor, slower movement and increasing anxiety about maintaining independence. Compare how drug treatment and at least one non-drug therapy could be used, considering likely benefits and limitations for this patient.",
       "markPoints": [
-        "Appropriate medication can improve some motor symptoms, with side effects/limitations.",
-        "Physiotherapy, occupational therapy or other supportive input can improve function, coping or safety.",
-        "Responses can be tailored to disease stage and individual needs."
+        "Identify an appropriate medication option as a possible way of managing motor symptoms.",
+        "Explain a plausible benefit for tremor, rigidity or bradykinesia, while noting individual response varies.",
+        "Explain a relevant limitation or adverse effect of medication.",
+        "Describe physiotherapy, occupational therapy or psychological support relevant to this patient's needs.",
+        "Link non-drug support to functional independence, mobility, daily activities or anxiety.",
+        "Make a contextualised judgement about combining or sequencing approaches and review as needs change."
       ],
-      "model": "Medication can reduce motor symptoms; rehabilitation and practical support can improve mobility, function and independence.",
-      "explain": "Parkinson's disease is progressive; treatment is typically symptom management, not cure.",
+      "model": "Drug treatment may help some motor symptoms, although side effects and timing need individual consideration. Physiotherapy can support mobility and balance; occupational therapy can help daily activities, while psychological support may help anxiety. A tailored combination with regular review may protect independence better than assuming one intervention will address every need.",
+      "explain": "Explain mechanisms or functions where relevant, link therapies to the patient's symptoms and compare benefits with limitations; there is no universal treatment sequence.",
       "misconception": "Do not equate supportive therapy with a lack of biological effect.",
       "samAligned": true,
       "marks": 6,
-      "levelsNote": "For an extended 6-mark response, link interventions to the patient's symptoms and daily life; consider limitations. These are revision cues, not an OCR mark scheme."
+      "levelsNote": "Extended 6-mark practice: link several valid points to this patient, compare the approaches and acknowledge limitations. This is a self-assessment checklist, not an OCR mark scheme."
     },
     {
       "id": "health-immunisation",
@@ -1348,8 +1354,8 @@ window.KeystoneHumanChallenges={
     {
       "id": "health-infection-control",
       "unit": "f171",
-      "area": 1,
-      "section": "1.2",
+      "area": 2,
+      "section": "2.1",
       "type": "single",
       "level": "apply",
       "stem": "Which process most directly selects for existing antibiotic-resistant bacteria during antibiotic exposure?",
