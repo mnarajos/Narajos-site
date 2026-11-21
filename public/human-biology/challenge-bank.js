@@ -1542,7 +1542,7 @@ window.KeystoneHumanChallenges={
       "type": "single",
       "level": "warmup",
       "warmup": true,
-      "stem": "Which structure is absent from a virus particle?",
+      "stem": "Which structure is not present in viruses as a group?",
       "options": [
         "Ribosomes",
         "Protein capsid",
