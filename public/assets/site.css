@@ -117,3 +117,11 @@ h1,h2,h3,p{margin-top:0}h1,h2,h3{letter-spacing:-.035em;line-height:1.17}h1{font
  .home-option{min-height:0}
  .home-simple .lead{font-size:16px}
 }
+
+/* Simulation catalogue: simple qualification grouping. */
+.simulation-group{scroll-margin-top:22px}
+.simulation-group + .simulation-group{margin-top:40px}
+.simulation-group h2{font-size:23px;margin:0 0 16px}
+.simulation-group .simulation-list .app-card{min-height:150px;gap:8px}
+.simulation-group .simulation-list .app-card p{line-height:1.5}
+.simulation-group .simulation-list .app-card .card-foot{padding-top:4px}
