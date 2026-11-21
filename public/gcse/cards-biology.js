@@ -48,7 +48,7 @@ window.KeystoneGcseDecks=Object.assign(window.KeystoneGcseDecks||{},{
  ["What is the word equation for anaerobic respiration in human muscles?","Glucose → lactic acid"],
  ["Why does breathing rate stay elevated after intense exercise?","To help provide oxygen for recovery from anaerobic respiration"],
  ["Is respiration the same as breathing?","No; respiration is a chemical process that transfers energy in cells"],
- ["How is oxygen produced during photosynthesis?","By splitting water using light energy",[],"H"]
+ ["Name one way a plant can use glucose made during photosynthesis.","Convert it to starch for storage",["use it in respiration","make cellulose","make fats or oils","make amino acids"]]
  ],
  b5:[
  ["Define homeostasis","The regulation of internal conditions to maintain optimum conditions for function",[]],
@@ -63,7 +63,7 @@ window.KeystoneGcseDecks=Object.assign(window.KeystoneGcseDecks||{},{
  ["What do effectors do in a response?","Muscles contract or glands secrete"]
  ],
  b6:[
- ["What is a gene?","A section of DNA that codes for a protein or functional RNA",["a section of DNA"]],
+ ["What is a gene?","A small section of DNA that codes for a protein",["a section of DNA"]],
  ["What is an allele?","An alternative form of a gene",[]],
  ["Define genotype","The combination of alleles an organism has for a characteristic",[]],
  ["Define phenotype","The observable characteristics of an organism",[]],
