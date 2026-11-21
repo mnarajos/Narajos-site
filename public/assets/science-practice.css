@@ -89,3 +89,47 @@
 .gas-visual figcaption{color:#485a60;font-size:.9rem}
 .gas-model button{min-height:44px;border:1px solid #276a62;border-radius:8px;background:#f0f7f4;color:#20564f;padding:.4rem .8rem;font:inherit;font-weight:650;cursor:pointer}
 .ks3-lesson .gas-result{margin:.5rem 0 0}
+
+.ks3-year-menu details{border-top:1px solid #d4dcd8;padding:.45rem 0}
+.ks3-year-menu summary{padding:.6rem 0;min-height:44px;font-size:1.12rem;font-weight:700;cursor:pointer}
+.ks3-year-menu summary:focus-visible{outline:3px solid #c9611f;outline-offset:3px}
+.ks3-year-menu .practice-choices{grid-template-columns:repeat(auto-fit,minmax(min(17rem,100%),1fr))}
+.ks3-diagram{margin:0 0 .9rem;padding:.65rem;background:#f0f7f4;border-radius:8px}
+.ks3-diagram figcaption{font-weight:700;margin-bottom:.5rem}
+.ks3-diagram-panels{display:flex;gap:.45rem;flex-wrap:wrap;align-items:center}
+.ks3-diagram-box{padding:.45rem .55rem;border:1px solid #a1b5af;border-radius:6px;background:#fff;text-align:center}
+.ks3-diagram-box strong{display:block}
+.ks3-flow .ks3-diagram-box{flex:1 1 6rem}
+.ks3-flow-arrow,.ks3-force{font-weight:700;color:#20564f}
+.ks3-particle-box{position:relative;width:5rem;height:4.6rem;margin:.35rem auto 0;border:1px solid #779b92;background:#f5faf8;border-radius:4px}
+.ks3-particle-box span{position:absolute;background:#26786e;width:9px;height:9px;border-radius:50%;transform:translate(-50%,-50%)}
+.ks3-molecule-groups{display:grid;gap:.3rem;grid-template-columns:repeat(2,auto);padding:.35rem .2rem}
+.ks3-molecule{display:flex}
+.ks3-atom{width:.86rem;height:.86rem;border-radius:50%;border:1px solid #24343b}
+.ks3-atom-a{background:#50a380}
+.ks3-atom-b{background:#b387c7}
+.ks3-element-box{margin-top:.3rem;padding:.2rem .45rem;border:1px solid #a1b5af;border-radius:4px;text-align:left}
+.ks3-ph-3,.ks3-ph-7,.ks3-ph-10{padding:.25rem .6rem;border-radius:4px;margin-top:.3rem}
+.ks3-ph-3{background:#f6c3a2}
+.ks3-ph-7{background:#c2e6ba}
+.ks3-ph-10{background:#d6ccf7}
+.ks3-bar-rows{display:grid;gap:.4rem;width:min(100%,22rem)}
+.ks3-bar{display:block;height:.65rem;background:#478d83;border-radius:4px}
+.ks3-day-night{display:flex;align-items:center;gap:.6rem;font-weight:700}
+.ks3-earth-globe{display:flex;align-items:center;justify-content:space-evenly;position:relative;width:7.5rem;height:7.5rem;border-radius:50%;background:linear-gradient(90deg,#f5d592 50%,#324f61 50%);font-size:.9rem;color:#253134}
+.ks3-earth-globe span:last-child{color:white}
+.ks3-earth-globe::after{content:"";position:absolute;left:24%;top:29%;width:.4rem;height:.4rem;border-radius:50%;background:#253134}
+.ks3-circuit{width:min(100%,10rem)}
+.ks3-circuit svg{width:100%;height:auto;display:block}
+.ks3-cell-example{display:grid;justify-items:center;gap:.35rem}
+.ks3-cell-shape{width:7.4rem;height:5.1rem;position:relative;background:#e9f4e1;color:#315f51}
+.ks3-cell-plant{border:4px solid #4e7755;box-shadow:inset 0 0 0 1px #315f51;border-radius:9px}
+.ks3-cell-animal{border:2px solid #4e7755;border-radius:48% 51% 47% 50%;background:#f7e9dc}
+.ks3-cell-nucleus{position:absolute;width:1.3rem;height:1.15rem;top:33%;left:30%;border-radius:50%;background:#826591;border:1px solid #513861}
+.ks3-chloroplasts{position:absolute;width:.55rem;height:.83rem;left:68%;top:30%;border-radius:50%;background:#367551;box-shadow:13px 11px #367551,-14px 22px #367551}
+.ks3-insect-panel{position:relative;min-width:7rem;min-height:5.3rem;display:grid;align-items:end;padding:.45rem .6rem;border-radius:5px;overflow:hidden}
+.ks3-bark-light{background:repeating-linear-gradient(94deg,#dac3a9 0 15px,#d1b698 15px 19px);color:#26353a}
+.ks3-bark-dark{background:repeating-linear-gradient(94deg,#6c5546 0 15px,#634c3e 15px 19px);color:#fff}
+.ks3-insect{position:absolute;top:.7rem;width:1.25rem;height:1.52rem;border:1px solid #503e33;border-radius:60% 49% 46% 48%;transform:rotate(25deg)}
+.ks3-insect-light{left:25%;background:#e2c9a7}
+.ks3-insect-dark{left:63%;background:#564135}
