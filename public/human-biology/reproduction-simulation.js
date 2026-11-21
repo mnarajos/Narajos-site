@@ -35,8 +35,8 @@ function svg(){
  '<g fill="#ffeff9" stroke="#b987b4" stroke-width="2"><circle cx="740" cy="222" r="9"/><circle cx="788" cy="203" r="9"/><circle cx="751" cy="190" r="6"/></g>'+
  '<ellipse class="krp-ovary-target" cx="765" cy="212" rx="67" ry="50" fill="#fff" fill-opacity="0"/></g>'+
  '<g id="krp-follicle" hidden aria-hidden="true"><circle r="13" fill="#fff3d4" stroke="#ca8740" stroke-width="3"/><circle r="5.8" fill="#dc9351"/></g>'+
- '<path id="krp-egg-left" d="M135 212Q181 223 201 190Q225 177 286 158Q344 140 390 184Q422 201 450 281" fill="none"/>'+
- '<path id="krp-egg-right" d="M765 212Q719 223 699 190Q675 177 614 158Q556 140 510 184Q478 201 450 281" fill="none"/>'+
+ '<path id="krp-egg-left" d="M135 212Q181 223 201 190Q225 177 286 158" fill="none"/>'+
+ '<path id="krp-egg-right" d="M765 212Q719 223 699 190Q675 177 614 158" fill="none"/>'+
  '<path id="krp-sperm-left" d="M450 515L450 438L450 354L450 300Q422 201 390 184Q344 140 286 158" fill="none"/>'+
  '<path id="krp-sperm-right" d="M450 515L450 438L450 354L450 300Q478 201 510 184Q556 140 614 158" fill="none"/>'+
  '<path id="krp-embryo-left" d="M286 158Q344 140 390 184Q422 201 450 281" fill="none"/>'+
@@ -85,7 +85,7 @@ function mount(host){
  var q=function(sel){return root.querySelector(sel);};
  var btn={},group={"follicle":q("#krp-follicle"),"egg":q("#krp-egg"),"sperm":q("#krp-sperm"),"embryo":q("#krp-embryo")};
  root.querySelectorAll("[data-krp]").forEach(function(b){btn[b.dataset.krp]=b;});
- var state={side:"left",phase:"idle",sperm:"idle",fertilised:false,ticket:0};
+ var state={side:"left",phase:"idle",sperm:"idle",spermSide:null,fertilised:false,ticket:0};
  var reduced=!!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);
  function status(t){q(".krp-status").textContent=t;}
  function show(g,yes){if(g)g.hidden=!yes;}
@@ -112,7 +112,7 @@ function mount(host){
   btn.lh.hidden=state.phase!=="mature";
   btn.sperm.disabled=state.sperm!=="idle";
   q(".krp-entry").setAttribute("aria-disabled",String(btn.sperm.disabled));
-  btn.fert.hidden=!(state.phase==="oviduct"&&state.sperm==="oviduct"&&!state.fertilised);
+  btn.fert.hidden=!canFertilise();
   btn.continue.hidden=state.phase!=="oviduct";
   root.querySelectorAll(".krp-ovary").forEach(function(o){
    o.classList.toggle("krp-active",o.dataset.side===state.side&&state.phase!=="idle");
@@ -142,7 +142,7 @@ function mount(host){
   state.phase="ovulating";show(group.follicle,false);show(group.egg,true);
   var path=q("#krp-egg-"+state.side);positionAt(group.egg,path,0);update();
   status("The LH surge triggers ovulation, releasing a secondary oocyte. Fimbriae and ciliary movement help transport it into an oviduct.");
-  transport(group.egg,path,0,.50,2300,function(){
+  transport(group.egg,path,0,1,2300,function(){
    state.phase="oviduct";update();
    status("The secondary oocyte is in the oviduct (typically the ampulla). It can be fertilised only if a viable sperm reaches it within a limited period.");
    maybeMeet();
@@ -151,17 +151,26 @@ function mount(host){
  function introduceSperm(){
   if(state.sperm!=="idle")return;
   state.sperm="travelling";show(group.sperm,true);
-  var path=q("#krp-sperm-"+state.side);positionAt(group.sperm,path,0);update();
+  state.spermSide=state.side;
+  var path=q("#krp-sperm-"+state.spermSide);positionAt(group.sperm,path,0);update();
   status("Sperm have entered the vagina. One representative sperm is shown moving through the cervical canal and uterine cavity towards an oviduct; most sperm do not complete this journey.");
   transport(group.sperm,path,0,1,3500,function(){
    state.sperm="oviduct";update();
-   status(state.phase==="oviduct"?"Sperm and secondary oocyte are both in the oviduct. Meeting does not guarantee fertilisation. You may show one possible outcome.":"The representative sperm has reached an oviduct. Fertilisation is possible only if a viable secondary oocyte is present.");
+   status("The representative sperm has reached an oviduct. Fertilisation is possible only if a viable secondary oocyte is present in that oviduct.");
    maybeMeet();
   });
  }
- function maybeMeet(){update();}
+ function canFertilise(){
+  return state.phase==="oviduct"&&state.sperm==="oviduct"&&state.spermSide===state.side&&!state.fertilised;
+ }
+ function maybeMeet(){
+  if(state.phase!=="oviduct"||state.sperm!=="oviduct")return;
+  status(canFertilise()
+    ?"The representative sperm and the secondary oocyte are in the same oviduct. You can show one possible outcome."
+    :"The representative sperm is in the other oviduct. Continue without fertilisation, or reset and choose an ovary before introducing sperm.");
+ }
  function fertilise(){
-  if(!(state.phase==="oviduct"&&state.sperm==="oviduct"))return;
+  if(!canFertilise())return;
   state.fertilised=true;state.phase="embryo";
   show(group.sperm,false);show(group.egg,false);show(group.embryo,true);
   var path=q("#krp-embryo-"+state.side);positionAt(group.embryo,path,0);update();
@@ -174,7 +183,7 @@ function mount(host){
   status("Without fertilisation, the secondary oocyte typically degenerates. It does not develop into an embryo; menstrual changes depend on the hormonal cycle.");
  }
  function reset(){
-  state.ticket++;state.side="left";state.phase="idle";state.sperm="idle";state.fertilised=false;
+  state.ticket++;state.side="left";state.phase="idle";state.sperm="idle";state.spermSide=null;state.fertilised=false;
   Object.keys(group).forEach(function(k){show(group[k],false);});
   update();status("FSH supports development of ovarian follicles. Select an ovary or press FSH to begin.");
  }

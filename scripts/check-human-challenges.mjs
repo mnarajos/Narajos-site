@@ -42,9 +42,9 @@ assert(help.includes("Vaccine types")&&help.includes("Key idea 1"),"Vaccine type
 companion.route("catchup/f171",h=>{help=h;});
 assert(help.includes("Immune dysfunction")&&help.includes("Vaccine types"),"Missing F171 subsections from catch-up navigation");
 
-assert.equal(db.questions.length,530);
+assert.equal(db.questions.length,534);
 assert.equal(db.questions.filter(q=>q.unit==="f170").length,244);
-assert.equal(db.questions.filter(q=>q.unit==="f171").length,208);
+assert.equal(db.questions.filter(q=>q.unit==="f171").length,212);
 for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,13,u+" knowledge bank missing");
 assert.deepEqual([...new Set(db.questions.map(q=>q.type))].sort(),["best","diagram","match","multi","number","order","short","single","sort","written"].sort());
 const ids=new Set();
@@ -198,7 +198,7 @@ assert(window.KeystoneHumanChallenge.stats("f170").weak>=1,"Not sure should reco
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"next"}}:null;}}});
 record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert(record.index>=1,"Question did not advance");
-assert.equal(window.KeystoneHumanChallenge.questionCount,530);
+assert.equal(window.KeystoneHumanChallenge.questionCount,534);
 // Verify the entire deterministic answer flow, not merely presence of new item types.
 function forcedQuestion(id){
  const q=db.questions.find(x=>x.id===id);assert(q,"Unknown forced test item: "+id);
@@ -333,7 +333,7 @@ assert(main.innerHTML.includes("A new cell membrane needs material"),"First hint
 assert(hintButton.hidden,"More help must wait for another inactive interval");
 tick(10010);clickAction("hint");
 assert(main.innerHTML.includes("Separate the production of membrane lipids"),"Second hint must teach the prerequisite principle");
-console.log("Human Biology checks passed: 530 questions, 91 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
+console.log("Human Biology checks passed: 534 questions, 91 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
 
 
 // Point practice must preserve one biological idea while support is withdrawn.

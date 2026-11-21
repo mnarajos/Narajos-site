@@ -423,6 +423,8 @@ body.onhome{background:radial-gradient(circle at 100% 0,rgba(92,207,196,.18),tra
 <script src="/assets/catchup-visuals.js"></script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/assets/home-link.css">
+<link rel="stylesheet" href="/assets/topic-finder.css">
+<script src="/assets/topic-finder.js"></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -6081,11 +6083,25 @@ function showHome(focus){
  L=null;
  var h='<div class="hb-hero"><h1>Ready to revise?</h1><p>Practice questions, catch up on a missed concept, or revisit what you found difficult.</p></div>';
  h+='<section class="companion-entry" aria-label="Learning companion"><span class="companion-symbol" aria-hidden="true">📖</span><div><strong>Missed a lesson or need a refresher?</strong><p>Read a few key ideas, then return to practice questions.</p></div><a class="btn" href="#catchup">Catch up</a></section>';
+ if(window.NarajosTopicFinder)h+=window.NarajosTopicFinder.markup;
  var kst=KSReview.progress();
- h+='<section class="kr-entry"><h2>Review for today</h2><p>Revisit flashcards after a delay. Previously missed cards return for practice.</p><div class="kr-metrics"><span>'+kst.due+' due</span><span>'+kst.seen+' practised</span></div><div class="kr-actions"><a class="btn primary" href="#spaced">Spaced review</a><a class="btn" href="#flashcards">Other flashcard modes</a></div></section>';
+ h+='<section class="kr-entry"><h2>Review for today</h2><p>Revisit flashcards after a delay. Previously missed cards return for practice.</p><div class="kr-metrics"><span>'+kst.due+' due</span><span>'+kst.seen+' practised</span></div><div class="kr-actions"><a class="btn primary" href="#spaced">Spaced review</a><a class="btn" href="#flashcards">Flashcards</a></div></section>';
  h+='<div class="hpcs">'+PAPERS.map(function(p){var c=PCARD[p.id];
   return '<a class="hpc hpc-'+p.id+'" href="#paper-'+p.id+'"><span class="blob" aria-hidden="true"></span>'+PART[p.id]+'<b>'+esc(p.name)+'</b><span class="pd">'+esc(c[0])+'</span><span class="dots">'+(c[1]?'<span>'+c[1]+'</span>':'')+'</span><span class="tstripe" aria-hidden="true" style="background:'+tStripe(p)+'"></span></a>';}).join("")+'</div>';
  render(h,focus);
+ mountStudyFinder();
+}
+function mountStudyFinder(){
+ const finder=window.NarajosTopicFinder;
+ if(!finder)return;
+ const groups=[{id:"p1",label:"Paper 1"},{id:"p2",label:"Paper 2"}];
+ const entries=PAPERS.filter(p=>p.id!=="p3").flatMap(p=>p.topics.filter(t=>DATA[t]).flatMap(t=>{
+  const topic=DATA[t];
+  return [{group:p.id,title:topic.title,context:p.name,actions:[["Browse topic","#topic-"+t],["Catch up","#catchup-"+t]]},
+   ...topic.concepts.filter(avail).map(c=>({group:p.id,title:c.title,context:topic.title,concept:true,
+    actions:[["Catch up","#catchup-"+t+"-"+c.id],...(isUnlocked(t,c)?[["Practise questions","#lesson-"+t+"-"+c.id]]:[])]}))];
+ }));
+ finder.mount(main,{groups,entries});
 }
 /* Topic-colour stripe along the bottom of each paper card (20 November, teacher chose option C; replaces the topic dots).
    Papers 1 and 2: one block per topic; Paper 3: all eight colours blended. */

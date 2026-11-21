@@ -1,4 +1,4 @@
-import { curriculum } from "./ks3-lessons.js";
+import { curriculum, motionLessons } from "./ks3-lessons.js";
 import { homeActivity } from "./ks3-home-activities.js";
 
 const illustrations = {
@@ -37,17 +37,6 @@ for (const list of document.querySelectorAll("[data-ks3-year]")) {
   if (location.hash === "#year-" + year) list.closest("details").open = true;
 }
 
-const lessonRoot = document.querySelector("[data-ks3-lesson]");
-if (lessonRoot) {
-  const id = new URLSearchParams(location.search).get("topic");
-  for (const [year, lessons] of Object.entries(curriculum)) {
-    const index = lessons.findIndex((lesson) => lesson.id === id);
-    if (index >= 0) {
-      renderLesson(lessons[index], year, index);
-      break;
-    }
-  }
-}
 
 function disclosure(label, ...contents) {
   const details = element("details");
@@ -111,7 +100,7 @@ function svgCircuit(closed) {
   }
   draw("path", { d: "M75 15H24V77H52 M69 77H136V57 M136 35V15H87 M75 1V29 M87 7V23", fill: "none", stroke: "currentColor", "stroke-width": 2 });
   draw("path", { d: closed ? "M52 77H69" : "M52 77L68 63", fill: "none", stroke: "currentColor", "stroke-width": 2 });
-  draw("circle", { cx: 136, cy: 46, r: 11, fill: "#f7faf8", stroke: "currentColor", "stroke-width": 2 });
+  draw("circle", { cx: 136, cy: 46, r: 11, fill: closed ? "#ffdf82" : "#f7faf8", stroke: "currentColor", "stroke-width": 2 });
   draw("path", { d: "M128 38L144 54 M128 54L144 38", fill: "none", stroke: "currentColor", "stroke-width": 2 });
   return svg;
 }
@@ -193,24 +182,91 @@ function renderVisual(visual) {
       break;
     case "earth": {
       const earth = element("div", "", "ks3-day-night");
-      earth.setAttribute("role", "img");
-      earth.setAttribute("aria-label", "The Sun is on the left. The left side of Earth is lit. A dot marks a location on Earth.");
       earth.append(element("span", "Sun →"));
       const globe = element("div", "", "ks3-earth-globe");
+      globe.setAttribute("aria-hidden", "true");
       for (const label of visual.panels) globe.append(element("span", label));
+      const place = element("span", "", "ks3-location");
+      globe.append(place);
       earth.append(globe);
-      panels.append(earth);
+      const positions = [
+        ["Morning at the edge of the lit side.", 50, 17],
+        ["Daytime. The location faces the Sun.", 19, 50],
+        ["Evening at the edge of the dark side.", 50, 83],
+        ["Night. The location faces away from the Sun.", 81, 50]
+      ];
+      let step = 0;
+      const report = modelReport();
+      function turn() {
+        const [description, x, y] = positions[step];
+        place.style.left = x + "%";
+        place.style.top = y + "%";
+        report.textContent = description;
+      }
+      panels.append(earth, modelButton("Turn Earth a quarter turn", () => { step = (step + 1) % positions.length; turn(); }), report);
+      turn();
       break;
     }
-    case "circuits":
-      for (const [label, closed] of [["Circuit A", false], ["Circuit B", true]]) {
+    case "circuits": {
+      const boxes = [["Circuit A", false], ["Circuit B", true]];
+      for (const [label, closed] of boxes) {
         const box = element("div", "", "ks3-diagram-box ks3-circuit");
         box.append(element("strong", label), svgCircuit(closed));
         panels.append(box);
       }
+      const report = modelReport();
+      const controls = element("div", "", "ks3-model-controls");
+      controls.append(modelButton("Close switch in circuit A", () => {
+        const diagram = panels.querySelector(".ks3-circuit svg");
+        const isClosed = controls.firstElementChild.getAttribute("aria-pressed") === "true";
+        const next = !isClosed;
+        diagram.replaceWith(svgCircuit(next));
+        controls.firstElementChild.setAttribute("aria-pressed", String(next));
+        controls.firstElementChild.textContent = next ? "Open switch in circuit A" : "Close switch in circuit A";
+        report.textContent = next ? "Circuit A is closed. The lamp lights." : "Circuit A has a gap. The lamp goes out.";
+      }));
+      controls.firstElementChild.setAttribute("aria-pressed", "false");
+      panels.append(controls, report);
       break;
+    }
+    case "moments": {
+      const scale = element("div", "", "ks3-seesaw");
+      const board = element("div", "", "ks3-seesaw-board");
+      board.setAttribute("aria-hidden", "true");
+      const leftWeight = element("span", "10 N");
+      const rightWeight = element("span", "10 N");
+      board.append(leftWeight, rightWeight);
+      scale.append(board, element("span", "▲ Pivot", "ks3-seesaw-pivot"));
+      const report = modelReport();
+      const controls = element("div", "", "ks3-model-controls");
+      const options = [1,2,3].map(distance=>modelButton(distance + " m", () => setDistance(distance)));
+      function setDistance(distance) {
+        board.style.transform = "rotate(" + (distance - 2) * 9 + "deg)";
+        rightWeight.style.left = 50 + 14 * distance + "%";
+        options.forEach((control,index)=>control.setAttribute("aria-pressed",String(index + 1 === distance)));
+        report.textContent = "Left moment: 20 N m. Right moment: " + (distance * 10) + " N m. " +
+          (distance === 2 ? "The seesaw balances." : (distance === 1 ? "The left" : "The right") + " end drops.");
+      }
+      controls.append(element("strong", "Move the right weight"), ...options);
+      panels.append(scale, controls, report);
+      setDistance(2);
+      break;
+    }
   }
   return figure;
+}
+
+function modelButton(label, action) {
+  const control = element("button", label, "ks3-model-button");
+  control.type = "button";
+  control.addEventListener("click", action);
+  return control;
+}
+
+function modelReport() {
+  const output = element("p", "", "ks3-model-report");
+  output.setAttribute("role", "status");
+  return output;
 }
 
 function renderQuestion(question, number, offset) {
@@ -235,6 +291,21 @@ function renderQuestion(question, number, offset) {
   message.setAttribute("role", "status");
   article.append(heading, choices, message);
   return article;
+}
+
+const externalModels = {
+  "states-of-matter": ["States of Matter: Basics", "states-of-matter-basics", "Choose Water, then compare the motion in Solid and Liquid. What changes, and what stays the same?"],
+  forces: ["Forces and Motion: Basics", "forces-and-motion-basics", "Choose Net Force. Set up two equal pulls in opposite directions. Predict what happens when one side pulls harder."],
+  "acids-and-alkalis": ["pH Scale: Basics", "ph-scale-basics", "Compare one acidic liquid and one alkaline liquid. Find the pH reading in each case and decide which side of 7 it is on."],
+  electricity: ["Circuit Construction Kit: DC", "circuit-construction-kit-dc", "In Intro, make one loop with a battery, bulb and switch. Predict what the bulb will do when you open the switch at a different position."]
+};
+
+function externalActivity(id) {
+  const [name, slug, prompt] = externalModels[id];
+  const step = element("p", prompt);
+  const go = element("p");
+  go.append(link("Open " + name + " on PhET", "https://phet.colorado.edu/en/simulations/" + slug));
+  return disclosure("Explore with PhET (optional)", step, go);
 }
 
 function renderLesson(lesson, year, index) {
@@ -270,5 +341,21 @@ function renderLesson(lesson, year, index) {
   checks.append(transfer);
   const finish = element("p", "", "catchup-finish");
   finish.append(link("Choose another Year " + year + " topic", yearLink.href));
+  const extension = externalModels[lesson.id] ? externalActivity(lesson.id) : null;
+  if (extension) teaching.append(extension);
   lessonRoot.replaceChildren(teaching, checks, homeActivity(lesson.id), finish);
 }
+
+const lessonRoot = document.querySelector("[data-ks3-lesson]");
+if (lessonRoot) {
+  const id = new URLSearchParams(location.search).get("topic");
+  for (const [year, units] of Object.entries(curriculum)) {
+    const lessons = year === "8" ? [...units, ...motionLessons] : units;
+    const index = lessons.findIndex((lesson) => lesson.id === id);
+    if (index >= 0) {
+      renderLesson(lessons[index], year, index);
+      break;
+    }
+  }
+}
+

@@ -221,17 +221,27 @@ try{
  await desktop.keyboard.press("Enter");
  assert.equal(await spermEntry.getAttribute("aria-disabled"),"true");
  await desktop.locator('[data-krp="fert"]').waitFor({state:"visible",timeout:8000});
- assert((await desktop.locator(".krp-status").innerText()).includes("Fertilisation")||(await desktop.locator(".krp-status").innerText()).includes("Sperm and secondary"),"Gamete meeting explanation missing");
+ await desktop.getByRole("status").filter({hasText:"are in the same oviduct"}).waitFor();
  await desktop.locator('[data-krp="fert"]').click();
  await desktop.waitForFunction(()=>document.querySelector(".krp-status")?.textContent.includes("Early embryo"));
  await screen(desktop,"human-f175-embryo");
  await desktop.locator('[data-krp="reset"]').click();
  assert(await desktop.locator('[data-krp="lh"]').isHidden(),"Reset should hide LH until follicle matures");
+ await desktop.locator('[data-krp="sperm"]').click();
+ await desktop.getByRole("status").filter({hasText:"The representative sperm has reached an oviduct."}).waitFor();
+ await desktop.getByRole("button",{name:/^Select right ovary/}).click();
+ await desktop.locator('[data-krp="lh"]').click();
+ await desktop.getByRole("status").filter({hasText:"The representative sperm is in the other oviduct"}).waitFor();
+ assert(await desktop.locator('[data-krp="fert"]').isHidden());
+ await desktop.goto(base+"/human-biology/#challenge/f171/case-follow-up-response");
+ await desktop.getByRole("table",{name:"Fictional booking data"}).waitFor();
+ assert(await desktop.getByRole("rowheader",{name:"A · reminder text"}).isVisible());
+
 
  await desktop.goto(base+"/human-biology/#challenge/f171/a3",{waitUntil:"load"});
  await desktop.locator(".k-question-view").waitFor({state:"visible"});
  const count=await desktop.evaluate(()=>window.KeystoneHumanChallenge?.questionCount);
- assert.equal(count,530,"Live engine did not load all questions");
+ assert.equal(count,534,"Live engine did not load all questions");
  assert((await desktop.locator("main").innerText()).length>90,"Question activity is blank");
  await desktop.locator("#site-home").click();
  const dialog=desktop.locator("#leave-dialog");
@@ -367,6 +377,12 @@ try{
  const tier=navPage.getByLabel("Exam tier",{exact:true});
  await tier.selectOption("F");
  const query=navPage.getByRole("searchbox",{name:"Topic or keyword"});
+ await query.fill("osmosis");
+ const exactOsmosis=navPage.getByRole("link",{name:"Practise questions: Osmosis (part 1)",exact:true});
+ await exactOsmosis.click();
+ await navPage.waitForURL("**/#lesson-b1-osmosis");
+ await navPage.getByRole("heading",{name:/Osmosis/,level:1}).first().waitFor();
+ await navPage.goto(base+"/gcse/");
  await query.fill("amylase");
  const biologyResult=navPage.getByRole("link",{name:"Learn and practise: Organisation",exact:true});
  await biologyResult.click();
@@ -375,6 +391,12 @@ try{
  assert.equal(await tier.inputValue(),"F","GCSE tier choice did not persist");
  await query.fill("this topic does not exist");
  await navPage.getByRole("status").filter({hasText:"No matching topics"}).waitFor();
+ await navPage.goto(base+"/alevel/");
+ const advancedSearch=navPage.getByRole("searchbox",{name:"Topic or keyword"});
+ await advancedSearch.fill("osmosis");
+ const advancedOsmosis=navPage.locator('[data-topic-finder] a[href="#catchup-a2-osmosis"]');
+ await advancedOsmosis.click();
+ await navPage.getByRole("heading",{name:/^Osmosis and water potential/,level:1}).waitFor();
  await navPage.goto(base+"/human-biology/");
  await navPage.getByLabel("Subject or unit").selectOption("f171");
  await navPage.getByRole("searchbox",{name:"Topic or keyword"}).fill("casts");
@@ -467,8 +489,8 @@ try{
  await navPage.getByRole("status").filter({hasText:"There are separate blocks or list points."}).waitFor();
  await navPage.getByText("Compare with the key ideas",{exact:true}).click();
  assert.equal(await navPage.locator(".writing-key li").count(),4);
- await navPage.getByText("More GCSE writing tasks",{exact:true}).click();
- const writingTasks=navPage.locator("#more-tasks a");
+ await navPage.getByRole("link",{name:"More GCSE writing tasks",exact:true}).click();
+ const writingTasks=navPage.locator("#gcse-tasks a");
  assert.equal(await writingTasks.count(),6);
  const taskPaths=await writingTasks.evaluateAll(links=>links.map(link=>link.href));
  for(const path of taskPaths){
@@ -543,6 +565,18 @@ try{
   assert.equal(await firstOption.getAttribute("aria-pressed"),"true");
   assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"KS3 catch-up lesson overflows at phone width");
  }
+ await navPage.goto(year7Paths[11]);
+ const rotateEarth=navPage.getByRole("button",{name:"Turn Earth a quarter turn"});
+ await rotateEarth.click();
+ await navPage.getByRole("status").filter({hasText:"Daytime. The location faces the Sun."}).waitFor();
+ await navPage.goto(year8Paths[9]);
+ await navPage.getByRole("button",{name:"Close switch in circuit A"}).click();
+ await navPage.getByRole("status").filter({hasText:"The lamp lights."}).waitFor();
+ await navPage.getByText("Explore with PhET (optional)",{exact:true}).click();
+ assert(await navPage.getByRole("link",{name:/Open Circuit Construction Kit/}).isVisible());
+ await navPage.goto(base+"/ks3/lesson/?topic=balanced-moments");
+ await navPage.getByRole("button",{name:"3 m",exact:true}).click();
+ await navPage.getByRole("status").filter({hasText:"The right end drops."}).waitFor();
  await navPage.goto(year8Paths[10]);
  await navPage.getByRole("link",{name:"Choose another Year 8 topic"}).click();
  await navPage.waitForURL(base+"/ks3/#year-8");
@@ -570,6 +604,12 @@ try{
  await navPage.getByText("Compare your explanation",{exact:true}).click();
  assert(await navPage.getByText(/The cell wall supports the plant cell/).isVisible());
 
+ await navPage.goto(base+"/teaching/simulations/enzyme-kinetics/");
+ assert(await navPage.locator("#btn-std").isHidden());
+ assert(await navPage.locator("#s-temp").isHidden());
+ await navPage.getByRole("button",{name:/Investigate/}).click();
+ const standard=navPage.locator("#btn-std");
+ assert((await standard.boundingBox()).height<65,"Standard conditions button is oversized");
  await navPage.goto(base+"/teaching/simulations/enzyme-kinetics/?activity=gcse");
  await navPage.getByRole("heading",{name:"Compare temperatures",exact:true}).waitFor();
  await navPage.locator("#btn-run").click();
@@ -604,7 +644,7 @@ try{
  await mobile.close();
  await desktop.close();
  assert.deepEqual(errors,[],"Uncaught page errors: "+errors.join("; "));
- console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 530 questions and mobile layout.");
+ console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 534 questions and mobile layout.");
 }finally{
  await browser.close();await new Promise(done=>server.close(done));
 }

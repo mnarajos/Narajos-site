@@ -97,6 +97,15 @@ const activities = {
     "Which of these two elements would you expect to be very unreactive? What is your evidence?",
     "Krypton. It is in Group 0, the same group as neon and argon. Elements in a group often have similar chemical properties."
   ],
+  "journey-speed": [
+    "Compare two journeys", "Use two example trips: 30 m in 10 s and 50 m in 25 s.",
+    "", "Which has the higher average speed?", "The first averages 3 m/s and the second 2 m/s."
+  ],
+  "balanced-moments": [
+    "Predict the balance", "Read the two moments in the model. Keep the weights unchanged and move the right one one step further out.",
+    "Imagine equal weights on opposite sides of a seesaw, the right weight further out than the left.",
+    "Which end drops?", "The right end. The same force at a greater distance gives a larger moment."
+  ],
   "gas-pressure": [
     "Test two changes in the model",
     "Use Starting box as your baseline. Compare it with Warmer gas, then go back to Starting box and compare it with Smaller box. Note what changes in each test.",

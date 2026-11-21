@@ -32,8 +32,17 @@
       const entries = typeof options.entries === "function" ? options.entries() : options.entries;
       const matches = entries.filter(entry => {
         if (group && entry.group !== group) return false;
-        const words = [entry.title, entry.context, entry.keywords].join(" ").toLowerCase();
+        if (entry.concept && !terms.length) return false;
+        const words = [entry.title, entry.concept ? "" : entry.context, entry.keywords].join(" ").toLowerCase();
         return terms.every(term => words.includes(term));
+      });
+      matches.sort((a, b) => {
+        const query = terms.join(" ");
+        const score = (entry) => {
+          const title = entry.title.toLowerCase();
+          return (title === query ? 4 : title.startsWith(query) && query ? 2 : 0) + (entry.concept ? 1 : 0);
+        };
+        return score(b) - score(a);
       });
       feedback.textContent = matches.length
         ? matches.length + (matches.length === 1 ? " result" : " results")

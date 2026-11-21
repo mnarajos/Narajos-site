@@ -563,8 +563,168 @@ var additions=[
     "misconception": "The mode of transmission depends on the pathogen; tick-borne and helminth infections spread differently.",
     "hintCue": "Consider the organ system primarily affected and how particles from the respiratory tract travel.",
     "samAligned": false
+  },
+  {
+    "id": "case-follow-up-response",
+    "section": "5.2",
+    "area": 5,
+    "type": "written",
+    "level": "stretch",
+    "marks": 6,
+    "caseTitle": "Did reminders make a difference?",
+    "stem": "Two clinics tried different ways of booking follow-ups. Analyse whether the figures support the claim that reminders improved attendance.",
+    "evidenceTable": {
+      "caption": "Fictional booking data",
+      "columns": [
+        "Clinic",
+        "Patients invited",
+        "Attended"
+      ],
+      "rows": [
+        [
+          "A · reminder text",
+          "80",
+          "64"
+        ],
+        [
+          "B · no reminder",
+          "50",
+          "35"
+        ]
+      ]
+    },
+    "markPoints": [
+      "Calculate and compare the proportions: 64/80 = 80% and 35/50 = 70%, a difference of 10 percentage points.",
+      "The reminder group had higher attendance. The clinics may differ in other ways, such as appointment times or transport access.",
+      "A fairer comparison would allocate reminder or no reminder within the same clinic, record follow-up over the same period and use the same definition of attendance."
+    ],
+    "model": "Attendance was 80% at clinic A and 70% at clinic B, so the reminder clinic was 10 percentage points higher. This is consistent with a benefit, but the comparison also changes the clinic. Easier transport or more convenient appointments at clinic A could explain part of the difference. Comparing people randomly allocated to reminder and no-reminder groups within the same clinic would give better evidence about the effect of reminders.",
+    "explain": "Compare proportions because the groups differ in size. Then explain exactly what else differs and why it matters.",
+    "misconception": "A higher percentage in a different clinic is evidence of an association. Other differences between clinics can contribute.",
+    "hints": [
+      "Divide the number who attended by the number invited for each clinic.",
+      "What changed at the same time as the reminders?"
+    ],
+    "levelsNote": "Compare both groups, qualify the inference and suggest a design that addresses a named limitation.",
+    "unit": "f171",
+    "samAligned": false
+  },
+  {
+    "id": "case-analytics-missing-records",
+    "section": "5.1.2",
+    "area": 5,
+    "type": "written",
+    "level": "stretch",
+    "marks": 6,
+    "caseTitle": "When a blank changes the conclusion",
+    "stem": "A service compares equipment returns at two sites. The draft report says Site B performs worse because its spreadsheet shows only 28 returns. Analyse the report's conclusion.",
+    "evidenceTable": {
+      "caption": "Fictional equipment-loan records",
+      "columns": [
+        "Site",
+        "Confirmed returned",
+        "Confirmed outstanding",
+        "Unknown status"
+      ],
+      "rows": [
+        [
+          "A",
+          "36",
+          "12",
+          "2"
+        ],
+        [
+          "B",
+          "28",
+          "7",
+          "15"
+        ]
+      ]
+    },
+    "markPoints": [
+      "Both sites have 50 loans. Confirmed returns are 36/50 (72%) at A and 28/50 (56%) at B.",
+      "Fifteen records are unknown at B, compared with two at A. Counting all unknowns as outstanding could understate the true return rate, especially at B.",
+      "Check original records using the same rules. Keep unknowns visible or report a range. B could have 28 to 43 returns, so the ranking could change."
+    ],
+    "model": "Site A has 36 confirmed returns and Site B has 28, out of 50 loans each. However, B also has 15 unknown records and A only two. If ten of B's unknown records were confirmed as returned, B's total would rise to 38 and the comparison could change. I would verify the missing records in both sites using the same rules and report unresolved cases separately.",
+    "explain": "A missing value should stay visible. Check how it could alter the comparison before ranking the sites.",
+    "misconception": "An empty field cannot be interpreted as a confirmed non-return.",
+    "hints": [
+      "Compare the number of unknowns as well as the confirmed returns.",
+      "Could the conclusion change if some of B's unknown loans were returned?"
+    ],
+    "levelsNote": "Use the figures to explain the direction of the possible error and what to do about it.",
+    "unit": "f171",
+    "samAligned": false
+  },
+  {
+    "id": "case-sharing-service-data",
+    "section": "5.3",
+    "area": 5,
+    "type": "written",
+    "level": "stretch",
+    "marks": 9,
+    "caseTitle": "Sharing a service summary",
+    "stem": "A fictional community service wants to publish a report about missed appointments. One option gives counts for each age band and location. Another shares a record for each visit with a code, exact age and date. Discuss what the service should publish to help explain patterns while protecting privacy.",
+    "markPoints": [
+      "Grouped counts can show broad patterns with fewer identifying details. Very small groups can still make individuals easier to recognise.",
+      "Coded records allow more detailed analysis, but exact age, date and location can sometimes combine with other information to identify a person.",
+      "Recommend a proportionate approach and justify it. Publish aggregated data with sensible grouping or combine small groups. Keep detailed records restricted to authorised analysis where needed."
+    ],
+    "model": "I would publish grouped counts because the purpose is to explain overall patterns in attendance. Local counts can still disclose information where a group contains only one or two visits, so I would combine small groups and explain how the figures were prepared. Coded visit records could help an authorised team check causes in more detail, but exact dates and ages could be combined with other information to work out who attended. Restrict those records to staff with a defined need and share only the fields required for that analysis.",
+    "explain": "Tie the recommendation to the intended audience, the required detail and the possibility of identifying someone from several fields together.",
+    "misconception": "Replacing a name with a code does not always prevent identification.",
+    "hints": [
+      "Which figures does the public need to see to understand the trend?",
+      "What happens when several precise details can be matched?"
+    ],
+    "levelsNote": "Weigh the usefulness of both options and justify the level of detail the public needs.",
+    "unit": "f171",
+    "samAligned": false
+  },
+  {
+    "id": "health-missing-status",
+    "section": "5.1.2",
+    "area": 5,
+    "type": "single",
+    "level": "apply",
+    "stem": "In the table one reading is marked unknown. A pupil replaces it with zero before finding a mean. What should they do instead?",
+    "evidenceTable": {
+      "caption": "Fictional sensor readings",
+      "columns": [
+        "Record",
+        "Reading"
+      ],
+      "rows": [
+        [
+          "A",
+          "17"
+        ],
+        [
+          "B",
+          "Unknown"
+        ],
+        [
+          "C",
+          "19"
+        ]
+      ]
+    },
+    "options": [
+      "Flag the missing reading and check its source before calculating",
+      "Keep zero because a blank is normally zero",
+      "Copy 19 into B because the next reading was 19",
+      "Ignore the missing status and say the mean used all three readings"
+    ],
+    "correct": 0,
+    "model": "Check the source and keep unknowns visible. The mean of the two known readings is 18.",
+    "explain": "An unknown is not a measured zero. Give the number of observations used in any mean.",
+    "misconception": "Replacing a blank by zero gives it a value without evidence.",
+    "unit": "f171",
+    "samAligned": false
   }
 ];
 var ids=new Set(bank.questions.map(function(q){return q.id;}));
 additions.forEach(function(q){if(!ids.has(q.id)){bank.questions.push(q);ids.add(q.id);}});
 })();
+
