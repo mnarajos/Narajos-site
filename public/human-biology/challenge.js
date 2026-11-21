@@ -1,0 +1,241 @@
+/* Human Biology high-yield question engine v2. Original questions only; not live OCR exam material. */
+(function(){
+"use strict";
+var db=window.KeystoneHumanChallenges,main=document.getElementById("main");
+if(!db||!main)return;
+var K="narajos-human-challenge-v2-",SK=K+"session",PK=K+"progress",session=null,progress={};
+try{var r=JSON.parse(localStorage.getItem(PK)||"{}");if(r&&typeof r==="object"&&!Array.isArray(r))progress=r;}catch(_){}
+var all=db.questions,byId={};all.forEach(function(q){byId[q.id]=q;});
+var render=null,visible=false,lastRoute="";
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(a){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[a];});}
+function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=b[i];b[i]=b[j];b[j]=t;}return b;}
+function save(){try{if(session)localStorage.setItem(SK,JSON.stringify(session));else localStorage.removeItem(SK);}catch(_){}}
+function saveProgress(){try{localStorage.setItem(PK,JSON.stringify(progress));}catch(_){}}
+function restore(){try{var x=JSON.parse(localStorage.getItem(SK)||"null");if(x&&Array.isArray(x.queue)&&x.queue.length&&x.queue.every(function(id){return !!byId[id];})&&x.index<x.queue.length&&!x.complete&&x.route&&x.unit)return x;}catch(_){}return null;}
+function isActive(){return !!session&&session.index<session.queue.length;}
+function discard(){session=null;save();}
+function icon(name){
+ var paths={
+ brain:'<path d="M12 18V5a4 4 0 0 0-7.5-1.9A4 4 0 0 0 3 10a4 4 0 0 0 1 7.5A4 4 0 0 0 12 18ZM12 18V5a4 4 0 0 1 7.5-1.9A4 4 0 0 1 21 10a4 4 0 0 1-1 7.5A4 4 0 0 1 12 18Z" transform="translate(0 2) scale(1 .9)"/>',
+ bolt:'<path d="m13 2-9 12h7l-1 8 10-12h-7l0-8Z"/>',
+ layers:'<rect x="4" y="4" width="14" height="15" rx="2"/><path d="M8 2h10a3 3 0 0 1 3 3v13"/>',
+ target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+ book:'<path d="M3 5h7a3 3 0 0 1 3 3v12a3 3 0 0 0-3-3H3zM21 5h-5a3 3 0 0 0-3 3v12a3 3 0 0 1 3-3h5z"/>',
+ flask:'<path d="M9 3h6M10 3v7l-5 8a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-8V3M8 16h8"/>',
+ grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+ rotate:'<path d="M3 11a9 9 0 0 1 15-6l3 3M21 4v4h-4M21 13a9 9 0 0 1-15 6l-3-3M3 20v-4h4"/>',
+ graph:'<path d="M4 4v16h16M7 16l4-5 4 2 5-7"/>',
+ check:'<path d="m4 12 5 5L20 6"/>',
+ alert:'<circle cx="12" cy="12" r="9"/><path d="M12 7v6m0 4h.01"/>',
+ chevron:'<path d="m9 5 7 7-7 7"/>'
+ };
+ return '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+(paths[name]||paths.target)+'</svg>';
+}
+function labelType(q){return {single:"Choose one",multi:"Choose two",order:"Put in order",match:"Match pairs",number:"Calculate",written:"Explain and check",short:"Short answer",diagram:"Use the diagram"}[q.type]||"Question";}
+function iconFor(q){return {single:"target",multi:"check",order:"layers",match:"grid",number:"graph",written:"book",short:"bolt",diagram:"target"}[q.type]||"target";}
+function areaName(unit,area){var F=["","Human cells and tissues","Physiology and organ systems","Endocrinology, nerves and reproduction","Microbiology"];var H=["","Causes and effects of disease","Treatment and prevention","Immunology","Diagnosis and monitoring","Research and confidentiality"];return (unit==="f170"?F:H)[area]||"Topic";}
+function filter(unit,scope){
+ var list=all.filter(function(q){return q.unit===unit;});
+ if(/^a[1-5]$/.test(scope))list=list.filter(function(q){return q.area===Number(scope.slice(1));});
+ else if(scope==="core"||scope==="apply"||scope==="stretch")list=list.filter(function(q){return q.level===scope;});
+ else if(scope==="sam")list=list.filter(function(q){return q.samAligned;});
+ else if(scope==="weak")list=list.filter(function(q){var p=progress[q.id];return p&&(p.wrong>0&&(p.lastCorrect===false||p.good/Math.max(1,p.seen)<.75));});
+ return list;
+}
+function unitStats(u){var qs=filter(u,"all"),seen=0,weak=0;
+ qs.forEach(function(q){var p=progress[q.id];if(p&&p.seen){seen++;if(p.wrong>0&&(p.lastCorrect===false||p.good/Math.max(1,p.seen)<.75))weak++;}});
+ return {questions:qs.length,seen:seen,weak:weak};}
+function source(){return '<p class="k-source">Original revision questions mapped against <a href="https://www.ocr.org.uk/Images/697578-specification-cambridge-advanced-national-in-human-biology.pdf" target="_blank" rel="noopener">OCR specification v8</a> and informed by the <a href="https://www.ocr.org.uk/qualifications/cambridge-advanced-nationals/human-biology-level-3-h049-h149/assessment/" target="_blank" rel="noopener">public sample assessment materials</a>. Examples are not official OCR questions, and sample alignment does not imply exam frequency.</p>';}
+function title(u){return u==="f171"?"F171 · Health and disease":"F170 · Fundamentals";}
+function show(html){if(render)render(html);}
+function intro(unit){
+ var f=unit==="f170",stats=unitStats(unit);
+ var areas=f?[1,2,3,4]:[1,2,3,4,5],colors=["","#58bcb0","#7da8df","#a18bdd","#e2a05c","#e18c96"];
+ var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+(f?"F170 · Exam practice":"F171 · Exam practice preview")+'</div><h1>'+esc(f?"Fundamentals of human biology":"Health and disease")+'</h1><p>'+esc(f?"Build speed and accuracy with short exam-focused challenges.":"Apply what you know through clinical decisions, data and explanation. F171 is an early question-bank preview.")+'</p></div>';
+ h+='<div class="k-mini-stats"><span><strong>'+stats.questions+'</strong> original questions</span><span><strong>'+stats.seen+'</strong> attempted</span><span><strong>'+stats.weak+'</strong> to revisit</span></div>';
+ h+='<h2 class="k-subhead">Start practising</h2><div class="k-action-grid">';
+ var tiles=[
+  ["all","Quick mix","A variety of question types","bolt","teal"],
+  ["sam","Exam-style focus","Skills found in OCR samples","target","blue"],
+  ["weak","Fix mistakes","Revisit questions you missed","rotate","orange"],
+  ["stretch","Challenge","Application and explanation","brain","purple"]];
+ tiles.forEach(function(t){h+='<a class="k-action '+t[4]+'" href="#challenge/'+unit+'/'+t[0]+'"><span class="k-icon">'+icon(t[3])+'</span><span><strong>'+t[1]+'</strong><small>'+t[2]+'</small></span><span class="k-arrow">'+icon("chevron")+'</span></a>';});
+ h+='</div><div class="k-headrow"><h2>Choose a topic</h2><small>'+areas.length+' areas</small></div><div class="k-areas">';
+ areas.forEach(function(a){var n=filter(unit,"a"+a).length;h+='<a href="#challenge/'+unit+'/a'+a+'" class="k-area" style="--topic-color:'+colors[a]+'"><span class="k-area-num">'+a+'</span><span class="k-area-label"><strong>'+esc(areaName(unit,a))+'</strong><small>'+n+' questions</small></span>'+icon("chevron")+'</a>';});
+ h+='</div><p class="k-source">'+(f?"Includes all four F170 areas.":"F171 sample bank is not yet a complete specification resource.")+'</p>'+source()+'</div>';show(h);
+}
+function landing(){
+ var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">Keystone Human Biology</div><h1>Choose an exam unit</h1><p>Short, varied questions first. See an explanation when you need it.</p></div><div class="k-unit-tiles">'+["f170","f171"].map(function(u){var s=unitStats(u);return '<a href="#challenge/'+u+'" class="k-unit-tile '+(u==="f170"?"teal":"blue")+'"><span class="k-icon">'+icon(u==="f170"?"brain":"flask")+'</span><span><small>'+u.toUpperCase()+' · 60-mark paper</small><strong>'+esc(u==="f170"?"Fundamentals of human biology":"Health and disease")+'</strong><em>'+s.questions+' questions · '+s.seen+' attempted'+(u==="f171"?" · preview":"")+'</em></span>'+icon("chevron")+'</a>';}).join("")+'</div>'+source()+'</div>';show(h);
+}
+function makeSession(unit,scope,route){
+ var selected=filter(unit,scope);if(!selected.length){show('<div class="k-wrap"><p class="crumb"><a href="#challenge/'+unit+'">← Exam unit</a></p><div class="paper panel"><h1>No questions here yet</h1><p>Try a mixed set or choose another area.</p><a class="button primary" href="#challenge/'+unit+'/all">Start mixed questions</a></div></div>');return;}
+ var size=scope==="all"?8:scope==="sam"?10:scope==="stretch"?6:8;
+ var ids=shuffle(selected).slice(0,size).map(function(x){return x.id;});
+ session={unit:unit,scope:scope,route:route,queue:ids,index:0,first:{},correctFirst:0,phase:"ask",answers:{},retries:{},complete:false,started:Date.now()};
+ save();drawQuestion();
+}
+function current(){return session&&byId[session.queue[session.index]];}
+function formChoice(q,answer){
+ var selected=answer&&Array.isArray(answer.selected)?answer.selected:[];
+ return '<div class="k-options" role="group" aria-label="Answer choices">'+q.options.map(function(o,i){
+  var checked=selected.indexOf(i)!==-1;
+  return '<label class="k-option'+(checked?" selected":"")+'"><input type="'+(q.type==="multi"?"checkbox":"radio")+'" name="kchoice" value="'+i+'"'+(checked?" checked":"")+'><span class="k-option-letter">'+String.fromCharCode(65+i)+'</span><span>'+esc(o)+'</span></label>';
+ }).join("")+'</div>';
+}
+function orderForm(q,answer){
+ var current=answer&&Array.isArray(answer.order)?answer.order:null;
+ if(!current){current=shuffle(q.items.map(function(_,i){return i;}));if(current.every(function(v,i){return v===i;}))current.reverse();session.answers[q.id]={order:current};save();}
+ return '<ol class="k-order">'+current.map(function(idx,pos){
+ return '<li><span class="k-order-num">'+(pos+1)+'</span><span>'+esc(q.items[idx])+'</span><span class="k-order-controls"><button class="k-small-btn" type="button" data-move="up" data-pos="'+pos+'" aria-label="Move step '+(pos+1)+' up" '+(pos===0?"disabled":"")+'>↑</button><button class="k-small-btn" type="button" data-move="down" data-pos="'+pos+'" aria-label="Move step '+(pos+1)+' down" '+(pos===current.length-1?"disabled":"")+'>↓</button></span></li>';
+ }).join("")+'</ol><p class="k-hint">Use the arrows to put the steps in order.</p>';
+}
+function matchForm(q,answer){
+ var vals=answer&&Array.isArray(answer.match)?answer.match:[],dest=shuffle(q.pairs.map(function(p){return p[1];}));
+ return '<div class="k-matches">'+q.pairs.map(function(p,i){
+ return '<label class="k-match"><span>'+esc(p[0])+'</span><select data-match="'+i+'" aria-label="Match for '+esc(p[0])+'"><option value="">Choose a match</option>'+q.pairs.map(function(e,j){return '<option value="'+j+'"'+(String(vals[i])===String(j)?" selected":"")+'>'+esc(e[1])+'</option>';}).join("")+'</select></label>';
+ }).join("")+'</div>';
+}
+function figure(name){
+ var tag='<div class="k-figure">';
+ if(name==="cell")tag+='<svg viewBox="0 0 440 210" role="img" aria-label="A simplified human cell. Label A points to the outer cell boundary. A nucleus and mitochondria appear inside."><ellipse cx="187" cy="105" rx="137" ry="82" fill="#e2f3f0" stroke="#167a77" stroke-width="5"/><circle cx="164" cy="105" r="37" fill="#d9d3f4" stroke="#7652ac" stroke-width="3"/><circle cx="170" cy="100" r="11" fill="#9679cb"/><ellipse cx="249" cy="78" rx="24" ry="13" fill="#efbd77" stroke="#98692c" stroke-width="3" transform="rotate(-24 249 78)"/><path d="M236 74q12 6 25 0" stroke="#98692c" stroke-width="2" fill="none"/><path d="M320 58L367 35" stroke="#1e5360" stroke-width="3"/><text x="374" y="37" font-size="25" font-weight="800" fill="#1e5360">A</text></svg>';
+ else if(name==="heart")tag+='<svg viewBox="0 0 440 235" role="img" aria-label="A highly simplified cross-section of a heart with two lower ventricular chambers. Label A points to the central wall between the ventricles."><path d="M98 69Q90 20 135 20L201 55 266 20Q321 20 309 85L291 167Q285 212 205 214 130 211 117 163Z" fill="#fbe4e4" stroke="#a64a56" stroke-width="4"/><path d="M205 57L205 209" stroke="#9b4050" stroke-width="12"/><path d="M142 92Q116 125 157 172L194 193V102Z" fill="#c4dcef" stroke="#447da7" stroke-width="2"/><path d="M220 102V193L260 172Q298 125 268 92Z" fill="#edaaaa" stroke="#a64a56" stroke-width="2"/><path d="M205 131L346 78" stroke="#1e5360" stroke-width="3"/><text x="355" y="83" font-size="24" font-weight="800" fill="#1e5360">A</text></svg>';
+ else if(name==="neuron")tag+='<svg viewBox="0 0 440 188" role="img" aria-label="Simplified neuron. A long axon with several myelin-covered segments and a dashed damaged segment highlighted near the centre."><circle cx="55" cy="95" r="26" fill="#e6d7f5" stroke="#835ca7" stroke-width="3"/><path d="M29 81L10 63M31 108L11 131M55 69L55 48M78 88L120 94M119 94H403" stroke="#65539c" stroke-width="5" fill="none"/><rect x="134" y="77" width="61" height="34" rx="14" fill="#bce3df" stroke="#167a77" stroke-width="3"/><rect x="216" y="77" width="61" height="34" rx="14" fill="#f6e1cb" stroke="#d79035" stroke-dasharray="6 5" stroke-width="3"/><rect x="298" y="77" width="62" height="34" rx="14" fill="#bce3df" stroke="#167a77" stroke-width="3"/><path d="M244 68L252 33" stroke="#d79035" stroke-width="3"/><text x="263" y="28" font-size="18" fill="#8e5919" font-weight="800">Damage</text></svg>';
+ else if(name==="growth")tag+='<svg viewBox="0 0 440 230" role="img" aria-label="Stylised bacterial growth curve: A flat initial region A, a steeply rising region B, a flat region C, and a decreasing region D."><path d="M48 15V185H420" stroke="#354c58" stroke-width="3" fill="none"/><path d="M65 164C100 165 111 165 135 157S205 80 243 47S298 47 343 47 383 68 401 109" stroke="#0b7973" stroke-width="5" fill="none"/><g fill="#263e4b" font-size="19" font-weight="750"><text x="87" y="151">A</text><text x="175" y="92">B</text><text x="293" y="31">C</text><text x="393" y="57">D</text><text x="177" y="217" font-size="14">Time</text><text x="56" y="15" font-size="14">Living cells</text></g></svg>';
+ else if(name==="antibody")tag+='<svg viewBox="0 0 440 230" role="img" aria-label="Y-shaped antibody schematic. Label A points to the tip of one upper arm, the antigen-binding region."><g fill="none" stroke-linecap="round" stroke-width="19"><path d="M217 199V113L155 38" stroke="#5c88b4"/><path d="M217 113L279 38" stroke="#5c88b4"/><path d="M226 199V116L165 33" stroke="#bd8ad3" stroke-width="5"/><path d="M226 116L289 33" stroke="#bd8ad3" stroke-width="5"/></g><path d="M150 34L93 17" stroke="#233d50" stroke-width="3"/><text x="63" y="25" font-size="23" font-weight="800">A</text></svg>';
+ else if(name==="antibiotic")tag+='<svg viewBox="0 0 440 220" role="img" aria-label="A simplified petri dish showing four discs A, B, C and D. Disc B has the largest clear zone around it."><ellipse cx="210" cy="109" rx="158" ry="94" fill="#dbecce" stroke="#77955e" stroke-width="4"/><g fill="#fff" stroke="#b3c3a8" stroke-width="2"><circle cx="125" cy="75" r="20"/><circle cx="227" cy="79" r="43"/><circle cx="145" cy="150" r="24"/><circle cx="282" cy="155" r="14"/></g><g fill="#d2b58b" stroke="#917a55" stroke-width="2"><circle cx="125" cy="75" r="8"/><circle cx="227" cy="79" r="8"/><circle cx="145" cy="150" r="8"/><circle cx="282" cy="155" r="8"/></g><g font-size="17" font-weight="800" fill="#273e42"><text x="104" y="50">A</text><text x="222" y="24">B</text><text x="130" y="186">C</text><text x="295" y="180">D</text></g></svg>';
+ return tag+'</div>';
+}
+function inputForm(q,answer){
+ answer=answer||{};
+ if(q.type==="single"||q.type==="diagram"||q.type==="multi")return formChoice(q,answer);
+ if(q.type==="order")return orderForm(q,answer);
+ if(q.type==="match")return matchForm(q,answer);
+ if(q.type==="number")return '<label class="k-field">Your calculation'+(q.answerUnit?' · '+esc(q.answerUnit):'')+'<input id="k-number" type="text" inputmode="decimal" autocomplete="off" placeholder="Enter the number" value="'+esc(answer.text||"")+'"></label>';
+ if(q.type==="short")return '<label class="k-field">Your answer<input id="k-text" type="text" autocomplete="off" spellcheck="false" placeholder="Type your answer" value="'+esc(answer.text||"")+'"></label>';
+ return '<label class="k-field">Explain in your own words<textarea id="k-written" rows="5" placeholder="Write an explanation before seeing the suggested points">'+esc(answer.text||"")+'</textarea></label>';
+}
+function answerKey(q){
+ if(q.type==="single"||q.type==="diagram")return '<strong>'+esc(q.options[q.correct])+'</strong>';
+ if(q.type==="multi")return '<strong>'+q.correct.map(function(i){return esc(q.options[i]);}).join("; ")+'</strong>';
+ if(q.type==="order")return '<ol>'+q.items.map(function(i){return '<li>'+esc(i)+'</li>';}).join("")+'</ol>';
+ if(q.type==="match")return '<ul>'+q.pairs.map(function(p){return '<li>'+esc(p[0])+' → '+esc(p[1])+'</li>';}).join("")+'</ul>';
+ if(q.type==="number")return '<strong>'+esc(q.model)+'</strong>';
+ if(q.type==="short")return '<strong>'+esc(q.model)+'</strong>';
+ return '<div class="k-criteria"><p>'+esc(q.model)+'</p><strong>Key points to look for</strong><ul>'+q.markPoints.map(function(p){return '<li>'+esc(p)+'</li>';}).join("")+'</ul></div>';
+}
+function currentAnswer(){var q=current();return q&&(session.answers[q.id]||{});}
+function drawQuestion(){
+ if(!session||!isActive())return;visible=true;var q=current(),a=currentAnswer();
+ var sub=q.unit==="f171"?"F171 · Health and disease":"F170 · Fundamentals",num=session.index+1,max=session.queue.length;
+ var prog=(100*(session.index/max)).toFixed(1),showing=session.phase==="feedback";
+ var h='<div class="k-wrap k-question-view"><p class="crumb"><a href="#challenge/'+q.unit+'">← Leave this set</a></p><div class="k-question-meta"><span>'+esc(sub)+'</span><span>'+num+' of '+max+'</span></div><div class="progress-track" role="progressbar" aria-label="Questions completed" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+session.index+'"><div style="width:'+prog+'%"></div></div>';
+ h+='<div class="k-question-paper"><div class="k-question-tags"><span class="k-type">'+icon(iconFor(q))+esc(labelType(q))+'</span><span class="k-level '+esc(q.level)+'">'+esc(q.level==="core"?"Core knowledge":q.level==="apply"?"Application":"Challenge")+'</span></div><h1>'+esc(q.stem)+'</h1>';
+ if(q.figure)h+=figure(q.figure);
+ if(!showing)h+=inputForm(q,a);
+ else{
+  var correct=session.lastResult===true,subjective=q.type==="written"||q.type==="short"&&session.lastResult===null;
+  h+='<div class="k-feedback '+(subjective?"pending":correct?"correct":"incorrect")+'"><div class="k-feedback-head">'+icon(subjective?"book":correct?"check":"alert")+'<strong>'+(subjective?"Check your explanation":correct?"Correct":"Not quite")+'</strong></div>';
+  h+='<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p>'+esc(q.explain)+'</p>';
+  if(!correct&&q.misconception)h+='<div class="k-misconception"><strong>Watch out</strong><p>'+esc(q.misconception)+'</p></div>';
+  h+='</div>';
+ }
+ if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points":"Check answer")+' →</button><button class="button quiet" type="button" data-k-action="skip">Not sure · show answer</button></div>';
+ else if(q.type==="written"||session.lastResult===null)h+='<div class="k-foot-actions"><button class="button primary" data-k-action="self-good" type="button">I included the key ideas</button><button class="button secondary" data-k-action="self-weak" type="button">I need more practice</button></div>';
+ else h+='<div class="k-foot-actions"><button class="button primary k-cta" data-k-action="next" type="button">Next question →</button></div>';
+ h+='</div><p class="k-question-footer">Topic '+q.area+' · '+esc(areaName(q.unit,q.area))+(q.samAligned?' · Skills reflected in OCR sample material':' · Specification coverage')+' · Original question</p></div>';
+ show(h);
+}
+function norm(s){return String(s||"").normalize("NFKC").trim().toLowerCase().replace(/[’‘]/g,"'").replace(/[.!?]+$/,"").replace(/\s+/g," ");}
+function validateAnswer(q,a){
+ if(q.type==="single"||q.type==="diagram"||q.type==="multi"){
+  if(!a.selected||!a.selected.length)return {ready:false};
+  if(q.type==="multi"&&a.selected.length!==q.correct.length)return {ready:false,msg:"Select exactly "+q.correct.length+" answers."};
+  return {ready:true,correct:q.type==="multi"?(a.selected.slice().sort().join(",")===q.correct.slice().sort().join(",")):a.selected[0]===q.correct};
+ }
+ if(q.type==="order")return {ready:true,correct:a.order&&a.order.every(function(v,i){return v===i;})};
+ if(q.type==="match"){if(!a.match||a.match.length!==q.pairs.length||a.match.some(function(v){return v===""||v==null;}))return {ready:false,msg:"Choose a match for each row."};return {ready:true,correct:a.match.every(function(v,i){return +v===i;})};}
+ if(q.type==="number"){var val=String(a.text||"").trim().replace(/,/g,"").replace(/^×/,"");var m=/^[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[-+]?\d+)?/i.exec(val);if(!m)return {ready:false,msg:"Enter a numerical answer."};return {ready:true,correct:Math.abs(Number(m[0])-q.correct)<=(q.tolerance||1e-9)};}
+ if(q.type==="short"){if(!String(a.text||"").trim())return {ready:false,msg:"Enter an answer first, or choose Not sure."};return {ready:true,correct:q.accepted.some(function(x){return norm(x)===norm(a.text);})};}
+ return {ready:true,correct:null};
+}
+function record(q,got){
+ var p=progress[q.id]||{seen:0,good:0,wrong:0};p.seen++;
+ if(got){p.good++;p.lastCorrect=true;}else{p.wrong++;p.lastCorrect=false;}p.last=Date.now();progress[q.id]=p;saveProgress();
+ if(!(q.id in session.first)){session.first[q.id]=got;if(got)session.correctFirst++;}
+ if(!got&&(session.retries[q.id]||0)<1){session.queue.push(q.id);session.retries[q.id]=(session.retries[q.id]||0)+1;}
+ save();
+}
+function readForm(){
+ var q=current();if(!q)return;
+ var a=session.answers[q.id]||{};var input=null;
+ if(q.type==="single"||q.type==="diagram"||q.type==="multi")a.selected=Array.from(main.querySelectorAll('input[name="kchoice"]:checked')).map(function(x){return Number(x.value);});
+ else if(q.type==="match")a.match=Array.from(main.querySelectorAll("[data-match]")).map(function(x){return x.value;});
+ else if(q.type==="number"||q.type==="short"||q.type==="written"){input=main.querySelector("#k-number, #k-text, #k-written");a.text=input?input.value:"";}
+ session.answers[q.id]=a;save();return a;
+}
+function check(skip){
+ var q=current();if(!q||session.phase==="feedback")return;
+ var a=readForm()||{},v=validateAnswer(q,a);
+ if(!skip&&!v.ready){var msg=main.querySelector(".k-error");if(!msg){msg=document.createElement("p");msg.className="k-error";msg.setAttribute("role","alert");main.querySelector(".k-foot-actions").prepend(msg);}msg.textContent=v.msg||"Choose an answer before checking.";return;}
+ session.lastResult=skip?null:v.correct;session.phase="feedback";
+ if(skip&&q.type!=="written")session.lastResult=null;
+ if(session.lastResult!==null)record(q,session.lastResult);
+ save();drawQuestion();
+}
+function gradeSelf(got){var q=current();if(!q)return;record(q,got);next();}
+function next(){
+ if(!session)return;
+ session.index++;session.phase="ask";session.lastResult=undefined;save();
+ if(session.index>=session.queue.length)finish();else drawQuestion();
+}
+function finish(){
+ if(!session)return;var old=session;session=null;save();
+ var repeat=Object.keys(old.retries).length,done=old.queue.length;
+ var h='<div class="k-wrap k-done"><p class="crumb"><a href="#challenge/'+old.unit+'">← Unit overview</a></p><div class="k-done-icon">'+icon("check")+'</div><h1>Practice complete</h1><p class="lead">'+old.correctFirst+' of '+Object.keys(old.first).length+' questions answered confidently on first attempt.</p>';
+ h+='<div class="k-mini-stats"><span><strong>'+Object.keys(old.first).length+'</strong> unique questions</span><span><strong>'+repeat+'</strong> revisited</span></div><div class="k-action-grid"><a class="k-action teal" href="#challenge/'+old.unit+'/weak"><span class="k-icon">'+icon("rotate")+'</span><span><strong>Fix weak areas</strong><small>Practise questions you missed</small></span></a><a class="k-action blue" href="#challenge/'+old.unit+'"><span class="k-icon">'+icon("grid")+'</span><span><strong>Choose another set</strong><small>Topic or mixed practice</small></span></a></div></div>';show(h);
+}
+function route(r,renderer){
+ render=renderer;lastRoute=r;
+ if(r==="challenge")return landing();
+ var m=/^challenge\/(f170|f171)(?:\/([a-z0-9-]+))?$/.exec(r);
+ if(!m)return landing();
+ var unit=m[1],scope=m[2]||null;
+ if(!scope){visible=false;return intro(unit);}
+ var old=session||restore();
+ if(old&&old.route===r){session=old;return drawQuestion();}
+ return makeSession(unit,scope,r);
+}
+main.addEventListener("change",function(e){
+ if(!session||session.phase!=="ask"||!visible)return;
+ if(e.target.matches('input[name="kchoice"]')){
+  var q=current();if(!q)return;
+  var a=session.answers[q.id]||{};
+  if(q.type==="multi")a.selected=Array.from(main.querySelectorAll('input[name="kchoice"]:checked')).map(function(x){return Number(x.value);});
+  else a.selected=[Number(e.target.value)];
+  session.answers[q.id]=a;save();
+  main.querySelectorAll(".k-option").forEach(function(l){l.classList.toggle("selected",!!l.querySelector("input").checked);});
+ }else if(e.target.matches("[data-match]")){readForm();}
+});
+main.addEventListener("input",function(e){
+ if(!session||session.phase!=="ask"||!visible)return;
+ if(e.target.matches("#k-number, #k-text, #k-written")){var q=current(),a=session.answers[q.id]||{};a.text=e.target.value;session.answers[q.id]=a;save();}
+});
+main.addEventListener("click",function(e){
+ if(!session||!visible)return;
+ var move=e.target.closest("[data-move]");
+ if(move){var q=current();if(!q||q.type!=="order")return;
+  var a=session.answers[q.id],i=Number(move.dataset.pos),j=i+(move.dataset.move==="up"?-1:1);
+  if(!a||!a.order||j<0||j>=a.order.length)return;
+  var t=a.order[i];a.order[i]=a.order[j];a.order[j]=t;save();drawQuestion();return;
+ }
+ var btn=e.target.closest("[data-k-action]");if(!btn)return;
+ if(btn.dataset.kAction==="check")check(false);
+ if(btn.dataset.kAction==="reveal")check(false);
+ if(btn.dataset.kAction==="skip")check(true);
+ if(btn.dataset.kAction==="next")next();
+ if(btn.dataset.kAction==="self-good")gradeSelf(true);
+ if(btn.dataset.kAction==="self-weak")gradeSelf(false);
+});
+window.addEventListener("beforeunload",function(e){if(isActive()){e.preventDefault();e.returnValue="";}});
+window.KeystoneHumanChallenge={route:route,isActive:isActive,discard:discard,stats:unitStats,questionCount:all.length,types:Array.from(new Set(all.map(function(q){return q.type;})))};
+})();
