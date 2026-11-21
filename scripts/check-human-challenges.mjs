@@ -17,7 +17,22 @@ load("human-biology/content-f170.js");
 load("human-biology/challenge-bank.js");
 load("human-biology/content-knowledge.js");
 load("human-biology/challenge.js");
-const db=window.KeystoneHumanChallenges,app=window.KeystoneHumanChallenge;
+load("human-biology/companion.js");
+const db=window.KeystoneHumanChallenges,app=window.KeystoneHumanChallenge,companion=window.KeystoneHumanCatchup;
+assert(companion,"Human Biology companion not available");
+assert.equal(companion.count().units,8,"Both examined and six knowledge-only units need catch-up entry points");
+for(const u of ["f170","f171","f172","f173","f174","f175","f176","f177"]){
+ let html="";companion.route("catchup/"+u,h=>{html=h;});
+ assert(html.includes("Catch up")||html.includes("Catch-up"),"Missing unit catch-up page "+u);
+}
+let help="";
+companion.route("catchup/f170/1.1.1",h=>{help=h;});
+assert(help.includes("Human cells and specialisation")&&help.includes("Key idea 1"),"F170 stepwise catch-up missing");
+companion.route("catchup/f175/a1",h=>{help=h;});
+assert(help.includes("oviduct")&&help.includes("Fallopian tube"),"F175 terminology catch-up missing");
+assert.equal(companion.linkFor({unit:"f170",section:"1.1.1",area:1}),"catchup/f170/1.1.1","Concept-specific reteach link missing");
+assert.equal(companion.linkFor({unit:"f175",section:"1.1",area:1}),"catchup/f175/a1","NEA unit knowledge catch-up route missing");
+
 assert.equal(db.questions.length,169);
 assert.equal(db.questions.filter(q=>q.unit==="f170").length,62);
 assert.equal(db.questions.filter(q=>q.unit==="f171").length,29);
