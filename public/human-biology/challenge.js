@@ -32,8 +32,8 @@ function icon(name){
  };
  return '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+(paths[name]||paths.target)+'</svg>';
 }
-function labelType(q){return {single:"Choose one",multi:"Choose two",order:"Put in order",match:"Match pairs",number:"Calculate",written:"Explain and check",short:"Short answer",diagram:"Use the diagram"}[q.type]||"Question";}
-function iconFor(q){return {single:"target",multi:"check",order:"layers",match:"grid",number:"graph",written:"book",short:"bolt",diagram:"target"}[q.type]||"target";}
+function labelType(q){if(q.subtype==="error")return "Spot the error";return {single:"Choose one",multi:"Choose two",order:"Put in order",match:"Match pairs",number:"Calculate",written:"Explain and check",short:"Short answer",diagram:"Use the diagram",best:"Choose and justify"}[q.type]||"Question";}
+function iconFor(q){return {single:"target",multi:"check",order:"layers",match:"grid",number:"graph",written:"book",short:"bolt",diagram:"target",best:"brain"}[q.type]||"target";}
 function areaName(unit,area){var F=["","Human cells and tissues","Physiology and organ systems","Endocrinology, nerves and reproduction","Microbiology"];var H=["","Causes and effects of disease","Treatment and prevention","Immunology","Diagnosis and monitoring","Research and confidentiality"];return (unit==="f170"?F:H)[area]||"Topic";}
 function filter(unit,scope){
  var list=all.filter(function(q){return q.unit===unit;});
@@ -102,6 +102,16 @@ function formChoice(q,answer){
   return '<label class="k-option'+(checked?" selected":"")+'"><input type="'+(q.type==="multi"?"checkbox":"radio")+'" name="kchoice" value="'+i+'"'+(checked?" checked":"")+'><span class="k-option-letter">'+String.fromCharCode(65+pos)+'</span><span>'+esc(o)+'</span></label>';
  }).join("")+'</div>';
 }
+function bestForm(q,answer){
+ answer=answer||{};
+ if(!answer.optionOrder){answer.optionOrder=shuffle(q.options.map(function(_,i){return i;}));session.answers[q.id]=answer;save();}
+ if(!answer.reasonOrder){answer.reasonOrder=shuffle(q.reasons.map(function(_,i){return i;}));session.answers[q.id]=answer;save();}
+ var h='<div class="k-justify"><fieldset><legend><span class="k-step-num">1</span> Choose the scientifically accurate explanation</legend><div class="k-options">';
+ h+=answer.optionOrder.map(function(i,pos){return '<label class="k-option"><input type="radio" name="kbest" value="'+i+'"'+(answer.choice===i?' checked':'')+'><span class="k-option-letter">'+String.fromCharCode(65+pos)+'</span><span>'+esc(q.options[i])+'</span></label>';}).join("");
+ h+='</div></fieldset><fieldset><legend><span class="k-step-num">2</span> Which scientific reason supports your choice?</legend><div class="k-options">';
+ h+=answer.reasonOrder.map(function(i,pos){return '<label class="k-option"><input type="radio" name="kreason" value="'+i+'"'+(answer.reason===i?' checked':'')+'><span class="k-option-letter">'+String.fromCharCode(65+pos)+'</span><span>'+esc(q.reasons[i])+'</span></label>';}).join("");
+ return h+'</div></fieldset></div>';
+}
 function orderForm(q,answer){
  var current=answer&&Array.isArray(answer.order)?answer.order:null;
  if(!current){current=shuffle(q.items.map(function(_,i){return i;}));if(current.every(function(v,i){return v===i;}))current.reverse();session.answers[q.id]={order:current};save();}
@@ -128,6 +138,7 @@ function figure(name){
 }
 function inputForm(q,answer){
  answer=answer||{};
+ if(q.type==="best")return bestForm(q,answer);
  if(q.type==="single"||q.type==="diagram"||q.type==="multi")return formChoice(q,answer);
  if(q.type==="order")return orderForm(q,answer);
  if(q.type==="match")return matchForm(q,answer);
@@ -136,6 +147,7 @@ function inputForm(q,answer){
  return '<label class="k-field">Explain in your own words<textarea id="k-written" rows="5" placeholder="Write an explanation before seeing the suggested points">'+esc(answer.text||"")+'</textarea></label>';
 }
 function answerKey(q){
+ if(q.type==="best")return '<strong>'+esc(q.options[q.correct])+'</strong><p><strong>Why:</strong> '+esc(q.reasons[q.reasonCorrect])+'</p>';
  if(q.type==="single"||q.type==="diagram")return '<strong>'+esc(q.options[q.correct])+'</strong>';
  if(q.type==="multi")return '<strong>'+q.correct.map(function(i){return esc(q.options[i]);}).join("; ")+'</strong>';
  if(q.type==="order")return '<ol>'+q.items.map(function(i){return '<li>'+esc(i)+'</li>';}).join("")+'</ol>';
@@ -169,6 +181,7 @@ function drawQuestion(){
 }
 function norm(s){return String(s||"").normalize("NFKC").trim().toLowerCase().replace(/[’‘]/g,"'").replace(/[.!?]+$/,"").replace(/\s+/g," ");}
 function validateAnswer(q,a){
+ if(q.type==="best"){if(!Number.isInteger(a.choice)||!Number.isInteger(a.reason))return {ready:false,msg:"Choose an explanation and the reason for it."};return {ready:true,correct:a.choice===q.correct&&a.reason===q.reasonCorrect};}
  if(q.type==="single"||q.type==="diagram"||q.type==="multi"){
   if(!a.selected||!a.selected.length)return {ready:false};
   if(q.type==="multi"&&a.selected.length!==q.correct.length)return {ready:false,msg:"Select exactly "+q.correct.length+" answers."};
@@ -190,7 +203,8 @@ function record(q,got){
 function readForm(){
  var q=current();if(!q)return;
  var a=session.answers[q.id]||{};var input=null;
- if(q.type==="single"||q.type==="diagram"||q.type==="multi")a.selected=Array.from(main.querySelectorAll('input[name="kchoice"]:checked')).map(function(x){return Number(x.value);});
+ if(q.type==="best"){var chosen=main.querySelector('input[name="kbest"]:checked'),reason=main.querySelector('input[name="kreason"]:checked');a.choice=chosen?Number(chosen.value):undefined;a.reason=reason?Number(reason.value):undefined;}
+ else if(q.type==="single"||q.type==="diagram"||q.type==="multi")a.selected=Array.from(main.querySelectorAll('input[name="kchoice"]:checked')).map(function(x){return Number(x.value);});
  else if(q.type==="match")a.match=Array.from(main.querySelectorAll("[data-match]")).map(function(x){return x.value;});
  else if(q.type==="number"||q.type==="short"||q.type==="written"){input=main.querySelector("#k-number, #k-text, #k-written");a.text=input?input.value:"";}
  session.answers[q.id]=a;save();return a;
@@ -231,7 +245,8 @@ function route(r,renderer){
 }
 main.addEventListener("change",function(e){
  if(!session||session.phase!=="ask"||!visible)return;
- if(e.target.matches('input[name="kchoice"]')){
+ if(e.target.matches('input[name="kbest"],input[name="kreason"]')){readForm();}
+ else if(e.target.matches('input[name="kchoice"]')){
   var q=current();if(!q)return;
   var a=session.answers[q.id]||{};
   if(q.type==="multi")a.selected=Array.from(main.querySelectorAll('input[name="kchoice"]:checked')).map(function(x){return Number(x.value);});
