@@ -1,0 +1,2122 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Molecular biology simulations | A-level Biology</title>
+<meta name="description" content="Interactive A-level Biology simulations of DNA replication, transcription, splicing, translation and gene expression.">
+<style>
+:root{
+  --bg:#0b1620; --panel:#122230; --panel2:#0e1c27; --line:#24404f;
+  --txt:#dbe8f2; --dim:#8fa8b8; --accent:#e0a021;
+  --A:#4ade80; --T:#f87171; --C:#60a5fa; --G:#fbbf24; --U:#c084fc;
+  --old:#7fa8c9; --new:#e0954a; --rna:#c084fc;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;}
+.wrap{max-width:1280px;margin:0 auto;padding:14px 16px 28px}
+h1{font-size:19px;margin:0 0 2px;letter-spacing:.2px}
+.sub{font-size:12.5px;color:var(--dim);margin:0 0 12px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.tab{background:var(--panel2);border:1px solid var(--line);color:var(--dim);
+  padding:8px 15px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer}
+.tab:hover{color:var(--txt)}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#12212b}
+.main{display:grid;grid-template-columns:1fr 296px;gap:14px}
+@media(max-width:1080px){.main{grid-template-columns:1fr}}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:10px}
+canvas{width:100%;display:block;border-radius:9px}
+.side{display:flex;flex-direction:column;gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px 13px}
+.card h3{margin:0 0 8px;font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:var(--dim)}
+.stepbar{background:var(--panel2);border:1px solid var(--line);border-radius:10px;
+  padding:9px 12px;margin-top:9px}
+.stepnum{font-size:10.5px;font-weight:800;letter-spacing:.8px;color:var(--accent);text-transform:uppercase}
+.stepdesc{font-size:13px;line-height:1.45;margin-top:3px}
+.ctrls{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:9px}
+button.act{background:var(--panel2);border:1px solid var(--line);color:var(--txt);
+  padding:7px 13px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer}
+button.act:hover{border-color:#3c6274}
+select.act{background:var(--panel2);border:1px solid var(--line);color:var(--txt);
+  padding:7px 11px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;max-width:300px}
+select.act:hover{border-color:#3c6274}
+button.go{background:var(--accent);border-color:var(--accent);color:#12212b}
+.ctrl{min-width:150px;flex:1}
+.ctrl .head{display:flex;justify-content:space-between;font-size:10.5px;color:var(--dim);
+  font-weight:700;margin-bottom:2px}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.trow{display:flex;align-items:center;gap:8px;padding:3px 0;font-size:12.5px}
+.trow .ic{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;
+  justify-content:center;font-size:10px;font-weight:800;color:#0b1620;flex:none}
+.trow .nm{flex:1;color:var(--dim)}
+.trow .ct{font-weight:800;font-variant-numeric:tabular-nums}
+ul.facts{margin:0;padding-left:16px;font-size:12.5px;line-height:1.5;color:var(--txt)}
+ul.facts li{margin-bottom:5px}
+.key{display:flex;gap:5px;flex-wrap:wrap;font-size:10.5px;font-weight:800}
+.key span{padding:3px 7px;border-radius:5px;color:#0b1620}
+.note{font-size:11.5px;color:var(--dim);line-height:1.45;margin-top:8px}
+.back{display:inline-block;margin:0 0 14px;color:var(--dim);font-size:12.5px;text-decoration:none}
+.back:hover{color:var(--txt);text-decoration:underline}
+.back:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+@media(max-width:600px){.wrap{padding:14px 10px 24px}.tab{padding:7px 10px}.card{padding:10px}.ctrl{min-width:115px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/teaching/simulations/">← Simulations</a>
+  <h1>Molecular biology</h1>
+  <p class="sub">AQA A-level Biology · interactive molecular models</p>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="main">
+    <div>
+      <div class="stage"><canvas id="cv"></canvas></div>
+      <div class="stepbar">
+        <div class="stepnum" id="step-num">Step 1 / 6</div>
+        <div class="stepdesc" id="step-desc">—</div>
+      </div>
+      <div class="ctrls">
+        <button class="act go" id="btn-run">⏸ Pause</button>
+        <button class="act" id="btn-step">⏭ Step</button>
+        <button class="act" id="btn-reset">↺ Reset</button>
+        <button class="act" id="btn-mode" style="display:none"></button>
+        <button class="act" id="btn-mode2" style="display:none"></button>
+        <select class="act" id="sel-view" style="display:none"></select>
+        <div class="ctrl" id="wrap-speed">
+          <div class="head"><label for="s-speed">Speed</label><span id="r-speed">1.0×</span></div>
+          <input type="range" id="s-speed" min="20" max="200" value="100" step="5">
+        </div>
+        <div class="ctrl" id="wrap-time">
+          <div class="head"><label for="s-time">Timeline</label><span id="r-time">0%</span></div>
+          <input type="range" id="s-time" min="0" max="1000" value="0" step="1">
+        </div>
+      </div>
+    </div>
+
+    <div class="side">
+      <div class="card"><h3>Bases</h3>
+        <div class="key">
+          <span style="background:var(--A)">A</span><span style="background:var(--T)">T</span>
+          <span style="background:var(--C)">C</span><span style="background:var(--G)">G</span>
+          <span style="background:var(--U)">U</span>
+        </div>
+        <div class="note" id="keynote">A–T pair with 2 hydrogen bonds; C–G with 3.</div>
+      </div>
+      <div class="card"><h3 id="tally-label">Running totals</h3><div id="tally"></div></div>
+      <div class="card"><h3>Key points</h3><ul class="facts" id="facts"></ul></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =======================================================================
+   Shared chassis
+   ======================================================================= */
+const cv=document.getElementById("cv"), ctx=cv.getContext("2d");
+const CW=940, CH=560; let DPR=1, VS=1, OX=0, OY=0;
+function size(){
+  const w=cv.parentElement.clientWidth; DPR=window.devicePixelRatio||1;
+  const h=Math.round(w*CH/CW);
+  cv.style.height=h+"px"; cv.width=Math.round(w*DPR); cv.height=Math.round(h*DPR);
+  VS=w/CW; OX=0; OY=0;
+}
+window.addEventListener("resize",size);
+function enter(){ ctx.setTransform(DPR,0,0,DPR,0,0); ctx.clearRect(0,0,cv.width,cv.height);
+  const g=ctx.createLinearGradient(0,0,0,CH*VS); g.addColorStop(0,"#14252f"); g.addColorStop(1,"#0d1a24");
+  ctx.fillStyle=g; ctx.fillRect(0,0,cv.width,cv.height); ctx.scale(VS,VS); }
+if(!CanvasRenderingContext2D.prototype.roundRect){
+  CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){
+    if(w<2*r)r=w/2; if(h<2*r)r=h/2; this.beginPath();
+    this.moveTo(x+r,y); this.arcTo(x+w,y,x+w,y+h,r); this.arcTo(x+w,y+h,x,y+h,r);
+    this.arcTo(x,y+h,x,y,r); this.arcTo(x,y,x+w,y,r); this.closePath(); return this; };
+}
+
+const BASE={A:"#4ade80",T:"#f87171",C:"#60a5fa",G:"#fbbf24",U:"#c084fc"};
+const RBASE={A:"#2c9159",C:"#2f6fbe",G:"#c08c07",U:"#8f4fc4"};   // RNA: a darker shade of the same
+const OLD="#7fa8c9", NEW="#e0954a", RNAC="#c084fc";
+function comp(b,rna){ if(b==="A") return rna?"U":"T"; if(b==="T") return "A";
+  if(b==="U") return "A"; if(b==="C") return "G"; return "C"; }
+function hbonds(b){ return (b==="C"||b==="G")?3:2; }
+function ez(f){ f=Math.max(0,Math.min(1,f)); return f*f*(3-2*f); }
+function seg(f,a,b){ return ez((f-a)/(b-a)); }
+const L=(p,q,u)=>p+(q-p)*u;
+
+/* a base drawn as a tab attached to a backbone */
+/* stalkTo: the y of the backbone this nucleotide belongs to. The short bar is
+   the sugar linking the base to it — the bars exist before the backbone does,
+   and it is their tips that later get joined by phosphodiester bonds.        */
+function drawBase(x,y,h,letter,dir,alpha,rna,stalkTo){
+  ctx.save(); if(alpha!=null) ctx.globalAlpha=alpha;
+  const w=24, top = dir>0 ? y : y-h, bot=top+h;
+  if(stalkTo!=null){
+    const anchor = Math.abs(stalkTo-top) < Math.abs(stalkTo-bot) ? top : bot;
+    ctx.strokeStyle="#9fb4c4"; ctx.lineWidth=4.5; ctx.lineCap="round";
+    ctx.beginPath(); ctx.moveTo(x,anchor); ctx.lineTo(x,stalkTo); ctx.stroke();
+  }
+  ctx.fillStyle=(rna?RBASE[letter]:BASE[letter])||"#7a8a96";
+  ctx.strokeStyle="rgba(6,16,24,.55)"; ctx.lineWidth=1.2;
+  ctx.beginPath(); ctx.roundRect(x-w/2,top,w,h,5); ctx.fill(); ctx.stroke();
+  ctx.fillStyle="#0b1620"; ctx.font="800 13px system-ui";
+  ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText(letter,x,top+h/2);
+  ctx.restore();
+}
+function drawHBonds(x,y0,y1,n,alpha){
+  ctx.save(); ctx.globalAlpha=alpha==null?1:alpha;
+  ctx.strokeStyle="#8fb4c8"; ctx.lineWidth=1.4; ctx.setLineDash([2.5,2.5]);
+  const span=(n-1)*5;
+  for(let i=0;i<n;i++){ const xx=x-span/2+i*5;
+    ctx.beginPath(); ctx.moveTo(xx,y0); ctx.lineTo(xx,y1); ctx.stroke(); }
+  ctx.setLineDash([]); ctx.restore();
+}
+function drawBackbone(pts,col,lw){
+  ctx.save(); ctx.strokeStyle=col; ctx.lineWidth=lw||7; ctx.lineCap="round"; ctx.lineJoin="round";
+  ctx.beginPath(); pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])); ctx.stroke();
+  ctx.restore();
+}
+/* a free nucleotide: phosphate + sugar + base */
+function drawFreeNuc(x,y,letter,sc,alpha,rna){
+  sc=sc||1; ctx.save(); if(alpha!=null) ctx.globalAlpha=alpha;
+  ctx.strokeStyle="rgba(200,220,235,.5)"; ctx.lineWidth=2.4*sc; ctx.lineCap="round";
+  ctx.beginPath(); ctx.moveTo(x-15*sc,y); ctx.lineTo(x+4*sc,y); ctx.stroke();
+  ctx.beginPath(); ctx.arc(x-19*sc,y,5*sc,0,6.29); ctx.fillStyle="#ef7fa8"; ctx.fill();   // phosphate
+  ctx.strokeStyle="rgba(6,16,24,.5)"; ctx.lineWidth=1; ctx.stroke();
+  ctx.beginPath(); ctx.arc(x-6*sc,y,5.5*sc,0,6.29); ctx.fillStyle="#9fb4c4"; ctx.fill(); ctx.stroke();  // sugar
+  ctx.fillStyle=(rna?RBASE[letter]:BASE[letter])||"#7a8a96";
+  ctx.beginPath(); ctx.roundRect(x+3*sc,y-9*sc,20*sc,18*sc,4*sc); ctx.fill(); ctx.stroke();
+  ctx.fillStyle="#0b1620"; ctx.font="800 "+(11*sc)+"px system-ui";
+  ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText(letter,x+13*sc,y);
+  ctx.restore();
+}
+function enzyme(x,y,w,h,col,label,fs){
+  // always fully opaque, whatever alpha the caller happened to leave set
+  ctx.save(); ctx.globalAlpha=1; ctx.fillStyle=col; ctx.strokeStyle="#dbe7ef"; ctx.lineWidth=1.6;
+  ctx.beginPath(); ctx.roundRect(x-w/2,y-h/2,w,h,11); ctx.fill(); ctx.stroke();
+  ctx.fillStyle="#0b1620"; ctx.font="800 "+(fs||11)+"px system-ui";
+  ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText(label,x,y); ctx.restore();
+}
+function pill(x,y,txt,col,fs){
+  fs=fs||10; ctx.save(); ctx.font="800 "+fs+"px system-ui";
+  const w=ctx.measureText(txt).width+16, h=fs*2;
+  ctx.fillStyle=col; ctx.strokeStyle="rgba(6,16,24,.5)"; ctx.lineWidth=1.2;
+  ctx.beginPath(); ctx.roundRect(x-w/2,y-h/2,w,h,h/2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle="#0b1620"; ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText(txt,x,y+0.5); ctx.restore();
+}
+function label(x,y,txt,col,fs,al){
+  ctx.save(); ctx.font="800 "+(fs||11.5)+"px system-ui";
+  ctx.textAlign=al||"center"; ctx.textBaseline="middle"; ctx.fillStyle=col; ctx.fillText(txt,x,y); ctx.restore();
+}
+function title(t,s){
+  ctx.save(); ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillStyle="#e9f3fa"; ctx.font="800 19px system-ui"; ctx.fillText(t,470,32);
+  ctx.fillStyle="#8fa8b8"; ctx.font="700 12px system-ui"; ctx.fillText(s,470,54); ctx.restore();
+}
+function curl(x,y,age){
+  ctx.save(); ctx.globalAlpha=Math.max(0,1-age); ctx.strokeStyle="#ffe14d"; ctx.lineWidth=2.2;
+  ctx.beginPath(); ctx.arc(x,y,10+age*12,-0.9,1.5); ctx.stroke(); ctx.restore();
+}
+
+/* =======================================================================
+   The gene used throughout
+   ======================================================================= */
+const GENE={
+  //        exon 1   intron 1  exon 2   intron 2  exon 3
+  tmpl:"TACGGA"+"TTTAAA"+"CGACTT"+"AAATTT"+"GCAATT",
+  introns:[[6,12],[18,24]]
+};
+GENE.isIn=i=>GENE.introns.some(r=>i>=r[0]&&i<r[1]);
+GENE.regions=(()=>{ const out=[]; let a=0;
+  for(const r of GENE.introns){ out.push({a,b:r[0]-1,ex:1}); out.push({a:r[0],b:r[1]-1,ex:0}); a=r[1]; }
+  out.push({a,b:24-1+6,ex:1}); return out; })();
+GENE.coding=[...GENE.tmpl].map(b=>comp(b)).join("");
+GENE.pre   =[...GENE.tmpl].map(b=>comp(b,true)).join("");
+GENE.mrna  = [...GENE.pre].filter((_,i)=>!GENE.isIn(i)).join("");
+
+/* =======================================================================
+   TAB 1 — DNA REPLICATION
+   ======================================================================= */
+const RP={ n:12, x0:250, dx:52, bbX:210,
+  yTopBB:130, yTopBase:[136,162], yNewTopBase:[178,204], yNewTopBB:210,
+  // the two original strands sit further apart in the duplex, leaving a clear
+  // channel for DNA helicase that does not cover either set of bases
+  yDupTop:244, yDupTopBase:[250,276], yDupBotBase:[326,352], yDupBot:358,
+  yNewBotBB:392, yNewBotBase:[398,424], yBotBase:[440,466], yBotBB:472,
+  poolTop:[78,100], poolBot:[492,508] };
+RP.top=GENE.tmpl.slice(0,RP.n);
+RP.bot=[...RP.top].map(b=>comp(b)).join("");
+RP.X=i=>RP.x0+i*RP.dx;
+const RSTEPS=[
+  {d:2.6,t:"A section of a DNA molecule. The two strands are held together by hydrogen bonds between complementary base pairs \u2014 2 between A and T, 3 between C and G."},
+  {d:4.4,t:"DNA helicase attaches. First it unwinds the double helix, then it breaks the hydrogen bonds so the two strands separate."},
+  {d:6.0,t:"Free DNA nucleotides move about at random. One only binds when it happens to collide with an exposed base it is complementary to \u2014 the others bounce away. They are held on by hydrogen bonds, but are NOT yet joined to one another."},
+  {d:8.0,t:"Only now does DNA polymerase act. It joins the nucleotides that are already base-paired, forming phosphodiester bonds between the sugar of one and the phosphate of the next, so a continuous new strand appears behind it."},
+  {d:4.0,t:"The two new molecules move apart and rewind into double helices. Two complete DNA molecules now exist where there was one."},
+  {d:3.4,t:"Each new molecule contains one original strand and one newly made strand \u2014 this is semi-conservative replication."}
+];
+let RPS=null;
+function rp(){ if(!RPS) RPS={step:0,t:0,curls:[],cum:{bp:0,hb:0,nuc:0}}; return RPS; }
+function rpTotal(){ return RSTEPS.reduce((a,s)=>a+s.d,0); }
+function rpElapsed(){ const R=rp(); let t=R.t; for(let i=0;i<R.step;i++) t+=RSTEPS[i].d; return t; }
+function rpSeek(fr){ const R=rp(); let t=Math.max(0,Math.min(1,fr))*rpTotal();
+  for(let i=0;i<RSTEPS.length;i++){ if(t<RSTEPS[i].d||i===RSTEPS.length-1){ R.step=i; R.t=Math.min(t,RSTEPS[i].d-0.001); break; } t-=RSTEPS[i].d; } }
+/* how far the fork has opened, and how many new nucleotides are in place */
+/* made   = nucleotides hydrogen-bonded to the template
+   joined = nucleotides linked by phosphodiester bonds, i.e. an actual strand.
+   Nothing is ever joined before DNA polymerase is on the scene.            */
+/* holds on each whole nucleotide, then snaps to the next: the new strand
+   grows one phosphodiester bond at a time rather than creeping smoothly */
+function stair(v){ const i=Math.floor(v); return i+ez(Math.min(1,(v-i)/0.32)); }
+function rpProgress(st,f){
+  if(st===0) return {open:0,made:0,joined:0};
+  if(st===1) return {open:3*ez(Math.max(0,(f-0.62)/0.38)),made:0,joined:0};
+  if(st===2) return {open:3,made:f<0.66?0:(f<0.92?1:2),joined:0};   // binds only on arrival
+  if(st===3){ const u=ez(f), made=L(2,RP.n,Math.max(0,(u-0.06)/0.94));
+    const jr=L(0,RP.n,Math.max(0,(u-0.14)/0.86));
+    return {open:L(3,RP.n,u), made, joined:Math.min(made,stair(jr)) }; }
+  return {open:RP.n,made:RP.n,joined:RP.n};
+}
+function updateRP(dt){ const R=rp();
+  if(S.playing){ R.t+=dt*S.speed;
+    if(R.t>=RSTEPS[R.step].d){ R.t=0; R.step++;
+      if(R.step>=RSTEPS.length){ R.step=0; R.cum.bp+=RP.n; R.cum.hb+=[...RP.top].reduce((a,b)=>a+hbonds(b),0); R.cum.nuc+=2*RP.n; } } }
+  for(const c of R.curls) c.age+=dt*S.speed*1.5; R.curls=R.curls.filter(c=>c.age<1);
+}
+/* deterministic wander so scrubbing the timeline stays stable */
+/* Each nucleotide jitters gently about its own spot rather than sweeping the
+   screen: still undirected, but calm enough to watch. */
+function wander(k,t,box,n){
+  n=n||8;
+  const hx=box[0]+(box[2]-box[0])*((k+0.5)/n), hy=(box[1]+box[3])/2;
+  const amp=(box[3]-box[1])*0.30;
+  return [ hx + 11*Math.sin(t*0.42+k*1.9) + 5*Math.sin(t*0.25+k*3.1),
+           hy + amp*Math.sin(t*0.33+k*2.4) ];
+}
+/* one duplex, tw=0 straight and tw=1 wound into a helix */
+function duplexPair(x0,x1,yA,yB,colA,colB,tw){
+  const mid=(yA+yB)/2, half=(yB-yA)/2, k=0.030, pa=[], pb=[];
+  for(let x=x0;x<=x1;x+=5){ const c=tw*Math.cos(x*k)+(1-tw);
+    pa.push([x,mid-half*c]); pb.push([x,mid+half*c]); }
+  drawBackbone(pa,colA); drawBackbone(pb,colB);
+  if(tw>0.03){ ctx.save(); ctx.globalAlpha=Math.min(1,tw*1.5);
+    ctx.strokeStyle="#8fb4c8"; ctx.lineWidth=1.3;
+    for(let x=x0+12;x<x1;x+=17){ const c=tw*Math.cos(x*k)+(1-tw);
+      ctx.beginPath(); ctx.moveTo(x,mid-half*c); ctx.lineTo(x,mid+half*c); ctx.stroke(); }
+    ctx.restore(); }
+}
+const FRAG=3, CYCLE=FRAG+1;      // 3 units of synthesis, then 1 unit jumping back
+/* The lagging strand: DNA polymerase runs RIGHT to LEFT, away from the fork,
+   then detaches and jumps back to the newly exposed template near the fork. */
+function lagState(made,full,n){
+  const nFrag=Math.ceil(n/FRAG);
+  const units = full ? CYCLE*nFrag : Math.max(0,made-FRAG)*(CYCLE/FRAG);
+  const complete = units >= CYCLE*nFrag;
+  const frag = Math.min(Math.floor(units/CYCLE), nFrag-1);
+  const s = complete ? CYCLE : Math.min(CYCLE-0.0001, units-frag*CYCLE);
+  const start=frag*FRAG, end=Math.min(n-1,start+FRAG-1);
+  const jumping = s>=FRAG && !complete;
+  const laid = Math.min(end-start+1, Math.floor(s)+1);
+  return {frag,s,start,end,jumping,laid,complete,nFrag};
+}
+function lagHas(i,LS){
+  if(LS.complete) return true;
+  if(i<LS.start) return true;                 // fragments already finished, further left
+  if(i>LS.end) return false;                  // template not reached yet
+  if(LS.jumping) return true;                 // this fragment is done
+  return i >= LS.end-LS.laid+1;               // filled from the RIGHT end leftwards
+}
+function lagBasesDone(LS,n){ return LS.complete ? n : LS.start + (LS.jumping?(LS.end-LS.start+1):LS.laid); }
+/* Beyond the AQA specification: leading and lagging strands. */
+/* the gaps between Okazaki fragments: drawn BEFORE the enzymes so the dark
+   blot never sits on top of the DNA polymerase or ligase */
+function sealedFragsOf(LS){ return LS.complete ? LS.nFrag : Math.max(0,LS.frag-3); }
+function drawOkazakiGaps(made,LS){
+  if(made<=0.5) return;
+  const sealedFrags=sealedFragsOf(LS);
+  for(let j=1;j<=LS.frag;j++){ if(j<=sealedFrags) continue;
+    const x=(RP.X(j*FRAG-1)+RP.X(j*FRAG))/2;
+    ctx.save(); ctx.strokeStyle="#0f1d27"; ctx.lineWidth=9;
+    ctx.beginPath(); ctx.moveTo(x-6,RP.yNewBotBB); ctx.lineTo(x+6,RP.yNewBotBB); ctx.stroke(); ctx.restore(); }
+}
+function drawOkazakiExtras(open,made,st,LS){
+  ctx.save();
+  ctx.fillStyle="rgba(90,40,110,.5)"; ctx.strokeStyle="#c07ad8"; ctx.lineWidth=1.4;
+  ctx.beginPath(); ctx.roundRect(620,48,296,40,9); ctx.fill(); ctx.stroke();
+  ctx.fillStyle="#e6c6f5"; ctx.font="800 10.5px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText("BEYOND THE AQA SPECIFICATION",768,62);
+  ctx.font="600 9.5px system-ui"; ctx.fillStyle="#cbb0dd";
+  ctx.fillText("leading / lagging strands are not examinable on 7402",768,78);
+  ctx.restore();
+  if(made<=0.5) return;
+  const sealedFrags=sealedFragsOf(LS);
+  // one DNA ligase on each nick that has not yet been sealed
+  for(let j=1;j<=LS.frag;j++){ if(j<=sealedFrags) continue;
+    const x=(RP.X(j*FRAG-1)+RP.X(j*FRAG))/2;
+    enzyme(x,RP.yNewBotBB-42,74,24,"#3fae8f","DNA ligase",9.5); }
+  if(st<=3) label(470,532,"DNA polymerase works right \u2192 left on the lagging strand, then detaches and jumps back towards the fork","#e6c6f5",11.5);
+}
+/* antiparallel ends, top to bottom on the left: 3′ 5′ 3′ 5′ (reversed on the right) */
+function drawPrimes(ys, rights){
+  const P=["3′","5′","3′","5′"];
+  for(let i=0;i<4;i++){ if(ys[i]==null) continue;
+    label(190,ys[i],P[i],"#c3d4e0",11,"right");
+    if(rights[i]!=null) label(rights[i]+20,ys[i],P[i]==="3′"?"5′":"3′","#c3d4e0",11,"left"); }
+}
+function drawRP(){
+  const R=rp(), st=R.step, f=Math.min(1,R.t/RSTEPS[st].d), t=rpElapsed();
+  const {open,made,joined}=rpProgress(st,f);
+  const oi=Math.floor(open), mi=Math.floor(made);
+  const forkX = RP.X(Math.min(open,RP.n-0.001)) - 8;
+  const LS = lagState(made, st>=4, RP.n);
+  const useOka = S.okazaki && st>=3;
+  const finished = st>=4;                          // the two molecules have parted
+  const split = finished ? (st===4?ez(f):1) : 0, shift = split*28;
+  const wind = finished ? Math.max(0,(split-0.42)/0.58) : 0;   // winds only once the bases have gone
+  const tw = st===0 ? 1 : (st===1 ? 1-ez(Math.min(1,f/0.42)) : 0);  // helicase unwinds first
+  const intact = tw>0.02 || open<0.01;
+  title("DNA replication","Nucleus \u00b7 semi-conservative");
+
+  // free nucleotides drifting about, in both pools
+  const poolAl = finished ? Math.max(0,1-split*2.6) : 1;   // clear away as the helices reform
+  if(poolAl>0.02){
+    const pools=[[276,RP.poolTop[0],632,RP.poolTop[1]],[300,RP.poolBot[0],836,RP.poolBot[1]]];
+    const letters="ATCGTAGC";
+    for(let k=0;k<5;k++){ const p=wander(k,t,pools[0],5); drawFreeNuc(p[0],p[1],letters[k],0.74,0.85*poolAl); }
+    for(let k=0;k<5;k++){ const p=wander(k,t,pools[1],5); drawFreeNuc(p[0],p[1],letters[7-k],0.74,0.85*poolAl); }
+    ctx.save(); ctx.globalAlpha=poolAl;
+    label(126,92,"free DNA nucleotides","#7f97a8",10.5,"right"); ctx.restore(); }
+
+  // ---- a nucleotide arriving for each new base as the fork advances ----
+  if(st===3){ const nx=Math.floor(made);
+    if(nx<RP.n){ const u=ez(Math.max(0,Math.min(1,made-nx)));
+      const ty=L(RP.poolTop[1],RP.yNewTopBase[0]-4,u);
+      const tv=Math.max(0,Math.min(1,(ty-RP.yTopBase[1]-4)/12));   // emerges below the template row
+      drawFreeNuc(L(RP.X(nx)-30,RP.X(nx)-16,u), ty, comp(RP.top[nx]), 0.82, tv);
+      if(!useOka){ const by2=L(RP.poolBot[0],RP.yNewBotBase[1]+4,u);
+        const bv=Math.max(0,Math.min(1,(RP.yBotBase[0]-4-by2)/12));
+        drawFreeNuc(L(RP.X(nx)-54,RP.X(nx)-16,u), by2, comp(RP.bot[nx]), 0.82, bv); } } }
+  // ---- parent backbones: intact on the right, opened on the left ----
+  if(finished){                                    // two complete molecules, moving apart and rewinding
+    duplexPair(RP.bbX,905,RP.yTopBB-shift,RP.yNewTopBB-shift,OLD,NEW,wind);
+    duplexPair(RP.bbX,905,RP.yNewBotBB+shift,RP.yBotBB+shift,NEW,OLD,wind);
+  } else if(intact){                                // still one molecule: a helix that unwinds
+    duplexPair(RP.bbX,905,RP.yDupTop,RP.yDupBot,OLD,OLD,tw);
+  } else {
+    drawBackbone([[RP.bbX,RP.yTopBB],[forkX-22,RP.yTopBB],[forkX,RP.yDupTop],[905,RP.yDupTop]],OLD);
+    drawBackbone([[RP.bbX,RP.yBotBB],[forkX-22,RP.yBotBB],[forkX,RP.yDupBot],[905,RP.yDupBot]],OLD);
+  }
+  // ---- new backbones, only where nucleotides have been joined ----
+  const jN=Math.floor(Math.min(joined,RP.n));         // whole nucleotides only
+  if(jN>0 && !finished){ const endX=RP.X(jN-1)+14;
+    drawBackbone([[RP.bbX,RP.yNewTopBB],[endX,RP.yNewTopBB]],NEW,6);
+    if(st===3&&jN>1){ ctx.save(); ctx.globalAlpha=Math.max(0,1-(joined-jN)/0.32);
+      ctx.strokeStyle="#ffe6b8"; ctx.lineWidth=7; ctx.lineCap="round";   // the newest bond, flashing
+      ctx.beginPath(); ctx.moveTo(RP.X(jN-2),RP.yNewTopBB); ctx.lineTo(RP.X(jN-1),RP.yNewTopBB); ctx.stroke();
+      if(!useOka){ ctx.beginPath(); ctx.moveTo(RP.X(jN-2),RP.yNewBotBB); ctx.lineTo(RP.X(jN-1),RP.yNewBotBB); ctx.stroke(); }
+      ctx.restore(); }
+    if(!useOka) drawBackbone([[RP.bbX,RP.yNewBotBB],[endX,RP.yNewBotBB]],NEW,6);
+    else { // one continuous strand behind, plus the fragment being built
+      let last=-1; for(let i=0;i<RP.n;i++) if(lagHas(i,LS)) last=i;
+      const done=LS.complete?RP.n:LS.frag*FRAG;                  // bases in completed fragments
+      if(done>0) drawBackbone([[RP.bbX,RP.yNewBotBB],[RP.X(Math.min(done,RP.n)-1)+16,RP.yNewBotBB]],NEW,6);
+      if(!LS.complete && last>=done){ let lo=null;
+        for(let i=done;i<=last;i++) if(lagHas(i,LS)&&lo===null) lo=i;
+        if(lo!==null) drawBackbone([[RP.X(lo)-16,RP.yNewBotBB],[RP.X(last)+16,RP.yNewBotBB]],NEW,6); } } }
+
+  const baseAl = st===0 ? 0 : (st===1 ? ez(Math.max(0,(f-0.44)/0.16)) : 1);
+  const splitAl = finished ? Math.max(0,1-split/0.38) : 1;
+  for(let i=0;i<RP.n;i++){
+    const x=RP.X(i), tb=RP.top[i], bb=RP.bot[i];
+    if(finished){                                       // bases fade as the molecules rewind
+      if(splitAl>0.02){ ctx.save(); ctx.globalAlpha=splitAl;
+        drawBase(x,RP.yTopBase[0]-shift,26,tb,1,1,false,RP.yTopBB-shift);
+        drawBase(x,RP.yNewTopBase[1]-shift,26,comp(tb),-1,1,false,RP.yNewTopBB-shift);
+        drawBase(x,RP.yNewBotBase[0]+shift,26,comp(bb),1,1,false,RP.yNewBotBB+shift);
+        drawBase(x,RP.yBotBase[1]+shift,26,bb,-1,1,false,RP.yBotBB+shift);
+        drawHBonds(x,RP.yTopBase[1]-shift,RP.yNewTopBase[0]-shift,hbonds(tb));
+        drawHBonds(x,RP.yNewBotBase[1]+shift,RP.yBotBase[0]+shift,hbonds(bb)); ctx.restore(); }
+      continue;
+    }
+    if(i>=open-0.5){                                    // still a double helix
+      if(baseAl>0.02){ drawBase(x,RP.yDupTopBase[0],26,tb,1,baseAl,false,RP.yDupTop);
+        drawBase(x,RP.yDupBotBase[1],26,bb,-1,baseAl,false,RP.yDupBot);
+        drawHBonds(x,RP.yDupTopBase[1],RP.yDupBotBase[0],hbonds(tb),baseAl); }
+    } else {                                            // separated: two templates
+      drawBase(x,RP.yTopBase[0],26,tb,1,1,false,RP.yTopBB);
+      drawBase(x,RP.yBotBase[1],26,bb,-1,1,false,RP.yBotBB);
+      if(i<Math.floor(made)){                           // appears exactly when its nucleotide lands
+        drawBase(x,RP.yNewTopBase[1],26,comp(tb),-1,1,false,RP.yNewTopBB);
+        drawHBonds(x,RP.yTopBase[1],RP.yNewTopBase[0],hbonds(tb));
+      }
+      const hasLag = useOka ? lagHas(i,LS) : (i<Math.floor(made));
+      if(hasLag){                                       // lagging strand: fragment by fragment
+        drawBase(x,RP.yNewBotBase[0],26,comp(bb),1,1,false,RP.yNewBotBB);
+        drawHBonds(x,RP.yNewBotBase[1],RP.yBotBase[0],hbonds(bb));
+      }
+    }
+  }
+  // ---- the rejection moment: a wrong nucleotide arrives, then the right one ----
+  if(st===2){ const x=RP.X(0), need=comp(RP.top[0]);
+    const wrong = need==="A" ? "G" : "A";
+    if(f<0.38){ const u=seg(f,0.04,0.24), bk=f>0.24?seg(f,0.24,0.38):0;
+      // one opacity for the nucleotide AND its caption: they fade in and out together
+      const a=Math.min(seg(f,0.03,0.13), Math.max(0,1-bk*1.25));
+      const yy=L(RP.yNewTopBase[0]-4,RP.yNewTopBase[0]-4,u)+bk*56;
+      drawFreeNuc(L(x-168,x-16,u)+bk*136, yy, wrong, 0.9, a);
+      if(a>0.02){ ctx.save(); ctx.globalAlpha=a;
+        label(250,220,"not complementary","#ff9d95",11);
+        label(250,233,"\u2014 it bounces off","#ff9d95",11); ctx.restore(); }
+      if(f>0.22&&f<0.25) R.curls.push({x:x,y:RP.yNewTopBase[0]-6,age:0.4}); }
+    else if(f<0.66){ const u=seg(f,0.40,0.99);                    // arrives, THEN binds at f = 0.66
+      const cy1=L(RP.poolTop[1],RP.yNewTopBase[0]-4,u);
+      drawFreeNuc(L(x-30,x-16,u), cy1, need, 0.9, Math.max(0,Math.min(1,(cy1-RP.yTopBase[1]-4)/12)));
+      if(f>0.58){ label(250,220,"complementary \u2014 hydrogen bonds form","#9fe8bd",11);
+        label(250,233,"but not yet joined to each other","#9fe8bd",11); } }
+    else if(f<0.92){ const x2=RP.X(1), u=seg(f,0.68,0.99);        // and again for the next base
+      const cy2=L(RP.poolTop[1],RP.yNewTopBase[0]-4,u);
+      drawFreeNuc(L(x2-30,x2-16,u), cy2, comp(RP.top[1]), 0.9, Math.max(0,Math.min(1,(cy2-RP.yTopBase[1]-4)/12)));
+      label(250,220,"complementary \u2014 hydrogen bonds form","#9fe8bd",11);
+      label(250,233,"but not yet joined to each other","#9fe8bd",11); } }
+
+  if(useOka) drawOkazakiGaps(made,LS);      // under the enzymes
+  // ---- enzymes ----
+  if(st>=1&&st<=3&&!intact||st===1&&tw<0.55){ const my=(RP.yDupTop+RP.yDupBot)/2;
+    enzyme(forkX+4,my,90,36,"#3fae8f","");
+    ctx.save();ctx.fillStyle="#0b1620";ctx.font="800 10.5px system-ui";
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillText("DNA",forkX+4,my-8); ctx.fillText("helicase",forkX+4,my+7); ctx.restore(); }
+  if(st===3){ const px=RP.X(Math.max(0,jN-1))+18;           // sits on the base it has just joined
+    enzyme(px,RP.yNewTopBB+2,104,30,"#c07ad8","DNA polymerase \u2192",10);
+    if(!S.okazaki) enzyme(px,RP.yNewBotBB-2,96,30,"#c07ad8","DNA polymerase",10);
+    else if(!LS.complete){
+      if(LS.jumping){                                    // detached, travelling back to the fork
+        const nxtEnd=Math.min(RP.n-1,LS.start+2*FRAG-1), u=ez(LS.s-FRAG);
+        const jx=L(RP.X(LS.start),RP.X(nxtEnd),u);
+        enzyme(jx,RP.yNewBotBB-30,104,30,"#c07ad8","DNA polymerase",10);
+        ctx.save(); ctx.strokeStyle="#c07ad8"; ctx.lineWidth=2; ctx.setLineDash([5,5]);
+        ctx.beginPath(); ctx.moveTo(RP.X(LS.start),RP.yNewBotBB-46); ctx.lineTo(RP.X(nxtEnd),RP.yNewBotBB-46);
+        ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+        label((RP.X(LS.start)+RP.X(nxtEnd))/2,RP.yNewBotBB-60,"detaches, jumps back","#e6c6f5",10);
+      } else {
+        const lx=RP.X(LS.end)-Math.min(LS.s,FRAG-1)*RP.dx;
+        enzyme(lx,RP.yNewBotBB-2,104,30,"#c07ad8","\u2190 DNA polymerase",10);
+      } } }
+
+  if(st===3){ const jf=Math.floor(joined);
+    if(R.lastJ!=null && jf===R.lastJ+1 && jf>0){
+      R.curls.push({x:RP.X(jf-1)-14,y:RP.yNewTopBB-12,age:0});
+      R.curls.push({x:RP.X(jf-1)-14,y:RP.yNewBotBB+12,age:0}); }
+    R.lastJ=jf;
+  } else R.lastJ=null;
+  if(S.okazaki) drawOkazakiExtras(open,made,st,LS);
+  // ---- labels ----
+  const lblX = S.okazaki?168:200;
+  label(lblX,finished?RP.yTopBB-shift:RP.yTopBB,"original strand",OLD,11,"right");
+  label(lblX,finished?RP.yBotBB+shift:RP.yBotBB,"original strand",OLD,11,"right");
+  if(joined>0.5){ label(lblX,finished?RP.yNewTopBB-shift:RP.yNewTopBB,S.okazaki?"leading strand":"new strand",NEW,11,"right");
+    label(lblX,finished?RP.yNewBotBB+shift:RP.yNewBotBB,S.okazaki?"lagging strand":"new strand",NEW,11,"right"); }
+  if(S.okazaki){ const nx = joined>0.5 ? RP.X(Math.min(joined,RP.n)-1)+14 : null;
+    drawPrimes(
+      finished ? [RP.yTopBB-shift,RP.yNewTopBB-shift,RP.yNewBotBB+shift,RP.yBotBB+shift]
+               : [RP.yTopBB, joined>0.5?RP.yNewTopBB:null, joined>0.5?RP.yNewBotBB:null, RP.yBotBB],
+      finished ? [905,905,905,905] : [905,null,null,905]); }   // growing ends get no 3\u2032 label
+  if(st===4&&f>0.5) label(470,532,"the two molecules separate \u2014 one has become two","#ffd98a",12.5);
+  if(st>=5) label(470,532,"each molecule has ONE original strand and ONE new strand \u2014 semi-conservative","#ffd98a",12.5);
+
+  for(const c of R.curls) curl(c.x,c.y,c.age);
+  ctx.save(); ctx.textAlign="left"; ctx.textBaseline="middle"; ctx.font="700 11px system-ui";
+  ctx.fillStyle="#c3d4e0";
+  ctx.fillText("base pairs opened "+Math.floor(open)+"    nucleotides added "+(2*Math.floor(made))+
+    "    joined into a strand "+(2*Math.floor(joined))+"    molecules completed "+Math.round(R.cum.bp/RP.n), 76, 550);
+  ctx.restore();
+}
+
+/* =======================================================================
+   TAB 2 — TRANSCRIPTION
+   ======================================================================= */
+const TR={ n:GENE.tmpl.length, x0:146, dx:25, bbX:132, lblX:122,
+  yTmplBB:134, yTmplBase:[140,164],
+  yRnaBase:[174,198], yRnaBB:206,          // the RNA forms right against the template
+  yPairBase:[232,256], yPairBB:264,        // 68px of hydrogen bonds \u2014 30% wider than before
+  yOpenBB:424, yOpenBase:[390,414],        // and further still once pushed aside
+  yTrailBB:474, yBracket:492,
+  poolY:[72,86], polY:226 };               // polymerase sits beside the nascent strand
+TR.X=i=>TR.x0+i*TR.dx;
+const T_BASE=[
+  {p:"intro", d:2.8,t:"A gene on a DNA molecule. Only one of the two strands \u2014 the template strand \u2014 will be copied."},
+  {p:"unwind",d:3.4,t:"DNA helicase breaks the hydrogen bonds in this region. The two strands separate and the bases on the template strand are exposed."},
+  {p:"grow",  d:17.0,t:"RNA polymerase moves along the template strand. Four things are happening at once behind it: free RNA nucleotides hydrogen-bond to their complementary bases; a little further back they have been joined by phosphodiester bonds; further back the pre-mRNA has peeled off the template; and behind that the DNA has rewound."},
+  {p:"finish",d:4.6,t:"Transcription is complete. The pre-mRNA separates fully from the DNA, and the DNA rewinds into a double helix. It still contains its introns \u2014 removing them is the next stage, on the splicing tab."}
+];
+
+function TS(){ return T_BASE; }
+let TRS=null;
+function tr(){ if(!TRS) TRS={step:0,t:0,curls:[],cum:{mrna:0,pre:0}}; return TRS; }
+function trTotal(){ return TS().reduce((a,z)=>a+z.d,0); }
+function trElapsed(){ const R=tr(), A=TS(); let t=R.t; for(let i=0;i<R.step;i++) t+=A[i].d; return t; }
+function trSeek(fr){ const R=tr(), A=TS(); let t=Math.max(0,Math.min(1,fr))*trTotal();
+  for(let i=0;i<A.length;i++){ if(t<A[i].d||i===A.length-1){ R.step=i; R.t=Math.min(t,A[i].d-0.001); break; } t-=A[i].d; } }
+function trProgress(ph,f){
+  if(ph==="intro")  return {pol:-1, open:0};
+  if(ph==="unwind") return {pol:-1, open:ez(f)};        // opens in place, then travels
+  if(ph==="grow")   return {pol:L(-1,TR.n+8,ez(f)), open:1};
+  return {pol:TR.n+8, open:0};
+}
+function updateTR(dt){ const R=tr(), A=TS();
+  if(S.playing){ R.t+=dt*S.speed;
+    if(R.t>=A[R.step].d){ R.t=0; R.step++;
+      if(R.step>=A.length){ R.step=0; R.cum.pre++;  } } }
+  for(const c of R.curls) c.age+=dt*S.speed*1.5; R.curls=R.curls.filter(c=>c.age<1);
+}
+function isIntron(i){ return GENE.isIn(i); }
+function bracket(x0,x1,y,txt,col,dir){
+  dir=dir||1;                                  // dir -1 puts the bracket above the strand
+  ctx.save(); ctx.strokeStyle=col; ctx.lineWidth=1.6; ctx.lineCap="round";
+  ctx.beginPath(); ctx.moveTo(x0,y-6*dir); ctx.lineTo(x0,y); ctx.lineTo(x1,y); ctx.lineTo(x1,y-6*dir);
+  ctx.stroke(); ctx.restore(); label((x0+x1)/2,y+16*dir,txt,col,11);
+}
+function drawTR(){
+  const R=tr(), A=TS(), st=R.step, ph=A[st].p, f=Math.min(1,R.t/A[st].d), t=trElapsed();
+  const {pol,open}=trProgress(ph,f);
+  const growing=(ph==="intro"||ph==="unwind"||ph==="grow");
+  const finish=(ph==="finish");
+  const done=!growing;
+  const rew = finish ? ez(f) : (done?1:0);
+  const wind = Math.max(0,(rew-0.42)/0.58);
+  if(!S.bare) title("Transcription","Nucleus \u00b7 DNA \u2192 pre-mRNA");
+
+  // free RNA nucleotides, cleared away once transcription has finished
+  const poolAl = done ? Math.max(0,1-rew*1.8) : 1;
+  if(poolAl>0.02){ const letters="AUCGUACG";
+    for(let k=0;k<5;k++){ const q=wander(k,t,[286,TR.poolY[0],664,TR.poolY[1]],5);
+      drawFreeNuc(q[0],q[1],letters[k],0.70,0.85*poolAl,true); }
+    ctx.save(); ctx.globalAlpha=poolAl;
+    if(!S.bare) label(TR.lblX,92,"free RNA nucleotides","#7f97a8",10.5,"right"); ctx.restore(); }
+
+  // ---- zones trailing the polymerase ----
+  const run0 = Math.max(2,46*open+2);     // a long shoulder, so a base descends gently
+  const rawL = TR.X(pol-7*open)-15-run0, rawR = TR.X(pol+2*open)+15+run0;
+  const bubL = Math.max(TR.bbX,rawL), bubR = Math.min(900,rawR);
+  // the bubble disappears once it has run off either end, and the two shoulders
+  // are never allowed to cross — which is what produced a figure-of-8
+  const bub = !done && open>0.02 && rawL<898 && rawR>TR.bbX+2 && (bubR-bubL)>14;
+  const run = bub?Math.max(2,Math.min(run0,(bubR-bubL)/2-1)):run0;
+  const yLo = TR.yPairBB+(TR.yOpenBB-TR.yPairBB)*open;
+  /* the y of the coding-strand backbone at any x — the single source of truth
+     for both the drawn backbone and where each of its bases sits */
+  const codY = x => { if(!bub||x<=bubL||x>=bubR) return TR.yPairBB;
+    if(x<bubL+run) return TR.yPairBB+(yLo-TR.yPairBB)*(x-bubL)/run;
+    if(x>bubR-run) return TR.yPairBB+(yLo-TR.yPairBB)*(bubR-x)/run;
+    return yLo; };
+  const sep      = i => bub && i>pol-7*open && i<=pol+2*open;
+  const hasRNA   = i => done || i<=pol;
+  const rnaJoined= i => done || i<=Math.floor(pol)-2;
+  const peeled   = i => done || i<=pol-9.2;
+  /* it only starts to dive once the bubble has closed behind it, so it never
+     descends through the displaced coding strand */
+  const rnaY = i => { if(done) return TR.yTrailBB;
+    const d=(pol-9.2)-i; if(d<=0) return TR.yRnaBB;
+    const u=Math.min(1,d/1.6); return TR.yRnaBB+(TR.yTrailBB-TR.yRnaBB)*(u*u*(3-2*u)); };
+
+  // ---- DNA ----
+  if(done){ duplexPair(TR.bbX,900,TR.yTmplBB,TR.yPairBB,"#a8cfe4",OLD,wind); }
+  else {
+    drawBackbone([[TR.bbX,TR.yTmplBB],[900,TR.yTmplBB]],"#a8cfe4");
+    if(bub){ drawBackbone([[TR.bbX,TR.yPairBB],[bubL,TR.yPairBB],[bubL+run,yLo],
+                    [bubR-run,yLo],[bubR,TR.yPairBB],[900,TR.yPairBB]],OLD); }
+    else drawBackbone([[TR.bbX,TR.yPairBB],[900,TR.yPairBB]],OLD);
+  }
+  const dnaAl = done ? Math.max(0,1-rew/0.38) : 1;
+  if(dnaAl>0.02) for(let i=0;i<TR.n;i++){ const x=TR.X(i);
+    drawBase(x,TR.yTmplBase[0],24,GENE.tmpl[i],1,dnaAl,false,TR.yTmplBB);
+    // the base sits a fixed 8px above its own backbone and travels WITH it, so the
+    // covalent link to the sugar-phosphate backbone is never broken
+    const by=codY(x), drop=by-TR.yPairBB;
+    const hidden = hasRNA(i) && Math.abs(rnaY(i)-by)<28;      // the pre-mRNA is in front here
+    if(!hidden) drawBase(x,by-8,24,GENE.coding[i],-1,dnaAl,false,by);
+    const hbAl=Math.max(0,Math.min(1,1-drop/16))*dnaAl;   // hydrogen bonds break as it pulls away
+    if(hbAl>0.02) drawHBonds(x,TR.yTmplBase[1],TR.yPairBase[0],hbonds(GENE.tmpl[i]),hbAl); }
+
+  // ---- labels, in the margin to the left of the strands ----
+  if(!S.bare){ label(TR.lblX,TR.yTmplBB,"template strand","#a8cfe4",11,"right");
+    label(TR.lblX,TR.yPairBB,"coding strand","#8fa8b8",11,"right"); }
+
+  // ---- RNA polymerase, in the bubble right beside the growing strand ----
+  if(pol>-1&&growing&&pol<TR.n+2){ const px=TR.X(Math.max(0,Math.min(pol,TR.n-1)));
+    enzyme(px,TR.polY,138,32,"#c07ad8","RNA polymerase",11); }
+
+  // ---- the next RNA nucleotide arriving from the pool and base-pairing ----
+  if(ph==="grow" && pol>=-0.5 && pol<TR.n-0.5){
+    const nx=Math.floor(pol)+1;
+    if(nx>=0 && nx<TR.n){ const u=ez(Math.max(0,Math.min(1,pol-Math.floor(pol))));
+      const tx=TR.X(nx)-9, ty=(TR.yRnaBase[0]+TR.yRnaBase[1])/2;
+      // in from the open bubble below, so it never crosses the legend or the strand labels
+      drawFreeNuc(L(tx+42,tx,u), L(TR.yRnaBB+118,ty,u), GENE.pre[nx], 0.72, Math.min(1,0.25+u), true);
+      if(u>0.86) drawHBonds(TR.X(nx),TR.yTmplBase[1],TR.yRnaBase[0],hbonds(GENE.tmpl[nx]),(u-0.86)/0.14); } }
+  // ---- the RNA ----
+  const gap = 0;
+  const jN = Math.max(0,Math.min(TR.n,Math.floor(pol)-1));    // whole nucleotides joined
+  if(hasRNA(0)){
+    if(jN>0){                                                  // backbone: only where bonds have formed
+      const pts=[]; for(let i=0;i<jN;i++){
+        const x=TR.X(i), y=rnaY(i);
+        pts.push([i===0?x-16:x,y]); }
+      if(pts.length>1){ ctx.save(); ctx.lineCap="round"; ctx.lineJoin="round";
+        ctx.strokeStyle="rgba(8,18,26,.85)"; ctx.lineWidth=11;
+        for(let pass=0;pass<2;pass++){ if(pass){ctx.strokeStyle=RNAC;ctx.lineWidth=7;}
+          ctx.beginPath(); pts.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])); ctx.stroke(); }
+        ctx.restore(); } }
+    for(let i=0;i<TR.n;i++){ if(!hasRNA(i)) break;
+      let x=TR.X(i);
+      const y=rnaY(i);
+      drawBase(x,y-8,24,GENE.pre[i],-1,1,true,y);
+      if(sep(i)) drawHBonds(x,TR.yTmplBase[1],y-32,hbonds(GENE.tmpl[i]));   // paired inside the bubble
+    }
+    if((done||pol>=5.5)&&!S.bare) label(TR.lblX,TR.yTrailBB,"pre-mRNA",RNAC,11.5,"right");
+  }
+  if(done&&!S.bare) for(const r of GENE.regions)
+    bracket(TR.X(r.a)-11,TR.X(r.b)+11,TR.yBracket,r.ex?"exon":"intron",r.ex?"#9fe8bd":"#ff9d95");
+
+
+  if(finish&&f>0.5&&!S.bare) label(470,530,"the pre-mRNA is fully separate, and the DNA is a double helix again","#ffd98a",12);
+
+  for(const c of R.curls) curl(c.x,c.y,c.age);
+  ctx.save(); ctx.textAlign="left"; ctx.textBaseline="middle"; ctx.font="700 11px system-ui";
+  ctx.fillStyle="#c3d4e0";
+  ctx.fillText("RNA nucleotides base-paired "+Math.max(0,Math.min(TR.n,Math.floor(pol)+1))+
+    "    joined "+jN+"    pre-mRNA made "+R.cum.pre, 76, 550);
+  ctx.restore();
+}
+
+/* =======================================================================
+   TAB 2 — THE MESELSON-STAHL EXPERIMENT
+   ======================================================================= */
+const HEAVY="#a8703c", LIGHTN="#93c5fd";   // ¹⁵N brown, ¹⁴N pale blue
+const MS={ cols:[168,366,564], yGen:98, yMol:130, tubeTop:296, tubeBot:474, tubeW:62,
+  yProp:496 };
+const MSP={ x:686, w:244, cx:808, yTop:160, yBot:414, off:7 };
+const MSTEPS=[
+  {d:3.0,t:"Bacteria are grown for many generations in a medium where the only nitrogen available is the isotope shown. Every base in their DNA is made using it, so both strands of every molecule contain it."},
+  {d:3.0,t:"The bacteria are moved to a medium containing only the other isotope. From now on, every NEW strand must be built from that one \u2014 the original strands cannot change."},
+  {d:3.6,t:"Generation 1: every molecule now has one original strand and one new strand. All of the DNA is intermediate in density, so it all settles at one level between the two."},
+  {d:3.8,t:"Generation 2: the two original strands still exist, in two molecules of intermediate density. The other two molecules were built entirely from the new isotope."},
+  {d:3.8,t:"The original strands are never destroyed or broken up \u2014 they are passed on intact, one to each new molecule. This is exactly what semi-conservative replication predicts."}
+];
+let MSS=null;
+function ms_(){ if(!MSS) MSS={step:0,t:0,helix:0}; return MSS; }
+function msGen(st,f){ if(st<=1) return 0; return Math.min(2, st-1); }
+function updateMS(dt){ const M=ms_();
+  if(S.playing) M.helix=(M.helix+dt*S.speed/16)%1;    // the inset runs on its own 16 s loop
+  if(S.playing){ M.t+=dt*S.speed;
+    if(M.t>=MSTEPS[M.step].d){ M.t=0; M.step=(M.step+1)%MSTEPS.length; } } }
+function msMolecules(g){
+  if(g===0) return [["O","O"]];
+  const out=[["O","N"],["O","N"]];
+  for(let i=0;i<Math.pow(2,g)-2;i++) out.push(["N","N"]);
+  return out;
+}
+function msIso(kind){ const startHeavy=S.msHeavy;
+  const orig=startHeavy?HEAVY:LIGHTN, nw=startHeavy?LIGHTN:HEAVY;
+  return kind==="O"?orig:nw; }
+function msBandY(kind){
+  const h=MS.tubeBot-MS.tubeTop, startHeavy=S.msHeavy;
+  if(kind==="mid") return MS.tubeTop+h*0.50;
+  const isHeavy=(kind==="orig")?startHeavy:!startHeavy;
+  return MS.tubeTop+h*(isHeavy?0.74:0.26); }
+/* one DNA molecule = two parallel vertical strands, coloured by isotope */
+function drawMSmol(x,yTop,pair,len){
+  len=len||52;
+  ctx.save(); ctx.lineCap="round"; ctx.lineWidth=5.5;
+  for(let k=0;k<2;k++){ ctx.strokeStyle=msIso(pair[k]);
+    const xx=x+(k?7:-7);
+    ctx.beginPath(); ctx.moveTo(xx,yTop); ctx.lineTo(xx,yTop+len); ctx.stroke(); }
+  ctx.restore(); }
+function drawTube(cx,bands){
+  const w=MS.tubeW, t=MS.tubeTop, b=MS.tubeBot;
+  ctx.save();
+  ctx.fillStyle="rgba(18,34,46,.85)"; ctx.strokeStyle="#3d5262"; ctx.lineWidth=1.8;
+  ctx.beginPath(); ctx.roundRect(cx-w/2,t,w,b-t,10); ctx.fill(); ctx.stroke();
+  for(const bd of bands){ const th=Math.max(7,Math.min(22,bd.frac*26));
+    if(bd.kind==="mid"){
+      ctx.fillStyle=msIso("O"); ctx.fillRect(cx-w/2+3,bd.y-th/2,w-6,th/2);
+      ctx.fillStyle=msIso("N"); ctx.fillRect(cx-w/2+3,bd.y,w-6,th/2);
+    } else { ctx.fillStyle=bd.col; ctx.fillRect(cx-w/2+3,bd.y-th/2,w-6,th); }
+    ctx.strokeStyle="rgba(6,16,24,.5)"; ctx.lineWidth=1;
+    ctx.strokeRect(cx-w/2+3,bd.y-th/2,w-6,th); }
+  ctx.restore(); }
+/* The inset: one molecule copied twice over, so generation 2 shows a hybrid
+   giving another hybrid AND one made entirely from the new isotope. */
+function drawHelixPanel(ph){
+  const P=MSP, O=msIso("O"), N2=msIso("N"), off=P.off, cx=P.cx;
+  const X1=[cx-58,cx+58], X2=[cx-84,cx-32,cx+32,cx+84];
+  ctx.save(); ctx.fillStyle="rgba(18,34,46,.55)"; ctx.strokeStyle="#2c4454"; ctx.lineWidth=1.4;
+  ctx.beginPath(); ctx.roundRect(P.x,P.yTop-48,P.w,(P.yBot-P.yTop)+114,12); ctx.fill(); ctx.stroke(); ctx.restore();
+  label(cx,P.yTop-30,"how each molecule is copied","#9fb8c9",11);
+  let A=0;
+  if(ph<0.08) A=8; else if(ph<0.20) A=8*(1-seg(ph,0.08,0.20));
+  else if(ph<0.34) A=0; else if(ph<0.46) A=8*Math.min(1,seg(ph,0.34,0.42));
+  else if(ph<0.58) A=8*(1-seg(ph,0.46,0.54)); else if(ph<0.74) A=0;
+  else A=8*Math.min(1,seg(ph,0.74,0.82));
+  const g1t=[[cx-off,X1[0]-off,O],[cx+off,X1[1]+off,O]];
+  const g2t=[[X1[0]-off,X2[0]-off,O],[X1[0]+off,X2[1]+off,N2],
+             [X1[1]-off,X2[2]-off,N2],[X1[1]+off,X2[3]+off,O]];
+  let pairs; const St=(x,col,t,grow)=>({x,col,t,grow});
+  if(ph<0.08) pairs=[[St(cx-off,O,-1),St(cx+off,O,1)]];
+  else if(ph<0.20){ const u=ez(seg(ph,0.08,0.20));
+    pairs=[[St(L(g1t[0][0],g1t[0][1],u),O,0),St(L(g1t[1][0],g1t[1][1],u),O,0)]]; }
+  else if(ph<0.34){ const g=seg(ph,0.20,0.34);
+    pairs=[[St(X1[0]-off,O,0),St(X1[0]+off,N2,0,g)],[St(X1[1]-off,N2,0,g),St(X1[1]+off,O,0)]]; }
+  else if(ph<0.46) pairs=[[St(X1[0]-off,O,-1),St(X1[0]+off,N2,1)],[St(X1[1]-off,N2,-1),St(X1[1]+off,O,1)]];
+  else if(ph<0.58){ const u=ez(seg(ph,0.46,0.58));
+    pairs=[[St(L(g2t[0][0],g2t[0][1],u),O,0),St(L(g2t[1][0],g2t[1][1],u),N2,0)],
+           [St(L(g2t[2][0],g2t[2][1],u),N2,0),St(L(g2t[3][0],g2t[3][1],u),O,0)]]; }
+  else if(ph<0.74){ const g=seg(ph,0.58,0.74);
+    pairs=[[St(X2[0]-off,O,0),St(X2[0]+off,N2,0,g)],[St(X2[1]-off,N2,0,g),St(X2[1]+off,N2,0)],
+           [St(X2[2]-off,N2,0),St(X2[2]+off,N2,0,g)],[St(X2[3]-off,N2,0,g),St(X2[3]+off,O,0)]]; }
+  else pairs=[[St(X2[0]-off,O,-1),St(X2[0]+off,N2,1)],[St(X2[1]-off,N2,-1),St(X2[1]+off,N2,1)],
+              [St(X2[2]-off,N2,-1),St(X2[2]+off,N2,1)],[St(X2[3]-off,N2,-1),St(X2[3]+off,O,1)]];
+  const y0=P.yTop, y1=P.yBot, NS=44, dy=(y1-y0)/NS;
+  const sx=(s,y)=> s.x + (s.t||0)*A*Math.sin(y*0.055+2);
+  for(const pr of pairs){
+    const grow=Math.min(pr[0].grow==null?1:pr[0].grow, pr[1].grow==null?1:pr[1].grow);
+    const gy=y0+(y1-y0)*grow, dx=Math.abs(pr[0].x-pr[1].x);
+    const al=Math.max(0,Math.min(1,1-(dx-2*off)/18));
+    if(al<=0.02) continue;
+    ctx.save(); ctx.globalAlpha=al; ctx.strokeStyle="#8fb4c8"; ctx.lineWidth=1.1;
+    for(let y=y0+6;y<gy;y+=16){ ctx.beginPath(); ctx.moveTo(sx(pr[0],y),y); ctx.lineTo(sx(pr[1],y),y); ctx.stroke(); }
+    ctx.restore(); }
+  for(const pr of pairs) for(const st of pr){
+    const gy = st.grow==null ? y1 : y0+(y1-y0)*st.grow, pts=[];
+    for(let i=0;i<=NS;i++){ const y=y0+i*dy; if(y>gy) break; pts.push([sx(st,y),y]); }
+    if(pts.length>1) drawBackbone(pts,st.col,4.5); }
+  const cap = ph<0.08?"a DNA double helix" : ph<0.20?"the strands separate"
+    : ph<0.34?"a new strand on each template" : ph<0.46?"generation 1 \u2014 both are hybrids"
+    : ph<0.58?"each molecule separates again" : ph<0.74?"new strands built again"
+    : "generation 2 \u2014 2 hybrid, 2 all-new";
+  label(cx,P.yBot+26,cap,"#c3d4e0",10.5);
+  if(ph>=0.74) label(cx,P.yBot+42,"only the outer two keep an original strand","#9fb8c9",9.5);
+}
+function drawMS(){
+  const M=ms_(), st=M.step, f=Math.min(1,M.t/MSTEPS[st].d);
+  const gen=msGen(st,f), startHeavy=S.msHeavy;
+  const first=startHeavy?"\u00b9\u2075N":"\u00b9\u2074N", second=startHeavy?"\u00b9\u2074N":"\u00b9\u2075N";
+  title("The Meselson\u2013Stahl experiment","Evidence for semi-conservative replication");
+  label(470,72,"grown on "+first+"  \u2192  then moved to "+second,"#ffd98a",13);
+  label(38,MS.tubeTop+8,"less dense","#7f97a8",10,"left");
+  label(38,MS.tubeTop+22,"(lighter)","#7f97a8",10,"left");
+  label(38,MS.tubeBot-22,"more dense","#7f97a8",10,"left");
+  label(38,MS.tubeBot-8,"(heavier)","#7f97a8",10,"left");
+  ctx.save(); ctx.strokeStyle="#2c4454"; ctx.lineWidth=1.4;
+  ctx.beginPath(); ctx.moveTo(114,MS.tubeTop); ctx.lineTo(114,MS.tubeBot); ctx.stroke(); ctx.restore();
+  drawHelixPanel(M.helix);
+  for(let g=0;g<=2;g++){
+    const cx=MS.cols[g], shown=g<=gen;
+    label(cx,MS.yGen,g===0?"before the move":"generation "+g,shown?"#dbe8f2":"#3d5262",12);
+    if(!shown){ ctx.save(); ctx.globalAlpha=0.18; drawTube(cx,[]); ctx.restore(); continue; }
+    const mols=msMolecules(g), sp=52, mx0=cx-(mols.length-1)*sp/2;
+    for(let i=0;i<mols.length;i++) drawMSmol(mx0+i*sp, MS.yMol, mols[i]);
+    label(cx,MS.yMol+70,mols.length+(mols.length===1?" molecule":" molecules"),"#8fa8b8",10.5);
+    const hyb=g===0?0:2, pure=Math.pow(2,g)-hyb, tot=Math.pow(2,g);
+    const bands=[];
+    if(g===0) bands.push({kind:"orig",y:msBandY("orig"),frac:1,col:msIso("O")});
+    else { bands.push({kind:"mid",y:msBandY("mid"),frac:hyb/tot});
+      if(pure>0) bands.push({kind:"new",y:msBandY("new"),frac:pure/tot,col:msIso("N")}); }
+    drawTube(cx,bands);
+    const txt = g===0 ? ("all "+first) : g===1 ? "all intermediate"
+      : (hyb+" intermediate, "+pure+" "+second);
+    label(cx,MS.yProp,txt,"#c3d4e0",11.5);
+  }
+  if(st>=4) label(470,528,"even after two generations, only TWO molecules contain an original strand","#ffd98a",12.5);
+  else label(470,528,"\u00b9\u2075N strands are brown  \u00b7  \u00b9\u2074N strands are pale blue","#7f97a8",11.5);
+}
+
+/* =======================================================================
+   TAB 4 — TRANSLATION
+   ======================================================================= */
+const CODE={AUG:["Met","#f4a259"],CCU:["Pro","#7fd6a2"],GCU:["Ala","#7fb8e8"],
+  GAA:["Glu","#e08fb0"],CGU:["Arg","#c9a6f0"],UAA:["STOP","#f87171"]};
+const TL={ x0:200, dx:30, poolY:[62,84], poolLbl:130, capY:502, yATP:170, yBond:234,
+  yLargeTop:180, yLargeBot:350, largeRx:112, yPolyExit:198,
+  yBodyTop:254, yAnti:[318,344], yMrnaBase:[358,382], yMrnaBB:390,
+  ySmallTop:394, ySmallBot:434, smallRx:104,
+  yCodon:456, yAAname:472, yCap:502 };
+TL.seq=GENE.mrna; TL.n=TL.seq.length; TL.nc=TL.n/3;
+TL.codon=c=>TL.seq.slice(c*3,c*3+3);
+TL.X=i=>TL.x0+i*TL.dx;
+TL.cx=c=>TL.X(c*3+1);
+function anticodon(cod){ return [...cod].map(b=>comp(b,true)).join(""); }
+/* every base of the codon pairs with its partner: A-U by 2 bonds, C-G by 3 */
+function codonHBonds(c){ const cd=TL.codon(c);
+  for(let k=0;k<3;k++) drawHBonds(TL.X(c*3+k), TL.yAnti[1], TL.yMrnaBase[0], hbonds(cd[k])); }
+const LSTEPS=[
+  {d:2.15,t:"The mRNA binds to a ribosome, positioned so that the first codon sits in the ribosome."},
+  {d:4.6,t:"tRNA molecules move about at random, each carrying its own amino acid. Only the one whose anticodon is complementary to the codon in the ribosome can bind \u2014 others arrive and leave again."},
+  {d:2.6,t:"A second tRNA binds to the next codon, bringing the next amino acid."},
+  {d:2.75,t:"A peptide bond forms between the two amino acids, inside the large subunit. ATP is needed for this."},
+  {d:2.75,t:"The ribosome moves one codon along the mRNA. The first tRNA leaves and can collect another amino acid."},
+  {d:5.4,t:"The process repeats. The polypeptide grows one amino acid at a time and threads out of the large subunit."},
+  {d:3.05,t:"A stop codon is reached. No tRNA has a complementary anticodon, so nothing binds and the finished polypeptide is released."}
+];
+let TLS=null;
+function tl(){ if(!TLS) TLS={step:0,t:0,curls:[],cum:{poly:0}}; return TLS; }
+function updateTL(dt){ const T2=tl();
+  if(S.playing){ T2.t+=dt*S.speed;
+    if(T2.t>=LSTEPS[T2.step].d){ T2.t=0; T2.step++;
+      if(T2.step>=LSTEPS.length){ T2.step=0; T2.cum.poly++; } } }
+  for(const c of T2.curls) c.age+=dt*S.speed*1.5; T2.curls=T2.curls.filter(c=>c.age<1);
+}
+/* chain   = amino acids joined so far
+   newestC = codon of the tRNA now holding the C-terminal residue
+   anchorC = codon the chain hangs from (may be between codons mid-translocation)
+   from/slide = the residue that has just left its tRNA, and how far it has moved  */
+function tlProgress(st,f){
+  if(st===0) return {p:0, chain:0, slide:1, from:-1, newestC:0, anchorC:0, pC:0, aC:1, arrive:1};
+  if(st===1) return {p:0, chain:f>=0.82?1:0, slide:1, from:-1, newestC:0, anchorC:0, pC:0, aC:1, arrive:1};
+  if(st===2) return {p:0, chain:1, slide:1, from:-1, newestC:0, anchorC:0, pC:0, aC:1, arrive:1};
+  if(st===3) return {p:0, chain:2, slide:seg(f,0.26,0.78), from:0, newestC:1, anchorC:1, pC:0, aC:1, arrive:1};
+  if(st===4) return {p:ez(f), chain:2, slide:1, from:0, newestC:1, anchorC:1, pC:0, aC:1, arrive:1};
+  if(st===5){ const u=ez(f), bf=u*(TL.nc-3), k=Math.floor(bf), q=bf-k;
+    // each cycle: the tRNA docks, THEN the bond forms, THEN the ribosome moves on
+    const on=q>0.40, cap=c=>Math.min(TL.nc-2,c);
+    return {p:L(1,TL.nc-2,u), chain:Math.min(TL.nc-1,2+k+(on?1:0)),
+      slide:on?seg(q,0.40,0.78):1, from:1+k, newestC:cap(on?2+k:1+k),
+      anchorC:cap(1+k+seg(q,0.72,1.0)), bond:bf,
+      pC:cap(1+k), aC:Math.min(TL.nc-1,2+k), arrive:seg(q,0.02,0.38)}; }
+  return {p:TL.nc-2, chain:TL.nc-1, slide:1, from:TL.nc-3, newestC:TL.nc-2, anchorC:TL.nc-2,
+    pC:TL.nc-2, aC:TL.nc-1, arrive:1};
+}
+/* the growing chain runs up through the large subunit and out of the exit tunnel */
+function polyPt(d,ax){        // ax = the amino acid on the tRNA in the P site
+  if(d<=70){ const u=d/70; return [ax-8-u*74, (TL.yBodyTop-18)-u*((TL.yBodyTop-18)-TL.yPolyExit)]; }
+  return [ax-82-(d-70), TL.yPolyExit];
+}
+/* compact tRNA for the free pool — same parts, far less room taken up */
+function drawTRNAsmall(x,yTop,anti,aa,col,alpha){
+  ctx.save(); if(alpha!=null) ctx.globalAlpha=alpha;
+  ctx.beginPath(); ctx.arc(x,yTop+8,7.5,0,6.29); ctx.fillStyle=col; ctx.fill();
+  ctx.strokeStyle="rgba(6,16,24,.5)"; ctx.lineWidth=1; ctx.stroke();
+  ctx.fillStyle="#0b1620"; ctx.font="800 6.5px system-ui";
+  ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText(aa,x,yTop+8);
+  ctx.fillStyle="#2c4257"; ctx.strokeStyle="#9ec6dc"; ctx.lineWidth=1.2;
+  ctx.beginPath(); ctx.roundRect(x-16,yTop+16,32,21,5); ctx.fill(); ctx.stroke();
+  ctx.fillStyle="#cfe0ec"; ctx.font="800 8.5px system-ui"; ctx.fillText(anti,x,yTop+27);
+  ctx.restore();
+}
+/* one ATP hydrolysed to ADP + Pi for every peptide bond */
+function drawATPcycle(q,ax,T2){
+  if(q<=0.02||q>=0.99) return;
+  const LANE=170;                       // its own lane, below the pool and above the bond
+  if(q<0.5){ const u=ez(q/0.5);
+    pill(L(ax+250,ax+70,u), LANE, "ATP", "#8b5cf6", 10);
+    if(u>0.9){ ctx.save(); ctx.strokeStyle="rgba(190,160,240,.5)"; ctx.lineWidth=1.6; ctx.setLineDash([4,4]);
+      ctx.beginPath(); ctx.moveTo(ax+70,LANE+12); ctx.lineTo(ax+45,TL.yBond-14); ctx.stroke();
+      ctx.setLineDash([]); ctx.restore(); } }
+  else { const u=ez((q-0.5)/0.5); ctx.save(); ctx.globalAlpha=Math.max(0,1-u*0.55);
+    pill(L(ax+70,ax+250,u), LANE-21, "ADP", "#6d9fd8", 10);
+    pill(L(ax+70,ax+250,u), LANE+22, "Pi",  "#ef7fa8", 9.5);
+    ctx.restore(); }
+  if(q>0.46&&q<0.54) T2.curls.push({x:ax+45,y:TL.yBond+4,age:0.3});
+}
+function drawTRNA(x,yTop,yBot,anti,aa,col,alpha,bound,noAA,mono){
+  ctx.save(); if(alpha!=null) ctx.globalAlpha=alpha;
+  const wTop=30, wBot=22;
+  ctx.fillStyle=mono?"#7f5350":(bound?"#35506b":"#2c4257");
+  ctx.strokeStyle=mono?"#b08683":"#9ec6dc"; ctx.lineWidth=1.6;
+  ctx.beginPath();
+  ctx.moveTo(x-wTop,yTop+8); ctx.quadraticCurveTo(x-wTop-6,yTop-4,x-8,yTop-4);
+  ctx.lineTo(x+8,yTop-4); ctx.quadraticCurveTo(x+wTop+6,yTop-4,x+wTop,yTop+8);
+  ctx.lineTo(x+wBot,yBot); ctx.lineTo(x-wBot,yBot); ctx.closePath();
+  ctx.fill(); ctx.stroke();
+  if(!noAA){                                   // a tRNA that has handed its amino acid over carries none
+    ctx.beginPath(); ctx.arc(x,yTop-18,13,0,6.29); ctx.fillStyle=col; ctx.fill();
+    ctx.strokeStyle="rgba(6,16,24,.5)"; ctx.stroke();
+    ctx.fillStyle="#0b1620"; ctx.font="800 9px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
+    ctx.fillText(aa,x,yTop-18); }
+  if(mono){ ctx.fillStyle="#8a5f5c"; ctx.strokeStyle="rgba(6,16,24,.5)"; ctx.lineWidth=1.2;
+    for(let k=0;k<3;k++){ ctx.beginPath();
+      ctx.roundRect(x-TL.dx+k*TL.dx-12, yBot, 24, TL.yAnti[1]-TL.yAnti[0], 5); ctx.fill(); ctx.stroke(); } }
+  else for(let k=0;k<3;k++) drawBase(x-TL.dx+k*TL.dx, yBot, TL.yAnti[1]-TL.yAnti[0], anti[k], 1, 1, true);
+  ctx.restore();
+}
+function drawRibosome(cx){
+  ctx.save();
+  ctx.fillStyle="rgba(46,116,104,.93)"; ctx.strokeStyle="#6ddcc4"; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.ellipse(cx,(TL.yLargeTop+TL.yLargeBot)/2,TL.largeRx,(TL.yLargeBot-TL.yLargeTop)/2,0,0,6.29);
+  ctx.fill(); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(cx,(TL.ySmallTop+TL.ySmallBot)/2,TL.smallRx,(TL.ySmallBot-TL.ySmallTop)/2,0,0,6.29);
+  ctx.fill(); ctx.stroke();
+  ctx.fillStyle="#0e2a26"; ctx.font="800 10.5px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText("ribosome",cx,TL.ySmallBot-13);
+  ctx.restore();
+}
+/* Beyond the AQA specification: the directions everything runs in. */
+function drawDirections(pts,nDrawn,polP,released){
+  ctx.save();
+  ctx.fillStyle="rgba(90,40,110,.5)"; ctx.strokeStyle="#c07ad8"; ctx.lineWidth=1.4;
+  ctx.beginPath(); ctx.roundRect(618,506,300,40,9); ctx.fill(); ctx.stroke();
+  ctx.fillStyle="#e6c6f5"; ctx.font="800 10.5px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText("BEYOND THE AQA SPECIFICATION",768,520);
+  ctx.font="600 9.5px system-ui"; ctx.fillStyle="#cbb0dd";
+  ctx.fillText("directions are not examinable on 7402",768,536);
+  ctx.restore();
+  // the mRNA is read 5' to 3'
+  label(TL.X(0)-24,443,"5\u2032","#c9b6f5",12,"right");
+  label(TL.X(TL.n-1)+24,443,"3\u2032","#c9b6f5",12,"left");
+  ctx.save(); ctx.strokeStyle="#8b6bb8"; ctx.lineWidth=1.6;
+  const ay=443, x0=TL.X(0)-10, x1=TL.X(TL.n-1)+10;      // clear of the small subunit
+  ctx.beginPath(); ctx.moveTo(x0,ay); ctx.lineTo(x1,ay);
+  ctx.moveTo(x1-9,ay-4); ctx.lineTo(x1,ay); ctx.lineTo(x1-9,ay+4); ctx.stroke(); ctx.restore();
+  label(470,522,"the ribosome reads the mRNA 5\u2032 \u2192 3\u2032","#c9b6f5",10.5);
+  // the polypeptide starts at its N-terminus — shown once it is clear of the subunit
+  if(nDrawn>0 && pts[0][0] < TL.cx(polP)-TL.largeRx-4){ const q=pts[0];
+    label(q[0]-17,q[1],"N-terminus   H\u2082N\u2013","#e6c6f5",10.5,"right");
+    if(released){ const e=pts[pts.length-1];          // the newest residue is the C-terminus
+      const txt="\u2013COOH   C-terminus";
+      ctx.save(); ctx.font="800 10.5px system-ui";
+      const w=ctx.measureText(txt).width+16;           // its own backing, so it reads from the moment
+      ctx.fillStyle="rgba(10,22,30,.85)"; ctx.strokeStyle="rgba(230,198,245,.4)"; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.roundRect(e[0]+14,e[1]-11,w,22,7); ctx.fill(); ctx.stroke(); ctx.restore();
+      label(e[0]+22,e[1],txt,"#e6c6f5",10.5,"left"); } }
+}
+function drawTL(){
+  const T2=tl(), st=T2.step, f=Math.min(1,T2.t/LSTEPS[st].d);
+  let t=T2.t; for(let i=0;i<st;i++) t+=LSTEPS[i].d;
+  const {p,chain,bond,slide,from,newestC,anchorC,pC,aC,arrive}=tlProgress(st,f);
+  const pInt=Math.round(p), rcx=TL.cx(p), aaY=TL.yBodyTop-18;
+  const pSiteAA=[TL.cx(newestC),aaY];
+  const rel = st===6 ? seg(f,0.52,1) : 0, relX=-rel*306, relY=-rel*32;   // floats clear, stays fully visible
+  const nAA=Math.max(0,Math.min(chain,TL.nc-1)), nDrawn=Math.max(0,nAA-1);
+  // every residue shifts back one slot as a new one joins, so nothing jumps
+  const gs=ez(slide);
+  const pts=[]; for(let i=0;i<nDrawn;i++) pts.push(polyPt((nDrawn-1-i+gs)*32,TL.cx(anchorC)));
+  if(nAA>0) pts.push(pSiteAA.slice());
+  // the residue that has just been handed over slides from its tRNA into the chain
+  if(nAA>=2 && slide<1 && from>=0){ const tgt=pts[nAA-2], u=ez(slide);
+    pts[nAA-2]=[L(TL.cx(from),tgt[0],u), L(aaY,tgt[1],u)]; }
+  // whichever tRNA the chain is holding must not also draw its own amino acid
+  const noAAat = c => nAA>0 && (c===newestC || c===from);
+  if(rel>0) for(const q of pts){ q[0]+=relX; q[1]+=relY; }         // the ribosome is centred on the codon in the P site
+  title("Translation","Ribosome \u00b7 mRNA \u2192 polypeptide");
+
+  // free tRNA drifting about
+  const spare=[1,2,3,4];
+  for(let k=0;k<4;k++){ const q=wander(k,t,[280,TL.poolY[0],470,TL.poolY[1]],4);
+    const cd=TL.codon(spare[k%4]), a=CODE[cd];
+    drawTRNAsmall(q[0],q[1],anticodon(cd),a[0],a[1],0.85); }
+
+  // ---- mRNA (a short untranslated stretch either side so the ribosome sits on it) ----
+  drawBackbone([[TL.X(0)-64,TL.yMrnaBB],[TL.X(TL.n-1)+30,TL.yMrnaBB]],RNAC,6);
+  for(let i=0;i<TL.n;i++) drawBase(TL.X(i),TL.yMrnaBase[1],24,TL.seq[i],-1,1,true,TL.yMrnaBB);
+
+  drawRibosome(rcx);
+
+  // the peptide bonds are laid down first, so every amino acid sits in front of them
+  if(pts.length>1){ ctx.save();
+    ctx.strokeStyle="rgba(225,238,248,.75)"; ctx.lineWidth=3.4; ctx.lineCap="round"; ctx.lineJoin="round";
+    ctx.beginPath(); pts.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));
+    ctx.stroke(); ctx.restore(); }
+
+  // ---- tRNA sitting in the ribosome ----
+  const pc=TL.codon(pC), ac=TL.codon(aC);
+  const showP = st>=1 && st!==4 && !(st===1&&f<0.82);
+  const showA = (st>=2 && st<=3) || st===5;
+  if(st===1){
+    const wrong=TL.codon(2);
+    if(f<0.50){ const u=seg(f,0.04,0.22), ex=ez(f>0.30?seg(f,0.30,0.50):0);
+      // rejected: it drifts away to the RIGHT and back up, fading out long before the edge
+      const x=L(TL.cx(pC)-176,TL.cx(pC),u)+ex*300;
+      const yTop=L(TL.poolY[1]+40,TL.yBodyTop,u)-ex*66;
+      drawTRNA(x, yTop, yTop+(TL.yAnti[0]-TL.yBodyTop), anticodon(wrong),
+        CODE[wrong][0], CODE[wrong][1], Math.max(0,1-ex*1.3), false);
+      if(f>0.20&&f<0.32) label(rcx+TL.largeRx+18,300,"anticodon not complementary \u2014 it leaves again","#ff9d95",11,"left"); }
+    else if(f<0.82){ const u=seg(f,0.52,0.80);
+      drawTRNA(L(TL.cx(pC)-176,TL.cx(pC),u), L(TL.poolY[1]+40,TL.yBodyTop,u),
+        L(TL.poolY[1]+66,TL.yAnti[0],u), anticodon(pc), CODE[pc][0], CODE[pc][1], 1, false);
+      if(f>0.72) label(rcx+TL.largeRx+18,300,"anticodon complementary \u2014 it binds","#9fe8bd",11,"left"); } }
+  if(showP){ drawTRNA(TL.cx(pC),TL.yBodyTop,TL.yAnti[0],anticodon(pc),CODE[pc][0],CODE[pc][1],1,true,noAAat(pC));
+    codonHBonds(pC); }
+  if(showA && CODE[ac][0]!=="STOP"){
+    // each new tRNA arrives after the translocation instead of popping into place
+    const u = st===2 ? seg(f,0.1,0.85) : arrive;
+    drawTRNA(L(TL.cx(aC)+180,TL.cx(aC),u), L(TL.poolY[1]+124,TL.yBodyTop,u),
+      L(TL.poolY[1]+150,TL.yAnti[0],u), anticodon(ac), CODE[ac][0], CODE[ac][1], 1, true, noAAat(aC));
+    if(u>0.95) codonHBonds(aC); }
+  if(st===4){ const u=ez(f), c1=TL.codon(1);
+    drawTRNA(TL.cx(1),TL.yBodyTop,TL.yAnti[0],anticodon(c1),CODE[c1][0],CODE[c1][1],1,true,noAAat(1));
+    codonHBonds(1);
+    const c0=TL.codon(0);
+    drawTRNA(L(TL.cx(0),TL.cx(0)-140,u), L(TL.yBodyTop,TL.poolY[1]+40,u),
+      L(TL.yAnti[0],TL.poolY[1]+66,u), anticodon(c0), CODE[c0][0], CODE[c0][1], Math.max(0,1-u*1.15), false, true);
+    if(u>0.25) label(924,TL.poolLbl+34,"the first tRNA leaves without its amino acid","#9fb8c9",10,"right");
+    label(rcx,TL.capY,"the ribosome moves one codon along","#ffd98a",11.5); }
+
+  // ---- the polypeptide, forming INSIDE the large subunit and threading out ----
+  if(nAA>0){
+    if(rel>0) ctx.save();
+    const nCirc = pts.length;                       // the chain draws every residue, tRNA draws none
+    for(let i=0;i<nCirc;i++){ const a=CODE[TL.codon(i)], q=pts[i];
+      ctx.save(); ctx.beginPath(); ctx.arc(q[0],q[1],13,0,6.29); ctx.fillStyle=a[1]; ctx.fill();
+      ctx.strokeStyle="rgba(6,16,24,.55)"; ctx.lineWidth=1.2; ctx.stroke();
+      ctx.fillStyle="#0b1620"; ctx.font="800 9px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
+      ctx.fillText(a[0],q[0],q[1]); ctx.restore(); }
+    if(nDrawn>0 && !S.dirs){ const lx=Math.max(80,pts[0][0]-18);
+      if(nAA>=3) label(Math.min(lx,rcx-TL.largeRx-8),pts[0][1]-4,"polypeptide","#c3d4e0",11,"right"); }
+    if(rel>0) ctx.restore();
+    if(S.dirs) drawDirections(pts,nDrawn,p,rel>0); }   // the instant it detaches
+  else if(S.dirs) drawDirections([],0,p,false);
+
+  if(st===3){ drawATPcycle(f,pSiteAA[0],T2);
+    if(f>0.52) label(rcx,TL.capY,"peptide bond forms \u2014 ATP \u2192 ADP + Pi","#ffd98a",11.5); }
+  if(st===5){ drawATPcycle(bond-Math.floor(bond),pSiteAA[0],T2);
+    label(rcx,TL.capY,"one ATP is hydrolysed for every peptide bond","#c9b6f5",11); }
+  if(st===6){ const sc=Math.min(TL.nc-1,pInt+1), u=seg(f,0.08,0.46);
+    drawTRNA(L(TL.cx(sc)+230,TL.cx(sc),u), L(TL.poolY[1]+40,TL.yBodyTop,u),
+      L(TL.poolY[1]+66,TL.yAnti[0],u), "   ", "", "#7f5350", 1, true, true, true);
+    label(470,TL.capY,"when the stop codon is reached, the polypeptide chain is released from the ribosome","#ffd98a",11.5); }
+
+  // drawn last so nothing can obscure them
+  label(924,90,"free tRNA, each carrying its amino acid","#7f97a8",10.5,"right");
+  label(TL.X(0)-74,TL.yMrnaBB,"mRNA",RNAC,11,"right");
+  for(let c=0;c<TL.nc;c++){ const cd=TL.codon(c);
+    label(TL.cx(c),TL.yCodon,cd,"#8fa8b8",10.5);
+    label(TL.cx(c),TL.yAAname,CODE[cd][0],CODE[cd][1],10.5); }
+  for(const c of T2.curls) curl(c.x,c.y,c.age);
+  ctx.save(); ctx.textAlign="left"; ctx.textBaseline="middle"; ctx.font="700 11px system-ui";
+  ctx.fillStyle="#c3d4e0";
+  ctx.fillText("codons read "+(Math.min(pInt+1,TL.nc-1))+"    amino acids joined "+nAA+
+    "    peptide bonds "+Math.max(0,nAA-1)+"    ATP used "+Math.max(0,nAA-1)+
+    "    polypeptides made "+T2.cum.poly, 76, 540);
+  ctx.restore();
+}
+
+/* =======================================================================
+   TAB — POST-TRANSCRIPTIONAL PROCESSING (splicing)
+   Reuses the transcription animation for the first stage, then works on the
+   very same pre-mRNA, base by base.
+   ======================================================================= */
+const EXC="#c084fc", INC="#78848f";       // exon purple, intron grey
+const SP={ yUp:196 };
+const SP_BASE=[
+  {p:"transcribe",d:4.6,t:"The gene is transcribed \u2014 the same process as the transcription tab, run through quickly and without its labels. What matters here is the pre-mRNA it leaves behind."},
+  {p:"fade",      d:1.4,t:"The DNA has rewound and plays no further part. Everything that follows happens to the pre-mRNA, still inside the nucleus."},
+  {p:"lift",      d:1.5,t:"The pre-mRNA lifts clear. Its backbone is now colour-coded: purple where it is exon, grey where it is intron. Only the exons code for part of the polypeptide."},
+  {p:"cut",       d:3.5,t:"The pre-mRNA is cut at both ends of each intron."},
+  {p:"release",   d:3.75,t:"Each excised intron is released from the strand and broken down."},
+  {p:"join",      d:4.0,t:"The exons are joined together. The result is mature mRNA, which leaves the nucleus for a ribosome."}
+];
+const SP_CAP=[{p:"cap",d:2.1,t:"BEYOND THE SPECIFICATION: the mRNA is also given a cap at its 5\u2032 end and a tail of adenine nucleotides \u2014 the poly(A) tail \u2014 at its 3\u2032 end. These protect it from enzymes and help a ribosome bind."},
+  {p:"protect",d:4.6,t:"BEYOND THE SPECIFICATION: the cap and tail are what keep the mRNA usable. Without them the exposed ends are attacked by enzymes and the mRNA is broken down quickly, and a ribosome has nothing to bind to."}];
+const SP_ALT=[{p:"alt",d:4.4,t:"BEYOND THE SPECIFICATION: the same pre-mRNA can be spliced in more than one way. An exon can be left out, or an intron kept in. Each version gives a different mRNA and so a different polypeptide \u2014 one reason an organism has far more proteins than genes."}];
+/* four of the mRNAs this one pre-mRNA could give */
+const SPALTS=[
+  {b:["E1","E2","E3"],      t:"all three exons kept"},
+  {b:["E1","E3"],           t:"exon 2 skipped"},
+  {b:["E1","E2"],           t:"exon 3 skipped"},
+  {b:["E1","I1","E2","E3"], t:"intron 1 kept in"}
+];
+const SPVIEWS=[
+  {cap:0,alt:0,label:"\u2460 splicing only  \u00b7  tap to change"},
+  {cap:1,alt:0,label:"\u2461 + 5\u2032 cap and poly(A) tail"},
+  {cap:0,alt:1,label:"\u2462 + alternative splicing"},
+  {cap:1,alt:1,label:"\u2463 + cap, tail and alternative splicing"}
+];
+function spSetView(v){
+  const was={cap:S.spCap,alt:S.spAlt};
+  S.spView=v; S.spCap=!!SPVIEWS[v-1].cap; S.spAlt=!!SPVIEWS[v-1].alt;
+  const R=sp(), A=spSteps();
+  const jump = (S.spAlt&&!was.alt) ? "alt" : (S.spCap&&!was.cap) ? "cap" : null;
+  if(jump){ const i=A.findIndex(z=>z.p===jump); if(i>=0){ R.step=i; R.t=0; } setRun(true); }
+  else if(R.step>=A.length){ R.step=A.length-1; R.t=0; }
+}
+function spSteps(){ return SP_BASE.concat(S.spCap?SP_CAP:[], S.spAlt?SP_ALT:[]); }
+let SPS=null;
+function sp(){ if(!SPS) SPS={step:0,t:0,cum:{mrna:0}}; return SPS; }
+function updateSP(dt){ const R=sp(), A=spSteps();
+  if(S.playing){ R.t+=dt*S.speed;
+    if(R.t>=A[R.step].d){ R.t=0; R.step++;
+      if(R.step>=A.length){ R.step=0; R.cum.mrna++; } } } }
+function spState(ph,f){
+  const o=["transcribe","fade","lift","cut","release","join","cap","protect","alt"], past=p=>o.indexOf(ph)>o.indexOf(p);
+  return { dnaAl: ph==="fade" ? 1-ez(f) : (past("fade")?0:1),
+    lift: ph==="lift"?ez(f):(past("lift")?1:0),
+    cut:  ph==="cut" ?ez(f):(past("cut") ?1:0),
+    rel:  ph==="release"?ez(f):(past("release")?1:0),
+    join: ph==="join"?ez(f):(past("join")?1:0),
+    cap:  ph==="cap" ?ez(f):(past("cap") ?1:0),
+    prot: ph==="protect"?ez(f):0,
+    alt:  ph==="alt" ?ez(f):0 };
+}
+/* side by side: what the cap and tail actually do for the mRNA */
+function spProtect(g){
+  label(470,268,"what the cap and tail are for","#e6c6f5",12);
+  const x0=262, x1=596;
+  // ---- without them ----
+  const yA=326, eat=Math.min(1,g*1.6)*74;
+  label(176,yA,"no cap or tail","#c9b6f5",10.5,"right");
+  ctx.save(); ctx.strokeStyle=EXC; ctx.lineWidth=7; ctx.lineCap="round";
+  ctx.beginPath(); ctx.moveTo(x0+eat,yA); ctx.lineTo(x1-eat,yA); ctx.stroke(); ctx.restore();
+  const ap=Math.min(1,g*1.6);
+  enzyme(L(x0-24,x0+eat-32,ap),yA,58,22,"#e0743f","enzyme",9.5);
+  enzyme(L(x1+56,x1-eat+32,ap),yA,58,22,"#e0743f","enzyme",9.5);
+  if(g>0.45) label(470,yA+36,"the ends are exposed \u2014 enzymes break the mRNA down quickly","#ff9d95",10.5);
+  // ---- with them ----
+  const yB=436, bo=g>0.42?ez(seg(g,0.42,0.72)):0;
+  label(176,yB,"with cap and tail","#c9b6f5",10.5,"right");
+  ctx.save(); ctx.strokeStyle=EXC; ctx.lineWidth=7; ctx.lineCap="round";
+  ctx.beginPath(); ctx.moveTo(x0-6,yB); ctx.lineTo(x1,yB); ctx.stroke();
+  ctx.beginPath(); ctx.arc(x0-24,yB,11,0,6.29); ctx.fillStyle="#6ddcc4"; ctx.fill();
+  ctx.strokeStyle="rgba(8,18,26,.55)"; ctx.lineWidth=1.3; ctx.stroke(); ctx.restore();
+  for(let k=0;k<5;k++) drawBase(x1+16+k*26,yB-8,22,"A",-1,1,true,yB);
+  enzyme(L(x0-96,x0-52,Math.min(1,g*2))-bo*52,yB+34,58,22,"#e0743f","enzyme",9.5);
+  enzyme(L(x1+160,x1+116,Math.min(1,g*2))+bo*52,yB+34,58,22,"#e0743f","enzyme",9.5);
+  if(bo>0.25){ ctx.save(); ctx.globalAlpha=Math.min(1,bo*2);
+    ctx.fillStyle="rgba(46,116,104,.93)"; ctx.strokeStyle="#6ddcc4"; ctx.lineWidth=1.8;
+    const rx2=L(x0+190,x0+6,bo), ry2=yB-32;
+    ctx.beginPath(); ctx.ellipse(rx2,ry2,34,20,0,0,6.29); ctx.fill(); ctx.stroke();
+    ctx.fillStyle="#0e2a26"; ctx.font="800 9.5px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
+    ctx.fillText("ribosome",rx2,ry2); ctx.restore(); }
+  if(g>0.72) label(470,yB+70,"the ends are protected, and a ribosome binds at the cap \u2014 so it lasts and can be translated","#9fe8bd",10.5);
+}
+function spBadge(txt){
+  ctx.save();
+  ctx.fillStyle="rgba(90,40,110,.5)"; ctx.strokeStyle="#c07ad8"; ctx.lineWidth=1.4;
+  ctx.beginPath(); ctx.roundRect(560,52,362,38,9); ctx.fill(); ctx.stroke();
+  ctx.fillStyle="#e6c6f5"; ctx.font="800 10.5px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText("BEYOND THE AQA SPECIFICATION",741,65);
+  ctx.font="600 9.5px system-ui"; ctx.fillStyle="#cbb0dd"; ctx.fillText(txt,741,80);
+  ctx.restore();
+}
+function spDrawStrand(y,q,alt,scale,lab){
+  scale=scale==null?1:scale; lab=lab!==false;
+  // how many intron bases lie before base i — the exons close up over them
+  const before=i=>{ let n=0; for(let k=0;k<i;k++) if(alt? spAltOut(k) : isIntron(k)) n++; return n; };
+  const out = alt ? spAltOut : isIntron;
+  const segs=[];
+  for(const r of GENE.regions){
+    const rem = alt ? out(r.a) : !r.ex;
+    segs.push({a:r.a,b:r.b,rem}); }
+  // backbone, coloured by region
+  for(const g of segs){
+    const off = -q.join*before(g.a)*TR.dx;
+    const up  = g.rem ? -(q.cut*36 + q.rel*76)*scale : 0;   // excised pieces drop away below
+    const al  = g.rem ? Math.max(0,1-q.rel*1.3) : 1;
+    if(al<0.02) continue;
+    const col = q.lift>0.45 ? (g.rem?INC:EXC) : RNAC;
+    ctx.save(); ctx.globalAlpha=al; ctx.strokeStyle=col; ctx.lineWidth=7; ctx.lineCap="round";
+    ctx.beginPath(); ctx.moveTo(TR.X(g.a)-13+off,y-up); ctx.lineTo(TR.X(g.b)+13+off,y-up); ctx.stroke(); ctx.restore();
+    for(let i=g.a;i<=g.b;i++) drawBase(TR.X(i)+off, y-up-8, 24, GENE.pre[i], -1, al, true, y-up);
+    if(q.lift>0.45 && (!g.rem||q.rel<0.9) && lab){
+      const cx2=(TR.X(g.a)+TR.X(g.b))/2+off;
+      label(cx2, y-up+30, g.rem?"intron":"exon", g.rem?INC:"#c9b6f5", 10.5);
+      if(g.rem&&q.rel<0.5) label(cx2, y-up+44, "to be removed", INC, 9.5); }
+  }
+  // the cuts
+  if(q.cut>0.02&&q.rel<0.15){ ctx.save(); ctx.strokeStyle="#ffd98a"; ctx.lineWidth=2.4;
+    for(const g of segs){ if(!g.rem) continue;
+      for(const xx of [TR.X(g.a)-14,TR.X(g.b)+14]){
+        ctx.beginPath(); ctx.moveTo(xx,y-26); ctx.lineTo(xx,y+22); ctx.stroke(); } }
+    ctx.restore(); }
+}
+function spAltOut(i){ return isIntron(i) || (i>=12&&i<=17); }   // exon 2 skipped as well
+function drawSP(){
+  const R=sp(), A=spSteps(), st=R.step, ph=A[st].p, f=Math.min(1,R.t/A[st].d);
+  title("Post-transcriptional processing","Nucleus \u00b7 pre-mRNA \u2192 mRNA");
+  if(ph==="transcribe"){                        // hand over to the real transcription animation
+    const TB=T_BASE, tot=TB.reduce((x,z)=>x+z.d,0); let t=f*tot;
+    const R2=tr();
+    for(let i=0;i<TB.length;i++){ if(t<TB[i].d||i===TB.length-1){ R2.step=i; R2.t=Math.min(t,TB[i].d-0.001); break; } t-=TB[i].d; }
+    S.bare=true; drawTR(); S.bare=false;
+    return; }
+  const q=spState(ph,f), y=L(TR.yTrailBB,SP.yUp,q.lift);
+  if(q.dnaAl>0.02){ ctx.save(); ctx.globalAlpha=q.dnaAl;
+    duplexPair(TR.bbX,900,TR.yTmplBB,TR.yPairBB,"#a8cfe4",OLD,1); ctx.restore(); }
+  spDrawStrand(y,q,false);
+  label(TR.lblX-(q.cap>0.02?62:0), y, q.join>0.6?"mRNA":"pre-mRNA", q.join>0.6?EXC:RNAC, 12, "right");
+  if(q.cut>0.05&&q.rel<0.2) label(470,146,"cut at both ends of each intron","#ffd98a",12);
+
+  if(q.cap>0.02){ const u=q.cap, kept=[...Array(TR.n).keys()].filter(i=>!isIntron(i));
+    const lx=TR.X(kept[0])-13, rx=TR.X(kept[kept.length-1])+13-q.join*12*TR.dx;
+    const nA=Math.round(11*Math.min(1,u*1.3));            // the tail grows out of the 3\u2032 end
+    ctx.save(); ctx.globalAlpha=Math.min(1,u*2);
+    // the cap is joined to the mRNA backbone by a short linker
+    ctx.strokeStyle=EXC; ctx.lineWidth=6; ctx.lineCap="round";
+    ctx.beginPath(); ctx.moveTo(lx-26,y); ctx.lineTo(lx+4,y); ctx.stroke();
+    ctx.beginPath(); ctx.arc(lx-38,y,12,0,6.29); ctx.fillStyle="#6ddcc4"; ctx.fill();
+    ctx.strokeStyle="rgba(8,18,26,.55)"; ctx.lineWidth=1.3; ctx.stroke();
+    ctx.restore();
+    if(nA>0){ ctx.save(); ctx.globalAlpha=Math.min(1,u*2);
+      ctx.strokeStyle=EXC; ctx.lineWidth=6; ctx.lineCap="round";
+      ctx.beginPath(); ctx.moveTo(rx-4,y); ctx.lineTo(rx+8+(nA-1)*TR.dx+10,y); ctx.stroke(); ctx.restore();
+      for(let k=0;k<nA;k++) drawBase(rx+8+k*TR.dx, y-8, 24, "A", -1, Math.min(1,u*2), true, y); }
+    label(lx-38,y-36,"5\u2032 cap","#6ddcc4",10.5);
+    if(nA>2) label(rx+8+(nA-1)*TR.dx/2, y+62, "poly(A) tail \u2014 many adenine nucleotides", "#2c9159",10.5);
+  }
+
+  if(q.prot>0.02) spProtect(q.prot);
+
+  if(q.alt>0.02){ const u=q.alt;
+    label(470,286,"the same pre-mRNA \u2014 four of the mRNAs it could give","#e6c6f5",12);
+    SPALTS.forEach((r,i)=>{
+      const ry=322+i*46, on=Math.max(0,Math.min(1,u*4.4-i*0.85));
+      if(on<=0.02) return;
+      let x=286;
+      ctx.save(); ctx.globalAlpha=on;
+      ctx.strokeStyle=EXC; ctx.lineWidth=5; ctx.lineCap="round";
+      ctx.beginPath(); ctx.moveTo(x-8,ry); ctx.lineTo(x+r.b.length*88-8,ry); ctx.stroke();
+      for(const bk of r.b){ const ex=bk[0]==="E";
+        ctx.fillStyle=ex?EXC:INC; ctx.strokeStyle="rgba(8,18,26,.55)"; ctx.lineWidth=1.2;
+        ctx.beginPath(); ctx.roundRect(x,ry-13,80,26,6); ctx.fill(); ctx.stroke();
+        ctx.fillStyle="#0b1620"; ctx.font="800 10.5px system-ui";
+        ctx.textAlign="center"; ctx.textBaseline="middle";
+        ctx.fillText((ex?"exon ":"intron ")+bk[1],x+40,ry);
+        x+=88; }
+      label(266,ry,r.t,"#c9b6f5",10.5,"right");
+      label(x+2,ry,"\u2192 a different polypeptide","#9fb8c9",10,"left");
+      ctx.restore(); });
+    if(u>0.82) label(470,522,"exons are always joined in the order they occur \u2014 what changes is which ones are included","#e6c6f5",11);
+  }
+
+  const showCap=q.cap>0.02||q.prot>0.02, showAlt=q.alt>0.02;
+  if(showCap||showAlt) spBadge(showCap&&showAlt ? "cap, tail and alternative splicing are not on the AQA specification"
+    : showCap ? "cap and tail are not on the AQA specification"
+    : "alternative splicing is not on the AQA specification");
+  ctx.save(); ctx.textAlign="left"; ctx.textBaseline="middle"; ctx.font="700 11px system-ui";
+  ctx.fillStyle="#c3d4e0";
+  ctx.fillText("introns removed "+(q.rel>=1?2:0)+"    exons kept "+(q.join>0.6?3:0)+
+    "    mRNA molecules made "+R.cum.mrna, 76, 546);
+  ctx.restore();
+}
+
+/* =======================================================================
+   TAB — CONTROL OF GENE EXPRESSION   (AQA 3.8.2)
+   ======================================================================= */
+const GXVIEWS=[
+  {k:"over",label:"Overview \u2014 where gene expression is controlled"},
+  {k:"epi", label:"1. Epigenetic control"},
+  {k:"tf",  label:"2. Transcriptional control \u2014 transcription factors"},
+  {k:"oest",label:"2. Transcriptional control \u2014 oestrogen"},
+  {k:"si",  label:"3. Post-transcriptional control \u2014 RNA interference"}
+];
+const GX_TF=[
+  {d:3.6,t:"Transcription factors are proteins that enter the nucleus and move about in the nucleoplasm. A gene has a promoter region just before it, where they can bind."},
+  {d:5.2,t:"A transcription factor binds a promoter only where the base sequence is complementary to its DNA-binding site. This one reaches a promoter it does not match, so it cannot bind and moves on."},
+  {d:4.8,t:"This transcription factor IS complementary to this promoter, so on contact it binds. That is why a given transcription factor activates only certain genes."},
+  {d:5.6,t:"The bound transcription factor now recruits RNA polymerase. RNA polymerase comes in from the nucleoplasm and binds to the transcription factor first \\u2014 it does not attach to the DNA somewhere else and slide along until it meets it."},
+  {d:5.0,t:"Only once it is held there does RNA polymerase settle onto the DNA and begin transcribing. mRNA is made one nucleotide at a time."},
+  {d:3.4,t:"The mRNA is translated into a polypeptide, so the gene is expressed. Other transcription factors work the opposite way and inhibit transcription."}
+];
+const GX_OEST=[
+  {d:3.6,t:"Oestrogen is a steroid hormone, made in the ovaries and carried in the blood to its target cells. It is not itself a transcription factor \u2014 it is the molecule that switches one on."},
+  {d:5.0,t:"THE KEY POINT: oestrogen is non-polar, so it is lipid-soluble. It passes straight between the fatty acid tails of the phospholipid bilayer by simple diffusion, needing no carrier or channel protein. Most hormones cannot do this."},
+  {d:5.0,t:"In the cytoplasm it meets a transcription factor and binds to a receptor site on it, complementary to the oestrogen molecule. Only target cells have this receptor \u2014 which is why oestrogen affects some cells and not others."},
+  {d:3.6,t:"Binding changes the shape of the transcription factor, so its DNA-binding site becomes active."},
+  {d:3.4,t:"The complex passes through a nuclear pore into the nucleus."},
+  {d:5.0,t:"It binds to the promoter region and stimulates RNA polymerase, so the gene is transcribed. The more oestrogen there is, the more of these genes are transcribed."}
+];
+const GX_EPI=[
+  {d:2.4,t:"A DNA molecule is a double helix. Its phosphate groups give it a negative charge."},
+  {d:3.2,t:"It winds almost twice around a core of eight histone proteins. Histones are positively charged, so the negatively charged DNA is attracted to them. DNA plus its histones is a NUCLEOSOME."},
+  {d:2.8,t:"Nucleosomes repeat all along the DNA, with linker DNA between them. Together, DNA and histones are called chromatin."},
+  {d:5.4,t:"ONE: HISTONE ACETYLATION. Acetyl groups on the histone tails reduce the positive charge, so the histones hold the negatively charged DNA less tightly. The chromatin stays loosely packed, transcription factors and RNA polymerase can reach the promoter, and the rate of transcription is high."},
+  {d:6.0,t:"Remove the acetyl groups and the histones become more positively charged. They attract the negatively charged DNA more strongly, the chromatin condenses and supercoils, and the promoter is no longer accessible. The rate of transcription falls."},
+  {d:3.2,t:"Acetylation is one route. DNA METHYLATION is a separate one, so start again from loosely packed chromatin."},
+  {d:5.6,t:"TWO: DNA METHYLATION. Methyl groups are added to cytosine bases along the DNA. This causes the chromatin to become more condensed, which prevents transcription factors and RNA polymerase reaching the promoter region, so the rate of transcription falls."},
+  {d:4.0,t:"Neither route changes the base sequence of the DNA. Both are epigenetic, and both are reversible."}
+];
+const GX_SI=[
+  {d:3.0,t:"A gene has been transcribed and its mRNA is in the cytoplasm, ready to be translated."},
+  {d:3.8,t:"A short double-stranded RNA molecule is made. AQA calls this siRNA; miRNA works in much the same way, and the exact difference between them is beyond the specification."},
+  {d:3.6,t:"A protein reaches it and combines with it. Together they will seek out any mRNA the strand matches."},
+  {d:3.0,t:"The two siRNA strands are separated, and one of them is kept by the complex."},
+  {d:4.0,t:"That strand is complementary to part of the mRNA, so on contact it base-pairs with it."},
+  {d:3.6,t:"RNA hydrolase cuts the mRNA into fragments."},
+  {d:3.2,t:"The mRNA can no longer be translated, so no polypeptide is made \u2014 the gene has been silenced."}
+];
+function gxSteps(){ return S.gxView===1 ? [{d:1e9,t:gxOverText()}] : [GX_EPI,GX_TF,GX_OEST,GX_SI][S.gxView-2]; }
+let GXS=null;
+function gx(){ if(!GXS) GXS={step:0,t:0,sel:0,clk:0,cum:{on:0,off:0}}; return GXS; }
+function gxElapsed(){ const R=gx(), A=gxSteps(); let t=R.t; for(let i=0;i<R.step;i++) t+=A[i].d; return t; }
+function updateGX(dt){ const R=gx(), A=gxSteps();
+  if(S.gxView===1){ R.step=0; R.t=0; if(S.playing) R.clk=(R.clk||0)+dt; return; }   // clicked, not played
+  if(S.playing){ R.t+=dt*S.speed;
+    if(R.t>=A[R.step].d){ R.t=0; R.step++;
+      if(R.step>=A.length){ R.step=0; if(S.gxView===1||S.gxView===2) R.cum.on++; else R.cum.off++; } } } }
+function gxSetView(v){ S.gxView=v; const R=gx(); R.step=0; R.t=0; R.sel=0; setRun(v!==1); }
+/* ---- shared pieces ---- */
+function gxRail(y,x0,x1){
+  drawBackbone([[x0,y],[x1,y]],OLD,6); drawBackbone([[x0,y+22],[x1,y+22]],OLD,6);
+  ctx.save(); ctx.strokeStyle="#8fb4c8"; ctx.lineWidth=1.2;
+  for(let x=x0+12;x<x1;x+=16){ ctx.beginPath(); ctx.moveTo(x,y+5); ctx.lineTo(x,y+17); ctx.stroke(); }
+  ctx.restore();
+}
+function gxPromoter(cx,y){
+  ctx.save();
+  ctx.fillStyle="rgba(224,160,33,.22)"; ctx.strokeStyle="#e0a021"; ctx.lineWidth=1.6;
+  ctx.beginPath(); ctx.roundRect(cx-72,y-1,144,24,5); ctx.fill(); ctx.stroke();
+  ctx.beginPath(); ctx.arc(cx,y-1,13,Math.PI,0); ctx.fillStyle="#e0a021"; ctx.fill(); ctx.stroke();
+  ctx.restore();
+  label(cx,y+40,"promoter region","#e0a021",11);
+}
+/* a transcription factor: square DNA-binding site = inactive, round = active */
+function gxFactor(cx,cy,active,recept,filled,site){
+  const w=150,h=48, l=cx-w/2, r=cx+w/2, t=cy-h/2, b=cy+h/2;
+  ctx.save(); ctx.globalAlpha=1;
+  ctx.fillStyle=active?"#4f9c86":"#4a6172"; ctx.strokeStyle="#dbe7ef"; ctx.lineWidth=1.6;
+  ctx.beginPath(); ctx.moveTo(l+10,t);
+  if(recept){ ctx.lineTo(cx-13,t); ctx.arc(cx,t,13,Math.PI,0,false); ctx.lineTo(r-10,t); }
+  else ctx.lineTo(r-10,t);
+  ctx.quadraticCurveTo(r,t,r,t+10); ctx.lineTo(r,b-10); ctx.quadraticCurveTo(r,b,r-10,b);
+  if(active){ ctx.lineTo(cx+14,b); ctx.arc(cx,b,14,0,Math.PI,true); ctx.lineTo(l+10,b); }
+  else { ctx.lineTo(cx+14,b); ctx.lineTo(cx+14,b-15); ctx.lineTo(cx-14,b-15); ctx.lineTo(cx-14,b); ctx.lineTo(l+10,b); }
+  ctx.quadraticCurveTo(l,b,l,b-10); ctx.lineTo(l,t+10); ctx.quadraticCurveTo(l,t,l+10,t);
+  ctx.closePath(); ctx.fill(); ctx.stroke();
+  if(site){ ctx.strokeStyle=site; ctx.lineWidth=4.5; ctx.lineCap="round"; ctx.beginPath();
+    if(active) ctx.arc(cx,b,14,0,Math.PI,true);
+    else { ctx.moveTo(cx-14,b); ctx.lineTo(cx-14,b-15); ctx.lineTo(cx+14,b-15); ctx.lineTo(cx+14,b); }
+    ctx.stroke(); }
+  ctx.restore();
+  label(cx,cy,"transcription factor","#eaf4f8",10.5);
+  if(filled){ ctx.save(); ctx.beginPath(); ctx.arc(cx,cy-24,12,0,6.29);
+    ctx.fillStyle="#f4a259"; ctx.fill(); ctx.strokeStyle="rgba(8,18,26,.5)"; ctx.lineWidth=1.2; ctx.stroke(); ctx.restore(); }
+}
+function gxOestrogen(x,y){
+  ctx.save(); ctx.globalAlpha=1;
+  ctx.beginPath(); ctx.arc(x,y,12,0,6.29); ctx.fillStyle="#f4a259"; ctx.fill();
+  ctx.strokeStyle="rgba(8,18,26,.5)"; ctx.lineWidth=1.3; ctx.stroke(); ctx.restore();
+}
+function gxTag(x,y,txt,col,r){
+  r=r||9;
+  ctx.save(); ctx.beginPath(); ctx.arc(x,y,r,0,6.29); ctx.fillStyle=col; ctx.fill();
+  ctx.strokeStyle="rgba(8,18,26,.5)"; ctx.lineWidth=1; ctx.stroke();
+  ctx.fillStyle="#0b1620"; ctx.font="800 "+(r*0.92).toFixed(1)+"px system-ui";
+  ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText(txt,x,y); ctx.restore();
+}
+function gxRate(v,txt){
+  const x0=690,w=150,y=74;
+  ctx.save(); ctx.fillStyle="rgba(18,34,46,.9)"; ctx.strokeStyle="#3d5262"; ctx.lineWidth=1.4;
+  ctx.beginPath(); ctx.roundRect(x0,y-9,w,18,6); ctx.fill(); ctx.stroke();
+  ctx.fillStyle=v>0.5?"#7ef2b0":v>0.15?"#ffd98a":"#ff9d95";
+  if(v>0.01){ ctx.beginPath(); ctx.roundRect(x0+2,y-7,(w-4)*v,14,5); ctx.fill(); }
+  ctx.restore();
+  label(x0+w/2,y-22,"rate of transcription","#9fb8c9",10.5);
+  label(x0+w/2,y+22,txt,v>0.5?"#7ef2b0":"#ff9d95",10.5);
+}
+/* two-line captions, in the clear band above the DNA */
+function gxNo(x,y,a,b){ label(x,y,a,"#ff9d95",11); label(x,y+15,b,"#ff9d95",11); }
+function gxYes(x,y,a,b){ label(x,y,a,"#7ef2b0",11); if(b) label(x,y+15,b,"#7ef2b0",11); }
+/* mRNA that grows one nucleotide at a time */
+function gxMRNA(x0,x1,y,g,n){
+  const k=Math.floor(g*n); if(k<1) return;
+  const ex=x0+(x1-x0)*(k/n);
+  ctx.save(); ctx.strokeStyle=RNAC; ctx.lineWidth=7; ctx.lineCap="round";
+  ctx.beginPath(); ctx.moveTo(x0,y); ctx.lineTo(ex,y); ctx.stroke(); ctx.restore();
+  label(x0-12,y,"mRNA",RNAC,11.5,"right");
+}
+/* ---------- overview: a click-through map of the cell ---------- */
+const GXPARTS={
+  nucleus:{n:"nucleus",d:"Holds the cell's DNA. Transcription happens here \u2014 translation does not."},
+  chromatin:{n:"chromatin",d:"DNA wound around histone proteins. DNA plus its histones is a nucleosome."},
+  gene:{n:"gene",d:"A length of DNA that codes for one polypeptide."},
+  promoter:{n:"promoter region",d:"A base sequence just before the gene, where transcription factors and RNA polymerase bind."},
+  mrna:{n:"mRNA",d:"A copy of the gene made in the nucleus, which carries the message out to a ribosome."},
+  pore:{n:"nuclear pore",d:"A gap in the nuclear envelope. mRNA leaves the nucleus through it."},
+  ribosome:{n:"ribosome",d:"Where mRNA is translated into a polypeptide."},
+  poly:{n:"polypeptide",d:"The chain of amino acids that the gene codes for."},
+  cytoplasm:{n:"cytoplasm",d:"Translation happens here \u2014 and mRNA can be destroyed here before it is ever used."}
+};
+let GXHIT=[];
+function gxHit(k,x0,y0,x1,y1){ GXHIT.push({k,x0,y0,x1,y1}); }
+function gxOverText(){
+  const q=gx().sel;
+  if(q===1) return "1. EPIGENETIC CONTROL, in the nucleus. How tightly the DNA is wound around its histone proteins decides whether a gene can be reached at all. This acts first, before anything else can happen.";
+  if(q===2) return "2. TRANSCRIPTIONAL CONTROL, at the promoter. Transcription factors decide whether RNA polymerase can begin transcribing the gene. Hormones such as oestrogen act here too.";
+  if(q===3) return "3. POST-TRANSCRIPTIONAL CONTROL, in the cytoplasm. mRNA that has already been made can be cut up before it is ever translated.";
+  if(typeof q==="string"&&GXPARTS[q]) return GXPARTS[q].n.toUpperCase()+" \u2014 "+GXPARTS[q].d;
+  return "Every cell carries the same genes but expresses only some of them. Click the numbered points 1, 2 and 3 to see where expression is controlled \u2014 or click any other part of the cell to identify it.";
+}
+/* A nucleosome. The DNA is drawn as a spiral that drifts sideways as it turns, so the
+   two turns can be told apart, and the front of the coil is semi-transparent so the
+   charge on the histone core still shows through.                                   */
+/* ONE continuous DNA molecule threaded through a whole row of nucleosomes: it wraps
+   around each histone core and runs straight between them, so the strand is never
+   broken.  wrap 0 = the same molecule, still straight.                              */
+function gxFibrePath(P,R,wrap,turns){
+  turns=turns||1.5;
+  const A=R*0.95, B=R*0.82, D=R*0.42, steps=54, tail=R*1.3;
+  const pts=[];
+  for(let k=0;k<P.length;k++){
+    const bx=P[k][0], by=P[k][1];
+    if(k===0) pts.push({x:bx-D-A-tail,y:by,f:false});
+    else pts.push({x:P[k-1][0]+D+A,y:P[k-1][1],f:false});
+    for(let i=0;i<=steps;i++){
+      const s2=i/steps, ang=Math.PI+s2*turns*2*Math.PI;
+      pts.push({x:bx-D+2*D*s2+A*Math.cos(ang), y:by+B*Math.sin(ang), f:Math.sin(ang)>0}); } }
+  const lb=P[P.length-1];
+  pts.push({x:lb[0]+D+A+tail,y:lb[1],f:false});
+  const x0=pts[0].x, x1=pts[pts.length-1].x, y0=P[0][1], y1=lb[1];
+  return pts.map((q,i)=>{ const s2=i/(pts.length-1);
+    return {x:L(x0+(x1-x0)*s2,q.x,wrap), y:L(y0+(y1-y0)*s2,q.y,wrap), f:q.f}; });
+}
+function gxCore(bx,by,R,opt,al){
+  ctx.save(); ctx.globalAlpha=al;
+  ctx.beginPath(); ctx.arc(bx,by,R,0,6.29);
+  ctx.fillStyle=opt.cond?"#a45f8c":"#8a6fb0"; ctx.fill();
+  ctx.strokeStyle="#dbe7ef"; ctx.lineWidth=1.6; ctx.stroke();
+  ctx.strokeStyle="#b79ad4"; ctx.lineWidth=Math.max(2,R*0.11); ctx.lineCap="round";
+  for(let k=0;k<6;k++){ const a2=(k/6)*6.29+0.5;
+    const x1=bx+Math.cos(a2)*R*1.02, y1=by+Math.sin(a2)*R*1.02;
+    ctx.beginPath(); ctx.moveTo(x1,y1);
+    ctx.quadraticCurveTo(x1+Math.cos(a2)*R*0.3-6,y1+Math.sin(a2)*R*0.3,
+                         x1+Math.cos(a2)*R*0.52,y1+Math.sin(a2)*R*0.52); ctx.stroke();
+    if(opt.acet!=null&&opt.acet>0.05&&k%2===0){ ctx.save(); ctx.globalAlpha=opt.acet;
+      gxTag(x1+Math.cos(a2)*R*0.7,y1+Math.sin(a2)*R*0.7,"Ac","#7ef2b0",Math.max(6,R*0.24)); ctx.restore(); } }
+  ctx.restore();
+}
+function gxDrawFibre(P,R,wrap,opt){
+  opt=opt||{}; const lw=opt.lw||5;
+  const pts=gxFibrePath(P,R,wrap,opt.turns);
+  ctx.save(); ctx.strokeStyle=OLD; ctx.lineWidth=lw; ctx.lineCap="round"; ctx.lineJoin="round";
+  ctx.beginPath(); pts.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));
+  ctx.stroke(); ctx.restore();
+  if(opt.mid) opt.mid();
+  const core=opt.coreAl==null?Math.min(1,wrap*3):opt.coreAl;
+  if(core>0.04) for(const b of P) gxCore(b[0],b[1],R,opt,core);
+  if(wrap>0.25){
+    ctx.save(); ctx.globalAlpha=0.55; ctx.strokeStyle=OLD; ctx.lineWidth=lw;
+    ctx.lineCap="round"; ctx.lineJoin="round";
+    let on=false;
+    for(let i=0;i<pts.length;i++){
+      if(pts[i].f){ if(!on){ ctx.beginPath();
+          ctx.moveTo(pts[Math.max(0,i-1)].x,pts[Math.max(0,i-1)].y); on=true; }
+        ctx.lineTo(pts[i].x,pts[i].y); }
+      else if(on){ ctx.lineTo(pts[i].x,pts[i].y); ctx.stroke(); on=false; } }
+    if(on) ctx.stroke(); ctx.restore(); }
+  if(core>0.04&&opt.charge){ ctx.save(); ctx.globalAlpha=core;
+    ctx.fillStyle="#f7f0fb"; ctx.font="800 "+(R*0.44).toFixed(1)+"px system-ui";
+    ctx.textAlign="center"; ctx.textBaseline="middle";
+    for(const b of P) ctx.fillText(opt.cond?"+ +":"+",b[0],b[1]); ctx.restore(); }
+}
+function gxNuc(cx,cy,R,wrap,opt){ gxDrawFibre([[cx,cy]],R,wrap,opt||{}); }
+function gxBeadPos(cx,cy,n,gap,r,coil){
+  const P=[];
+  for(let i=0;i<n;i++){ const sx=cx-(n-1)*gap/2+i*gap;
+    const zx=cx+(i-(n-1)/2)*gap*0.56, zy=cy+((i%2)?-1:1)*r*1.05;
+    P.push([L(sx,zx,coil),L(cy,zy,coil)]); }
+  return P;
+}
+function gxBeadString(cx,cy,n,gap,r,opt){
+  opt=opt||{}; const P=gxBeadPos(cx,cy,n,gap,r,opt.coil||0);
+  gxDrawFibre(P,r,opt.wrap==null?1:opt.wrap,opt);
+  return P;
+}
+function gxEnvelope(cx,cy,rx,ry,gaps,col){
+  ctx.save(); ctx.strokeStyle=col; ctx.lineWidth=2.4; const g=0.15;
+  const a=gaps.slice().sort((p,q)=>p-q);
+  for(let i=0;i<a.length;i++){ let s0=a[i]+g, s1=a[(i+1)%a.length]-g;
+    if(s1<=s0) s1+=6.2832;
+    ctx.beginPath(); ctx.ellipse(cx,cy,rx,ry,0,s0,s1); ctx.stroke(); }
+  ctx.restore();
+}
+function gxFlag(x,y,n,on){
+  ctx.save();
+  ctx.beginPath(); ctx.arc(x,y,15,0,6.29);
+  ctx.fillStyle=on?"#e0a021":"rgba(52,76,92,.95)"; ctx.fill();
+  ctx.strokeStyle=on?"#ffd98a":"#8fa8b8"; ctx.lineWidth=on?2.6:1.8; ctx.stroke();
+  ctx.fillStyle=on?"#12212b":"#dbe8f2"; ctx.font="800 14px system-ui";
+  ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText(n,x,y+0.5); ctx.restore();
+}
+function gxArrow(x0,y0,x1,y1,bend,col,al){
+  ctx.save(); if(al!=null) ctx.globalAlpha=al;
+  ctx.strokeStyle=col; ctx.lineWidth=4.5; ctx.lineCap="round";
+  const mx=(x0+x1)/2+bend, my=(y0+y1)/2;
+  ctx.beginPath(); ctx.moveTo(x0,y0); ctx.quadraticCurveTo(mx,my,x1,y1); ctx.stroke();
+  const a=Math.atan2(y1-my,x1-mx);
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x1-15*Math.cos(a-0.42),y1-15*Math.sin(a-0.42));
+  ctx.moveTo(x1,y1); ctx.lineTo(x1-15*Math.cos(a+0.42),y1-15*Math.sin(a+0.42));
+  ctx.stroke(); ctx.restore();
+}
+function gxPanel(){
+  const x=572,y=118,w=356,h=364, cx=x+w/2, q=gx().sel;
+  ctx.save(); ctx.fillStyle="rgba(12,26,36,.94)";
+  ctx.strokeStyle=(q===1||q===2||q===3)?"#e0a021":"#3d5262"; ctx.lineWidth=1.8;
+  ctx.beginPath(); ctx.roundRect(x,y,w,h,12); ctx.fill(); ctx.stroke(); ctx.restore();
+  if(q===1){
+    label(cx,y+26,"epigenetic control","#ffd98a",12.5);
+    const ph=((gx().clk||0)/9)%1;
+    const wrap = ph<0.14 ? 0 : ez(Math.min(1,seg(ph,0.14,0.40)));
+    const cond = ph>0.60 ? ez(Math.min(1,seg(ph,0.60,0.82))) : 0;
+    const gap=L(104,52,cond), r=23;
+    gxBeadString(cx,y+168,3,gap,r,{lw:4.5,wrap:wrap,cond:cond>0.5,charge:wrap>0.5,acet:wrap*(1-cond)});
+    if(cond>0.35) for(let i=0;i<3;i++){ ctx.save(); ctx.globalAlpha=Math.min(1,(cond-0.35)/0.4);
+      gxTag(cx-gap+i*gap+gap*0.46,y+186,"Me","#ffd98a",6.2); ctx.restore(); }
+    label(cx,y+62,
+      wrap<0.06 ? "a DNA double helix"
+      : wrap<0.97 ? "it winds around the histone proteins"
+      : cond<0.06 ? "nucleosomes \u2014 \u2018beads on a string\u2019"
+      : cond<0.97 ? "the chromatin condenses" : "tightly packed chromatin", "#a8cfe4",11.5);
+    if(wrap>0.97){
+      const on=cond<0.4;
+      label(cx,y+250,on?"loosely packed":"tightly packed",on?"#7ef2b0":"#ff9d95",13);
+      label(cx,y+274,on?"transcription factors can reach the DNA":"transcription factors cannot reach the DNA",
+        on?"#7ef2b0":"#ff9d95",11);
+      label(cx,y+296,on?"gene switched ON":"gene switched OFF",on?"#7ef2b0":"#ff9d95",12.5); }
+    label(cx,y+336,"acetyl groups (Ac) on the histone tails keep it loose","#9fb8c9",10.5);
+    label(cx,y+354,"methyl groups (Me) on the DNA help shut it down","#9fb8c9",10.5);
+  } else if(q===2){
+    label(cx,y+26,"transcriptional control","#ffd98a",12.5);
+    label(cx,y+54,"a transcription factor must bind the","#9fb8c9",10.5);
+    label(cx,y+72,"promoter before RNA polymerase can","#9fb8c9",10.5);
+    // ---- the DNA, well below the proteins ----
+    const dy=y+254, dy2=y+268, xl=x+26, xr=x+w-26;
+    drawBackbone([[xl,dy],[xr,dy]],OLD,5); drawBackbone([[xl,dy2],[xr,dy2]],OLD,5);
+    const pL=x+64, pR=x+144, gL=x+164, gR=x+312;
+    ctx.save();                                     // promoter: on the upper strand only
+    ctx.fillStyle="rgba(224,160,33,.32)"; ctx.strokeStyle="#e0a021"; ctx.lineWidth=1.4;
+    ctx.beginPath(); ctx.roundRect(pL,dy-7,pR-pL,14,4); ctx.fill(); ctx.stroke();
+    ctx.fillStyle="rgba(127,168,201,.28)"; ctx.strokeStyle="#7fa8c9";
+    ctx.beginPath(); ctx.roundRect(gL,dy-7,gR-gL,14,4); ctx.fill(); ctx.stroke(); ctx.restore();
+    label((pL+pR)/2,dy+34,"promoter","#e0a021",10.5);
+    label((gL+gR)/2,dy+34,"the gene","#7fa8c9",10.5);
+    // ---- the cycle: factor \u2192 arrow \u2192 factor binds \u2192 RNA pol \u2192 arrow ----
+    const ph=((gx().clk||0)/7)%1;
+    const fA=Math.min(1,seg(ph,0.02,0.10));                       // factor and its arrow together
+    const a1=ph>0.05&&ph<0.42 ? Math.min(seg(ph,0.05,0.11),1-seg(ph,0.39,0.42)) : 0;
+    const mv=ph>0.34 ? ez(Math.min(1,seg(ph,0.34,0.50))) : 0;     // factor moves down
+    const rA=Math.min(1,seg(ph,0.54,0.66));                       // RNA polymerase fades in
+    const a2=ph>0.70 ? Math.min(seg(ph,0.70,0.73),1-seg(ph,0.97,1)) : 0;
+    const fx=(pL+pR)/2, fyTop=y+142, fyBind=dy-32;
+    if(fA>0.02){ ctx.save(); ctx.globalAlpha=fA;
+      ctx.fillStyle="#4f9c86"; ctx.strokeStyle="#dbe7ef"; ctx.lineWidth=1.4;
+      ctx.beginPath(); ctx.roundRect(fx-52,L(fyTop,fyBind,mv)-15,104,30,7); ctx.fill(); ctx.stroke(); ctx.restore();
+      label(fx,L(fyTop,fyBind,mv),"factor","#eaf4f8",10.5); }
+    if(rA>0.02){ ctx.save(); ctx.globalAlpha=rA;
+      ctx.fillStyle="#c07ad8"; ctx.strokeStyle="#dbe7ef"; ctx.lineWidth=1.4;
+      ctx.beginPath(); ctx.roundRect(x+206,fyTop-15,104,30,7); ctx.fill(); ctx.stroke(); ctx.restore();
+      label(x+258,fyTop,"RNA pol","#12212b",10.5); }
+    if(a1>0.02) gxArrow(fx-40,L(fyTop,fyBind,mv)+18,pL+2,dy-13,-34,"#e0a021",a1);
+    if(a2>0.02) gxArrow(x+230,fyTop+18,pR-2,dy-13,-26,"#c07ad8",a2);
+    label(cx,y+330,"oestrogen acts at this level too","#4f9c86",11);
+  } else if(q===3){
+    label(cx,y+26,"post-transcriptional control","#ffd98a",12.5);
+    const ph=((gx().clk||0)/9)%1;
+    const em=Math.min(1,seg(ph,0.03,0.22));                          // mRNA leaves the nucleus
+    const gb=ph>0.26?ez(Math.min(1,seg(ph,0.26,0.44))):0;            // guide RNA binds on
+    const pr=ph>0.48?ez(Math.min(1,seg(ph,0.48,0.64))):0;            // the protein arrives
+    const ct=ph>0.68?ez(Math.min(1,seg(ph,0.68,0.88))):0;            // and cuts
+    const mY=y+150, gY=y+196, pY=y+250, xl=x+34, xr=x+322;
+    const cA=xl+(xr-xl)*0.34, cB=xl+(xr-xl)*0.70;
+    const end=L(xl,xr,em), off=ct*11;
+    ctx.save(); ctx.strokeStyle=RNAC; ctx.lineWidth=7; ctx.lineCap="round";
+    if(ct<0.02){ ctx.beginPath(); ctx.moveTo(xl,mY); ctx.lineTo(end,mY); ctx.stroke(); }
+    else { for(const [p0,p1,d] of [[xl,cA,-off],[cA,cB,0],[cB,xr,off]]){
+      ctx.beginPath(); ctx.moveTo(p0+d,mY); ctx.lineTo(p1+d,mY); ctx.stroke(); } }
+    ctx.restore();
+    label(cx,mY-40,ct>0.5?"mRNA cut into fragments":"mRNA in the cytoplasm",ct>0.5?"#ff9d95":RNAC,11.5);
+    if(gb>0.02){ const gy=L(gY+40,gY,gb);
+      ctx.save(); ctx.globalAlpha=Math.min(1,gb*2); ctx.strokeStyle="#f0a3c8"; ctx.lineWidth=6; ctx.lineCap="round";
+      ctx.beginPath(); ctx.moveTo(cA,gy); ctx.lineTo(cB,gy); ctx.stroke(); ctx.restore();
+      if(gb>0.6){ ctx.save(); ctx.strokeStyle="#8fb4c8"; ctx.lineWidth=1.3; ctx.setLineDash([2.5,2.5]);
+        for(let k=0;k<=5;k++){ const xx=cA+(cB-cA)*k/5;
+          ctx.beginPath(); ctx.moveTo(xx,mY+7); ctx.lineTo(xx,gy-7); ctx.stroke(); }
+        ctx.setLineDash([]); ctx.restore(); }
+      label(cA-10,gy,"guide RNA","#f0a3c8",10.5,"right"); }
+    if(pr>0.02){ const px=L(x+w-40,(cA+cB)/2,pr);
+      ctx.save(); ctx.globalAlpha=1; ctx.fillStyle="#3fae8f"; ctx.strokeStyle="#dbe7ef"; ctx.lineWidth=1.4;
+      ctx.beginPath(); ctx.roundRect(px-64,pY-16,128,32,8); ctx.fill(); ctx.stroke(); ctx.restore();
+      label(px,pY,"interference","#12212b",11); }
+    if(ct>0.02&&ct<0.98){ ctx.save(); ctx.globalAlpha=1; ctx.strokeStyle="#ffd98a"; ctx.lineWidth=3;
+      for(const xx of [cA,cB]){ ctx.beginPath(); ctx.moveTo(xx,mY-18); ctx.lineTo(xx,mY+18); ctx.stroke(); }
+      ctx.restore(); }
+    if(ct>0.9) label(cx,y+312,"it can never be translated","#ff9d95",12);
+    label(cx,y+340,"the guide RNA is complementary to the mRNA","#9fb8c9",10.5);
+    label(cx,y+358,"siRNA and miRNA both work this way","#9fb8c9",10.5);
+  } else if(typeof q==="string"&&GXPARTS[q]){
+    label(cx,y+40,GXPARTS[q].n,"#dbe8f2",15);
+    const words=GXPARTS[q].d.split(" "); let line="",ln=0;
+    for(const w2 of words){ const test=line?line+" "+w2:w2;
+      if(test.length>38){ label(cx,y+86+ln*22,line,"#9fb8c9",11.5); line=w2; ln++; } else line=test; }
+    if(line) label(cx,y+86+ln*22,line,"#9fb8c9",11.5);
+    label(cx,y+h-32,"click 1, 2 or 3 for the levels of control","#7f97a8",10.5);
+  } else {
+    label(cx,y+124,"click a numbered point","#e0a021",14);
+    label(cx,y+156,"to see how gene expression is","#9fb8c9",12);
+    label(cx,y+178,"controlled at that level","#9fb8c9",12);
+    label(cx,y+232,"or click any other part of the cell","#7f97a8",11);
+    label(cx,y+252,"to identify it","#7f97a8",11);
+  }
+}
+function gxDrawOverview(st,f,t){
+  const q=gx().sel;
+  GXHIT=[];
+  title("Where gene expression is controlled","One cell \u00b7 it carries the same genes as every other cell");
+  ctx.save();
+  ctx.fillStyle="rgba(18,34,46,.45)"; ctx.strokeStyle="#5d7a8c"; ctx.lineWidth=2.4;
+  ctx.beginPath(); ctx.roundRect(48,110,500,400,24); ctx.fill(); ctx.stroke();
+  ctx.fillStyle="rgba(30,56,74,.85)";
+  ctx.beginPath(); ctx.ellipse(244,252,168,116,0,0,6.29); ctx.fill();
+  ctx.restore();
+  gxEnvelope(244,252,168,116,[0.75,2.32,3.89,5.46],q==="nucleus"?"#e0a021":"#7fa8c9");
+  gxHit("cytoplasm",52,436,250,504); label(104,488,"cytoplasm","#7f97a8",11,"left");
+  gxHit("nucleus",90,140,400,160);   label(244,150,"nucleus","#7f97a8",11);
+  gxBeadString(240,196,3,54,15,{lw:3.4});
+  gxHit("chromatin",164,172,318,222); label(240,232,"chromatin","#9fb8c9",10);
+  gxFlag(126,196,"1",q===1); gxHit(1,108,178,144,214);
+  drawBackbone([[112,278],[372,278]],OLD,5); drawBackbone([[112,290],[372,290]],OLD,5);
+  ctx.save(); ctx.fillStyle="rgba(224,160,33,.25)"; ctx.strokeStyle="#e0a021"; ctx.lineWidth=1.4;
+  ctx.beginPath(); ctx.roundRect(172,277,62,14,4); ctx.fill(); ctx.stroke(); ctx.restore();
+  gxHit("promoter",172,268,234,298); label(203,262,"promoter","#e0a021",10);
+  gxHit("gene",244,268,372,298);     label(308,262,"gene","#9fb8c9",10);
+  gxFlag(126,330,"2",q===2); gxHit(2,108,312,144,348);
+  ctx.save(); ctx.strokeStyle=RNAC; ctx.lineWidth=6; ctx.lineCap="round";
+  ctx.beginPath(); ctx.moveTo(244,330); ctx.lineTo(366,330); ctx.stroke();
+  ctx.strokeStyle="#6f8fa4"; ctx.lineWidth=1.6; ctx.setLineDash([3,3]);
+  ctx.beginPath(); ctx.moveTo(308,298); ctx.lineTo(308,322); ctx.stroke(); ctx.setLineDash([]);
+  ctx.restore();
+  gxHit("mrna",244,318,366,344);
+  ctx.save(); ctx.strokeStyle="#5d7a8c"; ctx.lineWidth=2; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(372,334); ctx.lineTo(408,386); ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+  gxHit("pore",340,146,432,168); gxHit("pore",352,314,398,352);
+  label(374,152,"nuclear pores","#7f97a8",10,"left");
+  ctx.save(); ctx.strokeStyle=RNAC; ctx.lineWidth=6; ctx.lineCap="round";
+  ctx.beginPath(); ctx.moveTo(334,408); ctx.lineTo(524,408); ctx.stroke(); ctx.restore();
+  gxHit("mrna",334,398,432,420); label(372,432,"mRNA",RNAC,10.5);
+  gxFlag(306,408,"3",q===3); gxHit(3,288,390,324,426);
+  ctx.save(); ctx.fillStyle="rgba(46,116,104,.93)"; ctx.strokeStyle="#6ddcc4"; ctx.lineWidth=1.8;
+  ctx.beginPath(); ctx.ellipse(470,381,38,23,0,0,6.29); ctx.fill(); ctx.stroke();     // large subunit
+  ctx.beginPath(); ctx.ellipse(470,428,32,15,0,0,6.29); ctx.fill(); ctx.stroke();     // small subunit
+  ctx.restore();
+  gxHit("ribosome",432,358,508,444); label(470,458,"ribosome","#9fb8c9",10);
+  const aa=[[470,352],[448,332],[468,312],[446,294]];
+  ctx.save(); ctx.strokeStyle="rgba(225,238,248,.6)"; ctx.lineWidth=3; ctx.lineCap="round";
+  ctx.beginPath(); aa.forEach((q2,i)=>i?ctx.lineTo(q2[0],q2[1]):ctx.moveTo(q2[0],q2[1])); ctx.stroke(); ctx.restore();
+  for(const q2 of aa){ ctx.save(); ctx.beginPath(); ctx.arc(q2[0],q2[1],8,0,6.29);
+    ctx.fillStyle="#7fb8e8"; ctx.fill(); ctx.strokeStyle="rgba(8,18,26,.5)"; ctx.lineWidth=1.2; ctx.stroke(); ctx.restore(); }
+  gxHit("poly",428,282,492,362); label(458,272,"polypeptide","#7fb8e8",10.5);
+  gxPanel();
+}
+/* ---------- view 1: transcription factors ---------- */
+function gxDrawTF(st,f,t){
+  const railY=396, cx=380;
+  title("Transcriptional control \u2014 transcription factors","Nucleus \u00b7 AQA 3.8.2.2");
+  gxRail(railY,110,900); gxPromoter(cx,railY);
+  ctx.save(); ctx.strokeStyle="#9fb8c9"; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(470,railY+46); ctx.lineTo(470,railY+54); ctx.lineTo(880,railY+54); ctx.lineTo(880,railY+46);
+  ctx.stroke(); ctx.restore();
+  label(675,railY+68,"the gene","#9fb8c9",11);
+  const restY=180, bindY=371;
+  if(st===1){                                   // wrong shape: arrives, contacts, leaves again
+    const inU=ez(Math.min(1,f/0.42)), out=f>0.62?ez(seg(f,0.62,1)):0;
+    const d=wander(3,t,[240,140,560,220],4);
+    const fx=L(L(d[0],cx,inU),cx+330,out), fy=L(L(d[1],bindY-2,inU),restY-60,out);
+    gxFactor(fx,fy,false,false,false,"#8fa8b8");
+    if(f>0.44&&f<0.72) gxNo(cx,242,"this promoter's base sequence is not","complementary to its binding site");
+  } else if(st===2){                            // right shape: arrives and binds on contact
+    const inU=ez(Math.min(1,f/0.66));
+    const d=wander(1,t,[220,140,540,220],4);
+    gxFactor(L(d[0],cx,inU),L(d[1],bindY,inU),true,false,false,"#e0a021");
+    if(f>0.66) gxYes(cx,242,"complementary to this promoter","so it binds");
+  } else if(st>=3) gxFactor(cx,bindY,true,false,false,"#e0a021");
+  else { const d=wander(1,t,[220,140,540,220],4); gxFactor(d[0],d[1],true,false,false,"#e0a021"); }
+  label(120,124,"nucleoplasm","#7f97a8",11,"left");
+  if(st<=1) label(470,488,"transcription factors moving at random in the nucleoplasm","#7f97a8",10.5);
+  if(st>=3){                                   // down from the nucleoplasm, onto the factor, then the DNA
+    const dock = st===3 ? ez(Math.min(1,f/0.52)) : 1;
+    const sit  = st===3 ? ez(Math.max(0,seg(f,0.60,0.96))) : 1;
+    const px=cx+150, py=L(L(150,bindY,dock),railY+11,sit);
+    enzyme(px,py,150,34,"#c07ad8","RNA polymerase",11);
+    if(st===3){
+      if(dock<0.92) label(px,112,"in from the nucleoplasm","#c9a6f0",11);
+      else if(sit<0.55) gxYes(716,250,"it binds to the transcription","factor, not to the DNA");
+      else gxYes(716,250,"and only then does it","settle onto the DNA"); }
+  }
+  if(st>=4) gxMRNA(cx+150,880,railY+92,st===4?f:1,12);
+  if(st>=5) label(470,516,"the gene is being expressed","#7ef2b0",12.5);
+  else if(st<=2) label(470,516,"the gene is switched off","#ff9d95",12.5);
+  gxRate(st>=4?1:0, st>=4?"switched on":"switched off");
+}
+/* ---------- view 2: oestrogen ---------- */
+function gxDrawOest(st,f,t){
+  const memY=120, envY=322, railY=424, cx=380, tfx=252, tfy=228;
+  title("Transcriptional control \u2014 oestrogen","A steroid hormone \u00b7 AQA 3.8.2.2");
+  ctx.save();                                    // phospholipid bilayer, heads and tails
+  for(const [yy,dir] of [[memY-13,-1],[memY+13,1]]){
+    for(let x=76;x<=640;x+=17){
+      ctx.strokeStyle="#5d7a8c"; ctx.lineWidth=1.4;
+      ctx.beginPath(); ctx.moveTo(x-2,yy+dir*5); ctx.lineTo(x-3,yy+dir*15);
+      ctx.moveTo(x+2,yy+dir*5); ctx.lineTo(x+3,yy+dir*15); ctx.stroke();
+      ctx.beginPath(); ctx.arc(x,yy,5.5,0,6.29); ctx.fillStyle="#7fa8c9"; ctx.fill(); ctx.stroke(); } }
+  ctx.strokeStyle="#3d5262"; ctx.lineWidth=3;
+  ctx.beginPath(); ctx.moveTo(76,envY); ctx.lineTo(cx-58,envY); ctx.moveTo(cx+58,envY); ctx.lineTo(904,envY); ctx.stroke();
+  ctx.restore();
+  label(96,memY-30,"outside the cell","#7f97a8",11,"left");
+  label(96,memY+30,"cytoplasm","#7f97a8",11,"left");
+  label(cx+152,envY-14,"nuclear pore","#7f97a8",10.5);
+  label(96,envY+26,"nucleus","#7f97a8",11,"left");
+  gxRail(railY,110,900); gxPromoter(cx,railY);
+  const complexY = st===4 ? L(tfy,railY-25,ez(f)) : st>=5 ? railY-25 : tfy;
+  const complexX = st===4 ? L(tfx,cx,ez(f)) : st>=5 ? cx : tfx;
+  if(st<=2){
+    gxFactor(tfx,tfy,false,true,false);
+    let ox,oy;
+    if(st===0){ const d=wander(2,t,[300,52,700,88],3); ox=d[0]; oy=d[1]; }
+    else if(st===1){ const u=ez(f); const d=wander(2,t,[300,52,700,88],3);
+      ox=L(d[0],tfx+120,u); oy=L(d[1],memY+72,u); }
+    else { const u=ez(Math.min(1,f/0.7)); const d=wander(2,t,[300,150,640,206],3);
+      ox=L(L(d[0],tfx+120,0.001),tfx,u); oy=L(d[1],tfy-24,u); }
+    gxOestrogen(ox,oy);
+    if((oy<memY-32||oy>memY+32) && !(st===2&&f>0.32)) label(ox-22,oy,"oestrogen","#f4a259",11,"right");
+    if(st===1&&f>0.22){ label(660,memY+44,"NON-POLAR, so lipid-soluble","#f4a259",12.5,"left");
+      label(660,memY+66,"it passes straight between the fatty","#f4a259",11,"left");
+      label(660,memY+82,"acid tails by simple diffusion — no","#f4a259",11,"left");
+      label(660,memY+98,"carrier or channel protein is needed","#f4a259",11,"left"); }
+    if(st===2&&f>0.62){ gxYes(716,150,"a receptor site on a","transcription factor");
+      label(716,190,"only target cells have this receptor","#9fb8c9",10.5); }
+  } else {
+    gxFactor(complexX,complexY,st>=3,true,true);
+    if(st===3&&f>0.4) gxYes(complexX+230,complexY-16,"the shape changes","DNA-binding site now active");
+  }
+  if(st>=5){ const dock=ez(Math.min(1,f/0.40)), sit=ez(Math.max(0,seg(f,0.44,0.68)));
+    enzyme(cx+160,L(L(362,railY-25,dock),railY+11,sit),150,34,"#c07ad8","RNA polymerase",11);
+    gxMRNA(cx+160,884,railY+90,Math.max(0,seg(f,0.68,1)),12);
+    if(sit>0.9) label(716,236,"the complex stimulates RNA polymerase","#c9a6f0",11); }
+  gxRate(st>=5?1:0, st>=5?"switched on":"switched off");
+}
+/* ---------- view 3: epigenetics ---------- */
+function gxMinus(P,gap,al){
+  ctx.save(); ctx.globalAlpha=al==null?1:al;
+  ctx.fillStyle="#8fd0f0"; ctx.font="800 13px system-ui"; ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText("\u2013",P[0][0]-gap*0.62,P[0][1]-14);
+  ctx.fillText("\u2013",P[P.length-1][0]+gap*0.62,P[P.length-1][1]-14);
+  ctx.restore();
+}
+function gxDrawEpi(st,f,t){
+  title("Epigenetic control","Histone acetylation and DNA methylation \u00b7 AQA 3.8.2.2");
+  const cx=430;
+  if(st<=1){                                    // build one nucleosome
+    const core = st===0 ? 0 : Math.min(1,f/0.22);
+    const wrap = st===0 ? 0 : ez(Math.max(0,Math.min(1,(f-0.22)/0.62)));
+    gxNuc(cx,286,76,wrap,{len:520,lw:6,charge:1,coreAl:core});
+    label(cx,150,st===0?"a DNA double helix":(core<0.99?"a core of eight histone proteins":"the DNA winds almost twice around it"),"#a8cfe4",12.5);
+    if(st===0) label(cx,410,"negatively charged, because of its phosphate groups","#8fd0f0",11.5);
+    else { if(core>0.6) label(cx,404,"the histones are positively charged","#c9a6f0",11.5);
+      if(wrap>0.8){ label(cx,432,"opposite charges attract, so the DNA is held on","#a8cfe4",11.5);
+        label(cx,460,"DNA + histones = a NUCLEOSOME","#ffd98a",13); } }
+    gxRate(1,"high"); return; }
+  if(st===2){                                   // repeat into chromatin
+    const u=ez(Math.min(1,f/0.62));
+    const nb=u<0.34?1:u<0.68?3:5;
+    gxBeadString(cx,282,nb,L(210,118,u),L(76,30,u),{lw:5,charge:1});
+    label(cx,158,"nucleosomes repeat all along the DNA","#a8cfe4",12.5);
+    if(u>0.72){ label(cx,378,"the DNA between them is linker DNA","#a8cfe4",11.5);
+      label(cx,406,"DNA + histones together = CHROMATIN","#ffd98a",13); }
+    gxRate(1,"high"); return; }
+  // ---- the two routes ----
+  const meC = st===6 ? ez(Math.min(1,f/0.40)) : 0;               // methyl groups going on
+  const acet = st===4 ? 1-ez(Math.min(1,f/0.42)) : 1;            // acetyl groups coming off
+  const coil = st===4 ? ez(Math.max(0,seg(f,0.46,0.90)))
+             : st===5 ? 1-ez(Math.min(1,f/0.7))
+             : st===6 ? ez(Math.max(0,seg(f,0.34,0.88))) : (st===7?1:0);
+  const n=5, y=292, gap=100, r=26;
+  const P=gxBeadPos(cx,y,n,gap,r,coil);
+  const spread=51*(1-coil);
+  for(let i=0;i<n;i++) P[i][0]+= i<=2 ? -spread : spread;
+  const pm=[(P[2][0]+P[3][0])/2,(P[2][1]+P[3][1])/2];
+  const eL=P[2][0]+r*1.37, eR=P[3][0]-r*1.37;                   // the linker carrying the promoter
+  gxDrawFibre(P,r,1,{lw:4.5,cond:acet<0.5,charge:1,acet:acet*Math.max(0,1-coil*2.2),
+    mid:()=>{
+      ctx.save(); ctx.strokeStyle="#e0a021"; ctx.lineWidth=4.5; ctx.lineCap="round";
+      ctx.beginPath(); ctx.moveTo(eL,P[2][1]); ctx.lineTo(eR,P[3][1]); ctx.stroke(); ctx.restore();
+      if(meC>0.04){ ctx.save(); ctx.globalAlpha=meC;
+        const w2=eR-eL, nMe=Math.max(1,Math.min(5,Math.floor(w2/17)));
+        for(let k=0;k<nMe;k++) gxTag(eL+w2*(k+0.5)/nMe,(P[2][1]+P[3][1])/2-15,"Me","#ffd98a",6.2);
+        ctx.restore(); }
+      if(coil<0.5) gxMinus(P,gap,0.9*(1-coil*2)); } });
+  if(coil<0.4) label(pm[0],y+56,"promoter region","#e0a021",11);
+  label(cx,y+96,"the DNA is negatively charged \u2013   the histones are positively charged +","#9fb8c9",11);
+  if(st===3||st===4) label(cx,y+118, acet>0.5
+    ? "acetyl groups (Ac) reduce the positive charge, so the DNA is held less tightly"
+    : "no acetyl groups \u2014 the histones are more positive and hold the DNA tightly",
+    acet>0.5?"#7ef2b0":"#ff9d95",11);
+  if(st===6||st===7) label(cx,y+118,"methyl groups (Me) are added to cytosine bases in the DNA","#ffd98a",11);
+  if(coil>0.55) label(cx,y+140,"the chromatin condenses and supercoils","#ff9d95",11);
+  // one transcription factor, always the right shape: it can reach the promoter or it cannot
+  const cyc=(t*0.40)%1, appr=ez(Math.min(1,cyc/0.5)), away=cyc>0.55?ez(seg(cyc,0.55,1)):0;
+  const open2 = coil<0.4 && meC<0.25;
+  const reach = open2 ? pm[1]-46 : pm[1]-116;
+  const d=wander(0,t,[178,128,318,152],2);
+  const fx=L(d[0],pm[0],appr), fy=L(L(d[1],reach,appr),140,away);
+  gxFactor(fx,fy,true,false,false,"#e0a021");
+  if(st===3){ label(760,160,"its binding site and the promoter","#e0a021",11);
+    label(760,175,"region are the same colour","#e0a021",11); }
+  if(cyc>0.5&&cyc<0.9){
+    if(open2) gxYes(760,206,"it binds the promoter region","transcription is activated");
+    else gxNo(760,206,"it cannot bind to the promoter region,","so transcription is not activated"); }
+  const rate = 1-0.85*coil;
+  gxRate(rate, rate>0.75?"high":rate>0.4?"reduced":"low");
+  if(st===7) label(470,528,"the base sequence has not changed \u2014 both changes are epigenetic","#e6c6f5",12);
+}
+/* ---------- view 4: siRNA ---------- */
+const GXSI={ x0:196, dx:31, mY:242, sY:364 };
+GXSI.seq=GENE.mrna; GXSI.a=5; GXSI.b=12;
+GXSI.si=[...GENE.mrna.slice(5,13)].map(b=>comp(b,true)).join("");
+GXSI.X=i=>GXSI.x0+i*GXSI.dx;
+function gxDrawSi(st,f,t){
+  title("Post-transcriptional control \u2014 RNA interference","RNAi \u00b7 AQA 3.8.2.2");
+  const n=GXSI.seq.length;
+  const cut = st>=5 ? (st===5?ez(Math.max(0,seg(f,0.45,1))):1) : 0;
+  const bound = st>=4 ? ez(Math.min(1,f/0.72)) : 0;
+  const shift = i => cut*( i<GXSI.a ? -44 : i>GXSI.b ? 44 : (i<9?-14:14) );
+  ctx.save(); ctx.strokeStyle=RNAC; ctx.lineWidth=7; ctx.lineCap="round";
+  const runs = cut>0.02 ? [[0,GXSI.a-1],[GXSI.a,8],[9,GXSI.b],[GXSI.b+1,n-1]] : [[0,n-1]];
+  for(const [a,b] of runs){ ctx.beginPath();
+    ctx.moveTo(GXSI.X(a)-14+shift(a),GXSI.mY); ctx.lineTo(GXSI.X(b)+14+shift(b),GXSI.mY); ctx.stroke(); }
+  ctx.restore();
+  for(let i=0;i<n;i++) drawBase(GXSI.X(i)+shift(i),GXSI.mY+8,24,GXSI.seq[i],1,1,true,GXSI.mY);
+  label(GXSI.x0-24,GXSI.mY-30,"mRNA",RNAC,11.5,"right");
+  const drawSi=(y2,dbl)=>{ ctx.save(); ctx.strokeStyle="#f0a3c8"; ctx.lineWidth=6; ctx.lineCap="round";
+    ctx.beginPath(); ctx.moveTo(GXSI.X(GXSI.a)-14,y2); ctx.lineTo(GXSI.X(GXSI.b)+14,y2); ctx.stroke();
+    if(dbl){ ctx.beginPath(); ctx.moveTo(GXSI.X(GXSI.a)-14,y2+26); ctx.lineTo(GXSI.X(GXSI.b)+14,y2+26); ctx.stroke(); }
+    ctx.restore();
+    label(GXSI.X(GXSI.a)-26,y2+(dbl?13:0),dbl?"siRNA (double-stranded)":"siRNA","#f0a3c8",11,"right"); };
+  if(st===1){ const d=wander(4,t,[300,452,660,486],3); drawSi(d[1],true); }
+  else if(st===2){ const u=ez(Math.min(1,f/0.66)), d=wander(4,t,[300,452,660,486],3);
+    drawSi(470,true);
+    enzyme(L(886,GXSI.X(GXSI.b)+118,u),483,128,34,"#3fae8f","interference",11);
+    if(u>0.96) gxYes(470,410,"the protein binds the siRNA","");
+  } else if(st===3){ const y2=L(470,GXSI.sY+70,ez(f));
+    drawSi(y2,f<0.5); enzyme(GXSI.X(GXSI.b)+118,y2+(f<0.5?13:0),128,34,"#3fae8f","interference",11); }
+  else if(st>=4){ const y2=L(GXSI.sY+70,GXSI.sY,bound);
+    drawSi(y2,false);
+    for(let i=0;i<GXSI.si.length;i++) drawBase(GXSI.X(GXSI.a+i),y2-8,24,GXSI.si[i],-1,1,true,y2);
+    if(bound>0.94) for(let i=0;i<GXSI.si.length;i++)
+      drawHBonds(GXSI.X(GXSI.a+i)+shift(GXSI.a+i),GXSI.mY+32,y2-32,2);
+    enzyme(GXSI.X(GXSI.b)+118,y2,128,34,"#3fae8f","interference",11); }
+  if(st===4&&bound>0.94) gxYes(470,150,"complementary base pairing holds it on the mRNA","");
+  if(st===5){ const u=ez(Math.min(1,f/0.4));
+    enzyme(L(872,GXSI.X(9),u),GXSI.mY-64,130,32,"#e0743f","RNA hydrolase",10.5);
+    if(u>0.96) label(470,150,"the mRNA is cut into fragments","#ff9d95",11.5); }
+  if(st>=6) label(470,150,"the mRNA is cut into fragments","#ff9d95",11.5);
+  if(st>=6) label(470,186,"no polypeptide is made \u2014 the gene has been silenced","#ff9d95",12.5);
+  gxRate(cut>0.5?0.02:1, cut>0.5?"translation blocked":"can be translated");
+}
+function drawGX(){
+  const R=gx(), A=gxSteps(), st=R.step, f=Math.min(1,R.t/A[st].d), t=gxElapsed();
+  [gxDrawOverview,gxDrawEpi,gxDrawTF,gxDrawOest,gxDrawSi][S.gxView-1](st,f,t);
+  ctx.save(); ctx.textAlign="left"; ctx.textBaseline="middle"; ctx.font="700 11px system-ui";
+  ctx.fillStyle="#c3d4e0";
+  ctx.fillText("genes switched on "+R.cum.on+"    genes switched off "+R.cum.off, 76, 552);
+  ctx.restore();
+}
+
+/* =======================================================================
+   Stages, state, wiring
+   ======================================================================= */
+const STAGES={
+  replication:{ name:"DNA replication", type:"rp",
+    facts:["DNA helicase breaks the hydrogen bonds between complementary bases.",
+      "Each original strand acts as a template.",
+      "Free nucleotides bind only where they are complementary \u2014 A with T, C with G.",
+      "DNA polymerase joins adjacent nucleotides with phosphodiester bonds.",
+      "Each new molecule has one original and one new strand: semi-conservative."],
+    note:"AQA does not require leading and lagging strands, so both new strands are shown being built continuously." },
+  meselson:{ name:"Meselson\u2013Stahl", type:"ms",
+    facts:["Bacteria are grown so that all their DNA contains one isotope of nitrogen.",
+      "They are then moved to a medium containing only the other isotope.",
+      "After one generation all the DNA is intermediate in density.",
+      "After that, only two molecules ever contain an original strand.",
+      "Denser DNA settles lower down; less dense DNA settles higher up."],
+    note:"Use the toggle to start the bacteria on either isotope \u2014 the pattern mirrors." },
+  splicing:{ name:"Splicing", type:"sp",
+    facts:["Eukaryotic transcription makes pre-mRNA, which contains introns.",
+      "Introns are cut out at both ends and released.",
+      "The exons left behind are joined to form mature mRNA.",
+      "Only the exons code for part of the polypeptide.",
+      "Prokaryotes have no introns, so no splicing is needed."],
+    note:"Four views: splicing alone, or with the 5\u2032 cap and poly(A) tail, alternative splicing, or both." },
+  genex:{ name:"Gene expression", type:"gx",
+    facts:["A transcription factor binds the promoter region so RNA polymerase can start transcription.",
+      "Oestrogen is lipid-soluble; it binds a receptor site on a transcription factor.",
+      "Increased DNA methylation or decreased histone acetylation switches a gene off.",
+      "Epigenetic changes do not alter the base sequence of the DNA.",
+      "siRNA binds a protein, then guides it to a matching mRNA, which is cut up so it cannot be translated."],
+    note:"Four views: transcription factors, oestrogen, epigenetics and siRNA." },
+  translation:{ name:"Translation", type:"tl",
+    facts:["mRNA binds to a ribosome, which holds two codons at a time.",
+      "Each tRNA has an anticodon and carries one specific amino acid.",
+      "A tRNA only binds if its anticodon is complementary to the codon.",
+      "One ATP is hydrolysed to ADP + Pi for each peptide bond formed.",
+      "At a stop codon no tRNA binds, so the polypeptide is released."],
+    note:"One ATP is hydrolysed to ADP + Pi for every peptide bond formed." },
+  transcription:{ name:"Transcription", type:"tr",
+    facts:["Only the template strand is copied; the coding strand is not.",
+      "RNA polymerase joins the RNA nucleotides together with phosphodiester bonds.",
+      "In RNA, uracil pairs with adenine instead of thymine.",
+      "Eukaryotes make pre-mRNA, which is spliced to remove introns.",
+      "Splicing joins the exons together to form mature mRNA."],
+    note:"The RNA is shown forming on the template strand, then peeling away behind the polymerase." }
+};
+const ORDER=["replication","meselson","transcription","splicing","translation","genex"];
+const S={ sub:"replication", playing:true, speed:1.0, okazaki:false, msHeavy:true, dirs:false,
+  spView:1, spCap:false, spAlt:false, gxView:1, bare:false, ff:false };
+
+const tabsEl=document.getElementById("tabs");
+ORDER.forEach(k=>{ const b=document.createElement("button");
+  b.className="tab"; b.textContent=STAGES[k].name; b.dataset.k=k;
+  b.addEventListener("click",()=>select(k)); tabsEl.appendChild(b); });
+
+function select(k){ S.sub=k;
+  [...tabsEl.children].forEach(b=>b.classList.toggle("on",b.dataset.k===k));
+  if(k==="replication") RPS=null; else if(k==="transcription") TRS=null;
+  else if(k==="translation") TLS=null; else if(k==="splicing") SPS=null;
+  else if(k==="genex") GXS=null; else MSS=null;
+  setRun(true); refresh();
+}
+function STEPS(){ return S.sub==="replication"?RSTEPS : S.sub==="transcription"?TS() : S.sub==="translation"?LSTEPS : S.sub==="splicing"?spSteps() : S.sub==="genex"?gxSteps() : MSTEPS; }
+function STATE(){ return S.sub==="replication"?rp()   : S.sub==="transcription"?tr() : S.sub==="translation"?tl() : S.sub==="splicing"?sp() : S.sub==="genex"?gx() : ms_(); }
+function TOTAL(){ return STEPS().reduce((a,z)=>a+z.d,0); }
+function curStep(){ return STATE().step; }
+function nSteps(){ return STEPS().length; }
+function stepText(){ return STEPS()[STATE().step].t; }
+function elapsedFrac(){ const R=STATE(),A=STEPS(); let t=R.t; for(let i=0;i<R.step;i++) t+=A[i].d; return t/TOTAL(); }
+function seekTo(fr){ const R=STATE(),A=STEPS(); let t=Math.max(0,Math.min(1,fr))*TOTAL();
+  for(let i=0;i<A.length;i++){ if(t<A[i].d||i===A.length-1){ R.step=i; R.t=Math.min(t,A[i].d-0.001); break; } t-=A[i].d; } }
+
+function refresh(){
+  const st=STAGES[S.sub];
+  document.getElementById("facts").innerHTML=st.facts.map(f=>"<li>"+f+"</li>").join("");
+  document.getElementById("keynote").textContent = st.note;
+  document.getElementById("keynote").textContent += (S.sub==="transcription"||S.sub==="translation") ? "  RNA bases are shown in a darker shade than DNA bases." : "";
+  const mb=document.getElementById("btn-mode");
+  mb.style.display = (S.sub==="transcription"||S.sub==="genex") ? "none" : "";
+  document.getElementById("btn-mode2").style.display = "none";
+  const flat = S.sub==="genex" && S.gxView===1;      // click-driven, so it has no timeline
+  document.getElementById("wrap-speed").style.display = flat ? "none" : "";
+  document.getElementById("wrap-time").style.display  = flat ? "none" : "";
+  document.getElementById("btn-step").style.display   = flat ? "none" : "";
+  const sv=document.getElementById("sel-view");
+  sv.style.display = S.sub==="genex" ? "" : "none";
+  if(S.sub==="genex"){
+    if(!sv.dataset.built){ sv.innerHTML=GXVIEWS.map((v,i)=>
+      '<option value="'+(i+1)+'">'+v.label+'</option>').join(""); sv.dataset.built="1"; }
+    sv.value=String(S.gxView); }
+  mb.textContent = S.sub==="meselson"
+    ? (S.msHeavy ? "\u21c4 Start on \u00b9\u2074N instead" : "\u21c4 Start on \u00b9\u2075N instead")
+    : S.sub==="translation"
+    ? (S.dirs ? "\u2715 Hide directions" : "\u{1F52C} Show directions (beyond spec)")
+    : S.sub==="splicing" ? SPVIEWS[S.spView-1].label
+    : S.sub==="genex" ? GXVIEWS[S.gxView-1].label
+    : (S.okazaki ? "\u2715 Hide leading / lagging strands" : "\u{1F52C} Leading / lagging strands (beyond spec)");
+  renderTally();
+}
+function renderTally(){
+  const box=document.getElementById("tally");
+  if(S.sub==="genex"){ const R=gx(), A=gxSteps(), st=R.step;
+    const on = (S.gxView===1&&st>=4)||(S.gxView===2&&st>=5);
+    const rows=[["V","view","#e0a021",S.gxView],["\u2691","this gene is",on?"#7ef2b0":"#ff9d95",on?"ON":"OFF"],
+      ["\u2713","switched on","#7ef2b0",R.cum.on],["\u2715","switched off","#ff9d95",R.cum.off]];
+    box.innerHTML=rows.map(([i,n,c,v])=>'<div class="trow"><span class="ic" style="background:'+c+'">'+i+'</span><span class="nm">'+n+'</span><span class="ct">'+v+'</span></div>').join("");
+    return; }
+  if(S.sub==="splicing"){ const R=sp(), A=spSteps(), st=R.step, f=Math.min(1,R.t/A[st].d);
+    const q=spState(A[st].p,f);
+    const rows=[["E","exons kept",EXC,q.join>0.6?3:0],["I","introns removed",INC,q.rel>=1?2:0],
+      ["\u2702","cuts made","#ffd98a",q.cut>0.5?4:0],["M","mRNA molecules made","#e0a021",R.cum.mrna]];
+    box.innerHTML=rows.map(([i,n,c,v])=>'<div class="trow"><span class="ic" style="background:'+c+'">'+i+'</span><span class="nm">'+n+'</span><span class="ct">'+v+'</span></div>').join("");
+    return; }
+  if(S.sub==="translation"){ const T2=tl(), st=T2.step, f=Math.min(1,T2.t/LSTEPS[st].d);
+    const pr=tlProgress(st,f), nAA=Math.max(0,Math.min(pr.chain,TL.nc-1));
+    const rows=[["C","codons read",RNAC,Math.min(Math.round(pr.p)+1,TL.nc-1)],
+      ["A","amino acids joined","#7fd6a2",nAA],
+      ["P","peptide bonds formed","#e0a021",Math.max(0,nAA-1)],
+      ["\u26a1","ATP hydrolysed","#8b5cf6",Math.max(0,nAA-1)],
+      ["\u03a3","polypeptides made","#8b5cf6",T2.cum.poly]];
+    box.innerHTML=rows.map(([i,n,c,v])=>'<div class="trow"><span class="ic" style="background:'+c+'">'+i+'</span><span class="nm">'+n+'</span><span class="ct">'+v+'</span></div>').join("");
+    return; }
+  if(S.sub==="meselson"){ const M=ms_(), g=msGen(M.step,0), tot=Math.pow(2,g), hyb=g===0?0:2;
+    const rows=[["G","generation","#e0a021",g],["\u03a3","DNA molecules","#8fa8b8",tot],
+      ["O","containing an original strand",S.msHeavy?HEAVY:LIGHTN,g===0?1:hyb],
+      ["N","entirely new nitrogen",S.msHeavy?LIGHTN:HEAVY,g===0?0:tot-hyb]];
+    box.innerHTML=rows.map(([i,n,c,v])=>'<div class="trow"><span class="ic" style="background:'+c+'">'+i+'</span><span class="nm">'+n+'</span><span class="ct">'+v+'</span></div>').join("");
+    return; }
+  if(S.sub==="replication"){ const R=rp(), st=R.step, f=Math.min(1,R.t/RSTEPS[st].d);
+    const {open,made,joined}=rpProgress(st,f);
+    const rows=[["H","hydrogen bonds broken","#8fb4c8",[...RP.top.slice(0,Math.floor(open))].reduce((a,b)=>a+hbonds(b),0)],
+      ["N","nucleotides base-paired",NEW,2*Math.floor(made)],
+      ["P","phosphodiester bonds","#c07ad8",Math.max(0,2*(Math.floor(joined)-1))],
+      ["\u21bb","molecules completed","#e0a021",Math.round(R.cum.bp/RP.n)]];
+    box.innerHTML=rows.map(([i,n,c,v])=>'<div class="trow"><span class="ic" style="background:'+c+'">'+i+'</span><span class="nm">'+n+'</span><span class="ct">'+v+'</span></div>').join("");
+  } else { const R=tr(), A=TS(), st=R.step, f=Math.min(1,R.t/A[st].d);
+    const {pol}=trProgress(A[st].p,f);
+    const rows=[["R","RNA nucleotides joined",RNAC,Math.max(0,Math.min(TR.n,Math.floor(pol)-1))],
+      ["I","intron bases removed","#f87171",(A[st].p==="mature"?GENE.intron[1]-GENE.intron[0]:0)],
+      ["M","pre-mRNA molecules made","#e0a021",R.cum.pre]];
+    box.innerHTML=rows.map(([i,n,c,v])=>'<div class="trow"><span class="ic" style="background:'+c+'">'+i+'</span><span class="nm">'+n+'</span><span class="ct">'+v+'</span></div>').join("");
+  }
+}
+function setRun(on){ S.playing=on;
+  const b=document.getElementById("btn-run");
+  b.textContent = on ? "\u23F8 Pause" : "\u25B6 Play"; b.classList.toggle("go",on);
+}
+document.getElementById("btn-run").addEventListener("click",()=>setRun(!S.playing));
+document.getElementById("btn-reset").addEventListener("click",()=>{ select(S.sub); });
+document.getElementById("sel-view").addEventListener("change",e=>{ gxSetView(+e.target.value); refresh(); });
+document.getElementById("btn-mode").addEventListener("click",()=>{ if(S.sub==="meselson") S.msHeavy=!S.msHeavy;
+  else if(S.sub==="translation") S.dirs=!S.dirs;
+  else if(S.sub==="splicing"){ spSetView(S.spView%4+1); }
+  else if(S.sub==="genex"){ gxSetView(S.gxView%5+1); }
+  else S.okazaki=!S.okazaki; refresh(); });
+document.getElementById("btn-step").addEventListener("click",()=>{
+  if(S.sub==="genex"&&S.gxView===1) return;        // nothing to step through
+  S.ff=true; setRun(true); });
+const sSp=document.getElementById("s-speed");
+sSp.addEventListener("input",()=>{ S.speed=+sSp.value/100;
+  document.getElementById("r-speed").textContent=(S.speed).toFixed(1)+"\u00d7"; });
+const sT=document.getElementById("s-time");
+sT.addEventListener("input",()=>{ seekTo(+sT.value/1000);
+  document.getElementById("r-time").textContent=Math.round(+sT.value/10)+"%"; });
+
+function gxPick(e){
+  const r=cv.getBoundingClientRect();
+  const x=(e.clientX-r.left)/VS, y=(e.clientY-r.top)/VS;
+  for(let i=GXHIT.length-1;i>=0;i--){ const h=GXHIT[i];
+    if(x>=h.x0&&x<=h.x1&&y>=h.y0&&y<=h.y1) return h.k; }
+  return null;
+}
+cv.addEventListener("click",e=>{
+  if(S.sub!=="genex"||S.gxView!==1) return;
+  const k=gxPick(e); if(k!==null) gx().sel=k;
+});
+cv.addEventListener("mousemove",e=>{
+  if(S.sub!=="genex"||S.gxView!==1){ cv.style.cursor=""; return; }
+  cv.style.cursor = gxPick(e)!==null ? "pointer" : "";
+});
+let last=performance.now();
+function frame(now){
+  let dt=(now-last)/1000; last=now;
+  if(dt>0.12) dt=0.12;
+  dt*=0.5;                                  // everything runs at half the old pace
+  const before = S.ff ? curStep() : -1;
+  if(S.ff) dt*=12;                           // keep the step button as quick as it was
+  size(); enter();
+  if(S.sub==="replication"){ updateRP(dt); drawRP(); }
+  else if(S.sub==="transcription"){ updateTR(dt); drawTR(); }
+  else if(S.sub==="translation"){ updateTL(dt); drawTL(); }
+  else if(S.sub==="splicing"){ updateSP(dt); drawSP(); }
+  else if(S.sub==="genex"){ updateGX(dt); drawGX(); }
+  else { updateMS(dt); drawMS(); }
+  if(S.ff && (curStep()!==before || (S.sub==="genex"&&S.gxView===1))){ S.ff=false; setRun(false); }
+  if(S.playing){ const fr=elapsedFrac();
+    sT.value=Math.round(fr*1000); document.getElementById("r-time").textContent=Math.round(fr*100)+"%"; }
+  document.getElementById("step-num").textContent="Step "+(curStep()+1)+" / "+nSteps();
+  document.getElementById("step-desc").textContent=stepText();
+  renderTally();
+  requestAnimationFrame(frame);
+}
+select("replication");
+size();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
