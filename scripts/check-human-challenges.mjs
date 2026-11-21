@@ -89,7 +89,7 @@ assert(main.innerHTML.includes("Here’s how it works"),"Unknown answers should 
 const afterSkip=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert(Object.keys(afterSkip.quickCheckIds).length>=1,"Missed warm-up should prompt an independent related quick check");
 assert(afterSkip.quickCheckIds[afterSkip.queue[afterSkip.index+1]],"Related quick check should follow the missed question");
-assert(main.innerHTML.includes("Next question"),"Not sure should lead directly to feedback and the next question");
+assert(main.innerHTML.includes("Try a quick check"),"Unknown answer should offer a related independent check");
 assert(window.KeystoneHumanChallenge.stats("f170").weak>=1,"Not sure should record an area for re-practice");
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"next"}}:null;}}});
 record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
