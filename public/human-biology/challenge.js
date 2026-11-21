@@ -26,6 +26,7 @@ function icon(name){
  grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
  rotate:'<path d="M3 11a9 9 0 0 1 15-6l3 3M21 4v4h-4M21 13a9 9 0 0 1-15 6l-3-3M3 20v-4h4"/>',
  graph:'<path d="M4 4v16h16M7 16l4-5 4 2 5-7"/>',
+ calc:'<rect x="5" y="2" width="14" height="20" rx="2"/><rect x="8" y="5" width="8" height="4"/><path d="M8 13h2m3 0h3m-8 4h2m3 0h3"/>',
  check:'<path d="m4 12 5 5L20 6"/>',
  alert:'<circle cx="12" cy="12" r="9"/><path d="M12 7v6m0 4h.01"/>',
  chevron:'<path d="m9 5 7 7-7 7"/>'
@@ -346,6 +347,7 @@ function drawQuestion(){
  var used=session.hintsUsed&&session.hintsUsed[q.id]||0,availableHints=hintsFor(q);
  var h='<div class="k-wrap k-question-view"><p class="crumb"><a href="#challenge/'+q.unit+'">← Leave this set</a></p><div class="k-question-meta"><span>'+esc(sub)+'</span><span>'+num+' of '+max+'</span></div><div class="progress-track" role="progressbar" aria-label="Questions completed" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+session.index+'"><div style="width:'+prog+'%"></div></div>';
  h+='<div class="k-question-paper"><div class="k-question-tags"><span class="k-type">'+icon(iconFor(q))+esc(labelType(q))+'</span><span class="k-level '+esc(q.level)+'">'+esc(q.level==="warmup"?"Warm-up":q.level==="core"?"Core knowledge":q.level==="apply"?"Application":"Challenge")+'</span>'+(q.marks?'<span class="k-level stretch">'+q.marks+'-mark response</span>':'')+'</div><h1>'+esc(q.stem)+'</h1>';
+ if(q.type==="number"||q.calculator)h+='<div class="k-calculator-note">'+icon("calc")+'<span>Calculator may help</span></div>';
  if(q.figure)h+=figure(q.figure);
  if(isQuickCheck(q))h+='<p class="k-quick-label"><strong>Quick check:</strong> Apply the same idea independently.</p>';
  if(!showing){h+=inputForm(q,a);
@@ -493,12 +495,32 @@ main.addEventListener("change",function(e){
   main.querySelectorAll(".k-option").forEach(function(l){l.classList.toggle("selected",!!l.querySelector("input").checked);});
  }else if(e.target.matches("[data-match]")){readForm();}
 });
+/* Quick tap from the A-level tool: a correct first physical tap checks immediately.
+   A first wrong tap produces no visible grading, disables further auto-checks,
+   and the learner can revise the selection before using the Check button.
+   Keyboard choices never auto-check. */
+function pointerQuickTap(e){
+ if(!session||session.phase!=="ask"||!visible||!e||!e.detail||session.quickTapAttempted)return;
+ var q=current();if(!q||!(q.type==="single"||q.type==="diagram")||!q.options||q.options.length!==4)return;
+ var choice=e.target.closest&&e.target.closest(".k-option");
+ if(!choice)return;
+ var questionId=q.id;
+ if(typeof setTimeout!=="function")return;
+ setTimeout(function(){
+  if(!session||session.phase!=="ask"||current().id!==questionId||session.quickTapAttempted)return;
+  var selected=main.querySelector('input[name="kchoice"]:checked');
+  if(!selected)return;
+  session.quickTapAttempted=true;save();
+  if(+selected.value===q.correct)check(false);
+ },110);
+}
 main.addEventListener("input",function(e){
  if(!session||session.phase!=="ask"||!visible)return;
  if(e.target.matches("#k-number, #k-text, #k-written")){var q=current(),a=session.answers[q.id]||{};a.text=e.target.value;session.answers[q.id]=a;save();}
 });
 main.addEventListener("click",function(e){
  if(!session||!visible)return;
+ pointerQuickTap(e);
  var move=e.target.closest("[data-move]");
  if(move){var q=current();if(!q||q.type!=="order")return;
   var a=session.answers[q.id],i=Number(move.dataset.pos),j=i+(move.dataset.move==="up"?-1:1);
