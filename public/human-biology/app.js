@@ -48,21 +48,23 @@ function areaHtml(a){
  var count=a.sections.reduce(function(n,s){return n+s.cards.length;},0);
  return '<article class="paper area-card"><span class="number">TOPIC AREA '+a.number+'</span><h3>'+esc(a.title)+'</h3><p>'+esc(a.intro)+'</p><p class="summary">'+a.sections.length+' learning sections · '+count+' flashcards</p><div class="area-actions">'+link("area/"+a.id,"Explore topics","primary")+link("cards/"+a.id,"Flashcards")+link("practice/"+a.id,"Practice")+'</div></article>';
 }
+function kIcon(name){var E=window.KeystoneHumanChallenge;return E&&E.icon?E.icon(name):"▤";}
 function showHome(){
  var st=stats(),old=restoreSession(),E=window.KeystoneHumanChallenge,fs=E?E.stats("f170"):null,hs=E?E.stats("f171"):null;
+ var icon=E&&E.icon?E.icon:function(){return "▤";};
  var h='<div class="k-wrap"><section class="k-home-hero"><span class="k-eyebrow">Narajos Keystone · Cambridge OCR AAQ</span><h1>Ready to revise?</h1><p>Choose an exam unit, then practise the biology.</p></section>';
  h+='<section class="k-home-units" aria-label="Choose your exam unit">';
- h+='<a class="k-home-unit teal" href="#challenge/f170"><span class="k-unit-symbol">🧬</span><span class="k-unit-copy"><small>F170 · Exam unit</small><strong>Fundamentals of human biology</strong><em>'+(fs?fs.questions:0)+' varied questions · '+(fs?fs.seen:0)+' attempted</em></span><span class="k-unit-chev">›</span></a>';
- h+='<a class="k-home-unit blue" href="#challenge/f171"><span class="k-unit-symbol">🩺</span><span class="k-unit-copy"><small>F171 · Exam unit · Preview</small><strong>Health and disease</strong><em>'+(hs?hs.questions:0)+' original questions · '+(hs?hs.seen:0)+' attempted</em></span><span class="k-unit-chev">›</span></a>';
+ h+='<a class="k-home-unit teal" href="#challenge/f170"><span class="k-unit-symbol">'+icon("brain")+'</span><span class="k-unit-copy"><small>F170 · Exam unit</small><strong>Fundamentals of human biology</strong><em>'+(fs?fs.questions:0)+' varied questions · '+(fs?fs.seen:0)+' attempted</em></span><span class="k-unit-chev">›</span></a>';
+ h+='<a class="k-home-unit blue" href="#challenge/f171"><span class="k-unit-symbol">'+icon("flask")+'</span><span class="k-unit-copy"><small>F171 · Exam unit · Preview</small><strong>Health and disease</strong><em>'+(hs?hs.questions:0)+' original questions · '+(hs?hs.seen:0)+' attempted</em></span><span class="k-unit-chev">›</span></a>';
  h+='</section>';
  h+='<h2 class="k-subhead">Other ways to revise F170</h2><section class="k-home-actions">';
- h+='<a href="#flashcards" class="k-mini-action flash"><span class="k-mini-symbol">▤</span><strong>Flashcards</strong><small>Recall and spaced review</small></a>';
- h+='<a href="#topics" class="k-mini-action learn"><span class="k-mini-symbol">▣</span><strong>Learn a topic</strong><small>Short explanations</small></a>';
- h+='<a href="#challenge/f170/weak" class="k-mini-action fix"><span class="k-mini-symbol">↻</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
+ h+='<a href="#flashcards" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("layers")+'</span><strong>Flashcards</strong><small>Recall and spaced review</small></a>';
+ h+='<a href="#topics" class="k-mini-action learn"><span class="k-mini-symbol">'+kIcon("book")+'</span><strong>Learn a topic</strong><small>Short explanations</small></a>';
+ h+='<a href="#challenge/f170/weak" class="k-mini-action fix"><span class="k-mini-symbol">'+kIcon("rotate")+'</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
  h+='</section>';
  if(old)h+='<section class="k-continue"><div><strong>Unfinished flashcards or explanation practice</strong><p>Continue your saved set.</p></div>'+link("resume","Resume","primary")+'</section>';
- var savedChallenge=E&&E.isActive();
- if(savedChallenge)h+='<p class="k-small-note">An exam-question set is in progress. Return to it from your exam-unit page.</p>';
+ var savedChallenge=E&&E.hasResume();
+ if(savedChallenge)h+='<p class="k-small-note">An exam-question set is saved. Return to the relevant exam unit to resume.</p>';
  h+='<p class="k-small-note">F170 covers the four topic areas in this first learning bank; F171 exam questions are an initial selection. This is not yet complete specification coverage. Original questions only; no coursework assistance.</p></div>';
  render(h);
 }
@@ -70,7 +72,7 @@ function showTopics(){render(crumb("home","Overview")+'<div class="hero"><div cl
 function showArea(id){
  var a=areaById[id];if(!a)return notFound();
  var h=crumb("topics","All topic areas")+'<div class="k-compact-hero"><div class="eyebrow">F170 · Topic Area '+a.number+'</div><h1>'+esc(a.title)+'</h1></div>';
- h+='<div class="k-quick-buttons"><a class="k-shortcut primary" href="#challenge/f170/a'+a.number+'"><span class="k-mini-symbol">⚡</span><span><strong>Practise questions</strong><small>Different formats and feedback</small></span></a><a class="k-shortcut secondary" href="#cards/'+a.id+'"><span class="k-mini-symbol">▤</span><span><strong>Flashcards</strong><small>Active recall</small></span></a></div>';
+ h+='<div class="k-quick-buttons"><a class="k-shortcut primary" href="#challenge/f170/a'+a.number+'"><span class="k-mini-symbol">'+kIcon("bolt")+'</span><span><strong>Practise questions</strong><small>Different formats and feedback</small></span></a><a class="k-shortcut secondary" href="#cards/'+a.id+'"><span class="k-mini-symbol">▤</span><span><strong>Flashcards</strong><small>Active recall</small></span></a></div>';
  h+='<h2 class="k-subhead">Learn a specific topic</h2><div class="lesson-list">';
  a.sections.forEach(function(s){h+='<article class="paper lesson"><div><span class="num">'+esc(s.id)+'</span><h3>'+esc(s.title)+'</h3></div><div class="right">'+link("learn/"+s.id,"Open topic")+'</div></article>';});
  render('<div class="k-wrap">'+h+'</div></div>');
@@ -102,13 +104,13 @@ function showFlashMenu(){
  var st=stats();
  var h=crumb("home","Overview")+'<div class="k-compact-hero"><div class="eyebrow">F170 · Active recall</div><h1>Flashcards</h1></div>';
  h+='<div class="k-mini-stats"><span><strong>'+st.due+'</strong> due today</span><span><strong>'+st.weak+'</strong> previously missed</span><span><strong>'+st.newCards+'</strong> new</span></div>';
- h+='<div class="k-action-grid"><a class="k-action teal" href="#cards/due"><span class="k-mini-symbol">↻</span><span><strong>Review due cards</strong><small>Spaced practice</small></span><span>›</span></a><a class="k-action orange" href="#cards/weak"><span class="k-mini-symbol">!</span><span><strong>Weak cards</strong><small>Revisit errors</small></span><span>›</span></a><a class="k-action blue" href="#cards/new"><span class="k-mini-symbol">＋</span><span><strong>Learn new cards</strong><small>Try unfamiliar terms</small></span><span>›</span></a><a class="k-action purple" href="#cards/all"><span class="k-mini-symbol">▤</span><span><strong>Mixed revision</strong><small>Across F170</small></span><span>›</span></a></div>';
+ h+='<div class="k-action-grid"><a class="k-action teal" href="#cards/due"><span class="k-mini-symbol">↻</span><span><strong>Review due cards</strong><small>Spaced practice</small></span><span>›</span></a><a class="k-action orange" href="#cards/weak"><span class="k-mini-symbol">'+kIcon("alert")+'</span><span><strong>Weak cards</strong><small>Revisit errors</small></span><span>›</span></a><a class="k-action blue" href="#cards/new"><span class="k-mini-symbol">'+kIcon("layers")+'</span><span><strong>Learn new cards</strong><small>Try unfamiliar terms</small></span><span>›</span></a><a class="k-action purple" href="#cards/all"><span class="k-mini-symbol">▤</span><span><strong>Mixed revision</strong><small>Across F170</small></span><span>›</span></a></div>';
  h+='<h2 class="k-subhead">By topic</h2>'+chooserOptions("cards")+'<p class="k-small-note">Type first, reveal, then self-assess equivalent scientific wording. Your review progress remains in this browser.</p>';
  render('<div class="k-wrap">'+h+'</div>');
 }
 function showPracticeMenu(){
  var st=stats();
- render('<div class="k-wrap">'+crumb("home","Overview")+'<div class="k-compact-hero"><div class="eyebrow">F170 · Explanation practice</div><h1>Explain the biology</h1><p>Write a short answer, then check the key points.</p></div><div class="k-quick-buttons"><a class="k-shortcut primary" href="#challenge/f170/all"><span class="k-mini-symbol">⚡</span><span><strong>Varied exam questions</strong><small>Choose, order, calculate and explain</small></span></a><a class="k-shortcut secondary" href="#practice/all"><span class="k-mini-symbol">✎</span><span><strong>Explanation-only practice</strong><small>'+st.sections+' independent prompts</small></span></a></div><h2 class="k-subhead">Choose a topic</h2>'+chooserOptions("practice")+'</div>');
+ render('<div class="k-wrap">'+crumb("home","Overview")+'<div class="k-compact-hero"><div class="eyebrow">F170 · Explanation practice</div><h1>Explain the biology</h1><p>Write a short answer, then check the key points.</p></div><div class="k-quick-buttons"><a class="k-shortcut primary" href="#challenge/f170/all"><span class="k-mini-symbol">⚡</span><span><strong>Varied exam questions</strong><small>Choose, order, calculate and explain</small></span></a><a class="k-shortcut secondary" href="#practice/all"><span class="k-mini-symbol">'+kIcon("book")+'</span><span><strong>Explanation-only practice</strong><small>'+st.sections+' independent prompts</small></span></a></div><h2 class="k-subhead">Choose a topic</h2>'+chooserOptions("practice")+'</div>');
 }
 function createSession(type,scope){
  var selected=type==="cards"?cardsFor(scope).map(function(x){return x.id;}):sectionsFor(scope).map(function(x){return x.id;});
