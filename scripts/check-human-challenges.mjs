@@ -1,0 +1,65 @@
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+import vm from "node:vm";
+const read=path=>readFileSync("public/"+path,"utf8");
+const data=new Map(),events={},mainEvents={};
+const main={innerHTML:"",focus(){},addEventListener(name,fn){mainEvents[name]=fn;},querySelector(sel){return null;},querySelectorAll(){return [];}};
+const elements={};
+function elem(id){if(id==="main")return main;return elements[id]||(elements[id]={hidden:false,value:"",readOnly:false,focus(){},blur(){},addEventListener(){},querySelector(){return null;}});}
+const document={getElementById:elem,querySelectorAll(){return[];},addEventListener(name,fn){events["doc:"+name]=fn;},createElement(){return {className:"",setAttribute(){},textContent:""};}};
+const location={hash:"#home",assign(x){this.hash=x;}};
+const window={addEventListener(name,fn){events[name]=fn;},scrollTo(){}};
+const store={getItem(k){return data.get(k)||null;},setItem(k,v){data.set(k,String(v));},removeItem(k){data.delete(k);}};
+const c=vm.createContext({window,document,location,localStorage:store,Date,Math,console});
+function load(p){vm.runInContext(read(p),c,{filename:p});}
+load("assets/spaced-review.js");
+load("human-biology/content-f170.js");
+load("human-biology/challenge-bank.js");
+load("human-biology/challenge.js");
+const db=window.KeystoneHumanChallenges,app=window.KeystoneHumanChallenge;
+assert.equal(db.questions.length,70);
+assert.equal(db.questions.filter(q=>q.unit==="f170").length,51);
+assert.equal(db.questions.filter(q=>q.unit==="f171").length,19);
+assert.deepEqual([...new Set(db.questions.map(q=>q.type))].sort(),["diagram","match","multi","number","order","short","single","written"].sort());
+const ids=new Set();
+const validUnits=new Set(["f170","f171"]);
+const map=window.KeystoneHumanData.areas.flatMap(a=>a.sections.map(s=>s.id));
+for(const q of db.questions){
+ assert(!ids.has(q.id),"Duplicate question ID: "+q.id);ids.add(q.id);
+ assert(validUnits.has(q.unit),"Missing/incorrect unit: "+q.id);
+ assert(q.area>0&&q.area<=(q.unit==="f170"?4:5),"Incorrect topic area: "+q.id);
+ if(q.unit==="f170")assert(map.includes(q.section),"Question not mapped to current F170 section: "+q.id);
+ assert(q.model&&q.explain&&q.misconception,"Missing explanatory feedback: "+q.id);
+ if(q.type==="number")assert(Number.isFinite(q.correct)&&q.answerUnit,"Missing numeric answer and units: "+q.id);
+ if(q.type==="multi")assert(Array.isArray(q.correct)&&q.correct.length>=2,"Invalid multi-answer: "+q.id);
+ if(q.type==="match")assert(q.pairs.length>=2,"Too few match pairs: "+q.id);
+ if(q.type==="order")assert(q.items.length>=3,"Too short sequence: "+q.id);
+ if(q.type==="written")assert(q.markPoints.length>=2,"Unscaffolded written response: "+q.id);
+ if(q.marks)assert(q.type==="written"&&(q.marks===6||q.marks===9),"Unexpected extended-answer mark count: "+q.id);
+}
+assert.equal(db.questions.find(q=>q.id==="health-parkinsons-therapy").marks,6);
+assert.equal(db.questions.find(q=>q.id==="health-care-records").marks,9);
+assert(!JSON.stringify(db).match(/complete.*coursework|draft.*NEA|submit.*assignment/i),"NEA task assistance present");
+load("human-biology/app.js");
+assert(main.innerHTML.includes("Ready to revise?"));
+function route(hash){location.hash="#"+hash;events.hashchange();}
+route("challenge/f170");
+assert(main.innerHTML.includes("Exam-style focus")&&main.innerHTML.includes("Fix mistakes"),"F170 mode chooser missing");
+route("challenge/f171");
+assert(main.innerHTML.includes("Health and disease")&&main.innerHTML.includes("Diagnosis and monitoring"),"F171 chooser missing");
+route("challenge/f170/a1");
+assert(app.isActive(),"New challenge session was not started");
+assert(main.innerHTML.includes("Check answer")||main.innerHTML.includes("Compare with key points"),"Practice question not rendered");
+let record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.equal(record.unit,"f170");
+assert(record.queue.every(id=>db.questions.some(q=>q.id===id&&q.area===1)),"Area filter selected other questions");
+assert(main.innerHTML.includes("<svg"),"Expected in-app SVG icons");
+assert(typeof mainEvents.click==="function","Practice input handler missing");
+mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"skip"}}:null;}}});
+assert(main.innerHTML.includes("Expected answer"),"Answer reveal failed");
+assert(main.innerHTML.includes("I included the key ideas"),"Manual equivalent-answer check missing");
+mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"self-weak"}}:null;}}});
+record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert(record.index>=1,"Question did not advance");
+assert.equal(window.KeystoneHumanChallenge.questionCount,70);
+console.log("Human Biology challenge checks passed: 70 original F170/F171 questions, 8 formats, mapped topics, answer reveals, manual grading, saved progress and diagram assets.");
