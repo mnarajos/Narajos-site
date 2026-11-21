@@ -1,7 +1,7 @@
 /* Independently written high-yield questions informed by OCR specification v8 and public SAMPLE assessments.
    Sample alignment does not establish live-exam frequency. No copied OCR exam stems or mark schemes. */
 window.KeystoneHumanChallenges={
-  "version": "2026-11-21-oracle-pilot",
+  "version": "2026-11-21-confidence-ladder",
   "units": [
     {
       "id": "f170",
@@ -1482,7 +1482,8 @@ window.KeystoneHumanChallenges={
         "Recall the main function before checking the options.",
         "Think about the boundary between the whole cell and its environment."
       ],
-      "samAligned": false
+      "samAligned": false,
+      "onRamp": true
     },
     {
       "id": "warm-f170-physiology",
@@ -1507,7 +1508,8 @@ window.KeystoneHumanChallenges={
         "Recall the main function before checking the options.",
         "Which organ contains myocardium?"
       ],
-      "samAligned": false
+      "samAligned": false,
+      "onRamp": true
     },
     {
       "id": "warm-f170-endocrine",
@@ -1949,6 +1951,58 @@ window.KeystoneHumanChallenges={
       "hints": [
         "Identify the statement that contradicts the underlying biological mechanism.",
         "Check whether the student's wording confuses a process with a related but different process."
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "warm-f171-influenza",
+      "unit": "f171",
+      "area": 1,
+      "section": "1.2",
+      "type": "single",
+      "level": "warmup",
+      "warmup": true,
+      "onRamp": true,
+      "stem": "Which type of infectious agent causes influenza?",
+      "options": [
+        "Virus",
+        "Bacterium",
+        "Fungus",
+        "Protozoan"
+      ],
+      "correct": 0,
+      "model": "A virus",
+      "explain": "Influenza is caused by influenza viruses, which replicate using cells in the respiratory tract.",
+      "misconception": "Antibiotics act against susceptible bacteria, not influenza viruses.",
+      "hints": [
+        "Recall the type of microorganism associated with influenza.",
+        "This infectious agent does not have its own ribosomes."
+      ],
+      "samAligned": false
+    },
+    {
+      "id": "warm-f171-heart",
+      "unit": "f171",
+      "area": 4,
+      "section": "4.1",
+      "type": "single",
+      "level": "warmup",
+      "warmup": true,
+      "onRamp": true,
+      "stem": "Which organ pumps blood around the body?",
+      "options": [
+        "Heart",
+        "Kidney",
+        "Liver",
+        "Stomach"
+      ],
+      "correct": 0,
+      "model": "The heart",
+      "explain": "Contractions of cardiac muscle move blood through the pulmonary and systemic circulations.",
+      "misconception": "The kidneys filter blood and regulate its composition but do not pump it around the body.",
+      "hints": [
+        "Think of the organ whose muscle contracts rhythmically.",
+        "It contains atria and ventricles."
       ],
       "samAligned": false
     }
