@@ -11,8 +11,9 @@ Source files for [narajos.com](https://narajos.com/).
 - `public/gcse/flashcards-app.js` — GCSE topic, paper, mixed, weak and due-card review modes
 - `public/alevel/index.html` — A-level Biology revision
 - `public/alevel/spaced-review-app.js` — spaced-review dashboard built on its existing flashcard bank
-- `public/human-biology/` — Cambridge OCR AAQ revision app: paper-first F170/F171 navigation, original diagram, calculation and application challenges, and separate recall cards. F170 has 28 learning sections, 112 flashcards and 28 explanation-only prompts; exam-question bank currently has 62 F170 and 29 F171 challenges (nine formats, including two-step scientific reasoning). F171 remains an early preview.
+- `public/human-biology/` — Cambridge OCR AAQ revision app: paper-first F170/F171 navigation, original diagram, calculation and application challenges, and separate recall cards. F170 has 28 learning sections, 112 flashcards and 28 explanation-only prompts; exam-question bank currently has 62 F170 and 29 F171 challenges. The independent F172–F177 pathway has 78 introductory knowledge checks (13 per unit), including original diagram questions. Across the eight units the app supports ten answer formats. These are starter banks, not complete specification coverage.
 - `docs/HUMAN_BIOLOGY_REVISION_RESEARCH.md` — OCR specification / sample-material research, high-yield priority rationale, content-quality checklist and coverage gaps.
+- `docs/HUMAN_BIOLOGY_QUESTION_WRITING_STANDARD.md` — accessible, misconception-focused question and diagram standard with strict limits on coursework-unit support.
 - `docs/ORACLE_KEYSTONE_PEDAGOGY.md` — pedagogical and privacy standard for all Keystone apps: explicit sequencing, retrieval, scaffold fading, diagnostic reteach, transferable application and strictly local progress (no AI marking or learner telemetry).
 - `public/teacher/index.html` — Focused Questions for teachers
 - `public/teaching/simulations/` — simulation catalogue and five interactive models
@@ -42,7 +43,7 @@ Run `node scripts/check-site.mjs`, `node scripts/check-flashcards.mjs`, `node sc
 - GCSE card bank coverage across all 24 Trilogy topics, per-card structure and tier metadata
 - Spaced-review scheduling, missed-card retry logic, explicit answer aliases and both review-app interfaces
 
-The Human Biology app now has nine exam-question formats, a confidence-first Quick Mix (two easy warm-ups, two core questions, then application with a gated final stretch), progressive topic practice, optional hints, tightly matched quick checks, and an F171 preview alongside the original F170 bank. It is **not yet a complete statement-by-statement specification resource**. It includes no NEA assignment writing or marking. Sample-paper alignment indicates question *style*, not reliable predictions of future examination frequency. Source: Cambridge OCR Human Biology specification version 8 (October 2026).
+The Human Biology app has ten answer formats, a confidence-first Quick Mix, progressive topic practice, 10-second graduated hints, first-tap checking of correct four-choice answers, calculator cues, visual-answer feedback and a knowledge-only F172–F177 starter pathway. F170/F171 remain the examined units; coursework assistance is excluded. It is **not yet a complete statement-by-statement specification resource**. It includes no NEA assignment writing or marking. Sample-paper alignment indicates question *style*, not reliable predictions of future examination frequency. Source: Cambridge OCR Human Biology specification version 8 (October 2026).
 
 These checks are not a replacement for browser testing.
 
@@ -54,7 +55,7 @@ These checks are not a replacement for browser testing.
 4. Check that all five simulations keep their primary controls visible and scrollable in portrait mobile and desktop views.
 5. Open GCSE Flashcards: test paper and topic decks, missed-card repetition, typed answers, reverse definitions, Foundation filtering, interruption and session recovery.
 6. Open A-level Spaced Review: complete an untimed/timed/reverse deck and check its results contribute to review history.
-7. In Human Biology, test F170 and F171 entry cards, all eight question formats (including ordering, matching, diagram, numeric and manual 6/9-mark rubric), wrong-answer repeats, F170 flashcards, session recovery and leave confirmation; verify no coursework task features.
+7. In Human Biology, test F170–F177 pathways, all ten question formats (including ordering, matching, diagram, numeric and manual 6/9-mark rubric), wrong-answer repeats, F170 flashcards, session recovery and leave confirmation; verify no coursework task features.
 8. Check that the A-level DNA-replication flashcard accepts `S`, `S phase` and `synthesis phase` as appropriate.
 
 **Content status:** The GCSE flashcard decks are an initial curated recall selection, not a complete card-by-card representation of every specification statement. Further expansion and examiner-report review are recommended before describing them as comprehensive.
