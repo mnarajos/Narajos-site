@@ -23,3 +23,6 @@
 .krp-note{color:var(--muted,#58646d);font-size:.79rem;line-height:1.55;margin:12px 0 0}
 @media(max-width:600px){.krp-root{padding:12px}.krp-diagram{min-width:650px}.krp-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.krp-btn{font-size:.85rem}}
 @media(prefers-reduced-motion:reduce){.krp-ovary{transition:none}}
+
+.krp-swipe{display:none;margin:.45rem 0 .35rem;color:var(--muted,#58646d);font-size:.79rem;line-height:1.45}
+@media(max-width:650px){.krp-swipe{display:block}}
