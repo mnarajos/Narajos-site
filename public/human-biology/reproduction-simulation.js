@@ -51,7 +51,7 @@ function svg(){
  '<text x="199" y="276" text-anchor="middle">Fimbriae</text><text x="701" y="276" text-anchor="middle">Fimbriae</text>'+
  '<path d="M198 260L193 222M701 260L708 222" stroke="#566e7c" stroke-width="2"/>'+
  '<text x="449" y="84" text-anchor="middle">Uterus</text><path d="M450 93V151" stroke="#566e7c" stroke-width="2"/>'+
- '<text x="564" y="281">Endometrium</text><path d="M554 274L471 263" stroke="#566e7c" stroke-width="2"/>'+
+ '<text x="556" y="318">Endometrium</text><path d="M546 310L471 263" stroke="#566e7c" stroke-width="2"/>'+
  '<text x="548" y="376">Cervix</text><path d="M538 370L481 376" stroke="#566e7c" stroke-width="2"/>'+
  '<text x="335" y="405" text-anchor="end">Cervical canal</text><path d="M346 399L393 399L450 390" stroke="#566e7c" stroke-width="2" fill="none"/>'+
  '<text x="548" y="481">Vagina</text><path d="M538 474L490 469" stroke="#566e7c" stroke-width="2"/>'+
