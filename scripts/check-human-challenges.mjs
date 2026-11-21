@@ -95,6 +95,36 @@ mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?
 record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert(record.index>=1,"Question did not advance");
 assert.equal(window.KeystoneHumanChallenge.questionCount,89);
+// Verify the entire deterministic answer flow, not merely presence of new item types.
+function forcedQuestion(id){
+ const q=db.questions.find(x=>x.id===id);assert(q,"Unknown forced test item: "+id);
+ const state={unit:q.unit,scope:"a"+q.area,route:"challenge/"+q.unit+"/a"+q.area,queue:[q.id],index:0,first:{},correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,complete:false,started:Date.now()};
+ app.pause();data.set("narajos-human-challenge-v2-session",JSON.stringify(state));
+ app.route(state.route,html=>{main.innerHTML=html;});return q;
+}
+const clickAction=name=>mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:name}}:null;}}});
+const best=forcedQuestion("best-f170-magnification");
+assert(main.innerHTML.includes("Choose the scientifically accurate explanation")&&main.innerHTML.includes("Which scientific reason supports"),"Two-step reasoning must present both choices");
+main.querySelector=selector=>selector==='input[name="kbest"]:checked'?{value:String(best.correct)}:selector==='input[name="kreason"]:checked'?{value:String(best.reasonCorrect)}:null;
+clickAction("check");
+assert(main.innerHTML.includes("Correct")&&main.innerHTML.includes("Expected answer"),"Two-step answer should require both correct components");
+assert(JSON.parse(data.get("narajos-human-challenge-v2-progress"))[best.id].independent===1,"Correct independent reasoning should be counted");
+const warm=forcedQuestion("warm-f170-cells");
+main.querySelector=()=>null;main.querySelectorAll=()=>[{value:String(warm.correct)}];
+clickAction("hint");assert(main.innerHTML.includes("Hint 1"),"Warm-up should offer a hint");
+clickAction("check");
+const guided=JSON.parse(data.get("narajos-human-challenge-v2-progress"))[warm.id];
+assert.equal(guided.guided,1,"Guided success must be recorded as guided");
+assert.equal(guided.independent,0,"Guided success must not be scored as independent retrieval");
+const state=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.equal(state.correctFirst,0,"Hints must not inflate independent first-attempt score");
+assert(Object.keys(state.quickCheckIds).length>=1,"Guided success must lead to an independent quick check");
+forcedQuestion("cell-magnification");
+main.querySelector=selector=>selector===".k-error"?{textContent:""}:selector==="#k-number, #k-text, #k-written"?{value:"3000xyz"}:null;
+main.querySelectorAll=()=>[];
+clickAction("check");
+assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-session")).phase,"ask","Malformed numeric input must not be credited");
+
 const html=read("human-biology/index.html");
 assert(!html.includes("fonts.googleapis.com"),"Human Biology should not request remote fonts");
 assert(!/\b(?:fetch\(|sendBeacon\(|XMLHttpRequest\(|WebSocket\()/.test(read("human-biology/challenge.js")),"No network upload API should be used in this revision app");
