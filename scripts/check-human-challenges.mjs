@@ -43,7 +43,7 @@ for(const q of db.questions){
  if(q.marks)assert(q.type==="written"&&(q.marks===6||q.marks===9),"Unexpected extended-answer mark count: "+q.id);
 }
 assert.equal(db.questions.filter(q=>q.warmup).length,23,"Warm-up coverage");
-assert.equal(db.questions.filter(q=>q.type==="best").length,6,"Two-step reasoning coverage");
+assert.equal(db.questions.filter(q=>q.type==="best").length,7,"Two-step reasoning coverage");
 assert.equal(db.questions.filter(q=>q.subtype==="error").length,4,"Misconception correction coverage");
 assert.equal(db.questions.find(q=>q.id==="health-parkinsons-therapy").marks,6);
 assert.equal(db.questions.find(q=>q.id==="health-care-records").marks,9);
