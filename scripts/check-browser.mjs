@@ -210,7 +210,7 @@ try{
  await desktop.goto(base+"/human-biology/#challenge/f171/a3",{waitUntil:"load"});
  await desktop.locator(".k-question-view").waitFor({state:"visible"});
  const count=await desktop.evaluate(()=>window.KeystoneHumanChallenge?.questionCount);
- assert.equal(count,364,"Live engine did not load all questions");
+ assert.equal(count,508,"Live engine did not load all questions");
  assert((await desktop.locator("main").innerText()).length>90,"Question activity is blank");
  await desktop.locator("#site-home").click();
  const dialog=desktop.locator("#leave-dialog");
@@ -251,10 +251,82 @@ try{
  await mobile.getByText("Graph values in a table",{exact:true}).click();
  assert(await mobile.getByRole("table").isVisible(),"Accessible graph table cannot be opened");
  await screen(mobile,"human-skills-graph-mobile");
+ // Shared site-return control must look and behave consistently across every page.
+ const navPage=await browser.newPage({viewport:{width:1280,height:900}});
+ navPage.on("pageerror",e=>errors.push("Shared navigation: "+e.message));
+ let standard=null;
+ for(const path of ["/","/404.html","/privacy/","/teaching/","/teacher/","/gcse/","/alevel/","/human-biology/","/teaching/simulations/",...['bioenergetics','cardiac-cycle','enzyme-inhibition','enzyme-kinetics','molecular-biology'].map(x=>"/teaching/simulations/"+x+"/")]){
+  await navPage.goto(base+path,{waitUntil:"load"});
+  const control=navPage.locator("#site-home");assert(await control.isVisible(),"Missing homepage control: "+path);
+  assert.equal(await control.getAttribute("href"),"/");assert.equal(await control.innerText(),"Narajos");
+  const style=await control.evaluate(el=>{const s=getComputedStyle(el);return [s.fontSize,s.fontWeight,s.color,s.backgroundColor,s.borderRadius,s.minHeight];});
+  if(!standard)standard=style;else assert.deepEqual(style,standard,"Homepage control style differs: "+path);
+ }
+ await navPage.goto(base+"/human-biology/#challenge/f170/build");
+ await navPage.getByRole("heading",{name:"Build understanding",exact:true}).waitFor();
+ assert.equal(await navPage.locator("[href^='#challenge/f170/p-']").count(),28);
+ await screen(navPage,"human-progressive-menu");
+ const route="/human-biology/#challenge/f170/p-cell-stage-metaphase";
+ await navPage.goto(base+route);
+ let chosenCore;
+ for(let i=0;i<4;i++){
+  await navPage.locator(".k-question-view").waitFor();
+  const state=await navPage.evaluate(()=>JSON.parse(localStorage.getItem("narajos-human-challenge-v2-session")));
+  if(i===0){chosenCore=state.queue[2];assert((await navPage.locator(".k-sequence-note").innerText()).includes("1 ·"));}
+  const task=await navPage.evaluate(id=>window.KeystoneHumanChallenges.questions.find(q=>q.id===id),state.queue[state.index]);
+  if(task.type==="written"){
+   await navPage.locator("#k-written").fill("Anaphase: sister chromatids have separated and are moving to opposite poles.");
+   await navPage.locator('[data-k-action="check"]').click();
+   await navPage.locator('[data-k-action="self-good"]').click();
+  }else{
+   await navPage.locator('input[name="kchoice"][value="'+task.correct+'"]').check();
+   if(await navPage.locator('[data-k-action="check"]').count())await navPage.locator('[data-k-action="check"]').click();
+   await navPage.locator(".k-feedback.correct").waitFor();
+   if(i===1){await navPage.reload();await navPage.locator(".k-feedback.correct").waitFor();}
+   await navPage.locator('[data-k-action="next"]').click();
+  }
+ }
+ await navPage.getByRole("heading",{name:"Sequence complete",exact:true}).waitFor();
+ await navPage.getByRole("button",{name:"Repeat this idea"}).click();
+ assert.notEqual(await navPage.evaluate(()=>JSON.parse(localStorage.getItem("narajos-human-challenge-v2-session")).queue[2]),chosenCore);
+ await navPage.goto(base+"/teaching/simulations/cardiac-cycle/");
+ await navPage.locator("body:not(.booting)").waitFor();
+ const ecg=navPage.locator("#ecg-panel"),mechanical=navPage.locator("#mechanical-graph-panel");
+ assert(await ecg.isHidden());assert(await mechanical.isVisible());
+ for(const level of [1,2,3]){await navPage.locator('[data-level="'+level+'"]').click();assert(await ecg.isHidden(),"Detail level must not reveal optional ECG");}
+ await navPage.locator("#btn-ecg").click();assert(await ecg.isVisible());assert(await mechanical.isVisible());
+ assert.equal(await navPage.locator("#btn-ecg").getAttribute("aria-expanded"),"true");
+ await navPage.waitForTimeout(120);
+ assert(await navPage.locator("#ecg").evaluate(c=>c.width>100&&c.height>80),"Visible ECG canvas has no useful size");
+ const heartBox=await navPage.locator(".heartbox").boundingBox(),ecgBox=await ecg.boundingBox();
+ assert(ecgBox.x>=heartBox.x+heartBox.width,"Desktop ECG must sit beside heart");
+ await screen(navPage,"cardiac-optional-ecg");
+ await navPage.locator('[data-scene="elec"]').click();assert(await ecg.isVisible());assert(await mechanical.isHidden());
+ await navPage.locator("#hide-ecg").click();assert(await ecg.isHidden());
+ assert(await navPage.locator("#btn-ecg").evaluate(el=>document.activeElement===el));
+ const coreCopy=await navPage.locator(".stage").innerText();assert(!/P wave|QRS|T wave/.test(coreCopy),"Core conduction view still exposes ECG wave labels");
+ await navPage.locator("#btn-ecg").click();
+ await navPage.evaluate(()=>setRunning(false));
+ const canvas=await navPage.locator("#ecg").boundingBox();
+ await navPage.mouse.click(canvas.x+canvas.width*.6,canvas.y+canvas.height*.5);
+ const phase=await navPage.evaluate(()=>S.phi);assert(phase>.4&&phase<.8,"ECG scrubbing did not change the shared heart clock");
+ await navPage.setViewportSize({width:1280,height:720});
+ await navPage.locator('[data-scene="mech"]').click();
+ assert(await ecg.isVisible());assert((await navPage.locator("#ecg").boundingBox()).height>80);
+ await navPage.setViewportSize({width:390,height:844});
+ assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Optional ECG overflows phone width");
+ const phoneHeart=await navPage.locator(".heartbox").boundingBox(),phoneEcg=await ecg.boundingBox();
+ assert(phoneEcg.y>phoneHeart.y,"Phone ECG should stack below the heart");
+ await screen(navPage,"cardiac-optional-ecg-mobile");
+ await navPage.goto(base+"/human-biology/#challenge/f171/build");
+ assert.equal(await navPage.locator("[href^='#challenge/f171/p-']").count(),18);
+ assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Progression menu overflows phone width");
+ await screen(navPage,"human-progressive-mobile");
+ await navPage.close();
  await mobile.close();
  await desktop.close();
  assert.deepEqual(errors,[],"Uncaught page errors: "+errors.join("; "));
- console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 364 questions and mobile layout.");
+ console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 508 questions and mobile layout.");
 }finally{
  await browser.close();await new Promise(done=>server.close(done));
 }

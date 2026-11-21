@@ -52,6 +52,20 @@
   .graphbox .ghead .t{font-size:12.5px;font-weight:800}
   .graphbox .ghead .s{font-size:10px;color:var(--muted);font-weight:600}
   canvas#graph{flex:1;width:100%;display:block}
+  canvas#ecg{flex:1;width:100%;display:block;min-height:0}
+  #ecg-panel{min-height:0}
+  .graphbox[hidden],.ecg-detail[hidden]{display:none!important}
+  .ecg-toggle{border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);padding:8px 12px;min-height:44px;font:700 13px system-ui;cursor:pointer}
+  .ecg-toggle[aria-expanded="true"]{background:#fff4f0;border-color:var(--accent)}
+  .ecg-close{border:1px solid var(--line);border-radius:7px;padding:5px 8px;background:#fff;color:var(--ink);font:600 12px system-ui;cursor:pointer}
+  .ecg-note{margin:0;padding:0 11px 6px;font-size:11px;line-height:1.4;color:var(--muted)}
+  body[data-ecg="false"] .ecg-detail{display:none!important}
+  body[data-scene="mech"][data-ecg="true"] .viz{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);grid-template-rows:minmax(190px,1fr) minmax(190px,1fr)}
+  body[data-scene="mech"][data-ecg="true"] .heartbox{grid-column:1;grid-row:1 / 3}
+  body[data-scene="mech"][data-ecg="true"] #mechanical-graph-panel{grid-column:2;grid-row:1}
+  body[data-scene="mech"][data-ecg="true"] #ecg-panel{grid-column:2;grid-row:2}
+  .ecg-toggle:focus-visible,.ecg-close:focus-visible{outline:3px solid #df7928;outline-offset:3px}
+  @media(min-width:1001px) and (max-height:800px){body.sim-fullscreen[data-ecg="true"]{height:auto;min-height:100vh;overflow:auto}body[data-ecg="true"] main{min-height:690px}}
 
   .phasebar{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);
     border-radius:11px;padding:8px 13px}
@@ -134,22 +148,25 @@
     .viz{flex-direction:column}
     .heartbox{min-height:320px}.graphbox{min-height:240px}
     .level-group{margin-left:0}
+    body[data-scene="mech"][data-ecg="true"] .viz{display:flex;flex-direction:column}
   }
 </style>
 <link rel="stylesheet" href="/assets/simulation-shell.css">
+<link rel="stylesheet" href="/assets/home-link.css">
 </head>
-<body class="booting sim-fullscreen" data-scene="mech" data-level="1">
-<nav class="sim-utility-nav" aria-label="Simulation navigation"><a href="/teaching/simulations/">← All simulations</a><a class="sim-site-link" href="/" aria-label="Narajos main homepage"><img src="/favicon.svg" alt="">Narajos</a></nav>
+<body class="booting sim-fullscreen" data-scene="mech" data-level="1" data-ecg="false">
+<nav class="sim-utility-nav" aria-label="Simulation navigation"><a href="/teaching/simulations/">← All simulations</a><a href="/" id="site-home" class="narajos-home" aria-label="Narajos homepage" title="Narajos homepage"><img src="/favicon.svg" alt=""><span>Narajos</span></a></nav>
 
 <header>
   <div class="brand">
     <h1 class="t">The Cardiac Cycle</h1>
-    <div class="s">Pressure · volume · valves · sounds — AQA 3.4.1</div>
+    <div class="s">AQA 3.3.4.1 · Cardiac cycle | 3.6.1.3 · Heartbeat control</div>
   </div>
   <div class="tabs" role="group" aria-label="Choose a view">
     <button class="tab" data-scene="mech" aria-pressed="true">🫀 Cardiac cycle</button>
     <button class="tab" data-scene="elec" aria-pressed="false">⚡ Electrical conduction <span class="yr">Y13</span></button>
   </div>
+  <button type="button" class="ecg-toggle" id="btn-ecg" aria-expanded="false" aria-controls="ecg-panel">Show ECG · optional</button>
   <div class="level-group">
     <span>Detail</span>
     <div class="level-seg" role="group" aria-label="Complexity level">
@@ -164,13 +181,18 @@
   <section class="stage">
     <div class="viz">
       <div class="heartbox"><canvas id="heart"></canvas></div>
-      <div class="graphbox">
+      <div class="graphbox" id="mechanical-graph-panel">
         <div class="ghead">
           <span class="t" id="graph-title">Pressure &amp; volume against time</span>
           <span class="s" id="graph-sub">one cardiac cycle</span>
         </div>
         <canvas id="graph"></canvas>
       </div>
+      <section class="graphbox" id="ecg-panel" aria-labelledby="ecg-title" hidden>
+        <div class="ghead"><h2 class="t" id="ecg-title">ECG · Optional extension</h2><button type="button" class="ecg-close" id="hide-ecg" aria-label="Hide ECG">Hide</button></div>
+        <p class="ecg-note">Beyond the named AQA Biology requirements. The trace shares the heart's clock; it is a simplified teaching model.</p>
+        <canvas id="ecg" role="img" aria-label="Schematic electrocardiogram showing P, QRS and T waves with a time cursor synchronised to the heart animation."></canvas>
+      </section>
     </div>
 
     <div class="phasebar">
@@ -234,11 +256,10 @@
     <div class="scene-elec block" style="flex-direction:column;gap:11px">
       <div class="sectlabel">Conduction</div>
       <label class="toggle-row"><span class="switch"><input type="checkbox" id="e-labels" checked><span class="slider-ui"></span></span> Labels</label>
-      <label class="toggle-row lvl2"><span class="switch"><input type="checkbox" id="e-ecg" checked><span class="slider-ui"></span></span> Show ECG trace</label>
       <div class="ctrl lvl3">
         <div class="head"><label for="e-avn">AVN delay</label><span class="read" id="r-avn">normal</span></div>
         <input type="range" id="e-avn" min="0" max="100" value="40" step="1">
-        <div class="sub">The AVN delays the impulse so the atria finish emptying before the ventricles contract. This delay is the PR interval on the ECG.</div>
+        <div class="sub">The AVN delays the impulse so the atria finish emptying before the ventricles contract.<span class="ecg-detail"> AV conduction contributes to the PR interval on the ECG.</span></div>
       </div>
       <label class="toggle-row lvl3"><span class="switch"><input type="checkbox" id="e-block"><span class="slider-ui"></span></span> Complete heart block (AVN)</label>
       <div class="sub lvl3" style="font-size:11px;color:var(--muted)">With the AVN blocked, the impulse can't reach the ventricles. They fall back on a slow escape rhythm, so the atria and ventricles beat independently.</div>
@@ -255,10 +276,10 @@
         <p><b>Filling is mostly passive.</b> About 80% of ventricular filling happens passively before the atria contract; atrial systole tops up the rest (the “atrial kick”).</p>
       </div>
       <div id="notes-elec" class="scene-elec block" style="display:none">
-        <p><b>The SAN is the pacemaker.</b> It sets the rhythm and sends a wave of depolarisation across both atria, making them contract (the P wave on the ECG).</p>
+        <p><b>The SAN is the pacemaker.</b> It sets the rhythm and sends a wave of depolarisation across both atria, making them contract.<span class="ecg-detail"> Atrial depolarisation produces the P wave on the ECG.</span></p>
         <p><b>The AVN delays the impulse</b> by about 0.1 s so the atria finish emptying before the ventricles contract. Non-conducting tissue between the atria and ventricles stops the impulse spreading directly, so the AVN is the only route.</p>
-        <p><b>His → Purkinje.</b> The impulse travels down the bundle of His through the septum, then the Purkinje fibres carry it up through the ventricle walls, so the ventricles contract from the apex upwards (the QRS complex). The T wave is the ventricles repolarising.</p>
-        <p><b>Electrical precedes mechanical.</b> Each wave of the ECG comes just before the contraction it causes.</p>
+        <p><b>His → Purkinje.</b> The impulse travels down the bundle of His through the septum, then the Purkinje fibres carry it up through the ventricle walls, so the ventricles contract from the apex upwards.<span class="ecg-detail"> Ventricular depolarisation produces the QRS complex; the T wave represents ventricular repolarisation.</span></p>
+        <p><b>Activation precedes contraction.</b> Electrical activation triggers the subsequent contraction of cardiac muscle.</p>
       </div>
     </details>
   </aside>
@@ -360,7 +381,7 @@ const S={
   mLabels:true, flow:true, pressOnHeart:false, audio:false, whoosh:false, pvloop:false,
   showPV:true, showAo:true, showAtr:true, showVol:true, showMarkers:true,
   focus:null, gmap:{L:44,R:12,w:400}, scrubbing:false,
-  eLabels:true, ecg:true, avn:0.40, block:false,
+  eLabels:true, ecg:false, ecgMap:{L:20,R:14,w:400}, avn:0.40, block:false,
   prevAV:true, prevSL:false, soundT:0, soundKind:"",
   avEase:1, slEase:0, // eased valve openness for smooth leaflet motion
   ventPhi:0,          // ventricular clock (diverges from phi under heart block)
@@ -370,6 +391,7 @@ const S={
 /* ---------- canvases ---------- */
 const heart=document.getElementById("heart"), hx=heart.getContext("2d");
 const graph=document.getElementById("graph"), gx=graph.getContext("2d");
+const ecgCanvas=document.getElementById("ecg"), ex=ecgCanvas.getContext("2d");
 let DPR=1;
 const WW=520, WH=520; let HW=520,HH=520,HVS=1,HOX=0,HOY=0;
 function sizeCanvas(){
@@ -382,6 +404,7 @@ function sizeCanvas(){
   const gr=graph.getBoundingClientRect();
   graph.width=Math.max(1,gr.width)*DPR;graph.height=Math.max(1,gr.height)*DPR;
   gx.setTransform(DPR,0,0,DPR,0,0);
+  if(S.ecg){const er=ecgCanvas.getBoundingClientRect();ecgCanvas.width=Math.max(1,er.width)*DPR;ecgCanvas.height=Math.max(1,er.height)*DPR;ex.setTransform(DPR,0,0,DPR,0,0);}
 }
 window.addEventListener("resize",sizeCanvas);
 function hEnter(){hx.setTransform(DPR,0,0,DPR,0,0);hx.translate(HOX,HOY);hx.scale(HVS,HVS);}
@@ -924,13 +947,12 @@ function drawElec(){
   if(S.block){ heartLabel(hx,258,248,"✗ AVN blocked",11); }
 }
 function drawGraphECG(){
+  const graph=ecgCanvas,gx=ex;
   const w=graph.getBoundingClientRect().width,h=graph.getBoundingClientRect().height;
   if(w<20||h<20)return;
   gx.clearRect(0,0,w,h);gx.fillStyle="#fff";gx.fillRect(0,0,w,h);
-  if(!S.ecg && S.level>=2){gx.fillStyle="#9fb3c6";gx.font="600 12px system-ui";gx.textAlign="center";
-    gx.fillText("ECG hidden",(w)/2,h/2);return;}
   const L=20,R=14,T=26,B=46, mid=(T+h-B)*0.54;
-  S.gmap={L,R,w};
+  S.ecgMap={L,R,w};
   const pxX=phi=>L+phi*(w-L-R);
   const q=qOnset();
 
@@ -956,7 +978,7 @@ function drawGraphECG(){
   const amp=(h-T-B)*0.40;
   gx.beginPath();
   for(let i=0;i<=360;i++){const phi=i/360;
-    const y=mid-ecgValue(phi,S.block?(phi*(S.hr/38)):phi)*amp;
+    const y=mid-ecgValue(phi,S.scene==="elec"&&S.block?(phi*(S.hr/38)):phi)*amp;
     i?gx.lineTo(pxX(phi),y):gx.moveTo(pxX(phi),y);}
   gx.strokeStyle="#c0334d";gx.lineWidth=2;gx.stroke();
 
@@ -1020,18 +1042,18 @@ function chipHTML(cls,col,txt){return '<div class="chip '+cls+'"><span class="do
 function stat(k,v,u,lvl){const c=lvl?' lvl'+lvl:'';return '<div class="stat'+c+'"><div class="k">'+k+'</div><div class="v">'+v+' <small>'+u+'</small></div></div>';}
 function msg(t){return '<div class="msg"><span class="ic">💡</span><span>'+t+'</span></div>';}
 function elecPhaseName(){const p=((S.phi%1)+1)%1,q=qOnset();
-  if(p<0.07)return "Atrial depolarisation (P wave)";
+  if(p<0.07)return "Atrial depolarisation"+(S.ecg?" (P wave)":"");
   if(p<q)return "AVN delay";
-  if(p<q+0.06)return "Ventricular depolarisation (QRS)";
+  if(p<q+0.06)return "Ventricular depolarisation"+(S.ecg?" (QRS)":"");
   if(p<0.34)return "Ventricles contracting";
-  if(p<0.46)return "Ventricular repolarisation (T wave)";
+  if(p<0.46)return "Ventricular repolarisation"+(S.ecg?" (T wave)":"");
   return "Ventricles relaxed — filling";}
 function elecCoach(){const p=((S.phi%1)+1)%1,q=qOnset();
-  if(S.block)return "AVN blocked: P waves keep coming from the SAN, but they don't reach the ventricles, which beat on their own slow escape rhythm.";
-  if(p<0.07)return "The SAN fires. Depolarisation spreads across both atria (the P wave), making them contract.";
+  if(S.block)return "AVN blocked: atrial impulses continue from the SAN, but do not reach the ventricles, which beat on their own slow escape rhythm.";
+  if(p<0.07)return "The SAN fires. Depolarisation spreads across both atria"+(S.ecg?" (the P wave)":"")+", triggering atrial contraction.";
   if(p<q)return "The impulse is held at the AVN. This delay lets the atria finish emptying before the ventricles contract.";
-  if(p<q+0.06)return "The impulse races down the bundle of His and Purkinje fibres — the ventricles depolarise (the QRS complex).";
-  if(p<0.46)return "The ventricles contract, then repolarise (the T wave).";
+  if(p<q+0.06)return "The impulse races down the bundle of His and Purkinje fibres — the ventricles depolarise"+(S.ecg?" (the QRS complex)":"")+".";
+  if(p<0.46)return "The ventricles contract, then repolarise"+(S.ecg?" (the T wave)":"")+".";
   return "The heart is resting before the SAN fires again.";}
 function elecPhaseNameShort(){return elecPhaseName();}
 
@@ -1055,7 +1077,8 @@ function frame(now){
     }
   }
   if(S.scene==="mech"){ const m=model(S.phi); drawHeartBase(m); drawMechOverlay(m); drawGraphMech(); }
-  else { drawElec(); drawGraphECG(); }
+  else { drawElec(); }
+  if(S.ecg)drawGraphECG();
   // blood-flow whoosh: loudness tracks how fast ventricular volume is changing
   if(S.whoosh && S.scene==="mech" && S.running){
     const d=0.004, dVol=Math.abs(interp(K_VOL,S.phi+d)-interp(K_VOL,S.phi-d))/(2*d);
@@ -1077,13 +1100,20 @@ function setScene(sc){
   document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-pressed",b.dataset.scene===sc));
   document.getElementById("notes-mech").style.display=sc==="mech"?"block":"none";
   document.getElementById("notes-elec").style.display=sc==="elec"?"block":"none";
-  document.getElementById("graph-title").textContent= sc==="mech"?"Pressure & volume against time":"ECG (electrocardiogram)";
-  document.getElementById("graph-sub").textContent= sc==="mech"?"one cardiac cycle — every crossing is a valve event":"P = atria depolarise · QRS = ventricles depolarise · T = ventricles repolarise";
+  document.getElementById("mechanical-graph-panel").hidden=sc!=="mech";
   document.getElementById("hint").textContent= sc==="mech"
     ? "Valves open when the pressure behind them is higher than in front. Every crossing point on the graph is a valve opening or closing."
     : "The impulse starts at the SAN, is delayed at the AVN, then spreads through the His–Purkinje system. Electrical events come just before the contractions they cause.";
-  buildLegend();applyLevel();
+  buildLegend();applyLevel();sizeCanvas();
 }
+function setECG(on){
+  S.ecg=!!on;document.body.dataset.ecg=String(S.ecg);
+  document.getElementById("ecg-panel").hidden=!S.ecg;
+  const b=document.getElementById("btn-ecg");b.setAttribute("aria-expanded",String(S.ecg));b.textContent=S.ecg?"Hide ECG":"Show ECG · optional";
+  buildLegend();sizeCanvas();
+}
+document.getElementById("btn-ecg").addEventListener("click",()=>setECG(!S.ecg));
+document.getElementById("hide-ecg").addEventListener("click",()=>{setECG(false);document.getElementById("btn-ecg").focus();});
 function applyLevel(){
   const n=S.level;
   document.querySelectorAll(".lvl2").forEach(el=>el.style.display=n>=2?"":"none");
@@ -1112,9 +1142,9 @@ document.getElementById("btn-step").addEventListener("click",()=>{
 });
 
 /* ---- click / drag on the graph to jump to a time point (and pause) ---- */
-function scrubTo(clientX){
-  if(S.pvloop && S.scene==="mech" && S.level>=3) return;   // PV loop isn't a time axis
-  const r=graph.getBoundingClientRect(), {L,R,w}=S.gmap;
+function scrubTo(clientX,canvas=graph,map=S.gmap){
+  if(canvas===graph && S.pvloop && S.scene==="mech" && S.level>=3) return;   // PV loop isn't a time axis
+  const r=canvas.getBoundingClientRect(), {L,R,w}=map;
   let phi=(clientX-r.left-L)/(w-L-R);
   phi=Math.max(0,Math.min(0.9995,phi));
   S.phi=phi; if(!(S.scene==="elec"&&S.block)) S.ventPhi=phi;
@@ -1125,6 +1155,10 @@ graph.style.cursor="ew-resize";
 graph.addEventListener("pointerdown",e=>{S.scrubbing=true;setRunning(false);scrubTo(e.clientX);graph.setPointerCapture(e.pointerId);});
 graph.addEventListener("pointermove",e=>{if(S.scrubbing)scrubTo(e.clientX);});
 graph.addEventListener("pointerup",e=>{S.scrubbing=false;});
+ecgCanvas.style.cursor="ew-resize";
+ecgCanvas.addEventListener("pointerdown",e=>{S.scrubbing=true;setRunning(false);scrubTo(e.clientX,ecgCanvas,S.ecgMap);ecgCanvas.setPointerCapture(e.pointerId);});
+ecgCanvas.addEventListener("pointermove",e=>{if(S.scrubbing)scrubTo(e.clientX,ecgCanvas,S.ecgMap);});
+ecgCanvas.addEventListener("pointerup",()=>{S.scrubbing=false;});
 
 /* ---- focus on one phase: play just that section slowly, looping ---- */
 function setFocus(i){
@@ -1149,7 +1183,7 @@ bind("t-sound","audio",()=>{if(S.audio){try{if(!actx)actx=new(window.AudioContex
 bind("t-whoosh","whoosh",()=>{if(S.whoosh)ensureWhoosh(); else updateWhoosh(0);});
 bind("t-pvloop","pvloop");
 bind("l-pv","showPV");bind("l-ao","showAo");bind("l-atr","showAtr");bind("l-vol","showVol");bind("l-mark","showMarkers");
-bind("e-labels","eLabels");bind("e-ecg","ecg");
+bind("e-labels","eLabels");
 document.getElementById("e-block").addEventListener("change",e=>{S.block=e.target.checked;if(!S.block)S.ventPhi=S.phi;});
 document.getElementById("e-avn").addEventListener("input",e=>{S.avn=+e.target.value/100;
   document.getElementById("r-avn").textContent = S.avn<0.25?"short":S.avn>0.6?"long":"normal";});
@@ -1175,7 +1209,7 @@ function buildLegend(){
       lg("bx","#38bdf8","Purkinje fibres")+
       lg("bx","#ffd94d","Depolarising muscle")+
       lg("bx","#4d94e8","Repolarising muscle")+
-      lg("sw","#c0334d","ECG trace");
+      (S.ecg?lg("sw","#c0334d","ECG trace"):"");
   }
 }
 function lg(t,col,txt){const s=t==="sw"?'<span class="sw" style="background:'+col+'"></span>':'<span class="bx" style="background:'+col+'"></span>';
@@ -1190,3 +1224,4 @@ boot();
 </script>
 </body>
 </html>
+
