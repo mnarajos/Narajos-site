@@ -225,3 +225,26 @@ h1{font-size:clamp(1.65rem,3.5vw,2.2rem);letter-spacing:-.028em}
 .k-option-out{background:#f0f2f2!important;border-color:#b7c2bf!important;color:#677675;opacity:.72}
 .k-option-out .k-option-letter{background:#e2e5e5}
 .k-ruled-out{font-size:.7rem;font-weight:750;color:#566a67;margin-left:auto;white-space:nowrap}
+
+/* Optional Catch up / Reteach companion, without enlarging the main practice screen. */
+.k-companion-entry{display:flex;align-items:center;gap:12px;margin:0 0 21px;padding:16px;border:1px solid #c5dcd5;border-left:4px solid var(--brand);border-radius:13px;background:#fff;flex-wrap:wrap}
+.k-companion-entry>div:nth-child(2){flex:1;min-width:190px}
+.k-companion-entry strong{display:block;font:700 .88rem/1.4 Poppins,system-ui}
+.k-companion-entry p{color:var(--muted);font-size:.78rem;line-height:1.5;margin:3px 0 0}
+.k-companion-entry .button{white-space:nowrap}
+.k-companion-symbol{display:grid;place-items:center;width:40px;height:40px;border-radius:11px;color:var(--brand);background:var(--brandlight)}
+.k-companion-symbol svg{width:23px;height:23px}
+.k-catchup-tile{min-height:94px;background:#456e81!important}
+.k-catchup-tile .k-icon{background:#ffffff27;display:grid;place-items:center;font-size:1.15rem}
+.k-catchup-area{margin:0 0 4px}
+.k-catchup-concept{max-width:680px}
+.k-catchup-concept>.progress-track{margin-bottom:18px}
+.k-catchup-concept h1{margin:9px 0 17px}
+.k-catchup-concept .panel{padding:25px}
+.k-catchup-concept .panel h2{font-size:1rem;color:var(--brand)}
+.k-catchup-text{font-size:1.08rem;line-height:1.7;margin:9px 0 0}
+.k-catchup-controls{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 7px}
+.k-catchup-controls .button{flex:1 0 150px}
+.k-catchup-resume a,.k-catchup-after a{font-size:.87rem;font-weight:650}
+.k-catchup-after{margin:15px 0 0;border-top:1px solid #d4dedb;padding-top:12px}
+@media(max-width:560px){.k-companion-entry .button{width:100%}.k-catchup-concept .panel{padding:19px}.k-catchup-text{font-size:1.02rem}}
