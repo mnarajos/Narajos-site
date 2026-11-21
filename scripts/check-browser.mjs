@@ -210,7 +210,7 @@ try{
  await desktop.goto(base+"/human-biology/#challenge/f171/a3",{waitUntil:"load"});
  await desktop.locator(".k-question-view").waitFor({state:"visible"});
  const count=await desktop.evaluate(()=>window.KeystoneHumanChallenge?.questionCount);
- assert.equal(count,508,"Live engine did not load all questions");
+ assert.equal(count,530,"Live engine did not load all questions");
  assert((await desktop.locator("main").innerText()).length>90,"Question activity is blank");
  await desktop.locator("#site-home").click();
  const dialog=desktop.locator("#leave-dialog");
@@ -255,7 +255,7 @@ try{
  const navPage=await browser.newPage({viewport:{width:1280,height:900}});
  navPage.on("pageerror",e=>errors.push("Shared navigation: "+e.message));
  let standard=null;
- for(const path of ["/","/404.html","/privacy/","/teaching/","/teacher/","/gcse/","/alevel/","/human-biology/","/teaching/simulations/",...['bioenergetics','cardiac-cycle','enzyme-inhibition','enzyme-kinetics','molecular-biology'].map(x=>"/teaching/simulations/"+x+"/")]){
+ for(const path of ["/","/404.html","/privacy/","/teaching/","/teacher/","/gcse/","/alevel/","/human-biology/","/science-practice/","/teaching/simulations/",...['bioenergetics','cardiac-cycle','enzyme-inhibition','enzyme-kinetics','molecular-biology'].map(x=>"/teaching/simulations/"+x+"/")]){
   await navPage.goto(base+path,{waitUntil:"load"});
   const control=navPage.locator("#site-home");assert(await control.isVisible(),"Missing homepage control: "+path);
   assert.equal(await control.getAttribute("href"),"/");assert.equal(await control.innerText(),"Narajos");
@@ -338,14 +338,64 @@ try{
  await navPage.setViewportSize({width:390,height:844});
  await navPage.goto(base+"/human-biology/#challenge/f171/build");
  await navPage.getByRole("heading",{name:"Build understanding",exact:true}).waitFor();
- assert.equal(await navPage.locator("[href^='#challenge/f171/p-']").count(),18);
+ assert.equal(await navPage.locator("[href^='#challenge/f171/p-']").count(),21);
  assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Progression menu overflows phone width");
  await screen(navPage,"human-progressive-mobile");
+ // Start from the new student entry points at phone width.
+ await navPage.goto(base+"/gcse/");
+ const tier=navPage.getByLabel("Exam tier",{exact:true});
+ await tier.selectOption("F");
+ const query=navPage.getByRole("searchbox",{name:"Topic or keyword"});
+ await query.fill("amylase");
+ const biologyResult=navPage.getByRole("link",{name:"Learn and practise: Organisation",exact:true});
+ await biologyResult.click();
+ await navPage.getByRole("heading",{name:/Organisation/}).waitFor();
+ await navPage.goto(base+"/gcse/");
+ assert.equal(await tier.inputValue(),"F","GCSE tier choice did not persist");
+ await query.fill("this topic does not exist");
+ await navPage.getByRole("status").filter({hasText:"No matching topics"}).waitFor();
+ await navPage.goto(base+"/human-biology/");
+ await navPage.getByLabel("Subject or unit").selectOption("f171");
+ await navPage.getByRole("searchbox",{name:"Topic or keyword"}).fill("casts");
+ const castQuestion=navPage.getByRole("link",{name:/Practise: Compare plaster/});
+ await castQuestion.click();
+ await navPage.getByRole("heading",{name:/main purpose of a cast/}).waitFor();
+ await navPage.getByRole("link",{name:"← Leave this set"}).click();
+ await navPage.locator("#leave-confirm").click();
+ await navPage.getByRole("link",{name:/Clinical case questions/}).click();
+ await navPage.getByRole("link",{name:/Follow-up after screening/}).click();
+ await navPage.locator("#k-written").fill("Only 45 of the 60 people with a positive screen attended follow-up.");
+ await navPage.locator('[data-k-action="reveal"]').click();
+ await navPage.getByText("Key points to look for").waitFor();
+ await navPage.locator('[data-k-action="self-good"]').click();
+ await navPage.getByRole("heading",{name:"Practice complete"}).waitFor();
+ await navPage.goto(base+"/human-biology/#flashcards/f171");
+ await navPage.getByRole("link",{name:"Practise monitoring",exact:true}).click();
+ await navPage.getByRole("button",{name:"Reveal answer"}).click();
+ await navPage.getByText("Expected answer",{exact:true}).waitFor();
+ await navPage.getByRole("link",{name:"← Flashcards",exact:true}).click();
+ await navPage.locator("#leave-confirm").click();
+ await navPage.getByRole("heading",{name:"F171 flashcards",exact:true}).waitFor();
+ await navPage.goto(base+"/science-practice/#ks3-writing");
+ const outline=navPage.getByLabel("Notes on particle movement and temperature");
+ await outline.fill("warmer → faster random movement → quicker spread");
+ await navPage.reload();
+ assert.equal(await outline.inputValue(),"warmer → faster random movement → quicker spread");
+ await navPage.locator("#ks3-writing summary").first().click();
+ assert(await navPage.locator("#ks3-writing .model").isVisible());
+ assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Science practice overflows at phone width");
+ await navPage.goto(base+"/teaching/simulations/enzyme-kinetics/?activity=gcse");
+ await navPage.getByRole("heading",{name:"Compare temperatures",exact:true}).waitFor();
+ await navPage.locator("#btn-run").click();
+ await navPage.locator("#graph-readout summary").click();
+ await navPage.waitForFunction(()=>document.querySelector("#rate-rows td")?.textContent==="1");
+ await navPage.getByRole("link",{name:"Return to the follow-up question"}).click();
+ await navPage.getByRole("heading",{name:"GCSE · Compare two temperatures"}).waitFor();
  await navPage.close();
  await mobile.close();
  await desktop.close();
  assert.deepEqual(errors,[],"Uncaught page errors: "+errors.join("; "));
- console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 508 questions and mobile layout.");
+ console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 530 questions and mobile layout.");
 }finally{
  await browser.close();await new Promise(done=>server.close(done));
 }

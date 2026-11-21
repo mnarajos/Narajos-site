@@ -42,9 +42,9 @@ assert(help.includes("Vaccine types")&&help.includes("Key idea 1"),"Vaccine type
 companion.route("catchup/f171",h=>{help=h;});
 assert(help.includes("Immune dysfunction")&&help.includes("Vaccine types"),"Missing F171 subsections from catch-up navigation");
 
-assert.equal(db.questions.length,508);
+assert.equal(db.questions.length,530);
 assert.equal(db.questions.filter(q=>q.unit==="f170").length,244);
-assert.equal(db.questions.filter(q=>q.unit==="f171").length,186);
+assert.equal(db.questions.filter(q=>q.unit==="f171").length,208);
 for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,13,u+" knowledge bank missing");
 assert.deepEqual([...new Set(db.questions.map(q=>q.type))].sort(),["best","diagram","match","multi","number","order","short","single","sort","written"].sort());
 const ids=new Set();
@@ -84,7 +84,7 @@ for(const q of db.questions){
  if(q.type==="written")assert(q.markPoints.length>=2,"Unscaffolded written response: "+q.id);
  if(q.marks)assert(q.type==="written"&&(q.marks===6||q.marks===9),"Unexpected extended-answer mark count: "+q.id);
 }
-assert.equal(db.questions.filter(q=>q.warmup).length,83,"Warm-up coverage");
+assert.equal(db.questions.filter(q=>q.warmup).length,86,"Warm-up coverage");
 assert.equal(db.questions.filter(q=>q.type==="best").length,7,"Two-step reasoning coverage");
 assert.equal(db.questions.filter(q=>q.subtype==="error").length,4,"Misconception correction coverage");
 assert.equal(db.questions.find(q=>q.id==="health-parkinsons-therapy").marks,6);
@@ -198,7 +198,7 @@ assert(window.KeystoneHumanChallenge.stats("f170").weak>=1,"Not sure should reco
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"next"}}:null;}}});
 record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert(record.index>=1,"Question did not advance");
-assert.equal(window.KeystoneHumanChallenge.questionCount,508);
+assert.equal(window.KeystoneHumanChallenge.questionCount,530);
 // Verify the entire deterministic answer flow, not merely presence of new item types.
 function forcedQuestion(id){
  const q=db.questions.find(x=>x.id===id);assert(q,"Unknown forced test item: "+id);
@@ -285,7 +285,7 @@ assert(read("human-biology/index.html").includes("content-knowledge.js"),"Knowle
 assert(read("human-biology/index.html").includes("challenge-extension.js"),"Exam extension not loaded");
 // A normal new set contains one variant per family. Repeated visits avoid the
 // immediately previous version, while a resumed set keeps its exact queue.
-assert.equal(db.families.length,88);
+assert.equal(db.families.length,91);
 for(const family of db.families){
  assert.equal(family.members.length,3);
  const members=family.members.map(id=>db.questions.find(q=>q.id===id));
@@ -333,12 +333,12 @@ assert(main.innerHTML.includes("A new cell membrane needs material"),"First hint
 assert(hintButton.hidden,"More help must wait for another inactive interval");
 tick(10010);clickAction("hint");
 assert(main.innerHTML.includes("Separate the production of membrane lipids"),"Second hint must teach the prerequisite principle");
-console.log("Human Biology checks passed: 508 questions, 88 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
+console.log("Human Biology checks passed: 530 questions, 91 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
 
 
 // Point practice must preserve one biological idea while support is withdrawn.
 const ladders=window.KeystoneHumanProgressions;
-assert.equal(ladders.points.length,46);
+assert.equal(ladders.points.length,49);
 assert.equal(new Set(ladders.points.map(p=>p.unit+":"+p.section)).size,46);
 for(const point of ladders.points){
  assert.equal(point.core.length,3,"Each selected idea needs rotating core tasks");
@@ -362,4 +362,4 @@ for(const point of ladders.points){
  assert.equal(db.questions.find(q=>q.id===second.queue[3]).level,"stretch");
 }
 app.discard();
-console.log("46 teaching-idea sequences passed: prior knowledge, misconception, same-idea rotating core, transfer challenge and exact resume.");
+console.log("49 teaching-idea sequences passed: prior knowledge, misconception, same-idea rotating core, transfer challenge and exact resume.");

@@ -157,6 +157,13 @@
     .chamber-wrap{min-height:330px}
     .level-group{margin-left:0}
   }
+  .guided-task{border:1px solid #b0d8d2;background:#eff8f6;border-radius:12px;padding:12px;color:#163b3c}
+  .guided-task h2{font-size:1rem;margin:0 0 .35rem}
+  .guided-task p{font-size:.85rem;line-height:1.5;margin:0 0 .45rem}
+  .guided-task a{display:inline-flex;align-items:center;min-height:44px;color:#145f5b;font-weight:700}
+  .graph-readout summary{cursor:pointer;min-height:38px;padding-block:8px;font-size:12px;font-weight:700}
+  .graph-readout table{border-collapse:collapse;width:100%;font-size:12px}
+  .graph-readout :is(th,td){text-align:left;padding:4px 6px;border-bottom:1px solid #d1dadd}
 </style>
 <link rel="stylesheet" href="/assets/simulation-shell.css">
 <link rel="stylesheet" href="/assets/home-link.css">
@@ -257,10 +264,16 @@
       <div class="sub">Fixed chamber volume, so this really is a concentration. More substrate → more collisions → faster reaction. As it is used up, the reaction slows and stops.</div>
     </div>
 
+    <section class="guided-task" id="guided-task" hidden>
+      <h2 id="guided-title"></h2><p id="guided-steps"></p><a id="guided-return" href="/science-practice/#enzymes">Return to the follow-up question</a>
+    </section>
     <div class="graph-card lvl2">
       <div class="head"><span class="k">Reaction rate over time</span><span class="pk" id="g-max"></span></div>
-      <canvas id="graph"></canvas>
+      <canvas id="graph" role="img" aria-label="Reaction rate over time. Open the table for the recorded rates."></canvas>
       <div class="gcap"><b>Height</b> = rate of reaction in arbitrary units, where <b>1.00 AU</b> is the rate under standard conditions (20 substrate, 4 enzymes, 37 °C, optimum pH). <b>Left to right</b> = time since Start. The rate begins high and falls as substrate is used up.</div>
+      <details class="graph-readout" id="graph-readout"><summary>Recorded rates as a table</summary>
+        <table><thead><tr><th scope="col">Sample</th><th scope="col">Rate / AU</th></tr></thead><tbody id="rate-rows"></tbody></table>
+      </details>
     </div>
 
     <div class="predict lvl2">
@@ -331,7 +344,7 @@ const S = {
   counts:{amylase:4, protease:0, lipase:0},
   running:false, showLabels:false,
   enzymes:[], substrates:[], products:[],
-  productCount:0, rateStamps:[], rateSamples:[], peak:0, rateEMA:0, occEMA:0
+  productCount:0, rateStamps:[], rateSamples:[], sampleCount:0, peak:0, rateEMA:0, occEMA:0
 };
 
 /* ---------- Canvas ---------- */
@@ -787,9 +800,9 @@ function updateUI(info){
   coach(info.denCount,free,rate);
   if(S.running){
     sampleTimer++;
-    if(sampleTimer>=12){sampleTimer=0;S.rateSamples.push(rate);if(S.rateSamples.length>90)S.rateSamples.shift();}
+    if(sampleTimer>=12){sampleTimer=0;S.rateSamples.push(rate);S.sampleCount++;if(S.rateSamples.length>90)S.rateSamples.shift();}
   }
-  if(S.level>=2)drawGraph();
+  if(S.level>=2){drawGraph();refreshRateTable();}
 }
 function coach(dead,free,rate){
   const c=document.getElementById("coach"),t=document.getElementById("coach-text");
@@ -895,8 +908,20 @@ function setLevel(n){
   if(n===1)autoPH();
   sizeCanvas();
 }
+const rateReadout=document.getElementById("graph-readout");
+const rateRows=document.getElementById("rate-rows");
+let displayedSampleCount=-1;
+function refreshRateTable(){
+  if(!rateReadout.open||displayedSampleCount===S.sampleCount)return;
+  displayedSampleCount=S.sampleCount;
+  rateRows.innerHTML=S.rateSamples.map((rate,i)=>
+    "<tr><td>"+(S.sampleCount-S.rateSamples.length+i+1)+"</td><td>"+rate.toFixed(2)+"</td></tr>"
+  ).join("");
+  if(!S.rateSamples.length)rateRows.innerHTML='<tr><td colspan="2">Start a run to record rates.</td></tr>';
+}
+rateReadout.addEventListener("toggle",refreshRateTable);
 function resetRun(){
-  S.products.length=0;S.productCount=0;S.rateStamps.length=0;S.rateSamples.length=0;S.peak=0;S.rateEMA=0;S.occEMA=0;
+  S.products.length=0;S.productCount=0;S.rateStamps.length=0;S.rateSamples.length=0;S.sampleCount=0;S.peak=0;S.rateEMA=0;S.occEMA=0;
   S.substrates.length=0;S.enzymes.length=0;syncEnzymes();fillSubstrate();
 }
 document.querySelectorAll(".stab").forEach(b=>{
@@ -939,8 +964,22 @@ function frame(){
   updateUI(info);
   requestAnimationFrame(frame);
 }
+const guidedTasks={
+  ks3:{level:1,title:"Which enzyme digests starch?",steps:"Predict what will happen. Compare four protease molecules with four amylase molecules in separate runs. Keep starch selected. Pause before restarting each run and compare the product counts."},
+  gcse:{level:2,title:"Compare temperatures",steps:"Predict first. Set standard conditions before each run and change only the temperature. Compare 20 °C and 37 °C. Record the peak rate, and repeat to check how consistent your results are."},
+  alevel:{level:2,title:"Test for saturation",steps:"Predict the shape of the initial-rate curve. Reset to standard conditions before each run, then vary starting substrate between 5, 20 and 40. Keep enzyme concentration, pH and temperature fixed. Pause each run and compare its peak modelled rate."}
+};
 function boot(){
-  sizeCanvas();buildMix();setSubstrate("starch");setLevel(1);resetRun();
+  const activity=new URLSearchParams(location.search).get("activity");
+  const task=Object.hasOwn(guidedTasks,activity)?guidedTasks[activity]:null;
+  sizeCanvas();buildMix();setSubstrate("starch");setLevel(task?task.level:1);resetRun();
+  if(task){
+    document.getElementById("guided-title").textContent=task.title;
+    document.getElementById("guided-steps").textContent=task.steps;
+    document.getElementById("guided-return").href="/science-practice/#enzyme-"+activity;
+    document.getElementById("guided-task").hidden=false;
+    sizeCanvas();
+  }
   requestAnimationFrame(frame);
 }
 boot();

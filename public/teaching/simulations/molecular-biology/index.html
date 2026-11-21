@@ -857,19 +857,18 @@ function codonHBonds(c){ const cd=TL.codon(c);
 const LSTEPS=[
   {d:2.15,t:"The mRNA binds to a ribosome, positioned so that the first codon sits in the ribosome."},
   {d:4.6,t:"tRNA molecules move about at random, each carrying its own amino acid. Only the one whose anticodon is complementary to the codon in the ribosome can bind \u2014 others arrive and leave again."},
-  {d:2.6,t:"A second tRNA binds to the next codon, bringing the next amino acid."},
-  {d:2.75,t:"A peptide bond forms between the two amino acids, inside the large subunit. ATP is needed for this."},
+  {d:2.6,t:"A second tRNA binds to the next codon, bringing the next amino acid. Before entering the ribosome, ATP was used to attach each amino acid to its tRNA."},
+  {d:2.75,t:"A peptide bond forms inside the large subunit. The energy stored in the bond between an amino acid and its tRNA helps drive this reaction."},
   {d:2.75,t:"The ribosome moves one codon along the mRNA. The first tRNA leaves and can collect another amino acid."},
   {d:5.4,t:"The process repeats. The polypeptide grows one amino acid at a time and threads out of the large subunit."},
   {d:3.05,t:"A stop codon is reached. No tRNA has a complementary anticodon, so nothing binds and the finished polypeptide is released."}
 ];
 let TLS=null;
-function tl(){ if(!TLS) TLS={step:0,t:0,curls:[],cum:{poly:0}}; return TLS; }
+function tl(){ if(!TLS) TLS={step:0,t:0,cum:{poly:0}}; return TLS; }
 function updateTL(dt){ const T2=tl();
   if(S.playing){ T2.t+=dt*S.speed;
     if(T2.t>=LSTEPS[T2.step].d){ T2.t=0; T2.step++;
       if(T2.step>=LSTEPS.length){ T2.step=0; T2.cum.poly++; } } }
-  for(const c of T2.curls) c.age+=dt*S.speed*1.5; T2.curls=T2.curls.filter(c=>c.age<1);
 }
 /* chain   = amino acids joined so far
    newestC = codon of the tRNA now holding the C-terminal residue
@@ -907,21 +906,6 @@ function drawTRNAsmall(x,yTop,anti,aa,col,alpha){
   ctx.beginPath(); ctx.roundRect(x-16,yTop+16,32,21,5); ctx.fill(); ctx.stroke();
   ctx.fillStyle="#cfe0ec"; ctx.font="800 8.5px system-ui"; ctx.fillText(anti,x,yTop+27);
   ctx.restore();
-}
-/* one ATP hydrolysed to ADP + Pi for every peptide bond */
-function drawATPcycle(q,ax,T2){
-  if(q<=0.02||q>=0.99) return;
-  const LANE=170;                       // its own lane, below the pool and above the bond
-  if(q<0.5){ const u=ez(q/0.5);
-    pill(L(ax+250,ax+70,u), LANE, "ATP", "#8b5cf6", 10);
-    if(u>0.9){ ctx.save(); ctx.strokeStyle="rgba(190,160,240,.5)"; ctx.lineWidth=1.6; ctx.setLineDash([4,4]);
-      ctx.beginPath(); ctx.moveTo(ax+70,LANE+12); ctx.lineTo(ax+45,TL.yBond-14); ctx.stroke();
-      ctx.setLineDash([]); ctx.restore(); } }
-  else { const u=ez((q-0.5)/0.5); ctx.save(); ctx.globalAlpha=Math.max(0,1-u*0.55);
-    pill(L(ax+70,ax+250,u), LANE-21, "ADP", "#6d9fd8", 10);
-    pill(L(ax+70,ax+250,u), LANE+22, "Pi",  "#ef7fa8", 9.5);
-    ctx.restore(); }
-  if(q>0.46&&q<0.54) T2.curls.push({x:ax+45,y:TL.yBond+4,age:0.3});
 }
 function drawTRNA(x,yTop,yBot,anti,aa,col,alpha,bound,noAA,mono){
   ctx.save(); if(alpha!=null) ctx.globalAlpha=alpha;
@@ -1071,10 +1055,8 @@ function drawTL(){
     if(S.dirs) drawDirections(pts,nDrawn,p,rel>0); }   // the instant it detaches
   else if(S.dirs) drawDirections([],0,p,false);
 
-  if(st===3){ drawATPcycle(f,pSiteAA[0],T2);
-    if(f>0.52) label(rcx,TL.capY,"peptide bond forms \u2014 ATP \u2192 ADP + Pi","#ffd98a",11.5); }
-  if(st===5){ drawATPcycle(bond-Math.floor(bond),pSiteAA[0],T2);
-    label(rcx,TL.capY,"one ATP is hydrolysed for every peptide bond","#c9b6f5",11); }
+  if(st===3&&f>0.52) label(rcx,TL.capY,"a peptide bond forms inside the ribosome","#ffd98a",11.5);
+  if(st===5) label(rcx,TL.capY,"the ribosome repeats the cycle as the chain grows","#c9b6f5",11);
   if(st===6){ const sc=Math.min(TL.nc-1,pInt+1), u=seg(f,0.08,0.46);
     drawTRNA(L(TL.cx(sc)+230,TL.cx(sc),u), L(TL.poolY[1]+40,TL.yBodyTop,u),
       L(TL.poolY[1]+66,TL.yAnti[0],u), "   ", "", "#7f5350", 1, true, true, true);
@@ -1086,11 +1068,10 @@ function drawTL(){
   for(let c=0;c<TL.nc;c++){ const cd=TL.codon(c);
     label(TL.cx(c),TL.yCodon,cd,"#8fa8b8",10.5);
     label(TL.cx(c),TL.yAAname,CODE[cd][0],CODE[cd][1],10.5); }
-  for(const c of T2.curls) curl(c.x,c.y,c.age);
   ctx.save(); ctx.textAlign="left"; ctx.textBaseline="middle"; ctx.font="700 11px system-ui";
   ctx.fillStyle="#c3d4e0";
   ctx.fillText("codons read "+(Math.min(pInt+1,TL.nc-1))+"    amino acids joined "+nAA+
-    "    peptide bonds "+Math.max(0,nAA-1)+"    ATP used "+Math.max(0,nAA-1)+
+    "    peptide bonds "+Math.max(0,nAA-1)+
     "    polypeptides made "+T2.cum.poly, 76, 540);
   ctx.restore();
 }
@@ -1951,9 +1932,9 @@ const STAGES={
     facts:["mRNA binds to a ribosome, which holds two codons at a time.",
       "Each tRNA has an anticodon and carries one specific amino acid.",
       "A tRNA only binds if its anticodon is complementary to the codon.",
-      "One ATP is hydrolysed to ADP + Pi for each peptide bond formed.",
+      "ATP supplies energy to attach an amino acid to its matching tRNA. The ribosome then catalyses peptide-bond formation.",
       "At a stop codon no tRNA binds, so the polypeptide is released."],
-    note:"One ATP is hydrolysed to ADP + Pi for every peptide bond formed." },
+    note:"ATP is used to attach amino acids to tRNAs before they enter the ribosome." },
   transcription:{ name:"Transcription", type:"tr",
     facts:["Only the template strand is copied; the coding strand is not.",
       "RNA polymerase joins the RNA nucleotides together with phosphodiester bonds.",
@@ -2034,7 +2015,6 @@ function renderTally(){
     const rows=[["C","codons read",RNAC,Math.min(Math.round(pr.p)+1,TL.nc-1)],
       ["A","amino acids joined","#7fd6a2",nAA],
       ["P","peptide bonds formed","#e0a021",Math.max(0,nAA-1)],
-      ["\u26a1","ATP hydrolysed","#8b5cf6",Math.max(0,nAA-1)],
       ["\u03a3","polypeptides made","#8b5cf6",T2.cum.poly]];
     box.innerHTML=rows.map(([i,n,c,v])=>'<div class="trow"><span class="ic" style="background:'+c+'">'+i+'</span><span class="nm">'+n+'</span><span class="ct">'+v+'</span></div>').join("");
     return; }

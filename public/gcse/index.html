@@ -421,6 +421,8 @@ table.eqs-t{width:auto;border-collapse:collapse}table.eqs-t th{text-align:left;f
 </style>
 <link rel="stylesheet" href="/assets/spaced-review.css">
 <link rel="stylesheet" href="/assets/home-link.css">
+<link rel="stylesheet" href="/assets/topic-finder.css">
+<script src="/assets/topic-finder.js"></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -5985,6 +5987,8 @@ var KGFC=window.KeystoneGcseFlash.create({render:render,esc:esc,SCI:SCI,PAPERS:P
 function showHome(focus){
  L=null;
  var h='<h1 class="sr-only">AQA GCSE Combined Science (Trilogy) – Narajos Keystone</h1>';
+ h+='<section class="study-route-links"><label for="study-tier">Exam tier</label><select id="study-tier"><option value="">Choose your tier</option><option value="F">Foundation</option><option value="FH">Higher</option></select><div class="study-actions"><a href="/science-practice/#gcse-practicals">Required-practical practice</a><a href="/science-practice/#gcse-writing">Plan a science paragraph</a></div></section>';
+ if(window.NarajosTopicFinder)h+=window.NarajosTopicFinder.markup;
  h+='<div class="hm">';
  SCI.forEach(function(sci){
   var k=sci.topics[0][0].charAt(0);
@@ -5992,6 +5996,35 @@ function showHome(focus){
  });
  h+='</div><section class="kr-entry"><h2>Flashcards and spaced revision</h2><p>Recall essential knowledge across Biology, Chemistry and Physics. Review missed cards again after a delay.</p><div class="kr-actions"><a class="btn primary" href="#flashcards">Open flashcards</a><a class="btn" href="#flashreview">Review for today</a></div></section>';
  render(h,focus);
+ const tierSelect=main.querySelector("#study-tier");
+ if(tierSelect){
+  tierSelect.value=S.tierSet?S.tier:"";
+  tierSelect.addEventListener("change",function(){
+   if(!tierSelect.value)return;
+   S.tier=tierSelect.value;S.tierSet=true;save();
+   $$('input[name="tier"]').forEach(function(r){r.checked=r.value===S.tier;});
+   say(S.tier==="F"?"Foundation tier selected.":"Higher tier selected.");
+   const finder=main.querySelector("[data-topic-finder]");
+   if(finder)finder.dispatchEvent(new Event("study-tier-change"));
+  });
+ }
+ mountStudyFinder();
+}
+
+function mountStudyFinder(){
+ const finder=window.NarajosTopicFinder;
+ if(!finder)return;
+ const groups=SCI.map(sci=>({id:sci.name,label:sci.name}));
+ const topicKeywords={b1:"osmosis microscopy cells mitosis",b2:"amylase lipase digestion blood heart",b4:"photosynthesis respiration",
+  c3:"moles mass concentration",c8:"chromatography separation",p2:"circuits current voltmeter resistance",p3:"density pressure particles"};
+ const entries=()=>SCI.flatMap(sci=>sci.topics.map(([id,code,title])=>{
+  const paper=PAPERS.find(p=>p.topics.includes(id));
+  const actions=[["Learn and practise","#topic-"+id],["Flashcards","#cards-"+id]];
+  if(paper)actions.push(["Mixed questions","#mix-"+paper.id+"-"+id]);
+  return {group:sci.name,title,context:code+" · "+(paper?paper.name:sci.name),
+   keywords:[topicKeywords[id]||"",...availList(id).map(c=>c.title)].join(" "),actions};
+ }));
+ finder.mount(main,{groups,entries});
 }
 
 function showTopic(t,focus){

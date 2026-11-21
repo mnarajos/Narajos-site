@@ -1112,7 +1112,7 @@ function setECG(on){
   S.ecg=!!on;document.body.dataset.ecg=String(S.ecg);
   document.getElementById("ecg-panel").hidden=!S.ecg;
   const b=document.getElementById("btn-ecg");b.setAttribute("aria-expanded",String(S.ecg));b.textContent=S.ecg?"Hide ECG":"Show ECG · optional";
-  buildLegend();sizeCanvas();
+  buildLegend();sizeCanvas();updatePanels();
 }
 document.getElementById("btn-ecg").addEventListener("click",()=>setECG(!S.ecg));
 document.getElementById("hide-ecg").addEventListener("click",()=>{setECG(false);document.getElementById("btn-ecg").focus();});

@@ -13,6 +13,13 @@ areas.forEach(function(area){
   section.cards.forEach(function(card){card.sectionId=section.id;card.areaId=area.id;byCard[card.id]=card;cards.push(card);});
  });
 });
+const f171Decks=window.KeystoneF171Recall||[];
+const f171Cards=f171Decks.flatMap(([sectionId,sectionTitle,items])=>items.map(([q,a,aliases],index)=>{
+ const id="f171-"+sectionId+"-"+(index+1);
+ const card={id,sectionId,sectionTitle,q,a,aliases:aliases||[]};
+ byCard[id]=card;
+ return card;
+}));
 var review=scheduler.open("ocr-human-biology-f170");
 var sessionKey="narajos-human-biology-session-v1",practiceKey="narajos-human-biology-practice-v1";
 var progress={};try{var raw=JSON.parse(localStorage.getItem(practiceKey)||"null");if(raw&&typeof raw==="object"&&!Array.isArray(raw))progress=raw;}catch(_){}
@@ -39,6 +46,7 @@ function scopeName(scope){
  if(scope==="all")return "All F170 topics";
  if(areaById[scope])return "Topic Area "+areaById[scope].number+": "+areaById[scope].title;
  if(bySection[scope])return bySection[scope].id+": "+bySection[scope].title;
+ if(scope.startsWith("f171"))return "F171 · Active recall";
  if(scope==="due")return "Due flashcards";
  if(scope==="weak")return "Weak flashcards";
  if(scope==="new")return "New flashcards";
@@ -53,6 +61,7 @@ function showHome(){
  var st=stats(),old=restoreSession(),E=window.KeystoneHumanChallenge,fs=E?E.stats("f170"):null,hs=E?E.stats("f171"):null;
  var icon=E&&E.icon?E.icon:function(){return "▤";};
  var h='<div class="k-wrap"><section class="k-home-hero"><span class="k-eyebrow">Narajos Keystone · Cambridge OCR AAQ</span><h1>Ready to revise?</h1><p>Choose an exam unit, then practise the biology.</p></section>';
+ if(window.NarajosTopicFinder)h+=window.NarajosTopicFinder.markup;
  h+='<section class="k-home-units" aria-label="Choose your exam unit">';
  h+='<a class="k-home-unit teal" href="#challenge/f170"><span class="k-unit-symbol">'+icon("brain")+'</span><span class="k-unit-copy"><small>F170 · Exam unit</small><strong>Fundamentals of human biology</strong><em>'+(fs?fs.questions:0)+' varied questions · '+(fs?fs.seen:0)+' attempted</em></span><span class="k-unit-chev">›</span></a>';
  h+='<a class="k-home-unit blue" href="#challenge/f171"><span class="k-unit-symbol">'+icon("flask")+'</span><span class="k-unit-copy"><small>F171 · Exam unit · Preview</small><strong>Health and disease</strong><em>'+(hs?hs.questions:0)+' original questions · '+(hs?hs.seen:0)+' attempted</em></span><span class="k-unit-chev">›</span></a>';
@@ -66,6 +75,7 @@ function showHome(){
  h+='<a href="#challenge/f170/weak" class="k-mini-action fix"><span class="k-mini-symbol">'+kIcon("rotate")+'</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
  h+='</section>';
  h+='<h2 class="k-subhead">Other ways to revise F171</h2><section class="k-home-actions">';
+ if(f171Cards.length)h+='<a href="#flashcards/f171" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("layers")+'</span><strong>F171 flashcards</strong><small>Treatment, prevention and monitoring</small></a>';
  h+='<a href="#catchup/f171" class="k-mini-action learn"><span class="k-mini-symbol">'+kIcon("book")+'</span><strong>Catch up</strong><small>Key ideas and explanations</small></a>';
  h+='<a href="#skills/f171" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("calc")+'</span><strong>Skills practice</strong><small>Calculations, data and evidence</small></a>';
  h+='<a href="#challenge/f171/weak" class="k-mini-action fix"><span class="k-mini-symbol">'+kIcon("rotate")+'</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
@@ -75,6 +85,24 @@ function showHome(){
  if(savedChallenge){var route=E.resumeRoute();h+='<section class="k-continue"><div><strong>Revision questions in progress</strong><p>Return to your unfinished questions.</p></div>'+link(route,"Resume questions","primary")+'</section>';}
  h+='<p class="k-small-note">F170 covers the four topic areas in this first learning bank; F171 exam questions are an initial selection. This is not yet complete specification coverage. Original questions only; no coursework assistance.</p><p class="k-privacy-small">Your progress stays in this browser. <button class="k-local-reset" id="clear-human-bio" type="button">Clear progress on this device</button></p></div>';
  render(h);
+ mountStudyFinder();
+}
+function mountStudyFinder(){
+ const finder=window.NarajosTopicFinder;
+ const progressions=window.KeystoneHumanProgressions;
+ if(!finder||!progressions)return;
+ const groups=[{id:"f170",label:"F170 · Fundamentals of human biology"},{id:"f171",label:"F171 · Health and disease"}];
+ const entries=progressions.points.map(point=>{
+  const section=point.unit==="f170"?bySection[point.section]:null;
+  const catchup=window.KeystoneHumanCatchup&&window.KeystoneHumanCatchup.linkFor(point);
+  const actions=[["Practise","#challenge/"+point.unit+"/"+point.id]];
+  if(catchup)actions.push(["Catch up","#"+catchup]);
+  if(section)actions.push(["Flashcards","#cards/"+section.id]);
+  else if(f171Decks.some(deck=>deck[0]===point.section))actions.push(["Flashcards","#cards/f171-"+point.section]);
+  return {group:point.unit,title:point.statement,context:point.unit.toUpperCase()+" · "+point.section,
+   keywords:section?section.title:"",actions};
+ });
+ finder.mount(main,{groups,entries});
 }
 function showTopics(){render(crumb("home","Overview")+'<div class="hero"><div class="eyebrow">F170 topic map</div><h1>Explore the specification</h1><p class="lead">Select an area to study its learning sections. This pilot does not yet cover every individual breadth-and-depth statement.</p></div><div class="grid">'+areas.map(areaHtml).join("")+'</div>'+sourceNote());}
 function showArea(id){
@@ -91,6 +119,9 @@ function showLearn(id){
  render(h);
 }
 function cardsFor(scope){
+ if(scope==="f171")return f171Cards.slice();
+ if(scope==="f171-due")return f171Cards.filter(c=>review.due(c.id));
+ if(scope.startsWith("f171-"))return f171Cards.filter(c=>c.sectionId===scope.slice(5));
  if(scope==="due")return cards.filter(function(c){return review.due(c.id);});
  if(scope==="weak")return cards.filter(function(c){return review.weak(c.id);});
  if(scope==="new")return cards.filter(function(c){return !review.get(c.id);});
@@ -113,8 +144,14 @@ function showFlashMenu(){
  var h=crumb("home","Overview")+'<div class="k-compact-hero"><div class="eyebrow">F170 · Active recall</div><h1>Flashcards</h1></div>';
  h+='<div class="k-mini-stats"><span><strong>'+st.due+'</strong> due today</span><span><strong>'+st.weak+'</strong> previously missed</span><span><strong>'+st.newCards+'</strong> new</span></div>';
  h+='<div class="k-action-grid"><a class="k-action teal" href="#cards/due"><span class="k-mini-symbol">↻</span><span><strong>Review due cards</strong><small>Spaced practice</small></span><span>›</span></a><a class="k-action orange" href="#cards/weak"><span class="k-mini-symbol">'+kIcon("alert")+'</span><span><strong>Weak cards</strong><small>Revisit errors</small></span><span>›</span></a><a class="k-action blue" href="#cards/new"><span class="k-mini-symbol">'+kIcon("layers")+'</span><span><strong>Learn new cards</strong><small>Try unfamiliar terms</small></span><span>›</span></a><a class="k-action purple" href="#cards/all"><span class="k-mini-symbol">▤</span><span><strong>Mixed revision</strong><small>Across F170</small></span><span>›</span></a></div>';
+ if(f171Cards.length)h+='<p>'+link("flashcards/f171","Open F171 flashcards")+'</p>';
  h+='<h2 class="k-subhead">By topic</h2>'+chooserOptions("cards")+'<p class="k-small-note">Type first, reveal, then self-assess equivalent scientific wording. Your review progress remains in this browser.</p>';
  render('<div class="k-wrap">'+h+'</div>');
+}
+function showF171FlashMenu(){
+ const deckLinks=f171Decks.map(([section,title,items])=>'<article class="paper area-card"><h3>'+esc(title)+'</h3><p>'+items.length+' cards</p>'+link("cards/f171-"+section,"Practise "+title.toLowerCase(),"primary")+'</article>').join("");
+ const due=review.stats(f171Cards.map(c=>c.id)).due;
+ render('<div class="k-wrap">'+crumb("home","Overview")+'<div class="k-compact-hero"><div class="eyebrow">F171 · Active recall</div><h1>F171 flashcards</h1><p>Starter decks for treatment, prevention and monitoring.</p></div><div class="actions">'+link("cards/f171","Mix these topics","primary")+(due?link("cards/f171-due","Review "+due+" due cards"):"")+link("flashcards","F170 flashcards")+'</div><div class="grid">'+deckLinks+'</div></div>');
 }
 function showPracticeMenu(){
  var st=stats();
@@ -130,8 +167,8 @@ function createSession(type,scope){
 }
 function showCard(){
  var id=active.queue[0],c=byCard[id];if(!c){active.queue.shift();saveSession();return drawSession();}
- var h='<div class="flash-panel">'+crumb("flashcards","Flashcards")+'<div class="eyebrow">'+esc(scopeName(active.scope))+'</div><h1>Recall the biology</h1>';
- h+='<section class="paper"><div class="flash-brow"><span>'+esc(c.sectionId)+' · '+esc(bySection[c.sectionId].title)+'</span><span>'+active.completed+' / '+active.initial+' completed</span></div><div class="progress-track" role="progressbar" aria-label="Flashcards completed" aria-valuemin="0" aria-valuemax="'+active.initial+'" aria-valuenow="'+Math.min(active.completed,active.initial)+'"><div style="width:'+(100*active.completed/active.initial)+'%"></div></div>';
+ var h='<div class="flash-panel">'+crumb(active.scope.startsWith("f171")?"flashcards/f171":"flashcards","Flashcards")+'<div class="eyebrow">'+esc(scopeName(active.scope))+'</div><h1>Recall the biology</h1>';
+ h+='<section class="paper"><div class="flash-brow"><span>'+esc(c.sectionId)+' · '+esc(c.sectionTitle||bySection[c.sectionId].title)+'</span><span>'+active.completed+' / '+active.initial+' completed</span></div><div class="progress-track" role="progressbar" aria-label="Flashcards completed" aria-valuemin="0" aria-valuemax="'+active.initial+'" aria-valuenow="'+Math.min(active.completed,active.initial)+'"><div style="width:'+(100*active.completed/active.initial)+'%"></div></div>';
  h+='<div class="eyebrow">Question</div><p class="question">'+esc(c.q)+'</p><label for="typed" class="small muted">Your answer (optional)</label><input id="typed" class="typed" autocomplete="off" spellcheck="false" placeholder="Try to recall before revealing">';
  h+='<button class="button primary" type="button" data-action="reveal">Reveal answer</button>';
  h+='<div class="answer-box" id="answer-box" hidden><div class="eyebrow">Expected answer</div><p class="answer">'+esc(c.a)+'</p>'+(c.explain?'<p class="small">'+esc(c.explain)+'</p>':'')+'<p id="comparison" class="feedback" aria-live="polite"></p><div class="action-row"><button class="button secondary" data-action="again" type="button">Not yet · show again</button><button class="button primary" data-action="got-it" type="button">Got it</button></div></div></section>';
@@ -186,6 +223,7 @@ function runRoute(){
  if(r==="knowledge"||r==="challenge"||r.startsWith("challenge/")||r==="skills"||r.startsWith("skills/")){if(window.KeystoneHumanChallenge)return window.KeystoneHumanChallenge.route(r,render);return notFound();}
  if(r==="topics"){showTopics();return;}
  if(r==="flashcards"){showFlashMenu();return;}
+ if(r==="flashcards/f171"){showF171FlashMenu();return;}
  if(r==="practice"){showPracticeMenu();return;}
  if(r==="resume"){active=restoreSession();if(active){drawSession();}else empty("There is no unfinished set to resume.");return;}
  var m=/^(area|learn|cards|practice)\/([a-zA-Z0-9.-]+)$/.exec(r);
