@@ -11,6 +11,7 @@ Source files for [narajos.com](https://narajos.com/).
 - `public/gcse/flashcards-app.js` — GCSE topic, paper, mixed, weak and due-card review modes
 - `public/alevel/index.html` — A-level Biology revision
 - `public/alevel/spaced-review-app.js` — spaced-review dashboard built on its existing flashcard bank
+- `public/human-biology/` — Cambridge OCR AAQ F170 learning pilot (28 mapped sections, 112 flashcards and 28 application questions), with content separate from the app logic
 - `public/teacher/index.html` — Focused Questions for teachers
 - `public/teaching/simulations/` — simulation catalogue and five interactive models
 - `public/assets/site.css` — shared main-site styles
@@ -19,7 +20,7 @@ Source files for [narajos.com](https://narajos.com/).
 - `public/assets/spaced-review.css` — shared flashcard styling
 - `public/privacy/index.html` — privacy information
 
-The website does not require accounts or have donation or payment features. Fonts are loaded from Google Fonts, with local system-font fallbacks. Flashcard progress is recorded only in browser localStorage, separately for Trilogy and A-level Biology. A correct response is first due the following day, then at progressively longer intervals; incorrect cards return within the active session. Self-assessment remains available because valid biological/scientific answers cannot always be graded by exact text matching.
+The website does not require accounts or have donation or payment features. Fonts are loaded from Google Fonts, with local system-font fallbacks. Flashcard progress is recorded only in browser localStorage, separately for Trilogy, A-level Biology and Human Biology. A correct response is first due the following day, then at progressively longer intervals; incorrect cards return within the active session. Self-assessment remains available because valid biological/scientific answers cannot always be graded by exact text matching.
 
 ## Publishing
 
@@ -29,7 +30,7 @@ The root-level ZIP is a historic one-time import and is **not** used for ongoing
 
 ## Checks
 
-Run `node scripts/check-site.mjs` and `node scripts/check-flashcards.mjs` from the repository root. GitHub Actions runs both scripts on relevant changes. Checks include:
+Run `node scripts/check-site.mjs`, `node scripts/check-flashcards.mjs` and `node scripts/check-human-biology.mjs` from the repository root. GitHub Actions runs both scripts on relevant changes. Checks include:
 
 - The existence of major site pages and simulations
 - HTML titles, language attributes and viewport metadata
@@ -39,7 +40,9 @@ Run `node scripts/check-site.mjs` and `node scripts/check-flashcards.mjs` from t
 - GCSE card bank coverage across all 24 Trilogy topics, per-card structure and tier metadata
 - Spaced-review scheduling, missed-card retry logic, explicit answer aliases and both review-app interfaces
 
-This is a static check, **not** a replacement for browser testing.
+The Human Biology app has a curated F170 bank across all four topic areas; it is **not yet a complete statement-by-statement specification resource**. It includes no NEA assignment writing or marking. Source: Cambridge OCR Human Biology specification version 8 (October 2026).
+
+These checks are not a replacement for browser testing.
 
 ### Manual release checks
 
@@ -49,7 +52,8 @@ This is a static check, **not** a replacement for browser testing.
 4. Check that all five simulations keep their primary controls visible and scrollable in portrait mobile and desktop views.
 5. Open GCSE Flashcards: test paper and topic decks, missed-card repetition, typed answers, reverse definitions, Foundation filtering, interruption and session recovery.
 6. Open A-level Spaced Review: complete an untimed/timed/reverse deck and check its results contribute to review history.
-7. Check that the A-level DNA-replication flashcard accepts `S`, `S phase` and `synthesis phase` as appropriate.
+7. In Human Biology, test all four F170 topic areas, practice answer reveals, due and weak reviews, session recovery and leave confirmation; verify no coursework task features.
+8. Check that the A-level DNA-replication flashcard accepts `S`, `S phase` and `synthesis phase` as appropriate.
 
 **Content status:** The GCSE flashcard decks are an initial curated recall selection, not a complete card-by-card representation of every specification statement. Further expansion and examiner-report review are recommended before describing them as comprehensive.
 
