@@ -61,9 +61,9 @@ Mixed sets deliberately sample across available question formats and topic areas
 ## Current bank and remaining coverage gaps
 
 As of this revision:
-- F170: **28 learning sections** across four topic areas, **112 recall cards**, and **51 varied challenge questions**.
-- F171: **19 varied challenge questions** across all five topic areas, including one original 6-mark analyse and one 9-mark discuss example. This is a **preview**, not an exhaustive revision course.
-- Formats: one-answer selection, select-two, ordering, matching, numerical calculation, short written recall, extended writing with self-check, and original schematic/graph interpretation.
+- F170: **28 learning sections** across four topic areas, **112 recall cards**, and **62 varied challenge questions** (including one accessible area warm-up per area).
+- F171: **27 varied challenge questions** across all five topic areas, including one original 6-mark analyse and one 9-mark discuss example. This is a **preview**, not an exhaustive revision course.
+- Formats: one-answer selection, select-two, ordering, matching, numerical calculation, short written recall, extended writing with self-check, original schematic/graph interpretation, and **choose the better explanation then justify**.
 - The new F170 challenge bank does not yet include a dedicated varied-format question tagged to **1.2.1** or **2.1.1**. Existing F170 learning/review content still covers these concepts.
 - F171 immunology, data-rich interpretation and extended responses require substantial expansion.
 - The whole bank still needs an independent, statement-by-statement specification audit and live browser/visual/accessibility testing. A passing syntax or smoke test is not a scientific peer review.
@@ -73,3 +73,9 @@ As of this revision:
 Prioritise **untested specification coverage**, **transferable exam skills**, **representative data and clinical contexts**, then add variety within high-impact areas. Do not overfit to sample-paper topics: OCR explicitly samples across its topic areas. Keep F172–F177 out of assessed coursework assistance; teaching their underlying *biological knowledge* is appropriate, but there must be no generation, marking or coaching of live NEA assignments. Do not republish copyrighted OCR question stems, diagrams or mark schemes verbatim.
 
 Avoid claiming any question is from a live OCR examination, is guaranteed to appear, or predicts future frequency.
+
+## Oracle pedagogy implementation (21 November 2026)
+
+The authoritative shared learning-design standard is [`ORACLE_KEYSTONE_PEDAGOGY.md`](ORACLE_KEYSTONE_PEDAGOGY.md). Human Biology now distinguishes progressive **topic-area practice** (warm-up → core → application → challenge) from mixed revision (interleaved topic and format selection). The question bank adds four targeted error-correction questions and six two-step scientific reasoning questions. Optional graduated hints record **guided** success separately from unaided first-attempt recall. Wrong/unknown answers receive immediate explanation and up to two related quick checks per session, where sufficiently close existing questions are available. This is a transparent rule-based system, not AI grading. It is an interim step: concept-by-concept micro-lessons and independent verification of retention require more questions per section.
+
+Only browser-local progress and session state are saved; written responses are discarded after moving to the next question. The Human Biology homepage provides a control to clear the saved local state. There is no answer-upload or analytics integration in this application. Hosting providers may still process technical connection information, described in the Privacy page.
