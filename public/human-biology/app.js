@@ -64,7 +64,7 @@ function showHome(){
  h+='</section>';
  if(old)h+='<section class="k-continue"><div><strong>Unfinished flashcards or explanation practice</strong><p>Continue your saved set.</p></div>'+link("resume","Resume","primary")+'</section>';
  var savedChallenge=E&&E.hasResume();
- if(savedChallenge)h+='<p class="k-small-note">An exam-question set is saved. Return to the relevant exam unit to resume.</p>';
+ if(savedChallenge){var route=E.resumeRoute();h+='<section class="k-continue"><div><strong>Exam-question set in progress</strong><p>Return to your unfinished questions.</p></div>'+link(route,"Resume questions","primary")+'</section>';}
  h+='<p class="k-small-note">F170 covers the four topic areas in this first learning bank; F171 exam questions are an initial selection. This is not yet complete specification coverage. Original questions only; no coursework assistance.</p></div>';
  render(h);
 }
@@ -191,7 +191,7 @@ function showLeave(callback){
  var keep=document.getElementById("leave-stay"),go=document.getElementById("leave-confirm");
  keep.focus();
  keep.onclick=function(){modal.hidden=true;pending=null;};
- go.onclick=function(){var cb=pending;pending=null;modal.hidden=true;active=null;if(window.KeystoneHumanChallenge)window.KeystoneHumanChallenge.discard();if(cb)cb();};
+ go.onclick=function(){var cb=pending;pending=null;modal.hidden=true;active=null;if(window.KeystoneHumanChallenge)window.KeystoneHumanChallenge.pause();if(cb)cb();};
 }
 document.addEventListener("keydown",function(e){if(e.key==="Escape"){var m=document.getElementById("leave-dialog");if(!m.hidden){m.hidden=true;pending=null;document.getElementById("leave-stay").blur();}}});
 document.addEventListener("click",function(e){
