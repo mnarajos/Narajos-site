@@ -383,6 +383,186 @@ var additions=[
     "explain": "Standardised repeat measurements help distinguish trends from variation caused by technique or changing conditions.",
     "misconception": "A series of results needs interpretation; identical values are not expected or necessary.",
     "hintCue": "Think about whether a difference between visits reflects the patient or a changed measurement method."
+  },
+  {
+    "id": "f171-pkd-physiology",
+    "unit": "f171",
+    "area": 1,
+    "section": "1.2.1",
+    "type": "single",
+    "level": "apply",
+    "stem": "Polycystic kidney disease damages kidney tissue over time. Which body function may be reduced?",
+    "options": [
+      "Removing metabolic wastes and regulating body-fluid composition",
+      "Secreting digestive enzymes into the stomach",
+      "Moving air into and out of the lungs",
+      "Producing antibodies in lymph nodes"
+    ],
+    "correct": 0,
+    "model": "Kidney filtration and regulation of body-fluid composition.",
+    "explain": "Loss of functioning kidney tissue can impair removal of wastes and regulation of water and dissolved ions.",
+    "misconception": "The kidney's main role is not the digestion of food or ventilation of the lungs.",
+    "hintCue": "Focus on the role of functional kidney tissue in blood filtration and fluid balance.",
+    "samAligned": false
+  },
+  {
+    "id": "f171-malaria-anaemia",
+    "unit": "f171",
+    "area": 1,
+    "section": "1.3.2",
+    "type": "written",
+    "level": "apply",
+    "stem": "Explain why malaria can lead to anaemia and reduced oxygen transport.",
+    "markPoints": [
+      "Malaria parasites infect red blood cells, which are damaged or destroyed during infection.",
+      "Loss of red blood cells or haemoglobin reduces the blood's capacity to transport oxygen."
+    ],
+    "model": "Malaria can destroy infected erythrocytes; reduced red-cell mass decreases oxygen-carrying capacity.",
+    "explain": "Connect the pathogen's effect on a particular blood cell to the physiological consequence, rather than listing symptoms.",
+    "misconception": "Anaemia is not caused simply by an absence of oxygen in inhaled air.",
+    "hintCue": "Identify which blood cells Plasmodium infects and what those cells normally transport.",
+    "samAligned": false
+  },
+  {
+    "id": "f171-vaccination-prevention",
+    "unit": "f171",
+    "area": 2,
+    "section": "2.3",
+    "type": "single",
+    "level": "core",
+    "stem": "Why is routine vaccination primarily a preventative intervention?",
+    "options": [
+      "It prepares specific immune responses before a later infection",
+      "It removes all symptoms immediately after any infection",
+      "It replaces antibiotics in every bacterial illness",
+      "It restores organs already damaged by a disease"
+    ],
+    "correct": 0,
+    "model": "Vaccination primes adaptive immunity in advance of future exposure.",
+    "explain": "Vaccination aims to reduce the risk or severity of subsequent illness by stimulating an antigen-specific immune response.",
+    "misconception": "Vaccination is generally preventative, not a treatment that immediately cures an existing infection.",
+    "hintCue": "Consider the timing: how does the immune system change before the pathogen is encountered?",
+    "samAligned": false
+  },
+  {
+    "id": "f171-wearable-records",
+    "unit": "f171",
+    "area": 5,
+    "section": "5.1.1",
+    "type": "multi",
+    "level": "apply",
+    "stem": "Which TWO statements about health data from wearable devices are defensible?",
+    "options": [
+      "Repeated readings may reveal patterns over time",
+      "Privacy and the accuracy of measurements need consideration",
+      "Every device provides a clinically definitive diagnosis",
+      "A correlation in device data proves what caused a symptom"
+    ],
+    "correct": [
+      0,
+      1
+    ],
+    "model": "Trends can be informative; data quality and confidentiality matter.",
+    "explain": "Wearables may provide useful longitudinal observations, but readings need interpretation and responsible data handling.",
+    "misconception": "Consumer measurements are not automatically diagnostic, and correlations alone do not establish causation.",
+    "hintCue": "Distinguish useful repeated observations from certainty about diagnosis or cause.",
+    "samAligned": false
+  },
+  {
+    "id": "f171-analytics-process",
+    "unit": "f171",
+    "area": 5,
+    "section": "5.1.2",
+    "type": "order",
+    "level": "apply",
+    "stem": "Order the main stages of a simplified healthcare data-analysis workflow.",
+    "items": [
+      "Collect data",
+      "Extract the relevant data",
+      "Transform or clean the data",
+      "Analyse the prepared data",
+      "Interpret the findings",
+      "Report the results"
+    ],
+    "model": "Collection → extraction → transformation → analysis → interpretation → reporting.",
+    "explain": "Raw data need selection and preparation before analysis; findings then require interpretation and communication.",
+    "misconception": "Presenting a chart is not the same stage as cleaning, analysing or interpreting the underlying data.",
+    "hintCue": "Start by obtaining observations; finish by communicating the meaning of the findings.",
+    "samAligned": false
+  },
+  {
+    "id": "f171-research-designs",
+    "unit": "f171",
+    "area": 5,
+    "section": "5.2",
+    "type": "match",
+    "level": "core",
+    "stem": "Match each research design to its defining feature.",
+    "pairs": [
+      [
+        "Randomised controlled trial",
+        "Participants are assigned to comparison groups by chance"
+      ],
+      [
+        "Cohort study",
+        "Groups are followed over time to compare outcomes"
+      ],
+      [
+        "Case–control study",
+        "People with and without an outcome are compared for past exposures"
+      ],
+      [
+        "Epidemiological research",
+        "Patterns and determinants of health in populations are investigated"
+      ]
+    ],
+    "model": "RCT → random allocation; cohort → follow-up; case–control → compare prior exposures; epidemiology → population patterns.",
+    "explain": "Research methodology determines the kinds of comparisons and conclusions that are possible.",
+    "misconception": "Observational cohort and case–control studies do not randomly allocate exposure in the way an RCT allocates treatments.",
+    "hintCue": "Ask which design allocates groups by chance and which begins with people who already have the outcome.",
+    "samAligned": false
+  },
+  {
+    "id": "f171-chronic-asthma-monitor",
+    "unit": "f171",
+    "area": 4,
+    "section": "4.2.1",
+    "type": "single",
+    "level": "apply",
+    "stem": "Why might an asthma clinic monitor a patient's breathing measurements over several visits?",
+    "options": [
+      "To recognise changes in control and inform care decisions",
+      "To guarantee identical results at every appointment",
+      "To establish that asthma can never change over time",
+      "To replace every discussion of symptoms with one number"
+    ],
+    "correct": 0,
+    "model": "Monitor changes and help guide care.",
+    "explain": "Repeated measurements, interpreted alongside symptoms and context, may reveal deterioration or improvement in asthma control.",
+    "misconception": "A single reading does not capture the whole clinical picture, and physiological measurements naturally vary.",
+    "hintCue": "Think about how a trend across visits can be more useful than one isolated result.",
+    "samAligned": false
+  },
+  {
+    "id": "f171-tb-transmission",
+    "unit": "f171",
+    "area": 1,
+    "section": "1.3.1",
+    "type": "single",
+    "level": "core",
+    "stem": "Which route is most relevant to the spread of infectious pulmonary tuberculosis?",
+    "options": [
+      "Inhaling airborne particles containing the bacterium",
+      "Receiving a bite from an infected tick",
+      "Swallowing food containing a tapeworm egg",
+      "Touching intact skin briefly without exposure to respiratory particles"
+    ],
+    "correct": 0,
+    "model": "Inhaling airborne particles containing Mycobacterium tuberculosis.",
+    "explain": "Pulmonary TB can spread through inhalation of infectious airborne particles released by someone with infectious disease.",
+    "misconception": "The mode of transmission depends on the pathogen; tick-borne and helminth infections spread differently.",
+    "hintCue": "Consider the organ system primarily affected and how particles from the respiratory tract travel.",
+    "samAligned": false
   }
 ];
 var ids=new Set(bank.questions.map(function(q){return q.id;}));
