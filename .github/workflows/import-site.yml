@@ -1,0 +1,35 @@
+name: Import Narajos website
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Narajos_Keystone_Updated_Homepage_READY_TO_DEPLOY.zip'
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Unpack website files
+        run: |
+          unzip -o Narajos_Keystone_Updated_Homepage_READY_TO_DEPLOY.zip -d .
+          test -f index.html
+          test -f teaching/index.html
+          test -f gcse/index.html
+          test -f alevel/index.html
+          test -f teacher/index.html
+          test -f assets/site.css
+      - name: Save website files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html 404.html robots.txt sitemap.xml assets/ teaching/ gcse/ alevel/ teacher/ privacy/
+          if ! git diff --cached --quiet; then
+            git commit -m "Import Narajos website files"
+            git push
+          fi
