@@ -236,7 +236,7 @@ function validateAnswer(q,a){
  }
  if(q.type==="order")return {ready:true,correct:a.order&&a.order.every(function(v,i){return v===i;})};
  if(q.type==="match"){if(!a.match||a.match.length!==q.pairs.length||a.match.some(function(v){return v===""||v==null;}))return {ready:false,msg:"Choose a match for each row."};return {ready:true,correct:a.match.every(function(v,i){return +v===i;})};}
- if(q.type==="number"){var val=String(a.text||"").trim().replace(/,/g,"").replace(/^×/,"");var m=/^[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[-+]?\d+)?/i.exec(val);if(!m)return {ready:false,msg:"Enter a numerical answer."};return {ready:true,correct:Math.abs(Number(m[0])-q.correct)<=(q.tolerance||1e-9)};}
+ if(q.type==="number"){var val=String(a.text||"").trim().replace(/,/g,"").replace(/^×\s*/,"");if(!/^[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[-+]?\d+)?$/i.test(val))return {ready:false,msg:"Enter a number only. The expected unit is shown above the box."};return {ready:true,correct:Math.abs(Number(val)-q.correct)<=(q.tolerance||1e-9)};}
  if(q.type==="short"){if(!String(a.text||"").trim())return {ready:false,msg:"Enter an answer first, or choose Not sure."};return {ready:true,correct:q.accepted.some(function(x){return norm(x)===norm(a.text);})};}
  return {ready:true,correct:null};
 }
