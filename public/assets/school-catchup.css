@@ -43,7 +43,10 @@
 .school-storage-note { font-size: .88rem; }
 .school-storage-note:empty { display: none; }
 .school-progress { display: block; width: min(100%, 20rem); height: .9rem; accent-color: #175466; margin: .3rem 0 .55rem; }
+.school-progress[hidden] { display: none; }
 .school-current-stage h3 { margin: .55rem 0 .3rem; }
+.school-step-notes { padding: .55rem .7rem; margin: .35rem 0 .65rem; border-inline-start: 3px solid #41857d; background: #fff; }
+.school-step-notes h4 { margin: 0 0 .25rem; }
 .school-evidence-panel[hidden] { display: none; }
 .school-evidence-panel :is(.ks3-lesson, [data-catchup-first-evidence]) { scroll-margin-top: 5rem; }
 .school-lesson-extras { border-top: 1px solid #c9dada; margin-top: 1rem; }
@@ -53,6 +56,9 @@
 .school-stages p { margin: .18rem 0 .4rem; }
 .school-stages :is(button,a) { margin: 0 .35rem .4rem 0; }
 .school-journey-actions, .school-completion { display: flex; flex-wrap: wrap; gap: .45rem; align-items: center; padding-block: .55rem; }
+.school-completion { padding: .85rem; background: #e7f4eb; border: 1px solid #91bca2; border-radius: .6rem; margin: .55rem 0; }
+.school-completion h3 { flex-basis: 100%; margin: 0 0 .2rem; color: #1c5137; }
+.school-completion-tick { margin-inline-end: .5rem; }
 .school-journey-actions [hidden], [data-catchup-end][hidden] { display: none; }
 .school-check {
   color: #203948; background: #fcfefe; width: min(calc(100% - 1.2rem), 42rem); max-height: calc(100vh - 1.5rem);
@@ -61,6 +67,7 @@
 .school-check::backdrop { background: #142b37b8; }
 .school-check h2.school-check-question { margin: 0 0 .65rem; font-size: clamp(1.2rem,4vw,1.6rem); }
 .school-check-context { margin: 0 0 .3rem; }
+.school-question-diagram { display: block; width: min(100%, 21.25rem); height: auto; margin-block: .45rem; border-radius: .45rem; }
 .school-check fieldset { border: 0; padding: 0; margin-inline: 0; min-width: 0; }
 .school-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .school-check-options label { display: flex; align-items: center; gap: .55rem; border: 1px solid #a9c0c3; border-radius: .45rem; padding: .5rem .6rem; min-height: 44px; margin-block: .32rem; cursor: pointer; }
@@ -76,7 +83,9 @@
 .school-cell-comparison { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(17rem,100%),1fr)); gap: .65rem; }
 .school-cell-comparison figure { margin: 0; }
 .school-cell-comparison figcaption { font-weight: 700; }
-.school-cell-comparison img { width: 100%; filter: grayscale(1); }
+.school-cell-comparison img { width: 100%; }
+.school-greyscale .school-cell-comparison img { filter: grayscale(1); }
+.school-diagram-option { display: inline-flex; min-height: 44px; align-items: center; gap: .4rem; font-weight: 650; cursor: pointer; }
 .school-evidence-flow { display: flex; align-items: stretch; flex-wrap: wrap; gap: .45rem; margin: 0; padding: 0; list-style: none; }
 .school-evidence-flow > * { min-width: min(100%,9rem); flex: 1 1 9rem; display: grid; align-content: start; gap: .25rem; padding: .48rem .55rem; border: 1px solid #b3cdce; border-radius: .45rem; background: #eef7f6; }
 .school-solute, .school-ions { color: #32627d; font-size: 1.2rem; font-weight: 700; letter-spacing: .15em; overflow-wrap: anywhere; }

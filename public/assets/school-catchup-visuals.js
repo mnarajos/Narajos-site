@@ -2,7 +2,8 @@ const visual = {
   "cell-structures": `<div class="school-cell-comparison">
     <figure><figcaption>Cheek cell</figcaption><img src="/assets/ks3-diagrams/cheek-cell.svg" width="360" height="280" alt="Labelled cheek cell. Its mitochondria are small ovals with folded interiors."></figure>
     <figure><figcaption>Palisade cell</figcaption><img src="/assets/ks3-diagrams/palisade-cell.svg" width="360" height="280" alt="Labelled leaf cell. Its chloroplasts are ovals with short internal stacks, distinct from the folded interiors of its mitochondria."></figure>
-    </div><figcaption>Teaching diagrams in greyscale, with structures enlarged for clarity.</figcaption>`,
+    </div><label class="school-diagram-option"><input type="checkbox" data-greyscale> Greyscale</label>
+    <figcaption>Structures are enlarged for clarity.</figcaption>`,
   osmosis: `<div class="school-evidence-flow">
     <div><strong>Side A · More dilute</strong><span class="school-solute" aria-hidden="true">● ●</span></div>
     <div><strong>Partially permeable membrane</strong><span>Water moves both ways</span><b>Net water movement A → B</b></div>
@@ -38,5 +39,7 @@ export function year9Visual(id) {
   const figure = document.createElement("figure");
   figure.className = "school-evidence-visual";
   figure.innerHTML = visual[id];
+  const greyscale = figure.querySelector("[data-greyscale]");
+  greyscale?.addEventListener("change", () => figure.classList.toggle("school-greyscale", greyscale.checked));
   return figure;
 }

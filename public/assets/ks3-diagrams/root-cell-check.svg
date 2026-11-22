@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 220" role="img" aria-labelledby="title description">
+  <title id="title">Unfamiliar cell with three labels</title>
+  <desc id="description">A points to a thick outer boundary. B points to a small oval with a folded line. C points to a large dark oval.</desc>
+  <rect width="340" height="220" rx="9" fill="#f7f8f8"/>
+  <path d="M96 36 218 47 266 87 252 173 117 183 70 139 66 75Z" fill="#c1c6c7" stroke="#343b3e" stroke-width="3"/>
+  <path d="M101 45 215 55 257 90 244 165 121 174 79 135 75 79Z" fill="#e6e9e9" stroke="#343b3e" stroke-width="2"/>
+  <path d="M127 66 Q197 62 219 85 Q239 105 223 143 Q213 163 167 157 Q134 157 128 128 Q113 89 127 66Z" fill="#fcfdfd" stroke="#777e81" stroke-width="1.7"/>
+  <ellipse cx="101" cy="117" rx="14" ry="20" transform="rotate(-17 101 117)" fill="#777e81" stroke="#343b3e" stroke-width="2"/>
+  <g fill="#f8f9f9" stroke="#343b3e" stroke-width="1.6">
+    <ellipse cx="176" cy="63" rx="12" ry="6.5"/>
+    <ellipse cx="227" cy="157" rx="12" ry="6.5" transform="rotate(-16 227 157)"/>
+  </g>
+  <path d="M168 61q3-5 4 0v3q2 4 4 0v-3q3-5 4 0v2q2 3 4 0m35 95q2-5 4-1l1 3q2 3 4-1v-2q1-4 4-2" fill="none" stroke="#343b3e" stroke-width="1.35" stroke-linecap="round"/>
+  <g fill="#343b3e">
+    <circle cx="95" cy="76" r="1.7"/><circle cx="109" cy="85" r="1.7"/>
+    <circle cx="109" cy="151" r="1.7"/><circle cx="127" cy="158" r="1.7"/>
+    <circle cx="236" cy="83" r="1.7"/><circle cx="243" cy="107" r="1.7"/><circle cx="237" cy="129" r="1.7"/>
+  </g>
+  <g fill="none" stroke="#24292a" stroke-width="1.5">
+    <path d="M35 43H59L85 50"/>
+    <path d="M242 28H214L184 59"/>
+    <path d="M37 149H58L95 125"/>
+  </g>
+  <g fill="#181c1d" font-family="system-ui,sans-serif" font-size="18" font-weight="700">
+    <text x="18" y="49">A</text><text x="246" y="34">B</text><text x="19" y="155">C</text>
+  </g>
+</svg>

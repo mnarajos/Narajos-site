@@ -56,5 +56,5 @@ if (Object.hasOwn(year9, id)) {
   model.append(idea);
   host.replaceChildren(model);
   const [first, ...later] = lesson.steps;
-  mountJourney(model, model, {...lesson, id, steps: [{...first, notice: lesson.notice}, ...later]});
+  mountJourney(model, model, {...lesson, id, steps: [{...first, notice: first.teach ? undefined : lesson.notice}, ...later]});
 }

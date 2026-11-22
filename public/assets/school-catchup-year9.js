@@ -2,6 +2,7 @@ import { question } from "./school-catchup-journey.js";
 
 const q = question;
 const guided = (hint, task) => ({...task, hint});
+const teach = (title, explanation, task) => ({...task, teach: [title, explanation]});
 const lesson = (code, title, hook, notice, idea, visual, steps, retry) =>
   ({year: 9, code, title, hook, notice, idea, visual, steps, retry});
 
@@ -14,10 +15,12 @@ export const year9 = {
       ["Nucleus", "Contains genetic information"], ["Mitochondria", "Site of aerobic respiration"],
       ["Ribosomes", "Make proteins"], ["Chloroplasts in green plant cells", "Absorb light for photosynthesis"]]],
     [
-      q("Which structure makes proteins?", "Ribosomes", "Ribosomes assemble proteins.", "Chloroplasts", "The cell wall"),
-      guided("Think about how a muscle gets energy for contraction.",
-        q("Which structure would a working muscle cell often need in large numbers?", "Mitochondria", "Aerobic respiration transfers energy for work in the cell.", "Chloroplasts", "Cell walls")),
-      q("A root hair cell lacks chloroplasts. Which explanation is most useful?", "Its job is absorption, and it usually grows out of the light.", "Plant cells can be specialised for different jobs.", "It is an animal cell.", "Every plant cell must contain chloroplasts.")
+      teach("Inside a cell", "The nucleus holds DNA. Ribosomes are tiny structures that build proteins. A diagram may show them as dots.", q("Which structure makes proteins?", "Ribosomes", "Ribosomes assemble proteins.", "Chloroplasts", "The cell wall")),
+      teach("A working muscle", "Muscle cells need a steady supply of energy when they contract. Aerobic respiration takes place in mitochondria. Both plant and animal cells have them.",
+        guided("Think about how a muscle gets energy for contraction.", q("Which structure would a working muscle cell often need in large numbers?", "Mitochondria", "Aerobic respiration transfers energy for work in the cell.", "Chloroplasts", "Cell walls"))),
+      teach("Jobs in a plant", "A leaf cell absorbs light. A root hair cell takes up water and mineral ions. The structures in each cell suit its job.", q("A root hair cell lacks chloroplasts. Which explanation is most useful?", "Its job is absorption, and it usually grows out of the light.", "Plant cells can be specialised for different jobs.", "It is an animal cell.", "Every plant cell must contain chloroplasts.")),
+      {...q("Which label gives the best evidence that this could be a plant cell?", "A", "A points to the cell wall. Plant cells can lack chloroplasts. The mitochondrion and nucleus are found in both plant and animal cells.", "B", "C"),
+        image: ["/assets/ks3-diagrams/root-cell-check.svg", "Three labels on an unfamiliar cell. A points to its thick outer boundary. B points to a small oval with a folded line. C points to the large dark oval."]}
     ],
     q("Why does a root hair cell have a long extension?", "It increases the surface area for absorption.", "The extension allows more surface contact with the soil.", "It makes the cell divide faster.", "It replaces the cell membrane.")),
 
@@ -29,10 +32,11 @@ export const year9 = {
       ["More dilute solution", "Water can cross in both directions", "More concentrated solution"],
       ["Net movement starts here", "Net water movement →", "Net movement is towards this side"]]],
     [
-      q("What moves through the membrane by osmosis?", "Water molecules", "Osmosis describes movement of water through a partially permeable membrane.", ["Dissolved sugar", "Osmosis describes the water, not the movement of solute."], "All particles in the solution"),
-      guided("Find the dilute side first. That is where the net movement starts.",
-        q("Which way is the net movement of water in the model?", "From A to B", "Water moves both ways, but more crosses from dilute A to concentrated B overall.", "From B to A", "There is no movement in either direction")),
-      q("A potato piece loses mass in a concentrated salt solution. What most directly explains the loss?", "Water moves out by osmosis.", "The solution outside is more concentrated than the cell contents, so there is net movement out.", ["Salt leaves the potato by osmosis.", "Osmosis describes net movement of water."], "The cells have to divide.")
+      teach("Partially permeable membranes", "A partially permeable membrane lets water molecules cross. Some dissolved particles are too large to pass through.", q("What moves through the membrane by osmosis?", "Water molecules", "Osmosis describes movement of water through a partially permeable membrane.", ["Dissolved sugar", "Osmosis describes the water, not the movement of solute."], "All particles in the solution")),
+      teach("Movement in both directions", "Look at sides A and B in the notes. Water crosses both ways. The net direction is the way more water crosses overall.",
+        guided("Find the dilute side first. That is where the net movement starts.", q("Which way is the net movement of water in the model?", "From A to B", "Water moves both ways, but more crosses from dilute A to concentrated B overall.", "From B to A", "There is no movement in either direction"))),
+      teach("Water leaving cells", "Cucumber in salty brine can lose water. More water moves from its cells into the brine than moves back in.", q("A potato piece loses mass in a concentrated salt solution. What most directly explains the loss?", "Water moves out by osmosis.", "The solution outside is more concentrated than the cell contents, so there is net movement out.", ["Salt leaves the potato by osmosis.", "Osmosis describes net movement of water."], "The cells have to divide.")),
+      q("A wilted leaf is put into pure water. Its cells gain water. Which way is the net movement?", "From the water into the leaf cells", "The water outside is more dilute than the cell contents, so water moves into the cells by osmosis.", "From the cells into the water", "There is no net movement")
     ],
     q("A similar potato piece gains mass in pure water. Which way was the net movement?", "From the water into the potato cells", "The solution outside is more dilute than the cell contents.", "From the potato cells into the water", "There was no net movement")),
 
@@ -44,10 +48,11 @@ export const year9 = {
       ["Diffusion", "Higher to lower concentration overall", "No"],
       ["Active transport in this example", "Lower to higher concentration", "Yes"]]],
     [
-      q("A root cell takes up ions from lower concentration outside to higher concentration inside. What process is this?", "Active transport", "The movement goes against the concentration gradient.", "Osmosis", "Diffusion"),
-      guided("Compare the direction of the ions with the concentration gradient.",
-        q("Which change could reduce this uptake?", "A reduced energy supply from respiration", "Active transport requires energy.", "Keeping the membrane intact", "Keeping the soil wetter in every situation")),
-      q("Cells in the gut take up a dissolved nutrient when its concentration is lower in the gut than inside the cells. What is needed?", "Active transport using energy", "There is net movement against a concentration gradient.", "Diffusion down the gradient", "Water moving by osmosis")
+      teach("Two possible directions", "In diffusion, particles spread from higher to lower concentration. A membrane can also move some substances from lower to higher concentration. This is active transport.", q("A root cell takes up ions from lower concentration outside to higher concentration inside. What process is this?", "Active transport", "The movement goes against the concentration gradient.", "Osmosis", "Diffusion")),
+      teach("Where the energy comes from", "Moving ions against their concentration gradient takes energy. Respiration supplies this energy.",
+        guided("Compare the direction of the ions with the concentration gradient.", q("Which change could reduce this uptake?", "A reduced energy supply from respiration", "Active transport requires energy.", "Keeping the membrane intact", "Keeping the soil wetter in every situation"))),
+      teach("The same idea in the gut", "Gut cells absorb dissolved nutrients. To predict the process, compare the concentration on each side of the cell membrane.", q("Cells in the gut take up a dissolved nutrient when its concentration is lower in the gut than inside the cells. What is needed?", "Active transport using energy", "There is net movement against a concentration gradient.", "Diffusion down the gradient", "Water moving by osmosis")),
+      q("An aquatic plant takes up ions when their concentration is lower outside its cells. Which process allows this?", "Active transport", "The ions move against their concentration gradient. This requires energy.", "Diffusion", "Osmosis")
     ],
     q("Which observation most strongly suggests active transport?", "Ions enter a cell even though their concentration is already higher inside.", "Movement from lower to higher concentration requires an energy-dependent process in this example.", "A gas spreads through air.", "Water crosses a partially permeable membrane.")),
 
@@ -60,10 +65,11 @@ export const year9 = {
       ["Mitosis", "The chromosome copies separate into two nuclei"],
       ["Cell division", "The cell divides to form two cells"]]],
     [
-      q("What must happen to DNA before its copies separate?", "It must be copied.", "Both new nuclei need a complete set of genetic information.", "It must be halved without copying.", "It must leave both nuclei."),
-      guided("Find the step where the chromosome copies separate.",
-        q("Which step is mitosis itself?", "Division of the nucleus", "During mitosis the chromosome copies are separated to form two nuclei.", "Absorption of water", "The cell growing larger")),
-      q("A plant makes new cells at a root tip. How do those cells normally receive the same genetic information as the original cell?", "DNA is copied, then copies separate before the cell divides.", "The copied DNA supplies a complete set of information to each nucleus.", "Each new cell receives half the genes.", "The new cells make different genes during growth.")
+      teach("A full set of instructions", "To make two new cells with the same genetic information, each cell needs its own full set of DNA.", q("What must happen to DNA before its copies separate?", "It must be copied.", "Both new nuclei need a complete set of genetic information.", "It must be halved without copying.", "It must leave both nuclei.")),
+      teach("Copy, separate, divide", "The cell copies its DNA first. During mitosis the chromosome copies separate into two nuclei. The cell then divides.",
+        guided("Find the step where the chromosome copies separate.", q("Which step is mitosis itself?", "Division of the nucleus", "During mitosis the chromosome copies are separated to form two nuclei.", "Absorption of water", "The cell growing larger"))),
+      teach("Mitosis in living things", "Skin makes new cells to replace damaged ones. Plants make new cells as they grow. Each new cell needs the same genetic information as the original.", q("A plant makes new cells at a root tip. How do those cells normally receive the same genetic information as the original cell?", "DNA is copied, then copies separate before the cell divides.", "The copied DNA supplies a complete set of information to each nucleus.", "Each new cell receives half the genes.", "The new cells make different genes during growth.")),
+      q("A skin cell copies its DNA before dividing as a cut heals. Why must the chromosome copies separate into two nuclei?", "So each new cell gets a full set of genetic information.", "Copying makes two sets. Separating puts one set in each nucleus.", "So each nucleus gets half of the genes.", "So the cells stop containing DNA.")
     ],
     q("What could happen if an original cell divided without first copying its DNA?", "The two new cells could fail to receive a complete set of genetic information.", "Copies must be made before they can be distributed to both cells.", "Both cells would automatically receive an extra set.", "The amount of DNA inside each cell would double.")),
 
