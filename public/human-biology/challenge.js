@@ -606,6 +606,25 @@ function correctOrReveal(reveal){
   var pending=main.querySelector("[data-correction-heading]");if(pending)pending.focus();
  }
 }
+function misconceptionFeedback(q,a){
+ if(a.priorResponse)return "";
+ var messages=[];
+ if(q.optionFeedback&&a.selected)messages=a.selected.map(function(i){return q.optionFeedback[i];}).filter(Boolean);
+ if(q.numberFeedback&&a.text){
+  var value=Number(String(a.text).trim().replace(/,/g,"").replace(/^×\s*/,""));
+  var error=q.numberFeedback.find(function(entry){return Math.abs(value-entry[0])<1e-6;});
+  if(error)messages.push(error[1]);
+ }
+ return messages.length?'<div class="k-misconception"><strong>About your answer</strong>'+
+  messages.map(function(message){return '<p>'+esc(message)+'</p>';}).join("")+'</div>':"";
+}
+function correctionCue(q,rows){
+ if(q.correctionHint)return q.correctionHint;
+ if(q.type==="order")return "Recheck sequence positions "+rows.flatMap(function(ok,i){return ok?[]:[i+1];}).join(", ")+
+  ". Think about which events depend on earlier ones.";
+ if(q.type==="match")return "Use the term in each marked row to reconsider the relationship.";
+ return "Use the category definition to check each marked row.";
+}
 function drawQuestion(){
  if(!session||!isActive())return;
  initialiseOutcomes(session);
@@ -639,7 +658,7 @@ function drawQuestion(){
  else if(q.type==="written"&&!session.wasSkipped)h+=writtenReview(q,a);
  else if(canCorrect(q,a)){
   var rows=correctionRows(q,a),reviewCount=rows.filter(function(ok){return !ok;}).length;
-  h+='<div class="k-feedback incorrect"><h2 class="k-feedback-head" data-feedback-heading tabindex="-1">Review and improve</h2><p>'+reviewCount+' '+(q.type==="order"?(reviewCount===1?"position needs":"positions need"):(reviewCount===1?"row needs":"rows need"))+' another look. Your choices are saved.</p></div>';
+  h+='<div class="k-feedback incorrect"><h2 class="k-feedback-head" data-feedback-heading tabindex="-1">Review and improve</h2><p>'+reviewCount+' '+(q.type==="order"?(reviewCount===1?"position needs":"positions need"):(reviewCount===1?"row needs":"rows need"))+' another look. Your choices are saved.</p><p>'+esc(correctionCue(q,rows))+'</p></div>';
  }
  else{
   var correct=session.lastResult===true,subjective=!session.wasSkipped&&(session.lastResult===null||q.type==="written");
@@ -655,7 +674,11 @@ function drawQuestion(){
   if(q.type==='best'&&!correct&&!unknown){var partial=session.answers[q.id]||{};if(partial.choice===q.correct&&partial.reason!==q.reasonCorrect)h+='<p class="k-diagnostic-note">You chose the correct explanation; now focus on why it is correct.</p>';}
   if((!correct||helped)&&session.lastPlannedCheck)h+='<p class="k-quick-note">A related quick check is next, so you can try the idea again independently.</p>';
   if(q.levelsNote)h+='<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>';
-  if(!correct&&!unknown&&q.misconception)h+='<div class="k-misconception"><strong>Watch out</strong><p>'+esc(q.misconception)+'</p></div>';
+  if(!correct&&!unknown){
+   var diagnosis=misconceptionFeedback(q,a);
+   if(diagnosis)h+=diagnosis;
+   else if(q.misconception)h+='<div class="k-misconception"><strong>Watch out</strong><p>'+esc(q.misconception)+'</p></div>';
+  }
   h+='</div>';
  }
  if(showing&&(session.lastResult!==true||used||session.wasSkipped)&&

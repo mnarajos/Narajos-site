@@ -1153,7 +1153,13 @@ window.KeystoneHumanChallenges={
       "misconception": "Smoking does not improve alveolar diffusion surface area.",
       "samAligned": true,
       "hintCue": "Think about what smoke does to airway clearance and to the walls separating alveoli.",
-      "assessmentRevision": 1
+      "assessmentRevision": 1,
+      "optionFeedback": [
+        null,
+        null,
+        "Damaged cilia clear mucus less effectively. Retained mucus can narrow the airways.",
+        "Emphysema reduces elastic recoil, making it harder to drive air out of the lungs."
+      ]
     },
     {
       "id": "health-disease",
@@ -1218,7 +1224,13 @@ window.KeystoneHumanChallenges={
       "misconception": "Without a control, an observed effect may have an alternative explanation.",
       "samAligned": true,
       "hintCue": "Ask whether the liquid used to deliver the drug could itself have an effect.",
-      "assessmentRevision": 1
+      "assessmentRevision": 1,
+      "optionFeedback": [
+        null,
+        "Repeated readings estimate variation. A solvent-only comparison asks whether the carrier contributed to inhibition.",
+        "A concentration comparison needs results at different doses. The solvent-only result checks for an effect of the carrier.",
+        "A comparison between organisms needs data from both. The control isolates the effect of the carrier."
+      ]
     },
     {
       "id": "health-antibody",
@@ -1241,7 +1253,13 @@ window.KeystoneHumanChallenges={
       "misconception": "The stem is the Fc region, not the antigen-binding site.",
       "samAligned": true,
       "hintCue": "Identify the region that makes specific contact with an antigen rather than the constant stem.",
-      "assessmentRevision": 1
+      "assessmentRevision": 1,
+      "optionFeedback": [
+        null,
+        "The base is the Fc region. Label A points to an arm tip.",
+        "The hinge is where the two arms can flex relative to the base. A points farther out.",
+        "The bond helps hold chains together. The tip forms the region that recognises the antigen."
+      ]
     },
     {
       "id": "health-bp-repeat",
@@ -1266,7 +1284,13 @@ window.KeystoneHumanChallenges={
       "misconception": "A single high clinic reading is not always sufficient for a final diagnosis.",
       "samAligned": true,
       "hintCue": "Measurement conditions should remain stable, with the correct cuff for the patient's arm.",
-      "assessmentRevision": 1
+      "assessmentRevision": 1,
+      "optionFeedback": [
+        null,
+        null,
+        "Recent activity can change blood pressure. To compare resting readings, take them under comparable rested conditions.",
+        "A cuff that is too small for the arm can bias the result. Select the cuff size to suit the arm."
+      ]
     },
     {
       "id": "health-peakflow",
@@ -1377,7 +1401,13 @@ window.KeystoneHumanChallenges={
       "misconception": "Immunity is not always sterilising or lifelong.",
       "samAligned": false,
       "hintCue": "Think about why later exposure can evoke a more rapid antibody response.",
-      "assessmentRevision": 1
+      "assessmentRevision": 1,
+      "optionFeedback": [
+        null,
+        "Antibodies are proteins. They cannot divide. Activated lymphocytes can proliferate.",
+        "Antigen provides the target recognised during a response. It does not neutralise the pathogen.",
+        "Some phagocytes engulf material. Memory lymphocytes help organise a faster specific response."
+      ]
     },
     {
       "id": "health-casts",
@@ -1468,7 +1498,8 @@ window.KeystoneHumanChallenges={
       "explain": "A real intervention can have more than one purpose.",
       "misconception": "Supportive treatment is not the same as doing nothing.",
       "samAligned": false,
-      "hintCue": "Ask whether each intervention prevents disease, removes its cause or supports the person's function."
+      "hintCue": "Ask whether each intervention prevents disease, removes its cause or supports the person's function.",
+      "correctionHint": "Ask whether the approach aims to remove a cause, relieve effects, or reduce the chance of future disease."
     },
     {
       "id": "health-therapy-eval",

@@ -722,7 +722,13 @@ var additions=[
     "misconception": "Replacing a blank by zero gives it a value without evidence.",
     "unit": "f171",
     "samAligned": false,
-    "assessmentRevision": 1
+    "assessmentRevision": 1,
+    "optionFeedback": [
+      null,
+      "A previous reading is a different observation. It cannot be counted as a new measurement.",
+      "Divide by the number of readings actually included. A scheduled but unobserved measurement contributes neither a value nor a count.",
+      "Report the number actually measured so the reader can judge the completeness of the comparison."
+    ]
   }
 ];
 additions.push(...[

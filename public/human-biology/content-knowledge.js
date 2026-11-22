@@ -1063,7 +1063,13 @@ window.KeystoneHumanKnowledge={
       "hintCue": "Which pituitary hormone rises sharply just before ovulation?",
       "samAligned": false,
       "knowledgeOnly": true,
-      "assessmentRevision": 1
+      "assessmentRevision": 1,
+      "optionFeedback": [
+        null,
+        "FSH is important in developing the follicle. Focus on the signal that triggers release.",
+        "Rising oestrogen helps bring about the LH surge. The LH surge then acts on the follicle.",
+        "Progesterone secretion rises mainly after ovulation and supports the uterine lining."
+      ]
     },
     {
       "id": "f175-hormones",
