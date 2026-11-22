@@ -298,6 +298,32 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){retur
 function crumb(to,text){return '<p class="crumb"><a href="#'+esc(to)+'">← '+esc(text)+'</a></p>';}
 function unitKind(unit){return unit==="f170"||unit==="f171"?"Externally assessed":"NEA knowledge support";}
 function lessonFor(unit,id){return (window.KeystoneHumanLessons||{})[unit+"/"+id];}
+var buildPractice={
+ "f170/1.1.2":"p-cell-actual-width",
+ "f170/2.1.2":"p-phys-heart-septum",
+ "f170/2.1.3":"p-phys-homeostasis-cross",
+ "f170/2.2.3":"p-phys-peakflow-technique",
+ "f170/3.1.1":"p-endo-insulin-loop",
+ "f170/3.3.1":"p-endo-gametes",
+ "f171/2.1":"p-f171-local-systemic",
+ "f171/a2":"p-f171-local-systemic",
+ "f171/2.3":"p-f171-treatment-prevention",
+ "f171/a3":"p-f171-antigen-antibody-complex",
+ "f171/3.2.1":"p-f171-transplant-immunosuppression",
+ "f171/3.2.2":"p-f171-vaccine-types",
+ "f171/4.2.1":"p-health-screening",
+ "f171/a4":"p-f171-monitoring-repeats",
+ "f171/4.2.2":"p-f171-monitoring-repeats",
+ "f171/a5":"p-f171-research-designs"
+};
+function practiceScope(unit,id){
+ var point=buildPractice[unit+"/"+id];
+ return point&&window.KeystoneHumanProgressions?.get(point)?point:null;
+}
+function buildLink(unit,id,origin){
+ var scope=practiceScope(unit,id);
+ return scope?'<a data-hb-build href="#challenge/'+esc(unit)+'/'+esc(scope)+'?from='+esc(origin)+'">Build understanding</a>':"";
+}
 function resumeLinks(origin,practice){
  var engine=window.KeystoneHumanChallenge;
  var back=engine&&(engine.resumeRoute(origin)||engine.resumeRoute(origin.replace(/\/\d+$/,"")));
@@ -328,7 +354,7 @@ function relatedLinks(unit,id,origin,practice,label){
   var deck=(window.KeystoneF171Recall||[]).find(function(d){return d[0]===id;});
   links+='<a href="#'+(deck?"cards/f171-"+id:"flashcards/f171")+'">'+(deck?"Flashcards for this topic":"F171 flashcards")+'</a>';
  }
- return '<nav class="hb-teach-related" aria-label="Related learning">'+links+resumeLinks(origin,practice)+'</nav>';
+ return '<nav class="hb-teach-related" aria-label="Related learning">'+resumeLinks(origin,practice)+buildLink(unit,id,origin)+links+'</nav>';
 }
 function showHome(render){
  var h='<div class="k-wrap">'+crumb("home","Home")+'<div class="k-unit-hero"><div class="k-eyebrow">Your learning companion</div><h1>Catch up and understand</h1><p>Choose an idea to learn or revisit. Guided lessons show the reasoning before you practise.</p></div><div class="k-unit-tiles">';
@@ -361,7 +387,7 @@ function showUnit(unit,render){
  });
  h+='</div></div>';render(h);
 }
-function showConcept(unit,id,step,render){
+function showConcept(unit,id,step,render,review){
  var u=units.filter(function(x){return x.id===unit;})[0];
  if(!u)return showHome(render);
  var topic,points;
@@ -388,7 +414,7 @@ function showConcept(unit,id,step,render){
   render('<div class="k-wrap k-catchup-concept">'+crumb("catchup/"+unit,u.title)+
    '<div class="k-eyebrow">'+unitKind(unit)+'</div><h1>'+esc(topic)+'</h1>'+
    teaching.render(lesson,{inline:lesson.visual==="model"?"":visual,method:skillLinks(unit,id,lesson),modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:recap+related})+'</div>');
-  teaching.mount(unit+"/"+lessonId,lesson);
+  teaching.mount(unit+"/"+lessonId,lesson,review);
   if(sim)window.KeystoneReproductionSimulation.mount(document);
   return;
  }
@@ -407,19 +433,46 @@ function showConcept(unit,id,step,render){
   window.KeystoneReproductionSimulation.mount(document);
  }
 }
-window.KeystoneHumanCatchup={route:function(hash,render){
- if(hash==="catchup")return showHome(render);
- var m=/^catchup\/(f17[0-7])(?:\/([a-z0-9.]+))?(?:\/(\d+))?$/.exec(hash);
- if(!m)return showHome(render);
- if(!m[2])return showUnit(m[1],render);
- return showConcept(m[1],m[2],m[3],render);
-},linkFor:function(q){
+function linkFor(q){
  if(!q)return null;
  if(q.unit==="f170"&&sectionById[q.section])return "catchup/f170/"+q.section;
+ if(q.unit==="f171"&&q.section==="5.2")return "catchup/f171/a5";
  if(q.section&&notes[q.unit]&&notes[q.unit][q.section])return "catchup/"+q.unit+"/"+q.section;
- var a="a"+q.area;
- return notes[q.unit]&&notes[q.unit][a]?"catchup/"+q.unit+"/"+a:null;
-},searchTopics:function(){
+ var area="a"+q.area;
+ return notes[q.unit]&&notes[q.unit][area]?"catchup/"+q.unit+"/"+area:null;
+}
+function reteachFor(q){
+ var route=linkFor(q);
+ var targets={
+  "f170/1.1.2":[3,"Revisit the scale-bar calculation"],
+  "f170/2.1.2":[1,"Revisit blood flow and valve pressure"],
+  "f170/2.1.3":[2,"Revisit oxygen diffusion into blood"],
+  "f170/2.2.3":[2,"Revisit what ventilation measures"],
+  "f170/3.1.1":[3,"Revisit insulin action on target tissues"],
+  "f170/3.3.1":[3,"Revisit the features that identify reproductive tissues"],
+  "f171/2.1":[3,"Revisit how evidence supports a treatment choice"],
+  "f171/2.3":[3,"Revisit screening and diagnostic follow-up"],
+  "f171/a3":[3,"Revisit the roles of immune cells"],
+  "f171/3.2.1":[2,"Revisit rejection and infection risk"],
+  "f171/4.2.1":[3,"Revisit where missed cases appear in the table"],
+  "f171/4.2.2":[2,"Revisit when repeat readings are comparable"],
+  "f171/a5":[3,"Revisit what the evidence supports"]
+ };
+ if(!route)return null;
+ var target=targets[route.slice("catchup/".length)];
+ if(route==="catchup/f170/1.1.2"&&(q.type==="number"||q.id==="p-cell-actual-width-diagnostic")){
+  target=[4,"Revisit the worked unit conversion"];
+ }
+ return { route:route, href:route+(target?"?review="+target[0]:""),
+  label:target?target[1]:"Need more help? Catch up on this idea" };
+}
+window.KeystoneHumanCatchup={route:function(hash,render){
+ if(hash==="catchup")return showHome(render);
+ var m=/^catchup\/(f17[0-7])(?:\/([a-z0-9.]+))?(?:\/(\d+))?(?:\?review=(\d+))?$/.exec(hash);
+ if(!m)return showHome(render);
+ if(!m[2])return showUnit(m[1],render);
+ return showConcept(m[1],m[2],m[3],render,Number(m[4])||0);
+},linkFor:linkFor,reteachFor:reteachFor,practiceScope:practiceScope,searchTopics:function(){
  var f170=Object.values(sectionById).map(function(item){
   var s=item.section;
   return {group:"f170",title:s.title,context:"F170 · "+s.id,concept:true,actions:[["Catch up","#catchup/f170/"+s.id],["Flashcards","#cards/"+s.id]]};

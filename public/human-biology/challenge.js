@@ -648,8 +648,12 @@ function drawQuestion(){
   if((!correct||helped)&&session.lastPlannedCheck)h+='<p class="k-quick-note">A related quick check is next, so you can try the idea again independently.</p>';
   if(q.levelsNote)h+='<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>';
   if(!correct&&!unknown&&q.misconception)h+='<div class="k-misconception"><strong>Watch out</strong><p>'+esc(q.misconception)+'</p></div>';
-  if(!correct||helped||unknown){var cu=window.KeystoneHumanCatchup&&window.KeystoneHumanCatchup.linkFor(q);if(cu)h+='<p class="k-catchup-after"><a href="#'+esc(cu)+'" data-reteach-to="'+esc(cu)+'">Need more help? Catch up on this idea</a></p>';}
   h+='</div>';
+ }
+ if(showing&&(session.lastResult!==true||used||session.wasSkipped)&&
+    (q.type!=="written"||session.outcomes[session.index])){
+  var catchup=window.KeystoneHumanCatchup?.reteachFor(q);
+  if(catchup)h+='<p class="k-catchup-after"><a href="#'+esc(catchup.href)+'" data-reteach-to="'+esc(catchup.route)+'">'+esc(catchup.label)+'</a></p>';
  }
  if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points":"Check answer")+' →</button>'+(used<availableHints.length?'<button class="button secondary k-hint-button" type="button" data-k-action="hint"'+(hintRemaining()>0?' hidden':'')+'>'+(used?'More help':'Hint')+'</button>':'')+'<button class="button quiet" type="button" data-k-action="skip">I don’t know · show me</button></div>';
  else if(canCorrect(q,a))h+='<div class="k-foot-actions"><button class="button primary" data-k-action="correct" type="button">Try again</button><button class="button quiet" data-k-action="show-correction" type="button">Show answer</button></div>';
@@ -839,7 +843,9 @@ function route(r,renderer){
  if(!scope){visible=false;return intro(unit);}
  if(origin){
   var source=origin.split("/");
-  if(source[1]!==unit||source[2]!==scope||!/^(?:a[1-5]|\d+(?:\.\d+)*)$/.test(scope)||!filter(unit,scope).length)return intro(unit);
+  var topicScope=source[2]===scope&&/^(?:a[1-5]|\d+(?:\.\d+)*)$/.test(scope);
+  var buildScope=window.KeystoneHumanCatchup?.practiceScope(unit,source[2])===scope;
+  if(source[1]!==unit||(!topicScope&&!buildScope)||!filter(unit,scope).length)return intro(unit);
  }
  var old=sessionKey(session)===(origin?topicKey(unit,scope):SK)?session:null;
  old=old||restore(origin?topicKey(unit,scope):SK);

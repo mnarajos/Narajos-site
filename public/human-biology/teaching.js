@@ -98,7 +98,7 @@
     selfReview: "Compare your reasoning with each point."
   };
 
-  function mount(key, lesson) {
+  function mount(key, lesson, reviewStep) {
     const root = main.querySelector(".hb-teaching");
     if (!root) return;
     // Keep responses to earlier task versions separate from the new questions.
@@ -196,18 +196,26 @@
 
       showState(section, state, question);
     });
-    root.querySelector('[data-hb-action="model"]')?.addEventListener("click", event => {
-      const button = event.currentTarget;
-      const steps = button.previousElementSibling;
-      const next = steps.querySelector("[hidden]");
-      if (next) next.hidden = false;
-      else Array.from(steps.children).slice(1).forEach(step => { step.hidden = true; });
-      if (next) {
-        next.tabIndex = -1;
-        next.focus();
+    const modelButton = root.querySelector('[data-hb-action="model"]');
+    if (modelButton) {
+      const steps = modelButton.previousElementSibling;
+      function showModelStep(index, focus) {
+        Array.from(steps.children).forEach((step, i) => { step.hidden = i > index; });
+        modelButton.textContent = steps.querySelector("[hidden]") ? "Show next step" : "Replay example";
+        if (focus) {
+          steps.children[index].tabIndex = -1;
+          steps.children[index].focus();
+        }
       }
-      button.textContent = steps.querySelector("[hidden]") ? "Show next step" : "Replay example";
-    });
+      modelButton.addEventListener("click", () => {
+        const next = Array.from(steps.children).findIndex(step => step.hidden);
+        showModelStep(next < 0 ? 0 : next, true);
+      });
+      if (reviewStep) {
+        modelButton.closest("details").open = true;
+        showModelStep(Math.min(reviewStep, steps.children.length) - 1, true);
+      }
+    }
     updateFollowup();
   }
 
