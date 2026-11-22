@@ -39,7 +39,7 @@ const checkpoints = [
   prompt:"What attaches, and where, if implantation occurs?",
   options:[["A secondary oocyte attaches to the wall of the oviduct.","A secondary oocyte has yet to form an embryo. The model shows typical implantation in the uterus."],["A sperm attaches to an oocyte in the uterus.","Gamete fusion is fertilisation, which normally occurs in an oviduct."],["A blastocyst attaches to the uterine lining.",""]],
   cue:"Once a blastocyst has formed, show possible implantation. Look for where it attaches.",
-  observation:"The blastocyst attaches to the endometrium several days after fertilisation if conditions allow. Fertilisation and implantation are separate events; one does not guarantee the other."
+  observation:"The blastocyst attaches to the endometrium several days after fertilisation if conditions allow. Fertilisation can occur even when implantation fails."
  }
 ];
 function guideMarkup(){

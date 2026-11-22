@@ -335,7 +335,7 @@
       nodes: ["Uncontrolled observation", "Compare the groups", "Limit the conclusion"],
       model: [
         "Eight of twelve people improved after trying a fictional medicine. We cannot see how many would have improved anyway, so this alone does not identify the cause.",
-        "In the trial, 15 of 24 people improve with the medicine and 11 of 24 in the comparison group. The comparison shows that people can improve without the medicine. Random allocation reduces systematic differences between groups at the start; a small trial can still have chance imbalances.",
+        "In the trial, 15 of 24 people improve with the medicine and 11 of 24 in the comparison group. The comparison shows that people can improve without the medicine. Random allocation reduces systematic differences between groups at the start. In a small trial, the groups can still start out different by chance.",
         "The outcome assessor is blinded so knowledge of the group is less likely to influence the rating. The difference supports possible short-term benefit, but the small groups leave uncertainty. A week of follow-up tells us little about rare or delayed harms."
       ],
       skills: ["variables", "evidence"],
