@@ -63,7 +63,14 @@ try{
  await pilotPage.getByRole("heading",{name:"What made the same toy roll farther?",exact:true}).waitFor({timeout:10000}).catch(async error=>{
   throw new Error("Science Skills opening missing at "+pilotPage.url()+": "+(await pilotPage.locator("main").innerText()).slice(0,420),{cause:error});
  });
- assert(await pilotPage.getByRole("heading",{name:"Worked example · testing ramp angle"}).isVisible());
+ const workedRamp=pilotPage.getByRole("heading",{name:"Worked example · testing ramp angle"});
+ assert(!(await workedRamp.isVisible()));
+ assert(!(await pilotPage.getByRole("heading",{name:"Check your understanding",exact:true}).isVisible()));
+ await pilotPage.getByRole("button",{name:"See evidence",exact:true}).click();
+ await pilotPage.getByRole("heading",{name:"Roll a toy down a ramp",exact:true}).waitFor();
+ assert(await workedRamp.isVisible());
+ await pilotPage.getByText("More practice and activities",{exact:true}).click();
+ assert(await pilotPage.getByRole("heading",{name:"Check your understanding",exact:true}).isVisible());
  await pilotPage.goto(base+"/science-catch-up/?year=8");
  assert.equal(await pilotPage.locator(".school-topic-list > li").count(),13);
  assert.equal(await pilotPage.getByRole("link",{name:"Open GCSE revision"}).count(),0);
@@ -79,7 +86,18 @@ try{
  assert.equal(conceptLinks.length,12);
  for(const path of conceptLinks){
   await pilotPage.goto(path);
+  await pilotPage.getByRole("button",{name:"See evidence",exact:true}).waitFor();
+  assert(!(await pilotPage.getByRole("heading",{name:"Look at the evidence",exact:true}).isVisible()));
+  await pilotPage.getByRole("button",{name:"See evidence",exact:true}).click();
   await pilotPage.getByRole("heading",{name:"Look at the evidence",exact:true}).waitFor();
+  if(path.endsWith("topic=cell-structures")){
+   const comparison=pilotPage.locator(".school-cell-comparison img");
+   assert.equal(await comparison.count(),2);
+   for(const diagram of await comparison.all()){
+    await diagram.evaluate(img=>img.decode());
+    assert.equal(await diagram.evaluate(img=>getComputedStyle(img).filter),"grayscale(1)");
+   }
+  }
   assert(await pilotPage.getByRole("progressbar",{name:"Lesson progress"}).isVisible());
   assert.equal(await pilotPage.getByRole("progressbar",{name:"Lesson progress"}).getAttribute("value"),"0");
   assert((await pilotPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Year 9 catch-up overflows at phone width");
@@ -87,8 +105,11 @@ try{
  await pilotPage.goto(base+"/science-catch-up/lesson/?topic=osmosis");
  const guide=pilotPage.locator(".school-journey");
  const check=guide.getByRole("dialog");
- assert.equal(await pilotPage.locator(".school-lesson-table").count(),0);
+ await guide.getByRole("button",{name:"See evidence",exact:true}).click();
+ assert(!(await pilotPage.locator(".school-lesson-table").isVisible()));
  assert(await pilotPage.getByText("Net water movement A → B",{exact:true}).isVisible());
+ await pilotPage.getByText("Read the table",{exact:true}).click();
+ assert(await pilotPage.locator(".school-lesson-table").isVisible());
  await guide.getByRole("button",{name:"Open check",exact:true}).click();
  assert(await check.getByRole("heading",{name:"What moves through the membrane by osmosis?",exact:true}).isVisible());
  assert.equal(await check.getByRole("button",{name:"Continue",exact:true}).count(),0);
@@ -112,6 +133,8 @@ try{
  await check.getByRole("radio",{name:"Water molecules",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
  await check.getByRole("button",{name:"Continue",exact:true}).click();
+ assert(!(await pilotPage.getByRole("heading",{name:"Look at the evidence",exact:true}).isVisible()));
+ assert(await guide.getByText("Step 2 of 3",{exact:true}).isVisible());
  await guide.getByRole("button",{name:"Open check",exact:true}).click();
  await check.getByRole("radio",{name:"From A to B",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();

@@ -18,13 +18,11 @@ if (Object.hasOwn(year9, id)) {
   heading.before(code);
   const title = document.createElement("h2");
   title.textContent = "Look at the evidence";
-  const cue = document.createElement("p");
-  cue.textContent = lesson.notice;
   const idea = document.createElement("p");
   const label = document.createElement("strong");
   label.textContent = "The key idea. ";
   idea.append(label, lesson.idea);
-  model.append(title, cue);
+  model.append(title);
   const visual = year9Visual(id);
   if (visual) model.append(visual);
   if (lesson.visual) {
@@ -47,9 +45,16 @@ if (Object.hasOwn(year9, id)) {
       for (const text of row) tr.insertCell().textContent = text;
     }
     box.append(table);
-    model.append(box);
+    if (visual && id !== "cell-structures" && id !== "gas-exchange") {
+      const tableView = document.createElement("details");
+      const summary = document.createElement("summary");
+      summary.textContent = "Read the table";
+      tableView.append(summary, box);
+      model.append(tableView);
+    } else model.append(box);
   }
   model.append(idea);
   host.replaceChildren(model);
-  mountJourney(model, model, {...lesson, id});
+  const [first, ...later] = lesson.steps;
+  mountJourney(model, model, {...lesson, id, steps: [{...first, notice: lesson.notice}, ...later]});
 }

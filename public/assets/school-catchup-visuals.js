@@ -1,5 +1,8 @@
 const visual = {
-  "cell-structures": `<img src="/assets/ks3-diagrams/cheek-cell.svg" width="360" height="280" alt="Labelled human cheek cell with a nucleus, mitochondria, ribosomes and cell membrane.">`,
+  "cell-structures": `<div class="school-cell-comparison">
+    <figure><figcaption>Cheek cell</figcaption><img src="/assets/ks3-diagrams/cheek-cell.svg" width="360" height="280" alt="Labelled cheek cell. Its mitochondria are small ovals with folded interiors."></figure>
+    <figure><figcaption>Palisade cell</figcaption><img src="/assets/ks3-diagrams/palisade-cell.svg" width="360" height="280" alt="Labelled leaf cell. Its chloroplasts are ovals with short internal stacks, distinct from the folded interiors of its mitochondria."></figure>
+    </div><figcaption>Teaching diagrams in greyscale, with structures enlarged for clarity.</figcaption>`,
   osmosis: `<div class="school-evidence-flow">
     <div><strong>Side A · More dilute</strong><span class="school-solute" aria-hidden="true">● ●</span></div>
     <div><strong>Partially permeable membrane</strong><span>Water moves both ways</span><b>Net water movement A → B</b></div>

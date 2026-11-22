@@ -3,7 +3,11 @@ import { latestCatchup } from "./school-catchup-progress.js";
 
 const root = "/science-catch-up/";
 const revision = code => "/gcse/#topic-" + code.toLowerCase();
-const ks3Link = topic => topic.href || "/ks3/lesson/?topic=" + topic.id;
+function guidedHref(href) {
+  const url = new URL(href, location.origin);
+  url.searchParams.set("guided", "1");
+  return url.pathname + url.search;
+}
 const year = new URLSearchParams(location.search).get("year");
 const years = ["7", "8", "9", "10", "11"];
 
@@ -48,7 +52,8 @@ const main = document.querySelector("[data-catchup-catalogue]");
 const saved = latestCatchup(yearSelected ? year : undefined);
 if (saved) {
   const resume = element("aside", "", "school-resume");
-  resume.append(element("div", "Year " + saved.year + " · " + saved.title), link("Continue catch-up", saved.href, "school-primary"));
+  const href = Number(saved.year) < 9 ? guidedHref(saved.href) : saved.href;
+  resume.append(element("div", "Year " + saved.year + " · " + saved.title), link("Continue catch-up", href, "school-primary"));
   if (yearSelected) main.append(resume);
   else yearNav.before(resume);
 }
@@ -69,7 +74,8 @@ if (yearSelected) {
     const topics = year === "8" ? [...curriculum[year], ...motionLessons] : curriculum[year];
     for (const topic of topics) {
       const item = element("li");
-      item.append(link(topic.unit, ks3Link(topic), "school-topic-link"), element("p", topic.title));
+      const href = guidedHref(topic.href || "/ks3/lesson/?topic=" + topic.id);
+      item.append(link(topic.unit, href, "school-topic-link"), element("p", topic.title));
       list.append(item);
     }
   } else if (year === "9") {

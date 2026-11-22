@@ -37,6 +37,7 @@ export function mountJourney(host, model, lesson) {
   if (!host || !model || !lesson?.steps?.length || host.dataset.journeyMounted) return;
   host.dataset.journeyMounted = "true";
   const {id, year, title, hook, steps, retry, code} = lesson;
+  const guided = Number(year) >= 9 || new URLSearchParams(location.search).has("guided");
   const progressKey = year + "." + id;
   const prior = readCatchup(progressKey);
   const state = {
@@ -65,6 +66,18 @@ export function mountJourney(host, model, lesson) {
   const actions = element("div", "", "school-journey-actions");
   actions.append(shortcut);
   model.after(actions);
+  const evidence = guided ? element("div", "", "school-evidence-panel") : null;
+  if (evidence) {
+    evidence.hidden = true;
+    model.before(evidence);
+    evidence.append(model, actions);
+    if (Number(year) < 9 && evidence.nextElementSibling) {
+      const extras = element("details", "", "school-lesson-extras");
+      extras.append(element("summary", "More practice and activities"));
+      while (evidence.nextElementSibling) extras.append(evidence.nextElementSibling);
+      evidence.after(extras);
+    }
+  }
 
   let viewOnly = false;
   let shownIndex = state.step;
@@ -73,7 +86,7 @@ export function mountJourney(host, model, lesson) {
   }
 
   function renderStages() {
-    versions.textContent = state.done ? "Lesson complete" : "Check " + (state.step + 1) + " of " + steps.length;
+    versions.textContent = state.done ? "Lesson complete" : "Step " + (state.step + 1) + " of " + steps.length;
     progress.value = state.done ? steps.length : state.step;
     checkList.replaceChildren();
     const completeCount = state.done ? steps.length : state.step;
@@ -84,7 +97,7 @@ export function mountJourney(host, model, lesson) {
       heading.tabIndex = -1;
       stage.append(heading);
       if (step.notice) stage.append(element("p", step.notice));
-      stage.append(link("See evidence", "#" + model.id, "school-secondary"),
+      stage.append(button("See evidence", showEvidence),
         button(state.open ? "Resume this check" : "Open check", showCheck, "school-primary"));
       checkList.append(stage);
     }
@@ -93,6 +106,7 @@ export function mountJourney(host, model, lesson) {
       const next = element("div", "", "school-completion");
       if (code) next.append(link("Practise " + code + " in GCSE revision", "/gcse/#topic-" + code.toLowerCase(), "school-primary"));
       next.append(link("Choose another Year " + year + " topic", "/science-catch-up/?year=" + year, "school-secondary"));
+      if (evidence) next.append(button("Review evidence", showEvidence));
       checkList.append(next);
     }
     if (completeCount) {
@@ -107,6 +121,15 @@ export function mountJourney(host, model, lesson) {
 
   function showCheck() {
     if (!state.done) openCheck(state.step, false);
+  }
+
+  function showEvidence() {
+    if (evidence) evidence.hidden = false;
+    const target = state.step === 0 && model.querySelector("[data-catchup-first-evidence]") || model;
+    if (target.matches("details")) target.open = true;
+    target.tabIndex = -1;
+    target.focus({preventScroll: true});
+    target.scrollIntoView({block: "start"});
   }
 
   function currentQuestion() {
@@ -181,8 +204,7 @@ export function mountJourney(host, model, lesson) {
     tools.append(submit, next, button("See evidence", () => {
       if (!state.correct) state.helped = true;
       pause();
-      model.scrollIntoView({block: "start"});
-      model.focus({preventScroll: true});
+      showEvidence();
     }), button("Save and pause", pause));
     if (shownIndex === steps.length - 1 && !state.repeating) form.append(element("p", "Say how you know, then choose."));
     form.append(choices, result, tools);
@@ -244,6 +266,7 @@ export function mountJourney(host, model, lesson) {
       renderCheck();
       dialog.querySelector("h2").focus();
     } else {
+      if (evidence) evidence.hidden = true;
       state.open = false;
       if (atEnd) state.done = true;
       else state.step++;

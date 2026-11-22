@@ -333,6 +333,7 @@ function renderLesson(lesson, year, index) {
     aim.append(element("strong", rampAngleQuestion));
     const ramp = element("toy-ramp");
     ramp.id = "fair-test-ramp";
+    ramp.dataset.catchupFirstEvidence = "";
     ramp.tabIndex = -1;
     teaching.append(aim, element("p", "Try a shallow and a steep run. Keep the other settings the same."), ramp);
     import("./toy-ramp.js");
