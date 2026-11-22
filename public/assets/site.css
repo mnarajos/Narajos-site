@@ -230,3 +230,6 @@ body:has(> .topbar) > .footer .footer-inner > p { margin: 0; }
   .topbar .site-nav details:nth-of-type(2) .site-dropdown { left: 50%; right: auto; transform: translateX(-50%); }
   .topbar .site-nav .teacher-menu .site-dropdown { left: auto; right: 0; }
 }
+
+.site-dropdown a small { display: block; color: #4b646b; font-size: .825rem; font-weight: 550; }
+.site-dropdown { max-height: min(70vh,32rem); overflow-y: auto; }

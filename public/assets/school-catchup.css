@@ -158,3 +158,11 @@
   filter: drop-shadow(1px 1px 1px #131c1e);
 }
 .catchup-micrograph-outline { stroke: white; stroke-dasharray: 5 3; }
+
+.gcse-catchup-bars ul { list-style: none; margin: 0; padding: .25rem .7rem .65rem; }
+.gcse-catchup-bars li { display: grid; grid-template-columns: 1fr auto; gap: .25rem; margin-bottom: .65rem; }
+.gcse-catchup-bar { display: block; grid-column: 1 / -1; height: .8rem; border: 1px solid #23656c; border-radius: .25rem; background: #b8ded9; }
+.gcse-catchup-punnett table { width: min(100%,25rem); border-collapse: collapse; background: #f7faf8; text-align: center; margin-block: .65rem; }
+.gcse-catchup-punnett :is(th,td) { border: 1px solid #719a96; padding: .35rem; }
+.gcse-catchup-punnett th { background: #e0eee9; }
+.gcse-catchup-punnett .gcse-recessive { background: #eadff3; border: 2px solid #69447f; font-weight: 750; }
