@@ -78,6 +78,11 @@ try{
  await teacherMenu.getByRole("link",{name:"Focused Writing",exact:true}).click();
  await desktop.getByRole("heading",{name:"Focused Writing",exact:true,level:1}).waitFor();
  assert.equal(await desktop.locator("main textarea").count(),0,"The chooser should contain links to activities");
+ for (const thumbnail of await desktop.locator(".writing-choices img").all()) {
+  await thumbnail.scrollIntoViewIfNeeded();
+  await thumbnail.evaluate(image=>image.decode());
+  assert(await thumbnail.evaluate(image=>image.naturalWidth>0 && image.alt===""),"Writing route thumbnails should load beside their text labels");
+ }
  await screen(desktop,"focused-writing");
  await desktop.goto(base+"/");
  await screen(desktop,"home-structure");
@@ -557,6 +562,9 @@ try{
  if(!await outline.isVisible())await navPage.getByText("Plan your paragraph",{exact:true}).click();
  assert.equal(await outline.inputValue(),"warmer → faster random movement → quicker spread");
  await navPage.getByText("See a worked example",{exact:true}).click();
+ assert.equal(await navPage.locator(".writing-example-plan dt").count(),3);
+ assert(await navPage.locator(".writing-card .model").isHidden(),"The full KS3 paragraph should be available on request");
+ await navPage.getByText("Read the full paragraph",{exact:true}).click();
  assert(await navPage.locator(".writing-card .model").isVisible());
  for(const [level,visual] of [["ks3","dye-spread"],["gcse","osmosis-results"],["alevel","glucose-cotransport"]]){
   await navPage.goto(base+"/teaching/focused-writing/"+level+"/");
@@ -768,8 +776,32 @@ try{
  assert(Number(await warmCount.textContent())>0);
  assert(Number(await startingCount.textContent())>0,"Previous settings should remain available for comparison");
  assert.equal(await navPage.evaluate(()=>window.collisionClicks),lastClick,"Visual counts should work with audio muted");
+ const particleSelect=gasModel.getByLabel("Number of gas particles");
+ await particleSelect.selectOption("28");
+ assert.equal(await gasModel.locator("[data-gas-particles]").textContent(),"28");
+ assert.equal(await warmCount.textContent(),"—","Changing the particle number must clear earlier samples");
+ await gasModel.getByRole("radio",{name:"Starting box"}).check();
+ assert.equal(await gasModel.locator("[data-gas-pressure-value]").textContent(),"2.0×");
+ await gasModel.getByRole("radio",{name:"Smaller box"}).check();
+ assert.equal(await gasModel.locator("[data-gas-volume]").textContent(),"50%");
+ assert.equal(await gasModel.locator("[data-gas-pressure-value]").textContent(),"4.0×");
+ await gasModel.getByRole("button",{name:"Pause motion"}).click();
+ await collisions.click();
+ const beforeComparison=await navPage.evaluate(()=>window.collisionClicks);
+ const compareBoxSizes=gasModel.getByRole("button",{name:"Compare box sizes"});
+ await compareBoxSizes.press("Enter");
+ await gasModel.locator("[data-gas-compare-status]").filter({hasText:/Counting hits on the right wall/}).waitFor();
+ assert(await particleSelect.isDisabled(),"Particle count stays fixed during the volume comparison");
+ await compareBoxSizes.waitFor({timeout:20000});
+ const startHits=Number(await gasModel.locator('[data-gas-compare-count="start"]').textContent());
+ const smallHits=Number(await gasModel.locator('[data-gas-compare-count="small"]').textContent());
+ assert(startHits>0 && smallHits>startHits,"The smaller box must produce more hits on the right wall");
+ assert.equal((await navPage.evaluate(()=>window.collisionClicks))-beforeComparison,startHits+smallHits,"The comparison should play one click per counted hit");
+ assert.equal(await particleSelect.inputValue(),"28","The comparison should preserve the selected particle number");
+ await collisions.click();
  await gasModel.getByRole("button",{name:"Follow the observations"}).click();
  await gasModel.getByRole("button",{name:"Start motion"}).waitFor();
+ assert.equal(await gasModel.locator("[data-gas-particles]").textContent(),"14");
  await navPage.setViewportSize({width:320,height:800});
  await checkReadingSpacing(navPage,"Gas pressure guide");
  await navPage.setViewportSize({width:390,height:844});
