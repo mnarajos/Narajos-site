@@ -3,19 +3,31 @@
   const { choice, written } = window.KeystoneHumanTeaching;
 
   window.KeystoneHumanLessons["f172/a1"] = {
+    revision: 1,
     goal: "Relate chromosomes, genes and alleles to the outcomes of mitosis and meiosis.",
     activate: ["Where is most DNA found in a human cell?", "In the nucleus, organised into chromosomes. A small amount is also in mitochondria."],
     explain: ["A gene is a region of DNA with a functional product. Alleles are versions of a gene. Homologous chromosomes carry the same genes in corresponding positions and can carry different alleles."],
-    model: ["DNA replicates before either division. Replication produces sister chromatids.", "In mitosis, sister chromatids separate so each daughter cell usually receives the same set of chromosomes.", "In meiosis, homologous chromosomes separate first. Sister chromatids separate in the second division. The resulting gametes receive one chromosome from each homologous pair."],
-    guided: choice("Which structures separate during the first meiotic division?", 1,
-      [["Versions of a single DNA base.", "Track the whole chromosomes."], ["Homologous chromosomes.", ""], ["Sister chromatids.", "Sister chromatids normally separate in meiosis II."]],
-      "Each cell gets one member of each homologous pair during meiosis I.", ["Follow a pair with one chromosome inherited from each parent."]),
-    apply: choice("A diploid cell with two copies of a gene makes a gamete. How many copies of that gene ordinarily enter the gamete?", 0,
-      [["One.", ""], ["Two.", "Gametes receive one chromosome from each homologous pair."], ["Four.", "Replication does not give the mature gamete four copies."]],
-      "Meiosis halves the chromosome number.")
+    table: {caption: "Trace a homologous chromosome pair. Each letter represents one chromatid.", head: ["Stage", "Chromosome carrying R", "Homologue carrying r"], rows: [
+      ["Before replication", "R", "r"], ["After replication", "R and R joined", "r and r joined"],
+      ["After meiosis I", "Joined R sisters in one cell", "Joined r sisters in the other cell"],
+      ["After meiosis II", "An R chromatid in each of two cells", "An r chromatid in each of two cells"]
+    ]},
+    focusCells: [["0:0", "0:1", "1:0", "1:1"], ["2:0", "2:1", "3:0", "3:1"], ["1:0", "1:1"]],
+    model: [
+      "Track one homologous pair. The two chromosomes carry the same gene, but one carries R and the other r. DNA replication copies each chromosome into a joined pair of sister chromatids.",
+      "In meiosis I the homologues move apart, taking their joined sisters with them. In meiosis II the sisters separate. This simplified example tracks a locus unaffected by crossing over.",
+      "In mitosis the two homologues do not pair up and separate as a pair. The sisters of each replicated chromosome separate so each daughter nucleus receives both R and r chromosomes."
+    ],
+    guided: choice("In the model, one cell receives the chromosome carrying R at the end of meiosis I. What is it made of?", 1,
+      [["One R chromatid.", "Sister chromatids are still joined immediately after meiosis I."], ["Two joined R sister chromatids.", ""], ["An R chromatid joined to an r chromatid.", "The r was on the homologue that moved to the other cell."]],
+      "Meiosis I separates homologous chromosomes. The sister chromatids still share one centromere.", ["Which pair separates in this division?"]),
+    apply: choice("A starting cell has one homologue carrying E and one carrying e. An imaging sequence shows sister chromatids separating and each of two daughter nuclei receives both E and e. Which division fits?", 0,
+      [["Mitosis.", ""], ["Meiosis I.", "Meiosis I separates the E and e homologues before their sisters separate."], ["Meiosis II after normal meiosis I.", "The E and e homologues would already be in separate cells."]],
+      "Receiving both homologues while their sisters separate produces daughter nuclei with the original chromosome number, as in mitosis.")
   };
 
   window.KeystoneHumanLessons["f172/a2"] = {
+    revision: 1,
     goal: "Build a Punnett square and use the right denominator when information excludes an outcome.",
     activate: ["What does heterozygous mean?", "Having different alleles of a gene, such as Rr."],
     prior: ["f172/a1", "Review genes and alleles"],
@@ -23,15 +35,15 @@
     table: {caption: "Cross between Rr and Rr", head: ["One parent's gametes", "Other parent's R", "Other parent's r"], rows: [["R", "RR", "Rr"], ["r", "Rr", "rr"]]},
     model: ["Put the possible gametes from each parent on the outside of the square. Each carries either R or r.", "Combine alleles. The four equally likely boxes give RR, Rr, Rr and rr.", "If you know an offspring shows the dominant phenotype, remove rr. Two of the three remaining outcomes are Rr, so the conditional carrier probability is 2/3."],
     skills: ["genetics"],
-    guided: choice("For Rr × rr, what is the probability of rr?", 0,
-      [["1/2", ""], ["1/4", "One parent can only pass on r. This is not a cross between two heterozygotes."], ["0", "The Rr parent can pass on r."]],
-      "Half the gametes from Rr carry r and all gametes from rr carry r.", ["List the possible alleles in the gametes of each parent."]),
-    apply: choice("Two carriers have already had a child with rr. What is the chance of rr at their next conception under this model?", 2,
-      [["0", "One earlier outcome does not use up an allele."], ["1/2", "Each parent independently passes on r with probability 1/2."], ["1/4", ""]],
-      "Each new conception independently combines the gametes. 1/2 × 1/2 = 1/4.", ["Use the same parental genotypes for a new conception."]),
-    followup: choice("Two carriers have an offspring known to show the dominant phenotype. What is the chance that it is RR?", 1,
-      [["1/4", "The known dominant phenotype rules out rr. Recount the remaining boxes."], ["1/3", ""], ["1/2", "The remaining genotypes are not equally frequent. There are two Rr boxes."]],
-      "Among three equally likely non-rr boxes, exactly one is RR.")
+    guided: choice("Use the worked cross. An offspring shows the dominant phenotype. What is the probability that it has two R alleles?", 1,
+      [["1/4", "The known dominant phenotype rules out rr. Recount the remaining boxes."], ["1/3", ""], ["1/2", "RR and Rr are two possible genotypes, but they do not have equal numbers of boxes."]],
+      "Among three equally likely non-rr boxes, exactly one is RR.", ["Cross out the box that is incompatible with the known phenotype."]),
+    apply: choice("A fictional recessive trait appears only in tt. In a cross between Tt and tt, an offspring does not show the recessive trait. What is the probability it carries t?", 2,
+      [["1/2", "Half the boxes would be Tt before you know the phenotype. Re-evaluate using only compatible outcomes."], ["2/3", "That ratio can occur with two heterozygous parents. Here the tt parent contributes t every time."], ["1", ""]],
+      "Every offspring receives t from the tt parent. Without the recessive phenotype the offspring must also have received T, so the genotype is Tt.", ["List the possible contributions from the tt parent before considering the phenotype."]),
+    followup: choice("In another fictional trait, MM and Mm are purple and mm is white. For Mm × Mm, what fraction of purple offspring have genotype Mm?", 1,
+      [["1/2", "That uses all four boxes. White offspring have been excluded."], ["2/3", ""], ["3/4", "That is the fraction of all offspring predicted to be purple."]],
+      "Two boxes show Mm out of the three boxes compatible with purple.")
   };
 
   window.KeystoneHumanLessons["f172/a3"] = {
@@ -59,20 +71,24 @@
   };
 
   window.KeystoneHumanLessons["f173/a2"] = {
+    revision: 1,
     visual: "model",
     visualFrom: ["f170", "1.1.2"],
     goal: "Choose the appropriate imaging method and use scale evidence to interpret a micrograph.",
     activate: ["Is a larger image always more informative?", "Magnification increases image size. Resolution determines which nearby structures can be distinguished."],
     prior: ["f170/1.1.2", "Work through a real red-cell scale bar"],
     explain: ["Light microscopy can show many whole cells or living material. Transmission electron microscopy (TEM) shows detail within thin prepared sections. Scanning electron microscopy (SEM) shows surface topography."],
-    model: ["To compare surface projections, first decide you need surface detail.", "SEM provides detailed surface views. TEM would be more useful for internal membranes. A scale bar translates measurements on either image into actual size."],
+    nodes: ["Choose the view", "Check what is resolved", "Read the scale bar"],
+    model: ["To compare projections on the outside of a prepared cell, choose a view of the surface. SEM provides that view. TEM would be more useful for closely spaced membranes inside a thin section.",
+      "Inspect the red-cell image. A light micrograph can show outlines of cells where they are distinct. Enlarging its print would not reveal unresolved internal detail.",
+      "Compare a cell width with the white bar on the same image. The marked width is less than half of the bar labelled 20 µm, so the cell is less than 10 µm wide. The label is the actual length represented by the bar."],
     skills: ["magnification", "units"],
     guided: choice("Which image is best suited to distinguish closely spaced internal membranes?", 2,
       [["A larger copy of a blurred light image.", "Enlargement does not recover detail."], ["An SEM view of the cell exterior.", "This question needs internal detail."], ["A thin TEM section.", ""]],
       "TEM can resolve internal detail in thin sections.", ["Decide whether the feature is external or internal."]),
-    apply: choice("A micrograph is resized to twice its former width. What happens to object width divided by scale-bar width?", 1,
-      [["It doubles.", "The bar scales with the object."], ["It stays the same.", ""], ["It halves.", "Both lengths change by the same factor."]],
-      "A ratio of lengths measured on the same resized image stays constant.")
+    apply: choice("A new image resolves a small vesicle inside a thin tissue section. Its width is 16 pixels and a 500 nm scale bar spans 40 pixels. Which image type and actual width best fit?", 1,
+      [["SEM and 200 nm.", "The scale calculation works, but a thin section showing internal detail fits TEM."], ["TEM and 200 nm.", ""], ["TEM and 1,250 nm.", "This reverses the ratio. The vesicle is shorter than the bar, so its actual width must be less than 500 nm."]],
+      "TEM suits fine detail inside a thin section. The vesicle spans 16 ÷ 40 of the bar, giving 0.40 × 500 nm = 200 nm.", ["Choose based on the view, then compare the two pixel lengths."])
   };
 
   window.KeystoneHumanLessons["f173/a3"] = {
@@ -102,18 +118,29 @@
   };
 
   window.KeystoneHumanLessons["f174/a3"] = {
+    revision: 1,
     goal: "Follow a carbohydrate from digestion to absorption and metabolic use.",
     activate: ["What does an enzyme change?", "It increases the rate of a reaction. Digestive enzymes break larger molecules into smaller products."],
     prior: ["f170/3.1.1", "Review blood glucose feedback"],
     explain: ["Digestion breaks food molecules down. Absorption moves molecules from the gut into the body. Metabolism is the network of chemical reactions in cells, including respiration and synthesis."],
+    table: {caption: "Trace glucose from dietary starch", head: ["Where", "What changes", "What this enables"], rows: [
+      ["Gut lumen and intestinal surface", "Starch is digested to glucose", "Glucose becomes available for absorption"],
+      ["Small-intestine epithelium", "Glucose crosses the lining", "Glucose enters the blood"],
+      ["Target tissues", "Insulin signals after blood glucose rises", "Some tissues increase uptake or store glucose as glycogen"]
+    ]},
+    focusCells: [["0:0", "0:1"], ["1:0", "1:1"], ["2:0", "2:1"]],
     nodes: ["Digest", "Absorb", "Use or store"],
-    model: ["Amylase helps break starch into smaller carbohydrates. Other enzymes complete digestion to monosaccharides such as glucose.", "Glucose moves across the small-intestine epithelium and enters the blood.", "Cells use glucose in respiration or store it in compounds such as glycogen. Insulin supports uptake and storage after a meal."],
+    model: [
+      "Amylase breaks starch into smaller carbohydrates. Other enzymes finish the process and release glucose. Less starch digestion can mean less glucose is available at the intestinal surface.",
+      "Glucose moves across the epithelium into the blood. An absorptive defect can reduce this movement even when digestion has produced the usual amount of glucose.",
+      "When blood glucose rises, insulin signals target tissues. Skeletal muscle increases uptake and can store glucose as glycogen. The liver can also increase glycogen storage. Cells can use glucose in respiration."
+    ],
     guided: choice("Digestive enzymes act normally, but the absorptive surface is reduced. Which change is most direct?", 0,
       [["Less glucose can pass from the intestine into the body per unit time.", ""], ["Amylase necessarily stops hydrolysing starch.", "Digestion and absorption are separate steps."], ["All cells stop metabolising glucose immediately.", "The direct change is at the intestinal surface."]],
       "The products can still be made. Less surface can reduce their uptake.", ["Identify which step the change affects."]),
-    apply: written("Explain the difference between the role of an intestinal enzyme and the role of insulin after a meal.",
-      ["A digestive enzyme catalyses breakdown in the gut.", "Insulin signals target cells to increase uptake or storage once blood glucose rises."],
-      "The enzyme changes food molecules during digestion. Insulin changes the activity of target tissues in response to the glucose already absorbed.")
+    apply: written("In a fictional model, less starch is digested, but absorption of glucose works normally. Explain why less starch-derived glucose may enter the blood and why glucose already present in the food can still be absorbed.",
+      ["Reduced digestion releases less glucose from the starch.", "With less glucose available at the intestine, less starch-derived glucose can cross into blood.", "Glucose already in the gut can be absorbed directly because the absorptive mechanism still works."],
+      "The bottleneck is making glucose from starch. Less is available to cross the intestinal lining. Glucose already present in the food can still cross without being digested.", ["Identify where the two sources of glucose first join the pathway."])
   };
 
   window.KeystoneHumanLessons["f174/a4"] = {
@@ -208,25 +235,32 @@
         "Sensory neurones carry information from a receptor towards the CNS.")
     },
     "f176/a2": {
+      revision: 1,
       visual: "model",
       visualFrom: ["a6", "synapse"],
       goal: "Follow electrical and chemical signalling and distinguish excitation from reduced inhibition.",
       activate: ["What is threshold?", "The membrane potential that must be reached to trigger an action potential at the usual site of initiation."],
       explain: ["Voltage-gated sodium channels open during depolarisation and sodium enters. Potassium leaving contributes to repolarisation. At a chemical synapse, neurotransmitters carry the signal to receptors on the next cell."],
-      nodes: ["Action potential arrives", "Calcium enters", "Vesicles fuse", "Neurotransmitter binds", "Postsynaptic effect"],
+      table: {caption: "Two ways to bring a receiving neurone closer to threshold. Fictional readings at the trigger zone.", head: ["Change", "Excitatory input", "Inhibitory input", "Membrane potential"], rows: [
+        ["Starting point", "Usual", "Usual", "−65 mV"], ["More excitation", "Increases", "Unchanged", "−58 mV"],
+        ["Less inhibition", "Unchanged", "Decreases", "−58 mV"], ["Threshold in this example", "—", "—", "−55 mV"]
+      ]},
+      focusCells: [[], [], [], [], ["0:2"], ["1:0", "2:1", "1:2", "2:2", "3:2"]],
+      nodes: ["Action potential arrives", "Calcium enters", "Vesicles fuse", "Neurotransmitter binds", "Postsynaptic effect", "Compare changes in input"],
       model: [
         "Depolarisation reaches the presynaptic terminal.",
         "Voltage-gated calcium channels open and calcium ions enter.",
         "Calcium promotes vesicle fusion. Neurotransmitter is released into the synaptic cleft.",
         "The transmitter diffuses across and binds specific postsynaptic receptors.",
-        "Depending on the receptors, the effect makes firing more or less likely. The receiving cell integrates that input with others."
+        "Depending on the receptors, the effect makes firing more or less likely. The receiving cell integrates that input with others. Its starting potential in this example is −65 mV.",
+        "More excitation or less inhibition can each bring the trigger zone closer to threshold. With reduced inhibition the excitatory input has stayed the same. In both examples −58 mV is below the threshold of −55 mV, so the neurone has not fired."
       ],
       guided: choice("A change reduces calcium entry at an excitatory terminal. Predict the immediate effect.", 0,
         [["Less vesicle fusion and less transmitter release.", ""], ["The postsynaptic cell must fire faster.", "There is less excitatory input from this terminal."], ["Faster diffusion of the transmitter across the cleft.", "The change acts before release."]],
         "Calcium entry helps trigger vesicle fusion.", ["Find the step immediately after calcium entry."]),
-      apply: written("Inhibitory neurotransmitter release falls while excitatory input stays constant. Explain why firing may become more likely but is uncertain.",
-        ["Less inhibitory input opposes the overall excitation less.", "The cell integrates excitatory and inhibitory influences.", "Firing requires the resulting membrane potential to reach threshold."],
-        "Reduced inhibition can make threshold easier to reach. The size and timing of the remaining inputs determine whether it is reached.", ["Trace the indirect effect of removing some inhibition."]),
+      apply: written("Neurone A inhibits relay neurone B. A separate excitatory signal also reaches B. A stops firing, but the excitatory signal is unchanged. Explain why B could become more likely to fire and why firing is uncertain.",
+        ["When A stops firing, inhibitory input from A to B falls.", "The unchanged excitatory signal is less opposed. This is reduced inhibition.", "B fires only if its combined inputs bring its membrane potential to threshold."],
+        "Trace the change through A to B. B loses an inhibitory input while keeping the same excitatory input. Whether B reaches threshold depends on the remaining inputs and their timing.", ["Compare what changes at the two synapses onto B."]),
       followup: choice("The cell receives very weak excitation and loses one inhibitory input. What can be predicted?", 1,
         [["It must fire immediately.", "The remaining net input may still be below threshold."], ["Firing may be more likely, and reaching threshold is uncertain.", ""], ["Less inhibition always makes an action potential less likely.", "Reduced inhibition tends to favour excitation, other factors being equal."]],
         "The firing decision depends on the combined inputs.")
@@ -288,17 +322,28 @@
         "The trial can give evidence for the group studied. Further evidence is needed to judge whether the effect generalises to groups with different characteristics.")
     },
     "f177/a2": {
+      revision: 1,
       goal: "Compare the evidence from an uncontrolled observation and a randomised controlled trial.",
+      activate: ["What does a comparison group show?", "It helps estimate what might have happened under otherwise similar conditions without the intervention being studied."],
       explain: ["Preclinical investigation informs the decision to study a drug in humans. Randomisation allocates people to groups by chance. Blinding can reduce biases due to knowing the allocation. Comparison groups help estimate what might have happened otherwise."],
-      nodes: ["Uncontrolled observation", "Randomised comparison", "Qualified conclusion"],
-      model: ["In a fictional study, 8 of 12 people improve after trying an investigational medicine. Symptoms could have improved anyway.", "In a later trial, similar eligibility rules, random allocation, a comparison group and blinded outcome assessment make the groups easier to compare.", "A measured benefit supports effectiveness under those study conditions. Rare adverse effects or longer-term safety need separate evidence."],
+      table: {caption: "Fictional counts of improvement after one week", head: ["Study", "Medicine group", "Comparison group"], rows: [
+        ["Uncontrolled observation", "8 of 12", "No comparison group"],
+        ["Randomised trial", "15 of 24", "11 of 24"]
+      ]},
+      focusCells: [["0:0", "0:1"], ["1:0", "1:1"], ["1:0", "1:1"]],
+      nodes: ["Uncontrolled observation", "Compare the groups", "Limit the conclusion"],
+      model: [
+        "Eight of twelve people improved after trying a fictional medicine. We cannot see how many would have improved anyway, so this alone does not identify the cause.",
+        "In the trial, 15 of 24 people improve with the medicine and 11 of 24 in the comparison group. The comparison shows that people can improve without the medicine. Random allocation reduces systematic differences between groups at the start; a small trial can still have chance imbalances.",
+        "The outcome assessor is blinded so knowledge of the group is less likely to influence the rating. The difference supports possible short-term benefit, but the small groups leave uncertainty. A week of follow-up tells us little about rare or delayed harms."
+      ],
       skills: ["variables", "evidence"],
-      guided: choice("Which feature best helps distinguish treatment benefit from improvement that would have occurred anyway?", 2,
-        [["Always measuring after treatment.", "A before-and-after change alone leaves alternative explanations."], ["Reporting only the improvement group.", "This withholds the comparison."], ["A suitable concurrent comparison group.", ""]],
-        "The comparator estimates the outcomes under similar conditions without the investigational treatment.", ["Which evidence addresses what happens without the treatment?"]),
-      apply: written("A blinded randomised trial reports less pain after a week with a new treatment. No serious harms occur in 30 participants. What conclusions are justified?",
-        ["The pain finding is evidence about short-term effectiveness under trial conditions.", "Thirty people are insufficient to exclude rare harms.", "A one-week study cannot establish long-term safety."],
-        "The study can support a short-term effect. The size and duration sharply limit conclusions about serious rare or delayed harms.", ["Check each conclusion against the available number of participants and follow-up time."])
+      guided: choice("An investigator rates improvement on a five-point scale. Which change most directly limits bias in that rating?", 2,
+        [["Allocate participants by chance.", "Random allocation helps with starting differences. The assessor could still know the groups."], ["Measure more participants using the same rating process.", "A larger sample reduces some uncertainty, but the ratings could still be biased."], ["Keep the investigator unaware of each participant's group.", ""]],
+        "Blinding the investigator reduces the chance that knowledge of the allocation influences the judgement.", ["Who makes the rating, and what information might affect it?"]),
+      apply: written("In a new fictional trial, people are allocated at random. After two weeks an assessor records improvement in 16 of 25 people on a treatment and 12 of 25 in the comparison group. The assessor knew their groups. Explain what the results suggest and why blinding the assessor would help.",
+        ["The observed improvement was 64% with treatment and 48% in the comparison group, or 4 more people out of 25.", "The difference is evidence about short-term improvement, with uncertainty in this small trial.", "Knowing the allocation may influence how the assessor judges improvement. Blinding reduces this risk, which random allocation alone does not address."],
+        "More people were rated as improved in the treatment group. The small trial and potential rating bias limit how strongly the difference supports a treatment effect. Blinding would keep the assessor from knowing each participant's group.", ["Separate what random allocation changes at the start from what blinding changes during measurement."])
     }
   });
 })();
