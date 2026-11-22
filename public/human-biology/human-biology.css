@@ -276,3 +276,16 @@ main[tabindex="-1"]:focus{outline:none}
 .k-evidence-table thead{background:var(--brandlight)}
 .k-coverage{margin-top:1rem}
 .k-coverage summary{min-height:40px;font-weight:700;cursor:pointer}
+
+.k-f170-start { grid-template-columns: 1fr; margin-block: 1rem; }
+.k-f170-more { margin-block: 1rem; }
+.k-f170-more summary { cursor: pointer; font-weight: 650; padding-block: .4rem; }
+.k-reading-context {
+  margin: 0 0 .75rem;
+  padding: .65rem .85rem;
+  background: var(--k-teal-soft);
+  border-radius: .6rem;
+}
+.k-reading-prompt h1 { margin-block: 0 .55rem; }
+.k-question-paper > listen-to { margin-block-end: .75rem; }
+.k-feedback listen-to { margin-block: .35rem .65rem; }

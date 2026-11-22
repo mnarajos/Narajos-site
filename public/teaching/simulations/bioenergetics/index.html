@@ -96,9 +96,36 @@
     .vizwrap{min-height:340px}
     .toptabs{margin-left:0;width:100%}
   }
+
+  .toptabs, .btn-row { flex-wrap: wrap; }
+  .guide-panel { padding: .65rem .85rem; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+  .guide-panel > p { margin: .2rem 0 .55rem; }
+  .guide-buttons { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; }
+  .guide-buttons button, #btn-guide-mode {
+    min-height: 44px; padding: .35em .75em; border: 1px solid var(--line); border-radius: .45em;
+    background: var(--card); color: var(--ink); font: inherit; cursor: pointer;
+  }
+  .guide-buttons #btn-guide-play { background: var(--ink); border-color: var(--ink); color: #fff; }
+  #btn-guide-mode { align-self: flex-start; }
+  .guide-panel details { margin-top: .55rem; }
+  .guide-panel details p { margin: .25rem 0; }
+  .guide-panel summary { cursor: pointer; font-weight: 650; padding-block: .3em; }
+  button:focus-visible, summary:focus-visible, input[type=range]:focus-visible { outline: 3px solid #ba641b; outline-offset: 2px; }
+  main [hidden] { display: none; }
+  @media (max-height: 680px) and (min-width: 1001px) {
+    main { overflow-y: auto; }
+    .vizwrap { min-height: 340px; }
+  }
+  @media (max-width: 500px) {
+    .stage { padding-inline: 8px; }
+    .toptab { padding-inline: .65rem; }
+    main[data-guide="true"] .loc { display: none; }
+  }
 </style>
 <link rel="stylesheet" href="/assets/simulation-shell.css">
 <link rel="stylesheet" href="/assets/home-link.css">
+<link rel="stylesheet" href="/assets/reading-support.css">
+<script defer src="/assets/listen-to.js"></script>
 </head>
 <body class="sim-fullscreen">
 <nav class="sim-utility-nav" aria-label="Simulation navigation"><a href="/teaching/simulations/">← All simulations</a><a href="/" id="site-home" class="narajos-home" aria-label="Narajos homepage" title="Narajos homepage"><img src="/favicon.svg" alt=""><span>Narajos</span></a></nav>
@@ -118,20 +145,35 @@
 </header>
 
 <main>
-  <section class="stage">
+  <section class="stage" aria-label="Bioenergetics model">
+    <section class="guide-panel" id="bio-guide" aria-label="Guided observations" hidden>
+      <strong id="guide-number"></strong>
+      <p id="guide-prompt" class="reading-copy"></p>
+      <div class="guide-buttons">
+        <button type="button" id="btn-guide-play">Shine light</button>
+        <button type="button" id="btn-guide-next" hidden>Next observation</button>
+        <button type="button" id="btn-guide-back" hidden>Previous observation</button>
+        <listen-to for="guide-prompt guide-explanation" label="Listen to the observation"></listen-to>
+      </div>
+      <details id="guide-answer" hidden>
+        <summary>What happened?</summary>
+        <p id="guide-explanation" class="reading-copy"></p>
+      </details>
+    </section>
     <div class="vizwrap">
-      <canvas id="viz"></canvas>
+      <canvas id="viz" role="img"></canvas>
       <div class="loc" id="loc"><span class="pin"></span><span id="loc-txt"></span></div>
       <div class="equation" id="equation"></div>
     </div>
-    <div class="stepbar">
+    <div class="stepbar" id="full-stepbar">
       <span class="num" id="step-num"></span>
       <span class="desc" id="step-desc"></span>
       <span class="turn" id="turn-note"></span>
     </div>
+    <button type="button" id="btn-guide-mode" aria-controls="bio-guide full-controls">Open full model</button>
   </section>
 
-  <aside>
+  <aside id="full-controls">
     <div class="btn-row">
       <button class="act primary" id="btn-run"><span id="run-ic">▶</span><span id="run-tx">Play</span></button>
       <button class="act ghost" id="btn-step">⏭ Step</button>
@@ -189,9 +231,15 @@ let DPR=1, VW=940, VH=560, VS=1, OX=0, OY=0, CW=940, CH=560;
 function size(){
   DPR=Math.min(window.devicePixelRatio||1,2);
   const r=cv.parentElement.getBoundingClientRect();
-  CW=Math.max(320,r.width); CH=Math.max(260,r.height);
+  CW=Math.max(1,r.width); CH=Math.max(1,r.height);
   cv.width=CW*DPR; cv.height=CH*DPR; cv.style.width=CW+"px"; cv.style.height=CH+"px";
-  VS=Math.min(CW/VW,CH/VH); OX=(CW-VW*VS)/2; OY=(CH-VH*VS)/2;
+  if(isGuided() && CW<500){
+    const [x,y,width,height]=OBSERVATIONS[guideStep].focus;
+    VS=Math.min(CW/Math.max(280,width+65),CH/(height+65));
+    OX=CW/2-(x+width/2)*VS; OY=CH/2-(y+height/2)*VS;
+  }else{
+    VS=Math.min(CW/VW,CH/VH); OX=(CW-VW*VS)/2; OY=(CH-VH*VS)/2;
+  }
 }
 window.addEventListener("resize",size);
 function enter(){ctx.setTransform(DPR,0,0,DPR,0,0);ctx.clearRect(0,0,CW,CH);
@@ -731,6 +779,13 @@ function drawChemi(){
     if(chemiBlocked(cfg)) drawOxBlocked(); }
   if(cfg.light && (C.darkAcc.n>0||C.darkAcc.a>0)) drawDarkBuildup(C.darkAcc);
   if(cfg.light && S.dark) drawDarkPanel();
+  if(isGuided()){
+    const [x,y,width,height]=OBSERVATIONS[guideStep].focus;
+    ctx.save();
+    ctx.strokeStyle="#ffea9a";ctx.lineWidth=3;ctx.setLineDash([8,5]);
+    ctx.beginPath();ctx.roundRect(x,y,width,height,12);ctx.stroke();
+    ctx.restore();
+  }
 }
 function drawOxBlocked(){
   const bx=286, by=96, bw=380, bh=94;
@@ -1849,6 +1904,75 @@ const TALLY_META=[
 
 const S={ top:"photosynthesis", sub:"ldr", step:0, frac:0, t:0, playing:true, speed:1.0, dark:false, lightI:0.30, noCO2:false, glyAll:false, noO2:false, cyanide:false, ff:false };
 
+const OBSERVATIONS=[
+  {
+    prompt:"Shine light. Watch the water molecules in the marked area split.",
+    explanation:"Light drives the splitting of water, called photolysis. This releases oxygen and hydrogen ions. The electrons from water replace electrons lost from photosystem II.",
+    focus:[94,357,174,120]
+  },
+  {
+    prompt:"Shine light again. Watch hydrogen ions move into the thylakoid lumen.",
+    explanation:"As electrons pass along the electron transport chain, the energy they release moves hydrogen ions from the stroma into the thylakoid lumen. The concentration of hydrogen ions builds up there.",
+    focus:[262,145,192,280]
+  },
+  {
+    prompt:"Shine light. Watch hydrogen ions move back through ATP synthase. Look for ATP appearing on the stroma side.",
+    explanation:"Hydrogen ions move down their electrochemical gradient through ATP synthase. This drives the formation of ATP from ADP and inorganic phosphate.",
+    focus:[702,176,157,279]
+  }
+];
+const guidePanel=document.getElementById("bio-guide");
+const guideNumber=document.getElementById("guide-number");
+const guidePrompt=document.getElementById("guide-prompt");
+const guideAnswer=document.getElementById("guide-answer");
+const guideExplanation=document.getElementById("guide-explanation");
+const guidePlay=document.getElementById("btn-guide-play");
+const guideNext=document.getElementById("btn-guide-next");
+const guideBack=document.getElementById("btn-guide-back");
+const guideMode=document.getElementById("btn-guide-mode");
+const fullControls=document.getElementById("full-controls");
+const fullStepbar=document.getElementById("full-stepbar");
+let useGuide=true, guideStep=0, guideStarted=false, guidePlaying=false;
+
+function isGuided(){ return useGuide && S.sub==="ldr"; }
+function refreshGuide(){
+  const guided=isGuided();
+  document.querySelector("main").dataset.guide=String(guided);
+  guideMode.hidden=S.sub!=="ldr";
+  guideMode.textContent=guided?"Open full model":"Return to guided observations";
+  guidePanel.hidden=!guided;
+  fullControls.hidden=guided;
+  fullStepbar.hidden=guided;
+  if(guided){
+    const observation=OBSERVATIONS[guideStep];
+    guideNumber.textContent="Observation "+(guideStep+1)+" of "+OBSERVATIONS.length;
+    guidePrompt.textContent=observation.prompt;
+    guideExplanation.textContent=observation.explanation;
+    guidePlay.textContent=guidePlaying?"Pause":guideStarted?"Resume":"Shine light";
+    guideAnswer.hidden=!guideStarted;
+    guideNext.hidden=!guideStarted||guideStep===OBSERVATIONS.length-1;
+    guideBack.hidden=guideStep===0;
+  }
+  cv.setAttribute("aria-label",guided?OBSERVATIONS[guideStep].prompt:STAGES[S.sub].loc+" model");
+  size();
+}
+function guideTo(index){
+  guideStep=index;
+  guidePlaying=false;
+  guideStarted=false;
+  guideAnswer.open=false;
+  S.dark=false;
+  S.ff=false;
+  setRun(false);
+  resetStage();
+  refreshStatic();
+  refreshGuide();
+}
+function selectView(){
+  if(isGuided())guideTo(0);
+  else refreshGuide();
+}
+
 function buildSubtabs(){
   const box=document.getElementById("subtabs");
   box.innerHTML="";
@@ -1863,12 +1987,12 @@ function selectTop(top){
   S.top=top;
   document.querySelectorAll(".toptab").forEach(b=>b.setAttribute("aria-pressed",b.dataset.top===top));
   S.sub=SUBS[top][0][0];
-  buildSubtabs(); resetStage(); refreshStatic();
+  buildSubtabs(); resetStage(); refreshStatic(); selectView();
 }
 function selectSub(sub){
   S.sub=sub;
   document.querySelectorAll(".subtab").forEach(b=>b.setAttribute("aria-pressed",b.dataset.sub===sub));
-  resetStage(); refreshStatic();
+  resetStage(); refreshStatic(); selectView();
 }
 function resetStage(){ S.step=0; S.frac=0; S.t=0; if(CH_CFG[S.sub]) resetChemi(S.sub); if(S.sub==="calvin") CAL=makeCalvin(); if(S.sub==="glycolysis"){ GLY=makeGly(); } if(S.sub==="link"){ LNK=makeLnk(); } if(S.sub==="krebs"){ KRB=makeKrb(); } if(STAGES[S.sub].type==="anaer"){ ANA=makeAna(); ANAV=S.sub; } }
 
@@ -2033,7 +2157,9 @@ function frame(now){
       S.t += dt*S.speed;
     }
   }
-  if(st.type==="chemi") updateChemi(dt);
+  if(st.type==="chemi"){
+    if(!isGuided() || guidePlaying)updateChemi(dt);
+  }
   else if(st.type==="calvin") updateCalvin(dt);
   else if(st.type==="anaer"){ updateAna(dt);
     if(S.playing){ const fr=anaElapsed()/anaTotalTime(), el=document.getElementById("s-glytime");
@@ -2156,7 +2282,31 @@ const sSpd=document.getElementById("s-speed");
 sSpd.addEventListener("input",()=>{S.speed=+sSpd.value/100;document.getElementById("r-speed").textContent=S.speed.toFixed(1)+"×";});
 document.querySelectorAll(".toptab").forEach(b=>b.addEventListener("click",()=>selectTop(b.dataset.top)));
 
-function boot(){ size(); buildSubtabs(); refreshStatic(); setRun(true); requestAnimationFrame(frame); }
+guideMode.addEventListener("click",()=>{
+  useGuide=!useGuide;
+  if(isGuided())guideTo(0);
+  else{
+    guidePlaying=false;
+    setRun(false);
+    refreshGuide();
+  }
+});
+guidePlay.addEventListener("click",()=>{
+  guidePlaying=!guidePlaying;
+  // Pulse light for the first two observations. Repeated pulses build the
+  // gradient pupils follow in the third observation.
+  setRun(guidePlaying && guideStep===OBSERVATIONS.length-1);
+  if(!guideStarted){
+    guideStarted=true;
+    if(!S.playing)firePhotolysis();
+  }
+  guidePlay.textContent=guidePlaying?"Pause":"Resume";
+  guideAnswer.hidden=false;
+  guideNext.hidden=guideStep===OBSERVATIONS.length-1;
+});
+guideNext.addEventListener("click",()=>{guideTo(guideStep+1);guidePlay.focus();});
+guideBack.addEventListener("click",()=>{guideTo(guideStep-1);guidePlay.focus();});
+function boot(){ size(); buildSubtabs(); guideTo(0); requestAnimationFrame(frame); }
 boot();
 </script>
 </body>

@@ -7,13 +7,31 @@
   if (!context) return;
 
   const controls = model.querySelectorAll('input[name="gas-condition"]');
-  const toggle = model.querySelector("button");
+  const toggle = model.querySelector("[data-gas-motion]");
+  const change = model.querySelector("[data-gas-change]");
+  const next = model.querySelector("[data-gas-next]");
+  const back = model.querySelector("[data-gas-back]");
+  const free = model.querySelector("[data-gas-free]");
+  const guide = model.querySelector(".gas-guide");
+  const label = model.querySelector("[data-gas-step]");
+  const prompt = model.querySelector("[data-gas-prompt]");
   const output = model.querySelector("[role=status]");
   const conditions = {
     start: { width: 336, speed: 1, pressure: 1, description: "Starting pressure. The particles bounce off the walls." },
     warm: { width: 336, speed: Math.sqrt(1.8), pressure: 1.8, description: "Higher pressure. The same particles move faster. The box stays the same size." },
     small: { width: 210, speed: 1, pressure: 1.6, description: "Higher pressure. The same particles move at the same speeds, in a smaller box." }
   };
+
+  const observations = [
+    {before: "Press Start motion. Watch for an outlined dot when a particle hits a wall."},
+    {before: "Keep the box the same size. Predict what happens to pressure when you warm the gas.",
+     action: "Warm the gas", condition: "warm", after: "Look at the pressure bar. Compare it with the starting pressure."},
+    {before: "The gas is back at its starting temperature. Predict what happens to pressure in a smaller box.",
+     action: "Make the box smaller", condition: "small", after: "Watch the particles meet the walls. Have their speeds changed?"}
+  ];
+  let step = 0;
+  let observed = false;
+  let freeMode = false;
 
   const left = 16;
   const top = 12;
@@ -91,34 +109,76 @@
     frame = requestAnimationFrame(animate);
   }
 
-  for (const control of controls) {
-    control.addEventListener("change", () => {
-      const next = conditions[control.value];
-      const widthRatio = (next.width - 2 * radius) / (condition.width - 2 * radius);
-      for (const particle of particles) {
-        particle.x = left + radius + (particle.x - left - radius) * widthRatio;
-        particle.hit = 0;
-      }
-      condition = next;
-      output.textContent = condition.description;
-      draw();
-    });
+  function selectCondition(id) {
+    const setting = conditions[id];
+    const widthRatio = (setting.width - 2 * radius) / (condition.width - 2 * radius);
+    for (const particle of particles) {
+      particle.x = left + radius + (particle.x - left - radius) * widthRatio;
+      particle.hit = 0;
+    }
+    condition = setting;
+    controls.forEach(control => { control.checked = control.value === id; });
+    output.textContent = setting.description;
+    draw();
   }
 
-  toggle.addEventListener("click", () => {
-    if (frame === null) {
-      frame = requestAnimationFrame(animate);
-      toggle.textContent = "Pause motion";
-    } else {
+  function guideControls() {
+    const observation = observations[step];
+    label.textContent = "Observation " + (step + 1) + " of " + observations.length;
+    prompt.textContent = observed && observation.after ? observation.after : observation.before;
+    change.textContent = observation.action || "";
+    change.hidden = freeMode || step === 0 || observed;
+    next.hidden = freeMode || !observed || step === observations.length - 1;
+    back.hidden = freeMode || step === 0;
+  }
+
+  function goToStep(index) {
+    step = index;
+    if (step === 0) setMotion(false);
+    observed = false;
+    selectCondition("start");
+    guideControls();
+    (step === 0 ? toggle : change).focus();
+  }
+
+  controls.forEach(control => {
+    control.addEventListener("change", () => selectCondition(control.value));
+  });
+  next.addEventListener("click", () => goToStep(step + 1));
+  back.addEventListener("click", () => goToStep(step - 1));
+  change.addEventListener("click", () => {
+    selectCondition(observations[step].condition);
+    observed = true;
+    guideControls();
+    (next.hidden ? toggle : next).focus();
+  });
+  free.addEventListener("click", () => {
+    freeMode = !freeMode;
+    guide.hidden = freeMode;
+    controls[0].closest("fieldset").hidden = !freeMode;
+    free.textContent = freeMode ? "Follow the observations" : "Explore freely";
+    if (freeMode) guideControls();
+    else goToStep(0);
+  });
+
+  function setMotion(running) {
+    if (running) frame = requestAnimationFrame(animate);
+    else if (frame !== null) {
       cancelAnimationFrame(frame);
       frame = null;
       previousTime = null;
-      toggle.textContent = "Start motion";
+    }
+    toggle.textContent = running ? "Pause motion" : "Start motion";
+  }
+
+  toggle.addEventListener("click", () => {
+    setMotion(frame === null);
+    if (frame !== null && !freeMode && step === 0 && !observed) {
+      observed = true;
+      guideControls();
     }
   });
 
-  const startingControl = Array.from(controls).find((control) => control.checked);
-  if (startingControl.value === "start") draw();
-  else startingControl.dispatchEvent(new Event("change"));
+  selectCondition("start");
   model.hidden = false;
 })();
