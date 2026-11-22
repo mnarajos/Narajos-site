@@ -684,7 +684,46 @@ try{
   assert.equal(await navPage.getByLabel("Your paragraph:",{exact:true}).inputValue(),"");
   assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"GCSE writing task overflows at phone width");
  }
+ await desktop.goto(base+"/ks3/lesson/?topic=fair-tests");
+ await desktop.getByRole("heading",{name:"Roll a toy down a ramp"}).waitFor();
+ const rampOnDesktop=desktop.locator("toy-ramp");
+ const bike=await rampOnDesktop.getByRole("button",{name:"Bicycle",exact:true}).boundingBox();
+ const rampSvg=await rampOnDesktop.locator(".tr-apparatus svg").boundingBox();
+ await desktop.mouse.move(bike.x+bike.width/2,bike.y+bike.height/2);
+ await desktop.mouse.down();
+ await desktop.mouse.move(rampSvg.x+rampSvg.width*.18,rampSvg.y+rampSvg.height*.5,{steps:12});
+ await desktop.mouse.up();
+ assert.equal(await rampOnDesktop.getByRole("button",{name:"Bicycle",exact:true}).getAttribute("aria-pressed"),"true");
+ assert.equal(await rampOnDesktop.getByLabel("Release point").inputValue(),"middle");
+ await rampOnDesktop.getByRole("button",{name:"Roll toy"}).click();
+ await rampOnDesktop.getByRole("status").filter({hasText:/Distance from the ramp: \d+ cm/}).waitFor();
  await navPage.goto(base+"/teaching/focused-writing/order/");
+ const ramp=navPage.locator("toy-ramp");
+ const reading=ramp.locator("[data-runs] dd strong").first();
+ async function rollAndRead(){
+  await ramp.getByRole("button",{name:"Roll toy"}).press("Enter");
+  await ramp.getByRole("status").filter({hasText:/Distance from the ramp: \d+ cm/}).waitFor();
+  return parseInt(await reading.textContent(),10);
+ }
+ await navPage.emulateMedia({reducedMotion:"reduce"});
+ const original=await rollAndRead();
+ await ramp.getByText("Change the toy’s paint or load",{exact:true}).click();
+ await ramp.getByLabel("Paint colour").selectOption("blue");
+ assert.equal(await rollAndRead(),original,"Repainting the same toy changed its result");
+ assert.equal(await ramp.locator("[data-runs] dt").count(),2);
+ await ramp.getByLabel("Ramp angle").selectOption("30");
+ assert(await rollAndRead()>original,"The same toy should roll further from the steeper ramp");
+ await ramp.getByLabel("Ramp angle").selectOption("20");
+ await ramp.getByLabel("Ramp surface").selectOption("felt");
+ assert(await rollAndRead()<original,"The felt should shorten the run in this model");
+ await ramp.getByLabel("Ramp surface").selectOption("plastic");
+ await ramp.getByLabel("Release point").selectOption("bottom");
+ assert(await rollAndRead()<original,"A lower release point should shorten the run");
+ await ramp.getByLabel("Release point").selectOption("top");
+ await ramp.getByLabel("Add a small load").check();
+ assert(await rollAndRead()>original,"The test load should affect this toy's model distance");
+ await checkReadingSpacing(navPage,"Toy ramp investigation");
+ await navPage.emulateMedia({reducedMotion:"no-preference"});
  const oneParagraph=navPage.locator('[data-writing-order="ramp"]');
  await oneParagraph.getByRole("button",{name:"Check the order",exact:true}).click();
  await oneParagraph.getByRole("status").filter({hasText:"Choose 4 more sentences"}).waitFor();
