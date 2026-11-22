@@ -434,3 +434,14 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
   .paragraph-board{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:.9rem}
   .paragraph-bank{display:block;position:sticky;top:4.8rem}
 }
+
+.rock-practice h2{margin-top:0}
+.rock-photo{margin:0 0 .85rem;max-width:32rem}
+.rock-photo img{display:block;width:100%;height:auto;border-radius:var(--site-radius,8px)}
+.rock-photo figcaption{padding-top:.4rem;font-size:.875rem;line-height:1.5}
+.rock-roles{margin:.7rem 0;padding-left:1.4rem}
+.rock-roles li+li{margin-top:.28rem}
+.rock-next,.rock-navigation{margin-top:.65rem}
+.rock-navigation{display:flex;align-items:baseline;flex-wrap:wrap;gap:.5rem}
+.rock-navigation .rock-next{margin:0}
+.rock-navigation [hidden],.rock-practice [hidden],.rock-practice[hidden]{display:none}

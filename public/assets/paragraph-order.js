@@ -122,11 +122,10 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
     const current = slots[position];
     if (current !== null) pickerContent.append(element("p", "Current sentence: " + cards[current]));
     if (guidance) pickerContent.append(element("p", guidance[position], "paragraph-hint"));
-    else {
-      const help = element("details", "", "paragraph-hint");
-      help.append(element("summary", "Hint"), element("p", hints[position]));
-      pickerContent.append(help);
-    }
+    const help = element("details", "", "paragraph-hint");
+    const hint = hints[position].replace(/^Review [^.]+\. /, "");
+    help.append(element("summary", "Hint"), element("p", hint));
+    pickerContent.append(help);
     const choices = element("ul", "", "writing-order-options");
     for (const id of order) {
       if (id === current || slots.includes(id)) continue;

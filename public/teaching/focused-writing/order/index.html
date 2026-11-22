@@ -86,14 +86,19 @@
     <div data-writing-order="sandstone"></div>
     <button class="btn rock-next" type="button" data-rock-next="granite" hidden>Continue to granite <span aria-hidden="true">→</span></button>
    </section>
-   <details class="practice-card writing-card">
-    <summary>Build two paragraphs</summary>
-    <figure class="ks3-illustration">
-     <img src="/assets/ks3-diagrams/rock-samples.svg" alt="Sample A has bands of cemented grains. Sample B contains interlocking crystals.">
+   <section class="practice-card writing-card rock-practice" id="granite" aria-labelledby="granite-title" hidden>
+    <h2 id="granite-title">You do · Igneous rock</h2>
+    <p><strong>How did this igneous rock form?</strong></p>
+    <figure class="rock-photo">
+     <a href="/assets/writing-prompts/granite-specimen.webp" aria-label="View a larger photograph of the granite"><img src="/assets/writing-prompts/granite-specimen.webp" loading="lazy" width="880" height="660" alt="A granite specimen made of pale and dark mineral crystals that meet at irregular edges."></a>
+     <figcaption>Look for pale and dark crystals that fit together. <a href="/assets/writing-prompts/granite-specimen.webp">View larger photo</a>.<br><a href="https://commons.wikimedia.org/wiki/File:Granite.jpg">Eurico Zimbres (FGEL/UERJ), Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by-sa/2.0/br/">CC BY-SA 2.0 Brazil</a> · Resized</figcaption>
     </figure>
-    <p>How did the two rocks form? Complete the paragraph about Sample A first, then Sample B. Each paragraph needs its own opening and ending.</p>
-    <div data-writing-order="rocks"></div>
-   </details>
+    <div data-writing-order="granite"></div>
+    <div class="rock-navigation">
+     <button class="btn btn-secondary" type="button" data-rock-next="sandstone">Back to sandstone</button>
+     <button class="btn rock-next" type="button" data-rock-next="rock-review" hidden>Compare both paragraphs <span aria-hidden="true">→</span></button>
+    </div>
+   </section>
   </div>
   <p class="catchup-finish"><a href="/teaching/focused-writing/ks3/">Write your own outline from a diagram</a></p>
  </main>
