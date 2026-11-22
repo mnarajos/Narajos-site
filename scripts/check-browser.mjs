@@ -247,7 +247,7 @@ try{
  const synapseVideo=desktop.locator(".kc-video");
  await synapseVideo.locator(":scope > summary").click();
  assert(await synapseVideo.evaluate(el=>el.open),"Video disclosure should open on activation");
- await synapseVideo.getByText(/31:12 to 36:45/).waitFor();
+ assert.match(await synapseVideo.locator("p").first().innerText(),/31:12\s+to\s+36:45/);
  const estruch=synapseVideo.getByRole("link",{name:/Miss Estruch/});
  assert.equal(await estruch.getAttribute("href"),"https://www.youtube.com/watch?v=DVqHoZTZedw&t=1872s");
  assert.equal(await synapseVideo.locator("iframe").count(),0);
