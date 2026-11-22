@@ -1,5 +1,4 @@
-/* Keystone Human Biology companion: independent, original, concise science
-   recaps. No coursework templates, NEA marking, AI, or uploaded answers. */
+/* Keystone Human Biology companion. Catch-up lessons and original general practice. */
 (function(){
 "use strict";
 var root=window.KeystoneHumanData,bank=window.KeystoneHumanChallenges,other=window.KeystoneHumanKnowledge;
@@ -331,7 +330,7 @@ function showHome(render){
  units.forEach(function(u){
   h+='<a class="k-unit-tile k-catchup-tile" href="#catchup/'+u.id+'"><span class="k-icon">📖</span><span><small>'+u.id.toUpperCase()+(" · "+unitKind(u.id))+'</small><strong>'+esc(u.title)+'</strong><em>'+u.areas.length+' learning areas</em></span><span aria-hidden="true">›</span></a>';
  });
- h+='</div><p class="k-small-note">Guided lessons and short recaps cover selected content. NEA resources teach general knowledge and independent practice.</p></div>';
+ h+='</div><p class="k-small-note">Guided lessons and short recaps cover selected content. NEA units use general examples for independent learning.</p></div>';
  render(h);
 }
 function showUnit(unit,render){

@@ -84,11 +84,11 @@ function title(u){var U=unitMeta(u);return u.toUpperCase()+" · "+(U?U.title:"Hu
 function show(html){if(render)render(html);}
 function knowledgeLanding(){
  var modules=db.units.filter(function(u){return isKnowledge(u.id);});
- var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">Cambridge AAQ · Knowledge learning</div><h1>More Human Biology</h1><p>Practice the science from F172–F177. No coursework tasks, drafting, or marking.</p></div><div class="k-unit-tiles">';
+ var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">Cambridge AAQ · Knowledge learning</div><h1>More Human Biology</h1><p>Study the biology in F172–F177 and practise with original examples.</p></div><div class="k-unit-tiles">';
  modules.forEach(function(u){var n=filter(u.id,"all").length;
-  h+='<a class="k-unit-tile k-knowledge-tile" href="#challenge/'+u.id+'"><span class="k-icon">'+icon("book")+'</span><span><small>'+u.id.toUpperCase()+' · Knowledge only</small><strong>'+esc(u.title)+'</strong><em>'+n+' short practice questions · starter bank</em></span>'+icon("chevron")+'</a>';
+  h+='<a class="k-unit-tile k-knowledge-tile" href="#challenge/'+u.id+'"><span class="k-icon">'+icon("book")+'</span><span><small>'+u.id.toUpperCase()+' · NEA knowledge support</small><strong>'+esc(u.title)+'</strong><em>'+n+' short practice questions · starter bank</em></span>'+icon("chevron")+'</a>';
  });
- h+='</div><p class="k-source">This page teaches independent biological knowledge; it does not reproduce or assist with Cambridge OCR set assignments.</p></div>';show(h);
+ h+='</div><p class="k-source">Use these activities for general learning. Submit assessed coursework through your school or college.</p></div>';show(h);
 }
 function actionTile(route,label,description,symbol,colour){
  return '<a class="k-action '+colour+'" href="#'+route+'"><span class="k-icon">'+icon(symbol)+'</span><span><strong>'+label+'</strong><small>'+description+'</small></span><span class="k-arrow">'+icon("chevron")+'</span></a>';
@@ -96,16 +96,16 @@ function actionTile(route,label,description,symbol,colour){
 function intro(unit){
  var f=unit==="f170",knowledge=isKnowledge(unit),meta=unitMeta(unit),stats=unitStats(unit);
  var areas=knowledge?meta.areas.map(function(_,i){return i;}).filter(function(i){return i>0&&filter(unit,"a"+i).length>0;}):(f?[1,2,3,4]:[1,2,3,4,5]),colors=["","#58bcb0","#7da8df","#a18bdd","#e2a05c","#e18c96"];
- var h='<div class="k-wrap"><p class="crumb"><a href="'+(knowledge?"#knowledge":"#home")+'">← '+(knowledge?"Other units":"Home")+'</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+(knowledge?unit.toUpperCase()+" · Biological knowledge":f?"F170 · Exam practice":"F171 · Exam practice preview")+'</div><h1>'+esc(meta?meta.title:"Human Biology")+'</h1><p>'+esc(knowledge?"Short science questions only. No coursework help, reports, or proposals.":f?"Choose how you want to revise.":"Apply knowledge in clinical contexts. F171 is an early question-bank preview.")+'</p></div>';
+ var h='<div class="k-wrap"><p class="crumb"><a href="'+(knowledge?"#knowledge":"#home")+'">← '+(knowledge?"Other units":"Home")+'</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+(knowledge?unit.toUpperCase()+" · NEA knowledge support":f?"F170 · Externally assessed":"F171 · Externally assessed")+'</div><h1>'+esc(meta?meta.title:"Human Biology")+'</h1><p>'+esc(knowledge?"General science questions and guided lessons for independent learning.":f?"Choose how you want to revise.":"Apply knowledge in clinical contexts. F171 is an early question-bank preview.")+'</p></div>';
  if(f){
   h+='<section class="k-action-grid k-f170-start" aria-label="Start F170 revision">'+
-   actionTile("catchup/f170","Catch up","Read a short explanation","book","teal")+
+   actionTile("catchup/f170","Catch up","Learn from guided examples","book","teal")+
    actionTile("challenge/f170/all","Practise questions","Start easy, then build up","bolt","teal")+
    (skills?actionTile("skills/f170","Practise skills","Calculations, data, and evidence","calc","blue"):"")+'</section>';
   h+='<details class="k-f170-more"><summary>More practice options</summary>';
  } else {
   h+='<div class="k-mini-stats"><span><strong>'+stats.questions+'</strong> original questions</span><span><strong>'+stats.seen+'</strong> attempted</span><span><strong>'+stats.weak+'</strong> to revisit</span></div>';
-  h+='<h2 class="k-subhead">Start practising</h2>';
+  h+='<p><a href="#catchup/'+unit+'">Catch up on this unit</a></p><h2 class="k-subhead">Start practising</h2>';
  }
  h+='<div class="k-action-grid">';
  var tiles=[
@@ -132,7 +132,7 @@ function intro(unit){
   });
   h+='</ul><p>Counts include alternative versions of some questions. Topic areas have different depths of coverage.</p></details>';
  }
- h+='<p class="k-source">'+(knowledge?"Independent knowledge practice only; assignment-specific topic areas are excluded.":f?"Includes all four F170 areas.":"F171 sample bank is not yet a complete specification resource.")+'</p>'+source()+'</div>';show(h);
+ h+='<p class="k-source">'+(knowledge?"Independent knowledge practice only; assignment-specific topic areas are excluded.":f?"Includes all four F170 areas.":"F171 questions cover selected specification content.")+'</p>'+(knowledge?"":source())+'</div>';show(h);
 }
 function landing(){
  var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">Keystone Human Biology</div><h1>Choose an exam unit</h1><p>Short, varied questions first. See an explanation when you need it.</p></div><div class="k-unit-tiles">'+["f170","f171"].map(function(u){var s=unitStats(u);return '<a href="#challenge/'+u+'" class="k-unit-tile '+(u==="f170"?"teal":"blue")+'"><span class="k-icon">'+icon(u==="f170"?"brain":"flask")+'</span><span><small>'+u.toUpperCase()+' · 60-mark paper</small><strong>'+esc(u==="f170"?"Fundamentals of human biology":"Health and disease")+'</strong><em>'+s.questions+' questions · '+s.seen+' attempted'+(u==="f171"?" · preview":"")+'</em></span>'+icon("chevron")+'</a>';}).join("")+'</div>'+source()+'</div>';show(h);
@@ -625,16 +625,26 @@ function planQuickCheck(q){
 }
 function record(q,got){
  var helped=!!(session.hintsUsed&&session.hintsUsed[q.id]);
- var independent=!!got&&!helped&&!session.wasSkipped;
+ var selfReviewed=q.type==="written"||(q.type==="short"&&session.lastResult===null);
+ var corrected=Object.prototype.hasOwnProperty.call(session.first,q.id)&&!isQuickCheck(q);
+ var independent=!!got&&!helped&&!session.wasSkipped&&!selfReviewed&&!corrected;
  var progressId=session.skillId?"skill:"+session.skillId:q.id;
  var p=progress[progressId]||{seen:0,good:0,wrong:0,independent:0,guided:0};p.seen++;
- if(got){p.good++;if(helped)p.guided=(p.guided||0)+1;else p.independent=(p.independent||0)+1;p.lastCorrect=true;}
+ if(got){
+  p.good++;
+  if(selfReviewed)p.selfReviewed=(p.selfReviewed||0)+1;
+  else if(corrected)p.corrected=(p.corrected||0)+1;
+  else if(helped)p.guided=(p.guided||0)+1;
+  else if(independent)p.independent=(p.independent||0)+1;
+  p.lastCorrect=true;
+ }
  else{p.wrong++;p.lastCorrect=false;}
  p.last=Date.now();progress[progressId]=p;saveProgress();
  if(!(q.id in session.first)){
   session.first[q.id]=independent;
   if(independent)session.correctFirst++;
-  if(got&&!independent)session.guidedFirst=(session.guidedFirst||0)+1;
+  if(selfReviewed&&!session.wasSkipped)session.selfReviewed=(session.selfReviewed||0)+1;
+  if(got&&helped&&!selfReviewed)session.guidedFirst=(session.guidedFirst||0)+1;
  }
  if(isQuickCheck(q)){session.quickChecksSeen=(session.quickChecksSeen||0)+1;if(independent)session.quickChecksPassed=(session.quickChecksPassed||0)+1;}
  session.lastPlannedCheck=null;
@@ -685,9 +695,9 @@ function finish(){
   show('<div class="k-wrap k-done"><h1>Skills set complete</h1><p class="lead">'+old.correctFirst+' of 10 answered independently on first attempt.</p><p>'+old.guidedFirst+' answered with help. Highest practice step: '+old.maxSkillLevel+' of 4.</p><p>Try another set with new values or another authored context. This records practice, not proven mastery.</p><div class="actions"><button class="button primary" type="button" data-start-skill="'+sk.id+'">Practise this skill again</button><a class="button secondary" href="#skills/'+sk.unit+'">Choose another skill</a><a class="button secondary" href="#challenge/'+sk.unit+'">Apply to topic questions</a>'+skillReturnLink(old.returnTo)+'</div></div>');return;
  }
  var repeat=Object.keys(old.retries).length,done=old.queue.length;
- if(old.point){var p=ladders.get(old.point);show('<div class="k-wrap k-done"><h1>Sequence complete</h1><p class="lead">'+esc(p.statement)+'</p><p>'+old.correctFirst+' of '+Object.keys(old.first).length+' questions answered independently on first attempt. '+old.guidedFirst+' answered with help. This is practice evidence, not proof of lasting mastery.</p><div class="actions"><a class="button primary" href="#challenge/'+old.unit+'/build">Choose another idea</a><button class="button secondary" type="button" data-repeat-point="'+p.id+'">Repeat this idea</button><a class="button secondary" href="#catchup/'+old.unit+'/'+p.section+'">Revisit the explanation</a></div></div>');return;}
+ if(old.point){var p=ladders.get(old.point);show('<div class="k-wrap k-done"><h1>Sequence complete</h1><p class="lead">'+esc(p.statement)+'</p><p>'+old.correctFirst+' of '+Object.keys(old.first).length+' questions answered independently on first attempt. '+old.guidedFirst+' answered with help. '+(old.selfReviewed||0)+' explanations self-reviewed.</p><div class="actions"><a class="button primary" href="#challenge/'+old.unit+'/build">Choose another idea</a><button class="button secondary" type="button" data-repeat-point="'+p.id+'">Repeat this idea</button><a class="button secondary" href="#catchup/'+old.unit+'/'+p.section+'">Revisit the explanation</a></div></div>');return;}
  var h='<div class="k-wrap k-done"><p class="crumb"><a href="#challenge/'+old.unit+'">← Unit overview</a></p><div class="k-done-icon">'+icon("check")+'</div><h1>Practice complete</h1><p class="lead">'+old.correctFirst+' of '+Object.keys(old.first).length+' questions recalled independently on first attempt.</p>';
- h+='<div class="k-mini-stats"><span><strong>'+Object.keys(old.first).length+'</strong> unique questions</span><span><strong>'+repeat+'</strong> revisited</span><span><strong>'+(old.guidedFirst||0)+'</strong> answered with help</span><span><strong>'+(old.quickChecksPassed||0)+'/'+(old.quickChecksSeen||0)+'</strong> quick checks without help</span></div><div class="k-action-grid"><a class="k-action teal" href="#challenge/'+old.unit+'/weak"><span class="k-icon">'+icon("rotate")+'</span><span><strong>Fix weak areas</strong><small>Practise questions you missed</small></span></a><a class="k-action blue" href="#challenge/'+old.unit+'"><span class="k-icon">'+icon("grid")+'</span><span><strong>Choose another set</strong><small>Topic or mixed practice</small></span></a></div></div>';show(h);
+ h+='<div class="k-mini-stats"><span><strong>'+Object.keys(old.first).length+'</strong> unique questions</span><span><strong>'+repeat+'</strong> revisited</span><span><strong>'+(old.guidedFirst||0)+'</strong> answered with help</span><span><strong>'+(old.quickChecksPassed||0)+'/'+(old.quickChecksSeen||0)+'</strong> quick checks without help</span>'+((old.selfReviewed||0)?'<span><strong>'+old.selfReviewed+'</strong> explanations self-reviewed</span>':'')+'</div><div class="k-action-grid"><a class="k-action teal" href="#challenge/'+old.unit+'/weak"><span class="k-icon">'+icon("rotate")+'</span><span><strong>Fix weak areas</strong><small>Practise questions you missed</small></span></a><a class="k-action blue" href="#challenge/'+old.unit+'"><span class="k-icon">'+icon("grid")+'</span><span><strong>Choose another set</strong><small>Topic or mixed practice</small></span></a></div></div>';show(h);
 }
 function route(r,renderer){
  render=renderer;lastRoute=r;
