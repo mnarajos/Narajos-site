@@ -145,6 +145,7 @@ try{
  assert(!(await check.getByText("Need a clue?",{exact:true}).isVisible()));
  await check.getByRole("radio",{name:"From B to A",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
+ assert(await check.getByRole("status").filter({hasText:"B is the more concentrated side."}).isVisible());
  assert(await check.getByText("Need a clue?",{exact:true}).isVisible());
  await check.getByRole("radio",{name:"From A to B",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
