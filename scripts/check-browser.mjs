@@ -621,10 +621,12 @@ try{
  await reflex.getByRole("status").filter({hasText:"Motor neuron"}).waitFor();
  await desktop.goto(base+"/human-biology/#catchup/f170/1.1.2",{waitUntil:"load"});
  await desktop.getByText("I do · Measure a red cell from its scale bar",{exact:true}).click();
- await desktop.getByText("Estimate the size of a red blood cell",{exact:true}).click();
- assert(await desktop.locator(".micrograph-single img").evaluate(async img=>{await img.decode();return img.naturalWidth===386;}));
- await desktop.getByText("Check the calculation",{exact:true}).click();
- await desktop.locator(".kc-catchup-extra").getByText(/≈ 8 µm/).waitFor();
+ const microscope=desktop.locator("[data-hb-model-step]");
+ assert(await microscope.locator(".micrograph-single img").evaluate(async img=>{await img.decode();return img.naturalWidth===386;}));
+ assert(await microscope.locator(".hb-bar-length").isVisible());
+ await microscope.getByRole("button",{name:"Show next step"}).press("Enter");
+ await microscope.getByRole("button",{name:"Show next step"}).press("Enter");
+ await microscope.getByText(/≈ 8 µm/).waitFor();
  await desktop.goto(base+"/human-biology/#catchup/f170/2.1.2",{waitUntil:"load"});
  await desktop.locator(".kc-simulation-link").waitFor({state:"visible"});
  assert((await desktop.locator(".kc-simulation-link").getAttribute("href"))==="/teaching/simulations/cardiac-cycle/","Heart concept should link to cardiac-cycle simulation");

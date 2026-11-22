@@ -137,3 +137,56 @@
 .hb-inline-model > summary {
   padding-inline-start: .4rem;
 }
+
+.hb-writing-example dd { margin-block: .15rem .65rem; }
+.hb-review-answers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: .75rem;
+}
+.hb-review-answers section {
+  min-inline-size: 0;
+  border: 1px solid var(--line);
+  border-radius: .4rem;
+  padding: .65rem;
+  overflow-wrap: anywhere;
+}
+.hb-review-answers section p { white-space: pre-wrap; }
+[data-hb-review] select { display: block; margin-block: .25rem .7rem; max-inline-size: 100%; }
+[data-hb-review] textarea { display: block; margin-block-start: .35rem; }
+
+.hb-model-path [aria-current="step"],
+.hb-teach-table .hb-cell-focus {
+  outline: 2px solid currentColor;
+  outline-offset: -3px;
+}
+.hb-teach-table .hb-cell-focus { font-weight: 700; }
+[data-hb-model-step="3"] .hb-worked-micrograph .hb-bar-length,
+[data-hb-model-step="4"] .hb-worked-micrograph .hb-cell-length { opacity: .35; }
+
+.hb-teaching-sequence:has(.hb-teach-stage[open]) .hb-start { display: none; }
+.hb-teaching-sequence .hb-teach-stage[open] > summary {
+  border-block-end: 1px solid var(--line);
+  padding-block-end: .65rem;
+}
+.hb-stage-next .button { max-inline-size: 100%; white-space: normal; }
+.hb-feedback:focus { outline: 2px solid currentColor; outline-offset: 3px; }
+
+.hb-teaching button > svg {
+  inline-size: 1em;
+  block-size: 1em;
+  margin-inline-end: .35em;
+  vertical-align: -.15em;
+}
+
+.hb-teach-table th[scope="row"] { overflow-wrap: normal; }
+.hb-model-back { display: none; }
+@media (max-width: 36rem) {
+  .hb-model-with-evidence .hb-model-steps li:not([aria-current="step"]) { display: none; }
+  .hb-model-with-evidence .hb-model-steps li { margin-block-start: 0; }
+  .hb-model-with-evidence .hb-model-steps li::before { content: none; }
+  .hb-model-with-evidence .hb-model-back:not([hidden]) { display: inline-flex; }
+  .hb-worked-micrograph { max-inline-size: min(100%, 16rem); }
+}
+
+.hb-teaching-sequence :is(summary, [tabindex="-1"]) { scroll-margin-block-start: 8rem; }
