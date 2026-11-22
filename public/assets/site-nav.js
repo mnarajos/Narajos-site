@@ -3,8 +3,32 @@
  */
 (function(){
  "use strict";
+ var header=document.querySelector(".topbar .topbar-inner");
+ if(!header)return;
  var nav=document.querySelector(".site-nav");
- if(!nav)return;
+ if(!nav){
+  nav=document.createElement("nav");
+  nav.className="site-nav";
+  nav.setAttribute("aria-label","Main navigation");
+  nav.innerHTML=`
+   <details><summary><span class="nav-full">Learning Companions</span><span class="nav-short" aria-hidden="true">Study tools</span></summary>
+    <div class="site-dropdown"><a href="/science-catch-up/">Science Catch-up</a><a href="/gcse/">GCSE Combined Science (AQA Trilogy) revision</a><a href="/alevel/">A-level Biology (AQA)</a><a href="/human-biology/">Human Biology (Cambridge AAQ)</a></div></details>
+   <details><summary><span class="nav-full">Biology Simulations</span><span class="nav-short" aria-hidden="true">Simulations</span></summary>
+    <div class="site-dropdown"><a href="/teaching/simulations/">All simulations</a><a href="/teaching/simulations/#gcse-and-alevel">GCSE &amp; A-level</a><a href="/teaching/simulations/#alevel">A-level Biology</a></div></details>
+   <details class="teacher-menu"><summary>Teacher Tools</summary>
+    <div class="site-dropdown"><a href="/teacher/">Focused Questions</a><a href="/teaching/focused-writing/">Focused Writing</a></div></details>`;
+  header.append(nav);
+ }
+ var oldCatchup=nav.querySelector('a[href="/ks3/"]');
+ if(oldCatchup){oldCatchup.href="/science-catch-up/";oldCatchup.textContent="Science Catch-up";}
+ var pathname=location.pathname;
+ var section=pathname.startsWith("/ks3/")?"/science-catch-up/":pathname;
+ if(section.startsWith("/teaching/enzyme-investigations/"))section="/teaching/simulations/";
+ nav.querySelectorAll(".site-dropdown a").forEach(function(link){
+  if(link.hash||!section.startsWith(link.pathname))return;
+  link.closest("details").classList.add("site-section-current");
+  if(link.pathname===pathname)link.setAttribute("aria-current","page");
+ });
  var menus=Array.from(nav.querySelectorAll("details"));
  if(!menus.length)return;
  function closeOthers(keep){

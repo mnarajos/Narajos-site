@@ -57,6 +57,22 @@ try{
  assert.equal(await yearNavigation.getByRole("link").count(),5);
  await yearNavigation.getByRole("link",{name:/^Year 7/}).click();
  await pilotPage.getByRole("heading",{name:"Year 7 Science",exact:true}).waitFor();
+ const siteNavigation=pilotPage.getByRole("navigation",{name:"Main navigation"});
+ const siteMenus=siteNavigation.locator("summary");
+ assert.equal(await siteMenus.count(),3);
+ await siteMenus.nth(2).press("Enter");
+ const teacherLinks=siteNavigation.locator(".teacher-menu a");
+ assert.deepEqual(await teacherLinks.allTextContents(),["Focused Questions","Focused Writing"]);
+ await pilotPage.keyboard.press("Escape");
+ assert(!(await teacherLinks.first().isVisible()));
+ for(const width of [320,390]){
+  await pilotPage.setViewportSize({width,height:844});
+  const rows=await yearNavigation.getByRole("link").evaluateAll(links=>links.map(a=>Math.round(a.getBoundingClientRect().top)));
+  assert.deepEqual(rows,[rows[0],rows[0],rows[2],rows[2],rows[2]]);
+  assert(rows[2]>rows[0]);
+  assert((await pilotPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3);
+ }
+ await screen(pilotPage,"catch-up-year-navigation-mobile");
  assert.equal(await pilotPage.locator(".school-topic-list > li").count(),12);
  assert.equal(await pilotPage.getByRole("link",{name:"Open GCSE revision"}).count(),0);
  await pilotPage.getByRole("link",{name:"Science Skills",exact:true}).click();
@@ -64,11 +80,10 @@ try{
   throw new Error("Science Skills opening missing at "+pilotPage.url()+": "+(await pilotPage.locator("main").innerText()).slice(0,420),{cause:error});
  });
  const workedRamp=pilotPage.getByRole("heading",{name:"Worked example · testing ramp angle"});
- assert(!(await workedRamp.isVisible()));
- assert(!(await pilotPage.getByRole("heading",{name:"Check your understanding",exact:true}).isVisible()));
- await pilotPage.getByRole("button",{name:"Catch-up notes",exact:true}).click();
- await pilotPage.getByRole("heading",{name:"Roll a toy down a ramp",exact:true}).waitFor();
  assert(await workedRamp.isVisible());
+ assert(!(await pilotPage.getByRole("heading",{name:"Check your understanding",exact:true}).isVisible()));
+ await pilotPage.getByRole("heading",{name:"Roll a toy down a ramp",exact:true}).waitFor();
+ assert(await pilotPage.locator(".school-evidence-panel").evaluate(el=>!!(el.compareDocumentPosition(document.querySelector(".school-journey"))&Node.DOCUMENT_POSITION_FOLLOWING)));
  await pilotPage.getByText("More practice and activities",{exact:true}).click();
  assert(await pilotPage.getByRole("heading",{name:"Check your understanding",exact:true}).isVisible());
  await pilotPage.goto(base+"/science-catch-up/?year=8");
@@ -86,10 +101,8 @@ try{
  assert.equal(conceptLinks.length,12);
  for(const path of conceptLinks){
   await pilotPage.goto(path);
-  await pilotPage.getByRole("button",{name:"Catch-up notes",exact:true}).waitFor();
-  assert(!(await pilotPage.getByRole("heading",{name:"Catch-up notes",exact:true}).isVisible()));
-  await pilotPage.getByRole("button",{name:"Catch-up notes",exact:true}).click();
   await pilotPage.getByRole("heading",{name:"Catch-up notes",exact:true}).waitFor();
+  assert(await pilotPage.locator(".school-evidence-panel").evaluate(el=>!!(el.compareDocumentPosition(document.querySelector(".school-journey"))&Node.DOCUMENT_POSITION_FOLLOWING)));
   if(path.endsWith("topic=cell-structures")){
    const comparison=pilotPage.locator(".school-cell-comparison img");
    assert.equal(await comparison.count(),2);
@@ -109,7 +122,6 @@ try{
  const check=guide.getByRole("dialog");
  const startCheck=guide.getByRole("button",{name:"Check",exact:true});
  assert.match(await startCheck.textContent(),/Check.*→/);
- await guide.getByRole("button",{name:"Catch-up notes",exact:true}).click();
  assert(!(await pilotPage.locator(".school-lesson-table").isVisible()));
  assert(await pilotPage.getByText("Net water movement A → B",{exact:true}).isVisible());
  await pilotPage.getByText("Read the table",{exact:true}).click();
@@ -130,7 +142,8 @@ try{
   localStorage.setItem(key,JSON.stringify({...saved,draft:"Water can move in both directions."}));
  });
  await pilotPage.goto(base+"/science-catch-up/?year=9");
- await pilotPage.getByRole("link",{name:"Continue catch-up",exact:true}).click();
+ assert.equal(await pilotPage.getByRole("link",{name:"Continue catch-up",exact:true}).count(),0);
+ await pilotPage.getByRole("link",{name:"Which way does water move?",exact:true}).click();
  await guide.getByRole("button",{name:"Resume check",exact:true}).click();
  assert(await check.getByRole("radio",{name:"Dissolved sugar",exact:true}).isChecked());
  await check.getByText("Saved note",{exact:true}).click();
@@ -178,6 +191,19 @@ try{
  assert(await pilotPage.getByRole("link",{name:"Open GCSE revision"}).isVisible());
  await pilotPage.goto(base+"/science-catch-up/?year=11");
  assert(await pilotPage.getByRole("link",{name:"Open GCSE revision"}).isVisible());
+ await pilotPage.evaluate(()=>localStorage.setItem("gcse-test-progress","kept"));
+ const clearCatchup=pilotPage.getByRole("button",{name:"Clear catch-up progress",exact:true});
+ const clearDialog=pilotPage.getByRole("dialog",{name:"Clear catch-up progress?"});
+ await clearCatchup.click();
+ await clearDialog.getByRole("button",{name:"Cancel",exact:true}).click();
+ assert(await pilotPage.evaluate(()=>!!localStorage.getItem("narajos.catchup.v1.9.osmosis")));
+ await clearCatchup.click();
+ await clearDialog.getByRole("button",{name:"Clear progress",exact:true}).click();
+ await pilotPage.getByText("Catch-up progress cleared.",{exact:true}).waitFor();
+ assert(await clearCatchup.isHidden());
+ assert.deepEqual(await pilotPage.evaluate(()=>[Object.keys(localStorage).filter(k=>k.startsWith("narajos.catchup.v1.")),localStorage.getItem("gcse-test-progress")]),[[],"kept"]);
+ await pilotPage.goto(base+"/science-catch-up/lesson/?topic=osmosis");
+ await pilotPage.getByText("Step 1 of 4",{exact:true}).waitFor();
  await pilotPage.evaluate(()=>{window.name="kstest";});
  await pilotPage.goto(base+"/gcse/#topic-p2");
  await pilotPage.waitForFunction(()=>!!window.__k);
@@ -196,6 +222,7 @@ try{
  assert(await desktop.getByRole("heading",{name:"Biology Simulations",exact:true}).isVisible());
  assert(await desktop.getByRole("heading",{name:"Learning Companions"}).isVisible(),"Learning Companions missing from homepage");
  assert((await desktop.locator(".home-philosophy").innerText()).includes("complement classroom teaching"),"Public purpose statement missing");
+ assert.deepEqual(await desktop.locator(".home-option--questions .home-links a").evaluateAll(links=>links.map(a=>a.pathname)),["/teacher/","/teaching/focused-writing/"]);
  const homeMenu=desktop.locator(".site-nav details").first();
  await homeMenu.locator("summary").click();
  assert(await homeMenu.locator('a[href="/human-biology/"]').isVisible(),"Human Biology missing from homepage dropdown");

@@ -12,9 +12,13 @@
 .school-catchup :is(a, button, summary):focus-visible,
 .school-journey :is(a, button, summary):focus-visible,
 .school-check :is(a, button, summary, input):focus-visible { outline: 3px solid #b75a22; outline-offset: 3px; }
-.school-section-heading, .school-resume { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .6rem; padding-block: .5rem; }
+.school-section-heading { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .6rem; padding-block: .5rem; }
 .school-section-heading h2 { margin: 0; }
-.school-resume { padding: .65rem .85rem; border: 1px solid #a9c5c5; border-radius: .6rem; background: #ebf5f4; margin-block: 1rem; }
+.school-footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 0 1rem; }
+.school-footer-links :is(a,button) { display: inline-flex; align-items: center; min-height: 44px; }
+.school-footer-links button { padding: 0; border: 0; color: inherit; background: transparent; font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.school-footer-links button[hidden] { display: none; }
+.school-clear-status { flex-basis: 100%; font-size: .9rem; }
 .school-year-grid, .school-topic-list {
   list-style: none; padding: 0; margin-block: 1rem 0;
   display: grid; grid-template-columns: repeat(auto-fit,minmax(min(15rem,100%),1fr)); gap: .7rem;
@@ -39,6 +43,7 @@
   padding: clamp(.7rem,2vw,1rem); margin-block: 1rem; color: #203948;
 }
 .school-journey h2 { margin: .55rem 0 .3rem; font-size: clamp(1.15rem,3.2vw,1.55rem); }
+.school-opening-hook { margin: .35rem 0 .75rem; font-size: clamp(1.25rem,3vw,1.6rem); }
 .school-journey-status, .school-storage-note { margin: .35rem 0; }
 .school-storage-note { font-size: .88rem; }
 .school-storage-note:empty { display: none; }
@@ -95,3 +100,9 @@
 .school-enzyme-match b, .school-enzyme-changed b { display: block; width: 3rem; height: 1.15rem; border-radius: 0 0 .55rem .55rem; background: #38745e; }
 .school-enzyme-match b { background: radial-gradient(circle at 50% 0, transparent 0 .43rem, #38745e .45rem); margin-top: -.3rem; }
 .school-enzyme-changed i { margin-bottom: .25rem; }
+
+@media(max-width:600px) {
+  .school-years:not(.school-year-chooser) { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); }
+  .school-years:not(.school-year-chooser) a { grid-column: span 2; justify-content: center; text-align: center; }
+  .school-years:not(.school-year-chooser) a:nth-child(-n+2) { grid-column: span 3; }
+}

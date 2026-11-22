@@ -8,8 +8,8 @@ a{color:inherit;text-underline-offset:3px}a:hover{color:var(--accent-ink)}
 a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:4px;border-radius:4px}
 .skip{position:absolute;top:-100px;left:12px;background:#fff;padding:9px 14px;z-index:100;border:2px solid var(--accent)}.skip:focus{top:10px}
 .wrap{width:min(1100px,calc(100% - 48px));margin:0 auto}
-.topbar{background:rgba(250,249,246,.96);border-bottom:1px solid var(--line)}
-.topbar-inner{min-height:80px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.topbar{background:#fbf5ec;border-top:3px solid #c46e32;border-bottom:1px solid #e6d8ca}
+.topbar-inner{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
 .wordmark{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-size:24px;font-weight:800;letter-spacing:-.07em;white-space:nowrap}
 .wordmark:hover{color:var(--ink)}.wordmark svg{height:32px;width:32px;flex:none}.wordmark span{letter-spacing:-.05em}
 .nav{display:flex;align-items:center;gap:26px;flex-wrap:wrap}.nav a{color:#465562;font-size:13px;font-weight:650;text-decoration:none;white-space:nowrap}.nav a:hover,.nav a[aria-current="page"]{color:var(--accent-ink)}.nav a[aria-current="page"]{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:7px}
@@ -203,3 +203,30 @@ h1,h2,h3,p{margin-top:0}h1,h2,h3{letter-spacing:-.035em;line-height:1.17}h1{font
 
 
 .site-pronunciation{margin-inline-start:.35em;white-space:nowrap}
+
+/* Keep the same wordmark and navigation on resources and lessons. */
+.topbar .topbar-inner { padding-block: .35rem; }
+.topbar .site-nav summary { padding-inline: .55rem; border-radius: 7px; }
+.topbar .site-nav :is(.site-section-current, [open]) > summary { background: var(--accent-light); color: #843c13; }
+.topbar .site-nav details[open] > summary::before { content: none; }
+.topbar .site-dropdown a[aria-current="page"] { background: var(--accent-light); color: #843c13; }
+body:has(> .topbar):has(> .footer) { min-height: 100vh; display: flex; flex-direction: column; }
+body:has(> .topbar) > .footer { margin-block-start: auto; padding-block: 1.5rem; }
+body:has(> .topbar) > .footer .footer-inner { align-items: baseline; flex-wrap: wrap; row-gap: .55rem; }
+body:has(> .topbar) > .footer .footer-inner > p { margin: 0; }
+.practice-page .page-hero h1, .school-catchup h1 { font-size: clamp(2rem, 5vw, 3.05rem); }
+
+@media(min-width:731px) {
+  .topbar .topbar-inner { flex-direction: row; align-items: center; gap: 1rem; }
+  .topbar .site-nav { width: auto; gap: clamp(.4rem, 1.5vw, 1.25rem); }
+}
+@media(max-width:730px) {
+  .topbar .topbar-inner { align-items: stretch; flex-direction: column; gap: 0; padding-block: .3rem; }
+  .topbar .narajos-home { align-self: flex-start; }
+  .topbar .site-nav { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); align-items: start; gap: .25rem; }
+  .topbar .site-nav details { width: auto; }
+  .topbar .site-nav summary { display: flex; justify-content: center; min-height: 44px; text-align: center; padding: .35rem .25rem; white-space: normal; }
+  .topbar .site-nav details:first-of-type .site-dropdown { left: 0; right: auto; }
+  .topbar .site-nav details:nth-of-type(2) .site-dropdown { left: 50%; right: auto; transform: translateX(-50%); }
+  .topbar .site-nav .teacher-menu .site-dropdown { left: auto; right: 0; }
+}

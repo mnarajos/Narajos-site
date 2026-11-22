@@ -11,26 +11,30 @@ export function readCatchup(id) {
 
 export function saveCatchup(id, value) {
   try {
-    localStorage.setItem(prefix + id, JSON.stringify({...value, updated: Date.now()}));
+    localStorage.setItem(prefix + id, JSON.stringify(value));
     return true;
   } catch {
     return false;
   }
 }
 
-export function latestCatchup(year) {
+function catchupKeys() {
+  return Object.keys(localStorage).filter(key => key.startsWith(prefix));
+}
+
+export function hasCatchupProgress() {
   try {
-    let latest;
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (!key?.startsWith(prefix)) continue;
-      const value = readCatchup(key.slice(prefix.length));
-      if (!value.started || value.done || (year && value.year !== year)) continue;
-      if (!value.title || !value.href || !/^\/(?:ks3|science-catch-up)\//.test(value.href)) continue;
-      if (!latest || value.updated > latest.updated) latest = value;
-    }
-    return latest;
+    return catchupKeys().length > 0;
   } catch {
-    return undefined;
+    return false;
+  }
+}
+
+export function clearCatchupProgress() {
+  try {
+    for (const key of catchupKeys()) localStorage.removeItem(key);
+    return true;
+  } catch {
+    return false;
   }
 }
