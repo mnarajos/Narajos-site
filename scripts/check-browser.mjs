@@ -766,7 +766,7 @@ try{
   await navPage.goto(path);
   await navPage.getByRole("heading",{name:"Check your understanding",exact:true}).waitFor();
   const firstCheck=navPage.locator("[data-catchup-check]").first();
-  assert.equal(await navPage.locator("[data-catchup-check]").count(),path.includes("/ks3/lesson/")?3:2);
+  assert.equal(await navPage.locator("[data-catchup-check]").count(),/\/ks3\/(lesson|cells)\//.test(path)?3:2);
   assert(await navPage.locator(".ks3-lesson figure,.ks3-lesson table").first().isVisible(),"KS3 lesson is missing a visual prompt");
   const pictures=navPage.locator(".ks3-illustration img");
   for(const picture of await pictures.all()){
