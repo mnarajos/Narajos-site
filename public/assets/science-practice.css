@@ -160,6 +160,11 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .writing-order-controls button,.writing-order-group button{min-height:44px;border:1px solid #a1b5af;border-radius:7px;background:#fff;padding:.35rem .6rem;color:#24343b;font:inherit;cursor:pointer}
 .writing-order-controls button:first-child{background:#eef7f3;border-color:#276a62;font-weight:650}
 .writing-order-controls button:focus-visible,.writing-order-group button:focus-visible{outline:3px solid #c9611f;outline-offset:2px}
+.writing-order-feedback[data-result]{border-inline-start:4px solid #688781;scroll-margin-block:1rem}
+.writing-order-feedback[data-result="retry"]{background:#fff2de;border-inline-start-color:#a36128;color:#613717}
+.writing-order-feedback[data-result="correct"]{background:#e5f3e8;border-inline-start-color:#34704e;color:#224a32}
+.writing-order-group li[data-order-review] button{background:#fff2de;border-color:#a36128}
+.writing-order-review{display:inline-block;margin:.2rem .35rem;color:#613717;font-size:.85rem}
 .ks3-model-button{min-height:44px;border:1px solid #779b92;border-radius:7px;padding:.45rem .65rem;background:#fff;color:#214c47;font:inherit;font-weight:650;cursor:pointer}
 .ks3-model-button[aria-pressed="true"]{background:#d1ece2}
 .ks3-model-button:focus-visible{outline:3px solid #c9611f;outline-offset:3px}

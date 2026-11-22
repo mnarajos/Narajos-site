@@ -2,6 +2,7 @@ const exercises = {
   ramp: {
     paragraphs: [{
       title: "Why use the same car?",
+      openingHint: "Start by saying what the pupil should keep the same.",
       cards: [
         "To test ramp height fairly, use the same car each time.",
         "Changing the car could change how far it rolls.",
@@ -61,34 +62,50 @@ for (const root of document.querySelectorAll("[data-writing-order]")) {
   const options = elm("ul", "", "ks3-choices writing-order-options");
   const optionsHeading = elm("h3", "Sentences to choose from");
   const controls = elm("div", "", "writing-order-controls");
-  const feedback = elm("p", "", "ks3-feedback");
+  const feedback = elm("p", "", "ks3-feedback writing-order-feedback");
   feedback.setAttribute("role", "status");
   const model = elm("details");
   model.hidden = true;
   model.append(elm("summary", paragraphs.length === 1 ? "Read the completed paragraph" : "Read the completed paragraphs"),
     ...paragraphs.map(({ cards }) => elm("p", cards.join(" "), "model")));
 
+  function report(result, verdict, detail) {
+    feedback.dataset.result = result;
+    feedback.replaceChildren(elm("strong", verdict), " " + detail);
+    feedback.scrollIntoView({block: "nearest"});
+  }
+
   const check = button("Check the order", () => {
     if (selection.length < bank.length) {
-      feedback.textContent = "Choose " + (bank.length - selection.length) + " more " +
-        (bank.length - selection.length === 1 ? "sentence" : "sentences") + " before you check the order.";
+      const remaining = bank.length - selection.length;
+      report("incomplete", "Not checked yet.", "Choose " + remaining + " more " +
+        (remaining === 1 ? "sentence" : "sentences") + ".");
       return;
     }
     const firstError = selection.findIndex((id, index) => id !== index);
     if (firstError === -1) {
-      feedback.textContent = paragraphs.length === 1
-        ? "Correct. Your opening introduces the main idea. The middle explains it and the ending brings it back to the question."
-        : "Correct. Both paragraphs open with their own main idea, explain the steps in order, and finish by linking to the features of that rock.";
+      report("correct", "Correct.", paragraphs.length === 1
+        ? "Your opening gives the main idea. The middle explains it and the ending links it back to the question."
+        : "Both paragraphs give the main idea, explain the steps in order and link them to the rock.");
       model.hidden = false;
       return;
     }
     const group = firstError < groupCounts[0] ? 0 : 1;
     const slot = group === 0 ? firstError : firstError - groupCounts[0];
-    const roleHint = slot === 0 ? "Start with the sentence that introduces the main idea."
+    const roleHint = slot === 0 ? paragraphs[group].openingHint || "Start with the sentence that introduces the main idea."
       : slot === groupCounts[group] - 1 ? "Finish with the sentence that ties the explanation back to the question."
       : "Look for the sentence that directly follows the one before it.";
-    feedback.textContent = paragraphs[group].title + ", sentence " + (slot + 1) + ". " + roleHint +
-      " Select that sentence in your paragraph to return it and the later ones for another try.";
+    const marked = chosen.querySelectorAll("li")[firstError];
+    if (!marked.hasAttribute("data-order-review")) {
+      marked.dataset.orderReview = "";
+      const label = elm("strong", "Review this sentence", "writing-order-review");
+      label.id = root.dataset.writingOrder + "-order-review";
+      marked.append(label);
+      marked.querySelector("button").setAttribute("aria-describedby", label.id);
+    }
+    const location = paragraphs.length > 1 ? paragraphs[group].title + ", sentence " : "Sentence ";
+    report("retry", "Not quite.", location + (slot + 1) + " needs another look. " + roleHint +
+      " Select the marked sentence to try again.");
   });
   const reset = button("Start again", () => {
     selection.length = 0;
@@ -104,6 +121,7 @@ for (const root of document.querySelectorAll("[data-writing-order]")) {
     optionsHeading.hidden = selection.length === bank.length;
     options.hidden = optionsHeading.hidden;
     feedback.textContent = "";
+    delete feedback.dataset.result;
     model.hidden = true;
     model.open = false;
     let first = 0;
