@@ -1237,18 +1237,25 @@ window.KeystoneHumanKnowledge={
       "level": "apply",
       "stem": "Why can IVF bypass blocked oviducts?",
       "options": [
-        "Fertilisation occurs outside the body",
-        "It always repairs the blocked tubes",
-        "It removes all pregnancy risks",
-        "It replaces the uterus"
+        "Gametes can fuse outside the body before an embryo is transferred",
+        "Sperm placed in the uterus can reach the oocyte without tubal passage",
+        "Hormonal support moves the site of fertilisation from the tube to the uterus",
+        "Embryo transfer reopens an obstructed tube so fertilisation can occur"
       ],
       "correct": 0,
-      "model": "Fertilisation occurs outside the body",
+      "model": "Fertilisation can occur outside the body. An embryo can be transferred into the uterus.",
       "explain": "The resulting embryo can be transferred into the uterus.",
       "misconception": "IVF does not require the tubes to be surgically repaired.",
       "hintCue": "Where do gametes meet in IVF?",
       "samAligned": false,
-      "knowledgeOnly": true
+      "knowledgeOnly": true,
+      "assessmentRevision": 1,
+      "optionFeedback": [
+        null,
+        "Introducing sperm into the uterus still relies on sperm reaching the oocyte, normally in an oviduct.",
+        "Hormones can affect follicle development or ovulation. That does not move the usual site of fertilisation.",
+        "Embryo transfer happens after fertilisation. It places an embryo in the uterus rather than reopening a tube."
+      ]
     },
     {
       "id": "f175-infertility-factors",

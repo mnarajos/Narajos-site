@@ -1139,7 +1139,7 @@ additions.push({
  hintCue:"Compare the cell arrangement around the pale space with the arrangement each explanation requires.",
  misconception:"Colour can vary with stains. Use spatial features to distinguish tissue."
 },{
- id:"f171-rested-pressure-interpret",unit:"f171",area:4,section:"4.2.2",type:"single",level:"apply",
+ id:"f171-rested-pressure-interpret",independentFollowups:["p-health-bp-repeat-diagnostic"],unit:"f171",area:4,section:"4.2.2",type:"single",level:"apply",
  stem:"A teammate says the first and last visits prove that resting pressure rose. Which conclusion follows from these fictional records?",
  evidenceTable:{caption:"Systolic readings (mmHg)",columns:["Visit","First","Second","Conditions"],
   rows:[["1","132","134","Rested"],["2","131","133","Rested"],["3","151","Missing","Just after cycling"]],focus:[[0,3],[1,3],[2,3]]},
@@ -1150,7 +1150,7 @@ additions.push({
  hintCue:"Compare the test conditions before deciding which visits can be compared.",
  misconception:"An association in the record does not identify what caused the difference."
 },{
- id:"f171-trial-conclusion-interval",unit:"f171",area:5,section:"5.2",type:"single",level:"stretch",
+ id:"f171-trial-conclusion-interval",independentFollowups:["p-f171-research-designs-diagnostic"],unit:"f171",area:5,section:"5.2",type:"single",level:"stretch",
  stem:"In a fictional randomised trial, a walking aid group improved by 4 m more on average after four weeks. The 95% confidence interval for that difference runs from −3 to +11 m. Which conclusion fits the evidence?",
  options:["The estimated benefit is 4 m, but the interval includes no difference and the trial gives limited long-term evidence.","The result establishes a benefit because most of the interval is above zero.","Random allocation guarantees that sampling uncertainty has been removed.","Four weeks of improvement establish that rare harms are unlikely after a year."],
  correct:0,model:"The 4 m estimate is uncertain. Compatible values include zero difference. Longer follow-up and adequate sample sizes are needed for longer-term outcomes and rare harms.",

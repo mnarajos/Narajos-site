@@ -745,7 +745,8 @@ function planQuickCheck(q){
  var rank={warmup:0,core:1,apply:2,stretch:3};
  var candidates=all.filter(function(x){
   if(q.point&&x.point!==q.point&&ladders.get(q.point).core.indexOf(x.id)<0)return false;
-  return x.id!==q.id&&x.unit===q.unit&&x.section===q.section&&
+  var sameIdea=q.independentFollowups?q.independentFollowups.includes(x.id):x.section===q.section;
+  return x.id!==q.id&&x.unit===q.unit&&sameIdea&&
    (rank[x.level]||0)<=(rank[q.level]||0)&&
    !(x.id in seen)&&!(session.quickCheckIds||{})[x.id]&&
    ["single","diagram","match","best"].indexOf(x.type)>=0;

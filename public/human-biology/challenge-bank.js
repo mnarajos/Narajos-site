@@ -1240,6 +1240,9 @@ window.KeystoneHumanChallenges={
         "This measures inhibition in a test. Treatment effects also depend on whether suitable concentrations reach the site and other clinical factors.",
         "The carrier result checks whether the carrier appeared to inhibit growth. Different substances can still diffuse differently.",
         "A diameter needs a relevant validated interpretation criterion before it can support a susceptibility category."
+      ],
+      "independentFollowups": [
+        "health-antibiotic-control-v2"
       ]
     },
     {
@@ -1268,6 +1271,9 @@ window.KeystoneHumanChallenges={
         "Repeated readings estimate variation. A solvent-only comparison asks whether the carrier contributed to inhibition.",
         "A concentration comparison needs results at different doses. The solvent-only result checks for an effect of the carrier.",
         "A comparison between organisms needs data from both. The control isolates the effect of the carrier."
+      ],
+      "independentFollowups": [
+        "health-antibiotic-control-v2"
       ]
     },
     {
@@ -1297,6 +1303,9 @@ window.KeystoneHumanChallenges={
         "The base is the Fc region. Label A points to an arm tip.",
         "The hinge is where the two arms can flex relative to the base. A points farther out.",
         "The bond helps hold chains together. The tip forms the region that recognises the antigen."
+      ],
+      "independentFollowups": [
+        "p-f171-antigen-antibody-complex-diagnostic"
       ]
     },
     {
@@ -1328,6 +1337,9 @@ window.KeystoneHumanChallenges={
         null,
         "Recent activity can change blood pressure. To compare resting readings, take them under comparable rested conditions.",
         "A cuff that is too small for the arm can bias the result. Select the cuff size to suit the arm."
+      ],
+      "independentFollowups": [
+        "p-f171-monitoring-repeats-diagnostic"
       ]
     },
     {
@@ -1445,6 +1457,9 @@ window.KeystoneHumanChallenges={
         "Antibodies are proteins. They cannot divide. Activated lymphocytes can proliferate.",
         "Antigen provides the target recognised during a response. It does not neutralise the pathogen.",
         "Some phagocytes engulf material. Memory lymphocytes help organise a faster specific response."
+      ],
+      "independentFollowups": [
+        "health-immunisation-v2"
       ]
     },
     {
