@@ -1,6 +1,33 @@
 import { mountJourney, question } from "./school-catchup-journey.js";
 import { readCatchup, saveCatchup } from "./school-catchup-progress.js";
 
+const extendedJourneys = {
+  "fair-tests": {
+    practiceHint: "Look at the ruler. Where is the zero, and what are you measuring from there?",
+    teaching: [
+      ["Change one thing", "The independent variable is the factor you change on purpose. In the model, you can change the angle and compare the two runs."],
+      ["Measure the result", "The dependent variable is what you measure. Here the ruler starts at the foot of the ramp. Measure from there to where the toy stops."],
+      ["Keep the test fair", "A control variable is a factor you keep the same. In the angle test, use the same toy, surface and release point. Then you can link any difference to the angle."],
+    ],
+    transfer: question("You now want to test rough and smooth ramps. Which pair of settings should you keep the same?",
+      "Ramp angle and release point", "Changing the angle or release point could also change the distance. Keep both the same while changing the surface.",
+      ["Ramp surface and distance rolled", "Change the surface on purpose. Measure the distance rolled each time."],
+      ["Ramp surface and ramp angle", "Keep the angle the same, then change the surface to compare rough and smooth ramps."])
+  },
+  "states-of-matter": {
+    practiceHint: "Watch the particles change neighbours. Do the circles change size?",
+    teaching: [
+      ["Warm the solid", "Press Heat once. The particles vibrate faster around the same positions. The substance gets warmer and stays solid."],
+      ["Watch the particles slide", "A liquid can flow because its particles can move past each other. They stay close together. The same particles are present before and after melting."],
+      ["Compare a liquid and a gas", "Gas particles have much more space between them. When you squeeze a gas, they can move closer. A liquid changes very little in volume when squeezed."],
+    ],
+    transfer: question("In the model, you keep heating the liquid as it starts to boil. What happens to the temperature while liquid and gas are both present?",
+      "It stays steady while the liquid boils.", "At the boiling point, energy is still transferred to the substance. It changes state while the temperature stays steady.",
+      ["It keeps rising while the liquid boils.", "The liquid warms before it reaches the boiling point. While it boils, the temperature stays steady in this model."],
+      ["It drops as the gas forms.", "Heating supplies energy. At the boiling point, it changes the state while the temperature stays steady."])
+  }
+};
+
 const topics = {
   "fair-tests": [
     "What made the same toy roll farther?",
@@ -264,14 +291,18 @@ export function addKS3Journey(model, lesson, year) {
   if (!item) return;
   const [hook, hint, transfer] = item;
   addPracticeAnswer(model.parentElement.querySelector("[data-ks3-transfer]"), year + "." + lesson.id);
-  mountJourney(model, model, {
-    id: lesson.id, year, title: lesson.unit, hook,
-    steps: [
-      {...fromLesson(lesson.questions[0]), notice: hint},
-      {...fromLesson(lesson.questions[1]), hint},
-      question(...transfer)
-    ]
-  });
+  const steps = [
+    {...fromLesson(lesson.questions[0]), notice: hint},
+    {...fromLesson(lesson.questions[1]), hint},
+    question(...transfer)
+  ];
+  const extension = extendedJourneys[lesson.id];
+  if (extension) {
+    extension.teaching.forEach((teach, index) => { steps[index].teach = teach; });
+    steps[1].hint = extension.practiceHint;
+    steps.push(extension.transfer);
+  }
+  mountJourney(model, model, {id: lesson.id, year, hook, steps});
 }
 
 function fromCard(card) {
