@@ -1,3 +1,4 @@
+import {checkALevelExam} from "./check-alevel-exam.mjs";
 import assert from "node:assert/strict";
 import { chromium } from "playwright";
 import axe from "axe-core";
@@ -13,6 +14,7 @@ const pages = [
 ];
 
 try {
+  await checkALevelExam(browser,base);
   const page = await browser.newPage({ viewport: { width: 390, height: 844 }, hasTouch: true });
   await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
   const measurements = [];

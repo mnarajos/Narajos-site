@@ -1,0 +1,132 @@
+.al-teaching {
+  margin-block: 1.2rem;
+  padding: 1rem;
+  border: 1px solid var(--line, #97aaa5);
+  border-radius: 0.7rem;
+  background: var(--card, #fff);
+  color: var(--ink, #203c43);
+}
+.al-teaching h2 {
+  margin-top: 0;
+}
+.al-teaching .al-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-block: 1rem;
+}
+.al-teaching button,
+.al-teaching summary {
+  min-height: 44px;
+  cursor: pointer;
+}
+.al-teaching label {
+  display: block;
+  padding: 0.6rem;
+  border: 1px solid var(--line, #97aaa5);
+  border-radius: 0.4rem;
+  margin: 0.4rem 0;
+}
+.al-teaching input[type="radio"],
+.al-teaching input[type="checkbox"] {
+  margin-right: 0.6rem;
+}
+.al-teaching textarea {
+  display: block;
+  width: 100%;
+  min-height: 7rem;
+  font: inherit;
+  padding: 0.6rem;
+}
+.al-teaching select,
+.al-teaching input[type="number"] {
+  max-width: 100%;
+  padding: 0.6rem;
+  font: inherit;
+}
+.al-teaching svg {
+  display: block;
+  width: 100%;
+  max-width: 42rem;
+  height: auto;
+  margin: auto;
+}
+.al-teaching svg text {
+  font-family: inherit;
+  font-size: 17px;
+  fill: currentColor;
+}
+.al-teaching table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 1rem;
+}
+.al-teaching th,
+.al-teaching td {
+  border: 1px solid var(--line, #97aaa5);
+  padding: 0.35rem;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.al-table {
+  overflow: auto;
+}
+.al-figures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+.al-figures figure {
+  min-width: 0;
+  margin: 0;
+}
+.al-teaching figcaption {
+  font-weight: 700;
+}
+.al-teaching .al-feedback {
+  padding: 0.75rem;
+  border-left: 4px solid var(--acc, #236b65);
+  margin-block: 1rem;
+}
+.al-teaching .al-stage {
+  font-weight: 700;
+}
+.al-teaching :focus-visible {
+  outline: 3px solid var(--acc, #236b65);
+  outline-offset: 3px;
+}
+.al-teaching .al-path {
+  padding: 0.7rem;
+  border: 1px solid;
+  line-height: 2;
+}
+.al-teaching .al-step {
+  padding: 0.8rem;
+  background: var(--acc-soft, #edf4f1);
+}
+.al-teaching .al-step p {
+  margin-block: 0.4rem;
+}
+.al-teaching .al-note {
+  font-size: 1rem;
+}
+.al-teaching [hidden] {
+  display: none !important;
+}
+@media (max-width: 620px) {
+  .al-figures {
+    grid-template-columns: 1fr;
+  }
+  .al-teaching {
+    padding: 0.7rem;
+  }
+  .al-teaching table {
+    font-size: 0.92rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .al-teaching * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
