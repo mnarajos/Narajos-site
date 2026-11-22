@@ -57,8 +57,8 @@ export const curriculum = {
       "Some water particles at the surface have enough energy to escape into the air. They are still water particles. They move freely in all directions and spread out as water vapour. This is evaporation."),
     lesson("atoms-and-compounds", "Atoms, Elements and Compounds", "Can two joined atoms still be part of an element?",
       { type: "molecules", caption: "Three samples shown as particles", panels: [{ label: "Sample A", groups: ["aa", "aa", "aa"] }, { label: "Sample B", groups: ["ab", "ab", "ab"] }, { label: "Sample C", groups: ["aa", "ab", "aa"] }] },
-      "Each colour stands for a type of atom. Joined circles are bonded. Find the sample with the same two colours in every group.",
-      ["Use the colour of each circle to identify the type of [atom]. An [element] has one type of atom. Two atoms of that type can still be joined together.",
+      "The letters X and Y stand for different types of atom. Joined circles are bonded. Find the sample with both types in every group.",
+      ["Use the letter in each circle to identify the type of [atom]. An [element] has one type of atom. Two atoms of that type can still be joined together.",
        "A [compound] has different types of atom chemically bonded together. A [mixture] contains more than one substance. Compare groups of circles to see whether the sample contains one substance or more."],
       [
         check("What is sample A?", "An element", "All its atoms are one type, even though they are joined in pairs.", [
@@ -125,7 +125,7 @@ export const curriculum = {
       "The second lamp transfers 4 J usefully instead of 3 J, with the same input. A greater fraction of its input is useful, so it is more efficient."),
     lesson("reproduction", "Human and Plant Reproduction", "Does a flower get fertilised as soon as pollen lands on its stigma?",
       { type: "flow", caption: "A flowering plant forms seeds", panels: ["Pollen reaches a stigma", "A male sex cell reaches an ovule", "Sex cells join", "A seed develops"] },
-      "Follow the arrow from anther to stigma. Now find the ovule, where the sex cells can join.",
+      "Follow the pollen from anther to stigma. Then see how a sex cell reaches the ovule.",
       ["[Pollination] moves pollen from an anther to a stigma. Wind or an animal can move the pollen.",
        "[Fertilisation] is the joining of male and female sex cells. In a flowering plant this can happen in an [ovule]. In humans a sperm cell and an egg cell join."],
       [
@@ -159,7 +159,7 @@ export const curriculum = {
       "The second pupil may have added alkali in excess, after there was enough to neutralise the acid. The solution is then alkaline."),
     lesson("chemical-reactions", "Types of Reaction", "Why might a fizzing reaction seem to lose mass?",
       { caption: "Mass of a closed flask and its contents", headers: ["Before mixing", "After bubbles stop"], rows: [["132 g", "132 g"]] },
-      "Compare the readings before and after fizzing in the open and sealed containers.",
+      "Watch the balance in the sealed case. Then compare what happens when gas can escape.",
       ["A [chemical reaction] rearranges atoms to form new substances. Bubbles can be evidence that a new gas has formed.",
        "The sealed flask is a [closed system], so the gas stays inside. The same atoms are present before and after, so the total mass is [conserved]."],
       [
@@ -176,7 +176,7 @@ export const curriculum = {
       "Some gas escapes and is no longer on the balance. If the escaped gas were included, the total mass would be the same."),
     lesson("light-and-sound", "Light and Sound", "Why can you see lightning before you hear thunder?",
       { type: "flow", caption: "Two signals from the same lightning strike", panels: ["Lightning strike", "Light reaches you", "Thunder reaches you later"] },
-      "Compare what light and sound need to travel from the strike to you.",
+      "Start both signals at the strike. Step through to see which reaches you first.",
       ["Light and sound both transfer energy. Compare the light and sound from the same lightning strike. The light travels much faster through air.",
        "Sound travels as a [vibration] passed through matter, such as air. Light can also travel through *empty space*, a [vacuum]. That is how sunlight reaches Earth."],
       [
@@ -212,7 +212,7 @@ export const curriculum = {
   8: [
     lesson("health-and-lifestyle", "Health and Lifestyle", "Can two lunches give you the same energy and different nutrients?",
       { caption: "Some nutrients in typical foods", headers: ["Food", "Some nutrients it supplies"], rows: [["Wholemeal bread", "Carbohydrate, fibre"], ["Lentils", "Protein, carbohydrate, fibre"], ["Sunflower oil", "Lipid"]] },
-      "Find a food that provides more than one kind of nutrient.",
+      "Look at the foods. Find one that supplies more than one kind of nutrient.",
       ["A [nutrient] is a substance in food that the body uses. A [carbohydrate] or a [lipid] can supply energy. [Protein] supplies building blocks for growth and repair.",
        "Look at the lentil row. One food can supply several nutrients. A varied, balanced diet helps supply both the energy and the nutrients the body needs."],
       [
@@ -283,7 +283,7 @@ export const curriculum = {
       "The first winch does 50 × 3 = 150 J. The second does 25 × 6 = 150 J. They do the same work because halving force and doubling distance leaves the product unchanged."),
     lesson("respiration", "Respiration", "Why do seeds need oxygen even before they have leaves?",
       { type: "flow", caption: "From breathing to aerobic respiration", panels: ["Air moves in and out of your lungs", "Blood carries oxygen to cells", "Cells use oxygen and glucose in respiration"] },
-      "Follow what enters a body cell and what the cell uses for respiration.",
+      "Trace oxygen and glucose into the cell. Then find the products.",
       ["[Breathing] *moves air in and out*. In humans, it helps supply oxygen for a different process inside cells.",
        "[Aerobic respiration] uses oxygen and [glucose] to transfer energy for cell activities. Carbon dioxide and water are produced. Plant cells and animal cells both respire."],
       [

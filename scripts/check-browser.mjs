@@ -155,10 +155,33 @@ try{
    await pilotPage.getByRole("checkbox",{name:"Greyscale",exact:true}).check();
    assert.equal(await comparison.first().evaluate(img=>getComputedStyle(img).filter),"grayscale(1)");
   }
+  assert(await pilotPage.locator(".school-evidence-visual").isVisible(), path);
+  assert(await pilotPage.locator(".school-evidence-visual").locator('svg[role="img"],img,.catchup-clock-grid').count() > 0, path);
   assert(await pilotPage.getByRole("progressbar",{name:"Lesson progress"}).isVisible());
   assert.equal(await pilotPage.getByRole("progressbar",{name:"Lesson progress"}).getAttribute("value"),"0");
   assert((await pilotPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Year 9 catch-up overflows at phone width");
  }
+ await pilotPage.setViewportSize({width:320,height:844});
+ await pilotPage.goto(base+"/science-catch-up/lesson/?topic=energy-transfer");
+ await pilotPage.getByRole("button",{name:"Reveal both totals",exact:true}).press("Enter");
+ for(const total of ["100 J × 2 = 200 J", "50 J × 10 = 500 J"]){
+   assert(await pilotPage.getByText(total,{exact:true}).isVisible());
+ }
+ assert((await pilotPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"The energy timeline overflows at 320px");
+ await pilotPage.goto(base+"/ks3/lesson/?topic=earth-structure&guided=1");
+ const specimenImages=pilotPage.locator("#catchup-evidence .catchup-photo");
+ await specimenImages.first().waitFor();
+ assert.equal(await specimenImages.count(),2);
+ for(const image of await specimenImages.all()){
+   await image.evaluate(img=>img.decode());
+   const links=image.locator("..").getByRole("link");
+   assert.match(await links.nth(0).getAttribute("href"),/^https:\/\/commons\.wikimedia\.org/);
+   assert.match(await links.nth(1).getAttribute("href"),/^https:\/\/creativecommons\.org\/licenses\/by/);
+ }
+ await pilotPage.getByRole("button",{name:"Heat and press solid rock",exact:true}).press("Enter");
+ await pilotPage.getByRole("img",{name:/remains solid throughout/}).waitFor();
+ assert((await pilotPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"The rock model overflows at 320px");
+ await pilotPage.setViewportSize({width:390,height:844});
  await pilotPage.goto(base+"/science-catch-up/lesson/?topic=osmosis");
  const guide=pilotPage.locator(".school-journey");
  const check=guide.getByRole("dialog");

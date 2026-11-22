@@ -1,3 +1,5 @@
+import { ks3CatchupModel } from "./ks3-catchup-models.js";
+
 const flow = (caption, ...panels) => ({type: "flow", caption, panels});
 const table = (caption, headers, ...rows) => ({caption, headers, rows});
 
@@ -51,7 +53,7 @@ const comparisons = {
     notice: "Light reaches a distant observer. A sound wave needs matter to carry the vibration."
   },
   "health-and-lifestyle": {
-    original: "First food table", change: "Compare a snack",
+    original: "Compare three foods", change: "Compare a snack",
     prompt: "Compare the two snack choices. Can each food provide more than one kind of nutrient?",
     visual: table("Some nutrients in a snack", ["Food", "Some nutrients it supplies"],
       ["Plain yoghurt", "Protein, carbohydrate, calcium"], ["Orange", "Carbohydrate, fibre, vitamin C"]),
@@ -79,7 +81,7 @@ const comparisons = {
     notice: "The distance doubles and the work done doubles. The force is the same in both rows."
   },
   respiration: {
-    original: "Oxygen reaches a muscle", change: "Look at cells in a root",
+    original: "Look at a muscle cell", change: "Look at cells in a root",
     prompt: "A root has no lungs. What do its living cells need to respire aerobically?",
     visual: flow("Respiration in a root cell", "Glucose from the plant and oxygen from air in soil", "Aerobic respiration in the root cell", "Energy transferred for cell activities"),
     notice: "Both cells can use glucose and oxygen. The root gets its oxygen locally instead of breathing it in."
@@ -98,7 +100,7 @@ const comparisons = {
   },
   metals: {
     original: "Iron in copper sulfate", change: "Copper in iron sulfate",
-    prompt: "Swap which metal is the strip and which is in the compound. Predict whether a coating will form this time.",
+    prompt: "Swap the metals. Predict whether the second strip will get a coating.",
     visual: flow("Reverse which metal starts in solution", "Copper strip in iron sulfate solution", "No new iron coating forms"),
     notice: "Copper is less reactive than iron. It cannot displace iron from its compound."
   },
@@ -136,7 +138,24 @@ export function explore(lesson, original, renderVisual) {
   function show(changed) {
     first.setAttribute("aria-pressed", String(!changed));
     second.setAttribute("aria-pressed", String(changed));
-    view.replaceChildren(...(changed ? [renderVisual(setup.visual)] : original));
+    if (changed) {
+      const model = ks3CatchupModel(lesson.id, true);
+      if (model) {
+        view.replaceChildren(model);
+        if (lesson.id === "periodic-table") view.append(renderVisual(setup.visual));
+        if (setup.visual.headers) {
+          const table = document.createElement("details");
+          const label = document.createElement("summary");
+          label.textContent = "Read the table";
+          table.append(label, renderVisual(setup.visual));
+          view.append(table);
+        }
+      } else {
+        view.replaceChildren(renderVisual(setup.visual));
+      }
+    } else {
+      view.replaceChildren(...original);
+    }
     feedback.textContent = changed ? setup.notice : "";
   }
   first.addEventListener("click", () => show(false));

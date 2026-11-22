@@ -26,7 +26,7 @@ export const year9 = {
 
   osmosis: lesson("B1", "Osmosis",
     "Why might a piece of potato gain mass in water?",
-    "Which way do more water molecules cross the membrane?",
+    "Trace the arrows through the membrane. Which way do more water molecules cross?",
     "Osmosis is the net movement of water molecules through a partially permeable membrane from a more dilute to a more concentrated solution.",
     ["A simple membrane model", ["Side A", "Partially permeable membrane", "Side B"], [
       ["More dilute solution", "Water can cross in both directions", "More concentrated solution"],
@@ -42,7 +42,7 @@ export const year9 = {
 
   "active-transport": lesson("B1", "Active transport",
     "How can a root cell take in mineral ions when their concentration is already higher inside?",
-    "Find the lower ion concentration, then trace the ions.",
+    "Find the lower ion concentration in the zoomed view, then trace an ion.",
     "Active transport can move substances against their concentration gradient. It requires energy from respiration.",
     ["Two ways of moving substances", ["Process", "Direction", "Energy from respiration needed?"], [
       ["Diffusion", "Higher to lower concentration overall", "No"],
@@ -51,14 +51,17 @@ export const year9 = {
       teach("Two possible directions", "In diffusion, particles spread from higher to lower concentration. A membrane can also move some substances from lower to higher concentration. This is active transport.", q("A root cell takes up ions from lower concentration outside to higher concentration inside. What process is this?", "Active transport", "The movement goes against the concentration gradient.", "Osmosis", "Diffusion")),
       teach("Where the energy comes from", "Moving ions against their concentration gradient takes energy. Respiration supplies this energy.",
         guided("Compare the direction of the ions with the concentration gradient.", q("Which change could reduce this uptake?", "A reduced energy supply from respiration", "Active transport requires energy.", "Keeping the membrane intact", "Keeping the soil wetter in every situation"))),
-      teach("The same idea in the gut", "Gut cells absorb dissolved nutrients. To predict the process, compare the concentration on each side of the cell membrane.", q("Cells in the gut take up a dissolved nutrient when its concentration is lower in the gut than inside the cells. What is needed?", "Active transport using energy", "There is net movement against a concentration gradient.", "Diffusion down the gradient", "Water moving by osmosis")),
+      teach("The same idea in the gut", "Gut cells absorb dissolved nutrients. Compare their concentration on each side of the cell membrane.", {
+        ...q("Cells in the gut take up a dissolved nutrient when its concentration is lower in the gut than inside the cells. What is needed?", "Active transport using energy", "There is net movement against a concentration gradient.", "Diffusion down the gradient", "Water moving by osmosis"),
+        image: ["/assets/ks3-diagrams/gut-transport-check.svg", "A dissolved nutrient moves from the gut, where its concentration is lower, into a gut cell, where its concentration is higher."]
+      }),
       q("An aquatic plant takes up ions when their concentration is lower outside its cells. Which process allows this?", "Active transport", "The ions move against their concentration gradient. This requires energy.", "Diffusion", "Osmosis")
     ],
     q("Which observation most strongly suggests active transport?", "Ions enter a cell even though their concentration is already higher inside.", "Movement from lower to higher concentration requires an energy-dependent process in this example.", "A gas spreads through air.", "Water crosses a partially permeable membrane.")),
 
   mitosis: lesson("B1", "Mitosis",
     "How does each new cell get a full copy of the original cell’s DNA?",
-    "Follow the DNA from one cell to two.",
+    "Step through the pictures. Look for two nuclei inside one cell.",
     "The cell copies its DNA before mitosis. In mitosis, the copies separate into two nuclei. The cell then divides into two genetically identical cells.",
     ["From one cell to two", ["Stage", "What happens"], [
       ["Before mitosis", "The cell grows and copies its DNA"],
@@ -75,7 +78,7 @@ export const year9 = {
 
   "atomic-number": lesson("C1", "Atomic number and isotopes",
     "If a sodium atom loses an electron, is it still sodium?",
-    "Compare proton numbers first, then electron numbers.",
+    "Find the 11 protons in each nucleus. Then see what changes when an electron is removed.",
     "The proton number identifies the element. Changing electrons makes an ion. Changing neutrons gives a different isotope of the same element.",
     ["Compare the particles in the examples", ["Example", "Protons", "Neutrons", "Electrons"], [
       ["Sodium atom", "11", "12", "11"], ["Sodium ion", "11", "12", "10"], ["Different sodium isotope", "11", "13", "11"]]],
@@ -89,7 +92,7 @@ export const year9 = {
 
   "periodic-table": lesson("C1", "Groups in the periodic table",
     "Why do lithium and sodium react in similar ways?",
-    "Compare the last number in each electron arrangement.",
+    "Find the marked electron in each outer shell. Compare the last number in each arrangement.",
     "Elements in the same group often react in similar ways because they have the same number of electrons in their outer shell.",
     ["Outer electrons of some Group 1 metals", ["Element", "Electrons in shells", "Outer-shell electrons"], [
       ["Lithium", "2, 1", "1"], ["Sodium", "2, 8, 1", "1"], ["Potassium", "2, 8, 8, 1", "1"]]],
@@ -119,7 +122,7 @@ export const year9 = {
 
   "energy-transfer": lesson("P1", "Power and energy",
     "Can a more powerful device use less energy overall?",
-    "Compare power first, then total energy transferred.",
+    "Compare the height of one block, then reveal the total energy each device transfers.",
     "Power is energy transferred per second. Efficiency is the fraction of the input transferred usefully.",
     ["Compare two devices", ["Device", "Power", "Time", "Total transfer"], [
       ["A", "100 W", "2 s", "200 J"], ["B", "50 W", "10 s", "500 J"]]],
@@ -157,7 +160,7 @@ export const year9 = {
       ["After denaturation by high heat", "Shape has changed", "Fewer substrates can bind"]]],
     [
       q("Where does a substrate normally bind?", "At the enzyme’s active site", "The substrate can bind where the shapes are complementary.", "At every part of the enzyme", "On a cell wall instead"),
-      guided("Compare the shape of the active site in both rows.",
+      guided("Compare the active site after gentle warming and after strong heating.",
         q("Why can strong heating lower the enzyme’s activity?", "The active site changes shape and fewer substrates bind.", "This change is called denaturation.", "The enzyme is used up as a reactant.", "The heat creates more substrate.")),
       q("A digestive enzyme is heated until denatured, then cooled. Why can it stay inactive?", "Cooling need not restore the original active-site shape.", "If the shape remains changed, the substrate may still be unable to bind.", "Enzymes are alive and cannot come back to life.", "Cooling always restores every enzyme.")
     ],
