@@ -19,6 +19,9 @@ const checks = [
   ["potato", "reason", "Water entered the cells by osmosis, causing a mass gain.", ["credited"]],
   ["potato", "reason", "Water entered the cells because the potato gained mass.", ["compare"]],
   ["potato", "reason", "The sample gained mass because water moved out of the potato cells.", ["revise"]],
+  ["potato", "reason", "The potato gained mass because water moved into the dilute solution from its cells.", ["revise"]],
+  ["potato", "reason", "The potato gained mass because water moved across the partially permeable membrane by osmosis into its cells.", ["credited"]],
+
   ["potato", "reason", "The sample gained mass because water did not enter the cells.", ["compare"]],
   ["potato", "reason", "Water, into the cells, went somewhere. The sample gained mass.", ["compare"]],
   ["potato", "paragraph", "The potato gained 7% in dilute solution because water moved into its cells. It lost 9% in concentrated solution because water moved out of its cells.", ["credited", "credited", "credited", "credited"]],

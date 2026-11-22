@@ -65,9 +65,12 @@ function readPotatoEvidence(parts, expected) {
 }
 
 const water = /\bwater\b/;
-const entry = /\b(?:into|entered?|enters|entering|moved in|moves in|went in|taken up|absorbed)\b/;
-const exit = /\b(?:out of|left|leaves?|leaving|lost|moved out|moves out|went out)\b/;
 const cells = /\b(?:cells?|potato(?:es)?)\b/;
+const cellTarget = String.raw`(?:the |its |their )?(?:potato(?: cells?)?|cells?)\b`;
+const intoCells = new RegExp(String.raw`\bwater\b.{0,90}\b(?:in ?to|enter\w*)\s+` + cellTarget +
+  String.raw`|\b(?:cells?|potato)\b.{0,20}\b(?:take|took) up water\b`);
+const outOfCells = new RegExp(String.raw`\bwater\b.{0,90}\b(?:out of|leav\w*|left|from)\s+` + cellTarget);
+
 function causalParts(part) {
   const reason = part.match(/^(.*?)\s*,?\s*\b(?:because|due to(?: the fact that)?)\b\s*(.+)$/);
   if (reason) return { outcome: reason[1], cause: reason[2] };
@@ -77,8 +80,8 @@ function causalParts(part) {
 
 function readWaterMovement(parts, type, assumeSample) {
   const entering = type === "dilute";
-  const direction = entering ? entry : exit;
-  const opposite = entering ? exit : entry;
+  const flow = entering ? intoCells : outOfCells;
+  const opposite = entering ? outOfCells : intoCells;
   const effect = entering ? up : down;
   const label = entering ? "Water movement and mass gain" : "Water movement and mass loss";
   const model = entering ? "Net movement of water into the potato cells made the sample gain mass."
@@ -89,17 +92,15 @@ function readWaterMovement(parts, type, assumeSample) {
     return solution === type || (!solution && (assumeSample || effect.test(part)));
   });
   const waterClaims = related.filter(part => water.test(part) && cells.test(part));
-  const flow = entering ? /\b(?:(?:water|it)\b.{0,45}\binto|water\b.{0,28}\benter\w*\b|cells?\b.{0,20}\b(?:take|took) up water)/ :
-    /\b(?:(?:water|it)\b.{0,45}\bout of|water\b.{0,28}\b(?:leave\w*|left)\b)/;
   const matches = waterClaims.some(part => {
     const link = causalParts(part);
     return link && effect.test(link.outcome) && water.test(link.cause) && cells.test(link.cause) &&
-      flow.test(link.cause) && direction.test(link.cause) && !opposite.test(link.cause.split(/\bthan\b/)[0]) &&
+      flow.test(link.cause) && !opposite.test(link.cause.split(/\bthan\b/)[0]) &&
       !denial.test(part) && !uncertainty.test(part);
   });
   const reversed = waterClaims.some(part => {
-    const movement = part.match(/\bwater\b.{0,45}/)?.[0] || "";
-    return (entering ? /\b(?:out of|left the cells)\b/ : /\b(?:into|enter\w*)\b/).test(movement) && !direction.test(movement);
+    const cause = causalParts(part)?.cause || part;
+    return opposite.test(cause) && !flow.test(cause);
   });
 
   if (matches && !reversed) return result(label, "credited", "You linked the direction of water movement to the change in mass.");
