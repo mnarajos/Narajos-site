@@ -1,0 +1,91 @@
+import assert from "node:assert/strict";
+
+export async function checkCatchupScaffolds(browser, base) {
+  const page = await browser.newPage({viewport: {width: 320, height: 780}, hasTouch: true, isMobile: true});
+  const journey = page.locator(".school-journey");
+  const check = journey.getByRole("button", {name: "Check", exact: true});
+  const dialog = journey.getByRole("dialog");
+  const choose = async (answer, next = "Continue") => {
+    await dialog.getByRole("radio", {name: answer, exact: true}).check();
+    await dialog.getByRole("button", {name: "Check answer", exact: true}).press("Enter");
+    await dialog.getByRole("status").filter({hasText: /^Correct\./}).waitFor();
+    await dialog.getByRole("button", {name: next, exact: true}).press("Enter");
+  };
+  const narrow = async (scope, id) => assert(await scope.evaluate(node => node.scrollWidth <= node.clientWidth + 3), `${id} overflows`);
+  try {
+    for (const [year, count] of [[7, 12], [8, 11], [9, 12]]) {
+      await page.goto(`${base}/science-catch-up/?year=${year}`);
+      const lessons = page.locator(year < 9 ? ".school-topic-link" : ".school-concept-list a");
+      await lessons.first().waitFor();
+      const urls = await lessons.evaluateAll(items => items.map(item => item.href));
+      assert.equal(urls.length, count, `Year ${year} lesson count`);
+      for (const url of urls) {
+        await page.goto(url);
+        await page.locator(".school-opening-hook").waitFor();
+        await page.locator("#catchup-evidence").waitFor();
+        await check.press("Enter");
+        await dialog.getByRole("radio").first().waitFor();
+        await narrow(dialog, url);
+        assert(!(await dialog.getByRole("button", {name: "Catch-up notes", exact: true}).count()));
+        await page.keyboard.press("Escape");
+        await dialog.waitFor({state: "hidden"});
+      }
+    }
+
+    await page.goto(base + "/ks3/lesson/?topic=forces&guided=1");
+    // The coverage pass opens and pauses each first check but leaves it unattempted.
+    const reopen = journey.getByRole("button", {name: "Resume check", exact: true});
+    assert(await journey.getByRole("heading", {name: "Read the arrows on the cyclist"}).isVisible());
+    await reopen.press("Enter");
+    await choose("It stays the same.");
+    assert(await journey.getByRole("heading", {name: "We do · Guided practice"}).isVisible());
+    await check.press("Enter");
+    assert(await dialog.getByText("40 N backwards", {exact: false}).isVisible());
+    assert(await dialog.getByText(/Subtract the smaller force/).isVisible());
+    await choose("The cyclist slows down.");
+    assert(await journey.getByRole("heading", {name: "You do · On your own"}).isVisible());
+    await check.press("Enter");
+    await dialog.getByRole("button", {name: "Need a clue?"}).press("Enter");
+    assert.match(await dialog.locator(".school-clue").innerText(), /Compare the sizes/);
+    await dialog.getByRole("button", {name: "Another clue"}).press("Enter");
+    assert.match(await dialog.locator(".school-clue").innerText(), /Subtract 30 N/);
+    await choose("It speeds up. The resultant force is 40 N to the right.");
+    await dialog.getByRole("heading", {name: /A skateboard moves right/}).waitFor();
+    await choose("It speeds up. The resultant force is 30 N to the right.", "Finish catch-up");
+    await journey.getByRole("heading", {name: "Catch-up complete!"}).waitFor();
+    const evidence = await page.evaluate(() => JSON.parse(localStorage.getItem("narajos.catchup.v1.7.forces")));
+    assert.deepEqual(Object.values(evidence.outcomes), ["independent", "supported", "supported"]);
+    assert.equal(evidence.followUp, "independent");
+    await journey.getByRole("button", {name: "Try it yourself"}).press("Enter");
+    await page.getByText("Help with your answer", {exact: true}).press("Enter");
+    await page.getByText(/Give the size and direction of the resultant/).waitFor();
+    await page.getByRole("textbox", {name: "Your answer"}).fill("The resultant is 40 N to the right, so the crate speeds up.");
+    await page.reload();
+    await journey.getByRole("button", {name: "Try it yourself"}).press("Enter");
+    assert.match(await page.getByRole("textbox", {name: "Your answer"}).inputValue(), /40 N/);
+
+    await page.goto(base + "/ks3/lesson/?topic=balanced-moments&guided=1");
+    assert(await journey.getByText(/10 N × 2 m|10 × 2 = 20 N m/).isVisible());
+    await reopen.press("Enter");
+    await choose("The same distance from the pivot");
+    await check.press("Enter");
+    assert(await dialog.getByRole("img", {name: /12 N acts down/}).isVisible());
+    await choose("2 m from the pivot");
+    await check.press("Enter");
+    await choose("Yes. Both moments are 40 N m in opposite directions.", "Finish catch-up");
+
+    await page.goto(base + "/science-catch-up/lesson/?topic=atomic-number");
+    assert(await journey.getByText(/\+11 from the protons and −10/).isVisible());
+    await reopen.press("Enter");
+    assert(await dialog.getByRole("table", {name: "Three sodium examples"}).isVisible());
+    await choose("11 protons");
+    await check.press("Enter");
+    await choose("−1");
+    await check.press("Enter");
+    await choose("A magnesium ion with charge +2", "Finish catch-up");
+    await journey.getByRole("link", {name: "Revise C1", exact: true}).waitFor();
+  } finally {
+    await page.close();
+  }
+  console.log("Year 7–9: all 35 opening checks, worked examples, guided practice, independent follow-up and draft persistence passed.");
+}

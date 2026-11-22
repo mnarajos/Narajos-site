@@ -196,3 +196,4 @@
 .school-question-table :is(th, td) { text-align: start; padding: .35rem; border-bottom: 1px solid #b2c7c2; }
 .school-question-table th { background: #e0eeea; }
 @media (max-width: 370px) { .school-question-table :is(th, td) { padding: .25rem; } }
+.school-question-table :is(th, td) { overflow-wrap: anywhere; }

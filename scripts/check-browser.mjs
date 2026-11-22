@@ -6,6 +6,7 @@ import assert from "node:assert/strict";
 import {servePublic} from "./browser-test-site.mjs";
 import {chromium} from "playwright";
 import "./check-writing-marking.mjs";
+import {checkCatchupScaffolds} from "./check-catchup-scaffolds.mjs";
 
 const {server,base}=await servePublic();
 const browser=await chromium.launch({headless:true,args:["--no-sandbox"]});
@@ -31,6 +32,7 @@ async function checkPage(page,name){
  assert(overflow<=3,name+" overflows viewport horizontally by "+overflow+"px");
 }
 try{
+ await checkCatchupScaffolds(browser,base);
  {
  const writingTouch=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
  writingTouch.on("pageerror",err=>errors.push("Sentence picker: "+err.message));
@@ -250,6 +252,9 @@ try{
  assert(await guide.getByRole("heading",{name:"Movement in both directions",exact:true}).isVisible());
  await guide.getByRole("button",{name:"Check",exact:true}).click();
  assert(await check.getByRole("button",{name:"Need a clue?",exact:true}).isVisible());
+ assert(await check.getByRole("img",{name:/Side A is more dilute/}).isVisible());
+ assert((await check.locator(".school-question-evidence").innerText()).includes("Partially permeable membrane"));
+ assert(!(await check.locator(".school-question-evidence").innerText()).includes("A → B"));
  await check.getByRole("radio",{name:"From B to A",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
  assert(await check.getByRole("status").filter({hasText:"B is the more concentrated side."}).isVisible());
@@ -423,13 +428,23 @@ try{
  assert.deepEqual(await desktop.locator(".home-option--questions .home-links a").evaluateAll(links=>links.map(a=>a.pathname)),["/teacher/","/teaching/focused-writing/"]);
  const homeMenu=desktop.locator(".site-nav details").first();
  await homeMenu.locator("summary").click();
- assert(await homeMenu.locator('a[href="/human-biology/"]').isVisible(),"Human Biology missing from homepage dropdown");
+ assert(await homeMenu.locator('a[href="/human-biology/#catchup"]').isVisible(),"Human Biology missing from homepage dropdown");
  assert.equal(await homeMenu.getByRole("link",{name:/^Year (7|8|9|10|11)$/}).count(),5);
- await homeMenu.locator("summary").click();
+ for(const [label, route, heading] of [
+  ["A-level Biology — Catch up", "/alevel/#catchup", "Catch up on a concept"],
+  ["Human Biology — Catch up", "/human-biology/#catchup", "Catch up and understand"]
+ ]){
+  await homeMenu.getByRole("link",{name:label,exact:true}).press("Enter");
+  await desktop.waitForURL(base+route);
+  await desktop.getByRole("heading",{name:heading,exact:true}).waitFor();
+  await desktop.goto(base+"/");
+  await homeMenu.locator("summary").press("Enter");
+ }
+ await homeMenu.locator("summary").press("Enter");
  const navTargets=await desktop.locator(".site-nav a").evaluateAll(links=>links.map(a=>[a.getAttribute("href"),a.textContent]));
- assert.deepEqual(navTargets.slice(0,9).map(([route])=>route),[
+ assert.deepEqual(navTargets.slice(0,8).map(([route])=>route),[
   ...[7,8,9,10,11].map(year=>"/science-catch-up/?year="+year),
-  "/science-catch-up/","/gcse/","/alevel/","/human-biology/"
+  "/gcse/","/alevel/#catchup","/human-biology/#catchup"
  ]);
  for(const path of ["/teaching/","/privacy/","/teaching/simulations/","/science-catch-up/?year=8","/teaching/focused-writing/"]){
   await desktop.goto(base+path);
@@ -697,10 +712,10 @@ try{
  await mobile.locator(".home-philosophy").waitFor({state:"visible"});
  const mobileMenu=mobile.locator(".site-nav details").first();
  await mobileMenu.locator("summary").click();
- assert(await mobileMenu.locator('a[href="/human-biology/"]').isVisible(),"Human Biology missing from mobile homepage dropdown");
+ assert(await mobileMenu.locator('a[href="/human-biology/#catchup"]').isVisible(),"Human Biology missing from mobile homepage dropdown");
  assert((await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth))<=3,"Mobile homepage has horizontal overflow");
  await mobile.setViewportSize({width:320,height:780});
- assert.equal(await mobileMenu.getByRole("group",{name:"Science by year"}).getByRole("link").count(),6);
+ assert.equal(await mobileMenu.getByRole("group",{name:"Catch up by year"}).getByRole("link").count(),5);
  assert.equal(await mobileMenu.getByRole("group",{name:"By qualification"}).getByRole("link").count(),3);
  const dropdown=await mobileMenu.locator(".site-dropdown").boundingBox();
  assert(dropdown.x>=0&&dropdown.x+dropdown.width<=321,"The grouped menu must fit a narrow phone");
