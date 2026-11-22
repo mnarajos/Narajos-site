@@ -213,6 +213,18 @@ main.querySelector=selector=>selector==='input[name="kbest"]:checked'?{value:Str
 clickAction("check");
 assert(main.innerHTML.includes("Correct")&&main.innerHTML.includes("Expected answer"),"Two-step answer should require both correct components");
 assert(JSON.parse(data.get("narajos-human-challenge-v2-progress"))[best.id].independent===1,"Correct independent reasoning should be counted");
+const written=forcedQuestion("health-parkinsons-therapy");
+main.querySelector=selector=>selector==="#k-number, #k-text, #k-written"?{value:"Treatment can reduce tremor."}:null;
+clickAction("reveal");
+assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-progress"))[written.id],undefined,"Opening the model must not record an outcome");
+clickAction("self-good");
+const reviewProgress=JSON.parse(data.get("narajos-human-challenge-v2-progress"))[written.id];
+assert.equal(reviewProgress.selfReviewed,1);
+assert.equal(reviewProgress.independent,0);
+assert.equal(reviewProgress.checked,0,"Written reviews must not enter objective accuracy");
+assert.match(main.innerHTML,/0 of 0 objectively checked/);
+clickAction("self-good");
+assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-progress"))[written.id].seen,1,"Repeated review must not create another attempt");
 const warm=forcedQuestion("warm-f170-cells");
 main.querySelector=()=>null;main.querySelectorAll=()=>[{value:String(warm.correct)}];
 unlockHintClock();clickAction("hint");assert(main.innerHTML.includes("Hint 1"),"Warm-up should offer a hint");
