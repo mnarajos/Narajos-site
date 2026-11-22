@@ -316,13 +316,83 @@ const humanPractice = {
  "f171/a4":["cuff","screening"], "f171/4.2.2":"cuff", "f171/4.2.1":"screening",
  "f170/3.1.1":"thermoregulation", "f170/3.3.2":"cycle"
 };
+const videos = {
+ dna: {
+  title:"Semi-conservative DNA replication", creator:"Miss Estruch", url:"https://www.youtube.com/watch?v=QNZmc5aJgSI",
+  watch:"Track an original DNA strand. What is the other strand in each new DNA molecule?",
+  answer:"Each new DNA molecule contains one original strand and one newly synthesised strand."
+ },
+ alveoli: {
+  title:"Ventilation and gas exchange", creator:"Miss Estruch", url:"https://www.youtube.com/watch?v=Wyer9wvaxmM",
+  watch:"Focus on the alveolus. Which features shorten the diffusion distance and keep the oxygen gradient steep?",
+  answer:"The alveolar and capillary walls are thin. Ventilation and blood flow maintain a difference in oxygen concentration across them."
+ },
+ heart: {
+  title:"The cardiac cycle", creator:"Miss Estruch", url:"https://www.youtube.com/watch?v=2iimVfz1RYI",
+  watch:"Follow the ventricular pressure trace. What pressure difference opens the aortic valve?",
+  answer:"The aortic valve opens when left ventricular pressure rises above aortic pressure."
+ },
+ bloodFlow: {
+  title:"Blood flow through the heart", creator:"HHMI BioInteractive", url:"https://www.biointeractive.org/classroom-resources/heart-function",
+  watch:"Trace blood from the right ventricle until it returns to the heart. Which chamber receives it?",
+  answer:"It travels to the lungs in the pulmonary arteries, returns in the pulmonary veins and enters the left atrium."
+ },
+ phloem: {
+  title:"Sucrose translocation", creator:"Miss Estruch", url:"https://www.youtube.com/watch?v=JmyD6G0tyXU",
+  watch:"Trace what changes at the source after sucrose is loaded. What makes the sap flow towards the sink?",
+  answer:"Sucrose loading lowers the water potential in the phloem. Water enters by osmosis, raising hydrostatic pressure. The pressure difference drives mass flow towards the sink."
+ },
+ light: {
+  title:"The light-dependent reaction", creator:"Miss Estruch", url:"https://www.youtube.com/watch?v=vLcKRiE6sHE",
+  watch:"Follow the electrons released when water is split. Which electrons do they replace, and what gas is released?",
+  answer:"They replace electrons lost from photosystem II. Splitting water also releases oxygen and protons."
+ },
+ calvin: {
+  title:"The Calvin cycle", creator:"Miss Estruch", url:"https://www.youtube.com/watch?v=KM61NKYvphQ",
+  watch:"Find where carbon dioxide joins RuBP. Which two products of the light-dependent reaction help convert GP into triose phosphate?",
+  answer:"ATP and reduced NADP are used to convert glycerate 3-phosphate into triose phosphate."
+ },
+ respiration: {
+  title:"Oxidative phosphorylation", creator:"Miss Estruch", url:"https://www.youtube.com/watch?v=gh1GybbRcRU",
+  watch:"Trace a proton from the intermembrane space back into the mitochondrial matrix. Which protein does it pass through?",
+  answer:"The proton moves down its electrochemical gradient through ATP synthase, supplying energy to make ATP."
+ },
+ synapse: {
+  title:"Synaptic transmission", creator:"Miss Estruch", url:"https://www.youtube.com/watch?v=DVqHoZTZedw&t=1872s",
+  watch:"Watch the synapse section from 31:12 to 36:45. Which ion entering the presynaptic ending triggers neurotransmitter release?",
+  answer:"Calcium ions enter through voltage-gated channels, causing vesicles to fuse with the presynaptic membrane."
+ }
+};
+
+const videoByConcept = {
+ "a1/replication":"dna",
+ "a3/lungs":"alveoli",
+ "a3/heart":"heart",
+ "a3/phloem":"phloem",
+ "a5/lightdep":"light",
+ "a5/calvin":"calvin",
+ "a5/oxphos":"respiration",
+ "a6/synapse":"synapse",
+ "f170/1.1.5":"dna",
+ "f170/2.1.2":"bloodFlow",
+ "f170/2.1.3":"alveoli"
+};
+
+function videoPractice(video) {
+ return '<details class="kc-visual-check kc-video"><summary>Video · '+video.title+'</summary>'+
+  '<p>'+video.watch+'</p>'+
+  '<p><a href="'+video.url+'" target="_blank" rel="noopener noreferrer">Watch '+video.title+' · '+video.creator+' (new tab)</a></p>'+
+  '<details class="kc-visual-check"><summary>Check your answer</summary><p>'+video.answer+'</p></details></details>';
+}
+
 const alevelPractice = {synapse:"synapse",phloem:"phloem",kidney:"nephron",muscle:"sarcomere",sliding:"sarcomere",sliding2:"sarcomere"};
 let addedPracticeAssets = false;
 
 function render(course,id){
  var item=curated[course+"/"+id];
+ var video=videos[videoByConcept[course+"/"+id]];
  var practice=humanPractice[course+"/"+id] || (/^a[1-8]$/.test(course) ? alevelPractice[id] : "");
- if(!item&&!practice)return "";
+ if(!item&&!practice&&!video)return "";
  item=item||{};
  if(practice&&!addedPracticeAssets&&/^a[1-8]$/.test(course)&&window.customElements&&!document.querySelector('script[src="/assets/diagram-practice.js"]')){
   const css=document.createElement("link"),script=document.createElement("script");
@@ -333,7 +403,7 @@ function render(course,id){
   document.head.append(css,script);
   addedPracticeAssets=true;
  }
- var html='<aside class="kc-catchup-extra" aria-label="Visual explanation and related simulations">';
+ var html='<aside class="kc-catchup-extra" aria-label="Visual explanations and related practice">';
  if(item.diagram){
   var d=diagrams[item.diagram];
   html+='<figure class="kc-visual"><div class="kc-visual-heading"><span class="kc-visual-icon" aria-hidden="true">◈</span><strong>'+d.label+'</strong></div><div class="kc-visual-art">'+d.image+'</div><figcaption>'+d.caption+'</figcaption></figure>';
@@ -351,6 +421,7 @@ function render(course,id){
   html+='</div><small>The simulation opens in a new tab, so you can return to this key idea.</small></div>';
  }
  if(practice)for(const topic of [practice].flat())html+='<diagram-practice topic="'+topic+'"></diagram-practice>';
+ if(video)html+=videoPractice(video);
  return html+'</aside>';
 }
 window.KeystoneCatchupVisuals={render:render,has:function(course,id){return !!curated[course+"/"+id];}};
