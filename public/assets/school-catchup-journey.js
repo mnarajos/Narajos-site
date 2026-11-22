@@ -29,7 +29,7 @@ function feedbackFor(question, selected) {
 function supportStatus(outcome) {
   return {
     independent: "Correct without extra help",
-    supported: "Correct after help or a retry",
+    supported: "Correct with guidance, a clue or a retry",
     explained: "Explanation used"
   }[outcome] || "";
 }
@@ -74,6 +74,7 @@ export function mountJourney(host, model, lesson) {
   if (!document.documentElement.dataset.catchupYear) identifyCatchupYear(year);
   const guided = Number(year) >= 9 || new URLSearchParams(location.search).has("guided");
   const practice = guided ? model.parentElement.querySelector("[data-ks3-transfer]") : null;
+  const hasScaffolding = guided && steps.some(step => step.worked || step.guide);
   const progressKey = year + "." + id;
   const prior = readCatchup(progressKey);
   const state = {
@@ -121,9 +122,32 @@ export function mountJourney(host, model, lesson) {
     model.after(journey);
   }
 
+  function addQuestionEvidence(q) {
+    if (!q.image && !q.reference) return;
+    const support = element("details", "", "school-question-evidence");
+    support.open = true;
+    support.append(element("summary", q.reference?.label || "Question diagram"));
+    if (q.image) {
+      const img = element("img", "", "school-question-diagram");
+      [img.src, img.alt] = q.image;
+      support.append(img);
+    } else {
+      support.append(q.reference.render());
+    }
+    dialog.append(support);
+  }
+
   let viewOnly = false;
   let shownIndex = state.step;
+  const savedQuestion = (state.repeating && retry) || steps[state.step];
+  const changedPrompt = state.prompt && state.prompt !== savedQuestion.prompt;
+  const missingChoice = state.selected && state.selected !== savedQuestion.answer
+    && !savedQuestion.options.some(option => option.label === state.selected);
+  if (changedPrompt || missingChoice || state.correct && state.selected !== savedQuestion.answer) {
+    Object.assign(state, {selected: "", correct: false, feedback: "", clues: 0, helped: false, explained: false});
+  }
   function write() {
+    state.prompt = (state.repeating && retry ? retry : steps[state.step]).prompt;
     storageNote.textContent = saveCatchup(progressKey, state) ? "" : "Progress can only be kept while this page is open.";
   }
 
@@ -138,7 +162,13 @@ export function mountJourney(host, model, lesson) {
     if (!state.done) {
       const step = steps[state.step];
       const stage = element("section", "", "school-current-stage");
-      const heading = element("h3", lessonStages[state.step]);
+      let stageName = lessonStages[state.step];
+      if (hasScaffolding) {
+        if (step.guide) stageName = "We do · Guided practice";
+        else if (step.worked) stageName = "I do · Worked example";
+        else if (state.step === steps.length - 1) stageName = "You do · On your own";
+      }
+      const heading = element("h3", stageName);
       heading.tabIndex = -1;
       stage.append(heading);
       if (step.notice) stage.append(element("p", step.notice));
@@ -147,6 +177,16 @@ export function mountJourney(host, model, lesson) {
         const teaching = element("div", "", "school-step-notes");
         teaching.append(element("h4", title), element("p", text));
         stage.append(teaching);
+      }
+      if (guided && step.worked) {
+        const { title, lines, visual } = step.worked;
+        const example = element("div", "", "school-worked-example");
+        example.append(element("h4", title));
+        if (visual) example.append(visual());
+        const reasoning = element("ol");
+        reasoning.append(...lines.map(line => element("li", line)));
+        example.append(reasoning);
+        stage.append(example);
       }
       stage.append(checkButton(state.open ? "Resume check" : "Check", showCheck));
       if (state.step > 0) stage.append(button("Catch-up notes", () => showEvidence()));
@@ -230,13 +270,7 @@ export function mountJourney(host, model, lesson) {
     heading.tabIndex = -1;
     dialog.replaceChildren(heading);
     if (state.repeating && !viewOnly) heading.before(element("p", state.explained ? "Follow-up check" : "Try one more on your own", "school-check-context"));
-    if (q.image) {
-      const img = element("img", "", "school-question-diagram");
-      [img.src, img.alt] = q.image;
-      img.width = 340;
-      img.height = 220;
-      dialog.append(img);
-    }
+    addQuestionEvidence(q);
     if (viewOnly) {
       const status = supportStatus(state.outcomes?.[shownIndex]);
       if (status) dialog.append(element("p", status, "school-check-context"));
@@ -297,6 +331,7 @@ export function mountJourney(host, model, lesson) {
     next.hidden = !state.correct;
     const tools = element("div", "", "school-journey-actions");
     tools.append(submit, next, button("Save and pause", pause));
+    if (guided && q.guide) form.append(element("p", q.guide, "school-guided-prompt"));
     if (shownIndex === steps.length - 1 && !state.repeating) form.append(element("p", "Say how you know, then choose."));
     form.append(choices, result, tools);
     if (state.draft?.trim()) {
@@ -316,12 +351,13 @@ export function mountJourney(host, model, lesson) {
     const clueText = element("p", "", "school-clue");
     clueText.tabIndex = -1;
     function renderClues() {
-      const first = q.image ? "Trace each label to the exact feature it points to."
+      const first = q.clue || (Number(year) < 10 && q.hint) || (q.image || q.reference ? "Trace each label to the exact feature it points to."
         : q.teach ? "Think about the idea in “" + q.teach[0] + "”. Which option uses it?"
-        : "Find the key science word or the change described in the question.";
+        : "Look for the option that fits the change in the question.");
+      const second = q.clue || Number(year) >= 10 ? q.hint : "";
       clueText.hidden = !state.clues;
-      clueText.textContent = state.clues > 1 && q.hint ? q.hint : first;
-      clue.hidden = state.clues >= (q.hint ? 2 : 1);
+      clueText.textContent = state.clues > 1 && second ? second : first;
+      clue.hidden = state.clues >= (second ? 2 : 1);
       clue.textContent = state.clues ? "Another clue" : "Need a clue?";
     }
     renderClues();
@@ -383,7 +419,7 @@ export function mountJourney(host, model, lesson) {
     section.append(quickCheck);
     const tools = element("div", "", "school-journey-actions");
     tools.append(checkButton(nextLabel(), advance), button("Save and pause", pause));
-    const visual = !q.image && model.querySelector(
+    const visual = !q.image && !q.reference && model.querySelector(
       "[data-catchup-first-evidence], .catchup-model, .gcse-catchup-visual, .writing-data, .ks3-illustration, .ks3-visual");
     if (visual) tools.append(button("See lesson visual", () => {
       pause();
@@ -395,7 +431,9 @@ export function mountJourney(host, model, lesson) {
   function advance() {
     const atEnd = state.step === steps.length - 1;
     const repeat = atEnd && retry && state.helped && !state.repeating;
-    const outcome = state.explained ? "explained" : state.helped ? "supported" : "independent";
+    const {guide, worked} = currentQuestion();
+    const usedSupport = state.helped || (guided && (guide || worked));
+    const outcome = state.explained ? "explained" : usedSupport ? "supported" : "independent";
     if (state.repeating) state.followUp = outcome;
     else {
       state.outcomes ||= {};

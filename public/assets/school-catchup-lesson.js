@@ -1,4 +1,5 @@
 import { identifyCatchupYear, mountJourney } from "./school-catchup-journey.js";
+import { createWritingPractice, year9Writing } from "./school-catchup-writing.js";
 import { year9 } from "./school-catchup-year9.js";
 import { year9Visual } from "./school-catchup-visuals.js";
 import { gcseCatchup } from "./gcse-catchup-data.js";
@@ -71,6 +72,21 @@ if (Object.hasOwn(year9, id) || Object.hasOwn(gcseCatchup, id)) {
     } else model.append(box);
   }
   model.append(idea);
+  const earlier = {
+    osmosis: ["States of matter", "/ks3/lesson/?topic=states-of-matter&guided=1"],
+    "active-transport": ["Osmosis and partially permeable membranes", "/science-catch-up/lesson/?topic=osmosis"],
+    "gas-exchange": ["How blood carries oxygen to the muscles", "/ks3/lesson/?topic=the-body&guided=1"],
+    "ionic-conduction": ["Atomic number, isotopes and ions", "/science-catch-up/lesson/?topic=atomic-number"]
+  }[id];
+  if (!senior && earlier) {
+    const prerequisite = document.createElement("details");
+    const summary = document.createElement("summary");
+    const link = document.createElement("a");
+    summary.textContent = "Revisit an earlier idea";
+    [link.textContent, link.href] = earlier;
+    prerequisite.append(summary, link);
+    model.append(prerequisite);
+  }
   if (lesson.higher) {
     const extension = document.createElement("details");
     const summary = document.createElement("summary");
@@ -81,5 +97,13 @@ if (Object.hasOwn(year9, id) || Object.hasOwn(gcseCatchup, id)) {
     model.append(extension);
   }
   host.replaceChildren(model);
+  if (!senior && year9Writing[id]) {
+    const extra = document.createElement("details");
+    extra.className = "school-lesson-extras";
+    const summary = document.createElement("summary");
+    summary.textContent = "Practise writing a short explanation";
+    extra.append(summary, createWritingPractice("9." + id, year9Writing[id]));
+    host.append(extra);
+  }
   mountJourney(model, model, {...lesson, id});
 }

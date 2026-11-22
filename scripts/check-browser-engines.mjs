@@ -44,7 +44,7 @@ try {
   await menu.press("Enter");
   await page.getByRole("group", { name: "By qualification" }).getByRole("link", { name: /A-level Biology/ }).waitFor();
   await fits();
-  await page.getByRole("group", { name: "Science by year" }).getByRole("link", { name: "Year 9", exact: true }).click();
+  await page.getByRole("group", { name: "Catch up by year" }).getByRole("link", { name: "Year 9", exact: true }).click();
   await page.getByRole("heading", { name: "Year 9 Science", exact: true }).waitFor();
   const currentYear = page.getByRole("navigation", { name: "Choose a year group" }).locator('[aria-current="page"]');
   assert.equal(await currentYear.textContent(), "Year 9");

@@ -179,3 +179,21 @@
 
 .school-concept-list .school-concept-question,.school-storage-note,.catchup-picture figcaption small{font-size:.875rem}
 .school-check :is(.school-check-feedback,.school-clue,.school-check-explanation){font-size:1rem;line-height:var(--narajos-reading-line,1.55)}
+.school-worked-example { margin: .55rem 0 .75rem; padding: .7rem .85rem; background: #f8f1e7; border-inline-start: 4px solid #a86c3b; border-radius: .45rem; }
+.school-worked-example h4 { margin: 0 0 .35rem; }
+.school-worked-example ol { margin: .25rem 0 0; padding-inline-start: 1.35rem; }
+.school-worked-example li + li { margin-block-start: .25rem; }
+.school-guided-prompt { padding: .55rem .7rem; background: #eaf4f0; border-radius: .45rem; }
+.school-check { max-height: calc(100dvh - 1.5rem); overscroll-behavior: contain; }
+.school-question-evidence { margin-block: .25rem .65rem; padding: 0 .65rem .5rem; background: #eef5f3; border: 1px solid #b2c7c2; border-radius: .5rem; }
+.school-question-evidence summary { min-height: 44px; }
+.school-question-evidence .catchup-picture, .school-question-evidence .ks3-diagram { margin: .25rem 0; }
+.school-question-evidence :is(.catchup-drawing svg, img) { display: block; width: 100%; max-width: 27rem; height: auto; }
+.school-question-evidence :is(.catchup-picture svg, .ks3-circuit svg) { max-height: 18rem; }
+.school-question-evidence .ks3-diagram-panels { margin: .35rem 0; }
+.school-question-table { width: 100%; border-collapse: collapse; font-size: .94rem; }
+.school-question-table caption { text-align: start; font-weight: 650; margin-block-end: .25rem; }
+.school-question-table :is(th, td) { text-align: start; padding: .35rem; border-bottom: 1px solid #b2c7c2; }
+.school-question-table th { background: #e0eeea; }
+@media (max-width: 370px) { .school-question-table :is(th, td) { padding: .25rem; } }
+.school-question-table :is(th, td) { overflow-wrap: anywhere; }

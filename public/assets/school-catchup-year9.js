@@ -1,3 +1,4 @@
+import { applyYear9Scaffolds } from "./school-catchup-year9-scaffolds.js";
 import { question } from "./school-catchup-journey.js";
 
 const q = question;
@@ -197,3 +198,5 @@ export const year9 = {
     ],
     q("A simple molecular substance boils. What stays intact during this change of state?", "The covalent bonds within its molecules", "Boiling separates molecules from one another.", "The fixed positions of the molecules", "All attractions between neighbouring molecules"))
 };
+
+applyYear9Scaffolds(year9);

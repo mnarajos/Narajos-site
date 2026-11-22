@@ -28,12 +28,12 @@
   <details><summary><span class="nav-full">Learning Companions</span><span class="nav-short" aria-hidden="true">Study tools</span></summary>
    <div class="site-dropdown">
     <div class="site-dropdown-group" role="group" aria-labelledby="nav-years">
-     <p id="nav-years">Science by year</p>
-     <div class="site-year-links"><a href="/science-catch-up/?year=7">Year 7</a><a href="/science-catch-up/?year=8">Year 8</a><a href="/science-catch-up/?year=9">Year 9</a><a href="/science-catch-up/?year=10">Year 10</a><a href="/science-catch-up/?year=11">Year 11</a><a href="/science-catch-up/">All years</a></div>
+     <p id="nav-years">Catch up by year</p>
+     <div class="site-year-links"><a href="/science-catch-up/?year=7">Year 7</a><a href="/science-catch-up/?year=8">Year 8</a><a href="/science-catch-up/?year=9">Year 9</a><a href="/science-catch-up/?year=10">Year 10</a><a href="/science-catch-up/?year=11">Year 11</a></div>
     </div>
     <div class="site-dropdown-group" role="group" aria-labelledby="nav-qualifications">
      <p id="nav-qualifications">By qualification</p>
-     <a href="/gcse/">GCSE Combined Science — AQA Trilogy</a><a href="/alevel/">A-level Biology — AQA</a><a href="/human-biology/">Human Biology — Cambridge AAQ</a>
+     <a href="/gcse/">GCSE Combined Science — AQA Trilogy</a><a href="/alevel/#catchup">A-level Biology — Catch up</a><a href="/human-biology/#catchup">Human Biology — Catch up</a>
     </div>
    </div>
   </details>
@@ -56,7 +56,10 @@
   var pageLinks=Array.from(nav.querySelectorAll(".site-dropdown a"));
   var current=pageLinks.find(function(link){return link.pathname+link.search+link.hash===section;});
   if(!current)current=pageLinks.find(function(link){return !link.search&&!link.hash&&pathname.startsWith(link.pathname);});
-  if(!current)return;
+  if(!current){
+   if(section==="/science-catch-up/")nav.querySelector("details").classList.add("site-section-current");
+   return;
+  }
   current.closest("details").classList.add("site-section-current");
   current.setAttribute("aria-current",current.pathname+current.search===pathname+location.search?"page":"location");
  }

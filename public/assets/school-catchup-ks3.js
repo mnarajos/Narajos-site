@@ -1,5 +1,6 @@
 import { mountJourney, question } from "./school-catchup-journey.js";
-import { readCatchup, saveCatchup } from "./school-catchup-progress.js";
+import { addPracticeAnswer } from "./school-catchup-writing.js";
+import { withKS3Scaffolds, ks3FollowUps } from "./school-catchup-ks3-scaffolds.js";
 import { curriculum } from "./ks3-lessons.js";
 
 const extendedJourneys = {
@@ -55,7 +56,7 @@ const topics = {
       ["Water particles get bigger when pushed.", "The particles stay the same size. Look at the gaps between them."]]
   ],
   "atoms-and-compounds": [
-    "Look at what each colour represents and whether the groups of circles are all the same.",
+    "Read the letters. Check whether each bonded group is the same.",
     ["Every particle in a sample has one red atom bonded to two blue atoms. What kind of sample is it?",
       "A compound, because different kinds of atom are bonded in every identical group.",
       "Only one substance is present, and its particles contain chemically bonded atoms of two elements.",
@@ -236,33 +237,7 @@ function fromLesson(source) {
   return question(source.prompt, source.answer, source.correctFeedback, ...source.distractors);
 }
 
-function addPracticeAnswer(card, id) {
-  if (!card) return;
-  card.classList.add("ks3-try-practice");
-  let draft = card.querySelector("textarea");
-  let label = card.querySelector("label");
-  if (!draft) {
-    draft = document.createElement("textarea");
-    draft.id = "practice-answer-" + id.replaceAll(".", "-");
-    draft.rows = 3;
-    label = document.createElement("label");
-    label.htmlFor = draft.id;
-    label.textContent = "Your answer";
-    const example = card.querySelector(":scope > details");
-    if (example) example.before(label, draft);
-    else card.append(label, draft);
-  }
-  const pen = document.createElement("span");
-  pen.setAttribute("aria-hidden", "true");
-  pen.textContent = "✎";
-  label.prepend(pen);
-  const key = id + ".practice";
-  draft.maxLength = 2000;
-  draft.value = readCatchup(key).draft || "";
-  draft.addEventListener("input", () => saveCatchup(key, {step: 0, draft: draft.value}));
-}
-
-export function addKS3Journey(model, lesson, year) {
+export function addKS3Journey(model, lesson, year, renderVisual) {
   const item = topics[lesson.id];
   if (!item) return;
   const [hint, transfer] = item;
@@ -278,7 +253,8 @@ export function addKS3Journey(model, lesson, year) {
     steps[1].hint = extension.practiceHint;
     steps.push(extension.transfer);
   }
-  mountJourney(model, model, {id: lesson.id, year, hook: lesson.title, steps});
+  mountJourney(model, model, {id: lesson.id, year, hook: lesson.title,
+    steps: withKS3Scaffolds(lesson.id, steps, renderVisual), retry: ks3FollowUps[lesson.id]});
 }
 
 function fromCard(card) {
@@ -308,6 +284,6 @@ for (const host of document.querySelectorAll("[data-school-catchup-topic]")) {
   addPracticeAnswer(host.querySelector("[data-ks3-transfer]"), year + "." + id);
   mountJourney(model, model, {
     id, year, hook: lesson.title,
-    steps: [{...guided[0], notice: hint}, {...guided[1], hint}, question(...transfer)]
+    steps: withKS3Scaffolds(id, [{...guided[0], notice: hint}, {...guided[1], hint}, question(...transfer)])
   });
 }

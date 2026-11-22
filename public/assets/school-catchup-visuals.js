@@ -40,7 +40,7 @@ function cells() {
   return host;
 }
 
-function osmosis() {
+function osmosis(forQuestion = false) {
   const water = [[55,56],[38,82],[103,60],[84,112],[47,135],[113,150],[58,168],[124,177],
     [217,53],[192,106],[250,81],[265,172],[206,163],[283,146],[285,61],[235,137]];
   const solute = [[116,100],[94,154],[205,78],[241,55],[275,101],[209,139],[246,166],[272,124]];
@@ -50,15 +50,17 @@ function osmosis() {
     ${[54,81,108,135,162].map(y => line(154,y,166,y,"white",3)).join("")}
     ${water.map(([x,y]) => circle(x,y,4,"white",blue)).join("")}
     ${solute.map(([x,y]) => `<rect x="${x-5}" y="${y-5}" width="10" height="10" rx="1" fill="${violet}"/>`).join("")}
-    ${arrow(99,81,185,81,blue,3.5)}${arrow(203,120,125,120,blue,1.4)}
+    ${forQuestion ? "" : arrow(99,81,185,81,blue,3.5)+arrow(203,120,125,120,blue,1.4)}
     ${text(77,23,"A · more dilute")}${text(237,23,"B · more concentrated",ink,14)}
     ${text(160,207,"Partially permeable membrane",blue)}
     ${circle(42,229,4,"white",blue)}${text(53,234,"Water",ink,15,"start")}
     <rect x="169" y="224" width="10" height="10" fill="${violet}"/>
     ${text(185,234,"Dissolved particles",ink,15,"start")}`;
-  return picture("Net water movement A → B",
-    diagram("Equal volumes divided by a partially permeable membrane. Side B contains more dissolved particles. Water crosses both ways, but more crosses from A to B.", drawing, 320, 244),
-    "Water crosses both ways. The thicker arrow shows the direction in which more water crosses.");
+  const description = "Equal volumes divided by a partially permeable membrane. Side A is more dilute. Side B is more concentrated.";
+  return forQuestion ? picture("Sides A and B", diagram(description, drawing, 320, 244))
+    : picture("Net water movement A → B",
+      diagram(description + " Water crosses both ways, but more crosses from A to B.", drawing, 320, 244),
+      "Water crosses both ways. The thicker arrow shows the direction in which more water crosses.");
 }
 
 function activeTransport() {
@@ -215,8 +217,8 @@ function conduction() {
       "Positive and negative ions form a regular lattice. They vibrate in position and do not move across the solid.", `
       ${moving ? line(22,35,22,136,ink,5)+line(294,35,294,136,ink,5)+text(22,25,"+")+text(294,25,"−") : ""}
       ${points.map(([x,y],i) => circle(x,y,13,signs[i] ? "#e7b783" : "#cce4f1",signs[i] ? rust : blue) + text(x,y+5,signs[i] ? "+" : "−",ink,19)).join("")}
-      ${moving ? arrow(54,151,120,151,rust)+arrow(250,151,184,151,blue) : text(145,150,"Vibrate in fixed positions",teal,15)}
-      `,320,170),moving ? "A voltage moves positive ions one way and negative ions the other." : "The ions have charge, but they cannot flow through the solid.");
+      ${moving ? arrow(117,151,264,151,rust)+arrow(202,161,55,161,blue) : text(145,150,"Vibrate in fixed positions",teal,15)}
+      `,320,179),moving ? "A voltage moves positive ions one way and negative ions the other." : "The ions have charge, but they cannot flow through the solid.");
   }
   return compare(ions("Solid salt",solid,false),ions("Molten salt",liquid,true));
 }
@@ -256,3 +258,5 @@ export function year9Visual(id) {
   region.append(models[id]());
   return region;
 }
+
+export const osmosisQuestionDiagram = () => osmosis(true);
