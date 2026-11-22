@@ -57,6 +57,7 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
   const picker = element("dialog", "", "paragraph-picker");
   const pickerTitle = element("h3");
   pickerTitle.id = key.replaceAll(":", "-") + "-picker";
+  pickerTitle.tabIndex = -1;
   picker.setAttribute("aria-labelledby", pickerTitle.id);
   const pickerTools = element("div", "", "paragraph-picker-tools");
   const pickerContent = element("div", "", "paragraph-picker-content");
@@ -149,6 +150,7 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
     if (current !== null) pickerTools.append(button("Remove sentence", () => { remove(position); picker.close(); }));
     pickerTools.append(close);
     picker.showModal();
+    pickerTitle.focus();
   }
 
   const canDrag = matchMedia("(min-width: 761px) and (pointer: fine)");
