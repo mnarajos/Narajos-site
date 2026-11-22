@@ -60,23 +60,23 @@ function kIcon(name){var E=window.KeystoneHumanChallenge;return E&&E.icon?E.icon
 function showHome(){
  var st=stats(),old=restoreSession(),E=window.KeystoneHumanChallenge,fs=E?E.stats("f170"):null,hs=E?E.stats("f171"):null;
  var icon=E&&E.icon?E.icon:function(){return "▤";};
- var h='<div class="k-wrap"><section class="k-home-hero"><span class="k-eyebrow">Narajos Keystone · Cambridge OCR AAQ</span><h1>Ready to revise?</h1><p>Choose an exam unit, then practise the biology.</p></section>';
+ var h='<div class="k-wrap"><section class="k-home-hero"><span class="k-eyebrow">Narajos Keystone · Cambridge OCR AAQ</span><h1>Ready to revise?</h1><p>Choose a unit to catch up, revise or practise.</p></section>';
  if(window.NarajosTopicFinder)h+=window.NarajosTopicFinder.markup;
  h+='<section class="k-home-units" aria-label="Choose your exam unit">';
  h+='<a class="k-home-unit teal" href="#challenge/f170"><span class="k-unit-symbol">'+icon("brain")+'</span><span class="k-unit-copy"><small>F170 · Exam unit</small><strong>Fundamentals of human biology</strong><em>'+(fs?fs.questions:0)+' varied questions · '+(fs?fs.seen:0)+' attempted</em></span><span class="k-unit-chev">›</span></a>';
  h+='<a class="k-home-unit blue" href="#challenge/f171"><span class="k-unit-symbol">'+icon("flask")+'</span><span class="k-unit-copy"><small>F171 · Exam unit · Preview</small><strong>Health and disease</strong><em>'+(hs?hs.questions:0)+' original questions · '+(hs?hs.seen:0)+' attempted</em></span><span class="k-unit-chev">›</span></a>';
  h+='</section>';
- h+='<section class="k-companion-entry"><div class="k-companion-symbol">'+kIcon("book")+'</div><div><strong>Missed a lesson or feeling unsure?</strong><p>Catch up with a few key ideas, then return to questions.</p></div>'+link("catchup","Catch up","secondary")+'</section>';
- h+='<a class="k-more-units" href="#knowledge"><span>'+kIcon("book")+'</span><span><strong>Other Human Biology units</strong><small>F172–F177 · Knowledge questions only</small></span><span aria-hidden="true">›</span></a>';
+ h+='<section class="k-companion-entry"><div class="k-companion-symbol">'+kIcon("book")+'</div><div><strong>Missed a lesson or feeling unsure?</strong><p>Follow a worked example or review key ideas.</p></div>'+link("catchup","Catch up","secondary")+'</section>';
+ h+='<a class="k-more-units" href="#knowledge"><span>'+kIcon("book")+'</span><span><strong>Other Human Biology units</strong><small>F172–F177 · NEA knowledge support</small></span><span aria-hidden="true">›</span></a>';
  h+='<a class="k-more-units k-skills-entry" href="#skills"><span>'+kIcon("calc")+'</span><span><strong>Skills practice</strong><small>F170 and F171 · Worked examples and fresh practice sets</small></span><span aria-hidden="true">›</span></a>';
  h+='<h2 class="k-subhead">Other ways to revise F170</h2><section class="k-home-actions">';
  h+='<a href="#flashcards" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("layers")+'</span><strong>Flashcards</strong><small>Recall and spaced review</small></a>';
- h+='<a href="#catchup/f170" class="k-mini-action learn"><span class="k-mini-symbol">'+kIcon("book")+'</span><strong>Catch up</strong><small>Short explanations</small></a>';
+ h+='<a href="#catchup/f170" class="k-mini-action learn"><span class="k-mini-symbol">'+kIcon("book")+'</span><strong>Catch up</strong><small>Guided lessons and recaps</small></a>';
  h+='<a href="#challenge/f170/weak" class="k-mini-action fix"><span class="k-mini-symbol">'+kIcon("rotate")+'</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
  h+='</section>';
  h+='<h2 class="k-subhead">Other ways to revise F171</h2><section class="k-home-actions">';
  if(f171Cards.length)h+='<a href="#flashcards/f171" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("layers")+'</span><strong>F171 flashcards</strong><small>Treatment, prevention, and monitoring</small></a>';
- h+='<a href="#catchup/f171" class="k-mini-action learn"><span class="k-mini-symbol">'+kIcon("book")+'</span><strong>Catch up</strong><small>Key ideas and explanations</small></a>';
+ h+='<a href="#catchup/f171" class="k-mini-action learn"><span class="k-mini-symbol">'+kIcon("book")+'</span><strong>Catch up</strong><small>Guided clinical reasoning</small></a>';
  h+='<a href="#skills/f171" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("calc")+'</span><strong>Skills practice</strong><small>Calculations, data, and evidence</small></a>';
  h+='<a href="#challenge/f171/weak" class="k-mini-action fix"><span class="k-mini-symbol">'+kIcon("rotate")+'</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
  h+='</section>';
@@ -247,6 +247,7 @@ document.addEventListener("click",function(e){
  if(!window.confirm("Clear all Human Biology revision progress and unfinished sets saved in this browser? This cannot be undone."))return;
  var keys=["narajos-human-challenge-v2-session","narajos-human-challenge-v2-progress","narajos-human-challenge-v2-rotation","narajos-human-biology-session-v1","narajos-human-biology-practice-v1","narajos-keystone-review-v1-ocr-human-biology-f170"];
  if(window.KeystoneHumanTeaching)keys.push(window.KeystoneHumanTeaching.storageKey);
+ if(window.KeystoneHumanChallenge)keys.push(...window.KeystoneHumanChallenge.localSessionKeys());
  keys.forEach(function(k){try{localStorage.removeItem(k);}catch(_){}});
  location.reload();
 });

@@ -306,9 +306,20 @@ function resumeLinks(){
  return (back?'<a href="#'+esc(back)+'">Return to your unfinished question set</a>':'')+
   (simple?'<a href="#resume">Resume flashcards or explanation practice</a>':'');
 }
-function relatedLinks(unit,id,practice,lesson){
+function skillLinks(unit,id,lesson){
+ var library=window.KeystoneHumanSkills;
+ if(!library||!lesson.skills)return "";
+ return '<details class="hb-prerequisite"><summary>Practise a related method</summary><ul>'+
+  lesson.skills.map(function(skillId){
+   var skill=library.get(skillId);
+   if(!skill)return "";
+   return '<li><a href="#skills/'+skill.unit+'/'+skill.id+'?from=catchup/'+unit+'/'+id+'">'+
+    esc(skill.name)+'</a><p>'+esc(skill.description)+'</p></li>';
+  }).join("")+'</ul></details>';
+}
+function relatedLinks(unit,id,practice){
  var links='<a href="#'+esc(practice)+'">'+(unitKind(unit)==="Externally assessed"?"Practise questions":"Practise general knowledge")+'</a>';
- if(unit==="f170")links+='<a href="#cards/'+esc(id)+'">Flashcards for this topic</a>';
+ if(unit==="f170")links+='<a href="#challenge/f170/'+esc(id)+'">Varied topic questions</a><a href="#cards/'+esc(id)+'">Flashcards for this topic</a>';
  if(unit==="f171"){
   var deck=(window.KeystoneF171Recall||[]).find(function(d){return d[0]===id;});
   links+='<a href="#'+(deck?"cards/f171-"+id:"flashcards/f171")+'">'+(deck?"Flashcards for this topic":"F171 flashcards")+'</a>';
@@ -355,7 +366,7 @@ function showConcept(unit,id,step,render){
   topic=item.section.title;points=item.section.points;practice="practice/"+id;
  }else{
   var item=(notes[unit]||{})[id];if(!item)return showUnit(unit,render);
-  topic=item.title;points=item.lines;practice="challenge/"+unit+"/"+(unit==="f171"&&!id.startsWith("a")?"a"+id[0]:id);
+  topic=item.title;points=item.lines;practice="challenge/"+unit+"/"+id;
  }
  if(!Array.isArray(points)||!points.length)return showUnit(unit,render);
  step=Math.max(0,Math.min(points.length-1,Number(step)||0));
@@ -370,7 +381,7 @@ function showConcept(unit,id,step,render){
   var interactive=sim?'<details class="hb-inline-model"><summary>Open the reproductive pathway model</summary>'+sim.render()+'</details>':"";
   render('<div class="k-wrap k-catchup-concept">'+crumb("catchup/"+unit,u.title)+
    '<div class="k-eyebrow">'+unitKind(unit)+'</div><h1>'+esc(topic)+'</h1>'+
-   teaching.render(lesson,{inline:lesson.visual==="model"?"":visual,modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:recap+relatedLinks(unit,id,practice,lesson)})+'</div>');
+   teaching.render(lesson,{inline:lesson.visual==="model"?"":visual,method:skillLinks(unit,id,lesson),modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:recap+relatedLinks(unit,id,practice)})+'</div>');
   teaching.mount(unit+"/"+lessonId,lesson);
   if(sim)window.KeystoneReproductionSimulation.mount(document);
   return;
@@ -381,8 +392,7 @@ function showConcept(unit,id,step,render){
  if(step===0&&window.KeystoneCatchupVisuals)h+=window.KeystoneCatchupVisuals.render(unit,id);
  h+='<div class="k-catchup-controls">'+(step>0?'<a class="button secondary" href="'+key+'/'+(step-1)+'">Previous</a>':'')+
  (step<points.length-1?'<a class="button primary" href="'+key+'/'+(step+1)+'">Next key idea →</a>':'<a class="button primary" href="#'+practice+'">Practise questions →</a>')+'</div>';
- if(unit==="f170"&&step===points.length-1)h+='<p><a href="#cards/'+esc(id)+'">Flashcards for this topic</a></p>';
- h+='<p class="k-small-note">Short recap of selected key ideas.</p><div class="hb-teach-related">'+resumeLinks()+'</div>';
+ h+='<p class="k-small-note">Short recap of selected key ideas.</p>'+relatedLinks(unit,id,practice);
  if(unit==="f175"&&id==="a1"&&step===points.length-1&&window.KeystoneReproductionSimulation){
   h+=window.KeystoneReproductionSimulation.render();
  }

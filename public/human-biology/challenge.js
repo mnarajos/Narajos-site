@@ -11,7 +11,17 @@ var all=db.questions,byId={},skills=window.KeystoneHumanSkills,ladders=window.Ke
 var render=null,visible=false,lastRoute="",skillExampleStem="";
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(a){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[a];});}
 function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=b[i];b[i]=b[j];b[j]=t;}return b;}
-function save(){try{if(session)localStorage.setItem(SK,JSON.stringify(session));else localStorage.removeItem(SK);}catch(_){}}
+function contextualKey(skillId){return SK+"-catchup-"+skillId;}
+function sessionKey(item){return item&&item.returnTo?contextualKey(item.skillId):SK;}
+function save(){try{if(session)localStorage.setItem(sessionKey(session),JSON.stringify(session));}catch(_){}}
+function clearSession(item){try{localStorage.removeItem(sessionKey(item));}catch(_){}}
+function skillReturnLink(route){
+ return route?'<a class="button secondary" href="#'+esc(route)+'">Return to the catch-up lesson</a>':"";
+}
+function parseSkillRoute(route){
+ var match=/^skills(?:\/(f17[01]))?(?:\/([a-z]+))?(?:\?from=(catchup\/f17[0-7]\/[a-z0-9.]+))?$/.exec(route);
+ return match?{unit:match[1],skillId:match[2],returnTo:match[3]||null}:null;
+}
 function saveProgress(){try{localStorage.setItem(PK,JSON.stringify(progress));}catch(_){}}
 function rotatePool(list){
  var groups={},keys=[];list.forEach(function(q){var key=q.family||q.id;if(!groups[key]){groups[key]=[];keys.push(key);}groups[key].push(q);});
@@ -21,10 +31,17 @@ function rotatePool(list){
 }
 function rememberVersions(ids){ids.forEach(function(id){var q=byId[id];if(!q||!q.family)return;var past=rotation[q.family]||[];rotation[q.family]=past.filter(function(x){return x!==id;}).concat(id).slice(-2);});try{localStorage.setItem(RK,JSON.stringify(rotation));}catch(_){}}
 function familyInQueue(q){return session&&session.queue.some(function(id){var x=byId[id];return x&&(x.family||x.id)===(q.family||q.id);});}
-function restore(){try{var x=JSON.parse(localStorage.getItem(SK)||"null");if(x&&x.skillId){if(!skills||x.skillsVersion!==skills.version||!skills.get(x.skillId)||!Array.isArray(x.generated)||x.generated.length>10)return null;x.generated.forEach(function(g){var q=skills.generate(x.skillId,g.level,g.seed);byId[q.id]=q;});}if(x&&Array.isArray(x.queue)&&x.queue.length&&x.queue.every(function(id){return !!byId[id];})&&x.index<x.queue.length&&!x.complete&&x.route&&x.unit){x.hintsUsed=x.hintsUsed||{};x.quickCheckIds=x.quickCheckIds||{};x.quickCheckLinks=x.quickCheckLinks||{};x.guidedFirst=x.guidedFirst||0;x.quickChecksSeen=x.quickChecksSeen||0;x.quickChecksPassed=x.quickChecksPassed||0;return x;}}catch(_){}return null;}
+function restore(key=SK){try{var x=JSON.parse(localStorage.getItem(key)||"null");if(x&&x.skillId){if(!skills||x.skillsVersion!==skills.version||!skills.get(x.skillId)||!Array.isArray(x.generated)||x.generated.length>10)return null;x.generated.forEach(function(g){var q=skills.generate(x.skillId,g.level,g.seed);byId[q.id]=q;});}if(x&&Array.isArray(x.queue)&&x.queue.length&&x.queue.every(function(id){return !!byId[id];})&&x.index<x.queue.length&&!x.complete&&x.route&&x.unit){x.hintsUsed=x.hintsUsed||{};x.quickCheckIds=x.quickCheckIds||{};x.quickCheckLinks=x.quickCheckLinks||{};x.guidedFirst=x.guidedFirst||0;x.quickChecksSeen=x.quickChecksSeen||0;x.quickChecksPassed=x.quickChecksPassed||0;return x;}}catch(_){}return null;}
 function isActive(){return !!session&&session.index<session.queue.length;}
 function pause(){stopHintTimer();session=null;visible=false;} // Preserve the unfinished set in localStorage.
-function discard(){stopHintTimer();session=null;visible=false;save();}
+function discard(){stopHintTimer();clearSession(session);session=null;visible=false;}
+function savedSession(){
+ var standard=restore();
+ if(standard)return standard;
+ if(!skills)return null;
+ return skills.definitions.map(function(skill){return restore(contextualKey(skill.id));})
+  .filter(Boolean).sort(function(a,b){return b.started-a.started;})[0]||null;
+}
 function icon(name){
  var paths={
  brain:'<path d="M12 18V5a4 4 0 0 0-7.5-1.9A4 4 0 0 0 3 10a4 4 0 0 0 1 7.5A4 4 0 0 0 12 18ZM12 18V5a4 4 0 0 1 7.5-1.9A4 4 0 0 1 21 10a4 4 0 0 1-1 7.5A4 4 0 0 1 12 18Z" transform="translate(0 2) scale(1 .9)"/>',
@@ -52,6 +69,7 @@ function areaName(unit,area){var F=["","Human cells and tissues","Physiology and
 function filter(unit,scope){
  var list=all.filter(function(q){return q.unit===unit;});
  if(/^a[1-5]$/.test(scope))list=list.filter(function(q){return q.area===Number(scope.slice(1));});
+ else if(/^\d+(?:\.\d+)*$/.test(scope))list=list.filter(function(q){return q.section===scope;});
  else if(scope==="core"||scope==="apply"||scope==="stretch")list=list.filter(function(q){return q.level===scope;});
  else if(scope.startsWith("case-"))list=list.filter(q=>q.id===scope&&q.caseTitle);
  else if(scope==="sam")list=list.filter(function(q){return q.samAligned;});
@@ -281,14 +299,15 @@ function skillsMenu(unit){
  ["f170","f171"].forEach(function(u){var group=defs.filter(function(s){return s.unit===u;});if(!group.length)return;
   h+='<h2>'+u.toUpperCase()+'</h2><div class="k-skills-grid">';
   group.forEach(function(s){var p=progress["skill:"+s.id]||{};
-   h+='<article class="paper k-skill-card"><h3>'+esc(s.name)+'</h3><p>'+esc(s.description)+'</p>'+(p.seen?'<p class="k-source">'+(p.independent||0)+' of '+p.seen+' answered without help</p>':'')+'<a class="button primary" href="#skills/'+u+'/'+s.id+'">Practise<span class="sr-only"> '+esc(s.name)+'</span></a></article>';
+   var saved=old&&old.skillId===s.id?old:restore(contextualKey(s.id));
+   h+='<article class="paper k-skill-card"><h3>'+esc(s.name)+'</h3><p>'+esc(s.description)+'</p>'+(p.seen?'<p class="k-source">'+(p.independent||0)+' of '+p.seen+' answered without help</p>':'')+'<a class="button primary" href="#'+(saved?esc(saved.route):'skills/'+u+'/'+s.id)+'">'+(saved?'Resume':'Practise')+'<span class="sr-only"> '+esc(s.name)+'</span></a></article>';
   });h+='</div>';
  });
  h+='<p class="k-source">Calculations vary numbers and, where appropriate, the unknown quantity. Reasoning questions rotate through authored contexts. Repeats are possible. These skills support F170/F171; they are not complete knowledge coverage.</p>'+source()+'</div>';show(h);
 }
-function skillExample(sk,route){
+function skillExample(sk,returnTo){
  visible=false;var q=skills.generate(sk.id,2,Math.floor(Math.random()*4294967296));skillExampleStem=q.stem+JSON.stringify(q.graph||null);
- var h='<div class="k-wrap"><p class="crumb"><a href="#skills/'+sk.unit+'">← Skills practice</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+sk.unit.toUpperCase()+' · Skills practice</div><h1>'+esc(sk.name)+'</h1><p>Work through this example. Your practice starts with a different question.</p></div><section class="paper k-skill-example"><h2>Worked example</h2><p>'+esc(q.stem)+'</p>'+skills.graphHTML(q.graph)+'<h3>Method</h3><p>'+esc(q.explain)+'</p><p><strong>'+answerKey(q)+'</strong></p></section><p>Two independent correct answers move you up one step. An error moves the next question down one step. Using help keeps you at the same step.</p><button type="button" class="button primary" data-start-skill="'+sk.id+'">Now try one</button></div>';
+ var h='<div class="k-wrap"><p class="crumb"><a href="#skills/'+sk.unit+'">← Skills practice</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+sk.unit.toUpperCase()+' · Skills practice</div><h1>'+esc(sk.name)+'</h1><p>Work through this example. Your practice starts with a different question.</p></div><section class="paper k-skill-example"><h2>Worked example</h2><p>'+esc(q.stem)+'</p>'+skills.graphHTML(q.graph)+'<h3>Method</h3><p>'+esc(q.explain)+'</p><p><strong>'+answerKey(q)+'</strong></p></section><p>Two independent correct answers move you up one step. An error moves the next question down one step. Using help keeps you at the same step.</p><button type="button" class="button primary" data-start-skill="'+sk.id+'">Now try one</button>'+skillReturnLink(returnTo)+'</div>';
  show(h);
 }
 function addSkillQuestion(){
@@ -298,16 +317,19 @@ function addSkillQuestion(){
  session.maxSkillLevel=Math.max(session.maxSkillLevel||1,session.skillLevel);
 }
 function startSkill(sk,r){
- session={unit:sk.unit,scope:"skill",route:r,skillId:sk.id,skillsVersion:skills.version,skillLevel:1,maxSkillLevel:1,skillStreak:0,generated:[],queue:[],index:0,first:{},correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,complete:false,started:Date.now()};
+ session={unit:sk.unit,scope:"skill",route:r,returnTo:parseSkillRoute(r).returnTo,skillId:sk.id,skillsVersion:skills.version,skillLevel:1,maxSkillLevel:1,skillStreak:0,generated:[],queue:[],index:0,first:{},correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,complete:false,started:Date.now()};
  addSkillQuestion();save();drawQuestion();
 }
 function skillRoute(r){
- var m=/^skills(?:\/(f17[01]))?(?:\/([a-z]+))?$/.exec(r);
- if(!m)return skillsMenu();
- var sk=m[2]&&skills&&skills.get(m[2]);
- if(!sk||sk.unit!==m[1])return skillsMenu(m[1]);
- var old=session||restore();if(old&&old.route===r&&old.skillId===sk.id){session=old;return drawQuestion();}
- return skillExample(sk,r);
+ var path=parseSkillRoute(r);
+ if(!path)return skillsMenu();
+ var sk=path.skillId&&skills&&skills.get(path.skillId);
+ if(!sk||sk.unit!==path.unit)return skillsMenu(path.unit);
+ var old=restore(path.returnTo?contextualKey(sk.id):SK);
+ if(old&&old.skillId===sk.id){
+  session=old;session.returnTo=path.returnTo;session.route=r;save();return drawQuestion();
+ }
+ return skillExample(sk,path.returnTo);
 }
 function isQuickCheck(q){return !!(session&&session.quickCheckIds&&q&&session.quickCheckIds[q.id]);}
 function formChoice(q,answer){
@@ -521,7 +543,7 @@ function drawQuestion(){
  var sub=session.skillId?skills.get(session.skillId).name:title(q.unit),num=session.index+1,max=session.skillId?10:session.queue.length;
  var prog=(100*(session.index/max)).toFixed(1),showing=session.phase==="feedback";
  var used=session.hintsUsed&&session.hintsUsed[q.id]||0,availableHints=hintsFor(q);
- var h='<div class="k-wrap k-question-view"><p class="crumb"><a href="#'+(session.skillId?'skills/'+q.unit:'challenge/'+q.unit)+'">← Leave this set</a></p><div class="k-question-meta"><span>'+esc(sub)+'</span><span>'+num+' of '+max+'</span></div><div class="progress-track" role="progressbar" aria-label="Questions completed" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+session.index+'"><div style="width:'+prog+'%"></div></div>';
+ var h='<div class="k-wrap k-question-view"><p class="crumb"><a href="#'+(session.skillId?'skills/'+q.unit:'challenge/'+q.unit)+'">← Leave this set</a></p>'+skillReturnLink(session.returnTo)+'<div class="k-question-meta"><span>'+esc(sub)+'</span><span>'+num+' of '+max+'</span></div><div class="progress-track" role="progressbar" aria-label="Questions completed" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+session.index+'"><div style="width:'+prog+'%"></div></div>';
  if(session.point){var point=ladders.get(session.point);h+='<p class="k-sequence-note"><strong>'+esc(point.statement)+'</strong><br>'+esc(q.stage==="foundation"?"1 · Activate prior knowledge":q.stage==="diagnostic"?"2 · Check a misconception":q.stage==="challenge"?"4 · Transfer and challenge":"3 · Use the idea")+'</p>';}
  h+='<div class="k-question-paper"><div class="k-question-tags"><span class="k-type">'+icon(iconFor(q))+esc(labelType(q))+'</span><span class="k-level '+esc(q.level)+'">'+esc(q.level==="warmup"?"Warm-up":q.level==="core"?"Core knowledge":q.level==="apply"?"Application":"Challenge")+'</span>'+(q.marks?'<span class="k-level stretch">'+q.marks+'-mark response</span>':'')+'</div>'+questionPrompt(q);
  if(q.type==="number"||q.calculator)h+='<div class="k-calculator-note">'+icon("calc")+'<span>Calculator may help</span></div>';
@@ -657,10 +679,10 @@ function next(){
  if(session.index>=session.queue.length)finish();else drawQuestion();
 }
 function finish(){
- stopHintTimer();if(!session)return;var old=session;session=null;save();
+ stopHintTimer();if(!session)return;var old=session;clearSession(old);session=null;
  if(old.skillId){
   var sk=skills.get(old.skillId);
-  show('<div class="k-wrap k-done"><h1>Skills set complete</h1><p class="lead">'+old.correctFirst+' of 10 answered independently on first attempt.</p><p>'+old.guidedFirst+' answered with help. Highest practice step: '+old.maxSkillLevel+' of 4.</p><p>Try another set with new values or another authored context. This records practice, not proven mastery.</p><div class="actions"><button class="button primary" type="button" data-start-skill="'+sk.id+'">Practise this skill again</button><a class="button secondary" href="#skills/'+sk.unit+'">Choose another skill</a><a class="button secondary" href="#challenge/'+sk.unit+'">Apply to topic questions</a></div></div>');return;
+  show('<div class="k-wrap k-done"><h1>Skills set complete</h1><p class="lead">'+old.correctFirst+' of 10 answered independently on first attempt.</p><p>'+old.guidedFirst+' answered with help. Highest practice step: '+old.maxSkillLevel+' of 4.</p><p>Try another set with new values or another authored context. This records practice, not proven mastery.</p><div class="actions"><button class="button primary" type="button" data-start-skill="'+sk.id+'">Practise this skill again</button><a class="button secondary" href="#skills/'+sk.unit+'">Choose another skill</a><a class="button secondary" href="#challenge/'+sk.unit+'">Apply to topic questions</a>'+skillReturnLink(old.returnTo)+'</div></div>');return;
  }
  var repeat=Object.keys(old.retries).length,done=old.queue.length;
  if(old.point){var p=ladders.get(old.point);show('<div class="k-wrap k-done"><h1>Sequence complete</h1><p class="lead">'+esc(p.statement)+'</p><p>'+old.correctFirst+' of '+Object.keys(old.first).length+' questions answered independently on first attempt. '+old.guidedFirst+' answered with help. This is practice evidence, not proof of lasting mastery.</p><div class="actions"><a class="button primary" href="#challenge/'+old.unit+'/build">Choose another idea</a><button class="button secondary" type="button" data-repeat-point="'+p.id+'">Repeat this idea</button><a class="button secondary" href="#catchup/'+old.unit+'/'+p.section+'">Revisit the explanation</a></div></div>');return;}
@@ -672,7 +694,7 @@ function route(r,renderer){
  if(r==="skills"||r.startsWith("skills/"))return skillRoute(r);
  if(r==="challenge")return landing();
  if(r==="knowledge")return knowledgeLanding();
- var m=/^challenge\/(f17[0-7])(?:\/([a-z0-9-]+))?$/.exec(r);
+ var m=/^challenge\/(f17[0-7])(?:\/([a-z0-9.-]+))?$/.exec(r);
  if(!m)return landing();
  var unit=m[1],scope=m[2]||null;
  if(!scope){visible=false;return intro(unit);}
@@ -724,7 +746,7 @@ main.addEventListener("click",function(e){
  var help=e.target.closest("[data-k-action]");if(!help||help.dataset.kAction!=="hint")noteAnswerActivity();
  var start=e.target.closest("[data-start-skill]");
  var repeatPoint=e.target.closest("[data-repeat-point]");if(repeatPoint&&ladders){var point=ladders.get(repeatPoint.getAttribute("data-repeat-point"));if(point)return makeSession(point.unit,point.id,'challenge/'+point.unit+'/'+point.id);}
- if(start&&skills){var sk=skills.get(start.getAttribute("data-start-skill"));if(sk&&lastRoute==="skills/"+sk.unit+"/"+sk.id)return startSkill(sk,lastRoute);}
+ if(start&&skills){var sk=skills.get(start.getAttribute("data-start-skill"));var path=parseSkillRoute(lastRoute);if(sk&&path&&path.skillId===sk.id&&path.unit===sk.unit)return startSkill(sk,lastRoute);}
  if(!session||!visible)return;
  pointerQuickTap(e);
  var move=e.target.closest("[data-move]");
@@ -744,5 +766,5 @@ main.addEventListener("click",function(e){
 });
 main.addEventListener("keydown",function(e){if(e.target&&e.target.closest&&e.target.closest('[data-k-action="hint"]'))return;if(e.key!=="Tab"&&e.key!=="Shift")noteAnswerActivity();});
 window.addEventListener("beforeunload",function(e){if(isActive()){e.preventDefault();e.returnValue="";}});
-window.KeystoneHumanChallenge={route:route,isActive:isActive,discard:discard,pause:pause,stats:unitStats,questionCount:all.length,types:Array.from(new Set(all.map(function(q){return q.type;}))),icon:icon,hasResume:function(){return !!restore();},resumeRoute:function(){var old=restore();return old?old.route:null;}};
+window.KeystoneHumanChallenge={route:route,isActive:isActive,discard:discard,pause:pause,stats:unitStats,questionCount:all.length,types:Array.from(new Set(all.map(function(q){return q.type;}))),icon:icon,localSessionKeys:function(){return skills?skills.definitions.map(function(skill){return contextualKey(skill.id);}):[];},hasResume:function(){return !!savedSession();},resumeRoute:function(){var old=savedSession();return old?old.route:null;}};
 })();

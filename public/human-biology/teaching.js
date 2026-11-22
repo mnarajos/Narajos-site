@@ -82,7 +82,7 @@
       '</ol>' + (lesson.model.length > 1 ?
         '<button type="button" class="button secondary" data-hb-action="model">Show next step</button>' : '') + '</details>' : "";
     return '<div class="hb-teaching"><p class="lead hb-objective">' + escape(lesson.goal) + '</p>' + activate +
-      explanation + model + task("guided", "We do · Try it with support", lesson.guided) +
+      explanation + model + context.method + task("guided", "We do · Try it with support", lesson.guided) +
       task("independent", "You do · Apply it independently", lesson.apply) +
       '<div data-hb-followup hidden>' + task("followup", "Try a fresh check", lesson.followup) + '</div>' +
       context.related + '</div>';
