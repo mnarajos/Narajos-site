@@ -256,6 +256,19 @@ assert.equal(reviewProgress.checked,0,"Written reviews must not enter objective 
 assert.match(main.innerHTML,/0 of 0 objectively checked/);
 clickAction("self-good");
 assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-progress"))[written.id].seen,1,"Repeated review must not create another attempt");
+const sequence=forcedQuestion("f175-early");
+let sequenceSave=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+sequenceSave.answers[sequence.id].order=[0,1,2,3]; // a pre-Batch-10 saved draft
+data.set("narajos-human-challenge-v2-session",JSON.stringify(sequenceSave));
+app.pause();app.route(sequenceSave.route,h=>main.innerHTML=h);
+sequenceSave=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.equal(sequenceSave.answers[sequence.id].order.length,5);
+sequenceSave.answers[sequence.id].order=[0,1,2,3,4];
+data.set("narajos-human-challenge-v2-session",JSON.stringify(sequenceSave));
+app.pause();app.route(sequenceSave.route,h=>main.innerHTML=h);
+clickAction("check");
+assert.match(main.innerHTML,/<li>Fertilisation<\/li><li>Cleavage.*<\/li><li>Blastocyst formation.*<\/li><li>Implantation.*<\/li><li>Continued embryonic development<\/li>/);
+assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-session")).lastResult,true);
 const warm=forcedQuestion("warm-f170-cells");
 main.querySelector=()=>null;main.querySelectorAll=()=>[{value:String(warm.correct)}];
 unlockHintClock();clickAction("hint");assert(main.innerHTML.includes("Hint 1"),"Warm-up should offer a hint");

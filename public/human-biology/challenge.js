@@ -380,8 +380,11 @@ function bestForm(q,answer){
  h+=answer.reasonOrder.map(function(i,pos){return '<label class="k-option"><input type="radio" name="kreason" value="'+i+'"'+(answer.reason===i?' checked':'')+'><span class="k-option-letter">'+String.fromCharCode(65+pos)+'</span><span>'+esc(q.reasons[i])+'</span></label>';}).join("");
  return h+'</div></fieldset></div>';
 }
+function usableOrder(q,order){
+ return Array.isArray(order)&&order.length===q.items.length&&new Set(order).size===order.length&&order.every(function(i){return Number.isInteger(i)&&i>=0&&i<q.items.length;});
+}
 function orderForm(q,answer){
- var current=answer&&Array.isArray(answer.order)?answer.order:null;
+ var current=usableOrder(q,answer.order)?answer.order:null;
  if(!current){current=shuffle(q.items.map(function(_,i){return i;}));if(current.every(function(v,i){return v===i;}))current.reverse();session.answers[q.id]={order:current};save();}
  return '<ol class="k-order">'+current.map(function(idx,pos){
  return '<li><span class="k-order-num">'+(pos+1)+'</span><span>'+esc(q.items[idx])+'</span><span class="k-order-controls"><button class="k-small-btn" type="button" data-move="up" data-pos="'+pos+'" aria-label="Move step '+(pos+1)+' up" '+(pos===0?"disabled":"")+'>↑</button><button class="k-small-btn" type="button" data-move="down" data-pos="'+pos+'" aria-label="Move step '+(pos+1)+' down" '+(pos===current.length-1?"disabled":"")+'>↓</button></span></li>';
@@ -633,7 +636,7 @@ function validateAnswer(q,a){
   if(q.type==="multi"&&a.selected.length!==q.correct.length)return {ready:false,msg:"Select exactly "+q.correct.length+" answers."};
   return {ready:true,correct:q.type==="multi"?(a.selected.slice().sort().join(",")===q.correct.slice().sort().join(",")):a.selected[0]===q.correct};
  }
- if(q.type==="order")return {ready:true,correct:a.order&&a.order.every(function(v,i){return v===i;})};
+ if(q.type==="order")return {ready:usableOrder(q,a.order),correct:usableOrder(q,a.order)&&a.order.every(function(v,i){return v===i;})};
  if(q.type==="sort"){if(!a.sort||a.sort.length!==q.rows.length||a.sort.some(function(v){return v===""||v==null;}))return {ready:false,msg:"Choose a group for each statement."};return {ready:true,correct:a.sort.every(function(v,i){return +v===q.rows[i][1];})};}
  if(q.type==="match"){if(!a.match||a.match.length!==q.pairs.length||a.match.some(function(v){return v===""||v==null;}))return {ready:false,msg:"Choose a match for each row."};return {ready:true,correct:a.match.every(function(v,i){return +v===i;})};}
  if(q.type==="number"){var val=String(a.text||"").trim().replace(/,/g,"").replace(/^×\s*/,"");if(!/^[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[-+]?\d+)?$/i.test(val))return {ready:false,msg:"Enter a number only. The expected unit is shown above the box."};return {ready:true,correct:Math.abs(Number(val)-q.correct)<=(q.tolerance||1e-9)};}

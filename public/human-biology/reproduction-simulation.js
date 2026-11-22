@@ -233,7 +233,7 @@ function mount(host){
   status("Possible fertilisation: sperm and secondary oocyte fuse to form a zygote. Cell divisions begin as the early embryo travels towards the uterus.");
   transport(group.embryo,path,2400,function(){
    state.phase="ready-to-implant";update();
-   status("Early embryo has reached the uterus in this model. A blastocyst may attach to the endometrium several days after fertilisation. Select possible implantation to show that later event.");
+   status("The embryo has reached the uterus and develops into a blastocyst around this stage. A blastocyst may attach to the endometrium several days after fertilisation. Select possible implantation to show that later event.");
    offerFocus(btn.implant);
   },function(fraction){if(fraction>.3)show(divisions,true);});
  }

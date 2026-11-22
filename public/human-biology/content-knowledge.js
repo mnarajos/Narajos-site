@@ -1103,14 +1103,15 @@ window.KeystoneHumanKnowledge={
       "stem": "Put these stages in the usual order.",
       "items": [
         "Fertilisation",
-        "Early cell divisions",
-        "Implantation",
-        "Embryonic development"
+        "Cleavage and early embryonic development",
+        "Blastocyst formation as the embryo reaches the uterus",
+        "Implantation in the uterine lining",
+        "Continued embryonic development"
       ],
-      "model": "Fertilisation → cleavage → implantation → embryo development.",
-      "explain": "After fertilisation, cells divide before implantation.",
-      "misconception": "An embryo does not implant before cell division.",
-      "hintCue": "Which event must happen before implantation?",
+      "model": "Fertilisation → cleavage → blastocyst formation → implantation → continued embryonic development.",
+      "explain": "Fertilisation usually occurs in an oviduct and forms a zygote. Cleavage begins as the early embryo travels towards the uterus. The embryo develops into a blastocyst before it can implant in the uterine lining. Development continues after implantation.",
+      "misconception": "Implantation is a later step. By then, early embryonic development has already begun.",
+      "hintCue": "Compare where the first divisions happen with where attachment can occur.",
       "samAligned": false,
       "knowledgeOnly": true
     },

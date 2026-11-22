@@ -192,7 +192,7 @@ var notes={
       "title": "Conception and pregnancy",
       "lines": [
         "An oviduct is also called a Fallopian tube or uterine tube. Fertilisation usually occurs within an oviduct.",
-        "After fertilisation, the early embryo divides and later implants within the uterine lining.",
+        "The zygote begins cleavage as it travels towards the uterus. The embryo develops into a blastocyst that may implant in the uterine lining. Development continues after implantation.",
         "FSH supports follicle development, while a surge in LH normally triggers ovulation."
       ]
     },
