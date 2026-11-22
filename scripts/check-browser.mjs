@@ -356,6 +356,7 @@ try{
  await navPage.locator('button[data-level="3"]').click();
  await navPage.getByText("Graph values as a table",{exact:true}).press("Enter");
  const inhibitionTable=navPage.getByRole("table",{name:"Modelled values for the visible curves"});
+ await inhibitionTable.locator("tbody tr").first().waitFor();
  assert.equal(await inhibitionTable.locator("tbody tr").count(),18);
  await navPage.locator("#series input").first().uncheck();
  assert.equal(await inhibitionTable.locator("tbody tr").count(),12);
