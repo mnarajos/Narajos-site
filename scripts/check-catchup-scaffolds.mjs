@@ -45,6 +45,10 @@ export async function checkCatchupScaffolds(browser, base) {
     const reopen = journey.getByRole("button", {name: "Resume check", exact: true});
     assert(await journey.getByRole("heading", {name: "Read the arrows on the cyclist"}).isVisible());
     await reopen.press("Enter");
+    const balancedForces = dialog.locator(".school-question-evidence");
+    assert(await balancedForces.getByText(/40 N backwards/).isVisible());
+    assert(await balancedForces.getByText(/40 N forwards/).isVisible());
+    await narrow(dialog, "Balanced forces check");
     await choose("It stays the same.");
     assert(await journey.getByRole("heading", {name: "We do · Guided practice"}).isVisible());
     await check.press("Enter");

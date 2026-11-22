@@ -42,7 +42,8 @@ export const ks3Scaffolds = {
   ],
   forces: [
     {worked: worked("Read the arrows on the cyclist", "The left arrow is 40 N backwards. The right arrow is 40 N forwards.",
-      "Opposite forces subtract: 40 N − 40 N = 0 N.", "The cyclist is already moving. With zero resultant force, they continue at the same speed in a straight line.")},
+      "Opposite forces subtract: 40 N − 40 N = 0 N.", "The cyclist is already moving. With zero resultant force, they continue at the same speed in a straight line."),
+      diagram: {type: "forces", caption: "Horizontal forces on the moving cyclist", left: "40 N backwards", right: "40 N forwards"}},
     {guide: "Subtract the smaller force from the larger one. Compare the direction of the larger arrow with the cyclist’s motion.",
       worked: worked("When forces are unequal", "If 35 N acts forwards and 25 N acts backwards, the resultant is 10 N forwards.",
         "The resultant is in the direction of motion, so the cyclist speeds up."),
