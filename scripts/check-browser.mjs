@@ -245,7 +245,8 @@ try{
  await heartVideo.getByText(/enters the left atrium/).waitFor();
  await desktop.goto(base+"/alevel/#catchup-a6-synapse",{waitUntil:"load"});
  const synapseVideo=desktop.locator(".kc-video");
- await synapseVideo.getByText("Video · Synaptic transmission",{exact:true}).press("Enter");
+ await synapseVideo.locator(":scope > summary").click();
+ assert(await synapseVideo.evaluate(el=>el.open),"Video disclosure should open on activation");
  await synapseVideo.getByText(/31:12 to 36:45/).waitFor();
  const estruch=synapseVideo.getByRole("link",{name:/Miss Estruch/});
  assert.equal(await estruch.getAttribute("href"),"https://www.youtube.com/watch?v=DVqHoZTZedw&t=1872s");
