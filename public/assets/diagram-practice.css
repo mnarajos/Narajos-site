@@ -1,5 +1,5 @@
 .dp-practice{display:block;max-width:46rem;margin:1.25rem 0;color:#203643}
-.dp-practice [hidden],.dp-catalogue [hidden]{display:none!important}
+.dp-practice [hidden]{display:none!important}
 .dp-overview h2,.dp-course h2{font-size:clamp(1.13rem,2.5vw,1.35rem);margin:.3rem 0}
 .dp-overview p{margin:.35rem 0 .8rem;max-width:62ch}
 .dp-study,.dp-question{margin:.55rem 0;border:1px solid #b4c9c6;border-radius:.65rem;background:#fdfefe}
@@ -14,7 +14,7 @@
 .dp-leaders circle{fill:#fff;stroke:#223b48;stroke-width:1.5;vector-effect:non-scaling-stroke}
 .dp-practice button{font:inherit;font-weight:650;border:1px solid #48787a;border-radius:.45rem;background:#fff;color:#203643;padding:.44rem .65rem;min-height:44px;cursor:pointer;overflow-wrap:anywhere}
 .dp-practice button:disabled{opacity:.57;cursor:default}
-.dp-practice :is(summary,button,input,textarea):focus-visible,.dp-course a:focus-visible{outline:3px solid #b25313;outline-offset:3px}
+.dp-practice :is(summary,button,input,textarea):focus-visible{outline:3px solid #b25313;outline-offset:3px}
 .dp-practice button[aria-pressed="true"],.dp-practice .dp-primary{background:#215c5b;color:#fff}
 .dp-practice .dp-marker{position:absolute;transform:translate(-50%,-50%);display:grid;place-items:center;border:2px solid #215c5b;border-radius:50%;width:44px;height:44px;min-height:0;padding:0;line-height:1;background:#fff;color:#163d3b;font-weight:750;z-index:1}
 .dp-practice span.dp-marker{width:28px;height:28px;font-size:.9rem}
@@ -36,9 +36,8 @@
 .dp-field :is(textarea,input){font:inherit;color:#203643;background:#fff;border:1px solid #6f9392;border-radius:.35rem;padding:.5rem;width:100%;box-sizing:border-box}
 .dp-field input{max-width:13rem;min-height:44px}
 .dp-field textarea{resize:vertical}
-.dp-course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr));gap:.7rem}
-.dp-course{border:1px solid #c0d1cd;border-radius:.6rem;background:white;padding:.55rem .8rem}
-.dp-course-links{list-style:none;padding:0;margin:.2rem 0}
-.dp-course-links a{display:flex;align-items:center;min-height:44px;color:#185653;font-weight:650;text-decoration:underline;text-underline-offset:.18em}
-.dp-course-links a[aria-current="location"]{background:#e5f2ef;border-radius:.35rem;padding-inline:.35rem}
-.dp-catalogue section[id]{scroll-margin-top:1rem}
+
+.topic-diagram-activity{margin:.6rem 0;border:1px solid #b4c9c6;border-radius:.55rem;background:#fdfefe;color:#203643}
+.topic-diagram-activity>summary{padding:.65rem .85rem;cursor:pointer;min-height:44px;font-weight:650}
+.topic-diagram-activity>.dp-practice{padding:0 .75rem;margin:.4rem 0 .8rem}
+.dp-write::before{content:"";display:inline-block;width:1em;height:1em;margin-right:.4em;vertical-align:-.12em;background:#246459;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='m4 16-1 5 5-1L21 7l-4-4L4 16Zm10-10 4 4'/%3E%3C/svg%3E") center/contain no-repeat}

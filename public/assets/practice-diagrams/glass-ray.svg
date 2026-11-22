@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#26786e"/></marker><marker id="red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#aa4554"/></marker></defs>
+<rect width="600" height="360" fill="#fafcfb"/>
+<rect x="55" y="132" width="490" height="113" rx="4" fill="#dbeef4" stroke="#3a789b" stroke-width="3"/><path d="M272 67V206M333 173V326" fill="none" stroke="#637580" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 5"/><path d="M136 39L272 132L333 245L469 338" fill="none" stroke="#aa4554" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M165 59L224 100" fill="none" stroke="#aa4554" stroke-width="4" marker-end="url(#red)"/><path d="M281 151L312 208" fill="none" stroke="#aa4554" stroke-width="4" marker-end="url(#red)"/><path d="M374 273L431 311" fill="none" stroke="#aa4554" stroke-width="4" marker-end="url(#red)"/>
+</svg>

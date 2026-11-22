@@ -354,12 +354,13 @@ function renderLesson(lesson, year, index) {
   finish.append(link("Choose another Year " + year + " topic", yearLink.href));
   const extension = externalModels[lesson.id] ? externalActivity(lesson.id) : null;
   if (extension) teaching.append(extension);
-  const diagramTopic = { "separating-techniques": "filtration", electricity: "circuits",
-    "the-body": "breathing", photosynthesis: "leaf" }[lesson.id];
-  if (diagramTopic) {
+  const diagramTopic = { "separating-techniques": ["filtration", "distillation"], electricity: "circuits",
+    "the-body": "breathing", photosynthesis: "leaf", "light-and-sound": "refraction" }[lesson.id];
+  if (diagramTopic) for (const id of [diagramTopic].flat()) {
     const practice = element("diagram-practice");
-    practice.setAttribute("topic", diagramTopic);
-    if (["breathing","leaf"].includes(diagramTopic)) practice.setAttribute("question-limit", "3");
+    practice.setAttribute("topic", id);
+    if (["breathing","leaf"].includes(id)) practice.setAttribute("question-limit", "3");
+    if (id === "distillation") practice.setAttribute("question-limit", "3");
     checks.append(practice);
   }
   lessonRoot.replaceChildren(teaching, checks, homeActivity(lesson.id), finish);

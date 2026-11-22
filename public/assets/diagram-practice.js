@@ -1,4 +1,6 @@
-import { topics, topicGroups } from "./diagram-practice-data.js";
+import { topics as originalTopics } from "./diagram-practice-data.js";
+import { depthTopics } from "./diagram-depth-data.js";
+const topics = {...originalTopics, ...depthTopics};
 
 function el(tag, text, className) {
   const node = document.createElement(tag);
@@ -21,6 +23,14 @@ function status() {
 }
 
 const callouts = {
+  "skin-warm": [[118, 51], [371, 302], [454, 167]],
+  "cycle-curves": [[327, 57], [130, 96], [498, 121]],
+  "screening-grid": [[159, 116], [504, 116], [159, 272], [504, 272]],
+  "simple-distillation": [[64, 73], [377, 87], [525, 313]],
+  "glass-ray": [[179, 55], [407, 189], [494, 304], [156, 201]],
+  "synapse-rest": [[77, 74], [330, 190], [78, 303]],
+  "trolley-force": [[71, 55], [272, 59], [541, 249]],
+  "inheritance-grid": [[252, 119], [416, 119], [252, 247], [416, 247]],
   "breath-in": [[355, 47], [58, 218], [340, 330]],
   airway: [[72, 48], [272, 65], [492, 275]],
   cuff: [[224, 47], [382, 126], [536, 316]],
@@ -51,6 +61,7 @@ function draw(state, marks = []) {
   const image = el("img");
   image.src = "/assets/practice-diagrams/" + state[0] + ".svg";
   image.alt = state[3];
+  image.loading = "lazy";
   image.width = 600;
   image.height = 360;
   stage.append(image);
@@ -117,6 +128,7 @@ function checkButton(section, report, check) {
 
 function makeDiagramTask(section, topic, task, report) {
   const keys = task.parts || Object.keys(topic.parts);
+  const labelFor = key => task.assignments?.[key] || topic.parts[key].name;
   let selected = null;
   const placed = new Map();
   const chips = new Map();
@@ -133,7 +145,7 @@ function makeDiagramTask(section, topic, task, report) {
   function renderPlacements() {
     placements.replaceChildren(...keys.map(key => {
       const label = placed.get(key);
-      const row = el("li", key + " · " + (label ? topic.parts[label].name : "empty"));
+      const row = el("li", key + " · " + (label ? labelFor(label) : "empty"));
       if (label) row.append(button("Remove", () => {
         placed.delete(key);
         report.textContent = "Label removed from " + key + ".";
@@ -145,7 +157,7 @@ function makeDiagramTask(section, topic, task, report) {
     for (const [key, target] of targets) {
       const label = placed.get(key);
       target.classList.toggle("dp-filled", Boolean(label));
-      target.setAttribute("aria-label", key + ". " + topic.parts[key].cue + (label ? ". Label: " + topic.parts[label].name : ". Empty."));
+      target.setAttribute("aria-label", key + ". " + topic.parts[key].cue + (label ? ". Label: " + labelFor(label) : ". Empty."));
     }
     for (const [key, chip] of chips) {
       chip.setAttribute("aria-pressed", String(key === selected));
@@ -171,7 +183,7 @@ function makeDiagramTask(section, topic, task, report) {
     for (const [target, value] of placed) if (value === label) placed.delete(target);
     placed.set(key, label);
     selected = null;
-    report.textContent = topic.parts[label].name + " placed at " + key + ".";
+    report.textContent = labelFor(label) + " placed at " + key + ".";
     renderPlacements();
   }
 
@@ -180,9 +192,9 @@ function makeDiagramTask(section, topic, task, report) {
     labelBank.setAttribute("role", "group");
     labelBank.setAttribute("aria-label", "Labels");
     for (const key of [...keys.slice(1), keys[0]]) {
-      const chip = button(topic.parts[key].name, () => {
+      const chip = button(labelFor(key), () => {
         selected = selected === key ? null : key;
-        report.textContent = selected ? "Selected " + topic.parts[key].name + ". Choose a letter." : "Selection cleared.";
+        report.textContent = selected ? "Selected " + labelFor(key) + ". Choose a letter." : "Selection cleared.";
         renderPlacements();
       }, "dp-chip");
       chips.set(key, chip);
@@ -307,9 +319,11 @@ function makeCheck(section, task, report) {
       : (selected === task.answer ? "Correct. " : "Try again. ") + task.feedback);
     return;
   }
-  const field = el("label", task.type === "number" ? "Your answer in " + task.unit : "Your explanation", "dp-field");
+  const field = el("label", "", "dp-field");
+  const cue = el("span", task.type === "number" ? "Your answer in " + task.unit : "Write your explanation");
   const input = el(task.type === "number" ? "input" : "textarea");
-  field.append(input);
+  if (task.type === "written") cue.className = "dp-write";
+  field.append(cue, input);
   section.append(field);
   if (task.type === "number") {
     input.inputMode = "decimal";
@@ -346,7 +360,11 @@ class DiagramPractice extends HTMLElement {
     const study = el("details", "", "dp-study");
     study.open = true;
     study.append(el("summary", "Explore the model"), buildModel(topic));
+    this.id ||= "activity-" + this.getAttribute("topic");
     this.append(overview, study);
+    if (location.hash === "#" + this.id || new URLSearchParams(location.search).get("activity") === this.getAttribute("topic")) {
+      requestAnimationFrame(() => this.isConnected && this.scrollIntoView({block:"start"}));
+    }
     const limit = Number(this.getAttribute("question-limit")) || topic.questions.length;
     for (const task of topic.questions.slice(0, limit)) {
       const question = el("details", "", "dp-question");
@@ -368,48 +386,3 @@ class DiagramPractice extends HTMLElement {
 }
 
 customElements.define("diagram-practice", DiagramPractice);
-
-const catalogue = document.querySelector("[data-diagram-catalogue]");
-if (catalogue) {
-  const panels = new Map();
-  const nav = document.querySelector("[data-diagram-links]");
-  for (const group of topicGroups) {
-    const section = el("section", "", "dp-course");
-    section.append(el("h2", group));
-    const links = el("ul", "", "dp-course-links");
-    for (const [id, topic] of Object.entries(topics).filter(([, item]) => item.group === group)) {
-      const link = el("a", topic.title);
-      link.href = "#" + id;
-      const li = el("li");
-      li.append(link);
-      links.append(li);
-      const panel = el("section");
-      panel.id = id;
-      panel.hidden = true;
-      catalogue.append(panel);
-      panels.set(id, panel);
-    }
-    section.append(links);
-    nav.append(section);
-  }
-
-  function show() {
-    const id = location.hash.slice(1);
-    for (const [key, panel] of panels) {
-      panel.hidden = key !== id;
-      if (!panel.hidden && !panel.firstElementChild) {
-        const practice = el("diagram-practice");
-        practice.setAttribute("topic", id);
-        panel.append(practice);
-      }
-    }
-    for (const link of nav.querySelectorAll("a")) {
-      if (link.hash === location.hash) link.setAttribute("aria-current", "location");
-      else link.removeAttribute("aria-current");
-    }
-    panels.get(id)?.scrollIntoView({ block: "start" });
-  }
-
-  window.addEventListener("hashchange", show);
-  show();
-}

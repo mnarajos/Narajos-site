@@ -20,6 +20,13 @@ var notes={
         "A screen can produce a false positive or false negative. Diagnostic follow-up helps establish whether the condition is present. Earlier detection helps when appropriate care can follow."
       ]
     },
+    "4.2.1": {
+      "title": "Interpreting screening and diagnostic results",
+      "lines": [
+        "Screening identifies people who may need further assessment. A positive screen can occur in someone who does not have the condition.",
+        "Compare the screening result with an independent assessment. A false negative is a missed case and a false positive can lead to an unnecessary follow-up."
+      ]
+    },
     "4.2.2": {
       "title": "Taking repeat measurements for monitoring",
       "lines": [
@@ -313,7 +320,7 @@ function showUnit(unit,render){
     h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/2.1">Choosing a treatment</a><a class="button secondary" href="#catchup/f171/2.3">Prevention and early detection</a></div>';
    }
    if(unit==="f171"&&a.code==="a4"){
-    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/4.2.2">Taking repeat measurements</a></div>';
+    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/4.2.1">Interpreting screening results</a><a class="button secondary" href="#catchup/f171/4.2.2">Taking repeat measurements</a></div>';
    }
    if(unit==="f171"&&a.code==="a3"){
     h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/3.2.1">Immune dysfunction</a><a class="button secondary" href="#catchup/f171/3.2.2">Vaccine types</a></div>';
