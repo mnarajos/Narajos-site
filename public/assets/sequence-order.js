@@ -198,8 +198,8 @@ export function mountSequence(root, {
       document.body.append(drag.ghost);
       function scrollAtEdge() {
         if (!drag?.ghost) return;
-        if (drag.y < 80) window.scrollBy(0, -12);
-        else if (drag.y > innerHeight - 80) window.scrollBy(0, 12);
+        if (drag.y < 80) window.scrollBy({ top: -12, behavior: "instant" });
+        else if (drag.y > innerHeight - 80) window.scrollBy({ top: 12, behavior: "instant" });
         drag.hover?.removeAttribute("data-order-hover");
         drag.hover = targetAt(drag.x, drag.y);
         drag.hover?.setAttribute("data-order-hover", "");

@@ -1476,7 +1476,7 @@ try{
  await navPage.waitForURL(/\/ks3\/lesson\/\?topic=separating-techniques/);
  const desktopSequence=desktop.locator("[data-separation-order]");
  await desktop.goto(base+"/ks3/lesson/?topic=separating-techniques");
- await desktopSequence.locator(".writing-order-board").evaluate(el=>el.scrollIntoView({block:"center"}));
+ await desktopSequence.locator(".writing-order-board").evaluate(el=>el.scrollIntoView({block:"center",behavior:"instant"}));
  const firstGrip=bankCard(desktopSequence,"Pour the mixture").locator(".writing-order-grip");
  const firstSlot=slot(desktopSequence,0);
  const gripBox=await firstGrip.boundingBox(), slotBox=await firstSlot.boundingBox();
@@ -1541,7 +1541,7 @@ try{
  assert.match(await touchLabels.locator(".dp-placements").innerText(),/A · Cathode/);
  await touch.goto(base+"/teaching/focused-writing/order/");
  const touchOrder=touch.locator('[data-writing-order="ramp"]');
- await touchOrder.locator(".writing-order-board").evaluate(el=>el.scrollIntoView({block:"start"}));
+ await touchOrder.locator(".writing-order-board").evaluate(el=>el.scrollIntoView({block:"start",behavior:"instant"}));
  const grip=bankCard(touchOrder,"Different cars").locator(".writing-order-grip");
  const touchSlot=slot(touchOrder,0);
  const sourcePoint=center(await grip.boundingBox());
