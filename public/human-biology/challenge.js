@@ -577,16 +577,31 @@ function questionPrompt(q){
   (context?'<p class="reading-copy k-reading-context">'+esc(context)+'</p>':'')+
   '<h1>'+esc(task)+'</h1></div>';
 }
+function compareCase(q){
+ var comparison=q.comparison;
+ var responses=comparison.order.map(function(key,i){
+  return '<div><h4>Response '+String.fromCharCode(65+i)+'</h4><p>'+esc(key==="model"?q.model:comparison.partial)+'</p></div>';
+ }).join("");
+ var annotations=comparison.notes.map(function(note){
+  return '<li><strong>'+esc(note[0])+'</strong> '+esc(note[1])+'</li>';
+ }).join("");
+ var command=q.marks===6?"Analyse how the case details relate and what those relationships mean.":
+  "Discuss the benefits, limitations and implications for this case. Reach a justified view.";
+ return '<section><h3>Compare two answers</h3><p>'+command+'</p><p>Which response better answers the case, and why?</p>'+
+  '<details><summary>Read responses A and B</summary>'+responses+'<details><summary>Check your comparison</summary>'+
+  '<p>'+esc(comparison.comparison)+'</p><ul>'+annotations+'</ul><p>'+esc(q.explain)+'</p></details></details></section>';
+}
 function writtenReview(q,a){
  var review=a.review||{},finished=!!session.outcomes[session.index];
  var student='<section><h3>Your answer</h3><p class="k-review-draft">'+esc(a.text||"No draft was saved.")+'</p></section>';
- var model='<section><h3>Expected ideas</h3><p>'+esc(q.model)+'</p><p>'+esc(q.explain)+'</p></section>';
+ var model=q.comparison?compareCase(q):'<section><h3>Expected ideas</h3><p>'+esc(q.model)+'</p><p>'+esc(q.explain)+'</p></section>';
  var criteria=q.markPoints.map(function(point,i){
   var value=(review.criteria||{})[i];
   return '<label><span>'+esc(point)+'</span><select data-review-criterion="'+i+'"'+(finished?' disabled':'')+'><option value=""'+(!value?' selected':'')+'>Choose a rating</option><option value="met"'+(value==="met"?' selected':'')+'>Included</option><option value="work"'+(value==="work"?' selected':'')+'>Needs work</option></select></label>';
  }).join("");
  return '<div class="k-feedback pending"><h2 data-feedback-heading tabindex="-1">'+(finished?"Self-review complete":"Compare your reasoning")+'</h2><div class="k-review-grid">'+student+model+'</div>'+
   (q.levelsNote?'<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>':'')+
+  (q.comparison?'<p>Use the criteria to assess how well your answer applies biology and evidence across the whole response.</p>':'')+
   '<fieldset class="k-review-criteria"><legend>Key points to look for</legend><p>Check where your answer explains each point. Choose Needs work where a link is missing.</p>'+criteria+'</fieldset>'+
   '<label class="k-field" for="k-revised">Improve your answer</label><textarea id="k-revised" rows="5"'+(finished?' readonly':'')+'>'+esc(review.revised==null?a.text||"":review.revised)+'</textarea>'+
   (finished?'<p role="status">Self-reviewed'+(session.outcomes[session.index]==="review-needs-work"?' · further practice useful':'')+'</p>':'')+'</div>';

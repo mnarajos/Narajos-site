@@ -271,7 +271,7 @@ function clinicalCase(id,section,title,marks,stem,markPoints,model,explain,hints
  });
 }
 clinicalCase("case-cast-choice","2.1","Cast materials and recovery",6,
- "A person has a stable bone fracture that needs support for four more weeks. A fibreglass cast would be lighter and more durable than plaster, but costs more. The person works at a desk and needs to travel by public transport. Analyse how the material could affect their recovery and daily routine.",
+ "A person has a stable wrist fracture that needs support for four more weeks. A fibreglass cast would be lighter and more durable than plaster, but costs more. The person works at a desk and needs to travel by public transport. Analyse how the material could affect their recovery and daily routine.",
  ["A cast must immobilise the fracture and maintain alignment; a cast that fits well provides support while healing progresses.","A lighter and more durable cast could make travel and desk work more manageable and reduce disruption if it stays intact.","Plaster may be cheaper and is easily moulded. Cost and fit must be balanced against convenience, and the lining determines whether water exposure is appropriate."],
  "A well-fitted cast limits movement of the wrist, maintaining alignment while the bone heals. Plaster can mould closely to the limb, which helps with support, and its lower cost may matter. For this person, a lighter fibreglass cast may make it easier to travel and hold the arm in a comfortable position at the desk. Its durability could also reduce disruption if the person needs to wear it daily for four weeks. If either material would provide suitable immobilisation, the extra cost of fibreglass must be weighed against those practical benefits.",
  "Analyse a balance of effects for this individual. Keep healing, day-to-day function, and costs distinct.",
@@ -294,5 +294,42 @@ clinicalCase("case-home-monitoring","4.2.2","Home monitoring and clinic checks",
  "Reliable measurements taken at home can show repeated changes between appointments. This may help the clinic identify who needs review sooner and avoid relying on an isolated result. However, an ill-fitting cuff can shift the readings, and an absent report may reflect access difficulties rather than stable blood pressure. The clinic could offer a suitable validated cuff, teach the technique and provide a telephone or in-person alternative. I would use verified patterns to help prioritise reviews, while following up absent or unexpectedly high readings by a method the person can access.",
  "Weigh a practical benefit against measurement quality and access, then justify which patients need follow-up.",
  ["Consider why a pattern can be more informative than an isolated reading.","Think about whether an absent result is evidence of a normal result."]);
+const caseComparisons={
+ "case-cast-choice":{
+  order:["partial","model"],
+  partial:"Fibreglass is lighter, more durable and more expensive. Plaster moulds well and is cheaper. Both can support healing. Fibreglass would probably be more convenient.",
+  notes:[["Mechanism","Connects reduced movement to maintaining alignment during healing."],
+   ["Application","Explains why weight and durability matter for public transport, desk work and four further weeks."],
+   ["Qualification","If both casts support the fracture appropriately, weigh the practical benefit against the additional cost."]],
+  comparison:"Response B connects the material properties to specific consequences for this person. A lists relevant facts but leaves most of those relationships unexplained."
+ },
+ "case-treatment-spread":{
+  order:["model","partial"],
+  partial:"Surgery removes the main tumour and chemotherapy reaches other areas. Surgery can be risky and chemotherapy can have side effects. The person should receive both because each option has an advantage.",
+  notes:[["Mechanism and evidence","Separates pressure relief at one site from treatment that can reach distant deposits."],
+   ["Trade-off","Relates recovery time and potential adverse effects to the treatment sequence."],
+   ["Conditional judgement","Explains how the urgency of pressure symptoms and likely drug response could alter priorities."]],
+  comparison:"Response A weighs timing and explains when either priority makes sense. B identifies reach and risk but assumes the benefit and suitability of using both."
+ },
+ "case-screening-data":{
+  order:["partial","model"],
+  partial:"One third of the people with a positive result had the condition. The programme detected 15 cases. It should encourage the other 15 people to attend follow-up.",
+  notes:[["Denominator","Uses 45 attendees as the group that had diagnostic assessment."],
+   ["Missing data","Separates the 15 who did not attend from the 30 attendees without confirmation."],
+   ["Limit of inference","Identifies the missing evidence about false negatives."]],
+  comparison:"Response B separates what the figures show from what the clinic still needs to find out. A applies an observed proportion to all positive screens without evidence about non-attendees."
+ },
+ "case-home-monitoring":{
+  order:["model","partial"],
+  partial:"The clinic should use home monitors because they offer more readings and save appointments. A reading that looks high should trigger an appointment. People who cannot use a monitor could ask someone for help.",
+  notes:[["Potential benefit","Links comparable measurements over time to prioritising review."],
+   ["Limitation","Identifies why device fit and missing reports could distort a decision."],
+   ["Qualified judgement","Combines reliable trends with accessible alternatives and proportionate follow-up."]],
+  comparison:"Response A weighs access and reliability alongside potential benefits. B mentions convenience but treats a single value as enough to guide a decision."
+ }
+};
+Object.entries(caseComparisons).forEach(function([id,comparison]){
+ db.questions.find(function(q){return q.id===id;}).comparison=comparison;
+});
 window.KeystoneHumanProgressions={points:points,get:function(id){return points.filter(function(p){return p.id===id;})[0]||null;}};
 })();
