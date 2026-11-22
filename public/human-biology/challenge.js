@@ -551,6 +551,23 @@ function questionPrompt(q){
   (context?'<p class="reading-copy k-reading-context">'+esc(context)+'</p>':'')+
   '<h1>'+esc(task)+'</h1></div>';
 }
+function writtenReview(q,a){
+ var review=a.review||{},finished=!!session.outcomes[session.index];
+ var student='<section><h3>Your answer</h3><p class="k-review-draft">'+esc(a.text||"No draft was saved.")+'</p></section>';
+ var model='<section><h3>Expected ideas</h3><p>'+esc(q.model)+'</p><p>'+esc(q.explain)+'</p></section>';
+ var criteria=q.markPoints.map(function(point,i){
+  var value=(review.criteria||{})[i];
+  return '<label><span>'+esc(point)+'</span><select data-review-criterion="'+i+'"'+(finished?' disabled':'')+'><option value=""'+(!value?' selected':'')+'>Choose a rating</option><option value="met"'+(value==="met"?' selected':'')+'>Included</option><option value="work"'+(value==="work"?' selected':'')+'>Needs work</option></select></label>';
+ }).join("");
+ return '<div class="k-feedback pending"><h2 data-feedback-heading tabindex="-1">'+(finished?"Self-review complete":"Compare your reasoning")+'</h2><div class="k-review-grid">'+student+model+'</div>'+
+  (q.levelsNote?'<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>':'')+
+  '<fieldset class="k-review-criteria"><legend>Key points to look for</legend><p>Check where your answer explains each point. Choose Needs work where a link is missing.</p>'+criteria+'</fieldset>'+
+  '<label class="k-field" for="k-revised">Improve your answer</label><textarea id="k-revised" rows="5"'+(finished?' readonly':'')+'>'+esc(review.revised==null?a.text||"":review.revised)+'</textarea>'+
+  (finished?'<p role="status">Self-reviewed'+(session.outcomes[session.index]==="review-needs-work"?' · further practice useful':'')+'</p>':'')+'</div>';
+}
+function focusFeedback(){
+ var heading=main.querySelector("[data-feedback-heading]");if(heading)heading.focus();
+}
 function drawQuestion(){
  if(!session||!isActive())return;
  stopHintTimer();
@@ -572,12 +589,13 @@ function drawQuestion(){
  if(!showing){h+=inputForm(q,a);
   if(used)h+='<div class="k-hint-box" role="note"><strong>Hint '+used+' of '+availableHints.length+'</strong>'+availableHints.slice(0,used).map(function(t){return '<p>'+esc(t)+'</p>';}).join('')+'</div>';
  }
+ else if(q.type==="written"&&!session.wasSkipped)h+=writtenReview(q,a);
  else{
   var correct=session.lastResult===true,subjective=!session.wasSkipped&&(session.lastResult===null||q.type==="written");
   var helped=!!used,unknown=!!session.wasSkipped,quick=isQuickCheck(q);
   var neutral=unknown||subjective||(correct&&helped);
   var header=unknown?"Here’s how it works":subjective?"Check your explanation":correct&&helped?"Correct with a hint":correct&&quick?"Quick check passed":correct?"Correct":"Not yet";
-  h+='<div class="k-feedback '+(neutral?"pending":correct?"correct":"incorrect")+'"><div class="k-feedback-head">'+icon(neutral?"book":correct?"check":"alert")+'<strong>'+header+'</strong></div>';
+  h+='<div class="k-feedback '+(neutral?"pending":correct?"correct":"incorrect")+'"><h2 class="k-feedback-head" data-feedback-heading tabindex="-1">'+icon(neutral?"book":correct?"check":"alert")+header+'</h2>';
   if(q.figure)h+=figure(q.figure,true);
   h+='<div'+(q.unit==="f170"?' class="reading-copy"':'')+'>'+
    '<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p><strong>'+(correct&&!helped?'Why it works':unknown?'Explanation':'Quick reteach')+':</strong> '+esc(q.explain)+'</p></div>';
@@ -589,7 +607,8 @@ function drawQuestion(){
   h+='</div>';
  }
  if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points":"Check answer")+' →</button>'+(used<availableHints.length?'<button class="button secondary k-hint-button" type="button" data-k-action="hint"'+(hintRemaining()>0?' hidden':'')+'>'+(used?'More help':'Hint')+'</button>':'')+'<button class="button quiet" type="button" data-k-action="skip">I don’t know · show me</button></div>';
- else if(!session.wasSkipped&&(q.type==="written"||session.lastResult===null))h+='<div class="k-foot-actions"><button class="button primary" data-k-action="self-good" type="button">I included the key ideas</button><button class="button secondary" data-k-action="self-weak" type="button">I need more practice</button></div>';
+ else if(!session.wasSkipped&&q.type==="written"&&!session.outcomes[session.index])h+='<div class="k-foot-actions"><button class="button primary" data-k-action="finish-review" type="button">Finish review</button></div>';
+ else if(!session.wasSkipped&&q.type==="short"&&session.lastResult===null)h+='<div class="k-foot-actions"><button class="button primary" data-k-action="self-good" type="button">I included the key ideas</button><button class="button secondary" data-k-action="self-weak" type="button">I need more practice</button></div>';
  else h+='<div class="k-foot-actions"><button class="button primary k-cta" data-k-action="next" type="button">'+(session.lastPlannedCheck?'Try a quick check':'Next question')+' →</button></div>';
  h+='</div><p class="k-question-footer">Topic '+q.area+' · '+esc(areaName(q.unit,q.area))+(q.knowledgeOnly?' · Knowledge practice only':q.samAligned?' · Skills reflected in OCR sample material':' · Specification coverage')+' · Original question</p></div>';
  show(h);
@@ -608,7 +627,7 @@ function validateAnswer(q,a){
  if(q.type==="match"){if(!a.match||a.match.length!==q.pairs.length||a.match.some(function(v){return v===""||v==null;}))return {ready:false,msg:"Choose a match for each row."};return {ready:true,correct:a.match.every(function(v,i){return +v===i;})};}
  if(q.type==="number"){var val=String(a.text||"").trim().replace(/,/g,"").replace(/^×\s*/,"");if(!/^[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[-+]?\d+)?$/i.test(val))return {ready:false,msg:"Enter a number only. The expected unit is shown above the box."};return {ready:true,correct:Math.abs(Number(val)-q.correct)<=(q.tolerance||1e-9)};}
  if(q.type==="short"){if(!String(a.text||"").trim())return {ready:false,msg:"Enter an answer first, or choose Not sure."};return {ready:true,correct:q.accepted.some(function(x){return norm(x)===norm(a.text);})};}
- return {ready:true,correct:null};
+ return {ready:!!String(a.text||"").trim(),correct:null,msg:"Write an explanation first, or choose I don’t know."};
 }
 function planQuickCheck(q){
  if(session&&(session.skillId||session.point))return null; // Keep authored point sequences in their intended order.
@@ -676,7 +695,7 @@ function record(q,outcome){
   }
   save();return;
  }
- var needsHelp=p.needsPractice;
+ var needsHelp=p.needsPractice&&outcome!=="review-needs-work";
  var checkId=needsHelp?planQuickCheck(q):null;
  if(needsHelp&&(!got||!checkId)&&(session.retries[q.id]||0)<1){session.queue.push(q.id);session.retries[q.id]=(session.retries[q.id]||0)+1;}
  save();
@@ -701,14 +720,29 @@ function check(skip){
  session.phase="feedback";
  if(skip)record(q,"revealed");
  else if(session.lastResult!==null)record(q,session.lastResult?"correct":"incorrect");
- save();drawQuestion();
+ save();drawQuestion();focusFeedback();
 }
 function gradeSelf(got){
- var q=current();if(!q||session.phase!=="feedback"||session.wasSkipped||session.lastResult!==null)return;
+ var q=current();if(!q||q.type!=="short"||session.phase!=="feedback"||session.wasSkipped||session.lastResult!==null)return;
  record(q,got?"reviewed":"review-needs-work");next();
 }
+function finishWrittenReview(){
+ var q=current(),a=currentAnswer();
+ if(!q||q.type!=="written"||session.phase!=="feedback"||session.wasSkipped||session.outcomes[session.index])return;
+ var criteria=a.review&&a.review.criteria||{};
+ var needsWork=q.markPoints.some(function(_,i){return criteria[i]!=="met";});
+ record(q,needsWork?"review-needs-work":"reviewed");
+ drawQuestion();focusFeedback();
+}
+function saveReviewField(target){
+ var q=current();if(!q||q.type!=="written"||session.phase!=="feedback"||session.wasSkipped||session.outcomes[session.index])return;
+ var a=currentAnswer();a.review=a.review||{criteria:{}};
+ if(target.matches("#k-revised"))a.review.revised=target.value;
+ else a.review.criteria[target.dataset.reviewCriterion]=target.value;
+ session.answers[q.id]=a;save();
+}
 function next(){
- if(!session||session.phase!=="feedback")return;
+ if(!session||session.phase!=="feedback"||session.lastResult===null&&!session.outcomes[session.index])return;
  var previous=current();if(previous&&session.answers)delete session.answers[previous.id]; // Do not retain free-text answers beyond feedback.
  session.index++;session.phase="ask";session.lastResult=undefined;session.wasSkipped=false;session.lastPlannedCheck=null;session.quickTapAttempted=false;save();
  if(session.skillId&&session.index<10&&session.index>=session.queue.length){addSkillQuestion();save();}
@@ -742,6 +776,7 @@ function route(r,renderer){
  return makeSession(unit,scope,r);
 }
 main.addEventListener("change",function(e){
+ if(session&&visible&&e.target.matches("[data-review-criterion]")){saveReviewField(e.target);return;}
  noteAnswerActivity();
  if(!session||session.phase!=="ask"||!visible)return;
  if(e.target.matches('input[name="kbest"],input[name="kreason"]')){readForm();}
@@ -774,6 +809,7 @@ function pointerQuickTap(e){
  },110);
 }
 main.addEventListener("input",function(e){
+ if(session&&visible&&e.target.matches("#k-revised")){saveReviewField(e.target);return;}
  noteAnswerActivity();
  if(!session||session.phase!=="ask"||!visible)return;
  if(e.target.matches("#k-number, #k-text, #k-written")){var q=current(),a=session.answers[q.id]||{};a.text=e.target.value;session.answers[q.id]=a;save();}
@@ -797,6 +833,7 @@ main.addEventListener("click",function(e){
  if(btn.dataset.kAction==="reveal")check(false);
  if(btn.dataset.kAction==="skip")check(true);
  if(btn.dataset.kAction==="next")next();
+ if(btn.dataset.kAction==="finish-review")finishWrittenReview();
  if(btn.dataset.kAction==="self-good")gradeSelf(true);
  if(btn.dataset.kAction==="self-weak")gradeSelf(false);
 });

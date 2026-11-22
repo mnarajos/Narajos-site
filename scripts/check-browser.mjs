@@ -1096,7 +1096,8 @@ try{
   if(task.type==="written"){
    await navPage.locator("#k-written").fill("Sister chromatids separate to opposite poles. Each pole receives one copy of each of the 46 chromosomes, so each daughter cell receives 46.");
    await navPage.locator('[data-k-action="reveal"]').click();
-   await navPage.locator('[data-k-action="self-good"]').click();
+   await navPage.locator('[data-k-action="finish-review"]').click();
+   await navPage.locator('[data-k-action="next"]').click();
   }else{
    await navPage.locator('input[name="kchoice"][value="'+task.correct+'"]').focus();await navPage.keyboard.press("Space");
    if(await navPage.locator('[data-k-action="check"]').count())await navPage.locator('[data-k-action="check"]').click();
@@ -1154,7 +1155,24 @@ try{
  await navPage.locator("#k-written").fill("Only 45 of the 60 people with a positive screen attended follow-up.");
  await navPage.locator('[data-k-action="reveal"]').click();
  await navPage.getByText("Key points to look for").waitFor();
- await navPage.locator('[data-k-action="self-good"]').click();
+ const originalClinical="Only 45 of the 60 people with a positive screen attended follow-up.";
+ const revisedClinical=originalClinical+" Those who did not attend may have differed from those who did.";
+ assert.equal(await navPage.locator(".k-review-draft").textContent(),originalClinical);
+ assert.equal(await navPage.locator("[data-feedback-heading]").evaluate(el=>document.activeElement===el),true);
+ const reviewCriterion=navPage.locator("[data-review-criterion]").first();
+ await reviewCriterion.selectOption("work");
+ await navPage.locator("#k-revised").fill(revisedClinical);
+ await navPage.reload();
+ assert.equal(await reviewCriterion.inputValue(),"work");
+ assert.equal(await navPage.locator("#k-revised").inputValue(),revisedClinical);
+ assert.equal(await navPage.locator(".k-review-draft").textContent(),originalClinical);
+ assert.equal(await navPage.evaluate(()=>JSON.parse(localStorage.getItem("narajos-human-challenge-v2-session")).selfReviewed||0),0);
+ await navPage.locator('[data-k-action="finish-review"]').click();
+ await navPage.reload();
+ await navPage.getByText("Self-reviewed · further practice useful").waitFor();
+ assert.equal(await navPage.locator("#k-revised").inputValue(),revisedClinical);
+ assert.equal(await navPage.evaluate(()=>JSON.parse(localStorage.getItem("narajos-human-challenge-v2-session")).selfReviewed),1);
+ await navPage.locator('[data-k-action="next"]').click();
  await navPage.getByRole("heading",{name:"Practice complete"}).waitFor();
  await navPage.goto(base+"/human-biology/#flashcards/f171");
  await navPage.getByRole("link",{name:"Practise monitoring",exact:true}).click();
