@@ -33,9 +33,11 @@ canvas{width:100%;display:block;border-radius:9px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px 13px}
 .card h3{margin:0 0 8px;font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:var(--dim)}
 .stepbar{background:var(--panel2);border:1px solid var(--line);border-radius:10px;
-  padding:9px 12px;margin-top:9px}
+  padding:9px 12px;margin-block:9px}
 .stepnum{font-size:10.5px;font-weight:800;letter-spacing:.8px;color:var(--accent);text-transform:uppercase}
-.stepdesc{font-size:13px;line-height:1.45;margin-top:3px}
+.stepdesc{font-size:1rem;line-height:1.55;margin:3px 0 0;max-width:60ch}
+.step-detail summary{cursor:pointer;font-weight:700;padding-block:.3em}
+button.act:focus-visible,.tab:focus-visible,.step-detail summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .ctrls{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:9px}
 button.act{background:var(--panel2);border:1px solid var(--line);color:var(--txt);
   padding:7px 13px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer}
@@ -76,13 +78,13 @@ ul.facts li{margin-bottom:5px}
 
   <div class="main">
     <div>
-      <div class="stage"><canvas id="cv"></canvas></div>
       <div class="stepbar">
         <div class="stepnum" id="step-num">Step 1 / 6</div>
-        <div class="stepdesc" id="step-desc">—</div>
+        <div class="stepdesc" id="step-cue" aria-live="polite"></div>
       </div>
+      <div class="stage"><canvas id="cv" role="img" aria-labelledby="step-cue"></canvas></div>
       <div class="ctrls">
-        <button class="act go" id="btn-run">⏸ Pause</button>
+        <button class="act" id="btn-run">▶ Play</button>
         <button class="act" id="btn-step">⏭ Step</button>
         <button class="act" id="btn-reset">↺ Reset</button>
         <button class="act" id="btn-mode" style="display:none"></button>
@@ -97,6 +99,10 @@ ul.facts li{margin-bottom:5px}
           <input type="range" id="s-time" min="0" max="1000" value="0" step="1">
         </div>
       </div>
+      <details class="stepbar step-detail">
+        <summary>Read the explanation</summary>
+        <p class="stepdesc" id="step-desc"></p>
+      </details>
     </div>
 
     <div class="side">
@@ -253,12 +259,12 @@ RP.top=GENE.tmpl.slice(0,RP.n);
 RP.bot=[...RP.top].map(b=>comp(b)).join("");
 RP.X=i=>RP.x0+i*RP.dx;
 const RSTEPS=[
-  {d:2.6,t:"A section of a DNA molecule. The two strands are held together by hydrogen bonds between complementary base pairs \u2014 2 between A and T, 3 between C and G."},
-  {d:4.4,t:"DNA helicase attaches. First it unwinds the double helix, then it breaks the hydrogen bonds so the two strands separate."},
-  {d:6.0,t:"Free DNA nucleotides move about at random. One only binds when it happens to collide with an exposed base it is complementary to \u2014 the others bounce away. They are held on by hydrogen bonds, but are NOT yet joined to one another."},
-  {d:8.0,t:"Only now does DNA polymerase act. It joins the nucleotides that are already base-paired, forming phosphodiester bonds between the sugar of one and the phosphate of the next, so a continuous new strand appears behind it."},
-  {d:4.0,t:"The two new molecules move apart and rewind into double helices. Two complete DNA molecules now exist where there was one."},
-  {d:3.4,t:"Each new molecule contains one original strand and one newly made strand \u2014 this is semi-conservative replication."}
+  {d:2.6,cue:"Find the base pairs that hold the two strands together.",t:"A section of a DNA molecule. The two strands are held together by hydrogen bonds between complementary base pairs \u2014 2 between A and T, 3 between C and G."},
+  {d:4.4,cue:"Watch the two DNA strands separate at helicase.",t:"DNA helicase attaches. First it unwinds the double helix, then it breaks the hydrogen bonds so the two strands separate."},
+  {d:6.0,cue:"Look for the free nucleotide that fits an exposed base.",t:"Free DNA nucleotides move about at random. One only binds when it happens to collide with an exposed base it is complementary to \u2014 the others bounce away. They are held on by hydrogen bonds, but are NOT yet joined to one another."},
+  {d:8.0,cue:"Watch DNA polymerase join adjacent nucleotides.",t:"Only now does DNA polymerase act. It joins the nucleotides that are already base-paired, forming phosphodiester bonds between the sugar of one and the phosphate of the next, so a continuous new strand appears behind it."},
+  {d:4.0,cue:"Watch the two DNA molecules separate.",t:"The two new molecules move apart and rewind into double helices. Two complete DNA molecules now exist where there was one."},
+  {d:3.4,cue:"Find one original strand in each new DNA molecule.",t:"Each new molecule contains one original strand and one newly made strand \u2014 this is semi-conservative replication."}
 ];
 let RPS=null;
 function rp(){ if(!RPS) RPS={step:0,t:0,curls:[],cum:{bp:0,hb:0,nuc:0}}; return RPS; }
@@ -549,10 +555,10 @@ const TR={ n:GENE.tmpl.length, x0:146, dx:25, bbX:132, lblX:122,
   poolY:[72,86], polY:226 };               // polymerase sits beside the nascent strand
 TR.X=i=>TR.x0+i*TR.dx;
 const T_BASE=[
-  {p:"intro", d:2.8,t:"A gene on a DNA molecule. Only one of the two strands \u2014 the template strand \u2014 will be copied."},
-  {p:"unwind",d:3.4,t:"DNA helicase breaks the hydrogen bonds in this region. The two strands separate and the bases on the template strand are exposed."},
-  {p:"grow",  d:17.0,t:"RNA polymerase moves along the template strand. Four things are happening at once behind it: free RNA nucleotides hydrogen-bond to their complementary bases; a little further back they have been joined by phosphodiester bonds; further back the pre-mRNA has peeled off the template; and behind that the DNA has rewound."},
-  {p:"finish",d:4.6,t:"Transcription is complete. The pre-mRNA separates fully from the DNA, and the DNA rewinds into a double helix. It still contains its introns \u2014 removing them is the next stage, on the splicing tab."}
+  {p:"intro", d:2.8,cue:"Find the template strand that will be copied.",t:"A gene on a DNA molecule. Only one of the two strands \u2014 the template strand \u2014 will be copied."},
+  {p:"unwind",d:3.4,cue:"Look for the exposed bases on the template strand.",t:"DNA helicase breaks the hydrogen bonds in this region. The two strands separate and the bases on the template strand are exposed."},
+  {p:"grow",  d:17.0,cue:"Follow the growing RNA strand behind RNA polymerase.",t:"RNA polymerase moves along the template strand. Four things are happening at once behind it: free RNA nucleotides hydrogen-bond to their complementary bases; a little further back they have been joined by phosphodiester bonds; further back the pre-mRNA has peeled off the template; and behind that the DNA has rewound."},
+  {p:"finish",d:4.6,cue:"Watch pre-mRNA separate from DNA.",t:"Transcription is complete. The pre-mRNA separates fully from the DNA, and the DNA rewinds into a double helix. It still contains its introns \u2014 removing them is the next stage, on the splicing tab."}
 ];
 
 function TS(){ return T_BASE; }
@@ -702,11 +708,11 @@ const MS={ cols:[168,366,564], yGen:98, yMol:130, tubeTop:296, tubeBot:474, tube
   yProp:496 };
 const MSP={ x:686, w:244, cx:808, yTop:160, yBot:414, off:7 };
 const MSTEPS=[
-  {d:3.0,t:"Bacteria are grown for many generations in a medium where the only nitrogen available is the isotope shown. Every base in their DNA is made using it, so both strands of every molecule contain it."},
-  {d:3.0,t:"The bacteria are moved to a medium containing only the other isotope. From now on, every NEW strand must be built from that one \u2014 the original strands cannot change."},
-  {d:3.6,t:"Generation 1: every molecule now has one original strand and one new strand. All of the DNA is intermediate in density, so it all settles at one level between the two."},
-  {d:3.8,t:"Generation 2: the two original strands still exist, in two molecules of intermediate density. The other two molecules were built entirely from the new isotope."},
-  {d:3.8,t:"The original strands are never destroyed or broken up \u2014 they are passed on intact, one to each new molecule. This is exactly what semi-conservative replication predicts."}
+  {d:3.0,cue:"Find the isotope used in the original DNA.",t:"Bacteria are grown for many generations in a medium where the only nitrogen available is the isotope shown. Every base in their DNA is made using it, so both strands of every molecule contain it."},
+  {d:3.0,cue:"Check which isotope the new strands will contain.",t:"The bacteria are moved to a medium containing only the other isotope. From now on, every NEW strand must be built from that one \u2014 the original strands cannot change."},
+  {d:3.6,cue:"Find the single intermediate-density band.",t:"Generation 1: every molecule now has one original strand and one new strand. All of the DNA is intermediate in density, so it all settles at one level between the two."},
+  {d:3.8,cue:"Compare the two DNA bands after the second generation.",t:"Generation 2: the two original strands still exist, in two molecules of intermediate density. The other two molecules were built entirely from the new isotope."},
+  {d:3.8,cue:"Trace where the original DNA strands ended up.",t:"The original strands are never destroyed or broken up \u2014 they are passed on intact, one to each new molecule. This is exactly what semi-conservative replication predicts."}
 ];
 let MSS=null;
 function ms_(){ if(!MSS) MSS={step:0,t:0,helix:0}; return MSS; }
@@ -855,13 +861,13 @@ function anticodon(cod){ return [...cod].map(b=>comp(b,true)).join(""); }
 function codonHBonds(c){ const cd=TL.codon(c);
   for(let k=0;k<3;k++) drawHBonds(TL.X(c*3+k), TL.yAnti[1], TL.yMrnaBase[0], hbonds(cd[k])); }
 const LSTEPS=[
-  {d:2.15,t:"The mRNA binds to a ribosome, positioned so that the first codon sits in the ribosome."},
-  {d:4.6,t:"tRNA molecules move about at random, each carrying its own amino acid. Only the one whose anticodon is complementary to the codon in the ribosome can bind \u2014 others arrive and leave again."},
-  {d:2.6,t:"A second tRNA binds to the next codon, bringing the next amino acid. Before entering the ribosome, ATP was used to attach each amino acid to its tRNA."},
-  {d:2.75,t:"A peptide bond forms inside the large subunit. The energy stored in the bond between an amino acid and its tRNA helps drive this reaction."},
-  {d:2.75,t:"The ribosome moves one codon along the mRNA. The first tRNA leaves and can collect another amino acid."},
-  {d:5.4,t:"The process repeats. The polypeptide grows one amino acid at a time and threads out of the large subunit."},
-  {d:3.05,t:"A stop codon is reached. No tRNA has a complementary anticodon, so nothing binds and the finished polypeptide is released."}
+  {d:2.15,cue:"Find the first codon inside the ribosome.",t:"The mRNA binds to a ribosome, positioned so that the first codon sits in the ribosome."},
+  {d:4.6,cue:"Spot the tRNA with the matching anticodon.",t:"tRNA molecules move about at random, each carrying its own amino acid. Only the one whose anticodon is complementary to the codon in the ribosome can bind \u2014 others arrive and leave again."},
+  {d:2.6,cue:"Find the amino acid carried by the next tRNA.",t:"A second tRNA binds to the next codon, bringing the next amino acid. Before entering the ribosome, ATP was used to attach each amino acid to its tRNA."},
+  {d:2.75,cue:"Look for the new peptide bond.",t:"A peptide bond forms inside the large subunit. The energy stored in the bond between an amino acid and its tRNA helps drive this reaction."},
+  {d:2.75,cue:"Watch the first tRNA leave as the ribosome moves.",t:"The ribosome moves one codon along the mRNA. The first tRNA leaves and can collect another amino acid."},
+  {d:5.4,cue:"Follow the growing polypeptide chain.",t:"The process repeats. The polypeptide grows one amino acid at a time and threads out of the large subunit."},
+  {d:3.05,cue:"Watch the polypeptide leave at the stop codon.",t:"A stop codon is reached. No tRNA has a complementary anticodon, so nothing binds and the finished polypeptide is released."}
 ];
 let TLS=null;
 function tl(){ if(!TLS) TLS={step:0,t:0,cum:{poly:0}}; return TLS; }
@@ -1084,16 +1090,16 @@ function drawTL(){
 const EXC="#c084fc", INC="#78848f";       // exon purple, intron grey
 const SP={ yUp:196 };
 const SP_BASE=[
-  {p:"transcribe",d:4.6,t:"The gene is transcribed \u2014 the same process as the transcription tab, run through quickly and without its labels. What matters here is the pre-mRNA it leaves behind."},
-  {p:"fade",      d:1.4,t:"The DNA has rewound and plays no further part. Everything that follows happens to the pre-mRNA, still inside the nucleus."},
-  {p:"lift",      d:1.5,t:"The pre-mRNA lifts clear. Its backbone is now colour-coded: purple where it is exon, grey where it is intron. Only the exons code for part of the polypeptide."},
-  {p:"cut",       d:3.5,t:"The pre-mRNA is cut at both ends of each intron."},
-  {p:"release",   d:3.75,t:"Each excised intron is released from the strand and broken down."},
-  {p:"join",      d:4.0,t:"The exons are joined together. The result is mature mRNA, which leaves the nucleus for a ribosome."}
+  {p:"transcribe",d:4.6,cue:"Look for the pre-mRNA made from DNA.",t:"The gene is transcribed \u2014 the same process as the transcription tab, run through quickly and without its labels. What matters here is the pre-mRNA it leaves behind."},
+  {p:"fade",      d:1.4,cue:"Follow the pre-mRNA after it leaves the DNA.",t:"The DNA has rewound and plays no further part. Everything that follows happens to the pre-mRNA, still inside the nucleus."},
+  {p:"lift",      d:1.5,cue:"Find the segments marked as introns and exons.",t:"The pre-mRNA lifts clear. Its backbone is now colour-coded: purple where it is exon, grey where it is intron. Only the exons code for part of the polypeptide."},
+  {p:"cut",       d:3.5,cue:"Look for cuts at the ends of each intron.",t:"The pre-mRNA is cut at both ends of each intron."},
+  {p:"release",   d:3.75,cue:"Watch the introns separate from the strand.",t:"Each excised intron is released from the strand and broken down."},
+  {p:"join",      d:4.0,cue:"Follow the exons as they join to make mature mRNA.",t:"The exons are joined together. The result is mature mRNA, which leaves the nucleus for a ribosome."}
 ];
-const SP_CAP=[{p:"cap",d:2.1,t:"BEYOND THE SPECIFICATION: the mRNA is also given a cap at its 5\u2032 end and a tail of adenine nucleotides \u2014 the poly(A) tail \u2014 at its 3\u2032 end. These protect it from enzymes and help a ribosome bind."},
-  {p:"protect",d:4.6,t:"BEYOND THE SPECIFICATION: the cap and tail are what keep the mRNA usable. Without them the exposed ends are attacked by enzymes and the mRNA is broken down quickly, and a ribosome has nothing to bind to."}];
-const SP_ALT=[{p:"alt",d:4.4,t:"BEYOND THE SPECIFICATION: the same pre-mRNA can be spliced in more than one way. An exon can be left out, or an intron kept in. Each version gives a different mRNA and so a different polypeptide \u2014 one reason an organism has far more proteins than genes."}];
+const SP_CAP=[{p:"cap",d:2.1,cue:"Find the cap and tail at opposite ends of the mRNA.",t:"BEYOND THE SPECIFICATION: the mRNA is also given a cap at its 5\u2032 end and a tail of adenine nucleotides \u2014 the poly(A) tail \u2014 at its 3\u2032 end. These protect it from enzymes and help a ribosome bind."},
+  {p:"protect",d:4.6,cue:"Look at how the cap and tail protect the mRNA.",t:"BEYOND THE SPECIFICATION: the cap and tail are what keep the mRNA usable. Without them the exposed ends are attacked by enzymes and the mRNA is broken down quickly, and a ribosome has nothing to bind to."}];
+const SP_ALT=[{p:"alt",d:4.4,cue:"Compare the exons kept in each version.",t:"BEYOND THE SPECIFICATION: the same pre-mRNA can be spliced in more than one way. An exon can be left out, or an intron kept in. Each version gives a different mRNA and so a different polypeptide \u2014 one reason an organism has far more proteins than genes."}];
 /* four of the mRNAs this one pre-mRNA could give */
 const SPALTS=[
   {b:["E1","E2","E3"],      t:"all three exons kept"},
@@ -1112,7 +1118,7 @@ function spSetView(v){
   S.spView=v; S.spCap=!!SPVIEWS[v-1].cap; S.spAlt=!!SPVIEWS[v-1].alt;
   const R=sp(), A=spSteps();
   const jump = (S.spAlt&&!was.alt) ? "alt" : (S.spCap&&!was.cap) ? "cap" : null;
-  if(jump){ const i=A.findIndex(z=>z.p===jump); if(i>=0){ R.step=i; R.t=0; } setRun(true); }
+  if(jump){ const i=A.findIndex(z=>z.p===jump); if(i>=0){ R.step=i; R.t=0; } setRun(false); }
   else if(R.step>=A.length){ R.step=A.length-1; R.t=0; }
 }
 function spSteps(){ return SP_BASE.concat(S.spCap?SP_CAP:[], S.spAlt?SP_ALT:[]); }
@@ -1285,39 +1291,39 @@ const GXVIEWS=[
   {k:"si",  label:"3. Post-transcriptional control \u2014 RNA interference"}
 ];
 const GX_TF=[
-  {d:3.6,t:"Transcription factors are proteins that enter the nucleus and move about in the nucleoplasm. A gene has a promoter region just before it, where they can bind."},
-  {d:5.2,t:"A transcription factor binds a promoter only where the base sequence is complementary to its DNA-binding site. This one reaches a promoter it does not match, so it cannot bind and moves on."},
-  {d:4.8,t:"This transcription factor IS complementary to this promoter, so on contact it binds. That is why a given transcription factor activates only certain genes."},
-  {d:5.6,t:"The bound transcription factor now recruits RNA polymerase. RNA polymerase comes in from the nucleoplasm and binds to the transcription factor first \\u2014 it does not attach to the DNA somewhere else and slide along until it meets it."},
-  {d:5.0,t:"Only once it is held there does RNA polymerase settle onto the DNA and begin transcribing. mRNA is made one nucleotide at a time."},
-  {d:3.4,t:"The mRNA is translated into a polypeptide, so the gene is expressed. Other transcription factors work the opposite way and inhibit transcription."}
+  {d:3.6,cue:"Find the promoter next to the gene.",t:"Transcription factors are proteins that enter the nucleus and move about in the nucleoplasm. A gene has a promoter region just before it, where they can bind."},
+  {d:5.2,cue:"Watch what happens when the transcription factor fails to match.",t:"A transcription factor binds a promoter only where the base sequence is complementary to its DNA-binding site. This one reaches a promoter it does not match, so it cannot bind and moves on."},
+  {d:4.8,cue:"Look for the transcription factor that binds to the promoter.",t:"This transcription factor IS complementary to this promoter, so on contact it binds. That is why a given transcription factor activates only certain genes."},
+  {d:5.6,cue:"Follow RNA polymerase as it arrives at the promoter.",t:"The bound transcription factor now recruits RNA polymerase. RNA polymerase comes in from the nucleoplasm and binds to the transcription factor first \\u2014 it does not attach to the DNA somewhere else and slide along until it meets it."},
+  {d:5.0,cue:"Watch the RNA strand begin to form.",t:"Only once it is held there does RNA polymerase settle onto the DNA and begin transcribing. mRNA is made one nucleotide at a time."},
+  {d:3.4,cue:"Find the polypeptide made from the mRNA.",t:"The mRNA is translated into a polypeptide, so the gene is expressed. Other transcription factors work the opposite way and inhibit transcription."}
 ];
 const GX_OEST=[
-  {d:3.6,t:"Oestrogen is a steroid hormone, made in the ovaries and carried in the blood to its target cells. It is not itself a transcription factor \u2014 it is the molecule that switches one on."},
-  {d:5.0,t:"THE KEY POINT: oestrogen is non-polar, so it is lipid-soluble. It passes straight between the fatty acid tails of the phospholipid bilayer by simple diffusion, needing no carrier or channel protein. Most hormones cannot do this."},
-  {d:5.0,t:"In the cytoplasm it meets a transcription factor and binds to a receptor site on it, complementary to the oestrogen molecule. Only target cells have this receptor \u2014 which is why oestrogen affects some cells and not others."},
-  {d:3.6,t:"Binding changes the shape of the transcription factor, so its DNA-binding site becomes active."},
-  {d:3.4,t:"The complex passes through a nuclear pore into the nucleus."},
-  {d:5.0,t:"It binds to the promoter region and stimulates RNA polymerase, so the gene is transcribed. The more oestrogen there is, the more of these genes are transcribed."}
+  {d:3.6,cue:"Follow oestrogen from the blood to the target cell.",t:"Oestrogen is a steroid hormone, made in the ovaries and carried in the blood to its target cells. It is not itself a transcription factor \u2014 it is the molecule that switches one on."},
+  {d:5.0,cue:"Watch oestrogen pass through the phospholipid bilayer.",t:"THE KEY POINT: oestrogen is non-polar, so it is lipid-soluble. It passes straight between the fatty acid tails of the phospholipid bilayer by simple diffusion, needing no carrier or channel protein. Most hormones cannot do this."},
+  {d:5.0,cue:"Find the receptor that binds to oestrogen.",t:"In the cytoplasm it meets a transcription factor and binds to a receptor site on it, complementary to the oestrogen molecule. Only target cells have this receptor \u2014 which is why oestrogen affects some cells and not others."},
+  {d:3.6,cue:"Watch the shape of the receptor protein change.",t:"Binding changes the shape of the transcription factor, so its DNA-binding site becomes active."},
+  {d:3.4,cue:"Follow the complex through a nuclear pore.",t:"The complex passes through a nuclear pore into the nucleus."},
+  {d:5.0,cue:"Look for transcription starting after the complex binds to DNA.",t:"It binds to the promoter region and stimulates RNA polymerase, so the gene is transcribed. The more oestrogen there is, the more of these genes are transcribed."}
 ];
 const GX_EPI=[
-  {d:2.4,t:"A DNA molecule is a double helix. Its phosphate groups give it a negative charge."},
-  {d:3.2,t:"It winds almost twice around a core of eight histone proteins. Histones are positively charged, so the negatively charged DNA is attracted to them. DNA plus its histones is a NUCLEOSOME."},
-  {d:2.8,t:"Nucleosomes repeat all along the DNA, with linker DNA between them. Together, DNA and histones are called chromatin."},
-  {d:5.4,t:"ONE: HISTONE ACETYLATION. Acetyl groups on the histone tails reduce the positive charge, so the histones hold the negatively charged DNA less tightly. The chromatin stays loosely packed, transcription factors and RNA polymerase can reach the promoter, and the rate of transcription is high."},
-  {d:6.0,t:"Remove the acetyl groups and the histones become more positively charged. They attract the negatively charged DNA more strongly, the chromatin condenses and supercoils, and the promoter is no longer accessible. The rate of transcription falls."},
-  {d:3.2,t:"Acetylation is one route. DNA METHYLATION is a separate one, so start again from loosely packed chromatin."},
-  {d:5.6,t:"TWO: DNA METHYLATION. Methyl groups are added to cytosine bases along the DNA. This causes the chromatin to become more condensed, which prevents transcription factors and RNA polymerase reaching the promoter region, so the rate of transcription falls."},
-  {d:4.0,t:"Neither route changes the base sequence of the DNA. Both are epigenetic, and both are reversible."}
+  {d:2.4,cue:"Find the DNA double helix.",t:"A DNA molecule is a double helix. Its phosphate groups give it a negative charge."},
+  {d:3.2,cue:"Watch DNA wrap around the histone proteins.",t:"It winds almost twice around a core of eight histone proteins. Histones are positively charged, so the negatively charged DNA is attracted to them. DNA plus its histones is a NUCLEOSOME."},
+  {d:2.8,cue:"Find the repeated nucleosomes along the DNA.",t:"Nucleosomes repeat all along the DNA, with linker DNA between them. Together, DNA and histones are called chromatin."},
+  {d:5.4,cue:"Watch what happens to chromatin as histones are acetylated.",t:"ONE: HISTONE ACETYLATION. Acetyl groups on the histone tails reduce the positive charge, so the histones hold the negatively charged DNA less tightly. The chromatin stays loosely packed, transcription factors and RNA polymerase can reach the promoter, and the rate of transcription is high."},
+  {d:6.0,cue:"Watch the chromatin pack more tightly.",t:"Remove the acetyl groups and the histones become more positively charged. They attract the negatively charged DNA more strongly, the chromatin condenses and supercoils, and the promoter is no longer accessible. The rate of transcription falls."},
+  {d:3.2,cue:"Find the starting arrangement before DNA methylation.",t:"Acetylation is one route. DNA METHYLATION is a separate one, so start again from loosely packed chromatin."},
+  {d:5.6,cue:"Look for the region of DNA that becomes less accessible.",t:"TWO: DNA METHYLATION. Methyl groups are added to cytosine bases along the DNA. This causes the chromatin to become more condensed, which prevents transcription factors and RNA polymerase reaching the promoter region, so the rate of transcription falls."},
+  {d:4.0,cue:"Check what stays the same about the DNA sequence.",t:"Neither route changes the base sequence of the DNA. Both are epigenetic, and both are reversible."}
 ];
 const GX_SI=[
-  {d:3.0,t:"A gene has been transcribed and its mRNA is in the cytoplasm, ready to be translated."},
-  {d:3.8,t:"A short double-stranded RNA molecule is made. AQA calls this siRNA; miRNA works in much the same way, and the exact difference between them is beyond the specification."},
-  {d:3.6,t:"A protein reaches it and combines with it. Together they will seek out any mRNA the strand matches."},
-  {d:3.0,t:"The two siRNA strands are separated, and one of them is kept by the complex."},
-  {d:4.0,t:"That strand is complementary to part of the mRNA, so on contact it base-pairs with it."},
-  {d:3.6,t:"RNA hydrolase cuts the mRNA into fragments."},
-  {d:3.2,t:"The mRNA can no longer be translated, so no polypeptide is made \u2014 the gene has been silenced."}
+  {d:3.0,cue:"Find the mRNA in the cytoplasm.",t:"A gene has been transcribed and its mRNA is in the cytoplasm, ready to be translated."},
+  {d:3.8,cue:"Find the short double-stranded RNA.",t:"A short double-stranded RNA molecule is made. AQA calls this siRNA; miRNA works in much the same way, and the exact difference between them is beyond the specification."},
+  {d:3.6,cue:"Watch the short RNA combine with a protein.",t:"A protein reaches it and combines with it. Together they will seek out any mRNA the strand matches."},
+  {d:3.0,cue:"Follow the RNA strand that stays in the complex.",t:"The two siRNA strands are separated, and one of them is kept by the complex."},
+  {d:4.0,cue:"Look for the matching sequence on the mRNA.",t:"That strand is complementary to part of the mRNA, so on contact it base-pairs with it."},
+  {d:3.6,cue:"Watch the target mRNA split into fragments.",t:"RNA hydrolase cuts the mRNA into fragments."},
+  {d:3.2,cue:"See what happens to polypeptide production.",t:"The mRNA can no longer be translated, so no polypeptide is made \u2014 the gene has been silenced."}
 ];
 function gxSteps(){ return S.gxView===1 ? [{d:1e9,t:gxOverText()}] : [GX_EPI,GX_TF,GX_OEST,GX_SI][S.gxView-2]; }
 let GXS=null;
@@ -1328,7 +1334,7 @@ function updateGX(dt){ const R=gx(), A=gxSteps();
   if(S.playing){ R.t+=dt*S.speed;
     if(R.t>=A[R.step].d){ R.t=0; R.step++;
       if(R.step>=A.length){ R.step=0; if(S.gxView===1||S.gxView===2) R.cum.on++; else R.cum.off++; } } } }
-function gxSetView(v){ S.gxView=v; const R=gx(); R.step=0; R.t=0; R.sel=0; setRun(v!==1); }
+function gxSetView(v){ S.gxView=v; const R=gx(); R.step=0; R.t=0; R.sel=0; setRun(false); }
 /* ---- shared pieces ---- */
 function gxRail(y,x0,x1){
   drawBackbone([[x0,y],[x1,y]],OLD,6); drawBackbone([[x0,y+22],[x1,y+22]],OLD,6);
@@ -1944,7 +1950,7 @@ const STAGES={
     note:"The RNA is shown forming on the template strand, then peeling away behind the polymerase." }
 };
 const ORDER=["replication","meselson","transcription","splicing","translation","genex"];
-const S={ sub:"replication", playing:true, speed:1.0, okazaki:false, msHeavy:true, dirs:false,
+const S={ sub:"replication", playing:false, speed:1.0, okazaki:false, msHeavy:true, dirs:false,
   spView:1, spCap:false, spAlt:false, gxView:1, bare:false, ff:false };
 
 const tabsEl=document.getElementById("tabs");
@@ -1957,7 +1963,7 @@ function select(k){ S.sub=k;
   if(k==="replication") RPS=null; else if(k==="transcription") TRS=null;
   else if(k==="translation") TLS=null; else if(k==="splicing") SPS=null;
   else if(k==="genex") GXS=null; else MSS=null;
-  setRun(true); refresh();
+  setRun(false); refresh();
 }
 function STEPS(){ return S.sub==="replication"?RSTEPS : S.sub==="transcription"?TS() : S.sub==="translation"?LSTEPS : S.sub==="splicing"?spSteps() : S.sub==="genex"?gxSteps() : MSTEPS; }
 function STATE(){ return S.sub==="replication"?rp()   : S.sub==="transcription"?tr() : S.sub==="translation"?tl() : S.sub==="splicing"?sp() : S.sub==="genex"?gx() : ms_(); }
@@ -2040,6 +2046,8 @@ function renderTally(){
   }
 }
 function setRun(on){ S.playing=on;
+  if(!on)S.ff=false;
+  document.getElementById("step-cue").setAttribute("aria-live",on?"off":"polite");
   const b=document.getElementById("btn-run");
   b.textContent = on ? "\u23F8 Pause" : "\u25B6 Play"; b.classList.toggle("go",on);
 }
@@ -2076,6 +2084,10 @@ cv.addEventListener("mousemove",e=>{
   if(S.sub!=="genex"||S.gxView!==1){ cv.style.cursor=""; return; }
   cv.style.cursor = gxPick(e)!==null ? "pointer" : "";
 });
+function showStepText(id,value){
+  const element=document.getElementById(id);
+  if(element.textContent!==value)element.textContent=value;
+}
 let last=performance.now();
 function frame(now){
   let dt=(now-last)/1000; last=now;
@@ -2093,8 +2105,12 @@ function frame(now){
   if(S.ff && (curStep()!==before || (S.sub==="genex"&&S.gxView===1))){ S.ff=false; setRun(false); }
   if(S.playing){ const fr=elapsedFrac();
     sT.value=Math.round(fr*1000); document.getElementById("r-time").textContent=Math.round(fr*100)+"%"; }
-  document.getElementById("step-num").textContent="Step "+(curStep()+1)+" / "+nSteps();
-  document.getElementById("step-desc").textContent=stepText();
+  const number="Step "+(curStep()+1)+" / "+nSteps();
+  const cue=STEPS()[curStep()].cue||"Choose a labelled part of the gene expression model.";
+  const details=stepText();
+  showStepText("step-num",number);
+  showStepText("step-cue",cue);
+  showStepText("step-desc",details);
   renderTally();
   requestAnimationFrame(frame);
 }

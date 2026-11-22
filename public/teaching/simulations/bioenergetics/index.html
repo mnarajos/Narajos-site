@@ -125,7 +125,6 @@
 <link rel="stylesheet" href="/assets/simulation-shell.css">
 <link rel="stylesheet" href="/assets/home-link.css">
 <link rel="stylesheet" href="/assets/reading-support.css">
-<script defer src="/assets/listen-to.js"></script>
 </head>
 <body class="sim-fullscreen">
 <nav class="sim-utility-nav" aria-label="Simulation navigation"><a href="/teaching/simulations/">← All simulations</a><a href="/" id="site-home" class="narajos-home" aria-label="Narajos homepage" title="Narajos homepage"><img src="/favicon.svg" alt=""><span>Narajos</span></a></nav>
@@ -155,7 +154,6 @@
         <button type="button" id="btn-guide-play">Shine light</button>
         <button type="button" id="btn-guide-next" hidden>Next observation</button>
         <button type="button" id="btn-guide-back" hidden>Previous observation</button>
-        <listen-to for="guide-prompt guide-explanation" label="Listen to the observation"></listen-to>
       </div>
       <details id="guide-answer" hidden>
         <summary>What happened?</summary>
@@ -1945,7 +1943,6 @@ function refreshGuide(){
   guidePanel.hidden=!guided;
   fullControls.hidden=guided;
   fullStepbar.hidden=guided;
-  if(!guided)guidePanel.querySelector("listen-to").stop?.();
   if(guided){
     const observation=OBSERVATIONS[guideStep];
     guideNumber.textContent="Observation "+(guideStep+1)+" of "+OBSERVATIONS.length;

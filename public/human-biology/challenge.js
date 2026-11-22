@@ -312,7 +312,7 @@ function isQuickCheck(q){return !!(session&&session.quickCheckIds&&q&&session.qu
 function formChoice(q,answer){
  var selected=answer&&Array.isArray(answer.selected)?answer.selected:[];
  if(!answer.optionOrder){answer.optionOrder=shuffle(q.options.map(function(_,i){return i;}));session.answers[q.id]=answer;save();}
- return '<div class="k-options" role="group" aria-label="Answer choices"'+(q.unit==="f170"?' id="f170-choices"':'')+'>'+answer.optionOrder.map(function(i,pos){var o=q.options[i];
+ return '<div class="k-options" role="group" aria-label="Answer choices">'+answer.optionOrder.map(function(i,pos){var o=q.options[i];
   var checked=selected.indexOf(i)!==-1;
   var excluded=session.hintExcluded&&session.hintExcluded[q.id]===i&&(session.hintsUsed[q.id]||0)>=3;
   return '<label class="k-option'+(checked?" selected":"")+(excluded?" k-option-out":"")+'"><input type="'+(q.type==="multi"?"checkbox":"radio")+'" name="kchoice" value="'+i+'"'+(checked?" checked":"")+(excluded?' disabled':'')+'><span class="k-option-letter">'+String.fromCharCode(65+pos)+'</span><span>'+esc(o)+'</span>'+(excluded?'<span class="k-ruled-out">Ruled out</span>':'')+'</label>';
@@ -499,8 +499,7 @@ function questionPrompt(q){
  var task=split<0?stem:stem.slice(split).trimStart();
  return '<div id="f170-prompt" class="k-reading-prompt">'+
   (context?'<p class="reading-copy k-reading-context">'+esc(context)+'</p>':'')+
-  '<h1>'+esc(task)+'</h1></div>'+
-  '<listen-to for="f170-prompt f170-choices" label="Listen to the question"></listen-to>';
+  '<h1>'+esc(task)+'</h1></div>';
 }
 function drawQuestion(){
  if(!session||!isActive())return;
@@ -530,9 +529,8 @@ function drawQuestion(){
   var header=unknown?"Here’s how it works":subjective?"Check your explanation":correct&&helped?"Correct with a hint":correct&&quick?"Quick check passed":correct?"Correct":"Not yet";
   h+='<div class="k-feedback '+(neutral?"pending":correct?"correct":"incorrect")+'"><div class="k-feedback-head">'+icon(neutral?"book":correct?"check":"alert")+'<strong>'+header+'</strong></div>';
   if(q.figure)h+=figure(q.figure,true);
-  h+='<div'+(q.unit==="f170"?' id="f170-answer" class="reading-copy"':'')+'>'+
+  h+='<div'+(q.unit==="f170"?' class="reading-copy"':'')+'>'+
    '<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p><strong>'+(correct&&!helped?'Why it works':unknown?'Explanation':'Quick reteach')+':</strong> '+esc(q.explain)+'</p></div>';
-  if(q.unit==="f170")h+='<listen-to for="f170-answer" label="Listen to the feedback"></listen-to>';
   if(q.type==='best'&&!correct&&!unknown){var partial=session.answers[q.id]||{};if(partial.choice===q.correct&&partial.reason!==q.reasonCorrect)h+='<p class="k-diagnostic-note">You chose the correct explanation; now focus on why it is correct.</p>';}
   if((!correct||helped)&&session.lastPlannedCheck)h+='<p class="k-quick-note">A related quick check is next, so you can try the idea again independently.</p>';
   if(q.levelsNote)h+='<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>';

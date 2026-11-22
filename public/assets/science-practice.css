@@ -169,5 +169,8 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .gas-guide { display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: .5rem; }
 .ks3-lesson [data-gas-prompt] { margin-block: .25rem; }
 .gas-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
-.gas-model [data-gas-free] { margin-top: .65rem; background: transparent; }
+.gas-options { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .65rem; }
+.gas-model [data-gas-free] { background: transparent; }
+.gas-model [data-gas-sound][aria-pressed="true"] { background: #20564f; color: #fff; }
+.ks3-lesson .gas-sound-note { margin: .35rem 0 0; }
 .gas-model [hidden] { display: none; }

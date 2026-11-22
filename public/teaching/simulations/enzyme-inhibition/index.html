@@ -64,6 +64,14 @@
   .analysis .plothead .t{font-size:13px;font-weight:800}
   .analysis .plothead .s{font-size:10.5px;color:var(--muted);font-weight:600}
   canvas#plot{flex:1;width:100%;display:block}
+  .plot-data{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:.35rem .7rem}
+  .plot-data summary{cursor:pointer;min-height:44px;align-content:center;font-weight:700}
+  .plot-data summary:focus-visible,.plot-data-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .plot-data-scroll{max-height:12rem;overflow:auto}
+  .plot-data table{width:100%;border-collapse:collapse;font-size:.95rem}
+  .plot-data caption{padding:.4rem 0;text-align:left}
+  .plot-data th,.plot-data td{border-top:1px solid var(--line);padding:.36rem .4rem;text-align:left;overflow-wrap:anywhere}
+  body[data-level="3"] .stage{overflow-y:auto}
   .analysis .side{width:236px;flex:none;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
   .sectlabel{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
   .serieslist{display:flex;flex-direction:column;gap:4px}
@@ -185,7 +193,7 @@
           <span class="t">Initial rate of reaction against substrate concentration</span>
           <span class="s">initial rate — measured before substrate runs out</span>
         </div>
-        <canvas id="plot"></canvas>
+        <canvas id="plot" role="img" aria-label="Modelled initial reaction rate against substrate concentration. The graph values are available as a table."></canvas>
       </div>
       <div class="side">
         <div>
@@ -203,6 +211,17 @@
         <div class="readout" id="analysis-read"></div>
       </div>
     </div>
+
+    <details class="plot-data lvl3" id="plot-data">
+      <summary>Graph values as a table</summary>
+      <div class="plot-data-scroll" role="region" aria-label="Initial rate table" tabindex="0">
+        <table>
+          <caption>Modelled values for the visible curves</caption>
+          <thead><tr><th scope="col">Substrate / AU</th><th scope="col">Curve</th><th scope="col">Initial rate / AU</th></tr></thead>
+          <tbody id="plot-data-rows"></tbody>
+        </table>
+      </div>
+    </details>
 
     <div class="hint-strip" id="hint">A competitive inhibitor is a similar shape to the substrate, so it fits the active site. A non-competitive inhibitor fits the allosteric site instead.</div>
   </section>
@@ -741,8 +760,8 @@ function builtinSeries(){
   const k=kCat(), n=S.enzN;
   return [
     {id:"none",label:"No inhibitor",color:"#2f7fd6",Ic:0,In:0,n:n,k:k,vis:true},
-    {id:"comp",label:"Competitive ("+S.compN+")",color:"#e0566b",Ic:Math.max(S.compN,1),In:0,n:n,k:k,vis:true},
-    {id:"non",label:"Non-competitive ("+S.nonN+")",color:"#8b5cf6",Ic:0,In:Math.max(S.nonN,1),n:n,k:k,vis:true}
+    {id:"comp",label:"Competitive ("+Math.max(S.compN,1)+")",color:"#e0566b",Ic:Math.max(S.compN,1),In:0,n:n,k:k,vis:true},
+    {id:"non",label:"Non-competitive ("+Math.max(S.nonN,1)+")",color:"#8b5cf6",Ic:0,In:Math.max(S.nonN,1),n:n,k:k,vis:true}
   ];
 }
 let builtinVis={none:true,comp:true,non:true};
@@ -784,6 +803,32 @@ function snapshot(){
     Ic:S.compN,In:S.nonN,n:S.enzN,k:kCat(),vis:true});
   buildSeriesList();drawPlot();
 }
+const dataDetails=document.getElementById("plot-data"),dataRows=document.getElementById("plot-data-rows");
+let lastTableSeries="";
+function updatePlotTable(series){
+  if(!dataDetails.open)return;
+  const key=JSON.stringify(series);
+  if(key===lastTableSeries)return;
+  lastTableSeries=key;
+  dataRows.replaceChildren();
+  for(const concentration of [0,10,20,30,40,50]){
+    for(const curve of series){
+      const row=dataRows.insertRow();
+      const value=document.createElement("th");
+      value.scope="row";
+      value.textContent=concentration;
+      row.append(value);
+      row.insertCell().textContent=curve.label;
+      row.insertCell().textContent=rateOf(concentration,curve.Ic,curve.In,curve.n,curve.k).toFixed(2);
+    }
+  }
+  if(!series.length){
+    const empty=dataRows.insertRow().insertCell();
+    empty.colSpan=3;
+    empty.textContent="Choose a curve to see its values.";
+  }
+}
+dataDetails.addEventListener("toggle",()=>updatePlotTable(allSeries().filter(s=>s.vis)));
 function drawPlot(){
   const w=plot.getBoundingClientRect().width,h=plot.getBoundingClientRect().height;
   if(w<10||h<10)return;
@@ -810,6 +855,7 @@ function drawPlot(){
   pctx.fillText("Initial rate / AU",0,0);pctx.restore();
 
   const vis=allSeries().filter(s=>s.vis);
+  updatePlotTable(vis);
   /* Vmax guides */
   if(S.optVmax){
     pctx.setLineDash([4,4]);pctx.lineWidth=1.3;

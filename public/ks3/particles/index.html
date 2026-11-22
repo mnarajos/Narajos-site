@@ -5,7 +5,6 @@
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <script defer src="/assets/ks3-check.js"></script>
  <script defer src="/assets/ks3-gas-pressure.js"></script>
- <script defer src="/assets/listen-to.js"></script>
  <title>Particles and gas pressure | Narajos</title>
  <meta name="description" content="Particles and gas pressure">
 
@@ -38,7 +37,6 @@
       <strong data-gas-step>Observation 1 of 3</strong>
       <p data-gas-prompt>Press Start motion. Watch for an outlined dot when a particle hits a wall.</p>
      </div>
-     <listen-to for="gas-instructions gas-result" label="Listen to the observation"></listen-to>
     </div>
     <fieldset class="gas-conditions" hidden>
      <legend>Choose one change</legend>
@@ -57,7 +55,11 @@
      <button type="button" data-gas-back hidden>Previous observation</button>
     </div>
     <p class="gas-result reading-copy" id="gas-result" role="status">Starting pressure. The particles bounce off the walls.</p>
-    <button type="button" data-gas-free>Explore freely</button>
+    <div class="gas-options">
+     <button type="button" data-gas-free>Explore freely</button>
+     <button type="button" data-gas-sound aria-pressed="false" aria-describedby="gas-sound-note" hidden>Listen to collisions</button>
+    </div>
+    <p class="gas-sound-note" id="gas-sound-note" hidden>Each click is a wall collision. Listen for how often the clicks happen.</p>
    </div>
    <details>
     <summary>Read the explanation</summary>

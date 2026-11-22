@@ -216,6 +216,12 @@
     </div>
 
     <div class="ctrl">
+      <div class="head"><label for="s-cycle">Position in the cycle</label><span class="read" id="r-cycle" aria-hidden="true">0%</span></div>
+      <input type="range" id="s-cycle" min="0" max="100" value="0" step="1" aria-describedby="cycle-keys">
+      <div class="sub" id="cycle-keys">Use the arrow keys to move one step at a time. Moving the slider pauses the model.</div>
+    </div>
+
+    <div class="ctrl">
       <div class="head"><label for="s-hr">Heart rate</label><span class="read" id="r-hr">75 bpm</span></div>
       <input type="range" id="s-hr" min="40" max="180" value="75" step="1">
       <div class="sub">Sets the length of one cycle. Cardiac output = stroke volume × heart rate.</div>
@@ -383,7 +389,7 @@ const S={
   showPV:true, showAo:true, showAtr:true, showVol:true, showMarkers:true,
   focus:null, gmap:{L:44,R:12,w:400}, scrubbing:false,
   eLabels:true, ecg:false, ecgMap:{L:20,R:14,w:400}, avn:0.40, block:false,
-  prevAV:true, prevSL:false, soundT:0, soundKind:"",
+  prevAV:true, prevSL:false, soundT:-Infinity, soundKind:"",
   avEase:1, slEase:0, // eased valve openness for smooth leaflet motion
   ventPhi:0,          // ventricular clock (diverges from phi under heart block)
   pvTrail:[]
@@ -1035,10 +1041,18 @@ function updatePanels(){
       chipHTML("","#f0c235", S.block?"AVN blocked":"AVN conducting");
     document.getElementById("status").innerHTML= msg(elecCoach());
   }
-  // sound flash
+  const position=Math.round(S.phi*100);
+  if(cycleSlider.dataset.position!==String(position)){
+    cycleSlider.dataset.position=String(position);
+    cycleSlider.value=position;
+    cycleSlider.setAttribute("aria-valuetext",position+" percent of the cycle");
+    cyclePosition.textContent=position+"%";
+  }
   const sf=document.getElementById("sound-flash");
-  if(performance.now()-S.soundT<260){sf.classList.add("on");sf.textContent=S.soundKind==="S1"?"🔊 “lub” (S1)":"🔊 “dup” (S2)";}
-  else sf.classList.remove("on");
+  const sounding=!!S.soundKind&&performance.now()-S.soundT<260;
+  sf.classList.toggle("on",sounding);
+  const soundText=sounding?(S.soundKind==="S1"?"“Lub” (S1)":"“Dub” (S2)"):"";
+  if(sf.textContent!==soundText)sf.textContent=soundText;
 }
 function chipHTML(cls,col,txt){return '<div class="chip '+cls+'"><span class="dot" style="background:'+col+'"></span>'+txt+'</div>';}
 function stat(k,v,u,lvl){const c=lvl?' lvl'+lvl:'';return '<div class="stat'+c+'"><div class="k">'+k+'</div><div class="v">'+v+' <small>'+u+'</small></div></div>';}
@@ -1143,15 +1157,26 @@ document.getElementById("btn-step").addEventListener("click",()=>{
   S.phi=(S.phi+0.01)%1; if(!(S.scene==="elec"&&S.block))S.ventPhi=S.phi; detectSounds();
 });
 
-/* ---- click / drag on the graph to jump to a time point (and pause) ---- */
-function scrubTo(clientX,canvas=graph,map=S.gmap){
-  if(canvas===graph && S.pvloop && S.scene==="mech" && S.level>=3) return;   // PV loop isn't a time axis
-  const r=canvas.getBoundingClientRect(), {L,R,w}=map;
-  let phi=(clientX-r.left-L)/(w-L-R);
-  phi=Math.max(0,Math.min(0.9995,phi));
-  S.phi=phi; if(!(S.scene==="elec"&&S.block)) S.ventPhi=phi;
+/* The keyboard timeline and both graphs seek along the same time axis. */
+const cycleSlider=document.getElementById("s-cycle"),cyclePosition=document.getElementById("r-cycle");
+function syncValveState(){
+  const m=model(S.phi);
+  S.prevAV=m.avOpen; S.prevSL=m.slOpen;
+  S.soundT=-Infinity; S.soundKind="";
+}
+function seekCycle(phi){
+  S.phi=Math.max(0,Math.min(0.9995,phi));
+  if(!(S.scene==="elec"&&S.block))S.ventPhi=S.phi;
   S.focus=null; syncFocusButtons();
-  detectSounds();
+  setRunning(false);
+  syncValveState();
+  updatePanels();
+}
+cycleSlider.addEventListener("input",()=>seekCycle(Number(cycleSlider.value)/100));
+function scrubTo(clientX,canvas=graph,map=S.gmap){
+  if(canvas===graph && S.pvloop && S.scene==="mech" && S.level>=3) return; // PV loops have no time axis.
+  const r=canvas.getBoundingClientRect(), {L,R,w}=map;
+  seekCycle((clientX-r.left-L)/(w-L-R));
 }
 graph.style.cursor="ew-resize";
 graph.addEventListener("pointerdown",e=>{S.scrubbing=true;setRunning(false);scrubTo(e.clientX);graph.setPointerCapture(e.pointerId);});
@@ -1165,7 +1190,7 @@ ecgCanvas.addEventListener("pointerup",()=>{S.scrubbing=false;});
 /* ---- focus on one phase: play just that section slowly, looping ---- */
 function setFocus(i){
   S.focus=i;
-  if(i!=null && CORE[i]) S.phi=CORE[i].a;
+  if(i!=null && CORE[i]){ S.phi=CORE[i].a; syncValveState(); }
   syncFocusButtons(); setRunning(i!=null ? true : S.running);
 }
 function syncFocusButtons(){

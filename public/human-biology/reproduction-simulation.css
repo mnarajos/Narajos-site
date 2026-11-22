@@ -34,3 +34,9 @@
 .krp-anatomy-note{margin:.55rem 0 .25rem}
 .krp-anatomy-note summary{min-height:36px;padding:.35rem 0;cursor:pointer;color:#264e68;font-weight:700}
 .krp-anatomy-note p{margin:.25rem 0 .65rem;max-width:68ch}
+
+.krp-zoom { margin-bottom: .55rem; }
+.krp-zoom[aria-pressed="true"] { background: #264e68; color: #fff; }
+.krp-view.krp-follow .krp-diagram { width: 100%; min-width: 0; max-height: 32rem; }
+.krp-view.krp-follow + .krp-swipe { display: none; }
+.krp-status:focus { outline: 2px solid #95612b; outline-offset: 3px; }
