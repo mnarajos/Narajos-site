@@ -127,13 +127,6 @@ try{
  assert((await desktop.locator(".kc-visual-art svg").getAttribute("aria-label")).includes("reaction rate"),"Accessible enzyme schematic missing");
  await screen(desktop,"alevel-enzyme-visual");
 
- await desktop.addInitScript(()=>{
-  window.narajosSpeech=[];
-  Object.defineProperty(window,"speechSynthesis",{value:{
-   speak:utterance=>window.narajosSpeech.push(utterance.text),
-   cancel:()=>window.narajosSpeech.push("stopped")
-  }});
- });
  await checkPage(desktop,"human-biology");
  assert(await desktop.getByRole("heading",{name:"Other ways to revise F170",exact:true}).isVisible());
  assert(await desktop.getByRole("heading",{name:"Other ways to revise F171",exact:true}).isVisible());
@@ -178,12 +171,8 @@ try{
  await desktop.getByRole("heading",{name:"Worked example",exact:true}).waitFor();
  await desktop.getByRole("button",{name:"Now try one"}).click();
  await desktop.locator(".k-question-view").waitFor();
- const readQuestion=desktop.getByRole("button",{name:"Listen to the question"});
  assert(await desktop.locator(".k-reading-context").isVisible());
- await readQuestion.click();
- const spoken=await desktop.evaluate(()=>window.narajosSpeech.at(-1));
- assert(/magnification/i.test(spoken)&&/µm|mm/.test(spoken),"Read aloud must include the question and its measurement context");
- await desktop.getByRole("button",{name:"Stop listening"}).click();
+ assert.equal(await desktop.getByRole("button",{name:"Listen to the question"}).count(),0);
  for(let i=0;i<10;i++){
   const task=await desktop.evaluate(()=>{
    const s=JSON.parse(localStorage.getItem("narajos-human-challenge-v2-session"));
@@ -193,10 +182,6 @@ try{
   else await desktop.locator("#k-number").fill(String(task.correct));
   if(await desktop.locator('[data-k-action="check"]').count())await desktop.locator('[data-k-action="check"]').click();
   await desktop.locator(".k-feedback.correct").waitFor();
-  if(i===0){
-   await desktop.getByRole("button",{name:"Listen to the feedback"}).click();
-   assert.match(await desktop.evaluate(()=>window.narajosSpeech.at(-1)),/expected answer/i);
-  }
   if(i===2){
    await desktop.reload();await desktop.locator(".k-feedback.correct").waitFor();
    await desktop.getByRole("link",{name:"← Leave this set"}).click();
@@ -260,9 +245,11 @@ try{
  assert(await desktop.getByText(/The cervix is the narrow lower part of the uterus/).isVisible());
  assert(await desktop.locator('[data-krp="lh"]').isHidden(),"LH should not appear before follicle maturation");
  await screen(desktop,"human-f175-anatomy");
- await desktop.locator('[data-krp="fsh"]').click();
+ await desktop.locator('[data-krp="fsh"]').press("Enter");
  await desktop.locator('[data-krp="lh"]').waitFor({state:"visible",timeout:8000});
+ assert(await desktop.locator('[data-krp="lh"]').evaluate(el=>el===document.activeElement),"Focus should move to LH when the follicle is ready");
  assert((await desktop.locator(".krp-status").innerText()).includes("LH surge"),"Mature follicle should introduce LH surge");
+ assert(await desktop.locator("#krp-follicle").isVisible(),"Mature follicle must be visible in the diagram");
  await desktop.locator('[data-krp="lh"]').click();
  const spermEntry=desktop.getByRole("button",{name:"Sperm entry on the diagram"});
  await spermEntry.focus();
@@ -270,8 +257,10 @@ try{
  assert.equal(await spermEntry.getAttribute("aria-disabled"),"true");
  await desktop.locator('[data-krp="fert"]').waitFor({state:"visible",timeout:8000});
  await desktop.getByRole("status").filter({hasText:"are in the same oviduct"}).waitFor();
+ assert(await desktop.locator("#krp-egg").isVisible() && await desktop.locator("#krp-sperm").isVisible(),"Gametes must appear in the diagram");
  await desktop.locator('[data-krp="fert"]').click();
  await desktop.waitForFunction(()=>document.querySelector(".krp-status")?.textContent.includes("Early embryo"));
+ assert(await desktop.locator("#krp-embryo").isVisible(),"The early embryo must be visible in the uterus");
  await screen(desktop,"human-f175-embryo");
  await desktop.locator('[data-krp="reset"]').click();
  assert(await desktop.locator('[data-krp="lh"]').isHidden(),"Reset should hide LH until follicle matures");
@@ -322,6 +311,11 @@ try{
  await mobile.locator("#krp-model").waitFor({state:"visible"});
  assert((await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth))<=3,"F175 diagram must scroll inside its container, not overflow the page");
  assert((await mobile.locator(".krp-view").evaluate(el=>el.scrollWidth>el.clientWidth)),"F175 labelled diagram needs a scrollable phone viewport");
+ await mobile.getByRole("button",{name:"Follow the current stage"}).click();
+ assert.equal(await mobile.locator(".krp-diagram").getAttribute("viewBox"),"48 86 320 228");
+ assert(await mobile.locator(".krp-view").evaluate(el=>el.scrollWidth<=el.clientWidth+2),"The focused diagram should fit on a phone");
+ await mobile.getByRole("button",{name:"Follow the current stage"}).click();
+ assert.equal(await mobile.locator(".krp-diagram").getAttribute("viewBox"),"0 0 900 600");
  await screen(mobile,"human-f175-mobile");
  await mobile.goto(base+"/human-biology/#skills");
  await mobile.getByRole("heading",{name:"Skills practice",exact:true}).waitFor();
@@ -345,6 +339,29 @@ try{
   const style=await control.evaluate(el=>{const s=getComputedStyle(el);return [s.fontSize,s.fontWeight,s.color,s.backgroundColor,s.borderRadius,s.minHeight];});
   if(!standard)standard=style;else assert.deepEqual(style,standard,"Homepage control style differs: "+path);
  }
+ await navPage.goto(base+"/teaching/simulations/molecular-biology/");
+ const molecularPlay=navPage.getByRole("button",{name:/Play/});
+ await molecularPlay.waitFor();
+ await navPage.getByText("Find the base pairs that hold the two strands together.",{exact:true}).waitFor();
+ assert(await navPage.locator("#step-desc").isHidden());
+ await navPage.getByRole("button",{name:/Step/,exact:false}).press("Enter");
+ await navPage.getByText("Watch the two DNA strands separate at helicase.",{exact:true}).waitFor();
+ assert(await molecularPlay.isVisible(),"Molecular Biology should stop after one step");
+ await navPage.getByRole("button",{name:"Transcription",exact:true}).click();
+ assert(await molecularPlay.isVisible(),"Changing process should start paused");
+ await navPage.setViewportSize({width:320,height:800});
+ await checkReadingSpacing(navPage,"Molecular Biology");
+ await navPage.setViewportSize({width:1280,height:900});
+ await navPage.goto(base+"/teaching/simulations/enzyme-inhibition/");
+ await navPage.locator('button[data-level="3"]').click();
+ await navPage.getByText("Graph values as a table",{exact:true}).press("Enter");
+ const inhibitionTable=navPage.getByRole("table",{name:"Modelled values for the visible curves"});
+ assert.equal(await inhibitionTable.locator("tbody tr").count(),18);
+ await navPage.locator("#series input").first().uncheck();
+ assert.equal(await inhibitionTable.locator("tbody tr").count(),12);
+ await navPage.setViewportSize({width:390,height:844});
+ assert((await inhibitionTable.boundingBox()).width<=390,"Enzyme Inhibition data table is wider than the phone");
+ await navPage.setViewportSize({width:1280,height:900});
  await navPage.goto(base+"/teaching/simulations/bioenergetics/");
  const guide=navPage.getByRole("region",{name:"Guided observations"});
  const guidePlay=guide.locator("#btn-guide-play");
@@ -376,6 +393,14 @@ try{
  await navPage.setViewportSize({width:1280,height:900});
  await navPage.goto(base+"/teaching/simulations/cardiac-cycle/");
  await navPage.locator("body:not(.booting)").waitFor();
+ const cycleSlider=navPage.getByRole("slider",{name:"Position in the cycle"});
+ assert.equal(await navPage.locator("#sound-flash").textContent(),"","No heart sound should appear before the first valve event");
+ await cycleSlider.press("End");
+ assert.equal(await cycleSlider.inputValue(),"100");
+ assert.equal(await navPage.locator("#sound-flash").textContent(),"","Scrubbing should not claim a valve event");
+ await cycleSlider.press("Home");
+ await cycleSlider.press("ArrowRight");
+ assert.equal(await cycleSlider.inputValue(),"1");
  const ecg=navPage.locator("#ecg-panel"),mechanical=navPage.locator("#mechanical-graph-panel");
  assert(await ecg.isHidden());assert(await mechanical.isVisible());
  for(const level of [1,2,3]){await navPage.locator('button[data-level="'+level+'"]').click();assert(await ecg.isHidden(),"Detail level must not reveal optional ECG");}
@@ -677,14 +702,34 @@ try{
  await navPage.getByRole("link",{name:"Choose another Year 8 topic"}).click();
  await navPage.waitForURL(base+"/ks3/#year-8");
  await ks3Menu8.locator("ul").waitFor();
+ await navPage.addInitScript(()=>{
+  window.collisionClicks=0;
+  window.AudioContext=class {
+   state="suspended";
+   sampleRate=8000;
+   createBuffer(channels, samples) {return {getChannelData:()=>new Float32Array(samples)};}
+   createGain() {return {gain:{},connect(){}};}
+   createBufferSource() {return {connect(){},start(){window.collisionClicks++;}};}
+   async resume() {this.state="running";}
+  };
+ });
  await navPage.goto(base+"/ks3/particles/");
  const gasModel=navPage.locator("[data-gas-pressure]");
  assert(await gasModel.getByRole("radio",{name:"Warmer gas"}).isHidden());
+ const collisions=gasModel.getByRole("button",{name:"Listen to collisions"});
+ assert.equal(await collisions.getAttribute("aria-pressed"),"false");
+ await collisions.click();
+ assert.equal(await navPage.evaluate(()=>window.collisionClicks),0,"Paused gas should make no sound");
  await gasModel.getByRole("button",{name:"Start motion"}).click();
+ await navPage.waitForFunction(()=>window.collisionClicks>1);
+ await collisions.click();
+ assert.equal(await collisions.getAttribute("aria-pressed"),"false");
+ const lastClick=await navPage.evaluate(()=>window.collisionClicks);
  await gasModel.getByRole("button",{name:"Next observation"}).click();
  await gasModel.getByText(/Predict what happens to pressure when you warm/).waitFor();
  await gasModel.getByRole("button",{name:"Warm the gas"}).click();
  await gasModel.getByRole("status").filter({hasText:"The same particles move faster."}).waitFor();
+ assert.equal(await navPage.evaluate(()=>window.collisionClicks),lastClick,"Muting should stop wall clicks while animation continues");
  await gasModel.getByRole("button",{name:"Next observation"}).click();
  await gasModel.getByRole("status").filter({hasText:"Starting pressure."}).waitFor();
  await gasModel.getByRole("button",{name:"Make the box smaller"}).click();

@@ -12,6 +12,9 @@
   const next = model.querySelector("[data-gas-next]");
   const back = model.querySelector("[data-gas-back]");
   const free = model.querySelector("[data-gas-free]");
+  const sound = model.querySelector("[data-gas-sound]");
+  const soundNote = model.querySelector("#gas-sound-note");
+  const Audio = window.AudioContext || window.webkitAudioContext;
   const guide = model.querySelector(".gas-guide");
   const label = model.querySelector("[data-gas-step]");
   const prompt = model.querySelector("[data-gas-prompt]");
@@ -52,6 +55,45 @@
   let condition = conditions.start;
   let frame = null;
   let previousTime = null;
+
+  let audio, clickBuffer, volume;
+  let soundOn = false;
+  function clickWall() {
+    if (!soundOn || audio?.state !== "running") return;
+    const click = audio.createBufferSource();
+    click.buffer = clickBuffer;
+    click.connect(volume);
+    click.start();
+  }
+
+  if (Audio) {
+    sound.hidden = false;
+    sound.addEventListener("click", async () => {
+      soundOn = !soundOn;
+      sound.setAttribute("aria-pressed", String(soundOn));
+      soundNote.hidden = !soundOn;
+      try {
+        if (!audio) {
+          audio = new Audio();
+          clickBuffer = audio.createBuffer(1, Math.ceil(audio.sampleRate * 0.024), audio.sampleRate);
+          const samples = clickBuffer.getChannelData(0);
+          for (let i = 0; i < samples.length; i++) {
+            const seconds = i / audio.sampleRate;
+            samples[i] = Math.sin(2 * Math.PI * 265 * seconds) * Math.exp(-180 * seconds);
+          }
+          volume = audio.createGain();
+          volume.gain.value = 0.05;
+          volume.connect(audio.destination);
+        }
+        if (soundOn && audio.state !== "running") await audio.resume();
+      } catch (_) {
+        soundOn = false;
+        sound.setAttribute("aria-pressed", "false");
+        soundNote.hidden = false;
+        soundNote.textContent = "Collision sound is unavailable on this device.";
+      }
+    });
+  }
 
   function draw() {
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -98,11 +140,13 @@
         particle.x = Math.max(minX, Math.min(maxX, particle.x));
         particle.vx *= -1;
         particle.hit = 0.13;
+        clickWall();
       }
       if (particle.y < minY || particle.y > maxY) {
         particle.y = Math.max(minY, Math.min(maxY, particle.y));
         particle.vy *= -1;
         particle.hit = 0.13;
+        clickWall();
       }
     }
     draw();
@@ -128,6 +172,7 @@
     const stepPrompt = observed && observation.after ? observation.after : observation.before;
     if (label.textContent !== stepLabel) label.textContent = stepLabel;
     if (prompt.textContent !== stepPrompt) prompt.textContent = stepPrompt;
+    soundNote.textContent = "Each click is a wall collision. Listen for how often the clicks happen.";
     change.textContent = observation.action || "";
     change.hidden = freeMode || step === 0 || observed;
     next.hidden = freeMode || !observed || step === observations.length - 1;
@@ -159,10 +204,8 @@
     guide.hidden = freeMode;
     controls[0].closest("fieldset").hidden = !freeMode;
     free.textContent = freeMode ? "Follow the observations" : "Explore freely";
-    if (freeMode) {
-      guide.querySelector("listen-to").stop?.();
-      guideControls();
-    } else goToStep(0);
+    if (freeMode) guideControls();
+    else goToStep(0);
   });
 
   function setMotion(running) {
