@@ -133,6 +133,7 @@ export function mountIntroduction(card, id) {
     [example.conclusion, "Correct. This draws together the reasoning and says what it shows."]
   ];
   const rewrite = savedField(id + "-intro-rewrite-" + year, "Write a stronger topic sentence");
+  const ending = savedField(id + "-intro-ending-" + year, "Write a concluding sentence");
   guided.append(element("h3", "We do · Choose the opening and ending"),
     element("p", example.prompt), choicePractice("Which opening answers the question?", openingChoices),
     ...(id === "ramp" || year === 7 ? [choicePractice("Which note comes next after ‘different wheels and friction’?", [
@@ -142,7 +143,10 @@ export function mountIntroduction(card, id) {
     ])] : []),
     choicePractice("Which ending draws the reasoning together?", endingChoices),
     disclosure("Try writing your own opening", rewrite.wrapper,
-      disclosure("Compare with the model opening", element("p", example.topic, "model"))));
+      disclosure("Compare with the model opening", element("p", example.topic, "model"))),
+    disclosure("Practise writing a conclusion",
+      element("p", "Use the outline to say what the explanation shows. Check that your sentence adds something to the opening."),
+      ending.wrapper, disclosure("Compare with the model conclusion", element("p", example.conclusion, "model"))));
   const own = element("button", "You do · Plan your paragraph");
   own.type = "button";
   own.addEventListener("click", () => {
@@ -167,6 +171,13 @@ export function mountIntroduction(card, id) {
     ["But", "Use ‘but’ for a contrast. The next words give the reason."],
     ["So", "Use ‘so’ to give a result. The next words tell us why."]
   ]));
+  connectors.append(disclosure("Move the reason in a sentence",
+    element("p", "The car rolled a shorter distance because the surface caused more friction."),
+    element("p", "Because the surface caused more friction, the car rolled a shorter distance."),
+    element("p", "The main clause tells the reader what happened. The clause beginning with ‘because’ gives the reason.")));
+  if (year >= 12) connectors.append(disclosure("Qualify a scientific claim",
+    element("p", "Although the sodium gradient favours co-transport, uptake also depends on the availability of glucose and the co-transporter."),
+    element("p", "‘Although’ qualifies the claim by pointing out another influence on uptake.")));
   intro.append(disclosure("I do · Open the worked example", modelCard(example)),
     disclosure("We do · Practise the decisions", guided), own, courseNotes, connectors);
   const stimulus = card.querySelector("figure");
@@ -271,7 +282,18 @@ export function mountDevelopment(card, id, fields, guide, resetOutlineReport) {
       status.textContent = "Add a topic sentence, at least two notes and their supporting sentences, and a concluding sentence.";
       return;
     }
-    const text = [topic, ...active.map(([, field]) => field), conclusion].map(field => field.value.trim()).join(" ");
+    const ordered = [topic, ...active.map(([, field]) => field), conclusion];
+    const needsStop = ordered.find(field => !/[.!?][”"')\]]*$/.test(field.value.trim()));
+    if (needsStop) {
+      status.textContent = "Read each sentence back. Finish " + needsStop.labels[0].textContent.trim().replace(/:$/, "").toLowerCase() + " with punctuation.";
+      const container = needsStop.closest("details");
+      if (container) container.open = true;
+      const focusIndex = slots.findIndex(({field}) => field === needsStop);
+      if (focusIndex >= 0) show(focusIndex);
+      needsStop.focus();
+      return;
+    }
+    const text = ordered.map(field => field.value.trim()).join(" ");
     if (paragraph.value.trim() && paragraph.value.trim() !== text) {
       preview.value = text;
       preview.hidden = false;
