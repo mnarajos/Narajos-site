@@ -13,4 +13,20 @@ header.brand:has(> h1 .eyebrow):has(> a.narajos-home) {
   background: color-mix(in srgb, var(--card, #fff) 93%, #daa36f);
   box-shadow: inset 0 3px #c46e32;
 }
+
+:root {
+  --narajos-choice-fill: #eff5f4;
+  --narajos-choice-line: #78938f;
+  --narajos-choice-selected: #dceeea;
+}
+
+/* The revision apps retain their own subject colours and marked-answer states. */
+main .opt:has(input:enabled):not(:has(input:checked)),
+main .k-option:has(input:enabled):not(.selected):not(:has(input:checked)) {
+  background: color-mix(in srgb, var(--card, #fff) 93%, var(--acc, var(--brand, #146c69)));
+}
+main .opt:focus-within, main .k-option:focus-within {
+  outline: 2px solid var(--focus, var(--brand, #146c69));
+  outline-offset: 2px;
+}
 @media print{a.narajos-home{display:none}}

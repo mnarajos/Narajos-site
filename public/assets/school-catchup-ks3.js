@@ -1,4 +1,5 @@
 import { mountJourney, question } from "./school-catchup-journey.js";
+import { readCatchup, saveCatchup } from "./school-catchup-progress.js";
 
 const topics = {
   "fair-tests": [
@@ -232,10 +233,37 @@ function fromLesson(source) {
   return question(source.prompt, source.answer, source.correctFeedback, ...source.distractors);
 }
 
+function addPracticeAnswer(card, id) {
+  if (!card) return;
+  card.classList.add("ks3-try-practice");
+  let draft = card.querySelector("textarea");
+  let label = card.querySelector("label");
+  if (!draft) {
+    draft = document.createElement("textarea");
+    draft.id = "practice-answer-" + id.replaceAll(".", "-");
+    draft.rows = 3;
+    label = document.createElement("label");
+    label.htmlFor = draft.id;
+    label.textContent = "Your answer";
+    const example = card.querySelector(":scope > details");
+    if (example) example.before(label, draft);
+    else card.append(label, draft);
+  }
+  const pen = document.createElement("span");
+  pen.setAttribute("aria-hidden", "true");
+  pen.textContent = "✎";
+  label.prepend(pen);
+  const key = id + ".practice";
+  draft.maxLength = 2000;
+  draft.value = readCatchup(key).draft || "";
+  draft.addEventListener("input", () => saveCatchup(key, {step: 0, draft: draft.value}));
+}
+
 export function addKS3Journey(model, lesson, year) {
   const item = topics[lesson.id];
   if (!item) return;
   const [hook, hint, transfer] = item;
+  addPracticeAnswer(model.parentElement.querySelector("[data-ks3-transfer]"), year + "." + lesson.id);
   mountJourney(model, model, {
     id: lesson.id, year, title: lesson.unit, hook,
     steps: [
@@ -267,8 +295,10 @@ for (const host of document.querySelectorAll("[data-school-catchup-topic]")) {
   const [hook, hint, transfer] = item;
   const guided = [...host.querySelectorAll("[data-catchup-check]")].map(fromCard).filter(Boolean);
   if (guided.length < 2) continue;
+  const year = id === "cells" ? 7 : 8;
+  addPracticeAnswer(host.querySelector("[data-ks3-transfer]"), year + "." + id);
   mountJourney(model, model, {
-    id, year: id === "cells" ? 7 : 8, title: host.querySelector("h1").textContent, hook,
+    id, year, title: host.querySelector("h1").textContent, hook,
     steps: [{...guided[0], notice: hint}, {...guided[1], hint}, question(...transfer)]
   });
 }
