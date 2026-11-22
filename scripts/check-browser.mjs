@@ -673,7 +673,7 @@ try{
  await desktop.getByRole("status").filter({hasText:"are in the same oviduct"}).waitFor();
  assert(await desktop.locator("#krp-egg").isVisible() && await desktop.locator("#krp-sperm").isVisible(),"Gametes must appear in the diagram");
  await desktop.locator('[data-krp="fert"]').click();
- await desktop.waitForFunction(()=>document.querySelector(".krp-status")?.textContent.includes("Early embryo"));
+ await desktop.getByRole("status").filter({hasText:"develops into a blastocyst"}).waitFor();
  assert(await desktop.locator("#krp-embryo").isVisible(),"The early embryo must be visible in the uterus");
  await screen(desktop,"human-f175-embryo");
  await desktop.locator('[data-krp="reset"]').click();

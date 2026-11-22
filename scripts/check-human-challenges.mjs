@@ -261,6 +261,18 @@ assert(!data.get("narajos-human-challenge-v2-completed").includes("Revision afte
 
 clickAction("self-good");
 assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-progress"))[written.id].seen,1,"Repeated review must not create another attempt");
+// Legacy records with unreliable provenance remain available as history.
+const legacy=forcedQuestion("health-care-records");
+let legacySave=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+legacySave.first={[legacy.id]:true};legacySave.correctFirst=1;delete legacySave.outcomes;delete legacySave.objectiveFirst;
+data.set("narajos-human-challenge-v2-session",JSON.stringify(legacySave));
+app.pause();app.route(legacySave.route,h=>main.innerHTML=h);
+main.querySelector=selector=>selector==="#k-number, #k-text, #k-written"?{value:"Consider consent and confidentiality."}:null;
+clickAction("reveal");
+legacySave=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.equal(legacySave.correctFirst,0);
+assert.deepEqual(legacySave.objectiveFirst,{});
+assert.equal(legacySave.first[legacy.id],false);
 const sequence=forcedQuestion("f175-early");
 let sequenceSave=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 sequenceSave.answers[sequence.id].order=[0,1,2,3]; // a pre-Batch-10 saved draft

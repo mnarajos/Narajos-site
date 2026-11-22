@@ -1,3 +1,4 @@
+import {checkHumanReliability} from "./check-human-reliability.mjs";
 import {checkHumanCatchup} from "./check-human-catchup.mjs";
 import {checkALevelExam} from "./check-alevel-exam.mjs";
 import assert from "node:assert/strict";
@@ -17,6 +18,7 @@ const pages = [
 try {
   await checkALevelExam(browser,base);
   await checkHumanCatchup(browser,base);
+  await checkHumanReliability(browser,base,{touch:true,audit:axe.source});
   const page = await browser.newPage({ viewport: { width: 390, height: 844 }, hasTouch: true });
   await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
   const measurements = [];

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { firefox, webkit } from "playwright";
+import { checkHumanReliability } from "./check-human-reliability.mjs";
 import { servePublic } from "./browser-test-site.mjs";
 
 const engine = process.argv[2];
@@ -11,6 +12,7 @@ let route = "/";
 const errors = [];
 
 try {
+  await checkHumanReliability(browser, base, { touch: engine === "webkit" });
   const page = await browser.newPage({
     viewport: { width: 320, height: 780 },
     hasTouch: true,
