@@ -11,14 +11,16 @@ var all=db.questions,byId={},skills=window.KeystoneHumanSkills,ladders=window.Ke
 var render=null,visible=false,lastRoute="",skillExampleStem="";
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(a){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[a];});}
 function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=b[i];b[i]=b[j];b[j]=t;}return b;}
+const methodKey=SK+"-mixed-method";
 function contextualKey(skillId){return SK+"-catchup-"+skillId;}
 function topicKey(unit,scope){return SK+"-topic-"+unit+"/"+scope;}
 function sessionKey(item){
+ if(item&&item.scope==="methods")return methodKey;
  if(item&&item.topicContext)return topicKey(item.unit,item.scope);
  return item&&item.skillId&&item.returnTo?contextualKey(item.skillId):SK;
 }
 function localSessionKeys(){
- var keys=[CK].concat(skills?skills.definitions.map(function(skill){return contextualKey(skill.id);}):[]);
+ var keys=[CK,methodKey].concat(skills?skills.definitions.map(function(skill){return contextualKey(skill.id);}):[]);
  try{for(var i=0;i<localStorage.length;i++){var key=localStorage.key(i);if(key.startsWith(SK+"-topic-"))keys.push(key);}}catch(_){}
  return keys;
 }
@@ -98,6 +100,7 @@ function filter(unit,scope){
  var list=all.filter(function(q){return q.unit===unit;});
  if(/^a[1-5]$/.test(scope))list=list.filter(function(q){return q.area===Number(scope.slice(1));});
  else if(/^\d+(?:\.\d+)*$/.test(scope))list=list.filter(function(q){return q.section===scope;});
+ else if(scope==="methods")list=list.filter(function(q){return q.methodOrder;});
  else if(scope==="core"||scope==="apply"||scope==="stretch")list=list.filter(function(q){return q.level===scope;});
  else if(scope.startsWith("case-"))list=list.filter(q=>q.id===scope&&q.caseTitle);
  else if(scope==="sam")list=list.filter(function(q){return q.samAligned;});
@@ -286,6 +289,7 @@ function makeSession(unit,scope,route,origin){
  }
  var ids;
  if(point){ids=[point.foundation,rotatePool(point.core.map(function(id){return byId[id];}))[0].id];ids=[ids[0],point.diagnostic,ids[1],point.challenge];}
+ else if(scope==="methods"){ids=selected.sort(function(a,b){return a.methodOrder-b.methodOrder;}).map(function(q){return q.id;});}
  else if(scope==="all"){ids=quickMixQueue(unit,size);}
  else if(/^a[1-5]$/.test(scope)){
   // Topic practice is instructionally sequenced; unlike the mixed revision mode,
@@ -307,7 +311,12 @@ function showClinicalCases(){
  visible=false;
  const cases=all.filter(q=>q.unit==="f171"&&q.caseTitle);
  const links=cases.map(q=>'<a class="k-action blue" href="#challenge/f171/'+esc(q.id)+'"><span class="k-icon">'+icon("book")+'</span><span><strong>'+esc(q.caseTitle)+'</strong><small>'+q.marks+' marks · '+(q.marks===6?"Analyse":"Discuss")+'</small></span></a>');
- show('<div class="k-wrap"><p class="crumb"><a href="#challenge/f171">← F171</a></p><div class="k-unit-hero"><h1>Clinical case questions</h1><p>Write an answer, then compare your reasoning with an example and the key points.</p></div><div class="k-action-grid">'+links.join("")+'</div></div>');
+ show('<div class="k-wrap"><p class="crumb"><a href="#challenge/f171">← F171</a></p><div class="k-unit-hero"><h1>Clinical case questions</h1><p>Write an answer, then compare your reasoning with an example and the key points.</p></div><details class="k-coverage"><summary>What the command words ask for</summary><dl>'+
+  '<dt><strong>Describe</strong></dt><dd>State relevant observations, features or events.</dd>'+
+  '<dt><strong>Explain</strong></dt><dd>Use a biological mechanism to show why something happens.</dd>'+
+  '<dt><strong>Analyse</strong></dt><dd>Connect relevant information in this case and explain what the relationships mean.</dd>'+
+  '<dt><strong>Discuss</strong></dt><dd>Weigh evidence, implications and limitations to reach a justified view.</dd>'+
+  '</dl></details><div class="k-action-grid">'+links.join("")+'</div></div>');
 }
 function progressionMenu(unit){
  visible=false;var points=ladders.points.filter(function(p){return p.unit===unit;});
@@ -324,6 +333,7 @@ function skillsMenu(unit){
  if(!skills)return landing();
  var defs=skills.definitions.filter(function(s){return !unit||s.unit===unit;}),old=restore();
  var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">Human Biology · Repeated practice</div><h1>Skills practice</h1><p>Choose a method. See a worked example, then try ten questions. Start with choices; build towards independent application.</p></div><div class="actions"><a class="button secondary" href="#skills">All skills</a><a class="button secondary" href="#skills/f170">F170 skills</a><a class="button secondary" href="#skills/f171">F171 skills</a></div>';
+ if(!unit||unit==="f171")h+='<p><a class="button primary" href="#challenge/f171/methods">Choose a method from the context</a></p>';
  if(old&&old.skillId)h+='<div class="k-continue"><div><strong>Unfinished skills set</strong><p>'+esc(skills.get(old.skillId).name)+'</p></div><a class="button primary" href="#'+esc(old.route)+'">Resume practice</a></div>';
  ["f170","f171"].forEach(function(u){var group=defs.filter(function(s){return s.unit===u;});if(!group.length)return;
   h+='<h2>'+u.toUpperCase()+'</h2><div class="k-skills-grid">';
@@ -410,11 +420,14 @@ function matchForm(q,answer){
  return '<label class="k-match"><span>'+esc(p[0])+rowStatus(answer,i)+'</span><select'+(answer.correction&&answer.correction[i]?' disabled':'')+' data-match="'+i+'" aria-label="Match for '+esc(p[0])+'"><option value="">Choose a match</option>'+answer.targetOrder.map(function(j){return '<option value="'+j+'"'+(String(vals[i])===String(j)?" selected":"")+'>'+esc(q.pairs[j][1])+'</option>';}).join("")+'</select></label>';
  }).join("")+'</div>';
 }
-function evidenceTable(table){
+function evidenceTable(table,reveal){
  return '<div class="k-evidence-table" tabindex="0" role="region" aria-label="'+esc(table.caption)+'"><table><caption>'+esc(table.caption)+'</caption><thead><tr>'+
   table.columns.map(function(heading){return '<th scope="col">'+esc(heading)+'</th>';}).join("")+
-  '</tr></thead><tbody>'+table.rows.map(function(row){
-   return '<tr><th scope="row">'+esc(row[0])+'</th>'+row.slice(1).map(function(value){return '<td>'+esc(value)+'</td>';}).join("")+'</tr>';
+  '</tr></thead><tbody>'+table.rows.map(function(row,r){
+   return '<tr><th scope="row">'+esc(row[0])+'</th>'+row.slice(1).map(function(value,c){
+    var focus=reveal&&table.focus?.some(function(pair){return pair[0]===r&&pair[1]===c+1;});
+    return '<td'+(focus?' class="k-evidence-focus"':'')+'>'+esc(value)+'</td>';
+   }).join("")+'</tr>';
   }).join("")+'</tbody></table></div>';
 }
 const practiceFigures={
@@ -425,6 +438,10 @@ const practiceFigures={
  "practice-antibody":["antibody","A Y-shaped antibody with matching antigen fragments near its two tips."]
 };
 function figure(name,reveal){
+ if(typeof name==="object"){
+  return '<figure class="k-figure k-question-photo"><img width="'+name.width+'" height="'+name.height+'" src="'+esc(name.src)+'" alt="'+esc(name.alt)+'">'+
+   '<figcaption><a href="'+esc(name.source)+'">'+esc(name.credit)+'</a> · <a href="'+esc(name.licence)+'">'+esc(name.licenceName)+'</a> · '+esc(name.adaptation)+'</figcaption></figure>';
+ }
  var art=practiceFigures[name];
  if(art)return '<figure class="k-figure"><img width="600" height="360" style="width:100%;height:auto;max-width:600px" src="/assets/practice-diagrams/'+art[0]+'.svg" alt="'+esc(art[1])+'"></figure>';
  var tag='<div class="k-figure">';
@@ -569,16 +586,31 @@ function questionPrompt(q){
   (context?'<p class="reading-copy k-reading-context">'+esc(context)+'</p>':'')+
   '<h1>'+esc(task)+'</h1></div>';
 }
+function compareCase(q){
+ var comparison=q.comparison;
+ var responses=comparison.order.map(function(key,i){
+  return '<div><h4>Response '+String.fromCharCode(65+i)+'</h4><p>'+esc(key==="model"?q.model:comparison.partial)+'</p></div>';
+ }).join("");
+ var annotations=comparison.notes.map(function(note){
+  return '<li><strong>'+esc(note[0])+'</strong><blockquote>'+esc(note[2])+'</blockquote><p>'+esc(note[1])+'</p></li>';
+ }).join("");
+ var command=q.marks===6?"Analyse how the case details relate and what those relationships mean.":
+  "Discuss the benefits, limitations and implications for this case. Reach a justified view.";
+ return '<section><h3>Compare two answers</h3><p>'+command+'</p><p>Which response better answers the case, and why?</p>'+
+  '<details><summary>Read responses A and B</summary>'+responses+'<details><summary>Check your comparison</summary>'+
+  '<p>'+esc(comparison.comparison)+'</p><ul class="k-case-annotations">'+annotations+'</ul><p>'+esc(q.explain)+'</p></details></details></section>';
+}
 function writtenReview(q,a){
  var review=a.review||{},finished=!!session.outcomes[session.index];
  var student='<section><h3>Your answer</h3><p class="k-review-draft">'+esc(a.text||"No draft was saved.")+'</p></section>';
- var model='<section><h3>Expected ideas</h3><p>'+esc(q.model)+'</p><p>'+esc(q.explain)+'</p></section>';
+ var model=q.comparison?compareCase(q):'<section><h3>Expected ideas</h3><p>'+esc(q.model)+'</p><p>'+esc(q.explain)+'</p></section>';
  var criteria=q.markPoints.map(function(point,i){
   var value=(review.criteria||{})[i];
   return '<label><span>'+esc(point)+'</span><select data-review-criterion="'+i+'"'+(finished?' disabled':'')+'><option value=""'+(!value?' selected':'')+'>Choose a rating</option><option value="met"'+(value==="met"?' selected':'')+'>Included</option><option value="work"'+(value==="work"?' selected':'')+'>Needs work</option></select></label>';
  }).join("");
  return '<div class="k-feedback pending"><h2 data-feedback-heading tabindex="-1">'+(finished?"Self-review complete":"Compare your reasoning")+'</h2><div class="k-review-grid">'+student+model+'</div>'+
   (q.levelsNote?'<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>':'')+
+  (q.comparison?'<p>Use the criteria to assess how well your answer applies biology and evidence across the whole response.</p>':'')+
   '<fieldset class="k-review-criteria"><legend>Key points to look for</legend><p>Check where your answer explains each point. Choose Needs work where a link is missing.</p>'+criteria+'</fieldset>'+
   '<label class="k-field" for="k-revised">Improve your answer</label><textarea id="k-revised" rows="5"'+(finished?' readonly':'')+'>'+esc(review.revised==null?a.text||"":review.revised)+'</textarea>'+
   (finished?'<p role="status">Self-reviewed'+(session.outcomes[session.index]==="review-needs-work"?' · further practice useful':'')+'</p>':'')+'</div>';
@@ -606,6 +638,25 @@ function correctOrReveal(reveal){
   var pending=main.querySelector("[data-correction-heading]");if(pending)pending.focus();
  }
 }
+function misconceptionFeedback(q,a){
+ if(a.priorResponse)return "";
+ var messages=[];
+ if(q.optionFeedback&&a.selected)messages=a.selected.map(function(i){return q.optionFeedback[i];}).filter(Boolean);
+ if(q.numberFeedback&&a.text){
+  var value=Number(String(a.text).trim().replace(/,/g,"").replace(/^×\s*/,""));
+  var error=q.numberFeedback.find(function(entry){return Math.abs(value-entry[0])<=(entry[2]??1e-6);});
+  if(error)messages.push(error[1]);
+ }
+ return messages.length?'<div class="k-misconception"><strong>About your answer</strong>'+
+  messages.map(function(message){return '<p>'+esc(message)+'</p>';}).join("")+'</div>':"";
+}
+function correctionCue(q,rows){
+ if(q.correctionHint)return q.correctionHint;
+ if(q.type==="order")return "Recheck sequence positions "+rows.flatMap(function(ok,i){return ok?[]:[i+1];}).join(", ")+
+  ". Think about which events depend on earlier ones.";
+ if(q.type==="match")return "Use the term in each marked row to reconsider the relationship.";
+ return "Use the category definition to check each marked row.";
+}
 function drawQuestion(){
  if(!session||!isActive())return;
  initialiseOutcomes(session);
@@ -613,8 +664,15 @@ function drawQuestion(){
  adaptQuickMixMiddle();
  adaptQuickMixEnd();
  visible=true;var q=current(),a=currentAnswer();
+ // An earlier selection may refer to different option wording. Keep its recorded outcome.
+ if(q.assessmentRevision&&a.assessmentRevision!==q.assessmentRevision){
+  a={assessmentRevision:q.assessmentRevision,priorResponse:session.phase==="feedback"};
+  session.answers[q.id]=a;
+  if(session.hintExcluded)delete session.hintExcluded[q.id];
+  save();
+ }
  if(session.phase==="ask")ensureHintClock(q);
- var sub=session.skillId?skills.get(session.skillId).name:title(q.unit),num=session.index+1,max=session.skillId?10:session.queue.length;
+ var sub=session.scope==="methods"?"Choose and apply a method":session.skillId?skills.get(session.skillId).name:title(q.unit),num=session.index+1,max=session.skillId?10:session.queue.length;
  var prog=(100*(session.index/max)).toFixed(1),showing=session.phase==="feedback";
  var used=session.hintsUsed&&session.hintsUsed[q.id]||0,availableHints=hintsFor(q);
  var h='<div class="k-wrap k-question-view"><p class="crumb"><a href="#'+(session.skillId?'skills/'+q.unit:'challenge/'+q.unit)+'">← Leave this set</a></p>'+skillReturnLink(session.returnTo)+'<div class="k-question-meta"><span>'+esc(sub)+'</span><span>'+num+' of '+max+'</span></div><div class="progress-track" role="progressbar" aria-label="Questions completed" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+session.index+'"><div style="width:'+prog+'%"></div></div>';
@@ -623,7 +681,7 @@ function drawQuestion(){
  if(q.type==="number"||q.calculator)h+='<div class="k-calculator-note">'+icon("calc")+'<span>Calculator may help</span></div>';
  if(q.figure&&!showing)h+=figure(q.figure);
  if(q.graph&&skills)h+=skills.graphHTML(q.graph);
- if(q.evidenceTable)h+=evidenceTable(q.evidenceTable);
+ if(q.evidenceTable)h+=evidenceTable(q.evidenceTable,showing);
  if(isQuickCheck(q))h+='<p class="k-quick-label"><strong>Quick check:</strong> Apply the same idea independently.</p>';
  if(!showing){if(a.correction)h+='<h2 class="k-correction-title" data-correction-heading tabindex="-1">Review and try again</h2>';
   h+=inputForm(q,a);
@@ -632,7 +690,7 @@ function drawQuestion(){
  else if(q.type==="written"&&!session.wasSkipped)h+=writtenReview(q,a);
  else if(canCorrect(q,a)){
   var rows=correctionRows(q,a),reviewCount=rows.filter(function(ok){return !ok;}).length;
-  h+='<div class="k-feedback incorrect"><h2 class="k-feedback-head" data-feedback-heading tabindex="-1">Review and improve</h2><p>'+reviewCount+' '+(q.type==="order"?(reviewCount===1?"position needs":"positions need"):(reviewCount===1?"row needs":"rows need"))+' another look. Your choices are saved.</p></div>';
+  h+='<div class="k-feedback incorrect"><h2 class="k-feedback-head" data-feedback-heading tabindex="-1">Review and improve</h2><p>'+reviewCount+' '+(q.type==="order"?(reviewCount===1?"position needs":"positions need"):(reviewCount===1?"row needs":"rows need"))+' another look. Your choices are saved.</p><p>'+esc(correctionCue(q,rows))+'</p></div>';
  }
  else{
   var correct=session.lastResult===true,subjective=!session.wasSkipped&&(session.lastResult===null||q.type==="written");
@@ -643,11 +701,16 @@ function drawQuestion(){
   if(q.figure)h+=figure(q.figure,true);
   h+='<div'+(q.unit==="f170"?' class="reading-copy"':'')+'>'+
    '<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p><strong>'+(correct&&!helped?'Why it works':unknown?'Explanation':'Quick reteach')+':</strong> '+esc(q.explain)+'</p></div>';
+  if(a.priorResponse)h+='<p>Your saved result is from an earlier version of this question.</p>';
   if(!correct&&!unknown&&a.selected&&q.options)h+='<p><strong>Your selection</strong> '+a.selected.map(function(i){return esc(q.options[i]);}).join('; ')+'</p>';
   if(q.type==='best'&&!correct&&!unknown){var partial=session.answers[q.id]||{};if(partial.choice===q.correct&&partial.reason!==q.reasonCorrect)h+='<p class="k-diagnostic-note">You chose the correct explanation; now focus on why it is correct.</p>';}
   if((!correct||helped)&&session.lastPlannedCheck)h+='<p class="k-quick-note">A related quick check is next, so you can try the idea again independently.</p>';
   if(q.levelsNote)h+='<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>';
-  if(!correct&&!unknown&&q.misconception)h+='<div class="k-misconception"><strong>Watch out</strong><p>'+esc(q.misconception)+'</p></div>';
+  if(!correct&&!unknown){
+   var diagnosis=misconceptionFeedback(q,a);
+   if(diagnosis)h+=diagnosis;
+   else if(q.misconception)h+='<div class="k-misconception"><strong>Watch out</strong><p>'+esc(q.misconception)+'</p></div>';
+  }
   h+='</div>';
  }
  if(showing&&(session.lastResult!==true||used||session.wasSkipped)&&
@@ -680,13 +743,14 @@ function validateAnswer(q,a){
  return {ready:!!String(a.text||"").trim(),correct:null,msg:"Write an explanation first, or choose I don’t know."};
 }
 function planQuickCheck(q){
- if(session&&(session.skillId||session.point))return null; // Keep authored point sequences in their intended order.
+ if(session&&(session.skillId||session.point||session.scope==="methods"))return null; // Keep authored point sequences in their intended order.
  if(!session||isQuickCheck(q)||(session.quickChecksPlanned||0)>=2)return null;
  var seen=session.first||{};
  var rank={warmup:0,core:1,apply:2,stretch:3};
  var candidates=all.filter(function(x){
   if(q.point&&x.point!==q.point&&ladders.get(q.point).core.indexOf(x.id)<0)return false;
-  return x.id!==q.id&&x.unit===q.unit&&x.section===q.section&&
+  var sameIdea=q.independentFollowups?q.independentFollowups.includes(x.id):x.section===q.section;
+  return x.id!==q.id&&x.unit===q.unit&&sameIdea&&
    (rank[x.level]||0)<=(rank[q.level]||0)&&
    !(x.id in seen)&&!(session.quickCheckIds||{})[x.id]&&
    ["single","diagram","match","best"].indexOf(x.type)>=0;
@@ -847,8 +911,9 @@ function route(r,renderer){
   var buildScope=window.KeystoneHumanCatchup?.practiceScope(unit,source[2])===scope;
   if(source[1]!==unit||(!topicScope&&!buildScope)||!filter(unit,scope).length)return intro(unit);
  }
- var old=sessionKey(session)===(origin?topicKey(unit,scope):SK)?session:null;
- old=old||restore(origin?topicKey(unit,scope):SK);
+ var key=scope==="methods"?methodKey:origin?topicKey(unit,scope):SK;
+ var old=sessionKey(session)===key?session:null;
+ old=old||restore(key);
  if(origin&&!old)old=restore();
  if(old&&old.unit===unit&&old.scope===scope&&(origin||old.route===r||old.returnTo&&!old.topicContext&&!old.skillId)){
   // An unstarted legacy Quick Mix may still open on a random hard question.

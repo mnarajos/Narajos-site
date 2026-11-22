@@ -711,17 +711,24 @@ var additions=[
       ]
     },
     "options": [
-      "Flag the missing reading and check its source before calculating",
-      "Keep zero because a blank is normally zero",
-      "Copy 19 into B because the next reading was 19",
-      "Ignore the missing status and say the mean used all three readings"
+      "Flag the missing reading and state how many values any mean uses",
+      "Estimate it from the same person’s previous visit and count it as observed",
+      "Divide the total of observed readings by the number of scheduled readings",
+      "Omit it from the calculation but report the mean as if all readings were taken"
     ],
     "correct": 0,
     "model": "Check the source and keep unknowns visible. The mean of the two known readings is 18.",
     "explain": "An unknown is not a measured zero. Give the number of observations used in any mean.",
     "misconception": "Replacing a blank by zero gives it a value without evidence.",
     "unit": "f171",
-    "samAligned": false
+    "samAligned": false,
+    "assessmentRevision": 1,
+    "optionFeedback": [
+      null,
+      "A previous reading is a different observation. It cannot be counted as a new measurement.",
+      "Divide by the number of readings actually included. A scheduled but unobserved measurement contributes neither a value nor a count.",
+      "Report the number actually measured so the reader can judge the completeness of the comparison."
+    ]
   }
 ];
 additions.push(...[
@@ -1115,6 +1122,97 @@ additions.push(...[
     }
   }
 ]);
+
+// A small set of independent transfers from the assessment audit.
+additions.push({
+ id:"cell-testis-photo-evidence",unit:"f170",area:3,section:"3.3.1",type:"diagram",level:"apply",
+ stem:"Which interpretation is best supported by the cell arrangement around the pale space in this field?",
+ figure:{src:"/assets/micrographs/hb-testis.webp",width:479,height:590,
+  alt:"A pale central space has several layers of cells along its edge. Some profiles project into the space.",
+  credit:"Nephron",licenceName:"CC BY-SA 3.0",adaptation:"Resized and converted to WebP",
+  source:"https://commons.wikimedia.org/wiki/File:Seminiferous_tubule_and_sperm.jpg",
+  licence:"https://creativecommons.org/licenses/by-sa/3.0/"},
+ options:["A seminiferous tubule because developing cells form layers towards its lumen","An ovarian follicle because a large oocyte occupies the centre","Endometrium because separate glands lie below a free epithelial surface","A blood vessel because a single thin lining surrounds red blood cells"],
+ correct:0,model:"Layers of developing germ cells around a lumen support identification of a seminiferous tubule.",
+ explain:"Identify the boundary of the space first. The lining contains multiple cell layers rather than a single cell at the centre.",
+ optionFeedback:[null,"A follicle identification needs evidence of an oocyte surrounded by follicle cells. The central feature here is a space.","Endometrial glands would appear as separate profiles within supporting tissue beneath a surface.","A vessel lumen has an endothelial lining. The multiple layers shown support a different structure."],
+ hintCue:"Compare the cell arrangement around the pale space with the arrangement each explanation requires.",
+ misconception:"Colour can vary with stains. Use spatial features to distinguish tissue."
+},{
+ id:"f171-rested-pressure-interpret",independentFollowups:["p-health-bp-repeat-diagnostic"],unit:"f171",area:4,section:"4.2.2",type:"single",level:"apply",
+ stem:"A teammate says the first and last visits prove that resting pressure rose. Which conclusion follows from these fictional records?",
+ evidenceTable:{caption:"Systolic readings (mmHg)",columns:["Visit","First","Second","Conditions"],
+  rows:[["1","132","134","Rested"],["2","131","133","Rested"],["3","151","Missing","Just after cycling"]],focus:[[0,3],[1,3],[2,3]]},
+ options:["The rested readings overlap. Visit 3 gives insufficient evidence about resting change.","Visit 3 shows a higher resting pressure because the first reading was 151.","The missing value can be treated as zero to estimate the visit 3 mean.","The higher value proves a systematic instrument error."],
+ correct:0,model:"The comparable rested readings overlap. A measurement under different conditions does not establish a resting trend.",
+ explain:"Visits 1 and 2 used comparable conditions. A single post-activity value cannot establish resting pressure. The second value is unknown.",
+ optionFeedback:[null,"The conditions differ. The value of 151 was taken after activity, not under the rested conditions used earlier.","Zero is a value. A missing measurement cannot be included as measured evidence.","There is no instrument comparison. A physiological response to exercise could account for the difference."],
+ hintCue:"Compare the test conditions before deciding which visits can be compared.",
+ misconception:"An association in the record does not identify what caused the difference."
+},{
+ id:"f171-trial-conclusion-interval",independentFollowups:["p-f171-research-designs-diagnostic"],unit:"f171",area:5,section:"5.2",type:"single",level:"stretch",
+ stem:"In a fictional randomised trial, a walking aid group improved by 4 m more on average after four weeks. The 95% confidence interval for that difference runs from −3 to +11 m. Which conclusion fits the evidence?",
+ options:["The estimated benefit is 4 m, but the interval includes no difference and the trial gives limited long-term evidence.","The result establishes a benefit because most of the interval is above zero.","Random allocation guarantees that sampling uncertainty has been removed.","Four weeks of improvement establish that rare harms are unlikely after a year."],
+ correct:0,model:"The 4 m estimate is uncertain. Compatible values include zero difference. Longer follow-up and adequate sample sizes are needed for longer-term outcomes and rare harms.",
+ explain:"Random allocation reduces systematic imbalance on average. It does not remove sampling uncertainty. Trial duration limits the outcomes it can inform.",
+ optionFeedback:[null,"The interval includes zero, so the stated result is compatible with no difference.","Random allocation helps make groups comparable. Estimates can still vary between samples.","A short study cannot establish safety at later times or reliably rule out rare events."],
+ hintCue:"Consider whether there are plausible values on both sides of no difference and which outcomes were actually observed.",
+ misconception:"Separate sampling uncertainty from differences in how groups were formed."
+});
+// Context-first method selection uses the same question session and outcome model.
+additions.push({
+ id:"f171-method-choose-baseline",unit:"f171",area:4,section:"4.2.2",methodOrder:1,type:"single",level:"apply",
+ stem:"A fictional service records fewer missed appointments after a reminder. It wants to know how large the fall was relative to the original count. Which quantities should it compare?",
+ options:["The fall in count and the original count","The fall in count and the new count","The new count and the total across both dates","The original count and the total across both dates"],
+ correct:0,model:"Compare the change with the starting value.",
+ explain:"The fall is the original count minus the later count. Relate it to the original count because that is the stated baseline.",
+ optionFeedback:[null,"The new count describes where the service ended. The requested comparison is relative to the original count.","Pooling the dates changes the question. The amount of change must be compared with the baseline.","The total combines the two dates. It does not measure the fall."],
+ misconception:"The comparison is relative to the original count.",
+ hintCue:"Identify which number measures change and which represents the starting point."
+},{
+ id:"f171-method-baseline-change",unit:"f171",area:5,section:"5.1.2",methodOrder:2,type:"number",level:"apply",
+ stem:"A fictional monitoring service recorded 80 late reports at baseline and 68 after a reminder. What percentage of the baseline count was the fall? Give your answer to the nearest whole percent.",
+ correct:15,answerUnit:"%",tolerance:1e-6,model:"15%",
+ explain:"The fall is 80 − 68 = 12. Relative to the original count, 12 ÷ 80 × 100 = 15%.",
+ numberFeedback:[[12,"12 is the number of reports, not the percentage."],[18,"This uses 68 as the denominator. The baseline count is 80."],[85,"This is the proportion that remained. Use the amount of change."]],
+ misconception:"The baseline is the denominator.",
+ hintCue:"Find the change first. Which time point is the baseline?"
+},{
+ id:"f171-method-time-rate",unit:"f171",area:4,section:"4.1",methodOrder:3,type:"number",level:"apply",
+ stem:"Use the whole fictional activity record in the graph. What value should go in the box labelled beats per minute?",
+ graph:{times:[0,30,60,90],values:[0,43,90,135],xLabel:"Time (s)",yLabel:"Cumulative beats",caption:"Fictional cumulative heartbeat count"},
+ correct:90,answerUnit:"beats/min",tolerance:1e-6,model:"90 beats/min",
+ explain:"90 seconds is 1.5 minutes. 135 ÷ 1.5 gives 90 beats per minute.",
+ numberFeedback:[[135,"This is the total over 90 seconds. Convert to a one-minute rate."],[1.5,"Dividing by 90 gives beats per second. Convert the time to minutes before dividing."],[202.5,"You multiplied by the duration. Divide the count by the time in minutes."]],
+ misconception:"The duration must be in minutes to report beats per minute.",
+ hintCue:"Check that the time has the unit requested by the rate."
+},{
+ id:"f171-method-rearrange",unit:"f171",area:4,section:"4.2.2",methodOrder:4,type:"number",level:"stretch",
+ stem:"Three fictional resting pulse readings have a mean of 72 beats/min. Two readings were 67 and 74 beats/min. The remaining recorded value is obscured. What reading makes this stated mean possible?",
+ correct:75,answerUnit:"beats/min",tolerance:1e-6,model:"75 beats/min",
+ explain:"A mean of 72 across three readings gives a total of 216. Subtract 67 and 74 to find the obscured reading.",
+ numberFeedback:[[70.5,"70.5 is the mean of the two visible readings. Work from the stated mean of all three."],[216,"216 is the sum of all three readings. Subtract the two shown values."]],
+ misconception:"Use the count of all values to recover the total from a mean.",
+ hintCue:"Use the mean and number of readings to recover the sum."
+},{
+ id:"f171-method-missing-reading",unit:"f171",area:4,section:"4.2.2",methodOrder:5,type:"number",level:"apply",
+ stem:"A fictional record has four slots for resting systolic pressure but only three observed readings. Report the mean of the observed readings to the nearest whole mmHg.",
+ evidenceTable:{caption:"Rested readings",columns:["Slot","Systolic pressure (mmHg)"],rows:[["1","134"],["2","131"],["3","Missing"],["4","132"]],focus:[[0,1],[1,1],[3,1]]},
+ correct:132,answerUnit:"mmHg",tolerance:1e-6,model:"132 mmHg from three observations",
+ explain:"(134 + 131 + 132) ÷ 3 = 132.33, which rounds to 132. The missing observation contributes no value and no count.",
+ numberFeedback:[[99,"Dividing by four treats the unobserved value as zero. Only three readings were observed."],[132.33,"The calculation is right. Report the mean rounded to the nearest whole mmHg."],[397,"397 is the total. Divide it by the number of observed values."]],
+ misconception:"A missing observation contributes neither a value nor a count.",
+ hintCue:"Count observed values before choosing the denominator."
+},{
+ id:"f171-method-interpret-reading",unit:"f171",area:4,section:"4.2.2",methodOrder:6,type:"single",level:"stretch",
+ stem:"A monitor gives three similar readings with a mean of 132 mmHg. A checked reference taken under comparable conditions gives 124 mmHg. Which interpretation is warranted?",
+ options:["The monitor shows repeatability within the set. The difference warrants checking its accuracy.","The similar readings establish accuracy. The reference must be wrong.","The monitor readings lack repeatability because they differ from the reference.","The 8 mmHg difference establishes that the person's resting pressure rose."],
+ correct:0,model:"Agreement inside the set is evidence of repeatability. Comparison against a checked reference helps assess accuracy.",
+ explain:"A close group of readings can share an offset. The measurements compare devices under comparable conditions and do not establish biological change.",
+ optionFeedback:[null,"Agreement among readings shows repeatability. A consistent error can remain.","Repeatability compares repeated readings from the monitor. The reference comparison raises a different issue.","The evidence compares measurement methods. It does not establish a change over time."],
+ misconception:"Agreement between readings and agreement with a reference answer different questions.",
+ hintCue:"Distinguish comparisons within the group of readings from comparisons with the reference."
+});
 var ids=new Set(bank.questions.map(function(q){return q.id;}));
 additions.forEach(function(q){if(!ids.has(q.id)){bank.questions.push(q);ids.add(q.id);}});
 })();

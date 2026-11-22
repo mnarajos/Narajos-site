@@ -65,9 +65,9 @@ for(const unit of ["f170","f171","f172","f173","f174","f175","f176","f177"]){
   app.discard();
  }
 }
-assert.equal(db.questions.length,552);
-assert.equal(db.questions.filter(q=>q.unit==="f170").length,252);
-assert.equal(db.questions.filter(q=>q.unit==="f171").length,222);
+assert.equal(db.questions.length,561);
+assert.equal(db.questions.filter(q=>q.unit==="f170").length,253);
+assert.equal(db.questions.filter(q=>q.unit==="f171").length,230);
 for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,13,u+" knowledge bank missing");
 assert.deepEqual([...new Set(db.questions.map(q=>q.type))].sort(),["best","diagram","match","multi","number","order","short","single","sort","written"].sort());
 const ids=new Set();
@@ -100,6 +100,20 @@ for(const q of db.questions){
  if(q.type==="number")assert(Number.isFinite(q.correct)&&q.answerUnit!==undefined,"Missing numeric answer and units: "+q.id);
  if(q.type==="best")assert(q.options.length===4&&q.reasons.length===4&&q.correct>=0&&q.correct<q.options.length&&q.reasonCorrect>=0&&q.reasonCorrect<q.reasons.length,"Two-stage reasoning needs four options in both steps: "+q.id);
  if(q.warmup)assert(q.level==="warmup"&&q.type==="single","Warm-up should be a low-load single-answer question");
+ if(q.optionFeedback){
+  assert.equal(q.optionFeedback.length,q.options.length,q.id);
+  const correct=[].concat(q.correct);
+  for(const [index,feedback] of q.optionFeedback.entries())assert.equal(Boolean(feedback),!correct.includes(index),q.id+" feedback for option "+index);
+ }
+ if(q.numberFeedback){
+  assert.equal(q.type,"number",q.id);
+  for(const [value,message] of q.numberFeedback)assert(Number.isFinite(value)&&value!==q.correct&&message,q.id);
+ }
+ if(q.comparison){
+  assert(q.caseTitle&&q.comparison.order.includes("model")&&q.comparison.order.includes("partial"),q.id);
+  assert(q.comparison.notes.length&&q.comparison.comparison,q.id);
+  for(const note of q.comparison.notes)assert(q.model.includes(note[2]),q.id+" annotation should quote the model");
+ }
  if(q.type==="multi")assert(Array.isArray(q.correct)&&q.correct.length>=2,"Invalid multi-answer: "+q.id);
  if(q.type==="match")assert(q.pairs.length>=2,"Too few match pairs: "+q.id);
  if(q.type==="sort")assert(q.groups.length>=2&&q.rows.length>=4&&q.rows.every(r=>Number.isInteger(r[1])&&r[1]>=0&&r[1]<q.groups.length),"Invalid sort: "+q.id);
@@ -221,7 +235,7 @@ assert(window.KeystoneHumanChallenge.stats("f170").weak>=1,"Not sure should reco
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"next"}}:null;}}});
 record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert(record.index>=1,"Question did not advance");
-assert.equal(window.KeystoneHumanChallenge.questionCount,552);
+assert.equal(window.KeystoneHumanChallenge.questionCount,561);
 // Verify the entire deterministic answer flow, not merely presence of new item types.
 function forcedQuestion(id){
  const q=db.questions.find(x=>x.id===id);assert(q,"Unknown forced test item: "+id);
@@ -448,7 +462,7 @@ for(const id of ["p-cell-membrane-transport-challenge","p-health-screening-found
  assert(main.innerHTML.includes("Hint 2")&&!main.innerHTML.includes("Expected answer"),id);
  assert(question.hintCue&&!question.explain.includes(question.hintCue)&&!question.model.includes(question.hintCue),id);
 }
-console.log("Human Biology checks passed: 552 questions, 91 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
+console.log("Human Biology checks passed: 561 questions, 91 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
 
 
 // Point practice must preserve one biological idea while support is withdrawn.
