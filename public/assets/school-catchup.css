@@ -1,0 +1,34 @@
+.school-catchup { max-width: 62rem; padding-block: 1.35rem 2.5rem; }
+.school-catchup h1 { margin: .45rem 0 .35rem; }
+.school-lead { max-width: 48ch; margin: .45rem 0 1rem; }
+.school-breadcrumb { display: inline-block; padding-block: .3rem; font-weight: 650; }
+.school-years { display: flex; flex-wrap: wrap; gap: .45rem; margin-block: 1.15rem; }
+.school-years a, .school-primary, .school-secondary {
+  display: inline-flex; align-items: center; min-height: 44px; padding: .38rem .72rem;
+  color: #174858; border: 1px solid #9ebcbe; background: white; border-radius: .5rem;
+  font: inherit; font-weight: 675; text-decoration: none; cursor: pointer;
+}
+.school-primary, .school-years [aria-current="page"] { background: #175466; color: white; border-color: #175466; }
+.school-catchup :is(a, button, summary):focus-visible,
+.school-journey :is(a, button, summary):focus-visible,
+.school-check :is(a, button, summary, input):focus-visible { outline: 3px solid #b75a22; outline-offset: 3px; }
+.school-section-heading, .school-resume { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .6rem; padding-block: .5rem; }
+.school-section-heading h2 { margin: 0; }
+.school-resume { padding: .65rem .85rem; border: 1px solid #a9c5c5; border-radius: .6rem; background: #ebf5f4; margin-block: 1rem; }
+.school-year-grid, .school-topic-list {
+  list-style: none; padding: 0; margin-block: 1rem 0;
+  display: grid; grid-template-columns: repeat(auto-fit,minmax(min(15rem,100%),1fr)); gap: .7rem;
+}
+.school-year-grid li, .school-topic-list > li {
+  background: white; border: 1px solid #d0dfde; border-radius: .7rem; min-width: 0;
+}
+.school-year-grid a { display: grid; gap: .3rem; padding: .85rem; text-decoration: none; color: #174858; }
+.school-year-grid strong { font-size: 1.25rem; }
+.school-year-grid span, .school-topic-list p { color: #41575e; }
+.school-topic-list > li { padding: .75rem .85rem; }
+.school-topic-list h3, .school-topic-list p { margin: .25rem 0; }
+.school-topic-link { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
+.school-code { display: inline-block; margin-inline-end: .4rem; padding: .06rem .28rem; border-radius: .3rem; background: #e5f0f4; color: #244b64; font-size: .89rem; }
+.school-concept-list { padding: 0; margin: .4rem 0; list-style: none; }
+.school-concept-list a, .school-revise-link { display: inline-flex; align-items: center; min-height: 44px; padding-block: .2rem; }
+.school-revise-link { font-size: .9rem; }
