@@ -750,7 +750,12 @@ try{
  await combined.close();
  for(const width of [320,390,768,1280]){
   await fq.setViewportSize({width,height:844});
-  assert((await fq.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Focused Questions overflows at "+width);
+  const fqOverflow=await fq.evaluate(()=>{
+   if(document.documentElement.scrollWidth-innerWidth<=3)return [];
+   return [...document.body.querySelectorAll("*")].filter(el=>el.getBoundingClientRect().right>innerWidth+3)
+    .slice(0,8).map(el=>[el.tagName,el.className,Math.round(el.getBoundingClientRect().right)]);
+  });
+  assert.deepEqual(fqOverflow,[],"Focused Questions overflows at "+width);
   const bar=fq.locator("#sumbar");
   await bar.evaluate(el=>window.scrollTo({top:el.getBoundingClientRect().top+scrollY+200,behavior:"instant"}));
   assert((await bar.boundingBox()).y>=-1,"The question actions should stay visible while scrolling");
