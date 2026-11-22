@@ -128,6 +128,8 @@ assert.equal(db.questions.find(q=>q.id==="health-parkinsons-therapy").marks,6);
 assert.equal(db.questions.find(q=>q.id==="health-care-records").marks,9);
 const knowledgeQuestions=db.questions.filter(q=>/^f17[2-7]$/.test(q.unit));
 assert(knowledgeQuestions.every(q=>q.knowledgeOnly),"Knowledge-only unit item missing safety scope");
+assert(knowledgeQuestions.every(q=>!q.marks&&!q.levelsNote&&!q.caseTitle),
+ "NEA knowledge practice must use general questions and unmarked self-review");
 assert(!knowledgeQuestions.some(q=>/draft|complete the coursework|report for your assignment|submit your assignment|meet the assessment criteria/i.test(q.stem)),"Assessment-writing task leaked into knowledge bank");
 assert(knowledgeQuestions.filter(q=>q.figure).length>=6,"Each NEA-unit knowledge bank needs visual understanding checks");
 assert(db.questions.filter(q=>["single","diagram","best"].includes(q.type)).every(q=>q.options.length===4),"Four-option rule not met");

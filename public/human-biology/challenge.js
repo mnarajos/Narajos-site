@@ -165,7 +165,7 @@ function intro(unit){
   });
   h+='</ul><p>Counts include alternative versions of some questions. Topic areas have different depths of coverage.</p></details>';
  }
- h+='<p class="k-source">'+(knowledge?"Independent knowledge practice only; assignment-specific topic areas are excluded.":f?"Includes all four F170 areas.":"F171 questions cover selected specification content.")+'</p>'+(knowledge?"":source())+'</div>';show(h);
+ h+='<p class="k-source">'+(knowledge?"Practise general biology here. Discuss assessed coursework with your school or college.":f?"Includes all four F170 areas.":"F171 questions cover selected specification content.")+'</p>'+(knowledge?"":source())+'</div>';show(h);
 }
 function landing(){
  var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">Keystone Human Biology</div><h1>Choose an exam unit</h1><p>Short, varied questions first. See an explanation when you need it.</p></div><div class="k-unit-tiles">'+["f170","f171"].map(function(u){var s=unitStats(u);return '<a href="#challenge/'+u+'" class="k-unit-tile '+(u==="f170"?"teal":"blue")+'"><span class="k-icon">'+icon(u==="f170"?"brain":"flask")+'</span><span><small>'+u.toUpperCase()+' · 60-mark paper</small><strong>'+esc(u==="f170"?"Fundamentals of human biology":"Health and disease")+'</strong><em>'+s.questions+' questions · '+s.seen+' attempted'+(u==="f171"?" · preview":"")+'</em></span>'+icon("chevron")+'</a>';}).join("")+'</div>'+source()+'</div>';show(h);
