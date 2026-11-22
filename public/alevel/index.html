@@ -475,6 +475,10 @@ body.onhome{background:radial-gradient(circle at 100% 0,rgba(92,207,196,.18),tra
 
 <script src="/assets/spaced-review.js"></script>
 <script src="/alevel/spaced-review-app.js"></script>
+<link rel="stylesheet" href="/alevel/exam-skills.css">
+<script src="/alevel/teaching-data.js"></script>
+<script src="/alevel/drawing-bank.js"></script>
+<script src="/alevel/exam-skills.js"></script>
 <script>
 (function(){
 "use strict";
@@ -4591,7 +4595,7 @@ function topicCard(id){
 }
 function rpItem(r){
  var c=DATA[r[2]]&&DATA[r[2]].byId[r[3]];if(!c)return '<li class="concept locked"><div class="chead"><h3>'+r[0]+'. '+esc(r[1])+'</h3><span class="status">Coming soon</span></div></li>';
- return '<li class="concept '+(isMastered(r[2],c)?'mastered':'ready')+'"><div class="chead"><h3>'+r[0]+'. '+esc(r[1])+'</h3>'+(isMastered(r[2],c)?'<span class="status">✓ Mastered</span>':'')+'</div><p class="spec">'+esc(DATA[r[2]].code+': '+DATA[r[2]].title)+' · in the lesson ‘'+esc(c.title)+'’</p><a class="btn" href="#lesson-'+r[2]+'-'+r[3]+'">Open lesson<span class="sr-only">: '+esc(r[1])+'</span></a></li>';
+ return '<li class="concept '+(isMastered(r[2],c)?'mastered':'ready')+'"><div class="chead"><h3>'+r[0]+'. '+esc(r[1])+'</h3>'+(isMastered(r[2],c)?'<span class="status">✓ Independent pass</span>':'')+'</div><p class="spec">'+esc(DATA[r[2]].code+': '+DATA[r[2]].title)+' · in the lesson ‘'+esc(c.title)+'’</p><a class="btn" href="#lesson-'+r[2]+'-'+r[3]+'">Open lesson<span class="sr-only">: '+esc(r[1])+'</span></a></li>';
 }
 function paperDone(p){return p.topics.filter(function(t){return DATA[t];}).every(function(t){return availList(t).every(function(c){return isMastered(t,c);});});}
 function showPaperOld(p,focus){
@@ -4880,7 +4884,7 @@ function qsFor(c){var g={},out=[];c.qs.filter(tierOK).forEach(function(q){if(!q.
  if(c.pick&&res.length>c.pick+1){var wu=res.filter(function(q){return q.warm;}),rest=res.filter(function(q){return !q.warm;});for(var i=rest.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=rest[i];rest[i]=rest[j];rest[j]=tmp;}res=wu.concat(rest.slice(0,c.pick));}
  return res;}
 function bkey(t,c){return t+":"+c.id;}
-function isMastered(t,c){var b=S.best[bkey(t,c)]||{};return S.tier==="F"?((b.F||0)>=80||(b.FH||0)>=80):(b.FH||0)>=80;}
+function isMastered(t,c){var old=S.best[bkey(t,c)]||{},b=old.independent||{};return S.tier==="F"?((b.F||0)>=80||(b.FH||0)>=80):(b.FH||0)>=80;}
 function passedAny(t,c){var b=S.best[bkey(t,c)]||{};return (b.F||0)>=80||(b.FH||0)>=80;}
 function bestFor(t,c){var b=S.best[bkey(t,c)];return b?b[S.tier]:undefined;}
 function avail(c){return !((c.tier==="HT"||c.tier==="H")&&S.tier==="F");}
@@ -5625,7 +5629,7 @@ function slopFinish(){var sk=L.slop,n=L.n,r=L.right,mx=slopMax(sk),lv=L.maxLv,nx
  if(!n){location.hash="#"+bk.h;return;}
  var pct=Math.round(r/n*100),line=pct===100?"Every one right – you smashed it!":pct>=80?"Bang on – that skill is getting easy for you.":pct>=50?"Solid practice – every go makes it stick.":"No stress – practising the tricky ones is exactly how it gets easier.";
  var h='<div class="kbadge'+(L.top>=3?' gold':'')+'" aria-hidden="true"><span class="disc"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="9" cy="16" r="6.5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M15.5 16H29M24 16v5M28 16v4" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span></div>'+
-  '<h1>Well done for practising</h1><p class="endmsg">'+line+'</p><p class="score">You practised <strong>'+n+'</strong> question'+(n===1?'':'s')+' and got <strong>'+r+'</strong> right first time ('+pct+'%).</p><p>Highest level reached: Level '+lv+' of '+mx+' – '+LADDER[lv].n+'.</p>'+
+  '<h1>Well done for practising</h1><p class="endmsg">'+line+'</p><p class="score">You practised <strong>'+n+'</strong> question'+(n===1?'':'s')+' and got <strong>'+r+'</strong> correct independently ('+pct+'%).</p><p>Highest level reached: Level '+lv+' of '+mx+' – '+LADDER[lv].n+'.</p>'+
   (L.top>=3?'<p>Skill secure: you got 3 right at the top level.</p>':lv<mx?'<p>Next time, aim for Level '+Math.min(mx,lv+1)+'.</p>':'')+
   '<div class="endbtns">'+(nx?'<a class="btn primary big" href="#practice-'+nx.id+'">Next skill: '+esc(nx.name)+'</a>':'')+'<a class="btn big" href="#practice-'+sk.id+'">Practise this skill again</a><a class="btn big" href="#'+bk.h+'">'+esc(bk.label)+'</a></div>';
  L=null;render(h);if(n>=5)confetti(r/n>=0.8?100:50);}
@@ -5647,6 +5651,7 @@ function nextSlop(){var sk=L.slop,mx=slopMax(sk),lv=Math.min(L.lv,mx),st=LADDER[
 function showPractice(focus){
  L=null;
  var h='<p class="crumb"><a href="#">← Home</a></p><h1>Skills practice</h1><p class="lead">Each skill starts with a worked example, then the easiest question. The questions get harder one step at a time. If one goes wrong, the next one is a step easier. New values every time.</p>';
+ h+='<p><a class="btn" href="#exam">Exam Skills · drawings, marking points, and causal reasoning</a></p>';
  SKILLS.map(function(x){return x.sci;}).filter(function(v,i,a){return a.indexOf(v)===i;}).forEach(function(sc,si){
   h+='<section class="stage" aria-labelledby="ps-'+si+'"><h2 id="ps-'+si+'">'+esc(sc)+'</h2><ul class="concepts">';
   SKILLS.filter(function(x){return x.sci===sc;}).forEach(function(x){
@@ -5943,7 +5948,7 @@ var main=$("#main");
 var L=null;
 function render(h,focus){
  var hold=$("#hold");["#tierfs","#setbox"].forEach(function(x){var e=$(x);if(e&&main.contains(e))hold.appendChild(e);});
- document.body.classList.toggle("inl",!!L);var tc=L&&L.t?L.t:(window._tc||"");window._tc="";if(tc)document.body.setAttribute("data-tc",tc);else document.body.removeAttribute("data-tc");main.innerHTML=h;document.body.classList.toggle("onhome",!!main.querySelector(".hpcs"));main.classList.remove("pgin");void main.offsetWidth;main.classList.add("pgin");window.scrollTo(0,0);navMark();keepRanges(main);
+ document.body.classList.toggle("inl",!!L);var tc=L&&L.t?L.t:(window._tc||"");window._tc="";if(tc)document.body.setAttribute("data-tc",tc);else document.body.removeAttribute("data-tc");main.innerHTML=h;if(L&&L.t&&L.c&&L.phase==="rt"&&!L.fin){var teachLink=document.createElement("a");teachLink.className="btn";teachLink.href="#catchup-"+L.t+"-"+L.c.id;teachLink.textContent="Revisit the catch-up explanation";main.append(teachLink);}document.body.classList.toggle("onhome",!!main.querySelector(".hpcs"));main.classList.remove("pgin");void main.offsetWidth;main.classList.add("pgin");window.scrollTo(0,0);navMark();keepRanges(main);
  if(focus!==false){var f=$("h1",main);if(f){f.setAttribute("tabindex","-1");f.focus({preventScroll:true});}}
 }
 
@@ -6127,6 +6132,7 @@ function showPaper(p,focus){
   '<a class="ptl pt-s" href="#pskills-'+p.id+'">'+ICO.s+'<b>Maths Skills</b><small>'+sk.length+' skills</small></a></div>';
  if(p.id==="p3")h+='<ul class="rows">'+
   rowA("/alevel/evidence/","Evaluate unfamiliar data","Practise selecting evidence and qualifying a scientific conclusion.")+'</ul>';
+ h+='<p><a class="btn" href="#exam">Exam Skills</a></p>';
  var rows="";
  /* Paper 3 (20 November, teacher): the three real sections, marks as small text; extra practice in its own group */
  var sect="";if(p.skills3)p.skills3.forEach(function(x){var T=DATA[x[0]];if(T)sect+=rowA("#topic-"+x[0],T.title,(x[0]==="p3w"?"25 marks":x[0]==="p3e"?"15 marks":"38 marks")+" · "+x[1]);});
@@ -6213,9 +6219,9 @@ function showTopic(t,focus){
   h+='<section class="stage" aria-labelledby="st'+d+'"><h2 id="st'+d+'">'+STN[d]+'</h2><ul class="concepts">';
   list.forEach(function(c){
    var ms=isMastered(t,c),best=bestFor(t,c),cls=ms?"mastered":"ready";
-   var st=ms?"✓ Mastered":best!=null?"In progress":"Not started";
+   var st=ms?"✓ Independent pass":best!=null?"In progress":"Not started";
    h+='<li class="concept '+cls+'"><div class="chead"><h3>'+esc(c.title)+(c.tier==="H"?' <span class="badge">Stretch</span>':'')+'</h3><span class="status">'+st+'</span></div>';
-   h+='<p class="spec">'+qsFor(c).length+' questions'+(best!=null?' · Best '+best+'%':'')+'</p>';
+   h+='<p class="spec">'+qsFor(c).length+' questions'+(best!=null?' · Recorded best '+best+'%':'')+'</p>';
    var pr=c.needs.filter(function(nid){return avail(T.byId[nid]);});
    if(pr.length)h+='<p class="rel">Prior understanding of '+names(t,pr).map(function(x){return '<strong>'+esc(x)+'</strong>';}).join(" and ")+' recommended.</p>';
    if(/^\d/.test(c.spec))h+='<p class="specref"><em>AQA spec '+esc(c.spec)+'</em></p>';
@@ -6227,6 +6233,7 @@ function showTopic(t,focus){
  });
  if(CARDS[t])h+='<section class="stage" aria-labelledby="stfc"><h2 id="stfc">Flashcards</h2><p class="lead">Key words from the whole topic: read the definition and type the word. Cards you miss or pass come back at the end, until you have them all.</p><p><a class="btn primary" href="#cards-'+t+'">Start flashcards ('+CARDS[t].length+')</a></p>'+qcardHTML('#quick-'+t,'10 key words from this topic, against the clock')+'</section>';
  if(window.NarajosTopicFinder)h+=window.NarajosTopicFinder.topicPractice(t);
+ if(window.ALevelExamSkills){h+='<details class="al-teaching"><summary>Exam Skills for this topic</summary><div class="actions">'+window.ALevelExamSkills.links(t)+'</div><a class="btn" href="#exam-drawings">Biological drawings</a></details>';}
  render(h,focus);
  
 }
@@ -6263,6 +6270,7 @@ function showCatchup(t,c,step,focus){
  step=Math.max(0,Math.min(total-1,Number(step)||0));
  var ready=isUnlocked(t,c);
  var h='<p class="crumb"><a href="#catchup">← Catch-up topics</a></p><p class="spec">Catch-up companion · '+esc(DATA[t].code)+' · Step '+(step+1)+' of '+total+'</p><h1>'+esc(c.title)+'</h1>';
+ h+=(ready?'<p><a class="btn" href="#lesson-'+t+'-'+c.id+'">Skip to questions</a></p>':'');
  h+='<section class="key companion-key" aria-label="Key knowledge"><h2>Key idea</h2><ul>'+notes.slice(step*2,step*2+2).map(function(k){return '<li>'+rich(k)+'</li>';}).join('')+'</ul>'+(c.gate&&step===total-1?'<p class="gate"><strong>Why it matters:</strong> '+fmt(c.gate)+'</p>':'')+'</section>';
  if(window.KeystoneCatchupVisuals)h+=window.KeystoneCatchupVisuals.render(t,c.id);
  h+='<div class="actions companion-lesson-actions">'+(step>0?'<a class="btn" href="#catchup-'+t+'-'+c.id+'-'+(step-1)+'">Previous</a>':'')+
@@ -6270,6 +6278,7 @@ function showCatchup(t,c,step,focus){
  (ready?'<a class="btn'+(step===total-1?' primary':'')+'" href="#lesson-'+t+'-'+c.id+'">Start questions</a>':'<a class="btn" href="#topic-'+t+'">Review prerequisites</a>')+'</div>';
  h+='<p class="small companion-note">Use the questions to check understanding. Targeted explanations are also available after mistakes.</p>';
  render(h,focus);
+ if(window.ALevelExamSkills&&step===0){var teaching=document.createElement('details');teaching.className='al-teaching';var summary=document.createElement('summary');summary.textContent='Worked example and guided practice';teaching.append(summary);var support=document.createElement('div');teaching.append(support);main.querySelector('.companion-key').after(teaching);window.ALevelExamSkills.catchup(support,t,c.id);if(!support.children.length)teaching.remove();else teaching.open=true;}
 }
 
 /* ---------- Lesson ---------- */
@@ -6606,14 +6615,14 @@ function check(){
  $$("input,select,textarea",f).forEach(function(x){x.disabled=true;});
  var second=false,isQC=!L.slop&&L.qc===q0&&!L.first.has(q0);
  if(isQC){L.qcN=(L.qcN||0)+1;if(ok)L.qcOK=(L.qcOK||0)+1;}
- if(isQC&&ok&&!second)head="✓ Quick check passed – the reteach worked!";
+ if(isQC&&ok&&!second)head=!!L.cur.rung?"✓ Quick check correct with support":"✓ Related check correct independently";
  if(isQC&&!ok)note="Not yet. Read the explanation, and you will see this idea again before the end of the lesson."+(note?" "+note:"");
  if(second){head="✓ Correct, on a second try";note="Your first tap was a different answer, so this one does not count towards your score."+(note?" "+note:"");}
  L.run=ok&&!second?(L.run||0)+1:0;
  if(ok&&!second){var tier=Math.min(Math.floor(L.run/3),4);if(L.run%3===0){comboUp(tier);flash(tier);}else chime(TIER_CHIME[tier]);}
  var firstTime=!L.first.has(q0);
- if(firstTime)L.first.set(q0,ok&&!second);
  var hinted=!!(L.cur.rung);
+ if(firstTime)L.first.set(q0,ok&&!second&&!hinted);
  if(firstTime&&ok&&!second&&!L.slop){if(hinted)L.hintN=(L.hintN||0)+1;else L.ownN=(L.ownN||0)+1;}
  if(firstTime&&ok&&!second&&hinted&&!L.slop&&!q.warm&&!isQC){L.reteachQ=q;L.reteachHint=true;note="Right with a hint. A quick check is next, to make sure it has stuck."+(note?" "+note:"");}
  var requeue=!L.slop&&!ok&&!L.retried.has(q0);
@@ -6631,6 +6640,7 @@ function check(){
  L.phase="fb";
  var fb=$("#fb");fb.className="fb "+(ok?"good":L.cur.idk?"idk":"bad");
  fb.innerHTML='<h2 tabindex="-1">'+(head||(ok?pick(PRAISE):pick(NOPE)))+'</h2>'+(ok&&L.run>=2?'<p class="runline"><span class="combo'+(L.run%3===0?' big':'')+'" style="background:'+TIER_INK[Math.min(Math.floor(L.run/3),4)]+'">Combo ×'+L.run+'</span></p>':'')+(fastOK(ok)?fastHTML():'')+(backOK(ok)?backHTML():'')+(ok?'':answerHTML(q,L.cur.idk))+(whyNot?'<p class="why-not"><strong>About your answer:</strong> '+fmt(whyNot)+'</p>':'')+(note?'<p>'+fmt(note)+'</p>':'')+(q.why?'<p>'+fmt(q.why)+'</p>':'')+(!ok&&q.aqa?aqaHTML(q.aqa):'')+((ok||L.slop||q.warm||!(L.reteachQ===q&&reteachLines(q).length))?mnemHTML(mnemQ(q)):'')+(requeue?'<p class="small">This question will come back at the end of the lesson.</p>':'');
+ if(!L.slop&&L.t&&L.c&&(!ok||hinted)){fb.insertAdjacentHTML("beforeend",'<p><a class="btn" href="#catchup-'+L.t+'-'+L.c.id+'">Revisit the catch-up explanation</a></p>');}
  fb.hidden=false;
  if(L.slop&&L.lvMsg){fb.insertAdjacentHTML("beforeend",'<p class="lvmsg"><strong>'+esc(L.lvMsg)+'</strong></p>');L.lvMsg="";}
  if(L.slop&&L.showNext){L.showNext=false;var nx=nextSkill(L.slop);fb.insertAdjacentHTML("beforeend",'<div class="endbtns">'+(nx?'<a class="btn primary" href="#practice-'+nx.id+'">Next skill: '+esc(nx.name)+'</a>':'')+'<button type="button" class="btn" id="slopfin">Finish practice</button></div>');$("#slopfin").onclick=slopFinish;}
@@ -6732,16 +6742,16 @@ function showReteach(w,hinted){
 function finish(){
  L.fin=true;var t=L.t,c=L.c,correct=0;L.first.forEach(function(v){if(v)correct++;});
  var pct=Math.round(correct/L.total*100),k=bkey(t,c);
- var b=S.best[k]||(S.best[k]={}),lv0=levelOf(t,c);b[L.tier]=Math.max(b[L.tier]||0,pct);
+ var b=S.best[k]||(S.best[k]={}),lv0=levelOf(t,c);b[L.tier]=Math.max(b[L.tier]||0,pct);b.independent=b.independent||{};b.independent[L.tier]=Math.max(b.independent[L.tier]||0,pct);
  save();
  var ms=pct>=80,lv1=levelOf(t,c);
  var newly=S.guided?DATA[t].concepts.filter(function(x){return !L.before[x.id]&&isUnlocked(t,x);}):[];
  var leads=c.unlocks.map(function(id){return DATA[t].byId[id];}).filter(function(x){return !isMastered(t,x);});
- var h='<div class="kbadge'+(pct===100?' gold':'')+'" aria-hidden="true"><span class="disc"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="9" cy="16" r="6.5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M15.5 16H29M24 16v5M28 16v4" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span>'+(ms?'<span class="spark s1">✦</span><span class="spark s2">✦</span><span class="spark s3">✦</span>':'')+'</div><h1>'+(ms?'Concept mastered':'Lesson complete')+'</h1>'+
-  '<p class="endmsg">'+(pct===100?'Every question right first time. You absolutely smashed it!':ms?'That’s a pass – you bossed it!':pct>=50?'Solid effort – you’re over halfway there.':'No stress – every go helps it stick.')+'</p>'+
-  '<p class="score"><strong>'+correct+' of '+L.total+'</strong> right first time ('+pct+'%).</p>'+(L.qcN?'<p class="small">Quick checks after a reteach: '+(L.qcOK||0)+' of '+L.qcN+' right.</p>':'')+(L.hintN?'<p class="small">Right on your own: '+(L.ownN||0)+'. Right with a hint: '+L.hintN+'.</p>':'')+
+ var h='<div class="kbadge'+(pct===100?' gold':'')+'" aria-hidden="true"><span class="disc"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="9" cy="16" r="6.5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M15.5 16H29M24 16v5M28 16v4" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span>'+(ms?'<span class="spark s1">✦</span><span class="spark s2">✦</span><span class="spark s3">✦</span>':'')+'</div><h1>'+(ms?'Independent practice passed':'Lesson complete')+'</h1>'+
+  '<p class="endmsg">'+(pct===100?'Every assessed question was correct without a hint.':ms?'That’s a pass – you bossed it!':pct>=50?'Solid effort – you’re over halfway there.':'No stress – every go helps it stick.')+'</p>'+
+  '<p class="score"><strong>'+correct+' of '+L.total+'</strong> correct independently ('+pct+'%).</p>'+(L.qcN?'<p class="small">Quick checks after a reteach: '+(L.qcOK||0)+' of '+L.qcN+' right.</p>':'')+(L.hintN?'<p class="small">Right on your own: '+(L.ownN||0)+'. Right with a hint: '+L.hintN+'.</p>':'')+
   (L.fast?'<p class="small">⚡ Fast-tracked: you skipped '+L.fast.skip+' practice question'+(L.fast.skip===1?'':'s')+' and did the later questions.</p>':'')+
-  (ms?'<p>✓ You have mastered <strong>'+esc(c.title)+'</strong>.</p>':'<p>You need 80% right first time to pass. Have another go – the quick reteach after each wrong answer will help.</p>');
+  (ms?'<p>✓ Independent practice passed for <strong>'+esc(c.title)+'</strong>.</p>':'<p>An independent pass requires 80% correct without hints. Supported answers help you learn and lead to further checks. Have another go – the quick reteach after each wrong answer will help.</p>');
  var nextC=null;
  if(newly.length){h+='<section class="key" aria-labelledby="nu"><h2 id="nu">Now unlocked</h2><ul>'+newly.map(function(x){return '<li>'+esc(x.title)+'</li>';}).join("")+'</ul></section>';nextC=newly[0];}
  else if(ms&&leads.length&&!S.guided){h+='<section class="key" aria-labelledby="nu"><h2 id="nu">This leads to</h2><ul>'+leads.map(function(x){return '<li>'+esc(x.title)+'</li>';}).join("")+'</ul></section>';nextC=leads[0];}
@@ -6998,6 +7008,7 @@ function route(focus){
  var cf=document.querySelector(".confetti");if(cf&&cf.parentNode)cf.parentNode.removeChild(cf);
  var h=location.hash.slice(1),m;
  setOrigin(h);
+ if(h==="exam"||/^exam-[a-z0-9]+$/.test(h)){L=null;render('<div id="exam-host"></div>',false);window.ALevelExamSkills.route($("#exam-host"),h.slice(5));var eh=$("#exam-host h1");if(eh){eh.tabIndex=-1;eh.focus();}return;}
  if(h==="catchup")return showCatchupIndex(focus);
  if((m=/^catchup-([a-z0-9]+)$/.exec(h))&&DATA[m[1]])return showCatchupTopic(m[1],focus);
  if((m=/^catchup-([a-z0-9]+)-([a-z0-9]+)(?:-(\d+))?$/.exec(h))&&DATA[m[1]]){
@@ -7058,7 +7069,7 @@ var oqk=$("#opt-quick");oqk.checked=S.quick!==false;oqk.onchange=function(){S.qu
 snd.onchange=function(){setSound(snd.checked);if(snd.checked)chime();};
 $("#reset").onclick=function(){$("#reset-confirm").hidden=false;$("#reset-yes").focus();};
 $("#reset-no").onclick=function(){$("#reset-confirm").hidden=true;$("#reset").focus();};
-$("#reset-yes").onclick=function(){S.best={};S.slop={};save();$("#reset-confirm").hidden=true;$("#reset").focus();say("Progress reset.");if(!L)route(false);};
+$("#reset-yes").onclick=function(){S.best={};S.slop={};try{localStorage.removeItem("keystone.alevel.exam-skills.v1");}catch(e){}save();$("#reset-confirm").hidden=true;$("#reset").focus();say("Progress reset.");if(!L)route(false);};
 
 
 /* Prevent accidental loss of progress when navigating out of unfinished activities. */
