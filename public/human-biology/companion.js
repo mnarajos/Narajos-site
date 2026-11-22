@@ -366,10 +366,13 @@ function showConcept(unit,id,step,render){
   var visual=window.KeystoneCatchupVisuals?window.KeystoneCatchupVisuals.render(unit,id):"";
   var recap='<details class="paper panel"><summary>Review the key ideas</summary><ul class="keylines">'+
    points.map(function(point){return "<li>"+esc(point)+"</li>";}).join("")+"</ul></details>";
+  var sim=lesson.simulation&&window.KeystoneReproductionSimulation;
+  var interactive=sim?'<details class="hb-inline-model"><summary>Open the reproductive pathway model</summary>'+sim.render()+'</details>':"";
   render('<div class="k-wrap k-catchup-concept">'+crumb("catchup/"+unit,u.title)+
    '<div class="k-eyebrow">'+unitKind(unit)+'</div><h1>'+esc(topic)+'</h1>'+
-   teaching.render(lesson,{inline:lesson.visual==="model"?"":visual,modelVisual:lesson.visual==="model"?visual:"",related:recap+relatedLinks(unit,id,practice,lesson)})+'</div>');
+   teaching.render(lesson,{inline:lesson.visual==="model"?"":visual,modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:recap+relatedLinks(unit,id,practice,lesson)})+'</div>');
   teaching.mount(unit+"/"+lessonId,lesson);
+  if(sim)window.KeystoneReproductionSimulation.mount(document);
   return;
  }
 

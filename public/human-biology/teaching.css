@@ -131,3 +131,9 @@
 .hb-model-path strong {
   display: block;
 }
+.hb-inline-model {
+  margin-block: .75rem;
+}
+.hb-inline-model > summary {
+  padding-inline-start: .4rem;
+}
