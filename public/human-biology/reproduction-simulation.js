@@ -43,7 +43,8 @@ function svg(){
  '<path id="krp-embryo-right" d="M614 158Q556 140 510 184Q478 201 450 281" fill="none"/>'+
  '<g id="krp-egg" hidden aria-hidden="true"><circle r="11.5" fill="#ffe6a2" stroke="#c78436" stroke-width="3"/><circle r="5" fill="#d79746"/></g>'+
  '<g id="krp-sperm" hidden aria-hidden="true"><circle r="5" fill="#147ea4"/><path d="M-5 0Q-14 -11 -23 1Q-28 8 -37 0" stroke="#147ea4" stroke-width="3" fill="none" stroke-linecap="round"/></g>'+
- '<g id="krp-embryo" hidden aria-hidden="true"><circle r="13" fill="#f6d7ef" stroke="#a05591" stroke-width="3"/><path d="M0 -12V12M-12 0H12" stroke="#ad6ca1" stroke-width="2"/></g>'+
+ '<g id="krp-embryo" hidden aria-hidden="true"><circle r="13" fill="#f6d7ef" stroke="#a05591" stroke-width="3"/><path id="krp-divisions" hidden d="M0 -12V12M-12 0H12" stroke="#ad6ca1" stroke-width="2"/></g>'+
+ '<g id="krp-implant" hidden aria-hidden="true"><circle r="10" fill="#f6d7ef" stroke="#782858" stroke-width="3"/><circle r="3" fill="#782858"/></g>'+
  '<g font-family="system-ui,sans-serif" font-size="17" font-weight="600" fill="#334858">'+
  '<text x="135" y="140" text-anchor="middle">Ovary</text><text x="765" y="140" text-anchor="middle">Ovary</text>'+
  '<text x="278" y="100" text-anchor="middle">Oviduct</text><text x="621" y="100" text-anchor="middle">Oviduct</text>'+
@@ -75,7 +76,10 @@ function markup(){
  '<button class="krp-btn krp-sperm" data-krp="sperm" type="button">Introduce sperm <small>Follow sperm transport</small></button>'+
  '<button class="krp-btn krp-fert" data-krp="fert" type="button" hidden>Show possible fertilisation</button>'+
  '<button class="krp-btn krp-continue" data-krp="continue" type="button" hidden>Continue without fertilisation</button>'+
- '<button class="krp-btn krp-reset" data-krp="reset" type="button">Reset</button></div>'+
+ '<button class="krp-btn" data-krp="implant" type="button" hidden>Show possible implantation <small>Several days after fertilisation</small></button>'+
+ '<button class="krp-btn" data-krp="pause" type="button" aria-pressed="false">Pause animation</button>'+
+ '<button class="krp-btn krp-reset" data-krp="reset" type="button">Reset</button>'+
+ '<button class="krp-btn krp-reset" data-krp="replay" type="button">Replay from FSH</button></div>'+
  '<p class="krp-status" role="status" aria-live="polite" tabindex="-1">FSH supports development of ovarian follicles. Select an ovary or press FSH to begin.</p>'+
  '<p class="krp-note"><strong>Schematic, not to scale.</strong> A real menstrual cycle takes weeks. The animations compress time, and the LH surge follows sustained oestradiol signalling rather than a user-controlled hormone dose. Ovulation releases a secondary oocyte into the region near an oviduct; fertilisation usually occurs in its ampulla. A sperm reaching an oocyte does not guarantee fertilisation, and implantation is a later, separate event.</p></section>';
 }
@@ -84,9 +88,10 @@ function mount(host){
  if(!root||root.dataset.mounted)return;
  root.dataset.mounted="1";
  var q=function(sel){return root.querySelector(sel);};
- var btn={},group={"follicle":q("#krp-follicle"),"egg":q("#krp-egg"),"sperm":q("#krp-sperm"),"embryo":q("#krp-embryo")};
+ var btn={},group={"follicle":q("#krp-follicle"),"egg":q("#krp-egg"),"sperm":q("#krp-sperm"),"embryo":q("#krp-embryo"),"implant":q("#krp-implant")};
  root.querySelectorAll("[data-krp]").forEach(function(b){btn[b.dataset.krp]=b;});
- var state={side:"left",phase:"idle",sperm:"idle",spermSide:null,fertilised:false,ticket:0,view:"ovary",viewSide:"left",zoom:false};
+ var state={side:"left",phase:"idle",sperm:"idle",spermSide:null,fertilised:false,paused:false,view:"ovary",viewSide:"left",zoom:false};
+ var animations=new Set();
  var diagram=q(".krp-diagram"),view=q(".krp-view"),progress=q(".krp-status");
  var hotspots=root.querySelectorAll(".krp-ovary, .krp-entry");
  var areas={ovary:[48,86,320,228],oviduct:[75,73,390,242],sperm:[205,95,360,484],uterus:[250,102,390,445]};
@@ -102,7 +107,7 @@ function mount(host){
   if(document.activeElement===from)progress.focus({preventScroll:true});
  }
  function offerFocus(to){
-  if(document.activeElement===progress)to.focus({preventScroll:true});
+  if(to&&document.activeElement===progress)to.focus({preventScroll:true});
  }
  var reduced=!!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);
  function status(t){progress.textContent=t;}
@@ -111,18 +116,34 @@ function mount(host){
   var l=path.getTotalLength(),xy=path.getPointAtLength(Math.max(0,Math.min(1,p))*l);
   g.setAttribute("transform","translate("+xy.x.toFixed(1)+" "+xy.y.toFixed(1)+")");
  }
- function transport(g,path,from,to,ms,done){
-  var id=state.ticket,start;
-  if(reduced)ms=0;
-  function step(t){
-   if(!root.isConnected||id!==state.ticket)return;
-   if(start===undefined)start=t;
-   var p=ms?Math.min(1,(t-start)/ms):1;
-   var eased=p*p*(3-2*p);
-   positionAt(g,path,from+(to-from)*eased);
-   if(p<1)window.requestAnimationFrame(step);else if(done)done();
+ function animate(duration,draw,done){
+  if(reduced){draw(1);done();return;}
+  var animation={elapsed:0,last:null,frame:0};
+  function step(time){
+   animation.frame=0;
+   if(!root.isConnected){animations.delete(animation);return;}
+   if(animation.last!==null)animation.elapsed+=time-animation.last;
+   animation.last=time;
+   var fraction=Math.min(1,animation.elapsed/duration);
+   draw(fraction);
+   if(fraction<1)animation.play();
+   else{animations.delete(animation);done();update();}
   }
-  window.requestAnimationFrame(step);
+  animation.play=function(){animation.frame=window.requestAnimationFrame(step);};
+  animation.stop=function(){
+   window.cancelAnimationFrame(animation.frame);
+   animation.frame=0;animation.last=null;
+  };
+  animations.add(animation);
+  if(!state.paused)animation.play();
+  update();
+ }
+ function transport(g,path,duration,done,onPosition){
+  animate(duration,function(fraction){
+   var eased=fraction*fraction*(3-2*fraction);
+   positionAt(g,path,eased);
+   if(onPosition)onPosition(fraction);
+  },done);
  }
  function locate(g,x,y){g.setAttribute("transform","translate("+x+" "+y+")");}
  function update(){
@@ -132,6 +153,11 @@ function mount(host){
   q(".krp-entry").setAttribute("aria-disabled",String(btn.sperm.disabled));
   btn.fert.hidden=!canFertilise();
   btn.continue.hidden=state.phase!=="oviduct";
+  btn.implant.hidden=state.phase!=="ready-to-implant";
+  btn.pause.disabled=!animations.size;
+  btn.pause.setAttribute("aria-pressed",String(state.paused));
+  btn.pause.textContent=state.paused?"Resume animation":"Pause animation";
+
   root.querySelectorAll(".krp-ovary").forEach(function(o){
    o.classList.toggle("krp-active",o.dataset.side===state.side&&state.phase!=="idle");
    o.setAttribute("aria-disabled",state.phase==="idle"?"false":"true");
@@ -148,18 +174,13 @@ function mount(host){
   q("#krp-follicle circle:first-child").setAttribute("r","13");
   update();
   status("FSH supports growth and maturation of an ovarian follicle. The oocyte develops within the follicle.");
-  var id=state.ticket,start;function grow(t){
-   if(!root.isConnected||id!==state.ticket)return;
-   if(start===undefined)start=t;
-   var p=reduced?1:Math.min(1,(t-start)/1500);
-   q("#krp-follicle circle:first-child").setAttribute("r",String(13+18*p));
-   if(p<1)window.requestAnimationFrame(grow);
-   else {
-    state.phase="mature";update();
-    status("The follicle has matured in this simplified model. A naturally occurring LH surge normally triggers ovulation. Press LH surge.");
-    offerFocus(btn.lh);
-   }
-  }window.requestAnimationFrame(grow);
+  animate(1500,function(fraction){
+   q("#krp-follicle circle:first-child").setAttribute("r",String(13+18*fraction));
+  },function(){
+   state.phase="mature";update();
+   status("The follicle has matured in this simplified model. A naturally occurring LH surge normally triggers ovulation. Press LH surge.");
+   offerFocus(btn.lh);
+  });
  }
  function ovulate(){
   if(state.phase!=="mature")return;
@@ -168,7 +189,7 @@ function mount(host){
   state.phase="ovulating";show(group.follicle,false);show(group.egg,true);
   var path=q("#krp-egg-"+state.side);positionAt(group.egg,path,0);update();
   status("The LH surge triggers ovulation, releasing a secondary oocyte. Fimbriae and ciliary movement help transport it into an oviduct.");
-  transport(group.egg,path,0,1,2300,function(){
+  transport(group.egg,path,2300,function(){
    state.phase="oviduct";update();
    status("The secondary oocyte is in the oviduct (typically the ampulla). It can be fertilised only if a viable sperm reaches it within a limited period.");
    maybeMeet();
@@ -183,7 +204,7 @@ function mount(host){
   frameView("sperm",state.spermSide);
   var path=q("#krp-sperm-"+state.spermSide);positionAt(group.sperm,path,0);update();
   status("Sperm have entered the vagina. One representative sperm is shown moving through the cervical canal and uterine cavity towards an oviduct; most sperm do not complete this journey.");
-  transport(group.sperm,path,0,1,3500,function(){
+  transport(group.sperm,path,3500,function(){
    state.sperm="oviduct";update();
    status("The representative sperm has reached an oviduct. Fertilisation is possible only if a viable secondary oocyte is present in that oviduct.");
    maybeMeet();
@@ -207,9 +228,25 @@ function mount(host){
   frameView("uterus",state.side);
   state.fertilised=true;state.phase="embryo";
   show(group.sperm,false);show(group.egg,false);show(group.embryo,true);
+  var divisions=q("#krp-divisions");show(divisions,false);
   var path=q("#krp-embryo-"+state.side);positionAt(group.embryo,path,0);update();
   status("Possible fertilisation: sperm and secondary oocyte fuse to form a zygote. Cell divisions begin as the early embryo travels towards the uterus.");
-  transport(group.embryo,path,0,1,2400,function(){state.phase="complete";update();status("Early embryo has reached the uterus in this model. Implantation into the endometrium is a separate later process and is not guaranteed.");});
+  transport(group.embryo,path,2400,function(){
+   state.phase="ready-to-implant";update();
+   status("Early embryo has reached the uterus in this model. A blastocyst may attach to the endometrium several days after fertilisation. Select possible implantation to show that later event.");
+   offerFocus(btn.implant);
+  },function(fraction){if(fraction>.3)show(divisions,true);});
+ }
+ function implant(){
+  if(state.phase!=="ready-to-implant")return;
+  moveFocus(btn.implant);
+  state.phase="complete";
+  show(group.embryo,false);
+  locate(group.implant,state.side==="left"?433:467,267);
+  show(group.implant,true);
+  update();
+  status("Possible implantation: the blastocyst attaches at the uterine lining. Implantation is a separate event and is not guaranteed.");
+  offerFocus(btn.replay);
  }
  function noFertilisation(){
   if(state.phase!=="oviduct")return;
@@ -218,7 +255,8 @@ function mount(host){
   status("Without fertilisation, the secondary oocyte typically degenerates. It does not develop into an embryo; menstrual changes depend on the hormonal cycle.");
  }
  function reset(){
-  state.ticket++;state.side="left";state.phase="idle";state.sperm="idle";state.spermSide=null;state.fertilised=false;
+  animations.forEach(function(animation){animation.stop();});animations.clear();
+  state.paused=false;state.side="left";state.phase="idle";state.sperm="idle";state.spermSide=null;state.fertilised=false;
   Object.keys(group).forEach(function(k){show(group[k],false);});
   frameView("ovary","left");
   update();status("FSH supports development of ovarian follicles. Select an ovary or press FSH to begin.");
@@ -229,6 +267,16 @@ function mount(host){
  btn.fert.addEventListener("click",fertilise);
  btn.continue.addEventListener("click",noFertilisation);
  btn.reset.addEventListener("click",reset);
+ btn.implant.addEventListener("click",implant);
+ btn.replay.addEventListener("click",function(){
+  var side=state.side;
+  reset();select(side,btn.replay);
+ });
+ btn.pause.addEventListener("click",function(){
+  state.paused=!state.paused;
+  animations.forEach(function(animation){if(state.paused)animation.stop();else animation.play();});
+  update();
+ });
  btn.zoom.addEventListener("click",function(){
   state.zoom=!state.zoom;
   btn.zoom.setAttribute("aria-pressed",String(state.zoom));

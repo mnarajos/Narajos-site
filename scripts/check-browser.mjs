@@ -604,11 +604,12 @@ try{
  await desktop.locator('a[href="#catchup/f171/3.2.2"]').first().click();
  await desktop.locator(".k-catchup-concept").waitFor({state:"visible",timeout:10000});
  assert((await desktop.locator("main").innerText()).includes("Vaccine types"),"F171 vaccine catch-up not visible");
- await desktop.locator('a[href="#catchup/f171/3.2.2/1"]').first().click();
+ await desktop.goto(base+"/human-biology/#catchup/f171/3.2.2/1");
  await desktop.getByRole("heading",{name:"Key idea 2"}).waitFor({state:"visible",timeout:10000});
  assert((await desktop.locator("main").innerText()).includes("Key idea 2"),"Catch-up step did not advance");
  await screen(desktop,"human-vaccines");
  await desktop.goto(base+"/human-biology/#catchup/f170/3.2.1",{waitUntil:"load"});
+ await desktop.getByText("I do · Follow a worked example",{exact:true}).click();
  await desktop.getByText("Trace a withdrawal reflex",{exact:true}).click();
  const reflex=desktop.locator('science-sequence[kind="reflex"]');
  await reflex.locator("svg").waitFor({state:"visible"});
@@ -619,10 +620,11 @@ try{
  await reflex.getByRole("button",{name:"Previous step"}).press("Enter");
  await reflex.getByRole("status").filter({hasText:"Motor neuron"}).waitFor();
  await desktop.goto(base+"/human-biology/#catchup/f170/1.1.2",{waitUntil:"load"});
+ await desktop.getByText("I do · Measure a red cell from its scale bar",{exact:true}).click();
  await desktop.getByText("Estimate the size of a red blood cell",{exact:true}).click();
  assert(await desktop.locator(".micrograph-single img").evaluate(async img=>{await img.decode();return img.naturalWidth===386;}));
  await desktop.getByText("Check the calculation",{exact:true}).click();
- await desktop.getByText(/≈ 8 µm/).waitFor();
+ await desktop.locator(".kc-catchup-extra").getByText(/≈ 8 µm/).waitFor();
  await desktop.goto(base+"/human-biology/#catchup/f170/2.1.2",{waitUntil:"load"});
  await desktop.locator(".kc-simulation-link").waitFor({state:"visible"});
  assert((await desktop.locator(".kc-simulation-link").getAttribute("href"))==="/teaching/simulations/cardiac-cycle/","Heart concept should link to cardiac-cycle simulation");
@@ -767,6 +769,10 @@ try{
  await navPage.setViewportSize({width:1280,height:900});
 
  const supporter=await browser.newPage({viewport:{width:320,height:780},isMobile:true,hasTouch:true});
+ // The support form resets on pageshow. Wait for that lifecycle event before tapping.
+ await supporter.addInitScript(()=>{
+  window.addEventListener("pageshow",()=>{document.documentElement.dataset.smokePageShown="true";});
+ });
  let kofiRequests=0;
  await supporter.route("https://ko-fi.com/narajos",route=>{
   kofiRequests++;
@@ -775,6 +781,7 @@ try{
  await supporter.goto(base+"/");
  await supporter.locator("footer").getByRole("link",{name:"Support this website",exact:true}).tap();
  await supporter.getByRole("heading",{name:"Support this website",exact:true}).waitFor();
+ await supporter.locator("html[data-smoke-page-shown]").waitFor({state:"attached"});
  const continueToKofi=supporter.getByRole("link",{name:"Continue to Ko-fi",exact:true});
  const adult=supporter.getByRole("checkbox",{name:"I am aged 18 or over.",exact:true});
  const outsideClass=supporter.getByRole("checkbox",{name:"I am not one of the website creator’s current students.",exact:true});

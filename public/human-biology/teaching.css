@@ -1,0 +1,139 @@
+.hb-teaching {
+  display: grid;
+  gap: 1rem;
+}
+.hb-teaching [hidden] {
+  display: none !important;
+}
+.hb-teaching p,
+.hb-teaching li,
+.hb-teaching legend {
+  max-inline-size: 68ch;
+}
+.hb-teaching .hb-objective {
+  margin-block: 0;
+}
+.hb-prerequisite {
+  border-inline-start: 3px solid currentColor;
+  padding-inline-start: .8rem;
+}
+.hb-teaching summary {
+  cursor: pointer;
+  font-weight: 700;
+  padding-block: .35rem;
+}
+.hb-teach-stage,
+.hb-teach-explain {
+  min-inline-size: 0;
+}
+.hb-teach-stage fieldset {
+  border: 0;
+  padding: 0;
+  margin: 1rem 0;
+  min-inline-size: 0;
+}
+.hb-teach-stage legend {
+  font-weight: 700;
+  padding: 0;
+  margin-block-end: .65rem;
+}
+.hb-teach-option {
+  display: flex;
+  align-items: baseline;
+  gap: .65rem;
+  cursor: pointer;
+  border: 1px solid var(--line, #a4a8af);
+  border-radius: .5rem;
+  padding: .65rem;
+  margin-block: .45rem;
+}
+.hb-teach-stage textarea {
+  width: min(100%, 68ch);
+  min-height: 6rem;
+  font: inherit;
+  color: inherit;
+  background: var(--paper, Canvas);
+  padding: .65rem;
+  border: 1px solid currentColor;
+  border-radius: .45rem;
+}
+.hb-teach-stage .actions {
+  margin-block: .75rem 0;
+}
+.hb-teach-stage button[aria-disabled="true"] {
+  cursor: default;
+}
+.hb-feedback-visible {
+  margin-block-start: .8rem;
+  border-inline-start: 3px solid currentColor;
+  padding-inline-start: .8rem;
+}
+.hb-feedback-visible p:last-child {
+  margin-block-end: 0;
+}
+.hb-model-steps li + li {
+  margin-block-start: .65rem;
+}
+.hb-teach-table {
+  border-collapse: collapse;
+  max-inline-size: 100%;
+  margin-block: .7rem 1rem;
+  font-size: .95rem;
+}
+.hb-teach-table caption {
+  text-align: start;
+  font-weight: 700;
+  margin-block-end: .4rem;
+}
+.hb-teach-table th,
+.hb-teach-table td {
+  border: 1px solid var(--line, #a4a8af);
+  padding: .35em .45em;
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+.hb-teach-photo {
+  margin: .7rem 0;
+}
+.hb-teach-photo img {
+  display: block;
+  max-inline-size: min(100%, 40rem);
+  block-size: auto;
+  border-radius: .4rem;
+}
+.hb-teach-photo figcaption {
+  margin-block-start: .4rem;
+  font-size: .9rem;
+}
+.hb-teach-related {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.1rem;
+}
+.hb-model-path {
+  padding-inline-start: 1.25rem;
+}
+.hb-model-path li {
+  position: relative;
+  padding: .6rem .75rem;
+  border: 1px solid var(--line);
+  border-radius: .4rem;
+}
+.hb-model-path li + li {
+  margin-block-start: 1.5rem;
+}
+.hb-model-path li + li::before {
+  content: "↓";
+  position: absolute;
+  inset-block-start: -1.5em;
+  inset-inline-start: .65rem;
+}
+.hb-model-path strong {
+  display: block;
+}
+.hb-inline-model {
+  margin-block: .75rem;
+}
+.hb-inline-model > summary {
+  padding-inline-start: .4rem;
+}
