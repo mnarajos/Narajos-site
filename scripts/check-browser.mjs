@@ -84,6 +84,16 @@ try{
  assert(!(await pilotPage.getByRole("heading",{name:"Check your understanding",exact:true}).isVisible()));
  await pilotPage.getByRole("heading",{name:"Roll a toy down a ramp",exact:true}).waitFor();
  assert(await pilotPage.locator(".school-evidence-panel").evaluate(el=>!!(el.compareDocumentPosition(document.querySelector(".school-journey"))&Node.DOCUMENT_POSITION_FOLLOWING)));
+ const scienceSkills=pilotPage.locator(".school-journey");
+ assert(await scienceSkills.getByText("Step 1 of 4",{exact:true}).isVisible());
+ assert(await scienceSkills.getByRole("heading",{name:"Change one thing",exact:true}).isVisible());
+ await scienceSkills.getByRole("button",{name:"Check",exact:true}).click();
+ const scienceSkillsCheck=scienceSkills.getByRole("dialog");
+ assert(!(await scienceSkillsCheck.getByText(/The independent variable is the factor/).isVisible()));
+ await scienceSkillsCheck.getByRole("radio",{name:"The ramp angle",exact:true}).check();
+ await scienceSkillsCheck.getByRole("button",{name:"Check answer",exact:true}).click();
+ await scienceSkillsCheck.getByRole("button",{name:"Continue",exact:true}).click();
+ assert(await scienceSkills.getByRole("heading",{name:"Measure the result",exact:true}).isVisible());
  await pilotPage.getByText("More practice and activities",{exact:true}).click();
  assert(await pilotPage.getByRole("heading",{name:"Check your understanding",exact:true}).isVisible());
  assert.equal(await pilotPage.locator("[data-ks3-transfer] textarea").count(),1);
@@ -100,8 +110,19 @@ try{
  await pilotPage.locator("[data-ks3-transfer] summary").click();
  assert(await pilotPage.locator("[data-ks3-transfer]").getByText(/The cell wall supports the plant cell/).isVisible());
  await pilotPage.goto(base+"/ks3/lesson/?topic=states-of-matter&guided=1");
+ assert(await pilotPage.getByRole("heading",{name:"Warm the solid",exact:true}).isVisible());
  await pilotPage.getByText("More practice and activities",{exact:true}).click();
  assert(await pilotPage.locator("[data-ks3-transfer]").getByRole("textbox",{name:"Your answer",exact:true}).isVisible());
+ await pilotPage.evaluate(()=>localStorage.setItem("narajos.catchup.v1.7.states-of-matter",JSON.stringify({step:2,done:true})));
+ await pilotPage.reload();
+ await pilotPage.getByRole("button",{name:"Try the extra check",exact:true}).click();
+ await pilotPage.getByText("Step 4 of 4",{exact:true}).waitFor();
+ await pilotPage.locator(".school-current-stage").getByRole("button",{name:"Check",exact:true}).click();
+ const boilingCheck=pilotPage.getByRole("dialog");
+ await boilingCheck.getByRole("radio",{name:"It stays steady while the liquid boils.",exact:true}).check();
+ await boilingCheck.getByRole("button",{name:"Check answer",exact:true}).click();
+ await boilingCheck.getByRole("button",{name:"Finish catch-up",exact:true}).click();
+ await pilotPage.getByRole("heading",{name:"Catch-up complete!",exact:true}).waitFor();
  await pilotPage.goto(base+"/science-catch-up/?year=9");
  assert.equal(await pilotPage.locator(".school-topic-list > li").count(),5);
  await pilotPage.evaluate(()=>{
