@@ -8,9 +8,30 @@ export function question(prompt, answer, reasoning, ...distractors) {
     answer,
     reasoning,
     options: distractors.map(item => typeof item === "string"
-      ? {label: item, feedback: reasoning}
+      ? {label: item}
       : {label: item[0], feedback: item[1]})
   };
+}
+
+function distractorFeedback(option, question) {
+  const text = option?.feedback?.trim();
+  if (!text || text === question.reasoning.trim()) return "";
+  return text.replace(/^Incorrect[.!]\s*/i, "");
+}
+
+function feedbackFor(question, selected) {
+  if (selected === question.answer) return ["Correct.", question.reasoning];
+  const detail = distractorFeedback(question.options.find(option => option.label === selected), question);
+  return detail ? ["Incorrect.", detail]
+    : ["Incorrect.", "Key idea: " + question.reasoning];
+}
+
+function supportStatus(outcome) {
+  return {
+    independent: "Correct without extra help",
+    supported: "Correct after help or a retry",
+    explained: "Explanation used"
+  }[outcome] || "";
 }
 
 function element(tag, text, className) {
@@ -51,7 +72,8 @@ export function mountJourney(host, model, lesson) {
   const prior = readCatchup(progressKey);
   const state = {
     ...prior,
-    step: Math.min(prior.step, steps.length - 1)
+    step: Math.min(prior.step, steps.length - 1),
+    clues: prior.clues ?? Number(Boolean(prior.hintOpen))
   };
   model.id ||= "catchup-evidence";
   model.tabIndex = -1;
@@ -121,7 +143,7 @@ export function mountJourney(host, model, lesson) {
         stage.append(teaching);
       }
       stage.append(checkButton(state.open ? "Resume check" : "Check", showCheck));
-      if (state.step > 0) stage.append(button("Catch-up notes", showEvidence));
+      if (state.step > 0) stage.append(button("Catch-up notes", () => showEvidence()));
       checkList.append(stage);
     }
     if (state.done) {
@@ -138,7 +160,7 @@ export function mountJourney(host, model, lesson) {
         if (section) section.open = true;
         practice.querySelector("textarea")?.focus();
       }));
-      if (evidence) next.append(button("Catch-up notes", showEvidence));
+      if (evidence) next.append(button("Catch-up notes", () => showEvidence()));
       if (completeCount < steps.length) next.append(button("Try the extra check", () => {
         Object.assign(state, {done: false, step: completeCount});
         write();
@@ -161,9 +183,8 @@ export function mountJourney(host, model, lesson) {
     if (!state.done) openCheck(state.step, false);
   }
 
-  function showEvidence() {
+  function showEvidence(target = state.step === 0 && model.querySelector("[data-catchup-first-evidence]") || model) {
     if (evidence) evidence.hidden = false;
-    const target = state.step === 0 && model.querySelector("[data-catchup-first-evidence]") || model;
     if (target.matches("details")) target.open = true;
     target.tabIndex = -1;
     target.focus({preventScroll: true});
@@ -200,7 +221,7 @@ export function mountJourney(host, model, lesson) {
     heading.id = "school-check-heading";
     heading.tabIndex = -1;
     dialog.replaceChildren(heading);
-    if (state.repeating && !viewOnly) heading.before(element("p", "Try one more on your own", "school-check-context"));
+    if (state.repeating && !viewOnly) heading.before(element("p", state.explained ? "Follow-up check" : "Try one more on your own", "school-check-context"));
     if (q.image) {
       const img = element("img", "", "school-question-diagram");
       [img.src, img.alt] = q.image;
@@ -209,10 +230,24 @@ export function mountJourney(host, model, lesson) {
       dialog.append(img);
     }
     if (viewOnly) {
+      const status = supportStatus(state.outcomes?.[shownIndex]);
+      if (status) dialog.append(element("p", status, "school-check-context"));
       dialog.append(element("p", q.answer), element("p", q.reasoning));
+      if (shownIndex === steps.length - 1 && state.followUp && retry) {
+        const followUp = element("details");
+        followUp.append(element("summary", "Follow-up check"),
+          element("p", supportStatus(state.followUp)), element("p", retry.prompt),
+          element("p", retry.answer), element("p", retry.reasoning));
+        dialog.append(followUp);
+      }
       const notes = state.notes?.[shownIndex] || [];
       if (notes.length) dialog.append(element("h3", "Saved notes"), ...notes.map(note => element("p", note)));
       dialog.append(button("Close review", pause));
+      return;
+    }
+
+    if (state.explained) {
+      renderExplanation(q);
       return;
     }
 
@@ -235,13 +270,21 @@ export function mountJourney(host, model, lesson) {
       choices.append(label);
     }
 
-    const result = element("p", state.feedback || "", "school-check-feedback");
+    const result = element("p", "", "school-check-feedback");
     result.setAttribute("role", "status");
+
+    function showVerdict() {
+      result.replaceChildren();
+      if (!state.feedback || !state.selected) return;
+      const [verdict, detail] = feedbackFor(q, state.selected);
+      result.dataset.verdict = state.correct ? "correct" : "incorrect";
+      result.append(element("strong", verdict), " " + detail);
+    }
+    showVerdict();
+
     const submit = element("button", "Check answer", "school-primary");
     submit.type = "submit";
     submit.hidden = Boolean(state.correct);
-    const nextLabel = () => shownIndex === steps.length - 1 && (!retry || state.repeating || !state.helped)
-      ? "Finish catch-up" : "Continue";
     const next = checkButton(nextLabel(), advance);
     next.hidden = !state.correct;
     const tools = element("div", "", "school-journey-actions");
@@ -253,24 +296,42 @@ export function mountJourney(host, model, lesson) {
       note.append(element("summary", "Saved note"), element("p", state.draft));
       form.append(note);
     }
-    const hint = q.hint && !state.repeating ? element("details") : null;
-    if (hint) {
-      hint.hidden = !state.helped || state.correct;
-      hint.append(element("summary", "Need a clue?"), element("p", q.hint));
-      hint.open = Boolean(state.hintOpen);
-      hint.addEventListener("toggle", () => {
-        if (!hint.isConnected) return;
-        state.hintOpen = hint.open;
-        if (hint.open && !state.correct) state.helped = true;
-        write();
-      });
-      dialog.append(hint);
+    const support = element("div", "", "school-check-support");
+    support.hidden = Boolean(state.correct);
+    const clue = button("Need a clue?", () => {
+      state.clues++;
+      state.helped = true;
+      write();
+      renderClues();
+      clueText.focus();
+    });
+    const clueText = element("p", "", "school-clue");
+    clueText.tabIndex = -1;
+    function renderClues() {
+      const first = q.image ? "Trace each label to the exact feature it points to."
+        : q.teach ? "Think about the idea in “" + q.teach[0] + "”. Which option uses it?"
+        : "Find the key science word or the change described in the question.";
+      clueText.hidden = !state.clues;
+      clueText.textContent = state.clues > 1 && q.hint ? q.hint : first;
+      clue.hidden = state.clues >= (q.hint ? 2 : 1);
+      clue.textContent = state.clues ? "Another clue" : "Need a clue?";
     }
+    renderClues();
+    support.append(clue, button("I don’t know — explain it", () => {
+      state.helped = true;
+      state.explained = true;
+      write();
+      renderCheck();
+      dialog.querySelector(".school-check-explanation h3").focus();
+    }), clueText);
+    form.append(support);
     dialog.append(form);
 
     form.addEventListener("change", event => {
       if (event.target.name !== "answer") return;
       state.selected = event.target.value;
+      state.feedback = "";
+      showVerdict();
       write();
     });
     form.addEventListener("submit", event => {
@@ -278,13 +339,12 @@ export function mountJourney(host, model, lesson) {
       if (state.correct || !state.selected) return;
       state.correct = state.selected === q.answer;
       if (!state.correct) state.helped = true;
-      state.feedback = state.correct ? "Correct. " + q.reasoning :
-        (q.options.find(option => option.label === state.selected)?.feedback || "Try a different answer.");
+      state.feedback = feedbackFor(q, state.selected).join(" ");
       write();
-      result.textContent = state.feedback;
-      if (hint) hint.hidden = state.correct;
+      showVerdict();
       if (state.correct) {
-        for (const input of choices.querySelectorAll("input")) input.disabled = true;
+        support.hidden = true;
+        choices.disabled = true;
         submit.hidden = true;
         next.firstChild.textContent = nextLabel();
         next.hidden = false;
@@ -293,16 +353,53 @@ export function mountJourney(host, model, lesson) {
     });
   }
 
+  function nextLabel() {
+    return shownIndex === steps.length - 1 && (!retry || state.repeating || !state.helped)
+      ? "Finish catch-up" : "Continue";
+  }
+
+  function renderExplanation(q) {
+    const section = element("section", "", "school-check-explanation");
+    const heading = element("h3", "Explanation");
+    heading.tabIndex = -1;
+    section.append(heading, element("p", q.answer), element("p", q.reasoning));
+    const example = q.options.find(option => option.label === state.selected && distractorFeedback(option, q))
+      || q.options.find(option => distractorFeedback(option, q));
+    const quickCheck = element("details");
+    const compare = element("details");
+    compare.append(element("summary", "Compare your reasoning"),
+      element("p", example ? distractorFeedback(example, q) : q.reasoning));
+    quickCheck.append(element("summary", "Quick check"),
+      element("p", example ? "Why does “" + example.label + "” not fit here?" : "Say the key idea in your own words."),
+      compare);
+    section.append(quickCheck);
+    const tools = element("div", "", "school-journey-actions");
+    tools.append(checkButton(nextLabel(), advance), button("Save and pause", pause));
+    const visual = !q.image && model.querySelector(
+      "[data-catchup-first-evidence], .catchup-model, .gcse-catchup-visual, .writing-data, .ks3-illustration, .ks3-visual");
+    if (visual) tools.append(button("See lesson visual", () => {
+      pause();
+      showEvidence(visual);
+    }));
+    dialog.append(section, tools);
+  }
+
   function advance() {
     const atEnd = state.step === steps.length - 1;
     const repeat = atEnd && retry && state.helped && !state.repeating;
+    const outcome = state.explained ? "explained" : state.helped ? "supported" : "independent";
+    if (state.repeating) state.followUp = outcome;
+    else {
+      state.outcomes ||= {};
+      state.outcomes[state.step] = outcome;
+    }
     if (state.draft?.trim()) {
       state.notes ||= {};
       state.notes[state.step] ||= [];
       state.notes[state.step].push(state.draft.trim());
     }
     Object.assign(state, {selected: "", feedback: "", draft: "",
-      hintOpen: false, correct: false, helped: false, repeating: Boolean(repeat)});
+      clues: 0, hintOpen: false, correct: false, helped: false, explained: false, repeating: Boolean(repeat)});
     if (repeat) {
       write();
       renderCheck();

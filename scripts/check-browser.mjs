@@ -99,6 +99,7 @@ try{
  await scienceSkillsCheck.getByRole("button",{name:"Check answer",exact:true}).click();
  await scienceSkillsCheck.getByRole("button",{name:"Continue",exact:true}).click();
  assert(await scienceSkills.getByRole("heading",{name:"Measure the result",exact:true}).isVisible());
+ assert.equal(await pilotPage.evaluate(()=>JSON.parse(localStorage.getItem("narajos.catchup.v1.7.fair-tests")).outcomes[0]),"independent");
  await pilotPage.getByText("More practice and activities",{exact:true}).click();
  assert(await pilotPage.getByRole("heading",{name:"Check your understanding",exact:true}).isVisible());
  assert.equal(await pilotPage.locator("[data-ks3-transfer] textarea").count(),1);
@@ -199,7 +200,11 @@ try{
  assert.equal(await check.getByRole("textbox").count(),0);
  await check.getByRole("radio",{name:"Dissolved sugar",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
- await check.getByRole("status").filter({hasText:"Osmosis describes the water"}).waitFor();
+ await check.getByRole("status").filter({hasText:"Incorrect. Osmosis describes the water"}).waitFor();
+ await check.getByRole("radio",{name:"All particles in the solution",exact:true}).check();
+ await check.getByRole("button",{name:"Check answer",exact:true}).click();
+ await check.getByRole("status").filter({hasText:"Incorrect. Key idea: Osmosis describes movement of water"}).waitFor();
+ await check.getByRole("radio",{name:"Dissolved sugar",exact:true}).check();
  await screen(pilotPage,"year-9-catch-up-check-mobile");
  await check.getByRole("button",{name:"Save and pause",exact:true}).click();
  await pilotPage.evaluate(()=>{
@@ -221,11 +226,11 @@ try{
  assert(await guide.getByText("Step 2 of 4",{exact:true}).isVisible());
  assert(await guide.getByRole("heading",{name:"Movement in both directions",exact:true}).isVisible());
  await guide.getByRole("button",{name:"Check",exact:true}).click();
- assert(!(await check.getByText("Need a clue?",{exact:true}).isVisible()));
+ assert(await check.getByRole("button",{name:"Need a clue?",exact:true}).isVisible());
  await check.getByRole("radio",{name:"From B to A",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
  assert(await check.getByRole("status").filter({hasText:"B is the more concentrated side."}).isVisible());
- assert(await check.getByText("Need a clue?",{exact:true}).isVisible());
+ assert(await check.getByRole("button",{name:"Need a clue?",exact:true}).isVisible());
  await check.getByRole("radio",{name:"From A to B",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
  await check.getByRole("button",{name:"Continue",exact:true}).click();
@@ -253,6 +258,57 @@ try{
  await guide.getByText("Review answers",{exact:true}).click();
  await guide.getByRole("button",{name:"Check 1",exact:true}).click();
  assert(await check.getByText("Water can move in both directions.",{exact:true}).isVisible());
+ const helpPage=await browser.newPage({viewport:{width:320,height:780},isMobile:true,hasTouch:true});
+ const helpJourney=helpPage.locator(".school-journey");
+ const helpDialog=helpJourney.getByRole("dialog");
+ const askForHelp=()=>helpDialog.getByRole("button",{name:"I don’t know — explain it",exact:true}).tap();
+ for(const [year,id,path,steps,hasFollowUp] of [
+  [7,"fair-tests","/ks3/lesson/?topic=fair-tests&guided=1",4,false],
+  [8,"separating-techniques","/ks3/lesson/?topic=separating-techniques&guided=1",3,false],
+  [9,"osmosis","/science-catch-up/lesson/?topic=osmosis",4,true],
+  [10,"vaccine-memory","/science-catch-up/lesson/?topic=vaccine-memory&year=10",4,true],
+  [11,"wave-motion","/science-catch-up/lesson/?topic=wave-motion&year=11",4,true],
+ ]){
+  await helpPage.goto(base+path);
+  for(let index=0;index<steps;index++){
+   await helpJourney.getByRole("button",{name:"Check",exact:true}).tap();
+   if(index===0){
+    await helpDialog.getByRole("button",{name:"Need a clue?",exact:true}).press("Enter");
+    assert(await helpDialog.locator(".school-clue").isVisible());
+    assert.equal(await helpDialog.getByRole("radio",{checked:true}).count(),0);
+   }
+   await askForHelp();
+   assert(await helpDialog.getByRole("heading",{name:"Explanation",exact:true}).isVisible());
+   assert.equal(await helpDialog.getByRole("radio").count(),0);
+   if(index===0){
+    await helpDialog.getByText("Quick check",{exact:true}).tap();
+    await helpDialog.getByText("Compare your reasoning",{exact:true}).tap();
+    assert(await helpDialog.locator(".school-check-explanation details details p").isVisible());
+    if(await helpDialog.getByRole("button",{name:"See lesson visual",exact:true}).count()){
+     await helpDialog.getByRole("button",{name:"See lesson visual",exact:true}).tap();
+     await helpJourney.getByRole("button",{name:"Resume check",exact:true}).tap();
+    } else await helpDialog.getByRole("button",{name:"Save and pause",exact:true}).tap();
+    await helpPage.reload();
+    await helpJourney.getByRole("button",{name:"Resume check",exact:true}).tap();
+    assert(await helpDialog.getByRole("heading",{name:"Explanation",exact:true}).isVisible());
+   }
+   await helpDialog.getByRole("button",{name:index===steps-1&&!hasFollowUp?"Finish catch-up":"Continue",exact:true}).tap();
+  }
+  if(hasFollowUp){
+   assert(await helpDialog.getByText("Try one more on your own",{exact:true}).isVisible());
+   await askForHelp();
+   await helpDialog.getByRole("button",{name:"Finish catch-up",exact:true}).tap();
+  }
+  await helpJourney.getByRole("heading",{name:"Catch-up complete!",exact:true}).waitFor();
+  const saved=await helpPage.evaluate(key=>JSON.parse(localStorage.getItem("narajos.catchup.v1."+key)),year+"."+id);
+  assert.deepEqual(Object.values(saved.outcomes),Array(steps).fill("explained"));
+  assert.equal(saved.followUp,hasFollowUp?"explained":undefined);
+  await helpJourney.getByText("Review answers",{exact:true}).tap();
+  await helpJourney.getByRole("button",{name:"Check 1",exact:true}).tap();
+  assert(await helpDialog.getByText("Explanation used",{exact:true}).isVisible());
+  await helpDialog.getByRole("button",{name:"Close review",exact:true}).tap();
+ }
+ await helpPage.close();
  const seniorLessonIds=new Set();
  for(const [year,count] of [[10,10],[11,11]]){
   await pilotPage.goto(base+"/science-catch-up/?year="+year);

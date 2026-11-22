@@ -166,3 +166,10 @@
 .gcse-catchup-punnett :is(th,td) { border: 1px solid #719a96; padding: .35rem; }
 .gcse-catchup-punnett th { background: #e0eee9; }
 .gcse-catchup-punnett .gcse-recessive { background: #eadff3; border: 2px solid #69447f; font-weight: 750; }
+
+.school-check-feedback[data-verdict="incorrect"]:not(:empty) { background: #fff4e9; border-color: #a75e31; }
+.school-check-support { display: flex; flex-wrap: wrap; gap: .45rem; }
+.school-check-support[hidden], .school-check-support [hidden] { display: none; }
+.school-clue { flex-basis: 100%; margin-block: .2rem; }
+.school-check-explanation { border-inline-start: 3px solid #41857d; background: #eef5f3; padding: .5rem .75rem; }
+.school-check-explanation h3 { margin-block: .25rem; }
