@@ -6,6 +6,7 @@ import { explore } from "./ks3-explorations.js";
 import { fairTestPractice, fairTestPlan } from "./ks3-fair-tests.js";
 import { addKS3Journey } from "./school-catchup-ks3.js";
 import { ks3CatchupModel } from "./ks3-catchup-models.js";
+import { separationOrder } from "./separation-order.js";
 
 const illustrations = {
   "fair-tests": ["ramps", "A green toy car on a low ramp and a blue car on a higher ramp."],
@@ -409,6 +410,7 @@ function renderLesson(lesson, year, index) {
     if (id === "distillation") practice.setAttribute("question-limit", "3");
     checks.append(practice);
   }
+  if (lesson.id === "separating-techniques") checks.append(separationOrder());
   checks.append(transfer);
   if (externalModels[lesson.id]) checks.append(externalActivity(lesson.id));
   if (lesson.related) {

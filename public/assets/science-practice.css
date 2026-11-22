@@ -149,22 +149,37 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .ks3-illustration img{display:block;width:min(100%,32rem);height:auto}
 
 .writing-outline-review .writing-report details{padding-block:.25rem;margin-top:.6rem}
+.writing-order-board{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:.7rem;align-items:start}
+.writing-order-bank,.writing-order-group{background:#f0f7f4;border-radius:8px;padding:.65rem .8rem;min-width:0}
+.writing-order-bank h3,.writing-order-group h3{font-size:1rem;margin:.2rem 0 .45rem}
+.writing-order-bank p{margin:.2rem 0}
+.writing-order-options,.writing-order-group ol{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
 .writing-order-groups{display:grid;gap:.5rem}
-.writing-order-group{background:#f0f7f4;border-radius:8px;padding:.65rem .8rem}
-.writing-order-group h3,[data-writing-order] h3{font-size:1rem;margin:.2rem 0 .45rem}
-.writing-order-group ol{margin:.3rem 0;padding-left:1.15rem}
-.writing-order-group li{margin:.2rem 0}
-.writing-order-group li>span{color:#4f6166}
-.writing-order-group li button{text-align:left}
-.writing-order-controls{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem}
-.writing-order-controls button,.writing-order-group button{min-height:44px;border:1px solid #a1b5af;border-radius:7px;background:#fff;padding:.35rem .6rem;color:#24343b;font:inherit;cursor:pointer}
-.writing-order-controls button:first-child{background:#eef7f3;border-color:#276a62;font-weight:650}
-.writing-order-controls button:focus-visible,.writing-order-group button:focus-visible{outline:3px solid #c9611f;outline-offset:2px}
+.writing-order-group li{display:grid;gap:.3rem;padding:.4rem;border:1px solid #abc0ba;border-radius:7px;scroll-margin-block:1rem}
+.writing-order-group li>strong{font-size:.92rem}
+.sequence-order button{min-height:44px;border:1px solid #7f9a94;border-radius:7px;background:#fff;padding:.3rem .55rem;color:#24343b;font:inherit;cursor:pointer;text-align:left}
+.sequence-order button:disabled{background:#f5f8f7;color:#435458;cursor:default}
+.sequence-order button:focus-visible{outline:3px solid #a94f16;outline-offset:2px}
+.sequence-order .writing-order-card{display:grid;grid-template-columns:2.75rem minmax(0,1fr);width:100%;min-height:44px;align-items:stretch;gap:.4rem;padding:0 .45rem 0 0;overflow-wrap:anywhere}
+.writing-order-card>span+span{align-self:center;padding:.25rem 0}
+.writing-order-grip{display:grid;place-items:center;min-height:44px;border-inline-end:1px solid #b1c4be;color:#3b6059;font-size:1.5rem;touch-action:none;user-select:none;cursor:grab}
+.sequence-order .writing-order-card[aria-pressed="true"]{outline:2px solid #276a62;outline-offset:1px;background:#dfefe7}
+.writing-order-group li[data-order-target]{border-color:#276a62;border-style:dashed}
+.writing-order-group li[data-order-hover]{outline:3px solid #276a62;outline-offset:1px;background:#dfefe7}
+.writing-order-controls,.writing-order-slot-actions{display:flex;flex-wrap:wrap;gap:.35rem}
+.writing-order-controls{margin-top:.55rem}
+.writing-order-controls button:first-child:not(:disabled){background:#e2f0e9;border-color:#276a62;font-weight:650}
+.writing-order-announcement{margin:.35rem 0;min-height:1.45em}
 .writing-order-feedback[data-result]{border-inline-start:4px solid #688781;scroll-margin-block:1rem}
 .writing-order-feedback[data-result="retry"]{background:#fff2de;border-inline-start-color:#a36128;color:#613717}
 .writing-order-feedback[data-result="correct"]{background:#e5f3e8;border-inline-start-color:#34704e;color:#224a32}
-.writing-order-group li[data-order-review] button{background:#fff2de;border-color:#a36128}
-.writing-order-review{display:inline-block;margin:.2rem .35rem;color:#613717;font-size:.85rem}
+.writing-order-group li[data-order-review]{background:#fff2de;border-color:#a36128}
+.writing-order-review{color:#613717}
+.writing-order-ghost{position:fixed;top:0;left:0;z-index:20;pointer-events:none;max-width:min(17rem,65vw);padding:.35rem .55rem;border:1px solid #276a62;border-radius:7px;background:#e2f0e9;color:#24343b}
+@media(max-width:40rem){
+  .writing-order-board{grid-template-columns:minmax(0,1fr)}
+  .writing-order-group strong{line-height:1.35}
+}
 .ks3-model-button{min-height:44px;border:1px solid #779b92;border-radius:7px;padding:.45rem .65rem;background:#fff;color:#214c47;font:inherit;font-weight:650;cursor:pointer}
 .ks3-model-button[aria-pressed="true"]{background:#d1ece2}
 .ks3-model-button:focus-visible{outline:3px solid #c9611f;outline-offset:3px}
