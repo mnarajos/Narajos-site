@@ -9,7 +9,7 @@ const photos = {
   gneiss: ["Hand rock sample of a typical gneis.jpg", "Thorben Amann", "by-sa/4.0", 720, 480,
     "A specimen of gneiss showing alternating bands of light and dark minerals."],
   "wholemeal-bread": ["Homemade wholemeal bread.png", "Marius Vassnes", "by-sa/4.0", 720, 540,
-    "Three wholemeal bread rolls on a white plate."],
+    "Three small wholemeal loaves on a wire rack."],
   lentils: ["Green Lentils.JPG", "Adiel lo", "by-sa/3.0", 720, 480,
     "A close-up of a pile of dried green lentils."],
   "sunflower-oil": ["Sunflower oil bottles in Dnipro 2.jpg", "Alex Blokha", "by-sa/4.0", 465, 620,

@@ -32,7 +32,7 @@ function cells() {
   const option = node("label", "", "school-diagram-option");
   const greyscale = node("input");
   greyscale.type = "checkbox";
-  greyscale.addEventListener("change", () => comparison.classList.toggle("school-greyscale", greyscale.checked));
+  greyscale.addEventListener("change", () => host.classList.toggle("school-greyscale", greyscale.checked));
   option.append(greyscale, " Greyscale");
   controls.append(...buttons);
   comparison.append(...views.map(([, figure]) => figure));

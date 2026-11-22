@@ -112,7 +112,7 @@ function food() {
 
 function cart(distance, work) {
   const end = 46 + distance * 50;
-  return picture(distance + " m travelled",diagram("A 10 newton force pushes a cart " + distance + " metres along a straight track.", `
+  return picture(distance + " m travelled",diagram("A 10 newton force pushes a cart " + distance + (distance === 1 ? " metre" : " metres") + " along a straight track.", `
     ${line(26,113,285,113,ink,2)}
     ${line(46,110,46,124,ink,2)}${line(end,110,end,124,ink,2)}
     ${line(46,134,end,134,teal,3)}
