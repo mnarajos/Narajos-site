@@ -1324,6 +1324,34 @@ try{
  assert((await standardConditions.boundingBox()).height<65,"Standard conditions button is oversized");
  await navPage.goto(base+"/teaching/simulations/enzyme-kinetics/?activity=gcse");
  await navPage.getByRole("heading",{name:"Compare temperatures",exact:true}).waitFor();
+ const runControls=navPage.getByRole("group",{name:"Simulation controls"});
+ for(const [id,pH,enzyme] of [["starch","7","amylase"],["protein","2","protease"],["lipid","8","lipase"]]){
+  const substrate=navPage.locator('.stab[data-sub="'+id+'"]');
+  await substrate.click();
+  await navPage.locator("#s-temp").press("Home");
+  await runControls.getByRole("button",{name:"Start",exact:true}).press("Enter");
+  await standardConditions.click();
+  assert.equal(await substrate.getAttribute("aria-pressed"),"true");
+  assert.equal(await navPage.locator("#s-temp").inputValue(),"37");
+  assert.equal(await navPage.locator("#s-ph").inputValue(),pH);
+  assert.equal(await navPage.locator("#s-sub").inputValue(),"20");
+  assert.equal(await navPage.locator('.mixrow[data-k="'+enzyme+'"] .ct').textContent(),"4");
+  assert.equal(await navPage.locator(".mixrow .ct").allTextContents().then(values=>values.map(Number).reduce((sum,number)=>sum+number,0)),4);
+  await runControls.getByRole("button",{name:"Start",exact:true}).press("Enter");
+  await runControls.getByRole("button",{name:"Pause",exact:true}).press("Enter");
+  await runControls.getByRole("button",{name:"Reset",exact:true}).press("Enter");
+  assert.equal(await substrate.getAttribute("aria-pressed"),"true");
+ }
+ for(const width of [320,768,1366]){
+  await navPage.setViewportSize({width,height:720});
+  await navPage.locator("#graph-readout").scrollIntoViewIfNeeded();
+  const box=await runControls.boundingBox();
+  assert(box.y>=0&&box.y+box.height<=720,"Run controls scrolled off screen at "+width);
+  assert((await runControls.getByRole("button",{name:"Start",exact:true}).boundingBox()).height>=44);
+ }
+ await navPage.setViewportSize({width:390,height:844});
+ await navPage.locator('.stab[data-sub="starch"]').click();
+ await standardConditions.click();
  await navPage.locator("#btn-run").click();
  await navPage.locator("#graph-readout summary").click();
  await navPage.waitForFunction(()=>document.querySelector("#rate-rows td")?.textContent==="1");
