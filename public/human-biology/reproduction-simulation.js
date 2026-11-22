@@ -43,7 +43,7 @@ function svg(){
  '<path id="krp-embryo-right" d="M614 158Q556 140 510 184Q478 201 450 281" fill="none"/>'+
  '<g id="krp-egg" hidden aria-hidden="true"><circle r="11.5" fill="#ffe6a2" stroke="#c78436" stroke-width="3"/><circle r="5" fill="#d79746"/></g>'+
  '<g id="krp-sperm" hidden aria-hidden="true"><circle r="5" fill="#147ea4"/><path d="M-5 0Q-14 -11 -23 1Q-28 8 -37 0" stroke="#147ea4" stroke-width="3" fill="none" stroke-linecap="round"/></g>'+
- '<g id="krp-embryo" hidden aria-hidden="true"><circle r="13" fill="#f6d7ef" stroke="#a05591" stroke-width="3"/><path d="M0 -12V12M-12 0H12" stroke="#ad6ca1" stroke-width="2"/></g>'+
+ '<g id="krp-embryo" hidden aria-hidden="true"><circle r="13" fill="#f6d7ef" stroke="#a05591" stroke-width="3"/><path id="krp-divisions" hidden d="M0 -12V12M-12 0H12" stroke="#ad6ca1" stroke-width="2"/></g>'+
  '<g id="krp-implant" hidden aria-hidden="true"><circle r="10" fill="#f6d7ef" stroke="#782858" stroke-width="3"/><circle r="3" fill="#782858"/></g>'+
  '<g font-family="system-ui,sans-serif" font-size="17" font-weight="600" fill="#334858">'+
  '<text x="135" y="140" text-anchor="middle">Ovary</text><text x="765" y="140" text-anchor="middle">Ovary</text>'+
@@ -138,10 +138,11 @@ function mount(host){
   if(!state.paused)animation.play();
   update();
  }
- function transport(g,path,duration,done){
+ function transport(g,path,duration,done,onPosition){
   animate(duration,function(fraction){
    var eased=fraction*fraction*(3-2*fraction);
    positionAt(g,path,eased);
+   if(onPosition)onPosition(fraction);
   },done);
  }
  function locate(g,x,y){g.setAttribute("transform","translate("+x+" "+y+")");}
@@ -227,13 +228,14 @@ function mount(host){
   frameView("uterus",state.side);
   state.fertilised=true;state.phase="embryo";
   show(group.sperm,false);show(group.egg,false);show(group.embryo,true);
+  var divisions=q("#krp-divisions");show(divisions,false);
   var path=q("#krp-embryo-"+state.side);positionAt(group.embryo,path,0);update();
   status("Possible fertilisation: sperm and secondary oocyte fuse to form a zygote. Cell divisions begin as the early embryo travels towards the uterus.");
   transport(group.embryo,path,2400,function(){
    state.phase="ready-to-implant";update();
    status("Early embryo has reached the uterus in this model. A blastocyst may attach to the endometrium several days after fertilisation. Select possible implantation to show that later event.");
    offerFocus(btn.implant);
-  });
+  },function(fraction){if(fraction>.3)show(divisions,true);});
  }
  function implant(){
   if(state.phase!=="ready-to-implant")return;

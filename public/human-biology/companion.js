@@ -373,7 +373,7 @@ function showConcept(unit,id,step,render){
  var lesson=lessonFor(unit,id),teaching=window.KeystoneHumanTeaching;
  var lessonId=unit==="f171"?({"a2":"2.1","a4":"4.2.2"}[id]||id):id;
  if(lesson&&teaching&&step===0){
-  var visual=window.KeystoneCatchupVisuals?window.KeystoneCatchupVisuals.render(unit,id):"";
+  var visual=window.KeystoneCatchupVisuals?window.KeystoneCatchupVisuals.render.apply(null,lesson.visualFrom||[unit,id]):"";
   var recap='<details class="paper panel"><summary>Review the key ideas</summary><ul class="keylines">'+
    points.map(function(point){return "<li>"+esc(point)+"</li>";}).join("")+"</ul></details>";
   var sim=lesson.simulation&&window.KeystoneReproductionSimulation;

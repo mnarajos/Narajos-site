@@ -59,6 +59,8 @@
   };
 
   window.KeystoneHumanLessons["f173/a2"] = {
+    visual: "model",
+    visualFrom: ["f170", "1.1.2"],
     goal: "Choose the appropriate imaging method and use scale evidence to interpret a micrograph.",
     activate: ["Is a larger image always more informative?", "Magnification increases image size. Resolution determines which nearby structures can be distinguished."],
     prior: ["f170/1.1.2", "Work through a real red-cell scale bar"],
@@ -205,6 +207,8 @@
         "Sensory neurones carry information from a receptor towards the CNS.")
     },
     "f176/a2": {
+      visual: "model",
+      visualFrom: ["a6", "synapse"],
       goal: "Follow electrical and chemical signalling and distinguish excitation from reduced inhibition.",
       activate: ["What is threshold?", "The membrane potential that must be reached to trigger an action potential at the usual site of initiation."],
       explain: ["Voltage-gated sodium channels open during depolarisation and sodium enters. Potassium leaving contributes to repolarisation. At a chemical synapse, neurotransmitters carry the signal to receptors on the next cell."],

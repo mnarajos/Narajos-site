@@ -23,7 +23,7 @@
       activate: ["What does stable mean in this example?", "The bone fragments remain in an acceptable position during ordinary management. A fracture that cannot stay aligned may need a different method of stabilisation."],
       explain: [
         "A cast limits movement and can help maintain alignment while bone tissue repairs itself. Surgical fixation can hold fragments that are difficult to keep aligned, but involves risks such as infection and complications from the procedure.",
-        "Choose the mechanism and trade-offs that fit the case. These examples are for study."
+        "Supportive treatment manages symptoms or helps recovery. A treatment given with curative intent aims to remove or resolve the condition. Its outcome depends on the case."
       ],
       modelTitle: "Compare immobilisation with surgical fixation",
       nodes: ["Define the problem", "Compare the mechanisms", "Make a qualified judgement"],
