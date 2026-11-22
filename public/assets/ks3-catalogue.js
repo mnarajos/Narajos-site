@@ -320,11 +320,16 @@ function externalActivity(id) {
 }
 
 function renderLesson(lesson, year, index) {
+  const canonicalLink = document.querySelector('link[rel="canonical"]');
+  const canonical = new URL(canonicalLink.href);
+  canonical.searchParams.set("topic", lesson.id);
+  canonicalLink.href = canonical.href;
   document.title = lesson.unit + " | KS3 Science Catch-up | Narajos";
   document.querySelector("h1").textContent = lesson.unit;
   const yearLink = document.querySelector("[data-year-link]");
   yearLink.textContent = "← Year " + year + " topics";
   yearLink.href = "/science-catch-up/?year=" + year;
+  document.querySelector("[data-lesson-breadcrumb]").textContent = lesson.unit;
 
   const teaching = element("section", "", "practice-card ks3-lesson");
   const cue = element("p");

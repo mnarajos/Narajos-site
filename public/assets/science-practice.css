@@ -361,6 +361,7 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
  background: #fff; color: #214c54; font: inherit; text-align: start; cursor: pointer;
 }
 .spo-year-links a { text-decoration: none; font-weight: 650; }
+.spo-year-links [aria-current]::before { content: "✓"; margin-inline-end: .3em; }
 .spo-year-links [aria-current], .spo-intro button[aria-pressed="true"], .spo-controls button[aria-pressed="true"] { background: #d1ebe5; border-color: #35726d; }
 .spo-intro :is(a,button,summary):focus-visible, .spo-controls button:focus-visible, .spo-assembly button:focus-visible { outline: 3px solid #ad551f; outline-offset: 2px; }
 .spo-intro summary { min-height: 44px; cursor: pointer; padding-block: .5rem; font-weight: 700; }

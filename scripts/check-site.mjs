@@ -64,7 +64,6 @@ requireTrue(humanIndex.includes('/human-biology/companion.js'),"Human Biology co
 requireTrue(alevel.includes("function showCatchupIndex(")&&alevel.includes("function showCatchup("),"A-level catch-up route implementation missing");
 requireTrue(alevel.includes('href="#catchup-')&&alevel.includes('href="#catchup"'),"A-level catch-up navigation missing");
 requireTrue(alevel.includes("function showReteach("),"Existing A-level error-feedback reteach missing");
-requireTrue(home.includes("nav-short"),"Homepage mobile labels missing");
 requireTrue(home.includes('href="/human-biology/"'),"Human Biology link missing from homepage");
 requireTrue(read("human-biology/index.html").includes('/human-biology/app.js'),"Human Biology application script missing");
 requireTrue(read("human-biology/index.html").includes('href="/" id="site-home"'),"Human Biology site return link missing");
@@ -72,12 +71,8 @@ requireTrue(home.includes("Focused Questions"),"Teacher tool not discoverable fr
 const sharedHeaderPages=["index.html","teaching/index.html","teaching/simulations/index.html","privacy/index.html"];
 for(const p of sharedHeaderPages){
  const html=read(p);
- const nav=/<nav class="site-nav"[^>]*>([\s\S]*?)<\/nav>/.exec(html)?.[1]||"";
- requireTrue(nav.includes("Learning Companions"),"Learning-companion navigation label missing from "+p);
- for(const href of ["/gcse/","/alevel/","/human-biology/"]){
-  requireTrue(nav.includes('href="'+href+'"'),"Missing learner app "+href+" in "+p+" header");
- }
- requireTrue(!nav.includes("Science Revision"),"Outdated science revision menu label in "+p);
+ requireTrue(!/<nav class="site-nav"/.test(html),"Duplicate shared navigation in "+p);
+ requireTrue(html.includes('src="/assets/site-nav.js"'),"Shared navigation script missing from "+p);
 }
 const teachingOverview=read("teaching/index.html");
 const learnerCards=[...teachingOverview.matchAll(/<a class="app-card[^"]*" href="(\/[^"]+)"/g)].map(m=>m[1]);

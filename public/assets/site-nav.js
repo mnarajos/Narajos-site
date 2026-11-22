@@ -5,7 +5,7 @@
  "use strict";
  var footer=document.querySelector("footer.footer .footer-inner");
  if(footer&&!footer.querySelector('a[href="/terms/"]')){
-  var footerLinks=footer.querySelector(".footer-links");
+  var footerLinks=footer.querySelector(".footer-links, .school-footer-links");
   if(!footerLinks){
    footerLinks=document.createElement("nav");
    footerLinks.className="footer-links";
@@ -21,30 +21,47 @@
  }
  var header=document.querySelector(".topbar .topbar-inner");
  if(!header)return;
- var nav=document.querySelector(".site-nav");
- if(!nav){
-  nav=document.createElement("nav");
-  nav.className="site-nav";
-  nav.setAttribute("aria-label","Main navigation");
-  nav.innerHTML=`
-   <details><summary><span class="nav-full">Learning Companions</span><span class="nav-short" aria-hidden="true">Study tools</span></summary>
-    <div class="site-dropdown"><a href="/science-catch-up/?year=7">Year 7 Science <small>Catch up</small></a><a href="/science-catch-up/?year=8">Year 8 Science <small>Catch up</small></a><a href="/science-catch-up/?year=9">Year 9 Science <small>Catch up or revise</small></a><a href="/science-catch-up/?year=10">Year 10 Science <small>GCSE Trilogy · catch up or revise</small></a><a href="/science-catch-up/?year=11">Year 11 Science <small>GCSE Trilogy · catch up or revise</small></a><a href="/gcse/">GCSE Combined Science (AQA Trilogy) <small>Revise and practise</small></a><a href="/alevel/">A-level Biology (AQA)</a><a href="/human-biology/">Human Biology (Cambridge AAQ)</a></div></details>
-   <details><summary><span class="nav-full">Biology Simulations</span><span class="nav-short" aria-hidden="true">Simulations</span></summary>
-    <div class="site-dropdown"><a href="/teaching/simulations/">All simulations</a><a href="/teaching/simulations/#gcse-and-alevel">GCSE &amp; A-level</a><a href="/teaching/simulations/#alevel">A-level Biology</a></div></details>
-   <details class="teacher-menu"><summary>Teacher Tools</summary>
-    <div class="site-dropdown"><a href="/teacher/">Focused Questions</a><a href="/teaching/focused-writing/">Focused Writing</a></div></details>`;
-  header.append(nav);
+ var nav=document.createElement("nav");
+ nav.className="site-nav";
+ nav.setAttribute("aria-label","Main navigation");
+ nav.innerHTML=`
+  <details><summary><span class="nav-full">Learning Companions</span><span class="nav-short" aria-hidden="true">Study tools</span></summary>
+   <div class="site-dropdown">
+    <div class="site-dropdown-group" role="group" aria-labelledby="nav-years">
+     <p id="nav-years">Science by year</p>
+     <div class="site-year-links"><a href="/science-catch-up/?year=7">Year 7</a><a href="/science-catch-up/?year=8">Year 8</a><a href="/science-catch-up/?year=9">Year 9</a><a href="/science-catch-up/?year=10">Year 10</a><a href="/science-catch-up/?year=11">Year 11</a><a href="/science-catch-up/">All years</a></div>
+    </div>
+    <div class="site-dropdown-group" role="group" aria-labelledby="nav-qualifications">
+     <p id="nav-qualifications">By qualification</p>
+     <a href="/gcse/">GCSE Combined Science — AQA Trilogy</a><a href="/alevel/">A-level Biology — AQA</a><a href="/human-biology/">Human Biology — Cambridge AAQ</a>
+    </div>
+   </div>
+  </details>
+  <details><summary><span class="nav-full">Biology Simulations</span><span class="nav-short" aria-hidden="true">Simulations</span></summary>
+   <div class="site-dropdown"><a href="/teaching/simulations/">All simulations</a><a href="/teaching/simulations/#gcse-and-alevel">GCSE &amp; A-level</a><a href="/teaching/simulations/#alevel">A-level Biology</a><a href="/teaching/enzyme-investigations/">Guided enzyme investigations</a></div></details>
+  <details class="teacher-menu"><summary>Teacher Tools</summary>
+   <div class="site-dropdown"><a href="/teacher/">Focused Questions</a><a href="/teaching/focused-writing/">Focused Writing</a></div></details>`;
+ header.append(nav);
+
+ function showCurrentPage(){
+  var pathname=location.pathname;
+  var section=pathname.startsWith("/ks3/")?"/science-catch-up/":pathname;
+  if(section.startsWith("/science-catch-up/")){
+   section="/science-catch-up/";
+   var year=document.documentElement.dataset.catchupYear;
+   if(year)section+="?year="+year;
+  }
+  nav.querySelectorAll(".site-section-current").forEach(function(menu){menu.classList.remove("site-section-current");});
+  nav.querySelectorAll("[aria-current]").forEach(function(link){link.removeAttribute("aria-current");});
+  var pageLinks=Array.from(nav.querySelectorAll(".site-dropdown a"));
+  var current=pageLinks.find(function(link){return link.pathname+link.search+link.hash===section;});
+  if(!current)current=pageLinks.find(function(link){return !link.search&&!link.hash&&pathname.startsWith(link.pathname);});
+  if(!current)return;
+  current.closest("details").classList.add("site-section-current");
+  current.setAttribute("aria-current",current.pathname+current.search===pathname+location.search?"page":"location");
  }
- var oldCatchup=nav.querySelector('a[href="/ks3/"]');
- if(oldCatchup){oldCatchup.href="/science-catch-up/";oldCatchup.textContent="Science Catch-up";}
- var pathname=location.pathname;
- var section=pathname.startsWith("/ks3/")?"/science-catch-up/":pathname;
- if(section.startsWith("/teaching/enzyme-investigations/"))section="/teaching/simulations/";
- nav.querySelectorAll(".site-dropdown a").forEach(function(link){
-  if(link.hash||!section.startsWith(link.pathname))return;
-  link.closest("details").classList.add("site-section-current");
-  if(link.pathname===pathname&&(!link.search||link.search===location.search))link.setAttribute("aria-current","page");
- });
+ showCurrentPage();
+ document.addEventListener("narajos:catchup-year",showCurrentPage);
  var menus=Array.from(nav.querySelectorAll("details"));
  if(!menus.length)return;
  function closeOthers(keep){

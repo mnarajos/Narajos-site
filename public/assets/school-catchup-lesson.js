@@ -1,4 +1,4 @@
-import { mountJourney } from "./school-catchup-journey.js";
+import { identifyCatchupYear, mountJourney } from "./school-catchup-journey.js";
 import { year9 } from "./school-catchup-year9.js";
 import { year9Visual } from "./school-catchup-visuals.js";
 import { gcseCatchup } from "./gcse-catchup-data.js";
@@ -10,9 +10,16 @@ if (Object.hasOwn(year9, id) || Object.hasOwn(gcseCatchup, id)) {
   const senior = Object.hasOwn(gcseCatchup, id);
   const lesson = senior ? gcseCatchup[id] : year9[id];
   const back = senior && params.get("year") === "11" && [ "B5", "C4" ].includes(lesson.code) ? 11 : lesson.year;
+  const canonicalLink = document.querySelector('link[rel="canonical"]');
+  const canonical = new URL(canonicalLink.href);
+  canonical.searchParams.set("topic", id);
+  if (senior) canonical.searchParams.set("year", lesson.year);
+  canonicalLink.href = canonical.href;
   const breadcrumb = document.querySelector(".school-breadcrumb");
   breadcrumb.href = "/science-catch-up/?year=" + back;
   breadcrumb.textContent = "← Year " + back + " topics";
+  document.querySelector("[data-lesson-breadcrumb]").textContent = lesson.title;
+  identifyCatchupYear(back);
   const host = document.querySelector("[data-catchup-lesson]");
   const model = document.createElement("section");
   model.className = "practice-card ks3-lesson";
