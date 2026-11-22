@@ -297,12 +297,12 @@ export async function checkALevelExam(browser, base) {
         .getByRole("button", { name: "Check judgement", exact: true })
         .click();
       await page
-        .getByRole("button", { name: "Next drawing", exact: true })
+        .getByRole("button", { name: offset === 5 ? "Review progress" : "Next drawing", exact: true })
         .waitFor();
       if (item.defects.length) assert(await comparison.locator("[data-defect-overlay]").first().isVisible());
       if (round === 1) {
         await page.reload();
-        assert(await page.getByRole("button", { name: "Next drawing", exact: true }).isVisible());
+        assert(await page.getByRole("button", { name: offset === 5 ? "Review progress" : "Next drawing", exact: true }).isVisible());
       }
       assert(
         await page.evaluate(
@@ -310,7 +310,7 @@ export async function checkALevelExam(browser, base) {
         ),
       );
       await page
-        .getByRole("button", { name: "Next drawing", exact: true })
+        .getByRole("button", { name: offset === 5 ? "Review progress" : "Next drawing", exact: true })
         .click();
     }
     assert.equal(seen.size, 56);

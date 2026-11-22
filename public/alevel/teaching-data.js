@@ -501,6 +501,7 @@ window.ALevelTeachingFamilies = {
         guided: true,
       },
       {
+        visual: "pathway-enzyme",
         catchup: "a1-enzfactors",
         kind: "choice",
         prompt:
@@ -543,6 +544,7 @@ window.ALevelTeachingFamilies = {
         hints: ["Which reactant does the enzyme need in order to form product?", "Relieving inhibition cannot create substrate. Increased enzyme activity only increases product formation when substrate is available."],
       },
       {
+        visual: "pathway-double",
         catchup: null,
         kind: "group",
         prompt:
@@ -557,6 +559,7 @@ window.ALevelTeachingFamilies = {
         hints: ["First decide what happens to B when A increases.", "Then ask how the change in B affects the restraint on C."],
       },
       {
+        visual: "pathway-double",
         catchup: null,
         kind: "choice",
         prompt:
@@ -571,6 +574,7 @@ window.ALevelTeachingFamilies = {
         hints: ["Start with the effect of less A on B.", "Less A releases B from inhibition. More active B inhibits C more strongly, so C can decrease."],
       },
       {
+        visual: "pathway-neural",
         catchup: "a6-synapse",
         kind: "choice",
         prompt:

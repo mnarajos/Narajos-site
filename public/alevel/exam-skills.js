@@ -138,16 +138,16 @@
     if (step === 0) {
       line(["Signal", "→", "Target"]);
       line(["Inhibitor", "┤", "Target"]);
-    } else if (step === 1 || step === 2) {
-      line(["Reversible inhibitor", "┤", "Protease (enzyme)"], step === 1 ? 1 : 2);
+    } else if (step === 1 || step === 2 || step === "enzyme") {
+      line(["Reversible inhibitor", "┤", "Protease (enzyme)"], step === "enzyme" ? -1 : step === 1 ? 1 : 2);
       line(["Protease", "→", "Hydrolysis"], step === 1 ? 2 : -1);
       box.append(node("p", "Protein substrate → shorter peptide products"));
-    } else if (step === 3 || step === 4) {
-      line(["A", "┤", "B", "┤", "C"], step === 3 ? 1 : 3);
-    } else if (step === 5) {
+    } else if (step === 3 || step === 4 || step === "double") {
+      line(["A", "┤", "B", "┤", "C"], step === "double" ? -1 : step === 3 ? 1 : 3);
+    } else if (step === 5 || step === "neural") {
       line(["Excitatory input", "→", "Postsynaptic neurone"]);
-      line(["Inhibitory neurone", "┤", "Postsynaptic neurone"], 1);
-      box.append(node("p", "Less inhibition makes reaching threshold more likely if other inputs stay the same."));
+      line(["Inhibitory neurone", "┤", "Postsynaptic neurone"], step === "neural" ? -1 : 1);
+      if (step === 5) box.append(node("p", "Less inhibition makes reaching threshold more likely if other inputs stay the same."));
     } else {
       line(["Activation", "→", "Enzyme activity"]);
       line(["Inhibitor", "┤", "Enzyme activity"]);
@@ -211,6 +211,7 @@
       return box;
     }
     if (type === "pathway") return pathway(step);
+    if (type?.startsWith("pathway-")) return pathway(type.slice("pathway-".length));
     return node("div");
   }
   const icons = {
@@ -240,11 +241,11 @@
     ["independent", "Your turn"], ["review", "Review"],
   ];
 
-  function stageBar() {
+  function stageBar(sequence = stages) {
     const list = node("ol", null, "al-stages");
     list.setAttribute("aria-label", "Learning stages");
     list.setAttribute("role", "list");
-    for (const [id, label] of stages) {
+    for (const [id, label] of sequence) {
       const item = node("li");
       item.dataset.stage = id;
       item.append(icon(id), node("span", label));
@@ -253,10 +254,15 @@
     return list;
   }
 
-  function currentStage(bar, id) {
+  function currentStage(bar, id, symbol) {
     for (const item of bar.children) {
-      if (item.dataset.stage === id) item.setAttribute("aria-current", "step");
-      else item.removeAttribute("aria-current");
+      if (item.dataset.stage === id) {
+        item.setAttribute("aria-current", "step");
+        if (symbol && item.dataset.icon !== symbol) {
+          item.firstChild.replaceWith(icon(symbol));
+          item.dataset.icon = symbol;
+        }
+      } else item.removeAttribute("aria-current");
     }
   }
 
@@ -348,11 +354,12 @@
         secondary.append(key);
         if (moveFocus) focus(content.querySelector("h2"));
       } else {
-        const content = practise(active, family, state, {
-          stage: id => currentStage(bar, id),
-          context: options.context,
-        });
         const review = node("details", null, "al-review-example");
+        const content = practise(active, family, state, {
+          stage: (id, symbol) => currentStage(bar, id, symbol),
+          context: options.context,
+          moved: () => { review.open = false; },
+        });
         review.append(node("summary", "Review the worked example"));
         review.ontoggle = () => {
           if (!review.open) return;
@@ -507,7 +514,9 @@
       const accepted = isAccepted(i);
       const revealed = state.results[i]?.kind === "revealed";
       const review = state.reviews[i] || { choices: {} };
-      flow.stage?.(q.guided ? "guided" : "independent");
+      const symbol = { writing: "pen", group: "guided", number: "calculator" }[q.kind] ||
+        (q.visual?.startsWith("pathway") ? "pathway" : q.visual ? "diagram" : "independent");
+      flow.stage?.(q.guided ? "guided" : "independent", q.guided ? "guided" : symbol);
       const heading = node("h2", q.guided ? "With support" : "Your turn", "al-task-heading");
       block.append(heading, node("p", "Task " + (at + 1) + " of " + state.queue.length, "al-task-count"),
         node("h3", q.prompt));
@@ -641,6 +650,7 @@
           if (at === state.queue.length - 1) state.completed = true;
           else state.index = state.queue[at + 1];
           persist();
+          flow.moved?.();
           render(true);
         });
         next.classList.add("primary");
@@ -803,8 +813,11 @@
   }
 
   function drawings(host) {
-    const block = node("section", null, "al-teaching");
-    host.append(block);
+    const block = node("section", null, "al-teaching al-drawing");
+    const bar = stageBar([["model", "Compare"], ["guided", "With support"],
+      ["independent", "Your turn"], ["review", "Review"]]);
+    currentStage(bar, "model");
+    host.append(bar, block);
     const introduction = node("details", null, "al-drawing-example");
     introduction.open = !read().drawingSession && !read().drawingReview;
     introduction.append(node("summary", "Worked example · Compare two drawings"),
@@ -827,13 +840,14 @@
     block.append(introduction);
     const start = button(
       read().drawingSession ? "Resume drawing set" : "Start a six-drawing set",
-      () => round(),
+      () => round(true),
     );
     start.classList.add("primary");
     block.append(start);
     const exercise = node("section");
     block.append(exercise);
     function drawReview(review, moveFocus) {
+      currentStage(bar, "review");
       const heading = node("h3", "Review your drawings");
       exercise.replaceChildren(heading, outcomeOverview(review.entries.map(entry => entry.outcome)));
       const detail = node("details");
@@ -850,7 +864,7 @@
     const savedDrawing = read();
     if (savedDrawing.drawingSession) round();
     else if (savedDrawing.drawingReview) drawReview(savedDrawing.drawingReview, false);
-    function round() {
+    function round(moveFocus = false) {
       const data = read();
       let session = data.drawingSession;
       if (
@@ -885,6 +899,7 @@
       function show() {
         exercise.replaceChildren();
         const item = pool[at];
+        currentStage(bar, at === 0 ? "guided" : "independent", at === 0 ? "guided" : "diagram");
         exercise.append(
           node(
             "h3",
@@ -947,7 +962,7 @@
         else if (session.attempts) feedback.textContent = "Review and improve. " +
           (session.verdict === 1 ? item.why : "Compare the candidate with each stated requirement.");
         feedback.hidden = !feedback.textContent;
-        const next = button("Next drawing", () => {
+        const next = button(at < pool.length - 1 ? "Next drawing" : "Review progress", () => {
           if (!session.outcome) return;
           session.entries[at] = { id: item.id, outcome: session.outcome };
           const entries = session.entries;
@@ -1012,6 +1027,7 @@
         }
       }
       show();
+      if (moveFocus) focus(exercise.querySelector("h3"));
     }
   }
   const catalogue = [
