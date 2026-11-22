@@ -298,9 +298,10 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){retur
 function crumb(to,text){return '<p class="crumb"><a href="#'+esc(to)+'">← '+esc(text)+'</a></p>';}
 function unitKind(unit){return unit==="f170"||unit==="f171"?"Externally assessed":"NEA knowledge support";}
 function lessonFor(unit,id){return (window.KeystoneHumanLessons||{})[unit+"/"+id];}
-function resumeLinks(){
+function resumeLinks(origin,practice){
  var engine=window.KeystoneHumanChallenge;
- var back=engine&&engine.resumeRoute();
+ var back=engine&&(engine.resumeRoute(origin)||engine.resumeRoute(origin.replace(/\/\d+$/,"")));
+ if(back===practice)back=null;
  var simple=window.KeystoneHumanApp&&window.KeystoneHumanApp.hasResume&&window.KeystoneHumanApp.hasResume();
  return (back?'<a href="#'+esc(back)+'">Return to your unfinished question set</a>':'')+
   (simple?'<a href="#resume">Resume flashcards or explanation practice</a>':'');
@@ -316,14 +317,18 @@ function skillLinks(unit,id,lesson){
     esc(skill.name)+'</a><p>'+esc(skill.description)+'</p></li>';
   }).join("")+'</ul></details>';
 }
-function relatedLinks(unit,id,practice){
- var links='<a href="#'+esc(practice)+'">'+(unitKind(unit)==="Externally assessed"?"Practise questions":"Practise general knowledge")+'</a>';
- if(unit==="f170")links+='<a href="#challenge/f170/'+esc(id)+'">Varied topic questions</a><a href="#cards/'+esc(id)+'">Flashcards for this topic</a>';
+function practiceLabel(unit,id,topic){
+ var labels={"2.1":"Practise treatment decisions","2.3":"Practise prevention and early detection","3.2.1":"Practise immune dysfunction","3.2.2":"Practise vaccine types","4.2.1":"Practise interpreting screening results","4.2.2":"Practise monitoring and repeat measurements"};
+ return (unit==="f171"&&labels[id])||"Practise "+topic.toLowerCase();
+}
+function relatedLinks(unit,id,origin,practice,label){
+ var links='<a href="#'+esc(practice)+'">'+esc(label)+'</a>';
+ if(unit==="f170")links+='<a href="#cards/'+esc(id)+'">Flashcards for this topic</a>';
  if(unit==="f171"){
   var deck=(window.KeystoneF171Recall||[]).find(function(d){return d[0]===id;});
   links+='<a href="#'+(deck?"cards/f171-"+id:"flashcards/f171")+'">'+(deck?"Flashcards for this topic":"F171 flashcards")+'</a>';
  }
- return '<nav class="hb-teach-related" aria-label="Related learning">'+links+resumeLinks()+'</nav>';
+ return '<nav class="hb-teach-related" aria-label="Related learning">'+links+resumeLinks(origin,practice)+'</nav>';
 }
 function showHome(render){
  var h='<div class="k-wrap">'+crumb("home","Home")+'<div class="k-unit-hero"><div class="k-eyebrow">Your learning companion</div><h1>Catch up and understand</h1><p>Choose an idea to learn or revisit. Guided lessons show the reasoning before you practise.</p></div><div class="k-unit-tiles">';
@@ -359,17 +364,19 @@ function showUnit(unit,render){
 function showConcept(unit,id,step,render){
  var u=units.filter(function(x){return x.id===unit;})[0];
  if(!u)return showHome(render);
- var topic,points,practice;
+ var topic,points;
  if(unit==="f170"){
   var item=sectionById[id];if(!item)return showUnit(unit,render);
-  topic=item.section.title;points=item.section.points;practice="practice/"+id;
+  topic=item.section.title;points=item.section.points;
  }else{
   var item=(notes[unit]||{})[id];if(!item)return showUnit(unit,render);
-  topic=item.title;points=item.lines;practice="challenge/"+unit+"/"+id;
+  topic=item.title;points=item.lines;
  }
  if(!Array.isArray(points)||!points.length)return showUnit(unit,render);
  step=Math.max(0,Math.min(points.length-1,Number(step)||0));
- var key="#catchup/"+unit+"/"+id;
+ var origin="catchup/"+unit+"/"+id+(step?"/"+step:""),key="#catchup/"+unit+"/"+id;
+ var practice="challenge/"+unit+"/"+id+"?from="+origin,label=practiceLabel(unit,id,topic);
+ var related=relatedLinks(unit,id,origin,practice,label);
  var lesson=lessonFor(unit,id),teaching=window.KeystoneHumanTeaching;
  var lessonId=unit==="f171"?({"a2":"2.1","a4":"4.2.2"}[id]||id):id;
  if(lesson&&teaching&&step===0){
@@ -380,7 +387,7 @@ function showConcept(unit,id,step,render){
   var interactive=sim?'<details class="hb-inline-model"><summary>Open the reproductive pathway model</summary>'+sim.render()+'</details>':"";
   render('<div class="k-wrap k-catchup-concept">'+crumb("catchup/"+unit,u.title)+
    '<div class="k-eyebrow">'+unitKind(unit)+'</div><h1>'+esc(topic)+'</h1>'+
-   teaching.render(lesson,{inline:lesson.visual==="model"?"":visual,method:skillLinks(unit,id,lesson),modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:recap+relatedLinks(unit,id,practice)})+'</div>');
+   teaching.render(lesson,{inline:lesson.visual==="model"?"":visual,method:skillLinks(unit,id,lesson),modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:recap+related})+'</div>');
   teaching.mount(unit+"/"+lessonId,lesson);
   if(sim)window.KeystoneReproductionSimulation.mount(document);
   return;
@@ -390,8 +397,8 @@ function showConcept(unit,id,step,render){
  h+='<section class="paper panel"><h2>Key idea '+(step+1)+'</h2><p class="k-catchup-text">'+esc(points[step])+'</p></section>';
  if(step===0&&window.KeystoneCatchupVisuals)h+=window.KeystoneCatchupVisuals.render(unit,id);
  h+='<div class="k-catchup-controls">'+(step>0?'<a class="button secondary" href="'+key+'/'+(step-1)+'">Previous</a>':'')+
- (step<points.length-1?'<a class="button primary" href="'+key+'/'+(step+1)+'">Next key idea →</a>':'<a class="button primary" href="#'+practice+'">Practise questions →</a>')+'</div>';
- h+='<p class="k-small-note">Short recap of selected key ideas.</p>'+relatedLinks(unit,id,practice);
+ (step<points.length-1?'<a class="button primary" href="'+key+'/'+(step+1)+'">Next key idea →</a>':'<a class="button primary" href="#'+esc(practice)+'">'+esc(label)+' →</a>')+'</div>';
+ h+='<p class="k-small-note">Short recap of selected key ideas.</p>'+related;
  if(unit==="f175"&&id==="a1"&&step===points.length-1&&window.KeystoneReproductionSimulation){
   h+=window.KeystoneReproductionSimulation.render();
  }

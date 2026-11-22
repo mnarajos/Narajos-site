@@ -12,7 +12,16 @@ var render=null,visible=false,lastRoute="",skillExampleStem="";
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(a){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[a];});}
 function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=b[i];b[i]=b[j];b[j]=t;}return b;}
 function contextualKey(skillId){return SK+"-catchup-"+skillId;}
-function sessionKey(item){return item&&item.returnTo?contextualKey(item.skillId):SK;}
+function topicKey(unit,scope){return SK+"-topic-"+unit+"/"+scope;}
+function sessionKey(item){
+ if(item&&item.topicContext)return topicKey(item.unit,item.scope);
+ return item&&item.skillId&&item.returnTo?contextualKey(item.skillId):SK;
+}
+function localSessionKeys(){
+ var keys=skills?skills.definitions.map(function(skill){return contextualKey(skill.id);}):[];
+ try{for(var i=0;i<localStorage.length;i++){var key=localStorage.key(i);if(key.startsWith(SK+"-topic-"))keys.push(key);}}catch(_){}
+ return keys;
+}
 function save(){try{if(session)localStorage.setItem(sessionKey(session),JSON.stringify(session));}catch(_){}}
 function clearSession(item){try{localStorage.removeItem(sessionKey(item));}catch(_){}}
 function skillReturnLink(route){
@@ -53,12 +62,13 @@ function needsPractice(p){
 function isActive(){return !!session&&session.index<session.queue.length;}
 function pause(){stopHintTimer();session=null;visible=false;} // Preserve the unfinished set in localStorage.
 function discard(){stopHintTimer();clearSession(session);session=null;visible=false;}
-function savedSession(){
+function savedSession(origin){
  var standard=restore();
- if(standard)return standard;
- if(!skills)return null;
- return skills.definitions.map(function(skill){return restore(contextualKey(skill.id));})
-  .filter(Boolean).sort(function(a,b){return b.started-a.started;})[0]||null;
+ if(!origin&&standard)return standard;
+ var candidates=[standard].concat(localSessionKeys().map(function(key){return restore(key);}))
+  .filter(Boolean).sort(function(a,b){return b.started-a.started;});
+ if(origin)return candidates.find(function(item){return item.reteachTo===origin;})||candidates.find(function(item){return item.returnTo===origin;})||null;
+ return candidates[0]||null;
 }
 function icon(name){
  var paths={
@@ -249,7 +259,7 @@ function adaptQuickMixEnd(){
  session.quickMixAdjusted=true;
  save();
 }
-function makeSession(unit,scope,route){
+function makeSession(unit,scope,route,origin){
  if(ladders&&scope==="build")return progressionMenu(unit);
  if(unit==="f171"&&scope==="clinical")return showClinicalCases();
  var point=ladders&&ladders.get(scope);
@@ -290,6 +300,7 @@ function makeSession(unit,scope,route){
  }else ids=shuffle(chosen).map(function(x){return x.id;});
  session={unit:unit,scope:scope,route:route,queue:ids,index:0,first:{},correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,quickMixVersion:scope==="all"?2:null,quickMixBase:scope==="all"?ids.slice():null,quickMixFinalId:scope==="all"?ids[ids.length-1]:null,quickMixAdjusted:false,complete:false,started:Date.now()};
  if(point)session.point=point.id;
+ if(origin){session.topicContext=true;session.returnTo=origin;}
  rememberVersions(ids);save();drawQuestion();
 }
 function showClinicalCases(){
@@ -603,7 +614,7 @@ function drawQuestion(){
   if((!correct||helped)&&session.lastPlannedCheck)h+='<p class="k-quick-note">A related quick check is next, so you can try the idea again independently.</p>';
   if(q.levelsNote)h+='<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>';
   if(!correct&&!unknown&&q.misconception)h+='<div class="k-misconception"><strong>Watch out</strong><p>'+esc(q.misconception)+'</p></div>';
-  if(!correct||helped||unknown){var cu=window.KeystoneHumanCatchup&&window.KeystoneHumanCatchup.linkFor(q);if(cu)h+='<p class="k-catchup-after"><a href="#'+esc(cu)+'">Need more help? Catch up on this idea</a></p>';}
+  if(!correct||helped||unknown){var cu=window.KeystoneHumanCatchup&&window.KeystoneHumanCatchup.linkFor(q);if(cu)h+='<p class="k-catchup-after"><a href="#'+esc(cu)+'" data-reteach-to="'+esc(cu)+'">Need more help? Catch up on this idea</a></p>';}
   h+='</div>';
  }
  if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points":"Check answer")+' →</button>'+(used<availableHints.length?'<button class="button secondary k-hint-button" type="button" data-k-action="hint"'+(hintRemaining()>0?' hidden':'')+'>'+(used?'More help':'Hint')+'</button>':'')+'<button class="button quiet" type="button" data-k-action="skip">I don’t know · show me</button></div>';
@@ -757,23 +768,32 @@ function finish(){
  var repeat=Object.keys(old.retries).length,done=old.queue.length;
  if(old.point){var p=ladders.get(old.point);show('<div class="k-wrap k-done"><h1>Sequence complete</h1><p class="lead">'+esc(p.statement)+'</p><p>'+old.correctFirst+' of '+Object.keys(old.objectiveFirst||{}).length+' objectively checked questions answered independently on first attempt. '+old.guidedFirst+' answered with help. '+(old.selfReviewed||0)+' explanations self-reviewed.</p><div class="actions"><a class="button primary" href="#challenge/'+old.unit+'/build">Choose another idea</a><button class="button secondary" type="button" data-repeat-point="'+p.id+'">Repeat this idea</button><a class="button secondary" href="#catchup/'+old.unit+'/'+p.section+'">Revisit the explanation</a></div></div>');return;}
  var h='<div class="k-wrap k-done"><p class="crumb"><a href="#challenge/'+old.unit+'">← Unit overview</a></p><div class="k-done-icon">'+icon("check")+'</div><h1>Practice complete</h1><p class="lead">'+old.correctFirst+' of '+Object.keys(old.objectiveFirst||{}).length+' objectively checked questions answered independently on first attempt.</p>';
- h+='<div class="k-mini-stats"><span><strong>'+Object.keys(old.first).length+'</strong> unique questions</span><span><strong>'+repeat+'</strong> revisited</span><span><strong>'+(old.guidedFirst||0)+'</strong> answered with help</span><span><strong>'+(old.quickChecksPassed||0)+'/'+(old.quickChecksSeen||0)+'</strong> quick checks without help</span>'+((old.selfReviewed||0)?'<span><strong>'+old.selfReviewed+'</strong> explanations self-reviewed</span>':'')+'</div><div class="k-action-grid"><a class="k-action teal" href="#challenge/'+old.unit+'/weak"><span class="k-icon">'+icon("rotate")+'</span><span><strong>Fix weak areas</strong><small>Practise questions you missed</small></span></a><a class="k-action blue" href="#challenge/'+old.unit+'"><span class="k-icon">'+icon("grid")+'</span><span><strong>Choose another set</strong><small>Topic or mixed practice</small></span></a></div></div>';show(h);
+ h+='<div class="k-mini-stats"><span><strong>'+Object.keys(old.first).length+'</strong> unique questions</span><span><strong>'+repeat+'</strong> revisited</span><span><strong>'+(old.guidedFirst||0)+'</strong> answered with help</span><span><strong>'+(old.quickChecksPassed||0)+'/'+(old.quickChecksSeen||0)+'</strong> quick checks without help</span>'+((old.selfReviewed||0)?'<span><strong>'+old.selfReviewed+'</strong> explanations self-reviewed</span>':'')+'</div><div class="k-action-grid"><a class="k-action teal" href="#challenge/'+old.unit+'/weak"><span class="k-icon">'+icon("rotate")+'</span><span><strong>Fix weak areas</strong><small>Practise questions you missed</small></span></a><a class="k-action blue" href="#challenge/'+old.unit+'"><span class="k-icon">'+icon("grid")+'</span><span><strong>Choose another set</strong><small>Topic or mixed practice</small></span></a></div>'+skillReturnLink(old.returnTo)+'</div>';show(h);
 }
 function route(r,renderer){
  render=renderer;lastRoute=r;
  if(r==="skills"||r.startsWith("skills/"))return skillRoute(r);
  if(r==="challenge")return landing();
  if(r==="knowledge")return knowledgeLanding();
- var m=/^challenge\/(f17[0-7])(?:\/([a-z0-9.-]+))?$/.exec(r);
+ var m=/^challenge\/(f17[0-7])(?:\/([a-z0-9.-]+))?(?:\?from=(catchup\/f17[0-7]\/[a-z0-9.]+(?:\/\d+)?))?$/.exec(r);
  if(!m)return landing();
- var unit=m[1],scope=m[2]||null;
+ var unit=m[1],scope=m[2]||null,origin=m[3];
  if(!scope){visible=false;return intro(unit);}
- var old=session||restore();
- if(old&&old.route===r){
+ if(origin){
+  var source=origin.split("/");
+  if(source[1]!==unit||source[2]!==scope||!/^(?:a[1-5]|\d+(?:\.\d+)*)$/.test(scope)||!filter(unit,scope).length)return intro(unit);
+ }
+ var old=sessionKey(session)===(origin?topicKey(unit,scope):SK)?session:null;
+ old=old||restore(origin?topicKey(unit,scope):SK);
+ if(origin&&!old)old=restore();
+ if(old&&old.unit===unit&&old.scope===scope&&(origin||old.route===r||old.returnTo&&!old.topicContext&&!old.skillId)){
   // An unstarted legacy Quick Mix may still open on a random hard question.
   if(scope==="all"&&!old.quickMixVersion&&old.index===0&&old.phase==="ask"&&!Object.keys(old.first||{}).length)return makeSession(unit,scope,r);
-  session=old;return drawQuestion();}
- return makeSession(unit,scope,r);
+  session=old;
+  if(origin){session.returnTo=origin;session.route=r;save();}
+  return drawQuestion();
+ }
+ return makeSession(unit,scope,r,origin);
 }
 main.addEventListener("change",function(e){
  if(session&&visible&&e.target.matches("[data-review-criterion]")){saveReviewField(e.target);return;}
@@ -801,6 +821,8 @@ main.addEventListener("click",function(e){
  var repeatPoint=e.target.closest("[data-repeat-point]");if(repeatPoint&&ladders){var point=ladders.get(repeatPoint.getAttribute("data-repeat-point"));if(point)return makeSession(point.unit,point.id,'challenge/'+point.unit+'/'+point.id);}
  if(start&&skills){var sk=skills.get(start.getAttribute("data-start-skill"));var path=parseSkillRoute(lastRoute);if(sk&&path&&path.skillId===sk.id&&path.unit===sk.unit)return startSkill(sk,lastRoute);}
  if(!session||!visible)return;
+ var reteach=e.target.closest("[data-reteach-to]");
+ if(reteach){session.reteachTo=reteach.dataset.reteachTo;save();}
  var move=e.target.closest("[data-move]");
  if(move){var q=current();if(!q||q.type!=="order")return;
   var a=session.answers[q.id],i=Number(move.dataset.pos),j=i+(move.dataset.move==="up"?-1:1);
@@ -819,5 +841,5 @@ main.addEventListener("click",function(e){
 });
 main.addEventListener("keydown",function(e){if(e.target&&e.target.closest&&e.target.closest('[data-k-action="hint"]'))return;if(e.key!=="Tab"&&e.key!=="Shift")noteAnswerActivity();});
 window.addEventListener("beforeunload",function(e){if(isActive()){e.preventDefault();e.returnValue="";}});
-window.KeystoneHumanChallenge={route:route,isActive:isActive,discard:discard,pause:pause,stats:unitStats,questionCount:all.length,types:Array.from(new Set(all.map(function(q){return q.type;}))),icon:icon,localSessionKeys:function(){return skills?skills.definitions.map(function(skill){return contextualKey(skill.id);}):[];},hasResume:function(){return !!savedSession();},resumeRoute:function(){var old=savedSession();return old?old.route:null;}};
+window.KeystoneHumanChallenge={route:route,isActive:isActive,discard:discard,pause:pause,stats:unitStats,questionCount:all.length,types:Array.from(new Set(all.map(function(q){return q.type;}))),icon:icon,localSessionKeys:localSessionKeys,hasResume:function(){return !!savedSession();},resumeRoute:function(origin){var old=savedSession(origin);return old?old.route:null;}};
 })();

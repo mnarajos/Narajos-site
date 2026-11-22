@@ -9,7 +9,7 @@ function elem(id){if(id==="main")return main;return elements[id]||(elements[id]=
 const document={getElementById:elem,querySelectorAll(){return[];},addEventListener(name,fn){events["doc:"+name]=fn;},createElement(){return {className:"",setAttribute(){},textContent:""};}};
 const location={hash:"#home",assign(x){this.hash=x;}};
 const window={addEventListener(name,fn){events[name]=fn;},scrollTo(){}};
-const store={getItem(k){return data.get(k)||null;},setItem(k,v){data.set(k,String(v));},removeItem(k){data.delete(k);}};
+const store={get length(){return data.size;},key(i){return [...data.keys()][i]||null;},getItem(k){return data.get(k)||null;},setItem(k,v){data.set(k,String(v));},removeItem(k){data.delete(k);}};
 const c=vm.createContext({window,document,location,localStorage:store,Date,Math,console,setTimeout:fn=>fn()});
 function load(p){vm.runInContext(read(p),c,{filename:p});}
 load("assets/spaced-review.js");
@@ -42,6 +42,29 @@ assert(help.includes("Vaccine types")&&help.includes("Key idea 1"),"Vaccine type
 companion.route("catchup/f171",h=>{help=h;});
 assert(help.includes("Immune dysfunction")&&help.includes("Vaccine types"),"Missing F171 subsections from catch-up navigation");
 
+// Every generated topic practice link must open a queue at the requested scope.
+for(const unit of ["f170","f171","f172","f173","f174","f175","f176","f177"]){
+ companion.route("catchup/"+unit,h=>{help=h;});
+ const topics=[...new Set([...help.matchAll(/href="#(catchup\/f17[0-7]\/[a-z0-9.]+)"/g)].map(m=>m[1]))];
+ assert(topics.length>=3,unit);
+ for(const topic of topics){
+  companion.route(topic,h=>{help=h;});
+  const href=help.match(/href="#(challenge\/f17[0-7]\/[a-z0-9.]+\?from=catchup[^"]+)"/)?.[1];
+  assert(href,"No practice route for "+topic);
+  const scope=topic.split("/")[2];
+  app.route(href,h=>{main.innerHTML=h;});
+  const state=JSON.parse(data.get("narajos-human-challenge-v2-session-topic-"+unit+"/"+scope));
+  assert.equal(state.returnTo,topic);
+  assert(main.innerHTML.includes('href="#'+topic+'"')&&main.innerHTML.includes("Return to the catch-up lesson"));
+  assert(state.queue.every(id=>{
+   const q=db.questions.find(q=>q.id===id);
+   return q&&q.unit===unit&&(scope.startsWith("a")?q.area===+scope.slice(1):q.section===scope);
+  }),topic);
+  app.pause();app.route(href,h=>{main.innerHTML=h;});
+  assert.deepEqual(JSON.parse(data.get("narajos-human-challenge-v2-session-topic-"+unit+"/"+scope)).queue,state.queue);
+  app.discard();
+ }
+}
 assert.equal(db.questions.length,552);
 assert.equal(db.questions.filter(q=>q.unit==="f170").length,252);
 assert.equal(db.questions.filter(q=>q.unit==="f171").length,222);
