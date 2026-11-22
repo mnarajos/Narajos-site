@@ -1,6 +1,6 @@
 import { readCatchup, saveCatchup } from "./school-catchup-progress.js";
 
-const lessonStages = ["Notice and explain", "Practise with a clue", "Try an unfamiliar example"];
+const lessonStages = ["Notice", "Practise", "Apply it"];
 
 export function question(prompt, answer, reasoning, ...distractors) {
   return {
@@ -58,55 +58,50 @@ export function mountJourney(host, model, lesson) {
   const storageNote = element("p", "", "school-storage-note");
   const dialog = element("dialog", "", "school-check");
   dialog.setAttribute("aria-labelledby", "school-check-heading");
-  dialog.setAttribute("aria-describedby", "school-check-prompt");
 
-  const topic = link("Year " + year + " catch-up topics", "/science-catch-up/?year=" + year, "school-journey-back");
-  journey.append(topic, element("h2", hook), versions, progress, checkList, storageNote, dialog);
+  journey.append(element("h2", hook), versions, progress, checkList, storageNote, dialog);
   host.before(journey);
-  const cue = element("p", "When you’re ready, try the next check.");
-  const shortcut = button("Open the current check", showCheck, "school-primary");
+  const shortcut = button("Answer check", showCheck, "school-primary");
   const actions = element("div", "", "school-journey-actions");
-  actions.append(cue, shortcut);
+  actions.append(shortcut);
   model.after(actions);
 
   let viewOnly = false;
   let shownIndex = state.step;
-  let storageAvailable = true;
-
   function write() {
-    storageAvailable = saveCatchup(progressKey, state);
-    if (!storageAvailable) storageNote.textContent = "Progress is available while this page is open.";
+    storageNote.textContent = saveCatchup(progressKey, state) ? "" : "Progress can only be kept while this page is open.";
   }
 
   function renderStages() {
     versions.textContent = state.done ? "Lesson complete" : "Check " + (state.step + 1) + " of " + steps.length;
     progress.value = state.done ? steps.length : state.step;
-    storageNote.textContent = state.started ? (storageAvailable ? "Progress is saved in this browser." : "Progress is available while this page is open.") : "";
     checkList.replaceChildren();
-    for (const [index, step] of steps.entries()) {
-      const stage = element("details");
-      const completed = state.done || index < state.step;
-      const active = !state.done && index === state.step;
-      stage.open = active;
-      stage.append(element("summary", step.title || lessonStages[index]));
-      if (active) {
-        stage.append(element("p", step.notice || "Use the lesson model or example to think this through."),
-          link("Look at the model", "#" + model.id, "school-secondary"),
-          button(state.open ? "Resume this check" : "Open check", showCheck, "school-primary"));
-      } else if (completed) {
-        stage.append(button("Review this check", () => openCheck(index, true)));
-      } else {
-        stage.append(element("p", "Complete the previous check to open this one."));
-      }
+    const completeCount = state.done ? steps.length : state.step;
+    if (!state.done) {
+      const step = steps[state.step];
+      const stage = element("section", "", "school-current-stage");
+      const heading = element("h3", lessonStages[state.step]);
+      heading.tabIndex = -1;
+      stage.append(heading);
+      if (step.notice) stage.append(element("p", step.notice));
+      stage.append(link("See evidence", "#" + model.id, "school-secondary"),
+        button(state.open ? "Resume this check" : "Open check", showCheck, "school-primary"));
       checkList.append(stage);
     }
     shortcut.hidden = Boolean(state.done);
-    cue.hidden = Boolean(state.done);
     if (state.done) {
       const next = element("div", "", "school-completion");
       if (code) next.append(link("Practise " + code + " in GCSE revision", "/gcse/#topic-" + code.toLowerCase(), "school-primary"));
       next.append(link("Choose another Year " + year + " topic", "/science-catch-up/?year=" + year, "school-secondary"));
       checkList.append(next);
+    }
+    if (completeCount) {
+      const review = element("details");
+      review.append(element("summary", "Review answers"));
+      for (let index = 0; index < completeCount; index++) {
+        review.append(button("Check " + (index + 1), () => openCheck(index, true)));
+      }
+      checkList.append(review);
     }
   }
 
@@ -134,28 +129,29 @@ export function mountJourney(host, model, lesson) {
   function pause() {
     if (!viewOnly) write();
     dialog.close();
+    if (viewOnly) return;
     renderStages();
-    checkList.querySelector("details[open] button")?.focus({preventScroll: true});
+    checkList.querySelector(".school-current-stage button")?.focus({preventScroll: true});
   }
 
   function renderCheck() {
     const q = currentQuestion();
-    const heading = element("h2", state.repeating && !viewOnly ? "Try one more on your own" : (q.title || lessonStages[shownIndex]));
+    const heading = element("h2", q.prompt, "school-check-question");
     heading.id = "school-check-heading";
     heading.tabIndex = -1;
-    const prompt = element("p", q.prompt, "school-check-question");
-    prompt.id = "school-check-prompt";
-    dialog.replaceChildren(heading, prompt);
+    dialog.replaceChildren(heading);
+    if (state.repeating && !viewOnly) heading.before(element("p", "Try one more on your own", "school-check-context"));
     if (viewOnly) {
       dialog.append(element("p", q.answer), element("p", q.reasoning));
-      for (const note of state.notes?.[shownIndex] || []) dialog.append(element("p", "Your thinking. " + note));
+      const notes = state.notes?.[shownIndex] || [];
+      if (notes.length) dialog.append(element("h3", "Saved notes"), ...notes.map(note => element("p", note)));
       dialog.append(button("Close review", pause));
       return;
     }
 
     const form = element("form");
     const choices = element("fieldset", "", "school-check-options");
-    choices.append(element("legend", "Choose your answer"));
+    choices.append(element("legend", "Choose your answer", "school-visually-hidden"));
     const options = [...q.options];
     const shift = [...id].reduce((n, letter) => n + letter.charCodeAt(0), 0);
     options.splice((shift + shownIndex + (state.repeating ? 1 : 0)) % (options.length + 1), 0, {label: q.answer});
@@ -172,23 +168,6 @@ export function mountJourney(host, model, lesson) {
       choices.append(label);
     }
 
-    const thought = element("details", "", "school-thought");
-    thought.open = Boolean(state.thoughtOpen);
-    thought.append(element("summary", "Write down your thinking"));
-    const label = element("label", "Your thinking");
-    const draft = document.createElement("textarea");
-    draft.rows = 3;
-    draft.maxLength = 2000;
-    draft.value = state.draft || "";
-    label.append(draft);
-    thought.append(label);
-    thought.addEventListener("toggle", () => {
-      if (!thought.isConnected) return;
-      state.thoughtOpen = thought.open;
-      write();
-    });
-    draft.addEventListener("input", () => { state.draft = draft.value; write(); });
-
     const result = element("p", state.feedback || "", "school-check-feedback");
     result.setAttribute("role", "status");
     const submit = element("button", "Check answer", "school-primary");
@@ -199,14 +178,19 @@ export function mountJourney(host, model, lesson) {
     const next = button(nextLabel(), advance, "school-primary");
     next.hidden = !state.correct;
     const tools = element("div", "", "school-journey-actions");
-    tools.append(submit, next, button("Look at the model", () => {
+    tools.append(submit, next, button("See evidence", () => {
       if (!state.correct) state.helped = true;
       pause();
       model.scrollIntoView({block: "start"});
       model.focus({preventScroll: true});
     }), button("Save and pause", pause));
-    if (shownIndex === steps.length - 1) form.append(element("p", "Say or write your own answer before you choose."));
-    form.append(choices, thought, result, tools);
+    if (shownIndex === steps.length - 1 && !state.repeating) form.append(element("p", "Say how you know, then choose."));
+    form.append(choices, result, tools);
+    if (state.draft?.trim()) {
+      const note = element("details");
+      note.append(element("summary", "Saved note"), element("p", state.draft));
+      form.append(note);
+    }
     if (q.hint && !state.repeating) {
       const hint = element("details");
       hint.append(element("summary", "Need a clue?"), element("p", q.hint));
@@ -253,7 +237,7 @@ export function mountJourney(host, model, lesson) {
       state.notes[state.step] ||= [];
       state.notes[state.step].push(state.draft.trim());
     }
-    Object.assign(state, {selected: "", feedback: "", draft: "", thoughtOpen: false,
+    Object.assign(state, {selected: "", feedback: "", draft: "",
       hintOpen: false, correct: false, helped: false, repeating: Boolean(repeat)});
     if (repeat) {
       write();
@@ -264,7 +248,7 @@ export function mountJourney(host, model, lesson) {
       if (atEnd) state.done = true;
       else state.step++;
       pause();
-      checkList.querySelector(state.done ? ".school-completion a" : "details[open] summary")?.focus();
+      checkList.querySelector(state.done ? ".school-completion a" : ".school-current-stage h3")?.focus();
     }
   }
 

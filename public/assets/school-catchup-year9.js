@@ -25,9 +25,7 @@ export const year9 = {
     "Why might a piece of potato gain mass in water?",
     "Which way do more water molecules cross the membrane?",
     "Osmosis is the net movement of water molecules through a partially permeable membrane from a more dilute to a more concentrated solution.",
-    ["A simple membrane model", ["Side A", "Partially permeable membrane", "Side B"], [
-      ["More dilute solution", "Water can cross in both directions", "More concentrated solution"],
-      ["Net movement starts here", "Net water movement →", "Net movement is towards this side"]]],
+    null,
     [
       q("What moves through the membrane by osmosis?", "Water molecules", "Osmosis describes movement of water through a partially permeable membrane.", ["Dissolved sugar", "Osmosis describes the water, not the movement of solute."], "All particles in the solution"),
       guided("Find the dilute side first. That is where the net movement starts.",
@@ -38,7 +36,7 @@ export const year9 = {
 
   "active-transport": lesson("B1", "How do roots take up mineral ions?",
     "Can mineral ions enter a root cell when there are already more ions inside it?",
-    "Find the side with fewer ions before tracing their movement.",
+    "Find the lower ion concentration, then trace the ions.",
     "Active transport can move substances against their concentration gradient. It requires energy from respiration.",
     ["Two ways of moving substances", ["Process", "Direction", "Energy from respiration needed?"], [
       ["Diffusion", "Higher to lower concentration overall", "No"],
@@ -55,10 +53,7 @@ export const year9 = {
     "How can each new cell get a full copy of the genetic information?",
     "Follow the DNA from one cell to two.",
     "The cell copies its DNA before mitosis. In mitosis, the copies separate into two nuclei. The cell then divides into two genetically identical cells.",
-    ["From one cell to two", ["Stage", "What happens"], [
-      ["Before mitosis", "The cell grows and copies its DNA"],
-      ["Mitosis", "The chromosome copies separate into two nuclei"],
-      ["Cell division", "The cell divides to form two cells"]]],
+    null,
     [
       q("What must happen to DNA before its copies separate?", "It must be copied.", "Both new nuclei need a complete set of genetic information.", "It must be halved without copying.", "It must leave both nuclei."),
       guided("Find the step where the chromosome copies separate.",
@@ -99,10 +94,7 @@ export const year9 = {
     "A ball stops moving after it hits the ground. Where has its energy gone?",
     "Follow the energy before, during and after the fall.",
     "Energy is conserved. It is transferred between stores and can spread to the surroundings, where less of it remains useful.",
-    ["A ball is dropped and comes to rest", ["Moment", "Store or transfer to look for"], [
-      ["Before release", "Gravitational potential store of the ball and Earth"],
-      ["During the fall", "Energy is transferred into the kinetic store"],
-      ["During and after impact", "Energy is transferred to thermal stores. Some is transferred by sound."]]],
+    null,
     [
       q("Which store gains energy while the ball speeds up?", "Kinetic store", "A moving object has energy in its kinetic store.", "Chemical store", "Gravitational potential store"),
       guided("The final speed is zero. Look for transfers made during the impact.",
@@ -146,9 +138,7 @@ export const year9 = {
     "If warmth can speed up a reaction, why can more heat slow an enzyme down?",
     "Compare the active site before and after strong heating.",
     "An enzyme is a biological catalyst. Its substrate fits its active site. High temperatures can change the active site’s shape, so fewer substrates bind.",
-    ["A model of enzyme action", ["State", "Active site", "Result"], [
-      ["At a suitable temperature", "Shape is complementary to the substrate", "Substrates can bind and react"],
-      ["After denaturation by high heat", "Shape has changed", "Fewer substrates can bind"]]],
+    null,
     [
       q("Where does a substrate normally bind?", "At the enzyme’s active site", "The substrate can bind where the shapes are complementary.", "At every part of the enzyme", "On a cell wall instead"),
       guided("Compare the shape of the active site in both rows.",
@@ -161,9 +151,7 @@ export const year9 = {
     "Why can the same salt conduct when molten and fail to conduct when solid?",
     "In which state can ions move through the salt?",
     "An ionic compound contains oppositely charged ions. An electric current can flow when the ions are able to move and carry charge.",
-    ["The same ionic compound in two states", ["State", "Ions", "Conduction"], [
-      ["Solid", "Held in fixed positions in a lattice", "No mobile ions to carry the current"],
-      ["Molten", "Free to move past one another", "Mobile ions can carry the current"]]],
+    null,
     [
       q("Which particles can carry charge in molten sodium chloride?", "Moving ions", "Both positive and negative ions can move through the liquid.", "Uncharged salt molecules", "Only loose protons"),
       guided("The ions are charged in both rows. Which property changes when the solid melts?",

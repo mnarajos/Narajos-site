@@ -42,6 +42,7 @@ function link(text, href, className) {
 
 const yearNav = document.querySelector("[data-catchup-years]");
 const yearSelected = years.includes(year);
+if (!yearSelected) yearNav.classList.add("school-year-chooser");
 
 const main = document.querySelector("[data-catchup-catalogue]");
 const saved = latestCatchup(yearSelected ? year : undefined);
@@ -60,7 +61,7 @@ if (yearSelected) {
   document.title = "Year " + year + " Science Catch-up | Narajos";
   document.querySelector("h1").textContent = "Year " + year + " Science";
   const headings = element("div", "", "school-section-heading");
-  headings.append(element("h2", "Catch-up topics"));
+  headings.append(element("h2", Number(year) >= 10 ? "GCSE topics" : "Catch-up topics"));
   if (Number(year) >= 9) headings.append(link("Open GCSE revision", "/gcse/", "school-secondary"));
   main.append(headings);
   const list = element("ul", "", "school-topic-list");

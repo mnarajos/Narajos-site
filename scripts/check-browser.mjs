@@ -53,9 +53,9 @@ try{
  pilotPage.on("pageerror",err=>errors.push("Science Catch-up: "+err.message));
  await pilotPage.goto(base+"/science-catch-up/");
  const yearNavigation=pilotPage.getByRole("navigation",{name:"Choose a year group"});
- await yearNavigation.getByRole("link",{name:"Year 7",exact:true}).waitFor();
+ await yearNavigation.getByRole("link",{name:/^Year 7/}).waitFor();
  assert.equal(await yearNavigation.getByRole("link").count(),5);
- await yearNavigation.getByRole("link",{name:"Year 7",exact:true}).click();
+ await yearNavigation.getByRole("link",{name:/^Year 7/}).click();
  await pilotPage.getByRole("heading",{name:"Year 7 Science",exact:true}).waitFor();
  assert.equal(await pilotPage.locator(".school-topic-list > li").count(),12);
  assert.equal(await pilotPage.getByRole("link",{name:"Open GCSE revision"}).count(),0);
@@ -69,6 +69,7 @@ try{
  assert.equal(await pilotPage.getByRole("link",{name:"Open GCSE revision"}).count(),0);
  await pilotPage.goto(base+"/ks3/cells/");
  assert(await pilotPage.getByRole("heading",{name:"What gives away the plant cell in a pair of microscope photographs?"}).isVisible());
+ assert.match(await pilotPage.locator(".ks3-cell-functions").first().innerText(),/Mitochondria\s+are the site of aerobic respiration/);
  await pilotPage.goto(base+"/science-catch-up/?year=9");
  assert.equal(await pilotPage.locator(".school-topic-list > li").count(),5);
  await pilotPage.evaluate(()=>{
@@ -85,20 +86,29 @@ try{
  }
  await pilotPage.goto(base+"/science-catch-up/lesson/?topic=osmosis");
  const guide=pilotPage.locator(".school-journey");
- let check=guide.getByRole("dialog");
+ const check=guide.getByRole("dialog");
+ assert.equal(await pilotPage.locator(".school-lesson-table").count(),0);
+ assert(await pilotPage.getByText("Net water movement A → B",{exact:true}).isVisible());
  await guide.getByRole("button",{name:"Open check",exact:true}).click();
+ assert(await check.getByRole("heading",{name:"What moves through the membrane by osmosis?",exact:true}).isVisible());
  assert.equal(await check.getByRole("button",{name:"Continue",exact:true}).count(),0);
+ assert.equal(await check.getByRole("textbox").count(),0);
  await check.getByRole("radio",{name:"Dissolved sugar",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
  await check.getByRole("status").filter({hasText:"Osmosis describes the water"}).waitFor();
  await screen(pilotPage,"year-9-catch-up-check-mobile");
- await check.getByText("Write down your thinking",{exact:true}).click();
- await check.getByLabel("Your thinking",{exact:true}).fill("Water can move in both directions.");
  await check.getByRole("button",{name:"Save and pause",exact:true}).click();
+ await pilotPage.evaluate(()=>{
+  const key="narajos.catchup.v1.9.osmosis";
+  const saved=JSON.parse(localStorage.getItem(key));
+  localStorage.setItem(key,JSON.stringify({...saved,draft:"Water can move in both directions."}));
+ });
  await pilotPage.goto(base+"/science-catch-up/?year=9");
  await pilotPage.getByRole("link",{name:"Continue catch-up",exact:true}).click();
  await guide.getByRole("button",{name:"Resume this check",exact:true}).click();
- assert.equal(await check.getByLabel("Your thinking",{exact:true}).inputValue(),"Water can move in both directions.");
+ assert(await check.getByRole("radio",{name:"Dissolved sugar",exact:true}).isChecked());
+ await check.getByText("Saved note",{exact:true}).click();
+ assert(await check.getByText("Water can move in both directions.",{exact:true}).isVisible());
  await check.getByRole("radio",{name:"Water molecules",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
  await check.getByRole("button",{name:"Continue",exact:true}).click();
@@ -120,6 +130,9 @@ try{
  assert.equal(await guide.getByRole("link",{name:"Practise B1 in GCSE revision",exact:true}).getAttribute("href"),"/gcse/#topic-b1");
  await pilotPage.reload();
  await guide.getByText("Lesson complete",{exact:true}).waitFor();
+ await guide.getByText("Review answers",{exact:true}).click();
+ await guide.getByRole("button",{name:"Check 1",exact:true}).click();
+ assert(await check.getByText("Water can move in both directions.",{exact:true}).isVisible());
  await pilotPage.goto(base+"/science-catch-up/?year=10");
  assert(await pilotPage.getByRole("link",{name:"Open GCSE revision"}).isVisible());
  await pilotPage.goto(base+"/science-catch-up/?year=11");
@@ -995,8 +1008,8 @@ try{
  await navPage.getByRole("status").filter({hasText:"The right end drops."}).waitFor();
  await navPage.goto(year8Paths[10]);
  await navPage.getByRole("link",{name:"Choose another Year 8 topic"}).click();
- await navPage.waitForURL(base+"/ks3/#year-8");
- await ks3Menu8.locator("ul").waitFor();
+ await navPage.waitForURL(base+"/science-catch-up/?year=8");
+ await navPage.getByRole("heading",{name:"Year 8 Science",exact:true}).waitFor();
  await navPage.addInitScript(()=>{
   window.collisionClicks=0;
   window.AudioContext=class {

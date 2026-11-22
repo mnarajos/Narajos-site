@@ -20,25 +20,6 @@ if (Object.hasOwn(year9, id)) {
   title.textContent = "Look at the evidence";
   const cue = document.createElement("p");
   cue.textContent = lesson.notice;
-  const [caption, columns, rows] = lesson.visual;
-  const box = document.createElement("div");
-  box.className = "writing-data";
-  const table = document.createElement("table");
-  table.className = "school-lesson-table";
-  table.createCaption().textContent = caption;
-  const headings = table.createTHead().insertRow();
-  for (const text of columns) {
-    const column = document.createElement("th");
-    column.scope = "col";
-    column.textContent = text;
-    headings.append(column);
-  }
-  const body = table.createTBody();
-  for (const row of rows) {
-    const tr = body.insertRow();
-    for (const text of row) tr.insertCell().textContent = text;
-  }
-  box.append(table);
   const idea = document.createElement("p");
   const label = document.createElement("strong");
   label.textContent = "The key idea. ";
@@ -46,7 +27,29 @@ if (Object.hasOwn(year9, id)) {
   model.append(title, cue);
   const visual = year9Visual(id);
   if (visual) model.append(visual);
-  model.append(box, idea);
+  if (lesson.visual) {
+    const [caption, columns, rows] = lesson.visual;
+    const box = document.createElement("div");
+    box.className = "writing-data";
+    const table = document.createElement("table");
+    table.className = "school-lesson-table";
+    table.createCaption().textContent = caption;
+    const headings = table.createTHead().insertRow();
+    for (const text of columns) {
+      const column = document.createElement("th");
+      column.scope = "col";
+      column.textContent = text;
+      headings.append(column);
+    }
+    const body = table.createTBody();
+    for (const row of rows) {
+      const tr = body.insertRow();
+      for (const text of row) tr.insertCell().textContent = text;
+    }
+    box.append(table);
+    model.append(box);
+  }
+  model.append(idea);
   host.replaceChildren(model);
   mountJourney(model, model, {...lesson, id});
 }

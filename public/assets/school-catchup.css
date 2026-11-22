@@ -2,7 +2,7 @@
 .school-catchup h1 { margin: .45rem 0 .35rem; }
 .school-breadcrumb { display: inline-block; padding-block: .3rem; font-weight: 650; }
 .school-years { display: flex; flex-wrap: wrap; gap: .45rem; margin-block: 1.15rem; }
-.school-years a, .school-primary, .school-secondary {
+.school-years:not(.school-year-chooser) a, .school-primary, .school-secondary {
   display: inline-flex; align-items: center; min-height: 44px; padding: .38rem .72rem;
   color: #174858; border: 1px solid #9ebcbe; background: white; border-radius: .5rem;
   font: inherit; font-weight: 675; text-decoration: none; cursor: pointer;
@@ -38,10 +38,11 @@
   padding: clamp(.7rem,2vw,1rem); margin-block: 1rem; color: #203948;
 }
 .school-journey h2 { margin: .55rem 0 .3rem; font-size: clamp(1.15rem,3.2vw,1.55rem); }
-.school-journey-back { color: #175466; font-weight: 650; }
 .school-journey-status, .school-storage-note { margin: .35rem 0; }
 .school-storage-note { font-size: .88rem; }
+.school-storage-note:empty { display: none; }
 .school-progress { display: block; width: min(100%, 20rem); height: .9rem; accent-color: #175466; margin: .3rem 0 .55rem; }
+.school-current-stage h3 { margin: .55rem 0 .3rem; }
 .school-stages details { border-top: 1px solid #c9dada; padding: .25rem 0; }
 .school-stages summary, .school-check summary { cursor: pointer; padding: .62rem 0; min-height: 42px; font-weight: 700; }
 .school-stages p { margin: .18rem 0 .4rem; }
@@ -53,15 +54,14 @@
   border: 1px solid #77969d; border-radius: .8rem; padding: clamp(.7rem,2.5vw,1.3rem); overflow: auto;
 }
 .school-check::backdrop { background: #142b37b8; }
-.school-check h2 { margin: 0 0 .5rem; font-size: clamp(1.2rem,4vw,1.6rem); }
-.school-check-question { font-size: 1.07rem; font-weight: 650; margin: .6rem 0 .8rem; }
+.school-check h2.school-check-question { margin: 0 0 .65rem; font-size: clamp(1.2rem,4vw,1.6rem); }
+.school-check-context { margin: 0 0 .3rem; }
 .school-check fieldset { border: 0; padding: 0; margin-inline: 0; min-width: 0; }
-.school-check legend { font-weight: 650; margin-block: .3rem; }
+.school-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .school-check-options label { display: flex; align-items: center; gap: .55rem; border: 1px solid #a9c0c3; border-radius: .45rem; padding: .5rem .6rem; min-height: 44px; margin-block: .32rem; cursor: pointer; }
 .school-check-options label:has(:checked) { background: #e5f1f1; border-color: #258078; }
 .school-check-options input { flex: none; accent-color: #175466; }
 .school-check-feedback:not(:empty) { background: #ebf5f4; padding: .5rem .65rem; margin-block: .5rem; border-inline-start: 3px solid #41857d; }
-.school-thought textarea { display: block; box-sizing: border-box; width: 100%; resize: vertical; font: inherit; margin-block: .3rem; }
 .school-lesson-table { width: 100%; max-width: 38rem; }
 .school-lesson-table caption { text-align: left; font-weight: 700; }
 .school-lesson-table :is(td,th) { overflow-wrap: anywhere; }
