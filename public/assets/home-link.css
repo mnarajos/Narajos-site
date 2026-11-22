@@ -5,4 +5,12 @@ a.narajos-home span{display:inline;letter-spacing:0}
 a.narajos-home:hover{color:#9b4614;border-color:#c96a25;background:#fff9f3;text-decoration:none}
 a.narajos-home:focus-visible{outline:3px solid #df7928;outline-offset:3px}
 header.brand>a.narajos-home{margin-left:auto}
+
+/* Match the site header accent without affecting the simulation controls. */
+header.top:has(> .top-inner > a.narajos-home),
+header.top:has(> .bar > nav[aria-label="Human Biology app navigation"]),
+header.brand:has(> h1 .eyebrow):has(> a.narajos-home) {
+  background: color-mix(in srgb, var(--card, #fff) 93%, #daa36f);
+  box-shadow: inset 0 3px #c46e32;
+}
 @media print{a.narajos-home{display:none}}
