@@ -25,7 +25,7 @@ export async function checkHumanCatchup(browser, base) {
       await open("catchup/" + key);
       await page.getByText(lesson.goal, { exact: true }).waitFor();
       assert(await page.getByRole("heading", { name: "Understand the idea" }).isVisible(), key);
-      if (lesson.revision) {
+      if (lesson.revision && (key.startsWith("f170/") || key.startsWith("f171/"))) {
         const buildLink = page.getByRole("link", { name: "Build understanding", exact: true });
         const href = await buildLink.getAttribute("href");
         assert(href.endsWith("?from=catchup/" + key), key);
@@ -273,7 +273,7 @@ export async function checkHumanCatchup(browser, base) {
     assert(await reproduction.locator("#krp-implant").isHidden());
 
     const guide = reproduction.locator(".krp-guide");
-    await guide.locator("summary").press("Enter");
+    await guide.locator(":scope > summary").press("Enter");
     const checkpoint = guide.getByLabel("Revisit a stage");
     const nextCheckpoint = guide.getByRole("button", { name: "Next checkpoint" });
     const observation = guide.locator(".krp-observation");
@@ -334,6 +334,30 @@ export async function checkHumanCatchup(browser, base) {
     })).violations.map(issue => issue.id));
     assert.deepEqual(reproductionIssues, [], "F175 simulation accessibility findings");
 
+    const apply = guide.getByRole("link", { name: "Apply to a different situation" });
+    const transportRoute = "challenge/f175/f175-transport?from=catchup/f175/a1";
+    assert.equal(await apply.getAttribute("href"), "#" + transportRoute);
+    assert(!(await saved("narajos-human-challenge-v2-progress"))?.["f175-transport"], "Watching the model must not record an assessment result");
+    await apply.press("Enter");
+    const caseStem = page.getByText(/fimbriae are held further from the ovary/);
+    const transportWrong = page.getByRole("radio", { name: /Release of the secondary oocyte from its follicle/ });
+    await caseStem.waitFor();
+    await transportWrong.check();
+    await page.getByRole("button", { name: /Check answer/ }).press("Enter");
+    const transportFeedback = page.getByText(/Find the next step after release that depends on the fimbriae/);
+    await transportFeedback.waitFor();
+    await page.getByRole("link", { name: "Revisit how the oocyte enters the oviduct" }).press("Enter");
+    await page.locator("#leave-confirm").press("Enter");
+    await checkpoint.waitFor();
+    assert.equal(await checkpoint.inputValue(), "ovulation");
+    assert(await checkpoint.evaluate(select => document.activeElement === select));
+    await guide.getByText("Review this stage", { exact: true }).press("Enter");
+    await guide.getByText(/finger-like fimbriae help receive/).first().waitFor();
+    await page.getByRole("link", { name: "Return to your unfinished question set" }).press("Enter");
+    await transportFeedback.waitFor();
+    assert.equal(new URL(page.url()).hash, "#" + transportRoute);
+    assert.equal((await saved(practiceKey + "-topic-f175/f175-transport")).outcomes[0], "incorrect");
+
     const touch = await browser.newPage({ viewport: { width: 390, height: 780 }, hasTouch: true, reducedMotion: "reduce" });
     try {
       await touch.goto(base + "/human-biology/#catchup/f175/a1/2");
@@ -343,6 +367,12 @@ export async function checkHumanCatchup(browser, base) {
       await touch.getByRole("button", { name: /FSH Develop/ }).tap();
       await touch.getByRole("button", { name: "Next checkpoint" }).tap();
       assert.equal(await touch.getByLabel("Revisit a stage").inputValue(), "ovulation");
+      await touch.goto(base + "/human-biology/#" + transportRoute);
+      await touch.getByRole("radio", { name: /Entry of the released oocyte into the oviduct/ }).locator("..").tap();
+      await touch.getByRole("button", { name: /Check answer/ }).tap();
+      assert.equal(await touch.locator("[data-feedback-heading]").innerText(), "Correct");
+      assert.equal(await touch.evaluate(key => JSON.parse(localStorage.getItem(key)).outcomes[0],
+        practiceKey + "-topic-f175/f175-transport"), "independent");
     } finally {
       await touch.close();
     }

@@ -1049,7 +1049,7 @@ window.KeystoneHumanKnowledge={
       "section": "1.1",
       "type": "single",
       "level": "core",
-      "stem": "Which hormone surge triggers ovulation?",
+      "stem": "A follicle reaches maturity after a rise in FSH. Which signal normally triggers release of its secondary oocyte?",
       "options": [
         "LH",
         "FSH",
@@ -1063,13 +1063,41 @@ window.KeystoneHumanKnowledge={
       "hintCue": "Which pituitary hormone rises sharply just before ovulation?",
       "samAligned": false,
       "knowledgeOnly": true,
-      "assessmentRevision": 1,
+      "assessmentRevision": 2,
       "optionFeedback": [
         null,
         "FSH is important in developing the follicle. Focus on the signal that triggers release.",
         "Rising oestrogen helps bring about the LH surge. The LH surge then acts on the follicle.",
         "Progesterone secretion rises mainly after ovulation and supports the uterine lining."
       ]
+    },
+    {
+      "id": "f175-transport",
+      "unit": "f175",
+      "area": 1,
+      "section": "1.2",
+      "type": "single",
+      "level": "apply",
+      "stem": "In a fictional model, ovulation occurs normally, but the fimbriae are held further from the ovary. Viable sperm reach the nearby oviduct. Which event is most directly made less likely?",
+      "options": [
+        "Movement of sperm from the cervix into the uterine cavity",
+        "Entry of the released oocyte into the oviduct",
+        "Release of the secondary oocyte from its follicle",
+        "Attachment of a blastocyst already in the uterus"
+      ],
+      "correct": 1,
+      "model": "Entry of the released oocyte into the oviduct",
+      "explain": "The oocyte is released near the ovary. The fimbriae help receive it into the oviduct. If it misses the opening, sperm can arrive in the oviduct without meeting the oocyte.",
+      "misconception": "Ovulation releases the oocyte from its follicle. Entry into the oviduct is a separate step.",
+      "hintCue": "Trace the oocyte's short journey from the ovary to the opening of the oviduct.",
+      "optionFeedback": [
+        "The sperm have already passed through the uterine cavity and reached the oviduct. Look at the oocyte's route.",
+        null,
+        "The case says that ovulation occurs normally. Find the next step after release that depends on the fimbriae.",
+        "The fimbriae act before the usual meeting of gametes. Attachment of an existing blastocyst takes place in the uterine lining."
+      ],
+      "samAligned": false,
+      "knowledgeOnly": true
     },
     {
       "id": "f175-hormones",
@@ -1978,7 +2006,13 @@ window.KeystoneHumanKnowledge={
       "misconception": "The oviduct is distinct from the ovary and from the cervix beneath the uterus.",
       "hintCue": "The labelled tube connects the region near an ovary with the uterus.",
       "samAligned": false,
-      "knowledgeOnly": true
+      "knowledgeOnly": true,
+      "optionFeedback": [
+        null,
+        "The cervix is the narrow lower part of the uterus. Follow the line leading to A from beside the ovary.",
+        "The ovary is the oval structure beside A. The arrow identifies the tube extending towards the uterus.",
+        "The vagina is below the cervix. The label points to a tube extending from the upper part of the uterus."
+      ]
     },
     {
       "id": "f176-diagram-brain",

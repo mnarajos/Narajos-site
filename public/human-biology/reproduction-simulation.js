@@ -48,9 +48,11 @@ function guideMarkup(){
   checkpoints.map(step=>'<option value="'+step.id+'">'+step.title+'</option>').join("")+'</select>'+
   '<form><fieldset><legend></legend><div class="krp-options"></div></fieldset>'+
   '<button class="krp-btn" type="submit">Check prediction</button></form>'+
-  '<p class="krp-prediction" role="status"></p><p class="krp-observation" role="status"></p>'+
+  '<p class="krp-prediction" role="status"></p>'+
+  '<details class="krp-anatomy-note krp-explanation"><summary>Review this stage</summary><p></p></details>'+
+  '<p class="krp-observation" role="status"></p>'+
   '<button class="krp-btn" type="button" data-next-checkpoint hidden>Next checkpoint</button>'+
-  '<a data-f175-apply href="#challenge/f175/a1?from=catchup/f175/a1" hidden>Apply to a different situation</a></details>';
+  '<a data-f175-apply href="#challenge/f175/f175-transport?from=catchup/f175/a1" hidden>Apply to a different situation</a></details>';
 }
 function writtenSequence(){
  return '<details class="krp-anatomy-note"><summary>Read the pathway without animation</summary><ol>'+
@@ -61,6 +63,7 @@ function mountGuide(root, observed, withoutFertilisation, onChange, initialStep)
  const select = guide.querySelector("select");
  const form = guide.querySelector("form");
  const feedback = guide.querySelector(".krp-prediction");
+ const explanation = guide.querySelector(".krp-explanation");
  const observation = guide.querySelector(".krp-observation");
  const next = guide.querySelector("[data-next-checkpoint]");
  const apply = guide.querySelector("[data-f175-apply]");
@@ -73,6 +76,7 @@ function mountGuide(root, observed, withoutFertilisation, onChange, initialStep)
   const end = index === checkpoints.length - 1 || (step.id === "fertilisation" && withoutFertilisation());
   const message = answered && seen ? step.observation : "";
   if(observation.textContent !== message) observation.textContent = message;
+  explanation.hidden = Boolean(message);
   next.hidden = !answered || !seen || end;
   apply.hidden = !answered || !seen || !end;
   onChange(guide.open && answered && !seen ? step.action : null);
@@ -84,6 +88,8 @@ function mountGuide(root, observed, withoutFertilisation, onChange, initialStep)
   const step = checkpoints[index];
   select.value = step.id;
   form.querySelector("legend").textContent = step.prompt;
+  explanation.open = false;
+  explanation.querySelector("p").textContent = step.observation;
   form.querySelector("fieldset").disabled = false;
   form.querySelector("button").hidden = false;
   form.querySelector(".krp-options").innerHTML = step.options.map(([label], j)=>
@@ -122,6 +128,7 @@ function mountGuide(root, observed, withoutFertilisation, onChange, initialStep)
  const initialIndex = checkpoints.findIndex(step=>step.id===initialStep);
  guide.open = initialIndex !== -1;
  choose(Math.max(0,initialIndex));
+ if(guide.open)select.focus();
  return {
   update,
   reset:()=>choose(0),

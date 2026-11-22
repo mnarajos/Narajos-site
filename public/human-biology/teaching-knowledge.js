@@ -134,28 +134,29 @@
   const { choice, written } = window.KeystoneHumanTeaching;
   Object.assign(window.KeystoneHumanLessons, {
     "f175/a1": {
-      goal: "Trace the different routes of gametes and place ovulation, fertilisation and implantation in order.",
+      revision: 1,
+      goal: "Trace the routes of the gametes and explain how an interruption can change what happens next.",
       activate: ["Where do sperm and oocytes develop?", "Sperm are produced in seminiferous tubules in the testes and mature in the epididymis. An oocyte develops inside an ovarian follicle."],
       prior: ["f170/3.3.1", "Compare reproductive anatomy and tissue images"],
       explain: [
         "Sperm travel from the epididymis along the vas deferens. Secretions from accessory glands contribute to semen, which leaves through the urethra.",
-        "The ovaries release oocytes. The oviduct (Fallopian tube) opens near the ovary. Its cilia and muscular contractions help transport the oocyte or early embryo towards the uterus."
+        "The oviduct (Fallopian tube) opens near the ovary. Fimbriae help receive the released oocyte, then cilia and muscular contractions help move it along the oviduct."
       ],
       simulation: true,
       modelTitle: "Follow the two routes and the later implantation",
       nodes: ["FSH supports follicle growth", "LH surge triggers ovulation", "Gametes can meet", "Implantation comes later"],
       model: [
-        "An ovarian follicle grows and the oocyte develops within it. In the model, select an ovary or press FSH.",
-        "Use LH surge. A secondary oocyte is released near the oviduct and enters it. The follicle itself stays in the ovary and forms the corpus luteum.",
-        "Introduce sperm. Follow vagina → cervical canal → uterus → oviduct. Fertilisation usually takes place in the ampulla of the oviduct.",
-        "If fertilisation occurs, cleavage begins as the zygote travels towards the uterus. The embryo develops into a blastocyst that may implant in the uterine endometrium several days later."
+        "Locate the growing follicle. FSH supports its development, so growth is visible while the oocyte is still inside.",
+        "Look for what moves when LH acts. The follicle stays in the ovary and forms the corpus luteum. The released secondary oocyte crosses the gap towards the opening of the oviduct.",
+        "Compare the two routes. Both can reach the ampulla of an oviduct. If the gametes are in different oviducts, they cannot fuse at that time.",
+        "Follow the embryo only on the fertilisation branch. Cleavage starts during transport. The blastocyst may implant several days later in the endometrium, the lining of the uterus."
       ],
       guided: choice("The sperm and oocyte are in different oviducts in the model. Which condition for this fertilisation is missing?", 1,
         [["Sperm must enter the ovary.", "Sperm usually meet the oocyte in the oviduct."], ["A viable sperm and a viable oocyte must meet in the same place.", ""], ["Implantation must happen first.", "Implantation occurs after fertilisation and early development."]],
         "In this model, the gametes must meet in the same oviduct.", ["Compare where each gamete is shown."]),
-      apply: written("A fertilised oocyte begins dividing in an oviduct. Explain what must happen before it can implant.",
-        ["The early embryo develops by cell division.", "It travels along the oviduct to the uterus.", "The blastocyst attaches to the endometrium days after fertilisation."],
-        "The zygote divides as it moves towards the uterus. The resulting blastocyst can attach to the uterine lining after reaching the uterus.", ["Locate fertilisation and implantation separately."]),
+      apply: written("In a fictional model, viable gametes fuse and an embryo reaches the uterus, but the uterine lining is unsuitable for attachment. Explain which events can already have happened and which event is affected.",
+        ["Fertilisation has occurred, forming a zygote in the oviduct.", "Cleavage and development into a blastocyst can occur before attachment.", "The unsuitable endometrium can prevent implantation despite fertilisation and early development."],
+        "Gamete fusion forms a zygote. Cleavage and development can proceed before the blastocyst contacts the endometrium. Successful implantation depends on suitable conditions in the lining, so the earlier events alone do not establish that it implants.", ["Consider where each event occurs and whether it depends on the uterine lining."]),
       followup: choice("Which event follows a normal LH surge most directly?", 2,
         [["Attachment of a blastocyst.", "Several stages precede implantation."], ["Sperm entry into the cervix.", "This route is separate from the ovarian response to LH."], ["Release of a secondary oocyte from a follicle.", ""]],
         "The LH surge triggers ovulation.")

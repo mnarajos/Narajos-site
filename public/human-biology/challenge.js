@@ -103,6 +103,7 @@ function filter(unit,scope){
  else if(scope==="methods")list=list.filter(function(q){return q.methodOrder;});
  else if(scope==="core"||scope==="apply"||scope==="stretch")list=list.filter(function(q){return q.level===scope;});
  else if(scope.startsWith("case-"))list=list.filter(q=>q.id===scope&&q.caseTitle);
+ else if(scope==="f175-transport")list=list.filter(q=>q.id===scope);
  else if(scope==="sam")list=list.filter(function(q){return q.samAligned;});
  else if(scope==="weak")list=list.filter(function(q){return needsPractice(progress[q.id]);});
  return list;
@@ -137,6 +138,7 @@ function intro(unit){
  } else {
   h+='<div class="k-mini-stats"><span><strong>'+stats.questions+'</strong> original questions</span><span><strong>'+stats.seen+'</strong> attempted</span><span><strong>'+stats.weak+'</strong> to revisit</span></div>';
   h+='<p><a href="#catchup/'+unit+'">Catch up on this unit</a></p><h2 class="k-subhead">Start practising</h2>';
+  if(unit==="f175")h+='<p><a href="#catchup/f175/a1?stage=follicle">Open the reproductive pathway model</a></p>';
  }
  h+='<div class="k-action-grid">';
  var tiles=[
@@ -715,7 +717,7 @@ function drawQuestion(){
  }
  if(showing&&(session.lastResult!==true||used||session.wasSkipped)&&
     (q.type!=="written"||session.outcomes[session.index])){
-  var catchup=window.KeystoneHumanCatchup?.reteachFor(q);
+  var catchup=window.KeystoneHumanCatchup?.reteachFor(q,a);
   if(catchup)h+='<p class="k-catchup-after"><a href="#'+esc(catchup.href)+'" data-reteach-to="'+esc(catchup.route)+'">'+esc(catchup.label)+'</a></p>';
  }
  if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points":"Check answer")+' →</button>'+(used<availableHints.length?'<button class="button secondary k-hint-button" type="button" data-k-action="hint"'+(hintRemaining()>0?' hidden':'')+'>'+(used?'More help':'Hint')+'</button>':'')+'<button class="button quiet" type="button" data-k-action="skip">I don’t know · show me</button></div>';
@@ -909,7 +911,8 @@ function route(r,renderer){
   var source=origin.split("/");
   var topicScope=source[2]===scope&&/^(?:a[1-5]|\d+(?:\.\d+)*)$/.test(scope);
   var buildScope=window.KeystoneHumanCatchup?.practiceScope(unit,source[2])===scope;
-  if(source[1]!==unit||(!topicScope&&!buildScope)||!filter(unit,scope).length)return intro(unit);
+  var reproductionTransfer=unit==="f175"&&source[2]==="a1"&&scope==="f175-transport";
+  if(source[1]!==unit||(!topicScope&&!buildScope&&!reproductionTransfer)||!filter(unit,scope).length)return intro(unit);
  }
  var key=scope==="methods"?methodKey:origin?topicKey(unit,scope):SK;
  var old=sessionKey(session)===key?session:null;
