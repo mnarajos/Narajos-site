@@ -171,3 +171,22 @@
 }
 .hb-stage-next .button { max-inline-size: 100%; white-space: normal; }
 .hb-feedback:focus { outline: 2px solid currentColor; outline-offset: 3px; }
+
+.hb-teaching button > svg {
+  inline-size: 1em;
+  block-size: 1em;
+  margin-inline-end: .35em;
+  vertical-align: -.15em;
+}
+
+.hb-teach-table th[scope="row"] { overflow-wrap: normal; }
+.hb-model-back { display: none; }
+@media (max-width: 36rem) {
+  .hb-model-with-evidence .hb-model-steps li:not([aria-current="step"]) { display: none; }
+  .hb-model-with-evidence .hb-model-steps li { margin-block-start: 0; }
+  .hb-model-with-evidence .hb-model-steps li::before { content: none; }
+  .hb-model-with-evidence .hb-model-back:not([hidden]) { display: inline-flex; }
+  .hb-worked-micrograph { max-inline-size: min(100%, 16rem); }
+}
+
+.hb-teaching-sequence :is(summary, [tabindex="-1"]) { scroll-margin-block-start: 8rem; }

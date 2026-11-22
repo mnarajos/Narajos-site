@@ -87,6 +87,19 @@ try {
   assert((await reflex.getByRole("status").innerText()).trim());
   await fits();
 
+  await open("/human-biology/?pilot=screening#catchup/f171/4.2.1");
+  await page.getByRole("button", { name: "See worked example", exact: true }).press("Enter");
+  const screening = page.locator("[data-hb-model-step]");
+  await screening.getByRole("button", { name: "Show next step", exact: true }).press("Enter");
+  assert.equal(await screening.locator(".hb-cell-focus").innerText(), "12");
+  await page.locator('[data-hb-stage="independent"] summary').press("Enter");
+  const response = page.locator('[data-hb-stage="independent"]');
+  await response.getByRole("radio", { name: /7 of 24/ }).check();
+  await response.getByRole("button", { name: "Check answer", exact: true }).press("Enter");
+  assert.match(await response.getByRole("status").innerText(), /Correct independently/);
+  assert(await response.getByRole("button", { name: "Check answer", exact: true }).isHidden());
+  await fits();
+
   await open("/teaching/focused-writing/ks3/");
   const writing = page.locator('[data-writing-exercise="dye"][data-writing-kind="short"]');
   await writing.getByRole("textbox").fill("The dye spread further because its particles moved faster.");

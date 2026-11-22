@@ -25,6 +25,14 @@ export async function checkHumanCatchup(browser, base) {
       await open("catchup/" + key);
       await page.getByText(lesson.goal, { exact: true }).waitFor();
       assert(await page.getByRole("heading", { name: "Understand the idea" }).isVisible(), key);
+      if (lesson.revision) {
+        const buildLink = page.getByRole("link", { name: "Build understanding", exact: true });
+        const href = await buildLink.getAttribute("href");
+        assert(href.endsWith("?from=catchup/" + key), key);
+        const pointId = href.split("?")[0].split("/").at(-1);
+        const pointUnit = await page.evaluate(id => window.KeystoneHumanProgressions.get(id)?.unit, pointId);
+        assert.equal(pointUnit, key.split("/")[0], key);
+      }
       const model = page.locator(".hb-teach-stage").first();
       await expand(model);
       assert((await model.locator(".hb-model-steps li").first().innerText()).includes(lesson.model[0]), key);
@@ -72,13 +80,21 @@ export async function checkHumanCatchup(browser, base) {
     for (const [key, worked, correctChoice, response] of pilots) {
       await page.evaluate(key => localStorage.removeItem(key), localPractice);
       await open("catchup/" + key);
+      const prerequisite = page.locator(".hb-teaching > .hb-prerequisite").first();
+      await prerequisite.locator("summary").press("Enter");
+      assert((await prerequisite.locator("p").innerText()).trim().length > 10, key);
+      await prerequisite.locator("summary").press("Enter");
       const start = page.getByRole("button", { name: "See worked example", exact: true });
       await start.press("Enter");
       const model = page.locator("[data-hb-model-step]");
       assert.match(await model.locator(".hb-model-steps li").first().innerText(), worked, key);
       await model.getByRole("button", { name: "Show next step" }).press("Enter");
       assert.equal(await model.getAttribute("data-hb-model-step"), "2", key);
-      if (key === "f171/4.2.1") assert.equal(await model.locator(".hb-cell-focus").innerText(), "12");
+      if (key === "f171/4.2.1") {
+        assert.equal(await model.locator(".hb-cell-focus").innerText(), "12");
+        await model.getByRole("button", { name: "Previous step" }).press("Enter");
+        assert.equal(await model.locator(".hb-cell-focus").innerText(), "18");
+      }
       while (await model.getByRole("button", { name: "Show next step" }).count()) {
         await model.getByRole("button", { name: "Show next step" }).press("Enter");
       }
@@ -280,6 +296,31 @@ export async function checkHumanCatchup(browser, base) {
       )).violations.map(v => [v.id, v.nodes.map(node => node.target)]));
       assert.deepEqual(results, [], "Human Biology teaching accessibility at " + width);
     }
+    await page.setViewportSize({ width: 640, height: 900 });
+    await open("catchup/f170/3.1.2");
+    await page.getByRole("button", { name: "See worked example" }).press("Enter");
+    const glucoseGraph = page.getByRole("img", { name: /Glucose.*Time/ });
+    assert(await glucoseGraph.isVisible());
+    await page.getByText("Graph values in a table", { exact: true }).press("Enter");
+    assert(await page.getByRole("table", { name: "Fictional glucose data" }).isVisible());
+    const zoom = await page.addStyleTag({ content: "html { zoom: 2; }" });
+    assert(await widthFits(), "Glucose graph overflow at simulated 200% zoom");
+    await zoom.evaluate(element => element.remove());
+
+    await page.setViewportSize({ width: 320, height: 800 });
+    await open("catchup/f171/a5");
+    const text = await page.addStyleTag({ content: "html { font-size: 125%; }" });
+    await expand(stage("independent"));
+    await stage("independent").getByRole("textbox").fill("The supervised practice differs between the two groups.");
+    await stage("independent").getByRole("button", { name: "Compare my explanation" }).press("Enter");
+    assert(await widthFits(), "Written review overflow at 320px with larger text");
+    await page.addScriptTag({ content: axe.source });
+    const reviewResults = await page.evaluate(async () => (await window.axe.run(
+      document.querySelector(".hb-teaching"),
+      { runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa"] } }
+    )).violations.map(violation => [violation.id, violation.nodes.map(node => node.target)]));
+    assert.deepEqual(reviewResults, [], "Written review accessibility at 320px");
+    await text.evaluate(element => element.remove());
     assert.deepEqual(errors, []);
     console.log("Human Biology Catch-up: " + chapters.length + " routes across eight units, feedback, saved drafts, session return, licensed images, reproduction controls, and responsive accessibility passed.");
   } finally {

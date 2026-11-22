@@ -29,6 +29,7 @@
     }
   }
 
+  const icon = name => window.KeystoneHumanChallenge?.icon(name) || "";
   const paragraphs = lines => (lines || []).map(line => '<p>' + escape(line) + '</p>').join("");
   const list = lines => '<ul>' + lines.map(line => '<li>' + escape(line) + '</li>').join("") + '</ul>';
 
@@ -52,12 +53,12 @@
   function writingExample(example) {
     if (!example) return "";
     return '<details class="hb-prerequisite hb-writing-example"><summary>' + escape(example.title) +
-      '</summary>' + paragraphs([example.prompt]) + '<dl>' + example.responses.map(([name, response]) =>
+      '</summary>' + paragraphs([example.prompt, example.choose].filter(Boolean)) + '<dl>' + example.responses.map(([name, response]) =>
         '<dt><strong>' + escape(name) + '</strong></dt><dd>' + escape(response) + '</dd>').join("") +
       '</dl><details><summary>Compare the reasoning</summary>' + paragraphs(example.compare) + '</details></details>';
   }
 
-  function task(stage, title, question) {
+  function task(stage, title, question, sequence) {
     if (!question) return "";
     const id = "hb-" + stage;
     const choice = Array.isArray(question.options);
@@ -69,7 +70,8 @@
       '</summary><form novalidate><fieldset><legend id="' + id + '-prompt">' + escape(question.prompt) +
       '</legend>' + figure(question.photo) + (question.photos || []).map((photo, index) => figure(photo, index + 1)).join("") + table(question.table) + paragraphs(question.starter ? [question.starter] : []) +
       inputs + '</fieldset><ol class="hb-hints" hidden></ol><div class="actions hb-controls">' +
-      '<button type="submit" class="button primary">' + (choice ? "Check answer" : "Compare my explanation") + '</button>' +
+      '<button type="submit" class="button primary">' + (!choice && sequence ? icon("pen") : "") +
+      (choice ? "Check answer" : "Compare my explanation") + '</button>' +
       (question.hints?.length ? '<button type="button" class="button secondary" data-hb-action="hint">Get a hint</button>' : '') +
       '<button type="button" class="button quiet" data-hb-action="explain">Show explanation</button>' +
       '</div><div class="hb-feedback" role="status" aria-atomic="true" tabindex="-1"></div>' +
@@ -77,7 +79,8 @@
   }
 
   function openStageButton(stage, label, style) {
-    return '<button type="button" data-hb-open="' + stage + '" class="button ' + style + '">' + label + '</button>';
+    return '<button type="button" data-hb-open="' + stage + '" class="button ' + style + '">' +
+      (stage === "model" ? icon("book") : "") + label + '</button>';
   }
 
   function render(lesson, context) {
@@ -90,21 +93,24 @@
       paragraphs(lesson.explain) + table(lesson.compare) + context.inline +
       (lesson.revision ? '<div class="actions hb-start">' + openStageButton("model", "See worked example", "primary") + '</div>' : '') +
       '</section>';
+    const evidenceModel = lesson.revision && (lesson.focusCells || lesson.graph || lesson.visual === "model");
     const model = lesson.model?.length ?
-      '<details class="paper panel hb-teach-stage" data-hb-model-step="1"><summary>I do · ' + escape(lesson.modelTitle || "Follow a worked example") +
+      '<details class="paper panel hb-teach-stage' + (evidenceModel ? ' hb-model-with-evidence' : '') +
+      '" data-hb-model-step="1"><summary>I do · ' + escape(lesson.modelTitle || "Follow a worked example") +
       '</summary>' + context.modelVisual + figure(lesson.photo) +
       (lesson.graph ? window.KeystoneHumanSkills.graphHTML(lesson.graph) : "") + table(lesson.table, lesson.focusCells) +
       '<ol class="hb-model-steps' + (lesson.nodes ? ' hb-model-path' : '') + '">' + lesson.model.map((step, i) =>
-        '<li' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
+        '<li value="' + (i + 1) + '"' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
         escape(step) + '</li>').join("") +
       '</ol>' + (lesson.model.length > 1 ?
         '<button type="button" class="button secondary" data-hb-action="model">Show next step</button>' : '') +
+      (evidenceModel ? '<button type="button" class="button quiet hb-model-back" hidden>Previous step</button>' : '') +
       (lesson.revision ? '<div class="actions" data-hb-after-model hidden>' +
         openStageButton("guided", "Try with support", "primary") + '</div>' : '') + '</details>' : "";
     return '<div class="hb-teaching' + (lesson.revision ? ' hb-teaching-sequence' : '') + '"><p class="lead hb-objective">' + escape(lesson.goal) + '</p>' + activate +
       explanation + model + context.method + task("guided", "We do · Try it with support", lesson.guided) +
       writingExample(lesson.writing) +
-      task("independent", "You do · Apply it independently", lesson.apply) +
+      task("independent", "You do · Apply it independently", lesson.apply, lesson.revision) +
       '<div data-hb-followup hidden>' + task("followup", "Try a fresh check", lesson.followup) + '</div>' +
       context.related + '</div>';
   }
@@ -136,7 +142,7 @@
       '<label for="hb-' + stage + '-revision">Improve your answer (optional)</label>' +
       '<textarea id="hb-' + stage + '-revision" data-hb-revision rows="4" maxlength="3000"' +
       (complete ? ' readonly' : '') + '>' + escape(state.revised ?? state.original) + '</textarea>' +
-      (complete ? '<p>Your self-review is saved.</p>' : '<div class="actions"><button type="button" class="button primary" data-hb-action="finish-review">Finish review</button></div>');
+      (complete ? '<p>Your self-review is saved.</p>' : '<div class="actions"><button type="button" class="button primary" data-hb-action="finish-review">' + icon("check") + 'Finish review</button></div>');
   }
 
   function mount(key, lesson, reviewStep) {
@@ -198,6 +204,7 @@
         section.querySelector('button[type="submit"]').disabled = true;
       }
       if (state.note) html = '<p>' + escape(state.note) + '</p>';
+      if (state.outcome === "selfReview" && comparing) html = '<p>Self-review saved.</p>';
       if (state.outcome && !comparing) {
         html = '<p><strong>' + outcomeLabels[state.outcome] + '</strong></p>' + html;
         if (question.points) html += list(question.points);
@@ -289,6 +296,7 @@
       const steps = modelButton.previousElementSibling;
       const cells = Array.from(model.querySelectorAll("[data-hb-cell]"));
       const advance = model.querySelector("[data-hb-after-model]");
+      const back = model.querySelector(".hb-model-back");
       function showModelStep(index, focus) {
         model.dataset.hbModelStep = index + 1;
         Array.from(steps.children).forEach((step, i) => {
@@ -299,6 +307,7 @@
         const active = lesson.focusCells?.[index] || [];
         cells.forEach(cell => cell.classList.toggle("hb-cell-focus", active.includes(cell.dataset.hbCell)));
         const finished = index === steps.children.length - 1;
+        if (back) back.hidden = index === 0;
         modelButton.textContent = finished ? "Replay example" : "Show next step";
         if (advance) {
           advance.hidden = !finished;
@@ -314,6 +323,7 @@
         const next = Array.from(steps.children).findIndex(step => step.hidden);
         showModelStep(next < 0 ? 0 : next, true);
       });
+      back?.addEventListener("click", () => showModelStep(Number(model.dataset.hbModelStep) - 2, true));
       if (reviewStep) {
         model.open = true;
         showModelStep(Math.min(reviewStep, steps.children.length) - 1, true);

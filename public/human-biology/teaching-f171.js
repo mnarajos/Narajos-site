@@ -225,6 +225,7 @@
       writing: {
         title: "Compare description, explanation, analysis and evaluation",
         prompt: "Two fictional groups improved on a balance test. The exercise group improved more, but its members started with higher activity levels.",
+        choose: "Which answer uses the evidence to make a qualified judgement? Decide before opening the comparison.",
         responses: [
           ["Description", "The exercise group improved more."],
           ["Explanation", "Frequent exercise may improve coordination, which can help with balancing."],
