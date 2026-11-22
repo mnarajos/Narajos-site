@@ -238,7 +238,8 @@ try{
  assert(await desktop.getByRole("rowheader",{name:"A · reminder text"}).isVisible());
  await desktop.getByRole("link",{name:"← Leave this set"}).click();
  await desktop.locator("#leave-confirm").click();
- await desktop.getByRole("heading",{name:"Health and disease",exact:true,level:1}).waitFor();
+ await desktop.waitForURL("**/#challenge/f171");
+ await desktop.getByRole("heading",{name:"F171 Health and disease",exact:true,level:1}).waitFor();
 
 
  await desktop.goto(base+"/human-biology/#challenge/f171/a3",{waitUntil:"load"});
