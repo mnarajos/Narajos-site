@@ -191,8 +191,20 @@ try{
  assert((await desktop.locator("main").innerText()).includes("Key idea 2"),"Catch-up step did not advance");
  await screen(desktop,"human-vaccines");
  await desktop.goto(base+"/human-biology/#catchup/f170/3.2.1",{waitUntil:"load"});
- await desktop.locator(".kc-visual-art svg").waitFor({state:"visible"});
- assert((await desktop.locator(".kc-visual-art svg").getAttribute("aria-label")).includes("Reflex arc"),"Human Biology reflex diagram missing");
+ await desktop.getByText("Trace a withdrawal reflex",{exact:true}).click();
+ const reflex=desktop.locator('science-sequence[kind="reflex"]');
+ await reflex.locator("svg").waitFor({state:"visible"});
+ const reflexNext=reflex.getByRole("button",{name:"Next step"});
+ for(let step=0;step<4;step++) await reflexNext.click();
+ await reflex.getByRole("status").filter({hasText:"Effector muscle"}).waitFor();
+ assert.equal(await reflexNext.getAttribute("aria-disabled"),"true");
+ await reflex.getByRole("button",{name:"Previous step"}).press("Enter");
+ await reflex.getByRole("status").filter({hasText:"Motor neuron"}).waitFor();
+ await desktop.goto(base+"/human-biology/#catchup/f170/1.1.2",{waitUntil:"load"});
+ await desktop.getByText("Estimate the size of a red blood cell",{exact:true}).click();
+ assert(await desktop.locator(".micrograph-single img").evaluate(async img=>{await img.decode();return img.naturalWidth===386;}));
+ await desktop.getByText("Check the calculation",{exact:true}).click();
+ await desktop.getByText(/≈ 8 µm/).waitFor();
  await desktop.goto(base+"/human-biology/#catchup/f170/2.1.2",{waitUntil:"load"});
  await desktop.locator(".kc-simulation-link").waitFor({state:"visible"});
  assert((await desktop.locator(".kc-simulation-link").getAttribute("href"))==="/teaching/simulations/cardiac-cycle/","Heart concept should link to cardiac-cycle simulation");
@@ -569,6 +581,21 @@ try{
   assert.equal(await firstOption.getAttribute("aria-pressed"),"true");
   assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"KS3 catch-up lesson overflows at phone width");
  }
+ await navPage.goto(base+"/ks3/lesson/?topic=reproduction");
+ await navPage.getByText("Follow a pollen grain",{exact:true}).click();
+ const pollen=navPage.locator('science-sequence[kind="pollen"]');
+ await pollen.getByRole("button",{name:"Next step"}).press("Enter");
+ await pollen.getByRole("status").filter({hasText:"The tube starts growing"}).waitFor();
+ assert.equal(await pollen.locator("svg g:not([hidden])").count(),1);
+ assert((await pollen.locator("svg").boundingBox()).width<=390);
+ await navPage.goto(base+"/ks3/cells/");
+ await navPage.getByText("Look through a microscope",{exact:true}).click();
+ const cellPhotos=await navPage.locator(".micrograph-grid img").all();
+ assert.equal(cellPhotos.length,2);
+ for(const img of cellPhotos) await img.evaluate(el=>el.decode());
+ await navPage.goto(base+"/ks3/adaptation/");
+ await navPage.getByText("Compare rock pocket mouse populations",{exact:true}).click();
+ assert((await navPage.getByRole("link",{name:/Open the HHMI pictures/}).getAttribute("href")).endsWith("MouseColorVar-Illustrations-act.pdf"));
  await navPage.goto(year7Paths[11]);
  const rotateEarth=navPage.getByRole("button",{name:"Turn Earth a quarter turn"});
  await rotateEarth.click();
@@ -652,4 +679,3 @@ try{
 }finally{
  await browser.close();await new Promise(done=>server.close(done));
 }
-

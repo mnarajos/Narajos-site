@@ -1,0 +1,51 @@
+science-sequence {
+  display: block;
+  margin-block: .65rem;
+}
+
+.ks-sequence-art {
+  max-width: 26rem;
+  margin-inline: auto;
+}
+
+.ks-sequence-art svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #f4f8f6;
+  border-radius: .65rem;
+  font: 600 13px system-ui, sans-serif;
+  fill: #193b38;
+}
+
+.ks-sequence-art [hidden] { display: none; }
+.ks-sequence-organ { fill: #deefe7; stroke: #42826e; stroke-width: 2; }
+.ks-sequence-ovule, .ks-sequence-anther { fill: #f7e3aa; stroke: #795017; stroke-width: 2; }
+.ks-sequence-filament, .ks-sequence-leader { fill: none; stroke: #556e65; stroke-width: 1.5; }
+.ks-sequence-route { fill: none; stroke: #97401c; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.ks-sequence-focus { fill: #97401c; stroke: #fff; stroke-width: 1; }
+.ks-sequence-path {
+  fill: none;
+  stroke: #6b8078;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ks-sequence-path.is-current { stroke: #97401c; stroke-width: 5; }
+science-sequence .ks-sequence-status { margin: .65rem 0; max-width: 62ch; }
+.ks-sequence-controls { display: flex; flex-wrap: wrap; gap: .5rem; }
+.ks-sequence-controls button {
+  padding: .55rem .8rem;
+  min-height: 44px;
+  border: 1px solid currentColor;
+  border-radius: .45rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.ks-sequence-controls button[aria-disabled="true"] {
+  opacity: .55;
+  cursor: default;
+}
+.ks-sequence-controls button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }

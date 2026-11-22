@@ -102,9 +102,10 @@ try{
  for(const [u,id,expected] of [["a1","enzfactors","enzyme-kinetics"],["a4","transcription","molecular-biology"],["a3","heart","cardiac-cycle"],["f170","2.1.2","cardiac-cycle"]]){
   requireTrue(visual.render(u,id).includes("/teaching/simulations/"+expected+"/"),"Missing curated simulation cross-link "+u+"/"+id);
  }
- for(const [u,id] of [["a1","monopoly"],["a2","osmosis"],["a5","chemios"],["f170","3.2.1"],["f171","3.2.2"]]){
+ for(const [u,id] of [["a1","monopoly"],["a2","osmosis"],["a5","chemios"],["f171","3.2.2"]]){
   requireTrue(visual.render(u,id).includes('role="img"'),"Missing accessible catch-up diagram "+u+"/"+id);
  }
+ requireTrue(visual.render("f170","3.2.1").includes('<science-sequence kind="reflex">')&&humanIndex.includes('src="/assets/science-sequences.js"'),"F170 reflex sequence is not wired");
  requireTrue(visual.render("f175","a1").indexOf("kc-simulation-link")<0,"Unrelated simulation link in F175 knowledge recap");
  requireTrue(humanIndex.includes("reproduction-simulation.js")&&humanIndex.includes("reproduction-simulation.css"),"F175 interactive model assets missing");
  requireTrue(read("human-biology/reproduction-simulation.js").includes("LH surge")&&read("human-biology/companion.js").includes("KeystoneReproductionSimulation.mount"),"F175 hormone-sequence model must be available in catch-up");
@@ -130,4 +131,3 @@ if(failures.length){
 }else{
  console.log("Website check passed: "+htmlFiles.length+" pages, "+scriptCount+" inline scripts parsed, "+linkCount+" local links checked.");
 }
-
