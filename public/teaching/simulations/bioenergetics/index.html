@@ -437,10 +437,10 @@ const CH_CFG={
     topLabel:"THYLAKOID LUMEN", botLabel:"STROMA", light:true, memLabel:["thylakoid","membrane"],
     ovals:[{x:214,lab:"PSII"},{x:474,lab:"PSI"}], showCarriers:true, enzX:590,
     pumpX:[300,356,412],
-    epath:[[176,404],[214,344],[214,240],[300,260],[356,266],[412,272],[474,280],[524,248],[590,300]],
+    epath:[[162,191],[196,211],[214,240],[300,260],[356,266],[412,272],[474,280],[524,248],[590,300]],
     enzLab:["NADP","reductase"], subName:"NADP", prodName:"reduced NADP",
-    needE:1, needH:1, outN:1, termH:"high", donorE:1,
-    waters:[{x:156,y:410},{x:196,y:418}],
+    needE:1, needH:1, outN:1, donorE:1,
+    waters:[{x:142,y:181},{x:182,y:201}],
     tally:[["atp","ATP made",ATPV],["term","reduced NADP made",VIVID],["byp","O\u2082 released","#3d8fd6"],["lum","H\u207a in lumen",PROT]] },
   oxphos:{ title:"Oxidative phosphorylation", sub:"Inner mitochondrial membrane (cristae) \u00b7 oxidative phosphorylation \u00b7 chemiosmosis",
     topLabel:"INTERMEMBRANE SPACE", botLabel:"MATRIX", light:false, memLabel:["inner","membrane"],
@@ -448,7 +448,7 @@ const CH_CFG={
     pumpX:[214,498,640],
     epath:[[214,244],[356,258],[498,272],[640,290]],
     enzLab:["IV"], subName:"O\u2082", prodName:"H\u2082O",
-    needE:4, needH:4, outN:2, termH:"low", donorE:2,
+    needE:4, needH:4, outN:2, donorE:2,
     donors:[{kind:"reduced NAD",at:0},{kind:"reduced NAD",at:1}],
     tally:[["atp","ATP made",ATPV],["term","H\u2082O made","#3d8fd6"],["byp","NAD reoxidised",PALE],["lum","H\u207a in intermembrane space",PROT]] }
 };
@@ -504,7 +504,10 @@ function updateChemi(dt){
   // ---- slow photolysis: water visibly becomes 4H+ + 4e- + O2 ----
   if(C.split){ const S2=C.split; S2.t+=dt*sp*0.5;                  // ~2 s
     if(S2.t>=1 && !S2.released){ S2.released=true;
-      for(let i=0;i<4;i++) C.protons.push({state:"low",x:S2.x-30+i*20,y:S2.y+26,dr:Math.random()*6.28});
+      for(let i=0;i<4;i++) C.protons.push({
+        state:"high", x:S2.x-32+i*22, y:S2.y-26+(i%2)*8,
+        hd:Math.random()*6.283, spd:95+Math.random()*55
+      });
       for(let i=0;i<4;i++) C.electrons.push({t:-0.10*i,pumped:cfg.pumpX.map(()=>false),from:0});
       C.byp.push({x:S2.x,y:S2.y+4,vx:-0.9,vy:0.45,life:2.6,label:"O\u2082",col:"#3d8fd6"}); C.totals.byp++;
       C.split=null; for(const w of C.waters){ w.gone=true; w.regen=1.4; } } }
@@ -594,8 +597,8 @@ function updateChemi(dt){
   C.redPull-=dt*sp;
   const inTransit=C.protons.filter(p=>p.state==="toEnz").length;
   if(C.redPull<=0 && C.sub && C.sub.state==="bound" && (C.sub.h+inTransit)<cfg.needH && !chemiBlocked(cfg)){
-    // complex IV draws its protons from the MATRIX; the LDR reductase from the lumen
-    const pool=C.protons.filter(p=>p.state===(cfg.termH==="low"?"low":"high"));
+    // Complex IV uses matrix protons. NADP reductase uses stromal protons.
+    const pool=C.protons.filter(p=>p.state==="low");
     const near=pool.slice().sort((a,b)=>Math.abs(a.x-LG.enz.x)-Math.abs(b.x-LG.enz.x))[0];
     if(near){ near.state="toEnz"; C.redPull=0.45; } }
   // ---- substrate at the terminal enzyme: enters bottom-LEFT, leaves bottom-RIGHT ----
@@ -692,10 +695,7 @@ function drawChemi(){
     ctx.fillText(cfg.memLabel[0],818,LG.memY-8); ctx.fillText(cfg.memLabel[1],818,LG.memY+6);
     ctx.textAlign="left"; }
   if(cfg.light && C.flash>0.02){ const al=0.28+0.55*C.flash;
-    const ws=C.waters.filter(w=>!w.gone);
-    const wx=ws.length?ws.reduce((a,w)=>a+w.x,0)/ws.length:(C.split?C.split.x:176);
-    const wy=ws.length?ws.reduce((a,w)=>a+w.y,0)/ws.length:(C.split?C.split.y:414);
-    drawRaySet(wx,wy-16,al); for(const ov of cfg.ovals) drawRaySet(ov.x,LG.memY-LG.ovalRy-8,al);
+    for(const ov of cfg.ovals) drawRaySet(ov.x,LG.memY-LG.ovalRy-8,al);
     ctx.fillStyle="rgba(245,224,96,"+(0.45+0.5*C.flash)+")";ctx.font="800 14px system-ui";ctx.textAlign="right";
     ctx.fillText("\u2600 light",x1-8,LG.topY+14); }
   // compartment labels sit IN FRONT of the light rays, on a half-opaque
@@ -715,8 +715,8 @@ function drawChemi(){
     ctx.fillStyle="#9ad2f5";ctx.font="800 13px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
     ctx.fillText("H\u2082O",sx-20,sy); ctx.fillText("H\u2082O",sx+20,sy+8); ctx.restore();
     ctx.save();ctx.globalAlpha=Math.min(1,t*1.7);
-    for(let i=0;i<4;i++) drawProtonC(sx-42+i*24, sy+30+t*16);
-    for(let i=0;i<4;i++) electronDot(sx-30+i*20, sy-26-t*20);
+    for(let i=0;i<4;i++) drawProtonC(sx-32+i*22, sy-12-t*16);
+    for(let i=0;i<4;i++) electronDot(sx-20+i*15, sy+8+t*18);
     ctx.globalAlpha=Math.min(1,t*1.4); pill(sx-72,sy+4,"O\u2082","#3d8fd6",11);
     ctx.restore(); }
   for(const p of C.protons){ if(p.state!=="low"&&p.state!=="high") continue;
@@ -1909,8 +1909,8 @@ const S={ top:"photosynthesis", sub:"ldr", step:0, frac:0, t:0, playing:true, sp
 const OBSERVATIONS=[
   {
     prompt:"Shine light. Watch the water molecules in the marked area split.",
-    explanation:"Light drives the splitting of water, called photolysis. This releases oxygen and hydrogen ions. The electrons from water replace electrons lost from photosystem II.",
-    focus:[94,357,174,120]
+    explanation:"Light drives photolysis at photosystem II. The splitting of water releases oxygen and hydrogen ions into the thylakoid lumen. Electrons from water replace those lost from photosystem II.",
+    focus:[81,141,170,108]
   },
   {
     prompt:"Shine light again. Watch hydrogen ions move into the thylakoid lumen.",

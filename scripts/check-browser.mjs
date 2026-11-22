@@ -355,8 +355,9 @@ try{
  assert(await navPage.evaluate(()=>!S.playing && chemiOf().split===null),"Guided model should start still");
  await guidePlay.press("Enter");
  await navPage.waitForFunction(()=>chemiOf().totals.byp>0);
+ assert(await navPage.evaluate(()=>chemiOf().protons.filter(p=>p.state==="high"&&p.y<LG.memTop).length>=4),"Photolysis should release protons into the lumen");
  await guide.getByText("What happened?",{exact:true}).click();
- assert(await guide.getByText(/called photolysis/).isVisible());
+ assert(await guide.getByText(/releases oxygen and hydrogen ions into the thylakoid lumen/).isVisible());
  await guideNext.click();
  await guide.getByText("Observation 2 of 3",{exact:true}).waitFor();
  assert(await guidePlay.evaluate(el=>el===document.activeElement));
