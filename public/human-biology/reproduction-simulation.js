@@ -56,7 +56,7 @@ function writtenSequence(){
  return '<details class="krp-anatomy-note"><summary>Read the pathway without animation</summary><ol>'+
   checkpoints.map(step=>'<li><strong>'+step.title+'</strong> '+step.observation+'</li>').join("")+'</ol></details>';
 }
-function mountGuide(root, observed, onChange, initialStep){
+function mountGuide(root, observed, withoutFertilisation, onChange, initialStep){
  const guide = root.querySelector(".krp-guide");
  const select = guide.querySelector("select");
  const form = guide.querySelector("form");
@@ -70,10 +70,11 @@ function mountGuide(root, observed, onChange, initialStep){
  function update(){
   const step = checkpoints[index];
   const seen = observed(step.id);
+  const end = index === checkpoints.length - 1 || (step.id === "fertilisation" && withoutFertilisation());
   const message = answered && seen ? step.observation : "";
   if(observation.textContent !== message) observation.textContent = message;
-  next.hidden = !answered || !seen || index === checkpoints.length - 1;
-  apply.hidden = !answered || !seen || index !== checkpoints.length - 1;
+  next.hidden = !answered || !seen || end;
+  apply.hidden = !answered || !seen || !end;
   onChange(guide.open && answered && !seen ? step.action : null);
  }
  function choose(i){
@@ -130,7 +131,7 @@ function mountGuide(root, observed, onChange, initialStep){
 function svg(){
  return '<svg class="krp-diagram" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" role="group" aria-labelledby="krp-title" aria-describedby="krp-description">'+
  '<title id="krp-title">Female reproductive anatomy and gamete transport</title>'+
- '<desc id="krp-description">A frontal section showing the uterus, ovaries, oviducts, and vagina. The cervix projects into the top of the vagina. Its central canal connects the uterine cavity to the vagina. Select an ovary or follow sperm transport.</desc>'+
+ '<desc id="krp-description">A frontal section showing the uterus, ovaries, oviducts and vagina. The fimbriae face each ovary across a gap. The cervical canal connects the uterine cavity to the vagina. The controls and a written sequence are available below the diagram.</desc>'+
  '<rect width="900" height="600" rx="17" fill="#fffafb"/>'+
  /* Tubes have darker wall with a lighter lumen to distinguish them from solid lines. */
  '<path d="M390 184 C355 147 321 140 286 158 S222 191 205 191" fill="none" stroke="#aa617e" stroke-width="23" stroke-linecap="round"/>'+
@@ -221,7 +222,7 @@ function mount(host,initialStep){
  var animations=new Set();
  var diagram=q(".krp-diagram"),view=q(".krp-view"),progress=q(".krp-status");
  const seen = new Set();
- const guide = mountGuide(root,step=>seen.has(step),action=>{
+ const guide = mountGuide(root,step=>seen.has(step),()=>state.phase==="complete"&&!state.fertilised,action=>{
   Object.entries(btn).forEach(([key,control])=>control.classList.toggle("krp-next",key===action));
  },initialStep);
  var hotspots=root.querySelectorAll(".krp-ovary, .krp-entry");
@@ -321,7 +322,7 @@ function mount(host,initialStep){
   frameView("oviduct",state.side);
   state.phase="ovulating";show(group.follicle,false);show(group.egg,true);
   var path=q("#krp-egg-"+state.side);positionAt(group.egg,path,0);update();
-  status("The LH surge triggers ovulation, releasing a secondary oocyte. Fimbriae and ciliary movement help transport it into an oviduct.");
+  status("The secondary oocyte leaves the follicle near the opening of an oviduct. The fimbriae help receive it and cilia and muscular contractions help move it along.");
   transport(group.egg,path,2300,function(){
    state.phase="oviduct";seen.add("ovulation");update();
    status("The secondary oocyte is in the oviduct (typically the ampulla). It can be fertilised only if a viable sperm reaches it within a limited period.");

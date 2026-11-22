@@ -40,3 +40,22 @@
 .krp-view.krp-follow .krp-diagram { width: 100%; min-width: 0; max-height: 32rem; }
 .krp-view.krp-follow + .krp-swipe { display: none; }
 .krp-status:focus { outline: 2px solid #95612b; outline-offset: 3px; }
+.krp-guide { margin-bottom: .8rem; border-block: 1px solid var(--line, #dce2df); padding-bottom: .45rem; }
+.krp-guide summary { min-height: 44px; display: list-item; padding-block: .65rem; cursor: pointer; font-weight: 700; }
+.krp-guide select { display: block; width: 100%; max-width: 24ch; min-height: 44px; margin: .25rem 0 .8rem; font: inherit; }
+.krp-guide fieldset { min-inline-size: 0; margin: 0; border: 0; padding: 0; }
+.krp-guide legend { padding: 0; font-weight: 700; }
+.krp-options { display: grid; gap: .15rem; margin: .25rem 0 .45rem; }
+.krp-options label { display: flex; align-items: center; gap: .55rem; min-height: 44px; padding: .25rem .45rem; cursor: pointer; }
+.krp-options label:focus-within { outline: 2px solid #5a798f; outline-offset: -2px; }
+.krp-options input { flex: 0 0 auto; inline-size: 1.1rem; block-size: 1.1rem; margin: 0; }
+.krp-prediction, .krp-observation { max-width: 65ch; margin: .5rem 0; }
+.krp-prediction:empty, .krp-observation:empty { margin: 0; }
+.krp-observation:not(:empty) { border-inline-start: 3px solid #bb7b38; padding-inline-start: .65rem; }
+[data-f175-apply]:not([hidden]) { display: inline-flex; align-items: center; min-height: 44px; }
+.krp-next:not(:disabled), .krp-next:not(:disabled):is(:hover, :focus-visible) { background: #264e68; color: #fff; }
+.krp-anatomy-note li + li { margin-top: .35rem; }
+@media (max-width: 450px) {
+ .krp-intro { display: block; }
+ .krp-controls { grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr)); }
+}
