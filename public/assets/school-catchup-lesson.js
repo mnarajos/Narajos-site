@@ -17,7 +17,7 @@ if (Object.hasOwn(year9, id)) {
   code.textContent = lesson.code;
   heading.before(code);
   const title = document.createElement("h2");
-  title.textContent = "Look at the evidence";
+  title.textContent = "Catch-up notes";
   const idea = document.createElement("p");
   const label = document.createElement("strong");
   label.textContent = "The key idea. ";

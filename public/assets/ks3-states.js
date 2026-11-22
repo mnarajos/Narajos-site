@@ -136,7 +136,7 @@ class KS3StatesModel extends HTMLElement {
     const heading = "ks3-states-title-" + ++modelCount;
     this.innerHTML = `
       <section class="ks3-states-model" aria-labelledby="${heading}">
-        <h3 id="${heading}">What changes when particles heat up?</h3>
+        <h3 id="${heading}">What changes as a substance warms?</h3>
         <p>Press Heat once. Watch the solid before it melts.</p>
         <figure>
           <canvas width="600" height="332" aria-hidden="true"></canvas>

@@ -342,7 +342,9 @@ function renderLesson(lesson, year, index) {
   } else {
     teaching.append(cue);
     if (lesson.id === "states-of-matter") {
-      teaching.append(element("ks3-states-model"));
+      const model = element("ks3-states-model");
+      model.dataset.catchupFirstEvidence = "";
+      teaching.append(model);
       import("./ks3-states.js");
     } else {
       const original = [];
