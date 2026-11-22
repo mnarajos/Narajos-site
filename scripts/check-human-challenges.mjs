@@ -100,6 +100,19 @@ for(const q of db.questions){
  if(q.type==="number")assert(Number.isFinite(q.correct)&&q.answerUnit!==undefined,"Missing numeric answer and units: "+q.id);
  if(q.type==="best")assert(q.options.length===4&&q.reasons.length===4&&q.correct>=0&&q.correct<q.options.length&&q.reasonCorrect>=0&&q.reasonCorrect<q.reasons.length,"Two-stage reasoning needs four options in both steps: "+q.id);
  if(q.warmup)assert(q.level==="warmup"&&q.type==="single","Warm-up should be a low-load single-answer question");
+ if(q.optionFeedback){
+  assert.equal(q.optionFeedback.length,q.options.length,q.id);
+  const correct=[].concat(q.correct);
+  for(const [index,feedback] of q.optionFeedback.entries())assert.equal(Boolean(feedback),!correct.includes(index),q.id+" feedback for option "+index);
+ }
+ if(q.numberFeedback){
+  assert.equal(q.type,"number",q.id);
+  for(const [value,message] of q.numberFeedback)assert(Number.isFinite(value)&&value!==q.correct&&message,q.id);
+ }
+ if(q.comparison){
+  assert(q.caseTitle&&q.comparison.order.includes("model")&&q.comparison.order.includes("partial"),q.id);
+  assert(q.comparison.notes.length&&q.comparison.comparison,q.id);
+ }
  if(q.type==="multi")assert(Array.isArray(q.correct)&&q.correct.length>=2,"Invalid multi-answer: "+q.id);
  if(q.type==="match")assert(q.pairs.length>=2,"Too few match pairs: "+q.id);
  if(q.type==="sort")assert(q.groups.length>=2&&q.rows.length>=4&&q.rows.every(r=>Number.isInteger(r[1])&&r[1]>=0&&r[1]<q.groups.length),"Invalid sort: "+q.id);

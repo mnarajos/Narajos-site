@@ -187,8 +187,8 @@ T("health-screening","Interpret a positive screening result without treating it 
   assessmentRevision:1,
   evidenceTable:{caption:"Screen and diagnostic assessment",columns:["Screen","Condition present","Condition absent"],rows:[["Positive","27","9"],["Negative","4","60"]],focus:[[0,1],[0,2]]},
   numberFeedback:[[9,"Nine is the false-positive count. Divide by all people who screened positive to express the percentage."],
-   [33.333333,"Dividing by 27 uses only confirmed cases as the denominator. The question includes everyone who screened positive."],
-   [13.043478,"Dividing by the condition-absent column answers a different question. Use the positive-screen row."]]
+   [33.333333,"Dividing by 27 uses only confirmed cases as the denominator. The question includes everyone who screened positive.",0.5],
+   [13.043478,"Dividing by the condition-absent column answers a different question. Use the positive-screen row.",0.5]]
  }));
 T("f171-monitoring-repeats","Distinguish a monitoring trend from procedural variation","Could the same cause bias every measurement even when you repeat the procedure?",
  C("What does monitoring a condition over time require?",["Comparable observations on more than one occasion","Only one observation with no date","Always choosing the lowest reading","Changing the test method at every visit"],"Monitoring concerns change across time, so dates and comparable methods matter."),

@@ -51,7 +51,7 @@ window.KeystoneF171Recall = [
     ["Why can suppressing graft rejection increase infection risk?", "Lower immune activity can also weaken responses to pathogens."]
   ]],
   ["3.2.2", "Vaccination and memory", [
-    ["Why can a response to the same antigen be quicker on a second exposure?", "Antigen-specific memory lymphocytes can respond and expand rapidly."],
+    ["What is the purpose of a vaccine booster?", "To renew or strengthen an immune response when further protection is needed."],
     ["What does a toxoid vaccine contain?", "An inactivated toxin that retains recognisable antigenic features."]
   ]],
   ["4.2.1", "Screening and diagnostic assessment", [

@@ -434,9 +434,8 @@ const practiceFigures={
 };
 function figure(name,reveal){
  if(typeof name==="object"){
-  var credit=name.credit.split(" · ");
   return '<figure class="k-figure k-question-photo"><img width="'+name.width+'" height="'+name.height+'" src="'+esc(name.src)+'" alt="'+esc(name.alt)+'">'+
-   '<figcaption><a href="'+esc(name.source)+'">'+esc(credit[0])+'</a> · <a href="'+esc(name.licence)+'">'+esc(credit[1])+'</a> · '+esc(credit[2])+'</figcaption></figure>';
+   '<figcaption><a href="'+esc(name.source)+'">'+esc(name.credit)+'</a> · <a href="'+esc(name.licence)+'">'+esc(name.licenceName)+'</a> · '+esc(name.adaptation)+'</figcaption></figure>';
  }
  var art=practiceFigures[name];
  if(art)return '<figure class="k-figure"><img width="600" height="360" style="width:100%;height:auto;max-width:600px" src="/assets/practice-diagrams/'+art[0]+'.svg" alt="'+esc(art[1])+'"></figure>';
@@ -640,7 +639,7 @@ function misconceptionFeedback(q,a){
  if(q.optionFeedback&&a.selected)messages=a.selected.map(function(i){return q.optionFeedback[i];}).filter(Boolean);
  if(q.numberFeedback&&a.text){
   var value=Number(String(a.text).trim().replace(/,/g,"").replace(/^×\s*/,""));
-  var error=q.numberFeedback.find(function(entry){return Math.abs(value-entry[0])<1e-6;});
+  var error=q.numberFeedback.find(function(entry){return Math.abs(value-entry[0])<=(entry[2]??1e-6);});
   if(error)messages.push(error[1]);
  }
  return messages.length?'<div class="k-misconception"><strong>About your answer</strong>'+

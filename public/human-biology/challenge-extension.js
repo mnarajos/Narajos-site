@@ -1129,7 +1129,7 @@ additions.push({
  stem:"Which interpretation is best supported by the cell arrangement around the pale space in this field?",
  figure:{src:"/assets/micrographs/hb-testis.webp",width:479,height:590,
   alt:"A pale central space has several layers of cells along its edge. Some profiles project into the space.",
-  credit:"Nephron · CC BY-SA 3.0 · cropped view in the source, resized and converted to WebP",
+  credit:"Nephron",licenceName:"CC BY-SA 3.0",adaptation:"Resized and converted to WebP",
   source:"https://commons.wikimedia.org/wiki/File:Seminiferous_tubule_and_sperm.jpg",
   licence:"https://creativecommons.org/licenses/by-sa/3.0/"},
  options:["A seminiferous tubule because developing cells form layers towards its lumen","An ovarian follicle because a large oocyte occupies the centre","Endometrium because separate glands lie below a free epithelial surface","A blood vessel because a single thin lining surrounds red blood cells"],
@@ -1179,7 +1179,8 @@ additions.push({
  hintCue:"Find the change first. Which time point is the baseline?"
 },{
  id:"f171-method-time-rate",unit:"f171",area:4,section:"4.1",methodOrder:3,type:"number",level:"apply",
- stem:"A fictional activity record counts 135 heartbeats over 90 seconds. What value should go in the box labelled beats per minute?",
+ stem:"Use the whole fictional activity record in the graph. What value should go in the box labelled beats per minute?",
+ graph:{times:[0,30,60,90],values:[0,43,90,135],xLabel:"Time (s)",yLabel:"Cumulative beats",caption:"Fictional cumulative heartbeat count"},
  correct:90,answerUnit:"beats/min",tolerance:1e-6,model:"90 beats/min",
  explain:"90 seconds is 1.5 minutes. 135 ÷ 1.5 gives 90 beats per minute.",
  numberFeedback:[[135,"This is the total over 90 seconds. Convert to a one-minute rate."],[1.5,"Dividing by 90 gives beats per second. Convert the time to minutes before dividing."],[202.5,"You multiplied by the duration. Divide the count by the time in minutes."]],
@@ -1187,10 +1188,10 @@ additions.push({
  hintCue:"Check that the time has the unit requested by the rate."
 },{
  id:"f171-method-rearrange",unit:"f171",area:4,section:"4.2.2",methodOrder:4,type:"number",level:"stretch",
- stem:"Three fictional resting pulse readings have a mean of 72 beats/min. Two readings were 68 and 74 beats/min. The remaining recorded value is obscured. What reading makes this stated mean possible?",
- correct:74,answerUnit:"beats/min",tolerance:1e-6,model:"74 beats/min",
- explain:"A mean of 72 across three readings gives a total of 216. Subtract 68 and 74 to find the obscured reading.",
- numberFeedback:[[71,"71 is the mean of the two visible readings. Work from the stated mean of all three."],[216,"216 is the sum of all three readings. Subtract the two shown values."]],
+ stem:"Three fictional resting pulse readings have a mean of 72 beats/min. Two readings were 67 and 74 beats/min. The remaining recorded value is obscured. What reading makes this stated mean possible?",
+ correct:75,answerUnit:"beats/min",tolerance:1e-6,model:"75 beats/min",
+ explain:"A mean of 72 across three readings gives a total of 216. Subtract 67 and 74 to find the obscured reading.",
+ numberFeedback:[[70.5,"70.5 is the mean of the two visible readings. Work from the stated mean of all three."],[216,"216 is the sum of all three readings. Subtract the two shown values."]],
  misconception:"Use the count of all values to recover the total from a mean.",
  hintCue:"Use the mean and number of readings to recover the sum."
 },{

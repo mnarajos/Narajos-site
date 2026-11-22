@@ -323,3 +323,4 @@ main[tabindex="-1"]:focus{outline:none}
 .k-question-photo img { display:block; max-inline-size:min(100%, 26rem); height:auto; }
 .k-question-photo figcaption { margin-block-start:.4rem; font-size:.9rem; }
 .k-evidence-table .k-evidence-focus { outline:2px solid currentColor; outline-offset:-3px; font-weight:700; }
+.flash-panel button[hidden] { display:none; }
