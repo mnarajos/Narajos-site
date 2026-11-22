@@ -156,6 +156,28 @@ window.KeystoneHumanLessons = {
         ["Less surface is available for diffusion.", "At a similar gradient, less oxygen can enter blood per unit time.", "Working muscles require more oxygen for aerobic respiration."],
         "Loss of alveolar surface can reduce the rate of oxygen entry into the blood. Circulation may deliver less oxygen relative to the increased demand of working muscles.", ["Start at the alveolar surface and end at the muscle."])
     },
+    "f170/2.2.2": {
+      revision: 1,
+      goal: "Explain how the respiratory and circulatory systems cooperate as working muscles demand more oxygen.",
+      activate: ["Quick check: why can working muscle need more oxygen?", "More contractions require more ATP. An increase in aerobic respiration can increase demand for oxygen."],
+      explain: ["Follow three transfers: air moves into alveoli, oxygen diffuses into blood, and circulation delivers oxygen to tissues. Changing one process does not guarantee that the others keep pace."],
+      prior: ["f170/2.1.3", "Review diffusion from an alveolus"],
+      nodes: ["Demand", "Exchange", "Delivery"],
+      model: [
+        "When a cyclist's leg muscles work harder, their demand for oxygen rises as aerobic respiration increases.",
+        "Deeper or more frequent breaths renew alveolar air. Oxygen diffuses into the blood and binds to haemoglobin.",
+        "If more blood reaches the working muscles per minute, delivery can rise. Oxygen leaves haemoglobin and diffuses towards respiring cells."
+      ],
+      guided: choice("Lung exchange is normal and the oxygen content of arterial blood stays similar, but blood flow to a working muscle falls. Which link limits delivery?", 1,
+        [["Oxygen can no longer diffuse into the lungs from the air.", "Ventilation brings air into the lungs. Exchange is stated to be normal."], ["Less oxygen-carrying blood reaches the muscle per minute.", ""], ["The muscle must now require less ATP.", "The change in blood flow does not establish lower demand."]],
+        "Track the quantity delivered per minute. Similar oxygen content does not compensate for a lower volume of blood arriving.", ["Identify which of the three transfers is affected."]),
+      apply: written("Two runners have similar blood flow to their muscles. One has fewer circulating red cells and a lower concentration of haemoglobin. Explain why oxygen delivery may differ even if breathing rates match.",
+        ["Haemoglobin carries most oxygen in blood.", "At comparable loading, less haemoglobin can reduce oxygen content per volume.", "With comparable blood flow, lower oxygen content can reduce oxygen delivered per minute."],
+        "Equal flow delivers a similar blood volume each minute. If there is less haemoglobin in that volume, it can carry less oxygen even when the runners breathe at similar rates.", ["Identify what carries oxygen and what matching flow actually tells you."]),
+      followup: choice("A person's blood flow is unchanged but alveolar oxygen falls. Which step would help explain less oxygen reaching the tissues?", 0,
+        [["Less oxygen may diffuse into the blood and bind to haemoglobin.", ""], ["Oxygen uptake is unaffected by the gradient.", "Oxygen transfer depends on the gradient between alveolar air and blood."], ["Air would enter a vein and increase O₂ delivery.", "Oxygen diffuses across the barrier; air does not travel in veins."]],
+        "A fall in alveolar oxygen partial pressure can reduce diffusion into the blood when other conditions are similar.")
+    },
     "f170/2.2.3": {
       revision: 1,
       goal: "Interpret ventilation measurements and explain what they tell you about oxygen delivery.",
@@ -204,6 +226,33 @@ window.KeystoneHumanLessons = {
       followup: choice("After a meal, a beta-cell disorder reduces insulin release. Target cells respond normally to the insulin they receive. Which part of the loop has primarily changed?", 0,
         [["Secretion of the signal.", ""], ["Target cells' sensitivity to insulin.", "Their sensitivity is stated to be normal."], ["The identity of the regulated variable.", "Blood glucose concentration is still the variable being regulated."]],
         "The signal is weaker because less insulin is released, even though the target cells remain responsive.")
+    },
+    "f170/3.1.2": {
+      revision: 1,
+      goal: "Interpret fictional glucose-tolerance data and separate a slower return from an explanation of its cause.",
+      activate: ["Quick check: what is a baseline?", "A value at the start that you compare later readings with. Fasting helps reduce the immediate influence of a recent meal before the starting measurement."],
+      explain: ["A glucose-tolerance test tracks blood glucose after a measured glucose load under a standard procedure. Compare the starting value, peak and later readings. The graph shows how glucose changes over time. Several physiological processes can contribute to its shape."],
+      prior: ["f170/3.1.1", "Review the insulin feedback loop"],
+      graph: { times: [0, 30, 60, 90, 120], values: [5, 8.8, 7.6, 6.1, 5.3], scaleMax: 12,
+        xLabel: "Time (min)", yLabel: "Glucose (mmol/L)", caption: "Fictional glucose data" },
+      nodes: ["Read the baseline", "Locate the highest reading", "Compare the late value with the baseline"],
+      model: [
+        "The x-axis shows time from the glucose load. The y-axis is blood glucose concentration in mmol/L. At time 0 the reading is 5.0 mmol/L.",
+        "The highest measured point is 8.8 at 30 minutes. A peak shows the period when glucose is elevated. It does not give the rate of insulin release.",
+        "By 120 minutes the reading is 5.3 mmol/L, close to its starting value. This is consistent with glucose disposal and regulation. The data cannot identify the contribution of secretion or target tissue sensitivity on their own."
+      ],
+      guided: choice("Another fictional series starts at 5.0, reaches 8.8 at 30 minutes and is 7.2 mmol/L at 120 minutes. What is the direct comparison with the worked data?", 2,
+        [["The second series had the higher measured peak.", "The two measured peaks are the same."], ["The second series proves that the pancreas released no insulin.", "Glucose data alone cannot identify the source of the difference."], ["At 120 minutes the second series is further above its own baseline.", ""]],
+        "Subtract each baseline from the late reading: 2.2 versus 0.3 mmol/L above baseline.", ["Compare the late value with the starting value for each series."]),
+      apply: {
+        ...written("Use these fictional readings to evaluate the claim that Sample B cleared glucose more slowly simply because its final reading is higher. Identify what further evidence would help.",
+          ["A falls by 2.5 mmol/L from the 30-minute reading, while B falls by 2.7 mmol/L.", "B starts higher. A's final reading is 0.7 above baseline and B's is 0.4 above baseline.", "More time points under the same protocol would help compare the pattern. Separate measures would be needed to infer a specific hormonal cause."],
+          "The final value alone does not establish slower clearance. B begins higher, ends closer to its own baseline and has a slightly larger measured drop. More measurements under comparable conditions would improve the inference.", ["Compare each final reading with its own starting value and highest measured reading."]),
+        table: {caption: "Fictional blood glucose concentrations (mmol/L)", head: ["Sample", "0 min", "30 min", "120 min"], rows: [["A", "4.8", "8.0", "5.5"], ["B", "6.2", "9.3", "6.6"]] }
+      },
+      followup: choice("A curve falls slowly after a glucose load. Which conclusion follows from this curve alone?", 1,
+        [["It establishes that insulin receptors do not function.", "The curve does not identify a specific mechanism."], ["It describes a slower fall in recorded glucose during those observations.", ""], ["It shows that no glucose was absorbed.", "Glucose initially rose after the load."]],
+        "Describe the time pattern directly. Additional evidence is necessary to identify its mechanism.")
     },
     "f170/3.2.1": {
       goal: "Follow a reflex pathway and predict which parts still work if one link is interrupted.",

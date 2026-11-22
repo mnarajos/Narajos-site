@@ -12,6 +12,13 @@ var notes={
         "Surgery can treat a local tumour or relieve pressure at its site. A systemic drug can reach cancer cells at several sites. Treatment decisions consider the location of disease, likely response, adverse effects, and recovery time."
       ]
     },
+    "2.2": {
+      "title": "Managing symptoms and function",
+      "lines": [
+        "Management therapies can relieve symptoms or support quality of life.",
+        "An improvement in function can be valuable even when the underlying condition persists."
+      ]
+    },
     "2.3": {
       "title": "Prevention and early detection",
       "lines": [
@@ -302,10 +309,13 @@ var buildPractice={
  "f170/1.1.2":"p-cell-actual-width",
  "f170/2.1.2":"p-phys-heart-septum",
  "f170/2.1.3":"p-phys-homeostasis-cross",
+ "f170/2.2.2":"p-phys-homeostasis-cross",
  "f170/2.2.3":"p-phys-peakflow-technique",
  "f170/3.1.1":"p-endo-insulin-loop",
+ "f170/3.1.2":"p-endo-type1",
  "f170/3.3.1":"p-endo-gametes",
  "f171/2.1":"p-f171-local-systemic",
+ "f171/2.2":"p-health-parkinsons-therapy",
  "f171/a2":"p-f171-local-systemic",
  "f171/2.3":"p-f171-treatment-prevention",
  "f171/a3":"p-f171-antigen-antibody-complex",
@@ -375,7 +385,7 @@ function showUnit(unit,render){
   }else{
    h+='<a class="k-area k-catchup-area" href="#catchup/'+unit+'/'+a.code+'"><span class="k-area-num">'+a.code.slice(1)+'</span><span class="k-area-label"><strong>'+esc(a.title)+'</strong><small>'+(lessonFor(unit,a.code)?'Guided lesson':'Short recap')+'</small></span><span aria-hidden="true">›</span></a>';
    if(unit==="f171"&&a.code==="a2"){
-    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/2.1">Choosing a treatment</a><a class="button secondary" href="#catchup/f171/2.3">Prevention and early detection</a></div>';
+    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/2.1">Choosing a treatment</a><a class="button secondary" href="#catchup/f171/2.2">Managing symptoms and function</a><a class="button secondary" href="#catchup/f171/2.3">Prevention and early detection</a></div>';
    }
    if(unit==="f171"&&a.code==="a4"){
     h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/4.2.1">Interpreting screening results</a><a class="button secondary" href="#catchup/f171/4.2.2">Taking repeat measurements</a></div>';
@@ -447,9 +457,12 @@ function reteachFor(q){
   "f170/1.1.2":[3,"Revisit the scale-bar calculation"],
   "f170/2.1.2":[1,"Revisit blood flow and valve pressure"],
   "f170/2.1.3":[2,"Revisit oxygen diffusion into blood"],
+  "f170/2.2.2":[3,"Revisit how circulation supports oxygen delivery"],
   "f170/2.2.3":[2,"Revisit what ventilation measures"],
+  "f170/3.1.2":[3,"Revisit comparing glucose with baseline"],
   "f170/3.1.1":[3,"Revisit insulin action on target tissues"],
   "f170/3.3.1":[3,"Revisit the features that identify reproductive tissues"],
+  "f171/2.2":[3,"Revisit what improvement in function shows"],
   "f171/2.1":[3,"Revisit how evidence supports a treatment choice"],
   "f171/2.3":[3,"Revisit screening and diagnostic follow-up"],
   "f171/a3":[3,"Revisit the roles of immune cells"],

@@ -92,7 +92,8 @@
       '</section>';
     const model = lesson.model?.length ?
       '<details class="paper panel hb-teach-stage" data-hb-model-step="1"><summary>I do · ' + escape(lesson.modelTitle || "Follow a worked example") +
-      '</summary>' + context.modelVisual + figure(lesson.photo) + table(lesson.table, lesson.focusCells) +
+      '</summary>' + context.modelVisual + figure(lesson.photo) +
+      (lesson.graph ? window.KeystoneHumanSkills.graphHTML(lesson.graph) : "") + table(lesson.table, lesson.focusCells) +
       '<ol class="hb-model-steps' + (lesson.nodes ? ' hb-model-path' : '') + '">' + lesson.model.map((step, i) =>
         '<li' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
         escape(step) + '</li>').join("") +

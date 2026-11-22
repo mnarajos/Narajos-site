@@ -54,6 +54,27 @@
         [["It establishes that disease has been cured everywhere.", "A local operation does not provide evidence about distant sites."], ["Removal can relieve local pressure on the nerve.", ""], ["It works by delivering medication through the circulation.", "Here the mechanism is physical removal."]],
         "Match the claim to the local mechanism and the evidence available.")
     },
+    "f171/2.2": {
+      revision: 1,
+      goal: "Explain how a management therapy affects function and judge what the improvement shows.",
+      activate: ["Quick check: what is a functional outcome?", "A measured change in what a person can do, such as walking more easily or completing a daily task."],
+      explain: ["Management therapy can reduce symptoms, help function or improve quality of life. A change in one outcome can be valuable even if the disease persists. Check whether the evidence measures an effect of the disease or the underlying disease process."],
+      nodes: ["Identify the effect being managed", "Connect the therapy and function", "Limit the claim"],
+      model: [
+        "A fictional person with Parkinson's has difficulty starting movements. The target is an effect that makes walking and everyday tasks harder.",
+        "Levodopa can be converted into dopamine in the brain. Improving dopamine signalling can ease some movement symptoms. A timed walk can provide evidence about one aspect of daily function.",
+        "A quicker comparable walk supports a functional benefit in this example. It does not show that the underlying disease has been reversed. Effects, unwanted effects and individual priorities still matter."
+      ],
+      guided: choice("After a course of physiotherapy, a fictional person's balance task improves and they can stand from a chair more easily. Which conclusion best fits these measurements?", 1,
+        [["The therapy eliminated the underlying cause of Parkinson's.", "Balance and standing do not measure whether neurodegeneration has reversed."], ["The person shows improvement in two measured functions.", ""], ["The therapy has no benefit because it did not cure the condition.", "Improved function can be a meaningful benefit of a management therapy."]],
+        "State what the tasks measure. Better performance supports a change in function, and the measurements leave the underlying disease status open.", ["Identify the outcome measured in each task."]),
+      apply: written("A fictional person with inflammatory arthritis reports less pain after symptom management and returns to a favourite activity. The follow-up measure of joint damage is unchanged. Explain how these findings can coexist and what they show about benefit.",
+        ["Less pain can make movement or participation easier.", "Pain and ability to participate are different outcomes from structural joint damage.", "There is evidence of symptomatic or functional benefit. The findings do not establish repair of the damage."],
+        "A therapy can ease pain so that activity becomes possible, even when measured joint damage is unchanged. The two measures describe different effects, so the improvement supports symptom management without demonstrating structural recovery.", ["Separate what the person can do from what happened to the underlying tissue."]),
+      followup: choice("A support aid improves a person's measured independence at home. Which outcome does the evidence establish most directly?", 0,
+        [["Improvement in the measured daily function.", ""], ["A reversal of the underlying cause.", "The assessment did not measure a reversal of the underlying process."], ["Benefit for every user with this condition.", "One example cannot establish the same benefit in other people."]],
+        "State the outcome supported by the evidence and keep the scope of the claim proportionate.")
+    },
     "f171/2.3": {
       revision: 1,
       goal: "Distinguish prevention, screening, diagnostic follow-up and monitoring by the purpose in each situation.",
