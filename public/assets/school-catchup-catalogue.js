@@ -1,5 +1,5 @@
 import { curriculum, motionLessons } from "./ks3-lessons.js";
-import { latestCatchup } from "./school-catchup-progress.js";
+import { clearCatchupProgress, hasCatchupProgress } from "./school-catchup-progress.js";
 
 const root = "/science-catch-up/";
 const revision = code => "/gcse/#topic-" + code.toLowerCase();
@@ -49,14 +49,6 @@ const yearSelected = years.includes(year);
 if (!yearSelected) yearNav.classList.add("school-year-chooser");
 
 const main = document.querySelector("[data-catchup-catalogue]");
-const saved = latestCatchup(yearSelected ? year : undefined);
-if (saved) {
-  const resume = element("aside", "", "school-resume");
-  const href = Number(saved.year) < 9 ? guidedHref(saved.href) : saved.href;
-  resume.append(element("div", "Year " + saved.year + " · " + saved.title), link("Continue catch-up", href, "school-primary"));
-  if (yearSelected) main.append(resume);
-  else yearNav.before(resume);
-}
 if (yearSelected) {
   for (const number of years) {
     const target = link("Year " + number, root + "?year=" + number);
@@ -113,3 +105,25 @@ if (yearSelected) {
   }
   yearNav.append(list);
 }
+
+const clearButton = document.querySelector("[data-catchup-clear]");
+const clearDialog = document.querySelector("[data-catchup-clear-dialog]");
+const clearStatus = document.querySelector("[data-catchup-clear-status]");
+function refreshClearButton() {
+  clearButton.hidden = !hasCatchupProgress();
+}
+clearButton.addEventListener("click", () => {
+  clearDialog.returnValue = "";
+  clearDialog.showModal();
+});
+clearDialog.addEventListener("close", () => {
+  if (clearDialog.returnValue !== "clear") return;
+  const cleared = clearCatchupProgress();
+  refreshClearButton();
+  clearStatus.hidden = false;
+  clearStatus.textContent = cleared ? "Catch-up progress cleared." : "Catch-up progress could not be cleared.";
+  clearStatus.focus();
+});
+window.addEventListener("pageshow", refreshClearButton);
+window.addEventListener("storage", refreshClearButton);
+refreshClearButton();

@@ -44,15 +44,12 @@ function link(text, href, className) {
 export function mountJourney(host, model, lesson) {
   if (!host || !model || !lesson?.steps?.length || host.dataset.journeyMounted) return;
   host.dataset.journeyMounted = "true";
-  const {id, year, title, hook, steps, retry, code} = lesson;
+  const {id, year, hook, steps, retry, code} = lesson;
   const guided = Number(year) >= 9 || new URLSearchParams(location.search).has("guided");
   const progressKey = year + "." + id;
   const prior = readCatchup(progressKey);
   const state = {
     ...prior,
-    title,
-    year: String(year),
-    href: location.pathname + location.search,
     step: Math.min(prior.step, steps.length - 1)
   };
   model.id ||= "catchup-evidence";
@@ -68,23 +65,31 @@ export function mountJourney(host, model, lesson) {
   const dialog = element("dialog", "", "school-check");
   dialog.setAttribute("aria-labelledby", "school-check-heading");
 
-  journey.append(element("h2", hook), versions, progress, checkList, storageNote, dialog);
-  host.before(journey);
-  const shortcut = checkButton("Check", showCheck);
-  const actions = element("div", "", "school-journey-actions");
-  actions.append(shortcut);
-  model.after(actions);
+  const checkHeading = element("h2", "Checks");
+  journey.append(checkHeading, versions, progress, checkList, storageNote, dialog);
+  const opening = element("h2", hook, "school-opening-hook");
   const evidence = guided ? element("div", "", "school-evidence-panel") : null;
   if (evidence) {
-    evidence.hidden = true;
+    evidence.hidden = Boolean(state.done || state.step > 0);
     model.before(evidence);
-    evidence.append(model, actions);
-    if (Number(year) < 9 && evidence.nextElementSibling) {
+    evidence.append(opening, model);
+    evidence.after(journey);
+    if (model.dataset.catchupFirstTopic === "cells") {
+      const microscopy = model.querySelector("[data-catchup-first-evidence]");
+      if (microscopy) {
+        microscopy.open = true;
+        model.querySelector("h2")?.after(microscopy);
+      }
+    }
+    if (Number(year) < 9 && journey.nextElementSibling) {
       const extras = element("details", "", "school-lesson-extras");
       extras.append(element("summary", "More practice and activities"));
-      while (evidence.nextElementSibling) extras.append(evidence.nextElementSibling);
-      evidence.after(extras);
+      while (journey.nextElementSibling) extras.append(journey.nextElementSibling);
+      journey.after(extras);
     }
+  } else {
+    model.before(opening);
+    model.after(journey);
   }
 
   let viewOnly = false;
@@ -94,6 +99,7 @@ export function mountJourney(host, model, lesson) {
   }
 
   function renderStages() {
+    checkHeading.hidden = Boolean(state.done);
     versions.textContent = state.done ? "Lesson complete" : "Step " + (state.step + 1) + " of " + steps.length;
     versions.classList.toggle("school-visually-hidden", Boolean(state.done));
     progress.hidden = Boolean(state.done);
@@ -113,11 +119,10 @@ export function mountJourney(host, model, lesson) {
         teaching.append(element("h4", title), element("p", text));
         stage.append(teaching);
       }
-      stage.append(button("Catch-up notes", showEvidence),
-        checkButton(state.open ? "Resume check" : "Check", showCheck));
+      stage.append(checkButton(state.open ? "Resume check" : "Check", showCheck));
+      if (state.step > 0) stage.append(button("Catch-up notes", showEvidence));
       checkList.append(stage);
     }
-    shortcut.hidden = Boolean(state.done);
     if (state.done) {
       const next = element("div", "", "school-completion");
       const heading = element("h3", "Catch-up complete!");
@@ -167,7 +172,6 @@ export function mountJourney(host, model, lesson) {
     shownIndex = index;
     viewOnly = review;
     if (!review) {
-      state.started = true;
       state.open = true;
       write();
     }
