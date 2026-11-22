@@ -82,6 +82,20 @@ function mount(closing, id, guide) {
   wrapper.append(button, status, report);
   closing.after(wrapper);
 
+  const scaffold = closing.closest(".writing-step").querySelector("[data-outline-scaffold]");
+  scaffold?.querySelector("button").addEventListener("click", event => {
+    const { scaffoldOpening, scaffoldNotes } = event.currentTarget.dataset;
+    const prepared = [scaffoldOpening, scaffoldNotes];
+    fields.slice(0, 2).forEach((field, index) => {
+      if (!field.value.trim()) {
+        field.value = prepared[index];
+        field.dispatchEvent(new Event("input", { bubbles: true }));
+      }
+    });
+    scaffold.querySelector("[data-outline-status]").textContent = "Use the supporting notes to add your own reasoning.";
+    fields[1].focus();
+  });
+
   for (const field of fields) {
     field.addEventListener("input", () => {
       if (!report.hidden) status.textContent = "Outline changed. Check it again when you’re ready.";

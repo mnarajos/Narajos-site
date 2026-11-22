@@ -12,7 +12,7 @@
  <link rel="stylesheet" href="/assets/home-link.css">
  <link rel="stylesheet" href="/assets/science-practice.css">
  <script defer src="/assets/paragraph-drafts.js"></script>
- <script defer src="/assets/writing-feedback.js"></script>
+ <script type="module" src="/assets/writing-feedback.js"></script>
  <script type="module" src="/assets/writing-outlines.js"></script>
 </head>
 <body>
@@ -26,30 +26,81 @@
    <h1>GCSE · Use evidence</h1>
 
   </div>
-  <article class="practice-card writing-card">
+  <article class="practice-card writing-card" data-writing-mark="potato">
    <figure class="writing-visual">
     <img src="/assets/writing-prompts/osmosis-results.png" alt="The potato gained 7% mass in dilute solution and lost 9% in concentrated solution.">
     <figcaption>Equal-sized potato cylinders were immersed for the same time. <a href="/assets/writing-prompts/osmosis-results.png">View full size</a></figcaption>
    </figure>
-   <p class="writing-prompt writing-cue" data-writing-cue="look"><strong>Start here.</strong> Which potato sample gained mass? Which lost mass? Read each percentage from the graph.</p>
+   <p class="writing-prompt writing-cue" data-writing-cue="look"><strong>Start here.</strong> Point to each bar in turn. Say which sample gained mass and which lost mass. Read the percentage for each.</p>
+
+    <section class="writing-sentence" data-writing-exercise="potato" data-writing-kind="short" aria-labelledby="gcse-sentence-short-title">
+     <h2 class="writing-cue" data-writing-cue="respond" id="gcse-sentence-short-title">Write one sentence</h2>
+     <label for="gcse-sentence-short">Report both changes in mass. Match each percentage and its direction to the right solution.</label>
+     <p class="writing-starter"><strong>Sentence starter</strong> In dilute solution the potato…</p>
+      <button type="button" data-use-starter="In dilute solution the potato ">Use sentence starter</button>
+     <textarea id="gcse-sentence-short" data-draft rows="2" maxlength="500"></textarea>
+     <button type="button" data-check-sentence>Check my sentence</button>
+     <p data-sentence-status role="status"></p>
+     <ul class="writing-mark-list" data-sentence-results hidden></ul>
+     <details class="writing-sentence-model" data-sentence-model hidden>
+      <summary>Compare with a model sentence</summary>
+      <p class="model">The potato gained 7% mass in dilute solution and lost 9% in concentrated solution.</p>
+     </details>
+     <details data-sentence-comparison hidden>
+      <summary>Compare your first and latest sentences</summary>
+      <dl class="writing-versions">
+       <dt>First checked</dt><dd data-first-sentence></dd>
+       <dt>Latest checked</dt><dd data-revised-sentence></dd>
+      </dl>
+     </details>
+    </section>
+   <details class="writing-step">
+    <summary class="writing-cue" data-writing-cue="notes">Explain one result</summary>
+    <section class="writing-sentence" data-writing-exercise="potato" data-writing-kind="reason" aria-labelledby="gcse-sentence-reason-title">
+     <h2 class="writing-cue" data-writing-cue="respond" id="gcse-sentence-reason-title">Explain the mass gain</h2>
+     <label for="gcse-sentence-reason">Link the gain in dilute solution to the direction of water movement.</label>
+     <p class="writing-starter"><strong>Sentence starter</strong> The sample gained mass because…</p>
+      <button type="button" data-use-starter="The sample gained mass because ">Use sentence starter</button>
+     <textarea id="gcse-sentence-reason" data-draft rows="2" maxlength="500"></textarea>
+     <button type="button" data-check-sentence>Check my sentence</button>
+     <p data-sentence-status role="status"></p>
+     <ul class="writing-mark-list" data-sentence-results hidden></ul>
+     <details class="writing-sentence-model" data-sentence-model hidden>
+      <summary>Compare with a model sentence</summary>
+      <p class="model">The sample gained mass because water moved into the potato cells by osmosis.</p>
+     </details>
+     <details data-sentence-comparison hidden>
+      <summary>Compare your first and latest sentences</summary>
+      <dl class="writing-versions">
+       <dt>First checked</dt><dd data-first-sentence></dd>
+       <dt>Latest checked</dt><dd data-revised-sentence></dd>
+      </dl>
+     </details>
+    </section>
+   </details>
    <p class="writing-cue" data-writing-cue="respond"><strong>Now explain.</strong> Use both results to explain the mass changes. What else would you measure to find where the mass stays the same?</p>
-   <p class="tiny">First time? Look at the worked example before you plan.</p>
+   <p class="tiny">Ready to write more? Use the worked example and plan below.</p>
    <details class="writing-step">
     <summary class="writing-cue" data-writing-cue="model">See a worked example</summary>
-    <p class="writing-example-question"><strong>Example question</strong><br>Amylase took 80 seconds at 15 °C and 26 seconds at 35 °C to make the same amount of product. Explain the difference.</p>
+    <p class="writing-example-question"><strong>Example question</strong><br>In a separate osmosis test, equal-sized potato cylinders gained 4% mass in a dilute solution and lost 3% in a concentrated solution. Explain what happened.</p>
     <dl class="writing-example-plan">
-     <div class="writing-cue" data-writing-cue="opening"><dt>Topic sentence</dt><dd>Amylase worked faster at 35 °C than at 15 °C.</dd></div>
-     <div class="writing-cue" data-writing-cue="notes"><dt>Supporting notes</dt><dd><ul><li>The same amount of product formed in less time at 35 °C.</li><li>Amylase and starch molecules had more kinetic energy at 35 °C.</li><li>Successful collisions happened more often. More enzyme–substrate complexes formed per second.</li></ul></dd></div>
-     <div class="writing-cue" data-writing-cue="closing"><dt>Concluding sentence</dt><dd>Amylase worked faster at 35 °C in this test. We would need more temperatures to find its optimum.</dd></div>
+     <div class="writing-cue" data-writing-cue="opening"><dt>Topic sentence</dt><dd>The potato cylinders changed mass because water moved into or out of their cells.</dd></div>
+     <div class="writing-cue" data-writing-cue="notes"><dt>Supporting notes</dt><dd><ul><li>Dilute solution, +4% → net water movement into cells</li><li>Concentrated solution, −3% → net water movement out of cells</li><li>Osmosis across partially permeable cell membranes</li></ul></dd></div>
+     <div class="writing-cue" data-writing-cue="closing"><dt>Concluding sentence</dt><dd>Testing intermediate concentrations would help find where there is no net change in mass.</dd></div>
     </dl>
     <details class="writing-model">
      <summary>Read the full paragraph</summary>
-     <p class="model">Amylase worked faster at 35 °C than at 15 °C. The same amount of product formed in 26 seconds at 35 °C and 80 seconds at 15 °C. At 35 °C, amylase and starch molecules had more kinetic energy. They collided successfully more often, so more enzyme–substrate complexes formed per second. We would need to test more temperatures to find the optimum.</p>
+     <p class="model">The potato cylinders changed mass because water moved into or out of their cells. In dilute solution the cylinders gained 4% mass because more water moved into the cells than out. In concentrated solution they lost 3% because more water moved out than in. The water moved through partially permeable cell membranes by osmosis. Testing solutions between these concentrations would help find where the mass stays the same.</p>
     </details>
    </details>
    <details class="writing-step">
     <summary class="writing-cue" data-writing-cue="notes">Plan your paragraph</summary>
-    <p>Start with what the results show. In your notes, pair each result with the direction water moved. End with what you would test next.</p>
+    <p>For each result, note the solution, the signed percentage and the direction of water movement. End by saying what you would test next.</p>
+    <div class="writing-scaffold" data-outline-scaffold>
+     <p><strong>Start with part of the plan.</strong> This adds an opening and one evidence cue. Complete the explanation and add the other result.</p>
+     <button type="button" data-scaffold-opening="Potato cylinders changed mass in opposite directions in the two sugar solutions." data-scaffold-notes="Dilute solution · +7% · net water movement ...">Use a partly filled plan</button>
+     <p data-outline-status role="status"></p>
+    </div>
 
     <div class="writing-field-heading">
      <label for="gcse-topic">Topic sentence:</label>
@@ -79,6 +130,10 @@
    </details>
    <details class="writing-step">
     <summary class="writing-cue" data-writing-cue="respond">Write your paragraph</summary>
+    <div class="writing-scaffold">
+     <button type="button" data-use-sentences>Use my checked sentences</button>
+     <p role="status"></p>
+    </div>
     <div class="writing-field-heading">
      <label for="gcse-paragraph">Your paragraph:</label>
      <details class="writing-help">
@@ -105,6 +160,35 @@
      <li data-look-for="[&quot;\\bosmosis\\b&quot;, &quot;\\b(?:partially|selectively|semi[ -]?)\\s?permeable\\b&quot;]">Did you explain that osmosis is the net movement of water through a partially permeable membrane from a more dilute to a more concentrated solution?</li>
      <li data-look-for="[&quot;\\b(?:between|intermediate)\\b&quot;, &quot;\\b(?:no (?:net )?change|stays? the same|zero)\\b&quot;]">Did you suggest testing intermediate sugar concentrations to find where there is no net change in mass?</li>
     </ul>
+   </details>
+   <details class="writing-step">
+    <summary class="writing-cue" data-writing-cue="notes">Try a new pair of results</summary>
+    <section class="writing-sentence" data-writing-exercise="potato" data-writing-kind="transfer" aria-labelledby="gcse-sentence-transfer-title">
+     <h2 class="writing-cue" data-writing-cue="respond" id="gcse-sentence-transfer-title">Read a fresh result</h2>
+     <div class="writing-data">
+      <table><caption>Results from a second set of potato cylinders</caption>
+       <thead><tr><th scope="col">Solution</th><th scope="col">Change in mass</th></tr></thead>
+       <tbody><tr><th scope="row">Dilute</th><td>+5%</td></tr><tr><th scope="row">Concentrated</th><td>−6%</td></tr></tbody>
+      </table>
+     </div>
+     <label for="gcse-sentence-transfer">In one sentence, pair each result with its solution and say whether the mass rose or fell.</label>
+
+     <textarea id="gcse-sentence-transfer" data-draft rows="2" maxlength="500"></textarea>
+     <button type="button" data-check-sentence>Check my sentence</button>
+     <p data-sentence-status role="status"></p>
+     <ul class="writing-mark-list" data-sentence-results hidden></ul>
+     <details class="writing-sentence-model" data-sentence-model hidden>
+      <summary>Compare with a model sentence</summary>
+      <p class="model">In dilute solution the potato gained 5% mass, whereas in concentrated solution it lost 6%.</p>
+     </details>
+     <details data-sentence-comparison hidden>
+      <summary>Compare your first and latest sentences</summary>
+      <dl class="writing-versions">
+       <dt>First checked</dt><dd data-first-sentence></dd>
+       <dt>Latest checked</dt><dd data-revised-sentence></dd>
+      </dl>
+     </details>
+    </section>
    </details>
   </article>
   <p class="catchup-finish" id="more-tasks"><a href="/teaching/focused-writing/#gcse-tasks">More GCSE writing tasks</a></p>
