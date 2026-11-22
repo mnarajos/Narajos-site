@@ -28,17 +28,24 @@
   <div class="page-hero">
    <p class="breadcrumb"><a href="/teaching/focused-writing/">← Focused Writing</a></p>
    <h1>Order science sentences</h1>
-   <p class="lead">Build a paragraph with an opening, supporting sentences, and an ending.</p>
+   <p class="lead">See how a science paragraph works, then build two about rocks.</p>
   </div>
   <div class="practice-stack">
-   <details class="practice-card writing-card" open>
-    <summary>Build one paragraph</summary>
-    <toy-ramp></toy-ramp>
+   <section id="ramp-model" class="practice-card writing-card" aria-labelledby="ramp-model-title">
+    <h2 id="ramp-model-title">I do · Model a paragraph</h2>
+    <p>A pupil wants to find out whether ramp height changes how far a toy car rolls. <strong>Why use the same car each time?</strong></p>
     <figure class="ks3-illustration">
-     <img src="/assets/ks3-diagrams/ramps.svg" alt="A green car starts on a low ramp and a blue car starts on a higher ramp. Both ramps meet the same floor.">
+     <img src="/assets/writing-prompts/same-car-ramps.svg" alt="The same toy car sits on a low ramp and on a higher ramp.">
     </figure>
-    <p data-writing-cue="respond">A pupil wants to find out whether ramp height changes how far a toy car rolls. Why should they use the same car each time? Start by explaining how this helps the pupil interpret the results.</p>
-    <div data-writing-order="ramp"></div>
+    <div data-ramp-model></div>
+    <details class="writing-step">
+     <summary>Try the ramp model</summary>
+     <toy-ramp></toy-ramp>
+    </details>
+    <details class="writing-step" id="ramp-practice">
+     <summary>Practise with the ramp</summary>
+     <div class="writing-card" data-ramp-practice>
+     <div data-writing-order="ramp"></div>
     <details class="writing-step">
      <summary class="writing-cue" data-writing-cue="notes">Plan your paragraph</summary>
      <label for="ramp-topic">Topic sentence:</label>
@@ -61,7 +68,9 @@
       </div>
      </div>
     </details>
-   </details>
+     </div>
+    </details>
+   </section>
    <details class="practice-card writing-card">
     <summary>Build two paragraphs</summary>
     <figure class="ks3-illustration">

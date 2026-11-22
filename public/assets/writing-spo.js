@@ -49,16 +49,21 @@ function labelled(role, content, note, type) {
   return block;
 }
 
-function modelCard(example) {
+function modelCard(example, isRamp = false) {
   const mode = element("section", "", "spo-worked");
-  const topic = labelled("Topic sentence", example.topic, "Give the reader the scientific idea you will explain.", "topic");
+  const topic = labelled("Topic sentence", example.topic, isRamp
+    ? "It answers the question by showing what keeping the car the same helps you find out."
+    : "Give the reader the scientific idea you will explain.", "topic");
+  const rampReasons = ["Name a difference between cars that could matter.",
+    "Explain how that difference could change the result.", "Show how using the same car controls that difference."];
   const notes = element("ol", "", "spo-pairs");
   for (const [index, [note, sentence]] of example.details.entries()) {
     const item = element("li");
     item.append(disclosure("Reveal note " + (index + 1),
       labelled("Supporting note " + (index + 1), note, "A short reminder of the idea.", "note"),
       disclosure("Develop note " + (index + 1) + " into a sentence",
-        labelled("Supporting sentence " + (index + 1), sentence, "Explain the idea so the reader can follow it.", "sentence"))));
+        labelled("Supporting sentence " + (index + 1), sentence, isRamp ? rampReasons[index]
+          : "Explain the idea so the reader can follow it.", "sentence"))));
     notes.append(item);
   }
   const model = [example.topic, ...example.details.map(([, sentence]) => sentence), example.conclusion].join(" ");
@@ -67,12 +72,14 @@ function modelCard(example) {
     zoom.setAttribute("aria-pressed", String(enlarged));
   });
   zoom.setAttribute("aria-pressed", "false");
-  mode.append(element("h3", "I do · Model the decisions"), zoom,
-    element("p", example.prompt, "writing-example-question"),
-    disclosure("Reveal the topic sentence", topic),
+  mode.append(element("h3", isRamp ? "Worked example" : "I do · Model the decisions"), zoom);
+  if (!isRamp) mode.append(element("p", example.prompt, "writing-example-question"));
+  mode.append(disclosure("Reveal the topic sentence", topic),
     disclosure("Reveal the notes and develop them", notes),
     disclosure("Reveal the concluding sentence",
-      labelled("Concluding sentence", example.conclusion, "Say what the explanation shows or why it matters.", "conclusion")),
+      labelled("Concluding sentence", example.conclusion, isRamp
+        ? "This ties the reasoning together by saying why the two distances can be compared more fairly."
+        : "Say what the explanation shows or why it matters.", "conclusion")),
     disclosure("Read the assembled model", element("p", model, "model")));
   return mode;
 }
@@ -184,8 +191,10 @@ export function mountIntroduction(card, id) {
   if (year >= 12) connectors.append(disclosure("Qualify a scientific claim",
     element("p", "Although the sodium gradient favours co-transport, uptake also depends on the availability of glucose and the co-transporter."),
     element("p", "‘Although’ qualifies the claim by pointing out another influence on uptake.")));
-  intro.append(disclosure("I do · Open the worked example", modelCard(example)),
-    disclosure("We do · Practise the decisions", guided), own, courseNotes, connectors);
+  const rampModel = id === "ramp" && card.closest("#ramp-model")?.querySelector("[data-ramp-model]");
+  if (rampModel) rampModel.append(modelCard(example, true));
+  else intro.append(disclosure("I do · Open the worked example", modelCard(example)));
+  intro.append(disclosure("We do · Practise the decisions", guided), own, courseNotes, connectors);
   const stimulus = card.querySelector("figure");
   if (stimulus) stimulus.after(intro);
   else card.prepend(intro);
