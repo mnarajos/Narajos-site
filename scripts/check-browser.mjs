@@ -75,14 +75,19 @@ try{
  await screen(pilotPage,"catch-up-year-navigation-mobile");
  assert.equal(await pilotPage.locator(".school-topic-list > li").count(),12);
  assert.equal(await pilotPage.getByRole("link",{name:"Open GCSE revision"}).count(),0);
+ const year7Openings=await pilotPage.locator(".school-topic-list > li").evaluateAll(rows=>rows.map(row=>[row.querySelector("a").href,row.querySelector("p").textContent]));
  await pilotPage.getByRole("link",{name:"Science Skills",exact:true}).click();
- await pilotPage.getByRole("heading",{name:"What made the same toy roll farther?",exact:true}).waitFor({timeout:10000}).catch(async error=>{
+ await pilotPage.getByRole("heading",{name:"How could you find out what makes a toy roll farther?",exact:true}).waitFor({timeout:10000}).catch(async error=>{
   throw new Error("Science Skills opening missing at "+pilotPage.url()+": "+(await pilotPage.locator("main").innerText()).slice(0,420),{cause:error});
  });
  const workedRamp=pilotPage.getByRole("heading",{name:"Worked example · testing ramp angle"});
  assert(await workedRamp.isVisible());
  assert(!(await pilotPage.getByRole("heading",{name:"Check your understanding",exact:true}).isVisible()));
  await pilotPage.getByRole("heading",{name:"Roll a toy down a ramp",exact:true}).waitFor();
+ assert(await pilotPage.evaluate(()=>{
+  const parts=[".school-opening-hook",".ks3-ramp-setup","toy-ramp",".ks3-connection",".school-journey"].map(selector=>document.querySelector(selector));
+  return parts.every((part,i)=>part&&(i===0||Boolean(parts[i-1].compareDocumentPosition(part)&Node.DOCUMENT_POSITION_FOLLOWING)));
+ }),"Introduce the toy and model before the recall prompt and checks");
  assert(await pilotPage.locator(".school-evidence-panel").evaluate(el=>!!(el.compareDocumentPosition(document.querySelector(".school-journey"))&Node.DOCUMENT_POSITION_FOLLOWING)));
  const scienceSkills=pilotPage.locator(".school-journey");
  assert(await scienceSkills.getByText("Step 1 of 4",{exact:true}).isVisible());
@@ -100,8 +105,13 @@ try{
  await pilotPage.goto(base+"/science-catch-up/?year=8");
  assert.equal(await pilotPage.locator(".school-topic-list > li").count(),13);
  assert.equal(await pilotPage.getByRole("link",{name:"Open GCSE revision"}).count(),0);
+ const year8Openings=await pilotPage.locator(".school-topic-list > li").evaluateAll(rows=>rows.map(row=>[row.querySelector("a").href,row.querySelector("p").textContent]));
+ for(const [path,opening] of [...year7Openings,...year8Openings]){
+  await pilotPage.goto(path);
+  assert.equal(await pilotPage.locator(".school-opening-hook").textContent(),opening,path);
+ }
  await pilotPage.goto(base+"/ks3/cells/");
- assert(await pilotPage.getByRole("heading",{name:"What gives away the plant cell in a pair of microscope photographs?"}).isVisible());
+ assert(await pilotPage.getByRole("heading",{name:"How could you spot a plant cell without a label?",exact:true}).isVisible());
  assert.match(await pilotPage.locator(".ks3-cell-functions").first().innerText(),/Mitochondria\s+are the site of aerobic respiration/);
  const cellsAnswer=pilotPage.locator("[data-ks3-transfer]").getByRole("textbox",{name:"Your answer",exact:true});
  await cellsAnswer.fill("A cell wall supports the leaf cell.");
@@ -128,11 +138,12 @@ try{
  await pilotPage.evaluate(()=>{
   localStorage.setItem("narajos.catchup.v1.8.periodic-table", JSON.stringify({step:2,started:true,done:true}));
  });
- const conceptLinks=await pilotPage.locator(".school-concept-list a").evaluateAll(links=>links.map(a=>a.href));
+ const conceptLinks=await pilotPage.locator(".school-concept-list a").evaluateAll(links=>links.map(a=>[a.href,a.parentElement.querySelector("p").textContent]));
  assert.equal(conceptLinks.length,12);
- for(const path of conceptLinks){
+ for(const [path,opening] of conceptLinks){
   await pilotPage.goto(path);
   await pilotPage.getByRole("heading",{name:"Catch-up notes",exact:true}).waitFor();
+  assert.equal(await pilotPage.locator(".school-opening-hook").textContent(),opening,path);
   assert(await pilotPage.locator(".school-evidence-panel").evaluate(el=>!!(el.compareDocumentPosition(document.querySelector(".school-journey"))&Node.DOCUMENT_POSITION_FOLLOWING)));
   if(path.endsWith("topic=cell-structures")){
    const comparison=pilotPage.locator(".school-cell-comparison img");
@@ -175,7 +186,7 @@ try{
  });
  await pilotPage.goto(base+"/science-catch-up/?year=9");
  assert.equal(await pilotPage.getByRole("link",{name:"Continue catch-up",exact:true}).count(),0);
- await pilotPage.getByRole("link",{name:"Which way does water move?",exact:true}).click();
+ await pilotPage.getByRole("link",{name:"Osmosis",exact:true}).click();
  await guide.getByRole("button",{name:"Resume check",exact:true}).click();
  assert(await check.getByRole("radio",{name:"Dissolved sugar",exact:true}).isChecked());
  await check.getByText("Saved note",{exact:true}).click();

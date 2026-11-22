@@ -7,8 +7,8 @@ const lesson = (code, title, hook, notice, idea, visual, steps, retry) =>
   ({year: 9, code, title, hook, notice, idea, visual, steps, retry});
 
 export const year9 = {
-  "cell-structures": lesson("B1", "What do cell structures do?",
-    "Why do muscle cells need so many mitochondria?",
+  "cell-structures": lesson("B1", "Cell structures",
+    "Why do working muscle cells need lots of mitochondria?",
     "Find a mitochondrion in each cell, then find a chloroplast.",
     "A specialised cell has structures that help it do its job.",
     ["Structures in typical cells", ["Structure", "Job"], [
@@ -24,7 +24,7 @@ export const year9 = {
     ],
     q("Why does a root hair cell have a long extension?", "It increases the surface area for absorption.", "The extension allows more surface contact with the soil.", "It makes the cell divide faster.", "It replaces the cell membrane.")),
 
-  osmosis: lesson("B1", "Which way does water move?",
+  osmosis: lesson("B1", "Osmosis",
     "Why might a piece of potato gain mass in water?",
     "Which way do more water molecules cross the membrane?",
     "Osmosis is the net movement of water molecules through a partially permeable membrane from a more dilute to a more concentrated solution.",
@@ -40,8 +40,8 @@ export const year9 = {
     ],
     q("A similar potato piece gains mass in pure water. Which way was the net movement?", "From the water into the potato cells", "The solution outside is more dilute than the cell contents.", "From the potato cells into the water", "There was no net movement")),
 
-  "active-transport": lesson("B1", "How do roots take up mineral ions?",
-    "Can mineral ions enter a root cell when there are already more ions inside it?",
+  "active-transport": lesson("B1", "Active transport",
+    "How can a root cell take in mineral ions when their concentration is already higher inside?",
     "Find the lower ion concentration, then trace the ions.",
     "Active transport can move substances against their concentration gradient. It requires energy from respiration.",
     ["Two ways of moving substances", ["Process", "Direction", "Energy from respiration needed?"], [
@@ -56,8 +56,8 @@ export const year9 = {
     ],
     q("Which observation most strongly suggests active transport?", "Ions enter a cell even though their concentration is already higher inside.", "Movement from lower to higher concentration requires an energy-dependent process in this example.", "A gas spreads through air.", "Water crosses a partially permeable membrane.")),
 
-  mitosis: lesson("B1", "What must happen before a cell divides?",
-    "How can each new cell get a full copy of the genetic information?",
+  mitosis: lesson("B1", "Mitosis",
+    "How does each new cell get a full copy of the original cell’s DNA?",
     "Follow the DNA from one cell to two.",
     "The cell copies its DNA before mitosis. In mitosis, the copies separate into two nuclei. The cell then divides into two genetically identical cells.",
     ["From one cell to two", ["Stage", "What happens"], [
@@ -73,8 +73,8 @@ export const year9 = {
     ],
     q("What could happen if an original cell divided without first copying its DNA?", "The two new cells could fail to receive a complete set of genetic information.", "Copies must be made before they can be distributed to both cells.", "Both cells would automatically receive an extra set.", "The amount of DNA inside each cell would double.")),
 
-  "atomic-number": lesson("C1", "What makes an atom that element?",
-    "If a sodium atom loses one electron, is it still sodium?",
+  "atomic-number": lesson("C1", "Atomic number and isotopes",
+    "If a sodium atom loses an electron, is it still sodium?",
     "Compare proton numbers first, then electron numbers.",
     "The proton number identifies the element. Changing electrons makes an ion. Changing neutrons gives a different isotope of the same element.",
     ["Compare the particles in the examples", ["Example", "Protons", "Neutrons", "Electrons"], [
@@ -87,8 +87,8 @@ export const year9 = {
     ],
     q("A neutral chlorine atom gains an electron. Why is it still chlorine?", "Its nucleus still contains the same number of protons.", "The electron change affects charge. The proton number identifies chlorine.", "The neutron number always identifies the element.", "A new proton enters to balance the electron.")),
 
-  "periodic-table": lesson("C1", "Why do elements in a group react similarly?",
-    "Why can two atoms with different numbers of shells behave similarly?",
+  "periodic-table": lesson("C1", "Groups in the periodic table",
+    "Why do lithium and sodium react in similar ways?",
     "Compare the last number in each electron arrangement.",
     "Elements in the same group often react in similar ways because they have the same number of electrons in their outer shell.",
     ["Outer electrons of some Group 1 metals", ["Element", "Electrons in shells", "Outer-shell electrons"], [
@@ -101,8 +101,8 @@ export const year9 = {
     ],
     q("Which information best predicts similar reactions for two Group 1 elements?", "They each have one electron in the outer shell.", "In this group, the same outer-shell arrangement helps explain the similarity.", "Each has exactly one proton.", "They each have the same number of occupied shells.")),
 
-  "energy-stores": lesson("P1", "Where does the energy go?",
-    "A ball stops moving after it hits the ground. Where has its energy gone?",
+  "energy-stores": lesson("P1", "Energy stores and transfers",
+    "A dropped ball stops on the ground. Where has its energy gone?",
     "Follow the energy before, during and after the fall.",
     "Energy is conserved. It is transferred between stores and can spread to the surroundings, where less of it remains useful.",
     ["A ball is dropped and comes to rest", ["Moment", "Store or transfer to look for"], [
@@ -117,8 +117,8 @@ export const year9 = {
     ],
     q("Why does a bouncing ball reach a lower height each time?", "Some energy spreads to the surroundings at each bounce.", "Less energy returns to the ball’s kinetic and gravitational potential stores after each impact.", "Energy is destroyed on each impact.", "Its weight rises after each bounce.")),
 
-  "energy-transfer": lesson("P1", "Which device transfers energy faster?",
-    "Can the more powerful device use less energy overall?",
+  "energy-transfer": lesson("P1", "Power and energy",
+    "Can a more powerful device use less energy overall?",
     "Compare power first, then total energy transferred.",
     "Power is energy transferred per second. Efficiency is the fraction of the input transferred usefully.",
     ["Compare two devices", ["Device", "Power", "Time", "Total transfer"], [
@@ -131,8 +131,8 @@ export const year9 = {
     ],
     q("One lamp transfers 24 J of useful light from 60 J supplied. What fraction of its input was useful?", "0.4, or 40%", "Divide the useful 24 J by the total 60 J.", "0.6, or 60%", "36%, because 60 − 24 = 36")),
 
-  "gas-exchange": lesson("B2", "Why are air sacs good for gas exchange?",
-    "How can oxygen get from a single breath into a working muscle?",
+  "gas-exchange": lesson("B2", "Gas exchange",
+    "Why does a lung have millions of tiny air sacs?",
     "Trace oxygen across the air-sac wall and through the bloodstream.",
     "Gas exchange is faster over a short distance, across a large surface and when differences in concentration are maintained.",
     ["Follow oxygen from air to a muscle", ["Where", "What happens"], [
@@ -148,8 +148,8 @@ export const year9 = {
     ],
     q("A different organism has a gas exchange surface folded many times. How could folding help?", "It gives more surface area for diffusion.", "More area is available for gases to cross at the same time.", "It turns diffusion into respiration.", "It removes the need for a difference in concentration.")),
 
-  enzymes: lesson("B2", "Why can high temperature stop an enzyme working?",
-    "If warmth can speed up a reaction, why can more heat slow an enzyme down?",
+  enzymes: lesson("B2", "Enzymes and temperature",
+    "Why can gentle warming help an enzyme while stronger heat stops it working?",
     "Compare the active site before and after strong heating.",
     "An enzyme is a biological catalyst. Its substrate fits its active site. High temperatures can change the active site’s shape, so fewer substrates bind.",
     ["A model of enzyme action", ["State", "Active site", "Result"], [
@@ -163,8 +163,8 @@ export const year9 = {
     ],
     q("A change in pH alters an enzyme’s active site. What can happen to the reaction?", "It may slow because fewer substrates fit.", "The active-site shape affects whether the enzyme and substrate can bind.", "It must speed up because there is more enzyme.", "The substrate stops being a molecule.")),
 
-  "ionic-conduction": lesson("C2", "Why do molten salts conduct?",
-    "Why can the same salt conduct when molten and fail to conduct when solid?",
+  "ionic-conduction": lesson("C2", "Ionic compounds and conductivity",
+    "What changes about a salt when it melts and starts to conduct electricity?",
     "In which state can ions move through the salt?",
     "An ionic compound contains oppositely charged ions. An electric current can flow when the ions are able to move and carry charge.",
     ["The same ionic compound in two states", ["State", "Ions", "Conduction"], [
@@ -178,8 +178,8 @@ export const year9 = {
     ],
     q("A molten ionic compound solidifies. What explains the fall in conductivity?", "Its ions are now held in position in the lattice.", "The charges are still present, but they can no longer move through the solid.", "The liquid ions turn into neutral atoms.", "The electrons in each ion are all lost.")),
 
-  "molecular-melting": lesson("C2", "What is overcome when a molecular substance melts?",
-    "When ice melts, do the atoms inside each water molecule come apart?",
+  "molecular-melting": lesson("C2", "Melting molecular substances",
+    "Do the atoms in each water molecule separate when ice melts?",
     "Separate bonds within a molecule from attractions between molecules.",
     "When a simple molecular substance melts, attractions between molecules are overcome. The covalent bonds within each molecule remain intact.",
     ["Two types of attraction in a molecular substance", ["Where", "What to track"], [

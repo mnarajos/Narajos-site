@@ -18,11 +18,13 @@ if (Object.hasOwn(year9, id)) {
   heading.before(code);
   const title = document.createElement("h2");
   title.textContent = "Catch-up notes";
+  const notice = document.createElement("p");
+  notice.textContent = lesson.notice;
   const idea = document.createElement("p");
   const label = document.createElement("strong");
   label.textContent = "The key idea. ";
   idea.append(label, lesson.idea);
-  model.append(title);
+  model.append(title, notice);
   const visual = year9Visual(id);
   if (visual) model.append(visual);
   if (lesson.visual) {
@@ -55,6 +57,5 @@ if (Object.hasOwn(year9, id)) {
   }
   model.append(idea);
   host.replaceChildren(model);
-  const [first, ...later] = lesson.steps;
-  mountJourney(model, model, {...lesson, id, steps: [{...first, notice: first.teach ? undefined : lesson.notice}, ...later]});
+  mountJourney(model, model, {...lesson, id});
 }

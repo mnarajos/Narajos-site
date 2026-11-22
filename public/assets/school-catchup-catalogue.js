@@ -1,4 +1,5 @@
 import { curriculum, motionLessons } from "./ks3-lessons.js";
+import { year9 } from "./school-catchup-year9.js";
 import { clearCatchupProgress, hasCatchupProgress } from "./school-catchup-progress.js";
 
 const root = "/science-catch-up/";
@@ -13,11 +14,11 @@ const years = ["7", "8", "9", "10", "11"];
 
 const gcseYears = {
   9: [
-    ["B1", "Cells", [["cell-structures", "What do cell structures do?"], ["osmosis", "Which way does water move?"], ["active-transport", "How do roots take up mineral ions?"], ["mitosis", "What must happen before a cell divides?"]]],
-    ["C1", "Atomic structure and the periodic table", [["atomic-number", "What makes an atom that element?"], ["periodic-table", "Why do elements in a group react similarly?"]]],
-    ["P1", "Energy", [["energy-stores", "Where does the energy go?"], ["energy-transfer", "Which device transfers energy faster?"]]],
-    ["B2", "Organisation", [["gas-exchange", "Why are alveoli good for gas exchange?"], ["enzymes", "Why does an enzyme stop working when it gets too hot?"]]],
-    ["C2", "Bonding", [["ionic-conduction", "Why do molten salts conduct?"], ["molecular-melting", "What is overcome when a molecular substance melts?"]]]
+    ["B1", "Cells", ["cell-structures", "osmosis", "active-transport", "mitosis"]],
+    ["C1", "Atomic structure and the periodic table", ["atomic-number", "periodic-table"]],
+    ["P1", "Energy", ["energy-stores", "energy-transfer"]],
+    ["B2", "Organisation", ["gas-exchange", "enzymes"]],
+    ["C2", "Bonding", ["ionic-conduction", "molecular-melting"]]
   ],
   10: [
     ["B3", "Infection and response"], ["B4", "Bioenergetics"], ["P3", "Particle model of matter"],
@@ -76,9 +77,10 @@ if (yearSelected) {
       const title = element("h3");
       title.append(element("span", code, "school-code"), document.createTextNode(" " + topic));
       const links = element("ul", "", "school-concept-list");
-      for (const [id, concept] of lessons) {
+      for (const id of lessons) {
+        const {title, hook} = year9[id];
         const row = element("li");
-        row.append(link(concept, root + "lesson/?topic=" + id));
+        row.append(link(title, root + "lesson/?topic=" + id), element("p", hook, "school-concept-question"));
         links.append(row);
       }
       item.append(title, links, link("Revise " + code, revision(code), "school-revise-link"));
