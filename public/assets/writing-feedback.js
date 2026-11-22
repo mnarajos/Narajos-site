@@ -107,7 +107,7 @@ function addCopyButton(card, area, paragraph) {
       if (current && current !== first) lines.push((first ? "Latest sentence: " : prompt + "\n") + current);
     }
     for (const field of card.querySelectorAll("textarea[data-draft]")) {
-      if (field === paragraph || field.closest("[data-writing-exercise]") || !field.value.trim()) continue;
+      if (field === paragraph || field.closest("[data-writing-exercise], .spo-intro") || !field.value.trim()) continue;
       const label = field.labels[0]?.textContent.trim().replace(/:$/, "");
       if (label) lines.push(label + ": " + field.value.trim());
     }

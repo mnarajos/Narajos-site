@@ -802,6 +802,16 @@ try{
  assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Teacher Tools dropdown overflows the phone viewport");
  assert(await phoneTeacherMenu.getByRole("link",{name:"Focused Questions",exact:true}).isVisible());
  await phoneTeacherMenu.getByRole("link",{name:"Focused Writing",exact:true}).click();
+ const yearIntroLinks = await navPage.locator('.spo-year-links a').evaluateAll(links=>links.map(link=>link.href));
+ assert.equal(yearIntroLinks.length,7);
+ for(const path of yearIntroLinks){
+   await navPage.goto(path);
+   await navPage.getByRole("heading",{name:"Introduction to the SPO",exact:true}).waitFor();
+   const year=new URL(path).searchParams.get("year");
+   assert.equal(await navPage.locator('.spo-year-links [aria-current="page"]').textContent(),"Year "+year);
+   assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"SPO introduction overflows");
+ }
+ await navPage.goto(base+"/teaching/focused-writing/");
  await navPage.getByRole("link",{name:/KS3 · Explain a change/}).click();
  await navPage.getByRole("heading",{name:"KS3 · Explain a change",exact:true}).waitFor();
  await navPage.waitForLoadState("load");
@@ -818,7 +828,7 @@ try{
  await ks3Sentence.getByText("Compare your first and latest sentences",{exact:true}).click();
  assert((await ks3Sentence.locator("[data-first-sentence]").innerText()).includes("more particles"));
 
- const outline=navPage.getByLabel("Supporting notes:",{exact:true});
+ const outline=navPage.getByLabel("Supporting note 1",{exact:true});
  await navPage.getByText("Plan your paragraph",{exact:true}).click();
  await outline.fill("warmer → faster random movement → quicker spread");
  await navPage.getByRole("button",{name:"Use a partly filled plan",exact:true}).click();
@@ -868,7 +878,7 @@ try{
  await outlineCheck.click();
  await outlineReview.getByRole("status").filter({hasText:"Still to add: topic sentence, supporting notes, concluding sentence."}).waitFor();
  const opening=navPage.getByLabel("Topic sentence:",{exact:true});
- const supports=navPage.getByLabel("Supporting notes:",{exact:true});
+ const supports=navPage.getByLabel("Supporting note 1",{exact:true});
  const concluding=navPage.getByLabel("Concluding sentence:",{exact:true});
  await opening.fill("The potato mass changed.");
  await supports.fill("The potato gained 17%.");
@@ -916,7 +926,7 @@ try{
  await navPage.getByRole("status").filter({hasText:"Copied."}).waitFor();
  const copied=await navPage.evaluate(()=>navigator.clipboard.readText());
  assert(copied.includes("Report both changes in mass.") && copied.includes("First checked: Dilute: −9%") &&
-  copied.includes("Latest sentence: The potato gained 7%") && copied.includes("Supporting notes:") &&
+  copied.includes("Latest sentence: The potato gained 7%") && copied.includes("Supporting note 1:") &&
   copied.includes("Paragraph\nMy observations."),"The teacher copy must include the prompt, revision, outline and paragraph");
 
  await navPage.getByText("Compare with the key ideas",{exact:true}).click();
@@ -976,8 +986,8 @@ try{
  await navPage.emulateMedia({reducedMotion:"no-preference"});
  const oneParagraph=navPage.locator('[data-writing-order="ramp"]');
  await oneParagraph.getByRole("button",{name:"Check the order",exact:true}).click();
- await oneParagraph.getByRole("status").filter({hasText:"Not checked yet. Choose 4 more sentences."}).waitFor();
- for(const start of ["Changing the car","If both","To test ramp","Keeping the car"]){
+ await oneParagraph.getByRole("status").filter({hasText:"Not checked yet. Choose 5 more sentences."}).waitFor();
+ for(const start of ["Different cars","These differences","Using the same car each time helps","Using the same car keeps","This makes the comparison"]){
   await oneParagraph.locator(".writing-order-options").getByRole("button",{name:new RegExp("^"+start)}).click();
  }
  await oneParagraph.getByRole("button",{name:"Check the order",exact:true}).click();
@@ -985,11 +995,11 @@ try{
  const rampReview=oneParagraph.locator("[data-order-review]");
  assert.equal(await rampReview.count(),1);
  assert(await rampReview.getByText("Review this sentence",{exact:true}).isVisible());
- assert(await rampReview.getByRole("button",{name:/^Changing the car/}).isVisible());
- await oneParagraph.locator(".writing-order-group").getByRole("button",{name:/^Changing the car/}).click();
- assert.equal(await oneParagraph.locator(".writing-order-options button").count(),4);
+ assert(await rampReview.getByRole("button",{name:/^Different cars/}).isVisible());
+ await oneParagraph.locator(".writing-order-group").getByRole("button",{name:/^Different cars/}).click();
+ assert.equal(await oneParagraph.locator(".writing-order-options button").count(),5);
  assert.equal(await rampReview.count(),0);
- for(const start of ["To test ramp","Changing the car","If both","Keeping the car"]){
+ for(const start of ["Using the same car each time helps","Different cars","These differences","Using the same car keeps","This makes the comparison"]){
   await oneParagraph.locator(".writing-order-options").getByRole("button",{name:new RegExp("^"+start)}).click();
  }
  await oneParagraph.getByRole("button",{name:"Check the order",exact:true}).click();
@@ -997,6 +1007,36 @@ try{
  assert.equal(await oneParagraph.getByRole("status").getAttribute("data-result"),"correct");
  await oneParagraph.getByText("Read the completed paragraph",{exact:true}).click();
  assert(await oneParagraph.locator(".model").isVisible());
+ const spoRamp=navPage.locator(".writing-card").filter({has:oneParagraph});
+ await spoRamp.getByText("We do · Practise the decisions",{exact:true}).press("Enter");
+ await spoRamp.getByRole("button",{name:"To test ramp height fairly, use the same car each time.",exact:true}).press("Enter");
+ await spoRamp.getByText(/This tells the pupil what to do/).waitFor();
+ await spoRamp.getByText("Plan your paragraph",{exact:true}).press("Enter");
+ const supportingNotes=["different wheels and friction","different friction changes distance"];
+ await spoRamp.getByLabel("Topic sentence:",{exact:true}).fill("Using the same car helps isolate the effect of ramp height.");
+ for(const [index,note] of supportingNotes.entries()){
+   await spoRamp.getByLabel("Supporting note "+(index+1),{exact:true}).fill(note);
+ }
+ await spoRamp.getByLabel("Concluding sentence:",{exact:true}).fill("The distances can then be compared more fairly.");
+ await spoRamp.getByText("Develop your supporting sentences",{exact:true}).press("Enter");
+ await spoRamp.getByLabel("Supporting sentence 1",{exact:true}).fill("Different cars can have different wheels and friction.");
+ await spoRamp.getByRole("button",{name:"Develop note 2",exact:true}).press("Enter");
+ assert(await spoRamp.getByText(supportingNotes[1],{exact:true}).isVisible());
+ await spoRamp.getByLabel("Supporting sentence 2",{exact:true}).fill("Friction can change how far the car rolls.");
+ await spoRamp.getByText("Write your paragraph",{exact:true}).press("Enter");
+ const assembled=spoRamp.getByLabel("Your paragraph:",{exact:true});
+ await spoRamp.getByRole("button",{name:"Assemble my paragraph",exact:true}).press("Enter");
+ const beforeRevision=await assembled.inputValue();
+ assert.match(beforeRevision,/height\. Different cars.*Friction can change.*more fairly\./);
+ await assembled.fill(beforeRevision.replace("more fairly","with fewer confounding factors"));
+ const afterRevision=await assembled.inputValue();
+ await spoRamp.getByRole("button",{name:"Assemble my paragraph",exact:true}).press("Enter");
+ assert.equal(await assembled.inputValue(),afterRevision,"Reassembling must preserve an edited paragraph");
+ await spoRamp.getByText("Compare first and current versions",{exact:true}).press("Enter");
+ assert(await spoRamp.getByText("with fewer confounding factors",{exact:false}).isVisible());
+ await navPage.reload();
+ await spoRamp.getByText("Write your paragraph",{exact:true}).press("Enter");
+ assert.equal(await assembled.inputValue(),afterRevision);
  await navPage.getByText("Build two paragraphs",{exact:true}).click();
  const twoParagraphs=navPage.locator('[data-writing-order="rocks"]');
  assert.equal(await twoParagraphs.locator(".writing-order-options button").count(),10);
