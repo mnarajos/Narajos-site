@@ -68,15 +68,15 @@ function renderTable(visual) {
 
 function renderParticles(layout) {
   const positions = {
-    solid: [[25, 27], [44, 27], [63, 27], [25, 51], [44, 51], [63, 51], [25, 75], [44, 75], [63, 75]],
-    liquid: [[22, 45], [43, 39], [64, 47], [78, 58], [33, 61], [53, 65], [19, 78], [43, 83], [65, 83]],
+    solid: [[37, 64], [50, 64], [63, 64], [37, 78], [50, 78], [63, 78], [37, 92], [50, 92], [63, 92]],
+    liquid: [[19, 92], [32, 92], [45, 92], [58, 92], [71, 92], [25, 80], [38, 77], [51, 80], [65, 79]],
     gas: [[14, 14], [88, 14], [48, 25], [23, 48], [77, 50], [55, 63], [14, 83], [42, 91], [87, 85]]
   };
   const panel = element("div", "", "ks3-particle-box");
   panel.setAttribute("role", "img");
   panel.setAttribute("aria-label", {
     solid: "Nine particles close together in regular rows",
-    liquid: "Nine particles close together in a jumbled group",
+    liquid: "Nine closely packed particles in an irregular group at the bottom",
     gas: "Nine particles spread around the whole container"
   }[layout]);
   for (const [x, y] of positions[layout]) {
