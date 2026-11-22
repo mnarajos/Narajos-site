@@ -58,7 +58,7 @@
       '<textarea id="' + id + '" rows="4" maxlength="3000" aria-labelledby="' + id + '-prompt" required></textarea>';
     return '<details class="paper panel hb-teach-stage" data-hb-stage="' + stage + '"><summary>' + title +
       '</summary><form novalidate><fieldset><legend id="' + id + '-prompt">' + escape(question.prompt) +
-      '</legend>' + figure(question.photo) + table(question.table) + paragraphs(question.starter ? [question.starter] : []) +
+      '</legend>' + figure(question.photo) + (question.photos || []).map(figure).join("") + table(question.table) + paragraphs(question.starter ? [question.starter] : []) +
       inputs + '</fieldset><ol class="hb-hints" hidden></ol><div class="actions hb-controls">' +
       '<button type="submit" class="button primary">' + (choice ? "Check answer" : "Compare my explanation") + '</button>' +
       (question.hints?.length ? '<button type="button" class="button secondary" data-hb-action="hint">Get a hint</button>' : '') +
@@ -101,6 +101,8 @@
   function mount(key, lesson) {
     const root = main.querySelector(".hb-teaching");
     if (!root) return;
+    // Keep responses to earlier task versions separate from the new questions.
+    key += lesson.revision ? "/" + lesson.revision : "";
     const record = load()[key] || {};
     const questions = { guided: lesson.guided, independent: lesson.apply, followup: lesson.followup };
 
