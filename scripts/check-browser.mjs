@@ -771,7 +771,7 @@ try{
   await navPage.locator(".ks3-lesson figure,.ks3-lesson table").first().waitFor({state:"visible"});
   assert(await navPage.locator(".ks3-lesson .ks3-connection").first().isVisible(),"KS3 lesson is missing a recall cue");
   assert(await navPage.locator(".ks3-lesson .ks3-term").first().isVisible(),"KS3 lesson is missing vocabulary help");
-  await navPage.locator(".ks3-lesson button:not(.ks3-term)").first().waitFor({state:"visible"});
+  await navPage.locator(".ks3-lesson button:visible:not(.ks3-term)").first().waitFor({state:"visible"});
   const pictures=navPage.locator(".ks3-illustration img");
   for(const picture of await pictures.all()){
    await picture.evaluate(img=>img.decode());
