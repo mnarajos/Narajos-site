@@ -361,6 +361,7 @@ function showConcept(unit,id,step,render){
  step=Math.max(0,Math.min(points.length-1,Number(step)||0));
  var key="#catchup/"+unit+"/"+id;
  var lesson=lessonFor(unit,id),teaching=window.KeystoneHumanTeaching;
+ var lessonId=unit==="f171"?({"a2":"2.1","a4":"4.2.2"}[id]||id):id;
  if(lesson&&teaching&&step===0){
   var visual=window.KeystoneCatchupVisuals?window.KeystoneCatchupVisuals.render(unit,id):"";
   var recap='<details class="paper panel"><summary>Review the key ideas</summary><ul class="keylines">'+
@@ -368,7 +369,7 @@ function showConcept(unit,id,step,render){
   render('<div class="k-wrap k-catchup-concept">'+crumb("catchup/"+unit,u.title)+
    '<div class="k-eyebrow">'+unitKind(unit)+'</div><h1>'+esc(topic)+'</h1>'+
    teaching.render(lesson,{inline:lesson.visual==="model"?"":visual,modelVisual:lesson.visual==="model"?visual:"",related:recap+relatedLinks(unit,id,practice,lesson)})+'</div>');
-  teaching.mount(unit+"/"+id,lesson);
+  teaching.mount(unit+"/"+lessonId,lesson);
   return;
  }
 
