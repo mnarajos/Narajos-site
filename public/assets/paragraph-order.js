@@ -63,8 +63,6 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
   const pickerContent = element("div", "", "paragraph-picker-content");
   const close = button("Close", () => picker.close());
   picker.append(pickerTitle, pickerContent, pickerTools);
-  let returnFocus;
-  picker.addEventListener("close", () => returnFocus?.focus({ preventScroll: true }));
 
   const check = button("Check order", () => {
     if (slots.includes(null)) return;
@@ -117,7 +115,6 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
 
   function openPicker(position) {
     pickerTitle.textContent = roles[position];
-    returnFocus = entries[position].control;
     pickerContent.replaceChildren();
     pickerTools.replaceChildren();
     const current = slots[position];
@@ -149,6 +146,7 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
     }
     if (current !== null) pickerTools.append(button("Remove sentence", () => { remove(position); picker.close(); }));
     pickerTools.append(close);
+    entries[position].control.focus({ preventScroll: true });
     picker.showModal();
     pickerTitle.focus({ preventScroll: true });
   }
