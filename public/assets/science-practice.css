@@ -365,3 +365,10 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .spo-develop-row[hidden], textarea[data-legacy-outline][hidden], .spo-assembly textarea[hidden] { display: none; }
 .spo-assembly { margin: .6rem 0 .35rem; }
 .spo-assembly > button { background: #d1ebe5; font-weight: 670; }
+
+.spo-filters { display: flex; flex-wrap: wrap; gap: .55rem; margin-block: .7rem; }
+.spo-filters label { display: grid; gap: .2rem; flex: 1 1 10rem; min-width: 0; }
+.spo-filters select { min-height: 44px; min-width: 0; width: 100%; font: inherit; }
+.spo-filters p { flex-basis: 100%; margin: .15rem 0; }
+.spo-filters p:empty, .spo-filters[hidden], [data-writing-task-list][hidden], #gcse-tasks[hidden],
+[data-writing-task-list] li[hidden], #gcse-tasks li[hidden] { display: none; }

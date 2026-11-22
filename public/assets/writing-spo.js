@@ -55,9 +55,10 @@ function modelCard(example) {
   const notes = element("ol", "", "spo-pairs");
   for (const [index, [note, sentence]] of example.details.entries()) {
     const item = element("li");
-    item.append(labelled("Supporting note " + (index + 1), note, "A short reminder of the idea.", "note"),
+    item.append(disclosure("Reveal note " + (index + 1),
+      labelled("Supporting note " + (index + 1), note, "A short reminder of the idea.", "note"),
       disclosure("Develop note " + (index + 1) + " into a sentence",
-        labelled("Supporting sentence " + (index + 1), sentence, "Explain the idea so the reader can follow it.", "sentence")));
+        labelled("Supporting sentence " + (index + 1), sentence, "Explain the idea so the reader can follow it.", "sentence"))));
     notes.append(item);
   }
   const model = [example.topic, ...example.details.map(([, sentence]) => sentence), example.conclusion].join(" ");
@@ -90,7 +91,12 @@ function choicePractice(legend, choices) {
 }
 
 export function mountIntroduction(card, id) {
-  if (id.startsWith("gcse-")) return;
+  if (id.startsWith("gcse-")) {
+    const guide = element("a", "Introduction to the SPO");
+    guide.href = "/teaching/focused-writing/gcse/#spo-introduction";
+    card.prepend(guide);
+    return;
+  }
   const years = id === "alevel" ? [12, 13] : id === "gcse" ? [10, 11] : [7, 8, 9];
   const requested = Number(new URLSearchParams(location.search).get("year"));
   const year = years.includes(requested) ? requested : years[0];
