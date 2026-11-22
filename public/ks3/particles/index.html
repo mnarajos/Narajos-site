@@ -60,6 +60,16 @@
      <button type="button" data-gas-sound aria-pressed="false" aria-describedby="gas-sound-note" hidden>Listen to collisions</button>
     </div>
     <p class="gas-sound-note" id="gas-sound-note" hidden>Each click is a wall collision. Listen for how often the clicks happen.</p>
+    <details class="gas-count">
+     <summary>Compare collision counts</summary>
+     <p>Start motion to count wall collisions. Compare the last complete count for each setting. Every count covers 5 seconds of model motion.</p>
+     <dl>
+      <div><dt>Starting box</dt><dd data-gas-total="start">—</dd></div>
+      <div><dt>Warmer gas</dt><dd data-gas-total="warm">—</dd></div>
+      <div><dt>Smaller box</dt><dd data-gas-total="small">—</dd></div>
+     </dl>
+     <p data-gas-count-status role="status"></p>
+    </details>
    </div>
    <details>
     <summary>Read the explanation</summary>

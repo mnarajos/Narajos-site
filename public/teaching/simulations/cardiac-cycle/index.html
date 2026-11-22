@@ -187,7 +187,7 @@
           <span class="t" id="graph-title">Pressure &amp; volume against time</span>
           <span class="s" id="graph-sub">one cardiac cycle</span>
         </div>
-        <canvas id="graph"></canvas>
+        <canvas id="graph" role="img" aria-label="Cardiac pressure and volume traces. Each line has a distinct pattern and a label."></canvas>
       </div>
       <section class="graphbox" id="ecg-panel" aria-labelledby="ecg-title" hidden>
         <div class="ghead"><h2 class="t" id="ecg-title">ECG · Optional extension</h2><button type="button" class="ecg-close" id="hide-ecg" aria-label="Hide ECG">Hide</button></div>
@@ -292,6 +292,7 @@
   </aside>
 </main>
 
+<script src="/assets/graph-series.js"></script>
 <script>
 "use strict";
 /* =======================================================================
@@ -687,10 +688,22 @@ function drawMechOverlay(m){
 }
 
 /* ---------- Wiggers graph ---------- */
-function traceLine(c,fn,col,pxX,pyY,width){
+const CARDIAC_TRACES=[
+  {show:"showAo",control:"l-ao",name:"Aortic pressure",label:"Aorta",colour:"#7232ad",dash:[7,4],values:()=>K_AORTA},
+  {show:"showPV",control:"l-pv",name:"Ventricular pressure",label:"Ventricle",colour:"#b62b47",dash:[],values:()=>K_VENT},
+  {show:"showAtr",control:"l-atr",name:"Atrial pressure",label:"Atrium",colour:"#9d551e",dash:[1,4],values:()=>K_ATR},
+  {show:"showVol",control:"l-vol",name:"Ventricular volume",label:"Volume",colour:"#116e66",dash:[9,3,2,3],values:()=>K_VOL}
+];
+function traceLine(c,values,series,pxX,pyY){
+  c.save();
+  c.setLineDash(series.dash);
+  c.strokeStyle=series.colour;c.lineWidth=2;c.lineJoin="round";c.lineCap="round";
   c.beginPath();
-  for(let i=0;i<=240;i++){const phi=i/240;const y=fn(phi);i?c.lineTo(pxX(phi),pyY(y)):c.moveTo(pxX(phi),pyY(y));}
-  c.strokeStyle=col;c.lineWidth=width||2.2;c.lineJoin="round";c.stroke();
+  for(let i=0;i<=240;i++){
+    const phi=i/240,y=pyY(interp(values,phi));
+    if(i)c.lineTo(pxX(phi),y); else c.moveTo(pxX(phi),y);
+  }
+  c.stroke();c.restore();
 }
 function drawGraphMech(){
   const w=graph.getBoundingClientRect().width,h=graph.getBoundingClientRect().height;
@@ -699,7 +712,7 @@ function drawGraphMech(){
 
   if(S.pvloop && S.level>=3){ drawPVloop(w,h); return; }
 
-  const L=44,R=12,T=14,Bpv=0.60;              // pressure area on top 60%
+  const L=44,R=62,T=14,Bpv=0.60;              // pressure area on top 60%
   const pTop=T,pBot=T+(h-T-26)*Bpv, vTop=pBot+16,vBot=h-26;
   const pMax=130, vMax=140;
   const pxX=phi=>L+phi*(w-L-R);
@@ -732,11 +745,19 @@ function drawGraphMech(){
   gx.save();gx.translate(11,(vTop+vBot)/2);gx.rotate(-Math.PI/2);gx.textAlign="center";
   gx.fillText("Volume / mL",0,0);gx.restore();
 
-  // traces (toggleable, thin so overlaps are visible)
-  if(S.showAo)  traceLine(gx,phi=>interp(K_AORTA,phi),"#8a3ffb",pxX,pyP,1.6);
-  if(S.showPV)  traceLine(gx,phi=>interp(K_VENT,phi),"#c0334d",pxX,pyP,1.8);
-  if(S.showAtr) traceLine(gx,phi=>interp(K_ATR,phi),"#d98a45",pxX,pyP,1.6);
-  if(S.showVol) traceLine(gx,phi=>interp(K_VOL,phi),"#1a9e8f",pxX,pyV,1.8);
+  const pressureLabels=[],volumeLabels=[];
+  for(const series of CARDIAC_TRACES){
+    if(!S[series.show])continue;
+    const isVolume=series.show==="showVol";
+    const scale=isVolume?pyV:pyP;
+    const values=series.values();
+    traceLine(gx,values,series,pxX,scale);
+    (isVolume?volumeLabels:pressureLabels).push({
+      text:series.label,colour:series.colour,dash:series.dash,y:scale(interp(values,1))
+    });
+  }
+  NarajosGraphSeries.labelEnds(gx,pxX(1),pTop+8,pBot-6,pressureLabels);
+  NarajosGraphSeries.labelEnds(gx,pxX(1),vTop+8,vBot-6,volumeLabels);
 
   // valve-event markers at pressure crossings (labels staggered so close
   // events — AV-shut/SL-open and SL-shut/AV-open — don't overlap)
@@ -764,11 +785,11 @@ function drawGraphMech(){
   const cx=pxX(S.phi);
   gx.strokeStyle="#111e2b";gx.lineWidth=1.4;
   gx.beginPath();gx.moveTo(cx,T);gx.lineTo(cx,vBot);gx.stroke();
-  const m=model(S.phi);
-  if(S.showPV) dot(gx,cx,pyP(m.pv),"#c0334d");
-  if(S.showAo) dot(gx,cx,pyP(m.pao),"#8a3ffb");
-  if(S.showAtr)dot(gx,cx,pyP(m.pa),"#d98a45");
-  if(S.showVol)dot(gx,cx,pyV(m.vol),"#1a9e8f");
+  for(const series of CARDIAC_TRACES){
+    if(!S[series.show])continue;
+    const scale=series.show==="showVol"?pyV:pyP;
+    dot(gx,cx,scale(interp(series.values(),S.phi)),series.colour);
+  }
 
   gx.fillStyle="#5c7082";gx.font="600 9px system-ui,sans-serif";gx.textAlign="center";gx.textBaseline="top";
   gx.fillText("click the graph to jump to a time point →",(L+w-R)/2,vBot+6);
@@ -1222,10 +1243,7 @@ function buildLegend(){
   const box=document.getElementById("legend");
   if(S.scene==="mech"){
     box.innerHTML=
-      lg("sw","#c0334d","Ventricular pressure")+
-      lg("sw","#8a3ffb","Aortic pressure")+
-      lg("sw","#d98a45","Atrial pressure")+
-      lg("sw","#1a9e8f","Ventricular volume")+
+      CARDIAC_TRACES.map(series=>'<div class="row">'+NarajosGraphSeries.swatch(series.colour,series.dash)+'<span>'+series.name+'</span></div>').join("")+
       lg("bx","#d6394f","Oxygenated blood (left)")+
       lg("bx","#3f77c4","Deoxygenated blood (right)");
   } else {
@@ -1246,7 +1264,12 @@ if(!CanvasRenderingContext2D.prototype.roundRect){
   CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);
     this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);return this;};
 }
-function boot(){computeModel();sizeCanvas();buildLegend();setScene("mech");setLevel(1);requestAnimationFrame(frame);}
+function boot(){
+  for(const series of CARDIAC_TRACES){
+    document.getElementById(series.control).closest("label").querySelector(".ln-key").outerHTML=
+      NarajosGraphSeries.swatch(series.colour,series.dash);
+  }
+  computeModel();sizeCanvas();buildLegend();setScene("mech");setLevel(1);requestAnimationFrame(frame);}
 boot();
 </script>
 </body>

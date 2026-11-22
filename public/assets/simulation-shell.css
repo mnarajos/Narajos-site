@@ -16,3 +16,5 @@
  .sim-utility-nav{font-size:12px;padding:0 10px;min-height:42px}
  .sim-utility-nav a{min-height:42px}
 }
+
+.series-swatch { width: 24px; height: 12px; display: block; flex: none; }
