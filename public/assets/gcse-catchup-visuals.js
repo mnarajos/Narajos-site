@@ -58,7 +58,7 @@ function circuit() {
 }
 
 function web() {
-  return picture("Three feeding links",diagram("Grass is eaten by mice and rabbits. Owls eat mice and rabbits in this simplified example.",`
+  return picture("Feeding links",diagram("Grass is eaten by mice and rabbits. Owls eat mice and rabbits in this simplified example.",`
     ${arrow(87,95,129,53)}${arrow(87,95,129,136)}${arrow(191,52,224,92)}${arrow(191,138,224,98)}
     ${text(55,100,"Grass")}${text(159,51,"Mouse")}${text(159,145,"Rabbit")}${text(257,101,"Owl")}`),
     "Each arrow shows transfer from food to consumer. An owl can have more than one food source.");
@@ -101,7 +101,8 @@ function coil() {
   function state(on) {
     return picture(on?"Current on":"Current off",diagram(on?"Current flows through a coil wrapped around the iron core. Curved arrows show its magnetic field.":
       "No current flows in the coil. The model shows no field from the current.",`
-      ${on?'<path d="M66 92C34 35 103 15 160 16S286 35 250 92M66 92C34 150 103 169 160 168S286 150 250 92" fill="none" stroke="#23558c" stroke-width="2" stroke-dasharray="6 4"/>':""}
+      ${on?'<path d="M66 92C34 35 103 15 160 16S286 35 250 92M66 92C34 150 103 169 160 168S286 150 250 92" fill="none" stroke="#23558c" stroke-width="2" stroke-dasharray="6 4"/>'
+       + arrow(150,16,173,16,blue,1.5) + arrow(150,168,173,168,blue,1.5) : ""}
       <rect x="52" y="77" width="215" height="30" rx="5" fill="#c3d2d2" stroke="${ink}" stroke-width="2"/>
       <path d="M70 111q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51"
       fill="none" stroke="${rust}" stroke-width="3"/>

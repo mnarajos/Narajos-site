@@ -38,7 +38,7 @@ export const year10Catchup = {
       ["Test a limit","At high light, raise the carbon dioxide supply and keep temperature and light the same. A higher rate supports carbon dioxide as a limiting factor in the first trial.",
         "Which result would support carbon dioxide being limiting?","More oxygen collected per minute after adding carbon dioxide.","Changing one factor lets you link the difference to that factor.","The same volume collected in twice as long.","Dimming the light and adding carbon dioxide together."]
     ],
-    ["A shaded plant in bright enough light grows faster after it is warmed slightly, with everything else controlled. Which factor could have been limiting before warming?","Temperature","With other conditions controlled, warming can improve the rate when temperature limits it.","Water was definitely unavailable.","The plant had stopped respiring."],
+    ["Pondweed under a bright lamp produces oxygen faster after it is warmed slightly. Light and carbon dioxide stay the same. Which factor could have been limiting before warming?","Temperature","With other conditions controlled, warming can improve the rate when temperature limits it.","Water was definitely unavailable.","The plant had stopped respiring."],
     ["Increasing light leaves a positive oxygen production rate unchanged. What should you test next?","Change one other potential limiting factor.","Another factor could restrict the rate even while photosynthesis continues.","Record the rate as zero.","Increase all factors at once."],
     "Higher Tier · Use data to identify interacting limiting factors. For a point light source, doubling the distance gives approximately a quarter of the light intensity."),
 
@@ -343,7 +343,7 @@ export const year11Catchup = {
 
 const complementary = {
   "respiration-exercise": lesson(10,"B4","Respiration in muscles and yeast",
-    "Why do you keep breathing hard after you stop sprinting?",
+    "Why does bread dough make bubbles while sprinting muscles make a different product?",
     "Compare the products in muscle and yeast. Which product is unique to the muscle example?",
     "Respiration transfers energy. Without enough oxygen, muscles and yeast can both respire anaerobically, but their products differ.",
     ["pairs","Anaerobic respiration",[
