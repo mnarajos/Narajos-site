@@ -8,6 +8,7 @@
   font: inherit; font-weight: 675; text-decoration: none; cursor: pointer;
 }
 .school-primary, .school-years [aria-current="page"] { background: #175466; color: white; border-color: #175466; }
+.school-primary span[aria-hidden="true"] { margin-inline-start: .28em; }
 .school-catchup :is(a, button, summary):focus-visible,
 .school-journey :is(a, button, summary):focus-visible,
 .school-check :is(a, button, summary, input):focus-visible { outline: 3px solid #b75a22; outline-offset: 3px; }

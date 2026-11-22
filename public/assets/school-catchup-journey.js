@@ -27,6 +27,14 @@ function button(text, action, className = "school-secondary") {
   return el;
 }
 
+function checkButton(text, action) {
+  const check = button(text, action, "school-primary");
+  const arrow = element("span", " →");
+  arrow.setAttribute("aria-hidden", "true");
+  check.append(arrow);
+  return check;
+}
+
 function link(text, href, className) {
   const el = element("a", text, className);
   el.href = href;
@@ -62,7 +70,7 @@ export function mountJourney(host, model, lesson) {
 
   journey.append(element("h2", hook), versions, progress, checkList, storageNote, dialog);
   host.before(journey);
-  const shortcut = button("Answer check", showCheck, "school-primary");
+  const shortcut = checkButton("Check", showCheck);
   const actions = element("div", "", "school-journey-actions");
   actions.append(shortcut);
   model.after(actions);
@@ -97,8 +105,8 @@ export function mountJourney(host, model, lesson) {
       heading.tabIndex = -1;
       stage.append(heading);
       if (step.notice) stage.append(element("p", step.notice));
-      stage.append(button("See evidence", showEvidence),
-        button(state.open ? "Resume this check" : "Open check", showCheck, "school-primary"));
+      stage.append(button("Catch-up notes", showEvidence),
+        checkButton(state.open ? "Resume check" : "Check", showCheck));
       checkList.append(stage);
     }
     shortcut.hidden = Boolean(state.done);
@@ -106,7 +114,7 @@ export function mountJourney(host, model, lesson) {
       const next = element("div", "", "school-completion");
       if (code) next.append(link("Practise " + code + " in GCSE revision", "/gcse/#topic-" + code.toLowerCase(), "school-primary"));
       next.append(link("Choose another Year " + year + " topic", "/science-catch-up/?year=" + year, "school-secondary"));
-      if (evidence) next.append(button("Review evidence", showEvidence));
+      if (evidence) next.append(button("Catch-up notes", showEvidence));
       checkList.append(next);
     }
     if (completeCount) {
@@ -201,7 +209,7 @@ export function mountJourney(host, model, lesson) {
     const next = button(nextLabel(), advance, "school-primary");
     next.hidden = !state.correct;
     const tools = element("div", "", "school-journey-actions");
-    tools.append(submit, next, button("See evidence", () => {
+    tools.append(submit, next, button("Catch-up notes", () => {
       if (!state.correct) state.helped = true;
       pause();
       showEvidence();

@@ -20,13 +20,13 @@ const topics = {
       ["It is animal tissue because you see a nucleus.", "Plant cells can have visible nuclei too."]]
   ],
   "states-of-matter": [
-    "Where does a puddle go on a day that feels too cold for it to boil?",
-    "Heat the model from solid to liquid. Watch one particle and the spaces between neighbours.",
-    ["A damp towel dries indoors. What happens to the water that leaves it?",
-      "Water particles leave the surface and spread through the air.",
-      "Water can evaporate from the liquid surface below its boiling point.",
-      ["The water particles shrink until they disappear.", "Their size and identity stay the same when they enter the air."],
-      ["All the water first has to boil.", "Some particles escape from the surface well below boiling point."]]
+    "Can ice get warmer and stay solid?",
+    "Press Heat once. Does the motion change? Does the state change?",
+    ["Two syringes with blocked tips contain air and water. Why is the water harder to squeeze into a smaller volume?",
+      "Water particles are already close together.",
+      "There is very little room to push liquid particles closer. Gas particles are much farther apart.",
+      ["Water particles cannot move.", "Liquid particles can slide past each other while staying close together."],
+      ["Water particles get bigger when pushed.", "The particles stay the same size. Look at the gaps between them."]]
   ],
   "atoms-and-compounds": [
     "Can two atoms joined together still be part of an element?",

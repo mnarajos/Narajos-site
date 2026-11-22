@@ -66,7 +66,7 @@ try{
  const workedRamp=pilotPage.getByRole("heading",{name:"Worked example · testing ramp angle"});
  assert(!(await workedRamp.isVisible()));
  assert(!(await pilotPage.getByRole("heading",{name:"Check your understanding",exact:true}).isVisible()));
- await pilotPage.getByRole("button",{name:"See evidence",exact:true}).click();
+ await pilotPage.getByRole("button",{name:"Catch-up notes",exact:true}).click();
  await pilotPage.getByRole("heading",{name:"Roll a toy down a ramp",exact:true}).waitFor();
  assert(await workedRamp.isVisible());
  await pilotPage.getByText("More practice and activities",{exact:true}).click();
@@ -86,10 +86,10 @@ try{
  assert.equal(conceptLinks.length,12);
  for(const path of conceptLinks){
   await pilotPage.goto(path);
-  await pilotPage.getByRole("button",{name:"See evidence",exact:true}).waitFor();
-  assert(!(await pilotPage.getByRole("heading",{name:"Look at the evidence",exact:true}).isVisible()));
-  await pilotPage.getByRole("button",{name:"See evidence",exact:true}).click();
-  await pilotPage.getByRole("heading",{name:"Look at the evidence",exact:true}).waitFor();
+  await pilotPage.getByRole("button",{name:"Catch-up notes",exact:true}).waitFor();
+  assert(!(await pilotPage.getByRole("heading",{name:"Catch-up notes",exact:true}).isVisible()));
+  await pilotPage.getByRole("button",{name:"Catch-up notes",exact:true}).click();
+  await pilotPage.getByRole("heading",{name:"Catch-up notes",exact:true}).waitFor();
   if(path.endsWith("topic=cell-structures")){
    const comparison=pilotPage.locator(".school-cell-comparison img");
    assert.equal(await comparison.count(),2);
@@ -105,12 +105,14 @@ try{
  await pilotPage.goto(base+"/science-catch-up/lesson/?topic=osmosis");
  const guide=pilotPage.locator(".school-journey");
  const check=guide.getByRole("dialog");
- await guide.getByRole("button",{name:"See evidence",exact:true}).click();
+ const startCheck=guide.getByRole("button",{name:"Check",exact:true});
+ assert.match(await startCheck.textContent(),/Check.*→/);
+ await guide.getByRole("button",{name:"Catch-up notes",exact:true}).click();
  assert(!(await pilotPage.locator(".school-lesson-table").isVisible()));
  assert(await pilotPage.getByText("Net water movement A → B",{exact:true}).isVisible());
  await pilotPage.getByText("Read the table",{exact:true}).click();
  assert(await pilotPage.locator(".school-lesson-table").isVisible());
- await guide.getByRole("button",{name:"Open check",exact:true}).click();
+ await guide.getByRole("button",{name:"Check",exact:true}).click();
  assert(await check.getByRole("heading",{name:"What moves through the membrane by osmosis?",exact:true}).isVisible());
  assert.equal(await check.getByRole("button",{name:"Continue",exact:true}).count(),0);
  assert.equal(await check.getByRole("textbox").count(),0);
@@ -126,20 +128,20 @@ try{
  });
  await pilotPage.goto(base+"/science-catch-up/?year=9");
  await pilotPage.getByRole("link",{name:"Continue catch-up",exact:true}).click();
- await guide.getByRole("button",{name:"Resume this check",exact:true}).click();
+ await guide.getByRole("button",{name:"Resume check",exact:true}).click();
  assert(await check.getByRole("radio",{name:"Dissolved sugar",exact:true}).isChecked());
  await check.getByText("Saved note",{exact:true}).click();
  assert(await check.getByText("Water can move in both directions.",{exact:true}).isVisible());
  await check.getByRole("radio",{name:"Water molecules",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
  await check.getByRole("button",{name:"Continue",exact:true}).click();
- assert(!(await pilotPage.getByRole("heading",{name:"Look at the evidence",exact:true}).isVisible()));
+ assert(!(await pilotPage.getByRole("heading",{name:"Catch-up notes",exact:true}).isVisible()));
  assert(await guide.getByText("Step 2 of 3",{exact:true}).isVisible());
- await guide.getByRole("button",{name:"Open check",exact:true}).click();
+ await guide.getByRole("button",{name:"Check",exact:true}).click();
  await check.getByRole("radio",{name:"From A to B",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
  await check.getByRole("button",{name:"Continue",exact:true}).click();
- await guide.getByRole("button",{name:"Open check",exact:true}).click();
+ await guide.getByRole("button",{name:"Check",exact:true}).click();
  await check.getByRole("radio",{name:"Salt leaves the potato by osmosis.",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
  await check.getByRole("radio",{name:"Water moves out by osmosis.",exact:true}).check();
@@ -963,17 +965,38 @@ try{
  await navPage.setViewportSize({width:390,height:844});
  await navPage.goto(base+"/ks3/lesson/?topic=states-of-matter");
  const stateModel=navPage.locator("ks3-states-model");
- await stateModel.getByRole("status").filter({hasText:/Solid/}).waitFor();
+ const particleStatus=stateModel.getByRole("status");
+ await particleStatus.filter({hasText:/Cool solid/}).waitFor();
  await stateModel.getByRole("button",{name:"Play motion"}).press("Enter");
  await stateModel.getByRole("button",{name:"Pause motion"}).waitFor();
- await stateModel.getByRole("button",{name:"Heat",exact:true}).press("Enter");
- await stateModel.getByRole("status").filter({hasText:/Melting. Liquid/}).waitFor();
- await stateModel.getByRole("button",{name:"Heat",exact:true}).press("Enter");
- await stateModel.getByRole("status").filter({hasText:/Boiling. Gas/}).waitFor();
- await stateModel.getByRole("button",{name:"Cool",exact:true}).press("Enter");
- await stateModel.getByRole("status").filter({hasText:/Condensing. Liquid/}).waitFor();
- await stateModel.getByRole("button",{name:"Cool",exact:true}).press("Enter");
- await stateModel.getByRole("status").filter({hasText:/Freezing. Solid/}).waitFor();
+ const heatParticles=stateModel.getByRole("button",{name:"Heat",exact:true});
+ const coolParticles=stateModel.getByRole("button",{name:"Cool",exact:true});
+ for(const caption of [
+  /Warmer solid.*vibrate faster/,
+  /Melting.*Temperature stays steady/,
+  /Liquid.*hard to compress/,
+  /Warmer liquid.*still close together/,
+  /Boiling.*Temperature stays steady/,
+  /^Gas.*walls/,
+  /^Warmer gas.*move faster/
+ ]){
+  await heatParticles.press("Enter");
+  await particleStatus.filter({hasText:caption}).waitFor();
+ }
+ assert.equal(await heatParticles.getAttribute("aria-disabled"),"true");
+ for(const caption of [
+  /^Gas/,
+  /Condensing.*Temperature stays steady/,
+  /^Warmer liquid/,
+  /^Liquid.*hard to compress/,
+  /Freezing.*Temperature stays steady/,
+  /^Warmer solid/,
+  /^Cool solid/
+ ]){
+  await coolParticles.press("Enter");
+  await particleStatus.filter({hasText:caption}).waitFor();
+ }
+ assert.equal(await coolParticles.getAttribute("aria-disabled"),"true");
  await stateModel.getByRole("checkbox",{name:"Follow one particle"}).check();
  await stateModel.getByRole("button",{name:"Pause motion"}).press("Enter");
  await navPage.setViewportSize({width:320,height:800});

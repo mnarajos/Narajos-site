@@ -40,6 +40,8 @@ export const curriculum = {
       { type: "particles", caption: "Particle model of water", panels: [{ label: "Ice", layout: "solid" }, { label: "Liquid water", layout: "liquid" }, { label: "Water vapour", layout: "gas" }] },
       "Where are the particles close together? Where are they spread out?",
       ["Use a [particle model] to explain the pictures. Solid particles [vibrate] in fixed positions. In a liquid they are still close together, but they can move past each other.",
+       "A liquid is almost [incompressible]. Its particles are already packed close together, so squeezing it hardly changes its volume.",
+       "As a substance warms, its particles have more [kinetic energy] on average. A pure substance can keep taking in energy while melting or boiling without getting hotter.",
        "In a [change of state], the arrangement or motion of the particles changes. Gas particles move quickly and spread through the container. Ice, liquid water and water vapour are the same substance."],
       [
         check("Which statement describes the particles in ice?", "They vibrate in fixed positions.", "The particles move back and forth around their positions.", [

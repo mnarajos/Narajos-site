@@ -12,6 +12,8 @@ const definitions = {
   chloroplasts: "Structures in some plant cells that absorb light for photosynthesis.",
   vacuole: "A fluid-filled space inside a cell. A large vacuole in a plant cell helps keep the cell firm.",
   "particle model": "An explanation of matter using tiny moving particles.",
+  incompressible: "Cannot be squeezed into a smaller volume.",
+  "kinetic energy": "The energy a moving object or particle has because it is moving.",
   vibrate: "Move back and forth around a fixed position.",
   "change of state": "A change between solid, liquid and gas. The substance stays the same.",
   atom: "The smallest particle of an element that retains that element’s identity.",
