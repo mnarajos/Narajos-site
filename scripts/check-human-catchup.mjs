@@ -111,7 +111,7 @@ export async function checkHumanCatchup(browser, base) {
     await page.locator(".k-question-view").waitFor();
     assert.deepEqual((await saved(skillKey)).queue, skill.queue);
     await open("catchup/f170/1.1.2");
-    await page.getByRole("link", { name: "Return to your unfinished question set" }).click();
+    await page.getByRole("link", { name: /Practise microscopy and cell measurements/i }).click();
     await page.locator(".k-question-view").waitFor();
     assert.deepEqual((await saved(practiceKey)).queue, standard.queue);
 
@@ -119,8 +119,8 @@ export async function checkHumanCatchup(browser, base) {
     await page.getByRole("link", { name: "Need more help? Catch up on this idea" }).click();
     await page.locator("#leave-confirm").click();
     await page.getByRole("heading", { name: "Microscopy and cell measurements", exact: true }).waitFor();
-    await page.getByRole("link", { name: "Return to your unfinished question set" }).click();
-    await page.getByText("Here’s how it works", { exact: true }).waitFor();
+    await page.getByRole("link", { name: /Practise microscopy and cell measurements/i }).click();
+    await page.getByText("Explanation revealed", { exact: true }).waitFor();
 
     await open("cards/f171-2.3");
     await page.getByRole("textbox").fill("A saved flashcard draft.");

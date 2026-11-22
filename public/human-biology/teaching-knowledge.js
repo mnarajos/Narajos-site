@@ -148,7 +148,7 @@
         "An ovarian follicle grows and the oocyte develops within it. In the model, select an ovary or press FSH.",
         "Use LH surge. A secondary oocyte is released near the oviduct and enters it. The follicle itself stays in the ovary and forms the corpus luteum.",
         "Introduce sperm. Follow vagina → cervical canal → uterus → oviduct. Fertilisation usually takes place in the ampulla of the oviduct.",
-        "If fertilisation occurs, the zygote divides while travelling. A blastocyst may implant in the uterine endometrium several days later."
+        "If fertilisation occurs, cleavage begins as the zygote travels towards the uterus. The embryo develops into a blastocyst that may implant in the uterine endometrium several days later."
       ],
       guided: choice("The sperm and oocyte are in different oviducts in the model. Which condition for this fertilisation is missing?", 1,
         [["Sperm must enter the ovary.", "Sperm usually meet the oocyte in the oviduct."], ["A viable sperm and a viable oocyte must meet in the same place.", ""], ["Implantation must happen first.", "Implantation occurs after fertilisation and early development."]],

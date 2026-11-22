@@ -4,7 +4,7 @@
 var db=window.KeystoneHumanChallenges,main=document.getElementById("main");
 if(!db||!main)return;
 if(window.KeystoneHumanKnowledge){db.units=db.units.concat(window.KeystoneHumanKnowledge.units);db.questions=db.questions.concat(window.KeystoneHumanKnowledge.questions);}
-var K="narajos-human-challenge-v2-",SK=K+"session",PK=K+"progress",RK=K+"rotation",session=null,progress={},rotation={};
+var K="narajos-human-challenge-v2-",SK=K+"session",PK=K+"progress",RK=K+"rotation",CK=K+"completed",session=null,progress={},rotation={};
 try{var r=JSON.parse(localStorage.getItem(PK)||"{}");if(r&&typeof r==="object"&&!Array.isArray(r))progress=r;}catch(_){}
 try{var rr=JSON.parse(localStorage.getItem(RK)||"{}");if(rr&&typeof rr==="object"&&!Array.isArray(rr))rotation=rr;}catch(_){}
 var all=db.questions,byId={},skills=window.KeystoneHumanSkills,ladders=window.KeystoneHumanProgressions;all.forEach(function(q){byId[q.id]=q;});
@@ -12,7 +12,16 @@ var render=null,visible=false,lastRoute="",skillExampleStem="";
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(a){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[a];});}
 function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=b[i];b[i]=b[j];b[j]=t;}return b;}
 function contextualKey(skillId){return SK+"-catchup-"+skillId;}
-function sessionKey(item){return item&&item.returnTo?contextualKey(item.skillId):SK;}
+function topicKey(unit,scope){return SK+"-topic-"+unit+"/"+scope;}
+function sessionKey(item){
+ if(item&&item.topicContext)return topicKey(item.unit,item.scope);
+ return item&&item.skillId&&item.returnTo?contextualKey(item.skillId):SK;
+}
+function localSessionKeys(){
+ var keys=[CK].concat(skills?skills.definitions.map(function(skill){return contextualKey(skill.id);}):[]);
+ try{for(var i=0;i<localStorage.length;i++){var key=localStorage.key(i);if(key.startsWith(SK+"-topic-"))keys.push(key);}}catch(_){}
+ return keys;
+}
 function save(){try{if(session)localStorage.setItem(sessionKey(session),JSON.stringify(session));}catch(_){}}
 function clearSession(item){try{localStorage.removeItem(sessionKey(item));}catch(_){}}
 function skillReturnLink(route){
@@ -31,16 +40,35 @@ function rotatePool(list){
 }
 function rememberVersions(ids){ids.forEach(function(id){var q=byId[id];if(!q||!q.family)return;var past=rotation[q.family]||[];rotation[q.family]=past.filter(function(x){return x!==id;}).concat(id).slice(-2);});try{localStorage.setItem(RK,JSON.stringify(rotation));}catch(_){}}
 function familyInQueue(q){return session&&session.queue.some(function(id){var x=byId[id];return x&&(x.family||x.id)===(q.family||q.id);});}
-function restore(key=SK){try{var x=JSON.parse(localStorage.getItem(key)||"null");if(x&&x.skillId){if(!skills||x.skillsVersion!==skills.version||!skills.get(x.skillId)||!Array.isArray(x.generated)||x.generated.length>10)return null;x.generated.forEach(function(g){var q=skills.generate(x.skillId,g.level,g.seed);byId[q.id]=q;});}if(x&&Array.isArray(x.queue)&&x.queue.length&&x.queue.every(function(id){return !!byId[id];})&&x.index<x.queue.length&&!x.complete&&x.route&&x.unit){x.hintsUsed=x.hintsUsed||{};x.quickCheckIds=x.quickCheckIds||{};x.quickCheckLinks=x.quickCheckLinks||{};x.guidedFirst=x.guidedFirst||0;x.quickChecksSeen=x.quickChecksSeen||0;x.quickChecksPassed=x.quickChecksPassed||0;return x;}}catch(_){}return null;}
+function restore(key=SK){try{var x=JSON.parse(localStorage.getItem(key)||"null");if(x&&x.skillId){if(!skills||x.skillsVersion!==skills.version||!skills.get(x.skillId)||!Array.isArray(x.generated)||x.generated.length>10)return null;x.generated.forEach(function(g){var q=skills.generate(x.skillId,g.level,g.seed);byId[q.id]=q;});}if(x&&Array.isArray(x.queue)&&x.queue.length&&x.queue.every(function(id){return !!byId[id];})&&x.index<x.queue.length&&!x.complete&&x.route&&x.unit){x.hintsUsed=x.hintsUsed||{};x.quickCheckIds=x.quickCheckIds||{};x.quickCheckLinks=x.quickCheckLinks||{};x.guidedFirst=x.guidedFirst||0;x.quickChecksSeen=x.quickChecksSeen||0;x.quickChecksPassed=x.quickChecksPassed||0;initialiseOutcomes(x);return x;}}catch(_){}return null;}
+function initialiseOutcomes(item){
+ if(item.outcomes)return;
+ item.outcomes={};item.objectiveFirst={};
+ // Historical first-attempt flags do not distinguish a submitted error from a reveal.
+ // Never carry a written or unmatched short-answer self-rating into objective evidence.
+ Object.keys(item.first||{}).forEach(function(id){
+  var q=byId[id];if(!q||q.type==="written"||q.type==="short")item.first[id]=false;
+ });
+ item.correctFirst=Object.keys(item.first||{}).filter(function(id){return item.first[id]===true;}).length;
+ Object.keys(item.first||{}).filter(function(id){return item.first[id]===true;}).forEach(function(id){item.objectiveFirst[id]="independent";});
+}
+function progressEntry(id){
+ var old=progress[id];if(old&&old.outcomeVersion===1)return old;
+ return {outcomeVersion:1,seen:old&&old.seen||0,checked:0,good:0,wrong:0,independent:0,guided:0,legacy:old||undefined};
+}
+function needsPractice(p){
+ return !!(p&&(p.needsPractice===true||p.lastCorrect===false||(p.guided||0)>0&&!(p.independent||0)));
+}
 function isActive(){return !!session&&session.index<session.queue.length;}
 function pause(){stopHintTimer();session=null;visible=false;} // Preserve the unfinished set in localStorage.
 function discard(){stopHintTimer();clearSession(session);session=null;visible=false;}
-function savedSession(){
+function savedSession(origin){
  var standard=restore();
- if(standard)return standard;
- if(!skills)return null;
- return skills.definitions.map(function(skill){return restore(contextualKey(skill.id));})
-  .filter(Boolean).sort(function(a,b){return b.started-a.started;})[0]||null;
+ if(!origin&&standard)return standard;
+ var candidates=[standard].concat(localSessionKeys().map(function(key){return restore(key);}))
+  .filter(Boolean).sort(function(a,b){return b.started-a.started;});
+ if(origin)return candidates.find(function(item){return item.reteachTo===origin;})||candidates.find(function(item){return item.returnTo===origin;})||null;
+ return candidates[0]||null;
 }
 function icon(name){
  var paths={
@@ -73,11 +101,11 @@ function filter(unit,scope){
  else if(scope==="core"||scope==="apply"||scope==="stretch")list=list.filter(function(q){return q.level===scope;});
  else if(scope.startsWith("case-"))list=list.filter(q=>q.id===scope&&q.caseTitle);
  else if(scope==="sam")list=list.filter(function(q){return q.samAligned;});
- else if(scope==="weak")list=list.filter(function(q){var p=progress[q.id];return p&&(((p.wrong>0&&(p.lastCorrect===false||p.good/Math.max(1,p.seen)<.75)||((p.guided||0)>0&&(p.independent||0)===0))||((p.guided||0)>0&&(p.independent||0)===0)));});
+ else if(scope==="weak")list=list.filter(function(q){return needsPractice(progress[q.id]);});
  return list;
 }
 function unitStats(u){var qs=filter(u,"all"),seen=0,weak=0;
- qs.forEach(function(q){var p=progress[q.id];if(p&&p.seen){seen++;if(p.wrong>0&&(p.lastCorrect===false||p.good/Math.max(1,p.seen)<.75))weak++;}});
+ qs.forEach(function(q){var p=progress[q.id];if(p&&p.seen){seen++;if(needsPractice(p))weak++;}});
  return {questions:qs.length,seen:seen,weak:weak};}
 function source(){return '<p class="k-source">Original revision questions mapped against <a href="https://www.ocr.org.uk/Images/697578-specification-cambridge-advanced-national-in-human-biology.pdf" target="_blank" rel="noopener">OCR specification v8</a> and informed by the <a href="https://www.ocr.org.uk/qualifications/cambridge-advanced-nationals/human-biology-level-3-h049-h149/assessment/" target="_blank" rel="noopener">public sample assessment materials</a>. Examples are not official OCR questions, and sample alignment does not imply exam frequency.</p>';}
 function title(u){var U=unitMeta(u);return u.toUpperCase()+" · "+(U?U.title:"Human Biology");}
@@ -231,7 +259,7 @@ function adaptQuickMixEnd(){
  session.quickMixAdjusted=true;
  save();
 }
-function makeSession(unit,scope,route){
+function makeSession(unit,scope,route,origin){
  if(ladders&&scope==="build")return progressionMenu(unit);
  if(unit==="f171"&&scope==="clinical")return showClinicalCases();
  var point=ladders&&ladders.get(scope);
@@ -272,6 +300,7 @@ function makeSession(unit,scope,route){
  }else ids=shuffle(chosen).map(function(x){return x.id;});
  session={unit:unit,scope:scope,route:route,queue:ids,index:0,first:{},correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,quickMixVersion:scope==="all"?2:null,quickMixBase:scope==="all"?ids.slice():null,quickMixFinalId:scope==="all"?ids[ids.length-1]:null,quickMixAdjusted:false,complete:false,started:Date.now()};
  if(point)session.point=point.id;
+ if(origin){session.topicContext=true;session.returnTo=origin;}
  rememberVersions(ids);save();drawQuestion();
 }
 function showClinicalCases(){
@@ -300,7 +329,7 @@ function skillsMenu(unit){
   h+='<h2>'+u.toUpperCase()+'</h2><div class="k-skills-grid">';
   group.forEach(function(s){var p=progress["skill:"+s.id]||{};
    var saved=old&&old.skillId===s.id?old:restore(contextualKey(s.id));
-   h+='<article class="paper k-skill-card"><h3>'+esc(s.name)+'</h3><p>'+esc(s.description)+'</p>'+(p.seen?'<p class="k-source">'+(p.independent||0)+' of '+p.seen+' answered without help</p>':'')+'<a class="button primary" href="#'+(saved?esc(saved.route):'skills/'+u+'/'+s.id)+'">'+(saved?'Resume':'Practise')+'<span class="sr-only"> '+esc(s.name)+'</span></a></article>';
+   h+='<article class="paper k-skill-card"><h3>'+esc(s.name)+'</h3><p>'+esc(s.description)+'</p>'+(p.checked?'<p class="k-source">'+p.independent+' of '+p.checked+' checked responses answered independently</p>':'')+'<a class="button primary" href="#'+(saved?esc(saved.route):'skills/'+u+'/'+s.id)+'">'+(saved?'Resume':'Practise')+'<span class="sr-only"> '+esc(s.name)+'</span></a></article>';
   });h+='</div>';
  });
  h+='<p class="k-source">Calculations vary numbers and, where appropriate, the unknown quantity. Reasoning questions rotate through authored contexts. Repeats are possible. These skills support F170/F171; they are not complete knowledge coverage.</p>'+source()+'</div>';show(h);
@@ -351,18 +380,25 @@ function bestForm(q,answer){
  h+=answer.reasonOrder.map(function(i,pos){return '<label class="k-option"><input type="radio" name="kreason" value="'+i+'"'+(answer.reason===i?' checked':'')+'><span class="k-option-letter">'+String.fromCharCode(65+pos)+'</span><span>'+esc(q.reasons[i])+'</span></label>';}).join("");
  return h+'</div></fieldset></div>';
 }
+function usableOrder(q,order){
+ return Array.isArray(order)&&order.length===q.items.length&&new Set(order).size===order.length&&order.every(function(i){return Number.isInteger(i)&&i>=0&&i<q.items.length;});
+}
+function rowStatus(answer,i){
+ if(!answer.correction)return "";
+ return '<span class="k-row-status">'+(answer.correction[i]?"Correct so far":"Review this row")+'</span>';
+}
 function orderForm(q,answer){
- var current=answer&&Array.isArray(answer.order)?answer.order:null;
+ var current=usableOrder(q,answer.order)?answer.order:null;
  if(!current){current=shuffle(q.items.map(function(_,i){return i;}));if(current.every(function(v,i){return v===i;}))current.reverse();session.answers[q.id]={order:current};save();}
  return '<ol class="k-order">'+current.map(function(idx,pos){
- return '<li><span class="k-order-num">'+(pos+1)+'</span><span>'+esc(q.items[idx])+'</span><span class="k-order-controls"><button class="k-small-btn" type="button" data-move="up" data-pos="'+pos+'" aria-label="Move step '+(pos+1)+' up" '+(pos===0?"disabled":"")+'>↑</button><button class="k-small-btn" type="button" data-move="down" data-pos="'+pos+'" aria-label="Move step '+(pos+1)+' down" '+(pos===current.length-1?"disabled":"")+'>↓</button></span></li>';
+ return '<li><span class="k-order-num">'+(pos+1)+'</span><span>'+esc(q.items[idx])+(answer.correction&&idx!==pos?' <span class="k-row-status">Review position</span>':'')+'</span><span class="k-order-controls"><button class="k-small-btn" type="button" data-move="up" data-pos="'+pos+'" aria-label="Move step '+(pos+1)+' up" '+(pos===0?"disabled":"")+'>↑</button><button class="k-small-btn" type="button" data-move="down" data-pos="'+pos+'" aria-label="Move step '+(pos+1)+' down" '+(pos===current.length-1?"disabled":"")+'>↓</button></span></li>';
  }).join("")+'</ol><p class="k-hint">Use the arrows to put the steps in order.</p>';
 }
 function sortForm(q,answer){
  var selected=answer&&Array.isArray(answer.sort)?answer.sort:[];
  return '<div class="k-sort"><p class="k-hint">Choose one group for each statement.</p>'+
  q.rows.map(function(row,i){
-  return '<fieldset class="k-sort-row"><legend>'+esc(row[0])+'</legend><div class="k-sort-choices">'+q.groups.map(function(group,j){
+  return '<fieldset class="k-sort-row"'+(answer.correction&&answer.correction[i]?' disabled':'')+'><legend>'+esc(row[0])+'</legend>'+rowStatus(answer,i)+'<div class="k-sort-choices">'+q.groups.map(function(group,j){
    return '<label><input type="radio" name="ksort-'+i+'" value="'+j+'" data-sort-row="'+i+'"'+(selected[i]!==undefined&&selected[i]!==''&&Number(selected[i])===j?' checked':'')+'><span>'+esc(group)+'</span></label>';
   }).join("")+'</div></fieldset>';
  }).join("")+'</div>';
@@ -371,7 +407,7 @@ function matchForm(q,answer){
  var vals=answer&&Array.isArray(answer.match)?answer.match:[];
  if(!answer.targetOrder){answer.targetOrder=shuffle(q.pairs.map(function(_,i){return i;}));session.answers[q.id]=answer;save();}
  return '<div class="k-matches">'+q.pairs.map(function(p,i){
- return '<label class="k-match"><span>'+esc(p[0])+'</span><select data-match="'+i+'" aria-label="Match for '+esc(p[0])+'"><option value="">Choose a match</option>'+answer.targetOrder.map(function(j){return '<option value="'+j+'"'+(String(vals[i])===String(j)?" selected":"")+'>'+esc(q.pairs[j][1])+'</option>';}).join("")+'</select></label>';
+ return '<label class="k-match"><span>'+esc(p[0])+rowStatus(answer,i)+'</span><select'+(answer.correction&&answer.correction[i]?' disabled':'')+' data-match="'+i+'" aria-label="Match for '+esc(p[0])+'"><option value="">Choose a match</option>'+answer.targetOrder.map(function(j){return '<option value="'+j+'"'+(String(vals[i])===String(j)?" selected":"")+'>'+esc(q.pairs[j][1])+'</option>';}).join("")+'</select></label>';
  }).join("")+'</div>';
 }
 function evidenceTable(table){
@@ -475,7 +511,7 @@ function excludedOption(q){
 function hintsFor(q){
  var items=Array.isArray(q.hints)&&q.hints.length?q.hints.slice(0,2):[hintStrategy(q)];
  if(!q.hints&&typeof q.hintCue==="string"&&q.hintCue.trim())items.push(q.hintCue);
- if(["single","diagram","multi"].indexOf(q.type)>=0&&q.options&&q.options.length===4){
+ if(items.length===2&&["single","diagram","multi"].indexOf(q.type)>=0&&q.options&&q.options.length===4){
   var i=session.hintExcluded&&session.hintExcluded[q.id];
   if(!Number.isInteger(i))i=excludedOption(q);
   if(i!==null)items.push("You can rule out: "+q.options[i]+".");
@@ -533,8 +569,46 @@ function questionPrompt(q){
   (context?'<p class="reading-copy k-reading-context">'+esc(context)+'</p>':'')+
   '<h1>'+esc(task)+'</h1></div>';
 }
+function writtenReview(q,a){
+ var review=a.review||{},finished=!!session.outcomes[session.index];
+ var student='<section><h3>Your answer</h3><p class="k-review-draft">'+esc(a.text||"No draft was saved.")+'</p></section>';
+ var model='<section><h3>Expected ideas</h3><p>'+esc(q.model)+'</p><p>'+esc(q.explain)+'</p></section>';
+ var criteria=q.markPoints.map(function(point,i){
+  var value=(review.criteria||{})[i];
+  return '<label><span>'+esc(point)+'</span><select data-review-criterion="'+i+'"'+(finished?' disabled':'')+'><option value=""'+(!value?' selected':'')+'>Choose a rating</option><option value="met"'+(value==="met"?' selected':'')+'>Included</option><option value="work"'+(value==="work"?' selected':'')+'>Needs work</option></select></label>';
+ }).join("");
+ return '<div class="k-feedback pending"><h2 data-feedback-heading tabindex="-1">'+(finished?"Self-review complete":"Compare your reasoning")+'</h2><div class="k-review-grid">'+student+model+'</div>'+
+  (q.levelsNote?'<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>':'')+
+  '<fieldset class="k-review-criteria"><legend>Key points to look for</legend><p>Check where your answer explains each point. Choose Needs work where a link is missing.</p>'+criteria+'</fieldset>'+
+  '<label class="k-field" for="k-revised">Improve your answer</label><textarea id="k-revised" rows="5"'+(finished?' readonly':'')+'>'+esc(review.revised==null?a.text||"":review.revised)+'</textarea>'+
+  (finished?'<p role="status">Self-reviewed'+(session.outcomes[session.index]==="review-needs-work"?' · further practice useful':'')+'</p>':'')+'</div>';
+}
+function focusFeedback(){
+ var heading=main.querySelector("[data-feedback-heading]");if(heading)heading.focus();
+}
+function canCorrect(q,a){
+ return ["match","sort","order"].includes(q.type)&&session.outcomes&&session.outcomes[session.index]==="incorrect"&&session.lastResult===false&&!session.wasSkipped&&!a.correction;
+}
+function correctionRows(q,a){
+ if(q.type==="sort")return q.rows.map(function(row,i){return +a.sort[i]===row[1];});
+ if(q.type==="match")return q.pairs.map(function(_,i){return +a.match[i]===i;});
+ return a.order.map(function(idx,pos){return idx===pos;});
+}
+function correctOrReveal(reveal){
+ var q=current(),a=currentAnswer();
+ if(!q||session.phase!=="feedback"||!canCorrect(q,a))return;
+ delete session.outcomes[session.index]; // The initial incorrect submission remains in objective history.
+ if(reveal){
+  session.wasSkipped=true;record(q,"revealed");drawQuestion();focusFeedback();
+ }else{
+  a.correction=correctionRows(q,a);
+  session.answers[q.id]=a;session.phase="ask";save();drawQuestion();
+  var pending=main.querySelector("[data-correction-heading]");if(pending)pending.focus();
+ }
+}
 function drawQuestion(){
  if(!session||!isActive())return;
+ initialiseOutcomes(session);
  stopHintTimer();
  adaptQuickMixMiddle();
  adaptQuickMixEnd();
@@ -551,27 +625,36 @@ function drawQuestion(){
  if(q.graph&&skills)h+=skills.graphHTML(q.graph);
  if(q.evidenceTable)h+=evidenceTable(q.evidenceTable);
  if(isQuickCheck(q))h+='<p class="k-quick-label"><strong>Quick check:</strong> Apply the same idea independently.</p>';
- if(!showing){h+=inputForm(q,a);
+ if(!showing){if(a.correction)h+='<h2 class="k-correction-title" data-correction-heading tabindex="-1">Review and try again</h2>';
+  h+=inputForm(q,a);
   if(used)h+='<div class="k-hint-box" role="note"><strong>Hint '+used+' of '+availableHints.length+'</strong>'+availableHints.slice(0,used).map(function(t){return '<p>'+esc(t)+'</p>';}).join('')+'</div>';
+ }
+ else if(q.type==="written"&&!session.wasSkipped)h+=writtenReview(q,a);
+ else if(canCorrect(q,a)){
+  var rows=correctionRows(q,a),reviewCount=rows.filter(function(ok){return !ok;}).length;
+  h+='<div class="k-feedback incorrect"><h2 class="k-feedback-head" data-feedback-heading tabindex="-1">Review and improve</h2><p>'+reviewCount+' '+(q.type==="order"?(reviewCount===1?"position needs":"positions need"):(reviewCount===1?"row needs":"rows need"))+' another look. Your choices are saved.</p></div>';
  }
  else{
   var correct=session.lastResult===true,subjective=!session.wasSkipped&&(session.lastResult===null||q.type==="written");
   var helped=!!used,unknown=!!session.wasSkipped,quick=isQuickCheck(q);
   var neutral=unknown||subjective||(correct&&helped);
-  var header=unknown?"Here’s how it works":subjective?"Check your explanation":correct&&helped?"Correct with a hint":correct&&quick?"Quick check passed":correct?"Correct":"Not yet";
-  h+='<div class="k-feedback '+(neutral?"pending":correct?"correct":"incorrect")+'"><div class="k-feedback-head">'+icon(neutral?"book":correct?"check":"alert")+'<strong>'+header+'</strong></div>';
+  var header=unknown?"Explanation revealed":subjective?"Check your explanation":correct&&session.outcomes[session.index]==="corrected"?"Correct after a retry":correct&&helped?"Correct with a hint":correct&&quick?"Quick check passed":correct?"Correct":"Not yet";
+  h+='<div class="k-feedback '+(neutral?"pending":correct?"correct":"incorrect")+'"><h2 class="k-feedback-head" data-feedback-heading tabindex="-1">'+icon(neutral?"book":correct?"check":"alert")+header+'</h2>';
   if(q.figure)h+=figure(q.figure,true);
   h+='<div'+(q.unit==="f170"?' class="reading-copy"':'')+'>'+
    '<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p><strong>'+(correct&&!helped?'Why it works':unknown?'Explanation':'Quick reteach')+':</strong> '+esc(q.explain)+'</p></div>';
+  if(!correct&&!unknown&&a.selected&&q.options)h+='<p><strong>Your selection</strong> '+a.selected.map(function(i){return esc(q.options[i]);}).join('; ')+'</p>';
   if(q.type==='best'&&!correct&&!unknown){var partial=session.answers[q.id]||{};if(partial.choice===q.correct&&partial.reason!==q.reasonCorrect)h+='<p class="k-diagnostic-note">You chose the correct explanation; now focus on why it is correct.</p>';}
   if((!correct||helped)&&session.lastPlannedCheck)h+='<p class="k-quick-note">A related quick check is next, so you can try the idea again independently.</p>';
   if(q.levelsNote)h+='<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>';
   if(!correct&&!unknown&&q.misconception)h+='<div class="k-misconception"><strong>Watch out</strong><p>'+esc(q.misconception)+'</p></div>';
-  if(!correct||helped||unknown){var cu=window.KeystoneHumanCatchup&&window.KeystoneHumanCatchup.linkFor(q);if(cu)h+='<p class="k-catchup-after"><a href="#'+esc(cu)+'">Need more help? Catch up on this idea</a></p>';}
+  if(!correct||helped||unknown){var cu=window.KeystoneHumanCatchup&&window.KeystoneHumanCatchup.linkFor(q);if(cu)h+='<p class="k-catchup-after"><a href="#'+esc(cu)+'" data-reteach-to="'+esc(cu)+'">Need more help? Catch up on this idea</a></p>';}
   h+='</div>';
  }
  if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points":"Check answer")+' →</button>'+(used<availableHints.length?'<button class="button secondary k-hint-button" type="button" data-k-action="hint"'+(hintRemaining()>0?' hidden':'')+'>'+(used?'More help':'Hint')+'</button>':'')+'<button class="button quiet" type="button" data-k-action="skip">I don’t know · show me</button></div>';
- else if(!session.wasSkipped&&(q.type==="written"||session.lastResult===null))h+='<div class="k-foot-actions"><button class="button primary" data-k-action="self-good" type="button">I included the key ideas</button><button class="button secondary" data-k-action="self-weak" type="button">I need more practice</button></div>';
+ else if(canCorrect(q,a))h+='<div class="k-foot-actions"><button class="button primary" data-k-action="correct" type="button">Try again</button><button class="button quiet" data-k-action="show-correction" type="button">Show answer</button></div>';
+ else if(!session.wasSkipped&&q.type==="written"&&!session.outcomes[session.index])h+='<div class="k-foot-actions"><button class="button primary" data-k-action="finish-review" type="button">Finish review</button></div>';
+ else if(!session.wasSkipped&&q.type==="short"&&session.lastResult===null)h+='<div class="k-foot-actions"><button class="button primary" data-k-action="self-good" type="button">I included the key ideas</button><button class="button secondary" data-k-action="self-weak" type="button">I need more practice</button></div>';
  else h+='<div class="k-foot-actions"><button class="button primary k-cta" data-k-action="next" type="button">'+(session.lastPlannedCheck?'Try a quick check':'Next question')+' →</button></div>';
  h+='</div><p class="k-question-footer">Topic '+q.area+' · '+esc(areaName(q.unit,q.area))+(q.knowledgeOnly?' · Knowledge practice only':q.samAligned?' · Skills reflected in OCR sample material':' · Specification coverage')+' · Original question</p></div>';
  show(h);
@@ -585,12 +668,12 @@ function validateAnswer(q,a){
   if(q.type==="multi"&&a.selected.length!==q.correct.length)return {ready:false,msg:"Select exactly "+q.correct.length+" answers."};
   return {ready:true,correct:q.type==="multi"?(a.selected.slice().sort().join(",")===q.correct.slice().sort().join(",")):a.selected[0]===q.correct};
  }
- if(q.type==="order")return {ready:true,correct:a.order&&a.order.every(function(v,i){return v===i;})};
+ if(q.type==="order")return {ready:usableOrder(q,a.order),correct:usableOrder(q,a.order)&&a.order.every(function(v,i){return v===i;})};
  if(q.type==="sort"){if(!a.sort||a.sort.length!==q.rows.length||a.sort.some(function(v){return v===""||v==null;}))return {ready:false,msg:"Choose a group for each statement."};return {ready:true,correct:a.sort.every(function(v,i){return +v===q.rows[i][1];})};}
  if(q.type==="match"){if(!a.match||a.match.length!==q.pairs.length||a.match.some(function(v){return v===""||v==null;}))return {ready:false,msg:"Choose a match for each row."};return {ready:true,correct:a.match.every(function(v,i){return +v===i;})};}
  if(q.type==="number"){var val=String(a.text||"").trim().replace(/,/g,"").replace(/^×\s*/,"");if(!/^[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[-+]?\d+)?$/i.test(val))return {ready:false,msg:"Enter a number only. The expected unit is shown above the box."};return {ready:true,correct:Math.abs(Number(val)-q.correct)<=(q.tolerance||1e-9)};}
  if(q.type==="short"){if(!String(a.text||"").trim())return {ready:false,msg:"Enter an answer first, or choose Not sure."};return {ready:true,correct:q.accepted.some(function(x){return norm(x)===norm(a.text);})};}
- return {ready:true,correct:null};
+ return {ready:!!String(a.text||"").trim(),correct:null,msg:"Write an explanation first, or choose I don’t know."};
 }
 function planQuickCheck(q){
  if(session&&(session.skillId||session.point))return null; // Keep authored point sequences in their intended order.
@@ -623,40 +706,44 @@ function planQuickCheck(q){
  session.lastPlannedCheck=choice.id;
  return choice.id;
 }
-function record(q,got){
- var helped=!!(session.hintsUsed&&session.hintsUsed[q.id]);
- var selfReviewed=q.type==="written"||(q.type==="short"&&session.lastResult===null);
- var corrected=Object.prototype.hasOwnProperty.call(session.first,q.id)&&!isQuickCheck(q);
- var independent=!!got&&!helped&&!session.wasSkipped&&!selfReviewed&&!corrected;
- var progressId=session.skillId?"skill:"+session.skillId:q.id;
- var p=progress[progressId]||{seen:0,good:0,wrong:0,independent:0,guided:0};p.seen++;
- if(got){
-  p.good++;
-  if(selfReviewed)p.selfReviewed=(p.selfReviewed||0)+1;
-  else if(corrected)p.corrected=(p.corrected||0)+1;
-  else if(helped)p.guided=(p.guided||0)+1;
-  else if(independent)p.independent=(p.independent||0)+1;
-  p.lastCorrect=true;
+function record(q,outcome){
+ initialiseOutcomes(session);
+ if(session.outcomes[session.index])return;
+ var helped=!!session.hintsUsed[q.id],quick=isQuickCheck(q);
+ var previous=Object.prototype.hasOwnProperty.call(session.first,q.id);
+ if(outcome==="correct")outcome=!previous||quick?(helped?"supported":"independent"):"corrected";
+ var independent=outcome==="independent",got=independent||outcome==="supported"||outcome==="corrected";
+ var objective=got||outcome==="incorrect";
+ session.outcomes[session.index]=outcome;
+ var progressId=session.skillId?"skill:"+session.skillId:q.id,p=progressEntry(progressId);
+ p.seen++;
+ if(objective){
+  p.checked++;p.lastCorrect=got;
+  if(got)p.good++;else p.wrong++;
  }
- else{p.wrong++;p.lastCorrect=false;}
+ var key={independent:"independent",supported:"guided",corrected:"corrected",reviewed:"selfReviewed","review-needs-work":"selfReviewed",revealed:"revealed"}[outcome];
+ if(key)p[key]=(p[key]||0)+1;
+ p.needsPractice=outcome==="review-needs-work"||outcome==="revealed"||outcome==="incorrect"||outcome==="supported";
  p.last=Date.now();progress[progressId]=p;saveProgress();
- if(!(q.id in session.first)){
+ if(!previous){
   session.first[q.id]=independent;
+  if(objective)session.objectiveFirst[q.id]=outcome;
   if(independent)session.correctFirst++;
-  if(selfReviewed&&!session.wasSkipped)session.selfReviewed=(session.selfReviewed||0)+1;
-  if(got&&helped&&!selfReviewed)session.guidedFirst=(session.guidedFirst||0)+1;
+  if(outcome==="supported")session.guidedFirst++;
  }
- if(isQuickCheck(q)){session.quickChecksSeen=(session.quickChecksSeen||0)+1;if(independent)session.quickChecksPassed=(session.quickChecksPassed||0)+1;}
+ if(outcome==="reviewed"||outcome==="review-needs-work")session.selfReviewed=(session.selfReviewed||0)+1;
+ if(quick){session.quickChecksSeen++;if(independent)session.quickChecksPassed++;}
  session.lastPlannedCheck=null;
  if(session.skillId){
   if(independent){session.skillStreak++;if(session.skillStreak>=2){session.skillLevel=Math.min(4,session.skillLevel+1);session.skillStreak=0;}}
-  else{session.skillStreak=0;if(!got)session.skillLevel=Math.max(1,session.skillLevel-1);}
+  else if(outcome==="incorrect"||outcome==="revealed"||outcome==="supported"||outcome==="corrected"){
+   session.skillStreak=0;if(!got)session.skillLevel=Math.max(1,session.skillLevel-1);
+  }
   save();return;
  }
- var checkId=(!got||helped)?planQuickCheck(q):null;
- // When no suitable same-concept question exists, a guided response returns
- // later in the set for another unaided attempt rather than being counted secure.
- if((!got||(helped&&!checkId))&&(session.retries[q.id]||0)<1){session.queue.push(q.id);session.retries[q.id]=(session.retries[q.id]||0)+1;}
+ var needsHelp=p.needsPractice&&outcome!=="review-needs-work"&&!(outcome==="incorrect"&&canCorrect(q,currentAnswer()));
+ var checkId=needsHelp?planQuickCheck(q):null;
+ if(needsHelp&&(!got||!checkId)&&(session.retries[q.id]||0)<1){session.queue.push(q.id);session.retries[q.id]=(session.retries[q.id]||0)+1;}
  save();
 }
 function readForm(){
@@ -677,45 +764,97 @@ function check(skip){
  session.wasSkipped=!!skip;
  if(!skip&&q.type==="short"&&session.lastResult===false)session.lastResult=null; // allow scientifically equivalent synonyms to be self-assessed
  session.phase="feedback";
- if(session.lastResult!==null)record(q,session.lastResult);
- save();drawQuestion();
+ if(skip)record(q,"revealed");
+ else if(session.lastResult!==null)record(q,session.lastResult?"correct":"incorrect");
+ save();drawQuestion();focusFeedback();
 }
-function gradeSelf(got){var q=current();if(!q)return;record(q,got);next();}
+function gradeSelf(got){
+ var q=current();if(!q||q.type!=="short"||session.phase!=="feedback"||session.wasSkipped||session.lastResult!==null)return;
+ record(q,got?"reviewed":"review-needs-work");next();
+}
+function finishWrittenReview(){
+ var q=current(),a=currentAnswer();
+ if(!q||q.type!=="written"||session.phase!=="feedback"||session.wasSkipped||session.outcomes[session.index])return;
+ var criteria=a.review&&a.review.criteria||{};
+ var needsWork=q.markPoints.some(function(_,i){return criteria[i]!=="met";});
+ record(q,needsWork?"review-needs-work":"reviewed");
+ drawQuestion();focusFeedback();
+}
+function saveReviewField(target){
+ var q=current();if(!q||q.type!=="written"||session.phase!=="feedback"||session.wasSkipped||session.outcomes[session.index])return;
+ var a=currentAnswer();a.review=a.review||{criteria:{}};
+ if(target.matches("#k-revised"))a.review.revised=target.value;
+ else a.review.criteria[target.dataset.reviewCriterion]=target.value;
+ session.answers[q.id]=a;save();
+}
 function next(){
- if(!session)return;
+ if(!session||session.phase!=="feedback"||session.lastResult===null&&!session.outcomes[session.index])return;
  var previous=current();if(previous&&session.answers)delete session.answers[previous.id]; // Do not retain free-text answers beyond feedback.
- session.index++;session.phase="ask";session.lastResult=undefined;session.wasSkipped=false;session.lastPlannedCheck=null;session.quickTapAttempted=false;save();
+ session.index++;session.phase="ask";session.lastResult=undefined;session.wasSkipped=false;session.lastPlannedCheck=null;save();
  if(session.skillId&&session.index<10&&session.index>=session.queue.length){addSkillQuestion();save();}
  if(session.index>=session.queue.length)finish();else drawQuestion();
 }
+function outcomeSummary(old){
+ var outcomes=Object.values(old.outcomes||{}),total=Object.keys(old.objectiveFirst||{}).length;
+ var count=function(type){return outcomes.filter(function(result){return result===type;}).length;};
+ var review=total?old.correctFirst+' of '+total+' objectively checked questions answered independently on the first submission.':'No objective first submissions were recorded in this set.';
+ var stats=[[(old.guidedFirst||0),"answered with help"],[count("corrected"),"correct after a retry"],[(old.selfReviewed||0),"self-reviewed"],[count("revealed"),"explanations revealed"],[(old.quickChecksPassed||0)+"/"+(old.quickChecksSeen||0),"quick checks without help"]];
+ if(old.needsReview)stats.push([old.needsReview,"to revisit from this set"]);
+ return '<p class="lead">'+review+'</p><dl class="k-mini-stats k-outcome-stats">'+stats.map(function(stat){return '<div><dt>'+stat[1]+'</dt><dd>'+stat[0]+'</dd></div>';}).join("")+'</dl>';
+}
 function finish(){
- stopHintTimer();if(!session)return;var old=session;clearSession(old);session=null;
+ stopHintTimer();if(!session)return;
+ var old=session;clearSession(old);session=null;visible=false;
+ old.needsReview=old.skillId?0:Object.keys(old.first).filter(function(id){return needsPractice(progress[id]);}).length;
+ var result={};
+ ["correctFirst","objectiveFirst","outcomes","guidedFirst","selfReviewed","quickChecksPassed","quickChecksSeen","unit","skillId","point","returnTo","route","maxSkillLevel","needsReview"].forEach(function(key){result[key]=old[key];});
+ try{localStorage.setItem(CK,JSON.stringify(result));}catch(_){}
+ if(window.KeystoneHumanApp)window.KeystoneHumanApp.replaceRoute("challenge/review");
+ showCompletion(result);
+}
+function showCompletion(old){
+ var summary=outcomeSummary(old);
  if(old.skillId){
   var sk=skills.get(old.skillId);
-  show('<div class="k-wrap k-done"><h1>Skills set complete</h1><p class="lead">'+old.correctFirst+' of 10 answered independently on first attempt.</p><p>'+old.guidedFirst+' answered with help. Highest practice step: '+old.maxSkillLevel+' of 4.</p><p>Try another set with new values or another authored context. This records practice, not proven mastery.</p><div class="actions"><button class="button primary" type="button" data-start-skill="'+sk.id+'">Practise this skill again</button><a class="button secondary" href="#skills/'+sk.unit+'">Choose another skill</a><a class="button secondary" href="#challenge/'+sk.unit+'">Apply to topic questions</a>'+skillReturnLink(old.returnTo)+'</div></div>');return;
+  show('<div class="k-wrap k-done"><h1>Skills set complete</h1>'+summary+'<p>Highest practice step: '+old.maxSkillLevel+' of 4.</p><div class="actions"><button class="button primary" type="button" data-start-skill="'+sk.id+'">Practise this skill again</button><a class="button secondary" href="#skills/'+sk.unit+'">Choose another skill</a><a class="button secondary" href="#challenge/'+sk.unit+'">Apply to topic questions</a>'+skillReturnLink(old.returnTo)+'</div></div>');return;
  }
- var repeat=Object.keys(old.retries).length,done=old.queue.length;
- if(old.point){var p=ladders.get(old.point);show('<div class="k-wrap k-done"><h1>Sequence complete</h1><p class="lead">'+esc(p.statement)+'</p><p>'+old.correctFirst+' of '+Object.keys(old.first).length+' questions answered independently on first attempt. '+old.guidedFirst+' answered with help. '+(old.selfReviewed||0)+' explanations self-reviewed.</p><div class="actions"><a class="button primary" href="#challenge/'+old.unit+'/build">Choose another idea</a><button class="button secondary" type="button" data-repeat-point="'+p.id+'">Repeat this idea</button><a class="button secondary" href="#catchup/'+old.unit+'/'+p.section+'">Revisit the explanation</a></div></div>');return;}
- var h='<div class="k-wrap k-done"><p class="crumb"><a href="#challenge/'+old.unit+'">← Unit overview</a></p><div class="k-done-icon">'+icon("check")+'</div><h1>Practice complete</h1><p class="lead">'+old.correctFirst+' of '+Object.keys(old.first).length+' questions recalled independently on first attempt.</p>';
- h+='<div class="k-mini-stats"><span><strong>'+Object.keys(old.first).length+'</strong> unique questions</span><span><strong>'+repeat+'</strong> revisited</span><span><strong>'+(old.guidedFirst||0)+'</strong> answered with help</span><span><strong>'+(old.quickChecksPassed||0)+'/'+(old.quickChecksSeen||0)+'</strong> quick checks without help</span>'+((old.selfReviewed||0)?'<span><strong>'+old.selfReviewed+'</strong> explanations self-reviewed</span>':'')+'</div><div class="k-action-grid"><a class="k-action teal" href="#challenge/'+old.unit+'/weak"><span class="k-icon">'+icon("rotate")+'</span><span><strong>Fix weak areas</strong><small>Practise questions you missed</small></span></a><a class="k-action blue" href="#challenge/'+old.unit+'"><span class="k-icon">'+icon("grid")+'</span><span><strong>Choose another set</strong><small>Topic or mixed practice</small></span></a></div></div>';show(h);
+ if(old.point){var p=ladders.get(old.point);show('<div class="k-wrap k-done"><h1>Sequence complete</h1><p>'+esc(p.statement)+'</p>'+summary+'<div class="actions"><a class="button primary" href="#challenge/'+old.unit+'/build">Choose another idea</a><button class="button secondary" type="button" data-repeat-point="'+p.id+'">Repeat this idea</button><a class="button secondary" href="#catchup/'+old.unit+'/'+p.section+'">Revisit the explanation</a></div></div>');return;}
+ var h='<div class="k-wrap k-done"><p class="crumb"><a href="#challenge/'+old.unit+'">← Unit overview</a></p><div class="k-done-icon">'+icon("check")+'</div><h1>Practice complete</h1>'+summary+'<div class="actions">'+
+ (old.needsReview?'<a class="button primary" href="#challenge/'+old.unit+'/weak">Practise questions to revisit</a>':'')+
+ '<a class="button '+(old.needsReview?'secondary':'primary')+'" href="#challenge/'+old.unit+'">Choose another set</a>'+skillReturnLink(old.returnTo)+'</div></div>';show(h);
 }
 function route(r,renderer){
  render=renderer;lastRoute=r;
  if(r==="skills"||r.startsWith("skills/"))return skillRoute(r);
  if(r==="challenge")return landing();
  if(r==="knowledge")return knowledgeLanding();
- var m=/^challenge\/(f17[0-7])(?:\/([a-z0-9.-]+))?$/.exec(r);
+ if(r==="challenge/review"){
+  var completed=null;try{completed=JSON.parse(localStorage.getItem(CK)||"null");}catch(_){}
+  if(completed){visible=false;lastRoute=completed.route;return showCompletion(completed);}
+  return landing();
+ }
+ var m=/^challenge\/(f17[0-7])(?:\/([a-z0-9.-]+))?(?:\?from=(catchup\/f17[0-7]\/[a-z0-9.]+(?:\/\d+)?))?$/.exec(r);
  if(!m)return landing();
- var unit=m[1],scope=m[2]||null;
+ var unit=m[1],scope=m[2]||null,origin=m[3];
  if(!scope){visible=false;return intro(unit);}
- var old=session||restore();
- if(old&&old.route===r){
+ if(origin){
+  var source=origin.split("/");
+  if(source[1]!==unit||source[2]!==scope||!/^(?:a[1-5]|\d+(?:\.\d+)*)$/.test(scope)||!filter(unit,scope).length)return intro(unit);
+ }
+ var old=sessionKey(session)===(origin?topicKey(unit,scope):SK)?session:null;
+ old=old||restore(origin?topicKey(unit,scope):SK);
+ if(origin&&!old)old=restore();
+ if(old&&old.unit===unit&&old.scope===scope&&(origin||old.route===r||old.returnTo&&!old.topicContext&&!old.skillId)){
   // An unstarted legacy Quick Mix may still open on a random hard question.
   if(scope==="all"&&!old.quickMixVersion&&old.index===0&&old.phase==="ask"&&!Object.keys(old.first||{}).length)return makeSession(unit,scope,r);
-  session=old;return drawQuestion();}
- return makeSession(unit,scope,r);
+  session=old;
+  if(origin){session.returnTo=origin;session.route=r;save();}
+  return drawQuestion();
+ }
+ return makeSession(unit,scope,r,origin);
 }
 main.addEventListener("change",function(e){
+ if(session&&visible&&e.target.matches("[data-review-criterion]")){saveReviewField(e.target);return;}
  noteAnswerActivity();
  if(!session||session.phase!=="ask"||!visible)return;
  if(e.target.matches('input[name="kbest"],input[name="kreason"]')){readForm();}
@@ -728,26 +867,8 @@ main.addEventListener("change",function(e){
   main.querySelectorAll(".k-option").forEach(function(l){l.classList.toggle("selected",!!l.querySelector("input").checked);});
  }else if(e.target.matches("[data-match], [data-sort-row]")){readForm();}
 });
-/* Quick tap from the A-level tool: a correct first physical tap checks immediately.
-   A first wrong tap produces no visible grading, disables further auto-checks,
-   and the learner can revise the selection before using the Check button.
-   Keyboard choices never auto-check. */
-function pointerQuickTap(e){
- if(!session||session.phase!=="ask"||!visible||!e||!e.detail||session.quickTapAttempted)return;
- var q=current();if(!q||!(q.type==="single"||q.type==="diagram")||!q.options||q.options.length!==4)return;
- var choice=e.target.closest&&e.target.closest(".k-option");
- if(!choice)return;
- var questionId=q.id;
- if(typeof setTimeout!=="function")return;
- setTimeout(function(){
-  if(!session||session.phase!=="ask"||current().id!==questionId||session.quickTapAttempted)return;
-  var selected=main.querySelector('input[name="kchoice"]:checked');
-  if(!selected)return;
-  session.quickTapAttempted=true;save();
-  if(+selected.value===q.correct)check(false);
- },110);
-}
 main.addEventListener("input",function(e){
+ if(session&&visible&&e.target.matches("#k-revised")){saveReviewField(e.target);return;}
  noteAnswerActivity();
  if(!session||session.phase!=="ask"||!visible)return;
  if(e.target.matches("#k-number, #k-text, #k-written")){var q=current(),a=session.answers[q.id]||{};a.text=e.target.value;session.answers[q.id]=a;save();}
@@ -755,26 +876,33 @@ main.addEventListener("input",function(e){
 main.addEventListener("click",function(e){
  var help=e.target.closest("[data-k-action]");if(!help||help.dataset.kAction!=="hint")noteAnswerActivity();
  var start=e.target.closest("[data-start-skill]");
- var repeatPoint=e.target.closest("[data-repeat-point]");if(repeatPoint&&ladders){var point=ladders.get(repeatPoint.getAttribute("data-repeat-point"));if(point)return makeSession(point.unit,point.id,'challenge/'+point.unit+'/'+point.id);}
- if(start&&skills){var sk=skills.get(start.getAttribute("data-start-skill"));var path=parseSkillRoute(lastRoute);if(sk&&path&&path.skillId===sk.id&&path.unit===sk.unit)return startSkill(sk,lastRoute);}
+ var repeatPoint=e.target.closest("[data-repeat-point]");if(repeatPoint&&ladders){var point=ladders.get(repeatPoint.getAttribute("data-repeat-point"));if(point){var again="challenge/"+point.unit+"/"+point.id;if(window.KeystoneHumanApp)window.KeystoneHumanApp.replaceRoute(again);return makeSession(point.unit,point.id,again);}}
+ if(start&&skills){var sk=skills.get(start.getAttribute("data-start-skill"));var path=parseSkillRoute(lastRoute);if(sk&&path&&path.skillId===sk.id&&path.unit===sk.unit){if(window.KeystoneHumanApp)window.KeystoneHumanApp.replaceRoute(lastRoute);return startSkill(sk,lastRoute);}}
  if(!session||!visible)return;
- pointerQuickTap(e);
+ var reteach=e.target.closest("[data-reteach-to]");
+ if(reteach){session.reteachTo=reteach.dataset.reteachTo;save();}
  var move=e.target.closest("[data-move]");
  if(move){var q=current();if(!q||q.type!=="order")return;
   var a=session.answers[q.id],i=Number(move.dataset.pos),j=i+(move.dataset.move==="up"?-1:1);
   if(!a||!a.order||j<0||j>=a.order.length)return;
-  var t=a.order[i];a.order[i]=a.order[j];a.order[j]=t;save();drawQuestion();return;
+  var t=a.order[i];a.order[i]=a.order[j];a.order[j]=t;save();drawQuestion();
+  var controls=main.querySelectorAll('[data-pos="'+j+'"]:not(:disabled)');
+  if(controls.length)(Array.from(controls).find(function(el){return el.dataset.move===move.dataset.move;})||controls[0]).focus();
+  return;
  }
  var btn=e.target.closest("[data-k-action]");if(!btn)return;
  if(btn.dataset.kAction==="hint")showNextHint();
  if(btn.dataset.kAction==="check")check(false);
  if(btn.dataset.kAction==="reveal")check(false);
  if(btn.dataset.kAction==="skip")check(true);
+ if(btn.dataset.kAction==="correct")correctOrReveal(false);
+ if(btn.dataset.kAction==="show-correction")correctOrReveal(true);
  if(btn.dataset.kAction==="next")next();
+ if(btn.dataset.kAction==="finish-review")finishWrittenReview();
  if(btn.dataset.kAction==="self-good")gradeSelf(true);
  if(btn.dataset.kAction==="self-weak")gradeSelf(false);
 });
 main.addEventListener("keydown",function(e){if(e.target&&e.target.closest&&e.target.closest('[data-k-action="hint"]'))return;if(e.key!=="Tab"&&e.key!=="Shift")noteAnswerActivity();});
 window.addEventListener("beforeunload",function(e){if(isActive()){e.preventDefault();e.returnValue="";}});
-window.KeystoneHumanChallenge={route:route,isActive:isActive,discard:discard,pause:pause,stats:unitStats,questionCount:all.length,types:Array.from(new Set(all.map(function(q){return q.type;}))),icon:icon,localSessionKeys:function(){return skills?skills.definitions.map(function(skill){return contextualKey(skill.id);}):[];},hasResume:function(){return !!savedSession();},resumeRoute:function(){var old=savedSession();return old?old.route:null;}};
+window.KeystoneHumanChallenge={route:route,isActive:isActive,discard:discard,pause:pause,stats:unitStats,questionCount:all.length,types:Array.from(new Set(all.map(function(q){return q.type;}))),icon:icon,localSessionKeys:localSessionKeys,hasResume:function(){return !!savedSession();},resumeRoute:function(origin){var old=savedSession(origin);return old?old.route:null;}};
 })();
