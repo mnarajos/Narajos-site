@@ -25,7 +25,7 @@ export async function checkHumanCatchup(browser, base) {
       await open("catchup/" + key);
       await page.getByText(lesson.goal, { exact: true }).waitFor();
       assert(await page.getByRole("heading", { name: "Understand the idea" }).isVisible(), key);
-      if (lesson.revision) {
+      if (lesson.revision && (key.startsWith("f170/") || key.startsWith("f171/"))) {
         const buildLink = page.getByRole("link", { name: "Build understanding", exact: true });
         const href = await buildLink.getAttribute("href");
         assert(href.endsWith("?from=catchup/" + key), key);
@@ -272,6 +272,116 @@ export async function checkHumanCatchup(browser, base) {
     await reproduction.getByRole("button", { name: "Reset", exact: true }).press("Enter");
     assert(await reproduction.locator("#krp-implant").isHidden());
 
+    const guide = reproduction.locator(".krp-guide");
+    await guide.locator(":scope > summary").press("Enter");
+    const checkpoint = guide.getByLabel("Revisit a stage");
+    const nextCheckpoint = guide.getByRole("button", { name: "Next checkpoint" });
+    const observation = guide.locator(".krp-observation");
+    async function predict(name) {
+      const option = guide.getByRole("radio", { name, exact: true });
+      await option.press("Space");
+      await guide.getByRole("button", { name: "Check prediction" }).press("Enter");
+    }
+    await predict("The lining of the uterus.");
+    assert.match(await guide.locator(".krp-prediction").innerText(), /Look inside the ovary/);
+    assert.equal(await observation.innerText(), "");
+    await predict("The ovarian follicle.");
+    assert.equal(await nextCheckpoint.isVisible(), false);
+    await reproduction.getByRole("button", { name: /FSH Develop/ }).press("Enter");
+    assert.match(await observation.innerText(), /follicle enlarges/);
+    assert(await nextCheckpoint.evaluate(button => button === document.activeElement));
+    await nextCheckpoint.press("Enter");
+    await predict("A secondary oocyte is released from the follicle.");
+    await reproduction.getByRole("button", { name: /LH surge Trigger/ }).press("Enter");
+    assert.match(await observation.innerText(), /fimbriae/);
+    await nextCheckpoint.press("Enter");
+    await predict("In the widest region of an oviduct.");
+    await reproduction.getByRole("button", { name: /Introduce sperm/ }).press("Enter");
+    assert.match(await observation.innerText(), /vagina.*cervical canal.*uterine cavity.*oviduct/);
+    await nextCheckpoint.press("Enter");
+    await predict("The gametes may fail to meet while viable or may fail to fuse.");
+    await reproduction.getByRole("button", { name: "Show possible fertilisation", exact: true }).press("Enter");
+    assert(await reproduction.locator("#krp-blastocyst").isVisible());
+    await nextCheckpoint.press("Enter");
+    await predict("It undergoes cleavage and can develop into a blastocyst.");
+    assert.match(await observation.innerText(), /fluid-filled cavity/);
+    await nextCheckpoint.press("Enter");
+    await predict("A blastocyst attaches to the uterine lining.");
+    await reproduction.getByRole("button", { name: /Show possible implantation/ }).press("Enter");
+    assert.match(await observation.innerText(), /several days after fertilisation/);
+    assert(await guide.getByRole("link", { name: "Apply to a different situation" }).isVisible());
+
+    await reproduction.getByRole("button", { name: "Reset", exact: true }).press("Enter");
+    assert.equal(await checkpoint.inputValue(), "follicle");
+    await checkpoint.selectOption("fertilisation");
+    await predict("The gametes may fail to meet while viable or may fail to fuse.");
+    await reproduction.getByRole("button", { name: /Introduce sperm/ }).press("Enter");
+    await reproduction.getByRole("button", { name: /Select right ovary/ }).press("Enter");
+    await reproduction.getByRole("button", { name: /LH surge Trigger/ }).press("Enter");
+    assert(await reproduction.getByRole("button", { name: "Show possible fertilisation" }).isHidden());
+    await reproduction.getByRole("button", { name: "Continue without fertilisation" }).press("Enter");
+    assert.match(await reproduction.locator(".krp-status").innerText(), /does not develop into an embryo/);
+    assert(await guide.getByRole("link", { name: "Apply to a different situation" }).isVisible());
+    const writtenPath = reproduction.getByText("Read the pathway without animation", { exact: true });
+    await writtenPath.press("Enter");
+    assert.equal(await writtenPath.locator("..").getByRole("listitem").count(), 6);
+
+    await page.addStyleTag({ content: "html{font-size:200%} .krp-root{line-height:1.5;letter-spacing:.025em}" });
+    const enlargedLayout = await reproduction.evaluate(root => ({
+      page: document.documentElement.scrollWidth - innerWidth,
+      model: root.scrollWidth - root.clientWidth
+    }));
+    assert(enlargedLayout.page <= 3 && enlargedLayout.model <= 3,
+      "F175 stage guide overflows at 320px with enlarged text: " + JSON.stringify(enlargedLayout));
+    await page.addScriptTag({ content: axe.source });
+    const reproductionIssues = await reproduction.evaluate(async root => (await window.axe.run(root, {
+      runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] }
+    })).violations.map(issue => issue.id));
+    assert.deepEqual(reproductionIssues, [], "F175 simulation accessibility findings");
+
+    const apply = guide.getByRole("link", { name: "Apply to a different situation" });
+    const transportRoute = "challenge/f175/f175-transport?from=catchup/f175/a1";
+    assert.equal(await apply.getAttribute("href"), "#" + transportRoute);
+    assert(!(await saved("narajos-human-challenge-v2-progress"))?.["f175-transport"], "Watching the model must not record an assessment result");
+    await apply.press("Enter");
+    const caseStem = page.getByText(/fimbriae are held further from the ovary/);
+    const transportWrong = page.getByRole("radio", { name: /Release of the secondary oocyte from its follicle/ });
+    await caseStem.waitFor();
+    await transportWrong.check();
+    await page.getByRole("button", { name: /Check answer/ }).press("Enter");
+    const transportFeedback = page.getByText(/Find the next step after release that depends on the fimbriae/);
+    await transportFeedback.waitFor();
+    await page.getByRole("link", { name: "Revisit how the oocyte enters the oviduct" }).press("Enter");
+    await page.locator("#leave-confirm").press("Enter");
+    await checkpoint.waitFor();
+    assert.equal(await checkpoint.inputValue(), "ovulation");
+    assert(await checkpoint.evaluate(select => document.activeElement === select));
+    await guide.getByText("Review this stage", { exact: true }).press("Enter");
+    await guide.getByText(/finger-like fimbriae help receive/).first().waitFor();
+    await page.getByRole("link", { name: "Return to your unfinished question set" }).press("Enter");
+    await transportFeedback.waitFor();
+    assert.equal(new URL(page.url()).hash, "#" + transportRoute);
+    assert.equal((await saved(practiceKey + "-topic-f175/f175-transport")).outcomes[0], "incorrect");
+
+    const touch = await browser.newPage({ viewport: { width: 390, height: 780 }, hasTouch: true, reducedMotion: "reduce" });
+    try {
+      await touch.goto(base + "/human-biology/#catchup/f175/a1/2");
+      await touch.getByText("Predict and explain", { exact: true }).tap();
+      await touch.getByText("The ovarian follicle.", { exact: true }).tap();
+      await touch.getByRole("button", { name: "Check prediction" }).tap();
+      await touch.getByRole("button", { name: /FSH Develop/ }).tap();
+      await touch.getByRole("button", { name: "Next checkpoint" }).tap();
+      assert.equal(await touch.getByLabel("Revisit a stage").inputValue(), "ovulation");
+      await touch.goto(base + "/human-biology/#" + transportRoute);
+      await touch.getByRole("radio", { name: /Entry of the released oocyte into the oviduct/ }).locator("..").tap();
+      await touch.getByRole("button", { name: /Check answer/ }).tap();
+      assert.equal(await touch.locator("[data-feedback-heading]").innerText(), "Correct");
+      assert.equal(await touch.evaluate(key => JSON.parse(localStorage.getItem(key)).outcomes[0],
+        practiceKey + "-topic-f175/f175-transport"), "independent");
+    } finally {
+      await touch.close();
+    }
+
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await open("catchup/f175/a1/2");
     await reproduction.getByRole("button", { name: /Replay from FSH/ }).click();
@@ -280,7 +390,41 @@ export async function checkHumanCatchup(browser, base) {
     assert.equal(await reproduction.getByRole("button", { name: "Resume animation" }).getAttribute("aria-pressed"), "true");
     assert(await reproduction.getByRole("button", { name: /LH surge/ }).isHidden());
     await reproduction.getByRole("button", { name: "Resume animation" }).click();
-    await reproduction.getByRole("button", { name: /LH surge/ }).waitFor();
+    await reproduction.getByRole("button", { name: /LH surge/ }).click();
+    const noFertilisation = reproduction.getByRole("button", { name: "Continue without fertilisation" });
+    await noFertilisation.waitFor();
+    await reproduction.getByRole("button", { name: /Introduce sperm/ }).click();
+    assert(await noFertilisation.isHidden(), "The sperm transport should finish before choosing an outcome");
+    await reproduction.getByRole("button", { name: "Show possible fertilisation", exact: true }).waitFor();
+    await noFertilisation.click();
+    assert.match(await reproduction.locator(".krp-status").innerText(), /Without fertilisation/);
+    assert(await reproduction.locator("#krp-embryo").isHidden());
+    await reproduction.getByRole("button", { name: "Reset", exact: true }).click();
+    assert(await reproduction.getByRole("button", { name: /Introduce sperm/ }).isEnabled());
+
+    await open("catchup/f177/a2");
+    const f177Practice = page.getByRole("link", { name: "Practise research and trials" });
+    const f177Route = "challenge/f177/a2?from=catchup/f177/a2";
+    assert.equal(await f177Practice.getAttribute("href"), "#" + f177Route);
+    await f177Practice.press("Enter");
+    const f177Key = practiceKey + "-topic-f177/a2";
+    await page.locator(".k-question-view").waitFor();
+    await page.evaluate(key => {
+      const run = JSON.parse(localStorage.getItem(key));
+      run.queue = ["f177-diagram-randomise"];
+      localStorage.setItem(key, JSON.stringify(run));
+    }, f177Key);
+    await page.reload();
+    await page.getByRole("radio", { name: "Guarantee the treatment works" }).check();
+    await page.getByRole("button", { name: /Check answer/ }).press("Enter");
+    await page.getByRole("link", { name: "Revisit what random allocation changes" }).press("Enter");
+    await page.locator("#leave-confirm").press("Enter");
+    await page.locator('[data-hb-model-step="2"] [aria-current="step"]').waitFor();
+    assert(await page.getByText(/Random allocation reduces systematic differences/).isVisible());
+    assert.equal(await page.locator('a[href="#' + f177Route + '"]').count(), 1, "Show just one return to the same question");
+    await page.getByRole("link", { name: "Return to your unfinished question set" }).press("Enter");
+    await page.getByRole("heading", { name: "Not yet" }).waitFor();
+    assert.equal((await saved(f177Key)).outcomes[0], "incorrect");
 
     for (const width of [320, 390, 768, 1280]) {
       await page.setViewportSize({ width, height: 820 });
@@ -306,6 +450,32 @@ export async function checkHumanCatchup(browser, base) {
     const zoom = await page.addStyleTag({ content: "html { zoom: 2; }" });
     assert(await widthFits(), "Glucose graph overflow at simulated 200% zoom");
     await zoom.evaluate(element => element.remove());
+
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    for (const width of [640, 1280]) {
+      await page.setViewportSize({ width, height: 900 });
+      await open("catchup/f175/a1?stage=transport");
+      assert.equal(await checkpoint.inputValue(), "transport");
+      await guide.getByText("Review this stage", { exact: true }).press("Enter");
+      await guide.getByText(/widest region of an oviduct, the ampulla/).first().waitFor();
+      await reproduction.getByRole("button", { name: "Follow the current stage" }).press("Enter");
+      const reflow = await page.addStyleTag({ content: "html { zoom: 2; }" });
+      assert(await widthFits(), "F175 diagram overflows at 200% zoom with viewport " + width);
+      await reflow.evaluate(element => element.remove());
+    }
+    await page.setViewportSize({ width: 320, height: 800 });
+    await open("catchup/f176/a2?review=6");
+    const thresholdTable = page.getByRole("table", { name: /Two ways to bring a receiving neurone closer/ });
+    assert(await thresholdTable.isVisible());
+    assert.equal(await thresholdTable.getByRole("cell", { name: "−58 mV" }).count(), 2);
+    assert.equal(await thresholdTable.locator(".hb-cell-focus").count(), 5);
+    await page.addStyleTag({ content: "html { font-size: 125%; }" });
+    assert(await widthFits(), "F176 input comparison overflows with enlarged text");
+    await page.addScriptTag({ content: axe.source });
+    const thresholdIssues = await thresholdTable.evaluate(async table => (await window.axe.run(table, {
+      runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa"] }
+    })).violations.map(issue => issue.id));
+    assert.deepEqual(thresholdIssues, []);
 
     await page.setViewportSize({ width: 320, height: 800 });
     await open("catchup/f171/a5");

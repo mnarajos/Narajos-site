@@ -65,10 +65,10 @@ for(const unit of ["f170","f171","f172","f173","f174","f175","f176","f177"]){
   app.discard();
  }
 }
-assert.equal(db.questions.length,561);
+assert.equal(db.questions.length,562);
 assert.equal(db.questions.filter(q=>q.unit==="f170").length,253);
 assert.equal(db.questions.filter(q=>q.unit==="f171").length,230);
-for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,13,u+" knowledge bank missing");
+for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,u==="f175"?14:13,u+" knowledge bank missing");
 assert.deepEqual([...new Set(db.questions.map(q=>q.type))].sort(),["best","diagram","match","multi","number","order","short","single","sort","written"].sort());
 const ids=new Set();
 const validUnits=new Set(["f170","f171","f172","f173","f174","f175","f176","f177"]);
@@ -128,6 +128,8 @@ assert.equal(db.questions.find(q=>q.id==="health-parkinsons-therapy").marks,6);
 assert.equal(db.questions.find(q=>q.id==="health-care-records").marks,9);
 const knowledgeQuestions=db.questions.filter(q=>/^f17[2-7]$/.test(q.unit));
 assert(knowledgeQuestions.every(q=>q.knowledgeOnly),"Knowledge-only unit item missing safety scope");
+assert(knowledgeQuestions.every(q=>!q.marks&&!q.levelsNote&&!q.caseTitle),
+ "NEA knowledge practice must use general questions and unmarked self-review");
 assert(!knowledgeQuestions.some(q=>/draft|complete the coursework|report for your assignment|submit your assignment|meet the assessment criteria/i.test(q.stem)),"Assessment-writing task leaked into knowledge bank");
 assert(knowledgeQuestions.filter(q=>q.figure).length>=6,"Each NEA-unit knowledge bank needs visual understanding checks");
 assert(db.questions.filter(q=>["single","diagram","best"].includes(q.type)).every(q=>q.options.length===4),"Four-option rule not met");
@@ -235,7 +237,7 @@ assert(window.KeystoneHumanChallenge.stats("f170").weak>=1,"Not sure should reco
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"next"}}:null;}}});
 record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert(record.index>=1,"Question did not advance");
-assert.equal(window.KeystoneHumanChallenge.questionCount,561);
+assert.equal(window.KeystoneHumanChallenge.questionCount,562);
 // Verify the entire deterministic answer flow, not merely presence of new item types.
 function forcedQuestion(id){
  const q=db.questions.find(x=>x.id===id);assert(q,"Unknown forced test item: "+id);
@@ -462,7 +464,7 @@ for(const id of ["p-cell-membrane-transport-challenge","p-health-screening-found
  assert(main.innerHTML.includes("Hint 2")&&!main.innerHTML.includes("Expected answer"),id);
  assert(question.hintCue&&!question.explain.includes(question.hintCue)&&!question.model.includes(question.hintCue),id);
 }
-console.log("Human Biology checks passed: 561 questions, 91 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
+console.log("Human Biology checks passed: 562 questions, 91 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
 
 
 // Point practice must preserve one biological idea while support is withdrawn.

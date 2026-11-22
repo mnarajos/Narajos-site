@@ -161,8 +161,8 @@
   outline-offset: -3px;
 }
 .hb-teach-table .hb-cell-focus { font-weight: 700; }
-[data-hb-model-step="3"] .hb-worked-micrograph .hb-bar-length,
-[data-hb-model-step="4"] .hb-worked-micrograph .hb-cell-length { opacity: .35; }
+[data-unit="f170"] [data-hb-model-step="3"] .hb-worked-micrograph .hb-bar-length,
+[data-unit="f170"] [data-hb-model-step="4"] .hb-worked-micrograph .hb-cell-length { opacity: .35; }
 
 .hb-teaching-sequence:has(.hb-teach-stage[open]) .hb-start { display: none; }
 .hb-teaching-sequence .hb-teach-stage[open] > summary {

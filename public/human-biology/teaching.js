@@ -152,7 +152,7 @@
     key += lesson.revision ? "/" + lesson.revision : "";
     const record = load()[key] || {};
     const questions = { guided: lesson.guided, independent: lesson.apply, followup: lesson.followup };
-    const recommended = root.querySelector("[data-hb-resume], [data-hb-build]");
+    const recommended = root.querySelector("[data-hb-resume], [data-hb-build], [data-hb-practice]");
 
     function updateFollowup() {
       const state = record.independent;

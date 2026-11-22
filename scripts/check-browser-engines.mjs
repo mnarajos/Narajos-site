@@ -100,6 +100,18 @@ try {
   assert(await response.getByRole("button", { name: "Check answer", exact: true }).isHidden());
   await fits();
 
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await open("/human-biology/#catchup/f175/a1?stage=follicle");
+  const model = page.locator("#krp-model");
+  await model.getByRole("radio", { name: "The ovarian follicle." }).check();
+  await model.getByRole("button", { name: "Check prediction" }).press("Enter");
+  await model.getByRole("button", { name: /FSH Develop/ }).press("Enter");
+  assert.match(await model.locator(".krp-observation").innerText(), /follicle enlarges/);
+  await model.getByRole("button", { name: "Next checkpoint" }).press("Enter");
+  assert.equal(await model.getByLabel("Revisit a stage").inputValue(), "ovulation");
+  await fits();
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+
   await open("/teaching/focused-writing/ks3/");
   const writing = page.locator('[data-writing-exercise="dye"][data-writing-kind="short"]');
   await writing.getByRole("textbox").fill("The dye spread further because its particles moved faster.");

@@ -675,8 +675,8 @@ try{
  await desktop.getByRole("status").filter({hasText:"are in the same oviduct"}).waitFor();
  assert(await desktop.locator("#krp-egg").isVisible() && await desktop.locator("#krp-sperm").isVisible(),"Gametes must appear in the diagram");
  await desktop.locator('[data-krp="fert"]').click();
- await desktop.getByRole("status").filter({hasText:"develops into a blastocyst"}).waitFor();
- assert(await desktop.locator("#krp-embryo").isVisible(),"The early embryo must be visible in the uterus");
+ await desktop.getByRole("status").filter({hasText:"The blastocyst is now shown in the uterus"}).waitFor();
+ assert(await desktop.locator("#krp-blastocyst").isVisible(),"The blastocyst must be distinct from the earlier cleavage stage");
  await screen(desktop,"human-f175-embryo");
  await desktop.locator('[data-krp="reset"]').click();
  assert(await desktop.locator('[data-krp="lh"]').isHidden(),"Reset should hide LH until follicle matures");
@@ -698,7 +698,7 @@ try{
  await desktop.goto(base+"/human-biology/#challenge/f171/a3",{waitUntil:"load"});
  await desktop.locator(".k-question-view").waitFor({state:"visible"});
  const count=await desktop.evaluate(()=>window.KeystoneHumanChallenge?.questionCount);
- assert.equal(count,561,"Live engine did not load all questions");
+ assert.equal(count,562,"Live engine did not load all questions");
  assert((await desktop.locator("main").innerText()).length>90,"Question activity is blank");
  await desktop.locator("#site-home").click();
  const dialog=desktop.locator("#leave-dialog");
@@ -1956,7 +1956,7 @@ try{
  await mobile.close();
  await desktop.close();
  assert.deepEqual(errors,[],"Uncaught page errors: "+errors.join("; "));
- console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 561 questions and mobile layout.");
+ console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 562 questions and mobile layout.");
 }finally{
  await browser.close();await new Promise(done=>server.close(done));
 }

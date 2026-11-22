@@ -334,10 +334,11 @@ function buildLink(unit,id,origin){
  var scope=practiceScope(unit,id);
  return scope?'<a data-hb-build href="#challenge/'+esc(unit)+'/'+esc(scope)+'?from='+esc(origin)+'">Build understanding</a>':"";
 }
-function resumeLinks(origin,practice){
+function questionReturn(origin){
  var engine=window.KeystoneHumanChallenge;
- var back=engine&&(engine.resumeRoute(origin)||engine.resumeRoute(origin.replace(/\/\d+$/,"")));
- if(back===practice)back=null;
+ return engine&&(engine.resumeRoute(origin)||engine.resumeRoute(origin.replace(/\/\d+$/,"")));
+}
+function resumeLinks(back){
  var simple=window.KeystoneHumanApp&&window.KeystoneHumanApp.hasResume&&window.KeystoneHumanApp.hasResume();
  return (back?'<a data-hb-resume href="#'+esc(back)+'">Return to your unfinished question set</a>':'')+
   (simple?'<a href="#resume">Resume flashcards or explanation practice</a>':'');
@@ -358,13 +359,14 @@ function practiceLabel(unit,id,topic){
  return (unit==="f171"&&labels[id])||"Practise "+topic.toLowerCase();
 }
 function relatedLinks(unit,id,origin,practice,label){
- var links='<a href="#'+esc(practice)+'">'+esc(label)+'</a>';
+ var knowledge=/^f17[2-7]$/.test(unit),back=questionReturn(origin);
+ var links=back===practice&&knowledge?"":'<a'+(knowledge?" data-hb-practice":"")+' href="#'+esc(practice)+'">'+esc(label)+'</a>';
  if(unit==="f170")links+='<a href="#cards/'+esc(id)+'">Flashcards for this topic</a>';
  if(unit==="f171"){
   var deck=(window.KeystoneF171Recall||[]).find(function(d){return d[0]===id;});
   links+='<a href="#'+(deck?"cards/f171-"+id:"flashcards/f171")+'">'+(deck?"Flashcards for this topic":"F171 flashcards")+'</a>';
  }
- return '<nav class="hb-teach-related" aria-label="Related learning">'+resumeLinks(origin,practice)+buildLink(unit,id,origin)+links+'</nav>';
+ return '<nav class="hb-teach-related" aria-label="Related learning">'+resumeLinks(back===practice&&!knowledge?null:back)+buildLink(unit,id,origin)+links+'</nav>';
 }
 function showHome(render){
  var h='<div class="k-wrap">'+crumb("home","Home")+'<div class="k-unit-hero"><div class="k-eyebrow">Your learning companion</div><h1>Catch up and understand</h1><p>Choose an idea to learn or revisit. Guided lessons show the reasoning before you practise.</p></div><div class="k-unit-tiles">';
@@ -397,7 +399,7 @@ function showUnit(unit,render){
  });
  h+='</div></div>';render(h);
 }
-function showConcept(unit,id,step,render,review){
+function showConcept(unit,id,step,render,review,simulationStage){
  var u=units.filter(function(x){return x.id===unit;})[0];
  if(!u)return showHome(render);
  var topic,points;
@@ -420,12 +422,12 @@ function showConcept(unit,id,step,render,review){
   var recap='<details class="paper panel"><summary>Review the key ideas</summary><ul class="keylines">'+
    points.map(function(point){return "<li>"+esc(point)+"</li>";}).join("")+"</ul></details>";
   var sim=lesson.simulation&&window.KeystoneReproductionSimulation;
-  var interactive=sim?'<details class="hb-inline-model"><summary>Open the reproductive pathway model</summary>'+sim.render()+'</details>':"";
-  render('<div class="k-wrap k-catchup-concept">'+crumb("catchup/"+unit,u.title)+
+  var interactive=sim?'<details class="hb-inline-model"'+(simulationStage?' open':'')+'><summary>Open the reproductive pathway model</summary>'+sim.render()+'</details>':"";
+  render('<div class="k-wrap k-catchup-concept" data-unit="'+unit+'">'+crumb("catchup/"+unit,u.title)+
    '<div class="k-eyebrow">'+unitKind(unit)+'</div><h1>'+esc(topic)+'</h1>'+
    teaching.render(lesson,{inline:lesson.visual==="model"?"":visual,method:skillLinks(unit,id,lesson),modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:recap+related})+'</div>');
-  teaching.mount(unit+"/"+lessonId,lesson,review);
-  if(sim)window.KeystoneReproductionSimulation.mount(document);
+  teaching.mount(unit+"/"+lessonId,lesson,simulationStage?1:review);
+  if(sim)sim.mount(document,simulationStage,simulationStage&&document.querySelector("[data-hb-resume]"));
   return;
  }
 
@@ -451,7 +453,7 @@ function linkFor(q){
  var area="a"+q.area;
  return notes[q.unit]&&notes[q.unit][area]?"catchup/"+q.unit+"/"+area:null;
 }
-function reteachFor(q){
+function reteachFor(q,answer){
  var route=linkFor(q);
  var targets={
   "f170/1.1.2":[3,"Revisit the scale-bar calculation"],
@@ -472,7 +474,33 @@ function reteachFor(q){
   "f171/a5":[3,"Revisit what the evidence supports"]
  };
  if(!route)return null;
+ var reproduction={
+  "f175-w1":["transport","Revisit where the gametes can meet"],
+  "f175-hormones":["follicle","Revisit follicle development and ovulation"],
+  "f175-ovulation":answer?.selected?.[0]===1?["follicle","Revisit what FSH does"]:["ovulation","Revisit what the LH surge triggers"],
+  "f175-transport":["ovulation","Revisit how the oocyte enters the oviduct"],
+  "f175-diagram-oviduct":["transport","Revisit the oviduct and the gamete routes"],
+  "f175-early":["development","Revisit cleavage and blastocyst formation"],
+  "f175-implant":["implantation","Revisit implantation in the uterine lining"]
+ }[q.id];
+ if(reproduction)return {route:route,href:route+"?stage="+reproduction[0],label:reproduction[1]};
  var target=targets[route.slice("catchup/".length)];
+ target=({
+  "f172-diagram-alleles":[1,"Revisit alleles on homologous chromosomes"],
+  "f172-recessive":[2,"Revisit combining parental alleles"],
+  "f172-carrier":[2,"Revisit reading the Punnett square"],
+  "f173-tests":[1,"Revisit choosing a microscope for the feature"],
+  "f173-micro-contrast":[1,"Revisit surface and internal views"],
+  "f173-mag":[3,"Revisit scale and magnification"],
+  "f174-digestion":[1,"Revisit digestion and absorption"],
+  "f174-enzymes":[2,"Revisit how glucose reaches the blood"],
+  "f174-hormones":[3,"Revisit glucose uptake and storage"],
+  "f174-diagram-glucose":[3,"Revisit insulin action in target tissues"],
+  "f176-synapse":[4,"Revisit what crosses a chemical synapse"],
+  "f177-placebo":[2,"Revisit the purpose of the comparison group"],
+  "f177-diagram-randomise":[2,"Revisit what random allocation changes"],
+  "f177-blinding":[3,"Revisit how blinding reduces bias"]
+ })[q.id]||target;
  if(route==="catchup/f170/1.1.2"&&(q.type==="number"||q.id==="p-cell-actual-width-diagnostic")){
   target=[4,"Revisit the worked unit conversion"];
  }
@@ -484,10 +512,11 @@ function reteachFor(q){
 }
 window.KeystoneHumanCatchup={route:function(hash,render){
  if(hash==="catchup")return showHome(render);
- var m=/^catchup\/(f17[0-7])(?:\/([a-z0-9.]+))?(?:\/(\d+))?(?:\?review=(\d+))?$/.exec(hash);
+ var m=/^catchup\/(f17[0-7])(?:\/([a-z0-9.]+))?(?:\/(\d+))?(?:\?review=(\d+)|\?stage=(follicle|ovulation|transport|fertilisation|development|implantation))?$/.exec(hash);
  if(!m)return showHome(render);
  if(!m[2])return showUnit(m[1],render);
- return showConcept(m[1],m[2],m[3],render,Number(m[4])||0);
+ var simulationStage=m[1]==="f175"&&m[2]==="a1"?m[5]:null;
+ return showConcept(m[1],m[2],m[3],render,Number(m[4])||0,simulationStage);
 },linkFor:linkFor,reteachFor:reteachFor,practiceScope:practiceScope,searchTopics:function(){
  var f170=Object.values(sectionById).map(function(item){
   var s=item.section;
