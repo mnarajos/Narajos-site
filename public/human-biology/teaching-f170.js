@@ -189,6 +189,15 @@ window.KeystoneHumanLessons = {
       guided: choice("In a fictional comparison, beta-cell secretion rises normally after a meal, but the muscle cells respond less strongly. Which change is most likely, other things being similar?", 2,
         [["Less insulin must have been secreted.", "Secretion is the release of the signal. Tissue responsiveness is a separate step."], ["Insulin converts into glucose to compensate.", "Insulin binds to receptors and changes cell activity. It is not converted into glucose in this response."], ["Muscle glucose uptake rises less, so the raised blood glucose can last longer.", ""]],
         "Follow the effect from the target step onwards. A normal signal can have a smaller effect when target cells respond less strongly.", ["Locate the altered step: signal production or tissue response?", "Now predict what changes about the removal of glucose from blood."]),
+      writing: {
+        title: "Build a short causal explanation",
+        prompt: "Why can glucose uptake rise more slowly when muscle cells respond weakly to insulin?",
+        responses: [
+          ["Description", "Glucose uptake rises more slowly."],
+          ["Explanation", "Muscle cells respond less strongly to the same insulin signal, so less extra glucose is taken up from the blood."]
+        ],
+        compare: ["The description states what changes. The explanation links a cause, a biological mechanism and a consequence in one sentence. Add a second sentence only if it develops the next causal link."]
+      },
       apply: written("Body temperature drops in cold surroundings. Muscles begin shivering, releasing more heat. Explain why this is an example of negative feedback.",
         ["Body temperature is the regulated variable and it initially falls.", "Shivering increases heat production.", "Increased heat production helps raise temperature towards its usual range, opposing the fall."],
         "Shivering increases heat production when body temperature drops. Its effect tends to reverse the disturbance. Negative describes the direction of the effect relative to the change.", ["Compare the direction of the initial change with the effect of the response."]),

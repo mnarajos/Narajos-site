@@ -48,6 +48,14 @@
       '<a href="' + escape(photo.licenceUrl) + '">' + escape(photo.licence) + '</a> · Resized and converted to WebP</figcaption></figure>';
   }
 
+  function writingExample(example) {
+    if (!example) return "";
+    return '<details class="hb-prerequisite hb-writing-example"><summary>' + escape(example.title) +
+      '</summary>' + paragraphs([example.prompt]) + '<dl>' + example.responses.map(([name, response]) =>
+        '<dt><strong>' + escape(name) + '</strong></dt><dd>' + escape(response) + '</dd>').join("") +
+      '</dl><details><summary>Compare the reasoning</summary>' + paragraphs(example.compare) + '</details></details>';
+  }
+
   function task(stage, title, question) {
     if (!question) return "";
     const id = "hb-" + stage;
@@ -63,7 +71,7 @@
       '<button type="submit" class="button primary">' + (choice ? "Check answer" : "Compare my explanation") + '</button>' +
       (question.hints?.length ? '<button type="button" class="button secondary" data-hb-action="hint">Get a hint</button>' : '') +
       '<button type="button" class="button quiet" data-hb-action="explain">Show explanation</button>' +
-      '</div><div class="hb-feedback" role="status" aria-atomic="true"></div></form></details>';
+      '</div><div class="hb-feedback" role="status" aria-atomic="true"></div><div data-hb-review hidden></div></form></details>';
   }
 
   function render(lesson, context) {
@@ -84,6 +92,7 @@
         '<button type="button" class="button secondary" data-hb-action="model">Show next step</button>' : '') + '</details>' : "";
     return '<div class="hb-teaching"><p class="lead hb-objective">' + escape(lesson.goal) + '</p>' + activate +
       explanation + model + context.method + task("guided", "We do · Try it with support", lesson.guided) +
+      writingExample(lesson.writing) +
       task("independent", "You do · Apply it independently", lesson.apply) +
       '<div data-hb-followup hidden>' + task("followup", "Try a fresh check", lesson.followup) + '</div>' +
       context.related + '</div>';
@@ -97,6 +106,26 @@
     followup: "Correct independently on a fresh check.",
     selfReview: "Compare your reasoning with each point."
   };
+
+  function reviewFields(stage, question, state) {
+    const complete = state.outcome === "selfReview";
+    const checks = question.points.map((point, index) => {
+      const id = "hb-" + stage + "-criterion-" + index;
+      const value = state.criteria?.[index];
+      return '<li><label for="' + id + '">' + escape(point) + '</label><select id="' + id + '" data-hb-criterion="' +
+        index + '"' + (complete ? ' disabled' : '') + '><option value="">Choose</option>' +
+        '<option value="included"' + (value === "included" ? ' selected' : '') + '>Included</option>' +
+        '<option value="revise"' + (value === "revise" ? ' selected' : '') + '>Needs work</option></select></li>';
+    }).join("");
+    return '<h3 tabindex="-1">Review your explanation</h3><div class="hb-review-answers">' +
+      '<section><h4>Your answer</h4><p>' + escape(state.original) + '</p></section>' +
+      '<section><h4>Model explanation</h4><p>' + escape(question.explanation) + '</p></section></div>' +
+      '<p>Compare the reasoning against each criterion.</p><ul>' + checks + '</ul>' +
+      '<label for="hb-' + stage + '-revision">Improve your answer (optional)</label>' +
+      '<textarea id="hb-' + stage + '-revision" data-hb-revision rows="4" maxlength="3000"' +
+      (complete ? ' readonly' : '') + '>' + escape(state.revised ?? state.original) + '</textarea>' +
+      (complete ? '<p>Your self-review is saved.</p>' : '<div class="actions"><button type="button" class="button primary" data-hb-action="finish-review">Finish review</button></div>');
+  }
 
   function mount(key, lesson, reviewStep) {
     const root = main.querySelector(".hb-teaching");
@@ -115,6 +144,8 @@
     function showState(section, state, question) {
       const hintList = section.querySelector(".hb-hints");
       const feedback = section.querySelector(".hb-feedback");
+      const review = section.querySelector("[data-hb-review]");
+      const comparing = state.original !== undefined;
       const count = state.hint || 0;
       hintList.hidden = !count;
       hintList.innerHTML = count ? question.hints.slice(0, count).map(hint => '<li>' + escape(hint) + '</li>').join("") : "";
@@ -130,10 +161,16 @@
         section.querySelector('button[type="submit"]').disabled = true;
       }
       if (state.note) html = '<p>' + escape(state.note) + '</p>';
-      if (state.outcome) {
+      if (state.outcome && !comparing) {
         html = '<p><strong>' + outcomeLabels[state.outcome] + '</strong></p>' + html;
         if (question.points) html += list(question.points);
         html += '<p>' + escape(question.explanation) + '</p>';
+      }
+      review.hidden = !comparing;
+      if (comparing) {
+        review.innerHTML = reviewFields(section.dataset.hbStage, question, state);
+        section.querySelector("fieldset").hidden = true;
+        section.querySelector(".hb-controls").hidden = true;
       }
       feedback.innerHTML = html;
       feedback.classList.toggle("hb-feedback-visible", Boolean(html));
@@ -145,6 +182,7 @@
       const question = questions[stage];
       const form = section.querySelector("form");
       const textarea = form.querySelector("textarea");
+      const detailedReview = lesson.revision && textarea;
       const state = record[stage] ||= {};
       if (textarea) textarea.value = state.draft || "";
       else if (Number.isInteger(state.selected)) {
@@ -152,16 +190,22 @@
         if (choice) choice.checked = true;
       }
 
-      form.addEventListener("input", () => {
-        if (textarea) state.draft = textarea.value;
-        else state.selected = Number(form.querySelector("input:checked").value);
+      form.addEventListener("input", event => {
+        const input = event.target;
+        if (input.matches("[data-hb-revision]")) state.revised = input.value;
+        else if (input.matches("[data-hb-criterion]")) (state.criteria ||= {})[input.dataset.hbCriterion] = input.value;
+        else if (input === textarea) state.draft = textarea.value;
+        else if (input.matches('input[type="radio"]')) state.selected = Number(input.value);
         save(key, record);
       });
 
       form.addEventListener("click", event => {
         const button = event.target.closest("[data-hb-action]");
         if (!button) return;
-        if (button.dataset.hbAction === "hint") {
+        if (button.dataset.hbAction === "finish-review") {
+          state.outcome = "selfReview";
+          state.note = "";
+        } else if (button.dataset.hbAction === "hint") {
           if ((state.hint || 0) >= question.hints.length) return;
           state.hint = (state.hint || 0) + 1;
         } else {
@@ -171,13 +215,15 @@
         }
         save(key, record);
         showState(section, state, question);
+        if (button.dataset.hbAction === "finish-review") section.querySelector("[data-hb-review] h3").focus();
       });
 
       form.addEventListener("submit", event => {
         event.preventDefault();
         state.note = "";
         if (textarea) {
-          if (textarea.value.trim()) state.outcome = "selfReview";
+          if (detailedReview && textarea.value.trim()) state.original = textarea.value.trim();
+          else if (textarea.value.trim()) state.outcome = "selfReview";
           else state.note = "Write an explanation first, or show the model for help.";
         } else {
           const selected = form.querySelector("input:checked");
@@ -192,6 +238,7 @@
         }
         save(key, record);
         showState(section, state, question);
+        if (state.original !== undefined) section.querySelector("[data-hb-review] h3").focus();
       });
 
       showState(section, state, question);

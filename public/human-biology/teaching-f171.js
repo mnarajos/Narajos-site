@@ -37,6 +37,16 @@
         [["Fixation avoids procedural complications.", "Internal fixation requires an operation and brings its own risks."], ["The cast has failed to repair the bone itself.", "The cast protects alignment. Living tissue carries out repair."], ["Fixation may address the lost alignment that the cast did not maintain.", ""]],
         "The new evidence changes the balance. Internal support could maintain alignment, although the procedural risk still matters.", ["Identify which treatment goal the images show was not met."],
         { table: {caption: "Options in this fictional case", head: ["Option", "How it acts", "Relevant limit"], rows: [["Cast", "Limits motion from outside", "Alignment was lost"], ["Fixation", "Holds fragments internally", "Invasive procedure"]] } }),
+      writing: {
+        title: "Plan a justified scientific paragraph",
+        prompt: "Two fictional patients with stable fractures are offered different forms of immobilisation. Explain how maintaining alignment affects your judgement.",
+        responses: [
+          ["Topic sentence", "For a stable fracture, the priority is to preserve satisfactory alignment while the bone repairs."],
+          ["Supporting reasoning", "Immobilisation reduces movement between fragments. If follow-up shows that alignment is maintained, an intervention with added risks needs a reason beyond its greater invasiveness."],
+          ["Concluding sentence", "The follow-up evidence supports the option that can maintain alignment at an acceptable risk in this case."]
+        ],
+        compare: ["The opening answers the question with a scientific claim. The middle explains the mechanism and applies the evidence. The conclusion weighs the benefit and risk in the stated circumstances."]
+      },
       apply: written("A fictional cancer has spread to three sites. One mass is pressing on a nerve. Compare local surgery with a systemic medicine, and justify which better addresses the stated aim of treating disease at all three sites. Include a limit of your judgement.",
         ["Local surgery could relieve pressure at the operated site but would not by itself treat distant sites.", "A systemic medicine can circulate to all three sites and act if the tumour cells are susceptible.", "The wider reach fits the stated aim. Suitability still depends on treatment response and adverse effects."],
         "For the goal of treating disease at all three sites, a suitable systemic drug has wider reach through the circulation. Local surgery could still help the nerve compression. Wider reach alone does not prove the drug will work or that its benefits outweigh its harms.", ["Compare what each option can reach with the stated goal."]),
@@ -188,6 +198,17 @@
       guided: choice("In the sleep study, workshop volunteers are also more likely to change their evening routine. How does this affect the conclusion?", 2,
         [["It establishes that 20 minutes is the workshop effect.", "The observed difference combines the intervention and any effect of the group differences."], ["It makes the reported means unusable as observations.", "The means still describe what was reported. The causal interpretation is limited."], ["It gives an alternative explanation for part of the difference.", ""]],
         "A group difference that could affect the outcome limits the inference from a simple comparison of means.", ["Name the measured outcome and ask what else could have changed it."]),
+      writing: {
+        title: "Compare description, explanation, analysis and evaluation",
+        prompt: "Two fictional groups improved on a balance test. The exercise group improved more, but its members started with higher activity levels.",
+        responses: [
+          ["Description", "The exercise group improved more."],
+          ["Explanation", "Frequent exercise may improve coordination, which can help with balancing."],
+          ["Analysis", "The larger observed gain could relate to the exercise or to differences in how active the groups already were."],
+          ["Evaluation", "The result supports an association. A fairer comparison would allocate participants randomly and use the same test for both groups before judging a causal effect."]
+        ],
+        compare: ["Analysis uses the group difference to identify a competing explanation. The evaluation makes a qualified judgement and names an improvement that addresses that specific limitation."]
+      },
       apply: {
         ...written("Evaluate the claim that the new walking aid alone caused the larger improvement. Use both rows and explain how you would strengthen the study.",
           ["The new-aid group improved by 16 m, compared with 9 m, a 7 m observed difference.", "The new-aid group had more supervised practice, which could also affect walking distance.", "Keep practice comparable or use a design that separates the two factors. A larger and longer study can address precision or durability."],
