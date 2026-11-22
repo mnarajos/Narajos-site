@@ -66,6 +66,25 @@
     wrap.append(t);
     return wrap;
   }
+  function enlargePlot(figure, name) {
+    const dialog = node("dialog", null, "al-figure-dialog");
+    dialog.setAttribute("aria-label", name);
+    const scroll = node("div", null, "al-plot-scroll");
+    scroll.setAttribute("role", "region");
+    scroll.setAttribute("aria-label", name);
+    scroll.tabIndex = 0;
+    const close = button("Close enlarged diagram", () => dialog.close());
+    const open = button("Enlarge diagram", () => {
+      const svg = figure.querySelector("svg");
+      scroll.replaceChildren(svg.cloneNode(true));
+      dialog.showModal();
+      close.focus();
+    });
+    open.classList.add("al-secondary");
+    dialog.append(node("h2", name), close, scroll);
+    figure.append(open, dialog);
+  }
+
   function pressureGraph(step) {
     const samples = [
       [0, 7, 5, 82], [.12, 10, 7, 78], [.20, 8, 35, 75], [.28, 7, 86, 74],
@@ -110,6 +129,7 @@
       '<text x="6" y="188">0</text><text x="6" y="71">100</text><text x="286" y="210">0.8</text></svg>';
     figure.append(node("figcaption", explanation),
       node("p", "Solid: ventricle · dashed: aorta · dotted: atrium", "al-figure-key"));
+    enlargePlot(figure, "Cardiac pressure graph");
     return figure;
   }
 
@@ -118,6 +138,7 @@
     figure.innerHTML =
       '<svg role="img" aria-label="Plant-tissue calibration. The best-fit line crosses zero percentage change in mass at minus 400 kPa." viewBox="0 0 360 245"><g fill="none" stroke="currentColor"><path d="M40 15V190H330"/><polyline stroke-width="2.5" points="55,164 115,130 175,96 235,62 295,28"/><path stroke-dasharray="4 4" d="M40 96H320M175 96V190"/></g><text x="43" y="208">−800</text><text x="156" y="208">−400</text><text x="290" y="208">0</text><text x="16" y="100">0</text><text x="8" y="168">−10</text><text x="12" y="31">10</text><text x="65" y="235">Solution water potential / kPa</text><text x="42" y="16">Change in mass / %</text></svg>';
     figure.append(node("figcaption", "Read across from zero change, then down to the water potential axis."));
+    enlargePlot(figure, "Water potential graph");
     return figure;
   }
 
@@ -289,6 +310,8 @@
       show(0);
       next.focus();
     });
+    previous.classList.add("al-secondary");
+    replay.classList.add("al-secondary");
     controls.append(next, previous, replay);
     block.append(heading, panel, art, controls);
     host.append(block);
@@ -366,7 +389,7 @@
           if (!review.querySelector(".al-model")) {
             model(review, family, state, persist, () => {
               review.open = false;
-              focus(content.querySelector("h3, h2"));
+              focus(content.querySelector(".al-task-prompt") || content.querySelector("h2"));
             }, true);
           }
           if (!state.completed && !state.outcomes[state.index] && !family.tasks[state.index].guided) {
@@ -375,7 +398,7 @@
           }
         };
         secondary.append(review);
-        if (moveFocus) focus(content.querySelector("h2"));
+        if (moveFocus) focus(content.querySelector(".al-task-prompt") || content.querySelector("h2"));
       }
       if (state.phase !== "practice") {
         const skip = button("Go straight to questions", () => practiseNow(true, true));
@@ -518,11 +541,13 @@
         (q.visual?.startsWith("pathway") ? "pathway" : q.visual ? "diagram" : "independent");
       flow.stage?.(q.guided ? "guided" : "independent", q.guided ? "guided" : symbol);
       const heading = node("h2", q.guided ? "With support" : "Your turn", "al-task-heading");
-      block.append(heading, node("p", "Task " + (at + 1) + " of " + state.queue.length, "al-task-count"),
-        node("h3", q.prompt));
+      const prompt = node("h3", q.prompt, "al-task-prompt");
+      prompt.id = "al-current-question";
+      block.append(heading, node("p", "Task " + (at + 1) + " of " + state.queue.length, "al-task-count"), prompt);
       if (q.visual) block.append(visual(q.visual));
 
       const form = node("form");
+      form.setAttribute("aria-labelledby", prompt.id);
       if (q.kind === "choice" || q.kind === "multi") {
         const field = node("fieldset");
         field.append(node("legend", q.kind === "multi" ? "Select every applicable answer" : "Choose one answer"));
@@ -583,6 +608,7 @@
 
       const status = node("div", null, "al-feedback");
       status.setAttribute("role", "status");
+      status.setAttribute("aria-atomic", "true");
       const controls = node("div", null, "al-controls");
       function announce(text, kind) {
         const symbol = { correct: "check", improve: "retry", hint: "bulb", explained: "model", review: "review" }[kind];
@@ -590,7 +616,6 @@
         if (symbol) status.append(icon(symbol));
         if (text) status.append(node("span", text));
         status.dataset.kind = kind;
-        status.hidden = !text;
       }
       const result = state.results[i];
       if (accepted) announce(writing ? "Review finished. Your draft and judgements are saved." :
@@ -691,7 +716,7 @@
       block.append(form);
       const catchup = flow.context ? flow.context(q) : (family.catchup ? ["Revisit catch-up teaching", "#catchup-" + family.catchup] : null);
       if (catchup) block.append(quietLink(...catchup));
-      if (moveFocus) focus(heading);
+      if (moveFocus) focus(prompt);
 
       form.onsubmit = event => {
         event.preventDefault();
@@ -909,9 +934,13 @@
               " of 6",
           ),
           node("p", item.specimen.name),
-          node("p", item.criterion),
         );
-        exercise.append(drawingComparison(item, session, persistDrawing));
+        const criteria = node("ul", null, "al-drawing-criteria");
+        const detail = item.specimen.type === "plan" ? "Show tissue boundaries only." : "Show cell boundaries and visible internal structures.";
+        criteria.append(node("li", "Use single, clear, unshaded outlines. " + detail),
+          node("li", "Preserve relative sizes. Label " + item.specimen.label.toLowerCase() + "."),
+          node("li", "Include a calibrated scale bar."));
+        exercise.append(criteria, drawingComparison(item, session, persistDrawing));
         const verdict = node("fieldset");
         verdict.append(
           node("legend", "Does the candidate meet the stated task?"),
@@ -958,10 +987,10 @@
         };
         const feedback = node("p", null, "al-feedback");
         feedback.setAttribute("role", "status");
+        feedback.setAttribute("aria-atomic", "true");
         if (session.outcome) feedback.textContent = outcomeNames[session.outcome] + ". " + item.why;
         else if (session.attempts) feedback.textContent = "Review and improve. " +
           (session.verdict === 1 ? item.why : "Compare the candidate with each stated requirement.");
-        feedback.hidden = !feedback.textContent;
         const next = button(at < pool.length - 1 ? "Next drawing" : "Review progress", () => {
           if (!session.outcome) return;
           session.entries[at] = { id: item.id, outcome: session.outcome };
@@ -987,7 +1016,6 @@
           if (session.outcome) return;
           if (session.verdict === undefined) {
             feedback.textContent = "Choose Accept or Reject first.";
-            feedback.hidden = false;
             return;
           }
           const cats = session.categories || [];

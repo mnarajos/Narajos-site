@@ -401,3 +401,80 @@ button.al-secondary {
   font-weight: 750;
 }
 .al-controls .al-secondary .al-icon { margin-inline-end: .28rem; }
+
+.al-step {
+  background: transparent;
+  border-inline-start: 3px solid #6297c5;
+  padding-block: .15rem;
+}
+.al-exam .al-drawing {
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+.al-drawing-criteria {
+  padding-inline-start: 1.25rem;
+  margin-block: .55rem .85rem;
+}
+.al-drawing-switch button {
+  box-shadow: none;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+}
+.al-drawing-switch [aria-pressed="true"] {
+  border-color: var(--acc);
+  background: var(--acc-soft);
+}
+.al-teaching .al-choice {
+  display: flex;
+  align-items: baseline;
+  min-height: 44px;
+  gap: .5rem;
+}
+.al-teaching .al-choice input {
+  flex: 0 0 auto;
+  margin-inline-end: .15rem;
+}
+.al-criteria .al-choice { display: inline-flex; }
+.al-science-plot > svg,
+.al-science-plot > div > svg,
+.al-teaching .al-science-plot > svg {
+  max-width: 34rem;
+  margin-inline: 0;
+}
+.al-science-plot figcaption { margin-top: .4rem; }
+.al-science-plot .al-figure-key { margin-block: .4rem 0; }
+.al-plot-scroll {
+  overflow-x: auto;
+  padding-block: .45rem;
+}
+.al-figure-dialog .al-plot-scroll svg {
+  margin-inline: 0;
+  width: 100%;
+  min-width: 26rem;
+  max-width: none;
+}
+.al-catalogue-copy,
+.al-drawing-switch button,
+.al-journey-stage h3 {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 380px) {
+  .al-stages {
+    gap: .2rem .45rem;
+  }
+  .al-teaching .al-science-plot > svg text {
+    font-size: 18px;
+  }
+}
+
+.al-exam h1,
+main:has(.al-catchup-journey) > h1 {
+  overflow-wrap: anywhere;
+}
+.al-teaching .al-feedback:empty {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}

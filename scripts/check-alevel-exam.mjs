@@ -58,7 +58,7 @@ export async function checkALevelExam(browser, base) {
       }
       await page.getByRole("button", { name: "Try with support", exact: true }).press("Enter");
       assert.equal(await page.locator(".al-stages [aria-current=step]").innerText(), "With support");
-      assert(await page.locator(".al-practice h2").evaluate(el => el === document.activeElement));
+      assert(await page.locator(".al-task-prompt").evaluate(el => el === document.activeElement));
       assert.equal(await page.locator(".al-model:visible").count(), 0);
     };
     for (const family of families) {
@@ -242,13 +242,13 @@ export async function checkALevelExam(browser, base) {
     assert.equal(await page.getByRole("link", { name: /Exam Skills.*Drawings/ }).count(), 1);
     const finder = page.locator("[data-topic-finder]");
     for (const [query, route] of [
-      ["scientific drawing", "drawings"], ["mark schemes", "points"], ["cardiac pressure", "pressures"],
-      ["heart valves", "pressures"], ["disinhibition", "causal"], ["enzyme inhibition", "causal"],
-      ["unfamiliar context", "causal"], ["causal reasoning", "causal"], ["dihybrid cross", "dihybrid"],
-      ["hardy-weinberg", "hardy"], ["water potential", "osmosis"], ["countercurrent exchange", "countercurrent"],
+      ["scientific drawing", "exam-drawings"], ["mark schemes", "exam-points"], ["cardiac pressure", "catchup-a3-heart"],
+      ["heart valves", "catchup-a3-heart"], ["disinhibition", "exam-causal"], ["enzyme inhibition", "exam-causal"],
+      ["unfamiliar context", "exam-causal"], ["causal reasoning", "exam-causal"], ["dihybrid cross", "catchup-a7-dihybrid"],
+      ["hardy-weinberg", "catchup-a7-hardy"], ["water potential", "catchup-a2-osmosis"], ["countercurrent exchange", "catchup-a3-fish"],
     ]) {
       await finder.getByRole("searchbox").fill(query);
-      assert.equal(await finder.locator('a[href="#exam-' + route + '"]').count(), 1, query);
+      assert.equal(await finder.locator('a[href="#' + route + '"]').count(), 1, query);
     }
     await finder.getByRole("searchbox").fill("dihybrid cross");
     assert(await finder.getByRole("link", { name: /Resume: Dihybrid/ }).isVisible());
@@ -351,6 +351,35 @@ export async function checkALevelExam(browser, base) {
         );
       }
     }
+    await page.setViewportSize({ width: 320, height: 780 });
+    await page.emulateMedia({ colorScheme: "dark", reducedMotion: "reduce" });
+    await page.evaluate(key => { const snapshot = JSON.parse(localStorage.getItem(key)); delete snapshot.pressures; localStorage.setItem(key, JSON.stringify(snapshot)); }, key);
+    await page.goto(base + "/alevel/#exam-pressures");
+    await page.getByRole("button", { name: "See worked example" }).press("Enter");
+    const enlarge = page.getByRole("button", { name: "Enlarge diagram", exact: true });
+    const fontSize = await page.locator(".al-model-visual svg text").first().evaluate(label =>
+      label.getScreenCTM().a * parseFloat(getComputedStyle(label).fontSize));
+    assert(fontSize >= 14, "Graph text is too small at 320px");
+    await enlarge.press("Enter");
+    const plot = page.getByRole("dialog", { name: "Cardiac pressure graph" });
+    await plot.waitFor();
+    assert(await plot.getByRole("region").evaluate(region => region.scrollWidth > region.clientWidth));
+    await page.keyboard.press("Escape");
+    assert(await enlarge.evaluate(el => el === document.activeElement));
+    await page.addScriptTag({ content: axe.source });
+    assert.deepEqual(await page.evaluate(async () => (await window.axe.run({
+      runOnly: ["color-contrast", "aria-valid-attr-value"]
+    })).violations.map(x => x.id)), []);
+    await page.addStyleTag({ content: "html{font-size:200%} .al-journey-stage p,.al-journey-stage .btn{font-size:1rem!important}" });
+    assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 3), "Enlarged text caused page overflow");
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send("Emulation.setPageScaleFactor", {pageScaleFactor: 2});
+    assert.equal(await page.evaluate(() => visualViewport.scale), 2);
+    await page.getByRole("button", { name: "Next step", exact: true }).press("Enter");
+    assert.equal(await page.locator(".al-crossover-current").getAttribute("data-crossover"), "B");
+    await cdp.send("Emulation.setPageScaleFactor", {pageScaleFactor: 1});
+    await cdp.detach();
+
     assert.deepEqual(errors, []);
     console.log(
       "A-level exam skills: 52 authored tasks, 56 drawing judgements, saved support state, and responsive accessibility passed.",

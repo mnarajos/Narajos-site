@@ -365,11 +365,11 @@ window.ALevelTeachingFamilies = {
       "Valve position depends on a pressure difference across the valve.",
     model: [
       "Recall that blood flows down a pressure gradient and valves respond passively to pressure differences.",
-      "Ventricular contraction raises ventricular pressure. When left ventricular pressure exceeds left atrial pressure, the mitral valve closes.",
-      "Initially both valves are closed. Myocardial force raises pressure during approximately isovolumetric contraction. Ventricular volume has not yet fallen appreciably.",
-      "When ventricular pressure exceeds aortic pressure, the aortic valve opens. Ejection then reduces ventricular volume.",
-      "During relaxation, ventricular pressure falls below aortic pressure. The aortic valve closes.",
-      "As the ventricle continues to relax, ventricular pressure falls below atrial pressure. The mitral valve opens and filling begins.",
+      "Follow the solid ventricular and dotted atrial traces. Compare them just after crossing B.",
+      "Compare ventricular pressure with both other traces between B and C. Pressure rises while ventricular volume stays approximately constant.",
+      "Follow the solid ventricular and dashed aortic traces at C. Ejection then reduces ventricular volume.",
+      "Follow the falling ventricular trace at D during relaxation.",
+      "Compare ventricular and atrial pressure just after E. Blood can enter the ventricle again.",
     ],
     tasks: [
       {

@@ -6111,7 +6111,7 @@ function mountStudyFinder(){
     const skill=byConcept.get(t+"-"+c.id);
     const questions=isUnlocked(t,c)?[["Practise questions","#lesson-"+t+"-"+c.id]]:[];
     return skill?{...skill,group:p.id,groups:[p.id,"exam"],title:skill.title,context:topic.title+" · Exam Skills",
-      keywords:c.title+" "+skill.keywords,actions:[...skill.actions,...questions,
+      keywords:c.title+" "+skill.keywords,actions:[[skill.actions[0][0],"#catchup-"+t+"-"+c.id],...questions,
         ...(c.id==="epigen"?[["Review transcription factors","#catchup-a8-transfac"]]:[])]}:
       {group:p.id,title:c.title,context:topic.title,concept:true,actions:[["Catch up","#catchup-"+t+"-"+c.id],...questions]};
    })];
