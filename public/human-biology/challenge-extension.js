@@ -1122,6 +1122,43 @@ additions.push(...[
     }
   }
 ]);
+
+// A small set of independent transfers from the assessment audit.
+additions.push({
+ id:"cell-testis-photo-evidence",unit:"f170",area:3,section:"3.3.1",type:"diagram",level:"apply",
+ stem:"Which interpretation is best supported by the cell arrangement around the pale space in this field?",
+ figure:{src:"/assets/micrographs/hb-testis.webp",width:479,height:590,
+  alt:"A pale central space has several layers of cells along its edge. Some profiles project into the space.",
+  credit:"Nephron · CC BY-SA 3.0 · cropped view in the source, resized and converted to WebP",
+  source:"https://commons.wikimedia.org/wiki/File:Seminiferous_tubule_and_sperm.jpg",
+  licence:"https://creativecommons.org/licenses/by-sa/3.0/"},
+ options:["A seminiferous tubule because developing cells form layers towards its lumen","An ovarian follicle because a large oocyte occupies the centre","Endometrium because separate glands lie below a free epithelial surface","A blood vessel because a single thin lining surrounds red blood cells"],
+ correct:0,model:"Layers of developing germ cells around a lumen support identification of a seminiferous tubule.",
+ explain:"Identify the boundary of the space first. The lining contains multiple cell layers rather than a single cell at the centre.",
+ optionFeedback:[null,"A follicle identification needs evidence of an oocyte surrounded by follicle cells. The central feature here is a space.","Endometrial glands would appear as separate profiles within supporting tissue beneath a surface.","A vessel lumen has an endothelial lining. The multiple layers shown support a different structure."],
+ hintCue:"Compare the cell arrangement around the pale space with the arrangement each explanation requires.",
+ misconception:"Colour can vary with stains. Use spatial features to distinguish tissue."
+},{
+ id:"f171-rested-pressure-interpret",unit:"f171",area:4,section:"4.2.2",type:"single",level:"apply",
+ stem:"A teammate says the first and last visits prove that resting pressure rose. Which conclusion follows from these fictional records?",
+ evidenceTable:{caption:"Systolic readings (mmHg)",columns:["Visit","First","Second","Conditions"],
+  rows:[["1","132","134","Rested"],["2","131","133","Rested"],["3","151","Missing","Just after cycling"]],focus:[[0,3],[1,3],[2,3]]},
+ options:["The rested readings overlap. Visit 3 gives insufficient evidence about resting change.","Visit 3 shows a higher resting pressure because the first reading was 151.","The missing value can be treated as zero to estimate the visit 3 mean.","The higher value proves a systematic instrument error."],
+ correct:0,model:"The comparable rested readings overlap. A measurement under different conditions does not establish a resting trend.",
+ explain:"Visits 1 and 2 used comparable conditions. A single post-activity value cannot establish resting pressure. The second value is unknown.",
+ optionFeedback:[null,"The conditions differ. The value of 151 was taken after activity, not under the rested conditions used earlier.","Zero is a value. A missing measurement cannot be included as measured evidence.","There is no instrument comparison. A physiological response to exercise could account for the difference."],
+ hintCue:"Compare the test conditions before deciding which visits can be compared.",
+ misconception:"An association in the record does not identify what caused the difference."
+},{
+ id:"f171-trial-conclusion-interval",unit:"f171",area:5,section:"5.2",type:"single",level:"stretch",
+ stem:"In a fictional randomised trial, a walking aid group improved by 4 m more on average after four weeks. The 95% confidence interval for that difference runs from −3 to +11 m. Which conclusion fits the evidence?",
+ options:["The estimated benefit is 4 m, but the interval includes no difference and the trial gives limited long-term evidence.","The result establishes a benefit because most of the interval is above zero.","Random allocation guarantees that sampling uncertainty has been removed.","Four weeks of improvement establish that rare harms are unlikely after a year."],
+ correct:0,model:"The 4 m estimate is uncertain. Compatible values include zero difference. Longer follow-up and adequate sample sizes are needed for longer-term outcomes and rare harms.",
+ explain:"Random allocation reduces systematic imbalance on average. It does not remove sampling uncertainty. Trial duration limits the outcomes it can inform.",
+ optionFeedback:[null,"The interval includes zero, so the stated result is compatible with no difference.","Random allocation helps make groups comparable. Estimates can still vary between samples.","A short study cannot establish safety at later times or reliably rule out rare events."],
+ hintCue:"Consider whether there are plausible values on both sides of no difference and which outcomes were actually observed.",
+ misconception:"Separate sampling uncertainty from differences in how groups were formed."
+});
 var ids=new Set(bank.questions.map(function(q){return q.id;}));
 additions.forEach(function(q){if(!ids.has(q.id)){bank.questions.push(q);ids.add(q.id);}});
 })();

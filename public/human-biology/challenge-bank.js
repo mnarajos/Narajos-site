@@ -1187,22 +1187,60 @@ window.KeystoneHumanChallenges={
       "unit": "f171",
       "area": 2,
       "section": "2.1",
-      "type": "diagram",
+      "type": "single",
       "level": "apply",
-      "stem": "Four antibiotic discs have different clear zones in a culture. Which disc has the largest zone of inhibition?",
-      "figure": "antibiotic",
+      "stem": "A teaching laboratory compared existing records for two antibiotics against the same bacterial sample. Which conclusion follows from these fictional results?",
+      "figure": null,
       "options": [
-        "Disc B",
-        "Disc A",
-        "Disc C",
-        "Disc D"
+        "B had the larger zone in this test. The difference alone does not rank clinical effectiveness.",
+        "B is clinically more effective because a 6 mm larger zone means a stronger treatment at any site.",
+        "The carrier result establishes that differences in diffusion played no role.",
+        "The zone sizes alone classify the sample as resistant to A and susceptible to B."
       ],
       "correct": 0,
-      "model": "Disc B",
-      "explain": "A larger clear zone suggests stronger inhibition under the test conditions.",
+      "model": "B had a larger measured zone under the test conditions. Clinical effectiveness and susceptibility need additional evidence.",
+      "explain": "The measured zones differ by 6 mm. Zone size can depend on diffusion and the conditions. Susceptibility interpretation uses criteria for the relevant organism, drug and test.",
       "misconception": "An inhibition zone alone does not establish the best treatment for every patient.",
       "samAligned": true,
-      "hintCue": "Compare the clear area around each disc, not the diameter of the discs themselves."
+      "hintCue": "Separate what was measured on the plate from what would be needed to interpret the result.",
+      "assessmentRevision": 1,
+      "evidenceTable": {
+        "caption": "Recorded clear-zone diameters",
+        "columns": [
+          "Disc",
+          "Diameter (mm)"
+        ],
+        "rows": [
+          [
+            "Antibiotic A",
+            "14"
+          ],
+          [
+            "Antibiotic B",
+            "20"
+          ],
+          [
+            "Carrier only",
+            "No clear zone"
+          ]
+        ],
+        "focus": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      "optionFeedback": [
+        null,
+        "This measures inhibition in a test. Treatment effects also depend on whether suitable concentrations reach the site and other clinical factors.",
+        "The carrier result checks whether the carrier appeared to inhibit growth. Different substances can still diffuse differently.",
+        "A diameter needs a relevant validated interpretation criterion before it can support a susceptibility category."
+      ]
     },
     {
       "id": "health-antibiotic-control",

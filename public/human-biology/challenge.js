@@ -410,11 +410,14 @@ function matchForm(q,answer){
  return '<label class="k-match"><span>'+esc(p[0])+rowStatus(answer,i)+'</span><select'+(answer.correction&&answer.correction[i]?' disabled':'')+' data-match="'+i+'" aria-label="Match for '+esc(p[0])+'"><option value="">Choose a match</option>'+answer.targetOrder.map(function(j){return '<option value="'+j+'"'+(String(vals[i])===String(j)?" selected":"")+'>'+esc(q.pairs[j][1])+'</option>';}).join("")+'</select></label>';
  }).join("")+'</div>';
 }
-function evidenceTable(table){
+function evidenceTable(table,reveal){
  return '<div class="k-evidence-table" tabindex="0" role="region" aria-label="'+esc(table.caption)+'"><table><caption>'+esc(table.caption)+'</caption><thead><tr>'+
   table.columns.map(function(heading){return '<th scope="col">'+esc(heading)+'</th>';}).join("")+
-  '</tr></thead><tbody>'+table.rows.map(function(row){
-   return '<tr><th scope="row">'+esc(row[0])+'</th>'+row.slice(1).map(function(value){return '<td>'+esc(value)+'</td>';}).join("")+'</tr>';
+  '</tr></thead><tbody>'+table.rows.map(function(row,r){
+   return '<tr><th scope="row">'+esc(row[0])+'</th>'+row.slice(1).map(function(value,c){
+    var focus=reveal&&table.focus?.some(function(pair){return pair[0]===r&&pair[1]===c+1;});
+    return '<td'+(focus?' class="k-evidence-focus"':'')+'>'+esc(value)+'</td>';
+   }).join("")+'</tr>';
   }).join("")+'</tbody></table></div>';
 }
 const practiceFigures={
@@ -425,6 +428,11 @@ const practiceFigures={
  "practice-antibody":["antibody","A Y-shaped antibody with matching antigen fragments near its two tips."]
 };
 function figure(name,reveal){
+ if(typeof name==="object"){
+  var credit=name.credit.split(" · ");
+  return '<figure class="k-figure k-question-photo"><img width="'+name.width+'" height="'+name.height+'" src="'+esc(name.src)+'" alt="'+esc(name.alt)+'">'+
+   '<figcaption><a href="'+esc(name.source)+'">'+esc(credit[0])+'</a> · <a href="'+esc(name.licence)+'">'+esc(credit[1])+'</a> · '+esc(credit[2])+'</figcaption></figure>';
+ }
  var art=practiceFigures[name];
  if(art)return '<figure class="k-figure"><img width="600" height="360" style="width:100%;height:auto;max-width:600px" src="/assets/practice-diagrams/'+art[0]+'.svg" alt="'+esc(art[1])+'"></figure>';
  var tag='<div class="k-figure">';
@@ -649,7 +657,7 @@ function drawQuestion(){
  if(q.type==="number"||q.calculator)h+='<div class="k-calculator-note">'+icon("calc")+'<span>Calculator may help</span></div>';
  if(q.figure&&!showing)h+=figure(q.figure);
  if(q.graph&&skills)h+=skills.graphHTML(q.graph);
- if(q.evidenceTable)h+=evidenceTable(q.evidenceTable);
+ if(q.evidenceTable)h+=evidenceTable(q.evidenceTable,showing);
  if(isQuickCheck(q))h+='<p class="k-quick-label"><strong>Quick check:</strong> Apply the same idea independently.</p>';
  if(!showing){if(a.correction)h+='<h2 class="k-correction-title" data-correction-heading tabindex="-1">Review and try again</h2>';
   h+=inputForm(q,a);
