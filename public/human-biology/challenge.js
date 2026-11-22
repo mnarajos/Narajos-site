@@ -608,6 +608,7 @@ function correctOrReveal(reveal){
 }
 function drawQuestion(){
  if(!session||!isActive())return;
+ initialiseOutcomes(session);
  stopHintTimer();
  adaptQuickMixMiddle();
  adaptQuickMixEnd();

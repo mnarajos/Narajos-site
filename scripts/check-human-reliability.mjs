@@ -100,6 +100,13 @@ export async function checkHumanReliability(browser, base, { touch = false, audi
     assert.equal(await read("session"), null);
     assert.equal(await read("completed"), null);
     assert.equal(await read("progress"), null);
+
+    await page.goto(root + "?case#challenge/f171/case-screening-data");
+    await page.locator("#k-written").fill(original);
+    await byAction("reveal").press("Enter");
+    await page.getByRole("heading", { name: "Your answer", exact: true }).waitFor();
+    assert.equal(await page.locator(".k-review-draft").textContent(), original);
+    assert.deepEqual((await read("session")).outcomes, {});
     assert.deepEqual(errors, []);
   } finally {
     await page.close();
