@@ -272,5 +272,3 @@ export const topics = {
     ]
   }
 };
-
-export const topicGroups = ["KS3", "GCSE Combined Science", "A-level Biology", "Human Biology F170", "Human Biology F171", "Focused Writing"];

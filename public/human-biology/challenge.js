@@ -28,6 +28,7 @@ function discard(){stopHintTimer();session=null;visible=false;save();}
 function icon(name){
  var paths={
  brain:'<path d="M12 18V5a4 4 0 0 0-7.5-1.9A4 4 0 0 0 3 10a4 4 0 0 0 1 7.5A4 4 0 0 0 12 18ZM12 18V5a4 4 0 0 1 7.5-1.9A4 4 0 0 1 21 10a4 4 0 0 1-1 7.5A4 4 0 0 1 12 18Z" transform="translate(0 2) scale(1 .9)"/>',
+ pen:'<path d="m4 16-1 5 5-1L21 7l-4-4L4 16Zm10-10 4 4"/>',
  bolt:'<path d="m13 2-9 12h7l-1 8 10-12h-7l0-8Z"/>',
  layers:'<rect x="4" y="4" width="14" height="15" rx="2"/><path d="M8 2h10a3 3 0 0 1 3 3v13"/>',
  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
@@ -44,7 +45,7 @@ function icon(name){
  return '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+(paths[name]||paths.target)+'</svg>';
 }
 function labelType(q){if(q.subtype==="error")return "Spot the error";return {single:"Choose one",multi:"Choose two",order:"Put in order",match:"Match pairs",sort:"Sort statements",number:"Calculate",written:"Explain and check",short:"Short answer",diagram:"Use the diagram",best:"Choose and justify"}[q.type]||"Question";}
-function iconFor(q){return {single:"target",multi:"check",order:"layers",match:"grid",sort:"grid",number:"graph",written:"book",short:"bolt",diagram:"target",best:"brain"}[q.type]||"target";}
+function iconFor(q){return {single:"target",multi:"check",order:"layers",match:"grid",sort:"grid",number:"calc",written:"pen",short:"pen",diagram:"target",best:"brain"}[q.type]||"target";}
 function isKnowledge(unit){return /^f17[2-7]$/.test(unit);}
 function unitMeta(unit){return db.units.filter(function(x){return x.id===unit;})[0]||null;}
 function areaName(unit,area){var F=["","Human cells and tissues","Physiology and organ systems","Endocrinology, nerves and reproduction","Microbiology"];var H=["","Causes and effects of disease","Treatment and prevention","Immunology","Diagnosis and monitoring","Research and confidentiality"];var U=unitMeta(unit);return (unit==="f170"?F:unit==="f171"?H:U&&U.areas||[])[area]||"Topic";}

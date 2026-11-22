@@ -67,18 +67,39 @@
     panel.addEventListener("study-tier-change", update);
   }
 
-  const diagramTopics = {
-    "/gcse/": [["Leaf structure","leaf"],["I–V circuit","iv-circuit"],["Electrolysis","electrolysis"]],
-    "/alevel/": [["Phloem","phloem"],["Nephron","nephron"],["Sarcomere","sarcomere"]],
-    "/human-biology/": [["Breathing","breathing"],["Blood pressure","cuff"],["Antibodies","antibody"]]
-  };
-  const diagrams = typeof location !== "undefined" ? diagramTopics[location.pathname] || [] : [];
-  const diagramLinks = diagrams.length ? '<div class="study-finder-actions">' + diagrams.map(([title, id]) =>
-    '<a href="/diagram-practice/#' + id + '">' + title + ' diagram practice</a>').join("") + '</div>' : "";
   const markup = '<section class="study-finder" data-topic-finder aria-labelledby="study-find-heading">' +
     '<h2 id="study-find-heading">Find a topic</h2>' +
     '<div class="study-finder-fields"><label>Topic or keyword<input type="search" placeholder="Try enzymes or cells"></label>' +
     '<label>Subject or unit<select><option value="">All</option></select></label></div>' +
-    '<p role="status"></p><ul aria-label="Topic results"></ul>' + diagramLinks + '</section>';
-  window.NarajosTopicFinder = {markup, mount};
+    '<p role="status"></p><ul aria-label="Topic results"></ul>' + '</section>';
+  const practiceTopics = {
+    c1: [["distillation", "Simple distillation"]],
+    c4: [["electrolysis", "Electrolysis in solution"]],
+    p2: [["iv-circuit", "Measuring current and potential difference"]],
+    b2: [["leaf", "Leaf structure and gas exchange"]],
+    b6: [["inheritance", "Inheritance grids"]],
+    a3: [["phloem", "The mass flow hypothesis"]],
+    a6: [["synapse", "Synaptic transmission"], ["sarcomere", "Sliding filaments"], ["nephron", "The nephron"]]
+  };
+
+  function topicPractice(topicId) {
+    const activities = practiceTopics[topicId];
+    if (!activities || !document.head) return "";
+    if (!document.querySelector('script[src="/assets/diagram-practice.js"]')) {
+      const css = document.createElement("link");
+      css.rel = "stylesheet";
+      css.href = "/assets/diagram-practice.css";
+      const script = document.createElement("script");
+      script.type = "module";
+      script.src = "/assets/diagram-practice.js";
+      document.head.append(css, script);
+    }
+    const requested = new URLSearchParams(location.search).get("activity");
+    return activities.map(([id, title]) =>
+      '<details class="topic-diagram-activity"' + (id === requested ? ' open' : '') + '><summary>' + title +
+      ' · Diagram and questions</summary><diagram-practice topic="' + id + '"></diagram-practice></details>'
+    ).join("");
+  }
+
+  window.NarajosTopicFinder = {markup, mount, topicPractice};
 })();

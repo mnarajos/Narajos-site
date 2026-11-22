@@ -313,9 +313,10 @@ const microscopePractice = `<details class="kc-visual-check">
 const humanPractice = {
  "f170/1.2.2":"airway", "f170/2.1.3":"breathing", "f170/2.2.2":"breathing",
  "f171/a2":"cast", "f171/2.1":"cast", "f171/a3":"antibody",
- "f171/a4":"cuff", "f171/4.2.2":"cuff"
+ "f171/a4":["cuff","screening"], "f171/4.2.2":"cuff", "f171/4.2.1":"screening",
+ "f170/3.1.1":"thermoregulation", "f170/3.3.2":"cycle"
 };
-const alevelPractice = {phloem:"phloem",kidney:"nephron",muscle:"sarcomere",sliding:"sarcomere",sliding2:"sarcomere"};
+const alevelPractice = {synapse:"synapse",phloem:"phloem",kidney:"nephron",muscle:"sarcomere",sliding:"sarcomere",sliding2:"sarcomere"};
 let addedPracticeAssets = false;
 
 function render(course,id){
@@ -323,7 +324,7 @@ function render(course,id){
  var practice=humanPractice[course+"/"+id] || (/^a[1-8]$/.test(course) ? alevelPractice[id] : "");
  if(!item&&!practice)return "";
  item=item||{};
- if(practice&&!addedPracticeAssets&&/^a[1-8]$/.test(course)&&window.customElements){
+ if(practice&&!addedPracticeAssets&&/^a[1-8]$/.test(course)&&window.customElements&&!document.querySelector('script[src="/assets/diagram-practice.js"]')){
   const css=document.createElement("link"),script=document.createElement("script");
   css.rel="stylesheet";
   css.href="/assets/diagram-practice.css";
@@ -349,7 +350,7 @@ function render(course,id){
   });
   html+='</div><small>The simulation opens in a new tab, so you can return to this key idea.</small></div>';
  }
- if(practice)html+='<diagram-practice topic="'+practice+'"><a href="/diagram-practice/#'+practice+'">Practise with this diagram</a></diagram-practice>';
+ if(practice)for(const topic of [practice].flat())html+='<diagram-practice topic="'+topic+'"></diagram-practice>';
  return html+'</aside>';
 }
 window.KeystoneCatchupVisuals={render:render,has:function(course,id){return !!curated[course+"/"+id];}};

@@ -201,3 +201,5 @@ h1,h2,h3,p{margin-top:0}h1,h2,h3{letter-spacing:-.035em;line-height:1.17}h1{font
 .sim-card:hover .sim-card-go,.sim-card:focus-visible .sim-card-go{background:var(--accent-light);border-color:#d9aa85;transform:translateX(2px)}
 @media(prefers-reduced-motion:reduce){.home-option .home-links a span[aria-hidden],.sim-card-go{transition:none}.sim-card:hover .sim-card-go,.sim-card:focus-visible .sim-card-go{transform:none}}
 
+
+.site-pronunciation{margin-inline-start:.35em;white-space:nowrap}

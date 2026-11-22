@@ -679,7 +679,7 @@ try{
  for(const path of taskPaths){
   await navPage.goto(path);
   assert.equal(await navPage.locator("main .writing-card").count(),1);
-  assert(await navPage.locator(".writing-data, .trolley-setup").isVisible());
+  assert(await navPage.locator(".writing-data, diagram-practice[topic=trolley]").isVisible());
   await navPage.getByText("Write your paragraph",{exact:true}).click();
   assert.equal(await navPage.getByLabel("Your paragraph:",{exact:true}).inputValue(),"");
   assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"GCSE writing task overflows at phone width");
@@ -907,7 +907,8 @@ try{
  await navPage.waitForURL(base+"/teaching/enzyme-investigations/gcse/");
  await navPage.getByRole("heading",{name:"GCSE · Compare two temperatures"}).waitFor();
  await navPage.goto(base+"/diagram-practice/#filtration");
- const visualLab=navPage.locator("#filtration diagram-practice");
+ await navPage.waitForURL(/\/ks3\/lesson\/\?topic=separating-techniques/);
+ const visualLab=navPage.locator('diagram-practice[topic="filtration"]');
  const labels=visualLab.locator(".dp-question").first();
  await labels.locator("summary").click();
  await labels.getByRole("button",{name:"Filter paper",exact:true}).press("Enter");
@@ -928,7 +929,8 @@ try{
  await screen(navPage,"diagram-practice-mobile");
 
  await desktop.goto(base+"/diagram-practice/#iv-circuit");
- const circuit=desktop.locator("#iv-circuit .dp-question").first();
+ await desktop.waitForURL(/\/gcse\/\?activity=iv-circuit#topic-p2/);
+ const circuit=desktop.locator('diagram-practice[topic="iv-circuit"] .dp-question').first();
  await circuit.locator("summary").click();
  const chip=circuit.getByRole("button",{name:"Ammeter",exact:true});
  const target=circuit.getByRole("button",{name:/^A\./});
@@ -942,7 +944,8 @@ try{
 
  const touch=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
  await touch.goto(base+"/diagram-practice/#electrolysis");
- const touchLabels=touch.locator("#electrolysis .dp-question").first();
+ await touch.waitForURL(/\/gcse\/\?activity=electrolysis#topic-c4/);
+ const touchLabels=touch.locator('diagram-practice[topic="electrolysis"] .dp-question').first();
  await touchLabels.locator("summary").tap();
  const tch=touchLabels.getByRole("button",{name:"Cathode",exact:true});
  const dst=touchLabels.getByRole("button",{name:/^A\./});
@@ -957,12 +960,24 @@ try{
  await touch.close();
 
  await navPage.goto(base+"/diagram-practice/#breathing");
- const breath=navPage.locator("#breathing diagram-practice");
+ await navPage.waitForURL(/#catchup\/f170\/2\.2\.2/);
+ const breath=navPage.locator('diagram-practice[topic="breathing"]');
  await breath.getByRole("button",{name:"Breathing out",exact:true}).click();
  await breath.getByRole("status").filter({hasText:"the muscles relax"}).waitFor();
  await breath.getByRole("button",{name:"Breathing in",exact:true}).click();
  assert.equal(await breath.getByRole("button",{name:"Breathing in",exact:true}).getAttribute("aria-pressed"),"true");
 
+ await navPage.goto(base+"/gcse/#topic-b6");
+ await navPage.getByText("Inheritance grids · Diagram and questions",{exact:true}).click();
+ const grid=navPage.locator('diagram-practice[topic="inheritance"]');
+ await grid.getByText("Match each description to its homozygous outcome.",{exact:true}).click();
+ const gridQuestion=grid.locator(".dp-question[open]");
+ await gridQuestion.getByRole("button",{name:"Homozygous dominant",exact:true}).press("Enter");
+ await gridQuestion.getByRole("button",{name:/^A\./}).press("Enter");
+ await gridQuestion.getByRole("button",{name:"Homozygous recessive",exact:true}).press("Enter");
+ await gridQuestion.getByRole("button",{name:/^D\./}).press("Enter");
+ await gridQuestion.getByRole("button",{name:"Check answer",exact:true}).click();
+ await gridQuestion.getByRole("status").filter({hasText:"All labels correct"}).waitFor();
  await navPage.goto(base+"/teaching/focused-writing/gcse/compare-insulation/");
  const cooling=navPage.locator('[data-writing-exercise="insulation"]');
  await cooling.getByRole("textbox").fill("The bare can cooled by 7 °C while the felt-wrapped can cooled by 13 °C.");

@@ -287,3 +287,6 @@ main[tabindex="-1"]:focus{outline:none}
   border-radius: .6rem;
 }
 .k-reading-prompt h1 { margin-block: 0 .55rem; }
+
+.k-skill-example{background:#eff6fc;border:1px solid #9bbad5;border-inline-start:4px solid #3f6f95}
+.k-skill-example h2{color:#234e72}

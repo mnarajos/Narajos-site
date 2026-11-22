@@ -245,3 +245,14 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .writing-next-step{font-weight:650}
 .writing-share{margin:.5rem 0 .75rem}
 .writing-share textarea{margin-top:.45rem}
+
+/* The same example treatment follows the pupil from the plan to the full model. */
+.writing-card .writing-step:has(>summary[data-writing-cue="model"]){
+ background:#eff6fc;border:1px solid #a4bfd7;border-inline-start:4px solid #3f6f95;
+ border-radius:.55rem;padding:.45rem .8rem .65rem;margin:.65rem 0
+}
+.writing-card .writing-step>summary[data-writing-cue="model"]{color:#234e72;--writing-cue-color:#3f6f95}
+.writing-card .writing-step:has(>summary[data-writing-cue="model"]) :is(.writing-example-plan>div,.model){background:#f8fbfe}
+.writing-sentence-model,.writing-outline-review .writing-report details:has(>summary){
+ background:#eff6fc;border-inline-start:4px solid #3f6f95;padding-inline:.65rem;border-radius:.35rem
+}
