@@ -379,7 +379,7 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .enzyme-investigation { display: grid; gap: .8rem; }
 .enzyme-investigation h2 { margin: 0 0 .35rem; }
 .enzyme-compare { display: flex; flex-wrap: wrap; align-items: end; gap: .65rem; }
-.enzyme-compare label { display: grid; flex: 1 1 10rem; gap: .25rem; }
+.enzyme-compare > div { display: grid; flex: 1 1 10rem; gap: .25rem; }
 .enzyme-compare select, .enzyme-investigation button { min-height: 44px; font: inherit; }
 .enzyme-investigation button { background: #e2f0ec; border: 1px solid #557e79; color: #163d3e; padding: .45rem .7rem; border-radius: .45rem; cursor: pointer; }
 .enzyme-investigation :is(button,summary,select,textarea):focus-visible { outline: 3px solid #ba5720; outline-offset: 2px; }
