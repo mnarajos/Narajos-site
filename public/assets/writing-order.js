@@ -1,3 +1,4 @@
+import { mountParagraph } from "./paragraph-order.js";
 import { mountSequence } from "./sequence-order.js";
 import { rampExample } from "./writing-spo-examples.js";
 
@@ -39,6 +40,19 @@ const exercises = {
 
 
 for (const root of document.querySelectorAll("[data-writing-order]")) {
+  if (root.dataset.writingOrder === "ramp") {
+    mountParagraph(root, {
+      cards: exercises.ramp.paragraphs[0].cards,
+      order: exercises.ramp.order,
+      hints: ["Choose the sentence that explains why keeping the car the same matters.",
+        "Give a difference between cars before explaining what that difference does.",
+        "Link the differences in the cars to the distance rolled.",
+        "Explain what keeping the car the same controls.",
+        "End with what the pupil can tell from the comparison."],
+      success: "The opening answers the question, the middle explains the control, and the ending says what the comparison can show."
+    });
+    continue;
+  }
   const { paragraphs, order } = exercises[root.dataset.writingOrder];
   mountSequence(root, {
     groups: paragraphs.map(({ title, cards, openingHint }) => ({
