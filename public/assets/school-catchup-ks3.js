@@ -239,9 +239,9 @@ export function addKS3Journey(model, lesson, year) {
   mountJourney(model, model, {
     id: lesson.id, year, title: lesson.unit, hook,
     steps: [
-      {...fromLesson(lesson.questions[0]), title: "Notice and explain", notice: hint},
-      {...fromLesson(lesson.questions[1]), title: "Practise with a clue", hint},
-      {...question(...transfer), title: "Try an unfamiliar example"}
+      {...fromLesson(lesson.questions[0]), notice: hint},
+      {...fromLesson(lesson.questions[1]), hint},
+      question(...transfer)
     ]
   });
 }

@@ -3,7 +3,11 @@ import { latestCatchup } from "./school-catchup-progress.js";
 
 const root = "/science-catch-up/";
 const revision = code => "/gcse/#topic-" + code.toLowerCase();
-const ks3Link = topic => topic.href || "/ks3/lesson/?topic=" + topic.id;
+function guidedHref(href) {
+  const url = new URL(href, location.origin);
+  url.searchParams.set("guided", "1");
+  return url.pathname + url.search;
+}
 const year = new URLSearchParams(location.search).get("year");
 const years = ["7", "8", "9", "10", "11"];
 
@@ -41,24 +45,28 @@ function link(text, href, className) {
 }
 
 const yearNav = document.querySelector("[data-catchup-years]");
-for (const number of years) {
-  const target = link("Year " + number, root + "?year=" + number);
-  if (year === number) target.setAttribute("aria-current", "page");
-  yearNav.append(target);
-}
+const yearSelected = years.includes(year);
+if (!yearSelected) yearNav.classList.add("school-year-chooser");
 
 const main = document.querySelector("[data-catchup-catalogue]");
-const saved = latestCatchup(years.includes(year) ? year : undefined);
+const saved = latestCatchup(yearSelected ? year : undefined);
 if (saved) {
   const resume = element("aside", "", "school-resume");
-  resume.append(element("div", "Year " + saved.year + " · " + saved.title), link("Continue catch-up", saved.href, "school-primary"));
-  main.append(resume);
+  const href = Number(saved.year) < 9 ? guidedHref(saved.href) : saved.href;
+  resume.append(element("div", "Year " + saved.year + " · " + saved.title), link("Continue catch-up", href, "school-primary"));
+  if (yearSelected) main.append(resume);
+  else yearNav.before(resume);
 }
-if (years.includes(year)) {
+if (yearSelected) {
+  for (const number of years) {
+    const target = link("Year " + number, root + "?year=" + number);
+    if (year === number) target.setAttribute("aria-current", "page");
+    yearNav.append(target);
+  }
   document.title = "Year " + year + " Science Catch-up | Narajos";
   document.querySelector("h1").textContent = "Year " + year + " Science";
   const headings = element("div", "", "school-section-heading");
-  headings.append(element("h2", "Catch-up topics"));
+  headings.append(element("h2", Number(year) >= 10 ? "GCSE topics" : "Catch-up topics"));
   if (Number(year) >= 9) headings.append(link("Open GCSE revision", "/gcse/", "school-secondary"));
   main.append(headings);
   const list = element("ul", "", "school-topic-list");
@@ -66,7 +74,8 @@ if (years.includes(year)) {
     const topics = year === "8" ? [...curriculum[year], ...motionLessons] : curriculum[year];
     for (const topic of topics) {
       const item = element("li");
-      item.append(link(topic.unit, ks3Link(topic), "school-topic-link"), element("p", topic.title));
+      const href = guidedHref(topic.href || "/ks3/lesson/?topic=" + topic.id);
+      item.append(link(topic.unit, href, "school-topic-link"), element("p", topic.title));
       list.append(item);
     }
   } else if (year === "9") {
@@ -84,7 +93,7 @@ if (years.includes(year)) {
       list.append(item);
     }
   } else {
-    main.append(element("p", "Guided catch-up is piloting in Years 7–9. Use GCSE revision for the topics below."));
+    main.append(element("p", "Guided lessons are available in Years 7–9. Choose a GCSE topic to revise."));
     for (const [code, topic] of gcseYears[year]) {
       const item = element("li");
       item.append(element("h3", code + " · " + topic), link("Revise " + code, revision(code), "school-revise-link"));
@@ -102,5 +111,5 @@ if (years.includes(year)) {
     item.append(card);
     list.append(item);
   }
-  main.append(list);
+  yearNav.append(list);
 }
