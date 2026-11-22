@@ -2,7 +2,7 @@ import { mountJourney, question } from "./school-catchup-journey.js";
 
 const topics = {
   "fair-tests": [
-    "Can you prove what made the toy roll farther?",
+    "What made the same toy roll farther?",
     "Look back at the two ramp runs. Name the one thing that was deliberately changed.",
     ["Does wing length affect how slowly a paper spinner falls? Which plan would let you test that?",
       "Use different wing lengths and drop both spinners from the same height.",

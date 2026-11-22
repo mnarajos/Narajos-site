@@ -37,7 +37,8 @@ export function mountJourney(host, model, lesson) {
   if (!host || !model || !lesson?.steps?.length || host.dataset.journeyMounted) return;
   host.dataset.journeyMounted = "true";
   const {id, year, title, hook, steps, retry, code} = lesson;
-  const prior = readCatchup(id);
+  const progressKey = year + "." + id;
+  const prior = readCatchup(progressKey);
   const state = {
     ...prior,
     title,
@@ -73,7 +74,7 @@ export function mountJourney(host, model, lesson) {
   let storageAvailable = true;
 
   function write() {
-    storageAvailable = saveCatchup(id, state);
+    storageAvailable = saveCatchup(progressKey, state);
     if (!storageAvailable) storageNote.textContent = "Progress is available while this page is open.";
   }
 

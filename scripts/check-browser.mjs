@@ -775,7 +775,7 @@ try{
  assert.equal(await navPage.locator(".school-topic-list > li").count(),12);
  assert.equal(await navPage.getByRole("link",{name:"Open GCSE revision"}).count(),0);
  await navPage.getByRole("link",{name:"Science Skills",exact:true}).click();
- assert(await navPage.getByRole("heading",{name:"Can you prove what made the toy roll farther?"}).isVisible());
+ assert(await navPage.getByRole("heading",{name:"What made the same toy roll farther?"}).isVisible());
  assert(await navPage.getByRole("heading",{name:"Worked example · testing ramp angle"}).isVisible());
  await navPage.goto(base+"/science-catch-up/?year=8");
  assert.equal(await navPage.locator(".school-topic-list > li").count(),13);
@@ -784,12 +784,16 @@ try{
  assert(await navPage.getByRole("heading",{name:"What gives away the plant cell in a pair of microscope photographs?"}).isVisible());
  await navPage.goto(base+"/science-catch-up/?year=9");
  assert.equal(await navPage.locator(".school-topic-list > li").count(),5);
+ await navPage.evaluate(()=>{
+  localStorage.setItem("narajos.catchup.v1.8.periodic-table", JSON.stringify({step:2,started:true,done:true}));
+ });
  const conceptLinks=await navPage.locator(".school-concept-list a").evaluateAll(links=>links.map(a=>a.href));
  assert.equal(conceptLinks.length,12);
  for(const path of conceptLinks){
   await navPage.goto(path);
   assert(await navPage.getByRole("heading",{name:"Look at the evidence"}).isVisible());
   assert(await navPage.getByRole("progressbar",{name:"Lesson progress"}).isVisible());
+  assert.equal(await navPage.getByRole("progressbar",{name:"Lesson progress"}).getAttribute("value"),"0");
   assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Year 9 catch-up overflows at phone width");
  }
  await navPage.goto(base+"/science-catch-up/lesson/?topic=osmosis");
