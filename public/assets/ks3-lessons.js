@@ -126,8 +126,8 @@ export const curriculum = {
           ["It happens after a seed forms.", "In plants, seed development follows fertilisation. Humans do not make seeds."]
         ])
       ],
-      "Pollen reaches a flower’s stigma, but no male sex cell reaches the ovule. Explain why the ordinary sexual route to a seed stops there.",
-      "Pollination happened, but the sex cells could not join in the ovule. Without fertilisation, a seed cannot develop by this route."),
+      "A pollen grain lands on a stigma. Its tube stops before reaching the ovule. Explain why this pollen grain cannot lead to a seed.",
+      "Pollination has happened. The male nucleus cannot reach the egg cell in the ovule, so fertilisation cannot happen and the ovule cannot form a seed by this route."),
     lesson("acids-and-alkalis", "Acids and Alkalis", "What does a change in pH tell you?",
       { type: "ph", caption: "Universal indicator readings for three solutions", panels: [{ label: "A", value: 3 }, { label: "B", value: 7 }, { label: "C", value: 10 }] },
       "Find the pH 7 solution, then find the one with the lowest pH.",

@@ -263,6 +263,7 @@ var curated={
  "a6/reflex":{diagram:"reflex"},
  "a6/glucose":{diagram:"glucose"},
  "a2/vaccines":{diagram:"vaccines"},
+ "f170/1.1.2":{microscope:true},
  "f170/1.1.5":{diagram:"dna",links:["molecular"]},
  "f170/1.1.4":{diagram:"osmosis"},
  "f170/3.1.1":{diagram:"glucose"},
@@ -270,13 +271,45 @@ var curated={
  "f170/2.1.2":{diagram:"heartAnatomy",links:["cardiac"]},
  "f170/2.1.3":{diagram:"alveolus",check:["What if there is less alveolar surface area?","If other conditions are the same, less surface is available for diffusion at one time. Gas exchange can therefore be slower."]},
  "f170/2.2.1":{diagram:"systems"},
- "f170/3.2.1":{diagram:"reflex"},
+ "f170/3.2.1":{sequence:"reflex"},
  "f170/3.3.1":{diagram:"reproduction",outside:true},
  "f171/a3":{diagram:"vaccines"},
  "f171/3.2.2":{diagram:"vaccines"},
  "f172/a1":{diagram:"dna"},
  "f175/a1":{}
 };
+const reflexSequence = `<details class="kc-visual-check">
+ <summary>Trace a withdrawal reflex</summary>
+ <science-sequence kind="reflex"></science-sequence>
+ <details class="kc-visual-check">
+  <summary>Predict what happens if the motor neuron fails to carry the impulse</summary>
+  <p>The receptor and sensory neuron can still send a signal towards the spinal cord. The effector muscle would receive no impulse along this route, so this pathway would fail to trigger the withdrawal.</p>
+ </details>
+</details>`;
+
+const microscopePractice = `<details class="kc-visual-check">
+ <summary>Estimate the size of a red blood cell</summary>
+ <p>Compare the marked width of one human red blood cell with the white <strong>20 µm scale bar</strong>. Estimate its actual width.</p>
+ <figure class="micrograph-single">
+  <div class="micrograph-measurement">
+   <img src="/assets/micrographs/human-erythrocytes.jpg" width="386" height="404" loading="lazy" alt="Micrograph of fluorescently stained human red blood cells with a white scale bar at the lower right.">
+   <svg viewBox="0 0 386 404" aria-hidden="true">
+    <path d="M250 159H298M250 154v10m48-10v10" fill="none" stroke="#161c1b" stroke-width="4"/>
+    <path d="M250 159H298M250 154v10m48-10v10" fill="none" stroke="#ffed9a" stroke-width="2"/>
+   </svg>
+  </div>
+  <figcaption><small class="micrograph-credit"><a href="https://commons.wikimedia.org/wiki/File:Sedimented_red_blood_cells.jpg">MDougM</a> · public domain · measurement line added</small></figcaption>
+ </figure>
+ <details class="kc-visual-check">
+  <summary>Use measured lengths</summary>
+  <p>On the original image, the marked cell width is 48 pixels and the scale bar is 122 pixels.</p>
+ </details>
+ <details class="kc-visual-check">
+  <summary>Check the calculation</summary>
+  <p>The marked width is about 0.4 times the white bar: 0.4 × 20 µm ≈ 8 µm. Both lengths change by the same factor when you resize the image, so the ratio stays the same.</p>
+ </details>
+</details>`;
+
 function render(course,id){
  var item=curated[course+"/"+id];
  if(!item)return "";
@@ -285,6 +318,8 @@ function render(course,id){
   var d=diagrams[item.diagram];
   html+='<figure class="kc-visual"><div class="kc-visual-heading"><span class="kc-visual-icon" aria-hidden="true">◈</span><strong>'+d.label+'</strong></div><div class="kc-visual-art">'+d.image+'</div><figcaption>'+d.caption+'</figcaption></figure>';
  }
+ if(item.sequence==="reflex")html+=reflexSequence;
+ if(item.microscope)html+=microscopePractice;
  if(item.check)html+='<details class="kc-visual-check"><summary>'+item.check[0]+'</summary><p>'+item.check[1]+'</p></details>';
  if(item.outside)html+='<details class="kc-visual-check"><summary>Compare with a real tissue section</summary><p>Open the ovary slides. Find a follicle and describe one feature that makes it recognisable. Return to the drawing to locate the tissue in the whole system.</p><p><a href="https://histologyguide.com/slidebox/18-female-reproductive-system.html" target="_blank" rel="noopener noreferrer">Open the virtual slides at Histology Guide (opens in a new tab)</a></p></details>';
  if(item.links&&item.links.length){
@@ -299,4 +334,3 @@ function render(course,id){
 }
 window.KeystoneCatchupVisuals={render:render,has:function(course,id){return !!curated[course+"/"+id];}};
 })();
-

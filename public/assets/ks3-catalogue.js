@@ -324,6 +324,11 @@ function renderLesson(lesson, year, index) {
   if (illustrations[lesson.id]) teaching.append(renderIllustration(lesson.id));
   if (!illustrations[lesson.id] || lesson.visual.headers) teaching.append(renderVisual(lesson.visual));
   teaching.append(cue, explanation);
+  if (lesson.id === "reproduction") {
+    const sequence = element("science-sequence");
+    sequence.setAttribute("kind", "pollen");
+    teaching.append(disclosure("Follow a pollen grain", sequence));
+  }
   if (lesson.related) {
     const more = element("p");
     more.append(link(lesson.related.title, lesson.related.href));
@@ -358,4 +363,3 @@ if (lessonRoot) {
     }
   }
 }
-

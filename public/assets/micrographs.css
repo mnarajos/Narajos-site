@@ -1,0 +1,23 @@
+.micrograph-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  align-items: start;
+  gap: 1rem;
+  margin-block: .75rem;
+}
+
+.micrograph-grid figure, .micrograph-single { margin: .5rem 0; }
+.micrograph-grid img, .micrograph-single img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: .45rem;
+}
+.micrograph-grid figcaption, .micrograph-single figcaption {
+  margin-block-start: .4rem;
+  line-height: 1.45;
+}
+.micrograph-credit { display: block; font-size: .8em; }
+.micrograph-single { max-width: 24rem; }
+.micrograph-measurement { position: relative; }
+.micrograph-measurement svg { position: absolute; inset: 0; width: 100%; height: 100%; }
