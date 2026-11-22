@@ -75,7 +75,7 @@ function showHome(){
  h+='<a href="#challenge/f170/weak" class="k-mini-action fix"><span class="k-mini-symbol">'+kIcon("rotate")+'</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
  h+='</section>';
  h+='<h2 class="k-subhead">Other ways to revise F171</h2><section class="k-home-actions">';
- if(f171Cards.length)h+='<a href="#flashcards/f171" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("layers")+'</span><strong>F171 flashcards</strong><small>Treatment, prevention, and monitoring</small></a>';
+ if(f171Cards.length)h+='<a href="#flashcards/f171" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("layers")+'</span><strong>F171 flashcards</strong><small>Recall across all five topic areas</small></a>';
  h+='<a href="#catchup/f171" class="k-mini-action learn"><span class="k-mini-symbol">'+kIcon("book")+'</span><strong>Catch up</strong><small>Guided clinical reasoning</small></a>';
  h+='<a href="#skills/f171" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("calc")+'</span><strong>Skills practice</strong><small>Calculations, data, and evidence</small></a>';
  h+='<a href="#challenge/f171/weak" class="k-mini-action fix"><span class="k-mini-symbol">'+kIcon("rotate")+'</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
@@ -151,9 +151,14 @@ function showFlashMenu(){
  render('<div class="k-wrap">'+h+'</div>');
 }
 function showF171FlashMenu(){
- const deckLinks=f171Decks.map(([section,title,items])=>'<article class="paper area-card"><h3>'+esc(title)+'</h3><p>'+items.length+' cards</p>'+link("cards/f171-"+section,"Practise "+title.toLowerCase(),"primary")+'</article>').join("");
+ const titles=["Causes and effects of disease","Treatment and management","The immune response","Diagnosis and monitoring","Research and evidence"];
+ const groups=titles.map((title,index)=>{
+  const decks=f171Decks.filter(([section])=>section.startsWith((index+1)+"."));
+  const links=decks.map(([section,name,items])=>'<article class="paper area-card"><h3>'+esc(name)+'</h3><p>'+items.length+' cards</p>'+link("cards/f171-"+section,"Practise "+name.toLowerCase(),"primary")+'</article>').join("");
+  return '<h2 class="k-subhead">'+esc(title)+'</h2><div class="grid">'+links+'</div>';
+ }).join("");
  const due=review.stats(f171Cards.map(c=>c.id)).due;
- render('<div class="k-wrap">'+crumb("home","Overview")+'<div class="k-compact-hero"><div class="eyebrow">F171 · Active recall</div><h1>F171 flashcards</h1><p>Starter decks for treatment, prevention, and monitoring.</p></div><div class="actions">'+link("cards/f171","Mix these topics","primary")+(due?link("cards/f171-due","Review "+due+" due cards"):"")+link("flashcards","F170 flashcards")+'</div><div class="grid">'+deckLinks+'</div></div>');
+ render('<div class="k-wrap">'+crumb("home","Overview")+'<div class="k-compact-hero"><div class="eyebrow">F171 · Active recall</div><h1>F171 flashcards</h1><p>'+f171Cards.length+' focused cards across all five topic areas.</p></div><div class="actions">'+link("cards/f171","Mix these topics","primary")+(due?link("cards/f171-due","Review "+due+" due cards"):"")+link("flashcards","F170 flashcards")+'</div>'+groups+'</div>');
 }
 function showPracticeMenu(){
  var st=stats();
@@ -172,7 +177,8 @@ function showCard(){
  var h='<div class="flash-panel">'+crumb(active.scope.startsWith("f171")?"flashcards/f171":"flashcards","Flashcards")+'<div class="eyebrow">'+esc(scopeName(active.scope))+'</div><h1>Recall the biology</h1>';
  h+='<section class="paper"><div class="flash-brow"><span>'+esc(c.sectionId)+' · '+esc(c.sectionTitle||bySection[c.sectionId].title)+'</span><span>'+active.completed+' / '+active.initial+' completed</span></div><div class="progress-track" role="progressbar" aria-label="Flashcards completed" aria-valuemin="0" aria-valuemax="'+active.initial+'" aria-valuenow="'+Math.min(active.completed,active.initial)+'"><div style="width:'+(100*active.completed/active.initial)+'%"></div></div>';
  h+='<div class="eyebrow">Question</div><p class="question">'+esc(c.q)+'</p><label for="typed" class="small muted">Your answer (optional)</label><input id="typed" class="typed" autocomplete="off" spellcheck="false" placeholder="Try to recall before revealing">';
- h+='<button class="button primary" type="button" data-action="reveal">Reveal answer</button>';
+ h+='<div class="action-row"><button class="button primary" type="button" data-action="reveal">Reveal answer</button>'+
+  (c.id.startsWith("f171-")?'<button class="button quiet" type="button" data-action="recalled">I recalled it without typing</button>':'')+'</div>';
  h+='<div class="answer-box" id="answer-box" hidden><div class="eyebrow">Expected answer</div><p class="answer">'+esc(c.a)+'</p>'+(c.explain?'<p class="small">'+esc(c.explain)+'</p>':'')+'<p id="comparison" class="feedback" aria-live="polite"></p><div class="action-row"><button class="button secondary" data-action="again" type="button">Not yet · show again</button><button class="button primary" data-action="got-it" type="button">Got it</button></div></div></section>';
  h+='<p class="source-note">Equivalent accurate scientific wording may be acceptable. Use the expected answer to judge the underlying concept, not spelling alone.</p></div>';
  render(h);var input=document.getElementById("typed");if(input){input.value=active.draft||"";input.focus();input.addEventListener("input",function(){active.draft=input.value;saveSession();});input.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();var b=main.querySelector('[data-action="reveal"]');if(b)b.click();}});}
@@ -187,26 +193,34 @@ function showPractice(){
  render(h);var input=document.getElementById("typed");if(input){input.value=active.draft||"";input.addEventListener("input",function(){active.draft=input.value;saveSession();});input.addEventListener("keydown",function(e){if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault();var b=main.querySelector('[data-action="reveal"]');if(b)b.click();}});}
  if(active.phase==="answer")reveal(true);
 }
-function reveal(restored){
+function reveal(restored,silentRecall){
  if(!active)return;
  var box=document.getElementById("answer-box"),button=main.querySelector('[data-action="reveal"]'),field=document.getElementById("typed");
  if(!box||!button||!field)return;
  var answer=active.type==="cards"?byCard[active.queue[0]].a:"";
  var exact=active.type==="cards"?review.matches(field.value,answer,byCard[active.queue[0]].aliases):false;
  if(active.type==="cards"){
+  const f171=active.queue[0].startsWith("f171-");
+  const recalled=main.querySelector('[data-action="recalled"]');
+  if(f171){
+   if(!restored||active.retrievalAttempt===undefined)active.retrievalAttempt=Boolean(field.value.trim()||silentRecall);
+   if(recalled)recalled.hidden=true;
+   box.querySelector('[data-action="got-it"]').hidden=!active.retrievalAttempt;
+  }
   var comp=document.getElementById("comparison");
-  if(comp)comp.textContent=!field.value.trim()?"No typed answer supplied. Judge your recall after reading the model answer.":exact?"Your response matches an approved wording. Check your understanding before selecting Got it.":"This is not an exact listed wording. A scientifically equivalent answer may still be correct: compare the meaning before grading.";
+  if(comp)comp.textContent=f171&&!active.retrievalAttempt?"Read the model, then try retrieving it again.":!field.value.trim()?"Compare what you recalled with the model answer.":exact?"Your response matches an approved wording. Check your understanding before selecting Got it.":"This is not an exact listed wording. A scientifically equivalent answer may still be correct: compare the meaning before grading.";
  }
  field.readOnly=true;box.hidden=false;button.hidden=true;active.draft=field.value;active.phase="answer";saveSession();
  if(!restored){var first=box.querySelector("button");if(first)first.focus();}
 }
 function rate(success){
  if(!active||active.phase!=="answer")return;
+ if(success&&active.type==="cards"&&active.queue[0].startsWith("f171-")&&!active.retrievalAttempt)return;
  var id=active.queue.shift();if(!id)return;
  if(active.type==="cards"){review.mark(id,success);}else{var p=progress[id]||{seen:0,good:0};p.seen++;if(success)p.good++;progress[id]=p;storePractice();}
  if(!(id in active.first)){active.first[id]=success;if(success)active.correctFirst++;}
  if(success){active.completed++;}else{active.queue.push(id);}
- active.phase="question";active.draft="";saveSession();drawSession();
+ active.phase="question";active.draft="";delete active.retrievalAttempt;saveSession();drawSession();
 }
 function drawSession(){if(!active)return showHome();if(!active.queue.length)return finish();if(active.type==="cards")showCard();else showPractice();}
 function finish(){
@@ -262,7 +276,7 @@ document.addEventListener("keydown",function(e){
 });
 document.addEventListener("click",function(e){
  var action=e.target.closest("[data-action]");
- if(action){if(action.getAttribute("data-action")==="reveal")reveal(false);if(action.getAttribute("data-action")==="again")rate(false);if(action.getAttribute("data-action")==="got-it")rate(true);return;}
+ if(action){if(action.getAttribute("data-action")==="reveal")reveal(false);if(action.getAttribute("data-action")==="recalled")reveal(false,true);if(action.getAttribute("data-action")==="again")rate(false);if(action.getAttribute("data-action")==="got-it")rate(true);return;}
  var a=e.target.closest("a[href]");if(!a||(!active&&!(window.KeystoneHumanChallenge&&window.KeystoneHumanChallenge.isActive())))return;
  var href=a.getAttribute("href")||"";
  if(href.startsWith("#")&&href.replace(/^#/,"")===previousRoute)return;
