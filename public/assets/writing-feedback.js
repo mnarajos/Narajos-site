@@ -52,6 +52,7 @@ for (const area of document.querySelectorAll("[data-writing-check]")) {
     const next = criteria.find(item => item.state === "revise") || criteria.find(item => item.state === "compare");
     const cue = cues.find(({ signals }) => signals.length && !signals.every(signal => signal.test(prose))) || cues[0];
     focus.textContent = next ? "Try one change. " + next.feedback :
+      card.querySelector("[data-writing-order='ramp']") ? "Check the reasoning. If using a different car could change the distance, does your paragraph explain why that matters when testing ramp height?" :
       criteria.length ? "Now read your paragraph aloud. Can the reader follow how the science explains what happened?"
         : "Try one change. " + (cue?.question || "Check that every sentence helps answer the question.");
     marked.replaceChildren(...criteria.map(createRow));
@@ -68,6 +69,7 @@ for (const area of document.querySelectorAll("[data-writing-check]")) {
       return row;
     }));
     detail.open = false;
+    detail.hidden = !cues.length;
     const separate = /\n[ \t]*\n|(?:^|\n)[ \t]*(?:[-*•]|\d+[.)])[ \t]+/.test(draft);
     const sentences = draft.split(/[.!?]+(?=\s|$)/).filter(part => part.trim());
     status.textContent = separate ? messages.separate : sentences.length < 3 ? messages.short : messages.connected;
@@ -107,7 +109,7 @@ function addCopyButton(card, area, paragraph) {
       if (current && current !== first) lines.push((first ? "Latest sentence: " : prompt + "\n") + current);
     }
     for (const field of card.querySelectorAll("textarea[data-draft]")) {
-      if (field === paragraph || field.closest("[data-writing-exercise]") || !field.value.trim()) continue;
+      if (field === paragraph || field.closest("[data-writing-exercise], .spo-intro") || !field.value.trim()) continue;
       const label = field.labels[0]?.textContent.trim().replace(/:$/, "");
       if (label) lines.push(label + ": " + field.value.trim());
     }

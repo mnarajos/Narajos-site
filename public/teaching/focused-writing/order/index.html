@@ -12,7 +12,10 @@
  <link rel="stylesheet" href="/assets/home-link.css">
  <link rel="stylesheet" href="/assets/science-practice.css">
 
+ <script defer src="/assets/paragraph-drafts.js"></script>
  <script type="module" src="/assets/writing-order.js"></script>
+ <script type="module" src="/assets/writing-outlines.js"></script>
+ <script type="module" src="/assets/writing-feedback.js"></script>
  <script type="module" src="/assets/toy-ramp.js"></script>
  <script defer src="/assets/site-nav.js"></script>
 </head>
@@ -34,8 +37,30 @@
     <figure class="ks3-illustration">
      <img src="/assets/ks3-diagrams/ramps.svg" alt="A green car starts on a low ramp and a blue car starts on a higher ramp. Both ramps meet the same floor.">
     </figure>
-    <p>A pupil wants to find out whether ramp height changes how far a toy car rolls. Why should they use the same car each time? Start by stating what the pupil should keep the same.</p>
+    <p data-writing-cue="respond">A pupil wants to find out whether ramp height changes how far a toy car rolls. Why should they use the same car each time? Start by explaining how this helps the pupil interpret the results.</p>
     <div data-writing-order="ramp"></div>
+    <details class="writing-step">
+     <summary class="writing-cue" data-writing-cue="notes">Plan your paragraph</summary>
+     <label for="ramp-topic">Topic sentence:</label>
+     <textarea id="ramp-topic" data-draft rows="2"></textarea>
+     <label for="ramp-plan">Supporting notes:</label>
+     <textarea id="ramp-plan" data-draft rows="4"></textarea>
+     <label for="ramp-close">Concluding sentence:</label>
+     <textarea id="ramp-close" data-draft rows="2"></textarea>
+    </details>
+    <details class="writing-step">
+     <summary class="writing-cue" data-writing-cue="respond">Write your paragraph</summary>
+     <label for="ramp-paragraph">Your paragraph:</label>
+     <textarea id="ramp-paragraph" data-draft rows="6"></textarea>
+     <div class="writing-check" data-writing-check="ramp-paragraph" hidden>
+      <button type="button">Check my paragraph</button>
+      <p role="status"></p>
+      <div class="writing-report" data-writing-report hidden>
+       <p>Use these prompts to check your reasoning against the worked example.</p>
+       <ul></ul>
+      </div>
+     </div>
+    </details>
    </details>
    <details class="practice-card writing-card">
     <summary>Build two paragraphs</summary>

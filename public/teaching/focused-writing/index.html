@@ -12,6 +12,7 @@
  <link rel="stylesheet" href="/assets/home-link.css">
  <link rel="stylesheet" href="/assets/science-practice.css">
 
+ <script type="module" src="/assets/writing-task-filter.js"></script>
  <script defer src="/assets/site-nav.js"></script>
 </head>
 <body>
@@ -25,21 +26,45 @@
    <h1>Focused Writing</h1>
    <p class="lead">Classroom activities for planning and writing a science paragraph.</p>
   </div>
-  <ul class="practice-choices writing-choices" aria-label="Focused Writing activities">
-   <li><a href="/teaching/focused-writing/order/"><img src="/assets/ks3-diagrams/ramps.svg" alt="" loading="lazy"><strong>Start with sentence ordering</strong><span>Build one paragraph, then group and order sentences for two.</span></a></li>
-   <li><a href="/teaching/focused-writing/ks3/"><img src="/assets/writing-prompts/dye-spread.png" alt="" loading="lazy"><strong>KS3 · Explain a change</strong><span>Look at a dye diagram and explain what happened in one sentence.</span></a></li>
-   <li><a href="/teaching/focused-writing/gcse/"><img src="/assets/writing-prompts/osmosis-results.png" alt="" loading="lazy"><strong>GCSE · Use evidence</strong><span>Use a potato graph to write and check one sentence.</span></a></li>
-   <li><a href="/teaching/focused-writing/alevel/"><img src="/assets/writing-prompts/glucose-cotransport.png" alt="" loading="lazy"><strong>A-level · Develop an essay paragraph</strong><span>Use an ileum diagram to explain a concentration gradient.</span></a></li>
+  <form class="spo-filters" data-writing-filter hidden aria-label="Find a writing activity">
+   <label>Phase
+    <select name="phase"><option value="">All phases</option><option>KS3</option><option>GCSE</option><option>A-level</option></select>
+   </label>
+   <label>Subject
+    <select name="subject"><option value="">All subjects</option><option>Biology</option><option>Chemistry</option><option>Physics</option><option>Working scientifically</option></select>
+   </label>
+   <label>Writing purpose
+    <select name="purpose"><option value="">All purposes</option><option>Explanation</option><option>Experimental design</option><option>Data interpretation</option><option>Evaluation</option><option>Comparison</option></select>
+   </label>
+   <p role="status"></p>
+  </form>
+  <ul data-writing-task-list class="practice-choices writing-choices" aria-label="Focused Writing activities">
+   <li data-phase="KS3" data-subject="Working scientifically" data-purpose="Experimental design"><a href="/teaching/focused-writing/order/"><img src="/assets/ks3-diagrams/ramps.svg" alt="" loading="lazy"><strong>Start with sentence ordering</strong><span>Build one paragraph, then group and order sentences for two.</span></a></li>
+   <li data-phase="KS3" data-subject="Chemistry" data-purpose="Explanation"><a href="/teaching/focused-writing/ks3/"><img src="/assets/writing-prompts/dye-spread.png" alt="" loading="lazy"><strong>KS3 · Explain a change</strong><span>Look at a dye diagram and explain what happened in one sentence.</span></a></li>
+   <li data-phase="GCSE" data-subject="Biology" data-purpose="Data interpretation"><a href="/teaching/focused-writing/gcse/"><img src="/assets/writing-prompts/osmosis-results.png" alt="" loading="lazy"><strong>GCSE · Use evidence</strong><span>Use a potato graph to write and check one sentence.</span></a></li>
+   <li data-phase="A-level" data-subject="Biology" data-purpose="Explanation"><a href="/teaching/focused-writing/alevel/"><img src="/assets/writing-prompts/glucose-cotransport.png" alt="" loading="lazy"><strong>A-level · Develop an essay paragraph</strong><span>Use an ileum diagram to explain a concentration gradient.</span></a></li>
   </ul>
+  <section class="spo-intro" aria-labelledby="spo-year-title">
+   <h2 id="spo-year-title">Introduction to the SPO by year</h2>
+   <nav class="spo-year-links" aria-label="Single paragraph outline examples by year">
+    <a href="/teaching/focused-writing/ks3/?year=7#spo-introduction">Year 7</a>
+    <a href="/teaching/focused-writing/ks3/?year=8#spo-introduction">Year 8</a>
+    <a href="/teaching/focused-writing/ks3/?year=9#spo-introduction">Year 9</a>
+    <a href="/teaching/focused-writing/gcse/?year=10#spo-introduction">Year 10</a>
+    <a href="/teaching/focused-writing/gcse/?year=11#spo-introduction">Year 11</a>
+    <a href="/teaching/focused-writing/alevel/?year=12#spo-introduction">Year 12</a>
+    <a href="/teaching/focused-writing/alevel/?year=13#spo-introduction">Year 13</a>
+   </nav>
+  </section>
   <details class="writing-task-menu" id="gcse-tasks" open>
    <summary>GCSE writing tasks by paper</summary>
    <ul>
-    <li><a href="/teaching/focused-writing/gcse/light-and-photosynthesis/">Biology Paper 1 · Explain a photosynthesis pattern</a></li>
-    <li><a href="/teaching/focused-writing/gcse/meadow-biodiversity/">Biology Paper 2 · Evaluate a claim about biodiversity</a></li>
-    <li><a href="/teaching/focused-writing/gcse/temperature-change-method/">Chemistry Paper 1 · Plan a fair temperature test</a></li>
-    <li><a href="/teaching/focused-writing/gcse/compare-bags/">Chemistry Paper 2 · Justify a choice using life-cycle data</a></li>
-    <li><a href="/teaching/focused-writing/gcse/compare-insulation/">Physics Paper 1 · Explain a difference in cooling</a></li>
-    <li><a href="/teaching/focused-writing/gcse/trolley-acceleration/">Physics Paper 2 · Plan a test of force and acceleration</a></li>
+    <li data-phase="GCSE" data-subject="Biology" data-purpose="Data interpretation"><a href="/teaching/focused-writing/gcse/light-and-photosynthesis/">Biology Paper 1 · Explain a photosynthesis pattern</a></li>
+    <li data-phase="GCSE" data-subject="Biology" data-purpose="Evaluation"><a href="/teaching/focused-writing/gcse/meadow-biodiversity/">Biology Paper 2 · Evaluate a claim about biodiversity</a></li>
+    <li data-phase="GCSE" data-subject="Chemistry" data-purpose="Experimental design"><a href="/teaching/focused-writing/gcse/temperature-change-method/">Chemistry Paper 1 · Plan a fair temperature test</a></li>
+    <li data-phase="GCSE" data-subject="Chemistry" data-purpose="Evaluation"><a href="/teaching/focused-writing/gcse/compare-bags/">Chemistry Paper 2 · Justify a choice using life-cycle data</a></li>
+    <li data-phase="GCSE" data-subject="Physics" data-purpose="Comparison"><a href="/teaching/focused-writing/gcse/compare-insulation/">Physics Paper 1 · Explain a difference in cooling</a></li>
+    <li data-phase="GCSE" data-subject="Physics" data-purpose="Experimental design"><a href="/teaching/focused-writing/gcse/trolley-acceleration/">Physics Paper 2 · Plan a test of force and acceleration</a></li>
    </ul>
   </details>
   <details class="teacher-note"><summary>Teaching with a single-paragraph outline</summary>

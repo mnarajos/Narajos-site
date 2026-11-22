@@ -1,16 +1,13 @@
+import { rampExample } from "./writing-spo-examples.js";
+
 const exercises = {
   ramp: {
     paragraphs: [{
       title: "Why use the same car?",
-      openingHint: "Start by saying what the pupil should keep the same.",
-      cards: [
-        "To test ramp height fairly, use the same car each time.",
-        "Changing the car could change how far it rolls.",
-        "If both the car and ramp height change, we cannot tell which change affected the distance.",
-        "Keeping the car the same makes it easier to link any change in distance to the ramp height."
-      ]
+      openingHint: "Start with the sentence that explains why using the same car matters.",
+      cards: [rampExample.topic, ...rampExample.details.map(([, sentence]) => sentence), rampExample.conclusion]
     }],
-    order: [2, 0, 3, 1]
+    order: [2, 0, 4, 1, 3]
   },
   rocks: {
     paragraphs: [

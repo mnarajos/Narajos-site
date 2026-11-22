@@ -1,4 +1,12 @@
+import { mountDevelopment, mountIntroduction } from "./writing-spo.js";
+import { rampExample } from "./writing-spo-examples.js";
+
 const guides = {
+  ramp: [
+    ["Does the opening explain why keeping the car the same helps?", rampExample.topic],
+    ["Do your notes connect wheels and friction to the distance rolled, then explain the control?", rampExample.details.map(([note]) => note).join("; ")],
+    ["Does the ending explain how the control makes the comparison more valid?", rampExample.conclusion]
+  ],
   ks3: [
     ["Does your first sentence say which beaker showed the colour spreading further?", "The food colouring spreads further in the warm water in the same time."],
     ["Do your notes link warmer water, faster-moving dye particles and faster spreading, in that order?", "warmer water → dye particles move faster on average in random directions → spread further in the same time"],
@@ -82,37 +90,50 @@ function mount(closing, id, guide) {
   wrapper.append(button, status, report);
   closing.after(wrapper);
 
-  const scaffold = closing.closest(".writing-step").querySelector("[data-outline-scaffold]");
-  scaffold?.querySelector("button").addEventListener("click", event => {
+  function resetOutlineReport() {
+    if (!report.hidden) status.textContent = "Outline changed. Check it again when you’re ready.";
+    report.hidden = true;
+  }
+  const card = closing.closest(".writing-card");
+  mountIntroduction(card, id);
+  const development = mountDevelopment(card, id, fields, guide, resetOutlineReport);
+  const plan = closing.closest(".writing-step");
+  let scaffold = plan.querySelector("[data-outline-scaffold]");
+  if (!scaffold) {
+    scaffold = element("div");
+    scaffold.className = "writing-scaffold";
+    const control = element("button", "Use a partly filled plan");
+    control.type = "button";
+    const message = element("p");
+    message.dataset.outlineStatus = "";
+    message.setAttribute("role", "status");
+    scaffold.append(control, message);
+    plan.querySelector("summary").after(scaffold);
+  }
+  scaffold.querySelector("button").addEventListener("click", event => {
     const { scaffoldOpening, scaffoldNotes } = event.currentTarget.dataset;
-    const prepared = [scaffoldOpening, scaffoldNotes];
-    fields.slice(0, 2).forEach((field, index) => {
-      if (!field.value.trim()) {
-        field.value = prepared[index];
-        field.dispatchEvent(new Event("input", { bubbles: true }));
-      }
-    });
-    scaffold.querySelector("[data-outline-status]").textContent = "Use the supporting notes to add your own reasoning.";
-    fields[1].focus();
+    const [firstNote] = guide[1][1].split(";", 1);
+    const start = [id === "ramp" ? rampExample.details[0][0] : scaffoldNotes || firstNote];
+    development.fillScaffold(scaffoldOpening || guide[0][1], start);
+    scaffold.querySelector("[data-outline-status]").textContent = "Add your own reasoning to complete the plan.";
   });
 
-  for (const field of fields) {
-    field.addEventListener("input", () => {
-      if (!report.hidden) status.textContent = "Outline changed. Check it again when you’re ready.";
-      report.hidden = true;
-    });
-  }
+  fields[0].addEventListener("input", resetOutlineReport);
+  fields[2].addEventListener("input", resetOutlineReport);
 
   button.addEventListener("click", () => {
-    const values = fields.map((field) => field.value.trim());
+    const values = [fields[0].value.trim(), development.notes.map(note => note.value.trim()).filter(Boolean).join("\n"), fields[2].value.trim()];
     const missing = sections.filter((_, index) => !values[index]);
+    const numberOfNotes = development.notes.filter(note => note.value.trim()).length;
     const sameOpeningAndClosing = values[0] && values[2] && normalise(values[0]) === normalise(values[2]);
     if (missing.length) {
       status.textContent = "Still to add: " + missing.map((label) => label.toLowerCase()).join(", ") + ".";
     } else if (sameOpeningAndClosing) {
       status.textContent = "Your opening and ending repeat each other. Use the ending to show what you can now conclude.";
+    } else if (numberOfNotes < 2) {
+      status.textContent = "Add a second note so the reader can follow how the explanation develops.";
     } else {
-      status.textContent = "All three parts have an entry. Use the topic checks before you write the paragraph.";
+      status.textContent = "The three parts have entries. Use the prompts, then develop each note into a supporting sentence.";
     }
 
     const prompts = element("ul");
