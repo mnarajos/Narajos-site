@@ -136,7 +136,7 @@ try{
  await cellsAnswer.fill("A cell wall supports the leaf cell.");
  await pilotPage.reload();
  assert.equal(await cellsAnswer.inputValue(),"A cell wall supports the leaf cell.");
- await pilotPage.locator("[data-ks3-transfer] summary").click();
+ await pilotPage.locator("[data-ks3-transfer]").getByText("Compare your explanation",{exact:true}).click();
  assert(await pilotPage.locator("[data-ks3-transfer]").getByText(/The cell wall supports the plant cell/).isVisible());
  await pilotPage.goto(base+"/ks3/lesson/?topic=states-of-matter&guided=1");
  assert(await pilotPage.getByRole("heading",{name:"Warm the solid",exact:true}).isVisible());

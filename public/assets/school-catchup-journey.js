@@ -29,7 +29,7 @@ function feedbackFor(question, selected) {
 function supportStatus(outcome) {
   return {
     independent: "Correct without extra help",
-    supported: "Correct after help or a retry",
+    supported: "Correct with guidance, a clue or a retry",
     explained: "Explanation used"
   }[outcome] || "";
 }
@@ -431,7 +431,9 @@ export function mountJourney(host, model, lesson) {
   function advance() {
     const atEnd = state.step === steps.length - 1;
     const repeat = atEnd && retry && state.helped && !state.repeating;
-    const outcome = state.explained ? "explained" : state.helped || (guided && currentQuestion().guide) ? "supported" : "independent";
+    const {guide, worked} = currentQuestion();
+    const usedSupport = state.helped || (guided && (guide || worked));
+    const outcome = state.explained ? "explained" : usedSupport ? "supported" : "independent";
     if (state.repeating) state.followUp = outcome;
     else {
       state.outcomes ||= {};

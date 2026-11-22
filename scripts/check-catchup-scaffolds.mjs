@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 
 export async function checkCatchupScaffolds(browser, base) {
   const page = await browser.newPage({viewport: {width: 320, height: 780}, hasTouch: true, isMobile: true});
+  const errors = [];
+  page.on("pageerror", error => errors.push(page.url() + ": " + error.message));
   const journey = page.locator(".school-journey");
   const check = journey.getByRole("button", {name: "Check", exact: true});
   const dialog = journey.getByRole("dialog");
@@ -13,22 +15,28 @@ export async function checkCatchupScaffolds(browser, base) {
   };
   const narrow = async (scope, id) => assert(await scope.evaluate(node => node.scrollWidth <= node.clientWidth + 3), `${id} overflows`);
   try {
-    for (const [year, count] of [[7, 12], [8, 11], [9, 12]]) {
+    for (const [year, count] of [[7, 12], [8, 13], [9, 12]]) {
       await page.goto(`${base}/science-catch-up/?year=${year}`);
       const lessons = page.locator(year < 9 ? ".school-topic-link" : ".school-concept-list a");
       await lessons.first().waitFor();
       const urls = await lessons.evaluateAll(items => items.map(item => item.href));
       assert.equal(urls.length, count, `Year ${year} lesson count`);
+      assert.equal(new Set(urls).size, count, `Year ${year} has duplicate lesson links`);
       for (const url of urls) {
         await page.goto(url);
         await page.locator(".school-opening-hook").waitFor();
         await page.locator("#catchup-evidence").waitFor();
         await check.press("Enter");
         await dialog.getByRole("radio").first().waitFor();
+        for (const image of await dialog.locator("img").all()) {
+          await image.evaluate(node => node.decode());
+          assert((await image.getAttribute("alt"))?.trim(), `${url} is missing a diagram description`);
+        }
         await narrow(dialog, url);
         assert(!(await dialog.getByRole("button", {name: "Catch-up notes", exact: true}).count()));
         await page.keyboard.press("Escape");
         await dialog.waitFor({state: "hidden"});
+        assert(await journey.getByRole("button", {name: "Resume check"}).evaluate(button => document.activeElement === button));
       }
     }
 
@@ -54,7 +62,7 @@ export async function checkCatchupScaffolds(browser, base) {
     await choose("It speeds up. The resultant force is 30 N to the right.", "Finish catch-up");
     await journey.getByRole("heading", {name: "Catch-up complete!"}).waitFor();
     const evidence = await page.evaluate(() => JSON.parse(localStorage.getItem("narajos.catchup.v1.7.forces")));
-    assert.deepEqual(Object.values(evidence.outcomes), ["independent", "supported", "supported"]);
+    assert.deepEqual(Object.values(evidence.outcomes), ["supported", "supported", "supported"]);
     assert.equal(evidence.followUp, "independent");
     await journey.getByRole("button", {name: "Try it yourself"}).press("Enter");
     await page.getByText("Help with your answer", {exact: true}).press("Enter");
@@ -70,6 +78,7 @@ export async function checkCatchupScaffolds(browser, base) {
     await choose("The same distance from the pivot");
     await check.press("Enter");
     assert(await dialog.getByRole("img", {name: /12 N acts down/}).isVisible());
+    assert.match(await dialog.ariaSnapshot(), /img "12 N acts down/);
     await choose("2 m from the pivot");
     await check.press("Enter");
     await choose("Yes. Both moments are 40 N m in opposite directions.", "Finish catch-up");
@@ -84,8 +93,20 @@ export async function checkCatchupScaffolds(browser, base) {
     await check.press("Enter");
     await choose("A magnesium ion with charge +2", "Finish catch-up");
     await journey.getByRole("link", {name: "Revise C1", exact: true}).waitFor();
+
+    await page.goto(base + "/science-catch-up/lesson/?topic=energy-transfer");
+    await reopen.press("Enter");
+    await choose("A, because its power is higher.");
+    assert(await journey.getByText("Calculate efficiency", {exact: true}).isVisible());
+    await check.press("Enter");
+    await choose("40%");
+    await check.press("Enter");
+    await choose("35%, because 70 ÷ 200 = 0.35", "Finish catch-up");
+    const powerProgress = await page.evaluate(() => JSON.parse(localStorage.getItem("narajos.catchup.v1.9.energy-transfer")));
+    assert.deepEqual(Object.values(powerProgress.outcomes), ["supported", "supported", "independent"]);
+    assert.deepEqual(errors, [], "JavaScript errors in Year 7–9 catch-up");
   } finally {
     await page.close();
   }
-  console.log("Year 7–9: all 35 opening checks, worked examples, guided practice, independent follow-up and draft persistence passed.");
+  console.log("Year 7–9: all 37 opening checks, worked examples, guided practice, independent follow-up and draft persistence passed.");
 }

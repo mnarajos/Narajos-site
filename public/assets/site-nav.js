@@ -56,17 +56,15 @@
   var pageLinks=Array.from(nav.querySelectorAll(".site-dropdown a"));
   var current=pageLinks.find(function(link){return link.pathname+link.search+link.hash===section;});
   if(!current)current=pageLinks.find(function(link){return !link.search&&!link.hash&&pathname.startsWith(link.pathname);});
-  if(!current)current=pageLinks.find(function(link){return link.hash==="#catchup"&&link.pathname===pathname;});
   if(!current){
    if(section==="/science-catch-up/")nav.querySelector("details").classList.add("site-section-current");
    return;
   }
   current.closest("details").classList.add("site-section-current");
-  current.setAttribute("aria-current",current.pathname+current.search+current.hash===pathname+location.search+location.hash?"page":"location");
+  current.setAttribute("aria-current",current.pathname+current.search===pathname+location.search?"page":"location");
  }
  showCurrentPage();
  document.addEventListener("narajos:catchup-year",showCurrentPage);
- window.addEventListener("hashchange",showCurrentPage);
  var menus=Array.from(nav.querySelectorAll("details"));
  if(!menus.length)return;
  function closeOthers(keep){
