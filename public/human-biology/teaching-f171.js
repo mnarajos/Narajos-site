@@ -123,7 +123,7 @@
       apply: {
         ...written("Use this fictional peak-flow record to assess the claim that lung function steadily declined. Cite the comparison you trust most and explain what you would check next.",
           ["Weeks 1 and 3 used comparable conditions and have overlapping readings.", "Week 2 is lower, but different equipment and technique could account for it. One result is missing.", "Repeat measures with consistent equipment and technique and check device accuracy before deciding whether a trend is present."],
-          "The comparable weeks show similar recorded values. The lower week 2 values were recorded under different conditions, so the record does not establish a steady decline. Flag the missing week 3 value and take standardised readings with checked equipment."),
+          "The comparable weeks show similar recorded values. The lower week 2 values were recorded under different conditions, so the record does not establish a steady decline. Flag the missing week 3 value and take standardised readings with checked equipment.", ["Which weeks used comparable equipment and technique?"]),
         table: { caption: "Fictional peak-flow record (L/min)", head: ["Week", "First", "Second", "Third", "Conditions"],
           rows: [["1", "390", "400", "390", "Same device and technique"], ["2", "340", "350", "345", "Different device, no technique reminder"], ["3", "395", "—", "390", "As week 1"]] }
       },
@@ -215,7 +215,7 @@
       apply: {
         ...written("Evaluate the claim that the new walking aid alone caused the larger improvement. Use both rows and explain how you would strengthen the study.",
           ["The new-aid group improved by 16 m, compared with 9 m, a 7 m observed difference.", "The new-aid group had more supervised practice, which could also affect walking distance.", "Keep practice comparable or use a design that separates the two factors. A larger and longer study can address precision or durability."],
-          "The new-aid group gained 7 m more on average. Extra practice could explain some of this difference, so the observed improvement does not isolate the aid's effect. Compare the aids with matched practice and assess uncertainty over longer follow-up."),
+          "The new-aid group gained 7 m more on average. Extra practice could explain some of this difference, so the observed improvement does not isolate the aid's effect. Compare the aids with matched practice and assess uncertainty over longer follow-up.", ["What differed between the groups apart from the aid?"]),
         table: {caption: "Fictional walking-aid study after four weeks", head: ["Group", "People", "Practice per week", "Mean gain"], rows: [["New aid", "18", "3 sessions", "16 m"], ["Usual aid", "18", "1 session", "9 m"]] }
       },
       followup: choice("A randomised study in 40 people reports a small average benefit after four weeks. What can it say about rare harms after a year?", 0,

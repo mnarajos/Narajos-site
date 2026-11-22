@@ -463,6 +463,9 @@ function reteachFor(q){
  if(route==="catchup/f170/1.1.2"&&(q.type==="number"||q.id==="p-cell-actual-width-diagnostic")){
   target=[4,"Revisit the worked unit conversion"];
  }
+ if(route==="catchup/f171/4.2.1"&&(q.stage==="foundation"||q.stage==="diagnostic"||q.type==="number")){
+  target=[2,"Revisit why a positive screen can be false"];
+ }
  return { route:route, href:route+(target?"?review="+target[0]:""),
   label:target?target[1]:"Need more help? Catch up on this idea" };
 }

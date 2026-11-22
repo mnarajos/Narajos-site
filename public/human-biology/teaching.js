@@ -127,7 +127,8 @@
         '<option value="included"' + (value === "included" ? ' selected' : '') + '>Included</option>' +
         '<option value="revise"' + (value === "revise" ? ' selected' : '') + '>Needs work</option></select></li>';
     }).join("");
-    return '<h3 tabindex="-1">Review your explanation</h3><div class="hb-review-answers">' +
+    return '<h3 tabindex="-1">Review your explanation</h3><p>' + escape(question.prompt) +
+      '</p><div class="hb-review-answers">' +
       '<section><h4>Your answer</h4><p>' + escape(state.original) + '</p></section>' +
       '<section><h4>Model explanation</h4><p>' + escape(question.explanation) + '</p></section></div>' +
       '<p>Compare the reasoning against each criterion.</p><ul>' + checks + '</ul>' +
@@ -145,7 +146,6 @@
     const record = load()[key] || {};
     const questions = { guided: lesson.guided, independent: lesson.apply, followup: lesson.followup };
     const recommended = root.querySelector("[data-hb-resume], [data-hb-build]");
-    const recommendedParent = recommended?.parentElement;
 
     function updateFollowup() {
       const state = record.independent;
@@ -160,19 +160,17 @@
       const completed = state.accepted || state.outcome === "selfReview";
       const controls = section.querySelector(".hb-controls");
       if (completed) controls.hidden = true;
-      if (recommended && actions.contains(recommended)) {
-        recommended.classList.remove("button", "primary");
-        recommendedParent.prepend(recommended);
-      }
       actions.innerHTML = "";
       if (completed && stage === "guided") {
         actions.innerHTML = openStageButton("independent", "Apply it independently", "primary");
-      } else if (completed && stage === "independent" && !root.querySelector("[data-hb-followup]").hidden &&
-                 !record.followup?.accepted) {
-        actions.innerHTML = openStageButton("followup", "Try a fresh check", "primary");
+      } else if (completed && stage === "independent" && !root.querySelector("[data-hb-followup]").hidden) {
+        actions.innerHTML = openStageButton("followup", record.followup?.accepted ? "Review fresh check" : "Try a fresh check", "primary");
       } else if (completed && recommended) {
-        recommended.classList.add("button", "primary");
-        actions.append(recommended);
+        const next = document.createElement("a");
+        next.className = "button primary";
+        next.href = recommended.href;
+        next.textContent = recommended.hasAttribute("data-hb-resume") ? "Continue your saved questions" : "Continue to practice";
+        actions.append(next);
       } else if (state.wrong || state.revealed) {
         actions.innerHTML = openStageButton("model", "Revisit worked example", "quiet");
       }
