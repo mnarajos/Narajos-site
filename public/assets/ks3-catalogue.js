@@ -4,6 +4,7 @@ import { recallFor, linkForward } from "./ks3-connections.js";
 import { scienceParagraph } from "./ks3-words.js";
 import { explore } from "./ks3-explorations.js";
 import { fairTestPractice, fairTestPlan } from "./ks3-fair-tests.js";
+import { addKS3Journey } from "./school-catchup-ks3.js";
 
 const illustrations = {
   "fair-tests": ["ramps", "A green toy car on a low ramp and a blue car on a higher ramp."],
@@ -400,6 +401,7 @@ function renderLesson(lesson, year, index) {
   }
   if (follow) checks.append(follow);
   lessonRoot.replaceChildren(teaching, checks, homeActivity(lesson.id), finish);
+  addKS3Journey(teaching, lesson, year);
 }
 
 const lessonRoot = document.querySelector("[data-ks3-lesson]");
