@@ -106,9 +106,10 @@ function mount(closing, id, guide) {
     for (const step of [plan, draft].filter(Boolean)) {
       const reference = element("details");
       reference.className = "writing-reference";
-      const copy = referenceSource.cloneNode(true);
-      for (const img of copy.querySelectorAll("img")) img.loading = "lazy";
-      reference.append(element("summary", label), copy);
+      reference.append(element("summary", label));
+      reference.addEventListener("toggle", () => {
+        if (reference.open && reference.children.length === 1) reference.append(referenceSource.cloneNode(true));
+      });
       step.querySelector("summary").after(reference);
     }
   }
