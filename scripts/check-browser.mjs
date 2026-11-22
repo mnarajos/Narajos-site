@@ -32,6 +32,31 @@ async function checkPage(page,name){
 }
 try{
  {
+ const writingTouch=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+ writingTouch.on("pageerror",err=>errors.push("Sentence picker: "+err.message));
+ await writingTouch.goto(base+"/teaching/focused-writing/order/");
+ const touchOrder=writingTouch.locator('[data-writing-order="sandstone"]');
+ const touchSlot=touchOrder.locator('[data-order-position="0"]');
+ const touchControl=touchSlot.getByRole("button");
+ const dialog=touchOrder.getByRole("dialog",{name:"Topic sentence"});
+ assert(await touchOrder.locator(".paragraph-bank").isHidden());
+ await touchControl.scrollIntoViewIfNeeded();
+ await touchControl.tap();
+ await dialog.waitFor({timeout:3000}).catch(async error=>{
+  await screen(writingTouch,"writing-touch-picker-not-open");
+  throw new Error("Tap should open the picker. "+await touchSlot.innerText(),{cause:error});
+ });
+ await dialog.getByRole("button",{name:/^Sand grains settled/}).tap();
+ assert.match(await touchSlot.innerText(),/Sand grains settled/);
+ await touchControl.tap();
+ await dialog.getByRole("button",{name:/^This sandstone/}).tap();
+ assert.match(await touchSlot.innerText(),/This sandstone/);
+ await touchControl.tap();
+ await dialog.getByRole("button",{name:"Remove sentence",exact:true}).tap();
+ assert(await touchSlot.getByRole("button",{name:"Choose sentence for topic sentence"}).isVisible());
+ await writingTouch.close();
+ }
+ {
  const pilotPage=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
  pilotPage.on("pageerror",err=>errors.push("Science Catch-up: "+err.message));
  await pilotPage.goto(base+"/science-catch-up/");
@@ -1856,19 +1881,6 @@ try{
  const firstSandSentence=desktopOrder.locator(".paragraph-bank .paragraph-drag-card").filter({hasText:"This sandstone formed"});
  await firstSandSentence.dragTo(slot(desktopOrder,0));
  assert.match(await slot(desktopOrder,0).innerText(),/This sandstone formed/);
- await touch.goto(base+"/teaching/focused-writing/order/");
- const touchOrder=touch.locator('[data-writing-order="sandstone"]');
- const touchSlot=slot(touchOrder,0);
- assert(await touchOrder.locator(".paragraph-bank").isHidden());
- await touchSlot.getByRole("button").tap();
- await touchOrder.getByRole("dialog").getByRole("button",{name:/^Sand grains settled/}).tap();
- assert.match(await touchSlot.innerText(),/Sand grains settled/);
- await touchSlot.getByRole("button").tap();
- await touchOrder.getByRole("dialog").getByRole("button",{name:/^This sandstone/}).tap();
- assert.match(await touchSlot.innerText(),/This sandstone/);
- await touchSlot.getByRole("button").tap();
- await touchOrder.getByRole("button",{name:"Remove sentence",exact:true}).tap();
- assert(await touchSlot.getByRole("button",{name:"Choose sentence for topic sentence"}).isVisible());
  await touch.close();
 
  await navPage.goto(base+"/diagram-practice/#breathing");

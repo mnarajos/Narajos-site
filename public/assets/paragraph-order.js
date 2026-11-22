@@ -150,7 +150,7 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
     if (current !== null) pickerTools.append(button("Remove sentence", () => { remove(position); picker.close(); }));
     pickerTools.append(close);
     picker.showModal();
-    pickerTitle.focus();
+    pickerTitle.focus({ preventScroll: true });
   }
 
   const canDrag = matchMedia("(min-width: 761px) and (pointer: fine)");
