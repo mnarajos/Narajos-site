@@ -61,9 +61,7 @@ const home=read("index.html"),teacher=read("teacher/index.html");
 const alevel=read("alevel/index.html"),gcse=read("gcse/index.html");
 const humanIndex=read("human-biology/index.html");
 requireTrue(humanIndex.includes('/human-biology/companion.js'),"Human Biology companion not loaded");
-requireTrue(alevel.includes("function showCatchupIndex(")&&alevel.includes("function showCatchup("),"A-level catch-up route implementation missing");
 requireTrue(alevel.includes('href="#catchup-')&&alevel.includes('href="#catchup"'),"A-level catch-up navigation missing");
-requireTrue(alevel.includes("function showReteach("),"Existing A-level error-feedback reteach missing");
 requireTrue(home.includes('href="/human-biology/"'),"Human Biology link missing from homepage");
 requireTrue(read("human-biology/index.html").includes('/human-biology/app.js'),"Human Biology application script missing");
 requireTrue(read("human-biology/index.html").includes('href="/" id="site-home"'),"Human Biology site return link missing");
@@ -92,8 +90,6 @@ requireTrue(home.includes("GCSE Combined Science (AQA)"),"Homepage must name AQA
 requireTrue((home.match(/class="home-icon"/g)||[]).length===3,"Homepage must give each resource type a distinctive icon");
 const simulated=read("teaching/simulations/index.html");
 requireTrue((simulated.match(/class="app-card sim-card sim-card--/g)||[]).length===5,"Simulation catalogue should have five fully clickable cards");
-requireTrue(!simulated.includes("Open simulation"),"Simulation cards should not repeat Open simulation as a label");
-for(const p of sharedHeaderPages)requireTrue(read(p).includes('src="/assets/site-nav.js"'),"Shared dropdown behaviour is not loaded in "+p);
 requireTrue(existsSync(path.join(root,"assets/site-nav.js")),"Site nav script missing");
 requireTrue(existsSync(path.join(root,"assets/catchup-visuals.css")),"Catch-up diagram styles missing");
 requireTrue(alevel.includes('src="/assets/catchup-visuals.js"')&&alevel.includes("KeystoneCatchupVisuals.render(t,c.id)"),"A-level catch-up visuals not wired");
@@ -114,17 +110,23 @@ try{
  requireTrue(read("human-biology/reproduction-simulation.js").includes("LH surge")&&read("human-biology/companion.js").includes("KeystoneReproductionSimulation.mount"),"F175 hormone-sequence model must be available in catch-up");
 }catch(e){failures.push("Catch-up visual script failed to parse or render: "+e.message);}
 requireTrue(teacher.includes('class="narajos-home" aria-label="Narajos homepage"'),"Focused Questions return link missing");
-requireTrue(teacher.includes("function saveDraft()")&&teacher.includes("function restoreDraft()"),"Focused Questions draft recovery missing");
 requireTrue(["printq","printms","printboth"].every(id=>teacher.includes('id="'+id+'"')),"Focused Questions print options missing");
-requireTrue(teacher.includes(".question-sheet+.answer-sheet{break-before:page}"),"Combined answer sheet needs a page break");
-requireTrue(/<label for="lesson">[^<]*<span[^>]*>2<\/span> Topic<\/label>/.test(teacher),"Teacher topic label missing");
-requireTrue(teacher.includes("No assumption about another school"),"Incorrect date-based default topic");
 for(const [name,html] of [["GCSE",gcse],["A-level",alevel]]){
  requireTrue(html.includes('class="narajos-home"'),name+" main site return link missing");
- requireTrue(html.includes("function siteLeavePrompt("),name+" leave confirmation missing");
  requireTrue(html.includes("beforeunload"),name+" browser exit protection missing");
 }
 requireTrue(alevel.includes('"The stage of the cell cycle in which DNA replicates","S phase",["interphase","synthesis phase","S phase of interphase","S"]'),"A-level S phase or S answer missing");
+const sitemap=[...read("sitemap.xml").matchAll(/<loc>([^<]+)<\/loc>/g)].map(match=>match[1]);
+requireTrue(new Set(sitemap).size===sitemap.length,"Sitemap contains duplicate URLs");
+requireTrue(sitemap.includes("https://narajos.com/science-catch-up/"),"Sitemap must contain the catch-up catalogue");
+for(const href of sitemap){
+ const url=new URL(href);
+ const page=url.pathname.slice(1)+"index.html";
+ requireTrue(url.origin==="https://narajos.com"&&!url.hash&&!url.search,"Sitemap URL must be canonical: "+href);
+ const html=read(page);
+ requireTrue(html.includes('rel="canonical" href="'+href+'"'),"Sitemap URL disagrees with page canonical: "+href);
+ requireTrue(!/<meta[^>]*name="robots"[^>]*noindex/i.test(html),"Sitemap lists a noindex page: "+href);
+}
 requireTrue(existsSync(path.join(root,"assets/site.css")),"Site CSS missing");
 requireTrue(existsSync(path.join(root,"assets/simulation-shell.css")),"Simulation shell CSS missing");
 

@@ -3,28 +3,11 @@
  * Run after: npm install --no-save playwright@1.56.1 && npx playwright install chromium
  */
 import assert from "node:assert/strict";
-import {createServer} from "node:http";
-import {readFile,stat} from "node:fs/promises";
-import {resolve,extname,sep} from "node:path";
+import {servePublic} from "./browser-test-site.mjs";
 import {chromium} from "playwright";
 import "./check-writing-marking.mjs";
 
-const root=resolve("public");
-const types={".html":"text/html; charset=utf-8",".js":"text/javascript; charset=utf-8",".css":"text/css; charset=utf-8",".svg":"image/svg+xml",".json":"application/json",".png":"image/png",".jpg":"image/jpeg",".webp":"image/webp",".woff2":"font/woff2"};
-const server=createServer(async(req,res)=>{
- try{
-  const url=new URL(req.url,"http://localhost");
-  let path=resolve(root,"."+decodeURIComponent(url.pathname));
-  if(path!==root&&!path.startsWith(root+sep)){res.writeHead(403);res.end();return;}
-  const meta=await stat(path).catch(()=>null);
-  if(meta?.isDirectory()||url.pathname.endsWith("/"))path=resolve(path,"index.html");
-  const content=await readFile(path);
-  res.writeHead(200,{"Content-Type":types[extname(path)]||"application/octet-stream","Cache-Control":"no-store"});
-  res.end(content);
- }catch(_){res.writeHead(404);res.end("Not found");}
-});
-await new Promise(done=>server.listen(0,"127.0.0.1",done));
-const port=server.address().port,base="http://127.0.0.1:"+port;
+const {server,base}=await servePublic();
 const browser=await chromium.launch({headless:true,args:["--no-sandbox"]});
 const errors=[];
 async function checkReadingSpacing(page, label) {
@@ -801,6 +784,7 @@ try{
   assert(await fq.locator("#lesson option").count()>0);
  }
  const topic=setup.getByLabel("2 Topic",{exact:true});
+ assert.equal(await topic.inputValue(),await topic.locator("option").first().getAttribute("value"));
  await topic.selectOption({index:2});
  const remember=setup.getByRole("button",{name:"Remember",exact:true});
  const understanding=setup.getByRole("button",{name:"Check understanding",exact:true});

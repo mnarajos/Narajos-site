@@ -5,12 +5,12 @@ on:
     branches: [main]
     paths:
       - 'public/**'
-      - 'scripts/check-browser.mjs'
+      - 'scripts/**'
       - '.github/workflows/browser-smoke.yml'
   pull_request:
     paths:
       - 'public/**'
-      - 'scripts/check-browser.mjs'
+      - 'scripts/**'
       - '.github/workflows/browser-smoke.yml'
   workflow_dispatch:
 
@@ -40,3 +40,24 @@ jobs:
           path: /tmp/narajos-*.png
           if-no-files-found: ignore
           retention-days: 7
+
+
+  additional-browser-smoke:
+    name: ${{ matrix.engine }} smoke
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser and test runner
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps ${{ matrix.engine }}
+      - name: Check representative Narajos flows
+        run: node scripts/check-browser-engines.mjs ${{ matrix.engine }}
