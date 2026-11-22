@@ -12,7 +12,7 @@
  <link rel="stylesheet" href="/assets/home-link.css">
  <link rel="stylesheet" href="/assets/science-practice.css">
  <script defer src="/assets/paragraph-drafts.js"></script>
- <script defer src="/assets/writing-feedback.js"></script>
+ <script type="module" src="/assets/writing-feedback.js"></script>
  <script type="module" src="/assets/writing-outlines.js"></script>
 </head>
 <body>
@@ -26,31 +26,64 @@
    <h1>KS3 · Explain a change</h1>
 
   </div>
-  <article class="practice-card writing-card">
+  <article class="practice-card writing-card" data-writing-mark="dye">
    <figure class="writing-visual">
     <img src="/assets/writing-prompts/dye-spread.png" alt="After the same time, the colour covers a larger area in warm water than it does in cool water.">
     <figcaption>Model of two unstirred beakers after the same length of time. <a href="/assets/writing-prompts/dye-spread.png">View full size</a></figcaption>
    </figure>
-   <p class="writing-prompt writing-cue" data-writing-cue="look"><strong>Start here.</strong> Point to the beaker where the colour has spread further. Say what you see: “The colour has spread further in the … water.”</p>
+   <p class="writing-prompt writing-cue" data-writing-cue="look"><strong>Start here.</strong> Both beakers have the same amount of dye. Point to the one where it spread further. Say what you see to yourself or a partner.</p>
+
+    <section class="writing-sentence" data-writing-exercise="dye" data-writing-kind="short" aria-labelledby="ks3-sentence-short-title">
+     <h2 class="writing-cue" data-writing-cue="respond" id="ks3-sentence-short-title">Write one sentence</h2>
+     <label for="ks3-sentence-short">What explains the difference in how far the dye spread?</label>
+     <p class="writing-starter"><strong>Sentence starter</strong> The dye spread further in the warm water because…</p>
+      <button type="button" data-use-starter="The dye spread further in the warm water because ">Use sentence starter</button>
+     <textarea id="ks3-sentence-short" data-draft rows="2" maxlength="500"></textarea>
+     <button type="button" data-check-sentence>Check my sentence</button>
+     <p data-sentence-status role="status"></p>
+     <ul class="writing-mark-list" data-sentence-results hidden></ul>
+     <details class="writing-sentence-model" data-sentence-model hidden>
+      <summary>Compare with a model sentence</summary>
+      <p class="model">The dye spread further in the warm water because its particles moved faster on average.</p>
+     </details>
+     <details data-sentence-comparison hidden>
+      <summary>Compare your first and latest sentences</summary>
+      <dl class="writing-versions">
+       <dt>First checked</dt><dd data-first-sentence></dd>
+       <dt>Latest checked</dt><dd data-revised-sentence></dd>
+      </dl>
+     </details>
+    </section>
+   <details class="writing-step">
+    <summary>Practise because, but and so</summary>
+    <p><strong>Because</strong> gives the reason. “The dye spread further in warm water because …”</p>
+    <p><strong>But</strong> shows a contrast. “Both beakers had the same amount of dye, but …”</p>
+    <p><strong>So</strong> tells the reader what followed. “The dye particles moved faster in warm water, so …”</p>
+   </details>
    <p class="writing-cue" data-writing-cue="respond"><strong>Now explain.</strong> Why did the colour spread further in the same time?</p>
-   <p class="tiny">First time? Look at the worked example before you plan.</p>
+   <p class="tiny">Ready to write more? Use the worked example and plan below.</p>
    <details class="writing-step">
     <summary class="writing-cue" data-writing-cue="model">See a worked example</summary>
-    <p class="writing-example-question"><strong>Example question</strong><br>Why does the pressure rise when you warm air in a sealed bottle that cannot expand?</p>
+    <p class="writing-example-question"><strong>Example question</strong><br>Why did a drop of blue dye spread further through warm water than cool water?</p>
     <dl class="writing-example-plan">
-     <div class="writing-cue" data-writing-cue="opening"><dt>Topic sentence</dt><dd>Warming the air raises the pressure inside the bottle.</dd></div>
-     <div class="writing-cue" data-writing-cue="notes"><dt>Supporting notes</dt><dd><ul><li>The bottle stays the same size and the same particles stay inside.</li><li>Warmer air particles move faster on average.</li><li>They hit the walls more often and each hit has a greater effect.</li></ul></dd></div>
-     <div class="writing-cue" data-writing-cue="closing"><dt>Concluding sentence</dt><dd>The force on each unit of wall area increases, so the pressure rises.</dd></div>
+     <div class="writing-cue" data-writing-cue="opening"><dt>Topic sentence</dt><dd>Blue dye spreads faster through warmer water.</dd></div>
+     <div class="writing-cue" data-writing-cue="notes"><dt>Supporting notes</dt><dd><ul><li>Same time in both beakers</li><li>Warmer water → faster random movement of dye particles</li><li>Dye spreads further from where it started</li></ul></dd></div>
+     <div class="writing-cue" data-writing-cue="closing"><dt>Concluding sentence</dt><dd>Faster random movement explains why we see more spreading in the warm water.</dd></div>
     </dl>
     <details class="writing-model">
      <summary>Read the full paragraph</summary>
-     <p class="model">Warming the air raises the pressure inside the bottle. The bottle stays the same size and the same particles stay inside. When the air warms up, the particles move faster on average. They hit the walls more often and each hit has a greater effect. The force on each unit of wall area increases, so the pressure rises.</p>
+     <p class="model">Blue dye spreads faster through warmer water. The two drops have the same time to spread. In warmer water the dye particles move faster on average. They move randomly, so overall more dye spreads away from the place where it started. This explains why the blue patch is wider in the warm beaker.</p>
     </details>
    </details>
    <details class="writing-step">
     <summary class="writing-cue" data-writing-cue="notes">Plan your paragraph</summary>
     <p>Write the main idea in one sentence. Jot down what happens first and next. Finish by linking your ideas back to the question.</p>
-    <p><strong>Topic sentence to start with:</strong> Food colouring spreads faster through warm water.</p>
+    <p>Use a short note for each step in the explanation. Say how the movement changes, then link it back to what you saw.</p>
+    <div class="writing-scaffold" data-outline-scaffold>
+     <p><strong>Start with part of the plan.</strong> This adds an opening and a note. Add the particle movement yourself.</p>
+     <button type="button" data-scaffold-opening="Food colouring spreads faster through warm water." data-scaffold-notes="Same time · warm water → ...">Use a partly filled plan</button>
+     <p data-outline-status role="status"></p>
+    </div>
     <details><summary>Help ordering your notes</summary><p>Warmer water → dye particles move faster on average → colour spreads faster. Try the starter “When the water is warmer, the dye particles …”</p></details>
     <div class="writing-field-heading">
      <label for="ks3-topic">Topic sentence:</label>
@@ -80,6 +113,10 @@
    </details>
    <details class="writing-step">
     <summary class="writing-cue" data-writing-cue="respond">Write your paragraph</summary>
+    <div class="writing-scaffold">
+     <button type="button" data-use-sentences>Use my checked sentences</button>
+     <p role="status"></p>
+    </div>
     <div class="writing-field-heading">
      <label for="ks3-paragraph">Your paragraph:</label>
      <details class="writing-help">
@@ -105,6 +142,30 @@
      <li data-look-for="[&quot;\\bparticles?\\b&quot;, &quot;\\brandom\\w*\\b&quot;]">Did you explain that the dye particles move randomly and faster on average in warmer water?</li>
      <li data-look-for="[&quot;\\bdiffusion\\b&quot;, &quot;\\bconcentration\\b&quot;]">Did you connect their movement to the overall spread from where there is more dye to where there is less dye? This is diffusion.</li>
     </ul>
+   </details>
+   <details class="writing-step">
+    <summary class="writing-cue" data-writing-cue="notes">Try the same idea in a new example</summary>
+    <section class="writing-sentence" data-writing-exercise="dye" data-writing-kind="transfer" aria-labelledby="ks3-sentence-transfer-title">
+     <h2 class="writing-cue" data-writing-cue="respond" id="ks3-sentence-transfer-title">Compare the air in two boxes</h2>
+     <p>A model starts with the same amount of fragrance in two sealed boxes. After 30 seconds it has spread further in the warm box than in the cool one.</p>
+     <label for="ks3-sentence-transfer">Explain the difference in one sentence.</label>
+
+     <textarea id="ks3-sentence-transfer" data-draft rows="2" maxlength="500"></textarea>
+     <button type="button" data-check-sentence>Check my sentence</button>
+     <p data-sentence-status role="status"></p>
+     <ul class="writing-mark-list" data-sentence-results hidden></ul>
+     <details class="writing-sentence-model" data-sentence-model hidden>
+      <summary>Compare with a model sentence</summary>
+      <p class="model">The fragrance spread further through the warm air because the fragrance particles moved faster on average.</p>
+     </details>
+     <details data-sentence-comparison hidden>
+      <summary>Compare your first and latest sentences</summary>
+      <dl class="writing-versions">
+       <dt>First checked</dt><dd data-first-sentence></dd>
+       <dt>Latest checked</dt><dd data-revised-sentence></dd>
+      </dl>
+     </details>
+    </section>
    </details>
   </article>
  </main>

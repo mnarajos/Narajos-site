@@ -7,6 +7,7 @@ import {createServer} from "node:http";
 import {readFile,stat} from "node:fs/promises";
 import {resolve,extname,sep} from "node:path";
 import {chromium} from "playwright";
+import "./check-writing-marking.mjs";
 
 const root=resolve("public");
 const types={".html":"text/html; charset=utf-8",".js":"text/javascript; charset=utf-8",".css":"text/css; charset=utf-8",".svg":"image/svg+xml",".json":"application/json",".png":"image/png",".jpg":"image/jpeg",".webp":"image/webp",".woff2":"font/woff2"};
@@ -555,17 +556,34 @@ try{
  await phoneTeacherMenu.getByRole("link",{name:"Focused Writing",exact:true}).click();
  await navPage.getByRole("link",{name:/KS3 · Explain a change/}).click();
  await navPage.getByRole("heading",{name:"KS3 · Explain a change",exact:true}).waitFor();
+ const ks3Sentence=navPage.locator('[data-writing-exercise="dye"][data-writing-kind="short"]');
+ await ks3Sentence.getByRole("button",{name:"Use sentence starter",exact:true}).press("Enter");
+ const dyeDraft=ks3Sentence.locator("textarea");
+ assert((await dyeDraft.inputValue()).endsWith("because "));
+ await dyeDraft.fill("The dye spread further in the warm water because there were more particles.");
+ await ks3Sentence.getByRole("button",{name:"Check my sentence",exact:true}).click();
+ await ks3Sentence.getByRole("status").filter({hasText:"0 of 1 points confirmed"}).waitFor();
+ await dyeDraft.fill("The dye spread further in the warm water because its particles moved faster.");
+ await ks3Sentence.getByRole("button",{name:"Check my sentence",exact:true}).click();
+ await ks3Sentence.getByRole("status").filter({hasText:"1 of 1 points confirmed"}).waitFor();
+ await ks3Sentence.getByText("Compare your first and latest sentences",{exact:true}).click();
+ assert((await ks3Sentence.locator("[data-first-sentence]").innerText()).includes("more particles"));
+
  const outline=navPage.getByLabel("Supporting notes:",{exact:true});
  await navPage.getByText("Plan your paragraph",{exact:true}).click();
  await outline.fill("warmer → faster random movement → quicker spread");
+ await navPage.getByRole("button",{name:"Use a partly filled plan",exact:true}).click();
+ assert.equal(await outline.inputValue(),"warmer → faster random movement → quicker spread","A scaffold must preserve a pupil’s existing notes");
+ assert((await navPage.getByLabel("Topic sentence:",{exact:true}).inputValue()).includes("Food colouring"));
+
  await navPage.reload();
  if(!await outline.isVisible())await navPage.getByText("Plan your paragraph",{exact:true}).click();
  assert.equal(await outline.inputValue(),"warmer → faster random movement → quicker spread");
  await navPage.getByText("See a worked example",{exact:true}).click();
  assert.equal(await navPage.locator(".writing-example-plan dt").count(),3);
- assert(await navPage.locator(".writing-card .model").isHidden(),"The full KS3 paragraph should be available on request");
+ assert(await navPage.locator(".writing-card .writing-model .model").isHidden(),"The full KS3 paragraph should be available on request");
  await navPage.getByText("Read the full paragraph",{exact:true}).click();
- assert(await navPage.locator(".writing-card .model").isVisible());
+ assert(await navPage.locator(".writing-card .writing-model .model").isVisible());
  for(const [level,visual] of [["ks3","dye-spread"],["gcse","osmosis-results"],["alevel","glucose-cotransport"]]){
   await navPage.goto(base+"/teaching/focused-writing/"+level+"/");
   assert.equal(await navPage.locator("main .writing-card").count(),1,"Share links should show one writing activity");
@@ -575,6 +593,26 @@ try{
   await screen(navPage,"focused-writing-"+level+"-mobile");
  }
  await navPage.goto(base+"/teaching/focused-writing/gcse/");
+ const potatoSentence=navPage.locator('[data-writing-exercise="potato"][data-writing-kind="short"]');
+ const potatoEvidence=potatoSentence.locator("textarea");
+ await potatoEvidence.fill("Dilute: −9% and concentrated: +7%.");
+ await potatoSentence.getByRole("button",{name:"Check my sentence",exact:true}).click();
+ await potatoSentence.getByRole("status").filter({hasText:"0 of 2 points confirmed"}).waitFor();
+ assert.equal(await potatoSentence.locator('[data-review-state="revise"]').count(),2);
+ await potatoEvidence.fill("The potato gained 7% in dilute solution and lost 9% in concentrated solution.");
+ await potatoSentence.getByRole("button",{name:"Check my sentence",exact:true}).press("Enter");
+ await potatoSentence.getByRole("status").filter({hasText:"2 of 2 points confirmed"}).waitFor();
+ await navPage.getByText("Explain one result",{exact:true}).click();
+ const potatoReason=navPage.locator('[data-writing-exercise="potato"][data-writing-kind="reason"]');
+ await potatoReason.locator("textarea").fill("The sample gained mass because water moved into the potato cells.");
+ await potatoReason.getByRole("button",{name:"Check my sentence",exact:true}).click();
+ await potatoReason.getByRole("status").filter({hasText:"1 of 1 points confirmed"}).waitFor();
+ await navPage.getByText("Try a new pair of results",{exact:true}).click();
+ const potatoTransfer=navPage.locator('[data-writing-exercise="potato"][data-writing-kind="transfer"]');
+ await potatoTransfer.locator("textarea").fill("Dilute solution: +5%, concentrated solution: −6%.");
+ await potatoTransfer.getByRole("button",{name:"Check my sentence",exact:true}).click();
+ await potatoTransfer.getByRole("status").filter({hasText:"2 of 2 points confirmed"}).waitFor();
+ await checkReadingSpacing(navPage,"Focused Writing short answers");
  await navPage.getByText("Plan your paragraph",{exact:true}).click();
  const outlineCheck=navPage.getByRole("button",{name:"Check my outline",exact:true});
  const outlineReview=navPage.locator(".writing-outline-review");
@@ -608,9 +646,15 @@ try{
  await checkDraft.click();
  await navPage.getByRole("status").filter({hasText:"Write a draft before checking it."}).waitFor();
  assert(await draft.evaluate(element=>element===document.activeElement));
+ await navPage.getByRole("button",{name:"Use my checked sentences",exact:true}).click();
+ assert((await draft.inputValue()).includes("The potato gained 7%") &&
+  (await draft.inputValue()).includes("water moved into the potato cells"),"Confirmed sentences should be available to build a paragraph");
+
  await draft.fill("The potato lost 7% in dilute solution. In concentrated solution it gained 9%. There was no osmosis.");
  await checkDraft.click();
  const report=navPage.locator("[data-writing-report]");
+ assert.equal(await report.locator('[data-review-state="credited"]').count(),0,"Swapped results must not be credited");
+ await report.getByText("Word and figure checks",{exact:true}).click();
  await report.getByText(/Found in your draft: “7%”, “9%”/).waitFor();
  assert((await report.innerText()).includes("gained 7% in dilute solution and lost 9% in concentrated solution"));
  assert((await report.innerText()).includes("The checker looks for words or values in your draft."));
@@ -618,6 +662,14 @@ try{
  assert(await report.isHidden(),"Editing a checked draft should clear stale feedback");
  await checkDraft.click();
  await navPage.getByRole("status").filter({hasText:"There are separate blocks or list points."}).waitFor();
+ await navPage.context().grantPermissions(["clipboard-read","clipboard-write"]);
+ await navPage.getByRole("button",{name:"Copy for teacher",exact:true}).click();
+ await navPage.getByRole("status").filter({hasText:"Copied."}).waitFor();
+ const copied=await navPage.evaluate(()=>navigator.clipboard.readText());
+ assert(copied.includes("Report both changes in mass.") && copied.includes("First checked: Dilute: −9%") &&
+  copied.includes("Latest sentence: The potato gained 7%") && copied.includes("Supporting notes:") &&
+  copied.includes("Paragraph\nMy observations."),"The teacher copy must include the prompt, revision, outline and paragraph");
+
  await navPage.getByText("Compare with the key ideas",{exact:true}).click();
  assert.equal(await navPage.locator(".writing-key li").count(),4);
  await navPage.getByRole("link",{name:"More GCSE writing tasks",exact:true}).click();

@@ -1,69 +1,133 @@
-(function () {
-  "use strict";
+import { reviewWriting } from "./writing-marking.js";
+import { createRow } from "./writing-practice.js";
 
-  const feedbackMessages = {
-    empty: "Write a draft before checking it.",
-    short: "You have a start. Add supporting sentences and an ending, then check again.",
-    separate: "There are separate blocks or list points. Use your notes to write one connected paragraph.",
-    connected: "Read your paragraph aloud. Check that the opening answers the question and that each sentence follows from the one before it."
-  };
+const messages = {
+  empty: "Write a draft before checking it.",
+  short: "You have a start. Read the feedback and decide what your reader still needs.",
+  separate: "There are separate blocks or list points. Turn your notes into connected sentences.",
+  connected: "Read your paragraph aloud. Check that each sentence follows from the one before it."
+};
 
-  function normalise(text) {
-    return text.toLowerCase().replace(/[−–]/g, "-").replace(/\s+/g, " ").trim();
-  }
+const normalise = text => text.toLowerCase().replace(/[−–]/g, "-").replace(/\s+/g, " ").trim();
 
-  for (const area of document.querySelectorAll("[data-writing-check]")) {
-    const field = document.getElementById(area.dataset.writingCheck);
-    const card = area.closest(".writing-card");
-    const button = area.querySelector("button");
-    const status = area.querySelector("[role=status]");
-    const report = area.querySelector("[data-writing-report]");
-    const results = report.querySelector("ul");
-    const criteria = Array.from(card.querySelectorAll("[data-look-for]"), (item) => ({
-      question: item.textContent.trim(),
-      signals: JSON.parse(item.dataset.lookFor).map((pattern) => new RegExp(pattern, "i"))
-    })).filter(({ signals }) => signals.length);
+for (const area of document.querySelectorAll("[data-writing-check]")) {
+  const field = document.getElementById(area.dataset.writingCheck);
+  const card = area.closest(".writing-card");
+  const button = area.querySelector("button");
+  const status = area.querySelector("[role=status]");
+  const report = area.querySelector("[data-writing-report]");
+  const results = report.querySelector("ul");
+  const pilot = card.dataset.writingMark;
+  const cues = Array.from(card.querySelectorAll("[data-look-for]"), item => ({
+    question: item.textContent.trim(),
+    signals: JSON.parse(item.dataset.lookFor).map(pattern => new RegExp(pattern, "i"))
+  }));
+  const focus = document.createElement("p");
+  focus.className = "writing-next-step";
+  const marked = document.createElement("ul");
+  marked.className = "writing-mark-list";
+  const detail = document.createElement("details");
+  const summary = document.createElement("summary");
+  summary.textContent = "Word and figure checks";
+  const guidance = report.querySelector("p");
+  detail.append(summary, guidance, results);
+  report.append(focus, marked, detail);
 
-    function clearReport() {
-      report.hidden = true;
-      results.replaceChildren();
+  field.addEventListener("input", () => {
+    if (!report.hidden) status.textContent = "Draft changed. Check it again when you’re ready.";
+    else if (status.textContent === messages.empty) status.textContent = "";
+    report.hidden = true;
+  });
+
+  button.addEventListener("click", () => {
+    const draft = field.value.trim();
+    if (!draft) {
+      status.textContent = messages.empty;
+      field.focus();
+      return;
     }
 
-    field.addEventListener("input", () => {
-      if (!report.hidden) status.textContent = "Draft changed. Check it again when you’re ready.";
-      else if (status.textContent === feedbackMessages.empty) status.textContent = "";
-      clearReport();
-    });
+    const prose = normalise(draft);
+    const criteria = pilot ? reviewWriting(pilot, "paragraph", draft) : [];
+    const next = criteria.find(item => item.state === "revise") || criteria.find(item => item.state === "compare");
+    const cue = cues.find(({ signals }) => signals.length && !signals.every(signal => signal.test(prose))) || cues[0];
+    focus.textContent = next ? "Try one change. " + next.feedback :
+      criteria.length ? "Now read your paragraph aloud. Can the reader follow how the science explains what happened?"
+        : "Try one change. " + (cue?.question || "Check that every sentence helps answer the question.");
+    marked.replaceChildren(...criteria.map(createRow));
+    marked.hidden = !criteria.length;
 
-    button.addEventListener("click", () => {
-      clearReport();
-      const draft = field.value.trim();
-      if (!draft) {
-        status.textContent = feedbackMessages.empty;
-        field.focus();
-        return;
-      }
+    results.replaceChildren(...cues.map(({ question, signals }) => {
+      const row = document.createElement("li");
+      const matching = signals.map(signal => prose.match(signal)?.[0]).filter(Boolean);
+      const lead = document.createElement("strong");
+      lead.textContent = matching.length
+        ? "Found in your draft: " + Array.from(new Set(matching)).map(phrase => "“" + phrase.trim() + "”").join(", ") + ". "
+        : "Check this idea. ";
+      row.append(lead, question);
+      return row;
+    }));
+    detail.open = false;
+    const separate = /\n[ \t]*\n|(?:^|\n)[ \t]*(?:[-*•]|\d+[.)])[ \t]+/.test(draft);
+    const sentences = draft.split(/[.!?]+(?=\s|$)/).filter(part => part.trim());
+    status.textContent = separate ? messages.separate : sentences.length < 3 ? messages.short : messages.connected;
+    if (next) status.textContent += " " + next.feedback;
+    report.hidden = false;
+  });
+  area.hidden = false;
+  addCopyButton(card, area, field);
+}
 
-      const separate = /\n[ \t]*\n|(?:^|\n)[ \t]*(?:[-*•]|\d+[.)])[ \t]+/.test(draft);
-      const sentences = draft.split(/[.!?]+(?=\s|$)/).filter((part) => part.trim());
-      let message = feedbackMessages.connected;
-      if (separate) message = feedbackMessages.separate;
-      else if (sentences.length < 3) message = feedbackMessages.short;
+function addCopyButton(card, area, paragraph) {
+  const panel = document.createElement("div");
+  panel.className = "writing-share";
+  const copy = document.createElement("button");
+  copy.type = "button";
+  copy.textContent = "Copy for teacher";
+  const status = document.createElement("p");
+  status.setAttribute("role", "status");
+  const fallback = document.createElement("textarea");
+  fallback.readOnly = true;
+  fallback.setAttribute("aria-label", "Writing to copy for your teacher");
+  fallback.rows = 5;
+  fallback.hidden = true;
+  panel.append(copy, status, fallback);
+  (area.closest("details") || area).after(panel);
 
-      const prose = normalise(draft);
-      for (const { question, signals } of criteria) {
-        const row = document.createElement("li");
-        const matching = signals.map((signal) => prose.match(signal)?.[0]).filter(Boolean);
-        const lead = document.createElement("strong");
-        lead.textContent = matching.length
-          ? "Found in your draft: " + Array.from(new Set(matching)).map((phrase) => "“" + phrase.trim() + "”").join(", ") + ". "
-          : "Check whether you’ve included this. ";
-        row.append(lead, question);
-        results.append(row);
-      }
-      report.hidden = false;
-      status.textContent = message + " Review the checks below.";
-    });
-    area.hidden = false;
-  }
-})();
+  copy.addEventListener("click", async () => {
+    const heading = document.querySelector("main h1").textContent.trim();
+    const task = card.querySelector('p[data-writing-cue="respond"]')?.textContent.trim();
+    const lines = [];
+    for (const activity of card.querySelectorAll("[data-writing-exercise]")) {
+      const field = activity.querySelector("textarea");
+      const current = field.value.trim();
+      const first = activity.dataset.firstSentence;
+      const prompt = field.labels[0].textContent.trim();
+      if (first) lines.push(prompt + "\nFirst checked: " + first);
+      if (current && current !== first) lines.push((first ? "Latest sentence: " : prompt + "\n") + current);
+    }
+    for (const field of card.querySelectorAll("textarea[data-draft]")) {
+      if (field === paragraph || field.closest("[data-writing-exercise]") || !field.value.trim()) continue;
+      const label = field.labels[0]?.textContent.trim().replace(/:$/, "");
+      if (label) lines.push(label + ": " + field.value.trim());
+    }
+    if (paragraph.value.trim()) lines.push("Paragraph\n" + paragraph.value.trim());
+    if (!lines.length) {
+      status.textContent = "Write a sentence, outline or draft first.";
+      return;
+    }
+
+    const text = [heading, task, ...lines].filter(Boolean).join("\n\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      fallback.hidden = true;
+      status.textContent = "Copied. You can paste it into the place your teacher asks you to use.";
+    } catch (_) {
+      fallback.value = text;
+      fallback.hidden = false;
+      fallback.focus();
+      fallback.select();
+      status.textContent = "Your writing is selected. Copy it using your device’s copy command.";
+    }
+  });
+}
