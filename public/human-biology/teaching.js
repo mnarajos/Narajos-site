@@ -72,7 +72,12 @@
       '<button type="submit" class="button primary">' + (choice ? "Check answer" : "Compare my explanation") + '</button>' +
       (question.hints?.length ? '<button type="button" class="button secondary" data-hb-action="hint">Get a hint</button>' : '') +
       '<button type="button" class="button quiet" data-hb-action="explain">Show explanation</button>' +
-      '</div><div class="hb-feedback" role="status" aria-atomic="true"></div><div data-hb-review hidden></div></form></details>';
+      '</div><div class="hb-feedback" role="status" aria-atomic="true" tabindex="-1"></div>' +
+      '<div data-hb-review hidden></div><div class="actions hb-stage-next" hidden></div></form></details>';
+  }
+
+  function openStageButton(stage, label, style) {
+    return '<button type="button" data-hb-open="' + stage + '" class="button ' + style + '">' + label + '</button>';
   }
 
   function render(lesson, context) {
@@ -82,7 +87,9 @@
       ? '<details class="hb-prerequisite"><summary>' + escape(lesson.activate[0]) + '</summary><p>' +
         escape(lesson.activate[1]) + '</p>' + prior + '</details>' : prior;
     const explanation = '<section class="paper panel hb-teach-explain"><h2>Understand the idea</h2>' +
-      paragraphs(lesson.explain) + table(lesson.compare) + context.inline + '</section>';
+      paragraphs(lesson.explain) + table(lesson.compare) + context.inline +
+      (lesson.revision ? '<div class="actions hb-start">' + openStageButton("model", "See worked example", "primary") + '</div>' : '') +
+      '</section>';
     const model = lesson.model?.length ?
       '<details class="paper panel hb-teach-stage" data-hb-model-step="1"><summary>I do · ' + escape(lesson.modelTitle || "Follow a worked example") +
       '</summary>' + context.modelVisual + figure(lesson.photo) + table(lesson.table, lesson.focusCells) +
@@ -90,8 +97,10 @@
         '<li' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
         escape(step) + '</li>').join("") +
       '</ol>' + (lesson.model.length > 1 ?
-        '<button type="button" class="button secondary" data-hb-action="model">Show next step</button>' : '') + '</details>' : "";
-    return '<div class="hb-teaching"><p class="lead hb-objective">' + escape(lesson.goal) + '</p>' + activate +
+        '<button type="button" class="button secondary" data-hb-action="model">Show next step</button>' : '') +
+      (lesson.revision ? '<div class="actions" data-hb-after-model hidden>' +
+        openStageButton("guided", "Try with support", "primary") + '</div>' : '') + '</details>' : "";
+    return '<div class="hb-teaching' + (lesson.revision ? ' hb-teaching-sequence' : '') + '"><p class="lead hb-objective">' + escape(lesson.goal) + '</p>' + activate +
       explanation + model + context.method + task("guided", "We do · Try it with support", lesson.guided) +
       writingExample(lesson.writing) +
       task("independent", "You do · Apply it independently", lesson.apply) +
@@ -135,11 +144,39 @@
     key += lesson.revision ? "/" + lesson.revision : "";
     const record = load()[key] || {};
     const questions = { guided: lesson.guided, independent: lesson.apply, followup: lesson.followup };
+    const recommended = root.querySelector("[data-hb-resume], [data-hb-build]");
+    const recommendedParent = recommended?.parentElement;
 
     function updateFollowup() {
       const state = record.independent;
       root.querySelector("[data-hb-followup]").hidden = !lesson.followup ||
         !state || !(state.wrong || state.hint || state.revealed || state.outcome === "selfReview");
+    }
+
+    function nextAction(section, state) {
+      if (!lesson.revision) return;
+      const stage = section.dataset.hbStage;
+      const actions = section.querySelector(".hb-stage-next");
+      const completed = state.accepted || state.outcome === "selfReview";
+      const controls = section.querySelector(".hb-controls");
+      if (completed) controls.hidden = true;
+      if (recommended && actions.contains(recommended)) {
+        recommended.classList.remove("button", "primary");
+        recommendedParent.prepend(recommended);
+      }
+      actions.innerHTML = "";
+      if (completed && stage === "guided") {
+        actions.innerHTML = openStageButton("independent", "Apply it independently", "primary");
+      } else if (completed && stage === "independent" && !root.querySelector("[data-hb-followup]").hidden &&
+                 !record.followup?.accepted) {
+        actions.innerHTML = openStageButton("followup", "Try a fresh check", "primary");
+      } else if (completed && recommended) {
+        recommended.classList.add("button", "primary");
+        actions.append(recommended);
+      } else if (state.wrong || state.revealed) {
+        actions.innerHTML = openStageButton("model", "Revisit worked example", "quiet");
+      }
+      actions.hidden = !actions.hasChildNodes();
     }
 
     function showState(section, state, question) {
@@ -176,6 +213,7 @@
       feedback.innerHTML = html;
       feedback.classList.toggle("hb-feedback-visible", Boolean(html));
       updateFollowup();
+      nextAction(section, state);
     }
 
     root.querySelectorAll("[data-hb-stage]").forEach(section => {
@@ -202,7 +240,7 @@
 
       form.addEventListener("click", event => {
         const button = event.target.closest("[data-hb-action]");
-        if (!button) return;
+        if (!button || button.hasAttribute("data-hb-open")) return;
         if (button.dataset.hbAction === "finish-review") {
           state.outcome = "selfReview";
           state.note = "";
@@ -212,7 +250,7 @@
         } else {
           state.revealed = true;
           state.note = "";
-          state.outcome ||= textarea ? "selfReview" : "explained";
+          state.outcome ||= textarea && !detailedReview ? "selfReview" : "explained";
         }
         save(key, record);
         showState(section, state, question);
@@ -233,6 +271,7 @@
             state.note = question.options[Number(selected.value)][1];
             state.wrong = true;
           } else if (!state.outcome || state.outcome === "explained") {
+            state.accepted = true;
             state.outcome = state.revealed ? "explained" : state.wrong ? "corrected" :
               stage === "guided" || state.hint ? "guided" : stage === "followup" ? "followup" : "independent";
           }
@@ -240,6 +279,7 @@
         save(key, record);
         showState(section, state, question);
         if (state.original !== undefined) section.querySelector("[data-hb-review] h3").focus();
+        else if (lesson.revision && state.accepted) section.querySelector(".hb-feedback").focus();
       });
 
       showState(section, state, question);
@@ -249,6 +289,7 @@
       const model = modelButton.closest("details");
       const steps = modelButton.previousElementSibling;
       const cells = Array.from(model.querySelectorAll("[data-hb-cell]"));
+      const advance = model.querySelector("[data-hb-after-model]");
       function showModelStep(index, focus) {
         model.dataset.hbModelStep = index + 1;
         Array.from(steps.children).forEach((step, i) => {
@@ -258,7 +299,13 @@
         });
         const active = lesson.focusCells?.[index] || [];
         cells.forEach(cell => cell.classList.toggle("hb-cell-focus", active.includes(cell.dataset.hbCell)));
-        modelButton.textContent = steps.querySelector("[hidden]") ? "Show next step" : "Replay example";
+        const finished = index === steps.children.length - 1;
+        modelButton.textContent = finished ? "Replay example" : "Show next step";
+        if (advance) {
+          advance.hidden = !finished;
+          modelButton.classList.toggle("primary", !finished);
+          modelButton.classList.toggle("secondary", finished);
+        }
         if (focus) {
           steps.children[index].tabIndex = -1;
           steps.children[index].focus();
@@ -273,6 +320,19 @@
         showModelStep(Math.min(reviewStep, steps.children.length) - 1, true);
       } else showModelStep(0, false);
     }
+    root.addEventListener("click", event => {
+      const button = event.target.closest("[data-hb-open]");
+      if (!button) return;
+      const id = button.dataset.hbOpen;
+      const next = id === "model" ? root.querySelector("[data-hb-model-step]") :
+        root.querySelector('[data-hb-stage="' + id + '"]');
+      if (!next) return;
+      root.querySelectorAll("details.hb-teach-stage[open]").forEach(stage => {
+        if (stage !== next) stage.open = false;
+      });
+      next.open = true;
+      next.querySelector("summary").focus();
+    });
     updateFollowup();
   }
 

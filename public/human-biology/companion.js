@@ -329,7 +329,7 @@ function resumeLinks(origin,practice){
  var back=engine&&(engine.resumeRoute(origin)||engine.resumeRoute(origin.replace(/\/\d+$/,"")));
  if(back===practice)back=null;
  var simple=window.KeystoneHumanApp&&window.KeystoneHumanApp.hasResume&&window.KeystoneHumanApp.hasResume();
- return (back?'<a href="#'+esc(back)+'">Return to your unfinished question set</a>':'')+
+ return (back?'<a data-hb-resume href="#'+esc(back)+'">Return to your unfinished question set</a>':'')+
   (simple?'<a href="#resume">Resume flashcards or explanation practice</a>':'');
 }
 function skillLinks(unit,id,lesson){
