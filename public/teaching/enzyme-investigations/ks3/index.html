@@ -3,8 +3,8 @@
 <head>
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
- <title>KS3 · Which enzyme digests starch? | Narajos</title>
- <meta name="description" content="KS3 · Which enzyme digests starch?">
+ <title>KS3 · Can the same enzyme break down starch and protein? | Narajos</title>
+ <meta name="description" content="KS3 · Can the same enzyme break down starch and protein?">
 
  <link rel="canonical" href="https://narajos.com/teaching/enzyme-investigations/ks3/">
  <link rel="icon" href="/favicon.svg">
@@ -12,6 +12,7 @@
  <link rel="stylesheet" href="/assets/home-link.css">
  <link rel="stylesheet" href="/assets/science-practice.css">
 
+ <script type="module" src="/assets/enzyme-investigation.js"></script>
  <script defer src="/assets/site-nav.js"></script>
 </head>
 <body>
@@ -22,13 +23,47 @@
  <main id="main" class="wrap practice-page">
   <div class="page-hero">
    <p class="breadcrumb"><a href="/teaching/enzyme-investigations/">← Enzyme investigations</a></p>
-   <h1>KS3 · Which enzyme digests starch?</h1>
+   <h1>KS3 · Can the same enzyme break down starch and protein?</h1>
 
   </div>
-  <article class="practice-card"><p>Choose starch. Predict what will happen with stomach protease alone. Remove salivary amylase, add four protease molecules and start. Restart, swap to four amylase molecules and compare the product counts.</p>
-    <p><a href="/teaching/simulations/enzyme-kinetics/?activity=ks3">Open the KS3 model task</a></p>
-    <p><strong>After the model.</strong> Could adding more protease make it digest starch? Explain.</p>
-    <details><summary>Check your explanation</summary><p>Protease acts on proteins. Its active site is unsuitable for starch, so extra protease does not solve the mismatch. Amylase has an active site that can bind starch.</p></details>
+  <article class="practice-card enzyme-investigation" data-enzyme-model>
+   <section><h2>Predict</h2><p>Amylase breaks down starch. What do you think it will do to protein?</p></section>
+   <section>
+    <h2>Investigate</h2>
+    <p>Try both substrates with each enzyme. Look at which combinations make a product.</p>
+    <div class="enzyme-compare">
+     <label for="compare-enzyme">Enzyme <select id="compare-enzyme"><option value="amylase">Amylase</option><option value="protease">Protease</option></select></label>
+     <label for="compare-substrate">Substrate <select id="compare-substrate"><option value="starch">Starch</option><option value="protein">Protein</option></select></label>
+     <button type="button" data-enzyme-test>Test the pair</button>
+    </div>
+    <div class="enzyme-drawing" data-enzyme-drawing>
+     <svg viewBox="0 0 240 123" role="img" aria-label="An amylase model with a V-shaped active site and two sample substrates above it. Starch is triangular and protein has a rounded edge.">
+      <path d="M22 60H97L120 80 143 60H218V99Q218 115 199 115H41Q22 115 22 99Z" fill="#c8e5e0" stroke="#245e63" stroke-width="3"/>
+      <path d="M64 29h35L82 47Z M143 29h35q-5 17-17 17t-18-17Z" fill="#e7a970" stroke="#8a4926" stroke-width="2"/>
+      <g text-anchor="middle" fill="#1d3b47" font-size="13" font-weight="700"><text x="82" y="20">Starch</text><text x="161" y="20">Protein</text><text x="120" y="102">Amylase</text></g>
+     </svg>
+    </div>
+    <p data-enzyme-result role="status">Choose an enzyme and a substrate, then test your prediction.</p>
+    <details><summary>Your results</summary><ul data-enzyme-evidence></ul></details>
+   </section>
+   <form data-enzyme-explain>
+    <h2>Explain</h2>
+    <label for="enzyme-answer">Why does amylase break down starch but not protein?</label>
+    <textarea id="enzyme-answer" rows="3" maxlength="1500"></textarea>
+    <button type="submit">Check your explanation</button>
+    <p role="status"></p>
+    <details><summary>Help me write my explanation</summary>
+     <p>Start with “Amylase breaks down …” Then use the model to explain which substrate fits its active site.</p>
+     <p>You can give your explanation aloud to someone or rehearse it to yourself.</p>
+     <button type="button" data-explain-aloud>I explained it aloud</button>
+    </details>
+    <section data-explanation-model hidden tabindex="-1">
+     <h2>Check</h2>
+     <ul><li>Did you name the substrate amylase breaks down?</li><li>Did you explain what fits its active site?</li><li>Can you use the same idea to explain what protease does?</li></ul>
+     <div class="model"><p><strong>Model explanation</strong></p><p>Amylase breaks down starch because starch fits its active site. Protein does not fit amylase’s active site, so amylase does not break it down. Protease has a different active site that fits a protein. The two enzymes therefore act on different substrates.</p></div>
+    </section>
+   </form>
+   <details><summary>Explore the full simulation</summary><a href="/teaching/simulations/enzyme-kinetics/?activity=ks3">Open the KS3 model task</a></details>
   </article>
  </main>
  <footer class="footer"><div class="wrap footer-inner"><p>© 2026 Narajos</p><a href="/privacy/">Privacy</a></div></footer>

@@ -12,6 +12,7 @@
  <link rel="stylesheet" href="/assets/home-link.css">
  <link rel="stylesheet" href="/assets/science-practice.css">
 
+ <script type="module" src="/assets/enzyme-investigation.js"></script>
  <script defer src="/assets/site-nav.js"></script>
 </head>
 <body>
@@ -25,10 +26,17 @@
    <h1>GCSE · Compare two temperatures</h1>
 
   </div>
-  <article class="practice-card"><p>Set standard conditions before each run. Try 20 °C and 37 °C with the same enzyme, pH and starting amount of starch. Predict which run will reach the higher peak rate. Compare the peak rates displayed by the model and repeat each run. The peak is the highest modelled reading during a trial.</p>
+  <article class="practice-card enzyme-investigation"><p>Set standard conditions before each run. Try 20 °C and 37 °C with the same enzyme, pH and starting amount of starch. Predict which run will reach the higher peak rate. Compare the peak rates displayed by the model and repeat each run. The peak is the highest modelled reading during a trial.</p>
     <p><a href="/teaching/simulations/enzyme-kinetics/?activity=gcse">Open the GCSE model task</a></p>
     <p><strong>After the model.</strong> Explain why activity is lower in a third run at a much higher temperature.</p>
-    <details><summary>Check your explanation</summary><p>Warming within this lower range increases the rate of successful collisions. At sufficiently high temperatures the enzyme denatures. Its active site changes shape, so fewer enzyme–substrate complexes form.</p></details>
+    <form data-enzyme-explain>
+      <label for="enzyme-answer">Explain why enzyme activity falls at a very high temperature.</label><textarea id="enzyme-answer" rows="4" maxlength="1600"></textarea>
+      <button type="submit">Check your explanation</button><p role="status"></p>
+      <details><summary>Help me write my explanation</summary><p>Start with what happens to the enzyme’s active site.</p>
+       <button type="button" data-explain-aloud>I explained it aloud</button></details>
+      <section data-explanation-model hidden tabindex="-1"><h2>Compare your reasoning</h2><p>Did you describe denaturation and link the change in the active site to fewer enzyme–substrate complexes?</p>
+       <div class="model"><p>A very high temperature lowers enzyme activity because it denatures the enzyme. The active site changes shape and fewer substrates can bind. Fewer enzyme–substrate complexes form, so the reaction slows.</p></div></section>
+    </form>
   </article>
  </main>
  <footer class="footer"><div class="wrap footer-inner"><p>© 2026 Narajos</p><a href="/privacy/">Privacy</a></div></footer>

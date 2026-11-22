@@ -372,3 +372,19 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .spo-filters p { flex-basis: 100%; margin: .15rem 0; }
 .spo-filters p:empty, .spo-filters[hidden], [data-writing-task-list][hidden], #gcse-tasks[hidden],
 [data-writing-task-list] li[hidden], #gcse-tasks li[hidden] { display: none; }
+
+.enzyme-choice-ks3 a { background: #eef7ef; }
+.enzyme-choice-gcse a { background: #eaf4f8; }
+.enzyme-choice-alevel a { background: #f4eef7; }
+.enzyme-investigation { display: grid; gap: .8rem; }
+.enzyme-investigation h2 { margin: 0 0 .35rem; }
+.enzyme-compare { display: flex; flex-wrap: wrap; align-items: end; gap: .65rem; }
+.enzyme-compare label { display: grid; flex: 1 1 10rem; gap: .25rem; }
+.enzyme-compare select, .enzyme-investigation button { min-height: 44px; font: inherit; }
+.enzyme-investigation button { background: #e2f0ec; border: 1px solid #557e79; color: #163d3e; padding: .45rem .7rem; border-radius: .45rem; cursor: pointer; }
+.enzyme-investigation :is(button,summary,select,textarea):focus-visible { outline: 3px solid #ba5720; outline-offset: 2px; }
+.enzyme-investigation textarea { display: block; width: 100%; margin: .3rem 0 .6rem; }
+.enzyme-drawing { width: min(100%,20rem); margin-block: .7rem; border-radius: .5rem; background: #eef8f6; }
+.enzyme-drawing svg { display: block; width: 100%; height: auto; font-family: system-ui,sans-serif; }
+.enzyme-investigation summary { min-height: 44px; padding-block: .5rem; cursor: pointer; }
+.enzyme-investigation [role=status]:empty { display: none; }

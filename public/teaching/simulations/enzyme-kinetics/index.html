@@ -110,6 +110,7 @@
   button.act{flex:1;border:0;border-radius:10px;padding:11px;font-size:14px;font-weight:700;cursor:pointer;
     display:flex;align-items:center;justify-content:center;gap:7px;transition:.15s}
   #btn-std{flex:0 0 auto;min-height:44px}
+  button.act[hidden], .level-options[hidden]{display:none}
   .explore-first[hidden], .panel [hidden], body:not([data-level="1"]) #explore-first{display:none !important}
   .explore-first a{color:var(--accent-deep);font-weight:700}
   .explore-first p{margin:.25rem 0 .45rem}
@@ -172,6 +173,28 @@
   }
   .guided-task{border:1px solid #b0d8d2;background:#eff8f6;border-radius:12px;padding:12px;color:#163b3c}
   .guided-task h2{font-size:1rem;margin:0 0 .35rem}
+  .study-instructions{background:#fff;color:var(--ink);width:min(calc(100% - 1.35rem),37rem);
+    max-height:calc(100% - 1.25rem);padding:clamp(.7rem,3vw,1.4rem);border:1px solid #719b9f;border-radius:14px;overflow:auto}
+  .study-instructions::backdrop{background:#122c3bbe}
+  .study-instructions h2{margin:.2rem 0 .65rem}
+  .study-instructions li{margin-bottom:.5rem}
+  .study-instructions form{display:flex;justify-content:flex-start}
+  .study-instructions button{min-height:44px;flex:0 auto}
+  .level-options summary{cursor:pointer;min-height:44px;padding:.65rem .15rem;font-weight:700}
+  .level-options > div{margin:.55rem 0}
+  body[data-investigation="gcse"] .panel{gap:10px}
+  body[data-investigation="gcse"] .hint-strip{display:none}
+  body[data-investigation="gcse"] .guided-task{padding:.45rem .65rem}
+  body[data-investigation="gcse"] .guided-task h2{margin:0}
+  body[data-investigation="gcse"] .guided-task a{font-size:.86rem}
+  body[data-investigation="gcse"] .ctrl > .sub,
+  body[data-investigation="gcse"] .advanced-main-label{display:none}
+  body[data-investigation="gcse"] .stepper button{width:44px;height:44px}
+  @media(max-width:480px){body[data-investigation="gcse"] .chamber-wrap{min-height:260px}
+    body[data-investigation="gcse"] .env{top:5px;left:5px;gap:4px}
+    body[data-investigation="gcse"] .env .pill{padding:4px 6px}
+    body[data-investigation="gcse"] .status{gap:5px}}
+
   .guided-task p{font-size:.85rem;line-height:1.5;margin:0 0 .45rem}
   .guided-task a{display:inline-flex;align-items:center;min-height:44px;color:#145f5b;font-weight:700}
   .graph-readout summary{cursor:pointer;min-height:38px;padding-block:8px;font-size:12px;font-weight:700}
@@ -212,12 +235,13 @@
 <div class="run-controls" role="group" aria-label="Simulation controls">
   <button type="button" class="act primary" id="btn-run"><span id="run-ic" aria-hidden="true">▶</span><span id="run-tx">Start</span></button>
   <button type="button" class="act ghost" id="btn-reset"><span aria-hidden="true">↻</span> Reset</button>
+  <button type="button" class="act ghost" id="btn-instructions" aria-haspopup="dialog" hidden>Instructions</button>
   <p id="run-status" class="run-status" role="status"></p>
 </div>
 <main>
   <section class="stage">
     <div class="chamber-wrap">
-      <canvas id="chamber"></canvas>
+      <canvas id="chamber" role="img" aria-label="Particle model of substrate meeting enzymes. The key and product counts below show what is reacting."></canvas>
       <div class="env">
         <div class="pill"><span>🧫</span>Substrate <b id="env-sub">Starch</b></div>
         <div class="pill"><span>🌡️</span>Temp <b id="env-temp">37°C</b></div>
@@ -225,7 +249,7 @@
       </div>
     </div>
 
-    <div class="chips" id="chips"></div>
+    <div class="chips" id="chips" role="group" aria-label="Enzyme and substrate key"></div>
 
     <div class="status">
       <div class="stat">
@@ -286,7 +310,7 @@
     <div class="graph-card lvl2">
       <div class="head"><span class="k">Reaction rate over time</span><span class="pk" id="g-max"></span></div>
       <canvas id="graph" role="img" aria-label="Reaction rate over time. Open the table for the recorded rates."></canvas>
-      <div class="gcap"><b>Height</b> = rate of reaction in arbitrary units, where <b>1.00 AU</b> is the rate under standard conditions (20 substrate, 4 matching enzymes, 37 °C, optimum pH). <b>Left to right</b> = time since Start. The rate builds as products first form, can fluctuate, and falls as substrate is used up.</div>
+      <details class="graph-readout"><summary>How to read the graph</summary><div class="gcap"><b>Height</b> = rate of reaction in arbitrary units, where <b>1.00 AU</b> is the rate under standard conditions (20 substrate, 4 matching enzymes, 37 °C, optimum pH). <b>Left to right</b> = time since Start. The rate builds as products first form, can fluctuate, and falls as substrate is used up.</div></details>
       <details class="graph-readout" id="graph-readout"><summary>Recorded rates as a table</summary>
         <table><thead><tr><th scope="col">Sample</th><th scope="col">Rate / AU</th></tr></thead><tbody id="rate-rows"></tbody></table>
       </details>
@@ -311,6 +335,18 @@
     </details>
   </aside>
 </main>
+<dialog class="study-instructions" id="study-instructions" aria-labelledby="study-title">
+  <h2 id="study-title">Compare temperatures</h2>
+  <p>Investigate how changing the temperature affects the rate of reaction.</p>
+  <ol>
+    <li>Predict which temperature will give the higher peak rate.</li>
+    <li>Set standard conditions. Try 20 °C for your first run.</li>
+    <li>Set standard conditions again. Try 37 °C. Keep the substrate, enzyme mix and pH the same.</li>
+    <li>Compare the peak rates over the same run time. Repeat each trial to see how consistent the rates are.</li>
+  </ol>
+  <p>Try another temperature if you want to find where the rate starts to fall.</p>
+  <form method="dialog"><button class="act ghost">Close instructions</button></form>
+</dialog>
 
 <script>
 "use strict";
@@ -997,7 +1033,7 @@ function frame(){
   requestAnimationFrame(frame);
 }
 const guidedTasks={
-  ks3:{level:1,title:"Which enzyme digests starch?",steps:"Predict what will happen. Compare four protease molecules with four amylase molecules in separate runs. Keep starch selected. Pause before restarting each run and compare the product counts."},
+  ks3:{level:1,title:"Can the same enzyme break down starch and protein?",steps:"Test amylase and protease separately with starch and protein. Keep four of the selected enzyme and look for products. Reset between tests."},
   gcse:{level:2,title:"Compare temperatures",steps:"Predict first. Set standard conditions before each run and change only the temperature. Compare 20 °C and 37 °C. Record the peak rate, and repeat to check how consistent your results are."},
   alevel:{level:2,title:"Test for saturation",steps:"Predict how peak rate will change as you add more substrate. Reset to standard conditions before each run, then vary starting substrate between 5, 20 and 40. Keep enzyme concentration, pH and temperature fixed. Use the same run time and compare the highest rate displayed for each trial."}
 };
@@ -1011,6 +1047,25 @@ function boot(){
     document.getElementById("guided-return").href="/teaching/enzyme-investigations/"+activity+"/";
     document.getElementById("explore-first").hidden=true;
     document.getElementById("guided-task").hidden=false;
+    if(activity==="gcse"){
+      document.body.dataset.investigation="gcse";
+      document.getElementById("guided-steps").hidden=true;
+      const instructions=document.getElementById("study-instructions");
+      const openInstructions=document.getElementById("btn-instructions");
+      openInstructions.hidden=false;
+      openInstructions.addEventListener("click",()=>instructions.showModal());
+      instructions.addEventListener("close",()=>openInstructions.focus());
+      const secondary=document.createElement("details");
+      secondary.className="level-options lvl2";
+      const summary=document.createElement("summary");
+      summary.textContent="Other conditions and labels";
+      secondary.append(summary);
+      document.querySelector(".graph-card").after(secondary);
+      secondary.append(document.getElementById("mix").parentElement,
+        document.getElementById("s-ph").closest(".ctrl"),document.getElementById("s-sub").closest(".ctrl"),
+        document.querySelector(".toggle-row"));
+      document.querySelector(".predict").hidden=true;
+    }
     sizeCanvas();
   }
   requestAnimationFrame(frame);
