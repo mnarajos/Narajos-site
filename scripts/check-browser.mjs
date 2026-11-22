@@ -556,6 +556,7 @@ try{
  await phoneTeacherMenu.getByRole("link",{name:"Focused Writing",exact:true}).click();
  await navPage.getByRole("link",{name:/KS3 · Explain a change/}).click();
  await navPage.getByRole("heading",{name:"KS3 · Explain a change",exact:true}).waitFor();
+ await navPage.waitForLoadState("load");
  const ks3Sentence=navPage.locator('[data-writing-exercise="dye"][data-writing-kind="short"]');
  await ks3Sentence.getByRole("button",{name:"Use sentence starter",exact:true}).press("Enter");
  const dyeDraft=ks3Sentence.locator("textarea");
