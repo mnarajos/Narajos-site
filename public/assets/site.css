@@ -235,3 +235,11 @@ body:has(> .topbar) > .footer .footer-inner > p { margin: 0; }
 
 .site-dropdown a small { display: block; color: #4b646b; font-size: .825rem; font-weight: 550; }
 .site-dropdown { max-height: min(70vh,32rem); overflow-y: auto; }
+
+.support-confirmation{max-width:34rem;margin:1.25rem 0}
+.support-confirmation fieldset{min-inline-size:0;margin:0 0 .85rem;padding:.55rem .9rem;border:1px solid var(--line);border-radius:10px}
+.support-confirmation legend{padding-inline:.3rem;font-weight:750}
+.support-confirmation label{display:flex;align-items:center;gap:.6rem;min-height:44px;cursor:pointer}
+.support-confirmation input{width:1.15rem;height:1.15rem;flex:none;accent-color:var(--teal,#146c69)}
+.support-confirmation fieldset p{margin:.45rem 0;font-size:.94rem}
+.support-confirmation [aria-disabled="true"]{background:#e5e9e6;color:#47584f;border-color:#92a49a;box-shadow:none;transform:none;cursor:default}
