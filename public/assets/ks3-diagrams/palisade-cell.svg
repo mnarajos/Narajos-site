@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 280" role="img" aria-labelledby="title description">
+  <title id="title">Green leaf palisade cell</title>
+  <desc id="description">An elongated cell with a thick wall and a thin membrane just inside it. A large vacuole presses the cytoplasm towards the edges. The cytoplasm contains green chloroplasts, striped orange mitochondria and small dot-like ribosomes. Fine threads represent DNA in the nucleus.</desc>
+  <style>
+    .label { fill:#203842; font:600 17px system-ui,sans-serif; }
+    .leader { stroke:#435c68; stroke-width:1.5; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  </style>
+  <path d="M127 20Q177 15 227 22Q239 24 240 38L240 242Q239 257 227 260Q173 265 128 259Q118 257 117 243L117 37Q117 24 127 20Z"
+        fill="#e4c89e" stroke="#795b3b" stroke-width="2.5"/>
+  <path d="M130 29Q177 24 225 30Q231 32 231 40V241Q230 249 223 251Q171 255 131 250Q126 248 126 241V41Q126 32 130 29Z"
+        fill="#f1f7fa" stroke="#304858" stroke-width="2.3"/>
+  <path d="M164 55Q185 45 204 60C215 68 212 102 205 126Q201 139 184 149Q175 159 176 177Q181 189 188 200Q200 229 176 240Q150 245 149 217L145 91Q145 63 164 55Z"
+        fill="#d5ecfa" stroke="#43798f" stroke-width="1.8"/>
+
+  <defs>
+    <g id="chloroplast">
+      <ellipse rx="10" ry="5.5" fill="#56906b" stroke="#245b3d" stroke-width="1.5"/>
+      <path d="M-5 -2v4m4-4v4m4-4v4" stroke="#f0f7dd" stroke-width="1.3" stroke-linecap="round"/>
+    </g>
+    <g id="mitochondrion">
+      <path d="M-11 1Q-8-7 1-6Q9-5 11 1Q7 7-2 6Q-9 5-11 1Z" fill="#f2c497" stroke="#854d2d" stroke-width="1.5"/>
+      <path d="M-7 1Q-3-5 0 1T7 0" fill="none" stroke="#854d2d" stroke-width="1.2"/>
+    </g>
+  </defs>
+  <g>
+    <use href="#chloroplast" transform="translate(151 44) rotate(-14)"/>
+    <use href="#chloroplast" transform="translate(183 36) rotate(8)"/>
+    <use href="#chloroplast" transform="translate(216 47) rotate(30)"/>
+    <use href="#chloroplast" transform="translate(219 82) rotate(92)"/>
+    <use href="#chloroplast" transform="translate(218 117) rotate(92)"/>
+    <use href="#chloroplast" transform="translate(135 101) rotate(86)"/>
+    <use href="#chloroplast" transform="translate(135 170) rotate(94)"/>
+    <use href="#chloroplast" transform="translate(138 211) rotate(79)"/>
+    <use href="#chloroplast" transform="translate(218 213) rotate(81)"/>
+    <use href="#chloroplast" transform="translate(217 240) rotate(-28)"/>
+    <use href="#mitochondrion" transform="translate(137 121) rotate(-82) scale(.72)"/>
+    <use href="#mitochondrion" transform="translate(198 229) rotate(-63) scale(.79)"/>
+    <use href="#mitochondrion" transform="translate(174 247) scale(.62)"/>
+  </g>
+
+  <g fill="#283d55">
+    <circle cx="136" cy="66" r="1.8"/><circle cx="132" cy="76" r="1.8"/><circle cx="141" cy="80" r="1.8"/>
+    <circle cx="136" cy="137" r="1.8"/><circle cx="139" cy="154" r="1.8"/><circle cx="133" cy="188" r="1.8"/>
+    <circle cx="147" cy="226" r="1.8"/><circle cx="133" cy="232" r="1.8"/><circle cx="140" cy="237" r="1.8"/>
+    <circle cx="218" cy="64" r="1.8"/><circle cx="224" cy="98" r="1.8"/><circle cx="227" cy="135" r="1.8"/>
+    <circle cx="206" cy="198" r="1.8"/><circle cx="223" cy="224" r="1.8"/>
+  </g>
+
+  <ellipse cx="205" cy="169" rx="18" ry="22" fill="#e8dcf2" stroke="#665178" stroke-width="2"/>
+  <path d="M197 155C190 164 209 163 208 172S190 177 201 184M213 156C219 166 202 168 214 175"
+        stroke="#664182" stroke-width="2.3" fill="none" stroke-linecap="round"/>
+
+  <g class="leader">
+    <path d="M79 37H102L119 32"/>
+    <path d="M89 98H104L126 83"/>
+    <path d="M101 148H121L143 147"/>
+    <path d="M101 239H110L133 232"/>
+    <path d="M246 43H235L224 46"/>
+    <path d="M246 103H234L192 91"/>
+    <path d="M246 150H234L219 156"/>
+    <path d="M246 191H236L213 175"/>
+    <path d="M229 268H210L199 233"/>
+  </g>
+  <g class="label">
+    <text x="7" y="42">Cell wall</text>
+    <text x="7" y="88">Cell<tspan x="7" dy="19">membrane</tspan></text>
+    <text x="7" y="153">Cytoplasm</text>
+    <text x="7" y="244">Ribosomes</text>
+    <text x="250" y="48">Chloroplast</text>
+    <text x="250" y="108">Vacuole</text>
+    <text x="250" y="155">Nucleus</text>
+    <text x="250" y="196">DNA</text>
+    <text x="233" y="273">Mitochondrion</text>
+  </g>
+</svg>

@@ -88,7 +88,7 @@ class ToyRamp extends HTMLElement {
               <select data-surface>${options(Object.fromEntries(Object.entries(surfaces).map(([key, surface]) => [key, surface.name])))}</select>
             </label>
             <label>Ramp angle
-              <select data-angle>${options({10: "10° · Low", 20: "20° · Medium", 30: "30° · High"})}</select>
+              <select data-angle>${options({10: "10° · Shallow", 20: "20° · Intermediate", 30: "30° · Steep"})}</select>
             </label>
             <label>Release point
               <select data-point>${options(pointNames)}</select>

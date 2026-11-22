@@ -795,10 +795,24 @@ try{
  assert.equal(await pollen.locator("svg g:not([hidden])").count(),1);
  assert((await pollen.locator("svg").boundingBox()).width<=390);
  await navPage.goto(base+"/ks3/cells/");
+ const cellDiagrams=await navPage.locator(".ks3-cell-diagrams img").all();
+ assert.equal(cellDiagrams.length,2);
+ for(const img of cellDiagrams) {
+  await img.evaluate(el=>el.decode());
+  assert.match(await img.getAttribute("alt"),/mitochondria.*ribosome.*DNA/i);
+ }
  await navPage.getByText("Look through a microscope",{exact:true}).click();
  const cellPhotos=await navPage.locator(".micrograph-grid img").all();
  assert.equal(cellPhotos.length,2);
  for(const img of cellPhotos) await img.evaluate(el=>el.decode());
+ await navPage.getByText("Check what you spotted",{exact:true}).press("Enter");
+ assert(await navPage.getByText("Sample A is plant tissue.",{exact:true}).isVisible());
+ const microscopeCheck=navPage.locator('[aria-labelledby="catchup-q3"]');
+ await microscopeCheck.getByRole("button",{name:/edges are straight/}).press("Enter");
+ await microscopeCheck.getByRole("status").filter({hasText:/Some animal cells/}).waitFor();
+ await microscopeCheck.getByRole("button",{name:"There is too little evidence to decide."}).press("Enter");
+ await microscopeCheck.getByRole("status").filter({hasText:/Correct/}).waitFor();
+ await checkReadingSpacing(navPage,"Year 7 cell diagrams");
  await navPage.goto(base+"/ks3/adaptation/");
  await navPage.getByText("Compare rock pocket mouse populations",{exact:true}).click();
  assert((await navPage.getByRole("link",{name:/Open the HHMI pictures/}).getAttribute("href")).endsWith("MouseColorVar-Illustrations-act.pdf"));
