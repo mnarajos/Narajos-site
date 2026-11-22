@@ -703,6 +703,7 @@ try{
  await desktop.goto(base+"/ks3/lesson/?topic=fair-tests");
  await desktop.getByRole("heading",{name:"Roll a toy down a ramp"}).waitFor();
  const rampOnDesktop=desktop.locator("toy-ramp");
+ await rampOnDesktop.locator(".tr-apparatus svg").scrollIntoViewIfNeeded();
  const bike=await rampOnDesktop.getByRole("button",{name:"Bicycle",exact:true}).boundingBox();
  const rampSvg=await rampOnDesktop.locator(".tr-apparatus svg").boundingBox();
  await desktop.mouse.move(bike.x+bike.width/2,bike.y+bike.height/2);
@@ -772,6 +773,7 @@ try{
  const yearNavigation=navPage.getByRole("navigation",{name:"Choose a year group"});
  assert.equal(await yearNavigation.getByRole("link").count(),5);
  await yearNavigation.getByRole("link",{name:"Year 7",exact:true}).click();
+ await navPage.getByRole("heading",{name:"Year 7 Science",exact:true}).waitFor();
  assert.equal(await navPage.locator(".school-topic-list > li").count(),12);
  assert.equal(await navPage.getByRole("link",{name:"Open GCSE revision"}).count(),0);
  await navPage.getByRole("link",{name:"Science Skills",exact:true}).click();
