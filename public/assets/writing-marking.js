@@ -24,7 +24,11 @@ function solutionIn(text) {
   return concentrated.test(text) ? "concentrated" : null;
 }
 
+const otherQuantity = /\b(?:concentration|temperature|length|volume)\s+(?:(?:had|has|was|is)\s+)?(?:increas\w*|decreas\w*|fell|rose|went (?:up|down)|was higher|was lower)\b/;
+const wrongObject = /\b(?:solution|water|sugar)(?: itself)?\s+(?:(?:had|has)\s+)?(?:gain\w*|lost|loses?)\b|\bmass of (?:the )?(?:solution|water|sugar)\b/;
+
 function massChange(text) {
+  if (otherQuantity.test(text) || wrongObject.test(text)) return null;
   const values = [...text.matchAll(/(?<![\d.])([+-])?\s*(\d+(?:\.\d+)?)\s*(?:%|per\s*cent\b)/g)];
   if (values.length !== 1 || denial.test(text) || uncertainty.test(text)) return null;
   const [, sign, amount] = values[0];
@@ -104,7 +108,7 @@ function readWaterMovement(parts, type, assumeSample) {
   return result(label, "compare", "Compare with this link, then try again. " + model);
 }
 
-const faster = /\b(?:faster|more (?:quickly|rapidly)|at (?:a )?(?:higher|greater) (?:speed|velocity)|speed up|sped up|move quicker)\b/;
+const faster = /\b(?:faster|more (?:quickly|rapidly)|(?:higher|greater) (?:average )?(?:speeds?|velocity)|speed up|sped up|(?:mov\w*|travell?\w*) quicker)\b/;
 const spread = /\b(?:spread\w*|diffus\w*|travell?\w*|dispers\w*)\b/;
 const comparative = /\b(?:further|farther|quicker|faster|more (?:quickly|rapidly|widely)|(?:larger|greater|bigger) (?:area|distance))\b/;
 
@@ -125,7 +129,9 @@ function readDiffusion(parts) {
         /\b(?:slow\w*|(?:more|bigger|larger)\s+(?:dye |colouring |fragrance )?(?:particles?|molecules?))\b/.test(mechanism)) {
       return result(label, "revise", "Keep the same particles. Which water or air sample makes them move faster on average?");
     }
-    if (!denial.test(part) && !uncertainty.test(part) &&
+    const ambientOnly = /\b(?:water|air) (?:particles?|molecules?)\b/.test(mechanism) &&
+      !/\b(?:dye|colou?r(?:ing)?|fragrance|scent|perfume|ink) (?:particles?|molecules?)\b/.test(mechanism);
+    if (!ambientOnly && !denial.test(part) && !uncertainty.test(part) &&
         /\b(?:particles?|molecules?)\b/.test(mechanism) && motion.test(mechanism) &&
         faster.test(mechanism) && spread.test(evidence) && comparative.test(evidence)) {
       linked = true;

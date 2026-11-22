@@ -581,9 +581,9 @@ try{
  assert.equal(await outline.inputValue(),"warmer → faster random movement → quicker spread");
  await navPage.getByText("See a worked example",{exact:true}).click();
  assert.equal(await navPage.locator(".writing-example-plan dt").count(),3);
- assert(await navPage.locator(".writing-card .model").isHidden(),"The full KS3 paragraph should be available on request");
+ assert(await navPage.locator(".writing-card .writing-model .model").isHidden(),"The full KS3 paragraph should be available on request");
  await navPage.getByText("Read the full paragraph",{exact:true}).click();
- assert(await navPage.locator(".writing-card .model").isVisible());
+ assert(await navPage.locator(".writing-card .writing-model .model").isVisible());
  for(const [level,visual] of [["ks3","dye-spread"],["gcse","osmosis-results"],["alevel","glucose-cotransport"]]){
   await navPage.goto(base+"/teaching/focused-writing/"+level+"/");
   assert.equal(await navPage.locator("main .writing-card").count(),1,"Share links should show one writing activity");

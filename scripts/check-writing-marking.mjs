@@ -28,6 +28,10 @@ const checks = [
   ["dye", "short", "The dye spread further in warm water because the particles moved faster in cool water.", ["revise"]],
   ["dye", "short", "The dye spread further in warm water because there were more dye particles.", ["revise"]],
   ["dye", "short", "The dye spread much faster because particles were moving.", ["compare"]],
+  ["potato", "short", "In dilute solution the sugar concentration increased by 7%, whereas in concentrated solution the sugar concentration decreased by 9%.", ["compare", "compare"]],
+  ["potato", "short", "The dilute solution itself gained 7% and the concentrated solution itself lost 9%.", ["compare", "compare"]],
+  ["dye", "short", "The dye spread further in the warm water because the water particles moved faster.", ["compare"]],
+  ["dye", "short", "The dye spread further in the warm water because the dye molecules had higher average speeds.", ["credited"]],
   ["dye", "transfer", "The fragrance spread further through the warm air because the fragrance particles moved faster on average.", ["credited"]],
 ];
 
