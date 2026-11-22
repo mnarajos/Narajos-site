@@ -2,8 +2,10 @@ import { airSac, arrow, blue, circle, compare, diagram, ink, line, node, periodi
   picture, rust, steps, teal, text, violet } from "./catchup-models.js";
 import { photo } from "./catchup-photos.js";
 
-function cyclist(reduced) {
+export function cyclist(reduced, {showExplanation = true} = {}) {
   const forward = reduced ? 20 : 40;
+  const explanation = reduced ? "The resultant force is 20 N backwards. The cyclist is still moving forwards and slows down."
+    : "The opposite horizontal forces are equal. The cyclist keeps moving at the same speed.";
   return picture("Horizontal forces on a moving cyclist", diagram(
     "The cyclist is moving right. A 40 newton force acts left and a " + forward + " newton force acts right.", `
     ${circle(126,113,20,"#f2f7f6",ink,2.5)}${circle(195,113,20,"#f2f7f6",ink,2.5)}
@@ -11,10 +13,9 @@ function cyclist(reduced) {
     <path d="M150 64l17-15 17 7 3 12 M150 64l20 18-11 24 M148 64l1 21-17 17" fill="none" stroke="${ink}" stroke-width="6" stroke-linecap="round"/>
     ${circle(178,42,8,"#db9963",ink,2)}
     ${arrow(111,93,35,93,blue,3)}${arrow(209,93,reduced ? 247 : 285,93,blue,3)}
-    ${text(55,78,"40 N",blue)}${text(265,78,forward + " N",blue)}
+    ${text(55,78,"40 N",blue)}${text(reduced ? 229 : 265,78,forward + " N",blue)}
     ${arrow(109,151,207,151,rust,2.5)}${text(163,174,"Direction of travel",rust)}
-    `,320,186), reduced ? "The resultant force is 20 N backwards. The cyclist is still moving forwards and slows down."
-    : "The opposite horizontal forces are equal. The cyclist keeps moving at the same speed.");
+    `,320,186), showExplanation ? explanation : undefined);
 }
 
 function flower(missed, tube = false) {
