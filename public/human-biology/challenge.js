@@ -475,7 +475,7 @@ function excludedOption(q){
 function hintsFor(q){
  var items=Array.isArray(q.hints)&&q.hints.length?q.hints.slice(0,2):[hintStrategy(q)];
  if(!q.hints&&typeof q.hintCue==="string"&&q.hintCue.trim())items.push(q.hintCue);
- if(["single","diagram","multi"].indexOf(q.type)>=0&&q.options&&q.options.length===4){
+ if(items.length===2&&["single","diagram","multi"].indexOf(q.type)>=0&&q.options&&q.options.length===4){
   var i=session.hintExcluded&&session.hintExcluded[q.id];
   if(!Number.isInteger(i))i=excludedOption(q);
   if(i!==null)items.push("You can rule out: "+q.options[i]+".");

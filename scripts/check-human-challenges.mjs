@@ -291,7 +291,7 @@ for(const family of db.families){
  const members=family.members.map(id=>db.questions.find(q=>q.id===id));
  assert.equal(new Set(members.map(q=>q.stem)).size,3,"Alternatives need distinct tasks: "+family.id);
  assert(members.every(q=>q.section===family.section&&q.objective===family.objective&&q.level===members[0].level),"Alternatives must preserve mapping and broad demand");
- assert(members.every(q=>Array.isArray(q.hints)&&q.hints.length===2&&q.hints.every(h=>h.length>30)),"Missing authored conceptual hints: "+family.id);
+ assert(members.every(q=>(q.hintCue?.length>30||Array.isArray(q.hints)&&q.hints.length===2&&q.hints.every(h=>h.length>30))),"Missing authored conceptual hints: "+family.id);
 }
 const recentVersions={};
 for(const unit of ["f170","f171"]){
@@ -333,6 +333,15 @@ assert(main.innerHTML.includes("A new cell membrane needs material"),"First hint
 assert(hintButton.hidden,"More help must wait for another inactive interval");
 tick(10010);clickAction("hint");
 assert(main.innerHTML.includes("Separate the production of membrane lipids"),"Second hint must teach the prerequisite principle");
+// Exercise the learner-visible progression hints before submitting an answer.
+for(const id of ["p-cell-membrane-transport-challenge","p-health-screening-foundation","p-f171-monitoring-repeats-diagnostic",...["f172","f173","f174","f175","f176","f177"].map(unit=>db.questions.find(q=>q.unit===unit&&q.hintCue).id)]){
+ const question=forcedQuestion(id);
+ tick(10010);clickAction("hint");
+ assert(main.innerHTML.includes("Hint 1")&&!main.innerHTML.includes("Hint 2"),id);
+ tick(10010);clickAction("hint");
+ assert(main.innerHTML.includes("Hint 2")&&!main.innerHTML.includes("Expected answer"),id);
+ assert(question.hintCue&&!question.explain.includes(question.hintCue)&&!question.model.includes(question.hintCue),id);
+}
 console.log("Human Biology checks passed: 552 questions, 91 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
 
 
