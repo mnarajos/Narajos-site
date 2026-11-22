@@ -1159,6 +1159,59 @@ additions.push({
  hintCue:"Consider whether there are plausible values on both sides of no difference and which outcomes were actually observed.",
  misconception:"Separate sampling uncertainty from differences in how groups were formed."
 });
+// Context-first method selection uses the same question session and outcome model.
+additions.push({
+ id:"f171-method-choose-baseline",unit:"f171",area:4,section:"4.2.2",methodOrder:1,type:"single",level:"apply",
+ stem:"A fictional service records fewer missed appointments after a reminder. It wants to know how large the fall was relative to the original count. Which quantities should it compare?",
+ options:["The fall in count and the original count","The fall in count and the new count","The new count and the total across both dates","The original count and the total across both dates"],
+ correct:0,model:"Compare the change with the starting value.",
+ explain:"The fall is the original count minus the later count. Relate it to the original count because that is the stated baseline.",
+ optionFeedback:[null,"The new count describes where the service ended. The requested comparison is relative to the original count.","Pooling the dates changes the question. The amount of change must be compared with the baseline.","The total combines the two dates. It does not measure the fall."],
+ misconception:"The comparison is relative to the original count.",
+ hintCue:"Identify which number measures change and which represents the starting point."
+},{
+ id:"f171-method-baseline-change",unit:"f171",area:5,section:"5.1.2",methodOrder:2,type:"number",level:"apply",
+ stem:"A fictional monitoring service recorded 80 late reports at baseline and 68 after a reminder. What percentage of the baseline count was the fall? Give your answer to the nearest whole percent.",
+ correct:15,answerUnit:"%",tolerance:1e-6,model:"15%",
+ explain:"The fall is 80 − 68 = 12. Relative to the original count, 12 ÷ 80 × 100 = 15%.",
+ numberFeedback:[[12,"12 is the number of reports, not the percentage."],[18,"This uses 68 as the denominator. The baseline count is 80."],[85,"This is the proportion that remained. Use the amount of change."]],
+ misconception:"The baseline is the denominator.",
+ hintCue:"Find the change first. Which time point is the baseline?"
+},{
+ id:"f171-method-time-rate",unit:"f171",area:4,section:"4.1",methodOrder:3,type:"number",level:"apply",
+ stem:"A fictional activity record counts 135 heartbeats over 90 seconds. What value should go in the box labelled beats per minute?",
+ correct:90,answerUnit:"beats/min",tolerance:1e-6,model:"90 beats/min",
+ explain:"90 seconds is 1.5 minutes. 135 ÷ 1.5 gives 90 beats per minute.",
+ numberFeedback:[[135,"This is the total over 90 seconds. Convert to a one-minute rate."],[1.5,"Dividing by 90 gives beats per second. Convert the time to minutes before dividing."],[202.5,"You multiplied by the duration. Divide the count by the time in minutes."]],
+ misconception:"The duration must be in minutes to report beats per minute.",
+ hintCue:"Check that the time has the unit requested by the rate."
+},{
+ id:"f171-method-rearrange",unit:"f171",area:4,section:"4.2.2",methodOrder:4,type:"number",level:"stretch",
+ stem:"Three fictional resting pulse readings have a mean of 72 beats/min. Two readings were 68 and 74 beats/min. The remaining recorded value is obscured. What reading makes this stated mean possible?",
+ correct:74,answerUnit:"beats/min",tolerance:1e-6,model:"74 beats/min",
+ explain:"A mean of 72 across three readings gives a total of 216. Subtract 68 and 74 to find the obscured reading.",
+ numberFeedback:[[71,"71 is the mean of the two visible readings. Work from the stated mean of all three."],[216,"216 is the sum of all three readings. Subtract the two shown values."]],
+ misconception:"Use the count of all values to recover the total from a mean.",
+ hintCue:"Use the mean and number of readings to recover the sum."
+},{
+ id:"f171-method-missing-reading",unit:"f171",area:4,section:"4.2.2",methodOrder:5,type:"number",level:"apply",
+ stem:"A fictional record has four slots for resting systolic pressure but only three observed readings. Report the mean of the observed readings to the nearest whole mmHg.",
+ evidenceTable:{caption:"Rested readings",columns:["Slot","Systolic pressure (mmHg)"],rows:[["1","134"],["2","131"],["3","Missing"],["4","132"]],focus:[[0,1],[1,1],[3,1]]},
+ correct:132,answerUnit:"mmHg",tolerance:1e-6,model:"132 mmHg from three observations",
+ explain:"(134 + 131 + 132) ÷ 3 = 132.33, which rounds to 132. The missing observation contributes no value and no count.",
+ numberFeedback:[[99,"Dividing by four treats the unobserved value as zero. Only three readings were observed."],[132.33,"The calculation is right. Report the mean rounded to the nearest whole mmHg."],[397,"397 is the total. Divide it by the number of observed values."]],
+ misconception:"A missing observation contributes neither a value nor a count.",
+ hintCue:"Count observed values before choosing the denominator."
+},{
+ id:"f171-method-interpret-reading",unit:"f171",area:4,section:"4.2.2",methodOrder:6,type:"single",level:"stretch",
+ stem:"A monitor gives three similar readings with a mean of 132 mmHg. A checked reference taken under comparable conditions gives 124 mmHg. Which interpretation is warranted?",
+ options:["The monitor shows repeatability within the set. The difference warrants checking its accuracy.","The similar readings establish accuracy. The reference must be wrong.","The monitor readings lack repeatability because they differ from the reference.","The 8 mmHg difference establishes that the person's resting pressure rose."],
+ correct:0,model:"Agreement inside the set is evidence of repeatability. Comparison against a checked reference helps assess accuracy.",
+ explain:"A close group of readings can share an offset. The measurements compare devices under comparable conditions and do not establish biological change.",
+ optionFeedback:[null,"Agreement among readings shows repeatability. A consistent error can remain.","Repeatability compares repeated readings from the monitor. The reference comparison raises a different issue.","The evidence compares measurement methods. It does not establish a change over time."],
+ misconception:"Agreement between readings and agreement with a reference answer different questions.",
+ hintCue:"Distinguish comparisons within the group of readings from comparisons with the reference."
+});
 var ids=new Set(bank.questions.map(function(q){return q.id;}));
 additions.forEach(function(q){if(!ids.has(q.id)){bank.questions.push(q);ids.add(q.id);}});
 })();

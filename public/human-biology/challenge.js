@@ -11,14 +11,16 @@ var all=db.questions,byId={},skills=window.KeystoneHumanSkills,ladders=window.Ke
 var render=null,visible=false,lastRoute="",skillExampleStem="";
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(a){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[a];});}
 function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=b[i];b[i]=b[j];b[j]=t;}return b;}
+const methodKey=SK+"-mixed-method";
 function contextualKey(skillId){return SK+"-catchup-"+skillId;}
 function topicKey(unit,scope){return SK+"-topic-"+unit+"/"+scope;}
 function sessionKey(item){
+ if(item&&item.scope==="methods")return methodKey;
  if(item&&item.topicContext)return topicKey(item.unit,item.scope);
  return item&&item.skillId&&item.returnTo?contextualKey(item.skillId):SK;
 }
 function localSessionKeys(){
- var keys=[CK].concat(skills?skills.definitions.map(function(skill){return contextualKey(skill.id);}):[]);
+ var keys=[CK,methodKey].concat(skills?skills.definitions.map(function(skill){return contextualKey(skill.id);}):[]);
  try{for(var i=0;i<localStorage.length;i++){var key=localStorage.key(i);if(key.startsWith(SK+"-topic-"))keys.push(key);}}catch(_){}
  return keys;
 }
@@ -98,6 +100,7 @@ function filter(unit,scope){
  var list=all.filter(function(q){return q.unit===unit;});
  if(/^a[1-5]$/.test(scope))list=list.filter(function(q){return q.area===Number(scope.slice(1));});
  else if(/^\d+(?:\.\d+)*$/.test(scope))list=list.filter(function(q){return q.section===scope;});
+ else if(scope==="methods")list=list.filter(function(q){return q.methodOrder;});
  else if(scope==="core"||scope==="apply"||scope==="stretch")list=list.filter(function(q){return q.level===scope;});
  else if(scope.startsWith("case-"))list=list.filter(q=>q.id===scope&&q.caseTitle);
  else if(scope==="sam")list=list.filter(function(q){return q.samAligned;});
@@ -286,6 +289,7 @@ function makeSession(unit,scope,route,origin){
  }
  var ids;
  if(point){ids=[point.foundation,rotatePool(point.core.map(function(id){return byId[id];}))[0].id];ids=[ids[0],point.diagnostic,ids[1],point.challenge];}
+ else if(scope==="methods"){ids=selected.sort(function(a,b){return a.methodOrder-b.methodOrder;}).map(function(q){return q.id;});}
  else if(scope==="all"){ids=quickMixQueue(unit,size);}
  else if(/^a[1-5]$/.test(scope)){
   // Topic practice is instructionally sequenced; unlike the mixed revision mode,
@@ -324,6 +328,7 @@ function skillsMenu(unit){
  if(!skills)return landing();
  var defs=skills.definitions.filter(function(s){return !unit||s.unit===unit;}),old=restore();
  var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">Human Biology · Repeated practice</div><h1>Skills practice</h1><p>Choose a method. See a worked example, then try ten questions. Start with choices; build towards independent application.</p></div><div class="actions"><a class="button secondary" href="#skills">All skills</a><a class="button secondary" href="#skills/f170">F170 skills</a><a class="button secondary" href="#skills/f171">F171 skills</a></div>';
+ if(!unit||unit==="f171")h+='<p><a class="button primary" href="#challenge/f171/methods">Choose a method from the context</a></p>';
  if(old&&old.skillId)h+='<div class="k-continue"><div><strong>Unfinished skills set</strong><p>'+esc(skills.get(old.skillId).name)+'</p></div><a class="button primary" href="#'+esc(old.route)+'">Resume practice</a></div>';
  ["f170","f171"].forEach(function(u){var group=defs.filter(function(s){return s.unit===u;});if(!group.length)return;
   h+='<h2>'+u.toUpperCase()+'</h2><div class="k-skills-grid">';
@@ -663,7 +668,7 @@ function drawQuestion(){
   save();
  }
  if(session.phase==="ask")ensureHintClock(q);
- var sub=session.skillId?skills.get(session.skillId).name:title(q.unit),num=session.index+1,max=session.skillId?10:session.queue.length;
+ var sub=session.scope==="methods"?"Choose and apply a method":session.skillId?skills.get(session.skillId).name:title(q.unit),num=session.index+1,max=session.skillId?10:session.queue.length;
  var prog=(100*(session.index/max)).toFixed(1),showing=session.phase==="feedback";
  var used=session.hintsUsed&&session.hintsUsed[q.id]||0,availableHints=hintsFor(q);
  var h='<div class="k-wrap k-question-view"><p class="crumb"><a href="#'+(session.skillId?'skills/'+q.unit:'challenge/'+q.unit)+'">← Leave this set</a></p>'+skillReturnLink(session.returnTo)+'<div class="k-question-meta"><span>'+esc(sub)+'</span><span>'+num+' of '+max+'</span></div><div class="progress-track" role="progressbar" aria-label="Questions completed" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+session.index+'"><div style="width:'+prog+'%"></div></div>';
@@ -734,7 +739,7 @@ function validateAnswer(q,a){
  return {ready:!!String(a.text||"").trim(),correct:null,msg:"Write an explanation first, or choose I don’t know."};
 }
 function planQuickCheck(q){
- if(session&&(session.skillId||session.point))return null; // Keep authored point sequences in their intended order.
+ if(session&&(session.skillId||session.point||session.scope==="methods"))return null; // Keep authored point sequences in their intended order.
  if(!session||isQuickCheck(q)||(session.quickChecksPlanned||0)>=2)return null;
  var seen=session.first||{};
  var rank={warmup:0,core:1,apply:2,stretch:3};
@@ -901,8 +906,9 @@ function route(r,renderer){
   var buildScope=window.KeystoneHumanCatchup?.practiceScope(unit,source[2])===scope;
   if(source[1]!==unit||(!topicScope&&!buildScope)||!filter(unit,scope).length)return intro(unit);
  }
- var old=sessionKey(session)===(origin?topicKey(unit,scope):SK)?session:null;
- old=old||restore(origin?topicKey(unit,scope):SK);
+ var key=scope==="methods"?methodKey:origin?topicKey(unit,scope):SK;
+ var old=sessionKey(session)===key?session:null;
+ old=old||restore(key);
  if(origin&&!old)old=restore();
  if(old&&old.unit===unit&&old.scope===scope&&(origin||old.route===r||old.returnTo&&!old.topicContext&&!old.skillId)){
   // An unstarted legacy Quick Mix may still open on a random hard question.
