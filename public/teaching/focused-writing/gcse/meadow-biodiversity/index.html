@@ -26,7 +26,10 @@
    <h1>Evaluate a claim about biodiversity</h1>
    <p class="lead">Biology Paper 2</p>
   </div>
-  <article class="practice-card writing-card">
+  <article class="practice-card writing-card" data-writing-mark="quadrats">
+   <figure class="writing-visual"><img src="/assets/practice-diagrams/quadrats.svg" width="600" height="360" alt="Six equal quadrats placed at different locations in each of two meadow patches.">
+    <figcaption><a href="/diagram-practice/#quadrats">Practise with this diagram</a></figcaption>
+   </figure>
    <div class="writing-data" role="region" aria-label="Plant sampling in two areas of the school field" tabindex="0">
     <table>
      <caption>Plant sampling in two areas of the school field</caption>
@@ -41,6 +44,25 @@
    <p class="writing-prompt writing-cue" data-writing-cue="look"><strong>Start here.</strong> Which area had more different plant species? Were both areas sampled the same number of times?</p>
    <p class="writing-purpose"><strong>Your job.</strong> Which mowing routine would you recommend trialling on the school field to see whether it helps more plant species grow?</p>
    <p class="writing-cue" data-writing-cue="respond"><strong>Now write.</strong> Evaluate the claim that mowing less often increases plant biodiversity. Use the results, explain why there might be a difference and suggest how to make the comparison more convincing.</p>
+   <section class="writing-sentence" data-writing-exercise="quadrats" data-writing-kind="short">
+    <h2 class="writing-cue" data-writing-cue="respond">Write one sentence</h2>
+    <label for="quadrats-evidence">Compare the number of plant species in the two patches in one sentence.</label>
+    <textarea id="quadrats-evidence" data-draft rows="2" maxlength="500"></textarea>
+    <button type="button" data-check-sentence>Check my sentence</button>
+    <p data-sentence-status role="status"></p>
+    <ul class="writing-mark-list" data-sentence-results hidden></ul>
+    <details class="writing-sentence-model" data-sentence-model hidden>
+     <summary>Compare with a model sentence</summary>
+     <p class="model">There were four species in the weekly mown patch and nine species in the patch mown once a term.</p>
+    </details>
+    <details data-sentence-comparison hidden>
+     <summary>Compare your first and latest sentences</summary>
+     <dl class="writing-versions">
+      <dt>First checked</dt><dd data-first-sentence></dd>
+      <dt>Latest checked</dt><dd data-revised-sentence></dd>
+     </dl>
+    </details>
+   </section>
    <details class="writing-step">
     <summary class="writing-cue" data-writing-cue="notes">Plan your paragraph</summary>
     <p>Organise your notes in this order. both plant counts → possible biological reason → another explanation. End with a fairer comparison.</p>
@@ -71,6 +93,10 @@
    </details>
    <details class="writing-step">
     <summary class="writing-cue" data-writing-cue="respond">Write your paragraph</summary>
+    <div class="writing-scaffold">
+     <button type="button" data-use-sentences>Use my checked sentence</button>
+     <p role="status"></p>
+    </div>
     <div class="writing-field-heading">
      <label for="gcse-meadow-biodiversity-paragraph">Your paragraph:</label>
      <details class="writing-help">

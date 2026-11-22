@@ -67,10 +67,18 @@
     panel.addEventListener("study-tier-change", update);
   }
 
+  const diagramTopics = {
+    "/gcse/": [["Leaf structure","leaf"],["I–V circuit","iv-circuit"],["Electrolysis","electrolysis"]],
+    "/alevel/": [["Phloem","phloem"],["Nephron","nephron"],["Sarcomere","sarcomere"]],
+    "/human-biology/": [["Breathing","breathing"],["Blood pressure","cuff"],["Antibodies","antibody"]]
+  };
+  const diagrams = typeof location !== "undefined" ? diagramTopics[location.pathname] || [] : [];
+  const diagramLinks = diagrams.length ? '<div class="study-finder-actions">' + diagrams.map(([title, id]) =>
+    '<a href="/diagram-practice/#' + id + '">' + title + ' diagram practice</a>').join("") + '</div>' : "";
   const markup = '<section class="study-finder" data-topic-finder aria-labelledby="study-find-heading">' +
     '<h2 id="study-find-heading">Find a topic</h2>' +
     '<div class="study-finder-fields"><label>Topic or keyword<input type="search" placeholder="Try enzymes or cells"></label>' +
     '<label>Subject or unit<select><option value="">All</option></select></label></div>' +
-    '<p role="status"></p><ul aria-label="Topic results"></ul></section>';
+    '<p role="status"></p><ul aria-label="Topic results"></ul>' + diagramLinks + '</section>';
   window.NarajosTopicFinder = {markup, mount};
 })();

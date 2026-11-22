@@ -26,7 +26,10 @@
    <h1>Explain a difference in cooling</h1>
    <p class="lead">Physics Paper 1</p>
   </div>
-  <article class="practice-card writing-card">
+  <article class="practice-card writing-card" data-writing-mark="insulation">
+   <figure class="writing-visual"><img src="/assets/practice-diagrams/insulation.svg" width="600" height="360" alt="Two lidded cans with thermometers. Only the right-hand can has felt wrapped around its sides.">
+    <figcaption><a href="/diagram-practice/#insulation">Practise with this diagram</a></figcaption>
+   </figure>
    <div class="writing-data" role="region" aria-label="Water temperature in two identical lidded metal cans" tabindex="0">
     <table>
      <caption>Water temperature in two identical lidded metal cans</caption>
@@ -41,6 +44,25 @@
    <p class="writing-prompt writing-cue" data-writing-cue="look"><strong>Start here.</strong> Which can had the greater temperature drop? Work out both drops.</p>
    <p class="writing-purpose"><strong>Your job.</strong> Which can would you choose to keep the water warmer after ten minutes? Show how the results support your choice.</p>
    <p class="writing-cue" data-writing-cue="respond"><strong>Now write.</strong> Use the results to explain why felt helped keep the water warm. Suggest how to test whether the number of layers matters.</p>
+   <section class="writing-sentence" data-writing-exercise="insulation" data-writing-kind="short">
+    <h2 class="writing-cue" data-writing-cue="respond">Write one sentence</h2>
+    <label for="insulation-evidence">Compare the two temperature drops in one sentence.</label>
+    <textarea id="insulation-evidence" data-draft rows="2" maxlength="500"></textarea>
+    <button type="button" data-check-sentence>Check my sentence</button>
+    <p data-sentence-status role="status"></p>
+    <ul class="writing-mark-list" data-sentence-results hidden></ul>
+    <details class="writing-sentence-model" data-sentence-model hidden>
+     <summary>Compare with a model sentence</summary>
+     <p class="model">The bare can cooled by 13 °C, while the felt-wrapped can cooled by 7 °C.</p>
+    </details>
+    <details data-sentence-comparison hidden>
+     <summary>Compare your first and latest sentences</summary>
+     <dl class="writing-versions">
+      <dt>First checked</dt><dd data-first-sentence></dd>
+      <dt>Latest checked</dt><dd data-revised-sentence></dd>
+     </dl>
+    </details>
+   </section>
    <details class="writing-step">
     <summary class="writing-cue" data-writing-cue="notes">Plan your paragraph</summary>
     <p>Organise your notes in this order. both temperature drops → why felt slows energy transfer → fair test of the number of layers.</p>
@@ -71,6 +93,10 @@
    </details>
    <details class="writing-step">
     <summary class="writing-cue" data-writing-cue="respond">Write your paragraph</summary>
+    <div class="writing-scaffold">
+     <button type="button" data-use-sentences>Use my checked sentence</button>
+     <p role="status"></p>
+    </div>
     <div class="writing-field-heading">
      <label for="gcse-compare-insulation-paragraph">Your paragraph:</label>
      <details class="writing-help">

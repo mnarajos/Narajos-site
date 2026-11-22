@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#26786e"/></marker><marker id="red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#aa4554"/></marker></defs>
+<rect width="600" height="360" fill="#fafcfb"/>
+<path d="M178 86H90V275H263M240 86H476V171M476 225V275H284M263 242V306M284 252V295" fill="none" stroke="#263d4e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M178 86L227 60" fill="none" stroke="#263d4e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="178" cy="86" rx="4" ry="4" fill="#263d4e" stroke="#263d4e" stroke-width="3"/><ellipse cx="240" cy="86" rx="4" ry="4" fill="#263d4e" stroke="#263d4e" stroke-width="3"/><ellipse cx="476" cy="198" rx="27" ry="27" fill="#f5f8f8" stroke="#263d4e" stroke-width="3"/><path d="M458 180L494 216M494 180L458 216" fill="none" stroke="#263d4e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -142,8 +142,55 @@ function readDiffusion(parts) {
   return result(label, "compare", "Link the two ideas in one sentence. What moved faster, and how did that affect the spread?");
 }
 
+const visualEvidence = {
+  insulation: {
+    cases: [
+      {label: "Bare can", signal: /\b(?:bare|unwrapped|uninsulated|uncovered|(?:without|no) (?:felt|wrapping|insulation))\b/, value: 13},
+      {label: "Felt-wrapped can", signal: /\b(?:felt|wrapped|insulated|covered)\b/, value: 7}
+    ],
+    quantity: /(?<![\d.])(-?\d+(?:\.\d+)?)\s*(?:°\s*c|degrees?\s*c(?:elsius)?\b)/g,
+    usedMeasure: /\b(?:by|drop\w*|fell|decreas\w*|lost|change)\b/,
+    oppositeMeasure: /\b(?:rose|increas\w*|warmed|cooled to|fell to|dropped to)\b/,
+    hint: "Match the temperature drop in °C to this can. State how far the temperature fell."
+  },
+  quadrats: {
+    cases: [
+      {label: "Weekly mown patch", signal: /\b(?:weekly|every week|once a week|patch a)\b/, value: 4},
+      {label: "Patch mown once a term", signal: /\b(?:once (?:a|per) term|termly|less (?:often|frequently)|patch b)\b/, value: 9}
+    ],
+    quantity: /(?<![\d.])(-?\d+(?:\.\d+)?|four|nine)\s+(?:different\s+)?(?:plant\s+)?species\b/g,
+    usedMeasure: /\bspecies\b/,
+    oppositeMeasure: /\b(?:per quadrat|in each quadrat)\b/,
+    hint: "Match the total number of plant species to this patch. Use the number for all its samples."
+  }
+};
+
+function reviewVisualEvidence(task, parts) {
+  const rule = visualEvidence[task];
+  return rule.cases.map(({label,signal,value}, i) => {
+    const other = rule.cases[1-i].signal;
+    const values = [];
+    for (const part of parts) {
+      if (!signal.test(part) || other.test(part.replace(signal, "")) ||
+          denial.test(part.replace(/\bno (?:felt|wrapping|insulation)\b/, "")) ||
+          uncertainty.test(part) || !rule.usedMeasure.test(part) || rule.oppositeMeasure.test(part)) continue;
+      const matches = Array.from(part.matchAll(rule.quantity), match =>
+        match[1] === "four" ? 4 : match[1] === "nine" ? 9 : Number(match[1]));
+      if (matches.length === 1) {
+        const signedChange = task === "insulation" && /\bchange\b/.test(part);
+        values.push(signedChange ? -matches[0] : matches[0]);
+      }
+    }
+    if (values.length && values.every(item => item === value)) {
+      return result(label, "credited", "The result and condition match.");
+    }
+    return result(label, values.length ? "revise" : "compare", rule.hint);
+  });
+}
+
 export function reviewWriting(task, kind, text) {
   const parts = clauses(text);
+  if (visualEvidence[task]) return reviewVisualEvidence(task, parts);
   if (task === "dye") return [readDiffusion(parts)];
 
   if (kind === "reason") return [readWaterMovement(parts, "dilute", true)];
