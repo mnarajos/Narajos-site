@@ -73,7 +73,7 @@ if (years.includes(year)) {
     for (const [code, topic, lessons] of gcseYears[year]) {
       const item = element("li");
       const title = element("h3");
-      title.append(element("span", code, "school-code"), document.createTextNode(topic));
+      title.append(element("span", code, "school-code"), document.createTextNode(" " + topic));
       const links = element("ul", "", "school-concept-list");
       for (const [id, concept] of lessons) {
         const row = element("li");
