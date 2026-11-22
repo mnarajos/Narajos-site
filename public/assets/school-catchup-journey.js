@@ -74,6 +74,7 @@ export function mountJourney(host, model, lesson) {
   if (!document.documentElement.dataset.catchupYear) identifyCatchupYear(year);
   const guided = Number(year) >= 9 || new URLSearchParams(location.search).has("guided");
   const practice = guided ? model.parentElement.querySelector("[data-ks3-transfer]") : null;
+  const hasScaffolding = guided && steps.some(step => step.worked || step.guide);
   const progressKey = year + "." + id;
   const prior = readCatchup(progressKey);
   const state = {
@@ -123,7 +124,12 @@ export function mountJourney(host, model, lesson) {
 
   let viewOnly = false;
   let shownIndex = state.step;
+  const revisedPrompt = (state.repeating && retry ? retry : steps[state.step]).prompt;
+  if (state.prompt && state.prompt !== revisedPrompt || state.selected && ![steps[state.step].answer, ...steps[state.step].options.map(option => option.label)].includes(state.selected) && !state.repeating) {
+    Object.assign(state, {selected: "", correct: false, feedback: "", clues: 0, helped: false, explained: false});
+  }
   function write() {
+    state.prompt = (state.repeating && retry ? retry : steps[state.step]).prompt;
     storageNote.textContent = saveCatchup(progressKey, state) ? "" : "Progress can only be kept while this page is open.";
   }
 
@@ -138,7 +144,10 @@ export function mountJourney(host, model, lesson) {
     if (!state.done) {
       const step = steps[state.step];
       const stage = element("section", "", "school-current-stage");
-      const heading = element("h3", lessonStages[state.step]);
+      const stageName = hasScaffolding && step.worked ? ["I do · Worked example", "We do · Guided practice"][Number(Boolean(step.guide))]
+        : hasScaffolding && step.guide ? "We do · Guided practice"
+          : hasScaffolding && state.step === steps.length - 1 ? "You do · On your own" : lessonStages[state.step];
+      const heading = element("h3", stageName);
       heading.tabIndex = -1;
       stage.append(heading);
       if (step.notice) stage.append(element("p", step.notice));
@@ -147,6 +156,16 @@ export function mountJourney(host, model, lesson) {
         const teaching = element("div", "", "school-step-notes");
         teaching.append(element("h4", title), element("p", text));
         stage.append(teaching);
+      }
+      if (guided && step.worked) {
+        const { title, lines, visual } = step.worked;
+        const example = element("div", "", "school-worked-example");
+        example.append(element("h4", title));
+        if (visual) example.append(visual());
+        const reasoning = element("ol");
+        reasoning.append(...lines.map(line => element("li", line)));
+        example.append(reasoning);
+        stage.append(example);
       }
       stage.append(checkButton(state.open ? "Resume check" : "Check", showCheck));
       if (state.step > 0) stage.append(button("Catch-up notes", () => showEvidence()));
@@ -297,6 +316,7 @@ export function mountJourney(host, model, lesson) {
     next.hidden = !state.correct;
     const tools = element("div", "", "school-journey-actions");
     tools.append(submit, next, button("Save and pause", pause));
+    if (guided && q.guide) form.append(element("p", q.guide, "school-guided-prompt"));
     if (shownIndex === steps.length - 1 && !state.repeating) form.append(element("p", "Say how you know, then choose."));
     form.append(choices, result, tools);
     if (state.draft?.trim()) {
@@ -316,12 +336,13 @@ export function mountJourney(host, model, lesson) {
     const clueText = element("p", "", "school-clue");
     clueText.tabIndex = -1;
     function renderClues() {
-      const first = q.image ? "Trace each label to the exact feature it points to."
+      const first = q.clue || q.hint || (q.image ? "Trace each label to the exact feature it points to."
         : q.teach ? "Think about the idea in “" + q.teach[0] + "”. Which option uses it?"
-        : "Find the key science word or the change described in the question.";
+        : "Look for the option that fits the change in the question.");
+      const second = q.clue && q.hint ? q.hint : "";
       clueText.hidden = !state.clues;
-      clueText.textContent = state.clues > 1 && q.hint ? q.hint : first;
-      clue.hidden = state.clues >= (q.hint ? 2 : 1);
+      clueText.textContent = state.clues > 1 && second ? second : first;
+      clue.hidden = state.clues >= (second ? 2 : 1);
       clue.textContent = state.clues ? "Another clue" : "Need a clue?";
     }
     renderClues();
@@ -395,7 +416,7 @@ export function mountJourney(host, model, lesson) {
   function advance() {
     const atEnd = state.step === steps.length - 1;
     const repeat = atEnd && retry && state.helped && !state.repeating;
-    const outcome = state.explained ? "explained" : state.helped ? "supported" : "independent";
+    const outcome = state.explained ? "explained" : state.helped || (guided && currentQuestion().guide) ? "supported" : "independent";
     if (state.repeating) state.followUp = outcome;
     else {
       state.outcomes ||= {};

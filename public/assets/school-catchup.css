@@ -179,3 +179,8 @@
 
 .school-concept-list .school-concept-question,.school-storage-note,.catchup-picture figcaption small{font-size:.875rem}
 .school-check :is(.school-check-feedback,.school-clue,.school-check-explanation){font-size:1rem;line-height:var(--narajos-reading-line,1.55)}
+.school-worked-example { margin: .55rem 0 .75rem; padding: .7rem .85rem; background: #f8f1e7; border-inline-start: 4px solid #a86c3b; border-radius: .45rem; }
+.school-worked-example h4 { margin: 0 0 .35rem; }
+.school-worked-example ol { margin: .25rem 0 0; padding-inline-start: 1.35rem; }
+.school-worked-example li + li { margin-block-start: .25rem; }
+.school-guided-prompt { padding: .55rem .7rem; background: #eaf4f0; border-radius: .45rem; }
