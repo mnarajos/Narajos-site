@@ -37,3 +37,9 @@ main .opt:focus-within, main .k-option:focus-within {
 
 /* Small footer link in the independently styled revision and teaching tools. */
 footer .resource-terms{display:inline-block;margin:.3rem .5rem .25rem 0;color:inherit;font-size:.85rem;text-underline-offset:.15em}
+
+/* Keep the orange wordmark legible on both application palettes. */
+.keystone-lockup .keystone-type .keystone-second{color:#a4470d}
+@media(prefers-color-scheme:dark){
+  :root:has(header.top .top-inner,header.brand .eyebrow) .keystone-lockup .keystone-type .keystone-second{color:#ff9b54}
+}

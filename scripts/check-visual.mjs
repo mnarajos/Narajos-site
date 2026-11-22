@@ -30,7 +30,18 @@ try {
     });
     measurements.push({ path, violations: check });
   }
+  await page.emulateMedia({ colorScheme: "dark", reducedMotion: "reduce" });
+  await page.goto(base + "/teacher/");
+  await page.addScriptTag({ content: axe.source });
+  const dark = await page.evaluate(async () => {
+    const result = await window.axe.run({ runOnly: ["color-contrast"] });
+    return result.violations.map(rule => ({ id: rule.id, impact: rule.impact, nodes: rule.nodes.map(node => node.target) }));
+  });
+  measurements.push({ path: "/teacher/ (dark)", violations: dark });
   console.log("Accessibility findings " + JSON.stringify(measurements));
+  const serious = measurements.flatMap(page => page.violations.filter(rule => rule.impact === "serious" || rule.impact === "critical"));
+  assert.deepEqual(serious, [], "Repair serious findings in the sampled pages");
+  await page.emulateMedia({ colorScheme: "light", reducedMotion: "reduce" });
 
   for (const [width, height] of [[320, 700], [375, 620], [390, 844], [640, 512], [768, 1024], [1280, 800]]) {
     await page.setViewportSize({ width, height });
@@ -67,7 +78,7 @@ try {
     const start = controls.getByRole("button", { name: "Start", exact: true });
     await start.tap();
     await controls.getByRole("button", { name: "Pause", exact: true }).tap();
-    const graph = page.locator(".graph-readout summary");
+    const graph = page.locator("#graph-readout > summary");
     await graph.tap();
     const visible = await controls.boundingBox();
     assert(visible && visible.y >= -1 && visible.y + visible.height <= height + 1, "Simulation controls move out of view");
