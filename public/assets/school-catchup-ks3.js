@@ -1,5 +1,5 @@
 import { mountJourney, question } from "./school-catchup-journey.js";
-import { readCatchup, saveCatchup } from "./school-catchup-progress.js";
+import { addPracticeAnswer } from "./school-catchup-writing.js";
 import { withKS3Scaffolds } from "./school-catchup-ks3-scaffolds.js";
 import { curriculum } from "./ks3-lessons.js";
 
@@ -235,32 +235,6 @@ const topics = {
 
 function fromLesson(source) {
   return question(source.prompt, source.answer, source.correctFeedback, ...source.distractors);
-}
-
-function addPracticeAnswer(card, id) {
-  if (!card) return;
-  card.classList.add("ks3-try-practice");
-  let draft = card.querySelector("textarea");
-  let label = card.querySelector("label");
-  if (!draft) {
-    draft = document.createElement("textarea");
-    draft.id = "practice-answer-" + id.replaceAll(".", "-");
-    draft.rows = 3;
-    label = document.createElement("label");
-    label.htmlFor = draft.id;
-    label.textContent = "Your answer";
-    const example = card.querySelector(":scope > details");
-    if (example) example.before(label, draft);
-    else card.append(label, draft);
-  }
-  const pen = document.createElement("span");
-  pen.setAttribute("aria-hidden", "true");
-  pen.textContent = "✎";
-  label.prepend(pen);
-  const key = id + ".practice";
-  draft.maxLength = 2000;
-  draft.value = readCatchup(key).draft || "";
-  draft.addEventListener("input", () => saveCatchup(key, {step: 0, draft: draft.value}));
 }
 
 export function addKS3Journey(model, lesson, year, renderVisual) {

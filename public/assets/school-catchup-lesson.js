@@ -1,4 +1,5 @@
 import { identifyCatchupYear, mountJourney } from "./school-catchup-journey.js";
+import { createWritingPractice, year9Writing } from "./school-catchup-writing.js";
 import { year9 } from "./school-catchup-year9.js";
 import { year9Visual } from "./school-catchup-visuals.js";
 import { gcseCatchup } from "./gcse-catchup-data.js";
@@ -81,5 +82,13 @@ if (Object.hasOwn(year9, id) || Object.hasOwn(gcseCatchup, id)) {
     model.append(extension);
   }
   host.replaceChildren(model);
+  if (!senior && year9Writing[id]) {
+    const extra = document.createElement("details");
+    extra.className = "school-lesson-extras";
+    const summary = document.createElement("summary");
+    summary.textContent = "Practise writing a short explanation";
+    extra.append(summary, createWritingPractice("9." + id, year9Writing[id]));
+    host.append(extra);
+  }
   mountJourney(model, model, {...lesson, id});
 }
