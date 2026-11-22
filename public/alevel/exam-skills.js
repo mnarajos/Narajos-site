@@ -164,55 +164,177 @@
     }
     return node("div");
   }
-  function model(host, family) {
-    const block = node("section", null, "al-teaching");
-    block.append(
-      node("h2", "Work through the reasoning"),
-      node("p", family.principle),
-    );
-    let index = 0;
-    const panel = node("div", null, "al-step"),
-      art = node("div"),
-      controls = node("div", null, "al-controls");
-    const previous = button("Previous step", () => {
-        index--;
-        update();
-      }),
-      next = button("Next step", () => {
-        index++;
-        update();
-      });
-    controls.append(
-      previous,
-      next,
-      button("Replay example", () => {
-        index = 0;
-        update();
-      }),
-    );
-    block.append(panel, art, controls);
+  const icons = {
+    idea: '<path d="M4 5h6a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z"/>',
+    model: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
+    guided: '<path d="m3 6 1 1 2-2m-3 7 1 1 2-2m-3 7 1 1 2-2M9 6h12M9 12h12M9 18h12"/>',
+    independent: '<path d="M5 5h14v14H5zM9 12h6m-3-3v6"/>',
+    review: '<path d="M9 4H5v16h14V4h-4M9 3h6v4H9zm0 11 2 2 4-4"/>',
+    bulb: '<path d="M9 19h6m-4 3h2M9 16c0-2-3-3-3-7a6 6 0 1 1 12 0c0 4-3 5-3 7Z"/>',
+    check: '<path d="m4 12 5 5L20 6"/>',
+    retry: '<path d="M4 11a8 8 0 1 1 1 6m-1-6V5m0 6h6"/>',
+    pen: '<path d="m5 16-1 4 4-1L20 7l-3-3ZM14 7l3 3"/>',
+    calculator: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8m-8 5h2m4 0h2m-8 4h2m4 0h2"/>',
+    pathway: '<path d="M4 5h7v6H4zM13 13h7v6h-7zM11 8h5v5M8 11v5h5"/>',
+    diagram: '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="10" r="1"/><path d="m4 17 5-4 3 3 4-5 5 5"/>',
+  };
+
+  function icon(name) {
+    const element = node("span", null, "al-icon");
+    element.setAttribute("aria-hidden", "true");
+    element.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + icons[name] + "</svg>";
+    return element;
+  }
+
+  const stages = [
+    ["idea", "Key idea"], ["model", "Worked example"], ["guided", "With support"],
+    ["independent", "Your turn"], ["review", "Review"],
+  ];
+
+  function stageBar() {
+    const list = node("ol", null, "al-stages");
+    list.setAttribute("aria-label", "Learning stages");
+    list.setAttribute("role", "list");
+    for (const [id, label] of stages) {
+      const item = node("li");
+      item.dataset.stage = id;
+      item.append(icon(id), node("span", label));
+      list.append(item);
+    }
+    return list;
+  }
+
+  function currentStage(bar, id) {
+    for (const item of bar.children) {
+      if (item.dataset.stage === id) item.setAttribute("aria-current", "step");
+      else item.removeAttribute("aria-current");
+    }
+  }
+
+  function model(host, family, state, persist, finish, revisiting = false) {
+    const block = node("section", null, "al-teaching al-model");
+    const heading = node("h2", "Worked example");
+    const panel = node("div", null, "al-step");
+    panel.setAttribute("aria-live", "polite");
+    panel.setAttribute("aria-atomic", "true");
+    const art = node("div", null, "al-model-visual");
+    const controls = node("div", null, "al-controls");
+    const last = family.model.length - 1;
+    let index = Math.min(last, Math.max(0, state.modelIndex || 0));
+    function show(i) {
+      index = i;
+      state.modelIndex = index;
+      persist();
+      update();
+    }
+    const previous = button("Previous step", () => show(index - 1));
+    const next = button("Next step", () => index < last ? show(index + 1) : finish());
+    next.classList.add("primary");
+    const replay = button("Replay example", () => {
+      show(0);
+      next.focus();
+    });
+    controls.append(next, previous, replay);
+    block.append(heading, panel, art, controls);
     host.append(block);
     function update() {
-      panel.replaceChildren(
-        node(
-          "p",
-          "Step " + (index + 1) + " of " + family.model.length,
-          "al-stage",
-        ),
-        node("p", family.model[index]),
-      );
+      panel.replaceChildren(node("p", family.model[index]),
+        node("p", (index + 1) + " of " + (last + 1), "al-task-count"));
       art.replaceChildren(visual(family.visual, index));
       previous.disabled = index === 0;
-      next.disabled = index === family.model.length - 1;
-      panel.setAttribute("aria-live", "polite");
+      next.textContent = index < last ? "Next step" : revisiting ? "Back to the question" : "Try with support";
+      replay.hidden = index === 0;
     }
     update();
     return block;
+  }
+
+  function journey(host, family, options = {}) {
+    const state = loadFamily(family);
+    const savedPractice = ["outcomes", "drafts", "hints", "responses", "reviews"].some(field => Object.keys(state[field]).length);
+    state.phase ||= savedPractice || state.completed ? "practice" : "idea";
+    const persist = () => saveFamily(family, state);
+    const bar = stageBar();
+    const active = node("div", null, "al-journey-stage");
+    const secondary = node("div", null, "al-journey-links");
+    host.append(bar, active, secondary);
+
+    function practiseNow(moveFocus, independent = false) {
+      if (independent) {
+        state.queue = family.tasks.flatMap((q, i) => q.guided ? [] : [i]);
+        state.index = state.queue[0];
+      }
+      state.phase = "practice";
+      persist();
+      show(moveFocus);
+    }
+
+    function show(moveFocus = false) {
+      active.replaceChildren();
+      secondary.replaceChildren();
+      if (state.phase === "idea") {
+        currentStage(bar, "idea");
+        const heading = node("h2", "Key idea");
+        const panel = node("section", null, "al-teaching al-key");
+        const start = button("See worked example", () => {
+          state.phase = "model";
+          persist();
+          show(true);
+        });
+        start.classList.add("primary");
+        panel.append(heading, node("p", family.principle));
+        if (options.notes) panel.append(options.notes);
+        panel.append(start);
+        active.append(panel);
+        if (moveFocus) focus(heading);
+      } else if (state.phase === "model") {
+        currentStage(bar, "model");
+        const content = model(active, family, state, persist, () => practiseNow(true));
+        const key = button("Review the key idea", () => {
+          state.phase = "idea";
+          persist();
+          show(true);
+        });
+        key.classList.add("al-secondary");
+        secondary.append(key);
+        if (moveFocus) focus(content.querySelector("h2"));
+      } else {
+        const content = practise(active, family, state, {
+          stage: id => currentStage(bar, id),
+          context: options.context,
+        });
+        const review = node("details", null, "al-review-example");
+        review.append(node("summary", "Review the worked example"));
+        review.ontoggle = () => {
+          if (!review.open) return;
+          if (!review.querySelector(".al-model")) {
+            model(review, family, state, persist, () => {
+              review.open = false;
+              focus(content.querySelector("h3, h2"));
+            }, true);
+          }
+          if (!state.completed && !state.outcomes[state.index] && !family.tasks[state.index].guided) {
+            state.modelAssists[state.index] = true;
+            persist();
+          }
+        };
+        secondary.append(review);
+        if (moveFocus) focus(content.querySelector("h2"));
+      }
+      if (state.phase !== "practice") {
+        const skip = button("Go straight to questions", () => practiseNow(true, true));
+        skip.classList.add("al-secondary");
+        secondary.append(skip);
+      }
+      if (options.extra) secondary.append(options.extra);
+    }
+    show();
   }
   const outcomeNames = {
     independent: "Independently correct",
     "hint-supported": "Correct with a clue",
     corrected: "Correct after correction",
+    "model-supported": "Correct after revisiting the model",
     guided: "Correct in guided practice",
     "self-reviewed": "Written response self-reviewed",
     "needs-practice": "Still needs practice",
@@ -220,7 +342,7 @@
 
   function loadFamily(family) {
     const state = read()[family.id] || {};
-    for (const field of ["outcomes", "drafts", "attempts", "hints", "responses", "results", "reviews"]) {
+    for (const field of ["outcomes", "drafts", "attempts", "hints", "responses", "results", "reviews", "modelAssists"]) {
       if (!state[field] || typeof state[field] !== "object" || Array.isArray(state[field])) state[field] = {};
     }
     const valid = i => Number.isInteger(i) && i >= 0 && i < family.tasks.length;
@@ -270,7 +392,7 @@
 
     function begin(queue) {
       for (const i of queue) {
-        for (const field of ["outcomes", "attempts", "hints", "responses", "results", "reviews"])
+        for (const field of ["outcomes", "attempts", "hints", "responses", "results", "reviews", "modelAssists"])
           delete state[field][i];
       }
       state.queue = queue;
@@ -404,7 +526,10 @@
       status.setAttribute("role", "status");
       const controls = node("div", null, "al-controls");
       function announce(text, kind) {
-        status.textContent = text;
+        const symbol = { correct: "check", improve: "retry", hint: "bulb", explained: "model", review: "review" }[kind];
+        status.replaceChildren();
+        if (symbol) status.append(icon(symbol));
+        if (text) status.append(node("span", text));
         status.dataset.kind = kind;
         status.hidden = !text;
       }
@@ -485,6 +610,7 @@
         hint.onclick = ((handler) => () => {
           if (hint.getAttribute("aria-disabled") !== "true") handler();
         })(hint.onclick);
+        hint.classList.add("al-secondary");
         if (!writing && (state.hints[i] || 0) < hints.length) controls.append(hint);
         if (!writing) {
           const reveal = button("Show explanation", () => {
@@ -494,6 +620,7 @@
             render();
             focus(block.querySelector('[role="status"]'));
           });
+          reveal.classList.add("al-secondary");
           controls.append(reveal);
         }
       }
@@ -564,7 +691,8 @@
         state.attempts[i] = attempts;
         state.results[i] = { kind: correct ? "accepted" : "incorrect", ...(matched ? { matched } : {}) };
         state.outcomes[i] = !correct ? "needs-practice" : q.guided ? "guided" :
-          attempts > 1 ? "corrected" : state.hints[i] ? "hint-supported" : "independent";
+          attempts > 1 ? "corrected" : state.hints[i] ? "hint-supported" :
+            state.modelAssists[i] ? "model-supported" : "independent";
         persist();
         render();
         focus(block.querySelector('[role="status"]'));
@@ -869,12 +997,12 @@
     families,
     model,
     practise,
-    catchup(host, topic, concept) {
+    hasCatchup(topic, concept) {
+      return Boolean(catchupMap[topic + "-" + concept]);
+    },
+    catchup(host, topic, concept, options) {
       const family = families[catchupMap[topic + "-" + concept]];
-      if (family) {
-        model(host, family);
-        practise(host, family);
-      }
+      if (family) journey(host, family, options);
     },
     route(host, id, filter) {
       host.append(
@@ -892,8 +1020,7 @@
       }
       const f = families[id];
       host.append(node("h1", f.title));
-      model(host, f);
-      practise(host, f);
+      journey(host, f);
     },
     links(topic) {
       const ids = Object.values(families)

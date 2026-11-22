@@ -6088,7 +6088,7 @@ var PCARD={p1:["Molecules, cells, exchange, and genetics","Topics 1–4"],p2:["E
 function showHome(focus){
  L=null;
  var h='<div class="hb-hero"><h1>Ready to revise?</h1><p>Practice questions, catch up on a missed concept, or revisit what you found difficult.</p></div>';
- h+='<section class="companion-entry" aria-label="Learning companion"><span class="companion-symbol" aria-hidden="true">📖</span><div><strong>Missed a lesson or need a refresher?</strong><p>Read a few key ideas, then return to practice questions.</p></div><a class="btn" href="#catchup">Catch up</a></section>';
+ h+='<section class="companion-entry" aria-label="Learning companion"><span class="companion-symbol" aria-hidden="true">📖</span><div><strong>Missed a lesson or need a refresher?</strong><p>Understand the idea, see a worked example, then practise.</p></div><a class="btn" href="#catchup">Catch up</a></section>';
  if(window.NarajosTopicFinder)h+=window.NarajosTopicFinder.markup;
  var kst=KSReview.progress();
  h+='<section class="kr-entry"><h2>Review for today</h2><p>Revisit flashcards after a delay. Previously missed cards return for practice.</p><div class="kr-metrics"><span>'+kst.due+' due</span><span>'+kst.seen+' practised</span></div><div class="kr-actions"><a class="btn primary" href="#spaced">Spaced review</a><a class="btn" href="#flashcards">Flashcards</a></div></section>';
@@ -6243,7 +6243,7 @@ function showTopic(t,focus){
    Existing question progression and post-error reteaching remain unchanged. */
 function showCatchupIndex(focus){
  L=null;
- var h='<p class="crumb"><a href="#">← Home</a></p><div class="hb-hero"><h1>Catch up on a concept</h1><p>Choose a topic, then a concept. Read a few key ideas before trying questions.</p></div><div class="catchup-paper-grid">';
+ var h='<p class="crumb"><a href="#">← Home</a></p><div class="hb-hero"><h1>Catch up on a concept</h1><p>Choose a concept to revisit. Guided lessons show how to use the key idea.</p></div><div class="catchup-paper-grid">';
  [['a1','a2','a3','a4'],['a5','a6','a7','a8']].forEach(function(topics,i){
   h+='<section class="catchup-paper-group" aria-labelledby="catchup-paper-'+(i+1)+'"><h2 id="catchup-paper-'+(i+1)+'">Paper '+(i+1)+' · Topics '+(i===0?'1–4':'5–8')+'</h2><ul class="topics">';
   topics.forEach(function(t){
@@ -6268,17 +6268,29 @@ function showCatchup(t,c,step,focus){
  L=null;
  var notes=Array.isArray(c.key)?c.key:[],total=Math.max(1,Math.ceil(notes.length/2));
  step=Math.max(0,Math.min(total-1,Number(step)||0));
- var ready=isUnlocked(t,c);
- var h='<p class="crumb"><a href="#catchup">← Catch-up topics</a></p><p class="spec">Catch-up companion · '+esc(DATA[t].code)+' · Step '+(step+1)+' of '+total+'</p><h1>'+esc(c.title)+'</h1>';
- h+=(ready?'<p><a class="btn" href="#lesson-'+t+'-'+c.id+'">Skip to questions</a></p>':'');
- h+='<section class="key companion-key" aria-label="Key knowledge"><h2>Key idea</h2><ul>'+notes.slice(step*2,step*2+2).map(function(k){return '<li>'+rich(k)+'</li>';}).join('')+'</ul>'+(c.gate&&step===total-1?'<p class="gate"><strong>Why it matters:</strong> '+fmt(c.gate)+'</p>':'')+'</section>';
+ var ready=isUnlocked(t,c),exam=window.ALevelExamSkills;
+ var h='<p class="crumb"><a href="#catchup-'+t+'">← Catch-up topics</a></p><h1>'+esc(c.title)+'</h1>';
+ if(exam&&exam.hasCatchup(t,c.id)){
+  render(h+'<div class="al-catchup-journey"></div>',focus);
+  var recap=document.createElement('details');
+  recap.className='al-key-notes';
+  recap.innerHTML='<summary>More key knowledge</summary><ul>'+notes.map(function(k){return '<li>'+rich(k)+'</li>';}).join('')+'</ul>'+(c.gate?'<p class="gate"><strong>Why it matters</strong> '+fmt(c.gate)+'</p>':'');
+  var extra=document.createElement('div');
+  var visuals=window.KeystoneCatchupVisuals&&window.KeystoneCatchupVisuals.render(t,c.id);
+  if(visuals)extra.innerHTML='<details class="al-key-notes"><summary>Related diagrams and simulations</summary>'+visuals+'</details>';
+  if(ready)extra.insertAdjacentHTML('beforeend','<a class="al-quiet-link" href="#lesson-'+t+'-'+c.id+'">More topic questions</a>');
+  exam.catchup(main.querySelector('.al-catchup-journey'),t,c.id,{notes:recap,extra:extra});
+  return;
+ }
+ h+='<p class="spec">'+esc(DATA[t].code)+' · Key ideas · '+(step+1)+' of '+total+'</p>';
+ h+='<section class="key companion-key" aria-label="Key knowledge"><h2>Key idea</h2><ul>'+notes.slice(step*2,step*2+2).map(function(k){return '<li>'+rich(k)+'</li>';}).join('')+'</ul>'+(c.gate&&step===total-1?'<p class="gate"><strong>Why it matters</strong> '+fmt(c.gate)+'</p>':'')+'</section>';
  if(window.KeystoneCatchupVisuals)h+=window.KeystoneCatchupVisuals.render(t,c.id);
- h+='<div class="actions companion-lesson-actions">'+(step>0?'<a class="btn" href="#catchup-'+t+'-'+c.id+'-'+(step-1)+'">Previous</a>':'')+
- (step<total-1?'<a class="btn primary" href="#catchup-'+t+'-'+c.id+'-'+(step+1)+'">Next key idea →</a>':'')+
- (ready?'<a class="btn'+(step===total-1?' primary':'')+'" href="#lesson-'+t+'-'+c.id+'">Start questions</a>':'<a class="btn" href="#topic-'+t+'">Review prerequisites</a>')+'</div>';
- h+='<p class="small companion-note">Use the questions to check understanding. Targeted explanations are also available after mistakes.</p>';
+ h+='<div class="actions companion-lesson-actions">'+
+ (step<total-1?'<a class="btn primary" href="#catchup-'+t+'-'+c.id+'-'+(step+1)+'">Next key idea</a>':
+   (ready?'<a class="btn primary" href="#lesson-'+t+'-'+c.id+'">Start questions</a>':'<a class="btn primary" href="#topic-'+t+'">Review prerequisites</a>'))+
+ (step>0?'<a class="al-quiet-link" href="#catchup-'+t+'-'+c.id+'-'+(step-1)+'">Previous</a>':'')+
+ (ready&&step<total-1?'<a class="al-quiet-link" href="#lesson-'+t+'-'+c.id+'">Go straight to questions</a>':'')+'</div>';
  render(h,focus);
- if(window.ALevelExamSkills&&step===0){var teaching=document.createElement('details');teaching.className='al-teaching';var summary=document.createElement('summary');summary.textContent='Worked example and guided practice';teaching.append(summary);var support=document.createElement('div');teaching.append(support);main.querySelector('.companion-key').after(teaching);window.ALevelExamSkills.catchup(support,t,c.id);if(!support.children.length)teaching.remove();else teaching.open=true;}
 }
 
 /* ---------- Lesson ---------- */

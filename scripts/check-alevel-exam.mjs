@@ -24,28 +24,24 @@ export async function checkALevelExam(browser, base) {
     );
     assert.equal(bank.length, 56);
     assert.equal(new Set(bank.map((x) => x.id)).size, 56);
+    const beginGuided = async family => {
+      assert.equal(await page.locator(".al-stages [aria-current=step]").innerText(), "Key idea");
+      await page.getByRole("button", { name: "See worked example", exact: true }).press("Enter");
+      assert.equal(await page.locator(".al-stages [aria-current=step]").innerText(), "Worked example");
+      assert(await page.getByRole("button", { name: "Previous step", exact: true }).isDisabled());
+      for (let i = 1; i < family.model.length; i++)
+        await page.getByRole("button", { name: "Next step", exact: true }).click();
+      await page.getByRole("button", { name: "Try with support", exact: true }).press("Enter");
+      assert.equal(await page.locator(".al-stages [aria-current=step]").innerText(), "With support");
+      assert(await page.locator(".al-practice h2").evaluate(el => el === document.activeElement));
+      assert.equal(await page.locator(".al-model:visible").count(), 0);
+    };
     for (const family of families) {
       await page.goto(base + "/alevel/#exam-" + family.id);
       await page
         .getByRole("heading", { name: family.title, exact: true })
         .waitFor();
-      assert(
-        await page
-          .getByRole("button", { name: "Previous step", exact: true })
-          .isDisabled(),
-      );
-      for (let i = 1; i < family.model.length; i++)
-        await page
-          .getByRole("button", { name: "Next step", exact: true })
-          .click();
-      assert(
-        await page
-          .getByRole("button", { name: "Next step", exact: true })
-          .isDisabled(),
-      );
-      await page
-        .getByRole("button", { name: "Replay example", exact: true })
-        .click();
+      await beginGuided(family);
       for (let i = 0; i < family.tasks.length; i++) {
         const q = family.tasks[i],
           form = page.locator(".al-teaching form");
@@ -110,6 +106,7 @@ export async function checkALevelExam(browser, base) {
       localStorage.removeItem("keystone.alevel.exam-skills.v1"),
     );
     await page.goto(base + "/alevel/#exam-hardy");
+    await beginGuided(families.find(family => family.id === "hardy"));
     await page
       .getByRole("button", { name: "Need a clue?", exact: true })
       .click();
@@ -142,6 +139,7 @@ export async function checkALevelExam(browser, base) {
 
     await page.goto(base + "/alevel/#exam-mechanisms");
     const mechanisms = families.find(family => family.id === "mechanisms");
+    await beginGuided(mechanisms);
     const shuffledPositions = new Set();
     for (let i = 0; i < mechanisms.tasks.length - 1; i++) {
       const q = mechanisms.tasks[i];
@@ -188,6 +186,17 @@ export async function checkALevelExam(browser, base) {
     assert(await page.getByRole("button", { name: "Retry questions I needed help with" }).isVisible());
     await page.getByText("Review the completed questions", { exact: true }).click();
     assert(await page.getByText(revised, { exact: true }).isVisible());
+    await page.evaluate(key => { const state = JSON.parse(localStorage.getItem(key)); delete state.dihybrid; localStorage.setItem(key, JSON.stringify(state)); }, key);
+    await page.goto(base + "/alevel/#catchup-a7-dihybrid");
+    await page.getByRole("heading", { name: /Dihybrid/, level: 1 }).waitFor();
+    await page.getByRole("button", { name: "Go straight to questions", exact: true }).click();
+    assert.equal(await page.locator(".al-stages [aria-current=step]").innerText(), "Your turn");
+    await page.locator(".al-practice input").first().fill("9");
+    await page.getByText("Review the worked example", { exact: true }).press("Enter");
+    await page.locator(".al-review-example .al-model").waitFor();
+    assert.equal(await page.locator(".al-practice input").first().inputValue(), "9");
+    await page.getByText("Review the worked example", { exact: true }).press("Enter");
+    assert.equal(await page.locator(".al-model:visible").count(), 0);
     // Every original drawing appears in the rotating short sets and accepts its authored category combination.
     const seen = new Set();
     for (let round = 0; round < 56; round++) {
