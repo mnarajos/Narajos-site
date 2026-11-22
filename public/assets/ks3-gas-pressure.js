@@ -118,14 +118,16 @@
     }
     condition = setting;
     controls.forEach(control => { control.checked = control.value === id; });
-    output.textContent = setting.description;
+    if (output.textContent !== setting.description) output.textContent = setting.description;
     draw();
   }
 
   function guideControls() {
     const observation = observations[step];
-    label.textContent = "Observation " + (step + 1) + " of " + observations.length;
-    prompt.textContent = observed && observation.after ? observation.after : observation.before;
+    const stepLabel = "Observation " + (step + 1) + " of " + observations.length;
+    const stepPrompt = observed && observation.after ? observation.after : observation.before;
+    if (label.textContent !== stepLabel) label.textContent = stepLabel;
+    if (prompt.textContent !== stepPrompt) prompt.textContent = stepPrompt;
     change.textContent = observation.action || "";
     change.hidden = freeMode || step === 0 || observed;
     next.hidden = freeMode || !observed || step === observations.length - 1;
@@ -157,8 +159,10 @@
     guide.hidden = freeMode;
     controls[0].closest("fieldset").hidden = !freeMode;
     free.textContent = freeMode ? "Follow the observations" : "Explore freely";
-    if (freeMode) guideControls();
-    else goToStep(0);
+    if (freeMode) {
+      guide.querySelector("listen-to").stop?.();
+      guideControls();
+    } else goToStep(0);
   });
 
   function setMotion(running) {

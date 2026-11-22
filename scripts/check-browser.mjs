@@ -26,6 +26,14 @@ await new Promise(done=>server.listen(0,"127.0.0.1",done));
 const port=server.address().port,base="http://127.0.0.1:"+port;
 const browser=await chromium.launch({headless:true,args:["--no-sandbox"]});
 const errors=[];
+async function checkReadingSpacing(page, label) {
+ const style=await page.addStyleTag({content:`
+  * { line-height: 1.5 !important; letter-spacing: .12em !important; word-spacing: .16em !important; }
+  p { margin-bottom: 2em !important; }
+ `});
+ assert((await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,label+" overflows with text spacing applied");
+ await style.evaluate(el=>el.remove());
+}
 async function screen(page,label){
  await page.screenshot({path:"/tmp/narajos-"+label+".png",fullPage:true});
 }
@@ -139,6 +147,9 @@ try{
  assert(await examFocus.isHidden());
  await desktop.getByText("More practice options",{exact:true}).click();
  assert(await examFocus.isVisible());
+ await desktop.setViewportSize({width:320,height:800});
+ await checkReadingSpacing(desktop,"F170 start");
+ await desktop.setViewportSize({width:1280,height:900});
  // Quiet hints: an interaction restarts the inactivity delay, then keyboard
  // activation reveals the conceptual prompt without stealing navigation.
  await desktop.goto(base+"/human-biology/#skills/f170/units");
@@ -352,6 +363,7 @@ try{
  await navPage.setViewportSize({width:320,height:800});
  assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Guided bioenergetics overflows a narrow viewport");
  assert((await navPage.locator("#viz").boundingBox()).width<=320);
+ await checkReadingSpacing(navPage,"Bioenergetics guide");
  await navPage.getByRole("button",{name:"Open full model"}).click();
  assert(await navPage.getByRole("button",{name:/Switch to dark/}).isVisible());
  assert(await guide.isHidden());
@@ -680,7 +692,7 @@ try{
  await gasModel.getByRole("button",{name:"Follow the observations"}).click();
  await gasModel.getByRole("button",{name:"Start motion"}).waitFor();
  await navPage.setViewportSize({width:320,height:800});
- assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Gas pressure model overflows at narrow width");
+ await checkReadingSpacing(navPage,"Gas pressure guide");
  await navPage.setViewportSize({width:390,height:844});
  await screen(navPage,"ks3-gas-pressure-mobile");
  await navPage.goto(base+"/science-practice/#gcse-writing");
