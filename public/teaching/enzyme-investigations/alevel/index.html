@@ -12,6 +12,7 @@
  <link rel="stylesheet" href="/assets/home-link.css">
  <link rel="stylesheet" href="/assets/science-practice.css">
 
+ <script type="module" src="/assets/enzyme-investigation.js"></script>
  <script defer src="/assets/site-nav.js"></script>
 </head>
 <body>
@@ -25,10 +26,17 @@
    <h1>A-level · Test for saturation</h1>
 
   </div>
-  <article class="practice-card"><p>Start from standard conditions before each trial. Keep enzyme concentration, temperature and pH constant. Try starting substrate concentrations 5, 20 and 40. Compare the peak modelled rates using the same run time in each trial. The peak is the highest reading during a run. An initial rate in a practical is estimated from the early slope of a product-versus-time graph.</p>
+  <article class="practice-card enzyme-investigation"><p>Start from standard conditions before each trial. Keep enzyme concentration, temperature and pH constant. Try starting substrate concentrations 5, 20 and 40. Compare the peak modelled rates using the same run time in each trial. The peak is the highest reading during a run. An initial rate in a practical is estimated from the early slope of a product-versus-time graph.</p>
     <p><a href="/teaching/simulations/enzyme-kinetics/?activity=alevel">Open the A-level model task</a></p>
     <p><strong>After the model.</strong> Sketch the highest modelled rate against starting substrate concentration. Explain the flattening and predict how doubling enzyme concentration changes the plateau.</p>
-    <details><summary>Compare with the key ideas</summary><p>The modelled peak-rate curve rises and approaches a plateau as active sites increasingly become occupied. Extra substrate then has less effect on the rate. More enzyme supplies more active sites and raises the maximum rate. The model’s rate-over-time plot is a different graph: you use a rate from each trial to construct the substrate-concentration plot.</p></details>
+    <form data-enzyme-explain>
+      <label for="enzyme-answer">Explain the plateau and predict what doubling enzyme concentration would do.</label><textarea id="enzyme-answer" rows="4" maxlength="1600"></textarea>
+      <button type="submit">Check your explanation</button><p role="status"></p>
+      <details><summary>Help me write my explanation</summary><p>Start with what happens to the proportion of active sites occupied as substrate concentration increases.</p>
+       <button type="button" data-explain-aloud>I explained it aloud</button></details>
+      <section data-explanation-model hidden tabindex="-1"><h2>Compare your reasoning</h2><p>Did you explain why adding substrate has little effect at saturation and what increasing enzyme concentration changes?</p>
+       <div class="model"><p>The rate approaches a maximum as the enzyme’s active sites become saturated with substrate. At high substrate concentrations, additional substrate has little effect because almost all sites are occupied. Doubling enzyme concentration provides twice as many active sites, so the maximum rate would double if the other conditions stayed the same.</p></div></section>
+    </form>
   </article>
  </main>
  <footer class="footer"><div class="wrap footer-inner"><p>© 2026 Narajos</p><a href="/privacy/">Privacy</a></div></footer>

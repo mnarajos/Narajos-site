@@ -1324,6 +1324,41 @@ try{
  assert((await standardConditions.boundingBox()).height<65,"Standard conditions button is oversized");
  await navPage.goto(base+"/teaching/simulations/enzyme-kinetics/?activity=gcse");
  await navPage.getByRole("heading",{name:"Compare temperatures",exact:true}).waitFor();
+ const instructionButton=navPage.getByRole("button",{name:"Instructions",exact:true});
+ await instructionButton.press("Enter");
+ const enzymeInstructions=navPage.getByRole("dialog",{name:"Compare temperatures"});
+ await enzymeInstructions.getByText(/Predict which temperature/).waitFor();
+ await navPage.keyboard.press("Escape");
+ assert(!(await enzymeInstructions.isVisible()));
+ assert(await instructionButton.evaluate(button=>button===document.activeElement));
+ const runControls=navPage.getByRole("group",{name:"Simulation controls"});
+ for(const [id,pH,enzyme] of [["starch","7","amylase"],["protein","2","protease"],["lipid","8","lipase"]]){
+  const substrate=navPage.locator('.stab[data-sub="'+id+'"]');
+  await substrate.click();
+  await navPage.locator("#s-temp").press("Home");
+  await runControls.getByRole("button",{name:"Start",exact:true}).press("Enter");
+  await standardConditions.click();
+  assert.equal(await substrate.getAttribute("aria-pressed"),"true");
+  assert.equal(await navPage.locator("#s-temp").inputValue(),"37");
+  assert.equal(await navPage.locator("#s-ph").inputValue(),pH);
+  assert.equal(await navPage.locator("#s-sub").inputValue(),"20");
+  assert.equal(await navPage.locator('.mixrow[data-k="'+enzyme+'"] .ct').textContent(),"4");
+  assert.equal(await navPage.locator(".mixrow .ct").allTextContents().then(values=>values.map(Number).reduce((sum,number)=>sum+number,0)),4);
+  await runControls.getByRole("button",{name:"Start",exact:true}).press("Enter");
+  await runControls.getByRole("button",{name:"Pause",exact:true}).press("Enter");
+  await runControls.getByRole("button",{name:"Reset",exact:true}).press("Enter");
+  assert.equal(await substrate.getAttribute("aria-pressed"),"true");
+ }
+ for(const width of [320,768,1366]){
+  await navPage.setViewportSize({width,height:720});
+  await navPage.locator("#graph-readout").scrollIntoViewIfNeeded();
+  const box=await runControls.boundingBox();
+  assert(box.y>=0&&box.y+box.height<=720,"Run controls scrolled off screen at "+width);
+  assert((await runControls.getByRole("button",{name:"Start",exact:true}).boundingBox()).height>=44);
+ }
+ await navPage.setViewportSize({width:390,height:844});
+ await navPage.locator('.stab[data-sub="starch"]').click();
+ await standardConditions.click();
  await navPage.locator("#btn-run").click();
  await navPage.locator("#graph-readout summary").click();
  await navPage.waitForFunction(()=>document.querySelector("#rate-rows td")?.textContent==="1");
@@ -1352,6 +1387,34 @@ try{
  await navPage.getByRole("link",{name:"Return to the follow-up question"}).click();
  await navPage.waitForURL(base+"/teaching/enzyme-investigations/gcse/");
  await navPage.getByRole("heading",{name:"GCSE · Compare two temperatures"}).waitFor();
+ await navPage.goto(base+"/teaching/enzyme-investigations/ks3/");
+ await navPage.getByRole("heading",{name:/Can the same enzyme break down starch and protein/}).waitFor();
+ const compareButton=navPage.getByRole("button",{name:"Test the pair",exact:true});
+ for(const [enzyme,substrate,reacts] of [["amylase","starch",true],["amylase","protein",false],["protease","starch",false],["protease","protein",true]]){
+  await navPage.getByLabel("Enzyme",{exact:true}).selectOption(enzyme);
+  await navPage.getByLabel("Substrate",{exact:true}).selectOption(substrate);
+  await compareButton.press("Enter");
+  assert((await navPage.locator("[data-enzyme-result]").textContent()).includes(reacts?"fits the active site":"No product is made"));
+ }
+ const explanation=navPage.locator("[data-enzyme-explain]");
+ const modelExplanation=explanation.locator("[data-explanation-model]");
+ for(const failure of ["","asdfasdf qwer","aaaaaa aaaaaa"]){
+  await explanation.locator("textarea").fill(failure);
+  await explanation.getByRole("button",{name:"Check your explanation",exact:true}).press("Enter");
+  assert(await modelExplanation.isHidden());
+ }
+ await explanation.locator("textarea").fill("I thnk amylase works on protien as well.");
+ await explanation.getByRole("button",{name:"Check your explanation",exact:true}).press("Enter");
+ assert(await modelExplanation.isVisible(),"A meaningful wrong answer should unlock model feedback");
+ await navPage.reload();
+ await explanation.getByText("Help me write my explanation",{exact:true}).click();
+ await explanation.getByRole("button",{name:"I explained it aloud"}).press("Enter");
+ assert(await modelExplanation.isVisible());
+ for(const width of [320,768,1366]){
+  await navPage.setViewportSize({width,height:800});
+  assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Guided enzyme investigation overflows at "+width);
+ }
+ await navPage.setViewportSize({width:390,height:844});
  await navPage.goto(base+"/diagram-practice/#filtration");
  await navPage.waitForURL(/\/ks3\/lesson\/\?topic=separating-techniques/);
  const visualLab=navPage.locator('diagram-practice[topic="filtration"]');
