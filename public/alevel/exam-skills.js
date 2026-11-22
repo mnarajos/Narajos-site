@@ -23,7 +23,7 @@
   }
   function node(tag, text, className) {
     const element = document.createElement(tag);
-    if (text) element.textContent = text;
+    if (text !== undefined && text !== null) element.textContent = text;
     if (className) element.className = className;
     return element;
   }
@@ -42,93 +42,156 @@
     element.tabIndex = -1;
     element.focus();
   }
-  function table(caption, headers, rows) {
+  function table(caption, headers, rows, highlights = []) {
     const wrap = node("div", null, "al-table"),
       t = node("table");
     t.createCaption().textContent = caption;
     const hr = t.createTHead().insertRow();
-    headers.forEach((h) => {
+    headers.forEach((h, i) => {
       const th = node("th", h);
       th.scope = "col";
+      if (highlights.includes(i)) th.classList.add("al-highlight-cell");
       hr.append(th);
     });
     const body = t.createTBody();
     rows.forEach((row) => {
       const r = body.insertRow();
-      row.forEach((v) => (r.insertCell().textContent = v));
+      row.forEach((value, i) => {
+        const cell = node(i ? "td" : "th", value);
+        if (!i) cell.scope = "row";
+        if (highlights.includes(i)) cell.classList.add("al-highlight-cell");
+        r.append(cell);
+      });
     });
     wrap.append(t);
     return wrap;
   }
-  function graph(type) {
-    const figure = node("figure"),
-      svg = node("div");
-    const points =
-      type === "pressure"
-        ? "40,178 110,176 140,150 170,38 210,33 250,60 280,160 320,180"
-        : "55,164 115,130 175,96 235,62 295,28";
-    const desc =
-      type === "pressure"
-        ? "Illustrative left-heart pressures. Solid ventricular line rises above atrial pressure at B, crosses above dashed aortic pressure at C, and falls below aortic pressure at D. Dotted atrial pressure remains low."
-        : "Plant-tissue calibration example. Water potential in kPa is on x-axis, percentage change in mass on y-axis. The best-fit line passes through minus 800 kPa and minus 10%, minus 400 kPa and 0%, and 0 kPa and plus 10%.";
-    svg.innerHTML =
-      '<svg role="img" aria-label="' +
-      desc +
-      '" viewBox="0 0 360 245"><g fill="none" stroke="currentColor"><path d="M40 15V190H330"/><polyline stroke-width="2.5" points="' +
-      points +
-      '"/>' +
-      (type === "pressure"
-        ? '<path stroke-dasharray="8 5" stroke-width="2" d="M40 70L140 80 210 45 255 62 270 69 320 80"/><path stroke-dasharray="2 4" stroke-width="2" d="M40 178L105 170 140 175 320 173"/>'
-        : '<path stroke-dasharray="4 4" d="M40 96H320M175 96V190"/>') +
-      "</g>" +
-      (type === "pressure"
-        ? '<text x="113" y="148">B</text><text x="158" y="66">C</text><text x="253" y="93">D</text><text x="45" y="24">Pressure / mmHg</text><text x="155" y="220">Time / s</text>'
-        : '<text x="43" y="208">−800</text><text x="156" y="208">−400</text><text x="290" y="208">0</text><text x="16" y="100">0</text><text x="8" y="168">−10</text><text x="12" y="31">10</text><text x="65" y="235">Solution water potential / kPa</text><text x="42" y="16">Change in mass / %</text>') +
-      "</svg>";
-    figure.append(
-      svg,
-      node(
-        "figcaption",
-        type === "pressure"
-          ? "Solid · ventricle. Dashed · aorta. Dotted · atrium. Schematic pressure traces, with time increasing to the right."
-          : "Model calibration line. Read the horizontal zero-change line, then down to the x-axis.",
-      ),
-    );
+  function pressureGraph(step) {
+    const samples = [
+      [0, 7, 5, 82], [.12, 10, 7, 78], [.20, 8, 35, 75], [.28, 7, 86, 74],
+      [.36, 7, 115, 112], [.45, 8, 106, 101], [.50, 9, 90, 93], [.57, 10, 40, 86],
+      [.65, 9, 7, 82], [.72, 7, 5, 79], [.80, 7, 5, 77],
+    ];
+    const traces = [
+      ["Atrium", "2 4"], ["Ventricle", ""], ["Aorta", "8 5"],
+    ];
+    const stages = [
+      [null, "Compare the pressure on opposite sides of one valve."],
+      ["B", "After B, ventricular pressure exceeds atrial pressure. The mitral valve closes."],
+      [null, "Between B and C, ventricular pressure is above atrial pressure and below aortic pressure. Both valves are closed."],
+      ["C", "After C, ventricular pressure exceeds aortic pressure. The aortic valve opens."],
+      ["D", "After D, aortic pressure exceeds ventricular pressure. The aortic valve closes."],
+      ["E", "After E, atrial pressure exceeds ventricular pressure. The mitral valve opens."],
+    ];
+    const [mark, explanation] = stages[step] || ["D", "At D, the falling ventricular trace crosses the aortic trace."];
+    const x = t => 42 + 280 * t / .8;
+    const y = p => 185 - 1.18 * p;
+    function crossover(name, other, at) {
+      const a = samples[at], b = samples[at + 1];
+      const delta = a[2] - a[other];
+      const fraction = delta / (delta - (b[2] - b[other]));
+      return { name, x: x(a[0] + fraction * (b[0] - a[0])), y: y(a[2] + fraction * (b[2] - a[2])) };
+    }
+    const points = [crossover("B", 1, 1), crossover("C", 3, 2), crossover("D", 3, 5), crossover("E", 1, 7)];
+    const comparison = step === 1 || step === 5 ? [0, 1] : step === 0 || step === 2 ? [0, 1, 2] : [1, 2];
+    const paths = traces.map(([name, dash], i) => {
+      const line = samples.map(sample => x(sample[0]).toFixed(2) + "," + y(sample[i + 1]).toFixed(2)).join(" ");
+      return '<polyline data-trace="' + name + '" class="' + (comparison.includes(i) ? "al-trace-current" : "al-trace-context") +
+        '" points="' + line + '" stroke-dasharray="' + dash + '"/>';
+    }).join("");
+    const markers = points.map(({name, x: cx, y: cy}) =>
+      '<g data-crossover="' + name + '"' + (mark === name ? ' class="al-crossover-current"' : '') +
+      '><circle cx="' + cx + '" cy="' + cy + '" r="' + (mark === name ? 6 : 3) +
+      '"/><text x="' + (cx + 8) + '" y="' + (cy - 7) + '">' + name + '</text></g>').join("");
+    const figure = node("figure", null, "al-science-plot");
+    figure.innerHTML = '<svg role="img" aria-label="Illustrative left-heart pressures. The solid trace represents the ventricle, the dashed trace the aorta and the dotted trace the atrium. ' +
+      explanation + '" viewBox="0 0 350 229"><g stroke="currentColor" fill="none"><path d="M42 25V185H328"/>' +
+      paths + '</g>' + markers + '<text x="42" y="18">Pressure / mmHg</text><text x="45" y="210">Time after start / s</text>' +
+      '<text x="6" y="188">0</text><text x="6" y="71">100</text><text x="286" y="210">0.8</text></svg>';
+    figure.append(node("figcaption", explanation),
+      node("p", "Solid: ventricle · dashed: aorta · dotted: atrium", "al-figure-key"));
     return figure;
   }
+
+  function graph() {
+    const figure = node("figure", null, "al-science-plot");
+    figure.innerHTML =
+      '<svg role="img" aria-label="Plant-tissue calibration. The best-fit line crosses zero percentage change in mass at minus 400 kPa." viewBox="0 0 360 245"><g fill="none" stroke="currentColor"><path d="M40 15V190H330"/><polyline stroke-width="2.5" points="55,164 115,130 175,96 235,62 295,28"/><path stroke-dasharray="4 4" d="M40 96H320M175 96V190"/></g><text x="43" y="208">−800</text><text x="156" y="208">−400</text><text x="290" y="208">0</text><text x="16" y="100">0</text><text x="8" y="168">−10</text><text x="12" y="31">10</text><text x="65" y="235">Solution water potential / kPa</text><text x="42" y="16">Change in mass / %</text></svg>';
+    figure.append(node("figcaption", "Read across from zero change, then down to the water potential axis."));
+    return figure;
+  }
+
+  function pathway(step) {
+    const box = node("figure", null, "al-causal-visual");
+    function line(parts, active = -1) {
+      const diagram = node("p", null, "al-causal-line");
+      parts.forEach((part, i) => {
+        const term = ["→", "┤"].includes(part) ? node("span", part, "al-causal-edge") : node("span", part, "al-causal-node");
+        if (part === "→" || part === "┤") {
+          term.setAttribute("aria-hidden", "true");
+          diagram.append(term, node("span", part === "→" ? "promotes" : "inhibits", "al-edge-label"));
+        } else diagram.append(term);
+        if (i === active) term.classList.add("al-causal-focus");
+      });
+      box.append(diagram);
+    }
+    if (step === 0) {
+      line(["Signal", "→", "Target"]);
+      line(["Inhibitor", "┤", "Target"]);
+    } else if (step === 1 || step === 2) {
+      line(["Reversible inhibitor", "┤", "Protease (enzyme)"], step === 1 ? 1 : 2);
+      line(["Protease", "→", "Hydrolysis"], step === 1 ? 2 : -1);
+      box.append(node("p", "Protein substrate → shorter peptide products"));
+    } else if (step === 3 || step === 4) {
+      line(["A", "┤", "B", "┤", "C"], step === 3 ? 1 : 3);
+    } else if (step === 5) {
+      line(["Excitatory input", "→", "Postsynaptic neurone"]);
+      line(["Inhibitory neurone", "┤", "Postsynaptic neurone"], 1);
+      box.append(node("p", "Less inhibition makes reaching threshold more likely if other inputs stay the same."));
+    } else {
+      line(["Activation", "→", "Enzyme activity"]);
+      line(["Inhibitor", "┤", "Enzyme activity"]);
+    }
+    return box;
+  }
+
   function visual(type, step = 99) {
-    if (type === "calibration" || type === "pressure") return graph(type);
+    if (type === "calibration") return graph();
+    if (type === "pressure") return pressureGraph(step);
     if (type === "countercurrent") {
       const box = node("div");
-      box.append(
-        table(
-          "Countercurrent model · positions left to right",
-          ["Fluid", "Left", "2", "3", "Right"],
-          [
-            ["Water →", 100, 80, 60, 40],
-            ["Blood ←", 90, 70, 50, 30],
-          ],
-        ),
-        table(
-          "Parallel-flow model · positions left to right",
-          ["Fluid", "Left", "2", "3", "Right"],
-          [
-            ["Water →", 100, 75, 60, 55],
-            ["Blood →", 10, 35, 50, 55],
-          ],
-        ),
-      );
+      const columns = ["Fluid", "Left", "2", "3", "Right"];
+      const counter = ["Countercurrent model · oxygen concentration", columns,
+        [["Water →", 100, 80, 60, 40], ["Blood ←", 90, 70, 50, 30]]];
+      const parallel = ["Parallel-flow model · oxygen concentration", columns,
+        [["Water →", 100, 75, 60, 55], ["Blood →", 10, 35, 50, 55]]];
+      if (step < 3) {
+        box.append(table(...counter, step < 2 ? [3] : [1, 2, 3, 4]));
+        if (step >= 2) box.append(node("p", "At each paired position, water has 10 more units of oxygen than blood."));
+      } else {
+        box.append(table(...parallel, [4]), node("p", "At the right, both fluids are at 55 units. The model shows no concentration gradient there."));
+        const comparison = node("details", null, "al-key-notes");
+        comparison.append(node("summary", "Compare the countercurrent values"), table(...counter));
+        box.append(comparison);
+      }
       return box;
     }
     if (type === "punnett") {
-      const g = ["AB", "Ab", "aB", "ab"];
-      const combine = (x, y) =>
-        [x[0], y[0]].sort().join("") + [x[1], y[1]].sort().join("");
-      return table(
-        "AaBb × AaBb · complete worked cross",
-        ["Gametes", ...g],
-        g.map((x) => [x, ...g.map((y) => combine(x, y))]),
-      );
+      const gametes = ["AB", "Ab", "aB", "ab"];
+      const box = node("div");
+      if (step < 2) {
+        box.append(node("p", "AaBb × AaBb", "al-cross"));
+        if (step === 1) box.append(node("p", "Gametes for each parent · AB, Ab, aB, ab"));
+      } else {
+        const combine = (x, y) => [x[0], y[0]].sort().join("") + [x[1], y[1]].sort().join("");
+        const title = step === 2 ? "Put one parent's gametes along each edge" :
+          step === 3 ? "Combine the highlighted row and column" : "AaBb × AaBb · worked cross";
+        box.append(table(title, ["Gametes", ...gametes], gametes.map((x, i) =>
+          [x, ...gametes.map((y, j) => step >= 4 || (step === 3 && i === 0 && j === 0) ? combine(x, y) : "—")]),
+        step === 3 ? [1] : []));
+        if (step >= 5) box.append(node("p", "Expected phenotypes · 9 A_B_ : 3 A_bb : 3 aaB_ : 1 aabb"));
+      }
+      return box;
     }
     if (type === "calvin") {
       const parts = [
@@ -138,30 +201,16 @@
         "Net TP → carbohydrates, lipids, and other organic compounds",
       ];
       const box = node("div", null, "al-path");
-      parts
-        .slice(0, Math.min(parts.length, step + 1))
-        .forEach((p) => box.append(node("p", p)));
+      parts.slice(0, Math.min(parts.length, step + 1)).forEach(p => box.append(node("p", p)));
       return box;
     }
     if (type === "regulation") {
-      const box = node("div");
+      const box = node("div", null, "al-science-plot");
       box.innerHTML =
         '<svg viewBox="0 0 400 235" role="img" aria-label="Two regulatory models. Closely packed nucleosomes restrict access to DNA. Acetylated, more separated nucleosomes permit greater access. A repressor bound at regulatory DNA inhibits transcription, and removal of it reduces repression."><g fill="none" stroke="currentColor" stroke-width="2"><path d="M20 68Q55 25 90 68T160 68T230 68"/><circle cx="65" cy="63" r="20"/><circle cx="108" cy="63" r="20"/><circle cx="151" cy="63" r="20"/><path d="M20 158Q60 110 100 158T180 158T260 158T340 158"/><circle cx="63" cy="151" r="17"/><circle cx="162" cy="151" r="17"/><circle cx="261" cy="151" r="17"/></g><text x="20" y="20">Compact chromatin · access restricted</text><text x="20" y="111">Histone acetylation · access increased</text><text x="20" y="197">Promoter methylation can reduce access.</text><text x="20" y="222">Repressor ┤ transcription</text></svg>';
       return box;
     }
-    if (type === "pathway") {
-      const box = node("div");
-      box.innerHTML =
-        '<svg viewBox="0 0 400 155" role="img" aria-label="Pathway A inhibits B, and B inhibits process C. Arrowhead means activation. A blunt end means inhibition."><g fill="none" stroke="currentColor" stroke-width="2"><rect x="15" y="35" width="65" height="45" rx="8"/><rect x="163" y="35" width="65" height="45" rx="8"/><rect x="310" y="35" width="75" height="45" rx="8"/><path d="M80 57H153M153 44V70M228 57H300M300 44V70M25 122H75M65 115L75 122L65 129M220 122H270M270 113V131"/></g><text x="43" y="64">A</text><text x="190" y="64">B</text><text x="343" y="64">C</text><text x="88" y="127">promotes</text><text x="285" y="127">inhibits</text></svg>';
-      if (step > 2)
-        box.append(
-          node(
-            "p",
-            "A increases → B activity falls → inhibition of C falls → C activity can rise.",
-          ),
-        );
-      return box;
-    }
+    if (type === "pathway") return pathway(step);
     return node("div");
   }
   const icons = {
@@ -503,6 +552,7 @@
           select.value = (state.responses[i] || [])[j] ?? "";
           if (checked.length) {
             select.disabled = checked[j];
+            if (!checked[j]) select.setAttribute("aria-invalid", "true");
             label.append(node("span", checked[j] ? "Correct group" : "Reconsider this group", "al-row-result"));
           }
           label.append(select);
@@ -598,20 +648,23 @@
       } else {
         controls.append(submit);
         const hints = hintsFor(q);
-        const hint = button(state.hints[i] ? "Another clue" : "Need a clue?", () => {
-          const count = (state.hints[i] || 0) + 1;
+        function labelHint(text) {
+          hint.replaceChildren(icon("bulb"), node("span", text));
+        }
+        const hint = button("", () => {
+          const previous = state.hints[i] || 0;
+          if (previous >= hints.length) return;
+          const count = previous + 1;
           state.hints[i] = count;
           state.results[i] = { ...state.results[i], clue: true };
           announce("Clue · " + hints[count - 1], "hint");
-          hint.textContent = count < hints.length ? "Another clue" : "Clues shown";
+          labelHint(count < hints.length ? "Another clue" : "Clues shown");
           hint.setAttribute("aria-disabled", String(count >= hints.length));
           persist();
         });
-        hint.onclick = ((handler) => () => {
-          if (hint.getAttribute("aria-disabled") !== "true") handler();
-        })(hint.onclick);
+        labelHint(state.hints[i] ? "Another clue" : "Need a clue?");
         hint.classList.add("al-secondary");
-        if (!writing && (state.hints[i] || 0) < hints.length) controls.append(hint);
+        if ((!writing || (q.hints && !review.open)) && (state.hints[i] || 0) < hints.length) controls.append(hint);
         if (!writing) {
           const reveal = button("Show explanation", () => {
             state.results[i] = { kind: "revealed" };
@@ -701,16 +754,61 @@
     render();
     return block;
   }
+  function drawingComparison(item, session, persist) {
+    const root = node("div", null, "al-drawing-comparison");
+    const switcher = node("div", null, "al-drawing-switch");
+    switcher.setAttribute("role", "group");
+    switcher.setAttribute("aria-label", "Drawing comparison");
+    const figures = node("div", null, "al-figures");
+    const dialog = node("dialog", null, "al-figure-dialog");
+    dialog.setAttribute("aria-labelledby", "al-enlarged-title");
+    const title = node("h2");
+    title.id = "al-enlarged-title";
+    const preview = node("div");
+    const close = button("Close enlarged image", () => dialog.close());
+    dialog.append(title, close, preview);
+    const labels = [["reference", "Reference observation"], ["candidate", "Candidate drawing"]];
+    function update() {
+      root.dataset.active = session.view || "reference";
+      for (const choice of switcher.children)
+        choice.setAttribute("aria-pressed", String(choice.dataset.view === root.dataset.active));
+    }
+    for (const [id, label] of labels) {
+      const isReference = id === "reference";
+      const choose = button(label, () => {
+        session.view = id;
+        persist();
+        update();
+      });
+      choose.dataset.view = id;
+      switcher.append(choose);
+      const figure = node("figure");
+      figure.dataset.view = id;
+      const image = node("div");
+      const mark = session.verdict === 1 && session.attempts > 0;
+      image.innerHTML = drawing.svg(item, isReference, mark);
+      const enlarge = button("Enlarge " + label.toLowerCase(), () => {
+        title.textContent = label;
+        preview.innerHTML = image.innerHTML;
+        dialog.showModal();
+        close.focus();
+      });
+      enlarge.classList.add("al-secondary");
+      figure.append(node("figcaption", label), image, enlarge);
+      figures.append(figure);
+    }
+    root.append(switcher, figures, dialog);
+    update();
+    return root;
+  }
+
   function drawings(host) {
     const block = node("section", null, "al-teaching");
     host.append(block);
-    block.append(
-      node("h2", "Learn to judge a drawing"),
-      node(
-        "p",
-        "The task below specifies the requirements. Several flaws in line quality still belong to one category. A scale or label is judged when the task asks for it. These categories do not carry a universal mark each.",
-      ),
-    );
+    const introduction = node("details", null, "al-drawing-example");
+    introduction.open = !read().drawingSession && !read().drawingReview;
+    introduction.append(node("summary", "Worked example · Compare two drawings"),
+      node("p", "Use the requirements for the drawing. Several problems with outlines can belong to one category."));
     const comparison = node("div", null, "al-figures");
     [drawing.bank[0], drawing.bank[1]].forEach((item, i) => {
       const fig = node("figure");
@@ -725,11 +823,13 @@
       );
       comparison.append(fig);
     });
-    block.append(comparison);
+    introduction.append(comparison);
+    block.append(introduction);
     const start = button(
       read().drawingSession ? "Resume drawing set" : "Start a six-drawing set",
       () => round(),
     );
+    start.classList.add("primary");
     block.append(start);
     const exercise = node("section");
     block.append(exercise);
@@ -777,6 +877,7 @@
       }
       persistDrawing();
       start.hidden = true;
+      introduction.open = false;
       const pool = Array.from(
         { length: 6 },
         (_, j) => drawing.bank[((round * 6 + j) * 9) % drawing.bank.length],
@@ -795,21 +896,7 @@
           node("p", item.specimen.name),
           node("p", item.criterion),
         );
-        const figures = node("div", null, "al-figures");
-        [true, false].forEach((ref) => {
-          const fig = node("figure");
-          fig.append(
-            node(
-              "figcaption",
-              ref ? "Reference observation" : "Candidate drawing",
-            ),
-          );
-          const image = node("div");
-          image.innerHTML = drawing.svg(item, ref);
-          fig.append(image);
-          figures.append(fig);
-        });
-        exercise.append(figures);
+        exercise.append(drawingComparison(item, session, persistDrawing));
         const verdict = node("fieldset");
         verdict.append(
           node("legend", "Does the candidate meet the stated task?"),
@@ -857,7 +944,8 @@
         const feedback = node("p", null, "al-feedback");
         feedback.setAttribute("role", "status");
         if (session.outcome) feedback.textContent = outcomeNames[session.outcome] + ". " + item.why;
-        else if (session.attempts) feedback.textContent = "Review and improve. " + item.why;
+        else if (session.attempts) feedback.textContent = "Review and improve. " +
+          (session.verdict === 1 ? item.why : "Compare the candidate with each stated requirement.");
         feedback.hidden = !feedback.textContent;
         const next = button("Next drawing", () => {
           if (!session.outcome) return;
@@ -891,6 +979,7 @@
           const ok = session.verdict === Number(item.defects.length > 0) &&
             cats.length === item.defects.length && item.defects.every(value => cats.includes(value));
           session.attempts++;
+          session.view = "candidate";
           if (ok) session.outcome = at === 0 ? "guided" : session.attempts > 1 ? "corrected" : session.helped ? "hint-supported" : "independent";
           persistDrawing();
           if (ok) {
@@ -925,63 +1014,108 @@
       show();
     }
   }
-  function index(host, filter) {
-    host.append(
-      node("h1", "Exam Skills"),
-      node(
-        "p",
-        "Choose a worked example, then practise the reasoning with guided and independent tasks.",
-      ),
-    );
-    const list = node("div");
-    const groups = [
-      ["Biological drawings", ["drawings"]],
-      ["Understanding mark schemes", ["points"]],
-      [
-        "Explaining biological mechanisms",
-        ["mechanisms", "pressures", "regulation"],
-      ],
-      ["Unfamiliar contexts and causal reasoning", ["causal"]],
-      [
-        "Scientific data, calculations, and representations",
-        ["osmosis", "countercurrent", "calvin", "dihybrid", "hardy"],
-      ],
-    ];
-    for (const [title, ids] of groups) {
-      const section = node("section"),
-        rows = node("ul", null, "concepts");
+  const catalogue = [
+    ["Drawing and observation", ["drawings"]],
+    ["Mark schemes and explanations", ["points", "mechanisms", "pressures", "regulation"]],
+    ["Unfamiliar contexts", ["causal"]],
+    ["Data, calculations and models", ["osmosis", "countercurrent", "calvin", "dihybrid", "hardy"]],
+  ];
+  const skillDetails = {
+    drawings: ["Biological drawings", "Compare drawings and identify defects.", "diagram", "biological drawing scientific drawing tissue plan observation accept reject scale bar"],
+    points: ["Independent marking points", "Recognise distinct criteria in an answer.", "review", "marking points mark schemes marking scheme group criteria"],
+    mechanisms: ["Biological mechanisms", "Connect a biological change to its effect.", "pen", "scientific explanations diffusion distance mechanism active transport synapse"],
+    pressures: ["Cardiac valve movements", "Compare pressures across the heart valves.", "pathway", "cardiac pressure cardiac pressures heart valves ventricular atrial aortic", "a3-heart"],
+    regulation: ["Gene regulation", "Explain how gene access and regulators affect transcription.", "pathway", "transcription factors gene expression epigenetics methylation histone", "a8-epigen"],
+    causal: ["Causal reasoning", "Trace a chain of effects in unfamiliar contexts.", "pathway", "disinhibition enzyme inhibition unfamiliar context causal reasoning inhibitor"],
+    osmosis: ["Water potential and calibration", "Use gradients and read the zero-change intercept.", "calculator", "water potential calibration osmosis", "a2-osmosis"],
+    countercurrent: ["Countercurrent exchange", "Compare the fluids at the same position.", "pathway", "countercurrent exchange fish gills oxygen diffusion", "a3-fish"],
+    calvin: ["Calvin cycle", "Follow carbon fixation, reduction and regeneration.", "pathway", "calvin cycle light independent photosynthesis", "a5-calvin"],
+    dihybrid: ["Dihybrid crosses", "Derive gametes and build a Punnett square.", "calculator", "dihybrid cross dihybrid inheritance punnett square", "a7-dihybrid"],
+    hardy: ["Hardy–Weinberg calculations", "Distinguish allele and genotype frequencies.", "calculator", "hardy weinberg hardy-weinberg population genetics", "a7-hardy"],
+  };
+  function activityStatus(id, saved) {
+    if (id === "drawings") {
+      if (saved.drawingSession) return ["Resume", "Drawing " + (saved.drawingSession.index + 1) + " of 6"];
+      return saved.drawingReview ? ["Review", "Six-drawing set"] : ["Start", ""];
+    }
+    const state = saved[id];
+    if (!state) return ["Start", ""];
+    if (state.completed) return ["Review", "Completed set"];
+    if (state.phase === "model") return ["Resume", "Worked example"];
+    if (state.phase === "practice" || ["responses", "outcomes", "drafts", "hints", "reviews"].some(field => Object.keys(state[field] || {}).length)) {
+      const at = Math.max(0, state.queue?.indexOf(state.index) ?? state.index ?? 0);
+      return ["Resume", "Question " + (at + 1) + " of " + (state.queue?.length || families[id].tasks.length)];
+    }
+    return ["Start", ""];
+  }
+
+  function index(host) {
+    host.append(node("h1", "Exam Skills"));
+    const saved = read();
+    for (const [title, ids] of catalogue) {
+      const section = node("section", null, "al-catalogue-group");
+      const rows = node("ul", null, "al-catalogue");
       section.append(node("h2", title));
       for (const id of ids) {
-        const family = families[id];
-        if (
-          filter &&
-          family &&
-          !family.topics.includes(filter) &&
-          !family.papers.includes(filter)
-        )
-          continue;
-        const li = node("li");
-        li.append(
-          link(
-            id === "drawings" ? "Accept or Reject?" : family.title,
-            "#exam-" + id,
-          ),
-        );
-        if (family) li.append(node("p", family.principle));
-        rows.append(li);
+        const [name, description, symbol] = skillDetails[id];
+        const [action, progress] = activityStatus(id, saved);
+        const row = node("li");
+        const entry = node("a", null, "al-catalogue-row");
+        entry.href = "#exam-" + id;
+        const copy = node("span", null, "al-catalogue-copy");
+        copy.append(node("strong", name), node("span", description));
+        if (progress) copy.append(node("small", progress));
+        entry.append(icon(symbol), copy, node("span", action, "al-row-action"));
+        row.append(entry);
+        rows.append(row);
       }
       section.append(rows);
-      list.append(section);
+      host.append(section);
     }
-    host.append(
-      node(
-        "p",
-        "Progress and drafts are saved on this browser. Clearing browser data removes them. You can also reset progress in Settings.",
-      ),
-      list,
-      link("Evaluate unfamiliar data", "/alevel/evidence/"),
-      link("Maths Skills", "#practice"),
-    );
+    const other = node("p", null, "al-journey-links");
+    other.append(quietLink("Evaluate unfamiliar data", "/alevel/evidence/"), quietLink("Maths Skills", "#practice"));
+    host.append(other);
+  }
+
+  function searchActivities() {
+    const saved = read();
+    return Object.entries(skillDetails).map(([id, [title, description, , keywords, equivalent]]) => {
+      const [action] = activityStatus(id, saved);
+      return { group: "exam", title, keywords, context: "Exam Skills · " + description,
+        equivalent, actions: [[action, "#exam-" + id]] };
+    });
+  }
+  const contextualLabels = {
+    "a2-diffusion": "Review diffusion distance",
+    "a2-active": "Review active transport",
+    "a2-osmosis": "Review water potential",
+    "a3-fish": "Review countercurrent exchange",
+    "a3-heart": "Review valve pressures",
+    "a5-calvin": "Review the Calvin cycle",
+    "a6-glucose": "Review control of blood glucose",
+    "a6-adh": "Review ADH and water balance",
+    "a6-synapse": "Review synaptic transmission",
+    "a6-homeo": "Review feedback in homeostasis",
+    "a7-dihybrid": "Review dihybrid crosses",
+    "a7-hardy": "Review Hardy–Weinberg",
+    "a8-epigen": "Review epigenetic control",
+    "a8-transfac": "Review transcription factors",
+    "a1-enzfactors": "Review enzyme inhibition",
+    "p3s-methods": "Review practical methods",
+  };
+
+  function contextualLink(family, returnTo) {
+    return question => {
+      const destination = question.catchup === undefined ? family.catchup : question.catchup;
+      if (!destination || !contextualLabels[destination]) return null;
+      return [contextualLabels[destination], "#catchup-" + destination + "?return=" + returnTo];
+    };
+  }
+
+  function breadcrumb(label, href) {
+    const line = node("p", null, "crumb");
+    line.append(quietLink("← " + label, href));
+    return line;
   }
   const catchupMap = {
     "a2-osmosis": "osmosis",
@@ -1001,26 +1135,30 @@
       return Boolean(catchupMap[topic + "-" + concept]);
     },
     catchup(host, topic, concept, options) {
-      const family = families[catchupMap[topic + "-" + concept]];
-      if (family) journey(host, family, options);
+      const source = topic + "-" + concept;
+      const family = families[catchupMap[source]];
+      if (family) journey(host, family, { ...options, context: contextualLink(family, "catchup-" + source) });
     },
-    route(host, id, filter) {
-      host.append(
-        link("A-level Biology home", "#"),
-        link("Exam Skills", "#exam"),
-      );
-      if (!id || (!families[id] && id !== "drawings")) {
-        index(host, filter);
+    searchActivities,
+    validFamily(id) {
+      return Object.hasOwn(families, id);
+    },
+    route(host, id) {
+      host.classList.add("al-exam");
+      if (!id || (!Object.hasOwn(families, id) && id !== "drawings")) {
+        host.append(breadcrumb("A-level Biology", "#"));
+        index(host);
         return;
       }
+      host.append(breadcrumb("Exam Skills", "#exam"));
       if (id === "drawings") {
         host.append(node("h1", "Biological drawings"));
         drawings(host);
         return;
       }
-      const f = families[id];
-      host.append(node("h1", f.title));
-      journey(host, f);
+      const family = families[id];
+      host.append(node("h1", family.title));
+      journey(host, family, { context: contextualLink(family, "exam-" + id) });
     },
     links(topic) {
       const ids = Object.values(families)

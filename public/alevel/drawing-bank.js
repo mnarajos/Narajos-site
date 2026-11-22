@@ -118,7 +118,7 @@
         : "The candidate meets the stated requirements. Clear outlines, appropriate detail, relative sizes, the requested label and the calibrated scale all agree with this reference.",
     })),
   );
-  function svg(item, reference = false) {
+  function svg(item, reference = false, annotated = false) {
     const s = item.specimen,
       d = reference ? [] : item.defects;
     let shape = s.shape;
@@ -152,6 +152,15 @@
       : "";
     const tx = d.includes(4) ? [180, 185] : s.target;
     const scale = (s.width / 4) * (d.includes(5) ? 2 : 1);
+    const positions = [
+      [70, 42, 62, 40], [102, 65, 114, 40], [97, 60, 162, 49],
+      [54, 22, 252, 169], [tx[0] - 11, tx[1] - 11, 22, 22], [67, 207, 86, 36],
+    ];
+    const overlay = annotated && d.length ? '<g data-defect-overlay="true" aria-hidden="true" fill="none">' +
+      d.map(defect => {
+        const [x, y, width, height] = positions[defect];
+        return '<rect x="' + x + '" y="' + y + '" width="' + width + '" height="' + height + '" rx="6"/>';
+      }).join("") + "</g>" : "";
     const desc = reference
       ? "Reference observation of " +
         s.name +
@@ -171,10 +180,10 @@
           ? s.type === "plan"
             ? "Individual cell outlines are added. "
             : "Internal ellipse structures are omitted. "
-          : "The visible boundaries match the reference. ") +
+          : "The drawing includes internal and external boundaries. ") +
         (d.includes(3)
-          ? "The drawing is stretched vertically relative to its width. "
-          : "Relative sizes match the reference. ") +
+          ? "The vertical distance between boundaries is enlarged. "
+          : "The boundaries can be compared for relative size. ") +
         "The " +
         s.label +
         " label " +
@@ -199,7 +208,7 @@
       s.label +
       '</text><text x="110" y="239" text-anchor="middle">' +
       scale +
-      " µm</text></svg>"
+      " µm</text>" + overlay + "</svg>"
     );
   }
   window.ALevelDrawingBank = { bank, categories, svg };

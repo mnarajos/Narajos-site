@@ -29,8 +29,33 @@ export async function checkALevelExam(browser, base) {
       await page.getByRole("button", { name: "See worked example", exact: true }).press("Enter");
       assert.equal(await page.locator(".al-stages [aria-current=step]").innerText(), "Worked example");
       assert(await page.getByRole("button", { name: "Previous step", exact: true }).isDisabled());
-      for (let i = 1; i < family.model.length; i++)
+      const art = page.locator(".al-model-visual");
+      if (family.id === "dihybrid") {
+        assert.equal(await art.getByRole("table").count(), 0);
+        assert(await art.getByText("AaBb × AaBb", { exact: true }).isVisible());
+      }
+      for (let i = 1; i < family.model.length; i++) {
         await page.getByRole("button", { name: "Next step", exact: true }).click();
+        if (family.id === "dihybrid" && i === 2)
+          assert.equal(await art.getByText("AABB", { exact: true }).count(), 0);
+        if (family.id === "dihybrid" && i === 3)
+          assert.equal(await art.getByText("AABB", { exact: true }).count(), 1);
+        if (family.id === "dihybrid" && i === 4)
+          assert.equal(await art.getByText("AaBb", { exact: true }).count(), 4);
+        if (family.id === "pressures" && [1, 3, 4, 5].includes(i)) {
+          const crossover = {1:"B", 3:"C", 4:"D", 5:"E"}[i];
+          assert.equal(await art.locator(".al-crossover-current").getAttribute("data-crossover"), crossover);
+          assert.equal(await art.locator(".al-trace-current").count(), 2);
+        }
+        if (family.id === "countercurrent" && i === 1)
+          assert.equal(await art.locator("td.al-highlight-cell").count(), 2);
+        if (family.id === "countercurrent" && i === 2)
+          assert.equal(await art.locator("td.al-highlight-cell").count(), 8);
+        if (family.id === "causal" && i === 3)
+          assert.equal(await art.locator(".al-causal-focus").count(), 1);
+        if (family.id === "causal" && i === 5)
+          assert(await art.getByText("Postsynaptic neurone", {exact:true}).first().isVisible());
+      }
       await page.getByRole("button", { name: "Try with support", exact: true }).press("Enter");
       assert.equal(await page.locator(".al-stages [aria-current=step]").innerText(), "With support");
       assert(await page.locator(".al-practice h2").evaluate(el => el === document.activeElement));
@@ -56,12 +81,21 @@ export async function checkALevelExam(browser, base) {
             await form
               .getByRole("checkbox", { name: q.options[a], exact: true })
               .check();
-        if (q.kind === "group")
-          for (let j = 0; j < q.items.length; j++)
-            await form
-              .locator("select")
-              .nth(j)
-              .selectOption(String(q.items[j][1]));
+        if (q.kind === "group") {
+          const selects = form.locator("select");
+          const correction = family.id === "points";
+          for (let j = 0; j < q.items.length; j++) {
+            const pick = correction && j === q.items.length - 1 ? (q.items[j][1] + 1) % q.groups.length : q.items[j][1];
+            await selects.nth(j).selectOption(String(pick));
+          }
+          if (correction) {
+            await form.getByRole("button", { name: "Check answer", exact: true }).click();
+            await page.reload();
+            assert.equal(await form.locator('select[aria-invalid="true"]').count(), 1);
+            assert.equal(await form.locator("select:disabled").count(), q.items.length - 1);
+            await selects.last().selectOption(String(q.items.at(-1)[1]));
+          }
+        }
         if (q.kind === "writing")
           await form
             .getByRole("textbox")
@@ -73,7 +107,7 @@ export async function checkALevelExam(browser, base) {
             name:
               q.kind === "writing"
                 ? "Compare with the checklist"
-                : "Check answer",
+                : q.kind === "group" && family.id === "points" ? "Try again" : "Check answer",
             exact: true,
           })
           .click();
@@ -148,6 +182,13 @@ export async function checkALevelExam(browser, base) {
       await page.getByRole("radio", { name: q.options[q.answer], exact: true }).check();
       await page.getByRole("button", { name: "Check answer", exact: true }).click();
       assert.match(await page.locator(".al-practice [role=status]").innerText(), new RegExp(i === 0 ? "shorter diffusion distance" : "Correct|correct"));
+      if (i === 0) {
+        await page.getByRole("link", { name: "Review diffusion distance", exact: true }).click();
+        await page.getByRole("heading", { name: "Simple and facilitated diffusion", exact: true }).waitFor();
+        await page.getByRole("link", { name: /Return to your question/ }).press("Enter");
+        assert.match(await page.locator(".al-practice [role=status]").innerText(), /shorter diffusion distance/);
+        assert(await page.getByRole("button", { name: "Next task", exact: true }).isVisible());
+      }
       if (i === 1) {
         const before = await saved("mechanisms");
         await page.reload();
@@ -197,6 +238,20 @@ export async function checkALevelExam(browser, base) {
     assert.equal(await page.locator(".al-practice input").first().inputValue(), "9");
     await page.getByText("Review the worked example", { exact: true }).press("Enter");
     assert.equal(await page.locator(".al-model:visible").count(), 0);
+    await page.goto(base + "/alevel/");
+    assert.equal(await page.getByRole("link", { name: /Exam Skills.*Drawings/ }).count(), 1);
+    const finder = page.locator("[data-topic-finder]");
+    for (const [query, route] of [
+      ["scientific drawing", "drawings"], ["mark schemes", "points"], ["cardiac pressure", "pressures"],
+      ["heart valves", "pressures"], ["disinhibition", "causal"], ["enzyme inhibition", "causal"],
+      ["unfamiliar context", "causal"], ["causal reasoning", "causal"], ["dihybrid cross", "dihybrid"],
+      ["hardy-weinberg", "hardy"], ["water potential", "osmosis"], ["countercurrent exchange", "countercurrent"],
+    ]) {
+      await finder.getByRole("searchbox").fill(query);
+      assert.equal(await finder.locator('a[href="#exam-' + route + '"]').count(), 1, query);
+    }
+    await finder.getByRole("searchbox").fill("dihybrid cross");
+    assert(await finder.getByRole("link", { name: /Resume: Dihybrid/ }).isVisible());
     // Every original drawing appears in the rotating short sets and accepts its authored category combination.
     const seen = new Set();
     for (let round = 0; round < 56; round++) {
@@ -211,6 +266,17 @@ export async function checkALevelExam(browser, base) {
         index = ((set * 6 + offset) * 9) % 56,
         item = bank[index];
       seen.add(item.id);
+      const comparison = page.locator(".al-drawing-comparison");
+      if (round === 0) {
+        assert.equal(await comparison.locator("figure:visible").count(), 1);
+        await comparison.getByRole("button", { name: "Candidate drawing", exact: true }).press("Enter");
+        const enlarge = comparison.getByRole("button", { name: "Enlarge candidate drawing", exact: true });
+        await enlarge.press("Enter");
+        await page.getByRole("dialog", { name: "Candidate drawing" }).waitFor();
+        await page.keyboard.press("Escape");
+        assert(await enlarge.evaluate(el => el === document.activeElement));
+      }
+      assert.equal(await comparison.locator("[data-defect-overlay]").count(), 0);
       await page
         .getByRole("radio", {
           name: item.defects.length ? "Reject" : "Accept",
@@ -233,6 +299,11 @@ export async function checkALevelExam(browser, base) {
       await page
         .getByRole("button", { name: "Next drawing", exact: true })
         .waitFor();
+      if (item.defects.length) assert(await comparison.locator("[data-defect-overlay]").first().isVisible());
+      if (round === 1) {
+        await page.reload();
+        assert(await page.getByRole("button", { name: "Next drawing", exact: true }).isVisible());
+      }
       assert(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth + 3,

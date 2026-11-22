@@ -31,7 +31,7 @@
       }
       const entries = typeof options.entries === "function" ? options.entries() : options.entries;
       const matches = entries.filter(entry => {
-        if (group && entry.group !== group) return false;
+        if (group && entry.group !== group && !entry.groups?.includes(group)) return false;
         if (entry.concept && !terms.length) return false;
         const words = [entry.title, entry.concept ? "" : entry.context, entry.keywords].join(" ").toLowerCase();
         return terms.every(term => words.includes(term));

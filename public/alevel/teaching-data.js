@@ -21,10 +21,7 @@ window.ALevelTeachingFamilies = {
         options: ["Into the cell", "Out of the cell", "No net movement"],
         answer: 0,
         why: "−300 kPa is higher than −700 kPa. Water enters across the partially permeable membrane.",
-        hints: [
-          "Compare which negative value is closer to zero.",
-          "The solution has the higher water potential.",
-        ],
+        hints: ["Which of the two values is closer to zero?", "The solution has the higher water potential."],
         guided: true,
       },
       {
@@ -33,10 +30,7 @@ window.ALevelTeachingFamilies = {
           "A calibration line crosses 0% change at −500 kPa. Estimate the tissue water potential in kPa.",
         answer: -500,
         why: "The intercept estimates the tissue water potential. Include the negative sign.",
-        hints: [
-          "Identify the quantity requested before substituting.",
-          "The intercept estimates the tissue water potential. Include the negative sign.",
-        ],
+        hints: ["Start at 0% mass change. Which axis gives the tissue estimate?", "Read the intercept on the horizontal axis, including its sign."],
         unit: "kPa",
       },
       {
@@ -49,10 +43,7 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "Equal water potentials give no net movement while molecules still cross.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "Equal water potentials give no net movement while molecules still cross.",
-        ],
+        hints: ["Compare the two water potentials before predicting net movement.", "Equal water potentials give no net movement while molecules still cross."],
       },
       {
         kind: "writing",
@@ -81,9 +72,9 @@ window.ALevelTeachingFamilies = {
       "Compare the two fluids at the same physical position, following each flow direction.",
     model: [
       "Recall that oxygen diffuses from higher to lower concentration. Compare neighbouring water and blood at the same point, not their two entry values.",
-      "In this illustrative steady-state countercurrent model, water flows left to right: 100, 80, 60, 40 units. Blood flows right to left: 90, 70, 50, 30 units at those same positions.",
-      "Blood enters on the right at 30 units and leaves on the left at 90. At every position, water has 10 units more oxygen, maintaining diffusion into blood.",
-      "In parallel flow, both enter from the left. Illustrative paired values are water 100, 75, 60, 55 and blood 10, 35, 50, 55. The difference narrows towards equilibrium. These are concentrations in an idealised model, not measured oxygen saturations.",
+      "Follow the arrows. At the highlighted position, compare the water with the blood immediately next to it.",
+      "Now compare every pair. Blood enters on the right at 30 units and leaves on the left at 90. The gradient stays in the same direction along the exchange surface.",
+      "In parallel flow the fluids move in the same direction. Compare the last pair. These figures are idealised oxygen concentrations.",
     ],
     tasks: [
       {
@@ -93,10 +84,7 @@ window.ALevelTeachingFamilies = {
         options: ["Water to blood", "Blood to water", "Neither"],
         answer: 0,
         why: "Compare the adjacent values. Water has the higher oxygen concentration.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "Compare the adjacent values. Water has the higher oxygen concentration.",
-        ],
+        hints: ["Compare water and blood at the same position.", "Compare the adjacent values. Water has the higher oxygen concentration."],
         guided: true,
       },
       {
@@ -110,10 +98,7 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "The local concentration difference permits diffusion along the whole exchange surface.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "The local concentration difference permits diffusion along the whole exchange surface.",
-        ],
+        hints: ["Can you find any point along the membrane where the two concentrations are equal?", "The local concentration difference permits diffusion along the whole exchange surface."],
       },
       {
         kind: "writing",
@@ -158,10 +143,7 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "GP reduction requires reducing power from reduced NADP, as well as ATP.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "GP reduction requires reducing power from reduced NADP, as well as ATP.",
-        ],
+        hints: ["Follow carbon from carbon dioxide into the first stable product.", "GP reduction requires reducing power from reduced NADP, as well as ATP."],
         guided: true,
       },
       {
@@ -174,10 +156,7 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "ATP is required in GP reduction and in regeneration. Predictions about pool sizes depend on timing.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "ATP is required in GP reduction and in regeneration. Predictions about pool sizes depend on timing.",
-        ],
+        hints: ["Find the step that makes TP. Which two light-dependent products does it use?", "ATP is required in GP reduction and in regeneration. Predictions about pool sizes depend on timing."],
       },
       {
         kind: "writing",
@@ -204,11 +183,12 @@ window.ALevelTeachingFamilies = {
     papers: ["p2", "p3"],
     principle: "Each gamete receives one allele at each gene locus.",
     model: [
-      "For AaBb, choose A or a, then B or b. Combine the choices to obtain AB, Ab, aB, and ab.",
-      "For unlinked genes with normal segregation these four gametes have equal probability. Put them along both edges of a 4 × 4 Punnett square for AaBb × AaBb.",
-      "Combine the row and column gametes in every cell. AABB results from AB × AB. AaBb can result from several different gamete combinations.",
-      "The expected phenotype ratio is 9 A_B_ : 3 A_bb : 3 aaB_ : 1 aabb only with complete dominance at both loci, independent assortment and no modifying interaction or differential survival. Finite offspring samples vary.",
-      "A test cross AaBb × aabb instead has expected 1:1:1:1 under these assumptions. Linked genes or epistasis can change phenotype ratios.",
+      "Start with the parents. Each parent is heterozygous at both gene loci.",
+      "Take A or a from one locus and B or b from the other. For unlinked genes with normal segregation, the four gametes are equally likely.",
+      "Place the gametes from one parent along the top and those from the other along the side.",
+      "Combine one gamete from each parent. AB × AB produces AABB.",
+      "Complete the other combinations. More than one pair of gametes can give AaBb.",
+      "Group the genotypes by phenotype. The displayed ratio assumes complete dominance, independent assortment and no modifying interaction or differential survival. A test cross AaBb × aabb instead gives an expected 1:1:1:1 under the same assumptions.",
     ],
     tasks: [
       {
@@ -218,7 +198,7 @@ window.ALevelTeachingFamilies = {
         options: ["Ab", "ab", "AB", "Aa"],
         answer: [0, 1],
         why: "The first locus contributes A or a. The second can contribute only b.",
-        hints: ["Take one allele from each locus.", "Both gametes end in b."],
+        hints: ["Take one allele from each of the two loci.", "Both gametes end in b."],
         guided: true,
       },
       {
@@ -227,10 +207,7 @@ window.ALevelTeachingFamilies = {
           "In an unlinked AaBb × aabb test cross, what fraction is expected to be aabb? Give a decimal.",
         answer: 0.25,
         why: "ab from AaBb has probability ¼. The other parent always supplies ab.",
-        hints: [
-          "Identify the quantity requested before substituting.",
-          "ab from AaBb has probability ¼. The other parent always supplies ab.",
-        ],
+        hints: ["Which gamete must each parent contribute for the offspring to be aabb?", "The aabb parent has one possible gamete. Consider the AaBb parent next."],
         unit: "fraction",
       },
       {
@@ -244,10 +221,7 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "Linkage affects gamete frequencies. The expected phenotype ratio also depends on dominance and gene interaction.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "Linkage affects gamete frequencies. The expected phenotype ratio also depends on dominance and gene interaction.",
-        ],
+        hints: ["Can linked loci always assort independently?", "Linkage affects gamete frequencies. The expected phenotype ratio also depends on dominance and gene interaction."],
       },
     ],
     visual: "punnett",
@@ -277,10 +251,7 @@ window.ALevelTeachingFamilies = {
           "Guided practice. 16% show the recessive phenotype under the stated assumptions. Find q.",
         answer: 0.4,
         why: "q² = 0.16, so q = √0.16 = 0.4.",
-        hints: [
-          "Identify the quantity requested before substituting.",
-          "q² = 0.16, so q = √0.16 = 0.4.",
-        ],
+        hints: ["Identify the recessive phenotype frequency before taking a square root.", "q² = 0.16, so q = √0.16 = 0.4."],
         guided: true,
         unit: "frequency",
       },
@@ -290,10 +261,7 @@ window.ALevelTeachingFamilies = {
           "In a different equilibrium population 4% have the recessive phenotype. Find the heterozygote frequency.",
         answer: 0.32,
         why: "q² = 0.04, q = 0.2, p = 0.8, and 2pq = 0.32.",
-        hints: [
-          "Identify the quantity requested before substituting.",
-          "q² = 0.04, q = 0.2, p = 0.8, and 2pq = 0.32.",
-        ],
+        hints: ["Find q and p separately before multiplying the two frequencies.", "q² = 0.04, q = 0.2, p = 0.8, and 2pq = 0.32."],
         unit: "frequency",
       },
       {
@@ -302,10 +270,7 @@ window.ALevelTeachingFamilies = {
           "In an equilibrium population of 500, q² = 0.25. How many heterozygotes are expected?",
         answer: 250,
         why: "q = 0.5, p = 0.5, 2pq = 0.5, and 0.5 × 500 = 250.",
-        hints: [
-          "Identify the quantity requested before substituting.",
-          "q = 0.5, p = 0.5, 2pq = 0.5, and 0.5 × 500 = 250.",
-        ],
+        hints: ["Write q² for the recessive genotype and compare it with 2pq.", "q = 0.5, p = 0.5, 2pq = 0.5, and 0.5 × 500 = 250."],
         unit: "individuals",
       },
     ],
@@ -330,6 +295,7 @@ window.ALevelTeachingFamilies = {
     ],
     tasks: [
       {
+        catchup: "a8-epigen",
         kind: "choice",
         prompt:
           "Guided practice. Promoter methylation increases at a gene where it reduces access. Predict transcription.",
@@ -340,13 +306,11 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "The supplied mechanism reduces access to the promoter.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "The supplied mechanism reduces access to the promoter.",
-        ],
+        hints: ["Check what the question says about access to this promoter.", "The supplied mechanism reduces access to the promoter."],
         guided: true,
       },
       {
+        catchup: "a8-epigen",
         kind: "choice",
         prompt:
           "Histones become acetylated but a necessary activator is absent. Is increased transcription guaranteed?",
@@ -357,12 +321,10 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "Accessibility can permit transcription, but does not replace necessary regulatory components.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "Accessibility can permit transcription, but does not replace necessary regulatory components.",
-        ],
+        hints: ["Which requirement for increased transcription is missing?", "Accessibility can permit transcription, but does not replace necessary regulatory components."],
       },
       {
+        catchup: "a8-transfac",
         kind: "choice",
         prompt:
           "An activator normally increases RNA polymerase binding at a promoter. Activator activity falls, with other requirements unchanged. Predict the effect.",
@@ -373,12 +335,11 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "Follow the activator-to-polymerase interaction. Less activation can reduce initiation of transcription.",
-        hints: [
-          "Use the stated assumptions and compare the relevant quantities.",
-          "Follow the activator-to-polymerase interaction. Less activation can reduce initiation of transcription.",
-        ],
+        hints: ["Connect activator activity to the probability of RNA polymerase binding.", "Follow the activator-to-polymerase interaction. Less activation can reduce initiation of transcription."],
       },
       {
+        catchup: "a8-transfac",
+        hints: ["What was the repressor doing before it was removed?"],
         kind: "writing",
         prompt: "A repressor is degraded. Explain why transcription can rise.",
         points: [
@@ -407,7 +368,8 @@ window.ALevelTeachingFamilies = {
       "Ventricular contraction raises ventricular pressure. When left ventricular pressure exceeds left atrial pressure, the mitral valve closes.",
       "Initially both valves are closed. Myocardial force raises pressure during approximately isovolumetric contraction. Ventricular volume has not yet fallen appreciably.",
       "When ventricular pressure exceeds aortic pressure, the aortic valve opens. Ejection then reduces ventricular volume.",
-      "During relaxation, ventricular pressure falls below aortic pressure and the aortic valve closes. Later, ventricular pressure below atrial pressure opens the mitral valve for filling.",
+      "During relaxation, ventricular pressure falls below aortic pressure. The aortic valve closes.",
+      "As the ventricle continues to relax, ventricular pressure falls below atrial pressure. The mitral valve opens and filling begins.",
     ],
     tasks: [
       {
@@ -417,10 +379,7 @@ window.ALevelTeachingFamilies = {
         options: ["Both mitral and aortic", "Only mitral", "Only aortic"],
         answer: 0,
         why: "20 > 8 closes the mitral valve. 20 < 80 keeps the aortic valve closed.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "20 > 8 closes the mitral valve. 20 < 80 keeps the aortic valve closed.",
-        ],
+        hints: ["Compare ventricular pressure with atrial pressure first.", "Now compare the same ventricular pressure with the aorta."],
         guided: true,
       },
       {
@@ -434,10 +393,7 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "110 > 90 opens the aortic valve. Volume falls during ejection.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "110 > 90 opens the aortic valve. Volume falls during ejection.",
-        ],
+        hints: ["For ejection, compare pressure in the ventricle with pressure in the aorta.", "110 > 90 opens the aortic valve. Volume falls during ejection."],
       },
       {
         kind: "group",
@@ -450,10 +406,7 @@ window.ALevelTeachingFamilies = {
           ["Ventricular volume while both valves are closed", 2],
         ],
         why: "Myocardial contraction raises pressure, closing the mitral valve when ventricular pressure exceeds atrial pressure. Initially both valves are closed and volume remains approximately constant.",
-        hints: [
-          "Separate the pressure rise from the later ejection.",
-          "Volume decreases once the aortic valve opens.",
-        ],
+        hints: ["Start with contraction, then compare ventricular pressure with atrial pressure.", "Volume decreases once the aortic valve opens."],
       },
       {
         kind: "choice",
@@ -466,10 +419,7 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "9 > 4 permits atrial-to-ventricular flow and opens the mitral valve. Aortic pressure exceeding ventricular pressure keeps the aortic valve closed.",
-        hints: [
-          "Use the stated assumptions and compare the relevant quantities.",
-          "9 > 4 permits atrial-to-ventricular flow and opens the mitral valve. Aortic pressure exceeding ventricular pressure keeps the aortic valve closed.",
-        ],
+        hints: ["Compare the sides of the mitral valve separately from the sides of the aortic valve.", "9 > 4 permits atrial-to-ventricular flow and opens the mitral valve. Aortic pressure exceeding ventricular pressure keeps the aortic valve closed."],
       },
       {
         kind: "choice",
@@ -482,10 +432,7 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "Name both compartments and compare their pressures.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "Name both compartments and compare their pressures.",
-        ],
+        hints: ["The mitral valve lies between the left atrium and left ventricle.", "Name both compartments and compare their pressures."],
       },
       {
         kind: "choice",
@@ -498,13 +445,11 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "Aortic pressure now exceeds ventricular pressure, tending to drive blood back and closing the semilunar valve.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "Aortic pressure now exceeds ventricular pressure, tending to drive blood back and closing the semilunar valve.",
-        ],
+        hints: ["At D, decide which trace is higher just to the right of the crossing.", "Aortic pressure now exceeds ventricular pressure, tending to drive blood back and closing the semilunar valve."],
         visual: "pressure",
       },
       {
+        hints: ["Describe the two valve comparisons separately during contraction and relaxation."],
         kind: "writing",
         prompt:
           "Explain the one-way flow through the left side during contraction and relaxation.",
@@ -534,12 +479,14 @@ window.ALevelTeachingFamilies = {
       "Stimulation promotes activity. Inhibition reduces activity. Disinhibition means removing or reducing an inhibitory influence. It permits activity, subject to other limiting inputs.",
       "A reversible inhibitor decreases → enzyme inhibition decreases → catalytic rate increases → protein hydrolysis is faster → less protein substrate remains after a fixed interval.",
       "This comparison assumes equal initial enzyme and substrate, temperature, pH and time, available substrate, and no replenishment or other limiting changes. Reducing free irreversible inhibitor need not restore enzymes already inactivated.",
-      "For A inhibits B, and B inhibits C: increasing A lowers B activity, so B inhibits C less. C can become more active. The two inhibitory links reverse direction twice.",
+      "A inhibits B. Increasing A lowers B activity.",
+      "B inhibits C. When B is less active, it inhibits C less, so C can become more active if conditions allow.",
       "In a simplified inhibitory synapse where inhibition hyperpolarises the postsynaptic membrane, less inhibitory input reduces that hyperpolarising influence. Reaching threshold still requires sufficient net excitation. Other inhibitory mechanisms can act by shunting current.",
       "In a competing pathway, activation and inhibition can change together. Without their relative magnitudes, the net outcome may be undetermined. A pathway diagram states relationships, not the size of each effect.",
     ],
     tasks: [
       {
+        catchup: "a1-enzfactors",
         kind: "choice",
         prompt:
           "Level 1 · Guided. A reversible inhibitor concentration falls. Other conditions stay suitable. Predict enzyme rate.",
@@ -550,13 +497,11 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "Less reversible inhibition allows more catalytic activity when substrate remains available.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "Less reversible inhibition allows more catalytic activity when substrate remains available.",
-        ],
+        hints: ["First ask what the reversible inhibitor normally does to the enzyme.", "Less reversible inhibition allows more catalytic activity when substrate remains available."],
         guided: true,
       },
       {
+        catchup: "a1-enzfactors",
         kind: "choice",
         prompt:
           "Level 2. A protease is reversibly inhibited. Inhibitor falls, with equal starting protein and fixed time before depletion. What remains?",
@@ -567,12 +512,10 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "Protease activity rises, hydrolysing peptide bonds faster, leaving less protein substrate.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "Protease activity rises, hydrolysing peptide bonds faster, leaving less protein substrate.",
-        ],
+        hints: ["Trace the change in protease activity before predicting how much protein remains.", "Protease activity rises, hydrolysing peptide bonds faster, leaving less protein substrate."],
       },
       {
+        catchup: "a1-enzfactors",
         kind: "choice",
         prompt:
           "An enzyme was irreversibly inactivated. Free inhibitor is washed away, and no new enzyme is supplied. What can be inferred?",
@@ -583,12 +526,10 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "Removing free inhibitor does not necessarily reverse an irreversible chemical modification of enzyme molecules.",
-        hints: [
-          "Use the stated assumptions and compare the relevant quantities.",
-          "Removing free inhibitor does not necessarily reverse an irreversible chemical modification of enzyme molecules.",
-        ],
+        hints: ["Distinguish the free inhibitor from enzyme molecules it has already inactivated.", "Removing free inhibitor does not necessarily reverse an irreversible chemical modification of enzyme molecules."],
       },
       {
+        catchup: "a1-enzfactors",
         kind: "choice",
         prompt:
           "A reaction has already used all its substrate. Reversible inhibitor concentration then falls. What happens to product formation without added substrate?",
@@ -599,12 +540,10 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "Relieving inhibition cannot create substrate. Increased enzyme activity only increases product formation when substrate is available.",
-        hints: [
-          "Use the stated assumptions and compare the relevant quantities.",
-          "Relieving inhibition cannot create substrate. Increased enzyme activity only increases product formation when substrate is available.",
-        ],
+        hints: ["Which reactant does the enzyme need in order to form product?", "Relieving inhibition cannot create substrate. Increased enzyme activity only increases product formation when substrate is available."],
       },
       {
+        catchup: null,
         kind: "group",
         prompt:
           "Level 3 · Complete the chain when A increases. A inhibits B, and B inhibits C.",
@@ -615,12 +554,10 @@ window.ALevelTeachingFamilies = {
           ["C activity, other conditions suitable", 0],
         ],
         why: "A inhibits B more. Less active B inhibits C less, allowing C activity to increase.",
-        hints: [
-          "Follow A to B before considering C.",
-          "Two inhibitory links reverse the effect twice.",
-        ],
+        hints: ["First decide what happens to B when A increases.", "Then ask how the change in B affects the restraint on C."],
       },
       {
+        catchup: null,
         kind: "choice",
         prompt:
           "A inhibits B and B inhibits C. A falls. Other conditions are suitable. Predict C.",
@@ -631,12 +568,10 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "Less A releases B from inhibition. More active B inhibits C more strongly, so C can decrease.",
-        hints: [
-          "Use the stated assumptions and compare the relevant quantities.",
-          "Less A releases B from inhibition. More active B inhibits C more strongly, so C can decrease.",
-        ],
+        hints: ["Start with the effect of less A on B.", "Less A releases B from inhibition. More active B inhibits C more strongly, so C can decrease."],
       },
       {
+        catchup: "a6-synapse",
         kind: "choice",
         prompt:
           "Level 4. In a model inhibitory input hyperpolarises a neurone. The input decreases, but excitation remains weak. What can be concluded?",
@@ -647,12 +582,10 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "Reduced hyperpolarisation can bring the membrane closer to threshold. Sufficient net excitation is still needed.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "Reduced hyperpolarisation can bring the membrane closer to threshold. Sufficient net excitation is still needed.",
-        ],
+        hints: ["Compare the change in inhibition with whether excitation can still reach threshold.", "Reduced hyperpolarisation can bring the membrane closer to threshold. Sufficient net excitation is still needed."],
       },
       {
+        catchup: "a8-transfac",
         kind: "choice",
         prompt:
           "Level 4. A repressor is inhibited by a newly described molecule R. R increases. RNA polymerase and activators remain available. Predict transcription.",
@@ -663,12 +596,10 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "R inhibits the repressor. Reduced repression permits increased transcription.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "R inhibits the repressor. Reduced repression permits increased transcription.",
-        ],
+        hints: ["Follow the effect of R on the repressor before deciding what happens to transcription.", "R inhibits the repressor. Reduced repression permits increased transcription."],
       },
       {
+        catchup: "a1-enzfactors",
         kind: "choice",
         prompt:
           "Level 5. A signal both activates an enzyme and increases its inhibitor concentration. Magnitudes are unknown. Predict net rate.",
@@ -679,12 +610,10 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "Opposing influences occur together. Their relative effects are needed to predict the net rate.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "Opposing influences occur together. Their relative effects are needed to predict the net rate.",
-        ],
+        hints: ["Decide whether the two effects push enzyme activity in the same direction.", "Opposing influences occur together. Their relative effects are needed to predict the net rate."],
       },
       {
+        catchup: "a6-homeo",
         kind: "group",
         prompt:
           "A hypothetical homeostatic pathway uses hormone H to promote hormone J. J inhibits H release. Immediately after J rises, classify the direct change.",
@@ -694,12 +623,10 @@ window.ALevelTeachingFamilies = {
           ["Rate of H release", 1],
         ],
         why: "More J increases inhibitory feedback on H release. The later time course depends on secretion, clearance and other inputs.",
-        hints: [
-          "Use the stated J-to-H relationship.",
-          "The feedback acts on the release of H.",
-        ],
+        hints: ["Find the direct effect of J on the release of H.", "The feedback acts on the release of H."],
       },
       {
+        catchup: "a1-enzfactors",
         kind: "choice",
         prompt:
           "Experimental data. At 0, 2 and 4 µmol dm⁻³ reversible inhibitor, product after 30 s is 12, 8 and 4 units. What does this support?",
@@ -710,12 +637,11 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "The data support reduced formation within the tested range. They establish neither irreversibility nor behaviour at untested doses.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "The data support reduced formation within the tested range. They establish neither irreversibility nor behaviour at untested doses.",
-        ],
+        hints: ["Compare the measured product amounts within the stated concentration range.", "The data support reduced formation within the tested range. They establish neither irreversibility nor behaviour at untested doses."],
       },
       {
+        catchup: "a1-enzfactors",
+        hints: ["Follow inhibitor concentration through amylase activity to starch remaining after one minute."],
         kind: "writing",
         prompt:
           "Explain why reducing a reversible inhibitor of amylase can leave less starch after one minute. State assumptions.",
@@ -749,31 +675,28 @@ window.ALevelTeachingFamilies = {
     ],
     tasks: [
       {
+        catchup: null,
         kind: "number",
         prompt:
           "Guided. In the supplied drawing framework, how many categories do “continuous lines, no sketching, no overlapping outlines, no hanging lines” address?",
         answer: 1,
         why: "All four concern line quality.",
-        hints: [
-          "Identify the quantity requested before substituting.",
-          "All four concern line quality.",
-        ],
+        hints: ["Group descriptions of the same drawing feature before counting.", "All four concern line quality."],
         guided: true,
         unit: "categories",
       },
       {
+        catchup: null,
         kind: "number",
         prompt:
           "Continuous outlines, no shading, correct proportions and a scale bar. How many of these drawing categories are addressed?",
         answer: 4,
         why: "Line quality, shading, proportions, and scale are four separate categories in this framework.",
-        hints: [
-          "Identify the quantity requested before substituting.",
-          "Line quality, shading, proportions, and scale are four separate categories in this framework.",
-        ],
+        hints: ["Assign each statement to a drawing criterion before counting.", "Line quality, shading, proportions, and scale are four separate categories in this framework."],
         unit: "categories",
       },
       {
+        catchup: null,
         kind: "group",
         prompt: "Group each statement by the supplied criterion.",
         groups: [
@@ -788,12 +711,10 @@ window.ALevelTeachingFamilies = {
           ["Blood flow removes absorbed oxygen", 2],
         ],
         why: "Two surface-area statements repeat one criterion. Thin walls and maintenance of a gradient are distinct.",
-        hints: [
-          "Look at the physical property each statement changes.",
-          "“More area” appears twice.",
-        ],
+        hints: ["Ask whether a statement describes the outline, shading, scale or another feature.", "“More area” appears twice."],
       },
       {
+        catchup: "a1-enzfactors",
         kind: "choice",
         prompt:
           "An enzyme-rate answer repeats “more collisions” twice. The framework credits collision frequency and active-site shape. Which replacement adds a distinct point?",
@@ -804,12 +725,10 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "The replacement adds the second criterion, active-site shape, instead of rephrasing collisions.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "The replacement adds the second criterion, active-site shape, instead of rephrasing collisions.",
-        ],
+        hints: ["Look for a change to the active site rather than another way of describing collisions.", "The replacement adds the second criterion, active-site shape, instead of rephrasing collisions."],
       },
       {
+        catchup: "p3s-methods",
         kind: "choice",
         prompt:
           "Framework: control temperature, measure rate, and repeat. Which response covers more criteria?",
@@ -820,12 +739,10 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "Controlling temperature, measuring a rate and repeating trials address three different requirements.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "Controlling temperature, measuring a rate and repeating trials address three different requirements.",
-        ],
+        hints: ["Check control, rate and repeats separately.", "Controlling temperature, measuring a rate and repeating trials address three different requirements."],
       },
       {
+        catchup: "p3s-methods",
         kind: "choice",
         prompt:
           "Framework: state the trend, quote data, and qualify uncertainty. Which response covers more criteria?",
@@ -836,24 +753,21 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "The response that gives a trend, a numerical comparison and a limitation addresses three distinct criteria.",
-        hints: [
-          "Use the stated assumptions and compare the relevant quantities.",
-          "The response that gives a trend, a numerical comparison and a limitation addresses three distinct criteria.",
-        ],
+        hints: ["Find a trend, a quoted numerical comparison and a qualifier separately.", "The response that gives a trend, a numerical comparison and a limitation addresses three distinct criteria."],
       },
       {
+        catchup: "p3s-methods",
         kind: "number",
         prompt:
           "New framework: numerical comparison, trend, limitation. Answer “A is 12 and B is 8, a difference of 4.” How many categories are addressed?",
         answer: 1,
         why: "These are numerical comparisons. The answer still lacks a trend across conditions and a limitation.",
-        hints: [
-          "Identify the quantity requested before substituting.",
-          "These are numerical comparisons. The answer still lacks a trend across conditions and a limitation.",
-        ],
+        hints: ["Decide whether the sentence describes a trend, gives a numerical comparison or identifies a limitation.", "These are numerical comparisons. The answer still lacks a trend across conditions and a limitation."],
         unit: "categories",
       },
       {
+        catchup: "p3s-methods",
+        hints: ["Keep one statement about repeats. Identify the two criteria it leaves uncovered."],
         kind: "writing",
         prompt:
           "Improve “use many repeats, repeat again, do more repeats”. Framework: random-error reduction, control of temperature, and calibration.",
@@ -885,6 +799,7 @@ window.ALevelTeachingFamilies = {
     ],
     tasks: [
       {
+        catchup: "a2-diffusion",
         kind: "choice",
         prompt:
           "Guided. Why does a thinner exchange surface increase diffusion rate?",
@@ -895,13 +810,11 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "A shorter diffusion distance links the thin surface to a higher diffusion rate when other factors are constant.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "A shorter diffusion distance links the thin surface to a higher diffusion rate when other factors are constant.",
-        ],
+        hints: ["Ask how far a particle must travel across a thinner surface.", "A useful explanation names the change in the route between the two sides."],
         guided: true,
       },
       {
+        catchup: "a2-active",
         kind: "choice",
         prompt:
           "A membrane transport protein is inhibited. Which explanation is complete if it normally carries ions against their gradient?",
@@ -912,12 +825,10 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "Name the process and the molecular component affected, without overextending to unrelated pathways.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "Name the process and the molecular component affected, without overextending to unrelated pathways.",
-        ],
+        hints: ["Identify the process that moves ions against their gradient.", "Name the process and the molecular component affected, without overextending to unrelated pathways."],
       },
       {
+        catchup: "a6-glucose",
         kind: "choice",
         prompt: "Which explains insulin lowering blood glucose?",
         options: [
@@ -927,12 +838,10 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "Release describes an event. Uptake and storage explain the consequence. Insulin is a hormone, not a glucose-hydrolysing enzyme.",
-        hints: [
-          "Trace the change through one relationship at a time.",
-          "Release describes an event. Uptake and storage explain the consequence. Insulin is a hormone, not a glucose-hydrolysing enzyme.",
-        ],
+        hints: ["Ask where glucose can go when its concentration in the blood falls.", "Release describes an event. Uptake and storage explain the consequence. Insulin is a hormone, not a glucose-hydrolysing enzyme."],
       },
       {
+        catchup: "a6-adh",
         kind: "choice",
         prompt:
           "A collecting duct has more aquaporins after ADH binding. Which explanation links mechanism to water movement?",
@@ -943,12 +852,11 @@ window.ALevelTeachingFamilies = {
         ],
         answer: 0,
         why: "ADH changes permeability through aquaporin insertion. Water moves by osmosis down an existing water-potential gradient.",
-        hints: [
-          "Use the stated assumptions and compare the relevant quantities.",
-          "ADH changes permeability through aquaporin insertion. Water moves by osmosis down an existing water-potential gradient.",
-        ],
+        hints: ["Relate the number of water channels to membrane permeability.", "ADH changes permeability through aquaporin insertion. Water moves by osmosis down an existing water-potential gradient."],
       },
       {
+        catchup: "a6-synapse",
+        hints: ["First state what acetylcholinesterase normally does in the synaptic cleft."],
         kind: "writing",
         prompt:
           "Explain how inhibition of acetylcholinesterase can prolong stimulation at a cholinergic synapse.",
