@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 160">
+ <title>Nutrient uptake by a gut cell</title>
+ <rect x="7" y="27" width="346" height="107" rx="13" fill="#eff7f4" stroke="#597874" stroke-width="2"/>
+ <path d="M190 28q-17 8 0 15q-17 8 0 15q-17 8 0 15q-17 8 0 15q-17 8 0 15q-17 8 0 15q-17 8 0 15" fill="none" stroke="#23656c" stroke-width="4"/>
+ <g fill="#d8964e" stroke="#98451e" stroke-width="1.5">
+  <circle cx="49" cy="59" r="6"/><circle cx="85" cy="111" r="6"/><circle cx="135" cy="76" r="6"/>
+  <circle cx="225" cy="54" r="6"/><circle cx="254" cy="59" r="6"/><circle cx="296" cy="50" r="6"/>
+  <circle cx="321" cy="69" r="6"/><circle cx="224" cy="111" r="6"/><circle cx="282" cy="119" r="6"/>
+  <circle cx="313" cy="102" r="6"/><circle cx="262" cy="91" r="6"/>
+ </g>
+ <path d="M144 84h93m0 0-10-5v10Z" stroke="#23558c" fill="#23558c" stroke-width="2"/>
+ <g font-family="system-ui,sans-serif" font-weight="650" font-size="17" fill="#263e4a" text-anchor="middle">
+  <text x="91" y="20">Inside the gut</text>
+  <text x="268" y="20">Inside the gut cell</text>
+  <text x="94" y="154">Lower concentration</text>
+  <text x="264" y="154">Higher concentration</text>
+ </g>
+</svg>

@@ -1,45 +1,258 @@
-const visual = {
-  "cell-structures": `<div class="school-cell-comparison">
-    <figure><figcaption>Cheek cell</figcaption><img src="/assets/ks3-diagrams/cheek-cell.svg" width="360" height="280" alt="Labelled cheek cell. Its mitochondria are small ovals with folded interiors."></figure>
-    <figure><figcaption>Palisade cell</figcaption><img src="/assets/ks3-diagrams/palisade-cell.svg" width="360" height="280" alt="Labelled leaf cell. Its chloroplasts are ovals with short internal stacks, distinct from the folded interiors of its mitochondria."></figure>
-    </div><label class="school-diagram-option"><input type="checkbox" data-greyscale> Greyscale</label>
-    <figcaption>Structures are enlarged for clarity.</figcaption>`,
-  osmosis: `<div class="school-evidence-flow">
-    <div><strong>Side A · More dilute</strong><span class="school-solute" aria-hidden="true">● ●</span></div>
-    <div><strong>Partially permeable membrane</strong><span>Water moves both ways</span><b>Net water movement A → B</b></div>
-    <div><strong>Side B · More concentrated</strong><span class="school-solute" aria-hidden="true">● ● ● ● ● ●</span></div>
-    </div><figcaption>Dots show dissolved particles.</figcaption>`,
-  mitosis: `<ol class="school-evidence-flow">
-    <li><strong>One cell</strong><span class="school-cell-shape" aria-hidden="true">Ⅰ</span><span>The cell grows before copying DNA.</span></li>
-    <li><strong>DNA copied</strong><span class="school-cell-shape" aria-hidden="true">Ⅱ</span><span>Two matching copies</span></li>
-    <li><strong>Two new cells</strong><span class="school-cell-shape" aria-hidden="true">Ⅰ</span><span class="school-cell-shape" aria-hidden="true">Ⅰ</span><span>One copy in each cell</span></li>
-    </ol><figcaption>One chromosome is shown.</figcaption>`,
-  "energy-stores": `<ol class="school-evidence-flow">
-    <li><strong>Ball held up</strong><span>Gravitational potential store of the ball and Earth</span></li>
-    <li><strong>Ball speeding up</strong><span>Kinetic store</span></li>
-    <li><strong>Ball comes to rest</strong><span>Thermal stores of the ball and surface. Some energy is transferred by sound.</span></li>
-    </ol>`,
-  "gas-exchange": `<div class="school-evidence-flow">
-    <div><strong>Air inside an alveolus</strong><span>Higher oxygen concentration</span></div>
-    <div><strong>Thin barrier</strong><b>Net oxygen movement →</b></div>
-    <div><strong>Blood in the capillary</strong><span>Lower oxygen concentration in arriving blood</span></div>
-    </div>`,
-  enzymes: `<div class="school-evidence-flow">
-    <div><strong>At a suitable temperature</strong><span class="school-enzyme-match" aria-hidden="true"><i></i><b></b></span><span>Substrate fits the active site</span></div>
-    <div><strong>After denaturation</strong><span class="school-enzyme-changed" aria-hidden="true"><i></i><b></b></span><span>Active site changes shape</span></div>
-    </div><figcaption>Orange shows the substrate. Green shows the enzyme.</figcaption>`,
-  "ionic-conduction": `<div class="school-evidence-flow">
-    <div><strong>Solid salt</strong><span class="school-ions" aria-hidden="true">+ − +<br>− + −<br>+ − +</span><span>Ions held in a lattice</span></div>
-    <div><strong>Molten salt</strong><span class="school-ions" aria-hidden="true">− ↗ +<br>+ ↘ −<br>− ↖ +</span><span>Ions can move through the liquid</span></div>
-    </div>`
+import { airSac, arrow, blue, circle, compare, diagram, ink, line, node, periodicOutline,
+  picture, rust, steps, teal, text, violet } from "./catchup-models.js";
+
+function cells() {
+  const host = node("div");
+  const comparison = node("div", "", "school-cell-comparison");
+  const views = [
+    ["Cheek cell", "cheek", "Labelled cheek cell. Its mitochondria are small ovals with folded interiors."],
+    ["Palisade cell", "palisade", "Labelled leaf cell. Its chloroplasts contain small stacks, distinct from the folds in its mitochondria."]
+  ].map(([title, file, alt]) => {
+    const figure = node("figure");
+    const image = node("img");
+    image.src = "/assets/ks3-diagrams/" + file + "-cell.svg";
+    image.width = 360;
+    image.height = 280;
+    image.alt = alt;
+    figure.append(node("figcaption", title), image);
+    return [title, figure];
+  });
+  const controls = node("div", "", "ks3-model-controls");
+  const choices = ["Compare both", ...views.map(([title]) => "Inspect " + title.toLowerCase())];
+  const buttons = choices.map((choice, index) => {
+    const button = node("button", choice, "ks3-model-button");
+    button.type = "button";
+    button.setAttribute("aria-pressed", String(index === 0));
+    button.addEventListener("click", () => {
+      views.forEach(([, figure], i) => { figure.hidden = index > 0 && index !== i + 1; });
+      buttons.forEach((item, i) => item.setAttribute("aria-pressed", String(index === i)));
+    });
+    return button;
+  });
+  const option = node("label", "", "school-diagram-option");
+  const greyscale = node("input");
+  greyscale.type = "checkbox";
+  greyscale.addEventListener("change", () => comparison.classList.toggle("school-greyscale", greyscale.checked));
+  option.append(greyscale, " Greyscale");
+  controls.append(...buttons);
+  comparison.append(...views.map(([, figure]) => figure));
+  host.append(controls, comparison, option, node("p", "Structures are enlarged for clarity."));
+  return host;
+}
+
+function osmosis() {
+  const water = [[55,56],[38,82],[103,60],[84,112],[47,135],[113,150],[58,168],[124,177],
+    [217,53],[192,106],[250,81],[265,172],[206,163],[283,146],[285,61],[235,137]];
+  const solute = [[116,100],[94,154],[205,78],[241,55],[275,101],[209,139],[246,166],[272,124]];
+  const drawing = `
+    <rect x="14" y="33" width="292" height="154" rx="10" fill="#e6f3fa" stroke="${ink}" stroke-width="2"/>
+    <rect x="154" y="32" width="12" height="155" fill="#90b8c8" stroke="${blue}"/>
+    ${[54,81,108,135,162].map(y => line(154,y,166,y,"white",3)).join("")}
+    ${water.map(([x,y]) => circle(x,y,4,"white",blue)).join("")}
+    ${solute.map(([x,y]) => `<rect x="${x-5}" y="${y-5}" width="10" height="10" rx="1" fill="${violet}"/>`).join("")}
+    ${arrow(99,81,185,81,blue,3.5)}${arrow(203,120,125,120,blue,1.4)}
+    ${text(77,23,"A · more dilute")}${text(237,23,"B · more concentrated",ink,14)}
+    ${text(160,207,"Partially permeable membrane",blue)}
+    ${circle(42,229,4,"white",blue)}${text(53,234,"Water",ink,15,"start")}
+    <rect x="169" y="224" width="10" height="10" fill="${violet}"/>
+    ${text(185,234,"Dissolved particles",ink,15,"start")}`;
+  return picture("Net water movement A → B",
+    diagram("Equal volumes divided by a partially permeable membrane. Side B contains more dissolved particles. Water crosses both ways, but more crosses from A to B.", drawing, 320, 244),
+    "Water crosses both ways. The thicker arrow shows the direction in which more water crosses.");
+}
+
+function activeTransport() {
+  const root = diagram("A root hair extends from a root cell into a space between soil particles.", `
+    <rect x="10" y="33" width="297" height="113" rx="18" fill="#f5eadb"/>
+    <path d="M14 54Q43 24 70 41T97 72Q67 92 33 84Z M20 112Q43 96 70 107L116 148H23Z M123 48Q151 22 194 41L170 74H111Z"
+      fill="#d5b58a" stroke="#8a6441" stroke-width="2"/>
+    <path d="M310 61H227Q198 61 186 81L86 92Q72 95 77 104Q80 111 92 110L195 107Q209 126 228 128H310Z"
+      fill="#d8efe3" stroke="${teal}" stroke-width="4"/>
+    ${circle(252,94,12,"#b496cd",violet)}
+    ${line(125,116,99,139,teal)}${text(107,160,"Root hair",teal)}
+    ${text(63,25,"Soil")}
+    ${text(267,51,"Root cell",teal)}
+    <rect x="89" y="83" width="45" height="33" rx="5" fill="none" stroke="${rust}" stroke-width="2" stroke-dasharray="4 4"/>`,320,172);
+  const membrane = diagram("In the magnified membrane, fewer ions are outside than inside. One ion moves through a protein from outside into the cell using energy from respiration.", `
+    <rect x="12" y="36" width="296" height="111" rx="9" fill="#e8f3ef"/>
+    <path d="M147 36h26v111h-26Z" fill="#abcdbf" stroke="${teal}"/>
+    <path d="M148 70q12 7 24 0v42q-12-7-24 0Z" fill="#e0c9eb" stroke="${violet}" stroke-width="2.5"/>
+    ${[[53,61],[66,122],[201,52],[226,66],[267,56],[290,76],[222,121],[265,108],[287,134]].map(([x,y]) => circle(x,y,5,"#d8964e",rust)).join("")}
+    ${circle(112,90,5,"#d8964e",rust)}${arrow(120,90,207,90,blue,3.5)}
+    ${text(75,24,"Soil water",ink)}${text(249,24,"Inside the cell",ink)}
+    ${text(74,166,"Fewer ions",rust)}${text(250,166,"More ions",rust)}
+    ${line(160,112,160,188,violet)}${text(160,207,"Membrane protein",violet)}`,320,218);
+  return compare(picture("Root hair in the soil", root, "Zoom in where the root hair takes up mineral ions."),
+    picture("Across the cell membrane", membrane, "Energy from respiration allows the cell to move ions into the side with the higher concentration."));
+}
+
+function mitosis() {
+  const chromosome = (x,y,paired) => line(x,y-11,x,y+11,violet,4) + line(x-3,y+1,x+3,y+1,ink,2) +
+    (paired ? line(x+8,y-11,x+8,y+11,violet,4) + line(x+5,y+1,x+11,y+1,ink,2) : "");
+  const nucleus = (x,y) => circle(x,y,28,"#ede5f3",violet,2);
+  const cell = (x,y,r) => circle(x,y,r,"#e7f4eb",teal,2.5);
+  return steps("From one cell to two", [
+    ["Copy DNA", () => picture("The cell copies its DNA before mitosis",
+      diagram("One original cell with a nucleus containing two matching copies of one chromosome.",
+        cell(160,80,57)+nucleus(160,80)+chromosome(156,80,true)+text(160,157,"Two matching copies")), "One chromosome is shown as an example.")],
+    ["Separate the copies", () => picture("Mitosis separates the chromosome copies",
+      diagram("There is still one cell. Separate nuclei form, each around one copy of the chromosome.",
+        `<ellipse cx="160" cy="80" rx="102" ry="53" fill="#e7f4eb" stroke="${teal}" stroke-width="2.5"/>`+
+        nucleus(108,80)+nucleus(211,80)+chromosome(108,80,false)+chromosome(211,80,false)+text(160,158,"Two nuclei in one cell")),
+      "Each new nucleus has one copy.")],
+    ["Divide the cell", () => picture("Two genetically identical cells",
+      diagram("Two separate cells, each with one nucleus and one matching copy of the chromosome.",
+        cell(92,80,48)+cell(228,80,48)+nucleus(92,80)+nucleus(228,80)+chromosome(92,80,false)+chromosome(228,80,false)+text(160,156,"A full set of DNA in each cell")))]
+  ]);
+}
+
+function atom(title, neutrons, shellCounts, note, highlightNeutron = false, lostElectron = false, protons = 11) {
+  const centreX = 160, centreY = 120;
+  const drawing = shellCounts.map((count, shell) => {
+    const radius = 39 + shell * 32;
+    return circle(centreX,centreY,radius,"none","#95acb2") + Array.from({length:count}, (_, index) => {
+      const angle = -Math.PI / 2 + index * (2*Math.PI / count);
+      const x = centreX + radius * Math.cos(angle), y = centreY + radius * Math.sin(angle);
+      const outer = shell === shellCounts.length - 1;
+      return circle(x,y,outer ? 6 : 4.5,outer && count === 1 ? "#edab65" : blue,outer && count === 1 ? rust : blue);
+    }).join("");
+  }).join("") + circle(centreX,centreY,34,"#e5eeef",teal,2) +
+    text(160,116,protons + " p⁺",teal,17) + text(160,136,neutrons + " n",highlightNeutron ? rust : ink,17) +
+    (lostElectron ? circle(160,17,6,"white",rust,2) + line(155,21,165,12,rust,2) : "");
+  return picture(title,diagram(title + ". " + protons + " protons, " + neutrons + " neutrons, electron arrangement " + shellCounts.filter(Boolean).join(", ") + ".",drawing,320,229),note);
+}
+
+function atomicNumber() {
+  const sodium23 = () => atom("Sodium-23 atom",12,[2,8,1],"11 electrons · no overall charge");
+  return steps("Isotope and ion comparisons", [
+    ["Change a neutron", () => compare(sodium23(),
+      atom("Sodium-24 atom",13,[2,8,1],"One more neutron · still 11 protons",true))],
+    ["Remove an electron", () => compare(sodium23(),
+      atom("Sodium-23 ion",12,[2,8,0],"10 electrons · charge +1",false,true))]
+  ]);
+}
+
+function groups() {
+  const host = node("div");
+  host.append(periodicOutline(), compare(
+    atom("Lithium · 2, 1",4,[2,1],"One electron in the outer shell.",false,false,3),
+    atom("Sodium · 2, 8, 1",12,[2,8,1],"One electron in the outer shell.")));
+  return host;
+}
+
+function droppedBall() {
+  const frames = [
+    ["Held up",47,"Gravitational potential store of the ball and Earth."],
+    ["Falling",91,"Energy transfers to the kinetic store as the ball speeds up."],
+    ["At rest",132,"The ball and floor warm slightly. Some energy also transfers by sound."]
+  ];
+  return compare(...frames.map(([title,y,note],index) => picture(title,
+    diagram("The same ball " + ["held above the ground","falling towards the ground","resting on the ground"][index] + ".", `
+    <rect x="17" y="145" width="286" height="16" fill="#c4d6d4"/>${line(17,145,303,145,teal,2)}
+    ${circle(160,y,13,"#e7aa64",rust,2.5)}
+    ${index===0 ? '<path d="M20 64H144q10 0 10-9h-10V49H20" fill="#ebd3c3" stroke="#9d6a53" stroke-width="2"/>' : ""}
+    ${index===1 ? arrow(198,72,198,126,blue,3.5) : ""}
+    ${index===2 ? arrow(142,144,101,144,rust)+arrow(178,144,219,144,rust) : ""}`,320,174),note)));
+}
+
+function power() {
+  function timeline(totals) {
+    const panel = node("div", "", "catchup-clock");
+    for (const [label, seconds, perSecond, total] of [["A",2,100,200],["B",10,50,500]]) {
+      const row = node("div");
+      const blocks = node("div", "", "catchup-clock-grid");
+      blocks.setAttribute("role", "img");
+      blocks.setAttribute("aria-label", seconds + " one-second blocks, each showing " + perSecond + " joules.");
+      for (let i = 0; i < seconds; i++) {
+        blocks.append(node("span", "", "catchup-clock-cell " + (perSecond === 100 ? "higher-rate" : "lower-rate")));
+      }
+      row.append(node("strong", label + " · " + perSecond + " W for " + seconds + " s"), blocks);
+      if (totals) row.append(node("strong", perSecond + " J × " + seconds + " = " + total + " J"));
+      panel.append(row);
+    }
+    const figure = node("figure", "", "catchup-picture");
+    figure.append(panel,node("figcaption",totals ? "B transfers more energy in total because it runs for longer." :
+      "Each block is one second. A taller block shows more energy transferred in that second."));
+    return figure;
+  }
+  return steps("Joules each second", [["Compare the seconds", () => timeline(false)], ["Reveal both totals", () => timeline(true)]]);
+}
+
+function gasExchange() {
+  return steps("Gas exchange at the lung surface", [
+    ["Healthy air sac", () => airSac(true)],
+    ["Make the barrier thicker", () => airSac(true,true)]
+  ]);
+}
+
+function enzymes() {
+  function example(changed, warm) {
+    const solid = changed ? "M46 76H137l23 26 25-26h89v54q0 26-26 26H72q-26 0-26-26Z" :
+      "M46 76H133v28h54V76h87v54q0 26-26 26H72q-26 0-26-26Z";
+    return diagram(changed ? "The substrate keeps its shape. The active site is now a V-shaped recess and cannot fit the substrate."
+      : "An orange rectangular substrate fits the rectangular pocket in a teal enzyme.", `
+      <path d="${solid}" fill="#b6ded3" stroke="${teal}" stroke-width="2.5"/>
+      <rect x="135" y="${changed ? 42 : 76}" width="50" height="26" rx="2" fill="#f5bc73" stroke="${rust}" stroke-width="2"/>
+      ${text(160,28,"Substrate",rust)}
+      ${text(160,140,"Enzyme",teal)}
+      ${changed ? text(247,68,"Active site",teal,14) + line(211,65,177,85,teal) : ""}
+      ${warm ? arrow(109,65,129,82,rust)+arrow(211,65,191,82,rust) : ""}`);
+  }
+  return steps("How temperature changes enzyme activity", [
+    ["Cool", () => picture("The substrate fits",example(false,false),"At a cool temperature there are fewer successful collisions each second.")],
+    ["Warm gently", () => picture("Same shape, more successful collisions",example(false,true),"The particles move faster, so the reaction can speed up.")],
+    ["Heat strongly", () => picture("The active site changes shape",example(true,false),"Fewer substrates can bind. This is denaturation.")]
+  ]);
+}
+
+function conduction() {
+  const solid = [[62,60],[117,60],[172,60],[227,60],[62,109],[117,109],[172,109],[227,109]];
+  const liquid = [[57,60],[135,52],[202,75],[252,105],[79,110],[129,126],[175,108],[241,57]];
+  function ions(title, points, moving) {
+    const signs = [true,false,true,false,false,true,false,true];
+    return picture(title, diagram(moving ?
+      "Positive and negative ions are mixed. Positive ions move toward the negative electrode and negative ions move toward the positive electrode." :
+      "Positive and negative ions form a regular lattice. They vibrate in position and do not move across the solid.", `
+      ${moving ? line(22,35,22,136,ink,5)+line(294,35,294,136,ink,5)+text(22,25,"+")+text(294,25,"−") : ""}
+      ${points.map(([x,y],i) => circle(x,y,13,signs[i] ? "#e7b783" : "#cce4f1",signs[i] ? rust : blue) + text(x,y+5,signs[i] ? "+" : "−",ink,19)).join("")}
+      ${moving ? arrow(54,151,120,151,rust)+arrow(250,151,184,151,blue) : text(145,150,"Vibrate in fixed positions",teal,15)}
+      `,320,170),moving ? "A voltage moves positive ions one way and negative ions the other." : "The ions have charge, but they cannot flow through the solid.");
+  }
+  return compare(ions("Solid salt",solid,false),ions("Molten salt",liquid,true));
+}
+
+function melting() {
+  const fixed = [[83,53],[160,53],[237,53],[83,112],[160,112],[237,112]];
+  const moving = [[74,68],[148,48],[219,71],[112,112],[184,113],[254,117]];
+  function state(title, positions, liquid) {
+    const molecule = ([x,y],index) => `<g ${index===1 ? `transform="rotate(${liquid ? 24 : 0} ${x} ${y})"` : ""}>
+      ${line(x-14,y+12,x,y,blue,4)}${line(x,y,x+14,y+12,blue,4)}
+      ${circle(x,y,12,"#e3a48e",rust)}${circle(x-14,y+12,6,"white",blue)}${circle(x+14,y+12,6,"white",blue)}
+      ${index===1 ? `<ellipse cx="${x}" cy="${y+6}" rx="29" ry="24" fill="none" stroke="${teal}" stroke-width="2.5"/>` : ""}
+      </g>`;
+    return picture(title,diagram(liquid ?
+      "Six complete water molecules are still close together in the liquid. The circled molecule has moved and still has its two blue bonds." :
+      "Six complete water molecules occupy a fixed arrangement in ice. Dashed lines show attractions between molecules. Solid blue lines join atoms within each molecule.", `
+      ${line(positions[0][0]+18,positions[0][1]+14,positions[3][0]-8,positions[3][1]-9,violet,2,"4 4")}
+      ${line(positions[2][0],positions[2][1]+16,positions[5][0]-9,positions[5][1]-10,violet,2,"4 4")}
+      ${positions.map(molecule).join("")}
+      ${text(160,161,"Follow the circled molecule",teal)}`),liquid ? "The complete molecules can move past one another." : "Attractions hold molecules in a fixed arrangement overall.");
+  }
+  const panel = node("div");
+  panel.append(compare(state("Ice",fixed,false),state("Liquid water",moving,true)),
+    node("p","Solid blue lines join atoms within a molecule. Dashed lines show some attractions between molecules.","catchup-molecule-legend"));
+  return panel;
+}
+
+const models = {
+  "cell-structures": cells, osmosis, "active-transport": activeTransport, mitosis,
+  "atomic-number": atomicNumber, "periodic-table": groups, "energy-stores": droppedBall,
+  "energy-transfer": power, "gas-exchange": gasExchange, enzymes, "ionic-conduction": conduction,
+  "molecular-melting": melting
 };
 
 export function year9Visual(id) {
-  if (!Object.hasOwn(visual, id)) return null;
-  const figure = document.createElement("figure");
-  figure.className = "school-evidence-visual";
-  figure.innerHTML = visual[id];
-  const greyscale = figure.querySelector("[data-greyscale]");
-  greyscale?.addEventListener("change", () => figure.classList.toggle("school-greyscale", greyscale.checked));
-  return figure;
+  const region = node("div", "", "school-evidence-visual catchup-model");
+  region.append(models[id]());
+  return region;
 }

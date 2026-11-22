@@ -108,3 +108,53 @@
   .school-years:not(.school-year-chooser) a { grid-column: span 2; justify-content: center; text-align: center; }
   .school-years:not(.school-year-chooser) a:nth-child(-n+2) { grid-column: span 3; }
 }
+
+.catchup-model { margin-block: .75rem; min-width: 0; }
+.catchup-model-controls { margin-block: 0 .65rem; }
+.catchup-model-controls button { white-space: normal; }
+.catchup-model-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(15rem,100%),1fr)); gap: .65rem; }
+.catchup-picture {
+  margin: 0; display: grid; align-content: start; min-width: 0; width: 100%;
+  background: #f4f9f8; border: 1px solid #bdcfce; border-radius: .55rem; overflow: hidden;
+}
+.catchup-picture figcaption {
+  display: grid; gap: .18rem; margin: 0; padding: .55rem .7rem;
+  color: #294653; font-size: 1rem; line-height: 1.45; overflow-wrap: anywhere;
+}
+.catchup-picture figcaption strong { color: #203d47; }
+.catchup-picture figcaption small { font-size: .825rem; line-height: 1.45; }
+.catchup-drawing { display: grid; align-items: center; justify-items: center; min-width: 0; }
+.catchup-drawing svg { display: block; width: min(100%, 25rem); height: auto; padding: .25rem; }
+.catchup-picture img.catchup-photo { display: block; width: 100%; max-width: none; height: auto; border-radius: 0; background: #fff; }
+.catchup-picture img.catchup-photo-tile { aspect-ratio: 4 / 3; object-fit: contain; }
+.catchup-periodic { display: grid; grid-template-columns: repeat(18,minmax(0,1fr)); gap: clamp(1px,.35vw,4px); margin: .4rem auto .6rem; max-width: 28rem; }
+.catchup-periodic span { background: #dbe6e5; border-radius: 1px; aspect-ratio: 1; }
+.catchup-periodic .catchup-group-one { background: #21636b; }
+.catchup-periodic .catchup-group-zero { background: #784525; }
+.catchup-periodic-key { display: flex; justify-content: space-between; gap: .35rem; max-width: 28rem; margin-inline: auto; font-weight: 650; }
+.catchup-clock { margin: 0; padding: .45rem .65rem .65rem; }
+.catchup-clock > div + div { margin-top: .6rem; }
+.catchup-clock-grid { display: grid; grid-template-columns: repeat(10,minmax(0,1fr)); align-items: end; gap: 3px; height: 3.2rem; border-bottom: 1px solid #789197; }
+.catchup-clock-cell { background: #c8e6e8; border: 1px solid #427d81; border-radius: .15rem .15rem 0 0; }
+.catchup-clock-cell.lower-rate { height: 50%; background: #f1d8bf; border-color: #985735; }
+.catchup-clock-cell.higher-rate { height: 100%; }
+.catchup-molecule-legend { margin-block: .4rem; color: #294653; }
+@media (max-width: 34rem) {
+  .catchup-model-grid { grid-template-columns: minmax(0,1fr); }
+}
+
+.ks3-molecule .ks3-atom { display: inline-grid; place-items: center; width: 1.45rem; height: 1.45rem; color: #182835; font: 700 .81rem/1 system-ui,sans-serif; }
+.catchup-model details { margin-top: .65rem; }
+.catchup-model details .catchup-picture { margin-top: .45rem; }
+.catchup-population { display: flex; gap: .3rem; flex-wrap: wrap; margin: .4rem 0; }
+.catchup-population span { width: 1.6rem; height: 1.6rem; border: 2px solid #6c4b36; border-radius: 50%; display: inline-grid; place-items: center; font: 700 .8rem/1 system-ui,sans-serif; }
+.catchup-population .pale-insect { background: #f2dfc0; color: #422918; }
+.catchup-population .dark-insect { background: #5f4030; color: #fff; }
+
+.catchup-closeups figure { margin: 0; }
+.catchup-closeups svg { display: block; width: 100%; height: auto; border-radius: .35rem; }
+.catchup-micrograph-outline, .catchup-micrograph-marker {
+  fill: none; stroke: #fff7b5; stroke-width: 2.5; vector-effect: non-scaling-stroke;
+  filter: drop-shadow(1px 1px 1px #131c1e);
+}
+.catchup-micrograph-outline { stroke: white; stroke-dasharray: 5 3; }

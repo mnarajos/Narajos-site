@@ -5,6 +5,7 @@ import { scienceParagraph } from "./ks3-words.js";
 import { explore } from "./ks3-explorations.js";
 import { fairTestPractice, fairTestPlan } from "./ks3-fair-tests.js";
 import { addKS3Journey } from "./school-catchup-ks3.js";
+import { ks3CatchupModel } from "./ks3-catchup-models.js";
 
 const illustrations = {
   "fair-tests": ["ramps", "A green toy car on a low ramp and a blue car on a higher ramp."],
@@ -152,8 +153,12 @@ function renderVisual(visual) {
           for (const atoms of panel.groups) {
             const pair = element("span", "", "ks3-molecule");
             pair.setAttribute("role", "img");
-            pair.setAttribute("aria-label", Array.from(atoms, (atom) => atom === "a" ? "green atom" : "purple atom").join(" bonded to "));
-            for (const atom of atoms) pair.append(element("span", "", "ks3-atom ks3-atom-" + atom));
+            pair.setAttribute("aria-label", Array.from(atoms, (atom) => atom === "a" ? "type X atom" : "type Y atom").join(" bonded to "));
+            for (const atom of atoms) {
+              const symbol = element("span", atom === "a" ? "X" : "Y", "ks3-atom ks3-atom-" + atom);
+              symbol.setAttribute("aria-hidden", "true");
+              pair.append(symbol);
+            }
             groups.append(pair);
           }
           box.append(groups);
@@ -347,8 +352,17 @@ function renderLesson(lesson, year, index) {
       import("./ks3-states.js");
     } else {
       const original = [];
-      if (illustrations[lesson.id]) original.push(renderIllustration(lesson.id));
-      if (!illustrations[lesson.id] || lesson.visual.headers) original.push(renderVisual(lesson.visual));
+      const model = ks3CatchupModel(lesson.id);
+      if (model) {
+        original.push(model);
+        if (lesson.id === "periodic-table") original.push(renderVisual(lesson.visual));
+        if (lesson.visual.headers || lesson.id === "work-done") {
+          original.push(disclosure(lesson.id === "work-done" ? "Compare the measured distances" : "Read the table", renderVisual(lesson.visual)));
+        }
+      } else {
+        if (illustrations[lesson.id]) original.push(renderIllustration(lesson.id));
+        if (!illustrations[lesson.id] || lesson.visual.headers) original.push(renderVisual(lesson.visual));
+      }
       teaching.append(...explore(lesson, original, renderVisual));
     }
   }
