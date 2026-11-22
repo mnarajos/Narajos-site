@@ -12,9 +12,11 @@ const concentrated = /\b(?:concentrated|stronger|higher (?:sugar |solute )?conce
 const up = /\b(?:gain\w*|increas\w*|ris(?:e|es|ing)|rose|grew|went up|heavier|more mass)\b/;
 const down = /\b(?:los(?:e|es|ing|s|t)|decreas\w*|fell|fall\w*|went down|drop\w*|lighter|less mass|reduc\w*)\b/;
 
-function result(label, state, feedback) {
-  return { label, state, feedback };
+function result(label, state, feedback, kind = "data") {
+  return { label, state, feedback, kind };
 }
+
+const reasoningResult = (label, state, feedback) => result(label, state, feedback, "reasoning");
 
 function solutionIn(text) {
   if (dilute.test(text)) {
@@ -52,7 +54,7 @@ function readPotatoEvidence(parts, expected) {
     const otherType = type === "dilute" ? "concentrated" : "dilute";
     const label = "Result in " + type + " solution";
     if (matches.length && matches.every(change => change === value)) {
-      return result(label, "credited", "You matched the direction and percentage to the " + type + " solution.");
+      return result(label, "matched", "You matched the direction and percentage to the " + type + " solution.");
     }
     if (matches.includes(expected[otherType]) || (matches.includes(value) && matches.some(change => change !== value))) {
       return result(label, "revise", "Check the bar for the " + type + " solution. Pair its own percentage and sign with that solution.");
@@ -103,10 +105,10 @@ function readWaterMovement(parts, type, assumeSample) {
     return opposite.test(cause) && !flow.test(cause);
   });
 
-  if (matches && !reversed) return result(label, "credited", "You linked the direction of water movement to the change in mass.");
-  if (reversed) return result(label, "revise", entering ? "If mass increased, did more water enter the potato or leave it?"
+  if (matches && !reversed) return reasoningResult(label, "detected", "Your draft appears to link water movement to mass change. Compare the direction and cause with the model.");
+  if (reversed) return reasoningResult(label, "revise", entering ? "If mass increased, did more water enter the potato or leave it?"
     : "If mass decreased, did more water enter the potato or leave it?");
-  return result(label, "compare", "Compare with this link, then try again. " + model);
+  return reasoningResult(label, "compare", "Compare with this link, then try again. " + model);
 }
 
 const faster = /\b(?:faster|more (?:quickly|rapidly)|(?:higher|greater) (?:average )?(?:speeds?|velocity)|speed up|sped up|(?:mov\w*|travell?\w*) quicker)\b/;
@@ -128,7 +130,7 @@ function readDiffusion(parts) {
     const { outcome: evidence, cause: mechanism } = link;
     if (wrongTemperature(evidence) || wrongTemperature(mechanism) ||
         /\b(?:slow\w*|(?:more|bigger|larger)\s+(?:dye |colouring |fragrance )?(?:particles?|molecules?))\b/.test(mechanism)) {
-      return result(label, "revise", "Keep the same particles. Which water or air sample makes them move faster on average?");
+      return reasoningResult(label, "revise", "Keep the same particles. Which water or air sample makes them move faster on average?");
     }
     const ambientOnly = /\b(?:water|air) (?:particles?|molecules?)\b/.test(mechanism) &&
       !/\b(?:dye|colou?r(?:ing)?|fragrance|scent|perfume|ink) (?:particles?|molecules?)\b/.test(mechanism);
@@ -138,8 +140,8 @@ function readDiffusion(parts) {
       linked = true;
     }
   }
-  if (linked) return result(label, "credited", "You explained the faster spread using faster particle movement.");
-  return result(label, "compare", "Link the two ideas in one sentence. What moved faster, and how did that affect the spread?");
+  if (linked) return reasoningResult(label, "detected", "Your draft appears to link faster particle movement with faster spread. Check which particles moved and how the speed affected the spread.");
+  return reasoningResult(label, "compare", "Link the two ideas in one sentence. What moved faster, and how did that affect the spread?");
 }
 
 const visualEvidence = {
@@ -182,7 +184,7 @@ function reviewVisualEvidence(task, parts) {
       }
     }
     if (values.length && values.every(item => item === value)) {
-      return result(label, "credited", "The result and condition match.");
+      return result(label, "matched", "The result and condition match.");
     }
     return result(label, values.length ? "revise" : "compare", rule.hint);
   });

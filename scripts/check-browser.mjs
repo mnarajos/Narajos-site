@@ -258,6 +258,15 @@ try{
  await guide.getByText("Review answers",{exact:true}).click();
  await guide.getByRole("button",{name:"Check 1",exact:true}).click();
  assert(await check.getByText("Water can move in both directions.",{exact:true}).isVisible());
+ const catalogueWithoutGroupBy=await browser.newPage();
+ await catalogueWithoutGroupBy.addInitScript(()=>{Object.groupBy=undefined;});
+ for(const year of [7,8,9,10,11]){
+  await catalogueWithoutGroupBy.goto(base+"/science-catch-up/?year="+year);
+  const topic=catalogueWithoutGroupBy.locator(".school-topic-list").getByRole("link").first();
+  await topic.click();
+  await catalogueWithoutGroupBy.locator(".school-journey").getByRole("button",{name:"Check",exact:true}).waitFor();
+ }
+ await catalogueWithoutGroupBy.close();
  const helpPage=await browser.newPage({viewport:{width:320,height:780},isMobile:true,hasTouch:true});
  const helpJourney=helpPage.locator(".school-journey");
  const helpDialog=helpJourney.getByRole("dialog");
@@ -1113,10 +1122,12 @@ try{
  assert((await dyeDraft.inputValue()).endsWith("because "));
  await dyeDraft.fill("The dye spread further in the warm water because there were more particles.");
  await ks3Sentence.getByRole("button",{name:"Check my sentence",exact:true}).click();
- await ks3Sentence.getByRole("status").filter({hasText:"0 of 1 points confirmed"}).waitFor();
+ await ks3Sentence.getByRole("status").filter({hasText:"Compare your reasoning with the model."}).waitFor();
+ assert(await ks3Sentence.locator('[data-review-state="revise"]').getByText("Check for a possible conflict",{exact:false}).isVisible());
+ assert.equal(await ks3Sentence.locator('[data-review-state="matched"]').count(),0);
  await dyeDraft.fill("The dye spread further in the warm water because its particles moved faster.");
  await ks3Sentence.getByRole("button",{name:"Check my sentence",exact:true}).click();
- await ks3Sentence.getByRole("status").filter({hasText:"1 of 1 points confirmed"}).waitFor();
+ await ks3Sentence.getByRole("status").filter({hasText:"Possible reasoning link found."}).waitFor();
  await ks3Sentence.getByText("Compare your first and latest sentences",{exact:true}).click();
  assert((await ks3Sentence.locator("[data-first-sentence]").innerText()).includes("more particles"));
 
@@ -1148,21 +1159,24 @@ try{
  const potatoEvidence=potatoSentence.locator("textarea");
  await potatoEvidence.fill("Dilute: −9% and concentrated: +7%.");
  await potatoSentence.getByRole("button",{name:"Check my sentence",exact:true}).click();
- await potatoSentence.getByRole("status").filter({hasText:"0 of 2 points confirmed"}).waitFor();
+ await potatoSentence.getByRole("status").filter({hasText:"0 of 2 data results matched."}).waitFor();
  assert.equal(await potatoSentence.locator('[data-review-state="revise"]').count(),2);
  await potatoEvidence.fill("The potato gained 7% in dilute solution and lost 9% in concentrated solution.");
  await potatoSentence.getByRole("button",{name:"Check my sentence",exact:true}).press("Enter");
- await potatoSentence.getByRole("status").filter({hasText:"2 of 2 points confirmed"}).waitFor();
+ await potatoSentence.getByRole("status").filter({hasText:"2 of 2 data results matched."}).waitFor();
  await navPage.getByText("Explain one result",{exact:true}).click();
  const potatoReason=navPage.locator('[data-writing-exercise="potato"][data-writing-kind="reason"]');
  await potatoReason.locator("textarea").fill("The sample gained mass because water moved into the potato cells.");
  await potatoReason.getByRole("button",{name:"Check my sentence",exact:true}).click();
- await potatoReason.getByRole("status").filter({hasText:"1 of 1 points confirmed"}).waitFor();
+ await potatoReason.getByRole("status").filter({hasText:"Possible reasoning link found."}).waitFor();
+ assert.equal(await potatoReason.locator('[data-review-state="detected"]').count(),1);
+ assert.equal(await potatoReason.locator('[data-review-state="matched"]').count(),0);
+ assert(await potatoReason.locator("[data-sentence-model]").isVisible());
  await navPage.getByText("Try a new pair of results",{exact:true}).click();
  const potatoTransfer=navPage.locator('[data-writing-exercise="potato"][data-writing-kind="transfer"]');
  await potatoTransfer.locator("textarea").fill("Dilute solution: +5%, concentrated solution: −6%.");
  await potatoTransfer.getByRole("button",{name:"Check my sentence",exact:true}).click();
- await potatoTransfer.getByRole("status").filter({hasText:"2 of 2 points confirmed"}).waitFor();
+ await potatoTransfer.getByRole("status").filter({hasText:"2 of 2 data results matched."}).waitFor();
  await checkReadingSpacing(navPage,"Focused Writing short answers");
  await navPage.getByText("Plan your paragraph",{exact:true}).click();
  const outlineCheck=navPage.getByRole("button",{name:"Check my outline",exact:true});
@@ -1199,13 +1213,13 @@ try{
  assert(await draft.evaluate(element=>element===document.activeElement));
  await navPage.getByRole("button",{name:"Use my checked sentences",exact:true}).click();
  assert((await draft.inputValue()).includes("The potato gained 7%") &&
-  (await draft.inputValue()).includes("water moved into the potato cells"),"Confirmed sentences should be available to build a paragraph");
+  (await draft.inputValue()).includes("water moved into the potato cells"),"Checked sentences should be available to build a paragraph");
 
  await draft.fill("The potato lost 7% in dilute solution. In concentrated solution it gained 9%. There was no osmosis.");
  await checkDraft.click();
  const report=navPage.locator("[data-writing-report]");
- assert.equal(await report.locator('[data-review-state="credited"]').count(),0,"Swapped results must not be credited");
- await report.getByText("Word and figure checks",{exact:true}).click();
+ assert.equal(await report.locator('[data-review-state="matched"]').count(),0,"Swapped results must not match the data");
+ await report.getByText("Words and figures found",{exact:true}).click();
  await report.getByText(/Found in your draft: “7%”, “9%”/).waitFor();
  assert((await report.innerText()).includes("gained 7% in dilute solution and lost 9% in concentrated solution"));
  assert((await report.innerText()).includes("The checker looks for words or values in your draft."));
@@ -1706,14 +1720,17 @@ try{
  }
  const explanation=navPage.locator("[data-enzyme-explain]");
  const modelExplanation=explanation.locator("[data-explanation-model]");
- for(const failure of ["","asdfasdf qwer","aaaaaa aaaaaa"]){
+ for(const failure of ["","i","15","asdfasdf qwer","qwertyuiop","aaaaaa aaaaaa","fits fits fits"]){
   await explanation.locator("textarea").fill(failure);
   await explanation.getByRole("button",{name:"Check your explanation",exact:true}).press("Enter");
   assert(await modelExplanation.isHidden());
  }
- await explanation.locator("textarea").fill("I thnk amylase works on protien as well.");
- await explanation.getByRole("button",{name:"Check your explanation",exact:true}).press("Enter");
- assert(await modelExplanation.isVisible(),"A meaningful wrong answer should unlock model feedback");
+ for(const attempt of ["I thnk amylase works on protien as well.","Starch matches the shape of the pocket.","fits","Protien fits"]){
+  await navPage.reload();
+  await explanation.locator("textarea").fill(attempt);
+  await explanation.getByRole("button",{name:"Check your explanation",exact:true}).press("Enter");
+  assert(await modelExplanation.isVisible(),"A plausible attempt should unlock model feedback: "+attempt);
+ }
  await navPage.reload();
  await explanation.getByText("Help me write my explanation",{exact:true}).click();
  await explanation.getByRole("button",{name:"I explained it aloud"}).press("Enter");
@@ -1831,10 +1848,10 @@ try{
  const cooling=navPage.locator('[data-writing-exercise="insulation"]');
  await cooling.getByRole("textbox").fill("The bare can cooled by 7 °C while the felt-wrapped can cooled by 13 °C.");
  await cooling.getByRole("button",{name:"Check my sentence"}).click();
- await cooling.getByRole("status").filter({hasText:"0 of 2 points confirmed"}).waitFor();
+ await cooling.getByRole("status").filter({hasText:"0 of 2 data results matched."}).waitFor();
  await cooling.getByRole("textbox").fill("The bare can cooled by 13 °C while the felt-wrapped can cooled by 7 °C.");
  await cooling.getByRole("button",{name:"Check my sentence"}).click();
- await cooling.getByRole("status").filter({hasText:"2 of 2 points confirmed"}).waitFor();
+ await cooling.getByRole("status").filter({hasText:"2 of 2 data results matched."}).waitFor();
  await navPage.close();
  await mobile.close();
  await desktop.close();

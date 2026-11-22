@@ -1,8 +1,15 @@
+const keyRuns = ["qwertyuiop", "asdfghjkl", "zxcvbnm", "qazwsxedc", "plmoknijb"];
+
+function looksLikeAWord(word) {
+  if (word.length < 3 || /^(.{1,8})\1+$|(.)\2{3,}/u.test(word)) return false;
+  const flipped = [...word].reverse().join("");
+  if (keyRuns.some(run => run.includes(word) || run.includes(flipped))) return false;
+  return /[^a-z]/u.test(word) || (/[aeiouy]/.test(word) && /[bcdfghjklmnpqrstvwxz]/.test(word));
+}
+
 function plausible(value) {
-  const words = value.toLowerCase().match(/[\p{L}\p{N}]+/gu) || [];
-  if (new Set(words).size < 2 || words.join("").length < 6) return false;
-  return words.some(word => /[aeiouy]/i.test(word) && /[bcdfghjklmnpqrstvwxz]/i.test(word) &&
-    !/^(?:asdf|qwer|zxcv|hjkl|jkl|qaz)+$/i.test(word) && !/(.)\1{3,}/u.test(word));
+  const words = value.toLowerCase().match(/\p{L}+/gu) || [];
+  return words.some(looksLikeAWord) && (words.length === 1 || new Set(words).size > 1);
 }
 
 for (const form of document.querySelectorAll("[data-enzyme-explain]")) {
@@ -13,11 +20,11 @@ for (const form of document.querySelectorAll("[data-enzyme-explain]")) {
   form.addEventListener("submit", event => {
     event.preventDefault();
     if (!plausible(answer.value.trim())) {
-      status.textContent = "Add a little more about what happened and why, or use the support below.";
+      status.textContent = "Try a word or sentence about what happened. You can also explain it aloud.";
       answer.focus();
       return;
     }
-    status.textContent = "Now compare your reasoning with the checklist.";
+    status.textContent = "Compare your attempt with the checklist.";
     model.hidden = false;
     model.focus();
   });
