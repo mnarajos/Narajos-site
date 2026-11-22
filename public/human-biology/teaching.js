@@ -32,19 +32,20 @@
   const paragraphs = lines => (lines || []).map(line => '<p>' + escape(line) + '</p>').join("");
   const list = lines => '<ul>' + lines.map(line => '<li>' + escape(line) + '</li>').join("") + '</ul>';
 
-  function table(data) {
+  function table(data, markCells) {
     if (!data) return "";
     return '<table class="hb-teach-table"><caption>' + escape(data.caption) + '</caption><thead><tr>' +
       data.head.map(cell => '<th scope="col">' + escape(cell) + '</th>').join("") + '</tr></thead><tbody>' +
-      data.rows.map(row => '<tr><th scope="row">' + escape(row[0]) + '</th>' +
-        row.slice(1).map(cell => '<td>' + escape(cell) + '</td>').join("") + '</tr>').join("") + '</tbody></table>';
+      data.rows.map((row, r) => '<tr><th scope="row">' + escape(row[0]) + '</th>' +
+        row.slice(1).map((cell, c) => '<td' + (markCells ? ' data-hb-cell="' + r + ':' + c + '"' : '') +
+          '>' + escape(cell) + '</td>').join("") + '</tr>').join("") + '</tbody></table>';
   }
 
-  function figure(photo) {
+  function figure(photo, field) {
     if (!photo) return "";
     return '<figure class="hb-teach-photo"><img src="' + escape(photo.src) + '" alt="' +
       escape(photo.alt) + '" width="' + photo.width + '" height="' + photo.height + '" loading="lazy" decoding="async">' +
-      '<figcaption><a href="' + escape(photo.source) + '">' + escape(photo.credit) + '</a> · ' +
+      '<figcaption>' + (field ? '<strong>Field ' + field + '</strong> · ' : '') + '<a href="' + escape(photo.source) + '">' + escape(photo.credit) + '</a> · ' +
       '<a href="' + escape(photo.licenceUrl) + '">' + escape(photo.licence) + '</a> · Resized and converted to WebP</figcaption></figure>';
   }
 
@@ -66,7 +67,7 @@
       '<textarea id="' + id + '" rows="4" maxlength="3000" aria-labelledby="' + id + '-prompt" required></textarea>';
     return '<details class="paper panel hb-teach-stage" data-hb-stage="' + stage + '"><summary>' + title +
       '</summary><form novalidate><fieldset><legend id="' + id + '-prompt">' + escape(question.prompt) +
-      '</legend>' + figure(question.photo) + (question.photos || []).map(figure).join("") + table(question.table) + paragraphs(question.starter ? [question.starter] : []) +
+      '</legend>' + figure(question.photo) + (question.photos || []).map((photo, index) => figure(photo, index + 1)).join("") + table(question.table) + paragraphs(question.starter ? [question.starter] : []) +
       inputs + '</fieldset><ol class="hb-hints" hidden></ol><div class="actions hb-controls">' +
       '<button type="submit" class="button primary">' + (choice ? "Check answer" : "Compare my explanation") + '</button>' +
       (question.hints?.length ? '<button type="button" class="button secondary" data-hb-action="hint">Get a hint</button>' : '') +
@@ -83,8 +84,8 @@
     const explanation = '<section class="paper panel hb-teach-explain"><h2>Understand the idea</h2>' +
       paragraphs(lesson.explain) + table(lesson.compare) + context.inline + '</section>';
     const model = lesson.model?.length ?
-      '<details class="paper panel hb-teach-stage"><summary>I do · ' + escape(lesson.modelTitle || "Follow a worked example") +
-      '</summary>' + context.modelVisual + figure(lesson.photo) + table(lesson.table) +
+      '<details class="paper panel hb-teach-stage" data-hb-model-step="1"><summary>I do · ' + escape(lesson.modelTitle || "Follow a worked example") +
+      '</summary>' + context.modelVisual + figure(lesson.photo) + table(lesson.table, lesson.focusCells) +
       '<ol class="hb-model-steps' + (lesson.nodes ? ' hb-model-path' : '') + '">' + lesson.model.map((step, i) =>
         '<li' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
         escape(step) + '</li>').join("") +
@@ -245,9 +246,18 @@
     });
     const modelButton = root.querySelector('[data-hb-action="model"]');
     if (modelButton) {
+      const model = modelButton.closest("details");
       const steps = modelButton.previousElementSibling;
+      const cells = Array.from(model.querySelectorAll("[data-hb-cell]"));
       function showModelStep(index, focus) {
-        Array.from(steps.children).forEach((step, i) => { step.hidden = i > index; });
+        model.dataset.hbModelStep = index + 1;
+        Array.from(steps.children).forEach((step, i) => {
+          step.hidden = i > index;
+          if (i === index) step.setAttribute("aria-current", "step");
+          else step.removeAttribute("aria-current");
+        });
+        const active = lesson.focusCells?.[index] || [];
+        cells.forEach(cell => cell.classList.toggle("hb-cell-focus", active.includes(cell.dataset.hbCell)));
         modelButton.textContent = steps.querySelector("[hidden]") ? "Show next step" : "Replay example";
         if (focus) {
           steps.children[index].tabIndex = -1;
@@ -259,9 +269,9 @@
         showModelStep(next < 0 ? 0 : next, true);
       });
       if (reviewStep) {
-        modelButton.closest("details").open = true;
+        model.open = true;
         showModelStep(Math.min(reviewStep, steps.children.length) - 1, true);
-      }
+      } else showModelStep(0, false);
     }
     updateFollowup();
   }

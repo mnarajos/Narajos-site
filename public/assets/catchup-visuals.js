@@ -287,19 +287,35 @@ const reflexSequence = `<details class="kc-visual-check">
  </details>
 </details>`;
 
-const microscopePractice = `<details class="kc-visual-check">
- <summary>Estimate the size of a red blood cell</summary>
- <p>Compare the marked width of one human red blood cell with the white <strong>20 µm scale bar</strong>. Estimate its actual width.</p>
- <figure class="micrograph-single">
+const microscopeFigure = `<figure class="micrograph-single">
   <div class="micrograph-measurement">
    <img src="/assets/micrographs/human-erythrocytes.jpg" width="386" height="404" loading="lazy" alt="Micrograph of fluorescently stained human red blood cells with a white scale bar at the lower right.">
    <svg viewBox="0 0 386 404" aria-hidden="true">
-    <path d="M250 159H298M250 154v10m48-10v10" fill="none" stroke="#161c1b" stroke-width="4"/>
-    <path d="M250 159H298M250 154v10m48-10v10" fill="none" stroke="#ffed9a" stroke-width="2"/>
+    <g class="hb-cell-length">
+     <path d="M250 159H298M250 154v10m48-10v10" fill="none" stroke="#161c1b" stroke-width="4"/>
+     <path d="M250 159H298M250 154v10m48-10v10" fill="none" stroke="#ffed9a" stroke-width="2"/>
+    </g>
    </svg>
   </div>
   <figcaption><small class="micrograph-credit"><a href="https://commons.wikimedia.org/wiki/File:Sedimented_red_blood_cells.jpg">MDougM</a> · public domain · measurement line added</small></figcaption>
- </figure>
+ </figure>`;
+const workedMicroscope = `<figure class="micrograph-single hb-worked-micrograph">
+  <div class="micrograph-measurement">
+   <img src="/assets/micrographs/human-erythrocytes.jpg" width="386" height="404" loading="lazy" alt="Micrograph of fluorescently stained human red blood cells with a white scale bar at the lower right.">
+   <svg viewBox="0 0 386 404" aria-hidden="true">
+    <g class="hb-cell-length">
+     <path d="M250 159H298M250 154v10m48-10v10" fill="none" stroke="#161c1b" stroke-width="4"/>
+     <path d="M250 159H298M250 154v10m48-10v10" fill="none" stroke="#ffed9a" stroke-width="2"/>
+    </g>
+    <rect class="hb-bar-length" x="240" y="356" width="130" height="22" rx="3" fill="none" stroke="#ffed9a" stroke-width="3"/>
+   </svg>
+  </div>
+  <figcaption>Marked width of one cell and the 20 µm scale bar at lower right.<small class="micrograph-credit"><a href="https://commons.wikimedia.org/wiki/File:Sedimented_red_blood_cells.jpg">MDougM</a> · public domain · measurement marks added</small></figcaption>
+ </figure>`;
+const microscopePractice = `<details class="kc-visual-check">
+ <summary>Estimate the size of a red blood cell</summary>
+ <p>Compare the marked width of one human red blood cell with the white <strong>20 µm scale bar</strong>. Estimate its actual width.</p>
+ ${microscopeFigure}
  <details class="kc-visual-check">
   <summary>Use measured lengths</summary>
   <p>On the original image, the marked cell width is 48 pixels and the scale bar is 122 pixels.</p>
@@ -388,7 +404,7 @@ function videoPractice(video) {
 const alevelPractice = {synapse:"synapse",phloem:"phloem",kidney:"nephron",muscle:"sarcomere",sliding:"sarcomere",sliding2:"sarcomere"};
 let addedPracticeAssets = false;
 
-function render(course,id){
+function render(course,id,worked){
  var item=curated[course+"/"+id];
  var video=videos[videoByConcept[course+"/"+id]];
  var practice=humanPractice[course+"/"+id] || (/^a[1-8]$/.test(course) ? alevelPractice[id] : "");
@@ -409,7 +425,7 @@ function render(course,id){
   html+='<figure class="kc-visual"><div class="kc-visual-heading"><span class="kc-visual-icon" aria-hidden="true">◈</span><strong>'+d.label+'</strong></div><div class="kc-visual-art" tabindex="0" role="region" aria-label="Scrollable science diagram">'+d.image+'</div><figcaption>'+d.caption+'</figcaption></figure>';
  }
  if(item.sequence==="reflex")html+=reflexSequence;
- if(item.microscope)html+=microscopePractice;
+ if(item.microscope)html+=worked?workedMicroscope:microscopePractice;
  if(item.check)html+='<details class="kc-visual-check"><summary>'+item.check[0]+'</summary><p>'+item.check[1]+'</p></details>';
  if(item.outside)html+='<details class="kc-visual-check"><summary>Compare with a real tissue section</summary><p>Open the ovary slides. Find a follicle and describe one feature that makes it recognisable. Return to the drawing to locate the tissue in the whole system.</p><p><a href="https://histologyguide.com/slidebox/18-female-reproductive-system.html" target="_blank" rel="noopener noreferrer">Open the virtual slides at Histology Guide (opens in a new tab)</a></p></details>';
  if(item.links&&item.links.length){

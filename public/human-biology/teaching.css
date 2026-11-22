@@ -154,3 +154,12 @@
 .hb-review-answers section p { white-space: pre-wrap; }
 [data-hb-review] select { display: block; margin-block: .25rem .7rem; max-inline-size: 100%; }
 [data-hb-review] textarea { display: block; margin-block-start: .35rem; }
+
+.hb-model-path [aria-current="step"],
+.hb-teach-table .hb-cell-focus {
+  outline: 2px solid currentColor;
+  outline-offset: -3px;
+}
+.hb-teach-table .hb-cell-focus { font-weight: 700; }
+[data-hb-model-step="3"] .hb-worked-micrograph .hb-bar-length,
+[data-hb-model-step="4"] .hb-worked-micrograph .hb-cell-length { opacity: .35; }

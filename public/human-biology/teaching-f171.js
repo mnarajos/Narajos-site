@@ -83,6 +83,7 @@
       activate: ["Quick check: which result is the screen and which is the comparison?", "The screen reports positive or negative. For this exercise, a separate diagnostic assessment establishes whether the condition is present."],
       explain: ["Read the screen row first. Then use the diagnostic column. A screen result is true when it agrees with the diagnostic assessment and false when it disagrees."],
       table: screening,
+      focusCells: [["0:0"], ["0:1"], ["1:0"], ["1:1"]],
       nodes: ["True positive", "False positive", "False negative", "True negative"],
       model: [
         "Start at Positive. Move to Condition present. The screen and diagnostic assessment agree. This cell contains 18 true positives.",
@@ -108,6 +109,7 @@
       activate: ["Quick check: how do repeatability and accuracy differ?", "Repeated measurements may agree with one another but still differ from a trusted reference. That would show good repeatability and poor accuracy."],
       explain: ["Check units, conditions and equipment before inferring change. Small differences can reflect normal variation. A missing value is unknown. A consistent instrument offset can remain even when you take many readings."],
       table: readings,
+      focusCells: [["0:0", "0:1", "0:2", "1:0", "1:1", "1:2"], ["0:3", "1:3"], ["2:0", "2:1", "2:2", "2:3"]],
       nodes: ["Compare values", "Check measurement conditions", "Use comparable readings"],
       model: [
         "Visit 1 readings are near 135 mmHg. Visit 2 readings are near 146 mmHg. Each set is tightly grouped, but the two visits differ.",
@@ -188,6 +190,7 @@
       activate: ["Quick check: what is a confounding variable?", "A difference linked to both the group someone is in and the outcome. It can help explain a difference even if the intervention has no effect."],
       explain: ["Identify the outcome and compare the groups. Then ask how the groups were formed, what else differed and how much uncertainty remains. Random allocation helps reduce systematic differences. A modest sample or short follow-up still limits the conclusion."],
       table: study,
+      focusCells: [["0:1", "1:1"], [], ["0:0", "1:0"]],
       nodes: ["Compare the outcome", "Find another explanation", "Qualify the conclusion"],
       model: [
         "The outcome is change in reported nightly sleep after four weeks. Compare both groups: 35 minutes versus 15, a difference of 20 minutes. Improvement within one group alone cannot isolate an effect.",
