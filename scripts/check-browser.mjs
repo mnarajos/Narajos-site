@@ -887,8 +887,12 @@ try{
  const cellPhotos=await navPage.locator(".micrograph-grid img").all();
  assert.equal(cellPhotos.length,2);
  for(const img of cellPhotos) await img.evaluate(el=>el.decode());
+ assert.equal(await cellPhotos[0].getAttribute("src"),"/assets/micrographs/elodea-leaf.webp");
+ assert.match(await cellPhotos[0].getAttribute("alt"),/small green oval bodies/);
+ assert(await navPage.locator(".micrograph-grid").getByRole("link",{name:"Juan Carlos Fonseca Mata"}).isVisible());
  await navPage.getByText("Check what you spotted",{exact:true}).press("Enter");
  assert(await navPage.getByText("Sample A is plant tissue.",{exact:true}).isVisible());
+ assert(await navPage.getByText(/small green bodies inside the cells are chloroplasts/).isVisible());
  const microscopeCheck=navPage.locator('[aria-labelledby="catchup-q3"]');
  await microscopeCheck.getByRole("button",{name:/edges are straight/}).press("Enter");
  await microscopeCheck.getByRole("status").filter({hasText:/Some animal cells/}).waitFor();
