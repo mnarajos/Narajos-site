@@ -1,7 +1,7 @@
 const width = 300;
 const height = 166;
 const radius = 8.8;
-const count = 36;
+const count = 48;
 const states = [
   {name: "Solid", observe: "Particles are packed in a regular arrangement. Watch them vibrate around fixed positions."},
   {name: "Liquid", observe: "Particles stay close together and collect at the bottom. Watch them change neighbours as they slide past each other."},
@@ -18,13 +18,14 @@ function makeParticles(state) {
   };
   const particles = [];
   for (let index = 0; index < count; index++) {
-    const row = Math.floor(index / 9);
-    const col = index % 9;
+    const columns = state === 0 ? 8 : 9;
+    const row = Math.floor(index / columns);
+    const col = index % columns;
     const speed = state === 2 ? 75 + 56 * random() : 24 + 31 * random();
     const angle = random() * 2 * Math.PI;
     const packed = state === 0;
     const spacing = radius * 2;
-    let x = packed ? (width - spacing * 8) / 2 + col * spacing : 19 + col * 32 + random() * 10;
+    let x = packed ? (width - spacing * (columns - 1)) / 2 + col * spacing : 19 + col * 32 + random() * 10;
     const bottom = height - radius - row * spacing;
     let y = packed ? bottom : bottom - random() * 8;
     if (state === 2) {
@@ -60,8 +61,8 @@ function moveParticles(particles, state, dt, time) {
     p.hit = Math.max(0, p.hit - dt);
     if (liquid) {
       // Gravity collects the liquid at the bottom. Gentle stirring keeps particles rearranging.
-      p.vx += (Math.sin(time * 8 + p.phase) * 360 - p.vx) * dt;
-      p.vy += (380 + Math.cos(time * 6 + p.phase) * 250 - p.vy) * dt;
+      p.vx += (Math.sin(time * (6 + p.phase / 6) + p.phase) * 470 - p.vx * 1.5) * dt;
+      p.vy += (280 + Math.cos(time * 7.3 + p.phase) * 650 - p.vy * 2.5) * dt;
     }
     p.x += p.vx * dt;
     p.y += p.vy * dt;
