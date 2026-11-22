@@ -290,9 +290,12 @@ try{
  }
  await guide.getByRole("link",{name:"Revise B3",exact:true}).click();
  await pilotPage.getByRole("link",{name:"Catch up on this topic",exact:true}).click();
+ await pilotPage.waitForURL(base+"/science-catch-up/?topic=b3");
+ const vaccineLesson=pilotPage.getByRole("link",{name:"Vaccination and the immune response",exact:true});
+ await vaccineLesson.waitFor();
  assert.equal(await pilotPage.locator(".school-topic-list > li").count(),1);
- await pilotPage.getByRole("link",{name:"Vaccination and the immune response",exact:true}).click();
- assert(await guide.getByRole("heading",{name:"Catch-up complete!",exact:true}).isVisible());
+ await vaccineLesson.click();
+ await guide.getByRole("heading",{name:"Catch-up complete!",exact:true}).waitFor();
  await pilotPage.goto(base+"/science-catch-up/?year=11");
  await pilotPage.evaluate(()=>localStorage.setItem("gcse-test-progress","kept"));
  const clearCatchup=pilotPage.getByRole("button",{name:"Clear catch-up progress",exact:true});
