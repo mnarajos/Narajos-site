@@ -301,3 +301,16 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .ks3-explore-result:not(:empty) { padding: .4rem .65rem; border-inline-start: 3px solid #528172; background: #edf6f3; margin: .5rem 0 0; }
 .ks3-explore-result:empty, [data-ks3-view][hidden] { display: none; }
 [data-ks3-look] > .ks3-model-controls { margin-bottom: .6rem; }
+
+.ks3-fair-aim{max-width:65ch}
+.ks3-fair-example{background:#eff6fc;border:1px solid #a4bfd7;border-inline-start:4px solid #3f6f95;border-radius:.55rem;padding:.7rem .8rem;margin-block:.7rem}
+.ks3-lesson .ks3-fair-example h3{margin-top:0}
+.ks3-fair-example .writing-data{margin-block:.55rem}
+.ks3-fair-example .writing-data :is(th,td){padding:.32rem .42rem}
+.ks3-fair-check fieldset{border:0;margin:0 0 .65rem;padding:0;min-width:0}
+.ks3-fair-check legend{font-weight:700;margin-bottom:.4rem}
+.ks3-fair-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(13rem,100%),1fr));gap:.4rem}
+.practice-card .ks3-fair-options label{display:flex;align-items:center;gap:.45rem;margin:0;padding:.4rem .55rem;min-height:44px;border:1px solid #a1b5af;border-radius:8px;cursor:pointer}
+.ks3-fair-options label:has(:checked){background:#e3f2ed;border-color:#276a62}
+.ks3-fair-options input{flex:none;accent-color:#276a62}
+.ks3-fair-options label:has(:focus-visible){outline:3px solid #c9611f;outline-offset:3px}

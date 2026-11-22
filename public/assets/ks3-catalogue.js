@@ -1,8 +1,9 @@
-import { curriculum, motionLessons, extraChecks } from "./ks3-lessons.js";
+import { curriculum, motionLessons, extraChecks, rampAngleQuestion } from "./ks3-lessons.js";
 import { homeActivity } from "./ks3-home-activities.js";
 import { recallFor, linkForward } from "./ks3-connections.js";
 import { scienceParagraph } from "./ks3-words.js";
 import { explore } from "./ks3-explorations.js";
+import { fairTestPractice, fairTestPlan } from "./ks3-fair-tests.js";
 
 const illustrations = {
   "fair-tests": ["ramps", "A green toy car on a low ramp and a blue car on a higher ramp."],
@@ -322,25 +323,38 @@ function renderLesson(lesson, year, index) {
   const title = element("h2", lesson.title);
   const cue = element("p");
   cue.append(element("strong", "Start here. "), lesson.notice);
+  const fairTests = lesson.id === "fair-tests";
   const explanation = element("section", "", "ks3-explanation");
-  explanation.append(element("h3", "The key idea"), ...lesson.explain.map(scienceParagraph));
+  explanation.append(element("h3", fairTests ? "Worked example · testing ramp angle" : "The key idea"));
   teaching.append(title, recallFor(lesson.id));
-  if (lesson.id === "fair-tests") {
+  if (fairTests) {
+    const aim = element("p", "", "ks3-fair-aim");
+    aim.append(element("strong", rampAngleQuestion));
     const ramp = element("toy-ramp");
-    teaching.append(ramp);
+    ramp.id = "fair-test-ramp";
+    ramp.tabIndex = -1;
+    teaching.append(aim, element("p", "Try a shallow and a steep run. Keep the other settings the same."), ramp);
     import("./toy-ramp.js");
-  }
-  teaching.append(cue);
-  if (lesson.id === "states-of-matter") {
-    teaching.append(element("ks3-states-model"));
-    import("./ks3-states.js");
+    explanation.classList.add("ks3-fair-example");
+    explanation.append(element("p", lesson.notice), renderVisual(lesson.visual));
   } else {
-    const original = [];
-    if (illustrations[lesson.id]) original.push(renderIllustration(lesson.id));
-    if (!illustrations[lesson.id] || lesson.visual.headers) original.push(renderVisual(lesson.visual));
-    teaching.append(...explore(lesson, original, renderVisual));
+    teaching.append(cue);
+    if (lesson.id === "states-of-matter") {
+      teaching.append(element("ks3-states-model"));
+      import("./ks3-states.js");
+    } else {
+      const original = [];
+      if (illustrations[lesson.id]) original.push(renderIllustration(lesson.id));
+      if (!illustrations[lesson.id] || lesson.visual.headers) original.push(renderVisual(lesson.visual));
+      teaching.append(...explore(lesson, original, renderVisual));
+    }
   }
+  explanation.append(...lesson.explain.map(scienceParagraph));
   teaching.append(explanation);
+  if (fairTests) {
+    teaching.append(disclosure("Compare the two ramp shapes", renderIllustration(lesson.id),
+      element("p", "The drawing uses two colours to show the setups. In your test, use the same toy in both runs.")));
+  }
   if (lesson.id === "states-of-matter") {
     teaching.append(disclosure("Compare the three arrangements", renderVisual(lesson.visual)));
   }
@@ -354,6 +368,7 @@ function renderLesson(lesson, year, index) {
   for (const [number, question] of lesson.questions.entries()) {
     checks.append(renderQuestion(question, number + 1, index + number));
   }
+  if (fairTests) checks.append(...fairTestPractice());
   const extra = extraChecks[lesson.id];
   if (extra) {
     const [prompt, answer, correctFeedback, distractors] = extra;
@@ -361,8 +376,9 @@ function renderLesson(lesson, year, index) {
     checks.append(renderQuestion({prompt, answer, correctFeedback, distractors}, number, index + number));
   }
   const transfer = element("article", "", "practice-card");
-  transfer.append(element("h3", "Try it yourself"), element("p", lesson.transfer),
-    disclosure("Compare your answer", element("p", lesson.model)));
+  transfer.append(element("h3", "Try it yourself"), element("p", lesson.transfer));
+  if (fairTests) transfer.append(fairTestPlan("sugar-investigation-plan", "Write your plan"));
+  transfer.append(disclosure("Compare your answer", element("p", lesson.model)));
   const follow = linkForward(lesson.id);
   const finish = element("p", "", "catchup-finish");
   finish.append(link("Choose another Year " + year + " topic", yearLink.href));
