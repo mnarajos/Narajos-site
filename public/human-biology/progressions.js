@@ -298,33 +298,33 @@ const caseComparisons={
  "case-cast-choice":{
   order:["partial","model"],
   partial:"Fibreglass is lighter, more durable and more expensive. Plaster moulds well and is cheaper. Both can support healing. Fibreglass would probably be more convenient.",
-  notes:[["Mechanism","Connects reduced movement to maintaining alignment during healing."],
-   ["Application","Explains why weight and durability matter for public transport, desk work and four further weeks."],
-   ["Qualification","If both casts support the fracture appropriately, weigh the practical benefit against the additional cost."]],
+  notes:[["Mechanism","Connects reduced movement to maintaining alignment during healing.","limits movement of the wrist, maintaining alignment while the bone heals"],
+   ["Application","Explains why weight and durability matter for public transport, desk work and four further weeks.","a lighter fibreglass cast may make it easier to travel and hold the arm in a comfortable position at the desk"],
+   ["Qualification","If both casts support the fracture appropriately, weigh the practical benefit against the additional cost.","If either material would provide suitable immobilisation"]],
   comparison:"Response B connects the material properties to specific consequences for this person. A lists relevant facts but leaves most of those relationships unexplained."
  },
  "case-treatment-spread":{
   order:["model","partial"],
   partial:"Surgery removes the main tumour and chemotherapy reaches other areas. Surgery can be risky and chemotherapy can have side effects. The person should receive both because each option has an advantage.",
-  notes:[["Mechanism and evidence","Separates pressure relief at one site from treatment that can reach distant deposits."],
-   ["Trade-off","Relates recovery time and potential adverse effects to the treatment sequence."],
-   ["Conditional judgement","Explains how the urgency of pressure symptoms and likely drug response could alter priorities."]],
+  notes:[["Mechanism and evidence","Separates pressure relief at one site from treatment that can reach distant deposits.","Removing the main tumour could relieve pressure locally"],
+   ["Trade-off","Relates recovery time and potential adverse effects to the treatment sequence.","Surgery could delay systemic treatment during recovery"],
+   ["Conditional judgement","Explains how the urgency of pressure symptoms and likely drug response could alter priorities.","If pressure is urgent, local relief may need to take priority"]],
   comparison:"Response A weighs timing and explains when either priority makes sense. B identifies reach and risk but assumes the benefit and suitability of using both."
  },
  "case-screening-data":{
   order:["partial","model"],
   partial:"One third of the people with a positive result had the condition. The programme detected 15 cases. It should encourage the other 15 people to attend follow-up.",
-  notes:[["Denominator","Uses 45 attendees as the group that had diagnostic assessment."],
-   ["Missing data","Separates the 15 who did not attend from the 30 attendees without confirmation."],
-   ["Limit of inference","Identifies the missing evidence about false negatives."]],
+  notes:[["Denominator","Uses 45 attendees as the group that had diagnostic assessment.","Of the 45 people who attended follow-up, 15 had the condition confirmed"],
+   ["Missing data","Separates the 15 who did not attend from the 30 attendees without confirmation.","we cannot infer the result for the 15 people with a positive screen who did not attend"],
+   ["Limit of inference","Identifies the missing evidence about false negatives.","whether any of the 440 people with a negative screen actually had the condition"]],
   comparison:"Response B separates what the figures show from what the clinic still needs to find out. A applies an observed proportion to all positive screens without evidence about non-attendees."
  },
  "case-home-monitoring":{
   order:["model","partial"],
   partial:"The clinic should use home monitors because they offer more readings and save appointments. A reading that looks high should trigger an appointment. People who cannot use a monitor could ask someone for help.",
-  notes:[["Potential benefit","Links comparable measurements over time to prioritising review."],
-   ["Limitation","Identifies why device fit and missing reports could distort a decision."],
-   ["Qualified judgement","Combines reliable trends with accessible alternatives and proportionate follow-up."]],
+  notes:[["Potential benefit","Links comparable measurements over time to prioritising review.","This may help the clinic identify who needs review sooner"],
+   ["Limitation","Identifies why device fit and missing reports could distort a decision.","an absent report may reflect access difficulties rather than stable blood pressure"],
+   ["Qualified judgement","Combines reliable trends with accessible alternatives and proportionate follow-up.","following up absent or unexpectedly high readings by a method the person can access"]],
   comparison:"Response A weighs access and reliability alongside potential benefits. B mentions convenience but treats a single value as enough to guide a decision."
  }
 };

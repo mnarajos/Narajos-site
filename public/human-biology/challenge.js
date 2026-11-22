@@ -311,7 +311,12 @@ function showClinicalCases(){
  visible=false;
  const cases=all.filter(q=>q.unit==="f171"&&q.caseTitle);
  const links=cases.map(q=>'<a class="k-action blue" href="#challenge/f171/'+esc(q.id)+'"><span class="k-icon">'+icon("book")+'</span><span><strong>'+esc(q.caseTitle)+'</strong><small>'+q.marks+' marks · '+(q.marks===6?"Analyse":"Discuss")+'</small></span></a>');
- show('<div class="k-wrap"><p class="crumb"><a href="#challenge/f171">← F171</a></p><div class="k-unit-hero"><h1>Clinical case questions</h1><p>Write an answer, then compare your reasoning with an example and the key points.</p></div><div class="k-action-grid">'+links.join("")+'</div></div>');
+ show('<div class="k-wrap"><p class="crumb"><a href="#challenge/f171">← F171</a></p><div class="k-unit-hero"><h1>Clinical case questions</h1><p>Write an answer, then compare your reasoning with an example and the key points.</p></div><details class="k-coverage"><summary>What the command words ask for</summary><dl>'+
+  '<dt><strong>Describe</strong></dt><dd>State relevant observations, features or events.</dd>'+
+  '<dt><strong>Explain</strong></dt><dd>Use a biological mechanism to show why something happens.</dd>'+
+  '<dt><strong>Analyse</strong></dt><dd>Connect relevant information in this case and explain what the relationships mean.</dd>'+
+  '<dt><strong>Discuss</strong></dt><dd>Weigh evidence, implications and limitations to reach a justified view.</dd>'+
+  '</dl></details><div class="k-action-grid">'+links.join("")+'</div></div>');
 }
 function progressionMenu(unit){
  visible=false;var points=ladders.points.filter(function(p){return p.unit===unit;});
@@ -587,13 +592,13 @@ function compareCase(q){
   return '<div><h4>Response '+String.fromCharCode(65+i)+'</h4><p>'+esc(key==="model"?q.model:comparison.partial)+'</p></div>';
  }).join("");
  var annotations=comparison.notes.map(function(note){
-  return '<li><strong>'+esc(note[0])+'</strong> '+esc(note[1])+'</li>';
+  return '<li><strong>'+esc(note[0])+'</strong><blockquote>'+esc(note[2])+'</blockquote><p>'+esc(note[1])+'</p></li>';
  }).join("");
  var command=q.marks===6?"Analyse how the case details relate and what those relationships mean.":
   "Discuss the benefits, limitations and implications for this case. Reach a justified view.";
  return '<section><h3>Compare two answers</h3><p>'+command+'</p><p>Which response better answers the case, and why?</p>'+
   '<details><summary>Read responses A and B</summary>'+responses+'<details><summary>Check your comparison</summary>'+
-  '<p>'+esc(comparison.comparison)+'</p><ul>'+annotations+'</ul><p>'+esc(q.explain)+'</p></details></details></section>';
+  '<p>'+esc(comparison.comparison)+'</p><ul class="k-case-annotations">'+annotations+'</ul><p>'+esc(q.explain)+'</p></details></details></section>';
 }
 function writtenReview(q,a){
  var review=a.review||{},finished=!!session.outcomes[session.index];

@@ -112,6 +112,7 @@ for(const q of db.questions){
  if(q.comparison){
   assert(q.caseTitle&&q.comparison.order.includes("model")&&q.comparison.order.includes("partial"),q.id);
   assert(q.comparison.notes.length&&q.comparison.comparison,q.id);
+  for(const note of q.comparison.notes)assert(q.model.includes(note[2]),q.id+" annotation should quote the model");
  }
  if(q.type==="multi")assert(Array.isArray(q.correct)&&q.correct.length>=2,"Invalid multi-answer: "+q.id);
  if(q.type==="match")assert(q.pairs.length>=2,"Too few match pairs: "+q.id);
