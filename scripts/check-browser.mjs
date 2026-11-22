@@ -769,6 +769,10 @@ try{
  await navPage.setViewportSize({width:1280,height:900});
 
  const supporter=await browser.newPage({viewport:{width:320,height:780},isMobile:true,hasTouch:true});
+ // The support form resets on pageshow. Wait for that lifecycle event before tapping.
+ await supporter.addInitScript(()=>{
+  window.addEventListener("pageshow",()=>{document.documentElement.dataset.smokePageShown="true";});
+ });
  let kofiRequests=0;
  await supporter.route("https://ko-fi.com/narajos",route=>{
   kofiRequests++;
@@ -777,6 +781,7 @@ try{
  await supporter.goto(base+"/");
  await supporter.locator("footer").getByRole("link",{name:"Support this website",exact:true}).tap();
  await supporter.getByRole("heading",{name:"Support this website",exact:true}).waitFor();
+ await supporter.locator("html[data-smoke-page-shown]").waitFor({state:"attached"});
  const continueToKofi=supporter.getByRole("link",{name:"Continue to Ko-fi",exact:true});
  const adult=supporter.getByRole("checkbox",{name:"I am aged 18 or over.",exact:true});
  const outsideClass=supporter.getByRole("checkbox",{name:"I am not one of the website creator’s current students.",exact:true});
