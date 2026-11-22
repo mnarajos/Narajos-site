@@ -3,6 +3,130 @@
    No data collection, student assessment, or coursework submission support. */
 (function(){
 "use strict";
+const checkpoints = [
+ {
+  id:"follicle", title:"Follicular development", action:"fsh",
+  prompt:"FSH concentration rises. Which structure responds by developing?",
+  options:[["The ovarian follicle.",""],["The lining of the uterus.","Look inside the ovary for the structure that houses the oocyte."],["The opening of the oviduct.","The opening receives an oocyte after release. It does not house the developing oocyte."]],
+  cue:"Use FSH or select an ovary. Watch what happens around the oocyte.",
+  observation:"The follicle enlarges around the oocyte, which remains inside it. FSH supports follicle development. Release needs a different signal."
+ },{
+  id:"ovulation", title:"Ovulation", action:"lh",
+  prompt:"A follicle has matured. What does the LH surge trigger most directly?",
+  options:[["The entire follicle moves into the oviduct.","Follow the small cell. The follicle remains in the ovary."],["A secondary oocyte is released from the follicle.",""],["A sperm fuses with the oocyte.","Fusion requires a sperm to reach the oocyte later."]],
+  cue:"Once the follicle matures, use LH. Watch the gap between the ovary and the end of the oviduct.",
+  observation:"The follicle stays in the ovary. The secondary oocyte is released nearby, where the finger-like fimbriae help receive it into the oviduct. Cilia and muscular contractions help move it along."
+ },{
+  id:"transport", title:"Gamete transport", action:"sperm",
+  prompt:"Sperm and a secondary oocyte are both travelling. Where are they most likely to meet?",
+  options:[["In the uterine cavity.","Sperm pass through the uterus. Follow their route one structure further."],["In the ovary.","The oocyte has already left the ovary before a sperm can meet it."],["In the widest region of an oviduct.",""]],
+  cue:"Introduce sperm. Follow the route from the vagina and look for where it can converge with the oocyte's route.",
+  observation:"Sperm enter through the vagina and pass through the cervical canal, uterine cavity and into an oviduct. The gametes usually meet in the widest region of an oviduct, the ampulla."
+ },{
+  id:"fertilisation", title:"Possible fertilisation", action:"fert",
+  prompt:"Sperm have reached an oviduct. Why might no zygote form?",
+  options:[["The gametes may fail to meet while viable or may fail to fuse.",""],["Fertilisation requires the oocyte to attach to the endometrium first.","Attachment to the endometrium is a later event involving an embryo."],["Sperm cannot fertilise an oocyte until it reaches the uterus.","The oviduct is the usual site of fertilisation."]],
+  cue:"Compare where the gametes are. Show one possible fertilisation, or continue without fertilisation.",
+  observation:"This model shows possible outcomes. Fertilisation requires viable gametes to meet at the right time and fuse successfully. If they do, a zygote forms. Without fertilisation the oocyte usually degenerates."
+ },{
+  id:"development", title:"Early development",
+  prompt:"A zygote has formed in the oviduct. Which event can occur before the embryo attaches to the uterus?",
+  options:[["It stays as one cell until contact with the lining.","Look for divisions during its journey."],["It undergoes cleavage and can develop into a blastocyst.",""],["It becomes a blastocyst only after a second fertilisation.","Fertilisation formed the zygote. Later stages arise from its development."]],
+  cue:"Follow the embryo on the fertilisation branch. Compare the single cell, divisions and hollow blastocyst.",
+  observation:"The zygote undergoes cleavage, a series of cell divisions, during transport. The embryo becomes a blastocyst with a fluid-filled cavity before it can implant."
+ },{
+  id:"implantation", title:"Possible implantation", action:"implant",
+  prompt:"What attaches, and where, if implantation occurs?",
+  options:[["A secondary oocyte attaches to the wall of the oviduct.","A secondary oocyte has yet to form an embryo. The model shows typical implantation in the uterus."],["A sperm attaches to an oocyte in the uterus.","Gamete fusion is fertilisation, which normally occurs in an oviduct."],["A blastocyst attaches to the uterine lining.",""]],
+  cue:"Once a blastocyst has formed, show possible implantation. Look for where it attaches.",
+  observation:"The blastocyst attaches to the endometrium several days after fertilisation if conditions allow. Fertilisation and implantation are separate events; one does not guarantee the other."
+ }
+];
+function guideMarkup(){
+ return '<details class="krp-guide"><summary>Predict and explain</summary>'+
+  '<label for="krp-checkpoint">Revisit a stage</label><select id="krp-checkpoint">'+
+  checkpoints.map(step=>'<option value="'+step.id+'">'+step.title+'</option>').join("")+'</select>'+
+  '<form><fieldset><legend></legend><div class="krp-options"></div></fieldset>'+
+  '<button class="krp-btn" type="submit">Check prediction</button></form>'+
+  '<p class="krp-prediction" role="status"></p><p class="krp-observation" role="status"></p>'+
+  '<button class="krp-btn" type="button" data-next-checkpoint hidden>Next checkpoint</button>'+
+  '<a data-f175-apply href="#challenge/f175/a1?from=catchup/f175/a1" hidden>Apply to a different situation</a></details>';
+}
+function writtenSequence(){
+ return '<details class="krp-anatomy-note"><summary>Read the pathway without animation</summary><ol>'+
+  checkpoints.map(step=>'<li><strong>'+step.title+'</strong> '+step.observation+'</li>').join("")+'</ol></details>';
+}
+function mountGuide(root, observed, onChange, initialStep){
+ const guide = root.querySelector(".krp-guide");
+ const select = guide.querySelector("select");
+ const form = guide.querySelector("form");
+ const feedback = guide.querySelector(".krp-prediction");
+ const observation = guide.querySelector(".krp-observation");
+ const next = guide.querySelector("[data-next-checkpoint]");
+ const apply = guide.querySelector("[data-f175-apply]");
+ let index = 0;
+ let answered = false;
+ let accepted = false;
+ function update(){
+  const step = checkpoints[index];
+  const seen = observed(step.id);
+  const message = answered && seen ? step.observation : "";
+  if(observation.textContent !== message) observation.textContent = message;
+  next.hidden = !answered || !seen || index === checkpoints.length - 1;
+  apply.hidden = !answered || !seen || index !== checkpoints.length - 1;
+  onChange(guide.open && answered && !seen ? step.action : null);
+ }
+ function choose(i){
+  index = i;
+  answered = false;
+  accepted = false;
+  const step = checkpoints[index];
+  select.value = step.id;
+  form.querySelector("legend").textContent = step.prompt;
+  form.querySelector("fieldset").disabled = false;
+  form.querySelector("button").hidden = false;
+  form.querySelector(".krp-options").innerHTML = step.options.map(([label], j)=>
+   '<label><input type="radio" name="prediction" value="'+j+'"> <span>'+label+'</span></label>').join("");
+  feedback.textContent = "";
+  update();
+ }
+ select.addEventListener("change",()=>choose(select.selectedIndex));
+ guide.addEventListener("toggle",update);
+ form.addEventListener("submit",event=>{
+  event.preventDefault();
+  if(accepted)return;
+  const selected = form.querySelector("input:checked");
+  if(!selected){
+   feedback.textContent = "Choose a prediction to check.";
+   form.querySelector("input").focus();
+   return;
+  }
+  const step = checkpoints[index];
+  const correction = step.options[Number(selected.value)][1];
+  answered = true;
+  accepted = !correction;
+  feedback.textContent = correction ? correction+" "+step.cue : "That prediction fits. "+step.cue;
+  if(accepted){
+   feedback.setAttribute("tabindex","-1");
+   feedback.focus({preventScroll:true});
+   form.querySelector("fieldset").disabled = true;
+   form.querySelector("button").hidden = true;
+  }
+  update();
+ });
+ next.addEventListener("click",()=>{
+  choose(index + 1);
+  form.querySelector("input").focus();
+ });
+ const initialIndex = checkpoints.findIndex(step=>step.id===initialStep);
+ guide.open = initialIndex !== -1;
+ choose(Math.max(0,initialIndex));
+ return {
+  update,
+  reset:()=>choose(0),
+  nextAction:()=>guide.open && (!next.hidden ? next : !apply.hidden ? apply : null)
+ };
+}
 function svg(){
  return '<svg class="krp-diagram" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" role="group" aria-labelledby="krp-title" aria-describedby="krp-description">'+
  '<title id="krp-title">Female reproductive anatomy and gamete transport</title>'+
@@ -43,7 +167,8 @@ function svg(){
  '<path id="krp-embryo-right" d="M614 158Q556 140 510 184Q478 201 450 281" fill="none"/>'+
  '<g id="krp-egg" hidden aria-hidden="true"><circle r="11.5" fill="#ffe6a2" stroke="#c78436" stroke-width="3"/><circle r="5" fill="#d79746"/></g>'+
  '<g id="krp-sperm" hidden aria-hidden="true"><circle r="5" fill="#147ea4"/><path d="M-5 0Q-14 -11 -23 1Q-28 8 -37 0" stroke="#147ea4" stroke-width="3" fill="none" stroke-linecap="round"/></g>'+
- '<g id="krp-embryo" hidden aria-hidden="true"><circle r="13" fill="#f6d7ef" stroke="#a05591" stroke-width="3"/><path id="krp-divisions" hidden d="M0 -12V12M-12 0H12" stroke="#ad6ca1" stroke-width="2"/></g>'+
+ '<g id="krp-embryo" hidden aria-hidden="true"><circle r="13" fill="#f6d7ef" stroke="#a05591" stroke-width="3"/><path id="krp-divisions" hidden d="M0 -12V12M-12 0H12" stroke="#ad6ca1" stroke-width="2"/>'+
+ '<g id="krp-blastocyst" hidden><circle cx="1" cy="-1" r="8" fill="#fffafb" stroke="#a05591" stroke-width="1.5"/><path d="M-9 3Q0 0 4 10Q-2 14-9 8Z" fill="#a05591"/></g></g>'+
  '<g id="krp-implant" hidden aria-hidden="true"><circle r="10" fill="#f6d7ef" stroke="#782858" stroke-width="3"/><circle r="3" fill="#782858"/></g>'+
  '<g font-family="system-ui,sans-serif" font-size="17" font-weight="600" fill="#334858">'+
  '<text x="135" y="140" text-anchor="middle">Ovary</text><text x="765" y="140" text-anchor="middle">Ovary</text>'+
@@ -63,7 +188,8 @@ function svg(){
 }
 function markup(){
  return '<section class="krp-root" id="krp-model" aria-label="Interactive ovulation and sperm transport model">'+
- '<div class="krp-intro"><h2>Explore ovulation and fertilisation</h2><p>Choose an ovary or press FSH, then follow the sequence.</p></div>'+
+ '<div class="krp-intro"><h2>Explore ovulation and fertilisation</h2><p>Make a prediction or explore the diagram freely.</p></div>'+
+ guideMarkup()+
  '<button class="krp-btn krp-zoom" data-krp="zoom" type="button" aria-pressed="false" aria-controls="krp-view">Follow the current stage</button>'+
  '<div class="krp-view" id="krp-view" role="region" aria-label="Reproductive anatomy diagram" tabindex="0">'+svg()+'</div>'+
  '<p class="krp-swipe">Swipe to see the whole diagram, or select Follow the current stage.</p>'+
@@ -80,10 +206,11 @@ function markup(){
  '<button class="krp-btn" data-krp="pause" type="button" aria-pressed="false">Pause animation</button>'+
  '<button class="krp-btn krp-reset" data-krp="reset" type="button">Reset</button>'+
  '<button class="krp-btn krp-reset" data-krp="replay" type="button">Replay from FSH</button></div>'+
- '<p class="krp-status" role="status" aria-live="polite" tabindex="-1">FSH supports development of ovarian follicles. Select an ovary or press FSH to begin.</p>'+
+ '<p class="krp-status" role="status" aria-live="polite" tabindex="-1">Select an ovary or press FSH to begin.</p>'+
+ writtenSequence()+
  '<p class="krp-note"><strong>Schematic, not to scale.</strong> A real menstrual cycle takes weeks. The animations compress time, and the LH surge follows sustained oestradiol signalling rather than a user-controlled hormone dose. Ovulation releases a secondary oocyte into the region near an oviduct; fertilisation usually occurs in its ampulla. A sperm reaching an oocyte does not guarantee fertilisation, and implantation is a later, separate event.</p></section>';
 }
-function mount(host){
+function mount(host,initialStep){
  var root=host&&host.querySelector&&host.querySelector("#krp-model");
  if(!root||root.dataset.mounted)return;
  root.dataset.mounted="1";
@@ -93,6 +220,10 @@ function mount(host){
  var state={side:"left",phase:"idle",sperm:"idle",spermSide:null,fertilised:false,paused:false,view:"ovary",viewSide:"left",zoom:false};
  var animations=new Set();
  var diagram=q(".krp-diagram"),view=q(".krp-view"),progress=q(".krp-status");
+ const seen = new Set();
+ const guide = mountGuide(root,step=>seen.has(step),action=>{
+  Object.entries(btn).forEach(([key,control])=>control.classList.toggle("krp-next",key===action));
+ },initialStep);
  var hotspots=root.querySelectorAll(".krp-ovary, .krp-entry");
  var areas={ovary:[48,86,320,228],oviduct:[75,73,390,242],sperm:[205,95,360,484],uterus:[250,102,390,445]};
  function frameView(area,side){
@@ -107,6 +238,7 @@ function mount(host){
   if(document.activeElement===from)progress.focus({preventScroll:true});
  }
  function offerFocus(to){
+  to=guide.nextAction()||to;
   if(to&&document.activeElement===progress)to.focus({preventScroll:true});
  }
  var reduced=!!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -157,6 +289,7 @@ function mount(host){
   btn.pause.disabled=!animations.size;
   btn.pause.setAttribute("aria-pressed",String(state.paused));
   btn.pause.textContent=state.paused?"Resume animation":"Pause animation";
+  guide.update();
 
   root.querySelectorAll(".krp-ovary").forEach(function(o){
    o.classList.toggle("krp-active",o.dataset.side===state.side&&state.phase!=="idle");
@@ -177,7 +310,7 @@ function mount(host){
   animate(1500,function(fraction){
    q("#krp-follicle circle:first-child").setAttribute("r",String(13+18*fraction));
   },function(){
-   state.phase="mature";update();
+   state.phase="mature";seen.add("follicle");update();
    status("The follicle has matured in this simplified model. A naturally occurring LH surge normally triggers ovulation. Press LH surge.");
    offerFocus(btn.lh);
   });
@@ -190,7 +323,7 @@ function mount(host){
   var path=q("#krp-egg-"+state.side);positionAt(group.egg,path,0);update();
   status("The LH surge triggers ovulation, releasing a secondary oocyte. Fimbriae and ciliary movement help transport it into an oviduct.");
   transport(group.egg,path,2300,function(){
-   state.phase="oviduct";update();
+   state.phase="oviduct";seen.add("ovulation");update();
    status("The secondary oocyte is in the oviduct (typically the ampulla). It can be fertilised only if a viable sperm reaches it within a limited period.");
    maybeMeet();
    if(state.sperm!=="travelling")offerFocus(state.sperm==="idle"?btn.sperm:canFertilise()?btn.fert:btn.continue);
@@ -205,7 +338,7 @@ function mount(host){
   var path=q("#krp-sperm-"+state.spermSide);positionAt(group.sperm,path,0);update();
   status("Sperm have entered the vagina. One representative sperm is shown moving through the cervical canal and uterine cavity towards an oviduct; most sperm do not complete this journey.");
   transport(group.sperm,path,3500,function(){
-   state.sperm="oviduct";update();
+   state.sperm="oviduct";seen.add("transport");update();
    status("The representative sperm has reached an oviduct. Fertilisation is possible only if a viable secondary oocyte is present in that oviduct.");
    maybeMeet();
    if(state.phase==="oviduct")offerFocus(canFertilise()?btn.fert:btn.continue);
@@ -229,10 +362,12 @@ function mount(host){
   state.fertilised=true;state.phase="embryo";
   show(group.sperm,false);show(group.egg,false);show(group.embryo,true);
   var divisions=q("#krp-divisions");show(divisions,false);
+  const blastocyst=q("#krp-blastocyst");show(blastocyst,false);
   var path=q("#krp-embryo-"+state.side);positionAt(group.embryo,path,0);update();
   status("Possible fertilisation: sperm and secondary oocyte fuse to form a zygote. Cell divisions begin as the early embryo travels towards the uterus.");
   transport(group.embryo,path,2400,function(){
-   state.phase="ready-to-implant";update();
+   state.phase="ready-to-implant";seen.add("fertilisation");seen.add("development");
+   show(divisions,false);show(blastocyst,true);update();
    status("The embryo has reached the uterus and develops into a blastocyst around this stage. A blastocyst may attach to the endometrium several days after fertilisation. Select possible implantation to show that later event.");
    offerFocus(btn.implant);
   },function(fraction){if(fraction>.3)show(divisions,true);});
@@ -244,6 +379,7 @@ function mount(host){
   show(group.embryo,false);
   locate(group.implant,state.side==="left"?433:467,267);
   show(group.implant,true);
+  seen.add("implantation");
   update();
   status("Possible implantation: the blastocyst attaches at the uterine lining. Implantation is a separate event and is not guaranteed.");
   offerFocus(btn.replay);
@@ -251,15 +387,17 @@ function mount(host){
  function noFertilisation(){
   if(state.phase!=="oviduct")return;
   moveFocus(btn.continue);
-  state.phase="complete";show(group.egg,false);update();
+  state.phase="complete";show(group.egg,false);seen.add("fertilisation");update();
   status("Without fertilisation, the secondary oocyte typically degenerates. It does not develop into an embryo; menstrual changes depend on the hormonal cycle.");
+  offerFocus(btn.replay);
  }
  function reset(){
   animations.forEach(function(animation){animation.stop();});animations.clear();
   state.paused=false;state.side="left";state.phase="idle";state.sperm="idle";state.spermSide=null;state.fertilised=false;
   Object.keys(group).forEach(function(k){show(group[k],false);});
   frameView("ovary","left");
-  update();status("FSH supports development of ovarian follicles. Select an ovary or press FSH to begin.");
+  seen.clear();guide.reset();
+  update();status("Select an ovary or press FSH to begin.");
  }
  btn.fsh.addEventListener("click",function(){select(state.side,btn.fsh);});
  btn.lh.addEventListener("click",ovulate);
