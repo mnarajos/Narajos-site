@@ -67,10 +67,11 @@
   }
 
   function render(lesson, context) {
+    const prior = lesson.prior ?
+      '<a href="#catchup/' + escape(lesson.prior[0]) + '">' + escape(lesson.prior[1]) + '</a>' : "";
     const activate = lesson.activate
       ? '<details class="hb-prerequisite"><summary>' + escape(lesson.activate[0]) + '</summary><p>' +
-        escape(lesson.activate[1]) + '</p>' + (lesson.prior ?
-          '<a href="#catchup/' + escape(lesson.prior[0]) + '">' + escape(lesson.prior[1]) + '</a>' : '') + '</details>' : '';
+        escape(lesson.activate[1]) + '</p>' + prior + '</details>' : prior;
     const explanation = '<section class="paper panel hb-teach-explain"><h2>Understand the idea</h2>' +
       paragraphs(lesson.explain) + table(lesson.compare) + context.inline + '</section>';
     const model = lesson.model?.length ?
