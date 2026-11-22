@@ -839,9 +839,9 @@ function drawPlot(){
   const w=plot.getBoundingClientRect().width,h=plot.getBoundingClientRect().height;
   if(w<10||h<10)return;
   pctx.clearRect(0,0,w,h);pctx.fillStyle="#fbfdff";pctx.fillRect(0,0,w,h);
-  const L=46,R=99,T=12,B=34;
+  const series=allSeries(),vis=series.filter(s=>s.vis);
+  const L=46,R=NarajosGraphSeries.labelMargin(pctx,series.map(s=>s.endLabel)),T=12,B=34;
   const px=v=>L+(v/50)*(w-L-R);
-  const vis=allSeries().filter(s=>s.vis);
   const maxY=1.15*Math.max(0.6,...vis.map(s=>vmaxOf(s.n,s.k,s.In)));
   const py=v=>h-B-(v/maxY)*(h-T-B);
 

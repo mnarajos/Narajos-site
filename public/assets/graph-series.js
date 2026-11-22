@@ -1,6 +1,15 @@
 (() => {
+  const labelFont = "650 11px system-ui,sans-serif";
   function swatch(colour, dash) {
     return '<svg class="series-swatch" viewBox="0 0 26 12" aria-hidden="true"><line x1="1" x2="25" y1="6" y2="6" stroke="'+colour+'" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="'+(dash.join(" ")||"none")+'"/></svg>';
+  }
+
+  function labelMargin(context, texts) {
+    context.save();
+    context.font = labelFont;
+    const width = Math.max(0, ...texts.map(text => context.measureText(text).width));
+    context.restore();
+    return Math.ceil(width) + 16;
   }
 
   function labelEnds(context, endX, top, bottom, labels) {
@@ -17,7 +26,7 @@
     }
 
     context.save();
-    context.font = "650 11px system-ui,sans-serif";
+    context.font = labelFont;
     context.textAlign = "left";
     context.textBaseline = "middle";
     context.fillStyle = "#162d3a";
@@ -35,5 +44,5 @@
     context.restore();
   }
 
-  window.NarajosGraphSeries = {swatch, labelEnds};
+  window.NarajosGraphSeries = {swatch, labelMargin, labelEnds};
 })();

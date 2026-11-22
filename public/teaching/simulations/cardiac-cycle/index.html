@@ -712,7 +712,7 @@ function drawGraphMech(){
 
   if(S.pvloop && S.level>=3){ drawPVloop(w,h); return; }
 
-  const L=44,R=62,T=14,Bpv=0.60;              // pressure area on top 60%
+  const L=44,R=NarajosGraphSeries.labelMargin(gx,CARDIAC_TRACES.map(series=>series.label)),T=14,Bpv=0.60;              // pressure area on top 60%
   const pTop=T,pBot=T+(h-T-26)*Bpv, vTop=pBot+16,vBot=h-26;
   const pMax=130, vMax=140;
   const pxX=phi=>L+phi*(w-L-R);
