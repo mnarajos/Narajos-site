@@ -1,11 +1,32 @@
 import { question as q } from "./school-catchup-journey.js";
-import { arrow, diagram, ink, rust, teal, text, blue, picture, line } from "./catchup-models.js";
+import { arrow, diagram, ink, rust, teal, text, blue, picture, line, circle } from "./catchup-models.js";
 
 const worked = (title, ...lines) => ({title, lines});
 const bars = (caption, ...values) => ({type: "bars", caption, max: 10, bars: values});
 const molecules = (label, groups) => ({type: "molecules", caption: "Joined circles represent bonded atoms", panels: [{label, groups}]});
 
 export const ks3Scaffolds = {
+  cells: [
+    {image: ["/assets/ks3-diagrams/palisade-cell.svg", "Leaf cell with a thick outer boundary and a thin line just inside it. The labelled diagram shows a nucleus, chloroplasts and other structures."]},
+    {...q("Which visible feature in this micrograph is the best evidence that it shows leaf tissue rather than cheek tissue?",
+      "Small green structures inside the cells", "The green structures are chloroplasts. Cheek cells do not contain chloroplasts.",
+      ["Straight-looking cell edges", "Some animal cells have straight-looking edges. Look for a structure inside the cell."],
+      ["The cells lie next to one another", "Cells are grouped together in both kinds of tissue."]),
+      guide: "Look inside a complete cell. Think about a structure that helps a leaf use light.",
+      image: ["/assets/micrographs/elodea-leaf.webp", "Light micrograph showing many small green oval bodies inside thin cell boundaries."]},
+    {clue: "Separate the features you can see from the ones you cannot identify.", hint: "Both animal and plant cells can have nuclei and straight-looking edges."}
+  ],
+  particles: [
+    {},
+    {guide: "The syringe is sealed and the temperature stays the same. Track what changes about the space between the walls.",
+      reference: {label: "Gas particles before and after compression", render: compressedGas}},
+    {...q("The same gas is in a sealed piston. The piston moves out and the gas keeps the same temperature. What happens to the pressure?", "It falls because wall collisions become less frequent.",
+      "The same particles move at the same average speed in a larger volume. They reach the walls less often.",
+      ["It rises because the gas has more room to move.", "With more space between the walls, particles travel farther before reaching a wall."],
+      ["It stays the same because the temperature is fixed.", "Average speed stays the same, but changing the volume changes the rate of wall collisions."]),
+      clue: "The particles still have the same average speed. What has changed about their journeys between walls?",
+      hint: "The walls are farther apart when the piston moves out."}
+  ],
   "atoms-and-compounds": [
     {worked: worked("Read Sample A", "Read the letters: every atom is type X.",
       "Each group has two bonded X atoms. All the groups are alike, so there is one substance.",
@@ -121,6 +142,13 @@ function oxygenRoute(processes = true) {
     ${text(105,31,"Air sac in lung")}${text(105,89,"Lung capillary blood")}${text(105,147,"Muscle capillary blood")}${text(105,205,"Muscle cell")}
     ${arrow(105,41,105,67,blue)}${arrow(105,99,105,125,rust)}${arrow(105,157,105,183,blue)}
     ${processes ? text(126,59,"Diffusion",blue,15,"start")+text(126,117,"Circulation via the heart",rust,15,"start")+text(126,175,"Diffusion",blue,15,"start") : ""}`, 320,225));
+}
+
+function compressedGas() {
+  const box = (x, width) => `<rect x="${x}" y="26" width="${width}" height="77" rx="4" fill="#e3f1f4" stroke="${teal}" stroke-width="2"/>` +
+    [[.19,39],[.64,44],[.32,57],[.86,68],[.23,82],[.72,87]].map(([fraction,y]) => circle(x+width*fraction,y,3.5,"#b7cee5",blue)).join("");
+  return picture("The same gas at the same temperature", diagram("Two containers contain six equally sized gas particles each. The right container has less space between its walls.", `
+    ${box(10,129)}${box(214,96)}${arrow(154,64,198,64,ink)}${text(75,123,"Before")}${text(262,123,"After")}`,320,134));
 }
 
 function filterDiagram(workedExample = false) {

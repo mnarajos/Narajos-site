@@ -139,8 +139,11 @@ export function mountJourney(host, model, lesson) {
 
   let viewOnly = false;
   let shownIndex = state.step;
-  const revisedPrompt = (state.repeating && retry ? retry : steps[state.step]).prompt;
-  if (state.prompt && state.prompt !== revisedPrompt || state.selected && ![steps[state.step].answer, ...steps[state.step].options.map(option => option.label)].includes(state.selected) && !state.repeating) {
+  const savedQuestion = (state.repeating && retry) || steps[state.step];
+  const changedPrompt = state.prompt && state.prompt !== savedQuestion.prompt;
+  const missingChoice = state.selected && state.selected !== savedQuestion.answer
+    && !savedQuestion.options.some(option => option.label === state.selected);
+  if (changedPrompt || missingChoice || state.correct && state.selected !== savedQuestion.answer) {
     Object.assign(state, {selected: "", correct: false, feedback: "", clues: 0, helped: false, explained: false});
   }
   function write() {
@@ -159,9 +162,12 @@ export function mountJourney(host, model, lesson) {
     if (!state.done) {
       const step = steps[state.step];
       const stage = element("section", "", "school-current-stage");
-      const stageName = hasScaffolding && step.worked ? ["I do · Worked example", "We do · Guided practice"][Number(Boolean(step.guide))]
-        : hasScaffolding && step.guide ? "We do · Guided practice"
-          : hasScaffolding && state.step === steps.length - 1 ? "You do · On your own" : lessonStages[state.step];
+      let stageName = lessonStages[state.step];
+      if (hasScaffolding) {
+        if (step.guide) stageName = "We do · Guided practice";
+        else if (step.worked) stageName = "I do · Worked example";
+        else if (state.step === steps.length - 1) stageName = "You do · On your own";
+      }
       const heading = element("h3", stageName);
       heading.tabIndex = -1;
       stage.append(heading);
@@ -345,10 +351,10 @@ export function mountJourney(host, model, lesson) {
     const clueText = element("p", "", "school-clue");
     clueText.tabIndex = -1;
     function renderClues() {
-      const first = q.clue || q.hint || (q.image ? "Trace each label to the exact feature it points to."
+      const first = q.clue || (Number(year) < 10 && q.hint) || (q.image || q.reference ? "Trace each label to the exact feature it points to."
         : q.teach ? "Think about the idea in “" + q.teach[0] + "”. Which option uses it?"
         : "Look for the option that fits the change in the question.");
-      const second = q.clue && q.hint ? q.hint : "";
+      const second = q.clue || Number(year) >= 10 ? q.hint : "";
       clueText.hidden = !state.clues;
       clueText.textContent = state.clues > 1 && second ? second : first;
       clue.hidden = state.clues >= (second ? 2 : 1);

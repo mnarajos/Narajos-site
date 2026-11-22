@@ -283,6 +283,6 @@ for (const host of document.querySelectorAll("[data-school-catchup-topic]")) {
   addPracticeAnswer(host.querySelector("[data-ks3-transfer]"), year + "." + id);
   mountJourney(model, model, {
     id, year, hook: lesson.title,
-    steps: [{...guided[0], notice: hint}, {...guided[1], hint}, question(...transfer)]
+    steps: withKS3Scaffolds(id, [{...guided[0], notice: hint}, {...guided[1], hint}, question(...transfer)])
   });
 }
