@@ -3,7 +3,7 @@ a.narajos-home{box-sizing:border-box;display:inline-flex;align-items:center;just
 a.narajos-home img{display:block;flex:none;width:28px;height:28px;object-fit:contain}
 a.narajos-home span{display:inline;letter-spacing:0}
 a.narajos-home:hover{color:#9b4614;border-color:#c96a25;background:#fff9f3;text-decoration:none}
-a.narajos-home:focus-visible{outline:3px solid #df7928;outline-offset:3px}
+a.narajos-home:focus-visible{outline:3px solid var(--narajos-focus-ring);outline-offset:3px}
 header.brand>a.narajos-home{margin-left:auto}
 
 /* Match the site header accent without affecting the simulation controls. */
@@ -15,6 +15,10 @@ header.brand:has(> h1 .eyebrow):has(> a.narajos-home) {
 }
 
 :root {
+  --narajos-control-radius: .55rem;
+  --narajos-panel-radius: .875rem;
+  --narajos-focus-ring: #a34b1c;
+  --narajos-reading-line: 1.55;
   --narajos-choice-fill: #eff5f4;
   --narajos-choice-line: #78938f;
   --narajos-choice-selected: #dceeea;

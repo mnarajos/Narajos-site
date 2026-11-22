@@ -4,7 +4,7 @@
 .school-years { display: flex; flex-wrap: wrap; gap: .45rem; margin-block: 1.15rem; }
 .school-years:not(.school-year-chooser) a, .school-primary, .school-secondary {
   display: inline-flex; align-items: center; min-height: 44px; padding: .38rem .72rem;
-  color: #174858; border: 1px solid #9ebcbe; background: white; border-radius: .5rem;
+  color: #174858; border: 1px solid #9ebcbe; background: white; border-radius: var(--narajos-control-radius,.55rem);
   font: inherit; font-weight: 675; text-decoration: none; cursor: pointer;
 }
 .school-primary, .school-years:not(.school-year-chooser) a[aria-current="page"] { background: #175466; color: white; border-color: #175466; }
@@ -13,7 +13,7 @@
 .school-primary span[aria-hidden="true"] { margin-inline-start: .28em; }
 .school-catchup :is(a, button, summary):focus-visible,
 .school-journey :is(a, button, summary):focus-visible,
-.school-check :is(a, button, summary, input):focus-visible { outline: 3px solid #b75a22; outline-offset: 3px; }
+.school-check :is(a, button, summary, input):focus-visible { outline: 3px solid var(--narajos-focus-ring,#a34b1c); outline-offset: 3px; }
 .school-section-heading { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .6rem; padding-block: .5rem; }
 .school-section-heading h2 { margin: 0; }
 .school-footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: 0 1rem; }
@@ -175,3 +175,7 @@
 .school-clue { flex-basis: 100%; margin-block: .2rem; }
 .school-check-explanation { border-inline-start: 3px solid #41857d; background: #eef5f3; padding: .5rem .75rem; }
 .school-check-explanation h3 { margin-block: .25rem; }
+
+
+.school-concept-list .school-concept-question,.school-storage-note,.catchup-picture figcaption small{font-size:.875rem}
+.school-check :is(.school-check-feedback,.school-clue,.school-check-explanation){font-size:1rem;line-height:var(--narajos-reading-line,1.55)}

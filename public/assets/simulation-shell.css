@@ -5,16 +5,28 @@
   gap:12px;min-height:40px;padding:0 14px;background:#faf9f6;color:#24323e;
   border-bottom:1px solid #e3e4e2;font:600 13px/1.3 "Poppins",system-ui,sans-serif;
 }
-.sim-utility-nav a{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:4px 3px;color:inherit;text-decoration:none}
+.sim-utility-nav a{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:4px 3px;color:inherit;text-decoration:none}
 .sim-utility-nav a:hover{text-decoration:underline;color:#a84a13}
 .sim-utility-nav a:focus-visible{outline:3px solid #dc772c;outline-offset:0;border-radius:4px}
 .sim-utility-nav img{display:block;width:18px;height:18px}
 .sim-utility-nav .sim-site-link{white-space:nowrap}
 .brand h1.t{margin:0;line-height:1.15}
-@supports(height:100dvh){body.sim-fullscreen{height:100dvh}}
+@supports(height:100dvh){body.sim-fullscreen:not(.enzyme-simulation){height:100dvh}}
+@media(min-width:901px) and (min-height:481px){body.enzyme-simulation{height:100dvh}}
 @media(max-width:600px){
  .sim-utility-nav{font-size:12px;padding:0 10px;min-height:42px}
- .sim-utility-nav a{min-height:42px}
+ .sim-utility-nav a{min-height:44px}
 }
 
 .series-swatch { width: 24px; height: 12px; display: block; flex: none; }
+
+
+/* Shared legibility for controls, figure captions, and instructions. */
+.sim-utility-nav,.ctrl .head label,.ctrl .head .value,.toggle-row,.graph-card .head .k,
+.graph-card .head .pk,.graphbox .ghead .t,.graphbox .ghead .s,.graph-readout,
+.stat .k,.stat .v small,.level-group>span,.subgroup>.gl,.sectlabel,
+.details-label,.stepnum,.legend,.key,.hint-strip{font-size:.875rem}
+.guided-task p,.msg,.gcap,.ecg-note,.note,ul.facts,details.notes p{font-size:1rem;line-height:1.5}
+details.notes summary{font-size:.875rem}
+
+.tabs .tab,button.act,select.act,.step-detail summary,.gx-controls summary{min-height:44px}

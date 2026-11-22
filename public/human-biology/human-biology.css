@@ -290,3 +290,16 @@ main[tabindex="-1"]:focus{outline:none}
 
 .k-skill-example{background:#eff6fc;border:1px solid #9bbad5;border-inline-start:4px solid #3f6f95}
 .k-skill-example h2{color:#234e72}
+
+
+/* Explanations and help should remain easy to read in the learner flow. */
+.k-home-unit em,.k-unit-tile em,.k-mini-action small,.lesson .button,.k-action small,
+.k-hint-box strong,.k-field,.k-shortcut small,.k-companion-entry p,.k-privacy-small{font-size:.875rem}
+.k-hint,.k-hint-box p,.k-quick-label,.k-quick-note,.k-diagnostic-note,
+.k-diagram-answer,.k-level-guidance,.k-misconception,.k-error,.k-continue p{font-size:1rem;line-height:1.55}
+
+.lesson .button,.k-skill-graph summary,.k-coverage summary,.k-f170-more summary{min-height:44px}
+#main :is(input,textarea,select){scroll-margin-block:5rem 1rem}
+@media(max-height:480px){.top{position:relative}}
+
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}

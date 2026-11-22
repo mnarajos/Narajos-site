@@ -406,7 +406,7 @@ function render(course,id){
  var html='<aside class="kc-catchup-extra" aria-label="Visual explanations and related practice">';
  if(item.diagram){
   var d=diagrams[item.diagram];
-  html+='<figure class="kc-visual"><div class="kc-visual-heading"><span class="kc-visual-icon" aria-hidden="true">◈</span><strong>'+d.label+'</strong></div><div class="kc-visual-art">'+d.image+'</div><figcaption>'+d.caption+'</figcaption></figure>';
+  html+='<figure class="kc-visual"><div class="kc-visual-heading"><span class="kc-visual-icon" aria-hidden="true">◈</span><strong>'+d.label+'</strong></div><div class="kc-visual-art" tabindex="0" role="region" aria-label="Scrollable science diagram">'+d.image+'</div><figcaption>'+d.caption+'</figcaption></figure>';
  }
  if(item.sequence==="reflex")html+=reflexSequence;
  if(item.microscope)html+=microscopePractice;
