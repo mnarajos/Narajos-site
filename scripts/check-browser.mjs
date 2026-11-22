@@ -690,7 +690,11 @@ try{
  assert.notDeepEqual((await snapshot()).map(([question])=>question),customSet.map(([question])=>question));
 
  // Use an actual question with an authored common error for the clipboard and print checks.
- const questionWithError=await fq.evaluate(()=>sugg.findIndex(q=>q.w));
+ let questionWithError=await fq.evaluate(()=>sugg.findIndex(q=>q.w));
+ for(let attempt=0;questionWithError<0&&attempt<4;attempt++){
+  await generate.click();
+  questionWithError=await fq.evaluate(()=>sugg.findIndex(q=>q.w));
+ }
  assert(questionWithError>=0,"The selected bank should supply a common error for this check");
  await bank.nth(questionWithError).check();
  const readClipboard=()=>fq.evaluate(()=>navigator.clipboard.readText());

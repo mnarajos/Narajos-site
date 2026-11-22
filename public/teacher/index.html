@@ -3084,11 +3084,12 @@ function regen(){
 }
 function generateDifferent(){
  if(customised&&!window.confirm("Replace your customised selection with different questions?"))return;
- const previous=JSON.stringify(sugg.map(q=>q.q));
+ const questionSet=questions=>JSON.stringify(questions.map(q=>q.q).sort());
+ const previous=questionSet(sugg);
  const oldExtension=extQ;
  for(let attempt=0;attempt<8;attempt++){
   const candidate=generate();
-  if(JSON.stringify(candidate.map(q=>q.q))===previous)continue;
+  if(questionSet(candidate)===previous)continue;
   customised=false;sugg=candidate;render();return;
  }
  extQ=oldExtension;
