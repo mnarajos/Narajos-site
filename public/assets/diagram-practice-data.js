@@ -32,7 +32,7 @@ export const topics = {
   airway: {
     group: "Human Biology F170", title: "The lining of an airway",
     cue: "Look at the surface facing the air. Follow the trapped particles towards the throat.",
-    states: [["airway", "Airway lining", "This enlarged cross-section shows mucus above a single simplified row of cells. The arrow shows mucus movement towards the throat.", "Airway lining with hair-like projections, a cup-shaped cell, a layer above the cells and dots in that layer."]],
+    states: [["airway", "Airway lining", "This enlarged cross-section shows mucus over ciliated cells, with smaller cells near the base. The arrow shows mucus movement towards the throat.", "Airway lining with hair-like projections, a cup-shaped cell, a layer above the cells and dots in that layer."]],
     parts: {
       A: part(118, 113, "Layer containing small dots", "Mucus", "Traps particles carried in inhaled air."),
       B: part(260, 139, "Hair-like projections on the cell surface", "Cilia", "Beat to move the mucus towards the throat."),
@@ -175,10 +175,44 @@ export const topics = {
       written("Solid copper chloride contains ions. Explain why its solution can conduct when the solid cannot.", ["Ions in the solution are free to move and carry charge.", "Ions are held in fixed positions in the solid."])
     ]
   },
+  leaf: {
+    group: "GCSE Combined Science", title: "Leaf structure and gas exchange",
+    cue: "Follow the arrow from outside air to the air spaces. Compare the densely packed upper cells with the lower layer.",
+    states: [["leaf", "Leaf cross-section", "The upper cells receive light. Carbon dioxide can pass through a stoma into the air spaces. This diagram shows selected tissues in one section.", "A cuticle covers the upper surface. Closely packed cells containing many chloroplasts are above a layer with open spaces. A pore interrupts the lower surface."]],
+    parts: { A: part(183, 189, "Column of cells with many small green bodies", "Palisade mesophyll", "Contains many chloroplasts for photosynthesis."),
+      B: part(313, 249, "Gap between the irregular cells", "Air space", "Lets gases diffuse within the leaf."),
+      C: part(302, 293, "Opening between two curved cells", "Stoma", "Allows gases to move between the leaf and outside air."),
+      D: part(428, 91, "Thin waterproof layer at the top", "Waxy cuticle", "Reduces water loss at the surface.") },
+    questions: [
+      label(["A", "B", "C", "D"], "Distinguish a tissue, an air space, a surface pore and the outer coating."),
+      point("Select the opening through which carbon dioxide enters from outside air.", "C", "A stoma is a pore. Guard cells surround it."),
+      choose("Why are many chloroplasts in cells just below the upper surface useful?", ["These cells can absorb more light for photosynthesis", "They keep all water out of the leaf", "Chloroplasts carry sugars out through the stoma"], 0, "Chloroplasts absorb light. Their placement gives these cells access to light."),
+      choose("A pupil labels the tall cells packed with chloroplasts as upper epidermis. Which visible feature supports a better label?", ["A single thin sheet at the surface", "Tall cells containing many chloroplasts below the surface", "An open pore between two curved cells"], 1, "These are palisade mesophyll cells. The epidermis is the sheet above them."),
+      order("Order the path of carbon dioxide from outside the leaf.", ["Outside air", "Stoma", "Internal air space", "Photosynthesising cell"], "Gas passes through the surface pore and then diffuses through spaces inside the leaf."),
+      written("Stomata close on a hot dry day. Explain one benefit and one cost.", ["Closing stomata reduces water loss.", "Less carbon dioxide enters, which can limit photosynthesis."])
+    ]
+  },
+  phloem: {
+    group: "A-level Biology", title: "The mass flow hypothesis",
+    cue: "Follow sucrose into the sieve tube at the source. Compare movement of water near the source and near the sink.",
+    states: [["phloem", "One source-to-sink route", "The blue vessel is xylem. The green column is a sieve tube. The side arrows show loading, unloading and the net movement of water between the tubes.", "Two adjacent tubes run from source to sink. Water moves from the blue tube into the green tube at the source and back near the sink."]],
+    parts: { A: part(208, 179, "Blue water-conducting vessel", "Xylem", "Supplies water that can enter the phloem at the source."),
+      B: part(382, 178, "Green conducting column", "Sieve tube", "Transports sucrose in the phloem sap."),
+      C: part(377, 239, "Perforated cross-wall in the green column", "Sieve plate", "Has pores through which sap can pass."),
+      D: part(488, 276, "Tissue receiving sucrose", "Sink", "Uses or stores sucrose, keeping it moving out of the tube.") },
+    questions: [
+      label(["A", "B", "C", "D"], "Follow the direction of sucrose movement and find the route water takes between the vessels."),
+      point("Which structure lets sap pass from one sieve tube element to the next?", "C", "Pores through the sieve plate connect neighbouring sieve tube elements."),
+      order("Put these events near the source in order.", ["Sucrose is loaded into the sieve tube", "Water potential in the sieve tube decreases", "Water enters the sieve tube by osmosis", "Hydrostatic pressure at the source increases"], "The change in water potential precedes water entry and the rise in hydrostatic pressure."),
+      choose("A leaf becomes a net exporter while a growing root uses the sugars. What drives flow along this sieve tube?", ["A hydrostatic pressure difference between source and sink", "A difference in light intensity acting directly on the sap", "Water actively pumped from one sieve element to the next"], 0, "The pressure gradient drives bulk movement along the tube."),
+      choose("A leaf takes up labelled carbon dioxide. Labelled sugars are later detected below that leaf. Which conclusion fits the evidence?", ["Sugar produced in the leaf can move to another part of the plant", "The observation by itself establishes what drives mass flow", "Only water moved away from the leaf"], 0, "Labelled sugar traces transport. The observation alone cannot identify the force driving the transport."),
+      written("Predict how failing to unload sucrose at the sink could affect mass flow.", ["Sucrose may accumulate at the sink, lowering water potential there.", "Less water leaves the sieve tube at the sink.", "The hydrostatic pressure difference may decrease, slowing mass flow."])
+    ]
+  },
   nephron: {
     group: "A-level Biology", title: "The nephron and selective reabsorption",
     cue: "Trace the filtrate from the cup around the capillary knot to the collecting duct.",
-    states: [["nephron", "Blood and filtrate routes", "The red route shows vessels around the glomerulus. The blue route shows the tubule and collecting duct. The diagram simplifies the capillaries alongside the tubule.", "A red capillary knot sits inside a blue cup at upper left. A coiled tube leaves it, loops down, returns upwards and joins a straight collecting duct."]],
+    states: [["nephron", "Blood and filtrate routes", "The red route shows vessels around the glomerulus. The blue route shows the tubule and collecting duct. The short red vessels alongside the tubule are examples of capillaries that receive reabsorbed substances. The arrows show filtration and selected movements out of the tubule.", "A red capillary knot sits inside a blue cup at upper left. A coiled tube leaves it, loops down, returns upwards and joins a straight collecting duct."]],
     parts: { A: part(174, 94, "Red capillary knot within the cup", "Glomerulus", "Provides the high-pressure capillary bed for ultrafiltration."),
       B: part(133, 132, "Blue cup enclosing the knot", "Bowman’s capsule", "Receives the ultrafiltrate."),
       C: part(300, 146, "First coiled tubule after the cup", "Proximal convoluted tubule", "Selectively reabsorbs glucose and other useful solutes."),

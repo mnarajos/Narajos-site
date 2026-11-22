@@ -355,10 +355,11 @@ function renderLesson(lesson, year, index) {
   const extension = externalModels[lesson.id] ? externalActivity(lesson.id) : null;
   if (extension) teaching.append(extension);
   const diagramTopic = { "separating-techniques": "filtration", electricity: "circuits",
-    "the-body": "breathing" }[lesson.id];
+    "the-body": "breathing", photosynthesis: "leaf" }[lesson.id];
   if (diagramTopic) {
     const practice = element("diagram-practice");
     practice.setAttribute("topic", diagramTopic);
+    if (["breathing","leaf"].includes(diagramTopic)) practice.setAttribute("question-limit", "3");
     checks.append(practice);
   }
   lessonRoot.replaceChildren(teaching, checks, homeActivity(lesson.id), finish);

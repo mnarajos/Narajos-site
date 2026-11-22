@@ -31,6 +31,8 @@ const callouts = {
   "gas-syringe": [[513, 95], [59, 65], [276, 57]],
   "iv-circuit": [[541, 134], [307, 122], [343, 322]],
   electrolysis: [[154, 119], [460, 121], [326, 309]],
+  leaf: [[128, 64], [421, 177], [301, 332], [500, 54]],
+  phloem: [[81, 190], [498, 161], [277, 233], [540, 309]],
   nephron: [[70, 55], [56, 220], [322, 59], [553, 268]],
   "sarcomere-long": [[97, 44], [67, 275], [329, 85]],
   insulation: [[222, 32], [528, 145], [386, 282]],
@@ -345,12 +347,19 @@ class DiagramPractice extends HTMLElement {
     study.open = true;
     study.append(el("summary", "Explore the model"), buildModel(topic));
     this.append(overview, study);
-    for (const task of topic.questions) {
+    const limit = Number(this.getAttribute("question-limit")) || topic.questions.length;
+    for (const task of topic.questions.slice(0, limit)) {
       const question = el("details", "", "dp-question");
       question.append(el("summary", task.prompt));
       const content = el("div", "", "dp-question-body");
       const report = status();
       question.append(content);
+      question.addEventListener("toggle", () => {
+        if (question.open) {
+          study.open = false;
+          for (const other of this.querySelectorAll(".dp-question[open]")) if (other !== question) other.open = false;
+        }
+      });
       this.append(question);
       if (["label", "point"].includes(task.type)) makeDiagramTask(content, topic, task, report);
       else makeCheck(content, task, report);

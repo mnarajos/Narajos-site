@@ -68,8 +68,8 @@
   }
 
   const diagramTopics = {
-    "/gcse/": [["I–V circuit","iv-circuit"],["Electrolysis","electrolysis"]],
-    "/alevel/": [["Nephron","nephron"],["Sarcomere","sarcomere"]],
+    "/gcse/": [["Leaf structure","leaf"],["I–V circuit","iv-circuit"],["Electrolysis","electrolysis"]],
+    "/alevel/": [["Phloem","phloem"],["Nephron","nephron"],["Sarcomere","sarcomere"]],
     "/human-biology/": [["Breathing","breathing"],["Blood pressure","cuff"],["Antibodies","antibody"]]
   };
   const diagrams = typeof location !== "undefined" ? diagramTopics[location.pathname] || [] : [];

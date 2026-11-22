@@ -315,7 +315,7 @@ const humanPractice = {
  "f171/a2":"cast", "f171/2.1":"cast", "f171/a3":"antibody",
  "f171/a4":"cuff", "f171/4.2.2":"cuff"
 };
-const alevelPractice = {kidney:"nephron",muscle:"sarcomere",sliding:"sarcomere",sliding2:"sarcomere"};
+const alevelPractice = {phloem:"phloem",kidney:"nephron",muscle:"sarcomere",sliding:"sarcomere",sliding2:"sarcomere"};
 let addedPracticeAssets = false;
 
 function render(course,id){

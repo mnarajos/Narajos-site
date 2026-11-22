@@ -149,7 +149,7 @@ const visualEvidence = {
       {label: "Felt-wrapped can", signal: /\b(?:felt|wrapped|insulated|covered)\b/, value: 7}
     ],
     quantity: /(?<![\d.])(-?\d+(?:\.\d+)?)\s*(?:°\s*c|degrees?\s*c(?:elsius)?\b)/g,
-    usedMeasure: /\b(?:by|drop\w*|fell|decreas\w*|lost|decrease)\b/,
+    usedMeasure: /\b(?:by|drop\w*|fell|decreas\w*|lost|change)\b/,
     oppositeMeasure: /\b(?:rose|increas\w*|warmed|cooled to|fell to|dropped to)\b/,
     hint: "Match the temperature drop in °C to this can. State how far the temperature fell."
   },
@@ -173,10 +173,13 @@ function reviewVisualEvidence(task, parts) {
     for (const part of parts) {
       if (!signal.test(part) || other.test(part.replace(signal, "")) ||
           denial.test(part.replace(/\bno (?:felt|wrapping|insulation)\b/, "")) ||
-          !rule.usedMeasure.test(part) || rule.oppositeMeasure.test(part)) continue;
+          uncertainty.test(part) || !rule.usedMeasure.test(part) || rule.oppositeMeasure.test(part)) continue;
       const matches = Array.from(part.matchAll(rule.quantity), match =>
         match[1] === "four" ? 4 : match[1] === "nine" ? 9 : Number(match[1]));
-      if (matches.length === 1) values.push(matches[0]);
+      if (matches.length === 1) {
+        const signedChange = task === "insulation" && /\bchange\b/.test(part);
+        values.push(signedChange ? -matches[0] : matches[0]);
+      }
     }
     if (values.length && values.every(item => item === value)) {
       return result(label, "credited", "The result and condition match.");
