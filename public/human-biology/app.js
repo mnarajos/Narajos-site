@@ -246,6 +246,7 @@ document.addEventListener("click",function(e){
  var btn=e.target.closest("#clear-human-bio");if(!btn)return;
  if(!window.confirm("Clear all Human Biology revision progress and unfinished sets saved in this browser? This cannot be undone."))return;
  var keys=["narajos-human-challenge-v2-session","narajos-human-challenge-v2-progress","narajos-human-challenge-v2-rotation","narajos-human-biology-session-v1","narajos-human-biology-practice-v1","narajos-keystone-review-v1-ocr-human-biology-f170"];
+ if(window.KeystoneHumanTeaching)keys.push(window.KeystoneHumanTeaching.storageKey);
  keys.forEach(function(k){try{localStorage.removeItem(k);}catch(_){}});
  location.reload();
 });
@@ -271,6 +272,6 @@ window.addEventListener("hashchange",function(){
  allowRoute=false;runRoute();
 });
 window.addEventListener("beforeunload",function(e){if(active||(window.KeystoneHumanChallenge&&window.KeystoneHumanChallenge.isActive())){e.preventDefault();e.returnValue="";}});
-window.KeystoneHumanApp={stats:stats,content:function(){return {areas:areas.length,sections:sections.length,cards:cards.length};}};
+window.KeystoneHumanApp={stats:stats,hasResume:()=>!!restoreSession(),content:function(){return {areas:areas.length,sections:sections.length,cards:cards.length};}};
 runRoute();
 })();
