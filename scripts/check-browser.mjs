@@ -363,7 +363,10 @@ try{
  assert(await guidePlay.evaluate(el=>el===document.activeElement));
  await navPage.setViewportSize({width:320,height:800});
  assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Guided bioenergetics overflows a narrow viewport");
- assert((await navPage.locator("#viz").boundingBox()).width<=320);
+ await navPage.waitForFunction(()=>{
+  const canvas=document.querySelector("#viz");
+  return canvas.getBoundingClientRect().width<=320 && canvas.width<=640;
+ });
  await checkReadingSpacing(navPage,"Bioenergetics guide");
  await navPage.getByRole("button",{name:"Open full model"}).click();
  assert(await navPage.getByRole("button",{name:/Switch to dark/}).isVisible());

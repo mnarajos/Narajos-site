@@ -234,7 +234,7 @@ function size(){
   DPR=Math.min(window.devicePixelRatio||1,2);
   const r=cv.parentElement.getBoundingClientRect();
   CW=Math.max(1,r.width); CH=Math.max(1,r.height);
-  cv.width=CW*DPR; cv.height=CH*DPR; cv.style.width=CW+"px"; cv.style.height=CH+"px";
+  cv.width=CW*DPR; cv.height=CH*DPR;
   if(isGuided() && CW<500){
     const [x,y,width,height]=OBSERVATIONS[guideStep].focus;
     VS=Math.min(CW/Math.max(280,width+65),CH/(height+65));
