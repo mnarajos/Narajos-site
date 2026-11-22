@@ -485,12 +485,12 @@ DATA.b1={
   qs:[
    {"t":"mcq","tier":"F","q":"In which cell structure does aerobic respiration take place?","opts":["Mitochondria","Ribosomes","Cytoplasm","Chloroplasts"],"a":0,"fb":[null,"Ribosomes are where proteins are made.","Most reactions happen in the cytoplasm, but aerobic respiration happens in the mitochondria.","Chloroplasts carry out photosynthesis, not respiration."],"why":"Aerobic respiration happens in the mitochondria. It releases the energy the cell needs."},
    {"t":"cloze","tier":"F","q":"Complete the sentences about cells.","text":"Both plant and animal cells have a/an {nucleus}, which contains genetic material. Most chemical reactions happen in the {cytoplasm}. Proteins are made at the {ribosomes}. Plant cells also have a cell wall made of {cellulose}.","extra":["chloroplasts","starch"],"why":"These four keywords – and their functions – come up in almost every Cell biology question."},
-   {"t":"match","tier":"F","fig":"plantCell","q":"The diagram shows a plant cell. Match each letter to the structure it points to.","pairs":[["A","Cell wall"],["B","Chloroplast"],["C","Permanent vacuole"],["D","Nucleus"]],"why":"The cell wall is the thick outer layer, chloroplasts are the small green bodies, the vacuole is the large central space, and the nucleus is the large round structure."},
+   {"t":"match","tier":"F","fig":"plantCell","q":"The diagram shows a plant cell. Match each letter to the structure it points to.","pairs":[["A","Cell wall"],["B","Chloroplast"],["C","Permanent vacuole"],["D","Nucleus"]],"why":"The cell wall is the thick outer layer, chloroplasts are the small ovals in the cytoplasm, the vacuole is the large central space, and the nucleus is the large round structure."},
    {"t":"match","tier":"F","q":"Match each cell part to its job.","pairs":[["Nucleus","Contains genetic material that controls the cell"],["Cell membrane","Controls what enters and leaves the cell"],["Ribosome","Where proteins are made"],["Cytoplasm","Where most chemical reactions happen"]],"why":"Learn the structure and its function together.","tp":true},
    {"t":"multi","tier":"F","q":"Which three structures do plant cells have that animal cells do not?","n":3,"opts":["Cell wall","Chloroplasts","Permanent vacuole","Mitochondria","Cell membrane"],"a":[0,1,2],"why":"Cell wall, chloroplasts and permanent vacuole are found in plant cells only. Both cell types have mitochondria and a cell membrane – plants respire too.","alt":"plantanimal"},
    {"t":"mcq","tier":"F","q":"What substance is the plant cell wall made of?","opts":["Cellulose","Starch","Glucose","Chitin"],"a":0,"fb":[null,"Starch is a storage substance in plant cells, not the wall.","Cellulose is built from glucose, but the wall itself is cellulose.","Chitin is found in fungal cell walls, not plant cell walls."],"why":"The cell wall is made of cellulose, which strengthens the cell."},
    {"t":"mcq","tier":"F","q":"Root hair cells grow underground. Why do they have no chloroplasts?","opts":["There is no light underground for photosynthesis","Root hair cells do not need any glucose to survive","Their mitochondria make all the glucose they need instead","They absorb all their glucose directly from the soil"],"a":0,"fb":[null,"All living cells need glucose for respiration – root cells get it from the leaves.","Mitochondria use glucose in respiration; they do not make it.","Plants do not take in glucose from the soil – they make it by photosynthesis in the leaves."],"why":"Chloroplasts absorb light for photosynthesis. Underground there is no light, so chloroplasts would be no use."},
-   {"t":"tap","tier":"F","mode":"label","fig":"plantCell","q":"Label the parts of this plant cell.","pts":[[259,40],[68,118],[146,117],[228,82]],"labels":["cell wall","chloroplast","permanent vacuole","nucleus"],"why":"The cell wall is the outer layer. Chloroplasts are the small green structures. The permanent vacuole is the large space filled with cell sap. The nucleus contains the genetic material."},
+   {"t":"tap","tier":"F","mode":"label","fig":"plantCell","q":"Label the parts of this plant cell.","pts":[[259,40],[68,118],[146,117],[228,82]],"labels":["cell wall","chloroplast","permanent vacuole","nucleus"],"why":"The cell wall is the outer layer. Chloroplasts are the small ovals in the cytoplasm. The permanent vacuole is the large space filled with cell sap. The nucleus contains the genetic material."},
    {"t":"tap","tier":"F","mode":"label","fig":"animalCell","q":"Label the parts of this animal cell.","pts":[[32,36],[306,120],[300,36],[300,208],[32,204]],"labels":["nucleus","cell membrane","mitochondrion","ribosome","cytoplasm"],"extra":["cell wall"],"why":"The nucleus contains genetic material that controls the activities of the cell. The cell membrane controls the movement of substances in and out. Mitochondria are where aerobic respiration takes place. Ribosomes are where protein synthesis occurs. Cytoplasm is where most chemical reactions happen. Animal cells have no cell wall.","hint":"Animal cells do not have a cell wall."},
    {"t":"mcq","tier":"H","q":"Muscle cells contain many more mitochondria than most other cells. What is this an adaptation for?","opts":["Releasing more energy for contraction","Making more protein for growth","Storing more oxygen for exercise","Producing more glucose for respiration"],"a":0,"fb":[null,"Proteins are made at ribosomes, not mitochondria.","Mitochondria use oxygen in respiration; they do not store it.","Glucose is used up in mitochondria, not produced there."],"why":"More mitochondria means more aerobic respiration, which releases more energy for contraction."},
    {"t":"mcq","tier":"H","q":"A cell has a nucleus, cytoplasm, a cell membrane, mitochondria and ribosomes. It has no cell wall. What type of cell is it most likely to be?","opts":["An animal cell","A plant cell","A bacterial cell","A root hair cell"],"a":0,"fb":[null,"Plant cells have a cell wall. Mitochondria are found in both plant and animal cells.","Bacteria have a cell wall and no nucleus.","Root hair cells are plant cells, so they have a cell wall."],"why":"The missing cell wall is the key clue. A nucleus rules out bacteria, so it is an animal cell."},
@@ -4219,7 +4219,8 @@ FIGS.chainFig=function(){var a=' marker-end="url(#cha)"',g=arrowDef("cha");[["ha
  [74,134,194].forEach(function(y){g+='<line class="f-ray" x1="95" y1="'+y+'" x2="95" y2="'+(y-24)+'"'+a+'/>';});
  return svg("0 0 300 230","Food chain drawn from the bottom up: oak leaves, then caterpillar, then blue tit, then hawk at the top. Arrows point upwards from each organism to the one that eats it.",g);};
 FIGS.animalCell=function(){var g='<path class="f-cyto" d="M60 110Q52 50 130 38Q205 26 250 70Q278 110 252 160Q222 205 150 202Q80 200 64 160Q58 136 60 110Z"/>'+
- circ(125,115,26,"f-nuc")+'<ellipse class="f-mito" cx="205" cy="80" rx="13" ry="6"/><ellipse class="f-mito" cx="203" cy="158" rx="13" ry="6"/><ellipse class="f-mito" cx="95" cy="168" rx="13" ry="6"/>';
+ circ(125,115,26,"f-nuc")+'<ellipse class="f-mito" cx="205" cy="80" rx="13" ry="6"/><ellipse class="f-mito" cx="203" cy="158" rx="13" ry="6"/><ellipse class="f-mito" cx="95" cy="168" rx="13" ry="6"/>'+
+ '<path class="f-thin" stroke-linecap="round" d="M197 80q3-5 5-1v2q2 4 4 0v-2q2-3 5 0m-16 79q3-5 5-1v2q2 4 4 0v-2q2-3 5 0m-122 11q3-5 5-1v2q2 4 4 0v-2q2-3 5 0"/>';
  [[162,166],[172,118],[92,80],[118,178],[228,118],[150,70],[180,185]].forEach(function(p){g+=circ(p[0],p[1],2.5,"f-e");});
  g+='<path class="f-thin" d="M112 100L32 36M262 120L306 120M214 76L300 36M163 168L300 208M84 128L32 204"/>';
  return svg("0 0 340 240","Diagram of an animal cell with five lines pointing to its parts, each line ending in a numbered circle: a large round structure near the middle; the thin outer boundary of the cell; a small oval body with folds inside; a tiny dot in the cytoplasm; and the jelly-like material filling the cell.",g);};
@@ -4797,6 +4798,52 @@ TF("useTbl","Uses of four electromagnetic waves.",["Wave","Uses"],[["P","Cooking
 TF("hazTbl","Hazards of electromagnetic waves.",["Wave","Hazard"],[["Ultraviolet","X"],["X-rays and gamma rays","Mutation of genes; cancer"]]);
 TF("bilTbl","A wire in a magnetic field.",["Quantity","Value"],[["Magnetic flux density","0.2 T"],["Current","3 A"],["Length of wire in the field","0.5 m"]]);
 TF("motTbl","Changes made to a simple electric motor.",["Change","Effect"],[["Larger current","Coil turns faster"],["Stronger magnets","Coil turns faster"],["Current reversed","X"]]);
+
+
+/* Diagram practice in unfamiliar examples. The letters locate features rather than naming them. */
+FIGS.rootProfile=function(){
+ return svg("0 0 340 214","Three labels on an unfamiliar cell. A points to a large dark circle. B points to the thick outer boundary. C points to a small oval with a folded line.",
+  '<path fill="#c4c8cb" stroke="#36444b" stroke-width="3" d="M58 66Q78 47 148 52L250 68Q271 85 264 137L231 171 112 174Q76 169 62 142Z"/>'+
+  '<path fill="#eef0f1" stroke="#36444b" stroke-width="1.8" d="M67 71Q86 55 147 60L246 76Q262 88 255 134L227 163 113 166Q81 162 70 138Z"/>'+
+  '<path fill="#fff" stroke="#7d878a" stroke-width="1.5" d="M74 93Q105 70 164 72Q184 75 173 107Q169 130 144 149Q101 159 78 133Z"/>'+
+  '<ellipse fill="#878f93" stroke="#36444b" stroke-width="1.8" cx="204" cy="111" rx="18" ry="21"/>'+
+  '<ellipse fill="#f8f9f9" stroke="#36444b" stroke-width="1.6" cx="227" cy="143" rx="12" ry="7"/>'+
+  '<path fill="none" stroke="#36444b" stroke-width="1.45" d="M219 142q3-5 4 0v3q2 4 4 0v-3q2-4 4-1v3q2 3 4-1"/>'+
+  '<path fill="none" stroke="#36444b" stroke-width="1.45" d="M260 30H240L211 95M30 47H46L70 59M295 168H272L234 146"/>'+
+  '<g fill="#20282d" font-size="19" font-family="system-ui,sans-serif" font-weight="700"><text x="266" y="36">A</text><text x="14" y="52">B</text><text x="300" y="173">C</text></g>');
+};
+FIGS.voltmeterPlace=function(){
+ return svg("0 0 340 224","A circuit with a cell at the top, a vertical resistor on the right and a lamp at the bottom. Position A joins the upper wire either side of the two unequal lines. Position B joins points above and below a rectangle on the right wire. Position C joins the bottom wire either side of a circle with a cross.",
+  '<path class="f-ink" d="M135 49H52V171H151M181 171H272V117M272 74V49H151 M135 35V63 M151 42V56"/>'+
+  '<rect class="f-ink" x="262" y="74" width="20" height="43"/>'+
+  '<circle class="f-ink" cx="166" cy="171" r="15"/><path class="f-thin" d="m156 161 20 20m0-20-20 20"/>'+
+  '<path class="f-thin" stroke-dasharray="4 4" d="M119 49V20H169V49M272 61H311V129H272M138 171V201H193V171"/>'+
+  '<text class="f-txt" text-anchor="middle" x="144" y="17">A</text><text class="f-txt" x="315" y="101">B</text><text class="f-txt" text-anchor="middle" x="166" y="219">C</text>');
+};
+FIGS.waterMissing=function(){
+ return svg("0 0 340 178","An incomplete dot-and-cross diagram for water. Oxygen overlaps two hydrogen shells. Each overlap contains a dot and a cross. The rest of the oxygen shell is empty.",
+  '<circle class="f-thin" cx="171" cy="88" r="62"/><circle class="f-thin" cx="89" cy="88" r="41"/><circle class="f-thin" cx="253" cy="88" r="41"/>'+
+  '<text class="f-txt" text-anchor="middle" x="171" y="94">O</text><text class="f-txt" text-anchor="middle" x="79" y="94">H</text><text class="f-txt" text-anchor="middle" x="263" y="94">H</text>'+
+  '<circle class="f-e" cx="119" cy="80" r="3"/><circle class="f-e" cx="223" cy="80" r="3"/><path class="f-ink" d="m116 94 6 6m0-6-6 6m104-6 6 6m0-6-6 6"/>');
+};
+[
+ ["b1","cells",[
+  {"t":"mcq","tier":"F","fig":"rootProfile","q":"A student says this cell is an animal cell because it has a mitochondrion. Which label gives evidence against their claim?","opts":["C","B","A"],"a":1,"fb":["Both plants and animals have mitochondria.",null,"A nucleus is found in both plant and animal cells."],"why":"B points to a cell wall. Animal cells lack cell walls. A plant cell can have mitochondria even if it has no chloroplasts."},
+  {"t":"mcq","tier":"F","fig":"rootProfile","q":"Which labelled structure is the site of aerobic respiration?","opts":["B","A","C"],"a":2,"fb":["B is the cell wall. It supports the cell.","A is the nucleus. It contains genetic information.",null],"why":"C is a mitochondrion. Mitochondria are the site of aerobic respiration in plant and animal cells."}
+ ]],
+ ["c2","covalent",[
+  {"t":"mcq","tier":"F","fig":"waterMissing","q":"The shared electron pairs are shown. What must be added to complete the dot-and-cross diagram?","opts":["One electron on each hydrogen","Two unshared pairs on oxygen","One more pair in each overlap","Two unshared electrons on oxygen"],"a":1,"fb":["Each hydrogen already has two shared electrons in its first shell.",null,"Each O–H bond needs one shared pair. Both are already shown.","Oxygen supplies one electron to each shared pair. Four of its six outer electrons remain unshared."],"why":"Oxygen has six outer electrons. It shares one with each hydrogen. The other four form two unshared pairs on oxygen."}
+ ]],
+ ["p2","resistance",[
+  {"t":"tap","tier":"F","mode":"spot","fig":"voltmeterPlace","q":"Tap where to connect a voltmeter to measure the potential difference across the resistor.","pts":[[144,20],[311,93],[166,201]],"names":["A, top branch","B, right branch","C, bottom branch"],"a":1,"hint":"Find a branch with one end on either side of the resistor.","why":"At B, each voltmeter lead connects to a different side of the resistor. The voltmeter is in parallel with the resistor."}
+ ]],
+ ["b6","alleles",[
+  {"t":"multi","tier":"F","fig":"punnett","q":"Select every offspring box that shows a mouse with black fur.","opts":["Top left: BB","Top right: Bb","Bottom left: Bb","Bottom right: bb"],"n":3,"a":[0,1,2],"why":"One dominant B allele is enough for black fur. Both Bb boxes count, as does BB. Only bb gives white fur."}
+ ]]
+].forEach(function(entry){
+ var concept=DATA[entry[0]].concepts.find(function(c){return c.id===entry[1];});
+ concept.qs.push.apply(concept.qs,entry[2]);
+});
 
 
 /* ---------- Prepare data ---------- */

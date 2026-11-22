@@ -95,8 +95,10 @@ try{
    assert.equal(await comparison.count(),2);
    for(const diagram of await comparison.all()){
     await diagram.evaluate(img=>img.decode());
-    assert.equal(await diagram.evaluate(img=>getComputedStyle(img).filter),"grayscale(1)");
+    assert.equal(await diagram.evaluate(img=>getComputedStyle(img).filter),"none");
    }
+   await pilotPage.getByRole("checkbox",{name:"Greyscale",exact:true}).check();
+   assert.equal(await comparison.first().evaluate(img=>getComputedStyle(img).filter),"grayscale(1)");
   }
   assert(await pilotPage.getByRole("progressbar",{name:"Lesson progress"}).isVisible());
   assert.equal(await pilotPage.getByRole("progressbar",{name:"Lesson progress"}).getAttribute("value"),"0");
@@ -113,6 +115,7 @@ try{
  await pilotPage.getByText("Read the table",{exact:true}).click();
  assert(await pilotPage.locator(".school-lesson-table").isVisible());
  await guide.getByRole("button",{name:"Check",exact:true}).click();
+ assert.equal(await check.getByRole("button",{name:"Catch-up notes",exact:true}).count(),0);
  assert(await check.getByRole("heading",{name:"What moves through the membrane by osmosis?",exact:true}).isVisible());
  assert.equal(await check.getByRole("button",{name:"Continue",exact:true}).count(),0);
  assert.equal(await check.getByRole("textbox").count(),0);
@@ -136,8 +139,13 @@ try{
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
  await check.getByRole("button",{name:"Continue",exact:true}).click();
  assert(!(await pilotPage.getByRole("heading",{name:"Catch-up notes",exact:true}).isVisible()));
- assert(await guide.getByText("Step 2 of 3",{exact:true}).isVisible());
+ assert(await guide.getByText("Step 2 of 4",{exact:true}).isVisible());
+ assert(await guide.getByRole("heading",{name:"Movement in both directions",exact:true}).isVisible());
  await guide.getByRole("button",{name:"Check",exact:true}).click();
+ assert(!(await check.getByText("Need a clue?",{exact:true}).isVisible()));
+ await check.getByRole("radio",{name:"From B to A",exact:true}).check();
+ await check.getByRole("button",{name:"Check answer",exact:true}).click();
+ assert(await check.getByText("Need a clue?",{exact:true}).isVisible());
  await check.getByRole("radio",{name:"From A to B",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
  await check.getByRole("button",{name:"Continue",exact:true}).click();
@@ -146,15 +154,22 @@ try{
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
  await check.getByRole("radio",{name:"Water moves out by osmosis.",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
- assert.equal(await guide.getByRole("link",{name:/Practise B1/}).count(),0);
+ assert.equal(await guide.getByRole("link",{name:"Revise B1",exact:true}).count(),0);
+ await check.getByRole("button",{name:"Continue",exact:true}).click();
+ await guide.getByRole("button",{name:"Check",exact:true}).click();
+ await check.getByRole("radio",{name:"From the cells into the water",exact:true}).check();
+ await check.getByRole("button",{name:"Check answer",exact:true}).click();
+ await check.getByRole("radio",{name:"From the water into the leaf cells",exact:true}).check();
+ await check.getByRole("button",{name:"Check answer",exact:true}).click();
  await check.getByRole("button",{name:"Continue",exact:true}).click();
  await check.getByText("Try one more on your own",{exact:true}).waitFor();
  await check.getByRole("radio",{name:"From the water into the potato cells",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
  await check.getByRole("button",{name:"Finish catch-up",exact:true}).click();
- assert.equal(await guide.getByRole("link",{name:"Practise B1 in GCSE revision",exact:true}).getAttribute("href"),"/gcse/#topic-b1");
+ assert.equal(await guide.getByRole("link",{name:"Revise B1",exact:true}).getAttribute("href"),"/gcse/#topic-b1");
+ assert.equal(await guide.getByRole("link",{name:/Choose another Year/}).count(),0);
  await pilotPage.reload();
- await guide.getByText("Lesson complete",{exact:true}).waitFor();
+ await guide.getByRole("heading",{name:"Catch-up complete!",exact:true}).waitFor();
  await guide.getByText("Review answers",{exact:true}).click();
  await guide.getByRole("button",{name:"Check 1",exact:true}).click();
  assert(await check.getByText("Water can move in both directions.",{exact:true}).isVisible());
@@ -162,6 +177,14 @@ try{
  assert(await pilotPage.getByRole("link",{name:"Open GCSE revision"}).isVisible());
  await pilotPage.goto(base+"/science-catch-up/?year=11");
  assert(await pilotPage.getByRole("link",{name:"Open GCSE revision"}).isVisible());
+ await pilotPage.evaluate(()=>{window.name="kstest";});
+ await pilotPage.goto(base+"/gcse/#topic-p2");
+ await pilotPage.waitForFunction(()=>!!window.__k);
+ const diagramTasks=await pilotPage.evaluate(()=>window.__k.ev(
+  '[["b1","cells","rootProfile"],["c2","covalent","waterMissing"],["p2","resistance","voltmeterPlace"],["b6","alleles","punnett"]].map(([topic,concept,fig])=>DATA[topic].byId[concept].qs.filter(q=>q.fig===fig).map(q=>q.t+":"+q.a))'
+ ));
+ assert.deepEqual(diagramTasks.slice(0,3),[["mcq:1","mcq:2"],["mcq:1"],["tap:1"]]);
+ assert(diagramTasks[3].includes("multi:0,1,2"));
   await pilotPage.close();
  }
  const desktop=await browser.newPage({viewport:{width:1280,height:900}});

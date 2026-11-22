@@ -1,6 +1,6 @@
 import { readCatchup, saveCatchup } from "./school-catchup-progress.js";
 
-const lessonStages = ["Notice", "Practise", "Apply it"];
+const lessonStages = ["Notice", "Practise", "Apply it", "Try it on your own"];
 
 export function question(prompt, answer, reasoning, ...distractors) {
   return {
@@ -95,9 +95,11 @@ export function mountJourney(host, model, lesson) {
 
   function renderStages() {
     versions.textContent = state.done ? "Lesson complete" : "Step " + (state.step + 1) + " of " + steps.length;
+    versions.classList.toggle("school-visually-hidden", Boolean(state.done));
+    progress.hidden = Boolean(state.done);
     progress.value = state.done ? steps.length : state.step;
     checkList.replaceChildren();
-    const completeCount = state.done ? steps.length : state.step;
+    const completeCount = state.done ? state.step + 1 : state.step;
     if (!state.done) {
       const step = steps[state.step];
       const stage = element("section", "", "school-current-stage");
@@ -105,6 +107,12 @@ export function mountJourney(host, model, lesson) {
       heading.tabIndex = -1;
       stage.append(heading);
       if (step.notice) stage.append(element("p", step.notice));
+      if (step.teach) {
+        const [title, text] = step.teach;
+        const teaching = element("div", "", "school-step-notes");
+        teaching.append(element("h4", title), element("p", text));
+        stage.append(teaching);
+      }
       stage.append(button("Catch-up notes", showEvidence),
         checkButton(state.open ? "Resume check" : "Check", showCheck));
       checkList.append(stage);
@@ -112,9 +120,20 @@ export function mountJourney(host, model, lesson) {
     shortcut.hidden = Boolean(state.done);
     if (state.done) {
       const next = element("div", "", "school-completion");
-      if (code) next.append(link("Practise " + code + " in GCSE revision", "/gcse/#topic-" + code.toLowerCase(), "school-primary"));
-      next.append(link("Choose another Year " + year + " topic", "/science-catch-up/?year=" + year, "school-secondary"));
+      const heading = element("h3", "Catch-up complete!");
+      heading.tabIndex = -1;
+      const tick = element("span", "✓", "school-completion-tick");
+      tick.setAttribute("aria-hidden", "true");
+      heading.prepend(tick);
+      next.append(heading);
+      if (code) next.append(link("Revise " + code, "/gcse/#topic-" + code.toLowerCase(), "school-primary"));
       if (evidence) next.append(button("Catch-up notes", showEvidence));
+      if (completeCount < steps.length) next.append(button("Try the extra check", () => {
+        Object.assign(state, {done: false, step: completeCount});
+        write();
+        renderStages();
+        checkList.querySelector(".school-current-stage h3")?.focus();
+      }));
       checkList.append(next);
     }
     if (completeCount) {
@@ -141,7 +160,7 @@ export function mountJourney(host, model, lesson) {
   }
 
   function currentQuestion() {
-    return !viewOnly && state.repeating && shownIndex === steps.length - 1 && retry ? retry : steps[shownIndex];
+    return !viewOnly && state.repeating && shownIndex === state.step && retry ? retry : steps[shownIndex];
   }
 
   function openCheck(index, review) {
@@ -172,6 +191,13 @@ export function mountJourney(host, model, lesson) {
     heading.tabIndex = -1;
     dialog.replaceChildren(heading);
     if (state.repeating && !viewOnly) heading.before(element("p", "Try one more on your own", "school-check-context"));
+    if (q.image) {
+      const img = element("img", "", "school-question-diagram");
+      [img.src, img.alt] = q.image;
+      img.width = 340;
+      img.height = 220;
+      dialog.append(img);
+    }
     if (viewOnly) {
       dialog.append(element("p", q.answer), element("p", q.reasoning));
       const notes = state.notes?.[shownIndex] || [];
@@ -209,11 +235,7 @@ export function mountJourney(host, model, lesson) {
     const next = button(nextLabel(), advance, "school-primary");
     next.hidden = !state.correct;
     const tools = element("div", "", "school-journey-actions");
-    tools.append(submit, next, button("Catch-up notes", () => {
-      if (!state.correct) state.helped = true;
-      pause();
-      showEvidence();
-    }), button("Save and pause", pause));
+    tools.append(submit, next, button("Save and pause", pause));
     if (shownIndex === steps.length - 1 && !state.repeating) form.append(element("p", "Say how you know, then choose."));
     form.append(choices, result, tools);
     if (state.draft?.trim()) {
@@ -221,8 +243,9 @@ export function mountJourney(host, model, lesson) {
       note.append(element("summary", "Saved note"), element("p", state.draft));
       form.append(note);
     }
-    if (q.hint && !state.repeating) {
-      const hint = element("details");
+    const hint = q.hint && !state.repeating ? element("details") : null;
+    if (hint) {
+      hint.hidden = !state.helped || state.correct;
       hint.append(element("summary", "Need a clue?"), element("p", q.hint));
       hint.open = Boolean(state.hintOpen);
       hint.addEventListener("toggle", () => {
@@ -249,6 +272,7 @@ export function mountJourney(host, model, lesson) {
         (q.options.find(option => option.label === state.selected)?.feedback || "Try a different answer.");
       write();
       result.textContent = state.feedback;
+      if (hint) hint.hidden = state.correct;
       if (state.correct) {
         for (const input of choices.querySelectorAll("input")) input.disabled = true;
         submit.hidden = true;
@@ -279,7 +303,7 @@ export function mountJourney(host, model, lesson) {
       if (atEnd) state.done = true;
       else state.step++;
       pause();
-      checkList.querySelector(state.done ? ".school-completion a" : ".school-current-stage h3")?.focus();
+      checkList.querySelector(state.done ? ".school-completion h3" : ".school-current-stage h3")?.focus();
     }
   }
 
