@@ -1026,26 +1026,43 @@ try{
  await checkReadingSpacing(navPage,"Toy ramp investigation");
  await navPage.emulateMedia({reducedMotion:"no-preference"});
  const oneParagraph=navPage.locator('[data-writing-order="ramp"]');
- await oneParagraph.getByRole("button",{name:"Check the order",exact:true}).click();
- await oneParagraph.getByRole("status").filter({hasText:"Not checked yet. Choose 5 more sentences."}).waitFor();
- for(const start of ["Different cars","These differences","Using the same car each time helps","Using the same car keeps","This makes the comparison"]){
-  await oneParagraph.locator(".writing-order-options").getByRole("button",{name:new RegExp("^"+start)}).click();
+ const checkOrder=activity=>activity.getByRole("button",{name:"Check order",exact:true});
+ const bankCard=(activity,start)=>activity.locator(".writing-order-options").getByRole("button",{name:new RegExp("^"+start)});
+ const slot=(activity,index)=>activity.locator('[data-order-position="'+index+'"]');
+ const placeCard=async(activity,start,index)=>{
+  await bankCard(activity,start).click();
+  await slot(activity,index).locator("[data-order-place]").click();
+ };
+ assert(await checkOrder(oneParagraph).isDisabled());
+ const firstCard=bankCard(oneParagraph,"Different cars");
+ await firstCard.press("Enter");
+ assert.equal(await firstCard.getAttribute("aria-pressed"),"true");
+ assert.equal(await oneParagraph.locator("[data-order-position] [data-order-card]").count(),0);
+ assert.equal(await oneParagraph.locator("[data-order-target]").count(),5);
+ const firstDestination=slot(oneParagraph,0).locator("[data-order-place]");
+ assert(await firstDestination.evaluate(el=>el===document.activeElement));
+ await navPage.keyboard.press("Enter");
+ assert.match(await slot(oneParagraph,0).innerText(),/Different cars/);
+ for(const [i,start] of ["These differences","Using the same car each time helps","Using the same car keeps","This makes the comparison"].entries()){
+  await placeCard(oneParagraph,start,i+1);
  }
- await oneParagraph.getByRole("button",{name:"Check the order",exact:true}).click();
- await oneParagraph.getByRole("status").filter({hasText:"Not quite. Sentence 1"}).waitFor();
+ assert.equal(await oneParagraph.locator("[data-result]").count(),0,"Placing the last card must not mark the answer");
+ await checkOrder(oneParagraph).click();
+ await oneParagraph.getByRole("status").filter({hasText:/Not quite. Review topic sentence/i}).waitFor();
  const rampReview=oneParagraph.locator("[data-order-review]");
  assert.equal(await rampReview.count(),1);
  assert(await rampReview.getByText("Review this sentence",{exact:true}).isVisible());
- assert(await rampReview.getByRole("button",{name:/^Different cars/}).isVisible());
- await oneParagraph.locator(".writing-order-group").getByRole("button",{name:/^Different cars/}).click();
- assert.equal(await oneParagraph.locator(".writing-order-options button").count(),5);
+ await slot(oneParagraph,1).getByRole("button",{name:"Remove · Supporting sentence 1",exact:true}).click();
+ assert.equal(await oneParagraph.locator(".writing-order-options button").count(),1);
  assert.equal(await rampReview.count(),0);
- for(const start of ["Using the same car each time helps","Different cars","These differences","Using the same car keeps","This makes the comparison"]){
-  await oneParagraph.locator(".writing-order-options").getByRole("button",{name:new RegExp("^"+start)}).click();
- }
- await oneParagraph.getByRole("button",{name:"Check the order",exact:true}).click();
+ await slot(oneParagraph,0).locator("[data-order-card]").click();
+ await slot(oneParagraph,1).locator("[data-order-place]").click();
+ await slot(oneParagraph,2).locator("[data-order-card]").click();
+ await slot(oneParagraph,0).locator("[data-order-place]").click();
+ await placeCard(oneParagraph,"These differences",2);
+ await checkOrder(oneParagraph).click();
  await oneParagraph.getByRole("status").filter({hasText:"Correct."}).waitFor();
- assert.equal(await oneParagraph.getByRole("status").getAttribute("data-result"),"correct");
+ assert.equal(await oneParagraph.locator(".writing-order-feedback").getAttribute("data-result"),"correct");
  await oneParagraph.getByText("Read the completed paragraph",{exact:true}).click();
  assert(await oneParagraph.locator(".model").isVisible());
  const spoRamp=navPage.locator(".writing-card").filter({has:oneParagraph});
@@ -1081,16 +1098,15 @@ try{
  await navPage.getByText("Build two paragraphs",{exact:true}).click();
  const twoParagraphs=navPage.locator('[data-writing-order="rocks"]');
  assert.equal(await twoParagraphs.locator(".writing-order-options button").count(),10);
- for(const start of ["The layers","First, loose","As more","Minerals then","Together","The interlocking","As it cooled","First, the molten","The crystals grew","That is how"]){
-  await twoParagraphs.locator(".writing-order-options").getByRole("button",{name:new RegExp("^"+start)}).click();
+ for(const [i,start] of ["The layers","First, loose","As more","Minerals then","Together","The interlocking","As it cooled","First, the molten","The crystals grew","That is how"].entries()){
+  await placeCard(twoParagraphs,start,i);
  }
- await twoParagraphs.getByRole("button",{name:"Check the order",exact:true}).click();
- await twoParagraphs.getByRole("status").filter({hasText:"Not quite. How Sample B formed, sentence 2"}).waitFor();
- await twoParagraphs.locator("[data-order-review]").getByRole("button",{name:/^As it cooled/}).click();
- for(const start of ["First, the molten","As it cooled","The crystals grew","That is how"]){
-  await twoParagraphs.locator(".writing-order-options").getByRole("button",{name:new RegExp("^"+start)}).click();
- }
- await twoParagraphs.getByRole("button",{name:"Check the order",exact:true}).click();
+ await checkOrder(twoParagraphs).click();
+ await twoParagraphs.getByRole("status").filter({hasText:/Not quite. Review supporting sentence 1.*how Sample B formed/i}).waitFor();
+ await slot(twoParagraphs,7).locator("[data-order-card]").click();
+ await slot(twoParagraphs,6).locator("[data-order-place]").click();
+ assert.match(await slot(twoParagraphs,7).innerText(),/As it cooled/);
+ await checkOrder(twoParagraphs).click();
  await twoParagraphs.getByRole("status").filter({hasText:"Correct."}).waitFor();
  assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Sentence ordering overflows at phone width");
  await screen(navPage,"writing-sentence-order-mobile");
@@ -1458,6 +1474,22 @@ try{
  await navPage.setViewportSize({width:390,height:844});
  await navPage.goto(base+"/diagram-practice/#filtration");
  await navPage.waitForURL(/\/ks3\/lesson\/\?topic=separating-techniques/);
+ const desktopSequence=desktop.locator("[data-separation-order]");
+ await desktop.goto(base+"/ks3/lesson/?topic=separating-techniques");
+ await desktopSequence.locator(".writing-order-board").evaluate(el=>el.scrollIntoView({block:"center",behavior:"instant"}));
+ const firstGrip=bankCard(desktopSequence,"Pour the mixture").locator(".writing-order-grip");
+ const firstSlot=slot(desktopSequence,0);
+ const gripBox=await firstGrip.boundingBox(), slotBox=await firstSlot.boundingBox();
+ await desktop.mouse.move(gripBox.x+gripBox.width/2,gripBox.y+gripBox.height/2);
+ await desktop.mouse.down();
+ await desktop.mouse.move(slotBox.x+slotBox.width/2,slotBox.y+slotBox.height/2,{steps:10});
+ await desktop.mouse.up();
+ assert.match(await firstSlot.innerText(),/Pour the mixture/);
+ for(const [i,start] of ["Collect the salt","Gently heat","Let the concentrated"].entries()){
+  await placeCard(desktopSequence,start,i+1);
+ }
+ await checkOrder(desktopSequence).click();
+ await desktopSequence.locator(".writing-order-feedback").filter({hasText:"Correct."}).waitFor();
  const visualLab=navPage.locator('diagram-practice[topic="filtration"]');
  const labels=visualLab.locator(".dp-question").first();
  await labels.locator("summary").click();
@@ -1507,6 +1539,22 @@ try{
  await device.send("Input.dispatchTouchEvent",{type:"touchMove",touchPoints:[center(t2)]});
  await device.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});
  assert.match(await touchLabels.locator(".dp-placements").innerText(),/A · Cathode/);
+ await touch.goto(base+"/teaching/focused-writing/order/");
+ const touchOrder=touch.locator('[data-writing-order="ramp"]');
+ await touchOrder.locator(".writing-order-board").evaluate(el=>el.scrollIntoView({block:"start",behavior:"instant"}));
+ const grip=bankCard(touchOrder,"Different cars").locator(".writing-order-grip");
+ const touchSlot=slot(touchOrder,0);
+ const sourcePoint=center(await grip.boundingBox());
+ const targetPoint=center(await touchSlot.boundingBox());
+ assert(targetPoint.y<844,"First destination needs to be within the touch viewport");
+ await device.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[sourcePoint]});
+ await device.send("Input.dispatchTouchEvent",{type:"touchMove",touchPoints:[targetPoint]});
+ await device.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});
+ assert.match(await touchSlot.innerText(),/Different cars/);
+ await bankCard(touchOrder,"Using the same car each time helps").tap();
+ await touchSlot.locator("[data-order-place]").tap();
+ assert.match(await touchSlot.innerText(),/Using the same car each time helps/);
+ assert(await bankCard(touchOrder,"Different cars").isVisible(),"The displaced sentence should return to its bank");
  await touch.close();
 
  await navPage.goto(base+"/diagram-practice/#breathing");
