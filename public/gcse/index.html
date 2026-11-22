@@ -5994,7 +5994,7 @@ function showHome(focus){
   var k=sci.topics[0][0].charAt(0);
   h+='<section class="hsci '+k+'" aria-labelledby="hs-'+k+'"><h2 id="hs-'+k+'">'+sci.name+'</h2><div class="two">'+PAPERS.filter(function(p){return p.id.charAt(0)===k;}).map(function(p){return '<a class="btn" href="#paper-'+p.id+'" aria-label="'+esc(p.name)+'">'+esc(p.name.replace(sci.name+" ",""))+'</a>';}).join("")+'</div></section>';
  });
- h+='</div><section class="kr-entry"><h2>Flashcards and spaced revision</h2><p>Recall essential knowledge across Biology, Chemistry and Physics. Review missed cards again after a delay.</p><div class="kr-actions"><a class="btn primary" href="#flashcards">Open flashcards</a><a class="btn" href="#flashreview">Review for today</a></div></section>';
+ h+='</div><section class="kr-entry"><h2>Flashcards and spaced revision</h2><p>Recall essential knowledge across Biology, Chemistry and Physics. Review missed cards again after a delay.</p><div class="kr-actions"><a class="btn primary" href="#flashcards">Flashcards</a><a class="btn" href="#flashreview">Review for today</a></div></section>';
  render(h,focus);
  const tierSelect=main.querySelector("#study-tier");
  if(tierSelect){
@@ -6017,12 +6017,14 @@ function mountStudyFinder(){
  const groups=SCI.map(sci=>({id:sci.name,label:sci.name}));
  const topicKeywords={b1:"osmosis microscopy cells mitosis",b2:"amylase lipase digestion blood heart",b4:"photosynthesis respiration",
   c3:"moles mass concentration",c8:"chromatography separation",p2:"circuits current voltmeter resistance",p3:"density pressure particles"};
- const entries=()=>SCI.flatMap(sci=>sci.topics.map(([id,code,title])=>{
+ const entries=()=>SCI.flatMap(sci=>sci.topics.flatMap(([id,code,title])=>{
   const paper=PAPERS.find(p=>p.topics.includes(id));
   const actions=[["Learn and practise","#topic-"+id],["Flashcards","#cards-"+id]];
   if(paper)actions.push(["Mixed questions","#mix-"+paper.id+"-"+id]);
-  return {group:sci.name,title,context:code+" · "+(paper?paper.name:sci.name),
-   keywords:[topicKeywords[id]||"",...availList(id).map(c=>c.title)].join(" "),actions};
+  const context=code+" · "+(paper?paper.name:sci.name);
+  return [{group:sci.name,title,context,keywords:topicKeywords[id]||"",actions},
+   ...availList(id).map(concept=>({group:sci.name,title:concept.title,context:title,concept:true,
+    actions:[["Practise questions","#lesson-"+id+"-"+concept.id]]}))];
  }));
  finder.mount(main,{groups,entries});
 }

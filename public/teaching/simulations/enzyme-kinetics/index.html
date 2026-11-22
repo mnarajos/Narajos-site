@@ -100,6 +100,10 @@
   .btn-row{display:flex;gap:8px}
   button.act{flex:1;border:0;border-radius:10px;padding:11px;font-size:14px;font-weight:700;cursor:pointer;
     display:flex;align-items:center;justify-content:center;gap:7px;transition:.15s}
+  #btn-std{flex:0 0 auto;min-height:44px}
+  .explore-first[hidden], .panel [hidden], body:not([data-level="1"]) #explore-first{display:none !important}
+  .explore-first a{color:var(--accent-deep);font-weight:700}
+  .explore-first p{margin:.25rem 0 .45rem}
   button.act.primary{background:var(--accent);color:#fff}
   button.act.primary:hover{background:var(--accent-deep)}
   button.act.ghost{background:#eef3f4;color:var(--ink);border:1px solid var(--line)}
@@ -239,7 +243,8 @@
       <button class="act primary" id="btn-run"><span id="run-ic">▶</span><span id="run-tx">Start</span></button>
       <button class="act ghost" id="btn-reset" title="Clear everything and run again from the start">↻ Restart</button>
     </div>
-    <button class="act ghost" id="btn-std" style="font-size:12.5px;padding:8px" title="Return every control to the reference conditions that define 1.00 AU">⚖ Set standard conditions (1.00 AU)</button>
+    <div class="explore-first" id="explore-first"><p><strong>Start with starch.</strong> Predict what will fit the active site. Press Start and watch one product form.</p><a href="/teaching/enzyme-investigations/">Choose a guided investigation</a></div>
+    <button class="act ghost lvl2" id="btn-std" style="font-size:12.5px;padding:8px" title="Return every control to the reference conditions that define 1.00 AU">⚖ Set standard conditions (1.00 AU)</button>
 
     <div>
       <div class="sectlabel">Concentration of enzymes</div>
@@ -249,7 +254,7 @@
       </div>
     </div>
 
-    <div class="ctrl">
+    <div class="ctrl lvl2">
       <div class="head"><label for="s-temp">Temperature</label><span class="read" id="r-temp">37 °C</span></div>
       <input type="range" id="s-temp" class="track-temp" min="0" max="80" value="37" step="1">
       <div class="sub"><span class="optimum-note" id="opt-temp">The optimum temperature for this enzyme is 37 °C</span>. Higher temp = faster-moving molecules = more collisions… until the enzyme is denatured.</div>
@@ -261,7 +266,7 @@
       <div class="sub"><span class="optimum-note" id="opt-ph">The optimum pH for this enzyme is pH 7</span>. Away from the optimum the active site changes shape, so the substrate no longer fits.</div>
     </div>
 
-    <div class="ctrl">
+    <div class="ctrl lvl2">
       <div class="head"><label for="s-sub">Concentration of substrate</label><span class="read" id="r-sub">20</span></div>
       <input type="range" id="s-sub" min="4" max="40" value="20" step="1">
       <div class="sub">Fixed chamber volume, so this really is a concentration. More substrate → more collisions → faster reaction. As it is used up, the reaction slows and stops.</div>
@@ -270,7 +275,7 @@
     <div class="graph-card lvl2">
       <div class="head"><span class="k">Reaction rate over time</span><span class="pk" id="g-max"></span></div>
       <canvas id="graph" role="img" aria-label="Reaction rate over time. Open the table for the recorded rates."></canvas>
-      <div class="gcap"><b>Height</b> = rate of reaction in arbitrary units, where <b>1.00 AU</b> is the rate under standard conditions (20 substrate, 4 enzymes, 37 °C, optimum pH). <b>Left to right</b> = time since Start. The rate begins high and falls as substrate is used up.</div>
+      <div class="gcap"><b>Height</b> = rate of reaction in arbitrary units, where <b>1.00 AU</b> is the rate under standard conditions (20 substrate, 4 enzymes, 37 °C, optimum pH). <b>Left to right</b> = time since Start. The rate builds as products first form, can fluctuate, and falls as substrate is used up.</div>
       <details class="graph-readout" id="graph-readout"><summary>Recorded rates as a table</summary>
         <table><thead><tr><th scope="col">Sample</th><th scope="col">Rate / AU</th></tr></thead><tbody id="rate-rows"></tbody></table>
       </details>
@@ -971,7 +976,7 @@ function frame(){
 const guidedTasks={
   ks3:{level:1,title:"Which enzyme digests starch?",steps:"Predict what will happen. Compare four protease molecules with four amylase molecules in separate runs. Keep starch selected. Pause before restarting each run and compare the product counts."},
   gcse:{level:2,title:"Compare temperatures",steps:"Predict first. Set standard conditions before each run and change only the temperature. Compare 20 °C and 37 °C. Record the peak rate, and repeat to check how consistent your results are."},
-  alevel:{level:2,title:"Test for saturation",steps:"Predict the shape of the initial-rate curve. Reset to standard conditions before each run, then vary starting substrate between 5, 20 and 40. Keep enzyme concentration, pH and temperature fixed. Pause each run and compare its peak modelled rate."}
+  alevel:{level:2,title:"Test for saturation",steps:"Predict how peak rate will change as you add more substrate. Reset to standard conditions before each run, then vary starting substrate between 5, 20 and 40. Keep enzyme concentration, pH and temperature fixed. Use the same run time and compare the highest rate displayed for each trial."}
 };
 function boot(){
   const activity=new URLSearchParams(location.search).get("activity");
@@ -981,6 +986,7 @@ function boot(){
     document.getElementById("guided-title").textContent=task.title;
     document.getElementById("guided-steps").textContent=task.steps;
     document.getElementById("guided-return").href="/teaching/enzyme-investigations/"+activity+"/";
+    document.getElementById("explore-first").hidden=true;
     document.getElementById("guided-task").hidden=false;
     sizeCanvas();
   }

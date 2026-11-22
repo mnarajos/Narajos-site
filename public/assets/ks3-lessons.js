@@ -233,7 +233,7 @@ export const curriculum = {
       ],
       "Rubidium appears directly below potassium in Group 1. Predict one of its chemical properties and explain the link to its position.",
       "Rubidium is likely to be reactive. It belongs to the same group as lithium, sodium and potassium, which are reactive metals."),
-    { unit: "Motion and Pressure", title: "Particles and gas pressure", href: "/ks3/particles/" },
+    { unit: "Motion and Pressure", title: "Gas pressure, speed and moments", href: "/ks3/particles/" },
     { unit: "Adaptation and Inheritance", title: "Adaptation and variation", href: "/ks3/adaptation/" },
     lesson("separating-techniques", "Separating Techniques", "Why does a filter catch sand but let dissolved salt through?",
       { type: "flow", caption: "Salt water containing sand passes through a filter", panels: ["Sand + salt water", "Filter paper", "Sand stays in the paper. Salt solution passes through."] },
@@ -326,7 +326,7 @@ export const curriculum = {
       ["An electric current is a flow of charge. A working cell can drive a current when there is a complete conducting path through the circuit.",
        "Opening the switch breaks the path. A gap anywhere in the loop stops current flowing around it, wherever the lamp sits."],
       [
-        check("Which circuit can light its lamp?", "Circuit B", "Circuit B has a closed switch and a complete conducting path.", [
+        check("Before you move either switch, which circuit can light its lamp?", "Circuit B", "Circuit B has a closed switch and a complete conducting path.", [
           ["Circuit A", "The switch in circuit A has a gap. The path is incomplete."],
           ["Both circuits", "Circuit A has a gap. Only B provides a complete conducting path."]
         ]),
@@ -356,3 +356,40 @@ export const curriculum = {
       "Zinc, iron, copper. Zinc displaces iron, so it is more reactive than iron. Iron displaces copper, so copper is the least reactive of the three.")
   ]
 };
+
+export const motionLessons = [
+  lesson("journey-speed", "Motion and Pressure · Speed", "How can you compare speeds on a journey?",
+    { type: "bars", caption: "Distance covered in the same 5 seconds", max: 20, bars: [["Runner",10,"m"],["Cyclist",20,"m"]] },
+    "Who travelled further? Which part of the comparison stayed the same?",
+    ["Average speed is the distance travelled divided by the time taken. If distance is in metres and time in seconds, speed is in m/s.",
+     "In the diagram the runner covers 10 m in 5 s, an average of 2 m/s. The cyclist covers 20 m in 5 s, an average of 4 m/s."],
+    [
+      check("An athlete covers 15 m in 5 s. What is their average speed?", "3 m/s", "15 m divided by 5 s gives 3 m/s.", [
+        ["75 m/s", "Divide distance by time to find metres covered per second."],
+        ["10 m/s", "Subtracting the numbers does not give the distance travelled each second."]
+      ]),
+      check("A skateboarder and a cyclist each travel 30 m. The cyclist takes less time. Which has the higher average speed?", "The cyclist", "For the same distance, a shorter time gives a higher average speed.", [
+        ["The skateboarder", "The skateboarder needs more time to cover the same distance."],
+        ["They have the same average speed", "You also need the travel times. The cyclist covers the distance faster."]
+      ])
+    ],
+    "One pupil walks 60 m in 30 s. Another walks 100 m in 50 s. Compare their average speeds and explain.",
+    "Both average 2 m/s. The second pupil goes further, but also takes proportionally longer."),
+  lesson("balanced-moments", "Motion and Pressure · Moments", "How can you balance a seesaw?",
+    { type: "moments", caption: "A simple seesaw with equal weights and a movable load" },
+    "Keep both weights the same. Predict what happens when you move the right weight further from the pivot.",
+    ["A force can turn an object about a pivot. The turning effect is called a moment. It depends on the force and its perpendicular distance from the pivot.",
+     "Both forces here act downwards. As you move the right weight further out, its moment increases. The board balances when the moments in opposite directions are equal."],
+    [
+      check("Where should the right weight go to balance the left weight?", "The same distance from the pivot", "With equal forces, equal distances give equal moments.", [
+        ["Closer to the pivot than the left weight", "The same weight closer to the pivot produces a smaller moment."],
+        ["Anywhere on the right", "Position matters. The turning effect depends on distance from the pivot."]
+      ]),
+      check("The left moment is 4 N m. The right moment is 6 N m. Which end drops?", "The right end", "The moment on the right is larger.", [
+        ["The left end", "The larger moment belongs to the right end."],
+        ["Neither end", "The moments would need to be equal for balance."]
+      ])
+    ],
+    "A 20 N weight hangs 1 m to the left of a pivot. You have a 10 N weight on the right. How far from the pivot should it go to balance?",
+    "Put it 2 m from the pivot. Each turning effect is 20 N m, in opposite directions.")
+];

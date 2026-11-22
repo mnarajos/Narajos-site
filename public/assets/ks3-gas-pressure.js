@@ -48,6 +48,11 @@
       context.beginPath();
       context.arc(particle.x, particle.y, radius, 0, 2 * Math.PI);
       context.fill();
+      if (particle.hit > 0) {
+        context.lineWidth = 1.5;
+        context.strokeStyle = "#51250e";
+        context.stroke();
+      }
     }
 
     context.fillStyle = "#24343b";

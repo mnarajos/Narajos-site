@@ -71,7 +71,7 @@ function showHome(){
  h+='<a class="k-more-units k-skills-entry" href="#skills"><span>'+kIcon("calc")+'</span><span><strong>Skills practice</strong><small>F170 and F171 · Worked examples and fresh practice sets</small></span><span aria-hidden="true">›</span></a>';
  h+='<h2 class="k-subhead">Other ways to revise F170</h2><section class="k-home-actions">';
  h+='<a href="#flashcards" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("layers")+'</span><strong>Flashcards</strong><small>Recall and spaced review</small></a>';
- h+='<a href="#topics" class="k-mini-action learn"><span class="k-mini-symbol">'+kIcon("book")+'</span><strong>Learn a topic</strong><small>Short explanations</small></a>';
+ h+='<a href="#catchup/f170" class="k-mini-action learn"><span class="k-mini-symbol">'+kIcon("book")+'</span><strong>Catch up</strong><small>Short explanations</small></a>';
  h+='<a href="#challenge/f170/weak" class="k-mini-action fix"><span class="k-mini-symbol">'+kIcon("rotate")+'</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
  h+='</section>';
  h+='<h2 class="k-subhead">Other ways to revise F171</h2><section class="k-home-actions">';
@@ -92,16 +92,18 @@ function mountStudyFinder(){
  const progressions=window.KeystoneHumanProgressions;
  if(!finder||!progressions)return;
  const groups=[{id:"f170",label:"F170 · Fundamentals of human biology"},{id:"f171",label:"F171 · Health and disease"}];
+ const companion=window.KeystoneHumanCatchup;
  const entries=progressions.points.map(point=>{
   const section=point.unit==="f170"?bySection[point.section]:null;
   const catchup=window.KeystoneHumanCatchup&&window.KeystoneHumanCatchup.linkFor(point);
   const actions=[["Practise","#challenge/"+point.unit+"/"+point.id]];
-  if(catchup)actions.push(["Catch up","#"+catchup]);
+  if(catchup)actions.push([catchup.endsWith("/"+point.section)?"Catch up":"Related catch-up","#"+catchup]);
   if(section)actions.push(["Flashcards","#cards/"+section.id]);
   else if(f171Decks.some(deck=>deck[0]===point.section))actions.push(["Flashcards","#cards/f171-"+point.section]);
   return {group:point.unit,title:point.statement,context:point.unit.toUpperCase()+" · "+point.section,
    keywords:section?section.title:"",actions};
  });
+ if(companion)entries.unshift(...companion.searchTopics());
  finder.mount(main,{groups,entries});
 }
 function showTopics(){render(crumb("home","Overview")+'<div class="hero"><div class="eyebrow">F170 topic map</div><h1>Explore the specification</h1><p class="lead">Select an area to study its learning sections. This pilot does not yet cover every individual breadth-and-depth statement.</p></div><div class="grid">'+areas.map(areaHtml).join("")+'</div>'+sourceNote());}

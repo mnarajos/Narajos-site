@@ -117,7 +117,7 @@
 .ks3-bar{display:block;height:.65rem;background:#478d83;border-radius:4px}
 .ks3-day-night{display:flex;align-items:center;gap:.6rem;font-weight:700}
 .ks3-earth-globe{display:flex;align-items:center;justify-content:space-evenly;position:relative;width:7.5rem;height:7.5rem;border-radius:50%;background:linear-gradient(90deg,#f5d592 50%,#324f61 50%);font-size:.9rem;color:#253134}
-.ks3-earth-globe span:last-child{color:white}
+.ks3-earth-globe span:nth-child(2){color:white}
 .ks3-earth-globe::after{content:"";position:absolute;left:24%;top:29%;width:.4rem;height:.4rem;border-radius:50%;background:#253134}
 .ks3-circuit{width:min(100%,10rem)}
 .ks3-circuit svg{width:100%;height:auto;display:block}
@@ -153,3 +153,15 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .writing-order-controls button,.writing-order-group button{min-height:44px;border:1px solid #a1b5af;border-radius:7px;background:#fff;padding:.35rem .6rem;color:#24343b;font:inherit;cursor:pointer}
 .writing-order-controls button:first-child{background:#eef7f3;border-color:#276a62;font-weight:650}
 .writing-order-controls button:focus-visible,.writing-order-group button:focus-visible{outline:3px solid #c9611f;outline-offset:2px}
+.ks3-model-button{min-height:44px;border:1px solid #779b92;border-radius:7px;padding:.45rem .65rem;background:#fff;color:#214c47;font:inherit;font-weight:650;cursor:pointer}
+.ks3-model-button[aria-pressed="true"]{background:#d1ece2}
+.ks3-model-button:focus-visible{outline:3px solid #c9611f;outline-offset:3px}
+.ks3-model-controls{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+.ks3-model-controls strong{flex:0 0 100%}
+.ks3-model-report{flex-basis:100%;font-weight:600;color:#23433e;margin:.25rem 0 0}
+.ks3-earth-globe::after{content:none}
+.ks3-location{position:absolute;width:.64rem;height:.64rem;border:2px solid white;border-radius:50%;background:#263b40;transform:translate(-50%,-50%)}
+.ks3-seesaw{flex-basis:100%;height:7rem;max-width:23rem;padding:2.6rem 0 0;position:relative}
+.ks3-seesaw-board{height:6px;background:#276a62;position:relative;transform-origin:center}
+.ks3-seesaw-board span{position:absolute;bottom:6px;left:22%;transform:translateX(-50%);background:#fff;border-radius:4px;border:1px solid #779b92;padding:.15rem .3rem;white-space:nowrap}
+.ks3-seesaw-pivot{position:absolute;left:50%;transform:translateX(-50%);top:2.9rem;font-weight:650}

@@ -89,7 +89,18 @@ function intro(unit){
  if(skills&&!knowledge)h+='<a class="k-more-units" href="#skills/'+unit+'"><span>'+icon("calc")+'</span><span><strong>Skills practice</strong><small>Worked examples and fresh practice sets</small></span>'+icon("chevron")+'</a>';
  h+='<div class="k-headrow"><h2>Choose a topic</h2><small>'+areas.length+' areas</small></div><div class="k-areas">';
  areas.forEach(function(a){var n=filter(unit,"a"+a).length;h+='<a href="#challenge/'+unit+'/a'+a+'" class="k-area" style="--topic-color:'+colors[a]+'"><span class="k-area-num">'+a+'</span><span class="k-area-label"><strong>'+esc(areaName(unit,a))+'</strong><small>'+n+' questions</small></span>'+icon("chevron")+'</a>';});
- h+='</div><p class="k-source">'+(knowledge?"Independent knowledge practice only; assignment-specific topic areas are excluded.":f?"Includes all four F170 areas.":"F171 sample bank is not yet a complete specification resource.")+'</p>'+source()+'</div>';show(h);
+ h+='</div>';
+ if(unit==="f171"){
+  h+='<details class="k-coverage"><summary>What practice is available?</summary><ul>';
+  areas.forEach(function(a){
+   var qs=filter(unit,"a"+a);
+   var cases=qs.filter(function(q){return q.caseTitle;}).length;
+   var evidence=qs.filter(function(q){return q.evidenceTable||q.figure||q.graph||q.type==="number";}).length;
+   h+='<li><strong>'+esc(areaName(unit,a))+'</strong>. '+evidence+' diagram, data or calculation questions. '+cases+' extended case '+(cases===1?"response":"responses")+'.</li>';
+  });
+  h+='</ul><p>Counts include alternative versions of some questions. Topic areas have different depths of coverage.</p></details>';
+ }
+ h+='<p class="k-source">'+(knowledge?"Independent knowledge practice only; assignment-specific topic areas are excluded.":f?"Includes all four F170 areas.":"F171 sample bank is not yet a complete specification resource.")+'</p>'+source()+'</div>';show(h);
 }
 function landing(){
  var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">Keystone Human Biology</div><h1>Choose an exam unit</h1><p>Short, varied questions first. See an explanation when you need it.</p></div><div class="k-unit-tiles">'+["f170","f171"].map(function(u){var s=unitStats(u);return '<a href="#challenge/'+u+'" class="k-unit-tile '+(u==="f170"?"teal":"blue")+'"><span class="k-icon">'+icon(u==="f170"?"brain":"flask")+'</span><span><small>'+u.toUpperCase()+' · 60-mark paper</small><strong>'+esc(u==="f170"?"Fundamentals of human biology":"Health and disease")+'</strong><em>'+s.questions+' questions · '+s.seen+' attempted'+(u==="f171"?" · preview":"")+'</em></span>'+icon("chevron")+'</a>';}).join("")+'</div>'+source()+'</div>';show(h);
@@ -327,6 +338,13 @@ function matchForm(q,answer){
  return '<label class="k-match"><span>'+esc(p[0])+'</span><select data-match="'+i+'" aria-label="Match for '+esc(p[0])+'"><option value="">Choose a match</option>'+answer.targetOrder.map(function(j){return '<option value="'+j+'"'+(String(vals[i])===String(j)?" selected":"")+'>'+esc(q.pairs[j][1])+'</option>';}).join("")+'</select></label>';
  }).join("")+'</div>';
 }
+function evidenceTable(table){
+ return '<div class="k-evidence-table" tabindex="0" role="region" aria-label="'+esc(table.caption)+'"><table><caption>'+esc(table.caption)+'</caption><thead><tr>'+
+  table.columns.map(function(heading){return '<th scope="col">'+esc(heading)+'</th>';}).join("")+
+  '</tr></thead><tbody>'+table.rows.map(function(row){
+   return '<tr><th scope="row">'+esc(row[0])+'</th>'+row.slice(1).map(function(value){return '<td>'+esc(value)+'</td>';}).join("")+'</tr>';
+  }).join("")+'</tbody></table></div>';
+}
 function figure(name,reveal){
  var tag='<div class="k-figure">';
  if(name==="cell")tag+='<svg viewBox="0 0 440 210" role="img" aria-label="A schematic human cell with label A pointing to one structure. A nucleus and several organelles are shown."><ellipse cx="187" cy="105" rx="137" ry="82" fill="#e2f3f0" stroke="#167a77" stroke-width="5"/><circle cx="164" cy="105" r="37" fill="#d9d3f4" stroke="#7652ac" stroke-width="3"/><circle cx="170" cy="100" r="11" fill="#9679cb"/><ellipse cx="249" cy="78" rx="24" ry="13" fill="#efbd77" stroke="#98692c" stroke-width="3" transform="rotate(-24 249 78)"/><path d="M236 74q12 6 25 0" stroke="#98692c" stroke-width="2" fill="none"/><path d="M291 52L367 35" stroke="#1e5360" stroke-width="3"/><text x="374" y="37" font-size="25" font-weight="800" fill="#1e5360">A</text></svg>';
@@ -474,6 +492,7 @@ function drawQuestion(){
  if(q.type==="number"||q.calculator)h+='<div class="k-calculator-note">'+icon("calc")+'<span>Calculator may help</span></div>';
  if(q.figure&&!showing)h+=figure(q.figure);
  if(q.graph&&skills)h+=skills.graphHTML(q.graph);
+ if(q.evidenceTable)h+=evidenceTable(q.evidenceTable);
  if(isQuickCheck(q))h+='<p class="k-quick-label"><strong>Quick check:</strong> Apply the same idea independently.</p>';
  if(!showing){h+=inputForm(q,a);
   if(used)h+='<div class="k-hint-box" role="note"><strong>Hint '+used+' of '+availableHints.length+'</strong>'+availableHints.slice(0,used).map(function(t){return '<p>'+esc(t)+'</p>';}).join('')+'</div>';

@@ -176,6 +176,18 @@ var diagrams={
    text(240,267,"Interacting functions, not separate isolated organs",12,500),
    285)
  },
+ alveolus:{
+  label:"From an alveolus to the blood",
+  caption:"At the gas exchange surface, oxygen moves from alveolar air into the blood and carbon dioxide moves the other way. The diagram shows one alveolus and one nearby capillary.",
+  image:svg("An alveolar air space lies beside a blood capillary. The gas exchange barrier is thin. Oxygen moves from air into blood and carbon dioxide moves from blood into air.",
+   '<rect x="28" y="22" width="424" height="113" rx="22" fill="#e1f2f8" stroke="#5691a7" stroke-width="2"/>'+
+   '<rect x="28" y="152" width="424" height="79" rx="22" fill="#fbe3e4" stroke="#ac6672" stroke-width="2"/>'+
+   '<path d="M41 144H439" stroke="#6e828d" stroke-width="3" stroke-dasharray="7 4"/>'+
+   text(240,53,"Air inside the alveolus",18,700)+text(240,204,"Blood in the capillary",18,700)+
+   text(145,101,"Oxygen",16,650)+arrow(168,112,168,177,palettes.teal)+
+   text(339,101,"Carbon dioxide",16,650)+arrow(316,177,316,110,palettes.purple),
+   252)
+ },
  reflex:{
   label:"Reflex arc",
   caption:"A reflex response follows a defined pathway from receptor to effector. Sensory and motor neurones communicate through the CNS.",
@@ -256,9 +268,10 @@ var curated={
  "f170/3.1.1":{diagram:"glucose"},
  "f170/1.2.1":{diagram:"organisation"},
  "f170/2.1.2":{diagram:"heartAnatomy",links:["cardiac"]},
+ "f170/2.1.3":{diagram:"alveolus",check:["What if there is less alveolar surface area?","If other conditions are the same, less surface is available for diffusion at one time. Gas exchange can therefore be slower."]},
  "f170/2.2.1":{diagram:"systems"},
  "f170/3.2.1":{diagram:"reflex"},
- "f170/3.3.1":{diagram:"reproduction"},
+ "f170/3.3.1":{diagram:"reproduction",outside:true},
  "f171/a3":{diagram:"vaccines"},
  "f171/3.2.2":{diagram:"vaccines"},
  "f172/a1":{diagram:"dna"},
@@ -272,6 +285,8 @@ function render(course,id){
   var d=diagrams[item.diagram];
   html+='<figure class="kc-visual"><div class="kc-visual-heading"><span class="kc-visual-icon" aria-hidden="true">◈</span><strong>'+d.label+'</strong></div><div class="kc-visual-art">'+d.image+'</div><figcaption>'+d.caption+'</figcaption></figure>';
  }
+ if(item.check)html+='<details class="kc-visual-check"><summary>'+item.check[0]+'</summary><p>'+item.check[1]+'</p></details>';
+ if(item.outside)html+='<details class="kc-visual-check"><summary>Compare with a real tissue section</summary><p>Open the ovary slides. Find a follicle and describe one feature that makes it recognisable. Return to the drawing to locate the tissue in the whole system.</p><p><a href="https://histologyguide.com/slidebox/18-female-reproductive-system.html" target="_blank" rel="noopener noreferrer">Open the virtual slides at Histology Guide (opens in a new tab)</a></p></details>';
  if(item.links&&item.links.length){
   html+='<div class="kc-simulation-links"><p>Explore this idea in a simulation</p><div class="kc-simulation-actions">';
   item.links.forEach(function(key){

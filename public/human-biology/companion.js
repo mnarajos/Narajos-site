@@ -290,7 +290,7 @@ var units=[{id:"f170",title:"Fundamentals of human biology",areas:root.areas.map
 other.units.forEach(function(u){units.push({id:u.id,title:u.title,areas:u.areas.map(function(t,i){return{code:"a"+i,title:t};}).filter(function(a,i){return a.title&&notes[u.id]&&notes[u.id][a.code];})});});
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
 function crumb(to,text){return '<p class="crumb"><a href="#'+esc(to)+'">← '+esc(text)+'</a></p>';}
-function actions(back,practice){return '<div class="k-quick-buttons"><a class="k-shortcut secondary" href="#'+esc(back)+'"><span class="k-mini-symbol">←</span><span><strong>Back to topics</strong></span></a><a class="k-shortcut primary" href="#'+esc(practice)+'"><span class="k-mini-symbol">✓</span><span><strong>Try questions</strong><small>Check what you remember</small></span></a></div>';}
+function actions(back,practice){return '<div class="k-quick-buttons"><a class="k-shortcut secondary" href="#'+esc(back)+'"><span class="k-mini-symbol">←</span><span><strong>Back to topics</strong></span></a><a class="k-shortcut primary" href="#'+esc(practice)+'"><span class="k-mini-symbol">✓</span><span><strong>Practise questions</strong><small>Check what you remember</small></span></a></div>';}
 function showHome(render){
  var h='<div class="k-wrap">'+crumb("home","Home")+'<div class="k-unit-hero"><div class="k-eyebrow">Your learning companion</div><h1>Catch up and understand</h1><p>Choose one idea. Read short steps, then practise. You can always start with questions instead.</p></div><div class="k-unit-tiles">';
  units.forEach(function(u){
@@ -328,7 +328,7 @@ function showConcept(unit,id,step,render){
  var topic,points,practice;
  if(unit==="f170"){
   var item=sectionById[id];if(!item)return showUnit(unit,render);
-  topic=item.section.title;points=item.section.points;practice="cards/"+id;
+  topic=item.section.title;points=item.section.points;practice="practice/"+id;
  }else{
   var item=(notes[unit]||{})[id];if(!item)return showUnit(unit,render);
   topic=item.title;points=item.lines;practice="challenge/"+unit+"/"+(unit==="f171"&&/^3\\.2\\./.test(id)?"a3":id);
@@ -340,7 +340,8 @@ function showConcept(unit,id,step,render){
  h+='<section class="paper panel"><h2>Key idea '+(step+1)+'</h2><p class="k-catchup-text">'+esc(points[step])+'</p></section>';
  if(window.KeystoneCatchupVisuals)h+=window.KeystoneCatchupVisuals.render(unit,id);
  h+='<div class="k-catchup-controls">'+(step>0?'<a class="button secondary" href="'+key+'/'+(step-1)+'">Previous</a>':'')+
- (step<points.length-1?'<a class="button primary" href="'+key+'/'+(step+1)+'">Next key idea →</a>':'<a class="button primary" href="#'+practice+'">Try questions →</a>')+'</div>';
+ (step<points.length-1?'<a class="button primary" href="'+key+'/'+(step+1)+'">Next key idea →</a>':'<a class="button primary" href="#'+practice+'">Practise questions →</a>')+'</div>';
+ if(unit==="f170"&&step===points.length-1)h+='<p><a href="#cards/'+esc(id)+'">Flashcards for this topic</a></p>';
  h+='<p class="k-small-note">This is a short recap to support teaching and revision—not a complete first lesson or assessed-coursework guidance.</p>';
  if(step===points.length-1&&window.KeystoneHumanChallenge&&window.KeystoneHumanChallenge.hasResume()){
   var back=window.KeystoneHumanChallenge.resumeRoute();
@@ -366,5 +367,14 @@ window.KeystoneHumanCatchup={route:function(hash,render){
  if(q.section&&notes[q.unit]&&notes[q.unit][q.section])return "catchup/"+q.unit+"/"+q.section;
  var a="a"+q.area;
  return notes[q.unit]&&notes[q.unit][a]?"catchup/"+q.unit+"/"+a:null;
+},searchTopics:function(){
+ var f170=Object.values(sectionById).map(function(item){
+  var s=item.section;
+  return {group:"f170",title:s.title,context:"F170 · "+s.id,concept:true,actions:[["Catch up","#catchup/f170/"+s.id],["Flashcards","#cards/"+s.id]]};
+ });
+ var f171=Object.entries(notes.f171).map(function(entry){
+  return {group:"f171",title:entry[1].title,context:"F171 · "+entry[0],concept:true,actions:[["Catch up","#catchup/f171/"+entry[0]]]};
+ });
+ return f170.concat(f171);
 },count:function(){return {units:units.length,concepts:Object.values(notes).reduce(function(n,x){return n+Object.keys(x).length;},0)+Object.keys(sectionById).length};}};
 })();

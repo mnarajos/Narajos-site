@@ -268,3 +268,11 @@ main[tabindex="-1"]:focus{outline:none}
 .k-progression-list{display:grid;gap:12px;padding:0 12px 12px}
 .k-progression-list .k-skill-card{box-shadow:none;border-radius:12px}
 .k-sequence-note{padding:12px 16px;border-left:3px solid var(--brand);background:var(--brandlight);border-radius:8px}
+
+.k-evidence-table{overflow-x:auto;margin:.7rem 0 1rem}
+.k-evidence-table table{border-collapse:collapse;max-width:100%}
+.k-evidence-table caption{text-align:left;font-weight:700;padding:.25rem 0 .4rem}
+.k-evidence-table th,.k-evidence-table td{padding:.4rem .55rem;border:1px solid var(--line);text-align:left}
+.k-evidence-table thead{background:var(--brandlight)}
+.k-coverage{margin-top:1rem}
+.k-coverage summary{min-height:40px;font-weight:700;cursor:pointer}
