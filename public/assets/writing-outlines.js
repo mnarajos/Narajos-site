@@ -98,6 +98,20 @@ function mount(closing, id, guide) {
   mountIntroduction(card, id);
   const development = mountDevelopment(card, id, fields, guide, resetOutlineReport);
   const plan = closing.closest(".writing-step");
+  const draft = document.getElementById(id + "-paragraph")?.closest(".writing-step");
+  const referenceSource = card.querySelector(".writing-visual, .writing-data")
+    ?? card.closest("#ramp-model")?.querySelector(".ks3-illustration");
+  if (referenceSource) {
+    const label = referenceSource.matches(".writing-data") ? "View results" : "View diagram";
+    for (const step of [plan, draft].filter(Boolean)) {
+      const reference = element("details");
+      reference.className = "writing-reference";
+      const copy = referenceSource.cloneNode(true);
+      for (const img of copy.querySelectorAll("img")) img.loading = "lazy";
+      reference.append(element("summary", label), copy);
+      step.querySelector("summary").after(reference);
+    }
+  }
   let scaffold = plan.querySelector("[data-outline-scaffold]");
   if (!scaffold) {
     scaffold = element("div");

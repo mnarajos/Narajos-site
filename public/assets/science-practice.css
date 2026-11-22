@@ -449,3 +449,8 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .rock-comparison h3{margin:.2rem 0 .55rem}
 .rock-comparison img{aspect-ratio:4/3;object-fit:contain;background:#f0f3f1}
 @media(max-width:640px){.rock-comparison{grid-template-columns:minmax(0,1fr)}}
+.writing-reference{margin:.4rem 0 .7rem;padding:.3rem .6rem;border:1px solid #becdc9;border-radius:var(--site-radius,8px);background:#f3f8f5}
+.writing-reference summary{min-height:44px;align-content:center;font-weight:650;cursor:pointer}
+.writing-reference figure{max-width:30rem;margin:.4rem 0}
+.writing-reference .writing-data{margin:.4rem 0}
+.rock-next,.rock-navigation .btn,.catchup-finish .btn{min-height:44px;cursor:pointer}
