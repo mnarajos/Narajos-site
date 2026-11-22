@@ -54,11 +54,25 @@ try {
 
   await page.setViewportSize({ width: 320, height: 780 });
   await page.goto(base + "/");
-  const support = page.getByRole("region", { name: "Support the development of Narajos" });
+  const support = page.getByRole("region", { name: "Support the development of these resources" });
   assert.equal(await support.getByRole("link", { name: "Support on Ko-fi" }).getAttribute("href"), "/support/");
+  assert.match(await support.locator("p").textContent(), /Contributions are neither requested nor accepted from students\.$/);
+  assert.equal(await page.getByRole("link", { name: "Catch up Science · Years 7–11" }).getAttribute("href"), "/science-catch-up/");
   assert.equal(await page.getByRole("heading", { name: "Biology Simulations", exact: true }).count(), 1);
   assert.equal(await page.getByRole("link", { name: /Put digestive enzymes to the test/ }).count(), 1);
   assert(await page.locator(".home-option--sim p").evaluate(p => parseFloat(getComputedStyle(p).fontSize) >= 16));
+
+  await page.goto(base + "/teaching/focused-writing/order/");
+  await page.getByRole("button", { name: "Choose sentence for topic sentence" }).click();
+  const sentencePicker = page.getByRole("dialog", { name: "Topic sentence" });
+  assert(await sentencePicker.isVisible());
+  assert(await sentencePicker.evaluate(dialog => dialog.scrollWidth <= dialog.clientWidth + 2), "Sentence picker needs horizontal scrolling at 320px");
+  await page.addScriptTag({ content: axe.source });
+  const pickerIssues = await page.evaluate(async () => {
+    const result = await window.axe.run({ runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] } });
+    return result.violations.map(rule => rule.id);
+  });
+  assert.deepEqual(pickerIssues, [], "Accessibility findings while the sentence picker is open");
 
   await page.goto(base + "/teaching/");
   assert.equal(await page.locator('main a[href="/support/"]').count(), 1);

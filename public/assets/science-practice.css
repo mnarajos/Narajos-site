@@ -410,3 +410,48 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .writing-card .writing-help p,.writing-card .writing-model p,.writing-order-feedback{font-size:1rem;line-height:1.55}
 
 .practice-page :is(textarea,input,select){scroll-margin-block:5rem 1rem}
+
+.paragraph-board{grid-template-columns:minmax(0,1fr)}
+.paragraph-bank{display:none}
+.paragraph-bank h4{margin:.25rem 0 .5rem}
+.paragraph-drag-card{display:block;padding:.5rem .65rem;border:1px solid #7f9a94;border-radius:7px;background:#fff;cursor:grab}
+.paragraph-order .paragraph-slots li[hidden],.paragraph-order .writing-order-options li[hidden]{display:none}
+.paragraph-slots .paragraph-boundary{border-inline-start:4px solid #4e736b}
+.paragraph-slots button{width:100%;padding:.55rem .7rem}
+.paragraph-slots button[draggable=true]{cursor:grab}
+.paragraph-slots button:focus-visible{cursor:pointer}
+.paragraph-position-feedback{margin:0;padding:.2rem .35rem;color:#613717}
+.paragraph-order .paragraph-status:empty{margin:0}
+.paragraph-restart summary,.paragraph-picker summary,.paragraph-model summary{min-height:44px;align-content:center;cursor:pointer}
+.paragraph-picker{width:min(36rem,calc(100% - 1.25rem));max-height:min(82dvh,40rem);margin:auto;padding:1rem;border:1px solid #7f9a94;border-radius:12px;color:var(--ink,#24343b);background:#fcfcfa;overscroll-behavior:contain}
+.paragraph-picker::backdrop{background:rgba(24,37,42,.6)}
+.paragraph-picker h3{margin:0 0 .65rem}
+.paragraph-picker ul button{width:100%;padding:.6rem .75rem}
+.paragraph-picker-tools{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
+.paragraph-hint{background:#eef6f3;border-radius:7px;padding:.2rem .6rem}
+.paragraph-order button{overflow-wrap:anywhere}
+@media(min-width:761px) and (pointer:fine){
+  .paragraph-board{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:.9rem}
+  .paragraph-bank{display:block;position:sticky;top:4.8rem}
+}
+
+.rock-practice h2{margin-top:0}
+.rock-photo{margin:0 0 .85rem;max-width:32rem}
+.rock-photo img{display:block;width:100%;height:auto;border-radius:var(--site-radius,8px)}
+.rock-photo figcaption{padding-top:.4rem;font-size:.875rem;line-height:1.5}
+.rock-roles{margin:.7rem 0;padding-left:1.4rem}
+.rock-roles li+li{margin-top:.28rem}
+.rock-next,.rock-navigation{margin-top:.65rem}
+.rock-navigation{display:flex;align-items:baseline;flex-wrap:wrap;gap:.5rem}
+.rock-navigation .rock-next{margin:0}
+.rock-navigation [hidden],.rock-practice [hidden],.rock-practice[hidden]{display:none}
+.rock-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;align-items:start}
+.rock-comparison h3{margin:.2rem 0 .55rem}
+.rock-comparison img{aspect-ratio:4/3;object-fit:contain;background:#f0f3f1}
+@media(max-width:640px){.rock-comparison{grid-template-columns:minmax(0,1fr)}}
+.writing-reference{margin:.4rem 0 .7rem;padding:.3rem .6rem;border:1px solid #becdc9;border-radius:var(--site-radius,8px);background:#f3f8f5}
+.writing-reference summary{min-height:44px;align-content:center;font-weight:650;cursor:pointer}
+.writing-reference figure{max-width:30rem;margin:.4rem 0}
+.writing-reference .writing-data{margin:.4rem 0}
+.rock-next,.rock-navigation .btn,.catchup-finish .btn{min-height:44px;cursor:pointer}
+.paragraph-practice-page{scroll-behavior:auto}

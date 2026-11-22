@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-GB">
+<html lang="en-GB" class="paragraph-practice-page">
 <head>
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,17 +28,24 @@
   <div class="page-hero">
    <p class="breadcrumb"><a href="/teaching/focused-writing/">← Focused Writing</a></p>
    <h1>Order science sentences</h1>
-   <p class="lead">Build a paragraph with an opening, supporting sentences, and an ending.</p>
+   <p class="lead">See how a science paragraph works, then build two about rocks.</p>
   </div>
   <div class="practice-stack">
-   <details class="practice-card writing-card" open>
-    <summary>Build one paragraph</summary>
-    <toy-ramp></toy-ramp>
+   <section id="ramp-model" class="practice-card writing-card" aria-labelledby="ramp-model-title">
+    <h2 id="ramp-model-title">I do · Model a paragraph</h2>
+    <p>A pupil wants to find out whether ramp height changes how far a toy car rolls. <strong>Why use the same car each time?</strong></p>
     <figure class="ks3-illustration">
-     <img src="/assets/ks3-diagrams/ramps.svg" alt="A green car starts on a low ramp and a blue car starts on a higher ramp. Both ramps meet the same floor.">
+     <img src="/assets/writing-prompts/same-car-ramps.svg" alt="The same toy car sits on a low ramp and on a higher ramp.">
     </figure>
-    <p data-writing-cue="respond">A pupil wants to find out whether ramp height changes how far a toy car rolls. Why should they use the same car each time? Start by explaining how this helps the pupil interpret the results.</p>
-    <div data-writing-order="ramp"></div>
+    <div data-ramp-model></div>
+    <details class="writing-step">
+     <summary>Try the ramp model</summary>
+     <toy-ramp></toy-ramp>
+    </details>
+    <details class="writing-step" id="ramp-practice">
+     <summary>Practise with the ramp</summary>
+     <div class="writing-card" data-ramp-practice>
+     <div data-writing-order="ramp"></div>
     <details class="writing-step">
      <summary class="writing-cue" data-writing-cue="notes">Plan your paragraph</summary>
      <label for="ramp-topic">Topic sentence:</label>
@@ -61,17 +68,47 @@
       </div>
      </div>
     </details>
-   </details>
-   <details class="practice-card writing-card">
-    <summary>Build two paragraphs</summary>
-    <figure class="ks3-illustration">
-     <img src="/assets/ks3-diagrams/rock-samples.svg" alt="Sample A has bands of cemented grains. Sample B contains interlocking crystals.">
+     </div>
+    </details>
+   </section>
+   <section class="practice-card writing-card rock-practice" id="sandstone" aria-labelledby="sandstone-title">
+    <h2 id="sandstone-title">We do · Sedimentary rock</h2>
+    <p><strong>How did this sedimentary rock form?</strong></p>
+    <figure class="rock-photo">
+     <a href="/assets/writing-prompts/sandstone-specimen.webp" aria-label="View a larger photograph of the sandstone"><img src="/assets/writing-prompts/sandstone-specimen.webp" loading="lazy" width="840" height="558" alt="Close-up of sandstone with thin, parallel light and dark layers and a grainy surface."></a>
+     <figcaption>Look for thin layers and a grainy surface. <a href="/assets/writing-prompts/sandstone-specimen.webp">View larger photo</a>.<br><a href="https://commons.wikimedia.org/wiki/File:Horizontally-laminated_sandstone_1.jpg">James St. John, Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> · Resized</figcaption>
     </figure>
-    <p>How did the two rocks form? Complete the paragraph about Sample A first, then Sample B. Each paragraph needs its own opening and ending.</p>
-    <div data-writing-order="rocks"></div>
-   </details>
+    <ul class="rock-roles">
+     <li><strong>Topic sentence</strong> Give the main explanation.</li>
+     <li><strong>Supporting sentences</strong> Explain what happens to the sediment, step by step.</li>
+     <li><strong>Concluding sentence</strong> Bring the steps together and link them to the rock.</li>
+    </ul>
+    <div data-writing-order="sandstone"></div>
+    <button class="btn btn-primary rock-next" type="button" data-rock-next="granite" hidden>Continue to granite <span aria-hidden="true">→</span></button>
+   </section>
+   <section class="practice-card writing-card rock-practice" id="granite" aria-labelledby="granite-title" hidden>
+    <h2 id="granite-title">You do · Igneous rock</h2>
+    <p><strong>How did this igneous rock form?</strong></p>
+    <figure class="rock-photo">
+     <a href="/assets/writing-prompts/granite-specimen.webp" aria-label="View a larger photograph of the granite"><img src="/assets/writing-prompts/granite-specimen.webp" loading="lazy" width="880" height="660" alt="A granite specimen made of pale and dark mineral crystals that meet at irregular edges."></a>
+     <figcaption>Look for pale and dark crystals that fit together. <a href="/assets/writing-prompts/granite-specimen.webp">View larger photo</a>.<br><a href="https://commons.wikimedia.org/wiki/File:Granite.jpg">Eurico Zimbres (FGEL/UERJ), Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by-sa/2.0/br/">CC BY-SA 2.0 Brazil</a> · Resized</figcaption>
+    </figure>
+    <div data-writing-order="granite"></div>
+    <div class="rock-navigation">
+     <button class="btn btn-secondary" type="button" data-rock-next="sandstone">Back to sandstone</button>
+     <button class="btn btn-primary rock-next" type="button" data-rock-next="rock-review" hidden>Compare both paragraphs <span aria-hidden="true">→</span></button>
+    </div>
+   </section>
+   <section class="practice-card writing-card rock-practice" id="rock-review" aria-labelledby="rock-review-title" hidden>
+    <h2 id="rock-review-title">Review · Compare the paragraphs</h2>
+    <p>Both paragraphs open with the main idea, explain the science in order and end by linking the explanation to what you can see.</p>
+    <div class="rock-comparison" data-rock-comparison></div>
+    <div class="rock-navigation">
+     <button class="btn btn-secondary" type="button" data-rock-next="granite">Back to granite</button>
+    </div>
+   </section>
   </div>
-  <p class="catchup-finish"><a href="/teaching/focused-writing/ks3/">Write your own outline from a diagram</a></p>
+  <p class="catchup-finish"><a class="btn btn-primary" href="/teaching/focused-writing/ks3/">Now plan your own paragraph <span aria-hidden="true">→</span></a></p>
  </main>
  <footer class="footer"><div class="wrap footer-inner"><p>© 2026 Narajos <em class="site-pronunciation">It’s /nerr-RA-hoss/.</em></p><a href="/privacy/">Privacy</a></div></footer>
 </body>
