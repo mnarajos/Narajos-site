@@ -419,7 +419,16 @@ export async function checkALevelExam(browser, base) {
       runOnly: ["color-contrast", "aria-valid-attr-value"]
     })).violations.map(x => x.id)), []);
     await page.addStyleTag({ content: "html{font-size:200%} .al-journey-stage p,.al-journey-stage .btn{font-size:1rem!important}" });
-    assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 3), "Enlarged text caused page overflow");
+    const reflow = await page.evaluate(async () => {
+      await document.fonts.ready;
+      const width = document.documentElement.scrollWidth;
+      const offenders = [...document.querySelectorAll("body *")].filter(element =>
+        element.clientWidth > 1 && (element.scrollWidth > element.clientWidth + 3 ||
+          element.getBoundingClientRect().right > innerWidth + 3))
+        .slice(0, 15).map(element => [element.tagName, element.className, element.clientWidth, element.scrollWidth]);
+      return { width, viewport: innerWidth, offenders };
+    });
+    assert(reflow.width <= reflow.viewport + 3, "Enlarged text caused page overflow: " + JSON.stringify(reflow));
     const cdp = await page.context().newCDPSession(page);
     await cdp.send("Emulation.setPageScaleFactor", {pageScaleFactor: 2});
     assert.equal(await page.evaluate(() => visualViewport.scale), 2);

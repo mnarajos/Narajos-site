@@ -478,3 +478,26 @@ main:has(.al-catchup-journey) > h1 {
   border: 0;
   padding: 0;
 }
+
+.al-exam,
+.al-catchup-journey {
+  overflow-wrap: anywhere;
+}
+.al-journey-stage .al-controls > button {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+@media (max-width: 480px) {
+  header .brand {
+    min-inline-size: 0;
+    max-inline-size: 100%;
+  }
+  header .brand .btxt {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+  .al-exam .al-stages li,
+  .al-catchup-journey .al-stages li {
+    max-inline-size: 100%;
+  }
+}
