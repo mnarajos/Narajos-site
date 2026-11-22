@@ -195,7 +195,7 @@ try{
   await desktop.locator(".k-feedback.correct").waitFor();
   if(i===0){
    await desktop.getByRole("button",{name:"Listen to the feedback"}).click();
-   assert((await desktop.evaluate(()=>window.narajosSpeech.at(-1))).includes("Expected answer"));
+   assert.match(await desktop.evaluate(()=>window.narajosSpeech.at(-1)),/expected answer/i);
   }
   if(i===2){
    await desktop.reload();await desktop.locator(".k-feedback.correct").waitFor();
