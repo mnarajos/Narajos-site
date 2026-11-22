@@ -423,7 +423,7 @@ function showConcept(unit,id,step,render,review,simulationStage){
    points.map(function(point){return "<li>"+esc(point)+"</li>";}).join("")+"</ul></details>";
   var sim=lesson.simulation&&window.KeystoneReproductionSimulation;
   var interactive=sim?'<details class="hb-inline-model"'+(simulationStage?' open':'')+'><summary>Open the reproductive pathway model</summary>'+sim.render()+'</details>':"";
-  render('<div class="k-wrap k-catchup-concept">'+crumb("catchup/"+unit,u.title)+
+  render('<div class="k-wrap k-catchup-concept" data-unit="'+unit+'">'+crumb("catchup/"+unit,u.title)+
    '<div class="k-eyebrow">'+unitKind(unit)+'</div><h1>'+esc(topic)+'</h1>'+
    teaching.render(lesson,{inline:lesson.visual==="model"?"":visual,method:skillLinks(unit,id,lesson),modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:recap+related})+'</div>');
   teaching.mount(unit+"/"+lessonId,lesson,simulationStage?1:review);

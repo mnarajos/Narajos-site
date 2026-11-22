@@ -33,6 +33,7 @@
     prior: ["f172/a1", "Review genes and alleles"],
     explain: ["Genotype names the alleles. Phenotype is an observable characteristic. For this fictional single-gene trait, one R allele gives the dominant phenotype. A carrier with Rr can pass on the recessive r allele."],
     table: {caption: "Cross between Rr and Rr", head: ["One parent's gametes", "Other parent's R", "Other parent's r"], rows: [["R", "RR", "Rr"], ["r", "Rr", "rr"]]},
+    focusCells: [[], ["0:0", "0:1", "1:0", "1:1"], ["0:0", "0:1", "1:0"]],
     model: ["Put the possible gametes from each parent on the outside of the square. Each carries either R or r.", "Combine alleles. The four equally likely boxes give RR, Rr, Rr and rr.", "If you know an offspring shows the dominant phenotype, remove rr. Two of the three remaining outcomes are Rr, so the conditional carrier probability is 2/3."],
     skills: ["genetics"],
     guided: choice("Use the worked cross. An offspring shows the dominant phenotype. What is the probability that it has two R alleles?", 1,

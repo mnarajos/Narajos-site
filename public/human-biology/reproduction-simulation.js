@@ -48,9 +48,9 @@ function guideMarkup(){
   checkpoints.map(step=>'<option value="'+step.id+'">'+step.title+'</option>').join("")+'</select>'+
   '<form><fieldset><legend></legend><div class="krp-options"></div></fieldset>'+
   '<button class="krp-btn" type="submit">Check prediction</button></form>'+
-  '<p class="krp-prediction" role="status"></p>'+
+  '<p class="krp-prediction" role="status" aria-atomic="true"></p>'+
   '<details class="krp-anatomy-note krp-explanation"><summary>Review this stage</summary><p></p></details>'+
-  '<p class="krp-observation" role="status"></p>'+
+  '<p class="krp-observation" role="status" aria-atomic="true"></p>'+
   '<button class="krp-btn" type="button" data-next-checkpoint hidden>Next checkpoint</button>'+
   '<a data-f175-apply href="#challenge/f175/f175-transport?from=catchup/f175/a1" hidden>Apply to a different situation</a></details>';
 }
@@ -323,7 +323,7 @@ function mount(host,initialStep,returnLink){
    q("#krp-follicle circle:first-child").setAttribute("r",String(13+18*fraction));
   },function(){
    state.phase="mature";seen.add("follicle");update();
-   status("The follicle has matured in this simplified model. A naturally occurring LH surge normally triggers ovulation. Press LH surge.");
+   status("The follicle has matured. The LH surge control is now available.");
    offerFocus(btn.lh);
   });
  }
@@ -348,7 +348,7 @@ function mount(host,initialStep,returnLink){
   moveFocus(from);
   frameView("sperm",state.spermSide);
   var path=q("#krp-sperm-"+state.spermSide);positionAt(group.sperm,path,0);update();
-  status("Sperm have entered the vagina. One representative sperm is shown moving through the cervical canal and uterine cavity towards an oviduct; most sperm do not complete this journey.");
+  status("Follow one representative sperm from the vagina through the cervical canal and uterus. Many sperm do not reach an oviduct.");
   transport(group.sperm,path,3500,function(){
    state.sperm="oviduct";seen.add("transport");update();
    status("The representative sperm has reached an oviduct. Fertilisation is possible only if a viable secondary oocyte is present in that oviduct.");
@@ -380,7 +380,7 @@ function mount(host,initialStep,returnLink){
   transport(group.embryo,path,2400,function(){
    state.phase="ready-to-implant";seen.add("fertilisation");seen.add("development");
    show(divisions,false);show(blastocyst,true);update();
-   status("The embryo has reached the uterus and develops into a blastocyst around this stage. A blastocyst may attach to the endometrium several days after fertilisation. Select possible implantation to show that later event.");
+   status("The blastocyst is now shown in the uterus. You can show one possible later outcome at the uterine lining.");
    offerFocus(btn.implant);
   },function(fraction){if(fraction>.3)show(divisions,true);});
  }
