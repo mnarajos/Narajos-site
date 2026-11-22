@@ -49,7 +49,8 @@ const ramp = {
   success: "The opening answers the question, the middle explains the control, and the ending says what the comparison can show."
 };
 
-const rockSteps = ["sandstone", "granite"];
+const rocks = { sandstone, granite };
+const rockSteps = [...Object.keys(rocks), "rock-review"];
 const rockProgress = "narajos-paragraph-order:rock-step";
 const activities = {};
 const stages = rockSteps.map(id => document.getElementById(id));
@@ -58,19 +59,43 @@ const transitions = [...document.querySelectorAll("[data-rock-next]")];
 function updateTransitions() {
   for (const control of transitions) {
     const from = control.closest("section").id;
-    const onward = control.dataset.rockNext !== "sandstone";
-    control.hidden = onward && !activities[from]?.completed;
+    control.hidden = Object.hasOwn(rocks, from) && control.dataset.rockNext !== "sandstone" && !activities[from].completed;
   }
 }
 
 function showStage(id, focus) {
-  if (!rockSteps.includes(id) || id !== "sandstone" && !activities.sandstone.completed) id = "sandstone";
+  if (!rockSteps.includes(id) || !activities.sandstone.completed) id = "sandstone";
+  else if (id === "rock-review" && !activities.granite.completed) id = "granite";
+  if (id === "rock-review" && !comparison.children.length) fillComparison();
   for (const stage of stages) stage.hidden = stage.id !== id;
   try { localStorage.setItem(rockProgress, id); } catch { /* Stages work without storage. */ }
   if (focus) {
     const heading = document.getElementById(id).querySelector("h2");
     heading.tabIndex = -1;
     heading.focus();
+  }
+}
+
+const comparison = document.querySelector("[data-rock-comparison]");
+
+function fillComparison() {
+  const captions = {
+    sandstone: ["Sandstone", "Deposition, compaction and cementation"],
+    granite: ["Granite", "Cooling, crystal growth and solidification"]
+  };
+  for (const [id, { cards }] of Object.entries(rocks)) {
+    const [name, process] = captions[id];
+    const panel = document.createElement("article");
+    const heading = document.createElement("h3");
+    heading.textContent = name;
+    const mechanism = document.createElement("p");
+    mechanism.textContent = process;
+    const paragraph = document.createElement("p");
+    paragraph.className = "model";
+    paragraph.textContent = cards.join(" ");
+    const figure = document.querySelector("#" + id + " .rock-photo").cloneNode(true);
+    panel.append(heading, figure, mechanism, paragraph);
+    comparison.append(panel);
   }
 }
 

@@ -445,3 +445,7 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .rock-navigation{display:flex;align-items:baseline;flex-wrap:wrap;gap:.5rem}
 .rock-navigation .rock-next{margin:0}
 .rock-navigation [hidden],.rock-practice [hidden],.rock-practice[hidden]{display:none}
+.rock-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;align-items:start}
+.rock-comparison h3{margin:.2rem 0 .55rem}
+.rock-comparison img{aspect-ratio:4/3;object-fit:contain;background:#f0f3f1}
+@media(max-width:640px){.rock-comparison{grid-template-columns:minmax(0,1fr)}}
