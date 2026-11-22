@@ -264,7 +264,7 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .writing-mark-list{padding-left:1.35rem}
 .writing-mark-list li{margin:.3rem 0}
 .writing-mark-list span{display:block}
-.writing-mark-list [data-review-state="credited"] strong{color:#20564f}
+.writing-mark-list :is([data-review-state="matched"],[data-review-state="detected"]) strong{color:#20564f}
 .writing-mark-list [data-review-state="revise"] strong{color:#79411d}
 .writing-versions{margin:.25rem 0}
 .writing-versions dt{font-weight:700}

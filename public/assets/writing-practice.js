@@ -46,11 +46,13 @@ for (const activity of activities) {
       activity.dataset.firstSentence = first;
       try { sessionStorage.setItem(key, first); } catch (_) {}
     }
-    const credits = criteria.filter(item => item.state === "credited").length;
-    const next = criteria.find(item => item.state === "revise") || criteria.find(item => item.state === "compare");
-    const summary = credits + " of " + criteria.length + " points confirmed";
-    status.textContent = summary + (next ? " so far. " : ". ");
-    status.textContent += next ? next.feedback : "Read your sentence back to check it makes sense.";
+    const data = criteria.filter(item => item.kind === "data");
+    const reasoning = criteria.filter(item => item.kind === "reasoning");
+    const summary = [];
+    if (data.length) summary.push(data.filter(item => item.state === "matched").length + " of " + data.length + " data results matched.");
+    if (reasoning.length) summary.push(reasoning.some(item => item.state === "detected")
+      ? "Possible reasoning link found. Compare it with the model." : "Compare your reasoning with the model.");
+    status.textContent = summary.join(" ");
     results.replaceChildren(...criteria.map(createRow));
     results.hidden = false;
     model.hidden = false;
@@ -77,19 +79,19 @@ for (const button of document.querySelectorAll("[data-use-sentences]")) {
       return;
     }
 
-    const confirmed = Array.from(card.querySelectorAll("[data-writing-exercise]"))
+    const checkedSentences = Array.from(card.querySelectorAll("[data-writing-exercise]"))
       .filter(section => section.dataset.writingKind !== "transfer")
       .map(section => {
         const answer = section.querySelector("textarea").value.trim();
         return answer && answer === section.dataset.checkedSentence && reviewWriting(section.dataset.writingExercise, section.dataset.writingKind, answer)
-          .every(item => item.state === "credited") ? answer : "";
+          .every(item => item.state === "matched" || item.state === "detected") ? answer : "";
       }).filter(Boolean);
-    if (!confirmed.length) {
-      status.textContent = "Check a practice sentence first. When the point is confirmed, you can bring it into the draft.";
+    if (!checkedSentences.length) {
+      status.textContent = "Check a practice sentence and use its feedback before adding it to the draft.";
       return;
     }
 
-    paragraph.value = confirmed.map(text => /[.!?]$/.test(text) ? text : text + ".").join(" ");
+    paragraph.value = checkedSentences.map(text => /[.!?]$/.test(text) ? text : text + ".").join(" ");
     paragraph.dispatchEvent(new Event("input", { bubbles: true }));
     status.textContent = "Added. Use your plan to explain the remaining ideas.";
     paragraph.focus();
@@ -100,14 +102,17 @@ for (const button of document.querySelectorAll("[data-use-sentences]")) {
 export function createRow(criterion) {
   const row = document.createElement("li");
   const status = document.createElement("strong");
-  const labels = { credited: "Credited", revise: "Revise", compare: "Compare with model" };
+  const labels = {
+    matched: "Matches the data",
+    detected: "Possible link found",
+    revise: criterion.kind === "reasoning" ? "Check for a possible conflict" : "Recheck the data",
+    compare: "Compare with model"
+  };
   status.textContent = labels[criterion.state] + " · " + criterion.label;
   row.dataset.reviewState = criterion.state;
   row.append(status);
-  if (criterion.state === "credited") {
-    const feedback = document.createElement("span");
-    feedback.textContent = criterion.feedback;
-    row.append(feedback);
-  }
+  const feedback = document.createElement("span");
+  feedback.textContent = criterion.feedback;
+  row.append(feedback);
   return row;
 }

@@ -28,7 +28,7 @@ for (const area of document.querySelectorAll("[data-writing-check]")) {
   marked.className = "writing-mark-list";
   const detail = document.createElement("details");
   const summary = document.createElement("summary");
-  summary.textContent = "Word and figure checks";
+  summary.textContent = "Words and figures found";
   const guidance = report.querySelector("p");
   detail.append(summary, guidance, results);
   report.append(focus, marked, detail);
@@ -73,6 +73,7 @@ for (const area of document.querySelectorAll("[data-writing-check]")) {
     const separate = /\n[ \t]*\n|(?:^|\n)[ \t]*(?:[-*•]|\d+[.)])[ \t]+/.test(draft);
     const sentences = draft.split(/[.!?]+(?=\s|$)/).filter(part => part.trim());
     status.textContent = separate ? messages.separate : sentences.length < 3 ? messages.short : messages.connected;
+    if (criteria.some(item => item.kind === "reasoning")) status.textContent += " Compare any reasoning links with the model.";
     if (next) status.textContent += " " + next.feedback;
     report.hidden = false;
   });

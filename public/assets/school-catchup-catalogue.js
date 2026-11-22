@@ -36,7 +36,11 @@ const gcseYears = {
 
 const topicYears = Object.keys(gcseYears).filter(number => gcseYears[number].some(([code]) => code === selectedCode));
 const year = query.get("year") || topicYears[0];
-const lessonsByCode = Object.groupBy(Object.entries(gcseCatchup), ([, lesson]) => lesson.code);
+const lessonsByCode = Object.create(null);
+for (const entry of Object.entries(gcseCatchup)) {
+  const code = entry[1].code;
+  (lessonsByCode[code] ||= []).push(entry);
+}
 
 function element(tag, text, className) {
   const el = document.createElement(tag);
