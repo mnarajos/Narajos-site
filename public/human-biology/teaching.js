@@ -72,7 +72,7 @@
         escape(lesson.activate[1]) + '</p>' + (lesson.prior ?
           '<a href="#catchup/' + escape(lesson.prior[0]) + '">' + escape(lesson.prior[1]) + '</a>' : '') + '</details>' : '';
     const explanation = '<section class="paper panel hb-teach-explain"><h2>Understand the idea</h2>' +
-      paragraphs(lesson.explain) + context.inline + '</section>';
+      paragraphs(lesson.explain) + table(lesson.compare) + context.inline + '</section>';
     const model = lesson.model?.length ?
       '<details class="paper panel hb-teach-stage"><summary>I do · ' + escape(lesson.modelTitle || "Follow a worked example") +
       '</summary>' + context.modelVisual + figure(lesson.photo) + table(lesson.table) +
@@ -163,6 +163,7 @@
           state.hint = (state.hint || 0) + 1;
         } else {
           state.revealed = true;
+          state.note = "";
           state.outcome ||= textarea ? "selfReview" : "explained";
         }
         save(key, record);

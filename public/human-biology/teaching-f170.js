@@ -83,6 +83,15 @@ window.KeystoneHumanLessons = {
         "Particles move randomly. In diffusion, more particles move down the concentration gradient than move the other way, giving net movement. Some solutes diffuse through membrane proteins.",
         "Osmosis is net movement of water through a partially permeable membrane from higher to lower water potential. Active transport uses energy and membrane proteins to move a substance against its gradient."
       ],
+      compare: {
+        caption: "Read a membrane example by comparing both sides",
+        head: ["Particle", "Net movement", "What enables movement"],
+        rows: [
+          ["Oxygen", "Higher to lower oxygen concentration", "Directly through the lipid bilayer"],
+          ["Water", "Higher to lower water potential", "Partially permeable membrane, often via water channels"],
+          ["Ion in active uptake", "Lower to higher ion concentration", "A transporter and an energy source"]
+        ]
+      },
       modelTitle: "Decide which way particles move overall",
       nodes: ["Compare oxygen on both sides", "Check the membrane", "Predict net movement"],
       model: [

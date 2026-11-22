@@ -236,10 +236,10 @@ function runRoute(){
 }
 function showLeave(callback){
  var modal=document.getElementById("leave-dialog");
- pending=callback;modal.hidden=false;
+ pending=callback;var returnFocus=document.activeElement;modal.hidden=false;
  var keep=document.getElementById("leave-stay"),go=document.getElementById("leave-confirm");
  keep.focus();
- keep.onclick=function(){modal.hidden=true;pending=null;};
+ keep.onclick=function(){modal.hidden=true;pending=null;if(returnFocus&&returnFocus.isConnected)returnFocus.focus();};
  go.onclick=function(){var cb=pending;pending=null;modal.hidden=true;active=null;if(window.KeystoneHumanChallenge)window.KeystoneHumanChallenge.pause();if(cb)cb();};
 }
 document.addEventListener("click",function(e){
@@ -251,7 +251,15 @@ document.addEventListener("click",function(e){
  keys.forEach(function(k){try{localStorage.removeItem(k);}catch(_){}});
  location.reload();
 });
-document.addEventListener("keydown",function(e){if(e.key==="Escape"){var m=document.getElementById("leave-dialog");if(!m.hidden){m.hidden=true;pending=null;document.getElementById("leave-stay").blur();}}});
+document.addEventListener("keydown",function(e){
+ var modal=document.getElementById("leave-dialog");
+ if(!modal||modal.hidden)return;
+ var keep=document.getElementById("leave-stay"),go=document.getElementById("leave-confirm");
+ if(e.key==="Escape"){e.preventDefault();keep.click();return;}
+ if(e.key==="Tab"&&((e.shiftKey&&document.activeElement===keep)||(!e.shiftKey&&document.activeElement===go))){
+  e.preventDefault();(e.shiftKey?go:keep).focus();
+ }
+});
 document.addEventListener("click",function(e){
  var action=e.target.closest("[data-action]");
  if(action){if(action.getAttribute("data-action")==="reveal")reveal(false);if(action.getAttribute("data-action")==="again")rate(false);if(action.getAttribute("data-action")==="got-it")rate(true);return;}

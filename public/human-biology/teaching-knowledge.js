@@ -237,6 +237,17 @@
         ["Nociceptive input is processed by the CNS.", "Other inputs and context can alter the experience."],
         "The experience reflects how the CNS processes the input alongside other influences, so two similar stimuli can be experienced differently.")
     },
+    "f176/a4": {
+      goal: "Connect a change in nervous tissue to a possible effect on function.",
+      explain: ["Symptoms depend on which structures and pathways are affected. Similar symptoms can have several causes. Anatomical and functional evidence answer different questions."],
+      model: ["A fictional scan shows an injury near a region involved in coordinating movement.", "A coordination difficulty is consistent with interruption of circuits involving that region. Other structures and underlying causes still need to be considered."],
+      guided: choice("Why can a nervous-system injury affect a muscle that has no local tissue damage?", 0,
+        [["An interrupted motor pathway can reduce activation of the muscle.", ""], ["All muscle fibres must have been destroyed.", "The affected structure can be upstream of the muscle."], ["The muscle can no longer have any sensory input anywhere.", "The conclusion is broader than the evidence."]],
+        "Muscle contraction depends on motor signals reaching the effector in this pathway."),
+      apply: written("Explain why a brain injury can affect both movement and sensation.",
+        ["Different pathways carry motor output and sensory input.", "An injury can affect more than one pathway or a region that processes both."],
+        "Damage can disrupt incoming sensory information and outgoing motor signals. The exact pattern depends on the structures involved.")
+    },
     "f176/a5": {
       goal: "Choose an investigation based on the kind of evidence needed.",
       explain: ["Electroencephalography (EEG) records changes in electrical activity at the scalp. MRI produces anatomical images and can distinguish soft tissues. CT uses X-rays to reconstruct cross-sectional images."],
@@ -258,6 +269,18 @@
       apply: written("A receptor suppresses secretion when activated. Explain how a competitive antagonist could increase secretion.",
         ["It reduces activation by the natural agonist.", "The normal suppression becomes weaker.", "Secretion can rise if other factors are comparable."],
         "Follow the sign of the receptor's usual response. Reduced activation means less inhibition of secretion.", ["Start with what the receptor normally does."])
+    },
+    "f177/a3": {
+      goal: "Use the sample and follow-up to judge how widely a result can be applied.",
+      explain: ["Participants may differ from the wider population in age, health or other treatments. Sample size and follow-up limit detection of uncommon or delayed effects."],
+      model: ["A fictional one-month study includes adults under 40 with no other conditions.", "The measured effect applies most directly to similar adults during that month. The result gives limited direct evidence for older adults or longer use."],
+      skills: ["evidence"],
+      guided: choice("An uncommon side effect is not seen in 20 participants. What is a fair conclusion?", 2,
+        [["The side effect is impossible.", "A rare event may not occur in a small sample."], ["Everyone would have the effect after a longer trial.", "The available measurements do not show that."], ["No cases were observed; the study has limited power to detect rare effects.", ""]],
+        "State what was observed and the limitation of the sample."),
+      apply: written("Why might a result from one young, healthy group need more evidence before it is applied to a wider population?",
+        ["The sample may not represent older people or those with other health conditions.", "Benefits, responses and risks could differ in those groups."],
+        "The trial can give evidence for the group studied. Further evidence is needed to judge whether the effect generalises to groups with different characteristics.")
     },
     "f177/a2": {
       goal: "Compare the evidence from an uncontrolled observation and a randomised controlled trial.",
