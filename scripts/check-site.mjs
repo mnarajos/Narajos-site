@@ -89,6 +89,10 @@ requireTrue(home.includes("used freely for personal study and classroom teaching
 requireTrue(home.includes('href="/terms/"'),"Homepage Terms of Use link missing");
 const terms=read("terms/index.html");
 requireTrue(terms.includes("Third-party materials")&&terms.includes("their own licences"),"Terms must describe third-party licences separately");
+const support=read("support/index.html");
+requireTrue(home.includes('<a href="/support/">Support this website</a>'),"Footer support link missing");
+requireTrue(support.includes("I am aged 18 or over")&&support.includes("current students"),"Support declaration is incomplete");
+requireTrue(!support.includes('href="https://ko-fi.com/narajos"'),"Ko-fi link must only be enabled after both declarations");
 requireTrue(home.includes("GCSE Combined Science (AQA)"),"Homepage must name AQA after GCSE Combined Science");
 requireTrue((home.match(/class="home-icon"/g)||[]).length===3,"Homepage must give each resource type a distinctive icon");
 const simulated=read("teaching/simulations/index.html");

@@ -643,6 +643,44 @@ try{
  assert(await navPage.locator("footer").getByRole("link",{name:"Terms of Use",exact:true}).isVisible());
  await navPage.setViewportSize({width:1280,height:900});
 
+ const supporter=await browser.newPage({viewport:{width:320,height:780},isMobile:true,hasTouch:true});
+ let kofiRequests=0;
+ await supporter.route("https://ko-fi.com/narajos",route=>{
+  kofiRequests++;
+  return route.fulfill({status:200,contentType:"text/html",body:"<!doctype html><title>Ko-fi link test</title><h1>Ko-fi link test</h1>"});
+ });
+ await supporter.goto(base+"/");
+ await supporter.locator("footer").getByRole("link",{name:"Support this website",exact:true}).tap();
+ await supporter.getByRole("heading",{name:"Support this website",exact:true}).waitFor();
+ const continueToKofi=supporter.getByRole("link",{name:"Continue to Ko-fi",exact:true});
+ const adult=supporter.getByRole("checkbox",{name:"I am aged 18 or over.",exact:true});
+ const outsideClass=supporter.getByRole("checkbox",{name:"I am not one of the website creator’s current students.",exact:true});
+ assert.equal(await continueToKofi.getAttribute("href"),null);
+ assert(await continueToKofi.isDisabled());
+ await adult.tap();
+ assert.equal(await continueToKofi.getAttribute("href"),null);
+ await outsideClass.tap();
+ assert.equal(await continueToKofi.getAttribute("href"),"https://ko-fi.com/narajos");
+ await adult.tap();
+ assert.equal(await continueToKofi.getAttribute("href"),null);
+ await adult.tap();
+ assert((await supporter.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Support page overflows on a phone");
+ assert.equal(kofiRequests,0,"The page must not contact Ko-fi before the visitor follows the link");
+ await continueToKofi.tap();
+ await supporter.getByRole("heading",{name:"Ko-fi link test",exact:true}).waitFor();
+ assert.equal(kofiRequests,1);
+ await supporter.goBack();
+ await supporter.getByRole("heading",{name:"Support this website",exact:true}).waitFor();
+ assert.equal(await continueToKofi.getAttribute("href"),null);
+ assert(!(await adult.isChecked())&&!(await outsideClass.isChecked()));
+ await supporter.setViewportSize({width:1280,height:900});
+ assert((await supporter.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3);
+ for(const path of ["/science-catch-up/","/science-catch-up/lesson/?topic=diffusion&year=10","/teaching/focused-writing/order/","/gcse/","/alevel/","/human-biology/","/teacher/"]){
+  await supporter.goto(base+path);
+  assert.equal(await supporter.locator('a[href="/support/"]').count(),0,"Support link in a learning or teaching activity "+path);
+ }
+ await supporter.close();
+
  const fq=await browser.newPage({viewport:{width:1280,height:900}});
  await fq.context().grantPermissions(["clipboard-read","clipboard-write"]);
  await fq.addInitScript(()=>{
