@@ -209,288 +209,369 @@
     update();
     return block;
   }
-  function practise(host, family) {
-    const saved = read(),
-      key = family.id;
-    let state = saved[key] || {};
-    if (
-      !Number.isInteger(state.index) ||
-      state.index < 0 ||
-      state.index >= family.tasks.length
-    )
-      state = { index: 0 };
-    for (const field of [
-      "outcomes",
-      "drafts",
-      "attempts",
-      "hints",
-      "responses",
-    ]) {
-      if (
-        !state[field] ||
-        typeof state[field] !== "object" ||
-        Array.isArray(state[field])
-      )
-        state[field] = {};
+  const outcomeNames = {
+    independent: "Independently correct",
+    "hint-supported": "Correct with a clue",
+    corrected: "Correct after correction",
+    guided: "Correct in guided practice",
+    "self-reviewed": "Written response self-reviewed",
+    "needs-practice": "Still needs practice",
+  };
+
+  function loadFamily(family) {
+    const state = read()[family.id] || {};
+    for (const field of ["outcomes", "drafts", "attempts", "hints", "responses", "results", "reviews"]) {
+      if (!state[field] || typeof state[field] !== "object" || Array.isArray(state[field])) state[field] = {};
     }
-    const block = node("section", null, "al-teaching");
+    const valid = i => Number.isInteger(i) && i >= 0 && i < family.tasks.length;
+    if (!valid(state.index)) state.index = 0;
+    if (!Array.isArray(state.queue) || !state.queue.length || !state.queue.every(valid))
+      state.queue = family.tasks.map((_, i) => i);
+    if (!state.queue.includes(state.index)) state.index = state.queue[0];
+    for (const [i, outcome] of Object.entries(state.outcomes)) {
+      if (outcome === "self-reviewed" && !state.reviews[i]?.finished) {
+        // The previous interface logged opening the criteria as a completed review.
+        delete state.outcomes[i];
+        state.reviews[i] = { open: true, choices: {} };
+        if (state.completed) state.completed = false;
+      }
+    }
+    return state;
+  }
+
+  function saveFamily(family, state) {
+    const data = read();
+    data[family.id] = state;
+    return save(data);
+  }
+
+  function quietLink(text, href) {
+    const a = node("a", text, "al-quiet-link");
+    a.href = href;
+    return a;
+  }
+
+  function outcomeOverview(entries) {
+    const list = node("ul", null, "al-outcomes");
+    for (const [value, label] of Object.entries(outcomeNames)) {
+      const count = entries.filter(entry => entry === value).length;
+      if (count) list.append(node("li", count + " · " + label));
+    }
+    return list;
+  }
+
+  function practise(host, family, state = loadFamily(family), flow = {}) {
+    const block = node("section", null, "al-teaching al-practice");
     host.append(block);
-    const persist = () => {
-      const data = read();
-      data[key] = state;
-      return save(data);
-    };
-    function render() {
+    const persist = () => saveFamily(family, state);
+    const hintsFor = q => q.hints || ["Identify what changes, then connect it to the effect named in the question."];
+    const isAccepted = i => Boolean(state.outcomes[i] && state.outcomes[i] !== "needs-practice");
+    const hasCompletedTask = i => isAccepted(i) || state.results[i]?.kind === "revealed";
+
+    function begin(queue) {
+      for (const i of queue) {
+        for (const field of ["outcomes", "attempts", "hints", "responses", "results", "reviews"])
+          delete state[field][i];
+      }
+      state.queue = queue;
+      state.index = queue[0];
+      state.completed = false;
+      persist();
+      render(true);
+    }
+
+    function renderReview(moveFocus) {
+      const heading = node("h2", "Review your progress", "al-task-heading");
+      const outcomes = family.tasks.map((_, i) => state.outcomes[i]);
+      block.append(heading, outcomeOverview(outcomes));
+      const revisit = state.queue.filter(i => outcomes[i] !== "independent" &&
+        (outcomes[i] !== "self-reviewed" || Object.values(state.reviews[i]?.choices || {}).includes("revise")));
+      const actions = node("div", null, "al-controls");
+      const recommendation = revisit.length
+        ? button("Retry questions I needed help with", () => begin(revisit))
+        : link("Choose another skill", "#exam");
+      recommendation.classList.add("primary");
+      actions.append(recommendation);
+      if (revisit.length) actions.append(quietLink("Exam Skills catalogue", "#exam"));
+      const details = node("details");
+      details.append(node("summary", "Review the completed questions"));
+      const completed = node("ol");
+      family.tasks.forEach((q, i) => {
+        if (!outcomes[i] && !state.results[i] && !state.reviews[i]?.open) return;
+        const item = node("li");
+        item.append(node("p", q.prompt));
+        if (q.kind === "writing") {
+          item.append(node("p", state.drafts[i]));
+          const criteria = node("ul");
+          q.points.forEach((point, j) => {
+            const answer = state.reviews[i]?.choices?.[j];
+            if (answer) criteria.append(node("li", point + " — " + (answer === "included" ? "Included" : "Needs work")));
+          });
+          if (criteria.children.length) item.append(criteria);
+        } else {
+          const answer = state.responses[i];
+          const text = Array.isArray(answer) ? answer.map((value, j) =>
+            q.kind === "group" ? q.items[j][0] + " → " + q.groups[value] : q.options[value]).join(" · ") : answer;
+          if (text) item.append(node("p", "Your response · " + text));
+        }
+        item.append(node("strong", outcomeNames[outcomes[i]] || "Review still open"));
+        completed.append(item);
+      });
+      details.append(completed);
+      block.append(actions, details);
+      if (moveFocus) focus(heading);
+    }
+
+    function render(moveFocus = false) {
       block.replaceChildren();
-      const i = state.index,
-        q = family.tasks[i];
-      block.append(
-        node("h2", q.guided ? "Guided practice" : "Independent application"),
-        node("p", "Task " + (i + 1) + " of " + family.tasks.length),
-        node("h3", q.prompt),
-      );
+      if (state.completed) {
+        flow.stage?.("review");
+        renderReview(moveFocus);
+        return;
+      }
+      const i = state.index;
+      const q = family.tasks[i];
+      const at = state.queue.indexOf(i);
+      const writing = q.kind === "writing";
+      const accepted = isAccepted(i);
+      const revealed = state.results[i]?.kind === "revealed";
+      const review = state.reviews[i] || { choices: {} };
+      flow.stage?.(q.guided ? "guided" : "independent");
+      const heading = node("h2", q.guided ? "With support" : "Your turn", "al-task-heading");
+      block.append(heading, node("p", "Task " + (at + 1) + " of " + state.queue.length, "al-task-count"),
+        node("h3", q.prompt));
       if (q.visual) block.append(visual(q.visual));
-      const form = node("form"),
-        feedback = node("div", null, "al-feedback");
-      feedback.setAttribute("role", "status");
-      let help = state.hints[i] || 0,
-        correct = false,
-        attempts = state.attempts[i] || 0;
+
+      const form = node("form");
       if (q.kind === "choice" || q.kind === "multi") {
         const field = node("fieldset");
-        field.append(
-          node(
-            "legend",
-            q.kind === "multi"
-              ? "Select every applicable answer"
-              : "Choose one answer",
-          ),
-        );
-        q.options
-          .map((option, j) => ({ option, j }))
-          .sort(
-            (a, b) =>
-              ((a.j + i + family.id.length) % q.options.length) -
-              ((b.j + i + family.id.length) % q.options.length),
-          )
-          .forEach(({ option, j }) => {
-            const label = node("label"),
-              input = node("input");
-            input.type = q.kind === "multi" ? "checkbox" : "radio";
-            input.name = "answer";
-            input.value = j;
-            input.checked = (state.responses[i] || []).includes(j);
-            label.append(input, document.createTextNode(option));
-            field.append(label);
-          });
+        field.append(node("legend", q.kind === "multi" ? "Select every applicable answer" : "Choose one answer"));
+        const order = q.options.map((option, j) => ({ option, j }));
+        const rotation = i + family.id.length;
+        order.sort((a, b) => ((a.j + rotation) % order.length) - ((b.j + rotation) % order.length));
+        for (const { option, j } of order) {
+          const label = node("label", null, "al-choice");
+          const input = node("input");
+          input.type = q.kind === "multi" ? "checkbox" : "radio";
+          input.name = "answer";
+          input.value = j;
+          input.checked = (state.responses[i] || []).includes(j);
+          label.append(input, node("span", option));
+          field.append(label);
+        }
         form.append(field);
       } else if (q.kind === "number") {
-        const label = node(
-            "label",
-            "Your answer" + (q.unit ? " (" + q.unit + ")" : ""),
-          ),
-          input = node("input");
+        const label = node("label", "Your answer" + (q.unit ? " (" + q.unit + ")" : ""));
+        const input = node("input");
         input.type = "text";
         input.inputMode = "decimal";
         input.name = "number";
         input.autocomplete = "off";
-        input.value = state.responses[i] || "";
+        input.value = state.responses[i] ?? "";
         label.append(input);
         form.append(label);
       } else if (q.kind === "group") {
+        const checked = state.results[i]?.kind === "incorrect" ? state.results[i].matched || [] : [];
         q.items.forEach(([text], j) => {
-          const label = node("label", text),
-            select = node("select");
+          const label = node("label", text, "al-group-row");
+          const select = node("select");
           select.name = "group" + j;
           select.append(new Option("Choose a category", ""));
           q.groups.forEach((name, k) => select.append(new Option(name, k)));
           select.value = (state.responses[i] || [])[j] ?? "";
+          if (checked.length) {
+            select.disabled = checked[j];
+            label.append(node("span", checked[j] ? "Correct group" : "Reconsider this group", "al-row-result"));
+          }
           label.append(select);
           form.append(label);
         });
       } else {
-        const label = node("label", "Your explanation"),
-          text = node("textarea");
+        const label = node("label", "Your explanation");
+        const text = node("textarea");
         text.maxLength = 4000;
         text.name = "draft";
         text.value = state.drafts[i] || "";
-        text.oninput = () => {
-          state.drafts[i] = text.value;
-          persist();
-        };
+        text.readOnly = accepted;
         label.append(text);
         form.append(label);
       }
-      const controls = node("div", null, "al-controls"),
-        submit = node(
-          "button",
-          q.kind === "writing" ? "Compare with the checklist" : "Check answer",
-          "btn primary",
-        );
-      submit.type = "submit";
-      const hint = button("Need a clue?", () => {
-        help++;
-        state.hints[i] = help;
-        const hints = q.hints || [
-          "Answer the question first, then connect the mechanism to the consequence.",
-          "Use the scientific terms in the worked example.",
-        ];
-        feedback.textContent = hints[Math.min(help - 1, hints.length - 1)];
-        hint.textContent = "More help";
-        hint.disabled = help >= hints.length;
-        persist();
-      });
-      const next = button(
-        i === family.tasks.length - 1 ? "Review this set" : "Next task",
-        () => {
-          if (i === family.tasks.length - 1) {
-            block.replaceChildren(
-              node("h2", "Set complete"),
-              node(
-                "p",
-                "Review your outcomes or try the questions again after a delay.",
-              ),
-              button("Practise this set again", () => {
-                state = {
-                  index: 0,
-                  outcomes: {},
-                  drafts: {},
-                  attempts: {},
-                  hints: {},
-                  responses: {},
-                };
-                persist();
-                render();
-                focus(block.querySelector("h2"));
-              }),
-              link("Choose another skill", "#exam"),
-            );
-            focus(block.querySelector("h2"));
-            return;
-          }
-          state.index = i + 1;
-          persist();
-          render();
-          focus(block.querySelector("h2"));
-        },
-      );
-      next.hidden = true;
-      form.addEventListener("input", () => {
-        state.responses[i] =
-          q.kind === "number"
-            ? form.elements.number.value
-            : q.kind === "group"
-              ? [...form.querySelectorAll("select")].map((x) => x.value)
-              : [...form.querySelectorAll("input:checked")].map(
-                  (x) => +x.value,
-                );
-        persist();
-      });
-      controls.append(submit, hint, next);
-      form.append(controls, feedback);
-      block.append(
-        form,
-        link("Revisit catch-up teaching", "#catchup-" + family.catchup),
-      );
-      const record = (outcome) => {
-        state.outcomes[i] = outcome;
+      if (accepted || revealed) {
+        for (const input of form.querySelectorAll("input, select")) input.disabled = true;
+      }
+
+      const status = node("div", null, "al-feedback");
+      status.setAttribute("role", "status");
+      const controls = node("div", null, "al-controls");
+      function announce(text, kind) {
+        status.textContent = text;
+        status.dataset.kind = kind;
+        status.hidden = !text;
+      }
+      const result = state.results[i];
+      if (accepted) announce(writing ? "Review finished. Your draft and judgements are saved." :
+        outcomeNames[state.outcomes[i]] + ". " + q.why, writing ? "review" : "correct");
+      else if (revealed) announce("Explanation revealed. " + q.why, "explained");
+      else if (result?.clue && state.hints[i]) announce("Clue · " + hintsFor(q)[state.hints[i] - 1], "hint");
+      else if (result?.kind === "incorrect")
+        announce(q.kind === "group" ? "Review and improve the flagged rows. Your correct groups are kept." :
+          "Review and improve. " + q.why, "improve");
+      else if (state.hints[i]) announce("Clue · " + hintsFor(q)[state.hints[i] - 1], "hint");
+      else announce("", "");
+
+      form.oninput = () => {
+        if (hasCompletedTask(i)) return;
+        if (writing) state.drafts[i] = form.elements.draft.value;
+        else if (q.kind === "number") state.responses[i] = form.elements.number.value;
+        else if (q.kind === "group") state.responses[i] = [...form.querySelectorAll("select")].map(select => select.value);
+        else state.responses[i] = [...form.querySelectorAll('input[name="answer"]:checked')].map(input => +input.value);
         persist();
       };
-      form.onsubmit = (e) => {
-        e.preventDefault();
-        if (q.kind === "writing") {
+
+      form.append(status);
+      if (review.open && writing) {
+        const criteria = node("section", null, "al-criteria");
+        criteria.append(node("h3", "Check and improve"));
+        const model = node("details");
+        model.append(node("summary", "Compare with a model explanation"), node("p", q.points.join(" ")));
+        criteria.append(model);
+        q.points.forEach((point, j) => {
+          const field = node("fieldset");
+          field.append(node("legend", point));
+          for (const [value, text] of [["included", "Included"], ["revise", "Needs work"]]) {
+            const label = node("label", null, "al-choice");
+            const input = node("input");
+            input.type = "radio";
+            input.name = "criterion-" + j;
+            input.value = value;
+            input.checked = review.choices[j] === value;
+            input.disabled = accepted;
+            input.onchange = () => {
+              review.choices[j] = value;
+              persist();
+            };
+            label.append(input, node("span", text));
+            field.append(label);
+          }
+          criteria.append(field);
+        });
+        form.append(criteria);
+      }
+
+      const submit = node("button", accepted || revealed ? "" : review.open ? "Finish review" :
+        writing ? "Compare with the checklist" : result?.kind === "incorrect" ? "Try again" : "Check answer", "btn primary");
+      submit.type = "submit";
+      if (accepted || revealed) {
+        const next = button(at === state.queue.length - 1 ? "Review progress" : "Next task", () => {
+          if (at === state.queue.length - 1) state.completed = true;
+          else state.index = state.queue[at + 1];
+          persist();
+          render(true);
+        });
+        next.classList.add("primary");
+        controls.append(next);
+      } else {
+        controls.append(submit);
+        const hints = hintsFor(q);
+        const hint = button(state.hints[i] ? "Another clue" : "Need a clue?", () => {
+          const count = (state.hints[i] || 0) + 1;
+          state.hints[i] = count;
+          state.results[i] = { ...state.results[i], clue: true };
+          announce("Clue · " + hints[count - 1], "hint");
+          hint.textContent = count < hints.length ? "Another clue" : "Clues shown";
+          hint.setAttribute("aria-disabled", String(count >= hints.length));
+          persist();
+        });
+        hint.onclick = ((handler) => () => {
+          if (hint.getAttribute("aria-disabled") !== "true") handler();
+        })(hint.onclick);
+        if (!writing && (state.hints[i] || 0) < hints.length) controls.append(hint);
+        if (!writing) {
+          const reveal = button("Show explanation", () => {
+            state.results[i] = { kind: "revealed" };
+            state.outcomes[i] = "needs-practice";
+            persist();
+            render();
+            focus(block.querySelector('[role="status"]'));
+          });
+          controls.append(reveal);
+        }
+      }
+      form.append(controls);
+      block.append(form);
+      const catchup = flow.context ? flow.context(q) : (family.catchup ? ["Revisit catch-up teaching", "#catchup-" + family.catchup] : null);
+      if (catchup) block.append(quietLink(...catchup));
+      if (moveFocus) focus(heading);
+
+      form.onsubmit = event => {
+        event.preventDefault();
+        if (hasCompletedTask(i)) return;
+        if (writing) {
           if (form.elements.draft.value.trim().length < 12) {
-            feedback.textContent = "Write an explanation before comparing it.";
+            announce("Write an explanation before comparing it.", "improve");
             return;
           }
-          feedback.replaceChildren(
-            node(
-              "p",
-              "Compare each scientific point with your response. Use the checklist to revise your answer.",
-            ),
-          );
-          q.points.forEach((point) => {
-            const label = node("label"),
-              check = node("input");
-            check.type = "checkbox";
-            label.append(check, document.createTextNode(point));
-            feedback.append(label);
-          });
-          record("self-reviewed");
-          next.hidden = false;
+          state.drafts[i] = form.elements.draft.value;
+          if (!review.open) {
+            review.open = true;
+            state.reviews[i] = review;
+            persist();
+            render();
+            focus(block.querySelector(".al-criteria h3"));
+          } else if (q.points.some((_, j) => !review.choices[j])) {
+            announce("Choose Included or Needs work for each criterion.", "improve");
+            focus(status);
+          } else {
+            review.finished = true;
+            state.outcomes[i] = "self-reviewed";
+            persist();
+            render();
+            focus(block.querySelector('[role="status"]'));
+          }
           return;
         }
-        let response;
+
+        let correct, matched;
         if (q.kind === "number") {
           const raw = form.elements.number.value.trim().replace(/−/g, "-");
           if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(raw)) {
-            feedback.textContent =
-              "Enter a number in the stated units, including any negative sign.";
+            announce("Enter a number in the stated units, including any negative sign.", "improve");
             return;
           }
-          response = Number(raw);
-          correct = Math.abs(response - q.answer) < 1e-6;
+          state.responses[i] = form.elements.number.value;
+          correct = Math.abs(Number(raw) - q.answer) < 1e-6;
         } else if (q.kind === "group") {
-          const selects = [...form.querySelectorAll("select")];
-          if (selects.some((s) => s.value === "")) {
-            feedback.textContent = "Choose a category for every statement.";
+          const values = [...form.querySelectorAll("select")].map(select => select.value);
+          if (values.some(value => value === "")) {
+            announce("Choose a category for every statement.", "improve");
             return;
           }
-          correct = selects.every((s, j) => +s.value === q.items[j][1]);
+          state.responses[i] = values;
+          matched = values.map((value, j) => +value === q.items[j][1]);
+          correct = matched.every(Boolean);
         } else {
-          const answers = [...form.querySelectorAll("input:checked")].map(
-            (x) => +x.value,
-          );
-          if (!answers.length) {
-            feedback.textContent = "Choose an answer first.";
+          const values = [...form.querySelectorAll('input[name="answer"]:checked')].map(input => +input.value);
+          if (!values.length) {
+            announce("Choose an answer first.", "improve");
             return;
           }
-          correct =
-            q.kind === "multi"
-              ? JSON.stringify(answers.sort((a, b) => a - b)) ===
-                JSON.stringify([...q.answer].sort((a, b) => a - b))
-              : answers[0] === q.answer;
+          state.responses[i] = values;
+          correct = q.kind === "multi"
+            ? values.length === q.answer.length && q.answer.every(value => values.includes(value))
+            : values[0] === q.answer;
         }
-        attempts++;
+        const attempts = (state.attempts[i] || 0) + 1;
         state.attempts[i] = attempts;
+        state.results[i] = { kind: correct ? "accepted" : "incorrect", ...(matched ? { matched } : {}) };
+        state.outcomes[i] = !correct ? "needs-practice" : q.guided ? "guided" :
+          attempts > 1 ? "corrected" : state.hints[i] ? "hint-supported" : "independent";
         persist();
-        feedback.textContent =
-          (correct ? "Correct. " : "Review this reasoning. ") + q.why;
-        if (correct) {
-          record(
-            q.guided
-              ? "guided"
-              : attempts > 1
-                ? "corrected"
-                : help
-                  ? "hint-supported"
-                  : "independent",
-          );
-          next.hidden = false;
-          submit.disabled = true;
-          hint.hidden = true;
-        } else {
-          record("needs-practice");
-        }
+        render();
+        focus(block.querySelector('[role="status"]'));
       };
-      const outcomes = Object.values(state.outcomes);
-      if (outcomes.length)
-        block.append(
-          node(
-            "p",
-            outcomes.filter((v) => v === "independent").length +
-              " independent · " +
-              outcomes.filter((v) =>
-                ["guided", "hint-supported", "corrected"].includes(v),
-              ).length +
-              " supported · " +
-              outcomes.filter((v) => v === "self-reviewed").length +
-              " self-reviewed",
-            "al-note",
-          ),
-        );
     }
     render();
+    return block;
   }
   function drawings(host) {
     const block = node("section", null, "al-teaching");
@@ -524,6 +605,23 @@
     block.append(start);
     const exercise = node("section");
     block.append(exercise);
+    function drawReview(review, moveFocus) {
+      const heading = node("h3", "Review your drawings");
+      exercise.replaceChildren(heading, outcomeOverview(review.entries.map(entry => entry.outcome)));
+      const detail = node("details");
+      detail.append(node("summary", "Review the completed drawings"));
+      const entries = node("ol");
+      for (const entry of review.entries) {
+        const item = drawing.bank.find(candidate => candidate.id === entry.id);
+        if (item) entries.append(node("li", item.specimen.name + " · " + outcomeNames[entry.outcome] + ". " + item.why));
+      }
+      detail.append(entries);
+      exercise.append(detail);
+      if (moveFocus) focus(heading);
+    }
+    const savedDrawing = read();
+    if (savedDrawing.drawingSession) round();
+    else if (savedDrawing.drawingReview) drawReview(savedDrawing.drawingReview, false);
     function round() {
       const data = read();
       let session = data.drawingSession;
@@ -541,6 +639,7 @@
         data.drawingRound = round + 1;
       }
       const round = session.round;
+      session.entries ||= [];
       let at = session.index;
       function persistDrawing() {
         const stored = read();
@@ -593,18 +692,22 @@
           input.type = "radio";
           input.name = "drawing-verdict";
           input.value = j;
+          input.checked = session.verdict === j;
+          input.disabled = Boolean(session.outcome);
           label.append(input, document.createTextNode(text));
           verdict.append(label);
         });
         const categories = node("fieldset");
-        categories.hidden = true;
+        categories.hidden = session.verdict !== 1;
         verdict.onchange = () => {
-          categories.hidden =
-            verdict.querySelector("input:checked")?.value !== "1";
-          if (categories.hidden)
-            categories
-              .querySelectorAll("input")
-              .forEach((input) => (input.checked = false));
+          if (session.outcome) return;
+          session.verdict = Number(verdict.querySelector("input:checked").value);
+          categories.hidden = session.verdict !== 1;
+          if (categories.hidden) {
+            categories.querySelectorAll("input").forEach(input => { input.checked = false; });
+            session.categories = [];
+          }
+          persistDrawing();
         };
         categories.append(
           node("legend", "If rejected, select every category affected"),
@@ -614,70 +717,66 @@
             input = node("input");
           input.type = "checkbox";
           input.value = j;
+          input.checked = (session.categories || []).includes(j);
+          input.disabled = Boolean(session.outcome);
           label.append(input, document.createTextNode(name));
           categories.append(label);
         });
-        const feedback = node("p");
-        feedback.setAttribute("role", "status");
-        const next = button("Next drawing", () => {
-          at++;
-          session = { round, index: at, attempts: 0, helped: false };
+        categories.onchange = () => {
+          session.categories = [...categories.querySelectorAll("input:checked")].map(input => +input.value);
           persistDrawing();
+        };
+        const feedback = node("p", null, "al-feedback");
+        feedback.setAttribute("role", "status");
+        if (session.outcome) feedback.textContent = outcomeNames[session.outcome] + ". " + item.why;
+        else if (session.attempts) feedback.textContent = "Review and improve. " + item.why;
+        feedback.hidden = !feedback.textContent;
+        const next = button("Next drawing", () => {
+          if (!session.outcome) return;
+          session.entries[at] = { id: item.id, outcome: session.outcome };
+          const entries = session.entries;
+          at++;
+          session = { round, index: at, attempts: 0, helped: false, entries };
           if (at < pool.length) {
+            persistDrawing();
             show();
             focus(exercise.querySelector("h3"));
           } else {
             const finished = read();
             delete finished.drawingSession;
+            finished.drawingReview = { entries: entries.filter(Boolean) };
             save(finished);
             start.hidden = false;
             start.textContent = "Start a six-drawing set";
-            exercise.replaceChildren(
-              node("h3", "Set complete"),
-              node("p", "Use a new set for different specimens and defects."),
-            );
-            focus(exercise.querySelector("h3"));
+            drawReview(finished.drawingReview, true);
           }
         });
-        next.hidden = true;
-        exercise.append(
-          verdict,
-          categories,
-          button("Check judgement", () => {
-            const chosen = verdict.querySelector("input:checked");
-            if (!chosen) {
-              feedback.textContent = "Choose Accept or Reject first.";
-              return;
-            }
-            const cats = [...categories.querySelectorAll("input:checked")].map(
-              (x) => +x.value,
-            );
-            const ok =
-              +chosen.value === Number(item.defects.length > 0) &&
-              JSON.stringify(cats) === JSON.stringify(item.defects);
-            session.attempts++;
-            persistDrawing();
-            if (ok) {
-              const stored = read();
-              stored.drawingOutcomes ||= {};
-              stored.drawingOutcomes[item.id] =
-                at === 0
-                  ? "guided"
-                  : session.attempts > 1
-                    ? "corrected"
-                    : session.helped
-                      ? "hint-supported"
-                      : "independent";
-              save(stored);
-            }
-            feedback.textContent =
-              (ok ? "Correct. " : "Compare with the criteria. ") + item.why;
-            next.hidden = !ok;
-          }),
-          feedback,
-          next,
-        );
-        if (at === 0) {
+        next.classList.add("primary");
+        const check = button(session.attempts ? "Try judgement again" : "Check judgement", () => {
+          if (session.outcome) return;
+          if (session.verdict === undefined) {
+            feedback.textContent = "Choose Accept or Reject first.";
+            feedback.hidden = false;
+            return;
+          }
+          const cats = session.categories || [];
+          const ok = session.verdict === Number(item.defects.length > 0) &&
+            cats.length === item.defects.length && item.defects.every(value => cats.includes(value));
+          session.attempts++;
+          if (ok) session.outcome = at === 0 ? "guided" : session.attempts > 1 ? "corrected" : session.helped ? "hint-supported" : "independent";
+          persistDrawing();
+          if (ok) {
+            const stored = read();
+            stored.drawingOutcomes ||= {};
+            stored.drawingOutcomes[item.id] = session.outcome;
+            save(stored);
+          }
+          show();
+          focus(exercise.querySelector('[role="status"]'));
+        });
+        check.classList.add("primary");
+        exercise.append(verdict, categories, feedback, session.outcome ? next : check);
+        if (at === 0 && !session.outcome) {
           const hint = node("details");
           hint.append(
             node("summary", "Help with this judgement"),

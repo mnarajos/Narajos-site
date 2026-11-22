@@ -81,10 +81,15 @@ export async function checkALevelExam(browser, base) {
             exact: true,
           })
           .click();
+        if (q.kind === "writing") {
+          for (let j = 0; j < q.points.length; j++)
+            await form.locator('input[name="criterion-' + j + '"][value="included"]').check();
+          await form.getByRole("button", { name: "Finish review" }).click();
+        }
         await form
           .getByRole("button", {
             name:
-              i === family.tasks.length - 1 ? "Review this set" : "Next task",
+              i === family.tasks.length - 1 ? "Review progress" : "Next task",
             exact: true,
           })
           .waitFor();
@@ -121,7 +126,7 @@ export async function checkALevelExam(browser, base) {
       .click();
     await page.getByRole("textbox").fill("0.32");
     await page
-      .getByRole("button", { name: "Check answer", exact: true })
+      .getByRole("button", { name: "Try again", exact: true })
       .click();
     const outcomes = await page.evaluate(
       () =>
@@ -129,6 +134,60 @@ export async function checkALevelExam(browser, base) {
           .outcomes,
     );
     assert.deepEqual(outcomes, { 0: "guided", 1: "corrected" });
+    const key = "keystone.alevel.exam-skills.v1";
+    const saved = id => page.evaluate(([key, id]) => JSON.parse(localStorage.getItem(key))[id], [key, id]);
+    await page.reload();
+    assert.match(await page.locator(".al-practice [role=status]").innerText(), /Correct after correction/);
+    assert(await page.getByRole("button", { name: "Next task", exact: true }).isVisible());
+
+    await page.goto(base + "/alevel/#exam-mechanisms");
+    const mechanisms = families.find(family => family.id === "mechanisms");
+    const shuffledPositions = new Set();
+    for (let i = 0; i < mechanisms.tasks.length - 1; i++) {
+      const q = mechanisms.tasks[i];
+      const options = page.locator(".al-practice input[type=radio]");
+      shuffledPositions.add((await options.evaluateAll(inputs => inputs.map(input => +input.value))).indexOf(q.answer));
+      await page.getByRole("radio", { name: q.options[q.answer], exact: true }).check();
+      await page.getByRole("button", { name: "Check answer", exact: true }).click();
+      assert.match(await page.locator(".al-practice [role=status]").innerText(), new RegExp(i === 0 ? "shorter diffusion distance" : "Correct|correct"));
+      if (i === 1) {
+        const before = await saved("mechanisms");
+        await page.reload();
+        assert(await page.getByRole("radio", { name: q.options[q.answer], exact: true }).isChecked());
+        assert.equal(await page.getByRole("button", { name: "Check answer", exact: true }).count(), 0);
+        await page.locator(".al-practice form").evaluate(form => form.requestSubmit());
+        assert.deepEqual(await saved("mechanisms"), before);
+        assert.equal(before.outcomes[i], "independent");
+      }
+      await page.getByRole("button", { name: "Next task", exact: true }).click();
+    }
+    assert(shuffledPositions.size > 1);
+
+    const written = mechanisms.tasks.at(-1);
+    const writingIndex = mechanisms.tasks.length - 1;
+    const form = page.locator(".al-practice form");
+    await form.getByRole("textbox").fill("Acetylcholine binds to the receptors for longer.");
+    await form.getByRole("button", { name: "Compare with the checklist" }).click();
+    assert.equal((await saved("mechanisms")).outcomes[writingIndex], undefined);
+    await form.locator('input[name="criterion-0"][value="revise"]').check();
+    const revised = "Less acetylcholine is hydrolysed, so it can bind to receptors for longer.";
+    await form.getByRole("textbox").fill(revised);
+    await page.reload();
+    assert.equal(await form.getByRole("textbox").inputValue(), revised);
+    assert(await form.locator('input[name="criterion-0"][value="revise"]').isChecked());
+    for (let j = 1; j < written.points.length; j++)
+      await form.locator('input[name="criterion-' + j + '"][value="included"]').check();
+    await form.getByRole("button", { name: "Finish review" }).click();
+    assert.equal((await saved("mechanisms")).outcomes[writingIndex], "self-reviewed");
+    await page.reload();
+    assert(await form.getByRole("button", { name: "Review progress" }).isVisible());
+    await form.getByRole("button", { name: "Review progress" }).click();
+    await page.reload();
+    assert.match(await page.locator(".al-outcomes").innerText(), /3 · Independently correct/);
+    assert.match(await page.locator(".al-outcomes").innerText(), /1 · Written response self-reviewed/);
+    assert(await page.getByRole("button", { name: "Retry questions I needed help with" }).isVisible());
+    await page.getByText("Review the completed questions", { exact: true }).click();
+    assert(await page.getByText(revised, { exact: true }).isVisible());
     // Every original drawing appears in the rotating short sets and accepts its authored category combination.
     const seen = new Set();
     for (let round = 0; round < 56; round++) {

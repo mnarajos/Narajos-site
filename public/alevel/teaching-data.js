@@ -819,10 +819,10 @@ window.ALevelTeachingFamilies = {
           "Repeat several times, repeat again, do many repeats",
         ],
         answer: 0,
-        why: "The first covers three distinct requirements. The others restate one requirement.",
+        why: "Controlling temperature, measuring a rate and repeating trials address three different requirements.",
         hints: [
           "Trace the change through one relationship at a time.",
-          "The first covers three distinct requirements. The others restate one requirement.",
+          "Controlling temperature, measuring a rate and repeating trials address three different requirements.",
         ],
       },
       {
@@ -835,10 +835,10 @@ window.ALevelTeachingFamilies = {
           "Rate is higher and greater and larger",
         ],
         answer: 0,
-        why: "The first provides a trend, a numerical comparison and a limitation. The other responses repeat the trend.",
+        why: "The response that gives a trend, a numerical comparison and a limitation addresses three distinct criteria.",
         hints: [
           "Use the stated assumptions and compare the relevant quantities.",
-          "The first provides a trend, a numerical comparison and a limitation. The other responses repeat the trend.",
+          "The response that gives a trend, a numerical comparison and a limitation addresses three distinct criteria.",
         ],
       },
       {
@@ -894,10 +894,10 @@ window.ALevelTeachingFamilies = {
           "It always creates a higher concentration gradient",
         ],
         answer: 0,
-        why: "The first connects structure to a change in the path length.",
+        why: "A shorter diffusion distance links the thin surface to a higher diffusion rate when other factors are constant.",
         hints: [
           "Trace the change through one relationship at a time.",
-          "The first connects structure to a change in the path length.",
+          "A shorter diffusion distance links the thin surface to a higher diffusion rate when other factors are constant.",
         ],
         guided: true,
       },
