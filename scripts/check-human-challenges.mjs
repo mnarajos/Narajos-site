@@ -273,20 +273,30 @@ const physical=forcedQuestion("warm-f170-cells");
 main.querySelector=selector=>selector==='input[name="kchoice"]:checked'?{value:String(physical.correct)}:null;
 main.querySelectorAll=selector=>selector==='input[name="kchoice"]:checked'?[{value:String(physical.correct)}]:[];
 mainEvents.click({detail:1,target:{closest(selector){return selector===".k-option"?{}:null;}}});
-assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-session")).phase,"feedback","First correct physical tap should auto-check");
+assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-session")).phase,"ask","A correct first selection waits for submission");
+clickAction("check");clickAction("check");
+let submitted=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.deepEqual(submitted.outcomes,{"0":"independent"});
+assert.equal(submitted.correctFirst,1);
+app.pause();app.route(submitted.route,h=>main.innerHTML=h);
+assert(main.innerHTML.includes("Expected answer")&&main.innerHTML.includes("Next question"));
+clickAction("check");
+assert.deepEqual(JSON.parse(data.get("narajos-human-challenge-v2-session")).outcomes,submitted.outcomes);
 const falseFirst=forcedQuestion("warm-f170-physiology");
 main.querySelector=selector=>selector==='input[name="kchoice"]:checked'?{value:String((falseFirst.correct+1)%4)}:null;
 main.querySelectorAll=()=>[{value:String((falseFirst.correct+1)%4)}];
 mainEvents.click({detail:1,target:{closest(selector){return selector===".k-option"?{}:null;}}});
 let wrongState=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert.equal(wrongState.phase,"ask","First wrong tap should remain unanswered");
-assert.equal(wrongState.quickTapAttempted,true,"Wrong first tap must disable further automatic grading");
+assert.equal(Object.keys(wrongState.first).length,0,"Changing a selection before Check is not a graded correction");
 main.querySelector=selector=>selector==='input[name="kchoice"]:checked'?{value:String(falseFirst.correct)}:null;
 main.querySelectorAll=()=>[{value:String(falseFirst.correct)}];
 mainEvents.click({detail:1,target:{closest(selector){return selector===".k-option"?{}:null;}}});
 assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-session")).phase,"ask","Correcting an earlier wrong tap should require Check");
 clickAction("check");
-assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-session")).phase,"feedback","Check should credit the corrected answer");
+submitted=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.equal(submitted.phase,"feedback");
+assert.deepEqual(submitted.outcomes,{"0":"independent"},"Check grades the submitted answer only");
 
 // Each new schematic must support feedback, without disclosing an answer in alt text.
 for(const id of ["f172-diagram-alleles","f173-diagram-blood","f174-diagram-glucose","f175-diagram-oviduct","f176-diagram-brain","f177-diagram-randomise"]){

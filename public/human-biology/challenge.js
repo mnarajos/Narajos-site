@@ -744,7 +744,7 @@ function saveReviewField(target){
 function next(){
  if(!session||session.phase!=="feedback"||session.lastResult===null&&!session.outcomes[session.index])return;
  var previous=current();if(previous&&session.answers)delete session.answers[previous.id]; // Do not retain free-text answers beyond feedback.
- session.index++;session.phase="ask";session.lastResult=undefined;session.wasSkipped=false;session.lastPlannedCheck=null;session.quickTapAttempted=false;save();
+ session.index++;session.phase="ask";session.lastResult=undefined;session.wasSkipped=false;session.lastPlannedCheck=null;save();
  if(session.skillId&&session.index<10&&session.index>=session.queue.length){addSkillQuestion();save();}
  if(session.index>=session.queue.length)finish();else drawQuestion();
 }
@@ -789,25 +789,6 @@ main.addEventListener("change",function(e){
   main.querySelectorAll(".k-option").forEach(function(l){l.classList.toggle("selected",!!l.querySelector("input").checked);});
  }else if(e.target.matches("[data-match], [data-sort-row]")){readForm();}
 });
-/* Quick tap from the A-level tool: a correct first physical tap checks immediately.
-   A first wrong tap produces no visible grading, disables further auto-checks,
-   and the learner can revise the selection before using the Check button.
-   Keyboard choices never auto-check. */
-function pointerQuickTap(e){
- if(!session||session.phase!=="ask"||!visible||!e||!e.detail||session.quickTapAttempted)return;
- var q=current();if(!q||!(q.type==="single"||q.type==="diagram")||!q.options||q.options.length!==4)return;
- var choice=e.target.closest&&e.target.closest(".k-option");
- if(!choice)return;
- var questionId=q.id;
- if(typeof setTimeout!=="function")return;
- setTimeout(function(){
-  if(!session||session.phase!=="ask"||current().id!==questionId||session.quickTapAttempted)return;
-  var selected=main.querySelector('input[name="kchoice"]:checked');
-  if(!selected)return;
-  session.quickTapAttempted=true;save();
-  if(+selected.value===q.correct)check(false);
- },110);
-}
 main.addEventListener("input",function(e){
  if(session&&visible&&e.target.matches("#k-revised")){saveReviewField(e.target);return;}
  noteAnswerActivity();
@@ -820,7 +801,6 @@ main.addEventListener("click",function(e){
  var repeatPoint=e.target.closest("[data-repeat-point]");if(repeatPoint&&ladders){var point=ladders.get(repeatPoint.getAttribute("data-repeat-point"));if(point)return makeSession(point.unit,point.id,'challenge/'+point.unit+'/'+point.id);}
  if(start&&skills){var sk=skills.get(start.getAttribute("data-start-skill"));var path=parseSkillRoute(lastRoute);if(sk&&path&&path.skillId===sk.id&&path.unit===sk.unit)return startSkill(sk,lastRoute);}
  if(!session||!visible)return;
- pointerQuickTap(e);
  var move=e.target.closest("[data-move]");
  if(move){var q=current();if(!q||q.type!=="order")return;
   var a=session.answers[q.id],i=Number(move.dataset.pos),j=i+(move.dataset.move==="up"?-1:1);
