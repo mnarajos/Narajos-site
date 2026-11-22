@@ -393,3 +393,336 @@ export const motionLessons = [
     "A 20 N weight hangs 1 m to the left of a pivot. You have a 10 N weight on the right. How far from the pivot should it go to balance?",
     "Put it 2 m from the pivot. Each turning effect is 20 N m, in opposite directions.")
 ];
+
+export const extraChecks = {
+  "fair-tests": [
+    "Two paper spinners have different wing lengths and are dropped from different heights. Which change lets you test wing length?",
+    "Drop each spinner from the same height",
+    "This controls a second factor that could affect flight time.",
+    [
+      [
+        "Give each spinner a different mass",
+        "Mass could also change flight time."
+      ],
+      [
+        "Keep the wing lengths the same",
+        "Wing length is what the test is meant to change."
+      ]
+    ]
+  ],
+  "states-of-matter": [
+    "A sealed bag of ice melts. Which property of the water remains the same?",
+    "Its mass",
+    "The same water particles stay in the bag.",
+    [
+      [
+        "The fixed arrangement of the particles",
+        "The particles can move past one another in the liquid."
+      ],
+      [
+        "Its ability to keep a fixed shape",
+        "The liquid takes the shape of its container."
+      ]
+    ]
+  ],
+  "atoms-and-compounds": [
+    "A diagram shows each red particle bonded to a blue one. Every pair is identical. What does the diagram show?",
+    "A pure compound",
+    "Two elements are chemically joined in each identical pair.",
+    [
+      [
+        "A mixture of two unbonded elements",
+        "Each pair contains bonded atoms."
+      ],
+      [
+        "A pure element",
+        "The two colours represent different kinds of atom."
+      ]
+    ]
+  ],
+  "forces": [
+    "A bicycle moves at a steady speed along a straight, flat road. What must be true of its horizontal forces?",
+    "The forward and backward forces balance",
+    "Its velocity is steady, so the horizontal resultant is zero.",
+    [
+      [
+        "The forward force must be bigger",
+        "That would make it speed up."
+      ],
+      [
+        "There must be zero backward force",
+        "Resistive forces can be present and balance the forward force."
+      ]
+    ]
+  ],
+  "the-body": [
+    "Which sequence takes oxygen from inhaled air to an active muscle?",
+    "Air in lungs → blood → muscle cells",
+    "Oxygen crosses a gas exchange surface and is carried in the blood.",
+    [
+      [
+        "Air in lungs → stomach → muscle cells",
+        "The stomach is not on the oxygen transport route."
+      ],
+      [
+        "Heart muscle → blood → air in lungs",
+        "That reverses the overall direction of oxygen movement."
+      ]
+    ]
+  ],
+  "energy-transfers": [
+    "A lamp becomes hot while it shines. Where has some of the energy gone?",
+    "It has been transferred to the surroundings by heating",
+    "Warming the lamp and surrounding air accounts for some of the transfer.",
+    [
+      [
+        "It has disappeared",
+        "Energy is conserved."
+      ],
+      [
+        "All of it became light",
+        "The heating shows that energy also reached the surroundings in another way."
+      ]
+    ]
+  ],
+  "reproduction": [
+    "A pollen grain lands on the stigma. Why is that not yet fertilisation?",
+    "The male and female nuclei have yet to fuse",
+    "Pollination moves pollen. Fertilisation occurs after delivery of the male nucleus to the ovule.",
+    [
+      [
+        "The flower must first make a fruit",
+        "Fruit development follows fertilisation in a typical flowering plant."
+      ],
+      [
+        "The landing immediately joins the nuclei",
+        "They are still in separate parts of the flower."
+      ]
+    ]
+  ],
+  "acids-and-alkalis": [
+    "An acidic solution changes from pH 2 to pH 5. Which description fits it now?",
+    "It is less acidic and still acidic",
+    "The pH has moved closer to 7, but it is still below 7.",
+    [
+      [
+        "It has become alkaline",
+        "Its pH would need to be above 7."
+      ],
+      [
+        "It is more acidic",
+        "A lower pH means the solution is more acidic."
+      ]
+    ]
+  ],
+  "chemical-reactions": [
+    "A reaction releases a gas inside a sealed flask. What happens to the mass of the whole flask and its contents?",
+    "It stays the same",
+    "The gas remains inside, so the same material is on the balance.",
+    [
+      [
+        "It becomes smaller because gases have no mass",
+        "Gases have mass and the gas is still inside."
+      ],
+      [
+        "It gets larger because a new substance formed",
+        "The atoms are rearranged during the reaction."
+      ]
+    ]
+  ],
+  "light-and-sound": [
+    "You see a distant firework before you hear its bang. What explains the delay?",
+    "Light travels faster than sound in air",
+    "Both can reach you through air, but sound takes longer.",
+    [
+      [
+        "Sound was reflected back to the firework first",
+        "A direct sound can reach you without reflecting."
+      ],
+      [
+        "Light needed air to reach you",
+        "Light can also travel through a vacuum."
+      ]
+    ]
+  ],
+  "space": [
+    "A town turns from morning towards midday. Which change causes this?",
+    "The town turns to face the Sun more directly as Earth rotates",
+    "Earth’s rotation changes how directly sunlight reaches the town.",
+    [
+      [
+        "The Sun moves closer to the town over the morning",
+        "Day and night result from rotation."
+      ],
+      [
+        "The Moon moves away from Earth",
+        "The Moon's distance does not cause the daily cycle."
+      ]
+    ]
+  ],
+  "health-and-lifestyle": [
+    "Two pupils need energy for exercise. One says that only fat supplies energy. Is that correct?",
+    "Carbohydrate can also supply energy",
+    "Cells can release energy from glucose during respiration.",
+    [
+      [
+        "Only protein can supply energy",
+        "Carbohydrate and fat can both be used as energy sources."
+      ],
+      [
+        "Vitamins provide most of the energy",
+        "Vitamins play important roles but are not the main energy sources."
+      ]
+    ]
+  ],
+  "periodic-table": [
+    "Two elements are directly above and below each other in the periodic table. What does this tell you?",
+    "They are in the same group",
+    "Groups are vertical columns.",
+    [
+      [
+        "They are in the same period",
+        "Periods run left to right."
+      ],
+      [
+        "They have the same number of protons",
+        "Different elements have different proton numbers."
+      ]
+    ]
+  ],
+  "separating-techniques": [
+    "Sand and dissolved salt are mixed with water. Which step could separate the sand first?",
+    "Filter the mixture",
+    "Sand remains on the paper while the salt solution passes through.",
+    [
+      [
+        "Evaporate all the water first",
+        "Sand and salt would then remain together."
+      ],
+      [
+        "Use a sieve to remove the dissolved salt",
+        "Dissolved salt passes through ordinary sieves."
+      ]
+    ]
+  ],
+  "work-done": [
+    "The same force moves a box 2 m in one trial and 4 m in another. What happens to the work done by that force?",
+    "It doubles",
+    "When the force acts in the direction of movement, work done is force × distance.",
+    [
+      [
+        "It stays the same",
+        "The force is the same, but the distance changed."
+      ],
+      [
+        "It halves",
+        "The same force acting over a longer distance does more work."
+      ]
+    ]
+  ],
+  "respiration": [
+    "A plant in darkness still needs energy for cell processes. Which process continues to release it?",
+    "Respiration",
+    "Living plant cells respire in the light and in the dark.",
+    [
+      [
+        "Photosynthesis alone",
+        "Photosynthesis depends on light and stores energy in sugars."
+      ],
+      [
+        "Water uptake releases the energy",
+        "Water uptake is not the process releasing energy from glucose."
+      ]
+    ]
+  ],
+  "earth-structure": [
+    "Which label should go on the inward side of the mantle?",
+    "Core",
+    "The core lies inside the mantle, towards Earth's centre.",
+    [
+      [
+        "Crust",
+        "The crust is outside the mantle."
+      ],
+      [
+        "Atmosphere",
+        "The atmosphere surrounds Earth's outside."
+      ]
+    ]
+  ],
+  "photosynthesis": [
+    "A plant gains dry mass as it grows. Which gas provides carbon for its new carbohydrates?",
+    "Carbon dioxide",
+    "Carbon dioxide supplies carbon for the sugars made by photosynthesis.",
+    [
+      [
+        "Oxygen",
+        "Oxygen is released during photosynthesis."
+      ],
+      [
+        "Nitrogen",
+        "Nitrogen in the air is not the direct source of carbon for sugars."
+      ]
+    ]
+  ],
+  "electricity": [
+    "One wire is disconnected in a circuit with a cell, switch and lamp in one loop. What happens if the switch is closed?",
+    "The lamp stays off",
+    "The disconnected wire still breaks the loop.",
+    [
+      [
+        "The lamp lights when the switch closes",
+        "There is still a gap at the loose wire."
+      ],
+      [
+        "The lamp flickers because the cell changes direction",
+        "A gap in the loop stops a steady current."
+      ]
+    ]
+  ],
+  "metals": [
+    "A strip of magnesium is placed in copper sulfate solution. What visible result would support displacement?",
+    "A reddish-brown solid forms on the strip",
+    "Magnesium is more reactive and copper metal can be produced.",
+    [
+      [
+        "Magnesium metal appears on a copper strip",
+        "That would require copper to displace magnesium."
+      ],
+      [
+        "The strip stays clean and the solution does not change",
+        "That supplies no visible evidence of displacement."
+      ]
+    ]
+  ],
+  "journey-speed": [
+    "A runner covers 120 m in 20 s. What is their average speed?",
+    "6 m/s",
+    "Distance ÷ time = 120 ÷ 20.",
+    [
+      [
+        "0.17 m/s",
+        "That calculation divides time by distance."
+      ],
+      [
+        "2400 m/s",
+        "Speed uses division by the time, not multiplication."
+      ]
+    ]
+  ],
+  "balanced-moments": [
+    "A 20 N load acts 1 m to the left of a pivot. Where should a 10 N load act to balance it?",
+    "2 m to the right",
+    "Both moments have magnitude 20 N m in opposite directions.",
+    [
+      [
+        "1 m to the right",
+        "The lighter load needs a greater distance."
+      ],
+      [
+        "2 m to the left",
+        "Both loads would turn the beam in the same direction."
+      ]
+    ]
+  ]
+};

@@ -288,7 +288,7 @@ try{
  await desktop.goto(base+"/human-biology/#challenge/f171/a3",{waitUntil:"load"});
  await desktop.locator(".k-question-view").waitFor({state:"visible"});
  const count=await desktop.evaluate(()=>window.KeystoneHumanChallenge?.questionCount);
- assert.equal(count,534,"Live engine did not load all questions");
+ assert.equal(count,552,"Live engine did not load all questions");
  assert((await desktop.locator("main").innerText()).length>90,"Question activity is blank");
  await desktop.locator("#site-home").click();
  const dialog=desktop.locator("#leave-dialog");
@@ -727,7 +727,7 @@ try{
   await navPage.goto(path);
   await navPage.getByRole("heading",{name:"Check your understanding",exact:true}).waitFor();
   const firstCheck=navPage.locator("[data-catchup-check]").first();
-  assert.equal(await navPage.locator("[data-catchup-check]").count(),2);
+  assert.equal(await navPage.locator("[data-catchup-check]").count(),path.includes("/ks3/lesson/")?3:2);
   assert(await navPage.locator(".ks3-lesson figure,.ks3-lesson table").first().isVisible(),"KS3 lesson is missing a visual prompt");
   const pictures=navPage.locator(".ks3-illustration img");
   for(const picture of await pictures.all()){
@@ -906,11 +906,76 @@ try{
  await navPage.getByRole("link",{name:"Return to the follow-up question"}).click();
  await navPage.waitForURL(base+"/teaching/enzyme-investigations/gcse/");
  await navPage.getByRole("heading",{name:"GCSE · Compare two temperatures"}).waitFor();
+ await navPage.goto(base+"/diagram-practice/#filtration");
+ const visualLab=navPage.locator("#filtration diagram-practice");
+ const labels=visualLab.locator(".dp-question").first();
+ await labels.locator("summary").click();
+ await labels.getByRole("button",{name:"Filter paper",exact:true}).press("Enter");
+ await labels.getByRole("button",{name:/^A\./}).press("Enter");
+ assert.match(await labels.locator(".dp-placements").innerText(),/A · Filter paper/);
+ await labels.getByRole("button",{name:"Residue",exact:true}).click();
+ await labels.getByRole("button",{name:/^B\./}).click();
+ await labels.getByRole("button",{name:"Filtrate",exact:true}).click();
+ await labels.getByRole("button",{name:/^C\./}).click();
+ await labels.getByRole("button",{name:"Check answer",exact:true}).click();
+ await labels.getByRole("status").filter({hasText:"All labels correct"}).waitFor();
+ const point=visualLab.locator(".dp-question").nth(1);
+ await point.locator("summary").click();
+ await point.getByRole("button",{name:/^C\./}).click();
+ await point.getByRole("button",{name:"Check answer",exact:true}).click();
+ await point.getByRole("status").filter({hasText:"Correct."}).waitFor();
+ assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Diagram practice overflows on mobile");
+ await screen(navPage,"diagram-practice-mobile");
+
+ await desktop.goto(base+"/diagram-practice/#iv-circuit");
+ const circuit=desktop.locator("#iv-circuit .dp-question").first();
+ await circuit.locator("summary").click();
+ const chip=circuit.getByRole("button",{name:"Ammeter",exact:true});
+ const target=circuit.getByRole("button",{name:/^A\./});
+ await chip.scrollIntoViewIfNeeded();
+ const ch=await chip.boundingBox(), to=await target.boundingBox();
+ await desktop.mouse.move(ch.x+ch.width/2,ch.y+ch.height/2);
+ await desktop.mouse.down();
+ await desktop.mouse.move(to.x+to.width/2,to.y+to.height/2,{steps:8});
+ await desktop.mouse.up();
+ assert.match(await circuit.locator(".dp-placements").innerText(),/A · Ammeter/);
+
+ const touch=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+ await touch.goto(base+"/diagram-practice/#electrolysis");
+ const touchLabels=touch.locator("#electrolysis .dp-question").first();
+ await touchLabels.locator("summary").tap();
+ const tch=touchLabels.getByRole("button",{name:"Cathode",exact:true});
+ const dst=touchLabels.getByRole("button",{name:/^A\./});
+ await tch.scrollIntoViewIfNeeded();
+ const t1=await tch.boundingBox(),t2=await dst.boundingBox();
+ const device=await touch.context().newCDPSession(touch);
+ const center=rect=>({x:rect.x+rect.width/2,y:rect.y+rect.height/2});
+ await device.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[center(t1)]});
+ await device.send("Input.dispatchTouchEvent",{type:"touchMove",touchPoints:[center(t2)]});
+ await device.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});
+ assert.match(await touchLabels.locator(".dp-placements").innerText(),/A · Cathode/);
+ await touch.close();
+
+ await navPage.goto(base+"/diagram-practice/#breathing");
+ const breath=navPage.locator("#breathing diagram-practice");
+ await breath.getByRole("button",{name:"Breathing out",exact:true}).click();
+ await breath.getByRole("status").filter({hasText:"the muscles relax"}).waitFor();
+ await breath.getByRole("button",{name:"Breathing in",exact:true}).click();
+ assert.equal(await breath.getByRole("button",{name:"Breathing in",exact:true}).getAttribute("aria-pressed"),"true");
+
+ await navPage.goto(base+"/teaching/focused-writing/gcse/compare-insulation/");
+ const cooling=navPage.locator('[data-writing-exercise="insulation"]');
+ await cooling.getByRole("textbox").fill("The bare can cooled by 7 °C while the felt-wrapped can cooled by 13 °C.");
+ await cooling.getByRole("button",{name:"Check my sentence"}).click();
+ await cooling.getByRole("status").filter({hasText:"0 of 2 points confirmed"}).waitFor();
+ await cooling.getByRole("textbox").fill("The bare can cooled by 13 °C while the felt-wrapped can cooled by 7 °C.");
+ await cooling.getByRole("button",{name:"Check my sentence"}).click();
+ await cooling.getByRole("status").filter({hasText:"2 of 2 points confirmed"}).waitFor();
  await navPage.close();
  await mobile.close();
  await desktop.close();
  assert.deepEqual(errors,[],"Uncaught page errors: "+errors.join("; "));
- console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 534 questions and mobile layout.");
+ console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 552 questions and mobile layout.");
 }finally{
  await browser.close();await new Promise(done=>server.close(done));
 }

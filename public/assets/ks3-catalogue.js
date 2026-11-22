@@ -1,4 +1,4 @@
-import { curriculum, motionLessons } from "./ks3-lessons.js";
+import { curriculum, motionLessons, extraChecks } from "./ks3-lessons.js";
 import { homeActivity } from "./ks3-home-activities.js";
 
 const illustrations = {
@@ -340,6 +340,12 @@ function renderLesson(lesson, year, index) {
   for (const [number, question] of lesson.questions.entries()) {
     checks.append(renderQuestion(question, number + 1, index + number));
   }
+  const extra = extraChecks[lesson.id];
+  if (extra) {
+    const [prompt, answer, correctFeedback, distractors] = extra;
+    const number = lesson.questions.length + 1;
+    checks.append(renderQuestion({prompt, answer, correctFeedback, distractors}, number, index + number));
+  }
   const transfer = element("article", "", "practice-card");
   transfer.append(element("h3", "Try it yourself"), element("p", lesson.transfer),
     disclosure("Compare your answer", element("p", lesson.model)));
@@ -348,6 +354,13 @@ function renderLesson(lesson, year, index) {
   finish.append(link("Choose another Year " + year + " topic", yearLink.href));
   const extension = externalModels[lesson.id] ? externalActivity(lesson.id) : null;
   if (extension) teaching.append(extension);
+  const diagramTopic = { "separating-techniques": "filtration", electricity: "circuits",
+    "the-body": "breathing" }[lesson.id];
+  if (diagramTopic) {
+    const practice = element("diagram-practice");
+    practice.setAttribute("topic", diagramTopic);
+    checks.append(practice);
+  }
   lessonRoot.replaceChildren(teaching, checks, homeActivity(lesson.id), finish);
 }
 

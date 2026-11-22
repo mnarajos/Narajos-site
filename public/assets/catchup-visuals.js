@@ -310,9 +310,28 @@ const microscopePractice = `<details class="kc-visual-check">
  </details>
 </details>`;
 
+const humanPractice = {
+ "f170/1.2.2":"airway", "f170/2.1.3":"breathing", "f170/2.2.2":"breathing",
+ "f171/a2":"cast", "f171/2.1":"cast", "f171/a3":"antibody",
+ "f171/a4":"cuff", "f171/4.2.2":"cuff"
+};
+const alevelPractice = {kidney:"nephron",muscle:"sarcomere",sliding:"sarcomere",sliding2:"sarcomere"};
+let addedPracticeAssets = false;
+
 function render(course,id){
  var item=curated[course+"/"+id];
- if(!item)return "";
+ var practice=humanPractice[course+"/"+id] || (/^a[1-8]$/.test(course) ? alevelPractice[id] : "");
+ if(!item&&!practice)return "";
+ item=item||{};
+ if(practice&&!addedPracticeAssets&&/^a[1-8]$/.test(course)&&window.customElements){
+  const css=document.createElement("link"),script=document.createElement("script");
+  css.rel="stylesheet";
+  css.href="/assets/diagram-practice.css";
+  script.type="module";
+  script.src="/assets/diagram-practice.js";
+  document.head.append(css,script);
+  addedPracticeAssets=true;
+ }
  var html='<aside class="kc-catchup-extra" aria-label="Visual explanation and related simulations">';
  if(item.diagram){
   var d=diagrams[item.diagram];
@@ -330,6 +349,7 @@ function render(course,id){
   });
   html+='</div><small>The simulation opens in a new tab, so you can return to this key idea.</small></div>';
  }
+ if(practice)html+='<diagram-practice topic="'+practice+'"><a href="/diagram-practice/#'+practice+'">Practise with this diagram</a></diagram-practice>';
  return html+'</aside>';
 }
 window.KeystoneCatchupVisuals={render:render,has:function(course,id){return !!curated[course+"/"+id];}};

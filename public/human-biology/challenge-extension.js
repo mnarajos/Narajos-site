@@ -724,6 +724,397 @@ var additions=[
     "samAligned": false
   }
 ];
+additions.push(...[
+  {
+    "id": "visual-f170-airway-goblet",
+    "unit": "f170",
+    "area": 1,
+    "section": "1.2.2",
+    "stem": "Which cell made the layer above the cells with cilia?",
+    "model": "Goblet cell",
+    "explain": "Goblet cells secrete mucus, which forms the layer facing the airway.",
+    "misconception": "Cilia move the layer. They do not secrete it.",
+    "level": "apply",
+    "samAligned": false,
+    "type": "diagram",
+    "options": [
+      "Goblet cell",
+      "Squamous epithelial cell",
+      "Red blood cell",
+      "Fibroblast"
+    ],
+    "correct": 0,
+    "figure": "practice-airway"
+  },
+  {
+    "id": "visual-f170-airway-alveolus",
+    "unit": "f170",
+    "area": 1,
+    "section": "1.2.2",
+    "stem": "The airway lining is replaced in a teaching model by one layer of flat cells without cilia. Which adaptation for gas exchange does this add?",
+    "model": "A short diffusion distance",
+    "explain": "Very thin squamous epithelium shortens the route across the barrier.",
+    "misconception": "Gas exchange depends on diffusion. Cilia have a different role in conducting airways.",
+    "level": "apply",
+    "samAligned": false,
+    "type": "single",
+    "options": [
+      "An increased airway diameter",
+      "A short diffusion distance",
+      "A greater rate of mucus secretion",
+      "More active transport of oxygen"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "visual-f170-airway-block",
+    "unit": "f170",
+    "area": 1,
+    "section": "1.2.2",
+    "stem": "An air pollutant reduces ciliary beating. Explain why inhaled particles may build up near the airway lining.",
+    "model": "Particles are trapped in mucus. Reduced ciliary movement slows transport of mucus towards the throat.",
+    "explain": "Link the changed cell activity to movement of the material above the cell.",
+    "misconception": "Mucus can still be produced when ciliary beating slows.",
+    "level": "apply",
+    "samAligned": false,
+    "type": "written",
+    "markPoints": [
+      "Particles are trapped in mucus.",
+      "Reduced ciliary movement slows transport of mucus towards the throat."
+    ],
+    "figure": "practice-airway"
+  },
+  {
+    "id": "visual-f170-airway-cause",
+    "unit": "f170",
+    "area": 1,
+    "section": "1.2.2",
+    "stem": "Order the steps that remove a particle from a conducting airway.",
+    "model": "Inhale a particle → Trap the particle in mucus → Move the mucus towards the throat by ciliary beating",
+    "explain": "Trapping and moving are separate processes.",
+    "misconception": "Cilia do not directly bind and carry each particle.",
+    "level": "apply",
+    "samAligned": false,
+    "type": "order",
+    "items": [
+      "Inhale a particle",
+      "Trap the particle in mucus",
+      "Move the mucus towards the throat by ciliary beating"
+    ]
+  },
+  {
+    "id": "visual-f170-volume-pressure",
+    "unit": "f170",
+    "area": 2,
+    "section": "2.2.2",
+    "stem": "The model shows the diaphragm in a flatter position. What starts air moving into the lungs?",
+    "model": "Pressure in the lungs temporarily falls below pressure outside",
+    "explain": "A larger chest volume lowers pressure in the lungs. The pressure difference draws air in.",
+    "misconception": "A muscle changes chest volume. The resulting pressure difference moves the air.",
+    "level": "apply",
+    "samAligned": false,
+    "type": "diagram",
+    "options": [
+      "Pressure in the lungs temporarily falls below pressure outside",
+      "Atmospheric pressure falls below pressure in the lungs",
+      "The diaphragm pushes air straight down the airway",
+      "Lung pressure rises as chest volume increases"
+    ],
+    "correct": 0,
+    "figure": "practice-breath-in"
+  },
+  {
+    "id": "visual-f170-quiet-expiration",
+    "unit": "f170",
+    "area": 2,
+    "section": "2.2.2",
+    "stem": "Put the changes during quiet expiration in order.",
+    "model": "The diaphragm relaxes → The chest volume decreases → Lung pressure rises above atmospheric pressure → Air flows out",
+    "explain": "Quiet expiration follows relaxation and elastic recoil.",
+    "misconception": "An increase in lung pressure follows the decrease in volume.",
+    "level": "apply",
+    "samAligned": false,
+    "type": "order",
+    "items": [
+      "The diaphragm relaxes",
+      "The chest volume decreases",
+      "Lung pressure rises above atmospheric pressure",
+      "Air flows out"
+    ]
+  },
+  {
+    "id": "visual-f170-minute-ventilation",
+    "unit": "f170",
+    "area": 2,
+    "section": "2.2.2",
+    "stem": "After a short activity, a person breathes 16 times per minute and takes in an average of 0.45 dm³ per breath. Calculate the volume of air breathed in per minute.",
+    "model": "7.2 dm³/min",
+    "explain": "Multiply 16 breaths per minute by 0.45 dm³ per breath.",
+    "misconception": "The rate is based on a minute. A tidal volume is the volume for one breath.",
+    "level": "apply",
+    "samAligned": false,
+    "type": "number",
+    "correct": 7.2,
+    "answerUnit": "dm³/min",
+    "tolerance": 0.01
+  },
+  {
+    "id": "visual-f170-volume-effort",
+    "unit": "f170",
+    "area": 2,
+    "section": "2.2.2",
+    "stem": "A person has reduced movement of the diaphragm. Explain why their depth of inspiration may be reduced.",
+    "model": "A smaller change in diaphragm position gives a smaller increase in thoracic volume. The pressure difference driving airflow into the lungs is smaller.",
+    "explain": "Follow each link from muscle movement to volume, pressure and flow.",
+    "misconception": "Inhalation is explained by a pressure difference, not a separate suction action of the diaphragm.",
+    "level": "apply",
+    "samAligned": false,
+    "type": "written",
+    "markPoints": [
+      "A smaller change in diaphragm position gives a smaller increase in thoracic volume.",
+      "The pressure difference driving airflow into the lungs is smaller."
+    ]
+  },
+  {
+    "id": "visual-f171-cuff-systolic",
+    "unit": "f171",
+    "area": 4,
+    "section": "4.1",
+    "stem": "The monitor shows 124/78. Which statement identifies the upper value?",
+    "model": "124 mmHg is systolic pressure",
+    "explain": "The systolic reading is the higher arterial pressure between the displayed values.",
+    "misconception": "Pulse rate and arterial pressure measure different things.",
+    "level": "apply",
+    "samAligned": false,
+    "type": "diagram",
+    "options": [
+      "124 mmHg is systolic pressure",
+      "124 mmHg is diastolic pressure",
+      "124 is pulse rate in beats per minute",
+      "124 is the difference between the two pressures"
+    ],
+    "correct": 0,
+    "figure": "practice-cuff"
+  },
+  {
+    "id": "visual-f171-cuff-supported",
+    "unit": "f171",
+    "area": 4,
+    "section": "4.1",
+    "stem": "Two blood pressure readings are to be compared. Which change makes the comparison fairer?",
+    "model": "Hold the arm at heart level for both readings",
+    "explain": "Standardise the measurement conditions, including arm position.",
+    "misconception": "A difference can come from procedure rather than a physiological change.",
+    "level": "apply",
+    "samAligned": false,
+    "type": "single",
+    "options": [
+      "Record one after exercise and one after rest",
+      "Hold the arm at heart level for both readings",
+      "Use a different cuff size each time regardless of fit",
+      "Take the second reading while the person is speaking"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "visual-f171-pressure-range",
+    "unit": "f171",
+    "area": 4,
+    "section": "4.2.2",
+    "stem": "Three systolic readings taken under the same conditions are 125, 121 and 128 mmHg. Calculate the range.",
+    "model": "7 mmHg",
+    "explain": "128 − 121 = 7 mmHg.",
+    "misconception": "Range uses the highest and lowest values. It is not a mean.",
+    "level": "apply",
+    "samAligned": false,
+    "type": "number",
+    "correct": 7,
+    "answerUnit": "mmHg",
+    "tolerance": 0.01
+  },
+  {
+    "id": "visual-f171-cuff-odd",
+    "unit": "f171",
+    "area": 4,
+    "section": "4.2.2",
+    "stem": "Two resting systolic readings are 123 and 125 mmHg. A third of 147 mmHg was recorded while the person moved their arm. Explain what should happen next.",
+    "model": "Record the original reading and annotate the different measurement conditions. Repeat under the same standardised conditions before judging whether the higher value represents a sustained change.",
+    "explain": "Repeat the measurement under comparable conditions and keep its context.",
+    "misconception": "A reading made under different conditions cannot by itself establish a trend.",
+    "level": "apply",
+    "samAligned": false,
+    "type": "written",
+    "markPoints": [
+      "Record the original reading and annotate the different measurement conditions.",
+      "Repeat under the same standardised conditions before judging whether the higher value represents a sustained change."
+    ]
+  },
+  {
+    "id": "visual-f171-cast-mechanism",
+    "unit": "f171",
+    "area": 2,
+    "section": "2.1",
+    "stem": "What is the direct purpose of the rigid layer around the forearm?",
+    "model": "Keep the break stable while living tissue repairs",
+    "explain": "The cast provides mechanical stability so the bone ends can stay aligned.",
+    "misconception": "The cast helps create conditions for repair. Bone cells and other living tissues carry out repair.",
+    "level": "apply",
+    "samAligned": false,
+    "type": "diagram",
+    "options": [
+      "Replace the damaged bone",
+      "Keep the break stable while living tissue repairs",
+      "Provide blood to the fracture",
+      "Increase movement at the break"
+    ],
+    "correct": 1,
+    "figure": "practice-cast"
+  },
+  {
+    "id": "visual-f171-cast-followup",
+    "unit": "f171",
+    "area": 2,
+    "section": "2.1",
+    "stem": "Two fractures have similar positions. What difference would be most relevant to considering additional fixation?",
+    "model": "How stable the bone ends are after alignment",
+    "explain": "Stability and maintenance of alignment are relevant to the method of support.",
+    "misconception": "The choice depends on characteristics of the fracture and the person, not the cast colour.",
+    "level": "apply",
+    "samAligned": false,
+    "type": "single",
+    "options": [
+      "How stable the bone ends are after alignment",
+      "Whether both scans are printed at the same scale",
+      "Which cast colour the person prefers",
+      "Whether both forearms were measured on the same day"
+    ],
+    "correct": 0
+  },
+  {
+    "id": "visual-f171-antibody-region",
+    "unit": "f171",
+    "area": 3,
+    "section": "3.1",
+    "stem": "What determines whether this antibody can bind a specific part of an antigen?",
+    "model": "Complementarity at its antigen-binding site",
+    "explain": "The binding surface must be sufficiently complementary in shape and chemical properties.",
+    "misconception": "Antibody and antigen are not the same molecule.",
+    "level": "apply",
+    "samAligned": false,
+    "type": "diagram",
+    "options": [
+      "Complementarity at its antigen-binding site",
+      "The length of its stem alone",
+      "The colour of the molecule in the diagram",
+      "The antigen having the same mass as the antibody"
+    ],
+    "correct": 0,
+    "figure": "practice-antibody"
+  },
+  {
+    "id": "visual-f171-antibody-change",
+    "unit": "f171",
+    "area": 3,
+    "section": "3.1",
+    "stem": "An altered antigen has a different shape at the part that normally binds an antibody. Explain how that can affect recognition.",
+    "model": "The antibody binding site may be less complementary to that part of the antigen. Binding may become weaker, or may not occur for that antibody.",
+    "explain": "Specify which surfaces interact and predict how their fit changes.",
+    "misconception": "A change in the antigen does not cause antibodies already present to reshape to fit it.",
+    "level": "apply",
+    "samAligned": false,
+    "type": "written",
+    "markPoints": [
+      "The antibody binding site may be less complementary to that part of the antigen.",
+      "Binding may become weaker, or may not occur for that antibody."
+    ],
+    "figure": "practice-antibody"
+  },
+  {
+    "id": "case-visual-rested-pressure",
+    "unit": "f171",
+    "area": 4,
+    "section": "4.2.2",
+    "stem": "A trainee says the higher readings after a walk show that a monitor is unreliable. Analyse the evidence and suggest a better check of repeatability.",
+    "model": "Resting values are close together, and all values after walking are higher. There is a systematic change in measurement conditions, so the results could reflect physiology. Use repeated readings with the same person, device and resting conditions to assess variation.",
+    "explain": "Compare both sets and separate measurement variation from changes in the person.",
+    "misconception": "Higher readings under a different condition do not by themselves show an instrument fault.",
+    "level": "stretch",
+    "samAligned": false,
+    "type": "written",
+    "markPoints": [
+      "Resting values are close together, and all values after walking are higher.",
+      "There is a systematic change in measurement conditions, so the results could reflect physiology.",
+      "Use repeated readings with the same person, device and resting conditions to assess variation."
+    ],
+    "marks": 6,
+    "caseTitle": "Resting and post-activity blood pressure",
+    "levelsNote": "Use details from both sets and connect the proposed repeat check to the claimed fault.",
+    "figure": "practice-cuff",
+    "evidenceTable": {
+      "caption": "Fictional systolic readings",
+      "columns": [
+        "Condition",
+        "Readings (mmHg)"
+      ],
+      "rows": [
+        [
+          "After seated rest",
+          "122, 124, 123"
+        ],
+        [
+          "Immediately after brisk walking",
+          "146, 150, 148"
+        ]
+      ]
+    }
+  },
+  {
+    "id": "case-visual-cast-comparison",
+    "unit": "f171",
+    "area": 5,
+    "section": "5.2",
+    "stem": "A fictional service compares outcomes for two approaches to supporting fractures. Discuss whether the results justify choosing either approach for a new patient.",
+    "model": "Calculate the proportions with alignment maintained: 36/40 = 90% and 43/50 = 86%. The lower proportion is in a group with more unstable fractures at the start. This could affect the outcome independently of the method. Consider whether alignment was measured in the same way and whether the outcomes include recovery, pain or complications. For a new patient, consider fracture stability and relevant evidence in comparable cases. These data alone do not establish which treatment is better.",
+    "explain": "Weigh what the comparison shows, the systematic group differences and the information needed for a decision.",
+    "misconception": "A higher percentage in one group does not remove confounding by the initial severity.",
+    "level": "stretch",
+    "samAligned": false,
+    "type": "written",
+    "markPoints": [
+      "Calculate the proportions with alignment maintained: 36/40 = 90% and 43/50 = 86%.",
+      "The lower proportion is in a group with more unstable fractures at the start. This could affect the outcome independently of the method.",
+      "Consider whether alignment was measured in the same way and whether the outcomes include recovery, pain or complications.",
+      "For a new patient, consider fracture stability and relevant evidence in comparable cases. These data alone do not establish which treatment is better."
+    ],
+    "marks": 9,
+    "caseTitle": "Comparing fracture support outcomes",
+    "levelsNote": "A sustained discussion should weigh evidence, limitations and implications for the patient.",
+    "figure": "practice-cast",
+    "evidenceTable": {
+      "caption": "Fictional follow-up records",
+      "columns": [
+        "Approach",
+        "Cases",
+        "Aligned at follow-up",
+        "Unstable initially"
+      ],
+      "rows": [
+        [
+          "External cast",
+          "40",
+          "36",
+          "6"
+        ],
+        [
+          "Internal fixation",
+          "50",
+          "43",
+          "34"
+        ]
+      ]
+    }
+  }
+]);
 var ids=new Set(bank.questions.map(function(q){return q.id;}));
 additions.forEach(function(q){if(!ids.has(q.id)){bank.questions.push(q);ids.add(q.id);}});
 })();

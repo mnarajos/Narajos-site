@@ -358,7 +358,16 @@ function evidenceTable(table){
    return '<tr><th scope="row">'+esc(row[0])+'</th>'+row.slice(1).map(function(value){return '<td>'+esc(value)+'</td>';}).join("")+'</tr>';
   }).join("")+'</tbody></table></div>';
 }
+const practiceFigures={
+ "practice-airway":["airway","Airway lining showing cilia and a mucus layer with trapped particles."],
+ "practice-breath-in":["breath-in","Chest cavity in inspiration with a flattened diaphragm, expanded lungs and outward rib movement."],
+ "practice-cuff":["cuff","A cuff is wrapped around the upper arm, connected to a display reading 124 over 78."],
+ "practice-cast":["cast","Forearm cutaway showing the cast shell and a break in the bone."],
+ "practice-antibody":["antibody","A Y-shaped antibody with matching antigen fragments near its two tips."]
+};
 function figure(name,reveal){
+ var art=practiceFigures[name];
+ if(art)return '<figure class="k-figure"><img width="600" height="360" style="width:100%;height:auto;max-width:600px" src="/assets/practice-diagrams/'+art[0]+'.svg" alt="'+esc(art[1])+'"></figure>';
  var tag='<div class="k-figure">';
  if(name==="cell")tag+='<svg viewBox="0 0 440 210" role="img" aria-label="A schematic human cell with label A pointing to one structure. A nucleus and several organelles are shown."><ellipse cx="187" cy="105" rx="137" ry="82" fill="#e2f3f0" stroke="#167a77" stroke-width="5"/><circle cx="164" cy="105" r="37" fill="#d9d3f4" stroke="#7652ac" stroke-width="3"/><circle cx="170" cy="100" r="11" fill="#9679cb"/><ellipse cx="249" cy="78" rx="24" ry="13" fill="#efbd77" stroke="#98692c" stroke-width="3" transform="rotate(-24 249 78)"/><path d="M236 74q12 6 25 0" stroke="#98692c" stroke-width="2" fill="none"/><path d="M291 52L367 35" stroke="#1e5360" stroke-width="3"/><text x="374" y="37" font-size="25" font-weight="800" fill="#1e5360">A</text></svg>';
  else if(name==="heart")tag+='<svg viewBox="0 0 440 235" role="img" aria-label="Schematic heart cross-section with two lower chambers and a pointer labelled A."><path d="M98 69Q90 20 135 20L201 55 266 20Q321 20 309 85L291 167Q285 212 205 214 130 211 117 163Z" fill="#fbe4e4" stroke="#a64a56" stroke-width="4"/><path d="M205 57L205 209" stroke="#9b4050" stroke-width="12"/><path d="M142 92Q116 125 157 172L194 193V102Z" fill="#c4dcef" stroke="#447da7" stroke-width="2"/><path d="M220 102V193L260 172Q298 125 268 92Z" fill="#edaaaa" stroke="#a64a56" stroke-width="2"/><path d="M205 131L346 78" stroke="#1e5360" stroke-width="3"/><text x="355" y="83" font-size="24" font-weight="800" fill="#1e5360">A</text></svg>';
