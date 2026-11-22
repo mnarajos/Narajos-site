@@ -72,6 +72,14 @@ try{
   assert(rows[2]>rows[0]);
   assert((await pilotPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3);
  }
+ const selectedYear=yearNavigation.locator('[aria-current="page"]');
+ assert.equal(await selectedYear.textContent(),"Year 7");
+ const selectedStyle=await selectedYear.evaluate(el=>[getComputedStyle(el).backgroundColor,getComputedStyle(el,"::before").content]);
+ assert.equal(selectedStyle[0],"rgb(23, 84, 102)");
+ assert.match(selectedStyle[1],/✓/);
+ await selectedYear.press("Tab");
+ await pilotPage.keyboard.press("Shift+Tab");
+ assert(await selectedYear.evaluate(el=>el===document.activeElement&&getComputedStyle(el).outlineStyle==="solid"));
  await screen(pilotPage,"catch-up-year-navigation-mobile");
  assert.equal(await pilotPage.locator(".school-topic-list > li").count(),12);
  assert.equal(await pilotPage.getByRole("link",{name:"Open GCSE revision"}).count(),0);
@@ -190,6 +198,13 @@ try{
  assert.match(await startCheck.textContent(),/Check.*→/);
  assert(!(await pilotPage.locator(".school-lesson-table").isVisible()));
  assert(await pilotPage.getByText("Net water movement A → B",{exact:true}).isVisible());
+ const osmosisBreadcrumb=pilotPage.getByRole("navigation",{name:"Breadcrumb",exact:true});
+ assert.equal(await osmosisBreadcrumb.getByRole("link",{name:"Science Catch-up",exact:true}).getAttribute("href"),"/science-catch-up/");
+ assert.equal(await osmosisBreadcrumb.getByRole("link",{name:"← Year 9 topics",exact:true}).getAttribute("href"),"/science-catch-up/?year=9");
+ assert.equal(await osmosisBreadcrumb.locator('[aria-current="page"]').textContent(),"Osmosis");
+ assert.equal(await pilotPage.locator('.site-nav [aria-current=location]').textContent(),"Year 9");
+ assert.match(await pilotPage.locator('link[rel="canonical"]').getAttribute("href"),/\?topic=osmosis$/);
+
  await pilotPage.getByText("Read the table",{exact:true}).click();
  assert(await pilotPage.locator(".school-lesson-table").isVisible());
  await guide.getByRole("button",{name:"Check",exact:true}).click();
@@ -262,6 +277,10 @@ try{
  await catalogueWithoutGroupBy.addInitScript(()=>{Object.groupBy=undefined;});
  for(const year of [7,8,9,10,11]){
   await catalogueWithoutGroupBy.goto(base+"/science-catch-up/?year="+year);
+  const yearCurrent=catalogueWithoutGroupBy.locator(".school-years [aria-current=page]");
+  assert.equal(await yearCurrent.textContent(),"Year "+year);
+  assert.equal(await yearCurrent.evaluate(el=>getComputedStyle(el).backgroundColor),"rgb(23, 84, 102)");
+  assert.equal(await catalogueWithoutGroupBy.locator(".site-nav [aria-current=page]").textContent(),"Year "+year);
   const topic=catalogueWithoutGroupBy.locator(".school-topic-list").getByRole("link").first();
   await topic.click();
   await catalogueWithoutGroupBy.locator(".school-journey").getByRole("button",{name:"Check",exact:true}).waitFor();
@@ -397,8 +416,18 @@ try{
  const homeMenu=desktop.locator(".site-nav details").first();
  await homeMenu.locator("summary").click();
  assert(await homeMenu.locator('a[href="/human-biology/"]').isVisible(),"Human Biology missing from homepage dropdown");
- assert.equal(await homeMenu.getByRole("link",{name:/^Year (7|8|9|10|11) Science/}).count(),5);
+ assert.equal(await homeMenu.getByRole("link",{name:/^Year (7|8|9|10|11)$/}).count(),5);
  await homeMenu.locator("summary").click();
+ const navTargets=await desktop.locator(".site-nav a").evaluateAll(links=>links.map(a=>[a.getAttribute("href"),a.textContent]));
+ assert.deepEqual(navTargets.slice(0,9).map(([route])=>route),[
+  ...[7,8,9,10,11].map(year=>"/science-catch-up/?year="+year),
+  "/science-catch-up/","/gcse/","/alevel/","/human-biology/"
+ ]);
+ for(const path of ["/teaching/","/privacy/","/teaching/simulations/","/science-catch-up/?year=8","/teaching/focused-writing/"]){
+  await desktop.goto(base+path);
+  assert.deepEqual(await desktop.locator(".site-nav a").evaluateAll(links=>links.map(a=>[a.getAttribute("href"),a.textContent])),navTargets);
+ }
+ await desktop.goto(base+"/");
  const menus=desktop.locator(".site-nav details");
  await menus.nth(0).locator("summary").click();
  await menus.nth(1).locator("summary").click();
@@ -662,6 +691,12 @@ try{
  await mobileMenu.locator("summary").click();
  assert(await mobileMenu.locator('a[href="/human-biology/"]').isVisible(),"Human Biology missing from mobile homepage dropdown");
  assert((await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth))<=3,"Mobile homepage has horizontal overflow");
+ await mobile.setViewportSize({width:320,height:780});
+ assert.equal(await mobileMenu.getByRole("group",{name:"Science by year"}).getByRole("link").count(),6);
+ assert.equal(await mobileMenu.getByRole("group",{name:"By qualification"}).getByRole("link").count(),3);
+ const dropdown=await mobileMenu.locator(".site-dropdown").boundingBox();
+ assert(dropdown.x>=0&&dropdown.x+dropdown.width<=321,"The grouped menu must fit a narrow phone");
+ await mobile.setViewportSize({width:390,height:844});
  await screen(mobile,"home-mobile");
  for(const name of ["teaching","teaching/simulations","privacy","alevel","human-biology"]){
   await checkPage(mobile,name);
@@ -1707,7 +1742,8 @@ try{
   await navPage.waitForFunction(suffix=>document.querySelector("#coach-text").textContent.includes("All enzymes have denatured "+suffix+"."),expected);
  }
  await navPage.getByRole("link",{name:"Return to the follow-up question"}).click();
- await navPage.waitForURL(base+"/teaching/enzyme-investigations/gcse/");
+ await navPage.waitForURL(base+"/teaching/enzyme-investigations/gcse/#follow-up");
+ assert(await navPage.locator("#follow-up").isVisible());
  await navPage.getByRole("heading",{name:"GCSE · Compare two temperatures"}).waitFor();
  await navPage.goto(base+"/teaching/enzyme-investigations/ks3/");
  await navPage.getByRole("heading",{name:/Can the same enzyme break down starch and protein/}).waitFor();

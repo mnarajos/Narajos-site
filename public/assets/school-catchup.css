@@ -7,7 +7,9 @@
   color: #174858; border: 1px solid #9ebcbe; background: white; border-radius: .5rem;
   font: inherit; font-weight: 675; text-decoration: none; cursor: pointer;
 }
-.school-primary, .school-years [aria-current="page"] { background: #175466; color: white; border-color: #175466; }
+.school-primary, .school-years:not(.school-year-chooser) a[aria-current="page"] { background: #175466; color: white; border-color: #175466; }
+.school-years a[aria-current="page"] { font-weight: 800; }
+.school-years a[aria-current="page"]::before { content: "✓"; margin-inline-end: .3em; }
 .school-primary span[aria-hidden="true"] { margin-inline-start: .28em; }
 .school-catchup :is(a, button, summary):focus-visible,
 .school-journey :is(a, button, summary):focus-visible,

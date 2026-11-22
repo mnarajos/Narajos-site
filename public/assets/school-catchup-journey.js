@@ -62,10 +62,16 @@ function link(text, href, className) {
   return el;
 }
 
+export function identifyCatchupYear(year) {
+  document.documentElement.dataset.catchupYear = String(year);
+  document.dispatchEvent(new Event("narajos:catchup-year"));
+}
+
 export function mountJourney(host, model, lesson) {
   if (!host || !model || !lesson?.steps?.length || host.dataset.journeyMounted) return;
   host.dataset.journeyMounted = "true";
   const {id, year, hook, steps, retry, code} = lesson;
+  if (!document.documentElement.dataset.catchupYear) identifyCatchupYear(year);
   const guided = Number(year) >= 9 || new URLSearchParams(location.search).has("guided");
   const practice = guided ? model.parentElement.querySelector("[data-ks3-transfer]") : null;
   const progressKey = year + "." + id;
@@ -155,6 +161,8 @@ export function mountJourney(host, model, lesson) {
       heading.prepend(tick);
       next.append(heading);
       if (code) next.append(link("Revise " + code, "/gcse/#topic-" + code.toLowerCase(), "school-primary"));
+      if (id === "enzymes") next.append(link("Try a guided enzyme investigation",
+        "/teaching/enzyme-investigations/gcse/", "school-secondary"));
       if (practice) next.append(button("Try it yourself", () => {
         const section = practice.closest("details");
         if (section) section.open = true;

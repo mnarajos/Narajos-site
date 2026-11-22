@@ -1,3 +1,4 @@
+import { identifyCatchupYear } from "./school-catchup-journey.js";
 import { curriculum, motionLessons } from "./ks3-lessons.js";
 import { year9 } from "./school-catchup-year9.js";
 import { gcseCatchup } from "./gcse-catchup-data.js";
@@ -61,6 +62,7 @@ if (!yearSelected) yearNav.classList.add("school-year-chooser");
 
 const main = document.querySelector("[data-catchup-catalogue]");
 if (yearSelected) {
+  identifyCatchupYear(year);
   for (const number of years) {
     const target = link("Year " + number, root + "?year=" + number);
     if (year === number) target.setAttribute("aria-current", "page");
