@@ -321,6 +321,11 @@ function renderLesson(lesson, year, index) {
   cue.append(element("strong", "Start here. "), lesson.notice);
   const explanation = disclosure("Read the explanation", ...lesson.explain.map((sentence) => element("p", sentence)));
   teaching.append(title);
+  if (lesson.id === "fair-tests") {
+    const ramp = element("toy-ramp");
+    teaching.append(ramp);
+    import("./toy-ramp.js");
+  }
   if (illustrations[lesson.id]) teaching.append(renderIllustration(lesson.id));
   if (!illustrations[lesson.id] || lesson.visual.headers) teaching.append(renderVisual(lesson.visual));
   teaching.append(cue, explanation);
