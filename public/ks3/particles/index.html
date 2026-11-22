@@ -5,6 +5,7 @@
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <script defer src="/assets/ks3-check.js"></script>
  <script defer src="/assets/ks3-gas-pressure.js"></script>
+ <script defer src="/assets/listen-to.js"></script>
  <title>Particles and gas pressure | Narajos</title>
  <meta name="description" content="Particles and gas pressure">
 
@@ -13,6 +14,7 @@
  <link rel="stylesheet" href="/assets/site.css">
  <link rel="stylesheet" href="/assets/home-link.css">
  <link rel="stylesheet" href="/assets/science-practice.css">
+ <link rel="stylesheet" href="/assets/reading-support.css">
 
  <script type="module" src="/assets/ks3-home-activities.js"></script>
 </head>
@@ -31,8 +33,14 @@
    <h2 id="catchup-lesson">Why does gas pressure change?</h2>
    <p>Picture air inside a sealed box. The air particles are always moving. Each time a particle hits a wall, it pushes on it. <strong>Pressure</strong> is the force on each unit of area.</p>
    <div class="gas-model" data-gas-pressure hidden>
-    <p><strong>Try it.</strong> Start the motion and watch a few wall collisions. Predict what will happen to the pressure when you warm the gas, then switch to <strong>Warmer gas</strong>. Next, try <strong>Smaller box</strong> at the starting temperature.</p>
-    <fieldset class="gas-conditions">
+    <div class="gas-guide">
+     <div id="gas-instructions" class="reading-copy" aria-live="polite" aria-atomic="true">
+      <strong data-gas-step>Observation 1 of 3</strong>
+      <p data-gas-prompt>Press Start motion. Watch for an outlined dot when a particle hits a wall.</p>
+     </div>
+     <listen-to for="gas-instructions gas-result" label="Listen to the observation"></listen-to>
+    </div>
+    <fieldset class="gas-conditions" hidden>
      <legend>Choose one change</legend>
      <label><input type="radio" name="gas-condition" value="start" checked> Starting box</label>
      <label><input type="radio" name="gas-condition" value="warm"> Warmer gas</label>
@@ -40,10 +48,16 @@
     </fieldset>
     <figure class="gas-visual">
      <canvas width="368" height="173" aria-hidden="true"></canvas>
-     <figcaption>Dots represent gas particles. A dot gets an outline when it hits a wall. The bar shows the predicted relative pressure for the selected setting.</figcaption>
+     <figcaption>Each dot is a gas particle. The bar shows relative pressure in this model.</figcaption>
     </figure>
-    <button type="button">Start motion</button>
-    <p class="gas-result" role="status">Starting pressure. The particles bounce off the walls.</p>
+    <div class="gas-actions">
+     <button type="button" data-gas-change hidden></button>
+     <button type="button" data-gas-motion>Start motion</button>
+     <button type="button" data-gas-next hidden>Next observation</button>
+     <button type="button" data-gas-back hidden>Previous observation</button>
+    </div>
+    <p class="gas-result reading-copy" id="gas-result" role="status">Starting pressure. The particles bounce off the walls.</p>
+    <button type="button" data-gas-free>Explore freely</button>
    </div>
    <details>
     <summary>Read the explanation</summary>

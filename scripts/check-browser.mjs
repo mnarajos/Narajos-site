@@ -26,6 +26,14 @@ await new Promise(done=>server.listen(0,"127.0.0.1",done));
 const port=server.address().port,base="http://127.0.0.1:"+port;
 const browser=await chromium.launch({headless:true,args:["--no-sandbox"]});
 const errors=[];
+async function checkReadingSpacing(page, label) {
+ const style=await page.addStyleTag({content:`
+  * { line-height: 1.5 !important; letter-spacing: .12em !important; word-spacing: .16em !important; }
+  p { margin-bottom: 2em !important; }
+ `});
+ assert((await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,label+" overflows with text spacing applied");
+ await style.evaluate(el=>el.remove());
+}
 async function screen(page,label){
  await page.screenshot({path:"/tmp/narajos-"+label+".png",fullPage:true});
 }
@@ -119,11 +127,29 @@ try{
  assert((await desktop.locator(".kc-visual-art svg").getAttribute("aria-label")).includes("reaction rate"),"Accessible enzyme schematic missing");
  await screen(desktop,"alevel-enzyme-visual");
 
+ await desktop.addInitScript(()=>{
+  window.narajosSpeech=[];
+  Object.defineProperty(window,"speechSynthesis",{value:{
+   speak:utterance=>window.narajosSpeech.push(utterance.text),
+   cancel:()=>window.narajosSpeech.push("stopped")
+  }});
+ });
  await checkPage(desktop,"human-biology");
  assert(await desktop.getByRole("heading",{name:"Other ways to revise F170",exact:true}).isVisible());
  assert(await desktop.getByRole("heading",{name:"Other ways to revise F171",exact:true}).isVisible());
  assert(await desktop.locator('.k-home-actions a[href="#skills/f171"]').isVisible());
  assert.equal(await desktop.locator("main").evaluate(el=>getComputedStyle(el).outlineStyle),"none","Main-content focus outline should not frame the whole app");
+ await desktop.goto(base+"/human-biology/#challenge/f170");
+ const firstF170Actions=desktop.getByRole("region",{name:"Start F170 revision"});
+ assert.deepEqual(await firstF170Actions.locator("a").evaluateAll(links=>links.map(a=>a.hash)),
+  ["#catchup/f170","#challenge/f170/all","#skills/f170"]);
+ const examFocus=desktop.getByRole("link",{name:/Exam-style focus/});
+ assert(await examFocus.isHidden());
+ await desktop.getByText("More practice options",{exact:true}).click();
+ assert(await examFocus.isVisible());
+ await desktop.setViewportSize({width:320,height:800});
+ await checkReadingSpacing(desktop,"F170 start");
+ await desktop.setViewportSize({width:1280,height:900});
  // Quiet hints: an interaction restarts the inactivity delay, then keyboard
  // activation reveals the conceptual prompt without stealing navigation.
  await desktop.goto(base+"/human-biology/#skills/f170/units");
@@ -152,6 +178,12 @@ try{
  await desktop.getByRole("heading",{name:"Worked example",exact:true}).waitFor();
  await desktop.getByRole("button",{name:"Now try one"}).click();
  await desktop.locator(".k-question-view").waitFor();
+ const readQuestion=desktop.getByRole("button",{name:"Listen to the question"});
+ assert(await desktop.locator(".k-reading-context").isVisible());
+ await readQuestion.click();
+ const spoken=await desktop.evaluate(()=>window.narajosSpeech.at(-1));
+ assert(/magnification/i.test(spoken)&&/µm|mm/.test(spoken),"Read aloud must include the question and its measurement context");
+ await desktop.getByRole("button",{name:"Stop listening"}).click();
  for(let i=0;i<10;i++){
   const task=await desktop.evaluate(()=>{
    const s=JSON.parse(localStorage.getItem("narajos-human-challenge-v2-session"));
@@ -161,6 +193,10 @@ try{
   else await desktop.locator("#k-number").fill(String(task.correct));
   if(await desktop.locator('[data-k-action="check"]').count())await desktop.locator('[data-k-action="check"]').click();
   await desktop.locator(".k-feedback.correct").waitFor();
+  if(i===0){
+   await desktop.getByRole("button",{name:"Listen to the feedback"}).click();
+   assert.match(await desktop.evaluate(()=>window.narajosSpeech.at(-1)),/expected answer/i);
+  }
   if(i===2){
    await desktop.reload();await desktop.locator(".k-feedback.correct").waitFor();
    await desktop.getByRole("link",{name:"← Leave this set"}).click();
@@ -309,6 +345,35 @@ try{
   const style=await control.evaluate(el=>{const s=getComputedStyle(el);return [s.fontSize,s.fontWeight,s.color,s.backgroundColor,s.borderRadius,s.minHeight];});
   if(!standard)standard=style;else assert.deepEqual(style,standard,"Homepage control style differs: "+path);
  }
+ await navPage.goto(base+"/teaching/simulations/bioenergetics/");
+ const guide=navPage.getByRole("region",{name:"Guided observations"});
+ const guidePlay=guide.locator("#btn-guide-play");
+ const guideNext=guide.getByRole("button",{name:"Next observation"});
+ await guidePlay.waitFor();
+ assert(await navPage.locator("#full-controls").isHidden());
+ assert(await guideNext.isHidden());
+ assert(await navPage.evaluate(()=>!S.playing && chemiOf().split===null),"Guided model should start still");
+ await guidePlay.press("Enter");
+ await navPage.waitForFunction(()=>chemiOf().totals.byp>0);
+ assert(await navPage.evaluate(()=>chemiOf().protons.filter(p=>p.state==="high"&&p.y<LG.memTop).length>=4),"Photolysis should release protons into the lumen");
+ await guide.getByText("What happened?",{exact:true}).click();
+ assert(await guide.getByText(/releases oxygen and hydrogen ions into the thylakoid lumen/).isVisible());
+ await guideNext.click();
+ await guide.getByText("Observation 2 of 3",{exact:true}).waitFor();
+ assert(await guidePlay.evaluate(el=>el===document.activeElement));
+ await navPage.setViewportSize({width:320,height:800});
+ assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Guided bioenergetics overflows a narrow viewport");
+ await navPage.waitForFunction(()=>{
+  const canvas=document.querySelector("#viz");
+  return canvas.getBoundingClientRect().width<=320 && canvas.width<=640;
+ });
+ await checkReadingSpacing(navPage,"Bioenergetics guide");
+ await navPage.getByRole("button",{name:"Open full model"}).click();
+ assert(await navPage.getByRole("button",{name:/Switch to dark/}).isVisible());
+ assert(await guide.isHidden());
+ await navPage.getByRole("button",{name:"Calvin cycle",exact:true}).click();
+ assert(await navPage.getByRole("button",{name:/Remove CO₂/}).isVisible());
+ await navPage.setViewportSize({width:1280,height:900});
  await navPage.goto(base+"/teaching/simulations/cardiac-cycle/");
  await navPage.locator("body:not(.booting)").waitFor();
  const ecg=navPage.locator("#ecg-panel"),mechanical=navPage.locator("#mechanical-graph-panel");
@@ -614,14 +679,25 @@ try{
  await ks3Menu8.locator("ul").waitFor();
  await navPage.goto(base+"/ks3/particles/");
  const gasModel=navPage.locator("[data-gas-pressure]");
+ assert(await gasModel.getByRole("radio",{name:"Warmer gas"}).isHidden());
  await gasModel.getByRole("button",{name:"Start motion"}).click();
- await gasModel.getByRole("radio",{name:"Warmer gas"}).check();
+ await gasModel.getByRole("button",{name:"Next observation"}).click();
+ await gasModel.getByText(/Predict what happens to pressure when you warm/).waitFor();
+ await gasModel.getByRole("button",{name:"Warm the gas"}).click();
  await gasModel.getByRole("status").filter({hasText:"The same particles move faster."}).waitFor();
- await gasModel.getByRole("radio",{name:"Smaller box"}).check();
+ await gasModel.getByRole("button",{name:"Next observation"}).click();
+ await gasModel.getByRole("status").filter({hasText:"Starting pressure."}).waitFor();
+ await gasModel.getByRole("button",{name:"Make the box smaller"}).click();
  await gasModel.getByRole("status").filter({hasText:"The same particles move at the same speeds"}).waitFor();
  await gasModel.getByRole("button",{name:"Pause motion"}).click();
+ await gasModel.getByRole("button",{name:"Explore freely"}).click();
+ await gasModel.getByRole("radio",{name:"Warmer gas"}).check();
+ await gasModel.getByRole("status").filter({hasText:"The same particles move faster."}).waitFor();
+ await gasModel.getByRole("button",{name:"Follow the observations"}).click();
  await gasModel.getByRole("button",{name:"Start motion"}).waitFor();
- assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Gas pressure model overflows at phone width");
+ await navPage.setViewportSize({width:320,height:800});
+ await checkReadingSpacing(navPage,"Gas pressure guide");
+ await navPage.setViewportSize({width:390,height:844});
  await screen(navPage,"ks3-gas-pressure-mobile");
  await navPage.goto(base+"/science-practice/#gcse-writing");
  await navPage.waitForURL(base+"/teaching/focused-writing/gcse/");

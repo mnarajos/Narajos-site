@@ -41,7 +41,7 @@
   .stage{flex:1;display:flex;flex-direction:column;min-width:0;padding:11px 12px;gap:9px}
   .vizwrap{flex:1;position:relative;border-radius:var(--radius);overflow:hidden;
     box-shadow:0 6px 22px rgba(19,32,43,.22);background:#0f1e29;min-height:0}
-  canvas#viz{display:block;width:100%;height:100%}
+  canvas#viz{display:block;position:absolute;inset:0;width:100%;height:100%}
   .loc{position:absolute;top:12px;left:14px;display:flex;align-items:center;gap:8px;
     background:rgba(11,26,36,.72);border:1px solid rgba(255,255,255,.14);border-radius:999px;
     padding:6px 12px;font-size:12px;font-weight:700;color:#dce9f2}
@@ -96,9 +96,36 @@
     .vizwrap{min-height:340px}
     .toptabs{margin-left:0;width:100%}
   }
+
+  .toptabs, .btn-row { flex-wrap: wrap; }
+  .guide-panel { padding: .65rem .85rem; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+  .guide-instructions > p { margin: .2rem 0 .55rem; }
+  .guide-buttons { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; }
+  .guide-buttons button, #btn-guide-mode {
+    min-height: 44px; padding: .35em .75em; border: 1px solid var(--line); border-radius: .45em;
+    background: var(--card); color: var(--ink); font: inherit; cursor: pointer;
+  }
+  .guide-buttons #btn-guide-play { background: var(--ink); border-color: var(--ink); color: #fff; }
+  #btn-guide-mode { align-self: flex-start; }
+  .guide-panel details { margin-top: .55rem; }
+  .guide-panel details p { margin: .25rem 0; }
+  .guide-panel summary { cursor: pointer; font-weight: 650; padding-block: .3em; }
+  button:focus-visible, summary:focus-visible, input[type=range]:focus-visible { outline: 3px solid #ba641b; outline-offset: 2px; }
+  main [hidden] { display: none; }
+  @media (max-height: 680px) and (min-width: 1001px) {
+    main { overflow-y: auto; }
+    .vizwrap { min-height: 340px; }
+  }
+  @media (max-width: 500px) {
+    .stage { padding-inline: 8px; }
+    .toptab { padding-inline: .65rem; }
+    main[data-guide="true"] .loc { display: none; }
+  }
 </style>
 <link rel="stylesheet" href="/assets/simulation-shell.css">
 <link rel="stylesheet" href="/assets/home-link.css">
+<link rel="stylesheet" href="/assets/reading-support.css">
+<script defer src="/assets/listen-to.js"></script>
 </head>
 <body class="sim-fullscreen">
 <nav class="sim-utility-nav" aria-label="Simulation navigation"><a href="/teaching/simulations/">← All simulations</a><a href="/" id="site-home" class="narajos-home" aria-label="Narajos homepage" title="Narajos homepage"><img src="/favicon.svg" alt=""><span>Narajos</span></a></nav>
@@ -118,20 +145,37 @@
 </header>
 
 <main>
-  <section class="stage">
+  <section class="stage" aria-label="Bioenergetics model">
+    <section class="guide-panel" id="bio-guide" aria-label="Guided observations" hidden>
+      <div class="guide-instructions" aria-live="polite" aria-atomic="true">
+        <strong id="guide-number"></strong>
+        <p id="guide-prompt" class="reading-copy"></p>
+      </div>
+      <div class="guide-buttons">
+        <button type="button" id="btn-guide-play">Shine light</button>
+        <button type="button" id="btn-guide-next" hidden>Next observation</button>
+        <button type="button" id="btn-guide-back" hidden>Previous observation</button>
+        <listen-to for="guide-prompt guide-explanation" label="Listen to the observation"></listen-to>
+      </div>
+      <details id="guide-answer" hidden>
+        <summary>What happened?</summary>
+        <p id="guide-explanation" class="reading-copy"></p>
+      </details>
+    </section>
     <div class="vizwrap">
-      <canvas id="viz"></canvas>
+      <canvas id="viz" role="img"></canvas>
       <div class="loc" id="loc"><span class="pin"></span><span id="loc-txt"></span></div>
       <div class="equation" id="equation"></div>
     </div>
-    <div class="stepbar">
+    <div class="stepbar" id="full-stepbar">
       <span class="num" id="step-num"></span>
       <span class="desc" id="step-desc"></span>
       <span class="turn" id="turn-note"></span>
     </div>
+    <button type="button" id="btn-guide-mode" aria-controls="bio-guide full-controls">Open full model</button>
   </section>
 
-  <aside>
+  <aside id="full-controls">
     <div class="btn-row">
       <button class="act primary" id="btn-run"><span id="run-ic">▶</span><span id="run-tx">Play</span></button>
       <button class="act ghost" id="btn-step">⏭ Step</button>
@@ -189,9 +233,15 @@ let DPR=1, VW=940, VH=560, VS=1, OX=0, OY=0, CW=940, CH=560;
 function size(){
   DPR=Math.min(window.devicePixelRatio||1,2);
   const r=cv.parentElement.getBoundingClientRect();
-  CW=Math.max(320,r.width); CH=Math.max(260,r.height);
-  cv.width=CW*DPR; cv.height=CH*DPR; cv.style.width=CW+"px"; cv.style.height=CH+"px";
-  VS=Math.min(CW/VW,CH/VH); OX=(CW-VW*VS)/2; OY=(CH-VH*VS)/2;
+  CW=Math.max(1,r.width); CH=Math.max(1,r.height);
+  cv.width=CW*DPR; cv.height=CH*DPR;
+  if(isGuided() && CW<500){
+    const [x,y,width,height]=OBSERVATIONS[guideStep].focus;
+    VS=Math.min(CW/Math.max(280,width+65),CH/(height+65));
+    OX=CW/2-(x+width/2)*VS; OY=CH/2-(y+height/2)*VS;
+  }else{
+    VS=Math.min(CW/VW,CH/VH); OX=(CW-VW*VS)/2; OY=(CH-VH*VS)/2;
+  }
 }
 window.addEventListener("resize",size);
 function enter(){ctx.setTransform(DPR,0,0,DPR,0,0);ctx.clearRect(0,0,CW,CH);
@@ -387,10 +437,10 @@ const CH_CFG={
     topLabel:"THYLAKOID LUMEN", botLabel:"STROMA", light:true, memLabel:["thylakoid","membrane"],
     ovals:[{x:214,lab:"PSII"},{x:474,lab:"PSI"}], showCarriers:true, enzX:590,
     pumpX:[300,356,412],
-    epath:[[176,404],[214,344],[214,240],[300,260],[356,266],[412,272],[474,280],[524,248],[590,300]],
+    epath:[[162,191],[196,211],[214,240],[300,260],[356,266],[412,272],[474,280],[524,248],[590,300]],
     enzLab:["NADP","reductase"], subName:"NADP", prodName:"reduced NADP",
-    needE:1, needH:1, outN:1, termH:"high", donorE:1,
-    waters:[{x:156,y:410},{x:196,y:418}],
+    needE:1, needH:1, outN:1, donorE:1,
+    waters:[{x:142,y:181},{x:182,y:201}],
     tally:[["atp","ATP made",ATPV],["term","reduced NADP made",VIVID],["byp","O\u2082 released","#3d8fd6"],["lum","H\u207a in lumen",PROT]] },
   oxphos:{ title:"Oxidative phosphorylation", sub:"Inner mitochondrial membrane (cristae) \u00b7 oxidative phosphorylation \u00b7 chemiosmosis",
     topLabel:"INTERMEMBRANE SPACE", botLabel:"MATRIX", light:false, memLabel:["inner","membrane"],
@@ -398,7 +448,7 @@ const CH_CFG={
     pumpX:[214,498,640],
     epath:[[214,244],[356,258],[498,272],[640,290]],
     enzLab:["IV"], subName:"O\u2082", prodName:"H\u2082O",
-    needE:4, needH:4, outN:2, termH:"low", donorE:2,
+    needE:4, needH:4, outN:2, donorE:2,
     donors:[{kind:"reduced NAD",at:0},{kind:"reduced NAD",at:1}],
     tally:[["atp","ATP made",ATPV],["term","H\u2082O made","#3d8fd6"],["byp","NAD reoxidised",PALE],["lum","H\u207a in intermembrane space",PROT]] }
 };
@@ -454,7 +504,10 @@ function updateChemi(dt){
   // ---- slow photolysis: water visibly becomes 4H+ + 4e- + O2 ----
   if(C.split){ const S2=C.split; S2.t+=dt*sp*0.5;                  // ~2 s
     if(S2.t>=1 && !S2.released){ S2.released=true;
-      for(let i=0;i<4;i++) C.protons.push({state:"low",x:S2.x-30+i*20,y:S2.y+26,dr:Math.random()*6.28});
+      for(let i=0;i<4;i++) C.protons.push({
+        state:"high", x:S2.x-32+i*22, y:S2.y-26+(i%2)*8,
+        hd:Math.random()*6.283, spd:95+Math.random()*55
+      });
       for(let i=0;i<4;i++) C.electrons.push({t:-0.10*i,pumped:cfg.pumpX.map(()=>false),from:0});
       C.byp.push({x:S2.x,y:S2.y+4,vx:-0.9,vy:0.45,life:2.6,label:"O\u2082",col:"#3d8fd6"}); C.totals.byp++;
       C.split=null; for(const w of C.waters){ w.gone=true; w.regen=1.4; } } }
@@ -544,8 +597,8 @@ function updateChemi(dt){
   C.redPull-=dt*sp;
   const inTransit=C.protons.filter(p=>p.state==="toEnz").length;
   if(C.redPull<=0 && C.sub && C.sub.state==="bound" && (C.sub.h+inTransit)<cfg.needH && !chemiBlocked(cfg)){
-    // complex IV draws its protons from the MATRIX; the LDR reductase from the lumen
-    const pool=C.protons.filter(p=>p.state===(cfg.termH==="low"?"low":"high"));
+    // Complex IV uses matrix protons. NADP reductase uses stromal protons.
+    const pool=C.protons.filter(p=>p.state==="low");
     const near=pool.slice().sort((a,b)=>Math.abs(a.x-LG.enz.x)-Math.abs(b.x-LG.enz.x))[0];
     if(near){ near.state="toEnz"; C.redPull=0.45; } }
   // ---- substrate at the terminal enzyme: enters bottom-LEFT, leaves bottom-RIGHT ----
@@ -642,10 +695,7 @@ function drawChemi(){
     ctx.fillText(cfg.memLabel[0],818,LG.memY-8); ctx.fillText(cfg.memLabel[1],818,LG.memY+6);
     ctx.textAlign="left"; }
   if(cfg.light && C.flash>0.02){ const al=0.28+0.55*C.flash;
-    const ws=C.waters.filter(w=>!w.gone);
-    const wx=ws.length?ws.reduce((a,w)=>a+w.x,0)/ws.length:(C.split?C.split.x:176);
-    const wy=ws.length?ws.reduce((a,w)=>a+w.y,0)/ws.length:(C.split?C.split.y:414);
-    drawRaySet(wx,wy-16,al); for(const ov of cfg.ovals) drawRaySet(ov.x,LG.memY-LG.ovalRy-8,al);
+    for(const ov of cfg.ovals) drawRaySet(ov.x,LG.memY-LG.ovalRy-8,al);
     ctx.fillStyle="rgba(245,224,96,"+(0.45+0.5*C.flash)+")";ctx.font="800 14px system-ui";ctx.textAlign="right";
     ctx.fillText("\u2600 light",x1-8,LG.topY+14); }
   // compartment labels sit IN FRONT of the light rays, on a half-opaque
@@ -665,8 +715,8 @@ function drawChemi(){
     ctx.fillStyle="#9ad2f5";ctx.font="800 13px system-ui";ctx.textAlign="center";ctx.textBaseline="middle";
     ctx.fillText("H\u2082O",sx-20,sy); ctx.fillText("H\u2082O",sx+20,sy+8); ctx.restore();
     ctx.save();ctx.globalAlpha=Math.min(1,t*1.7);
-    for(let i=0;i<4;i++) drawProtonC(sx-42+i*24, sy+30+t*16);
-    for(let i=0;i<4;i++) electronDot(sx-30+i*20, sy-26-t*20);
+    for(let i=0;i<4;i++) drawProtonC(sx-32+i*22, sy-12-t*16);
+    for(let i=0;i<4;i++) electronDot(sx-20+i*15, sy+8+t*18);
     ctx.globalAlpha=Math.min(1,t*1.4); pill(sx-72,sy+4,"O\u2082","#3d8fd6",11);
     ctx.restore(); }
   for(const p of C.protons){ if(p.state!=="low"&&p.state!=="high") continue;
@@ -731,6 +781,13 @@ function drawChemi(){
     if(chemiBlocked(cfg)) drawOxBlocked(); }
   if(cfg.light && (C.darkAcc.n>0||C.darkAcc.a>0)) drawDarkBuildup(C.darkAcc);
   if(cfg.light && S.dark) drawDarkPanel();
+  if(isGuided()){
+    const [x,y,width,height]=OBSERVATIONS[guideStep].focus;
+    ctx.save();
+    ctx.strokeStyle="#ffea9a";ctx.lineWidth=3;ctx.setLineDash([8,5]);
+    ctx.beginPath();ctx.roundRect(x,y,width,height,12);ctx.stroke();
+    ctx.restore();
+  }
 }
 function drawOxBlocked(){
   const bx=286, by=96, bw=380, bh=94;
@@ -1849,6 +1906,76 @@ const TALLY_META=[
 
 const S={ top:"photosynthesis", sub:"ldr", step:0, frac:0, t:0, playing:true, speed:1.0, dark:false, lightI:0.30, noCO2:false, glyAll:false, noO2:false, cyanide:false, ff:false };
 
+const OBSERVATIONS=[
+  {
+    prompt:"Shine light. Watch the water molecules in the marked area split.",
+    explanation:"Light drives photolysis at photosystem II. The splitting of water releases oxygen and hydrogen ions into the thylakoid lumen. Electrons from water replace those lost from photosystem II.",
+    focus:[81,141,170,108]
+  },
+  {
+    prompt:"Shine light again. Watch hydrogen ions move into the thylakoid lumen.",
+    explanation:"As electrons pass along the electron transport chain, the energy they release moves hydrogen ions from the stroma into the thylakoid lumen. The concentration of hydrogen ions builds up there.",
+    focus:[262,145,192,280]
+  },
+  {
+    prompt:"Shine light. Watch hydrogen ions move back through ATP synthase. Look for ATP appearing on the stroma side.",
+    explanation:"Hydrogen ions move down their electrochemical gradient through ATP synthase. This drives the formation of ATP from ADP and inorganic phosphate.",
+    focus:[702,176,157,279]
+  }
+];
+const guidePanel=document.getElementById("bio-guide");
+const guideNumber=document.getElementById("guide-number");
+const guidePrompt=document.getElementById("guide-prompt");
+const guideAnswer=document.getElementById("guide-answer");
+const guideExplanation=document.getElementById("guide-explanation");
+const guidePlay=document.getElementById("btn-guide-play");
+const guideNext=document.getElementById("btn-guide-next");
+const guideBack=document.getElementById("btn-guide-back");
+const guideMode=document.getElementById("btn-guide-mode");
+const fullControls=document.getElementById("full-controls");
+const fullStepbar=document.getElementById("full-stepbar");
+let useGuide=true, guideStep=0, guideStarted=false, guidePlaying=false;
+
+function isGuided(){ return useGuide && S.sub==="ldr"; }
+function refreshGuide(){
+  const guided=isGuided();
+  document.querySelector("main").dataset.guide=String(guided);
+  guideMode.hidden=S.sub!=="ldr";
+  guideMode.textContent=guided?"Open full model":"Return to guided observations";
+  guidePanel.hidden=!guided;
+  fullControls.hidden=guided;
+  fullStepbar.hidden=guided;
+  if(!guided)guidePanel.querySelector("listen-to").stop?.();
+  if(guided){
+    const observation=OBSERVATIONS[guideStep];
+    guideNumber.textContent="Observation "+(guideStep+1)+" of "+OBSERVATIONS.length;
+    guidePrompt.textContent=observation.prompt;
+    guideExplanation.textContent=observation.explanation;
+    guidePlay.textContent=guidePlaying?"Pause":guideStarted?"Resume":"Shine light";
+    guideAnswer.hidden=!guideStarted;
+    guideNext.hidden=!guideStarted||guideStep===OBSERVATIONS.length-1;
+    guideBack.hidden=guideStep===0;
+  }
+  cv.setAttribute("aria-label",guided?OBSERVATIONS[guideStep].prompt:STAGES[S.sub].loc+" model");
+  size();
+}
+function guideTo(index){
+  guideStep=index;
+  guidePlaying=false;
+  guideStarted=false;
+  guideAnswer.open=false;
+  S.dark=false;
+  S.ff=false;
+  setRun(false);
+  resetStage();
+  refreshStatic();
+  refreshGuide();
+}
+function selectView(){
+  if(isGuided())guideTo(0);
+  else refreshGuide();
+}
+
 function buildSubtabs(){
   const box=document.getElementById("subtabs");
   box.innerHTML="";
@@ -1863,12 +1990,12 @@ function selectTop(top){
   S.top=top;
   document.querySelectorAll(".toptab").forEach(b=>b.setAttribute("aria-pressed",b.dataset.top===top));
   S.sub=SUBS[top][0][0];
-  buildSubtabs(); resetStage(); refreshStatic();
+  buildSubtabs(); resetStage(); refreshStatic(); selectView();
 }
 function selectSub(sub){
   S.sub=sub;
   document.querySelectorAll(".subtab").forEach(b=>b.setAttribute("aria-pressed",b.dataset.sub===sub));
-  resetStage(); refreshStatic();
+  resetStage(); refreshStatic(); selectView();
 }
 function resetStage(){ S.step=0; S.frac=0; S.t=0; if(CH_CFG[S.sub]) resetChemi(S.sub); if(S.sub==="calvin") CAL=makeCalvin(); if(S.sub==="glycolysis"){ GLY=makeGly(); } if(S.sub==="link"){ LNK=makeLnk(); } if(S.sub==="krebs"){ KRB=makeKrb(); } if(STAGES[S.sub].type==="anaer"){ ANA=makeAna(); ANAV=S.sub; } }
 
@@ -2033,7 +2160,9 @@ function frame(now){
       S.t += dt*S.speed;
     }
   }
-  if(st.type==="chemi") updateChemi(dt);
+  if(st.type==="chemi"){
+    if(!isGuided() || guidePlaying)updateChemi(dt);
+  }
   else if(st.type==="calvin") updateCalvin(dt);
   else if(st.type==="anaer"){ updateAna(dt);
     if(S.playing){ const fr=anaElapsed()/anaTotalTime(), el=document.getElementById("s-glytime");
@@ -2156,7 +2285,36 @@ const sSpd=document.getElementById("s-speed");
 sSpd.addEventListener("input",()=>{S.speed=+sSpd.value/100;document.getElementById("r-speed").textContent=S.speed.toFixed(1)+"×";});
 document.querySelectorAll(".toptab").forEach(b=>b.addEventListener("click",()=>selectTop(b.dataset.top)));
 
-function boot(){ size(); buildSubtabs(); refreshStatic(); setRun(true); requestAnimationFrame(frame); }
+guideMode.addEventListener("click",()=>{
+  useGuide=!useGuide;
+  if(isGuided())guideTo(0);
+  else{
+    guidePlaying=false;
+    setRun(false);
+    refreshGuide();
+  }
+});
+guidePlay.addEventListener("click",()=>{
+  guidePlaying=!guidePlaying;
+  // Pulse light for the first two observations. Repeated pulses build the
+  // gradient pupils follow in the third observation.
+  setRun(guidePlaying && guideStep===OBSERVATIONS.length-1);
+  if(!guideStarted){
+    guideStarted=true;
+    if(!S.playing)firePhotolysis();
+  }
+  guidePlay.textContent=guidePlaying?"Pause":"Resume";
+  guideAnswer.hidden=false;
+  guideNext.hidden=guideStep===OBSERVATIONS.length-1;
+});
+guideNext.addEventListener("click",()=>{guideTo(guideStep+1);guidePlay.focus();});
+guideBack.addEventListener("click",()=>{guideTo(guideStep-1);guidePlay.focus();});
+function boot(){
+  buildSubtabs();
+  guideTo(0);
+  new ResizeObserver(size).observe(cv.parentElement);
+  requestAnimationFrame(frame);
+}
 boot();
 </script>
 </body>

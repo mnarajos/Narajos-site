@@ -165,3 +165,9 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .ks3-seesaw-board{height:6px;background:#276a62;position:relative;transform-origin:center}
 .ks3-seesaw-board span{position:absolute;bottom:6px;left:22%;transform:translateX(-50%);background:#fff;border-radius:4px;border:1px solid #779b92;padding:.15rem .3rem;white-space:nowrap}
 .ks3-seesaw-pivot{position:absolute;left:50%;transform:translateX(-50%);top:2.9rem;font-weight:650}
+
+.gas-guide { display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: .5rem; }
+.ks3-lesson [data-gas-prompt] { margin-block: .25rem; }
+.gas-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.gas-model [data-gas-free] { margin-top: .65rem; background: transparent; }
+.gas-model [hidden] { display: none; }

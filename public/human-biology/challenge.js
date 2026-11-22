@@ -71,22 +71,35 @@ function knowledgeLanding(){
  });
  h+='</div><p class="k-source">This page teaches independent biological knowledge; it does not reproduce or assist with Cambridge OCR set assignments.</p></div>';show(h);
 }
+function actionTile(route,label,description,symbol,colour){
+ return '<a class="k-action '+colour+'" href="#'+route+'"><span class="k-icon">'+icon(symbol)+'</span><span><strong>'+label+'</strong><small>'+description+'</small></span><span class="k-arrow">'+icon("chevron")+'</span></a>';
+}
 function intro(unit){
  var f=unit==="f170",knowledge=isKnowledge(unit),meta=unitMeta(unit),stats=unitStats(unit);
  var areas=knowledge?meta.areas.map(function(_,i){return i;}).filter(function(i){return i>0&&filter(unit,"a"+i).length>0;}):(f?[1,2,3,4]:[1,2,3,4,5]),colors=["","#58bcb0","#7da8df","#a18bdd","#e2a05c","#e18c96"];
- var h='<div class="k-wrap"><p class="crumb"><a href="'+(knowledge?"#knowledge":"#home")+'">← '+(knowledge?"Other units":"Home")+'</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+(knowledge?unit.toUpperCase()+" · Biological knowledge":f?"F170 · Exam practice":"F171 · Exam practice preview")+'</div><h1>'+esc(meta?meta.title:"Human Biology")+'</h1><p>'+esc(knowledge?"Short science questions only. No coursework help, reports or proposals.":f?"Build speed and accuracy with short exam-focused challenges.":"Apply knowledge in clinical contexts. F171 is an early question-bank preview.")+'</p></div>';
- h+='<div class="k-mini-stats"><span><strong>'+stats.questions+'</strong> original questions</span><span><strong>'+stats.seen+'</strong> attempted</span><span><strong>'+stats.weak+'</strong> to revisit</span></div>';
- h+='<h2 class="k-subhead">Start practising</h2><div class="k-action-grid">';
+ var h='<div class="k-wrap"><p class="crumb"><a href="'+(knowledge?"#knowledge":"#home")+'">← '+(knowledge?"Other units":"Home")+'</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+(knowledge?unit.toUpperCase()+" · Biological knowledge":f?"F170 · Exam practice":"F171 · Exam practice preview")+'</div><h1>'+esc(meta?meta.title:"Human Biology")+'</h1><p>'+esc(knowledge?"Short science questions only. No coursework help, reports or proposals.":f?"Choose how you want to revise.":"Apply knowledge in clinical contexts. F171 is an early question-bank preview.")+'</p></div>';
+ if(f){
+  h+='<section class="k-action-grid k-f170-start" aria-label="Start F170 revision">'+
+   actionTile("catchup/f170","Catch up","Read a short explanation","book","teal")+
+   actionTile("challenge/f170/all","Practise questions","Start easy, then build up","bolt","teal")+
+   (skills?actionTile("skills/f170","Practise skills","Calculations, data and evidence","calc","blue"):"")+'</section>';
+  h+='<details class="k-f170-more"><summary>More practice options</summary>';
+ } else {
+  h+='<div class="k-mini-stats"><span><strong>'+stats.questions+'</strong> original questions</span><span><strong>'+stats.seen+'</strong> attempted</span><span><strong>'+stats.weak+'</strong> to revisit</span></div>';
+  h+='<h2 class="k-subhead">Start practising</h2>';
+ }
+ h+='<div class="k-action-grid">';
  var tiles=[
   ...(!knowledge&&ladders?[["build","Build understanding","One idea, four progressive steps","layers","teal"]]:[]),
   ...(unit==="f171"?[["clinical","Clinical case questions","Practise 6-mark and 9-mark responses","book","blue"]]:[]),
-  ["all","Quick mix","Start easy, then build up","bolt","teal"],
+  ...(!f?[["all","Quick mix","Start easy, then build up","bolt","teal"]]:[]),
   [knowledge?"core":"sam",knowledge?"Core knowledge":"Exam-style focus",knowledge?"Learn the essentials":"Skills found in OCR samples","target","blue"],
   ["weak","Fix mistakes","Revisit questions you missed","rotate","orange"],
   ["stretch","Challenge","Apply your understanding","brain","purple"]];
- tiles.forEach(function(t){h+='<a class="k-action '+t[4]+'" href="#challenge/'+unit+'/'+t[0]+'"><span class="k-icon">'+icon(t[3])+'</span><span><strong>'+t[1]+'</strong><small>'+t[2]+'</small></span><span class="k-arrow">'+icon("chevron")+'</span></a>';});
+ tiles.forEach(function(t){h+=actionTile("challenge/"+unit+"/"+t[0],t[1],t[2],t[3],t[4]);});
  h+='</div>';
- if(skills&&!knowledge)h+='<a class="k-more-units" href="#skills/'+unit+'"><span>'+icon("calc")+'</span><span><strong>Skills practice</strong><small>Worked examples and fresh practice sets</small></span>'+icon("chevron")+'</a>';
+ if(f)h+='</details>';
+ if(skills&&!knowledge&&!f)h+='<a class="k-more-units" href="#skills/'+unit+'"><span>'+icon("calc")+'</span><span><strong>Skills practice</strong><small>Worked examples and fresh practice sets</small></span>'+icon("chevron")+'</a>';
  h+='<div class="k-headrow"><h2>Choose a topic</h2><small>'+areas.length+' areas</small></div><div class="k-areas">';
  areas.forEach(function(a){var n=filter(unit,"a"+a).length;h+='<a href="#challenge/'+unit+'/a'+a+'" class="k-area" style="--topic-color:'+colors[a]+'"><span class="k-area-num">'+a+'</span><span class="k-area-label"><strong>'+esc(areaName(unit,a))+'</strong><small>'+n+' questions</small></span>'+icon("chevron")+'</a>';});
  h+='</div>';
@@ -299,7 +312,7 @@ function isQuickCheck(q){return !!(session&&session.quickCheckIds&&q&&session.qu
 function formChoice(q,answer){
  var selected=answer&&Array.isArray(answer.selected)?answer.selected:[];
  if(!answer.optionOrder){answer.optionOrder=shuffle(q.options.map(function(_,i){return i;}));session.answers[q.id]=answer;save();}
- return '<div class="k-options" role="group" aria-label="Answer choices">'+answer.optionOrder.map(function(i,pos){var o=q.options[i];
+ return '<div class="k-options" role="group" aria-label="Answer choices"'+(q.unit==="f170"?' id="f170-choices"':'')+'>'+answer.optionOrder.map(function(i,pos){var o=q.options[i];
   var checked=selected.indexOf(i)!==-1;
   var excluded=session.hintExcluded&&session.hintExcluded[q.id]===i&&(session.hintsUsed[q.id]||0)>=3;
   return '<label class="k-option'+(checked?" selected":"")+(excluded?" k-option-out":"")+'"><input type="'+(q.type==="multi"?"checkbox":"radio")+'" name="kchoice" value="'+i+'"'+(checked?" checked":"")+(excluded?' disabled':'')+'><span class="k-option-letter">'+String.fromCharCode(65+pos)+'</span><span>'+esc(o)+'</span>'+(excluded?'<span class="k-ruled-out">Ruled out</span>':'')+'</label>';
@@ -476,6 +489,19 @@ function showNextHint(){
  session.hintReadyAt=Date.now()+HINT_DELAY;
  save();drawQuestion();
 }
+function questionPrompt(q){
+ if(q.unit!=="f170")return '<h1>'+esc(q.stem)+'</h1>';
+ // Keep the authored wording. Give standalone instructions their own line where
+ // a question follows a complete context sentence. Decimal points are untouched.
+ var stem=q.stem;
+ var split=session.scope==="sam"?-1:stem.search(/(?<=[.!?])\s+(?=(?:Which|What|How|Why|Calculate|Explain|Find|Identify|Suggest|Predict|Describe|State|Give|Use)\b)/);
+ var context=split<0?"":stem.slice(0,split);
+ var task=split<0?stem:stem.slice(split).trimStart();
+ return '<div id="f170-prompt" class="k-reading-prompt">'+
+  (context?'<p class="reading-copy k-reading-context">'+esc(context)+'</p>':'')+
+  '<h1>'+esc(task)+'</h1></div>'+
+  '<listen-to for="f170-prompt f170-choices" label="Listen to the question"></listen-to>';
+}
 function drawQuestion(){
  if(!session||!isActive())return;
  stopHintTimer();
@@ -488,7 +514,7 @@ function drawQuestion(){
  var used=session.hintsUsed&&session.hintsUsed[q.id]||0,availableHints=hintsFor(q);
  var h='<div class="k-wrap k-question-view"><p class="crumb"><a href="#'+(session.skillId?'skills/'+q.unit:'challenge/'+q.unit)+'">← Leave this set</a></p><div class="k-question-meta"><span>'+esc(sub)+'</span><span>'+num+' of '+max+'</span></div><div class="progress-track" role="progressbar" aria-label="Questions completed" aria-valuemin="0" aria-valuemax="'+max+'" aria-valuenow="'+session.index+'"><div style="width:'+prog+'%"></div></div>';
  if(session.point){var point=ladders.get(session.point);h+='<p class="k-sequence-note"><strong>'+esc(point.statement)+'</strong><br>'+esc(q.stage==="foundation"?"1 · Activate prior knowledge":q.stage==="diagnostic"?"2 · Check a misconception":q.stage==="challenge"?"4 · Transfer and challenge":"3 · Use the idea")+'</p>';}
- h+='<div class="k-question-paper"><div class="k-question-tags"><span class="k-type">'+icon(iconFor(q))+esc(labelType(q))+'</span><span class="k-level '+esc(q.level)+'">'+esc(q.level==="warmup"?"Warm-up":q.level==="core"?"Core knowledge":q.level==="apply"?"Application":"Challenge")+'</span>'+(q.marks?'<span class="k-level stretch">'+q.marks+'-mark response</span>':'')+'</div><h1>'+esc(q.stem)+'</h1>';
+ h+='<div class="k-question-paper"><div class="k-question-tags"><span class="k-type">'+icon(iconFor(q))+esc(labelType(q))+'</span><span class="k-level '+esc(q.level)+'">'+esc(q.level==="warmup"?"Warm-up":q.level==="core"?"Core knowledge":q.level==="apply"?"Application":"Challenge")+'</span>'+(q.marks?'<span class="k-level stretch">'+q.marks+'-mark response</span>':'')+'</div>'+questionPrompt(q);
  if(q.type==="number"||q.calculator)h+='<div class="k-calculator-note">'+icon("calc")+'<span>Calculator may help</span></div>';
  if(q.figure&&!showing)h+=figure(q.figure);
  if(q.graph&&skills)h+=skills.graphHTML(q.graph);
@@ -504,7 +530,9 @@ function drawQuestion(){
   var header=unknown?"Here’s how it works":subjective?"Check your explanation":correct&&helped?"Correct with a hint":correct&&quick?"Quick check passed":correct?"Correct":"Not yet";
   h+='<div class="k-feedback '+(neutral?"pending":correct?"correct":"incorrect")+'"><div class="k-feedback-head">'+icon(neutral?"book":correct?"check":"alert")+'<strong>'+header+'</strong></div>';
   if(q.figure)h+=figure(q.figure,true);
-  h+='<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p><strong>'+(correct&&!helped?'Why it works':unknown?'Explanation':'Quick reteach')+':</strong> '+esc(q.explain)+'</p>';
+  h+='<div'+(q.unit==="f170"?' id="f170-answer" class="reading-copy"':'')+'>'+
+   '<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p><strong>'+(correct&&!helped?'Why it works':unknown?'Explanation':'Quick reteach')+':</strong> '+esc(q.explain)+'</p></div>';
+  if(q.unit==="f170")h+='<listen-to for="f170-answer" label="Listen to the feedback"></listen-to>';
   if(q.type==='best'&&!correct&&!unknown){var partial=session.answers[q.id]||{};if(partial.choice===q.correct&&partial.reason!==q.reasonCorrect)h+='<p class="k-diagnostic-note">You chose the correct explanation; now focus on why it is correct.</p>';}
   if((!correct||helped)&&session.lastPlannedCheck)h+='<p class="k-quick-note">A related quick check is next, so you can try the idea again independently.</p>';
   if(q.levelsNote)h+='<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>';
