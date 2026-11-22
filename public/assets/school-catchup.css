@@ -191,3 +191,8 @@
 .school-question-evidence :is(.catchup-drawing svg, img) { display: block; width: 100%; max-width: 27rem; height: auto; }
 .school-question-evidence :is(.catchup-picture svg, .ks3-circuit svg) { max-height: 18rem; }
 .school-question-evidence .ks3-diagram-panels { margin: .35rem 0; }
+.school-question-table { width: 100%; border-collapse: collapse; font-size: .94rem; }
+.school-question-table caption { text-align: start; font-weight: 650; margin-block-end: .25rem; }
+.school-question-table :is(th, td) { text-align: start; padding: .35rem; border-bottom: 1px solid #b2c7c2; }
+.school-question-table th { background: #e0eeea; }
+@media (max-width: 370px) { .school-question-table :is(th, td) { padding: .25rem; } }
