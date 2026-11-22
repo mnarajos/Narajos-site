@@ -1,5 +1,5 @@
 /* Shared, lightweight scientific diagrams and internal simulation links in catch-up. */
-.kc-catchup-extra{margin:1rem 0 1.35rem;display:grid;gap:.8rem;color:var(--ink,#27353f)}
+.kc-catchup-extra{margin:1rem 0 1.35rem;display:grid;grid-template-columns:minmax(0,1fr);gap:.8rem;color:var(--ink,#27353f)}
 .kc-visual{border:1px solid var(--line,#d8dedb);border-radius:14px;padding:15px 15px 12px;background:var(--card,var(--paper,#fff));margin:0}
 .kc-visual-heading{display:flex;align-items:center;gap:.55rem;font-size:1rem;line-height:1.45;margin-bottom:.65rem}
 .kc-visual-icon{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:#e9f1ff;color:#3b649b;font-size:18px;flex:none}
