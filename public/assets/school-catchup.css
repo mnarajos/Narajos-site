@@ -184,3 +184,10 @@
 .school-worked-example ol { margin: .25rem 0 0; padding-inline-start: 1.35rem; }
 .school-worked-example li + li { margin-block-start: .25rem; }
 .school-guided-prompt { padding: .55rem .7rem; background: #eaf4f0; border-radius: .45rem; }
+.school-check { max-height: calc(100dvh - 1.5rem); overscroll-behavior: contain; }
+.school-question-evidence { margin-block: .25rem .65rem; padding: 0 .65rem .5rem; background: #eef5f3; border: 1px solid #b2c7c2; border-radius: .5rem; }
+.school-question-evidence summary { min-height: 44px; }
+.school-question-evidence .catchup-picture, .school-question-evidence .ks3-diagram { margin: .25rem 0; }
+.school-question-evidence :is(.catchup-drawing svg, img) { display: block; width: 100%; max-width: 27rem; height: auto; }
+.school-question-evidence :is(.catchup-picture svg, .ks3-circuit svg) { max-height: 18rem; }
+.school-question-evidence .ks3-diagram-panels { margin: .35rem 0; }

@@ -122,6 +122,21 @@ export function mountJourney(host, model, lesson) {
     model.after(journey);
   }
 
+  function addQuestionEvidence(q) {
+    if (!q.image && !q.reference) return;
+    const support = element("details", "", "school-question-evidence");
+    support.open = true;
+    support.append(element("summary", q.reference?.label || "Question diagram"));
+    if (q.image) {
+      const img = element("img", "", "school-question-diagram");
+      [img.src, img.alt] = q.image;
+      support.append(img);
+    } else {
+      support.append(q.reference.render());
+    }
+    dialog.append(support);
+  }
+
   let viewOnly = false;
   let shownIndex = state.step;
   const revisedPrompt = (state.repeating && retry ? retry : steps[state.step]).prompt;
@@ -249,13 +264,7 @@ export function mountJourney(host, model, lesson) {
     heading.tabIndex = -1;
     dialog.replaceChildren(heading);
     if (state.repeating && !viewOnly) heading.before(element("p", state.explained ? "Follow-up check" : "Try one more on your own", "school-check-context"));
-    if (q.image) {
-      const img = element("img", "", "school-question-diagram");
-      [img.src, img.alt] = q.image;
-      img.width = 340;
-      img.height = 220;
-      dialog.append(img);
-    }
+    addQuestionEvidence(q);
     if (viewOnly) {
       const status = supportStatus(state.outcomes?.[shownIndex]);
       if (status) dialog.append(element("p", status, "school-check-context"));
@@ -404,7 +413,7 @@ export function mountJourney(host, model, lesson) {
     section.append(quickCheck);
     const tools = element("div", "", "school-journey-actions");
     tools.append(checkButton(nextLabel(), advance), button("Save and pause", pause));
-    const visual = !q.image && model.querySelector(
+    const visual = !q.image && !q.reference && model.querySelector(
       "[data-catchup-first-evidence], .catchup-model, .gcse-catchup-visual, .writing-data, .ks3-illustration, .ks3-visual");
     if (visual) tools.append(button("See lesson visual", () => {
       pause();

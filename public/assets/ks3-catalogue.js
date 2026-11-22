@@ -225,6 +225,7 @@ function renderVisual(visual) {
         box.append(element("strong", label), svgCircuit(closed));
         panels.append(box);
       }
+      if (visual.reference) break;
       const report = modelReport();
       const controls = element("div", "", "ks3-model-controls");
       controls.append(modelButton("Close switch in circuit A", () => {
@@ -425,7 +426,7 @@ function renderLesson(lesson, year, index) {
   }
   if (follow) checks.append(follow);
   lessonRoot.replaceChildren(teaching, checks, homeActivity(lesson.id), finish);
-  addKS3Journey(teaching, lesson, year);
+  addKS3Journey(teaching, lesson, year, renderVisual);
 }
 
 const lessonRoot = document.querySelector("[data-ks3-lesson]");
