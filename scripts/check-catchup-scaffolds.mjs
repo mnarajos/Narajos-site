@@ -26,6 +26,16 @@ export async function checkCatchupScaffolds(browser, base) {
         await page.goto(url);
         await page.locator(".school-opening-hook").waitFor();
         await page.locator("#catchup-evidence").waitFor();
+        if (url.includes("topic=periodic-table")) {
+          const grid = page.locator(".catchup-periodic").first();
+          const hydrogen = grid.getByText("H", {exact: true});
+          const gridBox = await grid.boundingBox();
+          const hydrogenBox = await hydrogen.boundingBox();
+          assert(gridBox && hydrogenBox, "Hydrogen must be visible");
+          assert(Math.abs(hydrogenBox.x + hydrogenBox.width / 2 - gridBox.x - gridBox.width / 2) < 2,
+            "Hydrogen must be centred above the table");
+          assert.match(await grid.getAttribute("aria-label"), /Hydrogen.*top centre/);
+        }
         await check.press("Enter");
         await dialog.getByRole("radio").first().waitFor();
         for (const image of await dialog.locator("img").all()) {

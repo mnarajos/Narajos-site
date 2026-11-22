@@ -232,7 +232,7 @@ export const curriculum = {
       { type: "periodic", caption: "Examples from two groups in the periodic table", panels: [{ label: "Group 1", values: ["Li · lithium", "Na · sodium", "K · potassium"] }, { label: "Group 0", values: ["He · helium", "Ne · neon", "Ar · argon"] }] },
       "Which elements are in the same column as neon?",
       ["Elements appear in a particular order in the periodic table. A vertical column is called a [group]. Elements in a group often have similar [chemical properties].",
-       "Lithium, sodium and potassium are reactive metals in Group 1. Helium, neon and argon are very unreactive gases in Group 0. A position in the table helps you make a prediction about an unfamiliar element."],
+       "Lithium, sodium and potassium are reactive metals in Group 1. Helium, neon and argon are very unreactive gases in Group 0. In this GCSE layout, hydrogen is shown separately at the top centre. It is a non-metal and is not an alkali metal. A position in the table helps you make a prediction about an unfamiliar element."],
       [
         check("Which element shown is in the same group as lithium?", "Sodium", "Lithium and sodium are both in Group 1.", [
           ["Neon", "Neon is in Group 0. Look for an element directly below lithium."],

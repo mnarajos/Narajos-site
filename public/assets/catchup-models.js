@@ -104,13 +104,20 @@ export function airSac(detailed = false, thick = false) {
 
 export function periodicOutline() {
   const grid = node("div", "", "catchup-periodic");
-  grid.setAttribute("aria-hidden", "true");
+  grid.setAttribute("role", "img");
+  grid.setAttribute("aria-label", "GCSE periodic-table outline. Hydrogen is shown separately at the top centre. Group 1 is the left-hand column, starting with lithium. Group 0 is the right-hand column, starting with helium.");
   for (let period = 1; period <= 7; period++) {
     for (let group = 1; group <= 18; group++) {
       if (period === 1 && group !== 1 && group !== 18) continue;
       if ((period === 2 || period === 3) && group > 2 && group < 13) continue;
       const square = node("span");
       square.style.gridArea = period + " / " + group;
+      if (period === 1 && group === 1) {
+        square.style.gridArea = "1 / 9 / 2 / 11";
+        square.className = "catchup-hydrogen";
+        square.textContent = "H";
+      }
+      if (period === 1 && group === 18) square.textContent = "He";
       if (group === 1 && period > 1) square.className = "catchup-group-one";
       if (group === 18) square.className = "catchup-group-zero";
       grid.append(square);
