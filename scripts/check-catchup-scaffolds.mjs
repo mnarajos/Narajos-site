@@ -46,13 +46,14 @@ export async function checkCatchupScaffolds(browser, base) {
     assert(await journey.getByRole("heading", {name: "Read the arrows on the cyclist"}).isVisible());
     await reopen.press("Enter");
     const balancedForces = dialog.locator(".school-question-evidence");
-    assert(await balancedForces.getByText(/40 N backwards/).isVisible());
-    assert(await balancedForces.getByText(/40 N forwards/).isVisible());
+    assert(await balancedForces.getByRole("img", {name: /40 newton force acts left and a 40 newton force acts right/}).isVisible());
+    assert.equal(await balancedForces.getByText("40 N", {exact: true}).count(), 2);
+    assert.doesNotMatch(await balancedForces.innerText(), /keeps moving at the same speed/);
     await narrow(dialog, "Balanced forces check");
     await choose("It stays the same.");
     assert(await journey.getByRole("heading", {name: "We do · Guided practice"}).isVisible());
     await check.press("Enter");
-    assert(await dialog.getByText("40 N backwards", {exact: false}).isVisible());
+    assert(await dialog.getByRole("img", {name: /40 newton force acts left and a 20 newton force acts right/}).isVisible());
     assert(await dialog.getByText(/Subtract the smaller force/).isVisible());
     await choose("The cyclist slows down.");
     assert(await journey.getByRole("heading", {name: "You do · On your own"}).isVisible());
