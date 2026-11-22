@@ -1137,22 +1137,23 @@ window.KeystoneHumanChallenges={
       "section": "1.2.2",
       "type": "multi",
       "level": "apply",
-      "stem": "Which TWO changes help explain how smoking can lead to COPD?",
+      "stem": "Which TWO changes help explain persistent airflow limitation or poor gas exchange in smoking-related COPD?",
       "options": [
-        "Damage to cilia and mucus clearance",
-        "Inflammation and destruction of alveolar walls",
-        "Increased number of healthy alveoli",
-        "Complete absence of carbon dioxide production"
+        "Impaired cilia leave more mucus in the airways",
+        "Loss of alveolar walls reduces exchange surface and elastic recoil",
+        "Less mucus is produced, leaving the airways easier to clear",
+        "Greater elastic recoil makes expiration less effective"
       ],
       "correct": [
         0,
         1
       ],
-      "model": "Impaired airway clearance and chronic tissue injury.",
-      "explain": "Damage increases susceptibility to infection and reduces efficient airflow/gas exchange.",
+      "model": "Impaired mucus clearance and loss of alveolar walls",
+      "explain": "Mucus can obstruct smaller airways. Loss of alveolar walls reduces gas-exchange surface area and loss of recoil can make expiration harder.",
       "misconception": "Smoking does not improve alveolar diffusion surface area.",
       "samAligned": true,
-      "hintCue": "Think about what smoke does to airway clearance and to the walls separating alveoli."
+      "hintCue": "Think about what smoke does to airway clearance and to the walls separating alveoli.",
+      "assessmentRevision": 1
     },
     {
       "id": "health-disease",
@@ -1206,17 +1207,18 @@ window.KeystoneHumanChallenges={
       "level": "apply",
       "stem": "Why include a disc containing only solvent in an agar diffusion test?",
       "options": [
-        "To check whether the solvent itself affects bacterial growth",
-        "To confirm every antibiotic is equally powerful in the culture",
-        "To accelerate bacterial growth around the antibiotic discs",
-        "To identify the resistance genes carried by each bacterium"
+        "Estimate the contribution of the solvent to any clear zone",
+        "Estimate how much zone size varies across repeats",
+        "Estimate the effect of the antibiotic dose on zone size",
+        "Estimate the effect of the type of bacterium on zone size"
       ],
       "correct": 0,
       "model": "To check for an effect of the solvent",
       "explain": "A negative control can help attribute inhibition to the antibiotic rather than its carrier.",
       "misconception": "Without a control, an observed effect may have an alternative explanation.",
       "samAligned": true,
-      "hintCue": "Ask whether the liquid used to deliver the drug could itself have an effect."
+      "hintCue": "Ask whether the liquid used to deliver the drug could itself have an effect.",
+      "assessmentRevision": 1
     },
     {
       "id": "health-antibody",
@@ -1228,17 +1230,18 @@ window.KeystoneHumanChallenges={
       "stem": "What region of the simplified antibody is labelled A?",
       "figure": "antibody",
       "options": [
-        "Antigen-binding region",
-        "Constant Fc region",
-        "Disulfide bond joining chains",
-        "Cell nucleus"
+        "Antigen-binding region at the tip",
+        "Constant region at the base",
+        "Flexible hinge between the arms",
+        "Bond joining a light and heavy chain"
       ],
       "correct": 0,
       "model": "Antigen-binding region",
       "explain": "The tips of the Y-shaped antibody contain variable regions that bind specific antigens.",
       "misconception": "The stem is the Fc region, not the antigen-binding site.",
       "samAligned": true,
-      "hintCue": "Identify the region that makes specific contact with an antigen rather than the constant stem."
+      "hintCue": "Identify the region that makes specific contact with an antigen rather than the constant stem.",
+      "assessmentRevision": 1
     },
     {
       "id": "health-bp-repeat",
@@ -1247,22 +1250,23 @@ window.KeystoneHumanChallenges={
       "section": "4.1",
       "type": "multi",
       "level": "apply",
-      "stem": "Which TWO actions are sensible when repeating a clinic blood-pressure reading?",
+      "stem": "Which TWO changes improve the comparability of repeated clinic measurements of resting blood pressure?",
       "options": [
-        "Allow a period of quiet rest",
+        "Allow a comparable period of quiet rest",
         "Use an appropriately sized cuff",
-        "Change arms and cuff sizes randomly",
-        "Ask the patient to talk continually during inflation"
+        "Repeat just after walking to reproduce typical activity",
+        "Use a narrower cuff to detect smaller differences"
       ],
       "correct": [
         0,
         1
       ],
-      "model": "Rest and appropriate cuff size",
+      "model": "Quiet rest under comparable conditions and an appropriately sized cuff",
       "explain": "Standardised technique helps reduce preventable measurement error.",
       "misconception": "A single high clinic reading is not always sufficient for a final diagnosis.",
       "samAligned": true,
-      "hintCue": "Measurement conditions should remain stable, with the correct cuff for the patient's arm."
+      "hintCue": "Measurement conditions should remain stable, with the correct cuff for the patient's arm.",
+      "assessmentRevision": 1
     },
     {
       "id": "health-peakflow",
@@ -1360,19 +1364,20 @@ window.KeystoneHumanChallenges={
       "section": "3.2.2",
       "type": "single",
       "level": "core",
-      "stem": "Which response explains the role of memory lymphocytes in vaccination?",
+      "stem": "Why can a vaccinated person mount a faster specific response on later exposure to the same antigen?",
       "options": [
-        "A faster, stronger response after later exposure",
-        "Immediate production of antibiotics",
-        "Permanent sterilisation of all pathogens",
-        "Replacement of white blood cells with red blood cells"
+        "Antigen-specific memory cells can respond and multiply rapidly",
+        "The vaccine supplies antibodies that keep multiplying after vaccination",
+        "Antigen remains in the blood and directly neutralises the pathogen",
+        "Memory cells engulf matching pathogens before any other cells respond"
       ],
       "correct": 0,
-      "model": "Faster secondary immune response",
+      "model": "Antigen-specific memory lymphocytes enable a faster response",
       "explain": "Memory lymphocytes can support a more rapid specific response to the same antigen.",
       "misconception": "Immunity is not always sterilising or lifelong.",
       "samAligned": false,
-      "hintCue": "Think about why later exposure can evoke a more rapid antibody response."
+      "hintCue": "Think about why later exposure can evoke a more rapid antibody response.",
+      "assessmentRevision": 1
     },
     {
       "id": "health-casts",

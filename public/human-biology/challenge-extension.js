@@ -711,17 +711,18 @@ var additions=[
       ]
     },
     "options": [
-      "Flag the missing reading and check its source before calculating",
-      "Keep zero because a blank is normally zero",
-      "Copy 19 into B because the next reading was 19",
-      "Ignore the missing status and say the mean used all three readings"
+      "Flag the missing reading and state how many values any mean uses",
+      "Estimate it from the same person’s previous visit and count it as observed",
+      "Divide the total of observed readings by the number of scheduled readings",
+      "Omit it from the calculation but report the mean as if all readings were taken"
     ],
     "correct": 0,
     "model": "Check the source and keep unknowns visible. The mean of the two known readings is 18.",
     "explain": "An unknown is not a measured zero. Give the number of observations used in any mean.",
     "misconception": "Replacing a blank by zero gives it a value without evidence.",
     "unit": "f171",
-    "samAligned": false
+    "samAligned": false,
+    "assessmentRevision": 1
   }
 ];
 additions.push(...[

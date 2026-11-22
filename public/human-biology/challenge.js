@@ -613,6 +613,13 @@ function drawQuestion(){
  adaptQuickMixMiddle();
  adaptQuickMixEnd();
  visible=true;var q=current(),a=currentAnswer();
+ // An earlier selection may refer to different option wording. Keep its recorded outcome.
+ if(q.assessmentRevision&&a.assessmentRevision!==q.assessmentRevision){
+  a={assessmentRevision:q.assessmentRevision,priorResponse:session.phase==="feedback"};
+  session.answers[q.id]=a;
+  if(session.hintExcluded)delete session.hintExcluded[q.id];
+  save();
+ }
  if(session.phase==="ask")ensureHintClock(q);
  var sub=session.skillId?skills.get(session.skillId).name:title(q.unit),num=session.index+1,max=session.skillId?10:session.queue.length;
  var prog=(100*(session.index/max)).toFixed(1),showing=session.phase==="feedback";
@@ -643,6 +650,7 @@ function drawQuestion(){
   if(q.figure)h+=figure(q.figure,true);
   h+='<div'+(q.unit==="f170"?' class="reading-copy"':'')+'>'+
    '<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p><strong>'+(correct&&!helped?'Why it works':unknown?'Explanation':'Quick reteach')+':</strong> '+esc(q.explain)+'</p></div>';
+  if(a.priorResponse)h+='<p>Your saved result is from an earlier version of this question.</p>';
   if(!correct&&!unknown&&a.selected&&q.options)h+='<p><strong>Your selection</strong> '+a.selected.map(function(i){return esc(q.options[i]);}).join('; ')+'</p>';
   if(q.type==='best'&&!correct&&!unknown){var partial=session.answers[q.id]||{};if(partial.choice===q.correct&&partial.reason!==q.reasonCorrect)h+='<p class="k-diagnostic-note">You chose the correct explanation; now focus on why it is correct.</p>';}
   if((!correct||helped)&&session.lastPlannedCheck)h+='<p class="k-quick-note">A related quick check is next, so you can try the idea again independently.</p>';

@@ -1052,9 +1052,9 @@ window.KeystoneHumanKnowledge={
       "stem": "Which hormone surge triggers ovulation?",
       "options": [
         "LH",
-        "ADH",
-        "Insulin",
-        "Thyroxine"
+        "FSH",
+        "Oestrogen",
+        "Progesterone"
       ],
       "correct": 0,
       "model": "LH",
@@ -1062,7 +1062,8 @@ window.KeystoneHumanKnowledge={
       "misconception": "FSH promotes follicle development; it is not the main ovulatory surge.",
       "hintCue": "Which pituitary hormone rises sharply just before ovulation?",
       "samAligned": false,
-      "knowledgeOnly": true
+      "knowledgeOnly": true,
+      "assessmentRevision": 1
     },
     {
       "id": "f175-hormones",
