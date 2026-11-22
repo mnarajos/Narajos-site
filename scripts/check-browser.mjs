@@ -953,25 +953,37 @@ try{
  await navPage.emulateMedia({reducedMotion:"no-preference"});
  const oneParagraph=navPage.locator('[data-writing-order="ramp"]');
  await oneParagraph.getByRole("button",{name:"Check the order",exact:true}).click();
- await oneParagraph.getByRole("status").filter({hasText:"Choose 4 more sentences"}).waitFor();
- for(const start of ["Changing the car","To test ramp","If both","Keeping the car"]){
+ await oneParagraph.getByRole("status").filter({hasText:"Not checked yet. Choose 4 more sentences."}).waitFor();
+ for(const start of ["Changing the car","If both","To test ramp","Keeping the car"]){
   await oneParagraph.locator(".writing-order-options").getByRole("button",{name:new RegExp("^"+start)}).click();
  }
  await oneParagraph.getByRole("button",{name:"Check the order",exact:true}).click();
- await oneParagraph.getByRole("status").filter({hasText:"sentence 1"}).waitFor();
+ await oneParagraph.getByRole("status").filter({hasText:"Not quite. Sentence 1"}).waitFor();
+ const rampReview=oneParagraph.locator("[data-order-review]");
+ assert.equal(await rampReview.count(),1);
+ assert(await rampReview.getByText("Review this sentence",{exact:true}).isVisible());
+ assert(await rampReview.getByRole("button",{name:/^Changing the car/}).isVisible());
  await oneParagraph.locator(".writing-order-group").getByRole("button",{name:/^Changing the car/}).click();
  assert.equal(await oneParagraph.locator(".writing-order-options button").count(),4);
+ assert.equal(await rampReview.count(),0);
  for(const start of ["To test ramp","Changing the car","If both","Keeping the car"]){
   await oneParagraph.locator(".writing-order-options").getByRole("button",{name:new RegExp("^"+start)}).click();
  }
  await oneParagraph.getByRole("button",{name:"Check the order",exact:true}).click();
  await oneParagraph.getByRole("status").filter({hasText:"Correct."}).waitFor();
+ assert.equal(await oneParagraph.getByRole("status").getAttribute("data-result"),"correct");
  await oneParagraph.getByText("Read the completed paragraph",{exact:true}).click();
  assert(await oneParagraph.locator(".model").isVisible());
  await navPage.getByText("Build two paragraphs",{exact:true}).click();
  const twoParagraphs=navPage.locator('[data-writing-order="rocks"]');
  assert.equal(await twoParagraphs.locator(".writing-order-options button").count(),10);
- for(const start of ["The layers","First, loose","As more","Minerals then","Together","The interlocking","First, the molten","As it cooled","The crystals grew","That is how"]){
+ for(const start of ["The layers","First, loose","As more","Minerals then","Together","The interlocking","As it cooled","First, the molten","The crystals grew","That is how"]){
+  await twoParagraphs.locator(".writing-order-options").getByRole("button",{name:new RegExp("^"+start)}).click();
+ }
+ await twoParagraphs.getByRole("button",{name:"Check the order",exact:true}).click();
+ await twoParagraphs.getByRole("status").filter({hasText:"Not quite. How Sample B formed, sentence 2"}).waitFor();
+ await twoParagraphs.locator("[data-order-review]").getByRole("button",{name:/^As it cooled/}).click();
+ for(const start of ["First, the molten","As it cooled","The crystals grew","That is how"]){
   await twoParagraphs.locator(".writing-order-options").getByRole("button",{name:new RegExp("^"+start)}).click();
  }
  await twoParagraphs.getByRole("button",{name:"Check the order",exact:true}).click();
