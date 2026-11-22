@@ -1,11 +1,11 @@
 /* Original, seeded practice families. OCR v8 Appendix D / HSW, F170/F171 only.
-   Generated tasks use the existing challenge checker, hints and local progress.
+   Generated tasks use the existing challenge checker, hints, and local progress.
    Numeric variants are finite; reasoning contexts are curated and rotate. */
 (function(){
 "use strict";
 var definitions=[
  ["units","f170",1,"1.1.2","Microscope units","Convert mm, µm and nm before calculating.","M0.1, M1.4"],
- ["magnification","f170",1,"1.1.2","Magnification and actual size","Choose the equation, convert units and rearrange.","M2.2"],
+ ["magnification","f170",1,"1.1.2","Magnification and actual size","Choose the equation, convert units, and rearrange.","M2.2"],
  ["division","f170",1,"1.1.5","Percentages of dividing cells","Find a percentage or work backwards to a cell count.","M0.3; F170 sample style"],
  ["ventilation","f170",2,"2.2.3","Pulmonary ventilation","Use breathing rate and tidal volume, including litre conversions.","M2.3, M2.4"],
  ["growth","f170",4,"4.1.4","Bacterial growth","Use doubling, generations and the time for each division.","M0.5, M2.5"],
@@ -13,11 +13,11 @@ var definitions=[
  ["uncertainty","f170",1,"1.1.2","Measurement uncertainty","Use stated uncertainties; distinguish one reading from a difference.","M1.5"],
  ["cardiac","f171",2,"2.2","Cardiac output","Apply a supplied equation and compare changes in circulation.","M3.3"],
  ["percentage","f171",5,"5.1.2","Percentage change","Keep the starting value as the denominator, including decreases.","M0.3"],
- ["averages","f171",4,"4.2.1","Means, medians and repeat readings","Calculate summaries and distinguish the purpose of repeats.","M1.2"],
+ ["averages","f171",4,"4.2.1","Means, medians, and repeat readings","Calculate summaries and distinguish the purpose of repeats.","M1.2"],
  ["graph","f171",5,"5.2","Read a graph","Read axes and values, then compare groups and changes.","M1.6, M3.1"],
  ["rate","f171",3,"3.2.2","Rates from graphs","Calculate change over time using a labelled graph.","M3.5"],
- ["variables","f171",5,"5.2","Practical design","Identify variables, controls, fair comparisons and useful repeats.","HSW3, HSW4, HSW6"],
- ["evidence","f171",5,"5.2","Evaluate evidence","Distinguish association, causation, sample limitations and conclusions.","HSW5, HSW6"]
+ ["variables","f171",5,"5.2","Practical design","Identify variables, controls, fair comparisons, and useful repeats.","HSW3, HSW4, HSW6"],
+ ["evidence","f171",5,"5.2","Evaluate evidence","Distinguish association, causation, sample limitations, and conclusions.","HSW5, HSW6"]
 ].map(function(d){return {id:d[0],unit:d[1],area:d[2],section:d[3],name:d[4],description:d[5],reference:d[6]};});
 function get(id){return definitions.filter(function(s){return s.id===id;})[0];}
 function random(seed){var n=seed>>>0;return function(){n=(Math.imul(n,1664525)+1013904223)>>>0;return n/4294967296;};}
@@ -101,7 +101,7 @@ function generate(id,level,seed){
  q.id="skill-"+id+"-"+level+"-"+(seed>>>0);q.skillId=id;q.unit=sk.unit;q.area=sk.area;q.section=sk.section;
  q.level=["","warmup","core","apply","stretch"][level];q.skillLevel=level;q.generatedSeed=seed>>>0;
  q.hintCue=q.hintCue||"Identify what is given and what is needed. Check the worked example for the same method.";
- q.misconception=q.misconception||"Check the denominator, conversion or equation before calculating.";
+ q.misconception=q.misconception||"Check the denominator, conversion, or equation before calculating.";
  if(level===1&&q.type==="number"){
   var answer=fmt(q.correct),opts=[q.correct].concat(q.slips||[]).map(round).filter(function(x,i,arr){return isFinite(x)&&arr.indexOf(x)===i;});
   [q.correct*10,q.correct/10,q.correct*100,q.correct/100,1,10].forEach(function(x){x=round(x);if(opts.indexOf(x)<0)opts.push(x);});

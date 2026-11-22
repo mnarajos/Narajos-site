@@ -15,7 +15,7 @@ const illustrations = {
   "chemical-reactions": ["reaction-flask", "A flask with a stopper in place before mixing and while gas bubbles form. Both pictures show a closed flask."],
   "separating-techniques": ["filtration", "A mixture of sand and salt water is poured through filter paper. Sand collects in the paper. The salt solution passes through into the beaker."],
   "earth-structure": ["rock-samples", "Sample A has bands with separate rounded grains. Sample B has interlocking angular crystals."],
-  photosynthesis: ["photosynthesis", "Light, carbon dioxide and water reach the leaf. The leaf makes glucose. Oxygen leaves."],
+  photosynthesis: ["photosynthesis", "Light, carbon dioxide, and water reach the leaf. The leaf makes glucose. Oxygen leaves."],
   metals: ["displacement", "A grey iron strip in blue solution. A reddish coating appears on the immersed part of the strip and the solution becomes paler."]
 };
 
@@ -308,7 +308,7 @@ const externalModels = {
   "states-of-matter": ["States of Matter: Basics", "states-of-matter-basics", "Choose Water, then compare the motion in Solid and Liquid. What changes, and what stays the same?"],
   forces: ["Forces and Motion: Basics", "forces-and-motion-basics", "Choose Net Force. Set up two equal pulls in opposite directions. Predict what happens when one side pulls harder."],
   "acids-and-alkalis": ["pH Scale: Basics", "ph-scale-basics", "Compare one acidic liquid and one alkaline liquid. Find the pH reading in each case and decide which side of 7 it is on."],
-  electricity: ["Circuit Construction Kit: DC", "circuit-construction-kit-dc", "In Intro, make one loop with a battery, bulb and switch. Predict what the bulb will do when you open the switch at a different position."]
+  electricity: ["Circuit Construction Kit: DC", "circuit-construction-kit-dc", "In Intro, make one loop with a battery, bulb, and switch. Predict what the bulb will do when you open the switch at a different position."]
 };
 
 function externalActivity(id) {

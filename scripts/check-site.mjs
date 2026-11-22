@@ -84,7 +84,11 @@ const learnerCards=[...teachingOverview.matchAll(/<a class="app-card[^"]*" href=
 requireTrue(learnerCards.join(",")==="/gcse/,/alevel/,/human-biology/","Teaching overview must show all three learner apps before educator tools");
 requireTrue(teachingOverview.includes('href="/teacher/"')&&teachingOverview.includes("For educators"),"Focused Questions needs a separate educator section");
 requireTrue(home.includes("complement classroom teaching rather than replace it"),"Homepage missing teacher-complement rationale");
-requireTrue(home.includes("easy to access"),"Homepage missing free-access rationale");
+requireTrue(home.includes("Learning &amp; Teaching in Science"),"Homepage title missing");
+requireTrue(home.includes("used freely for personal study and classroom teaching"),"Homepage missing educational permission");
+requireTrue(home.includes('href="/terms/"'),"Homepage Terms of Use link missing");
+const terms=read("terms/index.html");
+requireTrue(terms.includes("Third-party materials")&&terms.includes("their own licences"),"Terms must describe third-party licences separately");
 requireTrue(home.includes("GCSE Combined Science (AQA)"),"Homepage must name AQA after GCSE Combined Science");
 requireTrue((home.match(/class="home-icon"/g)||[]).length===3,"Homepage must give each resource type a distinctive icon");
 const simulated=read("teaching/simulations/index.html");

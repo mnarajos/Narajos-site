@@ -45,7 +45,7 @@ const guides = {
   "gcse-compare-insulation": [
     ["Does the opening say what difference the felt made?", "The felt-covered can cooled less in ten minutes than the uncovered one."],
     ["Do the notes link the two temperature drops to the rate of energy transfer?", "13 °C without felt vs 7 °C with felt → felt and trapped air are poor thermal conductors → slower energy transfer to surroundings"],
-    ["Does your ending say what to change, keep the same and measure next?", "I would vary the layers of felt, keep the can and starting water conditions the same, and compare each ten-minute temperature drop."]
+    ["Does your ending say what to change, keep the same, and measure next?", "I would vary the layers of felt, keep the can and starting water conditions the same, and compare each ten-minute temperature drop."]
   ],
   "gcse-trolley-acceleration": [
     ["Does the opening state what you are changing and what you are measuring?", "I would change the pulling force and measure the acceleration of the same total mass."],

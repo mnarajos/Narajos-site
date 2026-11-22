@@ -5,7 +5,7 @@ const photos = {
   sandstone: ["Sandstone sample, Vosges.jpg", "Coyau", "by-sa/3.0", 720, 480,
     "A close-up of sandstone with fine grains and visible layers."],
   granite: ["Granite closeup.jpg", "Andrea R Bair", "by-sa/4.0", 288, 288,
-    "A granite hand sample showing interlocking pale, pink and dark crystals."],
+    "A granite hand sample showing interlocking pale, pink, and dark crystals."],
   gneiss: ["Hand rock sample of a typical gneis.jpg", "Thorben Amann", "by-sa/4.0", 720, 480,
     "A specimen of gneiss showing alternating bands of light and dark minerals."],
   "wholemeal-bread": ["Homemade wholemeal bread.png", "Marius Vassnes", "by-sa/4.0", 720, 540,

@@ -39,7 +39,7 @@ window.KeystoneGcseDecks=Object.assign(window.KeystoneGcseDecks||{},{
  ],
  c4:[
  ["What is produced when an acid reacts with a metal?","A salt and hydrogen"],
- ["What is produced when an acid reacts with a carbonate?","A salt, water and carbon dioxide"],
+ ["What is produced when an acid reacts with a carbonate?","A salt, water, and carbon dioxide"],
  ["What is a neutralisation reaction?","A reaction between an acid and a base that forms a salt and water",[]],
  ["What is the pH of a neutral aqueous solution at 25 °C?","7",["pH 7"]],
  ["What ions make an aqueous solution acidic?","Hydrogen ions (H⁺)",["H+ ions","H+"]],

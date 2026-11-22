@@ -17,7 +17,7 @@ window.KeystoneGcseDecks=Object.assign(window.KeystoneGcseDecks||{},{
  ["What is the SI unit of electric current?","Ampere",["amp","A"]],
  ["What is the SI unit of potential difference?","Volt",["V"]],
  ["What is the SI unit of resistance?","Ohm",["Ω"]],
- ["What is the equation linking potential difference, current and resistance?","V = IR"],
+ ["What is the equation linking potential difference, current, and resistance?","V = IR"],
  ["How is electric current defined?","Rate of flow of electric charge"],
  ["What is the equation for charge transferred?","Q = It"],
  ["In a series circuit, what happens to current at different points?","It is the same at every point"],
@@ -81,7 +81,7 @@ window.KeystoneGcseDecks=Object.assign(window.KeystoneGcseDecks||{},{
  ["What is an induced magnet?","A material that becomes magnetic in a magnetic field"],
  ["How can you make an electromagnet stronger?","Increase current or increase the number of coil turns",["use an iron core"]],
  ["What produces a magnetic field around a conducting wire?","An electric current"],
- ["What does Fleming’s left-hand rule show?","Relative directions of current, magnetic field and force",[],"H"],
+ ["What does Fleming’s left-hand rule show?","Relative directions of current, magnetic field, and force",[],"H"],
  ["What happens to the magnetic field strength as you move away from a magnet?","It decreases"],
  ["In which direction do magnetic field lines point outside a bar magnet?","From north pole to south pole"]
  ]

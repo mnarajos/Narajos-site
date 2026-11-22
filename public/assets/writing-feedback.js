@@ -115,7 +115,7 @@ function addCopyButton(card, area, paragraph) {
     }
     if (paragraph.value.trim()) lines.push("Paragraph\n" + paragraph.value.trim());
     if (!lines.length) {
-      status.textContent = "Write a sentence, outline or draft first.";
+      status.textContent = "Write a sentence, outline, or draft first.";
       return;
     }
 

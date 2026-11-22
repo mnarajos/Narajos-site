@@ -1,5 +1,5 @@
 /* Keystone Human Biology companion: independent, original, concise science
-   recaps. No coursework templates, NEA marking, AI or uploaded answers. */
+   recaps. No coursework templates, NEA marking, AI, or uploaded answers. */
 (function(){
 "use strict";
 var root=window.KeystoneHumanData,bank=window.KeystoneHumanChallenges,other=window.KeystoneHumanKnowledge;
@@ -10,7 +10,7 @@ var notes={
       "title": "Choosing a treatment",
       "lines": [
         "A cast immobilises the injured part to protect alignment while bone heals. Plaster moulds closely; fibreglass is generally lighter and more durable. A waterproof outer shell does not make the entire cast waterproof.",
-        "Surgery can treat a local tumour or relieve pressure at its site. A systemic drug can reach cancer cells at several sites. Treatment decisions consider the location of disease, likely response, adverse effects and recovery time."
+        "Surgery can treat a local tumour or relieve pressure at its site. A systemic drug can reach cancer cells at several sites. Treatment decisions consider the location of disease, likely response, adverse effects, and recovery time."
       ]
     },
     "2.3": {
@@ -50,7 +50,7 @@ var notes={
         "Inactivated vaccines use killed organisms; live attenuated vaccines contain weakened organisms that can replicate; toxoid vaccines contain inactivated toxins.",
         "mRNA vaccines deliver instructions for cells to produce an antigen; viral-vector vaccines use modified viruses to deliver genetic instructions; subunit vaccines deliver selected pathogen components.",
         "A conjugate vaccine links a polysaccharide antigen to a carrier protein, often making the response stronger in young children. A booster can renew or strengthen immune protection.",
-        "Protection varies by vaccine, pathogen and recipient. Live attenuated vaccines may not be suitable for some people with severe immunosuppression."
+        "Protection varies by vaccine, pathogen, and recipient. Live attenuated vaccines may not be suitable for some people with severe immunosuppression."
       ]
     },
     "a1": {
@@ -65,7 +65,7 @@ var notes={
       "title": "Treating disease",
       "lines": [
         "Preventative care reduces risk. Curative treatment aims to remove a cause; supportive treatment reduces symptoms or helps function.",
-        "Different treatments have benefits, limitations and unwanted effects. The most appropriate option depends on the condition and patient.",
+        "Different treatments have benefits, limitations, and unwanted effects. The most appropriate option depends on the condition and patient.",
         "Antibiotics act against susceptible bacteria; they do not treat influenza or other viral infections."
       ]
     },
@@ -148,7 +148,7 @@ var notes={
     "a3": {
       "title": "Biomolecule tests",
       "lines": [
-        "Different reagents detect different molecules: Biuret for peptide bonds, iodine for starch and Benedict's for reducing sugars.",
+        "Different reagents detect different molecules: Biuret for peptide bonds, iodine for starch, and Benedict's for reducing sugars.",
         "Chromatography separates substances according to movement between mobile and stationary phases.",
         "Controls and consistent conditions help distinguish a real result from contamination or another influence."
       ]
@@ -160,13 +160,13 @@ var notes={
       "lines": [
         "Carbohydrates can supply substrates for respiration; proteins provide amino acids for growth and repair; fats are important energy stores.",
         "Vitamins and minerals are needed in different amounts for particular functions.",
-        "A balanced diet depends on age, activity, health and other individual needs."
+        "A balanced diet depends on age, activity, health, and other individual needs."
       ]
     },
     "a2": {
       "title": "Nutrition-related conditions",
       "lines": [
-        "Nutrient deficiency can impair normal functions such as tissue repair, blood formation or bone health.",
+        "Nutrient deficiency can impair normal functions such as tissue repair, blood formation, or bone health.",
         "Dehydration occurs when water losses exceed intake. Fluid and electrolyte balance affect organ function.",
         "Avoid assuming someone's body mass alone establishes their health or nutritional status."
       ]
@@ -208,7 +208,7 @@ var notes={
     "a3": {
       "title": "Fertility and infertility",
       "lines": [
-        "Fertility depends on viable gametes, reproductive anatomy and suitable physiology.",
+        "Fertility depends on viable gametes, reproductive anatomy, and suitable physiology.",
         "Absent ovulation, low sperm motility or blocked oviducts can reduce the chance of fertilisation.",
         "A test result is evidence, not always proof of one particular cause of infertility."
       ]
@@ -276,7 +276,7 @@ var notes={
     "a2": {
       "title": "Research and trials",
       "lines": [
-        "Drug development includes laboratory investigation, preclinical assessment and clinical research.",
+        "Drug development includes laboratory investigation, preclinical assessment, and clinical research.",
         "Random allocation helps reduce selection bias. Blinding can reduce expectation and measurement effects.",
         "A comparison group provides evidence about changes that would occur without the tested treatment."
       ]
@@ -284,7 +284,7 @@ var notes={
     "a3": {
       "title": "Interpreting evidence and risk",
       "lines": [
-        "Regulatory decisions consider evidence of safety, effectiveness and quality.",
+        "Regulatory decisions consider evidence of safety, effectiveness, and quality.",
         "A small trial may miss uncommon harms; wider use can reveal additional information.",
         "A useful conclusion weighs benefits, uncertainty and unwanted effects rather than relying on a single result."
       ]
@@ -303,7 +303,7 @@ function showHome(render){
  units.forEach(function(u){
   h+='<a class="k-unit-tile k-catchup-tile" href="#catchup/'+u.id+'"><span class="k-icon">📖</span><span><small>'+u.id.toUpperCase()+(u.id==="f170"||u.id==="f171"?" · Exam unit":" · Knowledge only")+'</small><strong>'+esc(u.title)+'</strong><em>'+u.areas.length+' learning areas</em></span><span aria-hidden="true">›</span></a>';
  });
- h+='</div><p class="k-small-note">Brief learning recaps are not complete classroom lessons. They do not prepare, mark or improve assessed coursework.</p></div>';
+ h+='</div><p class="k-small-note">Brief learning recaps are not complete classroom lessons. They do not prepare, mark, or improve assessed coursework.</p></div>';
  render(h);
 }
 function showUnit(unit,render){

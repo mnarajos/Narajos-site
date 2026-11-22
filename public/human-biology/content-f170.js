@@ -9,14 +9,14 @@ window.KeystoneHumanData={
       "id": "area-1",
       "number": 1,
       "title": "Human cells and tissues",
-      "intro": "Cell structure, observation, cell division, tissue specialisation and research models.",
+      "intro": "Cell structure, observation, cell division, tissue specialisation, and research models.",
       "sections": [
         {
           "id": "1.1.1",
           "title": "Human cells and specialisation",
           "summary": "Specialised human cells retain the core organisation of eukaryotes, but their organelles and shape reflect their roles.",
           "points": [
-            "Most differentiated human cells have a membrane, cytoplasm and nucleus. A mature erythrocyte is an important exception: it lacks a nucleus and mitochondria.",
+            "Most differentiated human cells have a membrane, cytoplasm, and nucleus. A mature erythrocyte is an important exception: it lacks a nucleus and mitochondria.",
             "Rough endoplasmic reticulum carries ribosomes; the Golgi modifies and packages cell products. Mitochondria supply ATP by aerobic respiration.",
             "Adult stem cells may remain quiescent, then divide and differentiate in response to local signals; pluripotent stem cells can form a wider range of cell types."
           ],
@@ -58,7 +58,7 @@ window.KeystoneHumanData={
           ],
           "scenario": {
             "prompt": "A protein-secreting cell has abundant rough ER and Golgi stacks. Explain the link.",
-            "answer": "Ribosomes on the rough ER synthesise proteins; the Golgi modifies, sorts and packages them into vesicles.",
+            "answer": "Ribosomes on the rough ER synthesise proteins; the Golgi modifies, sorts, and packages them into vesicles.",
             "explain": "Mention the sequence of organelles rather than just naming them."
           }
         },
@@ -92,7 +92,7 @@ window.KeystoneHumanData={
             },
             {
               "id": "1.1.2-03",
-              "q": "Formula linking magnification, image size and actual size",
+              "q": "Formula linking magnification, image size, and actual size",
               "a": "Magnification = image size ÷ actual size",
               "aliases": [
                 "Image size / actual size"
@@ -118,7 +118,7 @@ window.KeystoneHumanData={
         {
           "id": "1.1.3",
           "title": "Organelles working together",
-          "summary": "Organelles function in networks; protein production requires genetic information, ribosomes and transport compartments.",
+          "summary": "Organelles function in networks; protein production requires genetic information, ribosomes, and transport compartments.",
           "points": [
             "The nucleus contains DNA; the nucleolus is involved in ribosome assembly.",
             "Ribosomes synthesise polypeptides. Proteins for secretion move through rough ER and Golgi, then vesicles fuse with the plasma membrane.",
@@ -167,7 +167,7 @@ window.KeystoneHumanData={
         {
           "id": "1.1.4",
           "title": "Cell membranes and transport",
-          "summary": "The fluid mosaic model links membrane structure to selective transport, signalling and tissue recognition.",
+          "summary": "The fluid mosaic model links membrane structure to selective transport, signalling, and tissue recognition.",
           "points": [
             "Phospholipids form a bilayer with hydrophilic heads outward and hydrophobic tails inward; proteins and cholesterol are embedded within it.",
             "Simple diffusion needs no transport protein; facilitated diffusion uses a channel or carrier down a gradient. Active transport uses energy to move against a gradient.",
@@ -214,7 +214,7 @@ window.KeystoneHumanData={
         {
           "id": "1.1.5",
           "title": "Cell division and inheritance",
-          "summary": "DNA replication, mitosis and meiosis contribute differently to growth, repair and genetic variation.",
+          "summary": "DNA replication, mitosis, and meiosis contribute differently to growth, repair and genetic variation.",
           "points": [
             "Interphase includes growth and DNA replication (S phase). Mitosis is nuclear division followed usually by cytokinesis.",
             "Meiosis includes two divisions, reducing chromosome number and generating genetic variation through crossing over and independent assortment.",
@@ -263,12 +263,12 @@ window.KeystoneHumanData={
         },
         {
           "id": "1.2.1",
-          "title": "Tissues, organs and systems",
-          "summary": "Human biological organisation can be described at cell, tissue, organ and organ-system levels.",
+          "title": "Tissues, organs, and systems",
+          "summary": "Human biological organisation can be described at cell, tissue, organ, and organ-system levels.",
           "points": [
             "A tissue is a group of cells organised to carry out related functions.",
             "An organ contains different tissues functioning together; an organ system comprises interacting organs.",
-            "Different tissue types coexist within single organs, for example muscle, epithelium, connective tissue and nervous tissue in the gut."
+            "Different tissue types coexist within single organs, for example muscle, epithelium, connective tissue, and nervous tissue in the gut."
           ],
           "cards": [
             {
@@ -306,18 +306,18 @@ window.KeystoneHumanData={
           ],
           "scenario": {
             "prompt": "Explain why the stomach is an organ rather than a tissue.",
-            "answer": "It contains multiple tissue types (for example epithelium, smooth muscle and nervous tissue) working together.",
+            "answer": "It contains multiple tissue types (for example epithelium, smooth muscle, and nervous tissue) working together.",
             "explain": "A tissue is not defined by having only one cell type, but an organ has multiple tissue types."
           }
         },
         {
           "id": "1.2.2",
           "title": "Tissue structure and function",
-          "summary": "The organisation of epithelia, muscle, connective tissues and blood explains their different roles.",
+          "summary": "The organisation of epithelia, muscle, connective tissues, and blood explains their different roles.",
           "points": [
             "Squamous epithelium is thin for exchange; ciliated epithelium moves surface materials; cuboidal epithelium is common in secretion and absorption.",
             "Skeletal muscle is typically voluntary and striated; cardiac muscle is striated and interconnected; smooth muscle occurs in hollow organs.",
-            "Bone and cartilage are specialised connective tissues. Blood is a tissue composed of plasma, erythrocytes, leukocytes and platelets."
+            "Bone and cartilage are specialised connective tissues. Blood is a tissue composed of plasma, erythrocytes, leukocytes, and platelets."
           ],
           "cards": [
             {
@@ -366,7 +366,7 @@ window.KeystoneHumanData={
           "points": [
             "Cell and tissue cultures grow under controlled, sterile conditions in suitable media.",
             "Organoids are three-dimensional, self-organised tissue models that reproduce selected structural or functional features of organs.",
-            "Human-based models may reduce animal use and improve human relevance, but often lack complete blood supply, immune interactions or whole-body physiology."
+            "Human-based models may reduce animal use and improve human relevance, but often lack complete blood supply, immune interactions, or whole-body physiology."
           ],
           "cards": [
             {
@@ -405,7 +405,7 @@ window.KeystoneHumanData={
           ],
           "scenario": {
             "prompt": "A drug works in a liver organoid. Explain why its clinical safety is not yet established.",
-            "answer": "The organoid cannot capture all whole-body metabolism, immune responses or drug effects in other tissues.",
+            "answer": "The organoid cannot capture all whole-body metabolism, immune responses, or drug effects in other tissues.",
             "explain": "An organoid finding needs further validation."
           }
         }
@@ -414,17 +414,17 @@ window.KeystoneHumanData={
     {
       "id": "area-2",
       "number": 2,
-      "title": "Human physiology, organs and systems",
+      "title": "Human physiology, organs, and systems",
       "intro": "How organs and systems support each other, what happens when they fail, and how function is measured.",
       "sections": [
         {
           "id": "2.1.1",
           "title": "What physiologists study",
-          "summary": "Human physiology studies the functions of organs and organ systems in health, exercise and disease.",
+          "summary": "Human physiology studies the functions of organs and organ systems in health, exercise, and disease.",
           "points": [
             "Anatomy describes structure; physiology investigates function and regulation.",
-            "Physiologists use measurements to characterise responses to exercise, illness, treatment or ageing.",
-            "Measurements need context: a result may change with activity, hydration or time of day."
+            "Physiologists use measurements to characterise responses to exercise, illness, treatment, or ageing.",
+            "Measurements need context: a result may change with activity, hydration, or time of day."
           ],
           "cards": [
             {
@@ -470,7 +470,7 @@ window.KeystoneHumanData={
         {
           "id": "2.1.2",
           "title": "Organs and their specialisations",
-          "summary": "Organ histology is closely related to function, particularly in circulation, digestion, breathing and excretion.",
+          "summary": "Organ histology is closely related to function, particularly in circulation, digestion, breathing, and excretion.",
           "points": [
             "The heart has right and left atria and ventricles, valves and a septum. Myocardium contracts; endocardium lines the chambers; the pericardium surrounds the heart.",
             "Alveoli provide a large surface area for gas exchange. The small intestine absorbs digested molecules; the colon reabsorbs water.",
@@ -519,7 +519,7 @@ window.KeystoneHumanData={
           "title": "When organs fail",
           "summary": "Disorders change tissue structure or function and can disrupt several systems simultaneously.",
           "points": [
-            "Examples include atherosclerosis, valve defects, osteoporosis, cirrhosis, COPD, inflammatory bowel disease, kidney failure and pancreatic disorders.",
+            "Examples include atherosclerosis, valve defects, osteoporosis, cirrhosis, COPD, inflammatory bowel disease, kidney failure, and pancreatic disorders.",
             "Atherosclerotic plaques narrow arteries and may restrict blood supply. COPD can reduce effective ventilation and gas exchange.",
             "DEXA scans estimate bone mineral density and help assess osteoporosis."
           ],
@@ -568,7 +568,7 @@ window.KeystoneHumanData={
           "summary": "Replacing organ function can be lifesaving, but transplantation and artificial support have limitations.",
           "points": [
             "Donor-organ immune recognition can trigger rejection; matching and immunosuppressive medication reduce risk.",
-            "Artificial or mechanical organs can bridge to recovery or transplant, but may carry infection, clotting, mechanical or resource burdens.",
+            "Artificial or mechanical organs can bridge to recovery or transplant, but may carry infection, clotting, mechanical, or resource burdens.",
             "Corrective surgery may repair a damaged organ without replacing it."
           ],
           "cards": [
@@ -669,11 +669,11 @@ window.KeystoneHumanData={
         {
           "id": "2.2.2",
           "title": "How human systems interact",
-          "summary": "Homeostasis, respiration, excretion, lymphatic drainage and circulation require coordinated organs.",
+          "summary": "Homeostasis, respiration, excretion, lymphatic drainage, and circulation require coordinated organs.",
           "points": [
-            "Blood transports gases, nutrients, hormones and immune cells. The lymphatic system returns interstitial fluid and supports immune surveillance.",
-            "The skeleton supports movement, stores calcium and contains blood-forming marrow.",
-            "Homeostatic regulation includes body temperature, plasma glucose and water balance; mechanisms commonly use negative feedback."
+            "Blood transports gases, nutrients, hormones, and immune cells. The lymphatic system returns interstitial fluid and supports immune surveillance.",
+            "The skeleton supports movement, stores calcium, and contains blood-forming marrow.",
+            "Homeostatic regulation includes body temperature, plasma glucose, and water balance; mechanisms commonly use negative feedback."
           ],
           "cards": [
             {
@@ -701,7 +701,7 @@ window.KeystoneHumanData={
             },
             {
               "id": "2.2.2-04",
-              "q": "System involving trachea, bronchi, lungs and breathing muscles",
+              "q": "System involving trachea, bronchi, lungs, and breathing muscles",
               "a": "Respiratory system",
               "aliases": [],
               "explain": ""
@@ -718,9 +718,9 @@ window.KeystoneHumanData={
           "title": "Measuring system activity",
           "summary": "Clinical measurements are useful only when taken appropriately and interpreted with relevant limitations.",
           "points": [
-            "Examples include blood pressure, radial pulse, ECG, spirometry, peak expiratory flow, FeNO, glucose testing, temperature, ultrasound, colonoscopy and urinalysis.",
+            "Examples include blood pressure, radial pulse, ECG, spirometry, peak expiratory flow, FeNO, glucose testing, temperature, ultrasound, colonoscopy, and urinalysis.",
             "Spirometry measures volumes and flow; peak flow measures maximal expiratory flow; FeNO can indicate airway inflammation in an appropriate clinical context.",
-            "Pulmonary ventilation rate = breathing rate × tidal volume. Test sensitivity, technique, context and repeatability influence interpretation."
+            "Pulmonary ventilation rate = breathing rate × tidal volume. Test sensitivity, technique, context, and repeatability influence interpretation."
           ],
           "cards": [
             {
@@ -769,15 +769,15 @@ window.KeystoneHumanData={
     {
       "id": "area-3",
       "number": 3,
-      "title": "Endocrinology, neurobiology and reproduction",
-      "intro": "Hormones, negative feedback, nerve signalling and reproductive function.",
+      "title": "Endocrinology, neurobiology, and reproduction",
+      "intro": "Hormones, negative feedback, nerve signalling, and reproductive function.",
       "sections": [
         {
           "id": "3.1.1",
           "title": "Hormones and homeostasis",
           "summary": "Endocrine signals act through the blood; negative feedback helps stabilise the internal environment.",
           "points": [
-            "Hormones act on cells with appropriate receptors. Examples include adrenaline, thyroxine, somatostatin, erythropoietin, calcitonin, insulin and ADH.",
+            "Hormones act on cells with appropriate receptors. Examples include adrenaline, thyroxine, somatostatin, erythropoietin, calcitonin, insulin, and ADH.",
             "Negative feedback involves a change being detected, coordination of a response and an effector acting to oppose the change.",
             "Insulin lowers plasma glucose; ADH increases water reabsorption in kidney collecting ducts; erythropoietin stimulates red cell production."
           ],
@@ -825,7 +825,7 @@ window.KeystoneHumanData={
         {
           "id": "3.1.2",
           "title": "Monitoring homeostasis",
-          "summary": "Physiological measurements can identify abnormal temperature, water balance or plasma glucose regulation.",
+          "summary": "Physiological measurements can identify abnormal temperature, water balance, or plasma glucose regulation.",
           "points": [
             "Hypoglycaemia means abnormally low blood glucose; hyperglycaemia means abnormally high blood glucose.",
             "Type 1 diabetes involves autoimmune destruction of beta cells; type 2 involves impaired insulin sensitivity and progressive insulin-secretion problems.",
@@ -926,7 +926,7 @@ window.KeystoneHumanData={
         {
           "id": "3.2.2",
           "title": "Brain and spinal cord",
-          "summary": "Major brain regions contribute to behaviour, coordination and physiological regulation.",
+          "summary": "Major brain regions contribute to behaviour, coordination, and physiological regulation.",
           "points": [
             "The cerebrum supports higher processing and voluntary function; the cerebellum supports movement coordination.",
             "The hypothalamus regulates aspects of homeostasis and influences the pituitary; the medulla contains centres important in cardiovascular and respiratory control.",
@@ -966,18 +966,18 @@ window.KeystoneHumanData={
           ],
           "scenario": {
             "prompt": "Why might cerebrospinal fluid be sampled when infection of the CNS is suspected?",
-            "answer": "It can be tested for organisms, immune cells and biochemical changes associated with infection.",
+            "answer": "It can be tested for organisms, immune cells, and biochemical changes associated with infection.",
             "explain": "A lumbar puncture is an investigation, not a treatment."
           }
         },
         {
           "id": "3.3.1",
           "title": "Reproductive anatomy",
-          "summary": "Structures of the reproductive systems cooperate in gamete production, fertilisation and development.",
+          "summary": "Structures of the reproductive systems cooperate in gamete production, fertilisation, and development.",
           "points": [
             "Ovaries produce oocytes; oviducts transport them; uterus supports implantation and pregnancy. The cervix connects uterus and vagina.",
             "Testes produce sperm; epididymides support sperm maturation and storage; vas deferens transports sperm; accessory glands add seminal fluid.",
-            "Human sex traits vary; reproductive anatomy does not always fit two typical patterns. The specification also requires recognition of uterine, ovarian and testicular tissues in photomicrographs."
+            "Human sex traits vary; reproductive anatomy does not always fit two typical patterns. The specification also requires recognition of uterine, ovarian, and testicular tissues in photomicrographs."
           ],
           "cards": [
             {
@@ -1072,7 +1072,7 @@ window.KeystoneHumanData={
           "summary": "Ageing changes endocrine function, fertility and the risk-benefit balance of treatments.",
           "points": [
             "Menopause follows declining ovarian follicular function; symptoms can include vasomotor changes and urogenital symptoms.",
-            "Hormone therapy may relieve symptoms but suitability depends on individual benefits, risks and clinical circumstances.",
+            "Hormone therapy may relieve symptoms but suitability depends on individual benefits, risks, and clinical circumstances.",
             "Benign prostatic enlargement can obstruct the urethra and affect urination; fertility and pregnancy risks change with age."
           ],
           "cards": [
@@ -1131,7 +1131,7 @@ window.KeystoneHumanData={
           "title": "Bacterial cells",
           "summary": "Bacteria are prokaryotic cells with structures and growth patterns distinct from human cells.",
           "points": [
-            "Typical bacterial structures include a plasma membrane, peptidoglycan wall, cytoplasm, 70S ribosomes, circular chromosome and sometimes plasmids, capsule and flagellum.",
+            "Typical bacterial structures include a plasma membrane, peptidoglycan wall, cytoplasm, 70S ribosomes, circular chromosome, and sometimes plasmids, capsule and flagellum.",
             "Gram-positive cells have relatively thick peptidoglycan; Gram-negative cells have an outer membrane and a thinner peptidoglycan layer.",
             "The OCR specification lists 'mesosomes'; modern microscopy regards many classical mesosome images as chemical-fixation artefacts, not established membrane organelles."
           ],
@@ -1180,7 +1180,7 @@ window.KeystoneHumanData={
         {
           "id": "4.1.2",
           "title": "Fungi and fungal disease",
-          "summary": "Fungi are eukaryotes whose cell walls, hyphae and spores differ from bacterial structures.",
+          "summary": "Fungi are eukaryotes whose cell walls, hyphae, and spores differ from bacterial structures.",
           "points": [
             "Fungal walls contain chitin. Hyphae extend through substrates; branching hyphae form a mycelium. Septa can subdivide hyphae.",
             "Fungal extracellular enzymes digest material outside cells. Saprotrophs use non-living material; parasites obtain resources from hosts.",
@@ -1229,9 +1229,9 @@ window.KeystoneHumanData={
         {
           "id": "4.1.3",
           "title": "Where bacteria are found",
-          "summary": "Microbes occupy skin, mucosal surfaces, the gut and many external environments.",
+          "summary": "Microbes occupy skin, mucosal surfaces, the gut, and many external environments.",
           "points": [
-            "Bacteria can colonise skin, conjunctiva, teeth, gastrointestinal and reproductive tracts, and environmental water, soil and surfaces.",
+            "Bacteria can colonise skin, conjunctiva, teeth, gastrointestinal, and reproductive tracts, and environmental water, soil, and surfaces.",
             "Sampling methods must account for contamination, location and the risks of culturing unknown organisms.",
             "Aseptic technique limits accidental introduction or escape of microbes, but it cannot make an unverified clinical sample automatically safe."
           ],
@@ -1380,7 +1380,7 @@ window.KeystoneHumanData={
           "title": "Beneficial microbes and the human microbiota",
           "summary": "Microbes can support health, but interventions that alter the microbiota need sound evidence and safety checks.",
           "points": [
-            "The human microbiota includes bacteria and fungi in different body sites; its activities can support metabolism, colonisation resistance and immune responses.",
+            "The human microbiota includes bacteria and fungi in different body sites; its activities can support metabolism, colonisation resistance, and immune responses.",
             "Certain intestinal bacteria synthesise vitamins. Microbial competition can make it harder for some pathogens to establish themselves.",
             "Probiotics may alter microbial communities in some contexts. Faecal microbiota transplantation is established for selected recurrent C. difficile infections, but its use for obesity remains investigational rather than established routine treatment."
           ],

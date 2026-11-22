@@ -8,7 +8,7 @@ const extendedJourneys = {
     teaching: [
       ["Change one thing", "The independent variable is the factor you change on purpose. In the model, you can change the angle and compare the two runs."],
       ["Measure the result", "The dependent variable is what you measure. Here the ruler starts at the foot of the ramp. Measure from there to where the toy stops."],
-      ["Keep the test fair", "A control variable is a factor you keep the same. In the angle test, use the same toy, surface and release point. Then you can link any difference to the angle."],
+      ["Keep the test fair", "A control variable is a factor you keep the same. In the angle test, use the same toy, surface, and release point. Then you can link any difference to the angle."],
     ],
     transfer: question("You now want to test rough and smooth ramps. Which pair of settings should you keep the same?",
       "Ramp angle and release point", "Changing the angle or release point could also change the distance. Keep both the same while changing the surface.",
@@ -183,9 +183,9 @@ const topics = {
       ["Only if the seed has lungs.", "Respiration happens in cells. Oxygen can reach cells without lungs."]]
   ],
   "earth-structure": [
-    "Compare loose grains, layers and what later holds layers together.",
+    "Compare loose grains, layers, and what later holds layers together.",
     ["A sandstone contains many rounded grains cemented together. What sequence best explains its formation?",
-      "Sediment was deposited, then buried, compacted and cemented.",
+      "Sediment was deposited, then buried, compacted, and cemented.",
       "Grains are deposited in layers. Pressure packs them together and minerals can cement them.",
       ["Lava cooled and all the grains formed as crystals at once.", "Cemented grains are evidence of deposition and later change."],
       ["The rock formed because the sand stayed loose.", "Some process must bind the loose grains into solid rock."]]

@@ -15,7 +15,7 @@ window.KeystoneHumanKnowledge={
         "Gene therapy and engineering"
       ],
       "excluded": [
-        "Producing or marking NEA presentations, research, patient counselling materials or submissions"
+        "Producing or marking NEA presentations, research, patient counselling materials, or submissions"
       ]
     },
     {
@@ -81,7 +81,7 @@ window.KeystoneHumanKnowledge={
         "Brain scanning"
       ],
       "excluded": [
-        "NEA case-study analysis, reports or presentations"
+        "NEA case-study analysis, reports, or presentations"
       ]
     },
     {
@@ -97,7 +97,7 @@ window.KeystoneHumanKnowledge={
         "Clinical research proposal (excluded)"
       ],
       "excluded": [
-        "Clinical research proposals, pitches or assignment drafting"
+        "Clinical research proposals, pitches, or assignment drafting"
       ]
     }
   ],
@@ -446,7 +446,7 @@ window.KeystoneHumanKnowledge={
       "correct": 0,
       "model": "Microscope",
       "explain": "Microscopes produce magnified images of small structures.",
-      "misconception": "Other instruments measure temperature, time or mass.",
+      "misconception": "Other instruments measure temperature, time, or mass.",
       "hintCue": "Which instrument produces a cell image?",
       "samAligned": false,
       "knowledgeOnly": true,
@@ -1481,7 +1481,7 @@ window.KeystoneHumanKnowledge={
       ],
       "correct": 0,
       "model": "Nociceptor",
-      "explain": "Nociceptors detect potentially tissue-damaging chemical, thermal or mechanical stimuli.",
+      "explain": "Nociceptors detect potentially tissue-damaging chemical, thermal, or mechanical stimuli.",
       "misconception": "Pain perception also depends on CNS processing.",
       "hintCue": "Which receptor detects threat of tissue damage?",
       "samAligned": false,
@@ -1601,7 +1601,7 @@ window.KeystoneHumanKnowledge={
       ],
       "correct": 0,
       "model": "A substance used medically",
-      "explain": "Medicines can be used for prevention, diagnosis or treatment.",
+      "explain": "Medicines can be used for prevention, diagnosis, or treatment.",
       "misconception": "A drug need not be a naturally produced hormone.",
       "hintCue": "What are medicines used for?",
       "samAligned": false,
@@ -1830,7 +1830,7 @@ window.KeystoneHumanKnowledge={
         1
       ],
       "model": "Benefits and risks",
-      "explain": "Regulatory assessment examines evidence of quality, safety and effectiveness.",
+      "explain": "Regulatory assessment examines evidence of quality, safety, and effectiveness.",
       "misconception": "An appealing brand does not establish clinical benefit.",
       "hintCue": "What would make a drug safe and useful?",
       "samAligned": false,
