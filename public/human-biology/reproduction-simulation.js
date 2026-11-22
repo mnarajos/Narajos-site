@@ -293,11 +293,12 @@ function mount(host,initialStep,returnLink){
  function update(){
   btn.fsh.disabled=state.phase!=="idle";
   btn.lh.hidden=state.phase!=="mature";
-  btn.sperm.disabled=state.sperm!=="idle";
+  btn.sperm.disabled=state.sperm!=="idle"||state.phase==="complete";
   q(".krp-entry").setAttribute("aria-disabled",String(btn.sperm.disabled));
   btn.fert.hidden=!canFertilise();
-  btn.continue.hidden=state.phase!=="oviduct";
+  btn.continue.hidden=state.phase!=="oviduct"||state.sperm==="travelling";
   btn.implant.hidden=state.phase!=="ready-to-implant";
+  if(!animations.size)moveFocus(btn.pause);
   btn.pause.disabled=!animations.size;
   btn.pause.setAttribute("aria-pressed",String(state.paused));
   btn.pause.textContent=state.paused?"Resume animation":"Pause animation";
@@ -342,7 +343,7 @@ function mount(host,initialStep,returnLink){
   });
  }
  function introduceSperm(from){
-  if(state.sperm!=="idle")return;
+  if(state.sperm!=="idle"||state.phase==="complete")return;
   state.sperm="travelling";show(group.sperm,true);
   state.spermSide=state.side;
   moveFocus(from);
@@ -397,7 +398,7 @@ function mount(host,initialStep,returnLink){
   offerFocus(btn.replay);
  }
  function noFertilisation(){
-  if(state.phase!=="oviduct")return;
+  if(state.phase!=="oviduct"||state.sperm==="travelling")return;
   moveFocus(btn.continue);
   state.phase="complete";show(group.egg,false);seen.add("fertilisation");update();
   status("Without fertilisation, the secondary oocyte typically degenerates. It does not develop into an embryo; menstrual changes depend on the hormonal cycle.");

@@ -385,7 +385,17 @@ export async function checkHumanCatchup(browser, base) {
     assert.equal(await reproduction.getByRole("button", { name: "Resume animation" }).getAttribute("aria-pressed"), "true");
     assert(await reproduction.getByRole("button", { name: /LH surge/ }).isHidden());
     await reproduction.getByRole("button", { name: "Resume animation" }).click();
-    await reproduction.getByRole("button", { name: /LH surge/ }).waitFor();
+    await reproduction.getByRole("button", { name: /LH surge/ }).click();
+    const noFertilisation = reproduction.getByRole("button", { name: "Continue without fertilisation" });
+    await noFertilisation.waitFor();
+    await reproduction.getByRole("button", { name: /Introduce sperm/ }).click();
+    assert(await noFertilisation.isHidden(), "The sperm transport should finish before choosing an outcome");
+    await reproduction.getByRole("button", { name: "Show possible fertilisation", exact: true }).waitFor();
+    await noFertilisation.click();
+    assert.match(await reproduction.locator(".krp-status").innerText(), /Without fertilisation/);
+    assert(await reproduction.locator("#krp-embryo").isHidden());
+    await reproduction.getByRole("button", { name: "Reset", exact: true }).click();
+    assert(await reproduction.getByRole("button", { name: /Introduce sperm/ }).isEnabled());
 
     await open("catchup/f177/a2");
     const f177Practice = page.getByRole("link", { name: "Practise research and trials" });
@@ -435,6 +445,32 @@ export async function checkHumanCatchup(browser, base) {
     const zoom = await page.addStyleTag({ content: "html { zoom: 2; }" });
     assert(await widthFits(), "Glucose graph overflow at simulated 200% zoom");
     await zoom.evaluate(element => element.remove());
+
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    for (const width of [640, 1280]) {
+      await page.setViewportSize({ width, height: 900 });
+      await open("catchup/f175/a1?stage=transport");
+      assert.equal(await checkpoint.inputValue(), "transport");
+      await guide.getByText("Review this stage", { exact: true }).press("Enter");
+      await guide.getByText(/widest region of an oviduct, the ampulla/).first().waitFor();
+      await reproduction.getByRole("button", { name: "Follow the current stage" }).press("Enter");
+      const reflow = await page.addStyleTag({ content: "html { zoom: 2; }" });
+      assert(await widthFits(), "F175 diagram overflows at 200% zoom with viewport " + width);
+      await reflow.evaluate(element => element.remove());
+    }
+    await page.setViewportSize({ width: 320, height: 800 });
+    await open("catchup/f176/a2?review=6");
+    const thresholdTable = page.getByRole("table", { name: /Two ways to bring a receiving neurone closer/ });
+    assert(await thresholdTable.isVisible());
+    assert.equal(await thresholdTable.getByRole("cell", { name: "−58 mV" }).count(), 2);
+    assert.equal(await thresholdTable.locator(".hb-cell-focus").count(), 5);
+    await page.addStyleTag({ content: "html { font-size: 125%; }" });
+    assert(await widthFits(), "F176 input comparison overflows with enlarged text");
+    await page.addScriptTag({ content: axe.source });
+    const thresholdIssues = await thresholdTable.evaluate(async table => (await window.axe.run(table, {
+      runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa"] }
+    })).violations.map(issue => issue.id));
+    assert.deepEqual(thresholdIssues, []);
 
     await page.setViewportSize({ width: 320, height: 800 });
     await open("catchup/f171/a5");
