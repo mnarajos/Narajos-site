@@ -767,7 +767,10 @@ try{
   await navPage.getByRole("heading",{name:"Check your understanding",exact:true}).waitFor();
   const firstCheck=navPage.locator("[data-catchup-check]").first();
   assert.equal(await navPage.locator("[data-catchup-check]").count(),/\/ks3\/(lesson|cells)\//.test(path)?3:2);
-  assert(await navPage.locator(".ks3-lesson figure,.ks3-lesson table").first().isVisible(),"KS3 lesson is missing a visual prompt");
+  await navPage.locator(".ks3-lesson figure,.ks3-lesson table").first().waitFor({state:"visible"});
+  assert(await navPage.locator(".ks3-lesson .ks3-connection").first().isVisible(),"KS3 lesson is missing a recall cue");
+  assert(await navPage.locator(".ks3-lesson .ks3-term").first().isVisible(),"KS3 lesson is missing vocabulary help");
+  await navPage.locator(".ks3-lesson button:not(.ks3-term)").first().waitFor({state:"visible"});
   const pictures=navPage.locator(".ks3-illustration img");
   for(const picture of await pictures.all()){
    await picture.evaluate(img=>img.decode());
@@ -787,6 +790,36 @@ try{
   assert.equal(await firstOption.getAttribute("aria-pressed"),"true");
   assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"KS3 catch-up lesson overflows at phone width");
  }
+ await navPage.goto(base+"/ks3/lesson/?topic=fair-tests");
+ const independent=navPage.getByRole("button",{name:"independent variable",exact:true});
+ await independent.press("Enter");
+ assert.equal(await independent.getAttribute("aria-expanded"),"true");
+ await navPage.getByRole("status").filter({hasText:"The factor you deliberately change"}).waitFor();
+ await independent.press("Escape");
+ assert.equal(await independent.getAttribute("aria-expanded"),"false");
+ await navPage.goto(base+"/ks3/lesson/?topic=states-of-matter");
+ const stateModel=navPage.locator("ks3-states-model");
+ await stateModel.getByRole("status").filter({hasText:/Solid/}).waitFor();
+ await stateModel.getByRole("button",{name:"Play motion"}).press("Enter");
+ await stateModel.getByRole("button",{name:"Pause motion"}).waitFor();
+ await stateModel.getByRole("button",{name:"Heat",exact:true}).press("Enter");
+ await stateModel.getByRole("status").filter({hasText:/Melting. Liquid/}).waitFor();
+ await stateModel.getByRole("button",{name:"Heat",exact:true}).press("Enter");
+ await stateModel.getByRole("status").filter({hasText:/Boiling. Gas/}).waitFor();
+ await stateModel.getByRole("button",{name:"Cool",exact:true}).press("Enter");
+ await stateModel.getByRole("status").filter({hasText:/Condensing. Liquid/}).waitFor();
+ await stateModel.getByRole("button",{name:"Cool",exact:true}).press("Enter");
+ await stateModel.getByRole("status").filter({hasText:/Freezing. Solid/}).waitFor();
+ await stateModel.getByRole("checkbox",{name:"Follow one particle"}).check();
+ await stateModel.getByRole("button",{name:"Pause motion"}).press("Enter");
+ await navPage.setViewportSize({width:320,height:800});
+ await checkReadingSpacing(navPage,"KS3 states of matter");
+ await navPage.setViewportSize({width:390,height:844});
+ await navPage.goto(base+"/ks3/lesson/?topic=atoms-and-compounds");
+ await navPage.getByRole("button",{name:"Add a different pair to A"}).press("Enter");
+ await navPage.getByRole("status").filter({hasText:/A now contains two different substances/}).waitFor();
+ await navPage.getByRole("button",{name:"Original samples"}).press("Enter");
+ assert(await navPage.getByText("Three samples shown as particles",{exact:true}).isVisible());
  await navPage.goto(base+"/ks3/lesson/?topic=reproduction");
  await navPage.getByText("Follow a pollen grain",{exact:true}).click();
  const pollen=navPage.locator('science-sequence[kind="pollen"]');

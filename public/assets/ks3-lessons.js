@@ -11,8 +11,9 @@ export const curriculum = {
     lesson("fair-tests", "Science Skills", "What makes a test fair?",
       { caption: "Two tests of how a ramp affects rolling distance", headers: ["Test", "Ramp height", "Car", "Distance rolled"], rows: [["A", "10 cm", "Green", "60 cm"], ["B", "20 cm", "Blue", "95 cm"]] },
       "Spot the two things that changed between tests A and B.",
-      ["A fair test changes the factor you want to investigate. This is the independent variable. Here it is ramp height.",
-       "The distance rolled is what you measure. It is the dependent variable. Use the same car and release it in the same way. Then a difference is more likely to be due to ramp height."],
+      ["Change one factor on purpose. This is the [independent variable]. Here it is the height of the ramp. The distance the toy rolls is the [dependent variable] because it is the outcome you measure.",
+       "Keep other factors that could affect the result the same. These are [control variables|control variable]. For the ramp test, keep the toy, ramp surface and release position the same. Release the toy without pushing.",
+       "Use a clear method someone else could repeat. Measure from the foot of the ramp every time. Repeat each setup and see whether the measurements are close together."],
       [
         check("Which condition should change to answer the question?", "The height of the ramp", "The question asks about ramp height. Change this and measure the distance the car rolls.", [
           ["The car used", "Changing the car makes it harder to tell whether any difference was due to the ramp."],
@@ -29,8 +30,8 @@ export const curriculum = {
     lesson("states-of-matter", "Particles and their Behaviour", "What changes when ice melts?",
       { type: "particles", caption: "Particle model of water", panels: [{ label: "Ice", layout: "solid" }, { label: "Liquid water", layout: "liquid" }, { label: "Water vapour", layout: "gas" }] },
       "Where are the particles close together? Where are they spread out?",
-      ["In a solid the particles vibrate around fixed positions. In a liquid they are still close together, but they can move past each other.",
-       "A change of state changes the arrangement and movement. The particles are still water particles."],
+      ["Use a [particle model] to explain the pictures. Solid particles [vibrate] in fixed positions. In a liquid they are still close together, but they can move past each other.",
+       "In a [change of state], the arrangement or motion of the particles changes. Gas particles move quickly and spread through the container. Ice, liquid water and water vapour are the same substance."],
       [
         check("Which statement describes the particles in ice?", "They vibrate in fixed positions.", "The particles move back and forth around their positions.", [
           ["They never move.", "Particles in ice still vibrate. They stay in fixed positions overall."],
@@ -41,13 +42,13 @@ export const curriculum = {
           ["They turn into a different substance.", "Ice and liquid water are the same substance in different states."]
         ])
       ],
-      "A puddle dries on a cool day. Explain what happens to water particles that leave it.",
-      "Some water particles at the surface have enough energy to escape into the air. They become more spread out as water vapour. This is evaporation."),
+      "A puddle dries on a cool day. Do its water particles disappear? Explain what happens to the particles that leave it.",
+      "Some water particles at the surface have enough energy to escape into the air. They are still water particles. They move freely in all directions and spread out as water vapour. This is evaporation."),
     lesson("atoms-and-compounds", "Atoms, Elements and Compounds", "How can you tell an element from a compound?",
       { type: "molecules", caption: "Three samples shown as particles", panels: [{ label: "Sample A", groups: ["aa", "aa", "aa"] }, { label: "Sample B", groups: ["ab", "ab", "ab"] }, { label: "Sample C", groups: ["aa", "ab", "aa"] }] },
       "Each colour stands for a type of atom. Joined circles are bonded. Find the sample with the same two colours in every group.",
-      ["An element contains only one type of atom. Two atoms of the same type can be bonded together in an element.",
-       "A compound contains two or more types of atom chemically bonded. A mixture contains more than one substance."],
+      ["Use the colour of each circle to identify the type of [atom]. An [element] has one type of atom. Two atoms of that type can still be joined together.",
+       "A [compound] has different types of atom chemically bonded together. A [mixture] contains more than one substance. Compare groups of circles to see whether the sample contains one substance or more."],
       [
         check("What is sample A?", "An element", "All its atoms are one type, even though they are joined in pairs.", [
           ["A compound", "A compound contains different types of atom bonded together. All the atoms in A are the same type."],
@@ -63,8 +64,8 @@ export const curriculum = {
     lesson("forces", "Forces", "Does a moving object need a forward force?",
       { type: "forces", caption: "Two horizontal forces on a moving cyclist", left: "40 N backwards", right: "40 N forwards" },
       "Compare the sizes and directions of the forces.",
-      ["Forces acting in opposite directions can balance. Here the overall horizontal force is zero.",
-       "Balanced forces keep the motion the same. A cyclist already moving straight ahead keeps the same speed. An unbalanced force can change the speed or direction."],
+      ["In the diagram, two equal forces act on the cyclist in opposite directions. These are [balanced forces]. The *overall push or pull*, called the [resultant force], is zero.",
+       "A cyclist already moving straight ahead continues at the same speed when the forces balance. A non-zero resultant force can change the speed or direction."],
       [
         check("What happens to the cyclist’s speed in the diagram?", "It stays the same.", "The opposing forces are equal, so the cyclist does not speed up or slow down.", [
           ["The cyclist stops.", "The cyclist is already moving. With zero overall force, the motion stays the same."],
@@ -80,8 +81,8 @@ export const curriculum = {
     lesson("the-body", "The Body", "How does oxygen get from the air to your muscles?",
       { type: "flow", caption: "Follow oxygen through the body", panels: ["Air in the lungs", "Blood", "Muscle cells"] },
       "Follow the arrows. What carries oxygen from the lungs to a muscle?",
-      ["When you breathe in, air reaches tiny air sacs in the lungs. Oxygen moves from the air sacs into the blood by diffusion.",
-       "The blood carries oxygen to muscle cells. Muscles use oxygen in aerobic respiration, a process that transfers energy for their activity."],
+      ["When you breathe in, air reaches tiny air sacs in the lungs. Particles of oxygen pass into the nearby blood by [diffusion].",
+       "The blood carries oxygen to muscle cells. The cells use oxygen in [aerobic respiration], which transfers energy for their activity."],
       [
         check("Where does oxygen enter the blood?", "At the air sacs in the lungs", "Oxygen diffuses from air in the air sacs into the blood nearby.", [
           ["Inside the heart", "The heart pumps blood. Oxygen enters the blood at the lungs."],
@@ -97,8 +98,8 @@ export const curriculum = {
     lesson("energy-transfers", "Energy", "Where does the energy go in a lamp?",
       { type: "bars", caption: "Energy transferred by a lamp in one second", max: 10, bars: [["By light", 3, "J"], ["By heating", 7, "J"]] },
       "Which transfer is bigger? Add the two values.",
-      ["The lamp transfers energy to the surroundings by light and by heating. If the job is to light a room, light is the useful transfer.",
-       "The lamp receives 10 J in this example. All 10 J can be accounted for. Energy spreads to the surroundings and becomes less useful. It is still there."],
+      ["The lamp transfers energy to the surroundings by light and by heating. An [energy transfer] is useful if it helps with the job. Light is useful for lighting a room.",
+       "The lamp receives 10 J in this example. The total is [conserved]. Energy can *spread into the surroundings*, where it is harder to use, but all 10 J are still accounted for."],
       [
         check("How much energy was usefully transferred to light the room?", "3 J", "The light transfer is the one that lights the room.", [
           ["7 J", "7 J is the heating transfer. When the job is to light the room, the light is useful."],
@@ -114,8 +115,8 @@ export const curriculum = {
     lesson("reproduction", "Human and Plant Reproduction", "What is the difference between pollination and fertilisation?",
       { type: "flow", caption: "A flowering plant forms seeds", panels: ["Pollen reaches a stigma", "A male sex cell reaches an ovule", "Sex cells join", "A seed develops"] },
       "Follow the arrow from anther to stigma. Now find the ovule, where the sex cells can join.",
-      ["Pollination is the transfer of pollen from an anther to a stigma. It may happen with help from insects or wind.",
-       "Fertilisation is the joining of a male and female sex cell. In flowering plants this can happen in an ovule. In humans fertilisation also involves two sex cells joining, a sperm cell and an egg cell."],
+      ["[Pollination] moves pollen from an anther to a stigma. Wind or an animal can move the pollen.",
+       "[Fertilisation] is the joining of male and female sex cells. In a flowering plant this can happen in an [ovule]. In humans a sperm cell and an egg cell join."],
       [
         check("A bee carries pollen from an anther to a stigma. What has taken place?", "Pollination", "Pollen has reached a stigma. The sex cells have not yet joined in this step.", [
           ["Fertilisation", "Fertilisation is the joining of sex cells. A bee transferring pollen is pollination."],
@@ -131,8 +132,8 @@ export const curriculum = {
     lesson("acids-and-alkalis", "Acids and Alkalis", "What does a change in pH tell you?",
       { type: "ph", caption: "Universal indicator readings for three solutions", panels: [{ label: "A", value: 3 }, { label: "B", value: 7 }, { label: "C", value: 10 }] },
       "Find the pH 7 solution, then find the one with the lowest pH.",
-      ["A pH below 7 is acidic. A pH of 7 is neutral. A pH above 7 is alkaline. Universal indicator changes colour to help estimate pH.",
-       "Adding an alkali to an acid can raise its pH. Neutralisation is a reaction between the acid and the alkali."],
+      ["Use [pH|ph] to describe a solution. At room temperature, below 7 is acidic, 7 is neutral, and above 7 is alkaline. [Universal indicator] changes colour across the scale.",
+       "Adding an alkali to an acid can raise its pH. The reaction is called [neutralisation]. Use the final pH to decide whether the solution is still acidic, neutral or now alkaline."],
       [
         check("Which sample is alkaline?", "C, pH 10", "Alkaline solutions have a pH above 7.", [
           ["A, pH 3", "A pH of 3 is below 7, so A is acidic."],
@@ -148,8 +149,8 @@ export const curriculum = {
     lesson("chemical-reactions", "Types of Reaction", "Where does the mass go in a reaction?",
       { caption: "Mass of a closed flask and its contents", headers: ["Before mixing", "After bubbles stop"], rows: [["132 g", "132 g"]] },
       "The mixture fizzes after mixing. What happens to the measured mass?",
-      ["In a chemical reaction the atoms rearrange to form new substances. A gas can be a new substance.",
-       "In a closed container the gas stays inside. The same atoms are present, so the total mass stays the same."],
+      ["A [chemical reaction] rearranges atoms to form new substances. Bubbles can be evidence that a new gas has formed.",
+       "The sealed flask is a [closed system], so the gas stays inside. The same atoms are present before and after, so the total mass is [conserved]."],
       [
         check("Where is the gas after the reaction in this example?", "Inside the flask", "The container is closed, so the gas remains part of the measured contents.", [
           ["It all escaped from the flask.", "The flask is closed. The new gas stays inside."],
@@ -165,8 +166,8 @@ export const curriculum = {
     lesson("light-and-sound", "Light and Sound", "Why do you see lightning before hearing thunder?",
       { type: "flow", caption: "Two signals from the same lightning strike", panels: ["Lightning strike", "Light reaches you", "Thunder reaches you later"] },
       "Which signal reaches you first even though both start at the lightning strike?",
-      ["Light and sound both transfer energy. Light travels much faster through air than sound.",
-       "Sound needs matter to travel through. Light can travel through empty space, which is how light from the Sun reaches Earth."],
+      ["Light and sound both transfer energy. Compare the light and sound from the same lightning strike. The light travels much faster through air.",
+       "Sound travels as a [vibration] passed through matter, such as air. Light can also travel through *empty space*, a [vacuum]. That is how sunlight reaches Earth."],
       [
         check("Why do you see the flash first?", "Light travels faster than sound in air.", "In the same time light can travel much further.", [
           ["Thunder is blocked by air.", "Sound does travel through air. It just takes longer than the light to arrive."],
@@ -182,8 +183,8 @@ export const curriculum = {
     lesson("space", "Space", "What causes day and night?",
       { type: "earth", caption: "Light from the Sun illuminates one side of Earth", panels: ["Day", "Night"] },
       "Which side faces the Sun? Imagine the dot turning with Earth.",
-      ["Earth rotates about its axis about once every 24 hours. When your location faces the Sun, it is daytime there.",
-       "Earth also orbits the Sun. One orbit takes about a year. The daily change from light to dark is caused by Earth’s rotation."],
+      ["Earth's [rotation] is its *spin* about an [axis], roughly once every 24 hours. When your location faces the Sun, it is daytime there.",
+       "An [orbit] is a different movement. Earth takes about a year to go around the Sun. The change from day to night happens as Earth spins."],
       [
         check("What changes a location from day to night?", "Earth rotates so the location faces away from the Sun.", "Earth’s rotation carries the location into the unlit side.", [
           ["The Sun switches off.", "The Sun keeps giving out light. The opposite side of Earth is in shadow."],
@@ -201,8 +202,8 @@ export const curriculum = {
     lesson("health-and-lifestyle", "Health and Lifestyle", "Why do we need different nutrients?",
       { caption: "Some nutrients in typical foods", headers: ["Food", "Some nutrients it supplies"], rows: [["Wholemeal bread", "Carbohydrate, fibre"], ["Lentils", "Protein, carbohydrate, fibre"], ["Sunflower oil", "Lipid"]] },
       "Find a food that provides more than one kind of nutrient.",
-      ["A nutrient is a substance in food that the body uses. Carbohydrates and lipids can supply energy. Protein provides building blocks for growth and repair.",
-       "Food can supply several nutrients. A varied, balanced diet helps supply enough energy and all the nutrients the body needs."],
+      ["A [nutrient] is a substance in food that the body uses. A [carbohydrate] or a [lipid] can supply energy. [Protein] supplies building blocks for growth and repair.",
+       "Look at the lentil row. One food can supply several nutrients. A varied, balanced diet helps supply both the energy and the nutrients the body needs."],
       [
         check("Which nutrient is particularly useful for growth and repair?", "Protein", "Proteins in food provide building blocks the body can use to grow or repair tissues.", [
           ["Fibre", "Fibre helps the digestive system work well. Protein provides building blocks for growth and repair."],
@@ -219,8 +220,8 @@ export const curriculum = {
     lesson("periodic-table", "The Periodic Table", "How can the periodic table help us predict properties?",
       { type: "periodic", caption: "Examples from two groups in the periodic table", panels: [{ label: "Group 1", values: ["Li · lithium", "Na · sodium", "K · potassium"] }, { label: "Group 0", values: ["He · helium", "Ne · neon", "Ar · argon"] }] },
       "Which elements are in the same column as neon?",
-      ["A vertical column in the periodic table is a group. Elements in a group often have similar chemical properties.",
-       "Lithium, sodium and potassium are reactive metals in Group 1. Helium, neon and argon are very unreactive gases in Group 0."],
+      ["Elements appear in a particular order in the periodic table. A vertical column is called a [group]. Elements in a group often have similar [chemical properties].",
+       "Lithium, sodium and potassium are reactive metals in Group 1. Helium, neon and argon are very unreactive gases in Group 0. A position in the table helps you make a prediction about an unfamiliar element."],
       [
         check("Which element shown is in the same group as lithium?", "Sodium", "Lithium and sodium are both in Group 1.", [
           ["Neon", "Neon is in Group 0. Look for an element directly below lithium."],
@@ -238,8 +239,8 @@ export const curriculum = {
     lesson("separating-techniques", "Separating Techniques", "Why does a filter catch sand but let dissolved salt through?",
       { type: "flow", caption: "Salt water containing sand passes through a filter", panels: ["Sand + salt water", "Filter paper", "Sand stays in the paper. Salt solution passes through."] },
       "Trace what stays in the filter and what collects in the container.",
-      ["Sand stays as tiny grains in water. The grains are too large to pass through the holes in the filter paper.",
-       "Dissolved salt is spread through the water at particle level, so it passes through with the water. If water evaporates from the solution, salt crystals can form."],
+      ["In a salt [solution], salt has dissolved in water. Sand remains as solid grains. Examine where both substances go in the diagram.",
+       "[Filtration] traps insoluble sand in the filter paper. Water and the dissolved salt pass through. The two substances are separated because they behave differently in water."],
       [
         check("What stays in the filter paper?", "The sand", "The sand grains do not dissolve and are too large to pass through.", [
           ["The dissolved salt", "Dissolved salt passes through with the water."],
@@ -255,8 +256,8 @@ export const curriculum = {
     lesson("work-done", "Energy", "How are force, distance and work done linked?",
       { type: "bars", caption: "Same 10 N push in the direction of movement on two carts", max: 4, bars: [["Cart A moved", 2, "m"], ["Cart B moved", 4, "m"]] },
       "Which cart is pushed further? Is the force the same?",
-      ["When a force moves an object in the direction of the force, work is done. Work done is an amount of energy transferred. It is measured in joules.",
-       "Work done = force × distance moved in the direction of the force. For Cart A, 10 N × 2 m = 20 J."],
+      ["A push or pull transfers energy when it moves an object in the direction of the force. The energy transferred is called [work done].",
+       "Here the force acts along the movement. Multiply force by distance to find the work done. A larger force or a longer distance means more work is done when the other factor is the same."],
       [
         check("How much work does the push do on Cart B?", "40 J", "10 N × 4 m = 40 J.", [
           ["20 J", "20 J is for 2 m. Use 4 m for Cart B."],
@@ -272,8 +273,8 @@ export const curriculum = {
     lesson("respiration", "Respiration", "How is respiration different from breathing?",
       { type: "flow", caption: "From breathing to aerobic respiration", panels: ["Air moves in and out of your lungs", "Blood carries oxygen to cells", "Cells use oxygen and glucose in respiration"] },
       "Find the step that takes place in body cells such as muscle cells.",
-      ["Breathing moves air in and out of the lungs. It helps supply oxygen for respiration.",
-       "Aerobic respiration is a chemical process in cells. It uses glucose and oxygen, makes carbon dioxide and water, and transfers energy for cell activities."],
+      ["[Breathing] *moves air in and out*. In humans, it helps supply oxygen for a different process inside cells.",
+       "[Aerobic respiration] uses oxygen and [glucose] to transfer energy for cell activities. Carbon dioxide and water are produced. Plant cells and animal cells both respire."],
       [
         check("Which statement describes aerobic respiration?", "Cells use glucose and oxygen.", "Cells transfer energy from glucose in a process that uses oxygen.", [
           ["Air moves in and out of the lungs.", "That is breathing. It helps supply oxygen to cells where respiration happens."],
@@ -289,8 +290,8 @@ export const curriculum = {
     lesson("earth-structure", "Earth Structure", "What clues tell us how a rock formed?",
       { caption: "What a pupil sees in two rock samples", headers: ["Sample", "Visible clues"], rows: [["A", "Layers with grains stuck together"], ["B", "Interlocking mineral crystals"]] },
       "Which sample shows grains in layers? Which shows crystals fitted together?",
-      ["Sedimentary rock can form when sediment settles in layers and the grains are pressed and cemented together.",
-       "Igneous rock can form when molten rock cools and crystals grow. A rock’s features are clues. Sometimes you need more than one clue to identify it."],
+      ["[Sediment] can settle in layers. Its grains can be pressed and cemented together to form [sedimentary rock]. When molten rock cools and solidifies, crystals can grow to form [igneous rock].",
+       "Existing rock can change under heat or pressure while staying solid. This can make [metamorphic rock]. Layers alone may be ambiguous. Use clues such as the grains or crystals and how they fit together."],
       [
         check("Which process could make the layered, cemented grains in Sample A?", "Sediment settles and becomes compacted and cemented.", "Sediment layers can build up. Pressure and cementing turn them into rock.", [
           ["Molten rock cools into crystals.", "That is how igneous rock forms. Sample A shows cemented grains in layers."],
@@ -301,13 +302,13 @@ export const curriculum = {
           ["It turns straight into loose sediment.", "Weathering can break rock into pieces later. Cooling makes solid igneous rock."]
         ])
       ],
-      "A river carries grains into a lake. Over a long time, how could those grains become part of a sedimentary rock?",
-      "The grains settle in layers. More sediment piles on top and compacts them. Minerals can cement the grains together into solid rock."),
+      "Two samples both have bands. In one, the bands contain rounded grains cemented together. In the other, the bands are made of interlocking crystals. Which do you have stronger evidence for calling sedimentary? Explain.",
+      "The rounded, cemented grains are stronger evidence for sedimentary rock. Grains settle in layers and can become compacted and cemented. The bands of interlocking crystals need a different explanation or more evidence."),
     lesson("photosynthesis", "Photosynthesis", "Where does a plant get its glucose?",
       { type: "flow", caption: "A leaf exposed to light", panels: ["Carbon dioxide + water", "Leaf in light", "Glucose + oxygen"] },
       "Point to the arrows for what reaches the leaf and what leaves it. Find the substance made in the leaf.",
-      ["Plants use energy transferred by light to make glucose from carbon dioxide and water. This process is photosynthesis and it also makes oxygen.",
-       "Chlorophyll in leaf cells absorbs light. Plants can use glucose in respiration or use it to build other substances."],
+      ["[Photosynthesis] uses energy transferred by light to make [glucose] from carbon dioxide and water. The process also makes oxygen.",
+       "[Chlorophyll] in chloroplasts absorbs light. The plant can use the glucose in respiration or to build other substances. Plants still respire when it is dark."],
       [
         check("Which two substances does a plant use to make glucose in photosynthesis?", "Carbon dioxide and water", "These are the reactants. Light supplies energy for the process.", [
           ["Oxygen and glucose", "Those two substances are produced in photosynthesis."],
@@ -323,8 +324,8 @@ export const curriculum = {
     lesson("electricity", "Electricity and Electromagnetism", "What allows a lamp to light in a circuit?",
       { type: "circuits", caption: "Two circuits with the same lamp and cell" },
       "Trace each wire. Which path has a gap?",
-      ["An electric current is a flow of charge. A working cell can drive a current when there is a complete conducting path through the circuit.",
-       "Opening the switch breaks the path. A gap anywhere in the loop stops current flowing around it, wherever the lamp sits."],
+      ["An [electric current] is a flow of charge. A working electrical cell can drive a current around a [complete circuit].",
+       "Opening the switch makes a gap. In this single loop, a gap anywhere stops current flowing all the way around. A coil that acts as a magnet when it carries a current is an [electromagnet]."],
       [
         check("Before you move either switch, which circuit can light its lamp?", "Circuit B", "Circuit B has a closed switch and a complete conducting path.", [
           ["Circuit A", "The switch in circuit A has a gap. The path is incomplete."],
@@ -340,8 +341,8 @@ export const curriculum = {
     lesson("metals", "Metals and their Reactions", "What can a displacement reaction tell you?",
       { type: "flow", caption: "An iron strip is placed in copper sulfate solution", panels: ["Grey iron in blue solution", "A reddish copper coating appears", "Iron enters the solution"] },
       "Find the new solid coating. What changed about the metal strip?",
-      ["A more reactive metal can displace a less reactive metal from a compound in solution.",
-       "Here iron displaces copper from copper sulfate solution. Copper metal forms and iron sulfate remains in solution. The reaction is evidence that iron is more reactive."],
+      ["[Reactivity] describes how readily a substance reacts. In [displacement], a more reactive metal can take the place of a less reactive metal in a compound in solution.",
+       "An iron strip forms a copper coating in copper sulfate solution. Iron displaces copper from its compound, so this is evidence that iron is more reactive than copper."],
       [
         check("Which metal is more reactive in the example?", "Iron", "Iron displaces copper from its compound, so iron is more reactive.", [
           ["Copper", "Copper is the metal that was displaced. The metal that displaces it is more reactive."],
@@ -361,8 +362,8 @@ export const motionLessons = [
   lesson("journey-speed", "Motion and Pressure · Speed", "How can you compare speeds on a journey?",
     { type: "bars", caption: "Distance covered in the same 5 seconds", max: 20, bars: [["Runner",10,"m"],["Cyclist",20,"m"]] },
     "Who travelled further? Which part of the comparison stayed the same?",
-    ["Average speed is the distance travelled divided by the time taken. If distance is in metres and time in seconds, speed is in m/s.",
-     "In the diagram the runner covers 10 m in 5 s, an average of 2 m/s. The cyclist covers 20 m in 5 s, an average of 4 m/s."],
+    ["[Average speed] is the total distance divided by the total time. If we measure in metres and seconds, the answer tells us *metres per second*.",
+     "The runner covers 10 m in 5 s, an average of 2 m/s. The cyclist covers 20 m in 5 s, an average of 4 m/s. With equal times, the greater distance gives the higher average speed."],
     [
       check("An athlete covers 15 m in 5 s. What is their average speed?", "3 m/s", "15 m divided by 5 s gives 3 m/s.", [
         ["75 m/s", "Divide distance by time to find metres covered per second."],
@@ -378,8 +379,8 @@ export const motionLessons = [
   lesson("balanced-moments", "Motion and Pressure · Moments", "How can you balance a seesaw?",
     { type: "moments", caption: "A simple seesaw with equal weights and a movable load" },
     "Keep both weights the same. Predict what happens when you move the right weight further from the pivot.",
-    ["A force can turn an object about a pivot. The turning effect is called a moment. It depends on the force and its perpendicular distance from the pivot.",
-     "Both forces here act downwards. As you move the right weight further out, its moment increases. The board balances when the moments in opposite directions are equal."],
+    ["A force can turn an object about a [pivot]. The *turning effect*, called a [moment], depends on the force and its perpendicular distance from the pivot.",
+     "Both forces in the model act downwards. Moving one outwards increases its moment. The seesaw balances when the moments acting in opposite directions are equal."],
     [
       check("Where should the right weight go to balance the left weight?", "The same distance from the pivot", "With equal forces, equal distances give equal moments.", [
         ["Closer to the pivot than the left weight", "The same weight closer to the pivot produces a smaller moment."],
@@ -411,18 +412,12 @@ export const extraChecks = {
     ]
   ],
   "states-of-matter": [
-    "A sealed bag of ice melts. Which property of the water remains the same?",
-    "Its mass",
-    "The same water particles stay in the bag.",
+    "Which observation best distinguishes the gas in the model from the liquid?",
+    "The gas particles spread throughout the box. The liquid particles stay close together near the bottom.",
+    "The two states have the same particles. In the gas they are farther apart and move freely.",
     [
-      [
-        "The fixed arrangement of the particles",
-        "The particles can move past one another in the liquid."
-      ],
-      [
-        "Its ability to keep a fixed shape",
-        "The liquid takes the shape of its container."
-      ]
+      ["Only the gas particles can move and collide.", "Liquid particles also move and collide. Look at the spacing and the part of the box occupied."],
+      ["The gas particles grow as the box fills.", "Each particle stays the same size. The gaps between gas particles are much bigger."]
     ]
   ],
   "atoms-and-compounds": [
