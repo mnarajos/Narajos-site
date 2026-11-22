@@ -1,6 +1,54 @@
 import assert from "node:assert/strict";
 import axe from "axe-core";
 
+export async function checkExistingRoutes(browser, base) {
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, hasTouch: true });
+  const route = hash => page.goto(base + "/alevel/#" + hash);
+  const main = page.locator("main");
+  try {
+    for (const mode of ["Core", "Core + Stretch"]) {
+      await route("settings");
+      await page.getByRole("radio", { name: mode, exact: true }).check();
+      await page.reload();
+      assert(await page.getByRole("radio", { name: mode, exact: true }).isChecked());
+      if (mode === "Core") await page.getByRole("checkbox", { name: "Larger text" }).check();
+      assert(await page.locator("html").evaluate(el => el.classList.contains("big")));
+      await route("exam");
+      await main.getByRole("heading", { name: "Exam Skills", exact: true }).waitFor();
+      assert.equal(await main.locator(".al-catalogue-row").count(), 11);
+      await route("lesson-a1-monopoly");
+      await main.locator(".ltop").waitFor();
+      assert.match(await main.innerText(), /starch is a large molecule/);
+      // Direct navigation starts a fresh document after the existing lesson exit guard.
+      await page.goto(base + "/alevel/?check=" + encodeURIComponent(mode) + "#topic-a1");
+      await main.getByRole("heading", { name: /Biological molecules/, level: 1 }).waitFor();
+    }
+    for (const n of [1, 2, 3]) {
+      await route("");
+      await main.locator('a[href="#paper-p' + n + '"]').tap();
+      await main.getByRole("heading", { name: "Paper " + n, exact: true }).waitFor();
+      await main.locator('a[href="#prac-p' + n + '"]').click();
+      await main.getByRole("heading", { name: "Paper " + n + " required practicals", exact: true }).waitFor();
+      assert((await main.locator("li.concept").count()) > 0);
+      await route("pskills-p" + n);
+      await main.getByRole("heading", { name: "Paper " + n + " Maths Skills", exact: true }).waitFor();
+      assert((await main.locator('a[href^="#practice-"]').count()) > 0);
+    }
+    await route("flashcards");
+    await main.getByRole("heading", { name: "Flashcards", exact: true }).waitFor();
+    await main.locator('a[href="#spaced"]').click();
+    await main.getByRole("heading", { name: "Spaced flashcard review" }).waitFor();
+    await main.locator('a[href="#spaced-new"]').click();
+    const current = await main.locator(".kr-question").innerText();
+    await page.reload();
+    assert.equal(await main.locator(".kr-question").innerText(), current);
+    await main.getByRole("button", {name:"Reveal answer",exact:true}).press("Enter");
+    await main.getByText("Expected answer", {exact:true}).waitFor();
+  } finally {
+    await page.close();
+  }
+}
+
 export async function checkALevelExam(browser, base) {
   const page = await browser.newPage({ viewport: { width: 320, height: 780 } });
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -380,6 +428,39 @@ export async function checkALevelExam(browser, base) {
     await cdp.send("Emulation.setPageScaleFactor", {pageScaleFactor: 1});
     await cdp.detach();
 
+    // Old saved sets keep accepted outcomes without needing a new-style result record.
+    await page.evaluate(key => {
+      const snapshot = JSON.parse(localStorage.getItem(key));
+      snapshot.osmosis = {
+        index: 1, outcomes: { 0: "guided", 1: "independent" },
+        responses: { 0: [0], 1: "−500" }, attempts: { 0: 1, 1: 1 }, hints: {},
+      };
+      localStorage.setItem(key, JSON.stringify(snapshot));
+    }, key);
+    await page.goto(base + "/alevel/#exam-osmosis");
+    const old = await saved("osmosis");
+    assert.equal(await page.locator(".al-practice input[name=number]").inputValue(), "−500");
+    assert.match(await page.locator(".al-practice [role=status]").innerText(), /Independently correct/);
+    await page.reload();
+    assert(await page.getByRole("button", { name: "Next task", exact: true }).isVisible());
+    await page.locator(".al-practice form").evaluate(form => form.requestSubmit());
+    assert.deepEqual(await saved("osmosis"), old);
+
+    await page.getByRole("button", { name: "Next task", exact: true }).click();
+    await page.getByRole("button", { name: "Show explanation", exact: true }).press("Enter");
+    assert.match(await page.locator(".al-practice [role=status]").innerText(), /Explanation revealed/);
+    await page.getByRole("button", { name: "Next task", exact: true }).click();
+    const last = page.locator(".al-practice form");
+    await last.getByRole("textbox").fill("Water moves into the tissue cells by osmosis.");
+    await last.getByRole("button", { name: "Compare with the checklist" }).press("Enter");
+    for (const input of await last.locator('input[value="included"]').all()) await input.check();
+    await last.getByRole("button", { name: "Finish review" }).press("Enter");
+    await last.getByRole("button", { name: "Review progress" }).press("Enter");
+    assert.match(await page.locator(".al-outcomes").innerText(), /1 · Still needs practice/);
+    await page.getByRole("button", { name: "Retry questions I needed help with" }).press("Enter");
+    assert.equal((await saved("osmosis")).outcomes[1], "independent");
+    assert.equal((await saved("osmosis")).outcomes[2], undefined);
+    await checkExistingRoutes(browser, base);
     assert.deepEqual(errors, []);
     console.log(
       "A-level exam skills: 52 authored tasks, 56 drawing judgements, saved support state, and responsive accessibility passed.",

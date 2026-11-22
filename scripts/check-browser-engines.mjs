@@ -77,6 +77,17 @@ try {
   assert(await page.locator(".kc-simulation-link").count() > 0);
   await fits();
 
+  await open("/alevel/?exam-check=1#exam-osmosis");
+  await page.getByRole("button", { name: "Go straight to questions", exact: true }).press("Enter");
+  const numeric = page.locator(".al-practice input[name=number]");
+  await numeric.fill("−500");
+  await page.getByRole("button", { name: "Check answer", exact: true }).press("Enter");
+  await page.reload();
+  assert.equal(await numeric.inputValue(), "−500");
+  assert.match(await page.locator(".al-practice [role=status]").innerText(), /Independently correct/);
+  assert(await page.getByRole("button", { name: "Next task", exact: true }).isVisible());
+  await fits();
+
   await open("/human-biology/#catchup/f170/3.2.1");
   await page.getByText("I do · Follow a worked example", { exact: true }).click();
   await page.getByText("Trace a withdrawal reflex", { exact: true }).click();
