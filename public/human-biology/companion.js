@@ -367,7 +367,7 @@ function showConcept(unit,id,step,render){
    points.map(function(point){return "<li>"+esc(point)+"</li>";}).join("")+"</ul></details>";
   render('<div class="k-wrap k-catchup-concept">'+crumb("catchup/"+unit,u.title)+
    '<div class="k-eyebrow">'+unitKind(unit)+'</div><h1>'+esc(topic)+'</h1>'+
-   teaching.render(lesson,{inline:visual,related:recap+relatedLinks(unit,id,practice,lesson)})+'</div>');
+   teaching.render(lesson,{inline:lesson.visual==="model"?"":visual,modelVisual:lesson.visual==="model"?visual:"",related:recap+relatedLinks(unit,id,practice,lesson)})+'</div>');
   teaching.mount(unit+"/"+id,lesson);
   return;
  }

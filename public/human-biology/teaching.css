@@ -110,3 +110,24 @@
   flex-wrap: wrap;
   gap: .5rem 1.1rem;
 }
+.hb-model-path {
+  padding-inline-start: 1.25rem;
+}
+.hb-model-path li {
+  position: relative;
+  padding: .6rem .75rem;
+  border: 1px solid var(--line);
+  border-radius: .4rem;
+}
+.hb-model-path li + li {
+  margin-block-start: 1.5rem;
+}
+.hb-model-path li + li::before {
+  content: "↓";
+  position: absolute;
+  inset-block-start: -1.5em;
+  inset-inline-start: .65rem;
+}
+.hb-model-path strong {
+  display: block;
+}

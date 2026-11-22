@@ -75,9 +75,10 @@
       paragraphs(lesson.explain) + context.inline + '</section>';
     const model = lesson.model?.length ?
       '<details class="paper panel hb-teach-stage"><summary>I do · ' + escape(lesson.modelTitle || "Follow a worked example") +
-      '</summary>' + figure(lesson.photo) + table(lesson.table) +
-      '<ol class="hb-model-steps">' + lesson.model.map((step, i) =>
-        '<li' + (i ? ' hidden' : '') + '>' + escape(step) + '</li>').join("") +
+      '</summary>' + context.modelVisual + figure(lesson.photo) + table(lesson.table) +
+      '<ol class="hb-model-steps' + (lesson.nodes ? ' hb-model-path' : '') + '">' + lesson.model.map((step, i) =>
+        '<li' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
+        escape(step) + '</li>').join("") +
       '</ol>' + (lesson.model.length > 1 ?
         '<button type="button" class="button secondary" data-hb-action="model">Show next step</button>' : '') + '</details>' : "";
     return '<div class="hb-teaching"><p class="lead hb-objective">' + escape(lesson.goal) + '</p>' + activate +
@@ -206,5 +207,9 @@
     updateFollowup();
   }
 
-  window.KeystoneHumanTeaching = { render, mount, storageKey };
+  const choice = (prompt, answer, options, explanation, hints, extra) =>
+    ({ prompt, answer, options, explanation, hints, ...extra });
+  const written = (prompt, points, explanation, hints) => ({ prompt, points, explanation, hints });
+
+  window.KeystoneHumanTeaching = { render, mount, storageKey, choice, written };
 })();
