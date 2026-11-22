@@ -128,6 +128,14 @@ const scaffolds = {
 };
 
 export function applyYear9Scaffolds(lessons) {
+  lessons["atomic-number"].retry = q("A neutral oxygen atom gains two electrons. What happens?", "It becomes an oxygen ion with charge −2.",
+    "The proton number is unchanged. Two extra electrons give a net negative charge of −2.",
+    ["It becomes an oxygen ion with charge +2.", "Each added electron contributes a negative charge."],
+    ["It becomes a different element.", "Changing protons would change the element. This change affects only electrons."]);
+  lessons["gas-exchange"].retry = q("A thin layer builds up across a fish’s gill surface. The area stays the same. How could this affect oxygen uptake?",
+    "Oxygen diffuses more slowly because it crosses a longer distance.", "Increasing the thickness increases the diffusion distance, with other conditions unchanged.",
+    ["Oxygen diffuses faster because the layer makes the barrier thicker.", "A thicker barrier increases the distance oxygen must travel."],
+    ["Oxygen must move by active transport.", "Oxygen still diffuses across the barrier when there is a concentration difference."]);
   for (const [id, additions] of Object.entries(scaffolds)) {
     lessons[id].steps = lessons[id].steps.map((step, index) => ({...step, ...additions[index]}));
   }

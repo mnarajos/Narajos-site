@@ -192,3 +192,16 @@ export function withKS3Scaffolds(id, steps, renderVisual) {
     return {...step, ...attributes, ...(figure ? {reference: {label: "Question diagram", render: () => renderVisual({...figure, reference: true})}} : {})};
   });
 }
+
+export const ks3FollowUps = {
+  forces: q("A skateboard moves right. A 50 N pull acts right and a 20 N force acts left. What happens?",
+    "It speeds up. The resultant force is 30 N to the right.", "50 − 20 = 30. The resultant points in the same direction as the motion.",
+    ["It slows down. The resultant force is 30 N to the left.", "The force to the right is larger, so the resultant points right."],
+    ["It speeds up. The resultant force is 70 N to the right.", "These forces act in opposite directions, so subtract their sizes."]),
+  "balanced-moments": q("A 30 N weight acts 2 m to the left of a pivot. A 15 N weight acts 4 m to the right. Will the seesaw balance?",
+    "Yes. The opposing moments are both 60 N m.", "The 30 N force gives 30 × 2 = 60 N m. The 15 N force gives 15 × 4 = 60 N m in the opposite direction.",
+    ["No. The 30 N weight gives the larger moment.", "The 15 N weight acts twice as far from the pivot. Compare both products."],
+    ["No. The 15 N weight gives the larger moment.", "Distance increases the moment, but the force also matters. Here the products match."]),
+  metals: q("R displaces Q. P displaces R. Which order goes from most to least reactive?", "P, R, Q", "P goes above R, and R goes above Q.",
+    ["P, Q, R", "R displaces Q and therefore goes above it."], ["Q, R, P", "The displacing metal goes above the metal it replaces."])
+};

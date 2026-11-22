@@ -1,6 +1,6 @@
 import { mountJourney, question } from "./school-catchup-journey.js";
 import { addPracticeAnswer } from "./school-catchup-writing.js";
-import { withKS3Scaffolds } from "./school-catchup-ks3-scaffolds.js";
+import { withKS3Scaffolds, ks3FollowUps } from "./school-catchup-ks3-scaffolds.js";
 import { curriculum } from "./ks3-lessons.js";
 
 const extendedJourneys = {
@@ -253,7 +253,8 @@ export function addKS3Journey(model, lesson, year, renderVisual) {
     steps[1].hint = extension.practiceHint;
     steps.push(extension.transfer);
   }
-  mountJourney(model, model, {id: lesson.id, year, hook: lesson.title, steps: withKS3Scaffolds(lesson.id, steps, renderVisual)});
+  mountJourney(model, model, {id: lesson.id, year, hook: lesson.title,
+    steps: withKS3Scaffolds(lesson.id, steps, renderVisual), retry: ks3FollowUps[lesson.id]});
 }
 
 function fromCard(card) {

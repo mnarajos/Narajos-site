@@ -72,6 +72,21 @@ if (Object.hasOwn(year9, id) || Object.hasOwn(gcseCatchup, id)) {
     } else model.append(box);
   }
   model.append(idea);
+  const earlier = {
+    osmosis: ["States of matter", "/ks3/lesson/?topic=states-of-matter&guided=1"],
+    "active-transport": ["Osmosis and partially permeable membranes", "/science-catch-up/lesson/?topic=osmosis"],
+    "gas-exchange": ["How blood carries oxygen to the muscles", "/ks3/lesson/?topic=the-body&guided=1"],
+    "ionic-conduction": ["Atomic number, isotopes and ions", "/science-catch-up/lesson/?topic=atomic-number"]
+  }[id];
+  if (!senior && earlier) {
+    const prerequisite = document.createElement("details");
+    const summary = document.createElement("summary");
+    const link = document.createElement("a");
+    summary.textContent = "Revisit an earlier idea";
+    [link.textContent, link.href] = earlier;
+    prerequisite.append(summary, link);
+    model.append(prerequisite);
+  }
   if (lesson.higher) {
     const extension = document.createElement("details");
     const summary = document.createElement("summary");
