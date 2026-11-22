@@ -102,7 +102,7 @@
 .ks3-flow .ks3-diagram-box{flex:1 1 6rem}
 .ks3-flow-arrow,.ks3-force{font-weight:700;color:#20564f}
 .ks3-particle-box{position:relative;width:5rem;height:4.6rem;margin:.35rem auto 0;border:1px solid #779b92;background:#f5faf8;border-radius:4px}
-.ks3-particle-box span{position:absolute;background:#26786e;width:9px;height:9px;border-radius:50%;transform:translate(-50%,-50%)}
+.ks3-particle-box span{position:absolute;background:#26786e;width:.64rem;height:.64rem;border-radius:50%;transform:translate(-50%,-50%)}
 .ks3-molecule-groups{display:grid;gap:.3rem;grid-template-columns:repeat(2,auto);padding:.35rem .2rem}
 .ks3-molecule{display:flex}
 .ks3-atom{width:.86rem;height:.86rem;border-radius:50%;border:1px solid #24343b}
