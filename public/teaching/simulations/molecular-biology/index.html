@@ -36,7 +36,13 @@ canvas{width:100%;display:block;border-radius:9px}
   padding:9px 12px;margin-block:9px}
 .stepnum{font-size:10.5px;font-weight:800;letter-spacing:.8px;color:var(--accent);text-transform:uppercase}
 .stepdesc{font-size:1rem;line-height:1.55;margin:3px 0 0;max-width:60ch}
-.step-detail summary{cursor:pointer;font-weight:700;padding-block:.3em}
+.step-detail summary,.gx-controls summary{cursor:pointer;font-weight:700;padding-block:.45em}
+.gx-controls[hidden],.step-detail[hidden]{display:none}
+.gx-controls details{margin-top:.5rem}
+.gx-choices{display:flex;flex-wrap:wrap;gap:.45rem}
+.gx-choices button{min-height:44px}
+.gx-choices button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:#12212b}
+.gx-controls summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 button.act:focus-visible,.tab:focus-visible,.step-detail summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .ctrls{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:9px}
 button.act{background:var(--panel2);border:1px solid var(--line);color:var(--txt);
@@ -83,6 +89,14 @@ ul.facts li{margin-bottom:5px}
         <div class="stepdesc" id="step-cue" aria-live="polite"></div>
       </div>
       <div class="stage"><canvas id="cv" role="img" aria-labelledby="step-cue"></canvas></div>
+      <section class="gx-controls stepbar" id="gx-controls" aria-label="Explore the gene expression diagram" hidden>
+        <div class="gx-choices" id="gx-stages" role="group" aria-label="Control points"></div>
+        <details>
+          <summary>Parts of the cell</summary>
+          <div class="gx-choices" id="gx-parts" role="group" aria-label="Parts of the cell"></div>
+        </details>
+        <p class="stepdesc" id="gx-description" role="status" aria-atomic="true"></p>
+      </section>
       <div class="ctrls">
         <button class="act" id="btn-run">▶ Play</button>
         <button class="act" id="btn-step">⏭ Step</button>
@@ -556,7 +570,7 @@ const TR={ n:GENE.tmpl.length, x0:146, dx:25, bbX:132, lblX:122,
 TR.X=i=>TR.x0+i*TR.dx;
 const T_BASE=[
   {p:"intro", d:2.8,cue:"Find the template strand that will be copied.",t:"A gene on a DNA molecule. Only one of the two strands \u2014 the template strand \u2014 will be copied."},
-  {p:"unwind",d:3.4,cue:"Look for the exposed bases on the template strand.",t:"DNA helicase breaks the hydrogen bonds in this region. The two strands separate and the bases on the template strand are exposed."},
+  {p:"unwind",d:3.4,cue:"Look for the exposed bases on the template strand.",t:"The DNA opens locally as hydrogen bonds between the paired bases break. This exposes the bases on one strand, which acts as the template for RNA."},
   {p:"grow",  d:17.0,cue:"Follow the growing RNA strand behind RNA polymerase.",t:"RNA polymerase moves along the template strand. Four things are happening at once behind it: free RNA nucleotides hydrogen-bond to their complementary bases; a little further back they have been joined by phosphodiester bonds; further back the pre-mRNA has peeled off the template; and behind that the DNA has rewound."},
   {p:"finish",d:4.6,cue:"Watch pre-mRNA separate from DNA.",t:"Transcription is complete. The pre-mRNA separates fully from the DNA, and the DNA rewinds into a double helix. It still contains its introns \u2014 removing them is the next stage, on the splicing tab."}
 ];
@@ -1418,6 +1432,33 @@ const GXPARTS={
   poly:{n:"polypeptide",d:"The chain of amino acids that the gene codes for."},
   cytoplasm:{n:"cytoplasm",d:"Translation happens here \u2014 and mRNA can be destroyed here before it is ever used."}
 };
+const GX_CONTROL_LABELS=["Epigenetic control","Transcriptional control","Post-transcriptional control"];
+const gxControls=document.getElementById("gx-controls");
+const gxChoices=[];
+function addGeneChoice(parent,key,name){
+  const button=document.createElement("button");
+  button.type="button";
+  button.className="act";
+  button.textContent=name;
+  button.setAttribute("aria-pressed","false");
+  button.addEventListener("click",()=>selectGenePart(key));
+  parent.append(button);
+  gxChoices.push([key,button]);
+}
+GX_CONTROL_LABELS.forEach((label,i)=>addGeneChoice(document.getElementById("gx-stages"),i+1,(i+1)+". "+label));
+Object.entries(GXPARTS).forEach(([key,p])=>{
+  const name=p.n==="mRNA"?p.n:p.n.charAt(0).toUpperCase()+p.n.slice(1);
+  addGeneChoice(document.getElementById("gx-parts"),key,name);
+});
+function selectGenePart(part){
+  gx().sel=part;
+  updateGeneChoices();
+}
+function updateGeneChoices(){
+  const selection=gx().sel;
+  gxChoices.forEach(([key,button])=>button.setAttribute("aria-pressed",String(selection===key)));
+  showStepText("gx-description",selection?gxOverText():"");
+}
 let GXHIT=[];
 function gxHit(k,x0,y0,x1,y1){ GXHIT.push({k,x0,y0,x1,y1}); }
 function gxOverText(){
@@ -1426,7 +1467,7 @@ function gxOverText(){
   if(q===2) return "2. TRANSCRIPTIONAL CONTROL, at the promoter. Transcription factors decide whether RNA polymerase can begin transcribing the gene. Hormones such as oestrogen act here too.";
   if(q===3) return "3. POST-TRANSCRIPTIONAL CONTROL, in the cytoplasm. mRNA that has already been made can be cut up before it is ever translated.";
   if(typeof q==="string"&&GXPARTS[q]) return GXPARTS[q].n.toUpperCase()+" \u2014 "+GXPARTS[q].d;
-  return "Every cell carries the same genes but expresses only some of them. Click the numbered points 1, 2 and 3 to see where expression is controlled \u2014 or click any other part of the cell to identify it.";
+  return "Every cell carries the same genes but expresses only some of them. Choose a numbered control point or a part of the cell.";
 }
 /* A nucleosome. The DNA is drawn as a spiral that drifts sideways as it turns, so the
    two turns can be told apart, and the front of the coil is semi-transparent so the
@@ -1632,10 +1673,10 @@ function gxPanel(){
     if(line) label(cx,y+86+ln*22,line,"#9fb8c9",11.5);
     label(cx,y+h-32,"click 1, 2 or 3 for the levels of control","#7f97a8",10.5);
   } else {
-    label(cx,y+124,"click a numbered point","#e0a021",14);
+    label(cx,y+124,"choose a numbered point","#e0a021",14);
     label(cx,y+156,"to see how gene expression is","#9fb8c9",12);
     label(cx,y+178,"controlled at that level","#9fb8c9",12);
-    label(cx,y+232,"or click any other part of the cell","#7f97a8",11);
+    label(cx,y+232,"or select another part of the cell","#7f97a8",11);
     label(cx,y+252,"to identify it","#7f97a8",11);
   }
 }
@@ -1983,11 +2024,15 @@ function refresh(){
   const mb=document.getElementById("btn-mode");
   mb.style.display = (S.sub==="transcription"||S.sub==="genex") ? "none" : "";
   document.getElementById("btn-mode2").style.display = "none";
-  const flat = S.sub==="genex" && S.gxView===1;      // click-driven, so it has no timeline
+  const flat = S.sub==="genex" && S.gxView===1;      // selectable overview, without a timeline
+  gxControls.hidden = !flat;
+  document.querySelector(".step-detail").hidden = flat;
+  if(flat)updateGeneChoices();
   document.getElementById("wrap-speed").style.display = flat ? "none" : "";
   document.getElementById("wrap-time").style.display  = flat ? "none" : "";
   document.getElementById("btn-step").style.display   = flat ? "none" : "";
   const sv=document.getElementById("sel-view");
+  sv.setAttribute("aria-label","Gene expression view");
   sv.style.display = S.sub==="genex" ? "" : "none";
   if(S.sub==="genex"){
     if(!sv.dataset.built){ sv.innerHTML=GXVIEWS.map((v,i)=>
@@ -2078,7 +2123,7 @@ function gxPick(e){
 }
 cv.addEventListener("click",e=>{
   if(S.sub!=="genex"||S.gxView!==1) return;
-  const k=gxPick(e); if(k!==null) gx().sel=k;
+  const k=gxPick(e); if(k!==null) selectGenePart(k);
 });
 cv.addEventListener("mousemove",e=>{
   if(S.sub!=="genex"||S.gxView!==1){ cv.style.cursor=""; return; }
@@ -2105,7 +2150,7 @@ function frame(now){
   if(S.ff && (curStep()!==before || (S.sub==="genex"&&S.gxView===1))){ S.ff=false; setRun(false); }
   if(S.playing){ const fr=elapsedFrac();
     sT.value=Math.round(fr*1000); document.getElementById("r-time").textContent=Math.round(fr*100)+"%"; }
-  const number="Step "+(curStep()+1)+" / "+nSteps();
+  const number=S.sub==="genex"&&S.gxView===1?"Overview":"Step "+(curStep()+1)+" / "+nSteps();
   const cue=STEPS()[curStep()].cue||"Choose a labelled part of the gene expression model.";
   const details=stepText();
   showStepText("step-num",number);

@@ -18,7 +18,12 @@
   const guide = model.querySelector(".gas-guide");
   const label = model.querySelector("[data-gas-step]");
   const prompt = model.querySelector("[data-gas-prompt]");
-  const output = model.querySelector("[role=status]");
+  const output = model.querySelector("#gas-result");
+  const countDetails = model.querySelector(".gas-count");
+  const countStatus = model.querySelector("[data-gas-count-status]");
+  const counts = Object.fromEntries(
+    Array.from(model.querySelectorAll("[data-gas-total]"), el => [el.dataset.gasTotal, el])
+  );
   const conditions = {
     start: { width: 336, speed: 1, pressure: 1, description: "Starting pressure. The particles bounce off the walls." },
     warm: { width: 336, speed: Math.sqrt(1.8), pressure: 1.8, description: "Higher pressure. The same particles move faster. The box stays the same size." },
@@ -53,12 +58,16 @@
   });
 
   let condition = conditions.start;
+  let conditionId = "start";
+  const sampleDuration = 5;
+  let sampleTime = 0, sampleHits = 0;
   let frame = null;
   let previousTime = null;
 
   let audio, clickBuffer, volume;
   let soundOn = false;
-  function clickWall() {
+  function hitWall() {
+    sampleHits++;
     if (!soundOn || audio?.state !== "running") return;
     const click = audio.createBufferSource();
     click.buffer = clickBuffer;
@@ -124,9 +133,7 @@
     context.fillRect(left + 136, 151, 93 * condition.pressure, 12);
   }
 
-  function animate(time) {
-    const elapsed = previousTime === null ? 0 : Math.min((time - previousTime) / 1000, 0.05);
-    previousTime = time;
+  function moveParticles(elapsed) {
     for (const particle of particles) {
       particle.x += particle.vx * condition.speed * elapsed;
       particle.y += particle.vy * condition.speed * elapsed;
@@ -140,15 +147,34 @@
         particle.x = Math.max(minX, Math.min(maxX, particle.x));
         particle.vx *= -1;
         particle.hit = 0.13;
-        clickWall();
+        hitWall();
       }
       if (particle.y < minY || particle.y > maxY) {
         particle.y = Math.max(minY, Math.min(maxY, particle.y));
         particle.vy *= -1;
         particle.hit = 0.13;
-        clickWall();
+        hitWall();
       }
     }
+  }
+
+  function animate(time) {
+    let elapsed = previousTime === null ? 0 : Math.min((time - previousTime) / 1000, 0.05);
+    previousTime = time;
+    const remaining = sampleDuration - sampleTime;
+    if (elapsed >= remaining) {
+      moveParticles(remaining);
+      counts[conditionId].textContent = sampleHits;
+      if (countDetails.open) {
+        const setting = counts[conditionId].previousElementSibling.textContent;
+        countStatus.textContent = setting + " · " + sampleHits + " wall collisions in 5 seconds.";
+      }
+      elapsed -= remaining;
+      sampleTime = 0;
+      sampleHits = 0;
+    }
+    moveParticles(elapsed);
+    sampleTime += elapsed;
     draw();
     frame = requestAnimationFrame(animate);
   }
@@ -160,6 +186,12 @@
       particle.x = left + radius + (particle.x - left - radius) * widthRatio;
       particle.hit = 0;
     }
+    if (conditionId !== id) {
+      sampleTime = 0;
+      sampleHits = 0;
+      countStatus.textContent = "";
+    }
+    conditionId = id;
     condition = setting;
     controls.forEach(control => { control.checked = control.value === id; });
     if (output.textContent !== setting.description) output.textContent = setting.description;

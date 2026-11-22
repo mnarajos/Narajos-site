@@ -1,3 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 213" font-family="system-ui, sans-serif" fill="#243c43" stroke-linecap="round" stroke-linejoin="round">
-<rect x="8" y="10" width="503" height="192" rx="13" fill="#f6faf8" stroke="#becfc7" stroke-width="2"/><ellipse cx="262" cy="47" rx="21" ry="21" fill="#f1c878" stroke="#ae541b" stroke-width="2"/><path d="M262 73 L302 116 M291 112 L302 116 L298 105" fill="none" stroke="#ae541b" stroke-width="3"/><path d="M246 154Q281 87 389 85Q377 174 266 170Q247 168 246 154Z" fill="#bcdfca" stroke="#1d746b" stroke-width="3"/><path d="M223 175Q275 146 360 107 M287 145L282 130 M321 129L338 142" fill="none" stroke="#1d746b" stroke-width="3"/><path d="M91 120 L265 136 M255 130 L265 136 L254 140" fill="none" stroke="#1d746b" stroke-width="3"/><path d="M165 172 L244 163 M235 158 L244 163 L236 170" fill="none" stroke="#26769d" stroke-width="3"/><path d="M374 131 L426 107 M416.3 104.6 L426 107 L420.3 115.2" fill="none" stroke="#26769d" stroke-width="3"/><text x="123" y="107" text-anchor="middle" font-size="19" font-weight="650">Carbon dioxide</text><text x="141" y="181" text-anchor="middle" font-size="19" font-weight="650">Water</text><text x="447" y="82" text-anchor="middle" font-size="19" font-weight="650">Oxygen</text><text x="318" y="44" text-anchor="middle" font-size="19" font-weight="650">Light</text><text x="367" y="190" text-anchor="middle" font-size="18" font-weight="650">Glucose made in leaf</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 305" font-family="system-ui, sans-serif" fill="#243c43" stroke-linecap="round" stroke-linejoin="round">
+ <rect x="8" y="8" width="504" height="289" rx="14" fill="#f6faf8" stroke="#becfc7" stroke-width="2"/>
+ <path d="M208 185Q245 124 350 118Q337 210 227 206Q212 203 208 185Z" fill="#bcdfca" stroke="#1d746b" stroke-width="3"/>
+ <path d="M200 212Q245 187 324 137M253 179l-6-17M285 160l14 13" fill="none" stroke="#1d746b" stroke-width="3"/>
+ <g fill="none" stroke-width="3.5">
+  <path d="M260 62v62m-7-9 7 9 7-9" stroke="#ae541b"/>
+  <path d="M113 145l116 23m-8-8 8 8-11 4" stroke="#1d746b"/>
+  <path d="M113 225l105-33m-10-3 10 3-7 9" stroke="#26769d"/>
+  <path d="M341 160l64-16m-10-4 10 4-7 8" stroke="#1d746b"/>
+  <path d="M286 247v-40" stroke="#567a6d" stroke-width="2.5"/>
+ </g>
+ <g text-anchor="middle" font-size="28" font-weight="650">
+  <text x="260" y="45">Light energy</text>
+  <text x="108" y="104">Carbon<tspan x="108" dy="31">dioxide</tspan></text>
+  <text x="100" y="247">Water</text>
+  <text x="431" y="125">Oxygen</text>
+  <text x="290" y="279">Glucose made in the leaf</text>
+ </g>
 </svg>

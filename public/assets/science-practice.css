@@ -174,3 +174,9 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .gas-model [data-gas-sound][aria-pressed="true"] { background: #20564f; color: #fff; }
 .ks3-lesson .gas-sound-note { margin: .35rem 0 0; }
 .gas-model [hidden] { display: none; }
+
+.gas-count { margin-top: .65rem; }
+.gas-count dl { display: grid; gap: .35rem; max-width: 24rem; }
+.gas-count dl div { display: flex; justify-content: space-between; gap: 1rem; padding: .25rem .45rem; background: #eef6f3; border-radius: .3rem; }
+.gas-count dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+.gas-count [data-gas-count-status]:empty { display: none; }
