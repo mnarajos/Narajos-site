@@ -1,6 +1,5 @@
 .school-catchup { max-width: 62rem; padding-block: 1.35rem 2.5rem; }
 .school-catchup h1 { margin: .45rem 0 .35rem; }
-.school-lead { max-width: 48ch; margin: .45rem 0 1rem; }
 .school-breadcrumb { display: inline-block; padding-block: .3rem; font-weight: 650; }
 .school-years { display: flex; flex-wrap: wrap; gap: .45rem; margin-block: 1.15rem; }
 .school-years a, .school-primary, .school-secondary {
@@ -19,6 +18,7 @@
   list-style: none; padding: 0; margin-block: 1rem 0;
   display: grid; grid-template-columns: repeat(auto-fit,minmax(min(15rem,100%),1fr)); gap: .7rem;
 }
+.school-years .school-year-grid { width: 100%; margin: 0; }
 .school-year-grid li, .school-topic-list > li {
   background: white; border: 1px solid #d0dfde; border-radius: .7rem; min-width: 0;
 }

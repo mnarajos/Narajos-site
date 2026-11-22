@@ -318,7 +318,7 @@ function renderLesson(lesson, year, index) {
   document.querySelector("h1").textContent = lesson.unit;
   const yearLink = document.querySelector("[data-year-link]");
   yearLink.textContent = "← Year " + year + " topics";
-  yearLink.href = "/ks3/#year-" + year;
+  yearLink.href = "/science-catch-up/?year=" + year;
 
   const teaching = element("section", "", "practice-card ks3-lesson");
   const title = element("h2", lesson.title);

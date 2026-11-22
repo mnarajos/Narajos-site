@@ -7,11 +7,11 @@ const lesson = (code, title, hook, notice, idea, visual, steps, retry) =>
 
 export const year9 = {
   "cell-structures": lesson("B1", "What do cell structures do?",
-    "Which parts would a working muscle cell need in large numbers?",
-    "Compare the different jobs in the table. Some structures are found in both plant and animal cells.",
-    "Cell structures carry out different jobs. The structure and contents of a specialised cell help it do its job.",
+    "Why do muscle cells need so many mitochondria?",
+    "Find the mitochondria in the diagram.",
+    "A specialised cell has structures that help it do its job.",
     ["Structures in typical cells", ["Structure", "Job"], [
-      ["Nucleus", "Contains genetic information"], ["Mitochondria", "Site of most aerobic respiration"],
+      ["Nucleus", "Contains genetic information"], ["Mitochondria", "Site of aerobic respiration"],
       ["Ribosomes", "Make proteins"], ["Chloroplasts in green plant cells", "Absorb light for photosynthesis"]]],
     [
       q("Which structure makes proteins?", "Ribosomes", "Ribosomes assemble proteins.", "Chloroplasts", "The cell wall"),
@@ -23,7 +23,7 @@ export const year9 = {
 
   osmosis: lesson("B1", "Which way does water move?",
     "Why might a piece of potato gain mass in water?",
-    "Compare water movement across the membrane. Water moves both ways, but there can be a net movement.",
+    "Which way do more water molecules cross the membrane?",
     "Osmosis is the net movement of water molecules through a partially permeable membrane from a more dilute to a more concentrated solution.",
     ["A simple membrane model", ["Side A", "Partially permeable membrane", "Side B"], [
       ["More dilute solution", "Water can cross in both directions", "More concentrated solution"],
@@ -38,7 +38,7 @@ export const year9 = {
 
   "active-transport": lesson("B1", "How do roots take up mineral ions?",
     "Can mineral ions enter a root cell when there are already more ions inside it?",
-    "Identify the less concentrated side and the direction the ions are moving.",
+    "Find the side with fewer ions before tracing their movement.",
     "Active transport can move substances against their concentration gradient. It requires energy from respiration.",
     ["Two ways of moving substances", ["Process", "Direction", "Energy from respiration needed?"], [
       ["Diffusion", "Higher to lower concentration overall", "No"],
@@ -53,8 +53,8 @@ export const year9 = {
 
   mitosis: lesson("B1", "What must happen before a cell divides?",
     "How can each new cell get a full copy of the genetic information?",
-    "Follow what happens to DNA before the copies separate. Follow what happens to the cell afterwards.",
-    "Before mitosis, DNA is copied. In mitosis, the copies are separated into two nuclei. The cell then divides to give two genetically identical cells in this model.",
+    "Follow the DNA from one cell to two.",
+    "The cell copies its DNA before mitosis. In mitosis, the copies separate into two nuclei. The cell then divides into two genetically identical cells.",
     ["From one cell to two", ["Stage", "What happens"], [
       ["Before mitosis", "The cell grows and copies its DNA"],
       ["Mitosis", "The chromosome copies separate into two nuclei"],
@@ -69,7 +69,7 @@ export const year9 = {
 
   "atomic-number": lesson("C1", "What makes an atom that element?",
     "If a sodium atom loses one electron, is it still sodium?",
-    "Look first at the number of protons, then compare electrons to work out charge.",
+    "Compare proton numbers first, then electron numbers.",
     "The proton number identifies the element. Changing electrons makes an ion. Changing neutrons gives a different isotope of the same element.",
     ["Compare the particles in the examples", ["Example", "Protons", "Neutrons", "Electrons"], [
       ["Sodium atom", "11", "12", "11"], ["Sodium ion", "11", "12", "10"], ["Different sodium isotope", "11", "13", "11"]]],
@@ -83,7 +83,7 @@ export const year9 = {
 
   "periodic-table": lesson("C1", "Why do elements in a group react similarly?",
     "Why can two atoms with different numbers of shells behave similarly?",
-    "Read the last number in each electron arrangement. It gives the number of outer-shell electrons.",
+    "Compare the last number in each electron arrangement.",
     "Elements in the same group often react in similar ways because they have the same number of electrons in their outer shell.",
     ["Outer electrons of some Group 1 metals", ["Element", "Electrons in shells", "Outer-shell electrons"], [
       ["Lithium", "2, 1", "1"], ["Sodium", "2, 8, 1", "1"], ["Potassium", "2, 8, 8, 1", "1"]]],
@@ -97,7 +97,7 @@ export const year9 = {
 
   "energy-stores": lesson("P1", "Where does the energy go?",
     "A ball stops moving after it hits the ground. Where has its energy gone?",
-    "Follow the energy stores from the start to after the impact.",
+    "Follow the energy before, during and after the fall.",
     "Energy is conserved. It is transferred between stores and can spread to the surroundings, where less of it remains useful.",
     ["A ball is dropped and comes to rest", ["Moment", "Store or transfer to look for"], [
       ["Before release", "Gravitational potential store of the ball and Earth"],
@@ -113,8 +113,8 @@ export const year9 = {
 
   "energy-transfer": lesson("P1", "Which device transfers energy faster?",
     "Can the more powerful device use less energy overall?",
-    "Compare energy transferred in a second and then compare the total energy.",
-    "Power is the rate of energy transfer. The total energy transferred depends on power and the time. Efficiency is the fraction of the input transferred usefully.",
+    "Compare power first, then total energy transferred.",
+    "Power is energy transferred per second. Efficiency is the fraction of the input transferred usefully.",
     ["Compare two devices", ["Device", "Power", "Time", "Total transfer"], [
       ["A", "100 W", "2 s", "200 J"], ["B", "50 W", "10 s", "500 J"]]],
     [
@@ -144,7 +144,7 @@ export const year9 = {
 
   enzymes: lesson("B2", "Why can high temperature stop an enzyme working?",
     "If warmth can speed up a reaction, why can more heat slow an enzyme down?",
-    "Compare the shape of the active site and substrate before and after strong heating.",
+    "Compare the active site before and after strong heating.",
     "An enzyme is a biological catalyst. Its substrate fits its active site. High temperatures can change the active site’s shape, so fewer substrates bind.",
     ["A model of enzyme action", ["State", "Active site", "Result"], [
       ["At a suitable temperature", "Shape is complementary to the substrate", "Substrates can bind and react"],
@@ -159,7 +159,7 @@ export const year9 = {
 
   "ionic-conduction": lesson("C2", "Why do molten salts conduct?",
     "Why can the same salt conduct when molten and fail to conduct when solid?",
-    "Find the particles that carry charge. Compare whether they can move from place to place.",
+    "In which state can ions move through the salt?",
     "An ionic compound contains oppositely charged ions. An electric current can flow when the ions are able to move and carry charge.",
     ["The same ionic compound in two states", ["State", "Ions", "Conduction"], [
       ["Solid", "Held in fixed positions in a lattice", "No mobile ions to carry the current"],

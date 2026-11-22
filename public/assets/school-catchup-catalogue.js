@@ -41,20 +41,22 @@ function link(text, href, className) {
 }
 
 const yearNav = document.querySelector("[data-catchup-years]");
-for (const number of years) {
-  const target = link("Year " + number, root + "?year=" + number);
-  if (year === number) target.setAttribute("aria-current", "page");
-  yearNav.append(target);
-}
+const yearSelected = years.includes(year);
 
 const main = document.querySelector("[data-catchup-catalogue]");
-const saved = latestCatchup(years.includes(year) ? year : undefined);
+const saved = latestCatchup(yearSelected ? year : undefined);
 if (saved) {
   const resume = element("aside", "", "school-resume");
   resume.append(element("div", "Year " + saved.year + " · " + saved.title), link("Continue catch-up", saved.href, "school-primary"));
-  main.append(resume);
+  if (yearSelected) main.append(resume);
+  else yearNav.before(resume);
 }
-if (years.includes(year)) {
+if (yearSelected) {
+  for (const number of years) {
+    const target = link("Year " + number, root + "?year=" + number);
+    if (year === number) target.setAttribute("aria-current", "page");
+    yearNav.append(target);
+  }
   document.title = "Year " + year + " Science Catch-up | Narajos";
   document.querySelector("h1").textContent = "Year " + year + " Science";
   const headings = element("div", "", "school-section-heading");
@@ -84,7 +86,7 @@ if (years.includes(year)) {
       list.append(item);
     }
   } else {
-    main.append(element("p", "Guided catch-up is piloting in Years 7–9. Use GCSE revision for the topics below."));
+    main.append(element("p", "Guided lessons are available in Years 7–9. Choose a GCSE topic to revise."));
     for (const [code, topic] of gcseYears[year]) {
       const item = element("li");
       item.append(element("h3", code + " · " + topic), link("Revise " + code, revision(code), "school-revise-link"));
@@ -102,5 +104,5 @@ if (years.includes(year)) {
     item.append(card);
     list.append(item);
   }
-  main.append(list);
+  yearNav.append(list);
 }

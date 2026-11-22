@@ -6,7 +6,7 @@ const definitions = {
   cytoplasm: "The material inside the cell where many chemical reactions happen.",
   nucleus: "The part of a plant or animal cell that contains most of its DNA.",
   dna: "The material that carries genetic information.",
-  mitochondria: "Cell structures where most aerobic respiration happens.",
+  mitochondria: "Site of aerobic respiration.",
   ribosomes: "Small cell structures that make proteins.",
   "cell wall": "A rigid layer outside the cell membrane that supports a plant cell.",
   chloroplasts: "Structures in some plant cells that absorb light for photosynthesis.",
