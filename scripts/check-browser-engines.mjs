@@ -27,8 +27,16 @@ try {
   }
 
   async function fits() {
-    const excess = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
-    assert(excess <= 3, route + " exceeds the viewport by " + excess + "px in " + engine);
+    const overflow = await page.evaluate(() => {
+      const excess = document.documentElement.scrollWidth - innerWidth;
+      if (excess <= 3) return { excess, elements: [] };
+      const elements = [...document.querySelectorAll("body *")]
+        .filter(element => element.getBoundingClientRect().right > innerWidth + 3 &&
+          !element.parentElement?.closest(".kc-visual-art"))
+        .slice(0, 8).map(element => [element.tagName, element.className, Math.round(element.getBoundingClientRect().right)]);
+      return { excess, elements };
+    });
+    assert(overflow.excess <= 3, route + " exceeds the viewport in " + engine + ": " + JSON.stringify(overflow));
   }
 
   await open("/");
@@ -63,7 +71,9 @@ try {
   await fits();
 
   await open("/alevel/#catchup-a1-enzfactors");
-  await page.locator(".kc-visual-art svg").waitFor({ state: "visible" });
+  const diagram = page.locator(".kc-visual-art");
+  await diagram.locator("svg").waitFor({ state: "visible" });
+  assert(await diagram.evaluate(el => el.scrollWidth > el.clientWidth), "A large diagram should scroll inside its panel");
   assert(await page.locator(".kc-simulation-link").count() > 0);
   await fits();
 
