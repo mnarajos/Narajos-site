@@ -627,6 +627,147 @@ try{
  const navPage=await browser.newPage({viewport:{width:1280,height:900}});
  navPage.on("pageerror",e=>errors.push("Shared navigation: "+e.message));
  let standard=null;
+ const fq=await browser.newPage({viewport:{width:1280,height:900}});
+ await fq.context().grantPermissions(["clipboard-read","clipboard-write"]);
+ await fq.addInitScript(()=>{
+  const open=window.open.bind(window);
+  window.open=(...args)=>{
+   const popup=open(...args);
+   if(popup)popup.print=()=>{popup.document.documentElement.dataset.printCalled="true";};
+   return popup;
+  };
+ });
+ await fq.goto(base+"/teacher/");
+ const setup=fq.getByRole("region",{name:"Set up",exact:true});
+ assert.deepEqual((await setup.locator(".step h2").allTextContents()).map(x=>x.trim()),["1 Year","2 Topic","3 Activity","4 Purpose(s)"]);
+ for(const year of [7,8,9,10,11]){
+  const toggle=setup.getByRole("button",{name:"Year "+year,exact:true});
+  await toggle.click();
+  assert.equal(await toggle.getAttribute("aria-pressed"),"true");
+  assert(await fq.locator("#lesson option").count()>0);
+ }
+ const topic=setup.getByLabel("2 Topic",{exact:true});
+ await topic.selectOption({index:2});
+ const remember=setup.getByRole("button",{name:"Remember",exact:true});
+ const understanding=setup.getByRole("button",{name:"Check understanding",exact:true});
+ await understanding.click();
+ assert.equal(await remember.getAttribute("aria-pressed"),"true");
+ assert.equal(await understanding.getAttribute("aria-pressed"),"true");
+ assert(await understanding.locator("svg").isVisible());
+ await setup.getByText("Advanced settings",{exact:true}).click();
+ await setup.getByRole("button",{name:"Securing basics",exact:true}).click();
+ assert.equal(await setup.getByRole("button",{name:"Securing basics",exact:true}).getAttribute("aria-pressed"),"true");
+ const challenge=setup.getByRole("button",{name:"+ 1 Challenge question",exact:true});
+ await challenge.click();
+ assert.equal(await challenge.getAttribute("aria-pressed"),"true");
+ assert(await fq.getByRole("checkbox",{name:"Use challenge question",exact:true}).isChecked());
+ await setup.getByRole("button",{name:"MWB quiz",exact:true}).click();
+ assert(await challenge.isHidden());
+ const startQuiz=fq.getByRole("button",{name:"Start MWB quiz",exact:true});
+ await startQuiz.click();
+ await fq.locator("#stage.open").getByText(/Write your answer on your whiteboard/).waitFor();
+ await fq.keyboard.press("Escape");
+ await setup.getByRole("button",{name:"Do Now",exact:true}).click();
+ assert.equal(await challenge.getAttribute("aria-pressed"),"true");
+ const startDoNow=fq.getByRole("button",{name:"Start Do Now",exact:true});
+ await startDoNow.click();
+ await fq.locator("#stage.open").getByRole("button",{name:"Go to answers",exact:true}).click();
+ await fq.locator("#stage.open").getByRole("button",{name:"3, 2, 1, show me",exact:true}).waitFor();
+ await fq.keyboard.press("Escape");
+
+ const bank=fq.getByRole("checkbox",{name:"Use question",exact:true});
+ await bank.first().uncheck();
+ const snapshot=()=>fq.locator("#qlist .q:not(.ext)").evaluateAll(rows=>rows.map(row=>[row.querySelector(".txt").textContent,row.querySelector("input").checked]));
+ const customSet=await snapshot();
+ await fq.reload();
+ assert.deepEqual(await snapshot(),customSet);
+ fq.once("dialog",dialog=>dialog.dismiss());
+ const generate=fq.getByRole("button",{name:"Generate different questions",exact:true});
+ await generate.click();
+ assert.deepEqual(await snapshot(),customSet);
+ fq.once("dialog",dialog=>dialog.accept());
+ await generate.click();
+ assert.notDeepEqual((await snapshot()).map(([question])=>question),customSet.map(([question])=>question));
+
+ // Use an actual question with an authored common error for the clipboard and print checks.
+ let questionWithError=await fq.evaluate(()=>sugg.findIndex(q=>q.w));
+ for(let attempt=0;questionWithError<0&&attempt<4;attempt++){
+  await generate.click();
+  questionWithError=await fq.evaluate(()=>sugg.findIndex(q=>q.w));
+ }
+ assert(questionWithError>=0,"The selected bank should supply a common error for this check");
+ await bank.nth(questionWithError).check();
+ const readClipboard=()=>fq.evaluate(()=>navigator.clipboard.readText());
+ const questionsButton=fq.getByRole("button",{name:"Copy questions",exact:true});
+ const markButton=fq.getByRole("button",{name:"Copy mark scheme",exact:true});
+ await questionsButton.click();
+ await fq.getByRole("status").filter({hasText:"Questions copied"}).waitFor();
+ const initialQuestions=await readClipboard();
+ assert.match(initialQuestions,/Do Now.*Year 11/);
+ assert.doesNotMatch(initialQuestions,/Watch for:/);
+ await markButton.click();
+ await fq.getByRole("status").filter({hasText:"Mark scheme copied"}).waitFor();
+ assert.doesNotMatch(await readClipboard(),/Watch for:/);
+ const chosenBefore=await snapshot();
+ const commonErrors=async enabled=>{
+  await fq.locator("#mark-options summary").click();
+  await fq.getByLabel("Include common errors",{exact:true}).setChecked(enabled);
+  await fq.keyboard.press("Escape");
+ };
+ await commonErrors(true);
+ assert.deepEqual(await snapshot(),chosenBefore);
+ await markButton.click();
+ await fq.getByRole("status").filter({hasText:"Mark scheme copied"}).waitFor();
+ assert.match(await readClipboard(),/Watch for:/);
+ await questionsButton.click();
+ await fq.getByRole("status").filter({hasText:"Questions copied"}).waitFor();
+ assert.equal(await readClipboard(),initialQuestions);
+ const sheet=async name=>{
+  await fq.locator("#print-menu summary").click();
+  const opened=fq.waitForEvent("popup");
+  await fq.getByRole("button",{name,exact:true}).click();
+  const popup=await opened;
+  await popup.locator("html[data-print-called=true]").waitFor({state:"attached"});
+  return popup;
+ };
+ const questionsSheet=await sheet("Question sheet");
+ assert(await questionsSheet.locator(".question-sheet").isVisible());
+ assert.equal(await questionsSheet.locator(".answer-sheet").count(),0);
+ assert.doesNotMatch(await questionsSheet.locator("body").innerText(),/Watch for:/);
+ await questionsSheet.close();
+ const answersSheet=await sheet("Answer sheet");
+ assert(await answersSheet.locator(".answer-sheet").isVisible());
+ assert.match(await answersSheet.locator("body").innerText(),/Watch for:/);
+ await answersSheet.close();
+ await commonErrors(false);
+ const combined=await sheet("Questions + answers");
+ assert.deepEqual(await combined.locator("body>section").evaluateAll(el=>el.map(section=>section.className)),["question-sheet","answer-sheet"]);
+ assert.doesNotMatch(await combined.locator("body").innerText(),/Watch for:/);
+ await combined.emulateMedia({media:"print"});
+ assert.equal(await combined.locator(".answer-sheet").evaluate(el=>getComputedStyle(el).breakBefore),"page");
+ const combinedPdf=await combined.pdf({preferCSSPageSize:true});
+ assert((combinedPdf.toString("latin1").match(/\/Type \/Page\b/g)||[]).length>=2,"The combined printout must use at least two pages");
+ await combined.close();
+ for(const width of [320,390,768,1280]){
+  await fq.setViewportSize({width,height:844});
+  const fqOverflow=await fq.evaluate(()=>{
+   if(document.documentElement.scrollWidth-innerWidth<=3)return [];
+   return [...document.body.querySelectorAll("*")].filter(el=>el.getBoundingClientRect().right>innerWidth+3)
+    .slice(0,8).map(el=>[el.tagName,el.className,Math.round(el.getBoundingClientRect().right)]);
+  });
+  assert.deepEqual(fqOverflow,[],"Focused Questions overflows at "+width);
+  const bar=fq.locator("#sumbar");
+  await bar.evaluate(el=>window.scrollTo({top:el.getBoundingClientRect().top+scrollY+200,behavior:"instant"}));
+  assert((await bar.boundingBox()).y>=-1,"The question actions should stay visible while scrolling");
+  await fq.locator("#mark-options summary").click();
+  const popoverBox=await fq.locator("#mark-options .action-panel").boundingBox();
+  assert(popoverBox.x>=0&&popoverBox.x+popoverBox.width<=width+1,"Mark scheme settings overflow at "+width);
+  await fq.keyboard.press("Escape");
+ }
+ await fq.setViewportSize({width:390,height:844});
+ await screen(fq,"focused-questions-mobile");
+ await fq.close();
+
  for(const path of ["/","/404.html","/privacy/","/teaching/","/teacher/","/gcse/","/alevel/","/human-biology/","/science-practice/","/teaching/simulations/",...['bioenergetics','cardiac-cycle','enzyme-inhibition','enzyme-kinetics','molecular-biology'].map(x=>"/teaching/simulations/"+x+"/")]){
   await navPage.goto(base+path,{waitUntil:"load"});
   const control=navPage.locator("#site-home");assert(await control.isVisible(),"Missing homepage control: "+path);

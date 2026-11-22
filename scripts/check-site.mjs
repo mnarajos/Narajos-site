@@ -112,8 +112,9 @@ try{
 }catch(e){failures.push("Catch-up visual script failed to parse or render: "+e.message);}
 requireTrue(teacher.includes('class="narajos-home" aria-label="Narajos homepage"'),"Focused Questions return link missing");
 requireTrue(teacher.includes("function saveDraft()")&&teacher.includes("function restoreDraft()"),"Focused Questions draft recovery missing");
-requireTrue(teacher.includes("function printSheet(answers)"),"Focused Questions print option missing");
-requireTrue(teacher.includes("Topic you’re teaching"),"Teacher topic label missing");
+requireTrue(["printq","printms","printboth"].every(id=>teacher.includes('id="'+id+'"')),"Focused Questions print options missing");
+requireTrue(teacher.includes(".question-sheet+.answer-sheet{break-before:page}"),"Combined answer sheet needs a page break");
+requireTrue(/<label for="lesson">[^<]*<span[^>]*>2<\/span> Topic<\/label>/.test(teacher),"Teacher topic label missing");
 requireTrue(teacher.includes("No assumption about another school"),"Incorrect date-based default topic");
 for(const [name,html] of [["GCSE",gcse],["A-level",alevel]]){
  requireTrue(html.includes('class="narajos-home"'),name+" main site return link missing");
