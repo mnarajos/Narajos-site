@@ -21,7 +21,7 @@ export function mountSequence(root, {
   const slots = cards.map(() => null);
   let selected = null;
   let drag = null;
-  let suppressClickUntil = 0;
+  let suppressDragClick = false;
 
   const board = element("div", "", "writing-order-board");
   const bankPanel = element("section", "", "writing-order-bank");
@@ -179,6 +179,7 @@ export function mountSequence(root, {
     action.textContent = "Selection cleared.";
   });
   root.addEventListener("pointerdown", event => {
+    if (event.isPrimary) suppressDragClick = false;
     const grip = event.target.closest(".writing-order-grip");
     const source = grip?.closest("[data-order-card]");
     if (!source || !event.isPrimary || event.button !== 0) return;
@@ -216,7 +217,7 @@ export function mountSequence(root, {
     const { ghost, hover, frame, id } = drag;
     drag = null;
     if (!ghost) return;
-    suppressClickUntil = performance.now() + 100;
+    suppressDragClick = true;
     cancelAnimationFrame(frame);
     ghost.remove();
     hover?.removeAttribute("data-order-hover");
@@ -232,7 +233,8 @@ export function mountSequence(root, {
     root.addEventListener(type, finishDrag);
   }
   root.addEventListener("click", event => {
-    if (event.detail && performance.now() < suppressClickUntil) {
+    if (event.detail && suppressDragClick) {
+      suppressDragClick = false;
       event.preventDefault();
       event.stopImmediatePropagation();
     }
