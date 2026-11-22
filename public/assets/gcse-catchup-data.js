@@ -50,9 +50,9 @@ export const year10Catchup = {
       ["Temperature",[[0,0],[1,1],[2,2],[3,2],[4,2],[5,3],[6,4]]]],"The horizontal section at 0 °C represents melting."],
     [
       ["Read the rising line","Internal energy is the total kinetic and potential energy of the particles. A temperature rise means their average kinetic energy rises.",
-        "What changes on the first rising section?","The average kinetic energy of the particles increases.","Temperature is related to average kinetic energy.","Each particle gets bigger.","The particles stop vibrating."],
+        "What changes on the first rising section?","The average kinetic energy of the particles increases.","Temperature is related to average kinetic energy.",["Each particle gets bigger.","Heating changes how fast the particles move or vibrate. The particles themselves stay the same size."],["The particles stop vibrating.","A temperature rise means the particles are vibrating faster on average."]],
       ["Read the flat line","Melting takes energy even at constant temperature. The arrangement changes, so the potential energy of the particles changes.",
-        "Where does the transferred energy go on the melting plateau?","It increases the particles’ potential energy.","The arrangement changes while average kinetic energy stays steady.","It makes all particles move faster.","No energy is transferred."],
+        "Where does the transferred energy go on the melting plateau?","It increases the particles’ potential energy.","The arrangement changes while average kinetic energy stays steady.",["It makes all particles move faster.","The temperature is steady, so the average kinetic energy stays steady."],["No energy is transferred.","The flat line shows a steady temperature. The heater still transfers energy as the solid melts."]],
       ["Calculate the energy","Specific latent heat is the energy needed to change the state of one kilogram without a temperature change. Use energy = mass × specific latent heat.",
         "How much energy melts 0.20 kg of ice if its specific latent heat is 334,000 J/kg?","66,800 J","Multiply 0.20 by 334,000.","334,000 J","1,670,000 J"]
     ],
@@ -297,11 +297,11 @@ export const year11Catchup = {
     ["wave"],
     [
       ["Notice what travels","A wave transfers energy. A marked point on the rope oscillates around its position as a transverse wave travels along the rope.",
-        "What does the marked point do?","Moves up and down around its rest position.","The point oscillates perpendicular to the direction of travel.","Travels to the far end with the wave.","Stays completely still."],
+        "What does the marked point do?","Moves up and down around its rest position.","The point oscillates perpendicular to the direction of travel.",["Travels to the far end with the wave.","The wave moves along the rope. The marked point oscillates around its own position."],["Stays completely still.","The marker does move. It moves up and down as the wave passes."]],
       ["Measure a wave","Wavelength is the distance between adjacent points in the same part of the cycle. Frequency is the number of cycles per second.",
         "A wave of frequency 4 Hz has a wavelength of 0.5 m. What is its speed?","2 m/s","Wave speed = frequency × wavelength.","8 m/s","0.125 m/s"],
       ["Compare waves","In a longitudinal wave the oscillations are parallel to the wave’s direction of travel. Sound in air is longitudinal.",
-        "What moves back and forth in a sound wave in air?","Air particles","They oscillate along the direction the wave travels.","Only sound particles","All the air moves along the room at the speed of sound."]
+        "What moves back and forth in a sound wave in air?","Air particles","They oscillate along the direction the wave travels.",["Only sound particles","Sound is a wave. Air particles are the particles that vibrate in this example."],["All the air moves along the room at the speed of sound.","Nearby air particles vibrate back and forth. The wave travels through the room without carrying that air with it."]]
     ],
     ["A floating marker goes up and down as a ripple passes. Which claim fits this evidence?","The ripple carries energy across the water while the marker oscillates locally.","The wave travels. The oscillation is local.","The floating marker must move to the edge at the wave speed.","The ripple cannot transfer energy."],
     ["Where can you measure one wavelength on a transverse diagram?","From one crest to the next crest.","The points must be one cycle apart.","From a crest to the closest trough.","From the centre line to a crest."]),
