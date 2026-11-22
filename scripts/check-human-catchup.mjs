@@ -327,7 +327,12 @@ export async function checkHumanCatchup(browser, base) {
     assert.equal(await writtenPath.locator("..").getByRole("listitem").count(), 6);
 
     await page.addStyleTag({ content: "html{font-size:200%} .krp-root{line-height:1.5;letter-spacing:.025em}" });
-    assert(await widthFits(), "F175 stage guide overflows at 320px with enlarged text");
+    const enlargedLayout = await reproduction.evaluate(root => ({
+      page: document.documentElement.scrollWidth - innerWidth,
+      model: root.scrollWidth - root.clientWidth
+    }));
+    assert(enlargedLayout.page <= 3 && enlargedLayout.model <= 3,
+      "F175 stage guide overflows at 320px with enlarged text: " + JSON.stringify(enlargedLayout));
     await page.addScriptTag({ content: axe.source });
     const reproductionIssues = await reproduction.evaluate(async root => (await window.axe.run(root, {
       runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] }
