@@ -28,7 +28,7 @@ The Batch 10–12 changes are merged in PRs #61–63, with successful site and b
 | F177 a2 | B | The contrast between observation and a trial is sound. Model randomisation and blinding separately and ask students to interpret a new comparison with one safeguard missing. |
 | F177 a3 | A | Sample and follow-up limitations are modelled separately, with independent generalisability reasoning and a link to Skills Practice. |
 
-No guided objective warranted a C rating. The F173 area 1, 4 and 5, F174 area 2 and F177 area 4 routes were also checked as recaps. They do not establish instructional coverage of biomedical roles, practical design/data interpretation, diet-related disorders or research planning. Skills Practice and general evidence examples are already available, and assessed planning remains with the centre. Batch 14 should establish which general concepts warrant further teaching.
+No guided objective warranted a C rating. F173 area 1 and F174 area 2 were checked as recaps. F173 areas 4–5 and F177 area 4 have no dedicated Catch-up route. Their general skills are represented elsewhere. They do not establish instructional coverage of biomedical roles, practical design/data interpretation, diet-related disorders or research planning. Skills Practice and general evidence examples are already available, and assessed planning remains with the centre. Batch 14 should establish which general concepts warrant further teaching.
 
 ## B13-02 · Existing F175 simulation
 

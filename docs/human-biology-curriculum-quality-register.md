@@ -71,29 +71,29 @@ The rows locate general knowledge support by OCR topic area. Question tags are a
 
 | OCR area | Existing lesson and question evidence | Visual or model | Remaining review |
 | --- | --- | --- | --- |
-| F172 area 1 | DNA replication and the two kinds of division · 5 tagged questions | DNA/allele schematic | Audit gene expression and the origins of genetic variation. |
-| F172 area 2 | Carrier inheritance and worked Punnett square · 4 tagged questions | Punnett square | Extend practice across inheritance patterns, mutations and selected disorders. |
+| F172 area 1 | Trace homologues and sister chromatids through two kinds of division · 5 tagged questions | Allele schematic and highlighted chromosome tracker | Audit gene expression and the origins of genetic variation. |
+| F172 area 2 | Choose a conditional denominator for different crosses · 4 tagged questions | Highlighted Punnett square | Extend practice across inheritance patterns, mutations and selected disorders. |
 | F172 area 3 | Scope of a fictional genetic test · 2 tagged questions | Worked test interpretation | Audit counselling, privacy and test limitations. |
 | F172 area 4 | Gene therapy in a fictional condition · 2 tagged questions | Cause–effect example | Review how well general knowledge distinguishes gene therapy and genetic engineering. |
 | F173 area 1 | Biomedical roles and controls recap · 2 tagged questions | None recorded here | Index biomedical disciplines and biological variability. |
-| F173 area 2 | Choose microscopy for surface detail · 6 tagged questions | Reused micrographs and sampled visual question | Audit microscopy selections, histology, haematology and immunoassays. |
+| F173 area 2 | Choose microscopy for surface or section detail and interpret scale · 6 tagged questions | Annotated red-cell micrograph and unfamiliar measurements | Audit microscopy selections, histology, haematology and immunoassays. |
 | F173 area 3 | Interpret a worked chromatography result · 5 tagged questions | Worked chromatography ratio | Audit biochemical tests, other separations and quantitative measurement. |
 | F173 area 4 | General reliability and controls available elsewhere · 0 tagged questions | General Skills Practice | Keep planning practicals for assessment within the centre. |
 | F173 area 5 | General data interpretation available elsewhere · 0 tagged questions | General Skills Practice | Use unrelated data for independent skill practice. |
 | F174 area 1 | Compare diets with similar energy content · 4 tagged questions | Nutrient or digestion examples | Audit micronutrient functions, absorption and deficiencies. |
 | F174 area 2 | Diet and disorder recap · 3 tagged questions | None recorded here | Audit dietary references, labels, malabsorption and excessive intake. |
-| F174 area 3 | Trace starch digestion and glucose regulation · 4 tagged questions | Glucose schematic | Audit metabolism, liver functions, appetite and osmoregulation. |
+| F174 area 3 | Trace starch digestion, absorption and glucose regulation · 4 tagged questions | Highlighted compartment-by-compartment model | Audit metabolism, liver functions, appetite and osmoregulation. |
 | F174 area 4 | Interpret BMI with its limitations · 2 tagged questions | Fictional comparative measurements | Index diagnostic and monitoring methods and general treatment principles. |
-| F175 area 1 | Trace gametes, fertilisation and implantation · 6 tagged questions | Reproduction simulation and labelled oviduct | Audit later development, anatomy and contraception. |
+| F175 area 1 | Explain possible outcomes and disrupted gamete transport · 7 tagged questions | Guided and free simulation, written pathway and labelled oviduct | Audit later development, anatomy and contraception. |
 | F175 area 2 | Placental exchange · 3 tagged questions | Exchange model | Separate antenatal appointments (2.1) from monitoring (2.3) in future question tagging. |
 | F175 area 3 | Compare causes of reduced fertility · 2 tagged questions | Fictional obstructed-oviduct example | Audit general fertility investigations and treatment. Keep the section 3.4 assessment reference separate from independent study. |
 | F175 area 4 | Trace IVF in an unrelated example · 2 tagged questions | Fertility pathway example | Audit general treatment stages and regulation. |
 | F176 area 1 | Trace the pathway from receptor to CNS · 4 tagged questions | Brain schematic | Audit spinal cord, nerves and major brain regions. |
-| F176 area 2 | Explain synaptic transmission step by step · 4 tagged questions | Progressive synapse sequence | Audit action-potential graphs and neuronal control. |
+| F176 area 2 | Explain synapses, excitation and reduced inhibition · 4 tagged questions | Progressive synapse sequence and threshold comparison | Audit action-potential graphs and neuronal control. |
 | F176 area 3 | Distinguish nociception and pain · 2 tagged questions | Example route from a hot object | Audit effects of different neurotransmitters and drugs. |
 | F176 area 4 | Interpret a fictional brain injury scan · 1 tagged questions | Worked scan scenario | Audit general diagnosis, support and treatment. |
 | F176 area 5 | Choose the method with suitable time resolution · 2 tagged questions | Worked modality comparison | Verify EEG, MRI and CT tags and interpretation tasks. |
 | F177 area 1 | Compare agonist and antagonist actions · 3 tagged questions | Receptor mechanism model | Audit classification, delivery and other properties. |
-| F177 area 2 | Compare uncontrolled observation and randomised evidence · 7 tagged questions | Trial group schematic | Audit clinical trial question tags against 2.4, plus preclinical, approval and surveillance coverage. |
+| F177 area 2 | Distinguish a comparator, randomisation and blinding · 7 tagged questions | Trial group schematic and fictional outcomes table | Audit clinical trial question tags against 2.4, plus preclinical, approval and surveillance coverage. |
 | F177 area 3 | Evaluate limits of a short fictional study · 3 tagged questions | Benefits and harms comparison | Audit evidence on stakeholders and ethical or market factors. |
 | F177 area 4 | General critical appraisal available elsewhere · 0 tagged questions | Fictional trial examples | Keep the assessed research proposal within the centre. |
