@@ -1,5 +1,6 @@
 import { mountJourney, question } from "./school-catchup-journey.js";
 import { readCatchup, saveCatchup } from "./school-catchup-progress.js";
+import { curriculum } from "./ks3-lessons.js";
 
 const extendedJourneys = {
   "fair-tests": {
@@ -30,8 +31,7 @@ const extendedJourneys = {
 
 const topics = {
   "fair-tests": [
-    "What made the same toy roll farther?",
-    "Look back at the two ramp runs. Name the one thing that was deliberately changed.",
+    "Use the ramp to compare two angles with the same toy.",
     ["Does wing length affect how slowly a paper spinner falls? Which plan would let you test that?",
       "Use different wing lengths and drop both spinners from the same height.",
       "Drop height can also change fall time, so keep it the same.",
@@ -39,7 +39,6 @@ const topics = {
       ["Make one spinner heavier and drop it higher.", "Two extra changes make it difficult to isolate the effect of wing length."]]
   ],
   cells: [
-    "What gives away the plant cell in a pair of microscope photographs?",
     "Trace one cell boundary and look for structures inside it.",
     ["A new image shows a dark nucleus and sections of straight cell edge. You cannot identify a wall or chloroplasts. What can you conclude?",
       "The visible evidence is insufficient to decide between a plant and an animal cell.",
@@ -48,7 +47,6 @@ const topics = {
       ["It is animal tissue because you see a nucleus.", "Plant cells can have visible nuclei too."]]
   ],
   "states-of-matter": [
-    "Can ice get warmer and stay solid?",
     "Press Heat once. Does the motion change? Does the state change?",
     ["Two syringes with blocked tips contain air and water. Why is the water harder to squeeze into a smaller volume?",
       "Water particles are already close together.",
@@ -57,7 +55,6 @@ const topics = {
       ["Water particles get bigger when pushed.", "The particles stay the same size. Look at the gaps between them."]]
   ],
   "atoms-and-compounds": [
-    "Can two atoms joined together still be part of an element?",
     "Look at what each colour represents and whether the groups of circles are all the same.",
     ["Every particle in a sample has one red atom bonded to two blue atoms. What kind of sample is it?",
       "A compound, because different kinds of atom are bonded in every identical group.",
@@ -66,7 +63,6 @@ const topics = {
       ["A mixture, because there are two colours.", "Each group has the same bonded combination, so there is one substance."]]
   ],
   forces: [
-    "A cyclist is already moving. Can the forces balance and the cyclist still move?",
     "Compare the two force arrows before predicting what happens to the motion.",
     ["A crate moves right. A 70 N pull acts right and friction acts left at 30 N. What happens?",
       "It speeds up. The resultant force is 40 N to the right.",
@@ -75,7 +71,6 @@ const topics = {
       ["It slows because friction is present.", "Friction acts left, but the larger pull means the resultant acts right."]]
   ],
   "the-body": [
-    "How does oxygen from one breath reach a working muscle in your foot?",
     "On the visual, follow the arrows from an air sac into a blood vessel, then to a muscle cell.",
     ["Blood flows past a working muscle. How does oxygen get from the blood into the muscle cells?",
       "It diffuses from the blood where its concentration is higher into the cells.",
@@ -84,7 +79,6 @@ const topics = {
       ["The muscle makes oxygen during respiration.", "Aerobic respiration uses oxygen supplied by the blood."]]
   ],
   "energy-transfers": [
-    "A lamp gets warm. Can you account for the energy that did not go into lighting the room?",
     "Find the energy by light and by heating in the example. Add the pieces.",
     ["A fan gets warmer and makes a sound while it moves air. Where has some of the input energy gone?",
       "Some has spread to the surroundings by heating and sound.",
@@ -93,7 +87,6 @@ const topics = {
       ["It all went into moving air because that is the fan’s purpose.", "Energy can transfer in several ways during the same process."]]
   ],
   reproduction: [
-    "A bee delivers pollen to a flower. Has fertilisation happened yet?",
     "Trace where the pollen lands, then follow the route towards the ovule.",
     ["Pollen lands on a stigma, but no male nucleus reaches an ovule. Which process has occurred?",
       "Pollination has occurred. Fertilisation has not occurred.",
@@ -102,7 +95,6 @@ const topics = {
       ["Neither has occurred because there is no seed.", "Pollination can happen even if no seed later develops."]]
   ],
   "acids-and-alkalis": [
-    "A solution changes from pH 3 to pH 5. Is it now alkaline?",
     "Find pH 7 on the scale before comparing the two readings.",
     ["An alkali is added and the pH moves from 4 to 6. What is the final solution?",
       "It is less acidic than before and still acidic.",
@@ -111,7 +103,6 @@ const topics = {
       ["It is neutral because the pH increased.", "A rise towards 7 is different from reaching 7."]]
   ],
   "chemical-reactions": [
-    "A fizzing reaction makes the balance reading fall. Where did the missing mass go?",
     "Compare the boundaries of the open and sealed apparatus.",
     ["A tablet reacts in a sealed bottle. Bubbles appear. What happens to the total mass of the sealed bottle and its contents?",
       "It stays the same because the gas remains in the bottle.",
@@ -120,7 +111,6 @@ const topics = {
       ["It rises because a new substance appears.", "The gas is made from atoms already present before the reaction."]]
   ],
   "light-and-sound": [
-    "You see lightning first. What could cross the same space if there were no air at all?",
     "Compare what the diagrams show about what each wave needs to travel.",
     ["An alarm rings inside a sealed chamber and a light flashes next to it. Most of the air is pumped out. What happens outside?",
       "The light is still visible. The sound from the alarm becomes much harder to hear.",
@@ -129,7 +119,6 @@ const topics = {
       ["Sound stays equally loud because it travels faster than light.", "Sound moves through vibrations in a medium. There is less air to transmit them."]]
   ],
   space: [
-    "Why does the Sun seem to disappear each evening?",
     "Keep the lamp still in the model and trace which way a point on Earth faces.",
     ["Earth turns so a town faces away from the Sun. Why is it night there?",
       "Earth’s rotation has moved the town onto the side facing away from the Sun.",
@@ -138,7 +127,6 @@ const topics = {
       ["Earth has gone all the way around the Sun.", "Earth takes about a year to orbit. Day and night repeat as it rotates."]]
   ],
   "health-and-lifestyle": [
-    "Two meals provide the same energy. Will they necessarily give the body everything it needs?",
     "Use the examples to distinguish an energy supply from all the nutrients a body needs.",
     ["Two lunches provide the same amount of energy. What else matters when comparing them?",
       "Whether they provide a range of nutrients needed for different jobs.",
@@ -147,7 +135,6 @@ const topics = {
       ["Only the weight of each lunch matters.", "Two foods of the same mass can supply different nutrients."]]
   ],
   "periodic-table": [
-    "Can a table tell you something about an element you’ve never seen?",
     "Trace one group down its column and compare the examples.",
     ["An unfamiliar element is listed directly below sodium in Group 1. Which prediction is supported?",
       "It is likely to be a reactive metal because it is in the same group.",
@@ -156,7 +143,6 @@ const topics = {
       ["It is likely to be an unreactive gas.", "Compare the Group 1 metals with the separate group that contains unreactive gases."]]
   ],
   particles: [
-    "What makes a bicycle pump harder to push as the trapped air is squeezed?",
     "Keep temperature and particle count the same. Compare collisions at the wall when the container gets smaller.",
     ["An airtight syringe is gently compressed at the same temperature. Why does its pressure rise?",
       "The same particles hit the walls more often in the smaller space.",
@@ -165,7 +151,6 @@ const topics = {
       ["More particles enter the syringe.", "The syringe is sealed, so its particle count stays the same."]]
   ],
   adaptation: [
-    "Can the safer colour for an insect change when the trees around it change?",
     "Compare what a bird can spot on both backgrounds.",
     ["Some plants inherit thicker waxy coatings, which reduce water loss. During a long dry period, how could the coating become more common?",
       "More plants with the thicker coating could survive and reproduce, passing it on.",
@@ -174,7 +159,6 @@ const topics = {
       ["The plants without a coating all change immediately.", "The proportions can change over generations as some individuals leave more offspring."]]
   ],
   "separating-techniques": [
-    "A filter catches sand. How did the dissolved salt get through?",
     "Trace where the solid and the dissolved substance go separately.",
     ["You have sand mixed with sugar. Which order helps you recover both?",
       "Dissolve the sugar, filter out the sand, then let water evaporate from the filtrate.",
@@ -183,7 +167,6 @@ const topics = {
       ["Evaporate all the water before filtering the mixture.", "You would get the two solids together again instead of separating them."]]
   ],
   "work-done": [
-    "Two people push equally hard. Which one transfers more energy by doing work?",
     "Compare the distances while keeping the force the same.",
     ["A 12 N force moves a trolley 5 m in the direction of the force. How much work is done?",
       "60 J, because work done is force multiplied by distance in this case.",
@@ -192,7 +175,6 @@ const topics = {
       ["12 J, because the force stays the same.", "The distance travelled also affects the work done."]]
   ],
   respiration: [
-    "Can a seed respire when there is no light?",
     "Identify where respiration happens and what an aerobic cell uses.",
     ["A seed germinates in darkness and has a supply of oxygen. Can its cells respire aerobically?",
       "Yes. The cells can use oxygen and glucose from the seed’s food stores.",
@@ -201,7 +183,6 @@ const topics = {
       ["Only if the seed has lungs.", "Respiration happens in cells. Oxygen can reach cells without lungs."]]
   ],
   "earth-structure": [
-    "How could grains of sand at the bottom of a sea become solid rock?",
     "Compare loose grains, layers and what later holds layers together.",
     ["A sandstone contains many rounded grains cemented together. What sequence best explains its formation?",
       "Sediment was deposited, then buried, compacted and cemented.",
@@ -210,7 +191,6 @@ const topics = {
       ["The rock formed because the sand stayed loose.", "Some process must bind the loose grains into solid rock."]]
   ],
   photosynthesis: [
-    "Could a plant make new glucose in the dark if it had plenty of water?",
     "Trace matter into the leaf and find the separate supply of energy.",
     ["A healthy green plant is put in darkness. Which prediction makes sense?",
       "Photosynthesis stops while respiration can continue using stored sugars.",
@@ -219,7 +199,6 @@ const topics = {
       ["Photosynthesis continues as normal while there is water.", "Water is a reactant. Light still supplies the energy."]]
   ],
   electricity: [
-    "How can a break on the far side of a lamp make it go out?",
     "Trace the full loop, including both terminals, before opening the switch.",
     ["An electromagnet releases an iron object when its switch opens. Why?",
       "Opening the loop stops current flowing through the coil.",
@@ -228,7 +207,6 @@ const topics = {
       ["The coil produces new current when the switch opens.", "An open loop provides no complete conducting path for the current."]]
   ],
   metals: [
-    "Can one metal push another metal out of a solution?",
     "Use the example to decide which metal can displace which.",
     ["Zinc displaces copper from a copper compound. What does this show?",
       "Zinc is more reactive than copper under these conditions.",
@@ -237,7 +215,6 @@ const topics = {
       ["They have equal reactivity because both are metals.", "Metals differ in how readily they react."]]
   ],
   "journey-speed": [
-    "Can a steeper line show faster motion even if the journey is shorter?",
     "Compare the distances travelled in equal time intervals.",
     ["Two pupils' distance–time lines are straight. P reaches 20 m in 4 s. Q reaches 20 m in 5 s. Who is faster?",
       "P, because P covers the same distance in less time.",
@@ -246,7 +223,6 @@ const topics = {
       ["They are equally fast because both cover 20 m.", "Speed also depends on how long the distance takes."]]
   ],
   "balanced-moments": [
-    "Can a lighter pupil balance a heavier pupil on a seesaw?",
     "Compare how far each force acts from the pivot.",
     ["A 40 N force acts 1 m to the left of a pivot. A 20 N force acts 2 m to the right. Will they balance?",
       "Yes. Both moments are 40 N m in opposite directions.",
@@ -289,7 +265,7 @@ function addPracticeAnswer(card, id) {
 export function addKS3Journey(model, lesson, year) {
   const item = topics[lesson.id];
   if (!item) return;
-  const [hook, hint, transfer] = item;
+  const [hint, transfer] = item;
   addPracticeAnswer(model.parentElement.querySelector("[data-ks3-transfer]"), year + "." + lesson.id);
   const steps = [
     {...fromLesson(lesson.questions[0]), notice: hint},
@@ -302,7 +278,7 @@ export function addKS3Journey(model, lesson, year) {
     steps[1].hint = extension.practiceHint;
     steps.push(extension.transfer);
   }
-  mountJourney(model, model, {id: lesson.id, year, hook, steps});
+  mountJourney(model, model, {id: lesson.id, year, hook: lesson.title, steps});
 }
 
 function fromCard(card) {
@@ -323,13 +299,15 @@ for (const host of document.querySelectorAll("[data-school-catchup-topic]")) {
   const item = topics[id];
   const model = host.querySelector(".ks3-lesson");
   if (!item || !model) continue;
-  const [hook, hint, transfer] = item;
+  const [hint, transfer] = item;
   const guided = [...host.querySelectorAll("[data-catchup-check]")].map(fromCard).filter(Boolean);
   if (guided.length < 2) continue;
   const year = id === "cells" ? 7 : 8;
+  const lesson = curriculum[year].find(topic => topic.href === "/ks3/" + id + "/");
+  if (!lesson) continue;
   addPracticeAnswer(host.querySelector("[data-ks3-transfer]"), year + "." + id);
   mountJourney(model, model, {
-    id, year, title: host.querySelector("h1").textContent, hook,
+    id, year, hook: lesson.title,
     steps: [{...guided[0], notice: hint}, {...guided[1], hint}, question(...transfer)]
   });
 }

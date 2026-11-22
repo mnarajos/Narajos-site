@@ -36,6 +36,8 @@
 .school-code { display: inline-block; margin-inline-end: .4rem; padding: .06rem .28rem; border-radius: .3rem; background: #e5f0f4; color: #244b64; font-size: .89rem; }
 .school-concept-list { padding: 0; margin: .4rem 0; list-style: none; }
 .school-concept-list a, .school-revise-link { display: inline-flex; align-items: center; min-height: 44px; padding-block: .2rem; }
+.school-concept-list li + li { margin-top: .55rem; }
+.school-topic-list .school-concept-question { margin-top: -.15rem; font-size: .9rem; line-height: 1.45; }
 .school-revise-link { font-size: .9rem; }
 
 .school-journey {

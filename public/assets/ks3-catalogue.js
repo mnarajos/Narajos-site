@@ -321,13 +321,11 @@ function renderLesson(lesson, year, index) {
   yearLink.href = "/science-catch-up/?year=" + year;
 
   const teaching = element("section", "", "practice-card ks3-lesson");
-  const title = element("h2", lesson.title);
   const cue = element("p");
   cue.append(element("strong", "Start here. "), lesson.notice);
   const fairTests = lesson.id === "fair-tests";
   const explanation = element("section", "", "ks3-explanation");
   explanation.append(element("h3", fairTests ? "Worked example · testing ramp angle" : "The key idea"));
-  teaching.append(title, recallFor(lesson.id));
   if (fairTests) {
     const aim = element("p", "", "ks3-fair-aim");
     aim.append(element("strong", rampAngleQuestion));
@@ -335,10 +333,11 @@ function renderLesson(lesson, year, index) {
     ramp.id = "fair-test-ramp";
     ramp.dataset.catchupFirstEvidence = "";
     ramp.tabIndex = -1;
-    teaching.append(aim, element("p", "Try a shallow and a steep run. Keep the other settings the same."), ramp);
+    const setup = element("p", "Release a toy from a ramp. It keeps rolling along the floor. Use the ruler to measure how far it goes from the foot of the ramp.", "ks3-ramp-setup");
+    teaching.append(setup, element("p", "Try a shallow ramp and a steep ramp with the same toy. Change only the angle."), ramp);
     import("./toy-ramp.js");
     explanation.classList.add("ks3-fair-example");
-    explanation.append(element("p", lesson.notice), renderVisual(lesson.visual));
+    explanation.append(aim, element("p", lesson.notice), renderVisual(lesson.visual));
   } else {
     teaching.append(cue);
     if (lesson.id === "states-of-matter") {
@@ -354,7 +353,7 @@ function renderLesson(lesson, year, index) {
     }
   }
   explanation.append(...lesson.explain.map(scienceParagraph));
-  teaching.append(explanation);
+  teaching.append(recallFor(lesson.id), explanation);
   if (fairTests) {
     teaching.append(disclosure("Compare the two ramp shapes", renderIllustration(lesson.id),
       element("p", "The drawing uses two colours to show the setups. In your test, use the same toy in both runs.")));

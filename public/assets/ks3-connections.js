@@ -1,6 +1,6 @@
 const connections = {
   "fair-tests": {
-    recall: ["Think of one thing you could change on a ramp and one thing you could measure."],
+    recall: ["For the two ramp runs, name the setting to change and the result to measure."],
     next: ["photosynthesis", "Use the idea of changing one factor at a time when you investigate a leaf in different light."]
   },
   cells: {
