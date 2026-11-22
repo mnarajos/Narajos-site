@@ -1,10 +1,18 @@
 import { mountJourney } from "./school-catchup-journey.js";
 import { year9 } from "./school-catchup-year9.js";
 import { year9Visual } from "./school-catchup-visuals.js";
+import { gcseCatchup } from "./gcse-catchup-data.js";
+import { gcseVisual } from "./gcse-catchup-visuals.js";
 
-const id = new URLSearchParams(location.search).get("topic");
-if (Object.hasOwn(year9, id)) {
-  const lesson = year9[id];
+const params = new URLSearchParams(location.search);
+const id = params.get("topic");
+if (Object.hasOwn(year9, id) || Object.hasOwn(gcseCatchup, id)) {
+  const senior = Object.hasOwn(gcseCatchup, id);
+  const lesson = senior ? gcseCatchup[id] : year9[id];
+  const back = senior && params.get("year") === "11" && [ "B5", "C4" ].includes(lesson.code) ? 11 : lesson.year;
+  const breadcrumb = document.querySelector(".school-breadcrumb");
+  breadcrumb.href = "/science-catch-up/?year=" + back;
+  breadcrumb.textContent = "← Year " + back + " topics";
   const host = document.querySelector("[data-catchup-lesson]");
   const model = document.createElement("section");
   model.className = "practice-card ks3-lesson";
@@ -25,9 +33,9 @@ if (Object.hasOwn(year9, id)) {
   label.textContent = "The key idea. ";
   idea.append(label, lesson.idea);
   model.append(title, notice);
-  const visual = year9Visual(id);
+  const visual = senior ? gcseVisual(lesson.visual) : year9Visual(id);
   if (visual) model.append(visual);
-  if (lesson.visual) {
+  if (!senior && lesson.visual) {
     const [caption, columns, rows] = lesson.visual;
     const box = document.createElement("div");
     box.className = "writing-data";
@@ -56,6 +64,15 @@ if (Object.hasOwn(year9, id)) {
     } else model.append(box);
   }
   model.append(idea);
+  if (lesson.higher) {
+    const extension = document.createElement("details");
+    const summary = document.createElement("summary");
+    summary.textContent = "Higher Tier";
+    const detail = document.createElement("p");
+    detail.textContent = lesson.higher.replace(/^Higher Tier · /, "");
+    extension.append(summary, detail);
+    model.append(extension);
+  }
   host.replaceChildren(model);
   mountJourney(model, model, {...lesson, id});
 }

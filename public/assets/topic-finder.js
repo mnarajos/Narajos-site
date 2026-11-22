@@ -84,7 +84,10 @@
 
   function topicPractice(topicId) {
     const activities = practiceTopics[topicId];
-    if (!activities || !document.head) return "";
+    const gcseCode = location.pathname === "/gcse/" && /^[bcp][1-9]0?$/.test(topicId);
+    const catchup = gcseCode ? '<p><a href="/science-catch-up/?topic=' + topicId +
+      '">Catch up on this topic</a> · Guided explanation and practice</p>' : "";
+    if (!activities || !document.head) return catchup;
     if (!document.querySelector('script[src="/assets/diagram-practice.js"]')) {
       const css = document.createElement("link");
       css.rel = "stylesheet";
@@ -95,7 +98,7 @@
       document.head.append(css, script);
     }
     const requested = new URLSearchParams(location.search).get("activity");
-    return activities.map(([id, title]) =>
+    return catchup + activities.map(([id, title]) =>
       '<details class="topic-diagram-activity"' + (id === requested ? ' open' : '') + '><summary>' + title +
       ' · Diagram and questions</summary><diagram-practice topic="' + id + '"></diagram-practice></details>'
     ).join("");

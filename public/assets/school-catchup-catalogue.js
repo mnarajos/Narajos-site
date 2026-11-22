@@ -1,5 +1,6 @@
 import { curriculum, motionLessons } from "./ks3-lessons.js";
 import { year9 } from "./school-catchup-year9.js";
+import { gcseCatchup } from "./gcse-catchup-data.js";
 import { clearCatchupProgress, hasCatchupProgress } from "./school-catchup-progress.js";
 
 const root = "/science-catch-up/";
@@ -9,7 +10,8 @@ function guidedHref(href) {
   url.searchParams.set("guided", "1");
   return url.pathname + url.search;
 }
-const year = new URLSearchParams(location.search).get("year");
+const query = new URLSearchParams(location.search);
+const selectedCode = query.get("topic")?.toUpperCase();
 const years = ["7", "8", "9", "10", "11"];
 
 const gcseYears = {
@@ -31,6 +33,10 @@ const gcseYears = {
     ["P5", "Forces"], ["P6", "Waves"], ["P7", "Magnetism and electromagnets"], ["B5", "Homeostasis"], ["B6", "Genetics"]
   ]
 };
+
+const topicYears = Object.keys(gcseYears).filter(number => gcseYears[number].some(([code]) => code === selectedCode));
+const year = query.get("year") || topicYears[0];
+const lessonsByCode = Object.groupBy(Object.entries(gcseCatchup), ([, lesson]) => lesson.code);
 
 function element(tag, text, className) {
   const el = document.createElement(tag);
@@ -59,7 +65,7 @@ if (yearSelected) {
   document.title = "Year " + year + " Science Catch-up | Narajos";
   document.querySelector("h1").textContent = "Year " + year + " Science";
   const headings = element("div", "", "school-section-heading");
-  headings.append(element("h2", Number(year) >= 10 ? "GCSE topics" : "Catch-up topics"));
+  headings.append(element("h2", "Catch-up topics"));
   if (Number(year) >= 9) headings.append(link("Open GCSE revision", "/gcse/", "school-secondary"));
   main.append(headings);
   const list = element("ul", "", "school-topic-list");
@@ -71,26 +77,28 @@ if (yearSelected) {
       item.append(link(topic.unit, href, "school-topic-link"), element("p", topic.title));
       list.append(item);
     }
-  } else if (year === "9") {
-    for (const [code, topic, lessons] of gcseYears[year]) {
+  } else {
+    const explanation = element("p");
+    explanation.append(element("strong", "Catch up"), " if you missed the topic or need it explained again. ",
+      element("strong", "Revise and practise"), " if you’ve learnt it and want to test yourself.");
+    main.append(explanation);
+    for (const [code, topic, lessonIds] of gcseYears[year]) {
+      if (topicYears.includes(year) && code !== selectedCode) continue;
       const item = element("li");
+      item.id = "catchup-" + code.toLowerCase();
       const title = element("h3");
       title.append(element("span", code, "school-code"), document.createTextNode(" " + topic));
       const links = element("ul", "", "school-concept-list");
-      for (const id of lessons) {
-        const {title, hook} = year9[id];
+      const lessons = year === "9" ? lessonIds.map(id => [id, year9[id]]) : lessonsByCode[code] || [];
+      for (const [id, lesson] of lessons) {
         const row = element("li");
-        row.append(link(title, root + "lesson/?topic=" + id), element("p", hook, "school-concept-question"));
+        const url = root + "lesson/?topic=" + id + (year === "9" ? "" : "&year=" + year);
+        row.append(link(lesson.title, url), element("p", lesson.hook, "school-concept-question"));
         links.append(row);
       }
-      item.append(title, links, link("Revise " + code, revision(code), "school-revise-link"));
-      list.append(item);
-    }
-  } else {
-    main.append(element("p", "Guided lessons are available in Years 7–9. Choose a GCSE topic to revise."));
-    for (const [code, topic] of gcseYears[year]) {
-      const item = element("li");
-      item.append(element("h3", code + " · " + topic), link("Revise " + code, revision(code), "school-revise-link"));
+      const revise = link("Revise " + code, revision(code), "school-revise-link");
+      revise.setAttribute("aria-label", "Revise and practise " + code + " " + topic);
+      item.append(title, links, revise);
       list.append(item);
     }
   }
@@ -101,7 +109,7 @@ if (yearSelected) {
     const item = element("li");
     const card = link("", root + "?year=" + number);
     card.append(element("strong", "Year " + number), element("span", Number(number) < 9 ? "Catch-up lessons" :
-      number === "9" ? "Catch-up lessons and GCSE revision" : "GCSE revision · catch-up in development"));
+      "Catch-up lessons and GCSE revision"));
     item.append(card);
     list.append(item);
   }

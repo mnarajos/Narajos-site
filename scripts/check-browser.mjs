@@ -253,10 +253,50 @@ try{
  await guide.getByText("Review answers",{exact:true}).click();
  await guide.getByRole("button",{name:"Check 1",exact:true}).click();
  assert(await check.getByText("Water can move in both directions.",{exact:true}).isVisible());
- await pilotPage.goto(base+"/science-catch-up/?year=10");
- assert(await pilotPage.getByRole("link",{name:"Open GCSE revision"}).isVisible());
+ const seniorLessonIds=new Set();
+ for(const [year,count] of [[10,10],[11,11]]){
+  await pilotPage.goto(base+"/science-catch-up/?year="+year);
+  assert(await pilotPage.getByText(/if you missed the topic or need it explained again/).isVisible());
+  assert(await pilotPage.getByRole("link",{name:"Open GCSE revision"}).isVisible());
+  const topicCards=pilotPage.locator(".school-topic-list > li");
+  assert.equal(await topicCards.count(),count);
+  for(const topic of await topicCards.all()){
+   assert(await topic.locator(".school-concept-list a").count()>0);
+   assert(await topic.getByRole("link",{name:/^Revise and practise/}).isVisible());
+  }
+  const urls=await pilotPage.locator(".school-concept-list a").evaluateAll(links=>links.map(a=>a.href));
+  for(const url of urls){
+   const id=new URL(url).searchParams.get("topic");
+   await pilotPage.goto(url);
+   await pilotPage.locator("#catchup-evidence").waitFor({timeout:10000});
+   assert(await pilotPage.locator("#catchup-evidence").locator('.catchup-picture,.gcse-catchup-punnett').count()>0,id);
+   assert.equal(await pilotPage.getByRole("link",{name:"← Year "+year+" topics"}).count(),1,id);
+   assert((await pilotPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,id+" overflows at phone width");
+   seniorLessonIds.add(id);
+  }
+ }
+ assert.equal(seniorLessonIds.size,30);
+ await pilotPage.goto(base+"/science-catch-up/lesson/?topic=vaccine-memory&year=10");
+ for(const [index,answer] of ["Specific antigens","Their immune system has already responded to its antigens.","The virus lacks the bacterial targets of antibiotics.","Those antibodies may not bind to the new pathogen’s antigens."].entries()){
+  await guide.getByRole("button",{name:"Check",exact:true}).click();
+  if(index===0){
+   await check.getByRole("radio",{name:"Any body cell",exact:true}).check();
+   await check.getByRole("button",{name:"Check answer",exact:true}).click();
+   assert(await check.getByRole("status").filter({hasText:"Recognition depends on the antigen"}).isVisible());
+  }
+  await check.getByRole("radio",{name:answer,exact:true}).check();
+  await check.getByRole("button",{name:"Check answer",exact:true}).click();
+  await check.getByRole("button",{name:index===3?"Finish catch-up":"Continue",exact:true}).click();
+ }
+ await guide.getByRole("link",{name:"Revise B3",exact:true}).click();
+ await pilotPage.getByRole("link",{name:"Catch up on this topic",exact:true}).click();
+ await pilotPage.waitForURL(base+"/science-catch-up/?topic=b3");
+ const vaccineLesson=pilotPage.getByRole("link",{name:"Vaccination and the immune response",exact:true});
+ await vaccineLesson.waitFor();
+ assert.equal(await pilotPage.locator(".school-topic-list > li").count(),1);
+ await vaccineLesson.click();
+ await guide.getByRole("heading",{name:"Catch-up complete!",exact:true}).waitFor();
  await pilotPage.goto(base+"/science-catch-up/?year=11");
- assert(await pilotPage.getByRole("link",{name:"Open GCSE revision"}).isVisible());
  await pilotPage.evaluate(()=>localStorage.setItem("gcse-test-progress","kept"));
  const clearCatchup=pilotPage.getByRole("button",{name:"Clear catch-up progress",exact:true});
  const clearDialog=pilotPage.getByRole("dialog",{name:"Clear catch-up progress?"});
@@ -292,6 +332,7 @@ try{
  const homeMenu=desktop.locator(".site-nav details").first();
  await homeMenu.locator("summary").click();
  assert(await homeMenu.locator('a[href="/human-biology/"]').isVisible(),"Human Biology missing from homepage dropdown");
+ assert.equal(await homeMenu.getByRole("link",{name:/^Year (7|8|9|10|11) Science/}).count(),5);
  await homeMenu.locator("summary").click();
  const menus=desktop.locator(".site-nav details");
  await menus.nth(0).locator("summary").click();
