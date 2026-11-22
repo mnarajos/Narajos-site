@@ -43,11 +43,27 @@
      <label><input type="radio" name="gas-condition" value="start" checked> Starting box</label>
      <label><input type="radio" name="gas-condition" value="warm"> Warmer gas</label>
      <label><input type="radio" name="gas-condition" value="small"> Smaller box</label>
+     <div class="gas-particle-control">
+      <label for="gas-particle-count">Number of gas particles</label>
+      <select id="gas-particle-count">
+       <option value="7">7 particles</option>
+       <option value="14" selected>14 particles</option>
+       <option value="28">28 particles</option>
+      </select>
+     </div>
     </fieldset>
     <figure class="gas-visual">
-     <canvas width="368" height="173" aria-hidden="true"></canvas>
-     <figcaption>Each dot is a gas particle. The bar shows relative pressure in this model.</figcaption>
+     <canvas width="368" height="150" aria-hidden="true"></canvas>
+     <figcaption>Each dot is one gas particle. An outlined dot has just hit a wall.</figcaption>
     </figure>
+    <div class="gas-readings">
+     <span><strong data-gas-particles>14</strong> particles</span>
+     <span><strong data-gas-volume>100%</strong> of starting volume</span>
+    </div>
+    <div class="gas-pressure-reading">
+     <label for="gas-pressure-meter">Relative pressure <strong data-gas-pressure-value>1.0×</strong></label>
+     <meter id="gas-pressure-meter" min="0" max="4" value="1" aria-describedby="gas-result"></meter>
+    </div>
     <div class="gas-actions">
      <button type="button" data-gas-change hidden></button>
      <button type="button" data-gas-motion>Start motion</button>
@@ -60,9 +76,18 @@
      <button type="button" data-gas-sound aria-pressed="false" aria-describedby="gas-sound-note" hidden>Listen to collisions</button>
     </div>
     <p class="gas-sound-note" id="gas-sound-note" hidden>Each click is a wall collision. Listen for how often the clicks happen.</p>
+    <div class="gas-compare" hidden>
+     <button type="button" data-gas-compare aria-describedby="gas-compare-help">Compare box sizes</button>
+     <p id="gas-compare-help">Watch the right wall. Each box runs for 5 seconds with the same number of particles at the same temperature. Turn on collision sound to hear just the hits on that wall.</p>
+     <p data-gas-compare-status role="status"></p>
+     <dl data-gas-compare-results hidden>
+      <div><dt>Starting box</dt><dd data-gas-compare-count="start">—</dd></div>
+      <div><dt>Half the volume</dt><dd data-gas-compare-count="small">—</dd></div>
+     </dl>
+    </div>
     <details class="gas-count">
      <summary>Compare collision counts</summary>
-     <p>Start motion to count wall collisions. Compare the last complete count for each setting. Every count covers 5 seconds of model motion.</p>
+     <p>Start motion to count wall collisions. Compare the last complete count for each setting. Every count covers 5 seconds of model motion. Changing the number of particles clears these counts.</p>
      <dl>
       <div><dt>Starting box</dt><dd data-gas-total="start">—</dd></div>
       <div><dt>Warmer gas</dt><dd data-gas-total="warm">—</dd></div>
@@ -75,6 +100,7 @@
     <summary>Read the explanation</summary>
     <ul>
      <li><strong>Warm the gas in the same box.</strong> Particles move faster on average. They hit the walls more often and push harder overall, so the pressure rises.</li>
+     <li><strong>Add particles to the same box at the same temperature.</strong> There are more particles to hit the walls each second, so the pressure rises.</li>
      <li><strong>Squeeze the gas at the same temperature.</strong> Average particle speed stays the same. The same particles have less space and hit the walls more often, so the pressure rises.</li>
     </ul>
    </details>
