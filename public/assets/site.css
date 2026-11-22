@@ -202,7 +202,9 @@ h1,h2,h3,p{margin-top:0}h1,h2,h3{letter-spacing:-.035em;line-height:1.17}h1{font
 @media(prefers-reduced-motion:reduce){.home-option .home-links a span[aria-hidden],.sim-card-go{transition:none}.sim-card:hover .sim-card-go,.sim-card:focus-visible .sim-card-go{transform:none}}
 
 
-.site-pronunciation{margin-inline-start:.35em;white-space:nowrap}
+.footer-inner p:has(.site-pronunciation){display:flex;flex-wrap:wrap;align-items:baseline;column-gap:1.15rem;row-gap:.2rem}
+.home-philosophy p{margin:.25rem 0 .55rem}
+.home-philosophy p:last-child{margin-block-end:0}
 
 /* Keep the same wordmark and navigation on resources and lessons. */
 .topbar .topbar-inner { padding-block: .35rem; }

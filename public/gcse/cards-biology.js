@@ -42,7 +42,7 @@ window.KeystoneGcseDecks=Object.assign(window.KeystoneGcseDecks||{},{
  ["What is the word equation for photosynthesis?","Carbon dioxide + water → glucose + oxygen"],
  ["What provides energy for photosynthesis?","Light"],
  ["What is chlorophyll's role in photosynthesis?","Absorbs light energy"],
- ["Name three limiting factors for photosynthesis.","Light intensity, carbon dioxide concentration and temperature"],
+ ["Name three limiting factors for photosynthesis.","Light intensity, carbon dioxide concentration, and temperature"],
  ["What is the word equation for aerobic respiration?","Glucose + oxygen → carbon dioxide + water"],
  ["Where does most aerobic respiration take place in eukaryotic cells?","Mitochondria"],
  ["What is the word equation for anaerobic respiration in human muscles?","Glucose → lactic acid"],

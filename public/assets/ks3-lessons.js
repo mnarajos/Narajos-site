@@ -20,7 +20,7 @@ export const curriculum = {
        "Keep other factors that could affect the result the same. These are [control variables|control variable]. Use the same toy and load, the same ramp surface and the same release point. Let go without pushing.",
        "A clear method lets someone else repeat the test. Use the foot of the ramp as 0 cm each time. Repeat each setup and check whether the readings are similar."],
       [
-        check(rampAngleQuestion + " Which condition should change?", "The ramp angle", "Change the angle to answer this question. Keep the toy, load, ramp surface and release point the same.", [
+        check(rampAngleQuestion + " Which condition should change?", "The ramp angle", "Change the angle to answer this question. Keep the toy, load, ramp surface, and release point the same.", [
           ["The toy used", "Changing the toy could change the distance. Use the same one for both runs."],
           ["The ramp surface", "Keep the surface the same here. A different surface would be an independent variable in a different test."]
         ]),
@@ -55,7 +55,7 @@ export const curriculum = {
       ],
       "A puddle dries on a cool day. Do its water particles disappear? Explain what happens to the particles that leave it.",
       "Some water particles at the surface have enough energy to escape into the air. They are still water particles. They move freely in all directions and spread out as water vapour. This is evaporation."),
-    lesson("atoms-and-compounds", "Atoms, Elements and Compounds", "Can two joined atoms still be part of an element?",
+    lesson("atoms-and-compounds", "Atoms, Elements, and Compounds", "Can two joined atoms still be part of an element?",
       { type: "molecules", caption: "Three samples shown as particles", panels: [{ label: "Sample A", groups: ["aa", "aa", "aa"] }, { label: "Sample B", groups: ["ab", "ab", "ab"] }, { label: "Sample C", groups: ["aa", "ab", "aa"] }] },
       "The letters X and Y stand for different types of atom. Joined circles are bonded. Find the sample with both types in every group.",
       ["Use the letter in each circle to identify the type of [atom]. An [element] has one type of atom. Two atoms of that type can still be joined together.",
@@ -70,7 +70,7 @@ export const curriculum = {
           ["None of its atoms are joined.", "Touching circles represent bonded atoms. C contains two different kinds of bonded pair."]
         ])
       ],
-      "One sample contains only identical groups. Every group has three atoms of one type bonded to one atom of another type. Is it an element, compound or mixture? Explain.",
+      "One sample contains only identical groups. Every group has three atoms of one type bonded to one atom of another type. Is it an element, compound, or mixture? Explain.",
       "It is a compound. Different types of atom are chemically bonded in each group, and the sample contains only that substance."),
     lesson("forces", "Forces", "Can a cyclist keep moving when the forces balance?",
       { type: "forces", caption: "Two horizontal forces on a moving cyclist", left: "40 N backwards", right: "40 N forwards" },
@@ -144,7 +144,7 @@ export const curriculum = {
       { type: "ph", caption: "Universal indicator readings for three solutions", panels: [{ label: "A", value: 3 }, { label: "B", value: 7 }, { label: "C", value: 10 }] },
       "Find the pH 7 solution, then find the one with the lowest pH.",
       ["Use [pH|ph] to describe a solution. At room temperature, below 7 is acidic, 7 is neutral, and above 7 is alkaline. [Universal indicator] changes colour across the scale.",
-       "Adding an alkali to an acid can raise its pH. The reaction is called [neutralisation]. Use the final pH to decide whether the solution is still acidic, neutral or now alkaline."],
+       "Adding an alkali to an acid can raise its pH. The reaction is called [neutralisation]. Use the final pH to decide whether the solution is still acidic, neutral, or now alkaline."],
       [
         check("Which sample is alkaline?", "C, pH 10", "Alkaline solutions have a pH above 7.", [
           ["A, pH 3", "A pH of 3 is below 7, so A is acidic."],
@@ -244,7 +244,7 @@ export const curriculum = {
         ])
       ],
       "Rubidium appears directly below potassium in Group 1. Predict one of its chemical properties and explain the link to its position.",
-      "Rubidium is likely to be reactive. It belongs to the same group as lithium, sodium and potassium, which are reactive metals."),
+      "Rubidium is likely to be reactive. It belongs to the same group as lithium, sodium, and potassium, which are reactive metals."),
     { unit: "Motion and Pressure", title: "Why is a bicycle pump harder to push when you block the outlet?", href: "/ks3/particles/" },
     { unit: "Adaptation and Inheritance", title: "How could darker tree bark make dark insects more common?", href: "/ks3/adaptation/" },
     lesson("separating-techniques", "Separating Techniques", "How can a filter catch sand but let dissolved salt through?",
@@ -327,7 +327,7 @@ export const curriculum = {
         ]),
         check("Where does the energy for photosynthesis come from?", "Light absorbed by chlorophyll", "Chlorophyll absorbs light, which transfers energy for making glucose.", [
           ["Minerals absorbed by the roots", "Minerals help plants grow, but light supplies energy for photosynthesis."],
-          ["Glucose absorbed by the roots", "The plant makes its own glucose using light, carbon dioxide and water."]
+          ["Glucose absorbed by the roots", "The plant makes its own glucose using light, carbon dioxide, and water."]
         ])
       ],
       "A plant has plenty of water and carbon dioxide but is kept in darkness. Explain what happens to photosynthesis and what its cells can still do.",
@@ -672,7 +672,7 @@ export const extraChecks = {
     ]
   ],
   "electricity": [
-    "One wire is disconnected in a circuit with a cell, switch and lamp in one loop. What happens if the switch is closed?",
+    "One wire is disconnected in a circuit with a cell, switch, and lamp in one loop. What happens if the switch is closed?",
     "The lamp stays off",
     "The disconnected wire still breaks the loop.",
     [

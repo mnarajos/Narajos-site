@@ -301,7 +301,7 @@ header.brand .narajos-return:hover{border-color:var(--brand);color:var(--brand)}
 <footer><p><em>It’s /nerr-RA-hoss/.</em></p>
   <div class="keystone-lockup keystone-lockup-mini" role="img" aria-label="Narajos Keystone"><svg class="keystone-mark" viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(0 20)"><path d="M36 10.5 L32.5 4.5" stroke="#F97316" stroke-linecap="round" stroke-width="3.4"></path><path d="M50 7.5 L50 0" stroke="#F97316" stroke-linecap="round" stroke-width="3.4"></path><path d="M64 10.5 L67.5 4.5" stroke="#F97316" stroke-linecap="round" stroke-width="3.4"></path><path class="lg-arch" d="M6 70 A44 44 0 0 1 7.7 57.9 L28 65.1 A22.5 22.5 0 0 0 27.5 70 ZM92.3 57.9 A44 44 0 0 1 94 70 L72.5 70 A22.5 22.5 0 0 0 72 65.1 ZM9.5 52.8 A44 44 0 0 1 14.4 44.1 L31.1 57.9 A22.5 22.5 0 0 0 29.9 60 ZM85.6 44.1 A44 44 0 0 1 90.5 52.8 L70.2 60 A22.5 22.5 0 0 0 69 57.9 ZM17.8 40 A44 44 0 0 1 25.1 33.8 L36.2 52.2 A22.5 22.5 0 0 0 34.5 53.7 ZM74.9 33.8 A44 44 0 0 1 82.2 40 L65.5 53.7 A22.5 22.5 0 0 0 63.8 52.2 Z" stroke-linejoin="round" stroke-width="2.6"></path><path d="M26.6 21 Q50 13 73.4 21 L61.6 48 L38.4 48 Z" fill="#F97316" stroke="#F97316" stroke-linejoin="round" stroke-width="2.6"></path><circle cx="42.4" cy="38.6" fill="none" r="5.2" stroke="#fff" stroke-width="3.9"></circle><path d="M46.3 35.1 L58 24.6" stroke="#fff" stroke-linecap="round" stroke-width="3.9"></path><path d="M53.2 28.8 l2.9 3.3" stroke="#fff" stroke-linecap="round" stroke-width="3.5"></path><path d="M56.7 25.8 l2.9 3.3" stroke="#fff" stroke-linecap="round" stroke-width="3.5"></path></g></svg><span class="keystone-type"><span class="keystone-first">Narajos</span><span class="keystone-second">Keystone</span></span></div>
   <div>Made by Dr Narajos</div>
-</footer>
+<a class="resource-terms" href="/terms/">Terms of Use</a></footer>
 
 <div id="stage" role="dialog" aria-modal="true" aria-label="Present">
   <div class="stagebar"><span class="where" id="where"></span><span class="clock" id="clock"></span><button class="btn x" id="close">Close</button></div>
@@ -339,9 +339,9 @@ const LESSONS = [
   {k:"r1", y:10, unit:"Radioactivity", name:"1. Atomic structure (atomic models)", sci:"Physics", today:true,
     connect:"Today: how new evidence changed our model of the atom, from the plum pudding model to the nuclear model."},
   {k:"r2", y:10, unit:"Radioactivity", name:"2. Atomic structure", sci:"Physics", today:true,
-    connect:"Today: inside the atom – protons, neutrons and electrons, mass number, atomic number and isotopes."},
+    connect:"Today: inside the atom – protons, neutrons, and electrons, mass number, atomic number, and isotopes."},
   {k:"r3", y:10, unit:"Radioactivity", name:"3. Radioactivity (1) ionising radiation", sci:"Physics", today:true,
-    connect:"Today: unstable nuclei give out alpha, beta and gamma radiation. Ionising radiation turns atoms into ions."},
+    connect:"Today: unstable nuclei give out alpha, beta, and gamma radiation. Ionising radiation turns atoms into ions."},
   {k:"r4", y:10, unit:"Radioactivity", name:"4. Radioactivity (2) nuclear decay", sci:"Physics", today:true,
     connect:"Today: what happens to the mass number and atomic number when a nucleus emits radiation."},
   {k:"r5", y:10, unit:"Radioactivity", name:"5. Activity & half-life", sci:"Physics", today:true,
@@ -422,7 +422,7 @@ const QS = [
 {id:"r4c",l:"r4",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"betaZ",q:"In beta decay, what happens to the atomic number?",a:"It increases by 1",ex:1},
 {id:"r4d",l:"r4",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"betaA",q:"In beta decay, what happens to the mass number?",a:"It stays the same"},
 {id:"r4e",l:"r4",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"gammachange",q:"What happens to the mass and charge of a nucleus when it emits a gamma ray?",a:"No change"},
-{id:"r4f",l:"r4",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"neutronemit",q:"Apart from alpha, beta and gamma, which particle can an unstable nucleus emit?",a:"A neutron"},
+{id:"r4f",l:"r4",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"neutronemit",q:"Apart from alpha, beta, and gamma, which particle can an unstable nucleus emit?",a:"A neutron"},
 {id:"r4g",l:"r4",ty:"C",f:"tf",m:"b",lv:2,t:"F",idea:"betaA",q:"True or false: in beta decay the mass number increases by 1. Correct it if false.",a:"False – atomic number +1; mass number unchanged",w:"True – pupils swap mass number and atomic number.",why:"In beta decay a neutron turns into a proton, so there is one more proton but the same total of protons and neutrons."},
 {id:"r4h",l:"r4",ty:"C",f:"tf",m:"b",lv:2,t:"F",idea:"betaZ",q:"True or false: beta decay changes the element. Give a reason.",a:"True – the number of protons increases by 1",why:"The atomic number (number of protons) decides the element, and beta decay increases it by 1."},
 {id:"r4i",l:"r4",ty:"C",f:"mcq",m:"b",lv:2,t:"F",idea:"betaZ",q:"A nucleus emits a beta particle. What happens?",o:["Atomic number +1, mass number the same","Mass number +1, atomic number the same","Atomic number −1, mass number the same","Both decrease by 1"],a:0,w:"B – pupils swap mass number and atomic number.",why:"A neutron turns into a proton: one more proton, same number of particles in the nucleus."},
@@ -475,7 +475,7 @@ const QS = [
 {id:"b1g",l:"b1",ty:"A",f:"explain",m:"k",lv:3,t:"F",idea:"roothair",q:"Explain why root hair cells use active transport to take in mineral ions.",a:"The mineral ions are more concentrated inside the cell than in the soil, so they must move against the concentration gradient. This needs energy.",why:"Active transport moves substances from a more dilute to a more concentrated solution, using energy from respiration."},
 
 // ---------- Year 9 C1 Atomic structure & periodic table ----------
-{id:"c1a",l:"c1",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"threeparticles",q:"Name the three particles that make up an atom.",a:"Protons, neutrons and electrons"},
+{id:"c1a",l:"c1",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"threeparticles",q:"Name the three particles that make up an atom.",a:"Protons, neutrons, and electrons"},
 {id:"c1b",l:"c1",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"electroncharge",q:"What is the relative charge of an electron?",a:"−1"},
 {id:"c1c",l:"c1",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"protonmass",q:"What is the relative mass of a proton?",a:"1"},
 {id:"c1d",l:"c1",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"element",q:"What is an element?",a:"Only one type of atom"},
@@ -487,7 +487,7 @@ const QS = [
 // ---------- Year 9 P1 Energy ----------
 {id:"p1a",l:"p1",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"kestore",q:"Which energy store does a moving object have?",a:"Kinetic"},
 {id:"p1b",l:"p1",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"joule",q:"What is the unit of energy?",a:"Joule (J)"},
-{id:"p1c",l:"p1",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"powereq",q:"Write the equation that links power, energy transferred and time.",a:"Power = energy transferred ÷ time",acc:"P = E/t"},
+{id:"p1c",l:"p1",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"powereq",q:"Write the equation that links power, energy transferred, and time.",a:"Power = energy transferred ÷ time",acc:"P = E/t"},
 {id:"p1d",l:"p1",ty:"C",f:"tf",m:"b",lv:2,t:"F",idea:"conserve",q:"True or false: energy is destroyed when a car brakes. Correct it if false.",a:"False – energy is transferred to the surroundings, not destroyed",w:"True – pupils say energy is ‘used up’.",why:"Energy cannot be created or destroyed. When a car brakes, energy is dissipated to the thermal store of the surroundings."},
 {id:"p1e",l:"p1",ty:"C",f:"error",m:"b",lv:2,t:"F",idea:"effeq",q:"Find the error: “Efficiency = total input energy ÷ useful output energy.”",a:"Swap: useful output ÷ total input",why:"Efficiency can never be more than 1 (100%), so the useful output goes on top."},
 {id:"p1f",l:"p1",ty:"A",f:"short",m:"b",lv:2,t:"F",idea:"kettle",q:"A kettle is 90% efficient. Where does most of the wasted energy go?",a:"It heats the surroundings",acc:"thermal store of the surroundings"},
@@ -511,7 +511,7 @@ const QS = [
 
 // ---------- Year 10 Infection and response ----------
 {id:"ia",l:"inf",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"antibiotic",q:"What type of pathogen do antibiotics kill?",a:"Bacteria"},
-{id:"ib",l:"inf",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"pathogens",q:"Name the four types of pathogen.",a:"Bacteria, viruses, fungi and protists"},
+{id:"ib",l:"inf",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"pathogens",q:"Name the four types of pathogen.",a:"Bacteria, viruses, fungi, and protists"},
 {id:"ic",l:"inf",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"antibody",q:"Which cells produce antibodies?",a:"White blood cells"},
 {id:"id",l:"inf",ty:"C",f:"tf",m:"b",lv:1,t:"F",idea:"antivirus",q:"True or false: antibiotics can cure viral infections. Correct it if false.",a:"False – antibiotics kill bacteria, not viruses",w:"True – a very common misconception.",why:"Antibiotics kill bacteria inside the body. They do not affect viruses."},
 {id:"ie",l:"inf",ty:"R",f:"short",m:"k",lv:2,t:"F",idea:"vaccine",q:"What does a vaccine contain?",a:"Small quantities of a dead or inactive form of a pathogen"},
@@ -526,7 +526,7 @@ const QS = [
 {id:"bif",l:"bio",ty:"C",f:"tf",m:"b",lv:2,t:"F",idea:"exo",q:"True or false: respiration is an exothermic reaction. Give a reason.",a:"True – it transfers energy to the environment"},
 
 // ---------- Year 10 Particle model ----------
-{id:"pma",l:"pm1",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"densityeq",q:"Write the equation that links density, mass and volume.",a:"Density = mass ÷ volume",acc:"ρ = m/V",ex:1},
+{id:"pma",l:"pm1",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"densityeq",q:"Write the equation that links density, mass, and volume.",a:"Density = mass ÷ volume",acc:"ρ = m/V",ex:1},
 {id:"pmb",l:"pm1",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"densityunit",q:"What is the SI unit of density?",a:"kg/m³",ex:1},
 {id:"pmc",l:"pm4",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"gasheat",q:"A gas in a sealed container is heated. What happens to its particles?",a:"They move faster"},
 {id:"pmd",l:"pm3",ty:"R",f:"short",m:"k",lv:2,t:"F",idea:"slhdef",q:"What is the specific latent heat of a substance?",a:"The energy needed to change the state of 1 kg of the substance with no change in temperature"},
@@ -612,7 +612,7 @@ function pick(a){return a[Math.floor(Math.random()*a.length)];}
 function ri(a,b){return a+Math.floor(Math.random()*(b-a+1));}
 
 const GENS = [
- {id:"g_pne",l:"r2",lv:1,t:"F",name:"Protons, neutrons and electrons",make(){const e=pick(ELEMENTS);const ask=pick(["protons","neutrons","electrons"]);const v=ask==="neutrons"?e[3]-e[2]:e[2];
+ {id:"g_pne",l:"r2",lv:1,t:"F",name:"Protons, neutrons, and electrons",make(){const e=pick(ELEMENTS);const ask=pick(["protons","neutrons","electrons"]);const v=ask==="neutrons"?e[3]-e[2]:e[2];
    return {q:`${e[0]} has atomic number ${e[2]} and mass number ${e[3]}. How many ${ask} are in one atom?`,a:String(v),why:ask==="neutrons"?`Neutrons = mass number − atomic number = ${e[3]} − ${e[2]} = ${v}.`:`In an atom, protons = electrons = atomic number = ${e[2]}.`,
    steps:ask==="neutrons"?[`${e[0]}: mass number ${e[3]}, atomic number ${e[2]}`,`Mass number = protons + neutrons`,`Neutrons = mass number − atomic number`,`= ${e[3]} − ${e[2]} = ${v}`]:[`${e[0]}: atomic number ${e[2]}`,`Atomic number = number of protons = ${e[2]}`,`An atom is neutral: electrons = protons`,`${ask} = ${v}`]};}},
  {id:"g_alpha",l:"r4",lv:2,t:"F",name:"Alpha decay",make(){const n=pick(ALPHA);const ask=pick(["mass number","atomic number"]);const v=ask==="mass number"?n[1]-4:n[2]-2;
@@ -774,10 +774,10 @@ lungs:{key:"Gas exchange happens in the alveoli: large surface area, thin walls 
 blood:{key:"Arteries carry blood away from the heart; veins carry blood back to it; capillaries exchange substances with cells.",vis:{t:"aid",big:"Arteries carry blood Away.",explain:"A for artery, A for away from the heart."},say:"Link each vessel to its job.",slip:"Pupils think all arteries carry oxygenated blood."},
 ionic:{key:"Ionic bonding: metal atoms lose electrons, non-metal atoms gain them. Oppositely charged ions attract strongly, so ionic compounds have high melting points. They conduct only when melted or dissolved, when the ions can move.",vis:{t:"steps",steps:["Metal loses electrons → positive ion (Mg → Mg²⁺)","Non-metal gains electrons → negative ion (Cl → Cl⁻)","Charges must cancel: Mg²⁺ with two Cl⁻ → MgCl₂","Strong attraction between ions → high melting point","Solid: ions can’t move → no current"]},aid:{big:"Metals lose, non-metals gain.",explain:"Metals have few outer electrons to give away; non-metals need a few more to fill their outer shell."},say:"Ask: which particles carry the charge, and can they move?",slip:"Pupils think solid ionic compounds conduct."},
 covalent:{key:"A covalent bond is a shared pair of electrons. In graphite each carbon forms 3 bonds, leaving delocalised electrons that carry charge.",vis:{t:"aid",big:"Covalent: co-share electrons.",explain:"‘Co’ means together: the atoms share a pair of electrons."},say:"Ask: shared or transferred?",slip:"Pupils say covalent bonds transfer electrons."},
-pathogens:{key:"Pathogens are bacteria, viruses, fungi and protists. Antibiotics kill bacteria but do not affect viruses.",vis:{t:"aid",big:"Antibiotics: bacteria only.",explain:"Antibiotics kill bacteria. Viruses reproduce inside our own cells, so antibiotics cannot reach them."},say:"Ask: is this pathogen a bacterium or a virus?",slip:"Pupils think antibiotics cure colds and flu."},
+pathogens:{key:"Pathogens are bacteria, viruses, fungi, and protists. Antibiotics kill bacteria but do not affect viruses.",vis:{t:"aid",big:"Antibiotics: bacteria only.",explain:"Antibiotics kill bacteria. Viruses reproduce inside our own cells, so antibiotics cannot reach them."},say:"Ask: is this pathogen a bacterium or a virus?",slip:"Pupils think antibiotics cure colds and flu."},
 immunity:{key:"White blood cells produce antibodies. A vaccine contains small quantities of dead or inactive pathogen, so if the real pathogen enters, the right antibodies are made quickly.",vis:{t:"steps",steps:["Vaccine: dead or inactive pathogen","White blood cells make antibodies","Some remain ready (memory cells)","Real pathogen enters → right antibodies made quickly → not ill"]},say:"Ask: what happens the second time the pathogen arrives?",slip:"Pupils think vaccines contain antibodies."},
 respiration:{key:"Aerobic respiration releases energy and carbon dioxide. In muscles, anaerobic respiration makes lactic acid. Respiration is exothermic and happens all the time in all living cells.",vis:{t:"steps",steps:["Aerobic: glucose + oxygen → carbon dioxide + water","Anaerobic (muscles): glucose → lactic acid","Both release energy (exothermic)","Plants respire all the time, day and night"]},say:"Respiration releases energy – it never ‘makes’ energy.",slip:"Pupils think plants only respire at night."},
-photosynthesis:{key:"Photosynthesis: carbon dioxide + water → glucose + oxygen. Its rate can be limited by light intensity, carbon dioxide concentration, temperature or chlorophyll.",vis:{t:"steps",steps:["Reactants: carbon dioxide + water","Light energy absorbed by chlorophyll","Products: glucose + oxygen","The factor in shortest supply limits the rate"]},say:"Ask: what is in shortest supply here?",slip:"Pupils say plants get their mass from the soil."},
+photosynthesis:{key:"Photosynthesis: carbon dioxide + water → glucose + oxygen. Its rate can be limited by light intensity, carbon dioxide concentration, temperature, or chlorophyll.",vis:{t:"steps",steps:["Reactants: carbon dioxide + water","Light energy absorbed by chlorophyll","Products: glucose + oxygen","The factor in shortest supply limits the rate"]},say:"Ask: what is in shortest supply here?",slip:"Pupils say plants get their mass from the soil."},
 density:{key:"Density = mass ÷ volume, measured in kg/m³.",vis:{t:"steps",steps:["Write the equation: density = mass ÷ volume","Put in the numbers","Calculate","Unit: kg/m³"]},say:"Equation, numbers, answer, unit.",slip:"Pupils divide volume by mass."},
 states:{key:"In a change of state, mass is conserved and the temperature stays the same while the state changes. Heating a gas makes its particles move faster, so they hit the walls more often and pressure rises.",vis:{t:"svg",svg:"states"},say:"The particles never change size – only their arrangement and speed change.",slip:"Pupils think particles expand when heated."},
 heatingcurve:{key:"While a substance changes state, the energy supplied breaks bonds between particles, so the temperature stays the same: a flat section on a heating curve.",vis:{t:"steps",steps:["Solid warms: temperature rises","Melting: flat – energy breaks bonds","Liquid warms: temperature rises","Boiling: flat – energy breaks bonds","Gas warms: temperature rises"]},say:"Point to each flat part and ask: where is the energy going?",slip:"Pupils think a flat line means heating stopped."},
@@ -830,7 +830,7 @@ LESSONS.push(
  {k:"o3", y:11, unit:"Organic chemistry", name:"3. Fractional distillation & cracking", sci:"Chemistry", today:true, connect:"Today: how crude oil is separated into fractions, and how cracking turns long molecules into more useful short ones."},
  {k:"an1", y:11, unit:"Chemical analysis", name:"1. Purity and formulations", sci:"Chemistry", today:true, connect:"Today: what ‘pure’ means in chemistry, and why formulations are mixed in exact amounts."},
  {k:"an2", y:11, unit:"Chemical analysis", name:"2. Paper chromatography", sci:"Chemistry", today:true, connect:"Today: separating a mixture with chromatography and identifying substances using Rf values."},
- {k:"an3", y:11, unit:"Chemical analysis", name:"3. Chemical tests for gases", sci:"Chemistry", today:true, connect:"Today: four gas tests – hydrogen, oxygen, carbon dioxide and chlorine."},
+ {k:"an3", y:11, unit:"Chemical analysis", name:"3. Chemical tests for gases", sci:"Chemistry", today:true, connect:"Today: four gas tests – hydrogen, oxygen, carbon dioxide, and chlorine."},
  {k:"at1", y:11, unit:"Chemistry of the atmosphere", name:"1. Evolution of the atmosphere", sci:"Chemistry", today:true, connect:"Today: how the early atmosphere of carbon dioxide became today’s nitrogen and oxygen."},
  {k:"at2", y:11, unit:"Chemistry of the atmosphere", name:"2. Greenhouse gases and climate change", sci:"Chemistry", today:true, connect:"Today: greenhouse gases keep the Earth warm – and human activity is adding more of them."},
  {k:"at3", y:11, unit:"Chemistry of the atmosphere", name:"3. Air pollution", sci:"Chemistry", today:true, connect:"Today: what burning fuels releases into the air, and the harm each pollutant does."},
@@ -949,7 +949,7 @@ QS.push(
 {id:"at2b",l:"at2",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"ghgrole",q:"Why do we need some greenhouse gases?",a:"Keep Earth warm enough for life"},
 {id:"at2c",l:"at2",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"co2human",q:"Give one human activity that increases carbon dioxide in the atmosphere.",a:"Burning fossil fuels",acc:"deforestation",ex:1},
 {id:"at2d",l:"at2",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"methanehuman",q:"Give one human activity that increases methane in the atmosphere.",a:"Animal farming",acc:"rubbish decomposing in landfill",ex:1},
-{id:"at2e",l:"at2",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"footprint",q:"What is a carbon footprint?",a:"Total greenhouse gases over a life cycle",acc:"total CO₂ and other greenhouse gases emitted over the full life cycle of a product, service or event",ex:1},
+{id:"at2e",l:"at2",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"footprint",q:"What is a carbon footprint?",a:"Total greenhouse gases over a life cycle",acc:"total CO₂ and other greenhouse gases emitted over the full life cycle of a product, service, or event",ex:1},
 {id:"at2f",l:"at2",ty:"C",f:"tf",m:"b",lv:2,t:"F",idea:"ozone",q:"True or false: the greenhouse effect is caused by the hole in the ozone layer. Correct it if false.",a:"False – it is caused by greenhouse gases",w:"True – a very common mix-up of two different issues.",why:"Greenhouse gases absorb and re-emit infrared radiation. The ozone layer is a separate topic.",ex:1},
 {id:"at2g",l:"at2",ty:"C",f:"error",m:"b",lv:2,t:"F",idea:"mechanism",q:"Find the error: “Greenhouse gases let heat escape from the Earth into space.”",a:"let escape → trap (absorb)",why:"Greenhouse gases absorb infrared radiation from the Earth and re-emit it, warming the atmosphere."},
 {id:"at2h",l:"at2",ty:"C",f:"mcq",m:"b",lv:2,t:"F",idea:"effects",q:"Which is a possible effect of global climate change?",o:["Rising sea levels","A bigger ozone hole","More acid rain","Less methane"],a:0,w:"B – pupils link climate change to the ozone layer.",why:"Effects include rising sea levels, more extreme weather, and changes to where species live and food is grown."},
@@ -958,7 +958,7 @@ QS.push(
 {id:"at2k",l:"at2",ty:"A",f:"short",m:"b",lv:3,t:"F",idea:"deforest",q:"Why does cutting down forests increase atmospheric carbon dioxide?",a:"Fewer trees take in CO₂ for photosynthesis",acc:"burning releases CO₂"},
 
 // ---------- at3 Air pollution ----------
-{id:"at3a",l:"at3",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"comask",q:"Which pollutant from incomplete combustion is toxic, colourless and odourless?",a:"Carbon monoxide",ex:1},
+{id:"at3a",l:"at3",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"comask",q:"Which pollutant from incomplete combustion is toxic, colourless, and odourless?",a:"Carbon monoxide",ex:1},
 {id:"at3b",l:"at3",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"so2source",q:"Where does sulfur dioxide from burning fuels come from?",a:"Sulfur impurities in the fuel",ex:1},
 {id:"at3c",l:"at3",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"acidrain",q:"Which two pollutants cause acid rain?",a:"Sulfur dioxide and oxides of nitrogen",ex:1},
 {id:"at3d",l:"at3",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"particulates",q:"Give one effect of particulates (soot) in the air.",a:"Global dimming",acc:"breathing problems"},
@@ -988,7 +988,7 @@ QS.push(
 {id:"u2c",l:"u2",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"glass",q:"How are glass bottles recycled?",a:"Crushed and melted to make new glass",acc:"reused after washing"},
 {id:"u2d",l:"u2",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"metals",q:"How are metals recycled?",a:"Melted and recast",acc:"melted and reformed"},
 {id:"u2e",l:"u2",ty:"C",f:"tf",m:"b",lv:2,t:"F",idea:"lcaobjective",q:"True or false: every part of an LCA is completely objective. Correct it if false.",a:"False – some values need judgements",w:"True – pupils think every LCA number is a measurement.",why:"Energy and water use are easy to measure, but values for pollution effects involve judgements, so LCAs can be biased."},
-{id:"u2f",l:"u2",ty:"C",f:"mcq",m:"b",lv:2,t:"F",idea:"lcastages",q:"LCA stages: raw materials, manufacture, use, … Which stage completes the list?",o:["Disposal","Advertising","Pricing","Packaging design"],a:0,w:"B – pupils add stages that are not in the LCA.",why:"The four stages are: raw materials, manufacture and packaging, use, disposal (with transport at each stage)."},
+{id:"u2f",l:"u2",ty:"C",f:"mcq",m:"b",lv:2,t:"F",idea:"lcastages",q:"LCA stages: raw materials, manufacture, use, … Which stage completes the list?",o:["Disposal","Advertising","Pricing","Packaging design"],a:0,w:"B – pupils add stages that are not in the LCA.",why:"The four stages are: raw materials, manufacture, and packaging, use, disposal (with transport at each stage)."},
 {id:"u2g",l:"u2",ty:"C",f:"error",m:"b",lv:2,t:"F",idea:"recyclefree",q:"Find the error: “Recycling uses no energy at all.”",a:"no energy → less energy",why:"Recycling still needs energy (collecting, sorting, melting), but usually less than extracting and processing new materials."},
 {id:"u2h",l:"u2",ty:"C",f:"who",m:"q",lv:2,t:"F",idea:"reuse",q:"Who is right? Viv: “Reusing a bottle is better than recycling it.” Wes: “Recycling is always best.”",a:"Viv – reusing needs less energy than melting it down"},
 {id:"u2i",l:"u2",ty:"A",f:"short",m:"b",lv:3,t:"F",idea:"bags",q:"A paper bag is used once; a plastic bag is reused many times. Which LCA stage changes most?",a:"Use (and disposal)"},
@@ -1009,7 +1009,7 @@ QS.push(
 
 // ---------- earlier topics: Electricity (Year 10) ----------
 {id:"p2a",l:"p2",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"currentdef",q:"What is electric current?",a:"The rate of flow of electrical charge",ex:1},
-{id:"p2b",l:"p2",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"vir",q:"Write the equation linking potential difference, current and resistance.",a:"V = I × R",ex:1},
+{id:"p2b",l:"p2",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"vir",q:"Write the equation linking potential difference, current, and resistance.",a:"V = I × R",ex:1},
 {id:"p2c",l:"p2",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"mains",q:"What is the potential difference and frequency of UK mains electricity?",a:"230 V, 50 Hz"},
 {id:"p2d",l:"p2",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"earth",q:"What colour is the earth wire?",a:"Green and yellow"},
 {id:"p2e",l:"p2",ty:"C",f:"tf",m:"b",lv:1,t:"F",idea:"usedup",q:"True or false: current is used up as it passes through a lamp. Correct it if false.",a:"False – the current is the same before and after",w:"True – pupils confuse current with energy.",why:"Charge flows all the way round; energy is transferred to the lamp, but the current is the same everywhere in a series circuit."},
@@ -1037,7 +1037,7 @@ QS.push(
 {id:"b7a",l:"b7",ty:"R",f:"short",m:"b",lv:1,t:"F",idea:"producer",q:"What is the producer at the start of most food chains?",a:"A green plant or alga"},
 {id:"b7b",l:"b7",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"abiotic",q:"Give one abiotic factor that affects a community.",a:"Light intensity",acc:"temperature; moisture; soil pH; wind; CO₂; O₂ in water"},
 {id:"b7c",l:"b7",ty:"R",f:"short",m:"b",lv:2,t:"F",idea:"quadrat",q:"What is a quadrat used for?",a:"To sample the abundance of organisms",ex:1},
-{id:"b7d",l:"b7",ty:"C",f:"tf",m:"b",lv:2,t:"F",idea:"interdep",q:"True or false: removing one species never affects others in the community. Correct it if false.",a:"False – species are interdependent",why:"Organisms depend on each other for food, shelter, pollination and seed dispersal."},
+{id:"b7d",l:"b7",ty:"C",f:"tf",m:"b",lv:2,t:"F",idea:"interdep",q:"True or false: removing one species never affects others in the community. Correct it if false.",a:"False – species are interdependent",why:"Organisms depend on each other for food, shelter, pollination, and seed dispersal."},
 {id:"b7e",l:"b7",ty:"C",f:"error",m:"b",lv:2,t:"F",idea:"decomposers",q:"Find the error: “Decomposers return carbon to the atmosphere by photosynthesis.”",a:"photosynthesis → respiration"},
 {id:"b7f",l:"b7",ty:"A",f:"short",m:"b",lv:3,t:"F",idea:"predprey",q:"Foxes eat rabbits. If rabbit numbers fall, what happens to fox numbers next?",a:"They fall"},
 
@@ -1101,21 +1101,21 @@ LESSONS.push(
  {k:"k2mat", y:0, unit:"KS2 Materials and states of matter", name:"KS2 Materials and states of matter", sci:"Chemistry"},
  {k:"k2liv", y:0, unit:"KS2 Living things", name:"KS2 Living things", sci:"Biology"},
  {k:"k2evo", y:0, unit:"KS2 Evolution and inheritance", name:"KS2 Evolution and inheritance", sci:"Biology"},
- {k:"k2phy", y:0, unit:"KS2 Forces, light, sound and space", name:"KS2 Forces, light, sound and space", sci:"Physics"},
+ {k:"k2phy", y:0, unit:"KS2 Forces, light, sound, and space", name:"KS2 Forces, light, sound, and space", sci:"Physics"},
  {k:"sk7", y:7, unit:"Science skills", name:"Science skills", sci:"Skills"},
  {k:"ce7", y:7, unit:"Cells", name:"Cells", sci:"Biology"},
- {k:"pa1", y:7, unit:"Particles and their behaviour", name:"1. States of matter", sci:"Chemistry", today:true, connect:"Today: everything is made of particles. How they are arranged and move decides whether something is a solid, liquid or gas."},
+ {k:"pa1", y:7, unit:"Particles and their behaviour", name:"1. States of matter", sci:"Chemistry", today:true, connect:"Today: everything is made of particles. How they are arranged and move decides whether something is a solid, liquid, or gas."},
  {k:"pa2", y:7, unit:"Particles and their behaviour", name:"2. Properties of matter", sci:"Chemistry", today:true, connect:"Today: why solids keep their shape, liquids flow and gases can be squashed – all explained by particles."},
  {k:"pa3", y:7, unit:"Particles and their behaviour", name:"3. Changes of state", sci:"Chemistry", today:true, connect:"Today: melting, freezing, evaporating, condensing – the particles stay the same; only their arrangement and movement change."},
- {k:"ae1", y:7, unit:"Atoms, elements and compounds", name:"1. Atoms and elements", sci:"Chemistry", today:true, connect:"Today: atoms are the building blocks of everything. An element is made of only one type of atom."},
- {k:"ae2", y:7, unit:"Atoms, elements and compounds", name:"2. Properties of elements", sci:"Chemistry", today:true, connect:"Today: sorting elements into metals and non-metals by their properties."},
- {k:"ae3", y:7, unit:"Atoms, elements and compounds", name:"3. Metallic elements", sci:"Chemistry", today:true, connect:"Today: what makes a metal a metal – and how its properties decide what we use it for."},
- {k:"ae4", y:7, unit:"Atoms, elements and compounds", name:"4. Molecular elements", sci:"Chemistry", today:true, connect:"Today: some elements exist as molecules – atoms of the same element joined together, like O₂."},
- {k:"ae5", y:7, unit:"Atoms, elements and compounds", name:"5. Common elements", sci:"Chemistry", today:true, connect:"Today: the symbols and uses of common elements – and why some symbols don’t match the English name."},
- {k:"ae6", y:7, unit:"Atoms, elements and compounds", name:"6. Compounds", sci:"Chemistry", today:true, connect:"Today: when elements chemically join, they make a new substance – a compound – with new properties."},
- {k:"ae7", y:7, unit:"Atoms, elements and compounds", name:"7. Chemical formulae", sci:"Chemistry", today:true, connect:"Today: reading a formula – which elements, and how many atoms of each."},
- {k:"ae8", y:7, unit:"Atoms, elements and compounds", name:"8. Naming compounds", sci:"Chemistry", today:true, connect:"Today: naming compounds – what ‘-ide’ and ‘-ate’ tell you."},
- {k:"ae9", y:7, unit:"Atoms, elements and compounds", name:"9. Mixtures and pure substances", sci:"Chemistry", today:true, connect:"Today: mixtures are not chemically joined, so they can be separated – and ‘pure’ means something special in science."},
+ {k:"ae1", y:7, unit:"Atoms, elements, and compounds", name:"1. Atoms and elements", sci:"Chemistry", today:true, connect:"Today: atoms are the building blocks of everything. An element is made of only one type of atom."},
+ {k:"ae2", y:7, unit:"Atoms, elements, and compounds", name:"2. Properties of elements", sci:"Chemistry", today:true, connect:"Today: sorting elements into metals and non-metals by their properties."},
+ {k:"ae3", y:7, unit:"Atoms, elements, and compounds", name:"3. Metallic elements", sci:"Chemistry", today:true, connect:"Today: what makes a metal a metal – and how its properties decide what we use it for."},
+ {k:"ae4", y:7, unit:"Atoms, elements, and compounds", name:"4. Molecular elements", sci:"Chemistry", today:true, connect:"Today: some elements exist as molecules – atoms of the same element joined together, like O₂."},
+ {k:"ae5", y:7, unit:"Atoms, elements, and compounds", name:"5. Common elements", sci:"Chemistry", today:true, connect:"Today: the symbols and uses of common elements – and why some symbols don’t match the English name."},
+ {k:"ae6", y:7, unit:"Atoms, elements, and compounds", name:"6. Compounds", sci:"Chemistry", today:true, connect:"Today: when elements chemically join, they make a new substance – a compound – with new properties."},
+ {k:"ae7", y:7, unit:"Atoms, elements, and compounds", name:"7. Chemical formulae", sci:"Chemistry", today:true, connect:"Today: reading a formula – which elements, and how many atoms of each."},
+ {k:"ae8", y:7, unit:"Atoms, elements, and compounds", name:"8. Naming compounds", sci:"Chemistry", today:true, connect:"Today: naming compounds – what ‘-ide’ and ‘-ate’ tell you."},
+ {k:"ae9", y:7, unit:"Atoms, elements, and compounds", name:"9. Mixtures and pure substances", sci:"Chemistry", today:true, connect:"Today: mixtures are not chemically joined, so they can be separated – and ‘pure’ means something special in science."},
  // later Year 7 topics (retrieval for Years 8 and 9)
  {k:"fo7", y:7, unit:"Forces", name:"Forces", sci:"Physics"},
  {k:"bo7", y:7, unit:"The body", name:"The body", sci:"Biology"},
@@ -1137,7 +1137,7 @@ Object.assign(FOUNDATION,{k2mat:2,sk7:1.5,ce7:1.5,pa1:1.5,pa2:1.2,pa3:1.5,ae1:1.
 // ---------- KS2 ----------
 QQ("k2mat",[
  ["C","error",2,"condenseerr","Find the error: “Steam turning back into water is called evaporation.”","evaporation → condensation"],
- ["R","short",1,"states","Name the three states of matter.","Solid, liquid and gas"],
+ ["R","short",1,"states","Name the three states of matter.","Solid, liquid, and gas"],
  ["R","short",1,"condense","What is it called when a gas turns into a liquid?","Condensation",{acc:"condensing"}],
  ["R","short",1,"evap","What is evaporation?","A liquid turning into a gas"],
  ["R","short",1,"insulator","Name a material that is a good thermal insulator.","Any one: wood, plastic, wool, air"],
@@ -1240,7 +1240,7 @@ QQ("pa3",[
  ["A","short",2,"solidat","Substance Y melts at 80 °C. What state is it at 20 °C?","Solid"]
 ]);
 
-// ---------- Year 7 November–December: Atoms, elements and compounds ----------
+// ---------- Year 7 November–December: Atoms, elements, and compounds ----------
 QQ("ae1",[
  ["R","short",1,"atom","What is an atom?","The smallest part of an element"],
  ["R","short",1,"element","What is an element?","A substance with only one type of atom"],
@@ -1258,7 +1258,7 @@ QQ("ae2",[
  ["R","short",1,"metalprops","Give two properties of most metals.","Any two: shiny, conduct electricity, conduct heat, malleable, high melting point"],
  ["R","short",2,"nonmetalprops","Give two properties of most non-metals.","Any two: dull, poor conductors, brittle, low melting point"],
  ["R","short",3,"graphite","Which non-metal conducts electricity?","Graphite (carbon)"],
- ["C","tf",1,"magnetic","True or false: all metals are magnetic. Correct it if false.","False – only iron, nickel and cobalt",{w:"True – pupils test cans with magnets and generalise."}],
+ ["C","tf",1,"magnetic","True or false: all metals are magnetic. Correct it if false.","False – only iron, nickel, and cobalt",{w:"True – pupils test cans with magnets and generalise."}],
  ["C","tf",2,"mercury","True or false: all metals are solid at room temperature. Correct it if false.","False – mercury is a liquid"],
  ["C","error",2,"brittle","Find the error: “Metals are brittle, so they shatter when hit.”","brittle → malleable (they bend)"],
  ["C","mcq",1,"identify","An element is dull and does not conduct electricity. What is it most likely to be?",null,{o:["A non-metal","A metal","A mixture","An alloy"],a:0,w:"B – pupils think grey or hard means metal."}],
@@ -1269,7 +1269,7 @@ QQ("ae3",[
  ["R","short",1,"copper","Why is copper used for electrical wires?","It conducts electricity well",{acc:"and is ductile"}],
  ["R","short",1,"malleable","What does malleable mean?","Can be hammered into shape"],
  ["R","short",2,"ductile","What does ductile mean?","Can be drawn into wires"],
- ["R","short",1,"magnetic3","Name the three magnetic metals.","Iron, nickel and cobalt"],
+ ["R","short",1,"magnetic3","Name the three magnetic metals.","Iron, nickel, and cobalt"],
  ["C","error",2,"mercury3","Find the error: “Mercury is a non-metal because it is a liquid.”","non-metal → metal; state does not decide",{why:"Mercury is shiny and conducts electricity: it is a metal, even though it is a liquid."}],
  ["C","mcq",2,"best","Which property best shows that an element is a metal?",null,{o:["It conducts electricity","It is a solid at 20 °C","It is grey in colour","It feels hard"],a:0,w:"B – many non-metals are solids too."}],
  ["C","who",3,"shiny","Who is right? Ola: “All shiny elements are metals.” Pip: “Some non-metals, like iodine, are shiny.”","Pip – a few non-metals are shiny"],
@@ -1337,14 +1337,14 @@ QQ("ae8",[
  ["C","who",2,"carbonate","Who is right? Zac: “Calcium carbonate contains oxygen.” Ava: “It contains only calcium and carbon.”","Zac – ‘-ate’ means oxygen is present"],
  ["A","short",2,"kbr","Name the compound with the formula KBr.","Potassium bromide"],
  ["A","short",2,"cao","Name the compound formed when calcium burns in oxygen.","Calcium oxide"],
- ["A","short",2,"cuco3","Copper carbonate is CuCO₃. Which three elements are in it?","Copper, carbon and oxygen"]
+ ["A","short",2,"cuco3","Copper carbonate is CuCO₃. Which three elements are in it?","Copper, carbon, and oxygen"]
 ]);
 QQ("ae9",[
  ["R","short",1,"mixture","What is a mixture?","Substances that are not chemically joined"],
  ["R","short",2,"pure","What does ‘pure’ mean in science?","Only one substance"],
  ["R","short",3,"mp","How can melting point show a substance is pure?","It melts at one exact temperature"],
  ["R","short",1,"filter","Which method separates sand from water?","Filtration"],
- ["C","tf",2,"juice","True or false: pure orange juice is a pure substance. Correct it if false.","False – it is a mixture of many substances",{w:"True – everyday ‘pure’ means nothing added.",why:"In science, pure means only one substance. Juice contains water, sugars, acids and more."}],
+ ["C","tf",2,"juice","True or false: pure orange juice is a pure substance. Correct it if false.","False – it is a mixture of many substances",{w:"True – everyday ‘pure’ means nothing added.",why:"In science, pure means only one substance. Juice contains water, sugars, acids, and more."}],
  ["C","tf",1,"physical","True or false: mixtures can be separated by physical methods. Give a reason.","True – the substances are not chemically joined"],
  ["C","who",1,"saltwater","Who is right? Bo: “Salt water is a compound.” Cal: “Salt water is a mixture.”","Cal – salt and water are not chemically joined"],
  ["C","mcq",2,"whichpure","Which is a pure substance?",null,{o:["Distilled water","Fresh spring water","Clean sea air","Whole milk"],a:0,w:"D – pupils think ‘natural’ means pure."}],
@@ -1444,7 +1444,7 @@ EXT.push(
  {id:"x_ae1",l:"ae1",q:"If everything is made of about 100 elements, how can there be millions of different substances?",a:"Elements join in different combinations and numbers to make compounds, each with its own properties."},
  {id:"x_ae3",l:"ae3",q:"Gold is used in jewellery and in electronics. Give reasons for both uses.",a:"Jewellery: shiny, does not tarnish/react, malleable. Electronics: excellent conductor and does not corrode, so connections stay good."},
  {id:"x_ae6",l:"ae6",q:"Hydrogen burns and oxygen helps things burn. Why can water put out fires?",a:"Water is a compound with completely different properties from its elements; it does not burn and it cools the fire and keeps oxygen out."},
- {id:"x_ae8",l:"ae8",q:"Predict the elements in sodium sulfate. How did you work it out?",a:"Sodium, sulfur and oxygen: the metal comes first, ‘sulf-’ means sulfur and ‘-ate’ means oxygen is also present."},
+ {id:"x_ae8",l:"ae8",q:"Predict the elements in sodium sulfate. How did you work it out?",a:"Sodium, sulfur, and oxygen: the metal comes first, ‘sulf-’ means sulfur and ‘-ate’ means oxygen is also present."},
  {id:"x_ae9",l:"ae9",q:"Bottled water is sold as ‘pure’. Is it pure in the scientific sense? Explain.",a:"No – it contains dissolved minerals and gases, so it is a mixture; ‘pure’ on the label means nothing harmful added."}
 );
 
@@ -1458,7 +1458,7 @@ LESSONS.push(
  {k:"mp4", y:8, unit:"Motion and pressure", name:"4. Moments", sci:"Physics", today:true, connect:"Today: forces can make things turn. A moment depends on the force and how far it is from the pivot."},
  {k:"mp5", y:8, unit:"Motion and pressure", name:"5. Speed", sci:"Physics", today:true, connect:"Today: speed is how far something travels each second – distance ÷ time."},
  {k:"mp6", y:8, unit:"Motion and pressure", name:"6. Distance–time graphs", sci:"Physics", today:true, connect:"Today: telling the story of a journey from a distance–time graph – the steeper the line, the faster."},
- {k:"ad1", y:8, unit:"Adaptation and inheritance", name:"1. Inheritance", sci:"Biology", today:true, connect:"Today: how characteristics are passed on from parents in DNA, genes and chromosomes."},
+ {k:"ad1", y:8, unit:"Adaptation and inheritance", name:"1. Inheritance", sci:"Biology", today:true, connect:"Today: how characteristics are passed on from parents in DNA, genes, and chromosomes."},
  {k:"ad2", y:8, unit:"Adaptation and inheritance", name:"2. Types of variation", sci:"Biology", today:true, connect:"Today: why living things differ – genes, environment, or both – and continuous or discontinuous."},
  {k:"ad3", y:8, unit:"Adaptation and inheritance", name:"3. Adaptations", sci:"Biology", today:true, connect:"Today: features that help organisms survive where they live."},
  {k:"ad4", y:8, unit:"Adaptation and inheritance", name:"4. Natural selection", sci:"Biology", today:true, connect:"Today: how variation and competition lead to natural selection – and how species change over time."},
@@ -1643,7 +1643,7 @@ QQ("se8",[
 ]);
 QQ("en8",[
  ["R","short",1,"watt","What is the unit of power?","The watt (W)"],
- ["R","short",1,"three","Name three ways thermal energy is transferred.","Conduction, convection and radiation"],
+ ["R","short",1,"three","Name three ways thermal energy is transferred.","Conduction, convection, and radiation"],
  ["R","short",2,"work","What is work done?","Energy transferred when a force moves something"],
  ["C","tf",3,"coldmetal","True or false: metal feels cold because it lets cold in. Correct it if false.","False – it conducts heat away from your hand",{w:"True – pupils think ‘cold’ flows."}],
  ["C","error",2,"convection","Find the error: “Convection happens in solids.”","solids → liquids and gases"],
@@ -1659,7 +1659,7 @@ QQ("rs8",[
  ["A","short",2,"dough","Why does bread dough rise?","Yeast makes carbon dioxide gas"]
 ]);
 QQ("ea8",[
- ["R","short",1,"rocks","Name the three types of rock.","Igneous, sedimentary and metamorphic"],
+ ["R","short",1,"rocks","Name the three types of rock.","Igneous, sedimentary, and metamorphic"],
  ["R","short",1,"igneous","Which type of rock forms when magma cools?","Igneous"],
  ["R","short",1,"fossils","Which type of rock may contain fossils?","Sedimentary"],
  ["C","tf",2,"crystals","True or false: large crystals form when magma cools quickly. Correct it if false.","False – slow cooling makes large crystals"],
@@ -1726,7 +1726,7 @@ EXT.push(
 // ===================== YEAR 9 (November–December: C1 Atomic structure and the periodic table) =====================
 LESSONS.push(
  {k:"ca1", y:9, unit:"C1 Atomic structure & periodic table", name:"1. History of the atom", sci:"Chemistry", today:true, connect:"Today: how the model of the atom changed as new evidence came in – from tiny spheres to the nuclear model."},
- {k:"ca2", y:9, unit:"C1 Atomic structure & periodic table", name:"2. Atomic structure", sci:"Chemistry", today:true, connect:"Today: protons, neutrons and electrons – their charges and masses, and how electrons are arranged in shells."},
+ {k:"ca2", y:9, unit:"C1 Atomic structure & periodic table", name:"2. Atomic structure", sci:"Chemistry", today:true, connect:"Today: protons, neutrons, and electrons – their charges and masses, and how electrons are arranged in shells."},
  {k:"ca3", y:9, unit:"C1 Atomic structure & periodic table", name:"3. Periodic table", sci:"Chemistry", today:true, connect:"Today: how the periodic table is organised, and how Mendeleev’s table led to the modern one."},
  {k:"ca4", y:9, unit:"C1 Atomic structure & periodic table", name:"4. Elements", sci:"Chemistry", today:true, connect:"Today: metals and non-metals – where they are in the periodic table, and why metals form positive ions."},
  {k:"ca5", y:9, unit:"C1 Atomic structure & periodic table", name:"5. Compounds", sci:"Chemistry", today:true, connect:"Today: compounds – elements chemically combined in fixed proportions – and reading their formulae."},
@@ -1753,7 +1753,7 @@ QQ("ca1",[
  ["C","mcq",2,"empty","Most alpha particles passed straight through the gold foil. What does this show?",null,{o:["Most of the atom is empty space","Atoms are solid, hard spheres","Gold atoms have no overall charge","The nucleus is negatively charged"],a:0,ex:1,w:"B – the solid-sphere idea is what this result disproved."}],
  ["C","who",1,"evidence","Who is right? Ash: “A model changes when new evidence does not fit it.” Bex: “A model changes when scientists vote on it.”","Ash – new evidence changes models"],
  ["A","short",3,"neutronlast","Why were neutrons the last particle to be found?","No charge, so hard to detect"],
- ["A","short",3,"bounce","A very few alpha particles bounced back. What does this show about the nucleus?","Tiny, dense and positively charged",{ex:1}],
+ ["A","short",3,"bounce","A very few alpha particles bounced back. What does this show about the nucleus?","Tiny, dense, and positively charged",{ex:1}],
  ["A","short",3,"predictplum","If the plum pudding model were right, what would all the alpha particles do?","Pass straight through, barely deflected"]
 ]);
 QQ("ca2",[
@@ -1893,7 +1893,7 @@ const BALANCE=[
  ["Fe + Cl₂ → FeCl₃","2Fe + 3Cl₂ → 2FeCl₃",["Cl: 2 on left, 3 on right – lowest common multiple is 6","3 in front of Cl₂, 2 in front of FeCl₃","Now 2 Fe on the right: 2 in front of Fe","2Fe + 3Cl₂ → 2FeCl₃"]]
 ];
 GENS.push(
- {id:"g_pne9",l:"ca2",lv:1,t:"F",name:"Protons, neutrons and electrons",make(){const e=pick(ATOMS20.slice(2));const ask=pick(["protons","neutrons","electrons"]);const v=ask==="neutrons"?e[2]-e[1]:e[1];
+ {id:"g_pne9",l:"ca2",lv:1,t:"F",name:"Protons, neutrons, and electrons",make(){const e=pick(ATOMS20.slice(2));const ask=pick(["protons","neutrons","electrons"]);const v=ask==="neutrons"?e[2]-e[1]:e[1];
    return {q:`${e[0]} has atomic number ${e[1]} and mass number ${e[2]}. How many ${ask} are in one atom?`,a:String(v),why:ask==="neutrons"?`Neutrons = mass number − atomic number = ${e[2]} − ${e[1]} = ${v}.`:`In an atom, protons = electrons = atomic number = ${e[1]}.`,
    steps:ask==="neutrons"?[`${e[0]}: mass number ${e[2]}, atomic number ${e[1]}`,`Mass number = protons + neutrons`,`Neutrons = mass number − atomic number`,`= ${e[2]} − ${e[1]} = ${v}`]:[`${e[0]}: atomic number ${e[1]}`,`Atomic number = number of protons = ${e[1]}`,`An atom is neutral: electrons = protons`,`${ask} = ${v}`]};}},
  {id:"g_estruct",l:"ca2",lv:2,t:"F",name:"Electronic structure",make(){const e=pick(ATOMS20.slice(2));const s=shellsOf(e[1]);
@@ -1916,17 +1916,17 @@ EXT.push(
  {id:"x_ca5",l:"ca5",q:"Water (H₂O) and hydrogen peroxide (H₂O₂) contain the same elements. Why are they so different?",a:"Different numbers of atoms combined in different proportions make a different compound with different properties."},
  {id:"x_ca6",l:"ca6",q:"A burning candle gets lighter, but rusting iron gets heavier. How can mass be conserved in both?",a:"The candle’s products (CO₂, water vapour) escape as gases; the iron gains oxygen (and water) from the air. Counting everything, mass is conserved."},
  {id:"x_ca7",l:"ca7",q:"Predict how francium, at the bottom of Group 1, would react with water. Explain your prediction.",a:"Extremely vigorously – more than caesium – because its outer electron is furthest from the nucleus and is lost most easily."},
- {id:"x_ca8",l:"ca8",q:"How could you use displacement reactions to put chlorine, bromine and iodine in order of reactivity?",a:"Add each halogen to solutions of the other halides; a colour change shows displacement; the halogen that displaces both others is most reactive (chlorine), the one that displaces none is least (iodine)."},
+ {id:"x_ca8",l:"ca8",q:"How could you use displacement reactions to put chlorine, bromine, and iodine in order of reactivity?",a:"Add each halogen to solutions of the other halides; a colour change shows displacement; the halogen that displaces both others is most reactive (chlorine), the one that displaces none is least (iodine)."},
  {id:"x_ca9",l:"ca9",q:"Why might helium balloons be safer than hydrogen balloons, even though hydrogen is lighter?",a:"Hydrogen is flammable and can explode; helium has a full outer shell, so it is unreactive and will not burn."},
  {id:"x_ca10",l:"ca10",q:"Plan how to get pure, dry salt from rock salt (salt mixed with sand and grit).",a:"Grind, dissolve in warm water, filter to remove sand, gently heat the filtrate to evaporate some water, leave to crystallise, then dry the crystals."}
 );
 
 // ===================== YEAR 10 December–January: Electricity (GCSE app lessons) =====================
 LESSONS.push(
- {k:"el1", y:10, unit:"Electricity", name:"1. Circuits, charge and current", sci:"Physics", today:true, connect:"Today: current is the rate of flow of charge – and it is the same everywhere in a single loop."},
+ {k:"el1", y:10, unit:"Electricity", name:"1. Circuits, charge, and current", sci:"Physics", today:true, connect:"Today: current is the rate of flow of charge – and it is the same everywhere in a single loop."},
  {k:"el2", y:10, unit:"Electricity", name:"2. Potential difference and resistance", sci:"Physics", today:true, connect:"Today: potential difference pushes the current; resistance opposes it. V = I × R links them."},
  {k:"el3", y:10, unit:"Electricity", name:"3. Resistors and I–V characteristics", sci:"Physics", today:true, connect:"Today: how current changes with potential difference for a resistor, a filament lamp and a diode – and components that respond to temperature and light."},
- {k:"el4", y:10, unit:"Electricity", name:"4. Series and parallel circuits", sci:"Physics", today:true, connect:"Today: the rules for current, potential difference and resistance in series and in parallel."},
+ {k:"el4", y:10, unit:"Electricity", name:"4. Series and parallel circuits", sci:"Physics", today:true, connect:"Today: the rules for current, potential difference, and resistance in series and in parallel."},
  {k:"el5", y:10, unit:"Electricity", name:"5. Mains electricity", sci:"Physics", today:true, connect:"Today: what comes out of the wall socket – alternating current at 230 V – and what each wire in a plug does."},
  {k:"el6", y:10, unit:"Electricity", name:"6. Power and energy transfer", sci:"Physics", today:true, connect:"Today: how much energy an appliance transfers depends on its power and how long it is on."},
  {k:"el7", y:10, unit:"Electricity", name:"7. The National Grid", sci:"Physics", today:true, connect:"Today: how electricity gets from the power station to your home – and why it is sent at such high potential differences."}
@@ -1937,7 +1937,7 @@ Object.assign(NEEDS,{
 
 QQ("el1",[
  ["R","short",1,"current","What is electric current?","The rate of flow of charge",{ex:1}],
- ["R","short",1,"qit","Give the equation that links charge, current and time.","Q = I × t",{ex:1}],
+ ["R","short",1,"qit","Give the equation that links charge, current, and time.","Q = I × t",{ex:1}],
  ["R","short",1,"coulomb","What is the unit of charge?","The coulomb (C)"],
  ["R","short",1,"amp","What is the unit of current?","The ampere (A)"],
  ["R","short",2,"carriers","In a metal wire, which particles carry the charge?","Electrons"],
@@ -1949,7 +1949,7 @@ QQ("el1",[
  ["A","short",3,"findI","30 C flows through a lamp in 10 s. What is the current?","3 A",{why:"I = Q ÷ t = 30 ÷ 10 = 3 A."}]
 ]);
 QQ("el2",[
- ["R","short",1,"vir","Give the equation that links potential difference, current and resistance.","V = I × R",{ex:1}],
+ ["R","short",1,"vir","Give the equation that links potential difference, current, and resistance.","V = I × R",{ex:1}],
  ["R","short",1,"ohm","What is the unit of resistance?","The ohm (Ω)"],
  ["R","short",1,"volt","What is the unit of potential difference?","The volt (V)"],
  ["R","short",1,"voltmeter","How is a voltmeter connected?","In parallel with the component",{ex:1}],
@@ -2001,10 +2001,10 @@ QQ("el5",[
  ["A","short",2,"metalcase","Why does a kettle with a metal case need an earth wire?","So a faulty case cannot stay live"]
 ]);
 QQ("el6",[
- ["R","short",1,"pvi","Give the equation that links power, potential difference and current.","P = V × I",{ex:1}],
- ["R","short",2,"pi2r","Give the equation that links power, current and resistance.","P = I² × R",{ex:1}],
- ["R","short",1,"ept","Give the equation that links energy, power and time.","E = P × t",{ex:1}],
- ["R","short",2,"eqv","Give the equation that links energy, charge and potential difference.","E = Q × V",{ex:1}],
+ ["R","short",1,"pvi","Give the equation that links power, potential difference, and current.","P = V × I",{ex:1}],
+ ["R","short",2,"pi2r","Give the equation that links power, current, and resistance.","P = I² × R",{ex:1}],
+ ["R","short",1,"ept","Give the equation that links energy, power, and time.","E = P × t",{ex:1}],
+ ["R","short",2,"eqv","Give the equation that links energy, charge, and potential difference.","E = Q × V",{ex:1}],
  ["R","short",1,"watt","What is the unit of power?","The watt (W)"],
  ["C","tf",2,"longer","True or false: 1 kW for 2 hours transfers more energy than 2 kW for 30 minutes. Give a reason.","True – 2 kWh compared with 1 kWh"],
  ["C","error",2,"minutes","Find the error: “A 60 W lamp on for 2 minutes transfers 120 J.”","120 J → 7200 J"],
@@ -2054,7 +2054,7 @@ EXT.push(
 );
 
 // ===================== YEAR 11 December: Forces (GCSE app lessons, AQA Trilogy 6.5) =====================
-const FCN=["Scalars, vectors and types of force","Gravity and weight","Resultant forces","Free body diagrams and resolving forces","Work done","Forces and elasticity","Speed, velocity and displacement","Distance–time graphs","Acceleration","Velocity–time graphs","Falling objects","Newton’s first law","Newton’s second law","Acceleration practical","Newton’s third law","Stopping distance and reaction time","Braking distance and forces","Momentum"];
+const FCN=["Scalars, vectors, and types of force","Gravity and weight","Resultant forces","Free body diagrams and resolving forces","Work done","Forces and elasticity","Speed, velocity, and displacement","Distance–time graphs","Acceleration","Velocity–time graphs","Falling objects","Newton’s first law","Newton’s second law","Acceleration practical","Newton’s third law","Stopping distance and reaction time","Braking distance and forces","Momentum"];
 const FCC=["Today: some quantities have only a size (scalars); others also have a direction (vectors) – and forces are vectors.","Today: weight is the force of gravity on a mass – W = m × g.","Today: the resultant force is the single force that has the same effect as all the forces acting together.","Today: free body diagrams show every force on an object; a single force can be split into two components.","Today: when a force moves an object, work is done and energy is transferred – W = F × s.","Today: stretching and squashing – elastic or inelastic – and F = k × e up to the limit of proportionality.","Today: distance and speed are scalars; displacement and velocity are vectors.","Today: reading a journey from a distance–time graph – the gradient is the speed.","Today: acceleration is the rate of change of velocity – a = Δv ÷ t.","Today: on a velocity–time graph the gradient is acceleration and the area underneath is distance travelled.","Today: falling objects – gravity, air resistance, and what happens when the forces balance.","Today: no resultant force means no change in motion – stationary objects stay still, moving objects keep moving.","Today: resultant force = mass × acceleration – F = m × a.","Today: investigating how force and mass affect acceleration – the required practical.","Today: whenever two objects interact, the forces they exert on each other are equal and opposite.","Today: stopping distance = thinking distance + braking distance – and what makes each longer.","Today: how brakes stop a car – friction does work, the brakes heat up, and why big decelerations are dangerous.","Today (Higher): momentum = mass × velocity, and in a collision total momentum is conserved."];
 FCN.forEach((n,i)=>LESSONS.push({k:"fc"+(i+1),y:11,unit:"Forces",name:(i+1)+". "+n,sci:"Physics",today:true,connect:FCC[i]}));
 Object.assign(NEEDS,{
@@ -2076,7 +2076,7 @@ QQ("fc1",[
  ["A","short",2,"interact","A magnet pulls a paper clip across a table. Name one contact and one non-contact force on the clip.","Contact: friction; non-contact: magnetic"]
 ]);
 QQ("fc2",[
- ["R","short",1,"wmg","Give the equation that links weight, mass and gravitational field strength.","W = m × g",{ex:1}],
+ ["R","short",1,"wmg","Give the equation that links weight, mass, and gravitational field strength.","W = m × g",{ex:1}],
  ["R","short",1,"g","What is the gravitational field strength on Earth?","9.8 N/kg",{acc:"10 N/kg"}],
  ["R","short",1,"weight","What is weight?","Force on a mass due to gravity",{ex:1}],
  ["R","short",2,"newtonmeter","What instrument measures weight?","A newtonmeter (calibrated spring balance)"],
@@ -2122,7 +2122,7 @@ QQ("fc5",[
  ["A","short",3,"brakes","Why do bike brakes get warm when you stop?","Work done against friction heats them"]
 ]);
 QQ("fc6",[
- ["R","short",1,"hooke","Give the equation that links force, spring constant and extension.","F = k × e",{ex:1}],
+ ["R","short",1,"hooke","Give the equation that links force, spring constant, and extension.","F = k × e",{ex:1}],
  ["R","short",1,"elastic","What is elastic deformation?","The object returns to its original shape",{ex:1}],
  ["R","short",2,"lop","What is the limit of proportionality?","Beyond it, extension stops being proportional to force",{ex:1}],
  ["R","short",2,"twoforces","Why do you need more than one force to stretch a spring?","One force would just move it"],
@@ -2136,7 +2136,7 @@ QQ("fc6",[
 QQ("fc7",[
  ["R","short",1,"disp","What is displacement?","Distance in a straight line, with direction",{ex:1}],
  ["R","short",1,"vel","What is velocity?","Speed in a given direction",{ex:1}],
- ["R","short",1,"svt","Give the equation that links distance, speed and time.","s = v × t",{ex:1}],
+ ["R","short",1,"svt","Give the equation that links distance, speed, and time.","s = v × t",{ex:1}],
  ["R","short",2,"walk","What is a typical walking speed?","About 1.5 m/s"],
  ["R","short",2,"sound","What is the speed of sound in air?","About 330 m/s"],
  ["C","tf",3,"circle","True or false: a car going round a roundabout at constant speed has a changing velocity. Give a reason.","True – its direction changes"],
@@ -2324,15 +2324,15 @@ purity:{key:"In chemistry, a pure substance is a single element or compound, not
 formulations:{key:"A formulation is a mixture designed as a useful product. Each component is added in a measured quantity. Examples: fuels, cleaning agents, paints, medicines, alloys, fertilisers, foods.",vis:{t:"pic",big:"A formulation is a recipe.",explain:"Like a cake, every ingredient is measured and has a job; change the amounts and the product no longer works properly."},say:"Ask: what job does each ingredient do?",slip:"Pupils think any mixture is a formulation."},
 chromatography:{key:"Paper chromatography separates mixtures. Rf = distance moved by substance ÷ distance moved by solvent. A pure compound gives one spot in all solvents.",vis:{t:"svg",svg:"chrom"},aid:{big:"Spot on top, solvent below.",explain:"In the Rf fraction, the spot’s distance goes on top. The spot never passes the solvent front, so Rf is always less than 1."},say:"Measure both distances from the start line.",slip:"Pupils divide the wrong way round or measure from the paper’s edge."},
 gastests:{key:"Hydrogen: burning splint → squeaky pop. Oxygen: glowing splint relights. Carbon dioxide: limewater turns milky. Chlorine: damp litmus paper is bleached.",vis:{t:"aid",big:"Hydrogen pops, oxygen relights, CO₂ clouds limewater, chlorine bleaches.",explain:"One verb for each gas: pops (burning splint), relights (glowing splint), clouds (limewater), bleaches (damp litmus)."},say:"Name the test and the result – both are needed.",slip:"Pupils swap the hydrogen and oxygen splints."},
-atmosphere:{key:"Today: about 80% nitrogen, 20% oxygen, small amounts of carbon dioxide, water vapour and noble gases. Early atmosphere: mainly carbon dioxide from volcanoes, little or no oxygen.",vis:{t:"steps",steps:["Volcanoes release CO₂, water vapour, some nitrogen","Water vapour condenses → oceans","CO₂ dissolves in oceans → carbonate rocks","Algae and plants photosynthesise: CO₂ down, oxygen up","CO₂ locked in sedimentary rocks and fossil fuels"]},say:"Follow the carbon: where did it go?",slip:"Pupils think oxygen came from volcanoes."},
-greenhouse:{key:"Water vapour, carbon dioxide and methane are greenhouse gases: they absorb and re-emit infrared radiation, keeping the Earth warm enough for life. Human activities increase carbon dioxide and methane.",vis:{t:"steps",steps:["Sunlight reaches the Earth","Earth emits infrared radiation","Greenhouse gases absorb and re-emit it","The atmosphere warms","More greenhouse gases → more warming"]},say:"Name the gas, the human source, and one effect.",slip:"Pupils blame the hole in the ozone layer."},
-footprint:{key:"A carbon footprint is the total amount of carbon dioxide and other greenhouse gases emitted over the full life cycle of a product, service or event. It can be reduced by cutting emissions.",vis:{t:"pic",big:"A carbon footprint is a receipt for every gram of greenhouse gas.",explain:"From making it, moving it and using it to throwing it away – everything is added up."},say:"Ask: which stage of its life adds the most?",slip:"Pupils count only the use stage."},
+atmosphere:{key:"Today: about 80% nitrogen, 20% oxygen, small amounts of carbon dioxide, water vapour, and noble gases. Early atmosphere: mainly carbon dioxide from volcanoes, little or no oxygen.",vis:{t:"steps",steps:["Volcanoes release CO₂, water vapour, some nitrogen","Water vapour condenses → oceans","CO₂ dissolves in oceans → carbonate rocks","Algae and plants photosynthesise: CO₂ down, oxygen up","CO₂ locked in sedimentary rocks and fossil fuels"]},say:"Follow the carbon: where did it go?",slip:"Pupils think oxygen came from volcanoes."},
+greenhouse:{key:"Water vapour, carbon dioxide, and methane are greenhouse gases: they absorb and re-emit infrared radiation, keeping the Earth warm enough for life. Human activities increase carbon dioxide and methane.",vis:{t:"steps",steps:["Sunlight reaches the Earth","Earth emits infrared radiation","Greenhouse gases absorb and re-emit it","The atmosphere warms","More greenhouse gases → more warming"]},say:"Name the gas, the human source, and one effect.",slip:"Pupils blame the hole in the ozone layer."},
+footprint:{key:"A carbon footprint is the total amount of carbon dioxide and other greenhouse gases emitted over the full life cycle of a product, service, or event. It can be reduced by cutting emissions.",vis:{t:"pic",big:"A carbon footprint is a receipt for every gram of greenhouse gas.",explain:"From making it, moving it and using it to throwing it away – everything is added up."},say:"Ask: which stage of its life adds the most?",slip:"Pupils count only the use stage."},
 pollution:{key:"Burning fuels releases carbon dioxide and water, plus pollutants: carbon monoxide (toxic), soot (global dimming, health), sulfur dioxide and oxides of nitrogen (acid rain, breathing problems).",vis:{t:"steps",steps:["Not enough oxygen → incomplete combustion → carbon monoxide and soot","Sulfur in the fuel → sulfur dioxide","Nitrogen + oxygen from the air in hot engines → oxides of nitrogen","Sulfur dioxide and oxides of nitrogen → acid rain"]},say:"For each pollutant: where it comes from, then the harm it does.",slip:"Pupils say oxides of nitrogen come from the fuel."},
 resources:{key:"Finite resources will run out; renewable ones are replaced as fast as they are used. Sustainable development meets the needs of current generations without compromising the ability of future generations to meet their own needs.",vis:{t:"steps",steps:["Finite: crude oil, metal ores – used faster than formed","Renewable: timber, crops, cotton – regrown","Sustainable: meet today’s needs","…without harming future generations’ needs"]},say:"Ask: will there still be some for your grandchildren?",slip:"Pupils think recycling makes ores renewable."},
 biomining:{key:"HT: Phytomining uses plants to absorb metal compounds from low-grade ores; the plants are burned and the metal extracted from the ash. Bioleaching uses bacteria to produce solutions containing metal compounds.",vis:{t:"aid",big:"Phyto = plant. Bio-leaching = bacteria.",explain:"‘Phyto’ is Greek for plant (as in phytoplankton); in bioleaching, bacteria leach the metal out."},say:"Both are slow but use low-grade ores.",slip:"Pupils swap plants and bacteria."},
-lca:{key:"A life cycle assessment judges a product’s environmental impact at each stage: extracting and processing raw materials, manufacturing and packaging, use, and disposal (plus transport at every stage).",vis:{t:"steps",steps:["1. Raw materials","2. Manufacture and packaging","3. Use","4. Disposal","Transport at every stage · some values need judgements, so LCAs can be biased"]},say:"Walk through the four stages for a real object in the room.",slip:"Pupils forget that LCAs can be biased."},
-recycling:{key:"Reducing, reusing and recycling cut the use of resources, energy and waste. Glass is reused or crushed and melted; metals are melted and recast.",vis:{t:"aid",big:"Reduce, reuse, recycle – in that order.",explain:"Reducing saves most; reusing needs only cleaning; recycling still needs energy to melt and reshape."},say:"Ask: which option uses the least energy?",slip:"Pupils think recycling uses no energy."},
-potable:{key:"Potable water is safe to drink: low levels of dissolved salts and microbes – not pure. In the UK: choose a fresh water source, filter it, then sterilise it (chlorine, ozone or ultraviolet light).",vis:{t:"steps",steps:["Fresh water from a river, lake or underground","Filter: remove solids","Sterilise: chlorine, ozone or UV kills microbes","Seawater needs desalination: distillation or reverse osmosis (lots of energy)"]},aid:{big:"Filter the bits, sterilise the bugs.",explain:"Filtering removes solids; only sterilising kills microbes."},say:"Ask: which step deals with microbes?",slip:"Pupils think filtering kills microbes, or that potable means pure."},
+lca:{key:"A life cycle assessment judges a product’s environmental impact at each stage: extracting and processing raw materials, manufacturing, and packaging, use, and disposal (plus transport at every stage).",vis:{t:"steps",steps:["1. Raw materials","2. Manufacture and packaging","3. Use","4. Disposal","Transport at every stage · some values need judgements, so LCAs can be biased"]},say:"Walk through the four stages for a real object in the room.",slip:"Pupils forget that LCAs can be biased."},
+recycling:{key:"Reducing, reusing and recycling cut the use of resources, energy, and waste. Glass is reused or crushed and melted; metals are melted and recast.",vis:{t:"aid",big:"Reduce, reuse, recycle – in that order.",explain:"Reducing saves most; reusing needs only cleaning; recycling still needs energy to melt and reshape."},say:"Ask: which option uses the least energy?",slip:"Pupils think recycling uses no energy."},
+potable:{key:"Potable water is safe to drink: low levels of dissolved salts and microbes – not pure. In the UK: choose a fresh water source, filter it, then sterilise it (chlorine, ozone, or ultraviolet light).",vis:{t:"steps",steps:["Fresh water from a river, lake, or underground","Filter: remove solids","Sterilise: chlorine, ozone, or UV kills microbes","Seawater needs desalination: distillation or reverse osmosis (lots of energy)"]},aid:{big:"Filter the bits, sterilise the bugs.",explain:"Filtering removes solids; only sterilising kills microbes."},say:"Ask: which step deals with microbes?",slip:"Pupils think filtering kills microbes, or that potable means pure."},
 wastewater:{key:"Waste water treatment: screening and grit removal; sedimentation into sludge and effluent; anaerobic digestion of the sludge; aerobic biological treatment of the effluent.",vis:{t:"steps",steps:["Screening: remove large objects and grit","Sedimentation: sludge settles, effluent on top","Sludge: anaerobic digestion (no oxygen)","Effluent: aerobic treatment (with oxygen)"]},say:"Track sludge and effluent separately.",slip:"Pupils mix up aerobic and anaerobic."},
 // earlier Year 10/11 topics
 electricity:{key:"Current is the rate of flow of charge (Q = I × t). V = I × R. Series: same current, potential difference shared. Parallel: same potential difference, currents add.",vis:{t:"steps",steps:["Current = rate of flow of charge","Series: current the same everywhere","Series: pd shared between components","Parallel: pd the same across each branch","Parallel: branch currents add up"]},aid:{big:"Ammeter along, voltmeter across.",explain:"An ammeter goes in series (along the wire); a voltmeter goes in parallel (across the component)."},say:"Charge isn’t used up – energy is transferred.",slip:"Pupils think current is used up by components."},
@@ -2399,7 +2399,7 @@ tables:{key:"Results table: independent variable in the first column; units only
 mean:{key:"Repeat readings to spot anomalies (results that don’t fit). Leave anomalies out, then mean = total ÷ number of readings.",vis:{t:"steps",steps:["Readings: 12 s, 13 s, 30 s, 11 s","30 s does not fit – anomaly","Use the rest: 12 + 13 + 11 = 36","36 ÷ 3 = 12 s"]},say:"Circle the anomaly first, then calculate.",slip:"Pupils include anomalies, or divide by the wrong number."},
 units7:{key:"Big unit to small unit: multiply. Small unit to big unit: divide.",vis:{t:"steps",steps:["1 cm = 10 mm · 1 m = 100 cm","1 kg = 1000 g · 1 l = 1000 ml","2.5 cm → mm: 2.5 × 10 = 25 mm","3000 g → kg: 3000 ÷ 1000 = 3 kg"]},say:"Ask: should the number get bigger or smaller?",slip:"Pupils multiply when they should divide."},
 labsafety:{key:"Lab rules prevent injuries: tie long hair back, wear goggles, stand up when heating, and never leave a flame unattended.",vis:{t:"steps",steps:["Hair tied back – it could catch fire","Goggles on – protect your eyes","Stand when heating – move away quickly if needed","Bags under desks – nothing to trip over"]},say:"Give each rule its reason.",slip:"Pupils learn rules without reasons, so forget them."},
-cells7:{key:"Animal and plant cells both have a nucleus, cytoplasm, cell membrane and mitochondria. Plant cells also have a cell wall, chloroplasts and a permanent vacuole.",vis:{t:"steps",steps:["Nucleus – controls the cell","Cytoplasm – where reactions happen","Cell membrane – controls what goes in and out","Mitochondria – respiration","Plants only: cell wall, chloroplasts, permanent vacuole"]},say:"Plants have three extras – they need support, light capture and storage.",slip:"Pupils confuse cell wall and cell membrane."},
+cells7:{key:"Animal and plant cells both have a nucleus, cytoplasm, cell membrane, and mitochondria. Plant cells also have a cell wall, chloroplasts and a permanent vacuole.",vis:{t:"steps",steps:["Nucleus – controls the cell","Cytoplasm – where reactions happen","Cell membrane – controls what goes in and out","Mitochondria – respiration","Plants only: cell wall, chloroplasts, permanent vacuole"]},say:"Plants have three extras – they need support, light capture, and storage.",slip:"Pupils confuse cell wall and cell membrane."},
 nucleus7:{key:"The nucleus contains the genetic material (DNA) and controls the cell’s activities.",vis:{t:"steps",steps:["Nucleus – the control centre","It holds the genetic material: DNA","DNA carries the instructions for the cell","Red blood cells are unusual: they have no nucleus"]},say:"Ask: what would happen to a cell without its instructions?",slip:"Pupils confuse the nucleus with the cytoplasm or the cell membrane."},
 diffusion7:{key:"Diffusion: particles spread out from where there are lots of them (high concentration) to where there are fewer (low concentration).",vis:{t:"pic",big:"Like a packed classroom emptying into an empty corridor.",explain:"Particles move randomly, so overall they spread from crowded to less crowded until they are evenly spread."},say:"High to low – always down the difference.",slip:"Pupils reverse the direction."},
 specialised:{key:"Specialised cells have features that suit their job: sperm cells have many mitochondria for energy; root hair cells have a large surface area and no chloroplasts.",vis:{t:"steps",steps:["Job → feature → reason","Sperm swims → many mitochondria → energy","Root hair absorbs water → long extension → large surface area","Root hair is underground → no chloroplasts → no light"]},say:"Always link feature to job with ‘so that’.",slip:"Pupils list features without the reason."},
@@ -2407,13 +2407,13 @@ organisation:{key:"Cells → tissues → organs → organ systems → organism. 
 // ----- Year 7 particles
 particles:{key:"Solid: particles touching in a regular pattern, vibrating. Liquid: touching, random, moving past each other. Gas: far apart, random, moving quickly in all directions.",vis:{t:"svg",svg:"states"},say:"The particles never change size – only their arrangement and movement.",slip:"Pupils think solid particles are still, or that gas particles are bigger."},
 properties7:{key:"Solids keep their shape because particles are fixed in place. Liquids and gases flow because particles move past each other. Only gases compress easily: their particles are far apart.",vis:{t:"steps",steps:["Fixed shape? Solid only","Fixed volume? Solid and liquid","Flows? Liquid and gas","Compresses? Gas only – big gaps"]},say:"Every property comes back to spacing and movement.",slip:"Pupils say liquids compress, or that sand is a liquid."},
-changes7:{key:"Melting, boiling and evaporating take in energy; freezing and condensing give it out. Mass stays the same – the same particles are just rearranged.",vis:{t:"steps",steps:["Solid → liquid: melting","Liquid → gas: boiling or evaporating","Gas → liquid: condensing","Liquid → solid: freezing","Solid → gas: sublimation"]},say:"Name the change, then say which way the energy goes.",slip:"Pupils think mass changes, or that boiling bubbles are air."},
+changes7:{key:"Melting, boiling, and evaporating take in energy; freezing and condensing give it out. Mass stays the same – the same particles are just rearranged.",vis:{t:"steps",steps:["Solid → liquid: melting","Liquid → gas: boiling or evaporating","Gas → liquid: condensing","Liquid → solid: freezing","Solid → gas: sublimation"]},say:"Name the change, then say which way the energy goes.",slip:"Pupils think mass changes, or that boiling bubbles are air."},
 boiling7:{key:"When a liquid boils, bubbles of its own gas form all through it. Evaporation happens only at the surface, at temperatures below the boiling point.",vis:{t:"pic",big:"Bubbles in boiling water are water – as a gas.",explain:"The water particles get enough energy to form gas inside the liquid. That gas is water vapour, not air."},say:"Ask: where would the air come from?",slip:"Pupils say the bubbles are air or oxygen."},
 mpbp:{key:"Below its melting point a substance is solid; between its melting and boiling points it is liquid; above its boiling point it is gas.",vis:{t:"steps",steps:["Melts at −20 °C, boils at 60 °C","Below −20 °C: solid","Between −20 °C and 60 °C: liquid","Above 60 °C: gas","20 °C → liquid"]},say:"Draw a number line and mark both points.",slip:"Pupils compare with only one of the two temperatures."},
 // ----- Year 7 atoms, elements and compounds
 elements7:{key:"An element is made of only one type of atom. Each element has a symbol: a capital first letter, then a small letter if needed.",vis:{t:"steps",steps:["O – oxygen","Co – cobalt: capital C, small o","CO – capital C and capital O: carbon + oxygen","Na – sodium (from its Latin name)"]},aid:{big:"Every capital letter starts a new element.",explain:"So Co is one element (cobalt) but CO is two (carbon and oxygen)."},say:"Point to each capital letter and count the elements.",slip:"Pupils write symbols in the wrong case."},
 metals7:{key:"Metals: shiny, good conductors of heat and electricity, malleable, mostly high melting points – on the left of the periodic table. Non-metals: dull, poor conductors, brittle when solid – on the right.",vis:{t:"steps",steps:["Metals: shiny · conduct · malleable · high melting point","Non-metals: dull · insulate · brittle · low melting point","Odd ones out: mercury is a liquid metal","Graphite is a non-metal that conducts"]},say:"Conducting electricity is the best single test for a metal.",slip:"Pupils think hard, grey or solid means metal."},
-magnetic7:{key:"Only three metals are magnetic: iron, nickel and cobalt. Steel is magnetic because it is mostly iron.",vis:{t:"pic",big:"A magnet picks up a steel can but not an aluminium can.",explain:"Most metals are not magnetic. Aluminium, copper and gold are not attracted to a magnet."},say:"Test it: which cans could a recycling magnet sort?",slip:"Pupils think all metals are magnetic."},
+magnetic7:{key:"Only three metals are magnetic: iron, nickel, and cobalt. Steel is magnetic because it is mostly iron.",vis:{t:"pic",big:"A magnet picks up a steel can but not an aluminium can.",explain:"Most metals are not magnetic. Aluminium, copper and gold are not attracted to a magnet."},say:"Test it: which cans could a recycling magnet sort?",slip:"Pupils think all metals are magnetic."},
 metaluses:{key:"We choose a metal for a job by its properties: copper for wires (conducts, ductile), aluminium for aircraft (strong, low density), steel for bridges (strong).",vis:{t:"steps",steps:["Job → property needed → metal","Wires → conducts, can be drawn into wires → copper","Aircraft → strong and light → aluminium","Pans → conducts heat → steel or aluminium (plastic handle)"]},say:"Always say which property makes it suitable.",slip:"Pupils name a property that doesn’t match the job."},
 molecules7:{key:"A molecule is two or more atoms joined together. If all its atoms are the same element (O₂, N₂, Cl₂), it is still an element. Noble gases exist as single atoms.",vis:{t:"steps",steps:["O – one oxygen atom","O₂ – one molecule: 2 oxygen atoms joined","2O – two separate oxygen atoms","H₂O – different atoms joined: a compound"]},aid:{big:"Small number: atoms in the molecule. Big number: how many molecules.",explain:"The small number belongs to the atom before it. The big number in front multiplies the whole formula."},say:"Ask: how many different types of atom?",slip:"Pupils think any molecule is a compound."},
 symbols7:{key:"Symbols are one or two letters. Some come from Latin names: Fe iron, Na sodium, K potassium, Cu copper, Ag silver, Au gold, Pb lead.",vis:{t:"steps",steps:["Fe – iron (ferrum)","Na – sodium (natrium)","K – potassium (kalium)","Cu – copper (cuprum)","Ag – silver (argentum) · Au – gold (aurum) · Pb – lead (plumbum)"]},say:"Link the Latin to an English word: plumber (lead pipes), ferrous (iron).",slip:"Pupils guess from the English name (So for sodium)."},
@@ -2443,7 +2443,7 @@ moments8:{key:"Moment = force × distance from the pivot. It balances when clock
 speed8:{key:"Speed = distance ÷ time, in m/s. Average speed = total distance ÷ total time.",vis:{t:"steps",steps:["A car travels 100 m in 5 s","speed = distance ÷ time","= 100 ÷ 5","= 20 m/s"]},say:"Ask: how many metres each second?",slip:"Pupils multiply, or divide time by distance."},
 dtgraph8:{key:"On a distance–time graph the slope shows the speed: steeper means faster, flat means stationary, and a line going down means coming back towards the start.",vis:{t:"svg",svg:"dtgraph"},say:"Trace the journey and tell its story.",slip:"Pupils read a flat line as steady speed."},
 inherit8:{key:"Nucleus → chromosomes → genes → DNA. A gene is a section of DNA. Each sex cell carries 23 chromosomes, so you inherit half from each parent (46 in total).",vis:{t:"steps",steps:["Cell → nucleus","Nucleus → 46 chromosomes (23 pairs)","Chromosome → many genes","Gene → a section of DNA","Egg 23 + sperm 23 → 46"]},say:"Zoom in one level at a time.",slip:"Pupils mix up the order, or think all genes come from one parent."},
-variation8:{key:"Continuous variation can take any value in a range (height, mass): draw a histogram. Discontinuous variation falls into groups (blood group): draw a bar chart. Variation can be genetic, environmental or both.",vis:{t:"steps",steps:["Height: any value → continuous → histogram","Blood group: A, B, AB or O → discontinuous → bar chart","Scar: environment only","Body mass: genes + environment"]},say:"Ask: can it be any value, or only certain groups?",slip:"Pupils class height as discontinuous."},
+variation8:{key:"Continuous variation can take any value in a range (height, mass): draw a histogram. Discontinuous variation falls into groups (blood group): draw a bar chart. Variation can be genetic, environmental, or both.",vis:{t:"steps",steps:["Height: any value → continuous → histogram","Blood group: A, B, AB or O → discontinuous → bar chart","Scar: environment only","Body mass: genes + environment"]},say:"Ask: can it be any value, or only certain groups?",slip:"Pupils class height as discontinuous."},
 adapt8:{key:"Adaptations are inherited features that help an organism survive in its habitat.",vis:{t:"steps",steps:["Polar bear: thick fur, fat layer, small ears → keeps heat","Desert fox: large ears → loses heat","Cactus: spines, thick stem → saves water","Camel: fat in hump → energy store"]},say:"Link every feature to survival with ‘so that’.",slip:"Pupils think animals adapt on purpose."},
 surface8:{key:"A larger surface area loses heat faster. Small ears and a round body save heat in the cold; large ears lose heat in the desert.",vis:{t:"pic",big:"Spread your fingers out to cool your hand; make a fist to keep it warm.",explain:"More surface touching the air means more heat lost."},say:"Ask: which loses heat faster – a spread-out hand or a fist?",slip:"Pupils think big ears keep animals warm."},
 natsel8:{key:"Natural selection: variation → competition → the best-adapted survive → they reproduce → their genes are passed on → the species changes over many generations.",vis:{t:"steps",steps:["Variation: individuals differ","Competition: for food, mates, space","Survival: the best-adapted live longer","Reproduction: they pass on their genes","Over many generations, the species changes"]},say:"Individuals don’t change – the population does.",slip:"Pupils say animals change to survive."},
@@ -2554,7 +2554,7 @@ newton1:{key:"Newton’s first law: if the resultant force is zero, a stationary
 newton2:{key:"Newton’s second law: resultant force = mass × acceleration (F = m × a). Acceleration is proportional to the resultant force and inversely proportional to mass.",vis:{t:"steps",steps:["1200 kg car, 2 m/s²","F = m × a","= 1200 × 2","= 2400 N (resultant force)","Double the mass, same force → half the acceleration"]},say:"F is always the resultant force.",slip:"Pupils use the driving force when friction is present."},
 rpaccel11:{key:"Required practical: pull a trolley with a falling mass; light gates measure acceleration. To vary force, move masses from the trolley to the hanger so total mass stays the same. Expect acceleration proportional to force.",vis:{t:"steps",steps:["Independent: force (masses on hanger)","Dependent: acceleration (light gates)","Control: total mass – move masses, don’t add them","Friction makes accelerations lower than expected"]},say:"Why move rather than add masses? The total mass being accelerated must stay the same.",slip:"Pupils add masses to the hanger, changing the total mass."},
 newton3:{key:"Newton’s third law: when two objects interact, they exert equal and opposite forces on each other. The forces are the same type and act on different objects, so they never cancel.",vis:{t:"steps",steps:["Earth pulls you down (gravity)","You pull the Earth up (gravity) – same size","Lorry hits car: equal and opposite forces","Book’s weight and table’s push: NOT a pair – both act on the book"]},say:"Third-law pairs: two objects, same type of force.",slip:"Pupils think the pair cancel, or the bigger object pushes harder."},
-stopping11:{key:"Stopping distance = thinking distance + braking distance. Thinking distance increases with speed and reaction time (tiredness, alcohol, drugs, distractions). Braking distance increases with speed and poor road, tyre or brake conditions.",vis:{t:"steps",steps:["Thinking: speed, tiredness, alcohol, drugs, phone","Braking: speed, wet/icy road, worn tyres, worn brakes","Speed affects both","Thinking distance = speed × reaction time: 20 × 0.5 = 10 m"]},say:"Sort each factor: driver or car/road?",slip:"Pupils put icy roads in thinking distance."},
+stopping11:{key:"Stopping distance = thinking distance + braking distance. Thinking distance increases with speed and reaction time (tiredness, alcohol, drugs, distractions). Braking distance increases with speed and poor road, tyre, or brake conditions.",vis:{t:"steps",steps:["Thinking: speed, tiredness, alcohol, drugs, phone","Braking: speed, wet/icy road, worn tyres, worn brakes","Speed affects both","Thinking distance = speed × reaction time: 20 × 0.5 = 10 m"]},say:"Sort each factor: driver or car/road?",slip:"Pupils put icy roads in thinking distance."},
 braking11:{key:"Brakes do work through friction: the car’s kinetic energy is transferred to thermal energy in the brakes. Greater speed needs a greater braking force to stop in the same distance. Large decelerations can injure passengers and overheat brakes.",vis:{t:"steps",steps:["Brakes apply friction to the wheels","Work done reduces kinetic energy","Energy → thermal energy: brakes get hot","Double speed → four times the kinetic energy"]},say:"Follow the energy from kinetic to thermal.",slip:"Pupils think braking just ‘uses up’ energy."},
 momentum11:{key:"Higher: momentum = mass × velocity (p = m v), in kg m/s. It is a vector. In a closed system, total momentum before = total momentum after.",vis:{t:"steps",steps:["Gun and bullet at rest: total momentum 0","Bullet: 0.01 × 400 = 4 kg m/s forwards","Gun must have 4 kg m/s backwards","v = 4 ÷ 2 = 2 m/s backwards"]},say:"Start by writing the total momentum before.",slip:"Pupils forget direction, or that total momentum can be zero."}
 });

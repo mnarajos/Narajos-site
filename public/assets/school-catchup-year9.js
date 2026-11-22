@@ -106,7 +106,7 @@ export const year9 = {
 
   "energy-stores": lesson("P1", "Energy stores and transfers",
     "A dropped ball stops on the ground. Where has its energy gone?",
-    "Follow the energy before, during and after the fall.",
+    "Follow the energy before, during, and after the fall.",
     "Energy is conserved. It is transferred between stores and can spread to the surroundings, where less of it remains useful.",
     ["A ball is dropped and comes to rest", ["Moment", "Store or transfer to look for"], [
       ["Before release", "Gravitational potential store of the ball and Earth"],

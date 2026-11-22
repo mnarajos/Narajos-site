@@ -30,3 +30,6 @@ main .opt:focus-within, main .k-option:focus-within {
   outline-offset: 2px;
 }
 @media print{a.narajos-home{display:none}}
+
+/* Small footer link in the independently styled revision and teaching tools. */
+footer .resource-terms{display:inline-block;margin:.3rem .5rem .25rem 0;color:inherit;font-size:.85rem;text-underline-offset:.15em}

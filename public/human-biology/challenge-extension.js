@@ -486,7 +486,7 @@ var additions=[
     ],
     "model": "Collection → extraction → transformation → analysis → interpretation → reporting.",
     "explain": "Raw data need selection and preparation before analysis; findings then require interpretation and communication.",
-    "misconception": "Presenting a chart is not the same stage as cleaning, analysing or interpreting the underlying data.",
+    "misconception": "Presenting a chart is not the same stage as cleaning, analysing, or interpreting the underlying data.",
     "hintCue": "Start by obtaining observations; finish by communicating the meaning of the findings.",
     "samAligned": false
   },
@@ -665,7 +665,7 @@ var additions=[
     "level": "stretch",
     "marks": 9,
     "caseTitle": "Sharing a service summary",
-    "stem": "A fictional community service wants to publish a report about missed appointments. One option gives counts for each age band and location. Another shares a record for each visit with a code, exact age and date. Discuss what the service should publish to help explain patterns while protecting privacy.",
+    "stem": "A fictional community service wants to publish a report about missed appointments. One option gives counts for each age band and location. Another shares a record for each visit with a code, exact age, and date. Discuss what the service should publish to help explain patterns while protecting privacy.",
     "markPoints": [
       "Grouped counts can show broad patterns with fewer identifying details. Very small groups can still make individuals easier to recognise.",
       "Coded records allow more detailed analysis, but exact age, date and location can sometimes combine with other information to identify a person.",
@@ -865,7 +865,7 @@ additions.push(...[
     "section": "2.2.2",
     "stem": "A person has reduced movement of the diaphragm. Explain why their depth of inspiration may be reduced.",
     "model": "A smaller change in diaphragm position gives a smaller increase in thoracic volume. The pressure difference driving airflow into the lungs is smaller.",
-    "explain": "Follow each link from muscle movement to volume, pressure and flow.",
+    "explain": "Follow each link from muscle movement to volume, pressure, and flow.",
     "misconception": "Inhalation is explained by a pressure difference, not a separate suction action of the diaphragm.",
     "level": "apply",
     "samAligned": false,
@@ -1035,7 +1035,7 @@ additions.push(...[
     "area": 4,
     "section": "4.2.2",
     "stem": "A trainee says the higher readings after a walk show that a monitor is unreliable. Analyse the evidence and suggest a better check of repeatability.",
-    "model": "Resting values are close together, and all values after walking are higher. There is a systematic change in measurement conditions, so the results could reflect physiology. Use repeated readings with the same person, device and resting conditions to assess variation.",
+    "model": "Resting values are close together, and all values after walking are higher. There is a systematic change in measurement conditions, so the results could reflect physiology. Use repeated readings with the same person, device, and resting conditions to assess variation.",
     "explain": "Compare both sets and separate measurement variation from changes in the person.",
     "misconception": "Higher readings under a different condition do not by themselves show an instrument fault.",
     "level": "stretch",
@@ -1044,7 +1044,7 @@ additions.push(...[
     "markPoints": [
       "Resting values are close together, and all values after walking are higher.",
       "There is a systematic change in measurement conditions, so the results could reflect physiology.",
-      "Use repeated readings with the same person, device and resting conditions to assess variation."
+      "Use repeated readings with the same person, device, and resting conditions to assess variation."
     ],
     "marks": 6,
     "caseTitle": "Resting and post-activity blood pressure",
@@ -1074,7 +1074,7 @@ additions.push(...[
     "area": 5,
     "section": "5.2",
     "stem": "A fictional service compares outcomes for two approaches to supporting fractures. Discuss whether the results justify choosing either approach for a new patient.",
-    "model": "Calculate the proportions with alignment maintained: 36/40 = 90% and 43/50 = 86%. The lower proportion is in a group with more unstable fractures at the start. This could affect the outcome independently of the method. Consider whether alignment was measured in the same way and whether the outcomes include recovery, pain or complications. For a new patient, consider fracture stability and relevant evidence in comparable cases. These data alone do not establish which treatment is better.",
+    "model": "Calculate the proportions with alignment maintained: 36/40 = 90% and 43/50 = 86%. The lower proportion is in a group with more unstable fractures at the start. This could affect the outcome independently of the method. Consider whether alignment was measured in the same way and whether the outcomes include recovery, pain, or complications. For a new patient, consider fracture stability and relevant evidence in comparable cases. These data alone do not establish which treatment is better.",
     "explain": "Weigh what the comparison shows, the systematic group differences and the information needed for a decision.",
     "misconception": "A higher percentage in one group does not remove confounding by the initial severity.",
     "level": "stretch",
@@ -1083,12 +1083,12 @@ additions.push(...[
     "markPoints": [
       "Calculate the proportions with alignment maintained: 36/40 = 90% and 43/50 = 86%.",
       "The lower proportion is in a group with more unstable fractures at the start. This could affect the outcome independently of the method.",
-      "Consider whether alignment was measured in the same way and whether the outcomes include recovery, pain or complications.",
+      "Consider whether alignment was measured in the same way and whether the outcomes include recovery, pain, or complications.",
       "For a new patient, consider fracture stability and relevant evidence in comparable cases. These data alone do not establish which treatment is better."
     ],
     "marks": 9,
     "caseTitle": "Comparing fracture support outcomes",
-    "levelsNote": "A sustained discussion should weigh evidence, limitations and implications for the patient.",
+    "levelsNote": "A sustained discussion should weigh evidence, limitations, and implications for the patient.",
     "figure": "practice-cast",
     "evidenceTable": {
       "caption": "Fictional follow-up records",

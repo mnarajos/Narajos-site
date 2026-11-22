@@ -106,7 +106,7 @@ function vacuum() {
 
 function food() {
   return compare(photo("wholemeal-bread","Wholemeal bread","Carbohydrate and fibre.",true),
-    photo("lentils","Lentils","Protein, carbohydrate and fibre.",true),
+    photo("lentils","Lentils","Protein, carbohydrate, and fibre.",true),
     photo("sunflower-oil","Sunflower oil","Lipid.",true));
 }
 

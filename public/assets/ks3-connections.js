@@ -97,7 +97,7 @@ const names = {
   "fair-tests": "Science Skills",
   cells: "Cells and microscopes",
   "states-of-matter": "Particles and their Behaviour",
-  "atoms-and-compounds": "Atoms, Elements and Compounds",
+  "atoms-and-compounds": "Atoms, Elements, and Compounds",
   forces: "Forces",
   "the-body": "The Body",
   "energy-transfers": "Energy transfers",

@@ -1,12 +1,12 @@
 /* Educational, deterministic, browser-only F175 reproduction simulation.
    Illustrates (not predicts) pituitary hormone signalling and gamete transport.
-   No data collection, student assessment or coursework submission support. */
+   No data collection, student assessment, or coursework submission support. */
 (function(){
 "use strict";
 function svg(){
  return '<svg class="krp-diagram" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" role="group" aria-labelledby="krp-title" aria-describedby="krp-description">'+
  '<title id="krp-title">Female reproductive anatomy and gamete transport</title>'+
- '<desc id="krp-description">A frontal section showing the uterus, ovaries, oviducts and vagina. The cervix projects into the top of the vagina. Its central canal connects the uterine cavity to the vagina. Select an ovary or follow sperm transport.</desc>'+
+ '<desc id="krp-description">A frontal section showing the uterus, ovaries, oviducts, and vagina. The cervix projects into the top of the vagina. Its central canal connects the uterine cavity to the vagina. Select an ovary or follow sperm transport.</desc>'+
  '<rect width="900" height="600" rx="17" fill="#fffafb"/>'+
  /* Tubes have darker wall with a lighter lumen to distinguish them from solid lines. */
  '<path d="M390 184 C355 147 321 140 286 158 S222 191 205 191" fill="none" stroke="#aa617e" stroke-width="23" stroke-linecap="round"/>'+

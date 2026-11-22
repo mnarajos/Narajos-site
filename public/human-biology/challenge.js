@@ -48,7 +48,7 @@ function labelType(q){if(q.subtype==="error")return "Spot the error";return {sin
 function iconFor(q){return {single:"target",multi:"check",order:"layers",match:"grid",sort:"grid",number:"calc",written:"pen",short:"pen",diagram:"target",best:"brain"}[q.type]||"target";}
 function isKnowledge(unit){return /^f17[2-7]$/.test(unit);}
 function unitMeta(unit){return db.units.filter(function(x){return x.id===unit;})[0]||null;}
-function areaName(unit,area){var F=["","Human cells and tissues","Physiology and organ systems","Endocrinology, nerves and reproduction","Microbiology"];var H=["","Causes and effects of disease","Treatment and prevention","Immunology","Diagnosis and monitoring","Research and confidentiality"];var U=unitMeta(unit);return (unit==="f170"?F:unit==="f171"?H:U&&U.areas||[])[area]||"Topic";}
+function areaName(unit,area){var F=["","Human cells and tissues","Physiology and organ systems","Endocrinology, nerves, and reproduction","Microbiology"];var H=["","Causes and effects of disease","Treatment and prevention","Immunology","Diagnosis and monitoring","Research and confidentiality"];var U=unitMeta(unit);return (unit==="f170"?F:unit==="f171"?H:U&&U.areas||[])[area]||"Topic";}
 function filter(unit,scope){
  var list=all.filter(function(q){return q.unit===unit;});
  if(/^a[1-5]$/.test(scope))list=list.filter(function(q){return q.area===Number(scope.slice(1));});
@@ -66,7 +66,7 @@ function title(u){var U=unitMeta(u);return u.toUpperCase()+" · "+(U?U.title:"Hu
 function show(html){if(render)render(html);}
 function knowledgeLanding(){
  var modules=db.units.filter(function(u){return isKnowledge(u.id);});
- var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">Cambridge AAQ · Knowledge learning</div><h1>More Human Biology</h1><p>Practice the science from F172–F177. No coursework tasks, drafting or marking.</p></div><div class="k-unit-tiles">';
+ var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">Cambridge AAQ · Knowledge learning</div><h1>More Human Biology</h1><p>Practice the science from F172–F177. No coursework tasks, drafting, or marking.</p></div><div class="k-unit-tiles">';
  modules.forEach(function(u){var n=filter(u.id,"all").length;
   h+='<a class="k-unit-tile k-knowledge-tile" href="#challenge/'+u.id+'"><span class="k-icon">'+icon("book")+'</span><span><small>'+u.id.toUpperCase()+' · Knowledge only</small><strong>'+esc(u.title)+'</strong><em>'+n+' short practice questions · starter bank</em></span>'+icon("chevron")+'</a>';
  });
@@ -78,12 +78,12 @@ function actionTile(route,label,description,symbol,colour){
 function intro(unit){
  var f=unit==="f170",knowledge=isKnowledge(unit),meta=unitMeta(unit),stats=unitStats(unit);
  var areas=knowledge?meta.areas.map(function(_,i){return i;}).filter(function(i){return i>0&&filter(unit,"a"+i).length>0;}):(f?[1,2,3,4]:[1,2,3,4,5]),colors=["","#58bcb0","#7da8df","#a18bdd","#e2a05c","#e18c96"];
- var h='<div class="k-wrap"><p class="crumb"><a href="'+(knowledge?"#knowledge":"#home")+'">← '+(knowledge?"Other units":"Home")+'</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+(knowledge?unit.toUpperCase()+" · Biological knowledge":f?"F170 · Exam practice":"F171 · Exam practice preview")+'</div><h1>'+esc(meta?meta.title:"Human Biology")+'</h1><p>'+esc(knowledge?"Short science questions only. No coursework help, reports or proposals.":f?"Choose how you want to revise.":"Apply knowledge in clinical contexts. F171 is an early question-bank preview.")+'</p></div>';
+ var h='<div class="k-wrap"><p class="crumb"><a href="'+(knowledge?"#knowledge":"#home")+'">← '+(knowledge?"Other units":"Home")+'</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+(knowledge?unit.toUpperCase()+" · Biological knowledge":f?"F170 · Exam practice":"F171 · Exam practice preview")+'</div><h1>'+esc(meta?meta.title:"Human Biology")+'</h1><p>'+esc(knowledge?"Short science questions only. No coursework help, reports, or proposals.":f?"Choose how you want to revise.":"Apply knowledge in clinical contexts. F171 is an early question-bank preview.")+'</p></div>';
  if(f){
   h+='<section class="k-action-grid k-f170-start" aria-label="Start F170 revision">'+
    actionTile("catchup/f170","Catch up","Read a short explanation","book","teal")+
    actionTile("challenge/f170/all","Practise questions","Start easy, then build up","bolt","teal")+
-   (skills?actionTile("skills/f170","Practise skills","Calculations, data and evidence","calc","blue"):"")+'</section>';
+   (skills?actionTile("skills/f170","Practise skills","Calculations, data, and evidence","calc","blue"):"")+'</section>';
   h+='<details class="k-f170-more"><summary>More practice options</summary>';
  } else {
   h+='<div class="k-mini-stats"><span><strong>'+stats.questions+'</strong> original questions</span><span><strong>'+stats.seen+'</strong> attempted</span><span><strong>'+stats.weak+'</strong> to revisit</span></div>';
@@ -110,7 +110,7 @@ function intro(unit){
    var qs=filter(unit,"a"+a);
    var cases=qs.filter(function(q){return q.caseTitle;}).length;
    var evidence=qs.filter(function(q){return q.evidenceTable||q.figure||q.graph||q.type==="number";}).length;
-   h+='<li><strong>'+esc(areaName(unit,a))+'</strong>. '+evidence+' diagram, data or calculation questions. '+cases+' extended case '+(cases===1?"response":"responses")+'.</li>';
+   h+='<li><strong>'+esc(areaName(unit,a))+'</strong>. '+evidence+' diagram, data, or calculation questions. '+cases+' extended case '+(cases===1?"response":"responses")+'.</li>';
   });
   h+='</ul><p>Counts include alternative versions of some questions. Topic areas have different depths of coverage.</p></details>';
  }
@@ -361,7 +361,7 @@ function evidenceTable(table){
 }
 const practiceFigures={
  "practice-airway":["airway","Airway lining showing cilia and a mucus layer with trapped particles."],
- "practice-breath-in":["breath-in","Chest cavity in inspiration with a flattened diaphragm, expanded lungs and outward rib movement."],
+ "practice-breath-in":["breath-in","Chest cavity in inspiration with a flattened diaphragm, expanded lungs, and outward rib movement."],
  "practice-cuff":["cuff","A cuff is wrapped around the upper arm, connected to a display reading 124 over 78."],
  "practice-cast":["cast","Forearm cutaway showing the cast shell and a break in the bone."],
  "practice-antibody":["antibody","A Y-shaped antibody with matching antigen fragments near its two tips."]

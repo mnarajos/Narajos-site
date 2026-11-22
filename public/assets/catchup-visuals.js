@@ -116,7 +116,7 @@ var diagrams={
  photosynthesis:{
   label:"Two stages of photosynthesis",
   caption:"Light-dependent reactions generate ATP and reduced NADP; these support carbon fixation in the Calvin cycle.",
-  image:svg("Light and water support light-dependent reactions in the thylakoid membranes, generating oxygen, ATP and reduced NADP. ATP and reduced NADP support the Calvin cycle in the stroma where carbon dioxide is fixed.",
+  image:svg("Light and water support light-dependent reactions in the thylakoid membranes, generating oxygen, ATP, and reduced NADP. ATP and reduced NADP support the Calvin cycle in the stroma where carbon dioxide is fixed.",
    box(16,65,198,88,"#e4f1fa")+box(266,65,198,88,"#e9f4e4")+
    text(115,90,"Light-dependent",18,700)+text(115,113,"reactions",18,700)+text(115,138,"Thylakoid membranes",13,500)+
    text(365,92,"Calvin cycle",18,700)+text(365,117,"Stroma",14,500)+
@@ -166,7 +166,7 @@ var diagrams={
  systems:{
   label:"Organ systems work together",
   caption:"Respiratory exchange, digestive absorption and renal regulation are linked through blood circulation. This is a systems overview, not an anatomical illustration.",
-  image:svg("Three organ systems are shown at the top: respiratory system exchanging oxygen and carbon dioxide, digestive system absorbing digested nutrients, and kidneys controlling water, ions and waste. Lines connect each to the circulatory system below because blood transport links their functions.",
+  image:svg("Three organ systems are shown at the top: respiratory system exchanging oxygen and carbon dioxide, digestive system absorbing digested nutrients, and kidneys controlling water, ions, and waste. Lines connect each to the circulatory system below because blood transport links their functions.",
    box(9,33,146,89,"#e5f1fc")+box(167,33,146,89,"#f0ebf9")+box(325,33,146,89,"#e9f3ea")+
    text(82,59,"Respiratory",16,700)+text(82,79,"O₂ in / CO₂ out",13,500)+
    text(240,59,"Digestive",16,700)+text(240,79,"Nutrients",13,500)+

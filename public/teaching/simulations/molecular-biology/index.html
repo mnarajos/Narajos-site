@@ -6,7 +6,7 @@
 <title>Molecular biology simulations | A-level Biology</title>
 <link rel="canonical" href="https://narajos.com/teaching/simulations/molecular-biology/">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta name="description" content="Interactive A-level Biology Simulations of DNA replication, transcription, splicing, translation and gene expression.">
+<meta name="description" content="Interactive A-level Biology Simulations of DNA replication, transcription, splicing, translation, and gene expression.">
 <style>
 :root{
   --bg:#0b1620; --panel:#122230; --panel2:#0e1c27; --line:#24404f;
@@ -1125,7 +1125,7 @@ const SPVIEWS=[
   {cap:0,alt:0,label:"\u2460 splicing only  \u00b7  tap to change"},
   {cap:1,alt:0,label:"\u2461 + 5\u2032 cap and poly(A) tail"},
   {cap:0,alt:1,label:"\u2462 + alternative splicing"},
-  {cap:1,alt:1,label:"\u2463 + cap, tail and alternative splicing"}
+  {cap:1,alt:1,label:"\u2463 + cap, tail, and alternative splicing"}
 ];
 function spSetView(v){
   const was={cap:S.spCap,alt:S.spAlt};
@@ -1284,7 +1284,7 @@ function drawSP(){
   }
 
   const showCap=q.cap>0.02||q.prot>0.02, showAlt=q.alt>0.02;
-  if(showCap||showAlt) spBadge(showCap&&showAlt ? "cap, tail and alternative splicing are not on the AQA specification"
+  if(showCap||showAlt) spBadge(showCap&&showAlt ? "cap, tail, and alternative splicing are not on the AQA specification"
     : showCap ? "cap and tail are not on the AQA specification"
     : "alternative splicing is not on the AQA specification");
   ctx.save(); ctx.textAlign="left"; ctx.textBaseline="middle"; ctx.font="700 11px system-ui";
@@ -1974,7 +1974,7 @@ const STAGES={
       "Increased DNA methylation or decreased histone acetylation switches a gene off.",
       "Epigenetic changes do not alter the base sequence of the DNA.",
       "siRNA binds a protein, then guides it to a matching mRNA, which is cut up so it cannot be translated."],
-    note:"Four views: transcription factors, oestrogen, epigenetics and siRNA." },
+    note:"Four views: transcription factors, oestrogen, epigenetics, and siRNA." },
   translation:{ name:"Translation", type:"tl",
     facts:["mRNA binds to a ribosome, which holds two codons at a time.",
       "Each tRNA has an anticodon and carries one specific amino acid.",

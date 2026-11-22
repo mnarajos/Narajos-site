@@ -323,8 +323,8 @@ try{
  const desktop=await browser.newPage({viewport:{width:1280,height:900}});
  await desktop.goto(base+"/",{waitUntil:"load"});
  assert(await desktop.title(),"Homepage title missing");
- assert.equal(await desktop.title(),"Science Resources | Narajos");
- assert(await desktop.getByRole("heading",{name:"Science Resources",exact:true}).isVisible());
+ assert.equal(await desktop.title(),"Learning & Teaching in Science | Narajos");
+ assert(await desktop.getByRole("heading",{name:"Learning & Teaching in Science",exact:true}).isVisible());
  assert(await desktop.getByRole("heading",{name:"Biology Simulations",exact:true}).isVisible());
  assert(await desktop.getByRole("heading",{name:"Learning Companions"}).isVisible(),"Learning Companions missing from homepage");
  assert((await desktop.locator(".home-philosophy").innerText()).includes("complement classroom teaching"),"Public purpose statement missing");
@@ -627,6 +627,22 @@ try{
  const navPage=await browser.newPage({viewport:{width:1280,height:900}});
  navPage.on("pageerror",e=>errors.push("Shared navigation: "+e.message));
  let standard=null;
+ await navPage.setViewportSize({width:320,height:800});
+ await navPage.goto(base+"/");
+ const homeFooter=navPage.locator("footer");
+ const copyright=homeFooter.getByText("© 2026 Narajos",{exact:false});
+ assert(await copyright.isVisible());
+ const pronunciation=homeFooter.locator("em.site-pronunciation");
+ assert.equal(await pronunciation.textContent(),"It’s /nerr-RA-hoss/.");
+ assert.equal(await pronunciation.evaluate(node=>getComputedStyle(node).fontStyle),"italic");
+ await homeFooter.getByRole("link",{name:"Terms of Use",exact:true}).click();
+ await navPage.getByRole("heading",{name:"Terms of Use",exact:true}).waitFor();
+ assert(await navPage.getByRole("heading",{name:"Third-party materials",exact:true}).isVisible());
+ assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Terms overflow at phone width");
+ await navPage.goto(base+"/science-catch-up/?year=8");
+ assert(await navPage.locator("footer").getByRole("link",{name:"Terms of Use",exact:true}).isVisible());
+ await navPage.setViewportSize({width:1280,height:900});
+
  const fq=await browser.newPage({viewport:{width:1280,height:900}});
  await fq.context().grantPermissions(["clipboard-read","clipboard-write"]);
  await fq.addInitScript(()=>{
@@ -768,7 +784,7 @@ try{
  await screen(fq,"focused-questions-mobile");
  await fq.close();
 
- for(const path of ["/","/404.html","/privacy/","/teaching/","/teacher/","/gcse/","/alevel/","/human-biology/","/science-practice/","/teaching/simulations/",...['bioenergetics','cardiac-cycle','enzyme-inhibition','enzyme-kinetics','molecular-biology'].map(x=>"/teaching/simulations/"+x+"/")]){
+ for(const path of ["/","/404.html","/privacy/","/terms/","/teaching/","/teacher/","/gcse/","/alevel/","/human-biology/","/science-practice/","/teaching/simulations/",...['bioenergetics','cardiac-cycle','enzyme-inhibition','enzyme-kinetics','molecular-biology'].map(x=>"/teaching/simulations/"+x+"/")]){
   await navPage.goto(base+path,{waitUntil:"load"});
   const control=navPage.locator("#site-home");assert(await control.isVisible(),"Missing homepage control: "+path);
   assert.equal(await control.getAttribute("href"),"/");assert.equal(await control.innerText(),"Narajos");

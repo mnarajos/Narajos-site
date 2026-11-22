@@ -1,4 +1,4 @@
-/* A-level Biology spaced reviews, alongside the existing untimed, timed and reverse decks. */
+/* A-level Biology spaced reviews, alongside the existing untimed, timed, and reverse decks. */
 (function(root){
 "use strict";
 function create(E){

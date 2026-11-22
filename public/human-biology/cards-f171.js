@@ -1,4 +1,4 @@
-/* Recall prompts for the initial F171 treatment, prevention and monitoring decks. */
+/* Recall prompts for the initial F171 treatment, prevention, and monitoring decks. */
 window.KeystoneF171Recall = [
   ["2.1", "Treatment", [
     ["What is the purpose of immobilising a fracture?", "To limit movement and maintain alignment while the bone heals."],

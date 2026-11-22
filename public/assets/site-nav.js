@@ -3,6 +3,22 @@
  */
 (function(){
  "use strict";
+ var footer=document.querySelector("footer.footer .footer-inner");
+ if(footer&&!footer.querySelector('a[href="/terms/"]')){
+  var footerLinks=footer.querySelector(".footer-links");
+  if(!footerLinks){
+   footerLinks=document.createElement("nav");
+   footerLinks.className="footer-links";
+   footerLinks.setAttribute("aria-label","Footer navigation");
+   var privacy=footer.querySelector('a[href="/privacy/"]');
+   if(privacy)footerLinks.append(privacy);
+   footer.append(footerLinks);
+  }
+  var terms=document.createElement("a");
+  terms.href="/terms/";
+  terms.textContent="Terms of Use";
+  footerLinks.append(terms);
+ }
  var header=document.querySelector(".topbar .topbar-inner");
  if(!header)return;
  var nav=document.querySelector(".site-nav");

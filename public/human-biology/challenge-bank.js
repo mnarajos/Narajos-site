@@ -315,7 +315,7 @@ window.KeystoneHumanChallenges={
       "explain": "A three-dimensional organoid models selected features of a tissue, not the entire patient.",
       "misconception": "Do not claim organoids are simply identical miniature organs.",
       "samAligned": false,
-      "hintCue": "Ask which effects depend on blood circulation, immune responses or other organs outside the culture."
+      "hintCue": "Ask which effects depend on blood circulation, immune responses, or other organs outside the culture."
     },
     {
       "id": "cell-membrane-transport",
@@ -354,7 +354,7 @@ window.KeystoneHumanChallenges={
       ],
       "correct": 0,
       "model": "It omits some whole-body physiology",
-      "explain": "Cell models may miss the effects of other organs, circulation and immune responses.",
+      "explain": "Cell models may miss the effects of other organs, circulation, and immune responses.",
       "misconception": "In vitro results can be useful without being conclusive.",
       "samAligned": false,
       "hintCue": "A cell culture is not the same as testing the medicine within an interacting whole body."
@@ -379,7 +379,7 @@ window.KeystoneHumanChallenges={
       "explain": "The septum divides the two ventricles and limits mixing of ventricular blood.",
       "misconception": "A septal defect is a hole in the partition, not the heart's outer wall.",
       "samAligned": true,
-      "hintCue": "Identify whether the line separates chambers, surrounds the heart or controls blood flow between chambers."
+      "hintCue": "Identify whether the line separates chambers, surrounds the heart, or controls blood flow between chambers."
     },
     {
       "id": "phys-diagnosis-tools",
@@ -407,7 +407,7 @@ window.KeystoneHumanChallenges={
       "explain": "Decide what is being measured before naming an instrument.",
       "misconception": "ECG alone does not image a hole in the ventricular septum.",
       "samAligned": true,
-      "hintCue": "Separate electrical recordings, ultrasound images and tests measuring air movement."
+      "hintCue": "Separate electrical recordings, ultrasound images, and tests measuring air movement."
     },
     {
       "id": "phys-ventilation",
@@ -436,7 +436,7 @@ window.KeystoneHumanChallenges={
       "stem": "A child has a sizeable ventricular septal defect. Explain ONE possible physiological consequence.",
       "markPoints": [
         "A left-to-right shunt may increase pulmonary blood flow and load.",
-        "This can cause breathlessness, fatigue or cardiac strain."
+        "This can cause breathlessness, fatigue, or cardiac strain."
       ],
       "model": "Increased blood flow towards the lungs can increase cardiac work and contribute to breathlessness.",
       "explain": "Small defects may cause few symptoms; severity and physiology vary.",
@@ -630,7 +630,7 @@ window.KeystoneHumanChallenges={
       "explain": "This negative-feedback sequence opposes the original glucose change.",
       "misconception": "Glucagon is not the main hormone released in response to high glucose.",
       "samAligned": true,
-      "hintCue": "Begin with the stimulus detected by the pancreas, then the signal, effector response and correction."
+      "hintCue": "Begin with the stimulus detected by the pancreas, then the signal, effector response, and correction."
     },
     {
       "id": "endo-hormone-match",
@@ -715,7 +715,7 @@ window.KeystoneHumanChallenges={
         "Limitation: sensor delay/error, cannula issues or user input may still affect control."
       ],
       "model": "Continuous monitoring and automated adjustment can improve control, but devices still need checks and can fail.",
-      "explain": "A closed-loop system uses a sensor, algorithm and insulin delivery mechanism.",
+      "explain": "A closed-loop system uses a sensor, algorithm, and insulin delivery mechanism.",
       "misconception": "Not every system automatically manages food intake without user input.",
       "samAligned": true,
       "hintCue": "Think about how frequently a sensor can sample and what could happen if the sensor or delivery system fails."
@@ -999,7 +999,7 @@ window.KeystoneHumanChallenges={
         "Decline phase"
       ],
       "model": "Lag → exponential → stationary → decline.",
-      "explain": "Populations tend to stop increasing as nutrient availability, waste accumulation and mortality change.",
+      "explain": "Populations tend to stop increasing as nutrient availability, waste accumulation, and mortality change.",
       "misconception": "Stationary does not mean that all bacteria have stopped dividing.",
       "samAligned": false,
       "hintCue": "The population first adjusts, then divides quickly, then plateaus as resources become limiting."
@@ -1014,7 +1014,7 @@ window.KeystoneHumanChallenges={
       "stem": "Name TWO reasons aseptic technique is important during a bacterial culture investigation.",
       "markPoints": [
         "Reduce contamination that could distort results.",
-        "Limit accidental exposure, spread or escape of cultured organisms."
+        "Limit accidental exposure, spread, or escape of cultured organisms."
       ],
       "model": "Avoid contamination of the culture and reduce exposure or spread.",
       "explain": "Laboratory procedures need a risk assessment for the organisms and materials involved.",
@@ -1093,7 +1093,7 @@ window.KeystoneHumanChallenges={
       "level": "stretch",
       "stem": "A supplement advertises that it will permanently cure obesity by replacing intestinal bacteria. Explain TWO reasons to question that claim.",
       "markPoints": [
-        "Changes to the microbiota are complex, variable and may not persist.",
+        "Changes to the microbiota are complex, variable, and may not persist.",
         "Evidence for treating obesity is not sufficient for a guaranteed cure; safety and clinical trials matter."
       ],
       "model": "Claims need controlled evidence; microbiota interventions may be variable or have risks.",
@@ -1316,9 +1316,9 @@ window.KeystoneHumanChallenges={
       "markPoints": [
         "Explain how faster access to records could improve continuity or coordination of care.",
         "Explain how appropriate sharing across services might reduce duplicated testing or communication errors.",
-        "Consider a limitation such as implementation cost, training demands or staff workload during transition.",
-        "Consider risks to confidentiality, cybersecurity, availability during outages or unequal patient access.",
-        "Discuss practical mitigations such as role-based access, backups, audits and staff training.",
+        "Consider a limitation such as implementation cost, training demands, or staff workload during transition.",
+        "Consider risks to confidentiality, cybersecurity, availability during outages, or unequal patient access.",
+        "Discuss practical mitigations such as role-based access, backups, audits, and staff training.",
         "Discuss the relative importance of the benefits and risks for this clinic, and reach a justified judgement with conditions."
       ],
       "model": "Electronic records could reduce delays and help clinicians share relevant results when patients move between services. However, training, cost, confidentiality and downtime are substantial practical issues. A phased rollout with access controls, secure backups, staff training and auditing may be justified if the clinic can sustain those safeguards; a different conclusion could be reasonable if supported.",
@@ -1327,7 +1327,7 @@ window.KeystoneHumanChallenges={
       "samAligned": true,
       "marks": 9,
       "levelsNote": "For OCR-style 9-mark DISCUSS practice, consider both sides in context, evaluate their relative importance and conclude with a reasoned judgement. This is not OCR's official mark scheme.",
-      "hintCue": "Use the specific clinic context: access to results, training, security, continuity and outages."
+      "hintCue": "Use the specific clinic context: access to results, training, security, continuity, and outages."
     },
     {
       "id": "health-parkinsons-therapy",
@@ -1336,13 +1336,13 @@ window.KeystoneHumanChallenges={
       "section": "2.2",
       "type": "written",
       "level": "stretch",
-      "stem": "A patient with early Parkinson's disease experiences hand tremor, slower movement and anxiety about maintaining independence. Analyse how medication and non-drug therapies might affect the patient's symptoms and day-to-day functioning.",
+      "stem": "A patient with early Parkinson's disease experiences hand tremor, slower movement, and anxiety about maintaining independence. Analyse how medication and non-drug therapies might affect the patient's symptoms and day-to-day functioning.",
       "markPoints": [
         "Identify an appropriate medication option as a possible way of managing motor symptoms.",
-        "Explain a plausible benefit for tremor, rigidity or bradykinesia, while noting individual response varies.",
+        "Explain a plausible benefit for tremor, rigidity, or bradykinesia, while noting individual response varies.",
         "Explain a relevant limitation or adverse effect of medication.",
         "Describe physiotherapy, occupational therapy or psychological support relevant to this patient's needs.",
-        "Link non-drug support to functional independence, mobility, daily activities or anxiety.",
+        "Link non-drug support to functional independence, mobility, daily activities, or anxiety.",
         "Make a contextualised judgement about combining or sequencing approaches and review as needs change."
       ],
       "model": "Drug treatment may help some motor symptoms, although side effects and timing need individual consideration. Physiotherapy can support mobility and balance; occupational therapy can help daily activities, while psychological support may help anxiety. A tailored combination with regular review may protect independence better than assuming one intervention will address every need.",
@@ -1350,7 +1350,7 @@ window.KeystoneHumanChallenges={
       "misconception": "Do not equate supportive therapy with a lack of biological effect.",
       "samAligned": true,
       "marks": 6,
-      "levelsNote": "For OCR-style 6-mark ANALYSE practice, develop causal links between treatments, effects, benefits and limitations in the given context. This is not OCR's official mark scheme.",
+      "levelsNote": "For OCR-style 6-mark ANALYSE practice, develop causal links between treatments, effects, benefits, and limitations in the given context. This is not OCR's official mark scheme.",
       "hintCue": "Compare how a medicine and a supportive intervention affect both motor signs and daily independence."
     },
     {
@@ -1475,8 +1475,8 @@ window.KeystoneHumanChallenges={
       "stem": "A hospital is considering a new treatment that improves mobility but has substantial adverse effects. State a reasoned approach to deciding whether to offer it.",
       "markPoints": [
         "Compare likely clinical benefits against adverse effects and uncertainty.",
-        "Consider the patient's goals, preferences and informed consent.",
-        "Use reliable evidence, individual context and monitoring plans."
+        "Consider the patient's goals, preferences, and informed consent.",
+        "Use reliable evidence, individual context, and monitoring plans."
       ],
       "model": "Compare benefits and harms using evidence, then support a decision reflecting patient goals and informed choice.",
       "explain": "Risk-benefit decisions vary by patient and treatment context.",
@@ -1503,7 +1503,7 @@ window.KeystoneHumanChallenges={
         1
       ],
       "model": "Access control and data minimisation",
-      "explain": "Appropriate permissions, security and governance protect confidential information.",
+      "explain": "Appropriate permissions, security, and governance protect confidential information.",
       "misconception": "Anonymisation must be assessed; stripping names alone may not prevent re-identification.",
       "samAligned": false,
       "hintCue": "Consider whether identifying information is essential and who needs permission to view it."
@@ -1941,7 +1941,7 @@ window.KeystoneHumanChallenges={
       ],
       "correct": 0,
       "reasons": [
-        "Predictive value depends partly on test sensitivity, specificity and condition prevalence.",
+        "Predictive value depends partly on test sensitivity, specificity, and condition prevalence.",
         "All screening tests have complete specificity.",
         "A screening result is always the same as a definitive diagnosis.",
         "Screening identifies all affected people without any diagnostic uncertainty."
@@ -2052,7 +2052,7 @@ window.KeystoneHumanChallenges={
       ],
       "correct": 0,
       "model": "430 L/min.",
-      "explain": "Peak flow usually records the highest technically acceptable effort rather than the mean, lowest or final value.",
+      "explain": "Peak flow usually records the highest technically acceptable effort rather than the mean, lowest, or final value.",
       "misconception": "The middle or final reading is not automatically the correct result.",
       "hints": [
         "Identify the statement that contradicts the underlying biological mechanism.",

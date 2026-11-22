@@ -130,7 +130,7 @@ export const year10Catchup = {
 
   "reaction-profiles": lesson(10,"C5","Exothermic and endothermic reaction profiles",
     "How can a reaction release energy if it needs energy to start?",
-    "Compare the start, peak and finish. The starting level is the same on both profiles.",
+    "Compare the start, peak, and finish. The starting level is the same on both profiles.",
     "The activation energy is the initial barrier. The difference between the reactant and product energy levels shows the overall transfer.",
     ["curve","Energy profiles for two reactions","Progress of reaction","Energy",[
       ["Exothermic",[[0,2],[1,2],[2,3],[3,5],[4,3],[5,1],[6,1]]],
@@ -141,7 +141,7 @@ export const year10Catchup = {
       ["Read the net change","Products have a lower energy level in an exothermic reaction. Energy is transferred to the surroundings. An endothermic reaction transfers in energy overall.",
         "Which profile shows net energy transferred to the surroundings?","The one whose products are lower than its reactants.","The decrease in energy of the reacting system goes to the surroundings.","The one with the highest peak.","Any profile that rises at the start."],
       ["Observe a temperature change","In a controlled temperature-change practical, warming of the mixture can indicate an exothermic reaction and cooling can indicate an endothermic reaction.",
-        "What should you compare in repeats using different reactants?","The temperature change from the same starting conditions.","Fair comparisons control amounts, timing and apparatus.","Only the highest temperature, without a starting reading.","Only whether the reactants change colour."]
+        "What should you compare in repeats using different reactants?","The temperature change from the same starting conditions.","Fair comparisons control amounts, timing, and apparatus.","Only the highest temperature, without a starting reading.","Only whether the reactants change colour."]
     ],
     ["A reaction starts at 25 and ends at 35 on the energy scale. How should it be classified?","Endothermic","The products are higher in energy, so energy is transferred in overall.","Exothermic","No transfer because the curve has a peak."],
     ["On a profile where products are below reactants, where does the difference in energy go?","To the surroundings","This is an exothermic energy transfer.","Into making the line higher","Nowhere, energy is destroyed."],
@@ -166,7 +166,7 @@ export const year10Catchup = {
     ["Which organ releases insulin when blood glucose rises?","The pancreas","The liver responds to insulin, while the pancreas releases it.","The liver","The stomach"],
     "Higher Tier · If blood glucose falls, the pancreas releases glucagon, which stimulates glycogen breakdown in the liver and release of glucose. The two hormones counter opposite changes."),
 
-  "food-web-change": lesson(10,"B7","Feeding relationships, sampling and biodiversity",
+  "food-web-change": lesson(10,"B7","Feeding relationships, sampling, and biodiversity",
     "How could losing one prey species affect several other populations?",
     "Trace the arrows from grass to the two herbivores. Which animals share an owl as a predator?",
     "Organisms depend on other organisms and on their environment. Sampling and food webs show different aspects of those relationships.",
@@ -179,12 +179,12 @@ export const year10Catchup = {
       ["Plan a sample","Place quadrats randomly when estimating abundance across an area. Use a transect when comparing a change along a gradient.",
         "Which method helps you measure how plant cover changes away from a path?","Quadrats at set distances along a transect.","A transect samples the gradient systematically.","One quadrat at the most grassy place.","Counting all plant species in a photograph from another site."]
     ],
-    ["One plot has 50 daisies only. Another has daisies, clover and grass. Which is richer in species?","The second plot","Species richness counts types, not total individuals.","The first plot because 50 is larger","Both always have the same richness"],
+    ["One plot has 50 daisies only. Another has daisies, clover, and grass. Which is richer in species?","The second plot","Species richness counts types, not total individuals.","The first plot because 50 is larger","Both always have the same richness"],
     ["Which method estimates the mean number of plants across a whole field fairly?","Take many quadrats at randomly chosen locations.","Random sampling reduces selection bias.","Take one beside the gate.","Only sample where plants look tallest."])
 };
 
 export const year11Catchup = {
-  "reaction-rate": lesson(11,"C6","Rates, collisions and reversible reactions",
+  "reaction-rate": lesson(11,"C6","Rates, collisions, and reversible reactions",
     "How can two reactions make the same amount of gas and finish at different times?",
     "Find the curve that is steepest at the start. Then compare their final readings.",
     "Rate is the amount of reactant used or product made per unit time. Two reactions can reach the same final yield at different rates.",
@@ -203,7 +203,7 @@ export const year11Catchup = {
     ["Which condition usually increases collision frequency in a solution?","Greater reactant concentration","There are more reactant particles per unit volume.","Larger bubbles of product after the reaction","Cooling the mixture"],
     "Higher Tier · Draw a tangent and calculate its gradient for the rate at a point. Explain how changing a condition can shift a dynamic equilibrium."),
 
-  "crude-oil": lesson(11,"C7","Crude oil, fractions and cracking",
+  "crude-oil": lesson(11,"C7","Crude oil, fractions, and cracking",
     "How can one barrel of crude oil supply fuel and chemical feedstock?",
     "Compare where the short- and long-chain hydrocarbons leave the column.",
     "Fractional distillation separates hydrocarbons by boiling range. Cracking breaks long hydrocarbons into smaller molecules.",
@@ -265,7 +265,7 @@ export const year11Catchup = {
         "Can potable water contain dissolved mineral salts?","Yes, at acceptable levels.","Potable means safe to drink.","No, it must contain only water molecules.","Only if the salts are visible."],
       ["Choose processes","Filtration removes suspended solids. Sterilisation kills microbes. Desalination removes dissolved salts.",
         "Which process removes dissolved salt from seawater?","Desalination","Dissolved salt passes through an ordinary solids filter.","Filter paper by itself","Sterilisation by itself"],
-      ["Compare the wider impact","A life-cycle assessment considers raw materials, manufacturing, use and disposal. Comparisons can change when assumptions such as reuse or transport change.",
+      ["Compare the wider impact","A life-cycle assessment considers raw materials, manufacturing, use, and disposal. Comparisons can change when assumptions such as reuse or transport change.",
         "What might alter a life-cycle comparison of two bottles?","How many times each bottle is reused.","The use stage contributes to overall impact.","Using a graph with a different font.","Ignoring raw material extraction in both cases."]
     ],
     ["A clear seawater sample passes through filter paper. Why is it still unsuitable to drink?","It still contains too much dissolved salt.","The particles of salt in solution pass through the filter.","Clear water always carries more sand.","The filter increases the salt concentration in every case."],
@@ -413,22 +413,22 @@ const complementary = {
   "electromagnetic-spectrum": lesson(11,"P6","The electromagnetic spectrum",
     "What makes a radio signal and an X-ray part of the same family?",
     "Read from long wavelengths to short wavelengths. Which wave has the higher frequency?",
-    "Electromagnetic waves are transverse and travel at the same speed in a vacuum. Their wavelengths, frequencies and effects differ.",
+    "Electromagnetic waves are transverse and travel at the same speed in a vacuum. Their wavelengths, frequencies, and effects differ.",
     ["pairs","Two ends of the electromagnetic spectrum",[
       ["Radio","Longer wavelength","Lower frequency."],
       ["Gamma","Shorter wavelength","Higher frequency."]]],
     [
       ["Compare what stays the same","Electromagnetic waves can travel through a vacuum. Different bands travel at the same speed in a vacuum.",
-        "Which travels faster in a vacuum, radio or X-rays?","They travel at the same speed.","The speed of electromagnetic waves in a vacuum is the same for both.","Radio waves","X-rays"],
-      ["Know the order","From long to short wavelength, the bands are radio, microwaves, infrared, visible, ultraviolet, X-rays and gamma.",
+        "Which travels faster in a vacuum, radio, or X-rays?","They travel at the same speed.","The speed of electromagnetic waves in a vacuum is the same for both.","Radio waves","X-rays"],
+      ["Know the order","From long to short wavelength, the bands are radio, microwaves, infrared, visible, ultraviolet, X-rays, and gamma.",
         "Which band sits between infrared and ultraviolet?","Visible light","Visible light is next to both in the spectrum.","Microwaves","Gamma rays"],
       ["Select a use or precaution","Infrared cameras detect radiation emitted by warm surfaces. X-rays can pass through soft tissue more easily than bone. X-rays and gamma rays are ionising.",
         "Why limit unnecessary exposure to X-rays?","They can ionise atoms and damage cells.","Ionising radiation can damage biological molecules.","They travel too slowly in a vacuum.","All X-rays are absorbed by air."]
     ],
     ["A warm object is viewed in darkness with a thermal camera. What is the camera detecting?","Infrared emitted by the object.","Warm objects emit infrared radiation.","A stream of hot particles.","Ultraviolet from a room lamp that is switched off."],
-    ["Which has the shorter wavelength, radio or ultraviolet?","Ultraviolet","It is nearer the short-wavelength end of the spectrum.","Radio","They are always the same length."]),
+    ["Which has the shorter wavelength, radio, or ultraviolet?","Ultraviolet","It is nearer the short-wavelength end of the spectrum.","Radio","They are always the same length."]),
 
-  "selection-and-variation": lesson(11,"B6","Variation, selection and evolution",
+  "selection-and-variation": lesson(11,"B6","Variation, selection, and evolution",
     "How can a population change while its individuals keep the same features?",
     "Compare the proportion of dark insects before and after several generations. Both generations live on dark bark.",
     "Natural selection changes how common inherited features are in a population over generations.",
@@ -450,7 +450,7 @@ const furtherCatchup = {
   "prevention-and-medicines": lesson(10,"B3","Preventing transmission and testing medicines",
     "Why might a mosquito net help against malaria while antibiotics do not prevent measles?",
     "Compare the ways the pathogens spread. Which step would help interrupt each route?",
-    "Preventing disease starts with how the pathogen spreads. Medicines are tested for safety, effectiveness and suitable dose.",
+    "Preventing disease starts with how the pathogen spreads. Medicines are tested for safety, effectiveness, and suitable dose.",
     ["pairs","Two different routes",[
       ["Measles","Virus → droplets from a person","Vaccination reduces the risk of developing the disease."],
       ["Malaria","Protist → mosquito → person","Mosquito nets can reduce bites."]]],
@@ -465,10 +465,10 @@ const furtherCatchup = {
     ["A person takes a painkiller for a bacterial infection and feels better. What can be concluded?","Their symptoms improved. The painkiller need not have killed the bacteria.","Symptom relief and treating the cause are different.","The painkiller must have killed all bacteria.","The infection was definitely viral."],
     ["Which transmission route is targeted by cooking contaminated food thoroughly?","Pathogens passed on in food.","The treatment reduces viable pathogens in the food.","Transmission by mosquito bites.","Inherited conditions passed to offspring."]),
 
-  "radiation-types": lesson(10,"P4","Alpha, beta and gamma radiation",
+  "radiation-types": lesson(10,"P4","Alpha, beta, and gamma radiation",
     "Why can a sheet of paper stop one emission while a thick barrier is needed for another?",
     "Read across the shielding comparisons. Which emission is the most penetrating?",
-    "Unstable nuclei emit radiation. Alpha, beta and gamma differ in their nature, ionising ability and penetration.",
+    "Unstable nuclei emit radiation. Alpha, beta, and gamma differ in their nature, ionising ability and penetration.",
     ["pairs","Compare the shielding",[
       ["Alpha and beta","Paper stops alpha","A few millimetres of aluminium can stop beta."],
       ["Gamma","Thick shielding reduces gamma","Dense lead or thick concrete can reduce the intensity."]]],
@@ -483,7 +483,7 @@ const furtherCatchup = {
     ["A source is stopped by thin aluminium but passes through paper. Which emission fits these observations?","Beta","Beta is more penetrating than alpha but less penetrating than gamma.","Alpha","Gamma"],
     ["After gamma emission, how does the number of protons in the nucleus change?","It stays the same.","A gamma photon carries away energy and leaves the proton number unchanged.","It decreases by two.","It increases by one."]),
 
-  "circuit-resistance": lesson(10,"P2","Resistance, current and electrical power",
+  "circuit-resistance": lesson(10,"P2","Resistance, current, and electrical power",
     "Why does a filament lamp not follow a straight-line graph?",
     "Compare the slopes of the current–potential difference curves as the potential difference rises.",
     "Resistance is potential difference divided by current. Heating a filament increases its resistance.",
@@ -530,7 +530,7 @@ const furtherCatchup = {
     [
       ["Move carbon into living material","Plants use carbon dioxide in photosynthesis. Feeding transfers carbon compounds from one organism to another.",
         "What process moves carbon from air into sugars in the plant?","Photosynthesis","Plants use carbon dioxide to produce sugars.","Combustion","Evaporation"],
-      ["Return carbon to the atmosphere","Plants, animals and decomposers respire. Combustion of organic fuels can also release carbon dioxide.",
+      ["Return carbon to the atmosphere","Plants, animals, and decomposers respire. Combustion of organic fuels can also release carbon dioxide.",
         "How can decomposers return carbon to the air?","By respiration","Respiration produces carbon dioxide.","By releasing oxygen only","By turning carbon atoms into new elements"],
       ["Link habitats to diversity","Biodiversity is the variety of living organisms. Protecting habitats and restoring areas can help populations survive.",
         "Which action can support biodiversity?","Protect several different habitats.","Different organisms use different conditions and resources.","Replace all habitats with one crop.","Remove the variety of food sources."]

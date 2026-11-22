@@ -75,9 +75,9 @@ function showHome(){
  h+='<a href="#challenge/f170/weak" class="k-mini-action fix"><span class="k-mini-symbol">'+kIcon("rotate")+'</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
  h+='</section>';
  h+='<h2 class="k-subhead">Other ways to revise F171</h2><section class="k-home-actions">';
- if(f171Cards.length)h+='<a href="#flashcards/f171" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("layers")+'</span><strong>F171 flashcards</strong><small>Treatment, prevention and monitoring</small></a>';
+ if(f171Cards.length)h+='<a href="#flashcards/f171" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("layers")+'</span><strong>F171 flashcards</strong><small>Treatment, prevention, and monitoring</small></a>';
  h+='<a href="#catchup/f171" class="k-mini-action learn"><span class="k-mini-symbol">'+kIcon("book")+'</span><strong>Catch up</strong><small>Key ideas and explanations</small></a>';
- h+='<a href="#skills/f171" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("calc")+'</span><strong>Skills practice</strong><small>Calculations, data and evidence</small></a>';
+ h+='<a href="#skills/f171" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("calc")+'</span><strong>Skills practice</strong><small>Calculations, data, and evidence</small></a>';
  h+='<a href="#challenge/f171/weak" class="k-mini-action fix"><span class="k-mini-symbol">'+kIcon("rotate")+'</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
  h+='</section>';
  if(old)h+='<section class="k-continue"><div><strong>Unfinished flashcards or explanation practice</strong><p>Continue your saved set.</p></div>'+link("resume","Resume","primary")+'</section>';
@@ -153,11 +153,11 @@ function showFlashMenu(){
 function showF171FlashMenu(){
  const deckLinks=f171Decks.map(([section,title,items])=>'<article class="paper area-card"><h3>'+esc(title)+'</h3><p>'+items.length+' cards</p>'+link("cards/f171-"+section,"Practise "+title.toLowerCase(),"primary")+'</article>').join("");
  const due=review.stats(f171Cards.map(c=>c.id)).due;
- render('<div class="k-wrap">'+crumb("home","Overview")+'<div class="k-compact-hero"><div class="eyebrow">F171 · Active recall</div><h1>F171 flashcards</h1><p>Starter decks for treatment, prevention and monitoring.</p></div><div class="actions">'+link("cards/f171","Mix these topics","primary")+(due?link("cards/f171-due","Review "+due+" due cards"):"")+link("flashcards","F170 flashcards")+'</div><div class="grid">'+deckLinks+'</div></div>');
+ render('<div class="k-wrap">'+crumb("home","Overview")+'<div class="k-compact-hero"><div class="eyebrow">F171 · Active recall</div><h1>F171 flashcards</h1><p>Starter decks for treatment, prevention, and monitoring.</p></div><div class="actions">'+link("cards/f171","Mix these topics","primary")+(due?link("cards/f171-due","Review "+due+" due cards"):"")+link("flashcards","F170 flashcards")+'</div><div class="grid">'+deckLinks+'</div></div>');
 }
 function showPracticeMenu(){
  var st=stats();
- render('<div class="k-wrap">'+crumb("home","Overview")+'<div class="k-compact-hero"><div class="eyebrow">F170 · Explanation practice</div><h1>Explain the biology</h1><p>Write a short answer, then check the key points.</p></div><div class="k-quick-buttons"><a class="k-shortcut primary" href="#challenge/f170/all"><span class="k-mini-symbol">⚡</span><span><strong>Varied exam questions</strong><small>Choose, order, calculate and explain</small></span></a><a class="k-shortcut secondary" href="#practice/all"><span class="k-mini-symbol">'+kIcon("book")+'</span><span><strong>Explanation-only practice</strong><small>'+st.sections+' independent prompts</small></span></a></div><h2 class="k-subhead">Choose a topic</h2>'+chooserOptions("practice")+'</div>');
+ render('<div class="k-wrap">'+crumb("home","Overview")+'<div class="k-compact-hero"><div class="eyebrow">F170 · Explanation practice</div><h1>Explain the biology</h1><p>Write a short answer, then check the key points.</p></div><div class="k-quick-buttons"><a class="k-shortcut primary" href="#challenge/f170/all"><span class="k-mini-symbol">⚡</span><span><strong>Varied exam questions</strong><small>Choose, order, calculate, and explain</small></span></a><a class="k-shortcut secondary" href="#practice/all"><span class="k-mini-symbol">'+kIcon("book")+'</span><span><strong>Explanation-only practice</strong><small>'+st.sections+' independent prompts</small></span></a></div><h2 class="k-subhead">Choose a topic</h2>'+chooserOptions("practice")+'</div>');
 }
 function createSession(type,scope){
  var selected=type==="cards"?cardsFor(scope).map(function(x){return x.id;}):sectionsFor(scope).map(function(x){return x.id;});

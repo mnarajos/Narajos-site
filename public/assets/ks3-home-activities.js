@@ -85,7 +85,7 @@ const activities = {
   ],
   "health-and-lifestyle": [
     "Read a food label",
-    "Look at the nutrition table on a food packet. Find protein, carbohydrate and fat. Check which column is per 100 g.",
+    "Look at the nutrition table on a food packet. Find protein, carbohydrate, and fat. Check which column is per 100 g.",
     "One label lists 9 g protein, 20 g carbohydrate and 4 g fat per 100 g.",
     "What does the label show about whether one food can supply different nutrients?",
     "It shows that a single food can supply several nutrients. Per 100 g gives a common basis for comparing foods."
@@ -143,7 +143,7 @@ const activities = {
   ],
   "earth-structure": [
     "Compare rock clues",
-    "If you can see a stone or paving slab from where you are, look for grains, crystals or bands. Sketch or describe one feature you can actually see.",
+    "If you can see a stone or paving slab from where you are, look for grains, crystals, or bands. Sketch or describe one feature you can actually see.",
     "One rock sample has rounded grains stuck together in bands. A second has interlocking mineral crystals.",
     "What clues would support an idea that a sample is sedimentary? Would a single clue always be enough?",
     "Cemented grains in layers support that idea. Some rocks share features, so combine clues and use more evidence when possible."
