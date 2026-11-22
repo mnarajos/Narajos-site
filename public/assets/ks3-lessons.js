@@ -6,26 +6,35 @@ const lesson = (id, unit, title, visual, notice, explain, questions, transfer, m
   id, unit, title, visual, notice, explain, questions, transfer, model, related
 });
 
+export const rampAngleQuestion = "How does ramp angle affect the distance a toy car rolls after it leaves the ramp?";
+
 export const curriculum = {
   7: [
     lesson("fair-tests", "Science Skills", "What makes a test fair?",
-      { caption: "Two tests of how a ramp affects rolling distance", headers: ["Test", "Ramp height", "Car", "Distance rolled"], rows: [["A", "10 cm", "Green", "60 cm"], ["B", "20 cm", "Blue", "95 cm"]] },
-      "Spot the two things that changed between tests A and B.",
-      ["Change one factor on purpose. This is the [independent variable]. Here it is the height of the ramp. The distance the toy rolls is the [dependent variable] because it is the outcome you measure.",
-       "Keep other factors that could affect the result the same. These are [control variables|control variable]. For the ramp test, keep the toy, ramp surface and release position the same. Release the toy without pushing.",
-       "Use a clear method someone else could repeat. Measure from the foot of the ramp every time. Repeat each setup and see whether the measurements are close together."],
+      { caption: "Example results from the ramp model", headers: ["Setting or result", "Run A", "Run B"],
+        rows: [["Ramp angle", "10° (shallow)", "30° (steep)"], ["Toy and load", "Car, unloaded", "Car, unloaded"],
+          ["Ramp surface", "Smooth plastic", "Smooth plastic"], ["Release point", "Near the top", "Near the top"],
+          ["Distance from the ramp foot", "45 cm", "130 cm"]] },
+      "Look across each row. Which setting changes and which settings stay the same?",
+      ["Change one factor on purpose. This is the [independent variable]. Here it is the ramp angle. Measure how far the toy rolls from the foot of the ramp to where it stops. This is the [dependent variable].",
+       "Keep other factors that could affect the result the same. These are [control variables|control variable]. Use the same toy and load, the same ramp surface and the same release point. Let go without pushing.",
+       "A clear method lets someone else repeat the test. Use the foot of the ramp as 0 cm each time. Repeat each setup and check whether the readings are similar."],
       [
-        check("Which condition should change to answer the question?", "The height of the ramp", "The question asks about ramp height. Change this and measure the distance the car rolls.", [
-          ["The car used", "Changing the car makes it harder to tell whether any difference was due to the ramp."],
-          ["The surface the car rolls on", "Keep the surface the same. The ramp height is the factor you want to test."]
+        check(rampAngleQuestion + " Which condition should change?", "The ramp angle", "Change the angle to answer this question. Keep the toy, load, ramp surface and release point the same.", [
+          ["The toy used", "Changing the toy could change the distance. Use the same one for both runs."],
+          ["The ramp surface", "Keep the surface the same here. A different surface would be an independent variable in a different test."]
         ]),
-        check("The green car is used in both tests. What should the pupil record each time?", "How far the car rolls", "This is the outcome the pupil is comparing.", [
-          ["The colour of the car", "Colour is held the same in both tests. The pupil needs to measure an outcome."],
-          ["The height only", "Record the height too, but the distance rolled tells you what difference the height made."]
+        check("In the ramp-angle investigation, what should the pupil measure each time?", "How far the car rolls from the foot of the ramp", "Measure from the same zero point to where the toy stops.", [
+          ["The colour of the car", "Repainting this toy in the model does not change how far it rolls."],
+          ["Only the angle of the ramp", "Record the angle too. The distance is the outcome you need to compare."]
+        ]),
+        check("A pupil starts the toy near the top on the shallow ramp and halfway up on the steep ramp. What should they change to make this a fair test of angle?", "Start the toy at the same release point in both runs", "Then ramp angle is the only setting deliberately changed. Starting lower down can also change the distance.", [
+          ["Use the same angle for both runs", "Keep two different angles because angle is the factor being tested."],
+          ["Repeat each setup with the current release points", "Repeats help you check consistency. Both angle and release point would still differ."]
         ])
       ],
-      "You want to test whether water temperature affects the time for sugar to dissolve. Say what to change, what to measure and one thing to keep the same.",
-      "Change the water temperature, measure the time until the sugar dissolves and keep the mass of sugar the same. You could also control the water volume and how you stir."),
+      "How does water temperature affect how long sugar takes to dissolve? Plan two runs. Say what you would change, what you would measure and two things you would keep the same. Explain why one of your controls matters.",
+      "Use two different water temperatures and time how long the sugar takes to dissolve. Keep the amount of sugar and the volume of water the same. If the amount of sugar changes, the time might change because there is more sugar to dissolve. You could also use the same type of sugar and stir each sample in the same way."),
     { unit: "Cells", title: "Cells and microscopes", href: "/ks3/cells/" },
     lesson("states-of-matter", "Particles and their Behaviour", "What changes when ice melts?",
       { type: "particles", caption: "Particle model of water", panels: [{ label: "Ice", layout: "solid" }, { label: "Liquid water", layout: "liquid" }, { label: "Water vapour", layout: "gas" }] },
@@ -397,9 +406,9 @@ export const motionLessons = [
 
 export const extraChecks = {
   "fair-tests": [
-    "Two paper spinners have different wing lengths and are dropped from different heights. Which change lets you test wing length?",
+    "Does wing length affect how long a paper spinner takes to fall? Two spinners have different wing lengths and are dropped from different heights. What should stay the same?",
     "Drop each spinner from the same height",
-    "This controls a second factor that could affect flight time.",
+    "Drop height can change the fall time. Keep it the same so you can test wing length.",
     [
       [
         "Give each spinner a different mass",

@@ -782,7 +782,8 @@ try{
   await navPage.goto(path);
   await navPage.getByRole("heading",{name:"Check your understanding",exact:true}).waitFor();
   const firstCheck=navPage.locator("[data-catchup-check]").first();
-  assert.equal(await navPage.locator("[data-catchup-check]").count(),/\/ks3\/(lesson|cells)\//.test(path)?3:2);
+  const expectedChecks=new URL(path).searchParams.get("topic")==="fair-tests" ? 4 : /\/ks3\/(lesson|cells)\//.test(path) ? 3 : 2;
+  assert.equal(await navPage.locator("[data-catchup-check]").count(),expectedChecks);
   await navPage.locator(".ks3-lesson figure,.ks3-lesson table").first().waitFor({state:"visible"});
   assert(await navPage.locator(".ks3-lesson .ks3-connection").first().isVisible(),"KS3 lesson is missing a recall cue");
   assert(await navPage.locator(".ks3-lesson .ks3-term").first().isVisible(),"KS3 lesson is missing vocabulary help");
@@ -813,6 +814,38 @@ try{
  await navPage.getByRole("status").filter({hasText:"The factor you deliberately change"}).waitFor();
  await independent.press("Escape");
  assert.equal(await independent.getAttribute("aria-expanded"),"false");
+ assert.match(await navPage.locator(".ks3-fair-aim").innerText(),/How does ramp angle affect the distance/);
+ assert(await navPage.getByRole("table",{name:"Example results from the ramp model"}).isVisible());
+ const surfaceTest=navPage.locator("#fair-test-surface");
+ const checkControls=surfaceTest.getByRole("button",{name:"Check my controls"});
+ const controlsFeedback=surfaceTest.getByRole("status");
+ await checkControls.press("Enter");
+ await controlsFeedback.filter({hasText:/Choose four factors/}).waitFor();
+ await surfaceTest.getByRole("checkbox",{name:"Ramp angle",exact:true}).check();
+ await surfaceTest.getByRole("checkbox",{name:"Ramp surface",exact:true}).check();
+ await checkControls.press("Enter");
+ await controlsFeedback.filter({hasText:"1 of the 4 controls selected. Change the ramp surface."}).waitFor();
+ await surfaceTest.getByRole("checkbox",{name:"Ramp surface",exact:true}).uncheck();
+ await surfaceTest.getByRole("checkbox",{name:"Paint colour of the same toy",exact:true}).check();
+ await checkControls.press("Enter");
+ await controlsFeedback.filter({hasText:"Repainting the same toy makes no difference in this model."}).waitFor();
+ await surfaceTest.getByRole("checkbox",{name:"Paint colour of the same toy",exact:true}).uncheck();
+ for(const name of ["Toy used","Added load","Release point"]){
+   await surfaceTest.getByRole("checkbox",{name,exact:true}).press("Space");
+ }
+ await checkControls.press("Enter");
+ await controlsFeedback.filter({hasText:"It is a control variable in this one."}).waitFor();
+ const releasePlan=navPage.locator("#release-point-plan");
+ await releasePlan.fill("Keep the ramp surface and ramp angle the same.");
+ await navPage.getByText("Use a sentence starter",{exact:true}).press("Enter");
+ assert(await navPage.getByText("I would change … and measure … .",{exact:false}).isVisible());
+ await navPage.getByText("Compare with an example plan",{exact:true}).press("Enter");
+ assert(await navPage.getByText(/Other valid controls include/).isVisible());
+ assert.equal(await releasePlan.inputValue(),"Keep the ramp surface and ramp angle the same.");
+ await navPage.locator("#sugar-investigation-plan").fill("Keep the mass of sugar and volume of water the same.");
+ await navPage.setViewportSize({width:320,height:800});
+ await checkReadingSpacing(navPage,"KS3 fair-test variables");
+ await navPage.setViewportSize({width:390,height:844});
  await navPage.goto(base+"/ks3/lesson/?topic=states-of-matter");
  const stateModel=navPage.locator("ks3-states-model");
  await stateModel.getByRole("status").filter({hasText:/Solid/}).waitFor();
