@@ -334,10 +334,11 @@ function buildLink(unit,id,origin){
  var scope=practiceScope(unit,id);
  return scope?'<a data-hb-build href="#challenge/'+esc(unit)+'/'+esc(scope)+'?from='+esc(origin)+'">Build understanding</a>':"";
 }
-function resumeLinks(origin,practice){
+function questionReturn(origin){
  var engine=window.KeystoneHumanChallenge;
- var back=engine&&(engine.resumeRoute(origin)||engine.resumeRoute(origin.replace(/\/\d+$/,"")));
- if(back===practice)back=null;
+ return engine&&(engine.resumeRoute(origin)||engine.resumeRoute(origin.replace(/\/\d+$/,"")));
+}
+function resumeLinks(back){
  var simple=window.KeystoneHumanApp&&window.KeystoneHumanApp.hasResume&&window.KeystoneHumanApp.hasResume();
  return (back?'<a data-hb-resume href="#'+esc(back)+'">Return to your unfinished question set</a>':'')+
   (simple?'<a href="#resume">Resume flashcards or explanation practice</a>':'');
@@ -358,13 +359,14 @@ function practiceLabel(unit,id,topic){
  return (unit==="f171"&&labels[id])||"Practise "+topic.toLowerCase();
 }
 function relatedLinks(unit,id,origin,practice,label){
- var links='<a href="#'+esc(practice)+'">'+esc(label)+'</a>';
+ var knowledge=/^f17[2-7]$/.test(unit),back=questionReturn(origin);
+ var links=back===practice&&knowledge?"":'<a'+(knowledge?" data-hb-practice":"")+' href="#'+esc(practice)+'">'+esc(label)+'</a>';
  if(unit==="f170")links+='<a href="#cards/'+esc(id)+'">Flashcards for this topic</a>';
  if(unit==="f171"){
   var deck=(window.KeystoneF171Recall||[]).find(function(d){return d[0]===id;});
   links+='<a href="#'+(deck?"cards/f171-"+id:"flashcards/f171")+'">'+(deck?"Flashcards for this topic":"F171 flashcards")+'</a>';
  }
- return '<nav class="hb-teach-related" aria-label="Related learning">'+resumeLinks(origin,practice)+buildLink(unit,id,origin)+links+'</nav>';
+ return '<nav class="hb-teach-related" aria-label="Related learning">'+resumeLinks(back===practice&&!knowledge?null:back)+buildLink(unit,id,origin)+links+'</nav>';
 }
 function showHome(render){
  var h='<div class="k-wrap">'+crumb("home","Home")+'<div class="k-unit-hero"><div class="k-eyebrow">Your learning companion</div><h1>Catch up and understand</h1><p>Choose an idea to learn or revisit. Guided lessons show the reasoning before you practise.</p></div><div class="k-unit-tiles">';
@@ -425,7 +427,7 @@ function showConcept(unit,id,step,render,review,simulationStage){
    '<div class="k-eyebrow">'+unitKind(unit)+'</div><h1>'+esc(topic)+'</h1>'+
    teaching.render(lesson,{inline:lesson.visual==="model"?"":visual,method:skillLinks(unit,id,lesson),modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:recap+related})+'</div>');
   teaching.mount(unit+"/"+lessonId,lesson,simulationStage?1:review);
-  if(sim)sim.mount(document,simulationStage);
+  if(sim)sim.mount(document,simulationStage,simulationStage&&document.querySelector("[data-hb-resume]"));
   return;
  }
 
@@ -483,6 +485,22 @@ function reteachFor(q,answer){
  }[q.id];
  if(reproduction)return {route:route,href:route+"?stage="+reproduction[0],label:reproduction[1]};
  var target=targets[route.slice("catchup/".length)];
+ target=({
+  "f172-diagram-alleles":[1,"Revisit alleles on homologous chromosomes"],
+  "f172-recessive":[2,"Revisit combining parental alleles"],
+  "f172-carrier":[2,"Revisit reading the Punnett square"],
+  "f173-tests":[1,"Revisit choosing a microscope for the feature"],
+  "f173-micro-contrast":[1,"Revisit surface and internal views"],
+  "f173-mag":[3,"Revisit scale and magnification"],
+  "f174-digestion":[1,"Revisit digestion and absorption"],
+  "f174-enzymes":[2,"Revisit how glucose reaches the blood"],
+  "f174-hormones":[3,"Revisit glucose uptake and storage"],
+  "f174-diagram-glucose":[3,"Revisit insulin action in target tissues"],
+  "f176-synapse":[4,"Revisit what crosses a chemical synapse"],
+  "f177-placebo":[2,"Revisit the purpose of the comparison group"],
+  "f177-diagram-randomise":[2,"Revisit what random allocation changes"],
+  "f177-blinding":[3,"Revisit how blinding reduces bias"]
+ })[q.id]||target;
  if(route==="catchup/f170/1.1.2"&&(q.type==="number"||q.id==="p-cell-actual-width-diagnostic")){
   target=[4,"Revisit the worked unit conversion"];
  }

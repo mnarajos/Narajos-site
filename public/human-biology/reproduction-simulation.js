@@ -58,7 +58,7 @@ function writtenSequence(){
  return '<details class="krp-anatomy-note"><summary>Read the pathway without animation</summary><ol>'+
   checkpoints.map(step=>'<li><strong>'+step.title+'</strong> '+step.observation+'</li>').join("")+'</ol></details>';
 }
-function mountGuide(root, observed, withoutFertilisation, onChange, initialStep){
+function mountGuide(root, observed, withoutFertilisation, onChange, initialStep, returnLink){
  const guide = root.querySelector(".krp-guide");
  const select = guide.querySelector("select");
  const form = guide.querySelector("form");
@@ -78,7 +78,7 @@ function mountGuide(root, observed, withoutFertilisation, onChange, initialStep)
   if(observation.textContent !== message) observation.textContent = message;
   explanation.hidden = Boolean(message);
   next.hidden = !answered || !seen || end;
-  apply.hidden = !answered || !seen || !end;
+  apply.hidden = Boolean(returnLink) || !answered || !seen || !end;
   onChange(guide.open && answered && !seen ? step.action : null);
  }
  function choose(i){
@@ -127,6 +127,10 @@ function mountGuide(root, observed, withoutFertilisation, onChange, initialStep)
  });
  const initialIndex = checkpoints.findIndex(step=>step.id===initialStep);
  guide.open = initialIndex !== -1;
+ if(returnLink){
+  returnLink.classList.add("krp-return");
+  guide.insertBefore(returnLink,form);
+ }
  choose(Math.max(0,initialIndex));
  if(guide.open)select.focus();
  return {
@@ -218,7 +222,7 @@ function markup(){
  writtenSequence()+
  '<p class="krp-note"><strong>Schematic, not to scale.</strong> A real menstrual cycle takes weeks. The animations compress time, and the LH surge follows sustained oestradiol signalling rather than a user-controlled hormone dose. Ovulation releases a secondary oocyte into the region near an oviduct; fertilisation usually occurs in its ampulla. A sperm reaching an oocyte does not guarantee fertilisation, and implantation is a later, separate event.</p></section>';
 }
-function mount(host,initialStep){
+function mount(host,initialStep,returnLink){
  var root=host&&host.querySelector&&host.querySelector("#krp-model");
  if(!root||root.dataset.mounted)return;
  root.dataset.mounted="1";
@@ -231,7 +235,7 @@ function mount(host,initialStep){
  const seen = new Set();
  const guide = mountGuide(root,step=>seen.has(step),()=>state.phase==="complete"&&!state.fertilised,action=>{
   Object.entries(btn).forEach(([key,control])=>control.classList.toggle("krp-next",key===action));
- },initialStep);
+ },initialStep,returnLink);
  var hotspots=root.querySelectorAll(".krp-ovary, .krp-entry");
  var areas={ovary:[48,86,320,228],oviduct:[75,73,390,242],sperm:[205,95,360,484],uterus:[250,102,390,445]};
  function frameView(area,side){

@@ -387,6 +387,30 @@ export async function checkHumanCatchup(browser, base) {
     await reproduction.getByRole("button", { name: "Resume animation" }).click();
     await reproduction.getByRole("button", { name: /LH surge/ }).waitFor();
 
+    await open("catchup/f177/a2");
+    const f177Practice = page.getByRole("link", { name: "Practise research and trials" });
+    const f177Route = "challenge/f177/a2?from=catchup/f177/a2";
+    assert.equal(await f177Practice.getAttribute("href"), "#" + f177Route);
+    await f177Practice.press("Enter");
+    const f177Key = practiceKey + "-topic-f177/a2";
+    await page.locator(".k-question-view").waitFor();
+    await page.evaluate(key => {
+      const run = JSON.parse(localStorage.getItem(key));
+      run.queue = ["f177-diagram-randomise"];
+      localStorage.setItem(key, JSON.stringify(run));
+    }, f177Key);
+    await page.reload();
+    await page.getByRole("radio", { name: "Guarantee the treatment works" }).check();
+    await page.getByRole("button", { name: /Check answer/ }).press("Enter");
+    await page.getByRole("link", { name: "Revisit what random allocation changes" }).press("Enter");
+    await page.locator("#leave-confirm").press("Enter");
+    await page.locator('[data-hb-model-step="2"] [aria-current="step"]').waitFor();
+    assert(await page.getByText(/Random allocation reduces systematic differences/).isVisible());
+    assert.equal(await page.locator('a[href="#' + f177Route + '"]').count(), 1, "Show just one return to the same question");
+    await page.getByRole("link", { name: "Return to your unfinished question set" }).press("Enter");
+    await page.getByRole("heading", { name: "Not yet" }).waitFor();
+    assert.equal((await saved(f177Key)).outcomes[0], "incorrect");
+
     for (const width of [320, 390, 768, 1280]) {
       await page.setViewportSize({ width, height: 820 });
       await open("catchup/f171/4.2.1");

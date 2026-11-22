@@ -52,7 +52,8 @@
 .krp-prediction, .krp-observation { max-width: 65ch; margin: .5rem 0; }
 .krp-prediction:empty, .krp-observation:empty { margin: 0; }
 .krp-observation:not(:empty) { border-inline-start: 3px solid #bb7b38; padding-inline-start: .65rem; }
-[data-f175-apply]:not([hidden]) { display: inline-flex; align-items: center; min-height: 44px; }
+[data-f175-apply]:not([hidden]), .krp-return { display: inline-flex; align-items: center; min-height: 44px; }
+.krp-return { margin-bottom: .45rem; }
 .krp-next:not(:disabled), .krp-next:not(:disabled):is(:hover, :focus-visible) { background: #264e68; color: #fff; }
 .krp-anatomy-note li + li { margin-top: .35rem; }
 @media (max-width: 450px) {
