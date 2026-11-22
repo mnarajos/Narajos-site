@@ -1,5 +1,5 @@
 .practice-cards{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(min(16rem,100%),1fr))}
-.practice-card{border:1px solid #d4dcd8;border-radius:14px;background:white;padding:clamp(.85rem,2.5vw,1.4rem);min-width:0}
+.practice-card{border:1px solid #d4dcd8;border-radius:var(--narajos-panel-radius,.875rem);background:white;padding:clamp(.85rem,2.5vw,1.4rem);min-width:0}
 .practice-card h3{margin-top:0}
 .practice-card details{border-top:1px solid #d4dcd8;padding:.6rem 0}
 .practice-card summary{font-weight:700;cursor:pointer;min-height:44px;padding:.55rem 0}
@@ -9,8 +9,8 @@
 .practice-card table caption{text-align:left;font-weight:700;margin-bottom:.3rem}
 .practice-card .model{background:#f0f7f4;border-left:4px solid #367b70;padding:.6rem .9rem}
 .practice-card label{display:block;font-weight:650;margin:.75rem 0 .22rem}
-.practice-card textarea{display:block;width:100%;color:#172b31;background:white;border:1px solid #879993;border-radius:8px;padding:.6rem;font:inherit;resize:vertical}
-.practice-card :is(a,summary,textarea):focus-visible{outline:3px solid #c9611f;outline-offset:3px}
+.practice-card textarea{display:block;width:100%;color:#172b31;background:white;border:1px solid #879993;border-radius:var(--narajos-control-radius,.55rem);padding:.6rem;font:inherit;resize:vertical}
+.practice-card :is(a,summary,textarea):focus-visible{outline:3px solid var(--narajos-focus-ring,#a34b1c);outline-offset:3px}
 .practice-card a{font-weight:650;text-underline-offset:3px}
 
 .practice-page{max-width:58rem;padding-bottom:2.5rem}
@@ -20,7 +20,7 @@
 .practice-choices{list-style:none;margin:0;padding:0;display:grid;gap:.65rem}
 .practice-choices a{display:grid;border:1px solid #d4dcd8;border-radius:12px;background:#fff;padding:.8rem 1rem;min-height:44px;text-decoration:none;color:#24343b}
 .practice-choices a:hover{border-color:#478d83;background:#f5fbf9}
-.practice-choices a:focus-visible,.teacher-note summary:focus-visible{outline:3px solid #c9611f;outline-offset:3px}
+.practice-choices a:focus-visible,.teacher-note summary:focus-visible{outline:3px solid var(--narajos-focus-ring,#a34b1c);outline-offset:3px}
 .practice-choices a span{color:#4f6166;font-size:.9rem}
 .practice-choices a span:empty{display:none}
 .practice-stack{display:grid;gap:1rem}
@@ -46,7 +46,7 @@
 .ks3-choices button::before{content:"";width:1.05rem;height:1.05rem;flex:none;border:1.5px solid #547a73;border-radius:50%}
 .ks3-choices button:hover,.ks3-choices button[aria-pressed=true]{background:var(--narajos-choice-selected,#dceeea);border-color:#478d83}
 .ks3-choices button[aria-pressed=true]::before{background:#146c69;box-shadow:inset 0 0 0 3px #dceeea}
-.ks3-choices button:focus-visible{outline:3px solid #c9611f;outline-offset:3px}
+.ks3-choices button:focus-visible{outline:3px solid var(--narajos-focus-ring,#a34b1c);outline-offset:3px}
 .ks3-try-practice textarea{background:#f6faf9;margin-bottom:.65rem}
 .ks3-try-practice label span[aria-hidden="true"]{margin-inline-end:.3rem;color:#175466}
 .ks3-try-practice > details{background:#f8f1e6;border-inline-start:3px solid #bb793d;border-radius:6px;padding:0 .7rem}
@@ -58,14 +58,14 @@
 .writing-field-heading{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;margin:.7rem 0 .25rem}
 .writing-card .writing-field-heading label{margin:0}
 .writing-card .writing-help{border:0;padding:0;display:contents}
-.writing-card .writing-help summary{list-style:none;display:inline-flex;align-items:center;min-height:32px;border:1px solid #b5c8c2;border-radius:6px;padding:.2rem .55rem;color:#315e57;background:#f5fbf9;font-size:.85rem}
+.writing-card .writing-help summary{list-style:none;display:inline-flex;align-items:center;min-height:44px;border:1px solid #b5c8c2;border-radius:6px;padding:.2rem .55rem;color:#315e57;background:#f5fbf9;font-size:.85rem}
 .writing-help summary::-webkit-details-marker{display:none}
 .writing-card .writing-help[open] summary{background:#e3f2ed}
 .writing-card .writing-help p{margin:0 0 .2rem;flex-basis:100%;background:#f0f7f4;border-radius:6px;padding:.5rem .65rem}
 .writing-check{margin-top:.7rem}
 .writing-check button{min-height:44px;border:1px solid #276a62;border-radius:8px;background:#f0f7f4;color:#20564f;padding:.45rem .8rem;font:inherit;font-weight:650;cursor:pointer}
 .writing-check button:is(:hover,:focus-visible){background:#e3f2ed}
-.writing-check button:focus-visible{outline:3px solid #c9611f;outline-offset:3px}
+.writing-check button:focus-visible{outline:3px solid var(--narajos-focus-ring,#a34b1c);outline-offset:3px}
 .writing-check [role=status]:empty{margin:0}
 .writing-report{background:#f5faf8;border-radius:8px;padding:.65rem .8rem}
 .writing-report p,.writing-report ul,.writing-key{margin:.25rem 0}
@@ -89,7 +89,7 @@
 .practice-card .gas-conditions label{display:flex;align-items:center;gap:.4rem;min-height:44px;border:1px solid #a1b5af;border-radius:8px;margin:0;padding:.35rem .55rem;cursor:pointer}
 .gas-conditions label:has(:checked){background:#e3f2ed;border-color:#276a62}
 .gas-conditions input{accent-color:#276a62}
-.gas-conditions label:has(:focus-visible),.gas-model button:focus-visible{outline:3px solid #c9611f;outline-offset:3px}
+.gas-conditions label:has(:focus-visible),.gas-model button:focus-visible{outline:3px solid var(--narajos-focus-ring,#a34b1c);outline-offset:3px}
 .gas-visual{margin:.7rem 0}
 .gas-visual canvas{width:min(100%,368px);height:auto;display:block}
 .gas-visual figcaption{color:#485a60;font-size:.9rem}
@@ -98,7 +98,7 @@
 
 .ks3-year-menu details{border-top:1px solid #d4dcd8;padding:.45rem 0}
 .ks3-year-menu summary{padding:.6rem 0;min-height:44px;font-size:1.12rem;font-weight:700;cursor:pointer}
-.ks3-year-menu summary:focus-visible{outline:3px solid #c9611f;outline-offset:3px}
+.ks3-year-menu summary:focus-visible{outline:3px solid var(--narajos-focus-ring,#a34b1c);outline-offset:3px}
 .ks3-year-menu .practice-choices{grid-template-columns:repeat(auto-fit,minmax(min(17rem,100%),1fr))}
 .ks3-diagram{margin:0 0 .9rem;padding:.65rem;background:#f0f7f4;border-radius:8px}
 .ks3-diagram figcaption{font-weight:700;margin-bottom:.5rem}
@@ -182,7 +182,7 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 }
 .ks3-model-button{min-height:44px;border:1px solid #779b92;border-radius:7px;padding:.45rem .65rem;background:#fff;color:#214c47;font:inherit;font-weight:650;cursor:pointer}
 .ks3-model-button[aria-pressed="true"]{background:#d1ece2}
-.ks3-model-button:focus-visible{outline:3px solid #c9611f;outline-offset:3px}
+.ks3-model-button:focus-visible{outline:3px solid var(--narajos-focus-ring,#a34b1c);outline-offset:3px}
 .ks3-model-controls{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
 .ks3-model-controls strong{flex:0 0 100%}
 .ks3-model-report{flex-basis:100%;font-weight:600;color:#23433e;margin:.25rem 0 0}
@@ -234,7 +234,7 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .gas-particle-control{flex:1 0 100%;display:flex;flex-wrap:wrap;align-items:center;gap:.35rem .65rem}
 .practice-card .gas-particle-control label{border:0;padding:0;min-height:0}
 .gas-particle-control select{font:inherit;color:#24343b;background:#fff;border:1px solid #a1b5af;border-radius:.45rem;min-height:44px;padding:.25rem .45rem}
-.gas-particle-control select:focus-visible{outline:3px solid #c9611f;outline-offset:3px}
+.gas-particle-control select:focus-visible{outline:3px solid var(--narajos-focus-ring,#a34b1c);outline-offset:3px}
 .gas-readings{display:flex;flex-wrap:wrap;gap:.35rem .55rem}
 .gas-readings span{background:#ecf6f3;border-radius:.35rem;padding:.2rem .5rem;font-variant-numeric:tabular-nums}
 .gas-pressure-reading{max-width:23rem;margin:.45rem 0 .75rem}
@@ -255,7 +255,7 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .writing-card .writing-sentence label{line-height:1.45}
 .writing-sentence textarea{margin:.4rem 0 .55rem}
 .writing-sentence button,.writing-scaffold button,.writing-share button{min-height:44px;border:1px solid #276a62;border-radius:8px;background:#fff;color:#20564f;padding:.45rem .7rem;font:inherit;font-weight:650;cursor:pointer}
-.writing-sentence button:focus-visible,.writing-scaffold button:focus-visible,.writing-share button:focus-visible{outline:3px solid #c9611f;outline-offset:3px}
+.writing-sentence button:focus-visible,.writing-scaffold button:focus-visible,.writing-share button:focus-visible{outline:3px solid var(--narajos-focus-ring,#a34b1c);outline-offset:3px}
 .writing-sentence [data-check-sentence]{background:#20564f;color:#fff}
 .writing-sentence [data-use-starter]{margin:.15rem 0}
 .writing-sentence [data-sentence-status],.writing-scaffold [role=status],.writing-share [role=status]{margin:.4rem 0 0}
@@ -339,7 +339,7 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .practice-card .ks3-fair-options label{display:flex;align-items:center;gap:.45rem;margin:0;padding:.4rem .55rem;min-height:44px;border:1px solid #a1b5af;border-radius:8px;cursor:pointer}
 .ks3-fair-options label:has(:checked){background:#e3f2ed;border-color:#276a62}
 .ks3-fair-options input{flex:none;accent-color:#276a62}
-.ks3-fair-options label:has(:focus-visible){outline:3px solid #c9611f;outline-offset:3px}
+.ks3-fair-options label:has(:focus-visible){outline:3px solid var(--narajos-focus-ring,#a34b1c);outline-offset:3px}
 
 /* Single paragraph outline lessons */
 .spo-intro { margin: 1rem 0; padding: clamp(.7rem,2.2vw,1.1rem); background: #f0f7f6; border: 1px solid #a5c5c4; border-radius: .65rem; color: #243e4c; scroll-margin-top: 5rem; }
@@ -404,3 +404,9 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .enzyme-drawing svg { display: block; width: 100%; height: auto; font-family: system-ui,sans-serif; }
 .enzyme-investigation summary { min-height: 44px; padding-block: .5rem; cursor: pointer; }
 .enzyme-investigation [role=status]:empty { display: none; }
+
+
+.writing-card .writing-help summary,.writing-feedback .writing-report summary,.writing-order-review{font-size:.875rem}
+.writing-card .writing-help p,.writing-card .writing-model p,.writing-order-feedback{font-size:1rem;line-height:1.55}
+
+.practice-page :is(textarea,input,select){scroll-margin-block:5rem 1rem}

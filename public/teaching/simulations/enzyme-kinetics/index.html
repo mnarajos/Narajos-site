@@ -37,12 +37,12 @@
   .stab[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
   .stab canvas{width:22px;height:16px;flex:none}
 
-  .level-group{margin-left:auto;display:flex;align-items:center;gap:8px}
+  .level-group{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap;max-width:100%}
   .level-group>span{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
-  .level-seg{display:flex;background:#eef3f4;border:1px solid var(--line);border-radius:10px;padding:3px}
+  .level-seg{display:flex;flex-wrap:wrap;background:#eef3f4;border:1px solid var(--line);border-radius:10px;padding:3px}
   .level-seg button{border:0;background:transparent;padding:6px 11px;border-radius:7px;cursor:pointer;
-    font-size:12.5px;font-weight:700;color:var(--muted)}
-  .level-seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+    font-size:.875rem;font-weight:700;color:#405865;min-height:44px}
+  .level-seg button[aria-pressed="true"]{background:#096b78;color:#fff}
 
   main{flex:1;display:flex;min-height:0}
   .stage{flex:1;display:flex;flex-direction:column;min-width:0;padding:12px 12px 8px}
@@ -125,7 +125,7 @@
   .mixrow.active{border-color:var(--accent);background:#f4fcfd}
   .mixrow canvas{width:30px;height:30px;flex:none}
   .mixrow .nm{flex:1;min-width:0}
-  .mixrow .nm .n1{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mixrow .nm .n1{font-size:12.5px;font-weight:700;overflow-wrap:anywhere}
   .mixrow .nm .n2{font-size:10.5px;color:var(--muted);font-weight:600}
   .stepper{display:flex;align-items:center;gap:4px;flex:none}
   .stepper button{width:26px;height:26px;border-radius:7px;border:1px solid var(--line);background:#f3f7f8;
@@ -166,7 +166,7 @@
 
   @media (prefers-reduced-motion: reduce){*{transition:none!important}}
   @media (max-width:900px){
-    main{flex-direction:column;overflow-y:auto}
+    main{flex-direction:column}
     .panel{width:auto;border-left:0;border-top:1px solid var(--line)}
     .chamber-wrap{min-height:330px}
     .level-group{margin-left:0}
@@ -189,22 +189,33 @@
   body[data-investigation="gcse"] .guided-task a{font-size:.86rem}
   body[data-investigation="gcse"] .ctrl > .sub,
   body[data-investigation="gcse"] .advanced-main-label{display:none}
-  body[data-investigation="gcse"] .stepper button{width:44px;height:44px}
+  .stepper button{width:44px;height:44px}
   @media(max-width:480px){body[data-investigation="gcse"] .chamber-wrap{min-height:260px}
     body[data-investigation="gcse"] .env{top:5px;left:5px;gap:4px}
     body[data-investigation="gcse"] .env .pill{padding:4px 6px}
     body[data-investigation="gcse"] .status{gap:5px}}
 
-  .guided-task p{font-size:.85rem;line-height:1.5;margin:0 0 .45rem}
+  .guided-task p{font-size:1rem;line-height:1.5;margin:0 0 .45rem}
   .guided-task a{display:inline-flex;align-items:center;min-height:44px;color:#145f5b;font-weight:700}
-  .graph-readout summary{cursor:pointer;min-height:38px;padding-block:8px;font-size:12px;font-weight:700}
-  .graph-readout table{border-collapse:collapse;width:100%;font-size:12px}
+  .graph-readout summary{cursor:pointer;min-height:38px;padding-block:8px;font-size:.875rem;font-weight:700}
+  .graph-readout table{border-collapse:collapse;width:100%;font-size:.875rem}
+  .conditions-detail{font-size:.875rem;color:var(--muted);margin-top:6px;line-height:1.5}
+  @media(max-width:900px),(max-height:480px){
+    html:has(body.enzyme-simulation){scroll-padding-block-start:4rem}
+    body.enzyme-simulation.sim-fullscreen{height:auto;min-height:100vh;min-height:100dvh;overflow:visible}
+    .enzyme-simulation main,.enzyme-simulation .panel{overflow:visible}
+    .enzyme-simulation .run-controls{position:sticky;top:0;z-index:19;
+      padding-inline:max(12px,env(safe-area-inset-left)) max(12px,env(safe-area-inset-right))}
+    .enzyme-simulation :is(input,summary){scroll-margin-block:4.25rem .75rem}
+  }
+  .stab,details.notes summary,.graph-readout summary{min-height:44px}
+  details.notes summary{padding-block:.55rem}
   .graph-readout :is(th,td){text-align:left;padding:4px 6px;border-bottom:1px solid #d1dadd}
 </style>
 <link rel="stylesheet" href="/assets/simulation-shell.css">
 <link rel="stylesheet" href="/assets/home-link.css">
 </head>
-<body class="booting sim-fullscreen" data-level="1">
+<body class="booting sim-fullscreen enzyme-simulation" data-level="1">
 <nav class="sim-utility-nav" aria-label="Simulation navigation"><a href="/teaching/simulations/">← All simulations</a><a href="/" id="site-home" class="narajos-home" aria-label="Narajos homepage" title="Narajos homepage"><img src="/favicon.svg" alt=""><span>Narajos</span></a></nav>
 
 <header>
@@ -279,12 +290,12 @@
     </section>
 
     <div class="explore-first" id="explore-first"><p><strong>Start with starch.</strong> Predict what will fit the active site. Press Start and watch one product form.</p><a href="/teaching/enzyme-investigations/">Choose a guided investigation</a></div>
-    <button class="act ghost lvl2" id="btn-std" style="font-size:12.5px;padding:8px" title="Use 37 °C, optimum pH, 20 substrate and four matching enzymes for the selected substrate">⚖ Set standard conditions (1.00 AU)</button>
+    <button class="act ghost lvl2" id="btn-std" style="padding:8px" title="Use 37 °C, optimum pH, 20 substrate and four matching enzymes for the selected substrate">⚖ Set standard conditions (1.00 AU)</button>
 
     <div>
       <div class="sectlabel">Concentration of enzymes</div>
       <div class="mix" id="mix"></div>
-      <div class="sub" style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.4">
+      <div class="sub conditions-detail">
         Add more than one enzyme to the mixture. Look at the shape of each active site — only the matching one can bind.
       </div>
     </div>
@@ -791,8 +802,8 @@ function drawGraph(){
     gctx.lineTo(w,h);gctx.lineTo(0,h);gctx.closePath();
     gctx.fillStyle="rgba(18,174,192,.12)";gctx.fill();
   }
-  gctx.font="600 9px system-ui,sans-serif";gctx.fillStyle="#8ba3ab";
-  gctx.textAlign="left";gctx.fillText(max.toFixed(2)+" AU",4,10);
+  gctx.font="600 12px system-ui,sans-serif";gctx.fillStyle="#435e68";
+  gctx.textAlign="left";gctx.fillText(max.toFixed(2)+" AU",4,13);
   gctx.textAlign="right";gctx.fillText("time →",w-4,h-4);
 }
 
