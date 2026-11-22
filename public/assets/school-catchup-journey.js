@@ -8,7 +8,7 @@ export function question(prompt, answer, reasoning, ...distractors) {
     answer,
     reasoning,
     options: distractors.map(item => typeof item === "string"
-      ? {label: item, feedback: "Compare that choice with the evidence, then try again."}
+      ? {label: item, feedback: reasoning}
       : {label: item[0], feedback: item[1]})
   };
 }
