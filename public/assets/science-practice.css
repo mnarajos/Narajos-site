@@ -42,9 +42,15 @@
 .ks3-checks h2{margin-bottom:0}
 .ks3-checks h3{font-size:1.05rem}
 .ks3-choices{display:grid;gap:.45rem;margin:0;padding:0;list-style:none}
-.ks3-choices button{display:block;width:100%;min-height:44px;text-align:left;background:white;color:#24343b;border:1px solid #a1b5af;border-radius:8px;padding:.5rem .75rem;font:inherit;cursor:pointer}
-.ks3-choices button:hover,.ks3-choices button[aria-pressed=true]{background:#e9f6f3;border-color:#478d83}
+.ks3-choices button{display:flex;align-items:center;gap:.6rem;width:100%;min-height:44px;text-align:left;background:var(--narajos-choice-fill,#eff5f4);color:#24343b;border:1px solid var(--narajos-choice-line,#78938f);border-radius:8px;padding:.5rem .75rem;font:inherit;cursor:pointer}
+.ks3-choices button::before{content:"";width:1.05rem;height:1.05rem;flex:none;border:1.5px solid #547a73;border-radius:50%}
+.ks3-choices button:hover,.ks3-choices button[aria-pressed=true]{background:var(--narajos-choice-selected,#dceeea);border-color:#478d83}
+.ks3-choices button[aria-pressed=true]::before{background:#146c69;box-shadow:inset 0 0 0 3px #dceeea}
 .ks3-choices button:focus-visible{outline:3px solid #c9611f;outline-offset:3px}
+.ks3-try-practice textarea{background:#f6faf9;margin-bottom:.65rem}
+.ks3-try-practice label span[aria-hidden="true"]{margin-inline-end:.3rem;color:#175466}
+.ks3-try-practice > details{background:#f8f1e6;border-inline-start:3px solid #bb793d;border-radius:6px;padding:0 .7rem}
+.ks3-try-practice > details > summary{cursor:pointer;min-height:44px;padding:.55rem 0;font-weight:650}
 .ks3-feedback{margin:.65rem 0 0;background:#f0f7f4;border-radius:8px;padding:.5rem .7rem}
 .ks3-feedback:empty{padding:0;margin:0}
 .catchup-finish{margin:1rem 0 0}

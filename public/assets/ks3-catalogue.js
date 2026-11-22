@@ -380,6 +380,7 @@ function renderLesson(lesson, year, index) {
     checks.append(renderQuestion({prompt, answer, correctFeedback, distractors}, number, index + number));
   }
   const transfer = element("article", "", "practice-card");
+  transfer.dataset.ks3Transfer = "";
   transfer.append(element("h3", "Try it yourself"), element("p", lesson.transfer));
   if (fairTests) transfer.append(fairTestPlan("sugar-investigation-plan", "Write your plan"));
   transfer.append(disclosure("Compare your answer", element("p", lesson.model)));

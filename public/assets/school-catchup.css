@@ -66,7 +66,7 @@
 .school-completion-tick { margin-inline-end: .5rem; }
 .school-journey-actions [hidden], [data-catchup-end][hidden] { display: none; }
 .school-check {
-  color: #203948; background: #fcfefe; width: min(calc(100% - 1.2rem), 42rem); max-height: calc(100vh - 1.5rem);
+  color: #203948; background: #f9f8f4; width: min(calc(100% - 1.2rem), 42rem); max-height: calc(100vh - 1.5rem);
   border: 1px solid #77969d; border-radius: .8rem; padding: clamp(.7rem,2.5vw,1.3rem); overflow: auto;
 }
 .school-check::backdrop { background: #142b37b8; }
@@ -75,8 +75,8 @@
 .school-question-diagram { display: block; width: min(100%, 21.25rem); height: auto; margin-block: .45rem; border-radius: .45rem; }
 .school-check fieldset { border: 0; padding: 0; margin-inline: 0; min-width: 0; }
 .school-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.school-check-options label { display: flex; align-items: center; gap: .55rem; border: 1px solid #a9c0c3; border-radius: .45rem; padding: .5rem .6rem; min-height: 44px; margin-block: .32rem; cursor: pointer; }
-.school-check-options label:has(:checked) { background: #e5f1f1; border-color: #258078; }
+.school-check-options label { display: flex; align-items: center; gap: .55rem; background: var(--narajos-choice-fill,#eff5f4); border: 1px solid var(--narajos-choice-line,#78938f); border-radius: .45rem; padding: .5rem .6rem; min-height: 44px; margin-block: .32rem; cursor: pointer; }
+.school-check-options label:has(:checked) { background: var(--narajos-choice-selected,#dceeea); border-color: #258078; }
 .school-check-options input { flex: none; accent-color: #175466; }
 .school-check-feedback:not(:empty) { background: #ebf5f4; padding: .5rem .65rem; margin-block: .5rem; border-inline-start: 3px solid #41857d; }
 .school-lesson-table { width: 100%; max-width: 38rem; }

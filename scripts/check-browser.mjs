@@ -86,12 +86,22 @@ try{
  assert(await pilotPage.locator(".school-evidence-panel").evaluate(el=>!!(el.compareDocumentPosition(document.querySelector(".school-journey"))&Node.DOCUMENT_POSITION_FOLLOWING)));
  await pilotPage.getByText("More practice and activities",{exact:true}).click();
  assert(await pilotPage.getByRole("heading",{name:"Check your understanding",exact:true}).isVisible());
+ assert.equal(await pilotPage.locator("[data-ks3-transfer] textarea").count(),1);
  await pilotPage.goto(base+"/science-catch-up/?year=8");
  assert.equal(await pilotPage.locator(".school-topic-list > li").count(),13);
  assert.equal(await pilotPage.getByRole("link",{name:"Open GCSE revision"}).count(),0);
  await pilotPage.goto(base+"/ks3/cells/");
  assert(await pilotPage.getByRole("heading",{name:"What gives away the plant cell in a pair of microscope photographs?"}).isVisible());
  assert.match(await pilotPage.locator(".ks3-cell-functions").first().innerText(),/Mitochondria\s+are the site of aerobic respiration/);
+ const cellsAnswer=pilotPage.locator("[data-ks3-transfer]").getByRole("textbox",{name:"Your answer",exact:true});
+ await cellsAnswer.fill("A cell wall supports the leaf cell.");
+ await pilotPage.reload();
+ assert.equal(await cellsAnswer.inputValue(),"A cell wall supports the leaf cell.");
+ await pilotPage.locator("[data-ks3-transfer] summary").click();
+ assert(await pilotPage.locator("[data-ks3-transfer]").getByText(/The cell wall supports the plant cell/).isVisible());
+ await pilotPage.goto(base+"/ks3/lesson/?topic=states-of-matter&guided=1");
+ await pilotPage.getByText("More practice and activities",{exact:true}).click();
+ assert(await pilotPage.locator("[data-ks3-transfer]").getByRole("textbox",{name:"Your answer",exact:true}).isVisible());
  await pilotPage.goto(base+"/science-catch-up/?year=9");
  assert.equal(await pilotPage.locator(".school-topic-list > li").count(),5);
  await pilotPage.evaluate(()=>{
@@ -128,6 +138,7 @@ try{
  assert(await pilotPage.locator(".school-lesson-table").isVisible());
  await guide.getByRole("button",{name:"Check",exact:true}).click();
  assert.equal(await check.getByRole("button",{name:"Catch-up notes",exact:true}).count(),0);
+ assert.equal(await check.locator(".school-check-options label").first().evaluate(el=>getComputedStyle(el).backgroundColor),"rgb(239, 245, 244)");
  assert(await check.getByRole("heading",{name:"What moves through the membrane by osmosis?",exact:true}).isVisible());
  assert.equal(await check.getByRole("button",{name:"Continue",exact:true}).count(),0);
  assert.equal(await check.getByRole("textbox").count(),0);

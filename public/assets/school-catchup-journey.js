@@ -46,6 +46,7 @@ export function mountJourney(host, model, lesson) {
   host.dataset.journeyMounted = "true";
   const {id, year, hook, steps, retry, code} = lesson;
   const guided = Number(year) >= 9 || new URLSearchParams(location.search).has("guided");
+  const practice = guided ? model.parentElement.querySelector("[data-ks3-transfer]") : null;
   const progressKey = year + "." + id;
   const prior = readCatchup(progressKey);
   const state = {
@@ -132,6 +133,11 @@ export function mountJourney(host, model, lesson) {
       heading.prepend(tick);
       next.append(heading);
       if (code) next.append(link("Revise " + code, "/gcse/#topic-" + code.toLowerCase(), "school-primary"));
+      if (practice) next.append(button("Try it yourself", () => {
+        const section = practice.closest("details");
+        if (section) section.open = true;
+        practice.querySelector("textarea")?.focus();
+      }));
       if (evidence) next.append(button("Catch-up notes", showEvidence));
       if (completeCount < steps.length) next.append(button("Try the extra check", () => {
         Object.assign(state, {done: false, step: completeCount});
@@ -236,7 +242,7 @@ export function mountJourney(host, model, lesson) {
     submit.hidden = Boolean(state.correct);
     const nextLabel = () => shownIndex === steps.length - 1 && (!retry || state.repeating || !state.helped)
       ? "Finish catch-up" : "Continue";
-    const next = button(nextLabel(), advance, "school-primary");
+    const next = checkButton(nextLabel(), advance);
     next.hidden = !state.correct;
     const tools = element("div", "", "school-journey-actions");
     tools.append(submit, next, button("Save and pause", pause));
@@ -280,7 +286,7 @@ export function mountJourney(host, model, lesson) {
       if (state.correct) {
         for (const input of choices.querySelectorAll("input")) input.disabled = true;
         submit.hidden = true;
-        next.textContent = nextLabel();
+        next.firstChild.textContent = nextLabel();
         next.hidden = false;
         next.focus();
       }
