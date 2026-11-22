@@ -29,3 +29,17 @@ The Batch 10–12 changes are merged in PRs #61–63, with successful site and b
 | F177 a3 | A | Sample and follow-up limitations are modelled separately, with independent generalisability reasoning and a link to Skills Practice. |
 
 No guided objective warranted a C rating. The F173 area 1, 4 and 5, F174 area 2 and F177 area 4 routes were also checked as recaps. They do not establish instructional coverage of biomedical roles, practical design/data interpretation, diet-related disorders or research planning. Skills Practice and general evidence examples are already available, and assessed planning remains with the centre. Batch 14 should establish which general concepts warrant further teaching.
+
+## B13-02 · Existing F175 simulation
+
+| Stage | Existing learning support | Missing reasoning or transfer |
+| --- | --- | --- |
+| Follicle | FSH grows the visual follicle. The status identifies the oocyte within it. | Ask which structure responds before revealing movement. Explain why growth does not imply release. |
+| Ovulation | LH is available after maturation. The view follows a secondary oocyte towards the fimbriae and oviduct. | The control already names its effect. Place an optional prediction before it and make the open gap and receiving role of the fimbriae explicit. |
+| Gamete routes | Distinct paths, anatomy labels and a cervix disclosure make the separate journeys visible. Different-side arrival is possible. | Ask pupils to predict the likely meeting place. Distinguish a transport obstacle from a failure to produce a gamete. |
+| Fertilisation | Both paths must converge before a possible fertilisation can be shown. A separate control continues without it. | Used controls and a matching location alone can be mistaken for sufficient evidence. Explain timing, viability and successful fusion. |
+| Development | Zygote movement and cleavage are visible. The status names the blastocyst. | Distinguish one cell from successive cleavage and blastocyst formation, before any attachment. |
+| Implantation | It is a later conditional interaction at the endometrium. | Check the distinction from fertilisation and explain where, when and what attaches. |
+| Transfer | Guided practice identifies conflicting locations and the independent response reconstructs the timeline. | Add an unseen disrupted pathway that asks what can still occur, how the next event is affected, and why. |
+
+Keep the anatomy, optional exploration, controls, accessible status, zoom, and both biological outcomes. Add a small number of optional, in-context checkpoints and short observations. Test the existing animation, written access, and question-return behaviour before broadening the work.
