@@ -2,6 +2,26 @@ import { mountParagraph } from "./paragraph-order.js";
 import { mountSequence } from "./sequence-order.js";
 import { rampExample } from "./writing-spo-examples.js";
 
+const sandstone = {
+  cards: [
+    "This sandstone formed when loose grains of sediment became solid rock.",
+    "Sand grains settled and built up in layers.",
+    "The weight of the layers above pressed the buried grains closer together.",
+    "Minerals deposited between the grains cemented them together.",
+    "Deposition, compaction and cementation explain how loose sand became the layered sandstone in the photograph."
+  ],
+  order: [2, 0, 4, 1, 3],
+  guidance: ["Which sentence gives the overall explanation?", "What happened to the loose grains?",
+    "What happened to the grains as more layers accumulated?", "What eventually held the grains together?",
+    "Which sentence draws the steps together and links them to the photograph?"],
+  hints: ["Review the topic sentence. Introduce the whole explanation of how loose grains became rock.",
+    "Review supporting sentence 1. The grains have to settle before other layers bury them.",
+    "Review supporting sentence 2. Think about what the weight of the layers above does to the grains.",
+    "Review supporting sentence 3. The grains have been pressed together. Explain what holds them together.",
+    "Review the concluding sentence. Connect the processes to the layers in the photograph."],
+  success: "The opening explains how loose sand became rock. The middle traces the process and the ending links it to the layers you can see."
+};
+
 const exercises = {
   ramp: {
     paragraphs: [{
@@ -40,6 +60,10 @@ const exercises = {
 
 
 for (const root of document.querySelectorAll("[data-writing-order]")) {
+  if (root.dataset.writingOrder === "sandstone") {
+    mountParagraph(root, sandstone);
+    continue;
+  }
   if (root.dataset.writingOrder === "ramp") {
     mountParagraph(root, {
       cards: exercises.ramp.paragraphs[0].cards,
