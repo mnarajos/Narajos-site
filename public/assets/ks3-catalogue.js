@@ -1,5 +1,8 @@
 import { curriculum, motionLessons, extraChecks } from "./ks3-lessons.js";
 import { homeActivity } from "./ks3-home-activities.js";
+import { recallFor, linkForward } from "./ks3-connections.js";
+import { scienceParagraph } from "./ks3-words.js";
+import { explore } from "./ks3-explorations.js";
 
 const illustrations = {
   "fair-tests": ["ramps", "A green toy car on a low ramp and a blue car on a higher ramp."],
@@ -319,27 +322,33 @@ function renderLesson(lesson, year, index) {
   const title = element("h2", lesson.title);
   const cue = element("p");
   cue.append(element("strong", "Start here. "), lesson.notice);
-  const explanation = disclosure("Read the explanation", ...lesson.explain.map((sentence) => element("p", sentence)));
-  teaching.append(title);
+  const explanation = element("section", "", "ks3-explanation");
+  explanation.append(element("h3", "The key idea"), ...lesson.explain.map(scienceParagraph));
+  teaching.append(title, recallFor(lesson.id));
   if (lesson.id === "fair-tests") {
     const ramp = element("toy-ramp");
     teaching.append(ramp);
     import("./toy-ramp.js");
   }
-  if (illustrations[lesson.id]) teaching.append(renderIllustration(lesson.id));
-  if (!illustrations[lesson.id] || lesson.visual.headers) teaching.append(renderVisual(lesson.visual));
-  teaching.append(cue, explanation);
+  teaching.append(cue);
+  if (lesson.id === "states-of-matter") {
+    teaching.append(element("ks3-states-model"));
+    import("./ks3-states.js");
+  } else {
+    const original = [];
+    if (illustrations[lesson.id]) original.push(renderIllustration(lesson.id));
+    if (!illustrations[lesson.id] || lesson.visual.headers) original.push(renderVisual(lesson.visual));
+    teaching.append(...explore(lesson, original, renderVisual));
+  }
+  teaching.append(explanation);
+  if (lesson.id === "states-of-matter") {
+    teaching.append(disclosure("Compare the three arrangements", renderVisual(lesson.visual)));
+  }
   if (lesson.id === "reproduction") {
     const sequence = element("science-sequence");
     sequence.setAttribute("kind", "pollen");
     teaching.append(disclosure("Follow a pollen grain", sequence));
   }
-  if (lesson.related) {
-    const more = element("p");
-    more.append(link(lesson.related.title, lesson.related.href));
-    teaching.append(more);
-  }
-
   const checks = element("section", "", "ks3-checks");
   checks.append(element("h2", "Check your understanding"));
   for (const [number, question] of lesson.questions.entries()) {
@@ -354,11 +363,9 @@ function renderLesson(lesson, year, index) {
   const transfer = element("article", "", "practice-card");
   transfer.append(element("h3", "Try it yourself"), element("p", lesson.transfer),
     disclosure("Compare your answer", element("p", lesson.model)));
-  checks.append(transfer);
+  const follow = linkForward(lesson.id);
   const finish = element("p", "", "catchup-finish");
   finish.append(link("Choose another Year " + year + " topic", yearLink.href));
-  const extension = externalModels[lesson.id] ? externalActivity(lesson.id) : null;
-  if (extension) teaching.append(extension);
   const diagramTopic = { "separating-techniques": ["filtration", "distillation"], electricity: "circuits",
     "the-body": "breathing", photosynthesis: "leaf", "light-and-sound": "refraction" }[lesson.id];
   if (diagramTopic) for (const id of [diagramTopic].flat()) {
@@ -368,6 +375,14 @@ function renderLesson(lesson, year, index) {
     if (id === "distillation") practice.setAttribute("question-limit", "3");
     checks.append(practice);
   }
+  checks.append(transfer);
+  if (externalModels[lesson.id]) checks.append(externalActivity(lesson.id));
+  if (lesson.related) {
+    const more = element("p");
+    more.append(link(lesson.related.title, lesson.related.href));
+    checks.append(more);
+  }
+  if (follow) checks.append(follow);
   lessonRoot.replaceChildren(teaching, checks, homeActivity(lesson.id), finish);
 }
 

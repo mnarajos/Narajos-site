@@ -257,3 +257,47 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .writing-sentence-model,.writing-outline-review .writing-report details:has(>summary){
  background:#eff6fc;border-inline-start:4px solid #3f6f95;padding-inline:.65rem;border-radius:.35rem
 }
+
+.ks3-explanation { margin: .75rem 0; }
+.ks3-explanation h3 { margin-bottom: .3rem; }
+.ks3-lesson .ks3-connection, .ks3-checks .ks3-connection, .ks3-connection {
+  padding: .48rem .72rem;
+  border-inline-start: 3px solid #6b8a9b;
+  background: #f0f6f8;
+  margin-block: .5rem .8rem;
+}
+.ks3-term {
+  appearance: none;
+  min-height: 25px;
+  border: 0;
+  border-radius: .2rem;
+  padding: 0 .15em;
+  background: #edf4f8;
+  color: #17475f;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline dotted;
+  text-underline-offset: .18em;
+  cursor: pointer;
+}
+.ks3-term[aria-expanded="true"] { background: #d8edf6; text-decoration-style: solid; }
+.ks3-term:focus-visible { outline: 3px solid #b45219; outline-offset: 2px; }
+.ks3-definition { display: block; margin: .25rem 0 .4rem; padding: .4rem .65rem; border-inline-start: 3px solid #497d92; background: #eaf4f9; }
+.ks3-definition[hidden] { display: none; }
+
+.ks3-states-model { border: 1px solid #b7cdd5; border-radius: .65rem; padding: .65rem; background: #fbfdfd; }
+.ks3-states-model h3 { margin-top: 0; }
+.ks3-states-model figure { margin: .55rem 0; }
+.ks3-states-model canvas { display: block; width: min(100%, 32rem); height: auto; border: 2px solid #416273; border-radius: .25rem; }
+.ks3-states-model figcaption { margin-top: .4rem; max-width: 65ch; }
+.ks3-states-model button[aria-disabled="true"] { opacity: .6; cursor: default; }
+.ks3-states-model .ks3-tracer { display: flex; min-height: 44px; align-items: center; gap: .4rem; margin: .28rem 0 0; width: fit-content; }
+.ks3-tracer input { min-width: 1.05rem; min-height: 1.05rem; accent-color: #276583; }
+.ks3-tracer input:focus-visible { outline: 3px solid #b45219; outline-offset: 2px; }
+
+.ks3-explore { border: 1px solid #b7cdd5; border-radius: .65rem; padding: .65rem; background: #fbfdfd; }
+.ks3-explore .ks3-illustration { margin-block: .65rem; }
+.ks3-explore :is(figure, .writing-data) { margin-bottom: .35rem; }
+.ks3-explore-result:not(:empty) { padding: .4rem .65rem; border-inline-start: 3px solid #528172; background: #edf6f3; margin: .5rem 0 0; }
+.ks3-explore-result:empty, [data-ks3-view][hidden] { display: none; }
+[data-ks3-look] > .ks3-model-controls { margin-bottom: .6rem; }

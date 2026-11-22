@@ -15,6 +15,9 @@
  <link rel="stylesheet" href="/assets/micrographs.css">
 
  <script type="module" src="/assets/ks3-home-activities.js"></script>
+ <script type="module" src="/assets/ks3-words.js"></script>
+ <script type="module" src="/assets/ks3-connections.js"></script>
+ <script type="module" src="/assets/ks3-explorations.js"></script>
 </head>
 <body>
  <a class="skip" href="#main">Skip to main content</a>
@@ -29,31 +32,34 @@
   </div>
   <section class="practice-card ks3-lesson" aria-labelledby="catchup-lesson">
    <h2 id="catchup-lesson">How can you recognise a plant cell?</h2>
+   <div data-ks3-recall="cells"></div>
    <p><strong>Start here.</strong> Find the leaf cell’s wall. Then find the thin cell membrane in both diagrams.</p>
-   <div class="ks3-cell-diagrams" role="group" aria-label="Labelled cell diagrams">
-    <figure>
+   <div data-ks3-look>
+    <div class="ks3-cell-diagrams" role="group" aria-label="Labelled cell diagrams">
+     <figure data-ks3-view="Inspect the leaf cell" data-ks3-notice="Look for two boundaries. The thin membrane is just inside the thicker wall.">
      <figcaption>Green leaf cell</figcaption>
      <img src="/assets/ks3-diagrams/palisade-cell.svg" width="360" height="280" alt="Palisade cell with a cell wall, a thin membrane, cytoplasm, a large vacuole, chloroplasts, mitochondria, ribosomes and a nucleus containing DNA.">
-    </figure>
-    <figure>
-     <figcaption>Human cheek cell</figcaption>
+     </figure>
+     <figure data-ks3-view="Inspect the cheek cell" data-ks3-notice="Follow the blue-grey line along the cell’s edge. This is the membrane. Then find the nucleus.">
+      <figcaption>Human cheek cell</figcaption>
      <img src="/assets/ks3-diagrams/cheek-cell.svg" width="360" height="280" alt="Flat, irregular cheek cell with a blue-grey membrane, cytoplasm, mitochondria, small ribosome dots and a nucleus containing DNA.">
-    </figure>
+     </figure>
+    </div>
    </div>
    <p class="ks3-cell-note">These are teaching diagrams. Colours and sizes are simplified.</p>
    <h3>Structures shared by these two cells</h3>
    <ul class="ks3-cell-functions">
-    <li>The <strong>cell membrane</strong> controls what enters and leaves the cell.</li>
-    <li>The <strong>cytoplasm</strong> is the jelly-like material where many cell reactions happen.</li>
-    <li>The <strong>nucleus</strong> contains <strong>DNA</strong>, which carries genetic information.</li>
-    <li><strong>Mitochondria</strong> are where most aerobic respiration happens.</li>
-    <li><strong>Ribosomes</strong> make proteins. The diagrams show them as tiny dots.</li>
+    <li>The <strong data-ks3-term="cell membrane">cell membrane</strong> controls what enters and leaves the cell.</li>
+    <li>The <strong data-ks3-term="cytoplasm">cytoplasm</strong> is the jelly-like material where many cell reactions happen.</li>
+    <li>The <strong data-ks3-term="nucleus">nucleus</strong> contains <strong data-ks3-term="dna">DNA</strong>, which carries genetic information.</li>
+    <li><strong data-ks3-term="mitochondria">Mitochondria</strong> are where most aerobic respiration happens.</li>
+    <li><strong data-ks3-term="ribosomes">Ribosomes</strong> make proteins. The diagrams show them as tiny dots.</li>
    </ul>
    <h3>Structures in the green leaf cell</h3>
    <ul class="ks3-cell-functions">
-    <li>The <strong>cell wall</strong> is a rigid layer outside the cell membrane. It supports the cell.</li>
-    <li><strong>Chloroplasts</strong> absorb light for photosynthesis. Some plant cells, such as onion bulb cells, usually lack chloroplasts.</li>
-    <li>The large <strong>vacuole</strong> contains cell sap and helps keep the cell firm.</li>
+    <li>The <strong data-ks3-term="cell wall">cell wall</strong> is a rigid layer outside the cell membrane. It supports the cell.</li>
+    <li><strong data-ks3-term="chloroplasts">Chloroplasts</strong> absorb light for photosynthesis. Some plant cells, such as onion bulb cells, usually lack chloroplasts.</li>
+    <li>The large <strong data-ks3-term="vacuole">vacuole</strong> contains cell sap and helps keep the cell firm.</li>
    </ul>
    <details>
     <summary>Look through a microscope</summary>
@@ -115,6 +121,7 @@
     <details><summary>Compare your explanation</summary><p>The cell wall supports the plant cell and helps it maintain its shape. The green structures are chloroplasts. They absorb light for photosynthesis.</p></details>
    </article>
   </section>
+  <div data-ks3-next="cells"></div>
   <div data-ks3-home="cells"></div>
   <p class="catchup-finish"><a href="/ks3/#year-7">Choose another Year 7 topic</a></p>
  </main>
