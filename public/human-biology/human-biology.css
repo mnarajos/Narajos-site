@@ -313,3 +313,9 @@ main[tabindex="-1"]:focus{outline:none}
 .k-review-criteria label{display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;justify-content:space-between;padding-block:0.5rem}
 .k-review-criteria select{min-height:44px;font:inherit;color:#233f5a;background:#fff;border:1px solid #5c7390;border-radius:0.35rem;padding:0.2rem}
 #k-revised{box-sizing:border-box;width:100%;font:inherit}
+
+.k-row-status{display:block;font-weight:650;font-size:.9rem}
+.k-correction-title{font-size:1.1rem}
+.k-outcome-stats div{background:#fff;border:1px solid #d9e3e0;border-radius:.5rem;padding:.5rem .75rem}
+.k-outcome-stats dd{margin:0;font-weight:700}
+[data-feedback-heading]:focus,[data-correction-heading]:focus{outline:2px solid currentColor;outline-offset:3px}

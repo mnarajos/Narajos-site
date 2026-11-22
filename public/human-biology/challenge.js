@@ -4,7 +4,7 @@
 var db=window.KeystoneHumanChallenges,main=document.getElementById("main");
 if(!db||!main)return;
 if(window.KeystoneHumanKnowledge){db.units=db.units.concat(window.KeystoneHumanKnowledge.units);db.questions=db.questions.concat(window.KeystoneHumanKnowledge.questions);}
-var K="narajos-human-challenge-v2-",SK=K+"session",PK=K+"progress",RK=K+"rotation",session=null,progress={},rotation={};
+var K="narajos-human-challenge-v2-",SK=K+"session",PK=K+"progress",RK=K+"rotation",CK=K+"completed",session=null,progress={},rotation={};
 try{var r=JSON.parse(localStorage.getItem(PK)||"{}");if(r&&typeof r==="object"&&!Array.isArray(r))progress=r;}catch(_){}
 try{var rr=JSON.parse(localStorage.getItem(RK)||"{}");if(rr&&typeof rr==="object"&&!Array.isArray(rr))rotation=rr;}catch(_){}
 var all=db.questions,byId={},skills=window.KeystoneHumanSkills,ladders=window.KeystoneHumanProgressions;all.forEach(function(q){byId[q.id]=q;});
@@ -18,7 +18,7 @@ function sessionKey(item){
  return item&&item.skillId&&item.returnTo?contextualKey(item.skillId):SK;
 }
 function localSessionKeys(){
- var keys=skills?skills.definitions.map(function(skill){return contextualKey(skill.id);}):[];
+ var keys=[CK].concat(skills?skills.definitions.map(function(skill){return contextualKey(skill.id);}):[]);
  try{for(var i=0;i<localStorage.length;i++){var key=localStorage.key(i);if(key.startsWith(SK+"-topic-"))keys.push(key);}}catch(_){}
  return keys;
 }
@@ -383,18 +383,22 @@ function bestForm(q,answer){
 function usableOrder(q,order){
  return Array.isArray(order)&&order.length===q.items.length&&new Set(order).size===order.length&&order.every(function(i){return Number.isInteger(i)&&i>=0&&i<q.items.length;});
 }
+function rowStatus(answer,i){
+ if(!answer.correction)return "";
+ return '<span class="k-row-status">'+(answer.correction[i]?"Correct so far":"Review this row")+'</span>';
+}
 function orderForm(q,answer){
  var current=usableOrder(q,answer.order)?answer.order:null;
  if(!current){current=shuffle(q.items.map(function(_,i){return i;}));if(current.every(function(v,i){return v===i;}))current.reverse();session.answers[q.id]={order:current};save();}
  return '<ol class="k-order">'+current.map(function(idx,pos){
- return '<li><span class="k-order-num">'+(pos+1)+'</span><span>'+esc(q.items[idx])+'</span><span class="k-order-controls"><button class="k-small-btn" type="button" data-move="up" data-pos="'+pos+'" aria-label="Move step '+(pos+1)+' up" '+(pos===0?"disabled":"")+'>↑</button><button class="k-small-btn" type="button" data-move="down" data-pos="'+pos+'" aria-label="Move step '+(pos+1)+' down" '+(pos===current.length-1?"disabled":"")+'>↓</button></span></li>';
+ return '<li><span class="k-order-num">'+(pos+1)+'</span><span>'+esc(q.items[idx])+(answer.correction&&idx!==pos?' <span class="k-row-status">Review position</span>':'')+'</span><span class="k-order-controls"><button class="k-small-btn" type="button" data-move="up" data-pos="'+pos+'" aria-label="Move step '+(pos+1)+' up" '+(pos===0?"disabled":"")+'>↑</button><button class="k-small-btn" type="button" data-move="down" data-pos="'+pos+'" aria-label="Move step '+(pos+1)+' down" '+(pos===current.length-1?"disabled":"")+'>↓</button></span></li>';
  }).join("")+'</ol><p class="k-hint">Use the arrows to put the steps in order.</p>';
 }
 function sortForm(q,answer){
  var selected=answer&&Array.isArray(answer.sort)?answer.sort:[];
  return '<div class="k-sort"><p class="k-hint">Choose one group for each statement.</p>'+
  q.rows.map(function(row,i){
-  return '<fieldset class="k-sort-row"><legend>'+esc(row[0])+'</legend><div class="k-sort-choices">'+q.groups.map(function(group,j){
+  return '<fieldset class="k-sort-row"'+(answer.correction&&answer.correction[i]?' disabled':'')+'><legend>'+esc(row[0])+'</legend>'+rowStatus(answer,i)+'<div class="k-sort-choices">'+q.groups.map(function(group,j){
    return '<label><input type="radio" name="ksort-'+i+'" value="'+j+'" data-sort-row="'+i+'"'+(selected[i]!==undefined&&selected[i]!==''&&Number(selected[i])===j?' checked':'')+'><span>'+esc(group)+'</span></label>';
   }).join("")+'</div></fieldset>';
  }).join("")+'</div>';
@@ -403,7 +407,7 @@ function matchForm(q,answer){
  var vals=answer&&Array.isArray(answer.match)?answer.match:[];
  if(!answer.targetOrder){answer.targetOrder=shuffle(q.pairs.map(function(_,i){return i;}));session.answers[q.id]=answer;save();}
  return '<div class="k-matches">'+q.pairs.map(function(p,i){
- return '<label class="k-match"><span>'+esc(p[0])+'</span><select data-match="'+i+'" aria-label="Match for '+esc(p[0])+'"><option value="">Choose a match</option>'+answer.targetOrder.map(function(j){return '<option value="'+j+'"'+(String(vals[i])===String(j)?" selected":"")+'>'+esc(q.pairs[j][1])+'</option>';}).join("")+'</select></label>';
+ return '<label class="k-match"><span>'+esc(p[0])+rowStatus(answer,i)+'</span><select'+(answer.correction&&answer.correction[i]?' disabled':'')+' data-match="'+i+'" aria-label="Match for '+esc(p[0])+'"><option value="">Choose a match</option>'+answer.targetOrder.map(function(j){return '<option value="'+j+'"'+(String(vals[i])===String(j)?" selected":"")+'>'+esc(q.pairs[j][1])+'</option>';}).join("")+'</select></label>';
  }).join("")+'</div>';
 }
 function evidenceTable(table){
@@ -582,6 +586,26 @@ function writtenReview(q,a){
 function focusFeedback(){
  var heading=main.querySelector("[data-feedback-heading]");if(heading)heading.focus();
 }
+function canCorrect(q,a){
+ return ["match","sort","order"].includes(q.type)&&session.outcomes&&session.outcomes[session.index]==="incorrect"&&session.lastResult===false&&!session.wasSkipped&&!a.correction;
+}
+function correctionRows(q,a){
+ if(q.type==="sort")return q.rows.map(function(row,i){return +a.sort[i]===row[1];});
+ if(q.type==="match")return q.pairs.map(function(_,i){return +a.match[i]===i;});
+ return a.order.map(function(idx,pos){return idx===pos;});
+}
+function correctOrReveal(reveal){
+ var q=current(),a=currentAnswer();
+ if(!q||session.phase!=="feedback"||!canCorrect(q,a))return;
+ delete session.outcomes[session.index]; // The initial incorrect submission remains in objective history.
+ if(reveal){
+  session.wasSkipped=true;record(q,"revealed");drawQuestion();focusFeedback();
+ }else{
+  a.correction=correctionRows(q,a);
+  session.answers[q.id]=a;session.phase="ask";save();drawQuestion();
+  var pending=main.querySelector("[data-correction-heading]");if(pending)pending.focus();
+ }
+}
 function drawQuestion(){
  if(!session||!isActive())return;
  stopHintTimer();
@@ -600,19 +624,25 @@ function drawQuestion(){
  if(q.graph&&skills)h+=skills.graphHTML(q.graph);
  if(q.evidenceTable)h+=evidenceTable(q.evidenceTable);
  if(isQuickCheck(q))h+='<p class="k-quick-label"><strong>Quick check:</strong> Apply the same idea independently.</p>';
- if(!showing){h+=inputForm(q,a);
+ if(!showing){if(a.correction)h+='<h2 class="k-correction-title" data-correction-heading tabindex="-1">Review and try again</h2>';
+  h+=inputForm(q,a);
   if(used)h+='<div class="k-hint-box" role="note"><strong>Hint '+used+' of '+availableHints.length+'</strong>'+availableHints.slice(0,used).map(function(t){return '<p>'+esc(t)+'</p>';}).join('')+'</div>';
  }
  else if(q.type==="written"&&!session.wasSkipped)h+=writtenReview(q,a);
+ else if(canCorrect(q,a)){
+  var rows=correctionRows(q,a),reviewCount=rows.filter(function(ok){return !ok;}).length;
+  h+='<div class="k-feedback incorrect"><h2 class="k-feedback-head" data-feedback-heading tabindex="-1">Review and improve</h2><p>'+reviewCount+' '+(q.type==="order"?(reviewCount===1?"position needs":"positions need"):(reviewCount===1?"row needs":"rows need"))+' another look. Your choices are saved.</p></div>';
+ }
  else{
   var correct=session.lastResult===true,subjective=!session.wasSkipped&&(session.lastResult===null||q.type==="written");
   var helped=!!used,unknown=!!session.wasSkipped,quick=isQuickCheck(q);
   var neutral=unknown||subjective||(correct&&helped);
-  var header=unknown?"Here’s how it works":subjective?"Check your explanation":correct&&helped?"Correct with a hint":correct&&quick?"Quick check passed":correct?"Correct":"Not yet";
+  var header=unknown?"Explanation revealed":subjective?"Check your explanation":correct&&session.outcomes[session.index]==="corrected"?"Correct after a retry":correct&&helped?"Correct with a hint":correct&&quick?"Quick check passed":correct?"Correct":"Not yet";
   h+='<div class="k-feedback '+(neutral?"pending":correct?"correct":"incorrect")+'"><h2 class="k-feedback-head" data-feedback-heading tabindex="-1">'+icon(neutral?"book":correct?"check":"alert")+header+'</h2>';
   if(q.figure)h+=figure(q.figure,true);
   h+='<div'+(q.unit==="f170"?' class="reading-copy"':'')+'>'+
    '<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p><strong>'+(correct&&!helped?'Why it works':unknown?'Explanation':'Quick reteach')+':</strong> '+esc(q.explain)+'</p></div>';
+  if(!correct&&!unknown&&a.selected&&q.options)h+='<p><strong>Your selection</strong> '+a.selected.map(function(i){return esc(q.options[i]);}).join('; ')+'</p>';
   if(q.type==='best'&&!correct&&!unknown){var partial=session.answers[q.id]||{};if(partial.choice===q.correct&&partial.reason!==q.reasonCorrect)h+='<p class="k-diagnostic-note">You chose the correct explanation; now focus on why it is correct.</p>';}
   if((!correct||helped)&&session.lastPlannedCheck)h+='<p class="k-quick-note">A related quick check is next, so you can try the idea again independently.</p>';
   if(q.levelsNote)h+='<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>';
@@ -621,6 +651,7 @@ function drawQuestion(){
   h+='</div>';
  }
  if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points":"Check answer")+' →</button>'+(used<availableHints.length?'<button class="button secondary k-hint-button" type="button" data-k-action="hint"'+(hintRemaining()>0?' hidden':'')+'>'+(used?'More help':'Hint')+'</button>':'')+'<button class="button quiet" type="button" data-k-action="skip">I don’t know · show me</button></div>';
+ else if(canCorrect(q,a))h+='<div class="k-foot-actions"><button class="button primary" data-k-action="correct" type="button">Try again</button><button class="button quiet" data-k-action="show-correction" type="button">Show answer</button></div>';
  else if(!session.wasSkipped&&q.type==="written"&&!session.outcomes[session.index])h+='<div class="k-foot-actions"><button class="button primary" data-k-action="finish-review" type="button">Finish review</button></div>';
  else if(!session.wasSkipped&&q.type==="short"&&session.lastResult===null)h+='<div class="k-foot-actions"><button class="button primary" data-k-action="self-good" type="button">I included the key ideas</button><button class="button secondary" data-k-action="self-weak" type="button">I need more practice</button></div>';
  else h+='<div class="k-foot-actions"><button class="button primary k-cta" data-k-action="next" type="button">'+(session.lastPlannedCheck?'Try a quick check':'Next question')+' →</button></div>';
@@ -709,7 +740,7 @@ function record(q,outcome){
   }
   save();return;
  }
- var needsHelp=p.needsPractice&&outcome!=="review-needs-work";
+ var needsHelp=p.needsPractice&&outcome!=="review-needs-work"&&!(outcome==="incorrect"&&canCorrect(q,currentAnswer()));
  var checkId=needsHelp?planQuickCheck(q):null;
  if(needsHelp&&(!got||!checkId)&&(session.retries[q.id]||0)<1){session.queue.push(q.id);session.retries[q.id]=(session.retries[q.id]||0)+1;}
  save();
@@ -762,22 +793,45 @@ function next(){
  if(session.skillId&&session.index<10&&session.index>=session.queue.length){addSkillQuestion();save();}
  if(session.index>=session.queue.length)finish();else drawQuestion();
 }
+function outcomeSummary(old){
+ var outcomes=Object.values(old.outcomes||{}),total=Object.keys(old.objectiveFirst||{}).length;
+ var count=function(type){return outcomes.filter(function(result){return result===type;}).length;};
+ var review=total?old.correctFirst+' of '+total+' objectively checked questions answered independently on the first submission.':'No objective first submissions were recorded in this set.';
+ var stats=[[(old.guidedFirst||0),"answered with help"],[count("corrected"),"correct after a retry"],[(old.selfReviewed||0),"self-reviewed"],[count("revealed"),"explanations revealed"],[(old.quickChecksPassed||0)+"/"+(old.quickChecksSeen||0),"quick checks without help"]];
+ if(old.needsReview)stats.push([old.needsReview,"to revisit from this set"]);
+ return '<p class="lead">'+review+'</p><dl class="k-mini-stats k-outcome-stats">'+stats.map(function(stat){return '<div><dt>'+stat[1]+'</dt><dd>'+stat[0]+'</dd></div>';}).join("")+'</dl>';
+}
 function finish(){
- stopHintTimer();if(!session)return;var old=session;clearSession(old);session=null;
+ stopHintTimer();if(!session)return;
+ var old=session;clearSession(old);session=null;visible=false;
+ old.needsReview=old.skillId?0:Object.keys(old.first).filter(function(id){return needsPractice(progress[id]);}).length;
+ var result={};
+ ["correctFirst","objectiveFirst","outcomes","guidedFirst","selfReviewed","quickChecksPassed","quickChecksSeen","unit","skillId","point","returnTo","route","maxSkillLevel","needsReview"].forEach(function(key){result[key]=old[key];});
+ try{localStorage.setItem(CK,JSON.stringify(result));}catch(_){}
+ if(window.KeystoneHumanApp)window.KeystoneHumanApp.replaceRoute("challenge/review");
+ showCompletion(result);
+}
+function showCompletion(old){
+ var summary=outcomeSummary(old);
  if(old.skillId){
   var sk=skills.get(old.skillId);
-  show('<div class="k-wrap k-done"><h1>Skills set complete</h1><p class="lead">'+old.correctFirst+' of '+Object.keys(old.objectiveFirst||{}).length+' checked responses answered independently on first attempt.</p><p>'+old.guidedFirst+' answered with help. Highest practice step: '+old.maxSkillLevel+' of 4.</p><p>Try another set with new values or another authored context. This records practice, not proven mastery.</p><div class="actions"><button class="button primary" type="button" data-start-skill="'+sk.id+'">Practise this skill again</button><a class="button secondary" href="#skills/'+sk.unit+'">Choose another skill</a><a class="button secondary" href="#challenge/'+sk.unit+'">Apply to topic questions</a>'+skillReturnLink(old.returnTo)+'</div></div>');return;
+  show('<div class="k-wrap k-done"><h1>Skills set complete</h1>'+summary+'<p>Highest practice step: '+old.maxSkillLevel+' of 4.</p><div class="actions"><button class="button primary" type="button" data-start-skill="'+sk.id+'">Practise this skill again</button><a class="button secondary" href="#skills/'+sk.unit+'">Choose another skill</a><a class="button secondary" href="#challenge/'+sk.unit+'">Apply to topic questions</a>'+skillReturnLink(old.returnTo)+'</div></div>');return;
  }
- var repeat=Object.keys(old.retries).length,done=old.queue.length;
- if(old.point){var p=ladders.get(old.point);show('<div class="k-wrap k-done"><h1>Sequence complete</h1><p class="lead">'+esc(p.statement)+'</p><p>'+old.correctFirst+' of '+Object.keys(old.objectiveFirst||{}).length+' objectively checked questions answered independently on first attempt. '+old.guidedFirst+' answered with help. '+(old.selfReviewed||0)+' explanations self-reviewed.</p><div class="actions"><a class="button primary" href="#challenge/'+old.unit+'/build">Choose another idea</a><button class="button secondary" type="button" data-repeat-point="'+p.id+'">Repeat this idea</button><a class="button secondary" href="#catchup/'+old.unit+'/'+p.section+'">Revisit the explanation</a></div></div>');return;}
- var h='<div class="k-wrap k-done"><p class="crumb"><a href="#challenge/'+old.unit+'">← Unit overview</a></p><div class="k-done-icon">'+icon("check")+'</div><h1>Practice complete</h1><p class="lead">'+old.correctFirst+' of '+Object.keys(old.objectiveFirst||{}).length+' objectively checked questions answered independently on first attempt.</p>';
- h+='<div class="k-mini-stats"><span><strong>'+Object.keys(old.first).length+'</strong> unique questions</span><span><strong>'+repeat+'</strong> revisited</span><span><strong>'+(old.guidedFirst||0)+'</strong> answered with help</span><span><strong>'+(old.quickChecksPassed||0)+'/'+(old.quickChecksSeen||0)+'</strong> quick checks without help</span>'+((old.selfReviewed||0)?'<span><strong>'+old.selfReviewed+'</strong> explanations self-reviewed</span>':'')+'</div><div class="k-action-grid"><a class="k-action teal" href="#challenge/'+old.unit+'/weak"><span class="k-icon">'+icon("rotate")+'</span><span><strong>Fix weak areas</strong><small>Practise questions you missed</small></span></a><a class="k-action blue" href="#challenge/'+old.unit+'"><span class="k-icon">'+icon("grid")+'</span><span><strong>Choose another set</strong><small>Topic or mixed practice</small></span></a></div>'+skillReturnLink(old.returnTo)+'</div>';show(h);
+ if(old.point){var p=ladders.get(old.point);show('<div class="k-wrap k-done"><h1>Sequence complete</h1><p>'+esc(p.statement)+'</p>'+summary+'<div class="actions"><a class="button primary" href="#challenge/'+old.unit+'/build">Choose another idea</a><button class="button secondary" type="button" data-repeat-point="'+p.id+'">Repeat this idea</button><a class="button secondary" href="#catchup/'+old.unit+'/'+p.section+'">Revisit the explanation</a></div></div>');return;}
+ var h='<div class="k-wrap k-done"><p class="crumb"><a href="#challenge/'+old.unit+'">← Unit overview</a></p><div class="k-done-icon">'+icon("check")+'</div><h1>Practice complete</h1>'+summary+'<div class="actions">'+
+ (old.needsReview?'<a class="button primary" href="#challenge/'+old.unit+'/weak">Practise questions to revisit</a>':'')+
+ '<a class="button '+(old.needsReview?'secondary':'primary')+'" href="#challenge/'+old.unit+'">Choose another set</a>'+skillReturnLink(old.returnTo)+'</div></div>';show(h);
 }
 function route(r,renderer){
  render=renderer;lastRoute=r;
  if(r==="skills"||r.startsWith("skills/"))return skillRoute(r);
  if(r==="challenge")return landing();
  if(r==="knowledge")return knowledgeLanding();
+ if(r==="challenge/review"){
+  var completed=null;try{completed=JSON.parse(localStorage.getItem(CK)||"null");}catch(_){}
+  if(completed){visible=false;lastRoute=completed.route;return showCompletion(completed);}
+  return landing();
+ }
  var m=/^challenge\/(f17[0-7])(?:\/([a-z0-9.-]+))?(?:\?from=(catchup\/f17[0-7]\/[a-z0-9.]+(?:\/\d+)?))?$/.exec(r);
  if(!m)return landing();
  var unit=m[1],scope=m[2]||null,origin=m[3];
@@ -821,8 +875,8 @@ main.addEventListener("input",function(e){
 main.addEventListener("click",function(e){
  var help=e.target.closest("[data-k-action]");if(!help||help.dataset.kAction!=="hint")noteAnswerActivity();
  var start=e.target.closest("[data-start-skill]");
- var repeatPoint=e.target.closest("[data-repeat-point]");if(repeatPoint&&ladders){var point=ladders.get(repeatPoint.getAttribute("data-repeat-point"));if(point)return makeSession(point.unit,point.id,'challenge/'+point.unit+'/'+point.id);}
- if(start&&skills){var sk=skills.get(start.getAttribute("data-start-skill"));var path=parseSkillRoute(lastRoute);if(sk&&path&&path.skillId===sk.id&&path.unit===sk.unit)return startSkill(sk,lastRoute);}
+ var repeatPoint=e.target.closest("[data-repeat-point]");if(repeatPoint&&ladders){var point=ladders.get(repeatPoint.getAttribute("data-repeat-point"));if(point){var again="challenge/"+point.unit+"/"+point.id;if(window.KeystoneHumanApp)window.KeystoneHumanApp.replaceRoute(again);return makeSession(point.unit,point.id,again);}}
+ if(start&&skills){var sk=skills.get(start.getAttribute("data-start-skill"));var path=parseSkillRoute(lastRoute);if(sk&&path&&path.skillId===sk.id&&path.unit===sk.unit){if(window.KeystoneHumanApp)window.KeystoneHumanApp.replaceRoute(lastRoute);return startSkill(sk,lastRoute);}}
  if(!session||!visible)return;
  var reteach=e.target.closest("[data-reteach-to]");
  if(reteach){session.reteachTo=reteach.dataset.reteachTo;save();}
@@ -830,13 +884,18 @@ main.addEventListener("click",function(e){
  if(move){var q=current();if(!q||q.type!=="order")return;
   var a=session.answers[q.id],i=Number(move.dataset.pos),j=i+(move.dataset.move==="up"?-1:1);
   if(!a||!a.order||j<0||j>=a.order.length)return;
-  var t=a.order[i];a.order[i]=a.order[j];a.order[j]=t;save();drawQuestion();return;
+  var t=a.order[i];a.order[i]=a.order[j];a.order[j]=t;save();drawQuestion();
+  var controls=main.querySelectorAll('[data-pos="'+j+'"]:not(:disabled)');
+  if(controls.length)(Array.from(controls).find(function(el){return el.dataset.move===move.dataset.move;})||controls[0]).focus();
+  return;
  }
  var btn=e.target.closest("[data-k-action]");if(!btn)return;
  if(btn.dataset.kAction==="hint")showNextHint();
  if(btn.dataset.kAction==="check")check(false);
  if(btn.dataset.kAction==="reveal")check(false);
  if(btn.dataset.kAction==="skip")check(true);
+ if(btn.dataset.kAction==="correct")correctOrReveal(false);
+ if(btn.dataset.kAction==="show-correction")correctOrReveal(true);
  if(btn.dataset.kAction==="next")next();
  if(btn.dataset.kAction==="finish-review")finishWrittenReview();
  if(btn.dataset.kAction==="self-good")gradeSelf(true);

@@ -212,7 +212,7 @@ assert(main.innerHTML.includes("Hint 1"),"A learner-controlled hint should appea
 assert(JSON.parse(data.get("narajos-human-challenge-v2-session")).hintsUsed[record.queue[0]]===1,"Hint use should be recorded on the local session");
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"skip"}}:null;}}});
 assert(main.innerHTML.includes("Expected answer"),"Answer reveal failed");
-assert(main.innerHTML.includes("Here’s how it works"),"Unknown answers should not be treated as punitive errors");
+assert(main.innerHTML.includes("Explanation revealed"),"Unknown answers should not be treated as punitive errors");
 const afterSkip=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 for(const id of Object.keys(afterSkip.quickCheckIds)){const next=db.questions.find(q=>q.id===id),missed=db.questions.find(q=>q.id===record.queue[0]);assert.equal(next.family,missed.family,"A warm-up follow-up must test the same idea");assert.equal(next.level,"warmup","A missed warm-up must not trigger a harder follow-up");}
 assert(afterSkip.queue.includes(record.queue[0]),"Missed warm-up should be returned to later");
@@ -253,7 +253,12 @@ const reviewProgress=JSON.parse(data.get("narajos-human-challenge-v2-progress"))
 assert.equal(reviewProgress.selfReviewed,1);
 assert.equal(reviewProgress.independent,0);
 assert.equal(reviewProgress.checked,0,"Written reviews must not enter objective accuracy");
-assert.match(main.innerHTML,/0 of 0 objectively checked/);
+assert.match(main.innerHTML,/No objective first submissions were recorded/);
+assert.match(main.innerHTML,/<dt>self-reviewed<\/dt><dd>1<\/dd>/);
+app.route("challenge/review",h=>main.innerHTML=h);
+assert.match(main.innerHTML,/<dt>self-reviewed<\/dt><dd>1<\/dd>/);
+assert(!data.get("narajos-human-challenge-v2-completed").includes("Revision after comparing."));
+
 clickAction("self-good");
 assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-progress"))[written.id].seen,1,"Repeated review must not create another attempt");
 const sequence=forcedQuestion("f175-early");
@@ -334,6 +339,29 @@ submitted=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert.equal(submitted.phase,"feedback");
 assert.deepEqual(submitted.outcomes,{"0":"independent"},"Check grades the submitted answer only");
 
+const sort=forcedQuestion(db.questions.find(q=>q.type==="sort").id);
+let wrongRow=true;
+main.querySelector=selector=>{
+ const index=selector.match(/ksort-(\d+)/)?.[1];
+ if(index===undefined)return null;
+ return {value:String(wrongRow&&index==="0"?(sort.rows[0][1]+1)%sort.groups.length:sort.rows[+index][1])};
+};
+clickAction("check");
+assert(main.innerHTML.includes("1 row needs another look")&&!main.innerHTML.includes("Expected answer"));
+clickAction("correct");
+let sorting=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.deepEqual(sorting.answers[sort.id].correction,Array.from(sort.rows,(_,i)=>i!==0));
+assert(main.innerHTML.includes("Review this row")&&main.innerHTML.includes("Correct so far"));
+app.pause();app.route(sorting.route,h=>main.innerHTML=h);
+assert(main.innerHTML.includes("Review this row"),"Correction should restore the submitted work");
+wrongRow=false;
+clickAction("check");
+assert(main.innerHTML.includes("Correct after a retry"));
+sorting=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.equal(sorting.outcomes[0],"corrected");
+assert.equal(sorting.objectiveFirst[sort.id],"incorrect");
+clickAction("next");
+assert.match(main.innerHTML,/<dt>correct after a retry<\/dt><dd>1<\/dd>/);
 // Each new schematic must support feedback, without disclosing an answer in alt text.
 for(const id of ["f172-diagram-alleles","f173-diagram-blood","f174-diagram-glucose","f175-diagram-oviduct","f176-diagram-brain","f177-diagram-randomise"]){
  const question=forcedQuestion(id);

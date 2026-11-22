@@ -281,6 +281,11 @@ window.addEventListener("hashchange",function(){
  allowRoute=false;runRoute();
 });
 window.addEventListener("beforeunload",function(e){if(active||(window.KeystoneHumanChallenge&&window.KeystoneHumanChallenge.isActive())){e.preventDefault();e.returnValue="";}});
-window.KeystoneHumanApp={stats:stats,hasResume:()=>!!restoreSession(),content:function(){return {areas:areas.length,sections:sections.length,cards:cards.length};}};
+function replaceRoute(route){
+ if(typeof history==="undefined")return;
+ history.replaceState(null,"","#"+route);
+ previousRoute=route;
+}
+window.KeystoneHumanApp={stats:stats,replaceRoute:replaceRoute,hasResume:()=>!!restoreSession(),content:function(){return {areas:areas.length,sections:sections.length,cards:cards.length};}};
 runRoute();
 })();
