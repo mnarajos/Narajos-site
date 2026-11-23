@@ -44,7 +44,20 @@ function rememberVersions(ids){ids.forEach(function(id){var q=byId[id];if(!q||!q
 function familyInQueue(q){return session&&session.queue.some(function(id){var x=byId[id];return x&&(x.family||x.id)===(q.family||q.id);});}
 function restore(key=SK){try{var x=JSON.parse(localStorage.getItem(key)||"null");if(x&&x.skillId){if(!skills||x.skillsVersion!==skills.version||!skills.get(x.skillId)||!Array.isArray(x.generated)||x.generated.length>10)return null;x.generated.forEach(function(g){var q=skills.generate(x.skillId,g.level,g.seed);byId[q.id]=q;});}if(x&&Array.isArray(x.queue)&&x.queue.length&&x.queue.every(function(id){return !!byId[id];})&&x.index<x.queue.length&&!x.complete&&x.route&&x.unit){x.hintsUsed=x.hintsUsed||{};x.quickCheckIds=x.quickCheckIds||{};x.quickCheckLinks=x.quickCheckLinks||{};x.guidedFirst=x.guidedFirst||0;x.quickChecksSeen=x.quickChecksSeen||0;x.quickChecksPassed=x.quickChecksPassed||0;initialiseOutcomes(x);return x;}}catch(_){}return null;}
 function initialiseOutcomes(item){
- if(item.outcomes)return;
+ if(item.evidenceVersion===2)return;
+ item.evidenceVersion=2;
+ if(item.outcomes){
+  // Older sessions sometimes inferred an independent result from a first-attempt flag.
+  // An actual independent submission can be traced to its position in the saved queue.
+  const observed=new Set(Object.entries(item.outcomes).filter(([,outcome])=>outcome==="independent").map(([index])=>item.queue[index]));
+  const inferred=Object.keys(item.objectiveFirst||{}).filter(id=>item.objectiveFirst[id]==="independent"&&!observed.has(id));
+  if(inferred.length){
+   item.earlierPractice ||= {first:{},correctFirst:item.correctFirst};
+   inferred.forEach(id=>{item.earlierPractice.first[id]=item.first[id];item.first[id]=false;delete item.objectiveFirst[id];});
+   item.correctFirst=Object.values(item.objectiveFirst).filter(outcome=>outcome==="independent").length;
+  }
+  return;
+ }
  item.outcomes={};item.objectiveFirst={};
  // Old flags record practice without identifying which help or feedback a pupil saw.
  const ids=Object.keys(item.first||{});
@@ -317,7 +330,7 @@ function makeSession(unit,scope,route,origin){
   for(var b=0;b<buckets.length&&arr.length<size;b++)while(buckets[b].length&&arr.length<size)arr.push(buckets[b].shift());
   ids=arr.sort(function(a,b){return stage(a)-stage(b);}).map(function(q){return q.id;});
  }else ids=shuffle(chosen).map(function(x){return x.id;});
- session={unit:unit,scope:scope,route:route,queue:ids,index:0,first:{},outcomes:{},objectiveFirst:{},correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,quickMixVersion:scope==="all"?2:null,quickMixBase:scope==="all"?ids.slice():null,quickMixFinalId:scope==="all"?ids[ids.length-1]:null,quickMixAdjusted:false,complete:false,started:Date.now()};
+ session={unit:unit,scope:scope,route:route,queue:ids,index:0,first:{},outcomes:{},objectiveFirst:{},evidenceVersion:2,correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,quickMixVersion:scope==="all"?2:null,quickMixBase:scope==="all"?ids.slice():null,quickMixFinalId:scope==="all"?ids[ids.length-1]:null,quickMixAdjusted:false,complete:false,started:Date.now()};
  if(point)session.point=point.id;
  if(origin){session.topicContext=true;session.returnTo=origin;}
  rememberVersions(ids);save();drawQuestion();
@@ -371,7 +384,7 @@ function addSkillQuestion(){
  session.maxSkillLevel=Math.max(session.maxSkillLevel||1,session.skillLevel);
 }
 function startSkill(sk,r){
- session={unit:sk.unit,scope:"skill",route:r,returnTo:parseSkillRoute(r).returnTo,skillId:sk.id,skillsVersion:skills.version,skillLevel:1,maxSkillLevel:1,skillStreak:0,generated:[],queue:[],index:0,first:{},outcomes:{},objectiveFirst:{},correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,complete:false,started:Date.now()};
+ session={unit:sk.unit,scope:"skill",route:r,returnTo:parseSkillRoute(r).returnTo,skillId:sk.id,skillsVersion:skills.version,skillLevel:1,maxSkillLevel:1,skillStreak:0,generated:[],queue:[],index:0,first:{},outcomes:{},objectiveFirst:{},evidenceVersion:2,correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,complete:false,started:Date.now()};
  addSkillQuestion();save();drawQuestion();
 }
 function skillRoute(r){
@@ -883,6 +896,7 @@ function next(){
  if(session.index>=session.queue.length)finish();else drawQuestion();
 }
 function outcomeSummary(old){
+ if(!old.outcomes || !old.objectiveFirst)return '<p class="lead">You completed this earlier set. The saved result does not identify the support used on each answer.</p>';
  var outcomes=Object.values(old.outcomes||{}),total=Object.keys(old.objectiveFirst||{}).length;
  var count=function(type){return outcomes.filter(function(result){return result===type;}).length;};
  var review=total?old.correctFirst+' of '+total+' objectively checked questions answered independently on the first submission.':'No objective first submissions were recorded in this set.';

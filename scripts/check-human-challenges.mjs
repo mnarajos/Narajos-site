@@ -284,7 +284,7 @@ assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-progress"))[written
 // Legacy records with unreliable provenance remain available as history.
 const legacy=forcedQuestion("health-care-records");
 let legacySave=JSON.parse(data.get("narajos-human-challenge-v2-session"));
-legacySave.first={[legacy.id]:true};legacySave.correctFirst=1;delete legacySave.outcomes;delete legacySave.objectiveFirst;
+legacySave.first={[legacy.id]:true};legacySave.correctFirst=1;delete legacySave.evidenceVersion;delete legacySave.outcomes;delete legacySave.objectiveFirst;
 data.set("narajos-human-challenge-v2-session",JSON.stringify(legacySave));
 app.pause();app.route(legacySave.route,h=>main.innerHTML=h);
 main.querySelector=selector=>selector==="#k-number, #k-text, #k-written"?{value:"Consider consent and confidentiality."}:null;
@@ -294,6 +294,19 @@ assert.equal(legacySave.correctFirst,0);
 assert.deepEqual(legacySave.objectiveFirst,{});
 assert.equal(legacySave.earlierPractice.first[legacy.id],true);
 assert.equal(legacySave.first[legacy.id],false);
+// Recover an earlier migrated flag independently from a submitted answer in the same saved queue.
+const inherited=forcedQuestion("f175-early");
+let inheritedSave=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+const proved=db.questions.find(q=>q.id!==inherited.id && q.type==="single").id;
+inheritedSave.queue=[proved,inherited.id];inheritedSave.index=1;inheritedSave.first={[proved]:true,[inherited.id]:true};
+inheritedSave.objectiveFirst={[proved]:"independent",[inherited.id]:"independent"};inheritedSave.outcomes={0:"independent"};
+delete inheritedSave.evidenceVersion;inheritedSave.correctFirst=2;
+data.set("narajos-human-challenge-v2-session",JSON.stringify(inheritedSave));
+app.pause();app.route(inheritedSave.route,h=>main.innerHTML=h);
+clickAction("skip");
+inheritedSave=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.equal(inheritedSave.correctFirst,1);assert.equal(inheritedSave.objectiveFirst[proved],"independent");
+assert.equal(inheritedSave.earlierPractice.first[inherited.id],true);
 const sequence=forcedQuestion("f175-early");
 let sequenceSave=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 sequenceSave.answers[sequence.id].order=[0,1,2,3]; // a pre-Batch-10 saved draft

@@ -1,6 +1,6 @@
 # Batch 26 assessment evidence
 
-The starting point was PR #77 on main at `8dc0de9`. All previous feature branch tips corresponded to merged pull requests. Site validation, the three browser engines and accessibility had passed. The separate Cloudflare Workers check on that same commit reported a failure. The public site and the deployment check need separate verification. The audit samples the shared checkers and high-risk authored questions. It is not a certification of the entire bank.
+The starting point was PR #77 on main at `8dc0de9`. All previous feature branch tips corresponded to merged pull requests. Site validation, the three browser engines and accessibility had passed. Cloudflare recorded a successful production build at 21:06 UTC on 23 November. A later branch build attached a failure to the same Git commit. Publication is verified separately from branch preview status. The audit samples the shared checkers and high-risk authored questions. It is not a certification of the entire bank.
 
 ## Objective assessment register
 
