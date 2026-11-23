@@ -203,6 +203,10 @@ var notes={
     }
   },
   "f175": {
+    "2.1": {
+      title: "First antenatal appointment and later monitoring",
+      lines: ["Booking history supplies context for later care. Starting measurements provide a baseline.", "Later measures can address a separate question about fetal growth or a possible condition."]
+    },
     "a1": {
       "title": "Conception and pregnancy",
       "lines": [
@@ -410,6 +414,9 @@ function showUnit(unit,render){
    if(unit==="f171"&&a.code==="a3"){
     h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/3.2.1">Immune dysfunction</a><a class="button secondary" href="#catchup/f171/3.2.2">Vaccine types</a></div>';
    }
+   if(unit==="f175"&&a.code==="a2"){
+    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f175/2.1">First antenatal appointment</a></div>';
+   }
   }
  });
  h+='</div></div>';render(h);
@@ -464,6 +471,9 @@ function linkFor(q){
  if(!q)return null;
  if(q.unit==="f170"&&sectionById[q.section])return "catchup/f170/"+q.section;
  if(q.unit==="f171"&&q.section==="5.2")return "catchup/f171/a5";
+ if(q.unit==="f175"&&q.section==="1.3")return "catchup/f175/a2";
+ if(q.unit==="f176"&&q.section==="3.2.1")return "catchup/f176/a2";
+ if(q.unit==="f177"&&["2.3","2.6"].includes(q.section))return "catchup/f177/a3";
  if(q.section&&notes[q.unit]&&notes[q.unit][q.section])return "catchup/"+q.unit+"/"+q.section;
  var area="a"+q.area;
  return notes[q.unit]&&notes[q.unit][area]?"catchup/"+q.unit+"/"+area:null;

@@ -93,6 +93,7 @@
   };
 
   window.KeystoneHumanLessons["f173/a3"] = {
+    revision: 1,
     goal: "Use reference evidence to interpret biochemical tests and a chromatogram.",
     explain: ["A positive control shows that a method can detect a known substance. A negative control shows the expected result without it. In chromatography, compare spots with standards run under the same conditions."],
     table: {caption: "Fictional chromatogram measurements", head: ["Lane", "Distance from baseline"], rows: [["Standard X", "2 cm"], ["Standard Y", "4 cm"], ["Unknown: first spot", "2 cm"], ["Unknown: second spot", "5 cm"], ["Solvent front", "10 cm"]]},
@@ -101,9 +102,13 @@
     guided: choice("Benedict's reagent remains blue in the unknown and in a known reducing-sugar sample after heating. What can be concluded?", 2,
       [["The unknown definitely contains no reducing sugar.", "The positive control failed, so this run cannot support that conclusion."], ["The unknown definitely contains reducing sugar.", "The expected positive colour was not produced."], ["The positive control failed and the unknown is inconclusive.", ""]],
       "A known positive needs to produce its expected result before the negative result is interpretable.", ["What should a valid positive control do?"]),
-    apply: choice("A different chromatogram gives a spot at 3 cm and a solvent front at 8 cm. What is the spot's Rf?", 0,
-      [["0.375", ""], ["2.67", "Divide the spot distance by the solvent-front distance."], ["5 cm", "Rf is a ratio of distances and has no unit."]],
-      "Rf = 3 ÷ 8 = 0.375.")
+    apply: {...written("On this new chromatogram, positions were recorded from the bottom edge. Calculate the Rf of the unknown spot and explain what the run supports about its identity.",
+      ["Measure from the baseline at 1 cm, so the spot travelled 3 cm and the solvent front travelled 6 cm.", "The unknown Rf is 3 ÷ 6 = 0.50. Its spot matches standard A under these conditions.", "The match is consistent with A. Different substances can have the same Rf, so this is not definitive identification."],
+      "Subtract the baseline coordinate from each position before dividing. The unknown and A each have Rf 0.50 in the same run. A matching result is evidence consistent with A, rather than proof of identity.",
+      ["Find the starting line before measuring travel."]),
+      table: {caption: "Fictional dye chromatogram. Positions above the bottom edge.", head: ["Feature", "Position (cm)"], rows: [
+        ["Baseline", "1.0"], ["Solvent front", "7.0"], ["Standard A spot", "4.0"], ["Standard B spot", "5.0"], ["Unknown spot", "4.0"]
+      ]}}
   };
 
   window.KeystoneHumanLessons["f174/a1"] = {
@@ -145,22 +150,62 @@
   };
 
   window.KeystoneHumanLessons["f174/a4"] = {
-    goal: "Interpret nutritional measurements in context.",
-    explain: ["BMI relates mass to height. It gives no direct measurement of body composition, nutrient intake or fitness. A change in mass can reflect fluid as well as body tissue."],
-    model: ["Two fictional adults have the same BMI and very different muscle mass.", "BMI alone cannot tell us who has more body fat. Choose measurements matched to the question and consider context."],
+    revision: 1,
+    goal: "Use dietary records, BMI and biomarkers to answer different questions about nutrition.",
+    activate: ["What is a biomarker?", "A measurable feature of the body, such as the concentration of a substance in blood."],
+    explain: ["BMI is mass in kilograms divided by height in metres squared. It gives no direct measurement of body composition or nutrient intake. A change in mass can reflect fluid as well as body tissue.",
+      "Dietary records can estimate intake over time. A biomarker supplies evidence about physiological status. Absorption, use and measurement conditions can affect it independently of intake."],
+    table: {caption: "Choose evidence for the question", head: ["Source", "What it helps answer", "One limit"], rows: [
+      ["Food record", "How much of a nutrient was eaten?", "Omitted foods and portions can distort estimates"],
+      ["BMI", "How does mass relate to height?", "Cannot separate muscle, fat and fluid"],
+      ["Blood biomarker", "What was measured in the body?", "Timing, illness and other factors may affect it"]
+    ]},
+    focusCells: [["1:0","1:1"], ["0:0","2:0"], ["0:1","2:1"]],
+    model: [
+      "Two fictional adults have the same BMI and very different muscle mass. BMI describes their mass relative to height. It cannot partition mass into muscle and fat.",
+      "One adult has a food record with a similar nutrient intake estimate to the other. If a blood marker differs, check that it measures the right feature and that sampling conditions are comparable.",
+      "The record is evidence about what was eaten. The blood marker is evidence about physiology. Differences in absorption or use could help explain why these results do not always track each other."
+    ],
     skills: ["graph", "averages"],
-    guided: choice("Body mass falls after sweating. Which explanation needs checking before attributing the fall to fat loss?", 2,
-      [["Bone length increases immediately.", "This is not a likely cause of the short-term change."], ["Nutrient composition has been directly measured.", "A weighing scale gives mass."], ["Fluid has been lost.", ""]],
+    guided: choice("Body mass falls after sweating. Which factor most directly explains why the fall alone is weak evidence of fat loss?", 2,
+      [["The person may have eaten fewer calories over the month.", "Long-term intake could affect body mass. The immediate change has a more direct explanation."], ["The scale calculates body mass relative to height.", "A mass reading alone does not include height or body composition."], ["Loss of water contributes to the change in mass.", ""]],
       "A short-term change can result from fluid loss."),
-    apply: choice("Which evidence would best investigate whether a fictional diet supplies enough iron?", 1,
-      [["BMI alone.", "BMI does not quantify nutrient intake."], ["Information about the amounts and iron content of foods eaten over time.", ""], ["One reading of height.", "This does not measure dietary iron."]],
-      "Use evidence about intake over time for a question about intake.")
+    apply: written("In a fictional study, two groups have similar BMI and recorded vitamin intake. Blood measurements of a vitamin differ. Explain what each measurement contributes and suggest one reason for the difference that does not require the groups to have eaten different amounts.",
+      ["Similar BMI means their mass-to-height relationship is similar.", "The record estimates intake. A blood test measures the vitamin at the sampling time.", "Different absorption, metabolism or sampling conditions could contribute even with similar intake."],
+      "BMI is a separate measurement. Intake records and measurements in the body answer different questions. A difference in physiological status could arise after ingestion, or from how the measurements were taken.")
   };
 })();
 
 (function () {
   const { choice, written } = window.KeystoneHumanTeaching;
   Object.assign(window.KeystoneHumanLessons, {
+    "f175/2.1": {
+      revision: 1,
+      goal: "Distinguish the purpose of the first antenatal appointment from tracking fetal development.",
+      activate: ["What is a baseline?", "It is a starting observation against which later observations can be compared."],
+      prior: ["f175/a2", "Review placental exchange and ultrasound"],
+      explain: [
+        "A first antenatal appointment helps a midwife establish a pregnancy and health history, discuss support needs and obtain starting measurements. The information helps the team decide what further assessment may be relevant.",
+        "Later follow-up may track development or offer distinct screening and diagnostic assessments. A booking history and a later growth measure provide different evidence."
+      ],
+      table: {caption: "Purposes of antenatal evidence", head: ["Context", "What it contributes"], rows: [
+        ["Booking history", "Context about health, previous pregnancies and support"],
+        ["Initial blood pressure", "A measurement to interpret and compare at follow-up"],
+        ["Later ultrasound measurements", "Evidence about growth when interpreted with gestational age and previous observations"]
+      ]},
+      focusCells: [["0:0"], ["1:0"], ["2:0"]],
+      model: [
+        "In a fictional record, the initial visit includes questions about previous pregnancies. The purpose is to understand the background and identify topics that may need follow-up.",
+        "The record also has one blood-pressure reading. This supplies a starting measurement. A single entry alone does not describe a trend.",
+        "Later scan measurements provide evidence about development. Compare them with gestational age and relevant previous findings rather than with the history alone."
+      ],
+      guided: choice("A record says blood pressure has increased since the first appointment. What makes this a monitoring claim?", 1,
+        [["The first reading concerned the mother's health.", "The subject of a measurement does not establish change."], ["It compares readings over time.", ""], ["It used the same record as the booking history.", "Location in the record does not establish a trend."]],
+        "Monitoring depends on comparable observations over time.", ["Look for what the later reading is being compared with."]),
+      apply: written("Why can a fictional record of previous pregnancies help at booking while leaving the growth of the current fetus unknown? Name a different type of evidence for growth.",
+        ["History supplies context for the assessment.", "History is not a measurement of this fetus.", "Ultrasound measurements interpreted with gestational age or previous measurements provide growth evidence."],
+        "Separate background information from measurements of the current pregnancy. Ultrasound can provide direct size measurements that help assess development in context.")
+    },
     "f175/a1": {
       revision: 1,
       goal: "Trace the routes of the gametes and explain how an interruption can change what happens next.",
@@ -289,15 +334,21 @@
         "Damage can disrupt incoming sensory information and outgoing motor signals. The exact pattern depends on the structures involved.")
     },
     "f176/a5": {
+      revision: 1,
       goal: "Choose an investigation based on the kind of evidence needed.",
       explain: ["Electroencephalography (EEG) records changes in electrical activity at the scalp. MRI produces anatomical images and can distinguish soft tissues. CT uses X-rays to reconstruct cross-sectional images."],
-      model: ["To examine changes over milliseconds, look for a method that records activity over time.", "EEG can show patterns with high time resolution. A standard anatomical MRI gives structural detail instead."],
+      table: {caption: "Readouts of nervous-system investigations", head: ["Method", "Main type of evidence"], rows: [
+        ["EEG", "Changes in scalp electrical activity over time"], ["Structural MRI", "Detailed anatomy, particularly soft tissue"], ["CT", "X-ray-based cross-sections showing features such as skull structure"]
+      ]},
+      focusCells: [["0:0"], ["1:0","2:0"]],
+      model: ["To examine changes over milliseconds, look for a method that records activity over time. EEG provides a time-varying signal.",
+        "Structural MRI and CT address anatomy. For example, a question about the edge of a skull fracture calls for structural evidence rather than an electrical recording."],
       guided: choice("Which technique uses ionising X-rays to form cross-sectional images?", 2,
         [["EEG.", "EEG records electrical activity at the scalp."], ["MRI.", "MRI uses magnetic fields and radiofrequency signals."], ["CT.", ""]],
         "CT reconstructs structural images from X-ray measurements."),
-      apply: choice("Which method best addresses the timing of a brief change in scalp electrical activity?", 0,
-        [["EEG.", ""], ["Structural MRI.", "This images anatomy rather than directly recording scalp voltage over milliseconds."], ["CT.", "This provides a structural image, not a scalp electrical recording."]],
-        "Match the measurement to the question. EEG is sensitive to changes over short timescales.")
+      apply: written("A team investigating a fictional movement problem needs high-detail images of the soft tissue of the cerebellum. Explain which of EEG, CT and structural MRI best meets that aim and why the other methods answer it less directly.",
+        ["Structural MRI gives detailed soft-tissue anatomy.", "EEG gives a signal over time rather than a structural brain image.", "CT can show anatomy, but structural MRI generally distinguishes soft tissues better for this purpose."],
+        "The question concerns soft-tissue structure. MRI can show that detail. EEG measures electrical activity, and the X-ray-based CT comparison answers many structural questions with less soft-tissue contrast for this particular aim.")
     },
     "f177/a1": {
       goal: "Distinguish receptor agonists from antagonists and predict their general effect on signalling.",
@@ -311,16 +362,29 @@
         "Follow the sign of the receptor's usual response. Reduced activation means less inhibition of secretion.", ["Start with what the receptor normally does."])
     },
     "f177/a3": {
-      goal: "Use the sample and follow-up to judge how widely a result can be applied.",
-      explain: ["Participants may differ from the wider population in age, health or other treatments. Sample size and follow-up limit detection of uncommon or delayed effects."],
-      model: ["A fictional one-month study includes adults under 40 with no other conditions.", "The measured effect applies most directly to similar adults during that month. The result gives limited direct evidence for older adults or longer use."],
+      revision: 1,
+      goal: "Distinguish what preclinical, clinical and post-market records can establish.",
+      activate: ["What is a comparison group for?", "It supplies a reference for what might have happened without the intervention."],
+      explain: [
+        "Preclinical evidence comes from studies before testing in people. A biological effect in a model can justify further research. It does not establish benefit in patients.",
+        "Clinical studies address safety and effectiveness in people under specified conditions. Later surveillance can flag suspected uncommon or delayed harms in broader use. Suspicion prompts investigation, which needs more evidence to establish causation."
+      ],
+      table: {caption: "Three types of evidence for a fictional medicine", head: ["Stage", "Evidence"], rows: [
+        ["Preclinical", "A biological effect is measured in a model"], ["Clinical", "Participants are followed for one month"], ["After authorisation", "A suspected delayed effect is reported in routine use"]
+      ]},
+      focusCells: [["0:0"], ["1:0"], ["2:0"]],
+      model: [
+        "The model result shows biological activity under study conditions. It cannot show whether patients would improve.",
+        "The trial gives direct evidence in the people studied during one month. Its size and duration still limit what it can say about uncommon or delayed effects.",
+        "A report after wider use can raise a signal. Investigators check timing, other possible causes and the frequency in suitable comparison records before drawing a causal conclusion."
+      ],
       skills: ["evidence"],
       guided: choice("An uncommon side effect is not seen in 20 participants. What is a fair conclusion?", 2,
         [["The side effect is impossible.", "A rare event may not occur in a small sample."], ["Everyone would have the effect after a longer trial.", "The available measurements do not show that."], ["No cases were observed; the study has limited power to detect rare effects.", ""]],
         "State what was observed and the limitation of the sample."),
-      apply: written("Why might a result from one young, healthy group need more evidence before it is applied to a wider population?",
-        ["The sample may not represent older people or those with other health conditions.", "Benefits, responses and risks could differ in those groups."],
-        "The trial can give evidence for the group studied. Further evidence is needed to judge whether the effect generalises to groups with different characteristics.")
+      apply: written("Two fictional medicines have 18 and 9 suspected side-effect reports after authorisation. What can the raw counts establish, and what would you need before comparing how often the event occurs?",
+        ["There are more reports for the first medicine in these records.", "The number exposed and period observed must be known for meaningful rates.", "Comparable populations and reporting processes matter. Reports alone do not prove causation."],
+        "The report counts are a starting point for investigation. Differences in use, reporting or the people treated could affect them. Comparable denominators and follow-up would make the frequency comparison more informative.")
     },
     "f177/a2": {
       revision: 1,
