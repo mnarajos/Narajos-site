@@ -555,13 +555,45 @@ window.KeystoneHumanCatchup={route:function(hash,render){
  var simulationStage=m[1]==="f175"&&m[2]==="a1"?m[5]:null;
  return showConcept(m[1],m[2],m[3],render,Number(m[4])||0,simulationStage);
 },unitList:units,linkFor:linkFor,reteachFor:reteachFor,practiceScope:practiceScope,topicPracticeScope:topicPracticeScope,searchTopics:function(){
- var f170=Object.values(sectionById).map(function(item){
-  var s=item.section;
-  return {group:"f170",title:s.title,context:"F170 · "+s.id,concept:true,actions:[["Catch up","#catchup/f170/"+s.id],["Flashcards","#cards/"+s.id]]};
- });
- var f171=Object.entries(notes.f171).map(function(entry){
-  return {group:"f171",title:entry[1].title,context:"F171 · "+entry[0],concept:true,actions:[["Catch up","#catchup/f171/"+entry[0]]]};
- });
- return f170.concat(f171);
+ const aliases={
+  "f170/1.1.2":"microscope micrograph magnification resolution scale bar TEM SEM",
+  "f170/3.1.1":"glucose insulin hormones blood sugar negative feedback",
+  "f171/4.2.1":"screen false positive false negative sensitivity specificity screening test",
+  "f171/a3":"immunity antibody antibodies antigen adaptive innate vaccination lymphocytes",
+  "f171/a5":"clinical research studies evidence trial data controls",
+  "f173/a2":"photomicrographs magnification scale bar light microscope TEM SEM",
+  "f173/a3":"chromatography chromatogram retention factor solvent front biochemical test",
+  "f174/a4":"BMI nutrient intake dietary measurements",
+  "f175/a1":"FSH LH ovulation follicle gamete oocyte fertilisation implantation menstrual cycle",
+  "f175/a4":"assisted reproduction IVF fertility",
+  "f176/a2":"synapse synaptic transmission inhibition excitation disinhibition neurotransmitter",
+  "f176/a5":"EEG MRI CT scan brain investigations electroencephalogram",
+  "f177/a2":"clinical trials trial randomisation blinding placebo controlled study",
+  "f177/a3":"preclinical testing safety pharmacovigilance adverse events surveillance"
+ };
+ const entries=[];
+ for(const unit of units){
+  const code=unit.id.toUpperCase();
+  const unitKindText=unitKind(unit.id);
+  entries.push({group:unit.id,title:unit.title,context:code+" · "+unitKindText,keywords:code,actions:[["Open unit","#challenge/"+unit.id]]});
+  if(unit.id==="f170")for(const area of unit.areas){
+   entries.push({group:unit.id,title:area.title,context:code+" · Topic "+area.code.slice(1),actions:[["Practise","#challenge/"+unit.id+"/"+area.code]]});
+  }
+  const topics=unit.id==="f170"?Object.entries(sectionById).map(([id,item])=>[id,item.section]):Object.entries(notes[unit.id]||{});
+  for(const [id,topic] of topics){
+   const studyRoute="#catchup/"+unit.id+"/"+id;
+   const point=practiceScope(unit.id,id);
+   const actions=[["Catch up",studyRoute]];
+   if(point)actions.push(["Build Understanding","#challenge/"+unit.id+"/"+point+"?from="+studyRoute.slice(1)]);
+   if(unit.id==="f175"&&id==="a1")actions.push(["Open interactive model",studyRoute+"?stage=follicle"]);
+   if((unit.id==="f173"&&id==="a3")||(unit.id==="f177"&&id==="a3")){
+    actions.push(["Practise","#challenge/"+unit.id+"/"+topicPracticeScope(unit.id,id)+"?from="+studyRoute.slice(1)]);
+   }
+   entries.push({group:unit.id,title:unit.id==="f173"&&id==="a3"?"Biomolecule tests and chromatography":topic.title,
+    context:code+" · "+unit.title,keywords:(aliases[unit.id+"/"+id]||"")+" "+id,
+    concept:!id.startsWith("a"),actions});
+  }
+ }
+ return entries;
 },count:function(){return {units:units.length,concepts:Object.values(notes).reduce(function(n,x){return n+Object.keys(x).length;},0)+Object.keys(sectionById).length};}};
 })();

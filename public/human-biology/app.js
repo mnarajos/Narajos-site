@@ -105,22 +105,22 @@ function showHome(section){
  if(focus)focus.focus();
 }
 function mountStudyFinder(){
- const finder=window.NarajosTopicFinder;
- const progressions=window.KeystoneHumanProgressions;
- if(!finder||!progressions)return;
- const groups=[{id:"f170",label:"F170 · Fundamentals of human biology"},{id:"f171",label:"F171 · Health and disease"}];
- const companion=window.KeystoneHumanCatchup;
- const entries=progressions.points.map(point=>{
-  const section=point.unit==="f170"?bySection[point.section]:null;
-  const catchup=window.KeystoneHumanCatchup&&window.KeystoneHumanCatchup.linkFor(point);
-  const actions=[["Practise","#challenge/"+point.unit+"/"+point.id]];
-  if(catchup)actions.push([catchup.endsWith("/"+point.section)?"Catch up":"Related catch-up","#"+catchup]);
-  if(section)actions.push(["Flashcards","#cards/"+section.id]);
-  else if(f171Decks.some(deck=>deck[0]===point.section))actions.push(["Flashcards","#cards/f171-"+point.section]);
-  return {group:point.unit,title:point.statement,context:point.unit.toUpperCase()+" · "+point.section,
-   keywords:section?section.title:"",actions};
- });
- if(companion)entries.unshift(...companion.searchTopics());
+ const finder=window.NarajosTopicFinder,companion=window.KeystoneHumanCatchup;
+ if(!finder||!companion)return;
+ const groups=companion.unitList.map(unit=>({id:unit.id,label:unit.id.toUpperCase()+" · "+unit.title}));
+ const entries=companion.searchTopics();
+ const lessonsByRoute=new Map(entries.filter(entry=>entry.actions[0][1].startsWith("#catchup/")).map(entry=>[entry.actions[0][1],entry]));
+ for(const point of window.KeystoneHumanProgressions?.points||[]){
+  const route=companion.linkFor(point);
+  const lesson=lessonsByRoute.get("#"+route);
+  if(lesson)lesson.keywords+=" "+point.statement;
+  else entries.push({group:point.unit,title:point.statement,context:point.unit.toUpperCase()+" · Build Understanding",
+   concept:true,actions:[["Practise","#challenge/"+point.unit+"/"+point.id]]});
+ }
+ for(const skill of window.KeystoneHumanSkills?.definitions||[]){
+  entries.push({group:skill.unit,title:skill.name,context:skill.unit.toUpperCase()+" · Skills Practice",
+   concept:true,keywords:skill.description,actions:[["Practise skill","#skills/"+skill.unit+"/"+skill.id]]});
+ }
  finder.mount(main,{groups,entries});
 }
 function showTopics(){render(crumb("home","Overview")+'<div class="hero"><div class="eyebrow">F170 topic map</div><h1>Explore the specification</h1><p class="lead">Select an area to study its learning sections. This pilot does not yet cover every individual breadth-and-depth statement.</p></div><div class="grid">'+areas.map(areaHtml).join("")+'</div>'+sourceNote());}

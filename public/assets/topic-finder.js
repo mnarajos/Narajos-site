@@ -44,9 +44,10 @@
         };
         return score(b) - score(a);
       });
-      feedback.textContent = matches.length
+      const message = matches.length
         ? matches.length + (matches.length === 1 ? " result" : " results")
-        : "No matching topics. Try a shorter term or choose a different subject or unit.";
+        : "No matching topics. Try a shorter keyword or change the filter.";
+      if (feedback.textContent !== message) feedback.textContent = message;
       for (const entry of matches) {
         const item = element("li", "", "study-finder-result");
         item.append(element("small", entry.context), element("strong", entry.title));
