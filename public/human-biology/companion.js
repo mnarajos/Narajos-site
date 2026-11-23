@@ -334,6 +334,14 @@ const focusedLessons={
   "The effects depend on the sites involved. A swollen node or a report of night sweats alone cannot establish the diagnosis."
  ]}
 };
+function indexComparisons(){
+ for(const [key,lesson] of Object.entries(window.KeystoneHumanLessons || {})){
+ if(key.startsWith("f171/1.2.1.") && lesson.title && !focusedLessons[key]){
+  focusedLessons[key]={area:"a1",title:lesson.title,practice:"1.2.1",lines:lesson.explain};
+ }
+}
+}
+indexComparisons();
 function lessonFor(unit,id){return (window.KeystoneHumanLessons||{})[unit+"/"+id];}
 var buildPractice={
  "f170/1.1.2":"p-cell-actual-width",
@@ -451,6 +459,7 @@ function showUnit(unit,render){
 function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
  var u=units.filter(function(x){return x.id===unit;})[0];
  if(!u)return showHome(render);
+ indexComparisons();
  const focus=focusedLessons[unit+"/"+id];
  var topic,points;
  if(focus){topic=focus.title;points=focus.lines;}

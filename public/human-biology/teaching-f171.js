@@ -395,3 +395,95 @@
   lessons["f171/a2"] = lessons["f171/2.1"];
   lessons["f171/a4"] = lessons["f171/4.2.2"];
 })();
+
+// Each comparison has its own stable catch-up route and saved written response.
+(function () {
+  const {choice, written} = window.KeystoneHumanTeaching;
+  function comparison(id, title, normal, changes, impact, model, check, transfer, criteria, answer) {
+    window.KeystoneHumanLessons["f171/1.2.1." + id] = {
+      title, revision: 1, goal: title + " — trace the change from structure to daily function.",
+      explain: [normal, ...changes, impact],
+      modelTitle: "Reason from the evidence", model,
+      guided: choice(check[0], 1, [[check[1], check[3]], [check[2], ""]], check[4], [normal]),
+      apply: written(transfer, criteria, answer)
+    };
+  }
+  comparison("movement", "Motor neurone disease and Parkinson’s disease",
+    "Brain circuits help initiate and scale movement. Motor neurones carry signals that activate voluntary muscles.",
+    ["In motor neurone disease (MND), motor neurones progressively stop working. Fewer effective signals reach the muscles. Weakness and muscle wasting can affect grip, swallowing, speech or breathing.",
+     "In Parkinson’s disease, loss of dopamine-producing cells disrupts circuits that coordinate movement. Slowness and stiffness can make starting a movement difficult. A resting tremor may be visible."],
+    "Someone may need extra time to dress, adapted equipment or help with meals. Progressive changes can alter a family’s caring responsibilities and demand for therapy services.",
+    ["A person can hold a cup firmly once they reach it but takes a long time to start reaching. That observation concerns movement initiation.",
+     "In contrast, a declining measured grip force is evidence of weakness. Ask what function changed before suggesting a mechanism. Neither finding identifies a disease on its own."],
+    ["Which change most directly explains muscle wasting in MND?", "Difficulty initiating movement alone", "Loss of signals from motor neurones", "Slow initiation and loss of muscle activation are different problems.", "Trace the last part of the pathway to the muscle."],
+    "A person with MND understands a conversation but their speech becomes less clear and swallowing takes longer. Explain the link and one possible consequence for family life.",
+    ["Link impaired motor signals to weaker or less coordinated muscle action.", "Apply the link to speech or swallowing.", "Give a specific consequence without assuming loss of understanding."],
+    "Loss of motor signals can weaken muscles used to articulate words and swallow. Meals may take longer and relatives may need to allow more time for communication. Unclear speech alone gives no evidence of impaired understanding.");
+  comparison("aorta", "Abdominal aortic aneurysm and hypertension",
+    "The aorta carries blood from the left ventricle. Its elastic wall stretches under pressure and recoils between beats.",
+    ["An abdominal aortic aneurysm is a local widening of a weakened section of the aortic wall. It often causes no symptoms. Rupture can cause severe pain and rapid internal blood loss.",
+     "Hypertension is persistently raised arterial blood pressure. It usually has no symptoms. Over time it increases strain on the heart and risk of damage to vessels and organs. Higher body mass can increase risk, but it cannot establish someone’s blood pressure."],
+    "Monitoring an aneurysm can require repeat scans and time away from work. Hypertension may require long-term monitoring even when a person feels well. Complications can increase family and health-service support needs.",
+    ["A fictional scan shows a local widening of the abdominal aorta. This is evidence about diameter.",
+     "A pressure cuff measures arterial pressure. Repeated readings under comparable conditions address persistent pressure; they do not measure the width of the aorta."],
+    ["Which result directly describes an aneurysm?", "One high cuff reading", "A scan showing local aortic dilation", "A pressure reading does not show vessel shape.", "Identify the quantity measured."],
+    "Two scans show a local abdominal aortic widening increasing from 3.4 to 4.1 cm. A pupil says this proves the person’s blood pressure rose. Evaluate the claim and explain one possible consequence if the wall ruptures.",
+    ["Compare the same structural measurement.", "Separate diameter from pressure.", "Link rupture to internal blood loss and reduced organ perfusion."],
+    "Diameter increased by 0.7 cm. Neither scan measured arterial pressure. If the wall ruptures, blood can leave the circulation rapidly, reducing blood flow to organs.");
+  comparison("airways", "Asthma and COPD",
+    "Air flows through bronchioles to alveoli. Thin alveolar walls provide a large surface for diffusion.",
+    ["Asthma involves inflamed, sensitive airways. Muscle tightening and mucus can narrow their openings, causing episodes of wheeze, cough or chest tightness. Air pollution can trigger symptoms in some people.",
+     "COPD produces persistent airflow obstruction. In emphysema, loss of alveolar walls also reduces surface area and elastic recoil. Smoking is a major risk factor; a smoking history alone cannot diagnose COPD."],
+    "Both conditions can limit activity. Fluctuating symptoms may interrupt school or sport; persistent breathlessness may increase the need for help with shopping. Flare-ups can require healthcare.",
+    ["A narrower airway offers greater resistance. At the same driving pressure less air moves through it.",
+     "Reopening that airway can improve ventilation. It cannot replace destroyed alveolar walls."],
+    ["Which change directly reduces diffusion area?", "Contraction of airway muscle", "Loss of alveolar walls", "Airway muscle chiefly changes airway diameter.", "Distinguish the air passages from the exchange surface."],
+    "Two people report breathlessness on stairs. One has variable airway narrowing. The other has evidence of lost alveolar walls. Explain how the same symptom could arise by different routes.",
+    ["Explain reduced airflow in narrowed airways.", "Explain reduced exchange area.", "Distinguish the reported symptom from evidence of structure."],
+    "Narrowed airways resist airflow, making ventilation more difficult. Lost alveolar walls leave less surface for gas exchange. Breathlessness is a symptom shared by both; it cannot locate the affected structure.");
+  comparison("digestive", "Crohn’s disease and hiatus hernia",
+    "The small intestine absorbs nutrients through its lining. At the stomach entrance a barrier normally limits reflux into the oesophagus.",
+    ["Crohn’s disease causes inflammation in parts of the digestive tract. Inflamed bowel can cause diarrhoea, pain and fatigue. If enough absorptive intestine is affected, nutrient uptake may fall and weight loss may follow.",
+     "In a sliding hiatus hernia the upper stomach and its junction with the oesophagus move through the diaphragm. Reflux can cause heartburn or a sour taste. Some hernias cause no symptoms."],
+    "Urgent bowel movements may interrupt travel or work. Families may adjust meals or journeys, and flare-ups may require treatment and time away from school.",
+    ["After a meal someone reports burning behind the breastbone. Backflow can expose the oesophageal lining to acidic stomach contents.",
+     "That mechanism does not explain every digestive symptom. For weight loss, consider intake and absorption separately."],
+    ["Which change directly impairs nutrient uptake?", "Displacement of the stomach junction alone", "Inflammation of absorptive small intestine", "Displacement primarily affects the reflux barrier.", "Locate where nutrients normally enter the body."],
+    "A fictional patient’s food intake is stable, but extensive small-intestinal inflammation accompanies weight loss. Explain one plausible mechanism and why this evidence alone cannot name the disease.",
+    ["Link the inflamed lining to reduced absorption.", "Connect nutrient availability to weight.", "Recognise that other causes are possible."],
+    "Inflammation can impair absorption, so less nutrient enters the body despite similar intake. That could contribute to weight loss. The findings are compatible with Crohn’s disease but do not uniquely identify it.");
+  comparison("renal", "Nephritis and polycystic kidney disease",
+    "Glomeruli filter water and small solutes from blood. Healthy filtration barriers retain blood cells and most large proteins.",
+    ["Nephritis means kidney inflammation. In glomerulonephritis the inflamed filters may leak blood cells or protein into urine. Reduced filtration and salt and water retention can contribute to swelling.",
+     "In polycystic kidney disease, enlarging fluid-filled cysts can damage functioning tissue. Blood pressure may rise and clearance of waste may decline. Pain or blood in urine can occur."],
+    "Swelling or fatigue can restrict daily activities. Appointments and, in advanced disease, kidney replacement therapy can affect family routines and demand on services.",
+    ["Protein in urine suggests a problem retaining protein, but does not show the shape of the kidney.",
+     "A scan can reveal cysts. To assess function, consider evidence about waste clearance as well as structure."],
+    ["Which finding directly shows a structural change in PKD?", "Fatigue", "Multiple fluid-filled cysts on imaging", "Fatigue has several possible causes.", "Separate a reported experience from a scan finding."],
+    "One report describes inflamed glomeruli and protein in urine. Another shows enlarging cysts and falling waste clearance. Explain the different routes to altered function.",
+    ["Relate glomerular inflammation to leakage.", "Relate cyst enlargement to loss of functioning tissue.", "Distinguish leakage from clearance."],
+    "Damaged glomerular barriers can let protein enter urine. Enlarging cysts can damage working kidney tissue, reducing its capacity to remove waste. These results describe different aspects of kidney function.");
+  comparison("oxygen", "Cystic fibrosis, sickle cell anaemia and iron-deficiency anaemia",
+    "Oxygen must reach the alveoli, bind to haemoglobin in red cells and be carried through vessels to tissues.",
+    ["Inherited CFTR variants in cystic fibrosis can produce thick secretions. Mucus can obstruct airways and impair clearance, contributing to cough and recurrent chest infections. Blocked pancreatic ducts may reduce delivery of digestive enzymes.",
+     "In sickle cell disease an inherited haemoglobin variant can make red cells rigid and sickle-shaped. Cells may break down early, causing anaemia, and can obstruct small vessels, causing painful episodes.",
+     "In iron-deficiency anaemia too little available iron limits haemoglobin production. Blood then carries less oxygen per unit volume; fatigue, breathlessness and pallor may occur."],
+    "Fatigue may restrict exercise. Repeated respiratory treatment or unpredictable pain may disrupt education, employment and family plans, with differing needs for healthcare.",
+    ["Trace the route backwards from a muscle. A blocked small vessel limits blood reaching it even if air reaches the lungs.",
+     "With low haemoglobin, each volume of blood can carry less oxygen even with open vessels. Airway obstruction affects a different stage."],
+    ["Which consequence most directly follows low available iron?", "Mucus blocks pancreatic ducts", "Less haemoglobin can be made", "Mucus obstruction is associated with cystic fibrosis.", "Identify the oxygen-carrying protein."],
+    "One patient has normal air entry, low iron stores and low haemoglobin. Another has sickle cell disease, anaemia and episodes of local pain. Explain the shared limitation and the extra mechanism in the second case.",
+    ["Identify reduced oxygen-carrying capacity in anaemia.", "Explain the role of iron in haemoglobin formation.", "Link sickling to impaired local blood flow."],
+    "Both may carry less oxygen per volume of blood. Low iron limits haemoglobin synthesis in the first case. In the second, red cells can break down early and rigid cells can obstruct small vessels, reducing oxygen delivery locally and causing pain.");
+  comparison("tissues", "Multiple sclerosis, rheumatoid arthritis, melanoma and rickets",
+    "Nerves transmit signals, joints permit movement, pigment cells produce melanin and growing bones need mineral for strength.",
+    ["In multiple sclerosis, immune-mediated damage to myelin in the central nervous system disrupts nerve conduction. Weakness, visual difficulties or fatigue can vary over time. In rheumatoid arthritis, the immune system mistakenly attacks joint tissues. The resulting inflammation affects joints, causing swelling, pain and stiffness.",
+     "Melanoma develops when melanocytes grow uncontrollably and may spread. A changing pigmented lesion is an observable sign needing assessment, not a diagnosis. Vitamin D deficiency can reduce calcium absorption. In rickets, poor mineralisation weakens growing bones, sometimes causing bowed legs, bone pain or difficulty walking."],
+    "Walking difficulties can have nervous, joint or bone causes. School access, transport, family support and treatment needs depend on the particular functional limitation.",
+    ["A clinician observes swollen finger joints. The patient reports pain when gripping a handle. Swelling is a sign; pain is a symptom.",
+     "Inflammation can restrict joint movement. This differs from disrupted nerve signalling or reduced bone strength."],
+    ["Which observation is a sign?", "Reported joint pain", "Visible joint swelling", "Pain is experienced and reported by the person.", "Ask how the information was obtained."],
+    "Two pupils say walking is tiring. One has evidence of poor bone mineralisation, the other of disrupted central nerve conduction. Explain why the same daily difficulty does not identify the same disorder.",
+    ["Link mineralisation to bone strength.", "Link nerve conduction to movement control.", "Use the limits of the symptom evidence."],
+    "Weak growing bones can deform under load, making walking difficult. Disrupted nerve conduction can instead impair control of movement. Feeling tired when walking cannot distinguish these mechanisms.");
+})();
