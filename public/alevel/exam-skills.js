@@ -824,13 +824,95 @@
     return credit;
   }
 
-  function paperDrawing() {
+  function drawingInspector() {
+    const dialog = node("dialog", null, "al-figure-dialog");
+    const title = node("h2");
+    const close = button("Close", () => dialog.close());
+    close.setAttribute("aria-label", "Close enlarged image");
+    const views = node("div", null, "al-inspector-views");
+    views.setAttribute("role", "group");
+    views.setAttribute("aria-label", "Switch enlarged image");
+    views.hidden = true;
+    const preview = node("div", null, "al-drawing-zoom");
+    preview.tabIndex = 0;
+    preview.setAttribute("role", "region");
+    preview.setAttribute("aria-label", "Enlarged image. Use the arrow keys or swipe to move across it.");
+    let opener;
+    const controls = node("div", null, "al-inspector-tools");
+    controls.append(views, close);
+    dialog.append(title, controls, preview);
+    dialog.addEventListener("close", () => opener?.focus());
+    function add(label, picture, shortLabel = label) {
+      function display() {
+        title.textContent = label;
+        dialog.setAttribute("aria-label", label);
+        preview.replaceChildren(picture.firstElementChild.cloneNode(true));
+        for (const option of views.children)
+          option.setAttribute("aria-pressed", String(option === view));
+      }
+      const view = button(shortLabel, display);
+      view.setAttribute("aria-label", label);
+      views.append(view);
+      views.hidden = views.children.length < 2;
+      title.classList.toggle("sr-only", !views.hidden);
+      const enlarge = button("Enlarge " + label.toLowerCase(), () => {
+        opener = enlarge;
+        display();
+        dialog.showModal();
+        preview.scrollTo(0, 0);
+        close.focus();
+      });
+      enlarge.classList.add("al-secondary");
+      return enlarge;
+    }
+    return {dialog, add};
+  }
+
+  function workedCredit(worked) {
+    const credit = node("small", null, "al-drawing-credit");
+    const source = node("a", worked.author), licence = node("a", worked.licence);
+    source.href = worked.credit;
+    licence.href = worked.licenceUrl;
+    credit.append(source, " · ", licence, " · ", worked.alterations);
+    return credit;
+  }
+
+  function drawingWorked(bar) {
+    const worked = window.ALevelDrawingWorked;
+    const panel = node("details", null, "al-drawing-worked al-drawing-example");
+    panel.append(node("summary", "Worked example · From a micrograph to a drawing"));
+    const figures = node("div", null, "al-figures");
+    const reference = node("figure"), photo = node("div");
+    photo.innerHTML = worked.observationSvg();
+    const inspector = drawingInspector();
+    reference.append(node("figcaption", worked.name), photo, inspector.add("Observation", photo));
+    figures.append(reference);
+    const reveal = button("Show the worked drawing", () => {
+      const figure = node("figure", null, "al-worked-model");
+      const title = node("figcaption", "Worked drawing"), model = node("div");
+      model.innerHTML = worked.modelSvg();
+      figure.append(title, model, inspector.add("Worked drawing", model, "Drawing"));
+      figures.append(figure);
+      const steps = node("ol");
+      worked.steps.forEach(step => steps.append(node("li", step)));
+      reveal.replaceWith(steps, node("p", "On paper, write the explanatory title beside your drawing. Include a calibrated scale bar, actual size or a magnification calculated for the drawing itself."));
+      currentStage(bar, "model");
+      focus(title);
+    });
+    panel.append(node("p", worked.observe), figures, node("p", worked.decide), reveal, workedCredit(worked), inspector.dialog);
+    panel.ontoggle = () => {
+      if (panel.open) currentStage(bar, figures.children.length === 1 ? "idea" : "model");
+    };
+    return panel;
+  }
+
+  function paperDrawing(bar) {
     const item = drawing.paper, s = item.specimen, panel = node("details", null, "al-paper");
     panel.append(node("summary", "Draw a specimen on paper"));
     const prompt = node("section", null, "al-paper-prompt");
-    const picture = node("div");
+    const picture = node("div"), inspector = drawingInspector();
     picture.innerHTML = drawing.svg(item,true);
-    prompt.append(node("h3", s.name), node("p", s.task + " Use a sharp pencil and give your drawing a title."), picture,
+    prompt.append(node("h3", s.name), node("p", s.task + " Use a sharp pencil. Add a short annotation explaining which internal detail you could resolve."), picture, inspector.add("Paper observation", picture, "Observation"),
       node("p", "Use the reference bar to set the length on your page. If you enlarge the cell, enlarge the bar in the same proportion."), drawingCredit(item));
     const print = button("Print observation and instructions", () => window.print());
     print.classList.add("al-secondary");
@@ -844,7 +926,8 @@
       "My title names the specimen and the cell I drew.",
       "I used clear, single pencil lines and left out shading and unresolved detail.",
       "I ruled the label line and kept the rest of the wall outline clear.",
-      "I labelled my scale bar in µm."
+      "I labelled my scale bar in µm.",
+      "I compared the cell’s height and width, and my annotation explains the limits of the visible detail."
     ];
     const getPaper = () => read().drawingPaper || {};
     function update(patch) {
@@ -876,10 +959,11 @@
       response.value = state.improvement || "";
       response.oninput = () => update({improvement:response.value});
       note.append(response);
-      review.replaceChildren(heading, picture, checks, note, node("p","Your checklist and improvement are saved on this device as self-review."));
+      review.replaceChildren(heading, picture, inspector.add("Paper model", picture, "Model"), checks, note, node("p","Your checklist and improvement are saved on this device as self-review."));
       if (moveFocus) focus(heading);
     }
-    panel.append(reveal, review);
+    panel.append(reveal, review, inspector.dialog);
+    panel.ontoggle = () => { if (panel.open) currentStage(bar, "review"); };
     if (getPaper().compared) showReview(false);
     return panel;
   }
@@ -890,18 +974,7 @@
     switcher.setAttribute("role", "group");
     switcher.setAttribute("aria-label", "Drawing comparison");
     const figures = node("div", null, "al-figures");
-    const dialog = node("dialog", null, "al-figure-dialog");
-    dialog.setAttribute("aria-labelledby", "al-enlarged-title");
-    const title = node("h2");
-    title.id = "al-enlarged-title";
-    const preview = node("div", null, "al-drawing-zoom");
-    preview.tabIndex = 0;
-    preview.setAttribute("role","region");
-    preview.setAttribute("aria-label","Enlarged image. Use the arrow keys or swipe to move across it.");
-    const close = button("Close enlarged image", () => dialog.close());
-    dialog.append(title, close, preview);
-    let opener;
-    dialog.addEventListener("close", () => opener?.focus());
+    const inspector = drawingInspector();
     const labels = [["reference", "Reference observation"], ["candidate", "Candidate drawing"]];
     function update() {
       root.dataset.active = session.view || "reference";
@@ -921,15 +994,7 @@
       figure.dataset.view = id;
       const image = node("div");
       image.innerHTML = drawing.svg(item, isReference, Boolean(session.outcome));
-      const enlarge = button("Enlarge " + label.toLowerCase(), () => {
-        opener = enlarge;
-        title.textContent = label;
-        preview.innerHTML = image.innerHTML;
-        dialog.showModal();
-        close.focus();
-      });
-      enlarge.classList.add("al-secondary");
-      figure.append(node("figcaption", label), image, enlarge);
+      figure.append(node("figcaption", label), image, inspector.add(label, image, isReference ? "Reference" : "Candidate"));
       figures.append(figure);
     }
     const descriptions = node("details", null, "al-drawing-evidence");
@@ -943,7 +1008,7 @@
     photo.src = "/assets/micrographs/" + item.specimen.image;
     photo.alt = "Full field before cropping. " + drawing.scaleText(item.specimen);
     full.append(photo, drawingCredit(item));
-    root.append(switcher, figures, descriptions, full, dialog);
+    root.append(switcher, figures, descriptions, full, inspector.dialog);
     update();
     return root;
   }
@@ -952,17 +1017,20 @@
     const comparison = node("details", null, "al-drawing-example");
     comparison.append(node("summary", "Cell drawing or tissue plan?"));
     const figures = node("div", null, "al-figures");
+    const worked = window.ALevelDrawingWorked;
+    const section = drawing.bank.find(item => item.specimen.id === "privet");
     const examples = [
-      [drawing.bank[0], "Cell drawing · onion epidermis", "Follow the outline of the selected cell. Include internal structures only when the observation resolves them."],
-      [drawing.bank.find(item => item.specimen.id === "privet"), "Tissue plan · privet leaf", "Trace the boundaries of tissue regions. Show the relative thickness of the epidermis and the position of the bundle. Leave out divisions between individual cells."]
+      ["Cell drawing · " + worked.name, worked.observationSvg(), "Trace the cell boundaries and the internal structures you can resolve. Preserve their positions and proportions.", workedCredit(worked)],
+      ["Tissue plan · " + section.specimen.name, drawing.svg(section, true), "Follow the boundaries between the tissue regions. Compare their relative thickness and position. A plan shows the distribution of tissues and leaves out individual cells.", drawingCredit(section)]
     ];
-    for (const [item, title, instruction] of examples) {
+    const inspector = drawingInspector();
+    for (const [title, svg, instruction, credit] of examples) {
       const figure = node("figure"), observation = node("div");
-      observation.innerHTML = drawing.svg(item, true);
-      figure.append(node("figcaption", title), observation, node("p", instruction), drawingCredit(item));
+      observation.innerHTML = svg;
+      figure.append(node("figcaption", title), observation, inspector.add(title, observation, title.split(" · ")[0]), node("p", instruction), credit);
       figures.append(figure);
     }
-    comparison.append(figures);
+    comparison.append(figures, node("p", "In a dissection, a body plan records the arrangement of the organs or other anatomical structures visible in the specimen."), inspector.dialog);
     return comparison;
   }
 
@@ -1032,20 +1100,42 @@
       persist(); render(); focus(feedback);
     };
     form.append(label, check, feedback);
-    panel.append(hint, form);
+    panel.append(hint, form, node("p", "Drawing magnification is the length on the page divided by the actual length, in the same units. When you resize a drawing, resize its bar in the same proportion. The bar still represents the same actual length."));
     render();
     return panel;
   }
 
   function drawings(host) {
     const stored = read();
-    if ((stored.drawingSession || stored.drawingReview) && stored.drawingVersion !== drawing.version) {
-      stored.previousDrawingSet = { session: stored.drawingSession, review: stored.drawingReview, round: stored.drawingRound };
+    if (stored.drawingVersion !== drawing.version) {
+      const outcomes = Object.entries(stored.drawingOutcomes || {});
+      const oldObservation = id => typeof id === "string" && id.includes(".");
+      const observations = outcomes.filter(([id]) => oldObservation(id));
+      const hasObservationSet = stored.drawingVersion === 2 ||
+        stored.drawingSession?.ids?.some(oldObservation) || stored.drawingReview?.entries?.some(entry => oldObservation(entry.id));
+      const prior = {session:stored.drawingSession, review:stored.drawingReview, round:stored.drawingRound};
+      if (hasObservationSet || observations.length) {
+        stored.earlierObservationSet = {...(hasObservationSet ? prior : {}), outcomes:Object.fromEntries(observations)};
+        stored.drawingOutcomes = Object.fromEntries(outcomes.filter(([id]) => !oldObservation(id)));
+      }
+      if (!hasObservationSet && (prior.session || prior.review)) stored.previousDrawingSet = prior;
       delete stored.drawingSession;
       delete stored.drawingReview;
       stored.drawingRound = 0;
       stored.drawingVersion = drawing.version;
       save(stored);
+    }
+    if (stored.earlierObservationSet) {
+      const prior = stored.earlierObservationSet, history = node("details");
+      history.append(node("summary", "Earlier observation judgements"),
+        node("p", "These attempts used the earlier drawings and criteria. Your current set starts with the revised questions."));
+      if (prior.session) history.append(node("p", "Your earlier set reached drawing " + (prior.session.index + 1) + " of 6."));
+      if (prior.review) history.append(node("p", "Your completed earlier set contains " + prior.review.entries.length + " judgements."));
+      const records = node("ul");
+      for (const [id, result] of Object.entries(prior.outcomes || {}))
+        records.append(node("li", id + " · " + (outcomeNames[result] || result)));
+      history.append(records);
+      host.append(history);
     }
     if (stored.previousDrawingSet || Object.keys(stored.drawingOutcomes || {}).some(id => /-\d$/.test(id))) {
       const history = node("details");
@@ -1064,45 +1154,12 @@
       return;
     }
     const block = node("section", null, "al-teaching al-drawing");
-    const bar = stageBar([["model", "Compare"], ["guided", "With support"],
-      ["independent", "Your turn"], ["review", "Review"]]);
-    currentStage(bar, "model");
+    const bar = stageBar([["idea", "Observe and decide"], ["model", "Worked drawing"],
+      ["guided", "Evaluate examples"], ["review", "Draw and review"]]);
+    currentStage(bar, "idea");
     host.append(bar, block);
-    const introduction = node("details", null, "al-drawing-example");
-    introduction.open = !read().drawingSession && !read().drawingReview;
-    const model = drawing.bank[0];
-    introduction.append(node("summary", "Worked example · From a micrograph to a drawing"),
-      node("p", "Trace the one complete onion cell in the centre. Follow the high corner to its rounded base before looking at the drawing."));
-    const comparison = node("div", null, "al-figures");
-    for (const [reference, title] of [[true,"Red onion epidermis"],[false,"Model cell drawing"]]) {
-      const fig = node("figure"), pic = node("div");
-      pic.innerHTML = drawing.svg(model,reference);
-      fig.append(node("figcaption", title), pic);
-      comparison.append(fig);
-    }
-    const corners = button("Locate the high corner in both images", () => {
-      const active = corners.getAttribute("aria-pressed") !== "true";
-      corners.setAttribute("aria-pressed", String(active));
-      comparison.querySelectorAll("figure > div > svg").forEach(svg => {
-        svg.querySelector("[data-worked-corner]")?.remove();
-        if (active) {
-          const ring = document.createElementNS("http://www.w3.org/2000/svg","circle");
-          ring.setAttribute("cx", "85.6"); ring.setAttribute("cy", "41.1");
-          ring.setAttribute("r","12"); ring.setAttribute("fill","none");
-          ring.setAttribute("stroke","#123349"); ring.setAttribute("stroke-width","3");
-          ring.setAttribute("stroke-dasharray","5 3"); ring.setAttribute("aria-hidden","true");
-          ring.dataset.workedCorner = "";
-          svg.append(ring);
-        }
-      });
-    });
-    corners.classList.add("al-secondary");
-    corners.setAttribute("aria-pressed","false");
-    const steps = node("ol");
-    steps.append(node("li","Carry across the unequal side lengths and the slope of the upper wall. The pink colour comes from the specimen. A single unshaded outline records the visible boundary."),
-      node("li","End the ruled label line on the right wall. The photograph resolves no nucleus in this cell, so leave the interior clear."),
-      node("li","The full photograph’s 200 µm bar spans 357 image units. One quarter of that length gives 89.25 units for a 50 µm bar. The crop and drawing use the same linear scale."));
-    introduction.append(comparison, corners, steps, node("p","On your own microscope drawing, give the specimen a title and record a measured size, scale bar or known magnification. Enlarging an image on screen changes its display size."), drawingCredit(model));
+    const introduction = drawingWorked(bar);
+    introduction.open = !stored.drawingSession && !stored.drawingReview;
     block.append(introduction, drawingTypes());
     const start = button(
       read().drawingSession ? "Resume drawing set" : "Start a six-drawing set",
@@ -1111,7 +1168,7 @@
     start.classList.add("primary");
     block.append(start);
     const exercise = node("section", null, "al-drawing-judgement");
-    block.append(exercise, scalePractice(), paperDrawing());
+    block.append(exercise, scalePractice(), paperDrawing(bar));
     function drawReview(review, moveFocus) {
       currentStage(bar, "review");
       const heading = node("h3", "Review your drawings");
@@ -1122,7 +1179,7 @@
       const entries = node("ol");
       for (const entry of review.entries) {
         const item = drawing.bank.find(candidate => candidate.id === entry.id);
-        if (item) entries.append(node("li", item.specimen.name + " · " + outcomeNames[entry.outcome] + ". " + item.why));
+        if (item) entries.append(node("li", item.specimen.name + " · " + (item.scope === "complete" ? "complete drawing judgement" : "focused judgement") + " · " + outcomeNames[entry.outcome] + ". " + item.why));
       }
       detail.append(entries);
       exercise.append(detail);
@@ -1165,7 +1222,8 @@
       function show() {
         exercise.replaceChildren();
         const item = pool[at];
-        currentStage(bar, at === 0 ? "guided" : "independent", at === 0 ? "guided" : "diagram");
+        const complete = item.scope === "complete";
+        currentStage(bar, "guided");
         exercise.append(
           node(
             "h3",
@@ -1175,17 +1233,21 @@
               " of 6",
           ),
           node("p", item.specimen.name),
+          node("strong", complete ? "Complete drawing" : "Focused practice · " + item.focus),
         );
         const criteria = node("ul", null, "al-drawing-criteria");
-        criteria.append(node("li", item.criterion),
-          node("li", "Use single, unshaded outlines. Label the " + item.specimen.label.toLowerCase() + "."),
-          node("li", item.specimen.scale ? "Use the observation’s length calibration for the scale bar." : "Judge visible form and relative proportions only. Accept applies to those features. This photograph has no length calibration."));
+        criteria.append(node("li", item.criterion));
+        if (complete) {
+          criteria.append(node("li", "Compare visible detail and proportions. Check for continuous, unshaded outlines, precise label lines and any annotation the task requests."),
+            node("li", "Read the title on the drawing. Check that it explains what is shown and that the scale bar agrees with the calibrated observation."));
+        } else {
+          criteria.append(node("li", "Judge only the named features. The source lacks verified size information, so this exercise cannot establish whether the drawing is complete."));
+        }
         exercise.append(criteria, drawingComparison(item, session, persistDrawing));
         const verdict = node("fieldset");
-        verdict.append(
-          node("legend", item.specimen.scale ? "Does the candidate meet the stated task, including scale?" : "Does the candidate meet the stated drawing criteria for visible features?"),
-        );
-        ["Accept", "Reject"].forEach((text, j) => {
+        verdict.append(node("legend", complete ? "Is this a complete drawing for the stated task?" : "How well do the specified features match the observation and task?"));
+        const choices = complete ? ["Accept", "Reject"] : ["Features match", "Features need correction"];
+        choices.forEach((text, j) => {
           const label = node("label"),
             input = node("input");
           input.type = "radio";
@@ -1211,6 +1273,7 @@
         categories.append(node("legend", "Which features need correcting?"),
           node("p","Use biological detail for structures added or left out. Use proportions for the size or shape of a structure that is present. Count each issue once."));
         drawing.categories.forEach((name, j) => {
+          if (item.allowedCategories && !item.allowedCategories.includes(j)) return;
           const label = node("label"),
             input = node("input");
           input.type = "checkbox";
@@ -1227,7 +1290,7 @@
         const feedback = node("p", null, "al-feedback");
         feedback.setAttribute("role", "status");
         feedback.setAttribute("aria-atomic", "true");
-        if (session.outcome) feedback.textContent = outcomeNames[session.outcome] + ". " + item.why;
+        if (session.outcome) feedback.textContent = outcomeNames[session.outcome] + (complete ? " · complete drawing judgement. " : " · focused judgement. ") + item.why;
         else if (session.attempts) {
           const previous = session.lastAttempt || session.firstAttempt;
           const extra = (previous?.categories || []).find(category => !item.defects.includes(category));
@@ -1236,7 +1299,7 @@
         }
         const next = button(at < pool.length - 1 ? "Next drawing" : "Review progress", () => {
           if (!session.outcome) return;
-          session.entries[at] = { id:item.id, outcome:session.outcome, firstAttempt:session.firstAttempt, attempts:session.attempts };
+          session.entries[at] = { id:item.id, scope:item.scope, outcome:session.outcome, firstAttempt:session.firstAttempt, attempts:session.attempts };
           const entries = session.entries;
           at++;
           session = { round, index: at, attempts: 0, helped: false, entries, ids: session.ids };
@@ -1258,7 +1321,7 @@
         const check = button(session.attempts ? "Try judgement again" : "Check judgement", () => {
           if (session.outcome) return;
           if (session.verdict === undefined) {
-            feedback.textContent = "Choose Accept or Reject first.";
+            feedback.textContent = "Choose “" + choices[0] + "” or “" + choices[1] + "” first.";
             return;
           }
           const cats = session.categories || [];

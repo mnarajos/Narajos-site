@@ -27,6 +27,19 @@ export async function checkBrowserZoom(base) {
     assert.equal(factor,2);
     await page.waitForFunction(old=>innerWidth<=old.width*.52 && devicePixelRatio>=old.ratio*1.95,before);
     await checkStudentJourney(page,base);
+    await page.goto(base+"/alevel/#exam-drawings");
+    const worked=page.locator(".al-drawing-worked");
+    await worked.getByRole("button",{name:"Show the worked drawing",exact:true}).press("Enter");
+    const inspect=worked.getByRole("button",{name:"Enlarge worked drawing",exact:true});
+    await inspect.press("Enter");
+    const dialog=page.getByRole("dialog");
+    await dialog.getByRole("region").focus();
+    await page.keyboard.press("ArrowRight");
+    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+3));
+    assert(await dialog.evaluate(el=>el.getBoundingClientRect().width<=innerWidth+1));
+    await page.keyboard.press("Escape");
+    assert(await inspect.evaluate(el=>el===document.activeElement));
+
     assert(await page.evaluate(old=>devicePixelRatio>=old*1.95,before.ratio));
   }finally{
     await context?.close();
