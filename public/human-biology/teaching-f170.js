@@ -51,13 +51,65 @@ window.KeystoneHumanLessons = {
     "Nephron", "BY-SA 3.0", 479, 590, "A pale central lumen is edged by several layers of cells. Fine dark profiles project into the lumen.");
 
   Object.assign(window.KeystoneHumanLessons, {
+    "f170/1.1.3": {
+      revision: 1,
+      goal: "Trace a secreted protein through a cell and predict where it will collect if one step fails.",
+      activate: ["What do ribosomes make?", "They join amino acids into a polypeptide. Some ribosomes are attached to the rough endoplasmic reticulum (RER)."],
+      explain: [
+        "The nucleus holds the DNA instructions. The nucleolus helps assemble ribosome subunits. Mitochondria supply much of the ATP that supports cell activity.",
+        "The RER receives many proteins made for secretion. The smooth ER has different roles, including making lipids. The Golgi modifies and sorts proteins, and vesicles carry them between compartments or to the cell surface."
+      ],
+      table: {caption: "Route of a secreted digestive enzyme", head: ["Structure", "What happens to the protein"], rows: [
+        ["Ribosomes on rough ER", "The polypeptide is made and enters the RER"], ["Golgi apparatus", "The protein is processed and sorted"],
+        ["Secretory vesicle", "The protein travels towards the cell surface"], ["Cell surface membrane", "The vesicle fuses and releases its contents"]
+      ]},
+      focusCells: [["0:0"], ["1:0", "2:0"], ["3:0"]],
+      nodes: ["Make the protein", "Process and move it", "Release it"],
+      model: [
+        "Ribosomes attached to the RER make a digestive enzyme using instructions from the nucleus. The polypeptide enters the RER, where it can fold.",
+        "Carrier vesicles move it to the Golgi for processing and sorting. A secretory vesicle carries the enzyme from the Golgi to the surface. Some other proteins are sorted for a different destination, such as a lysosome.",
+        "If the surface fusion step fails, the enzyme can still be made and carried there. It collects in vesicles inside the cell and less appears outside."
+      ],
+      guided: choice("A protein is present in the RER but absent from the Golgi and extracellular fluid. Which step would you check first?", 1,
+        [["Assembly of the protein by ribosomes.", "The protein is already present in the RER."], ["Delivery from the RER to the Golgi.", ""], ["Fusion with the cell surface.", "Loss of surface fusion would not explain why the protein is absent from the Golgi."]],
+        "Follow the route to the first point where the protein is missing.", ["Start with the last compartment where the protein was detected."]),
+      apply: written("A cell releases less collagen than usual. New collagen precursor is still made and processed in the Golgi, but it accumulates there. Explain which step has most likely been affected and why.",
+        ["Synthesis and Golgi delivery still occur.", "Sorting into secretory vesicles or exit from the Golgi is impaired.", "Less precursor reaches the cell surface for secretion."],
+        "The location of accumulation points to sorting or transport out of the Golgi. Loss of synthesis would lower the amount reaching the Golgi, rather than produce a build-up there."),
+      followup: choice("A new secreted protein is absent even in the RER. Where should the investigation start?", 0,
+        [["Protein production or entry into the RER.", ""], ["Fusion of Golgi-derived vesicles at the surface.", "A late fault cannot explain a missing protein at the start."], ["Secretion into the space outside the cell.", "Use the first missing compartment."]],
+        "Check production or the earliest delivery step before investigating later transport.")
+    },
+    "f170/4.1.4": {
+      revision: 1,
+      goal: "Read a supplied microbial population graph and explain net change from the direction of the curve.",
+      activate: ["What does a viable count estimate?", "The number of living cells in the sample represented by the count."],
+      explain: ["Binary fission produces two daughter cells. A population increases when more cells are added than lost. A constant viable count can conceal simultaneous division and death."],
+      graph: {times: [0, 1, 2, 3, 4, 5, 6], values: [2, 2, 4, 6, 6, 6, 5], scaleMax: 8,
+        xLabel: "Time (intervals)", yLabel: "Log₁₀ viable count", caption: "Illustrative microbial population graph"},
+      nodes: ["Read the axes", "Identify each phase", "Explain the balance"],
+      model: [
+        "This teaching graph uses a logarithmic vertical axis. A rise from 2 to 4 means a rise from 100 to 10,000, not an increase of two cells.",
+        "The first period shows little net increase (lag). The straight rising part represents exponential growth on a logarithmic scale. The later plateau is stationary phase. Then the viable count falls.",
+        "From intervals 3 to 5 the viable count remains about the same. Division could be continuing at roughly the same rate as cell death. Between 5 and 6 the net loss exceeds any new additions."
+      ],
+      skills: ["growth", "graph"],
+      guided: choice("At interval 5, a pupil says every cell stopped dividing when the graph first flattened. What can the graph establish?", 1,
+        [["No new cells were produced.", "Net count does not measure division separately from death."], ["The viable count stayed roughly constant over the plateau.", ""], ["No cells died during the plateau.", "Cells may be lost even if the total remains steady."]],
+        "A horizontal line establishes little net change. It gives no separate count of divisions and deaths.", ["What does the vertical axis measure?"]),
+      apply: {...written("A second dataset shows a fall from 7 to 5 on the log scale and then a plateau at 5. Explain what happened to the viable count and what the plateau cannot establish.",
+        ["The viable count became 100 times smaller.", "A fall is evidence of net loss rather than a total of two cells lost.", "The plateau does not establish that division or death stopped."],
+        "The count falls from 10⁷ to 10⁵. That is a hundredfold fall and shows net loss. At the later plateau, additions and losses may be balanced."),
+        table: {caption: "Independent population readings", head: ["Time interval", "Log₁₀ viable count"], rows: [["A", "7"], ["B", "5"], ["C", "5"]]} }
+    },
     "f170/1.1.2": {
       revision: 1,
       goal: "Use a micrograph's scale bar or stated magnification to estimate size. Explain whether a larger image shows finer detail.",
       activate: ["Quick check: how many µm are in 1 mm?", "1 mm = 1,000 µm and 1 µm = 1,000 nm. Convert to the same unit before dividing two lengths."],
       explain: [
         "A scale bar labels a known actual length. The structure and bar are measured on the same image, so resizing both together preserves their ratio.",
-        "Magnification is image size ÷ actual size. Resolution is the ability to distinguish two nearby points. Enlarging a blurred image spreads out the same information."
+        "Magnification is image size ÷ actual size. Resolution is the ability to distinguish two nearby points. Enlarging a blurred image spreads out the same information.",
+        "In transmitted light microscopy, a thin specimen lets light pass through and reduces overlapping layers. A microtome cuts thin sections of fixed tissues. A temporary mount can hold a thin living specimen in liquid. A stain can improve contrast, but a preparation that kills cells cannot show their motion."
       ],
       compare: {
         caption: "What kind of representation am I reading?",

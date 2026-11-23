@@ -437,7 +437,8 @@ const practiceFigures={
  "practice-breath-in":["breath-in","Chest cavity in inspiration with a flattened diaphragm, expanded lungs, and outward rib movement."],
  "practice-cuff":["cuff","A cuff is wrapped around the upper arm, connected to a display reading 124 over 78."],
  "practice-cast":["cast","Forearm cutaway showing the cast shell and a break in the bone."],
- "practice-antibody":["antibody","A Y-shaped antibody with matching antigen fragments near its two tips."]
+ "practice-antibody":["antibody","A Y-shaped antibody with matching antigen fragments near its two tips."],
+ "practice-chromatogram":["chromatogram","Three lanes share a baseline at 2 cm and a solvent front at 10 cm. Standard J has a spot at 4 cm, K at 8 cm. The unknown has spots at 6 cm and 8 cm."]
 };
 function figure(name,reveal){
  if(typeof name==="object"){
@@ -909,7 +910,7 @@ function route(r,renderer){
  if(!scope){visible=false;return intro(unit);}
  if(origin){
   var source=origin.split("/");
-  var topicScope=source[2]===scope&&/^(?:a[1-5]|\d+(?:\.\d+)*)$/.test(scope);
+  var topicScope=(source[2]===scope||window.KeystoneHumanCatchup?.topicPracticeScope(unit,source[2])===scope)&&/^(?:a[1-5]|\d+(?:\.\d+)*)$/.test(scope);
   var buildScope=window.KeystoneHumanCatchup?.practiceScope(unit,source[2])===scope;
   var reproductionTransfer=unit==="f175"&&source[2]==="a1"&&scope==="f175-transport";
   if(source[1]!==unit||(!topicScope&&!buildScope&&!reproductionTransfer)||!filter(unit,scope).length)return intro(unit);

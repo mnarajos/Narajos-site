@@ -80,6 +80,6 @@ assert.equal(progress["skill:magnification"].seen,10);
 fresh.start("magnification");assert.equal(fresh.state().index,0,"Repeat practice should start a fresh set");
 assert.notEqual(fresh.state().queue[0],before.queue[0]);
 fresh.api.pause();fresh.route("skills");assert(fresh.main.innerHTML.includes("Resume practice"));
-assert.equal(fresh.api.questionCount,562,"Fixed knowledge bank count must remain honest");
+assert.equal(fresh.api.questionCount,569,"Fixed knowledge bank count must remain honest");
 assert.equal(fresh.api.stats("f170").seen,0,"Skill performance must stay separate from topic coverage");
 console.log("Human Biology skills checks passed: 14 families, 22,400 seeded tasks, arithmetic, adaptive support, full reload/resume, ten-question sets and separate local history.");

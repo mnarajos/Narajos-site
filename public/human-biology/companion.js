@@ -5,6 +5,14 @@ var root=window.KeystoneHumanData,bank=window.KeystoneHumanChallenges,other=wind
 if(!root||!bank||!other)return;
 var notes={
   "f171": {
+    "1.2.1": {
+      title: "How airway and alveolar damage affect breathing",
+      lines: ["Airway narrowing can reduce airflow. Loss of alveolar walls reduces the area for gas exchange.", "A symptom can have more than one cause. Compare the function measured with the tissue affected."]
+    },
+    "4.1": {
+      title: "Choosing a physiological measurement",
+      lines: ["Spirometry, peak flow and pulse oximetry measure different features.", "Check the measurement conditions and distinguish a reading from a clinical conclusion."]
+    },
     "2.1": {
       "title": "Choosing a treatment",
       "lines": [
@@ -195,6 +203,10 @@ var notes={
     }
   },
   "f175": {
+    "2.1": {
+      title: "First antenatal appointment and later monitoring",
+      lines: ["Booking history supplies context for later care. Starting measurements provide a baseline.", "Later measures can address a separate question about fetal growth or a possible condition."]
+    },
     "a1": {
       "title": "Conception and pregnancy",
       "lines": [
@@ -307,6 +319,7 @@ function unitKind(unit){return unit==="f170"||unit==="f171"?"Externally assessed
 function lessonFor(unit,id){return (window.KeystoneHumanLessons||{})[unit+"/"+id];}
 var buildPractice={
  "f170/1.1.2":"p-cell-actual-width",
+ "f170/1.1.3":"p-cell-protein-route",
  "f170/2.1.2":"p-phys-heart-septum",
  "f170/2.1.3":"p-phys-homeostasis-cross",
  "f170/2.2.2":"p-phys-homeostasis-cross",
@@ -314,6 +327,9 @@ var buildPractice={
  "f170/3.1.1":"p-endo-insulin-loop",
  "f170/3.1.2":"p-endo-type1",
  "f170/3.3.1":"p-endo-gametes",
+ "f170/4.1.4":"p-micro-culture-phases",
+ "f171/1.2.1":"p-health-copd",
+ "f171/4.1":"p-health-bp-repeat",
  "f171/2.1":"p-f171-local-systemic",
  "f171/2.2":"p-health-parkinsons-therapy",
  "f171/a2":"p-f171-local-systemic",
@@ -329,6 +345,9 @@ var buildPractice={
 function practiceScope(unit,id){
  var point=buildPractice[unit+"/"+id];
  return point&&window.KeystoneHumanProgressions?.get(point)?point:null;
+}
+function topicPracticeScope(unit,id){
+ return ({"f173/a3":"3.4","f177/a3":"2.6"})[unit+"/"+id]||id;
 }
 function buildLink(unit,id,origin){
  var scope=practiceScope(unit,id);
@@ -386,14 +405,20 @@ function showUnit(unit,render){
    h+='</div></section>';
   }else{
    h+='<a class="k-area k-catchup-area" href="#catchup/'+unit+'/'+a.code+'"><span class="k-area-num">'+a.code.slice(1)+'</span><span class="k-area-label"><strong>'+esc(a.title)+'</strong><small>'+(lessonFor(unit,a.code)?'Guided lesson':'Short recap')+'</small></span><span aria-hidden="true">›</span></a>';
+   if(unit==="f171"&&a.code==="a1"){
+    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/1.2.1">Airway and alveolar damage</a></div>';
+   }
    if(unit==="f171"&&a.code==="a2"){
     h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/2.1">Choosing a treatment</a><a class="button secondary" href="#catchup/f171/2.2">Managing symptoms and function</a><a class="button secondary" href="#catchup/f171/2.3">Prevention and early detection</a></div>';
    }
    if(unit==="f171"&&a.code==="a4"){
-    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/4.2.1">Interpreting screening results</a><a class="button secondary" href="#catchup/f171/4.2.2">Taking repeat measurements</a></div>';
+    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/4.1">Choosing a physiological measurement</a><a class="button secondary" href="#catchup/f171/4.2.1">Interpreting screening results</a><a class="button secondary" href="#catchup/f171/4.2.2">Taking repeat measurements</a></div>';
    }
    if(unit==="f171"&&a.code==="a3"){
     h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/3.2.1">Immune dysfunction</a><a class="button secondary" href="#catchup/f171/3.2.2">Vaccine types</a></div>';
+   }
+   if(unit==="f175"&&a.code==="a2"){
+    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f175/2.1">First antenatal appointment</a></div>';
    }
   }
  });
@@ -413,7 +438,9 @@ function showConcept(unit,id,step,render,review,simulationStage){
  if(!Array.isArray(points)||!points.length)return showUnit(unit,render);
  step=Math.max(0,Math.min(points.length-1,Number(step)||0));
  var origin="catchup/"+unit+"/"+id+(step?"/"+step:""),key="#catchup/"+unit+"/"+id;
- var practice="challenge/"+unit+"/"+id+"?from="+origin,label=practiceLabel(unit,id,topic);
+ var scope=topicPracticeScope(unit,id);
+ var practice="challenge/"+unit+"/"+scope+"?from="+origin,label=practiceLabel(unit,id,topic);
+ if(scope!==id)label=unit==="f173"?"Practise chromatogram interpretation":"Practise medicine safety surveillance";
  var related=relatedLinks(unit,id,origin,practice,label);
  var lesson=lessonFor(unit,id),teaching=window.KeystoneHumanTeaching;
  var lessonId=unit==="f171"?({"a2":"2.1","a4":"4.2.2"}[id]||id):id;
@@ -449,6 +476,9 @@ function linkFor(q){
  if(!q)return null;
  if(q.unit==="f170"&&sectionById[q.section])return "catchup/f170/"+q.section;
  if(q.unit==="f171"&&q.section==="5.2")return "catchup/f171/a5";
+ if(q.unit==="f175"&&q.section==="1.3")return "catchup/f175/a2";
+ if(q.unit==="f176"&&q.section==="3.2.1")return "catchup/f176/a2";
+ if(q.unit==="f177"&&["2.3","2.6"].includes(q.section))return "catchup/f177/a3";
  if(q.section&&notes[q.unit]&&notes[q.unit][q.section])return "catchup/"+q.unit+"/"+q.section;
  var area="a"+q.area;
  return notes[q.unit]&&notes[q.unit][area]?"catchup/"+q.unit+"/"+area:null;
@@ -457,6 +487,7 @@ function reteachFor(q,answer){
  var route=linkFor(q);
  var targets={
   "f170/1.1.2":[3,"Revisit the scale-bar calculation"],
+  "f170/1.1.3":[2,"Revisit how proteins move through the cell"],
   "f170/2.1.2":[1,"Revisit blood flow and valve pressure"],
   "f170/2.1.3":[2,"Revisit oxygen diffusion into blood"],
   "f170/2.2.2":[3,"Revisit how circulation supports oxygen delivery"],
@@ -464,6 +495,8 @@ function reteachFor(q,answer){
   "f170/3.1.2":[3,"Revisit comparing glucose with baseline"],
   "f170/3.1.1":[3,"Revisit insulin action on target tissues"],
   "f170/3.3.1":[3,"Revisit the features that identify reproductive tissues"],
+  "f170/4.1.4":[3,"Revisit what a population plateau can show"],
+  "f171/1.2.1":[2,"Revisit how tissue damage changes breathing"],
   "f171/2.2":[3,"Revisit what improvement in function shows"],
   "f171/2.1":[3,"Revisit how evidence supports a treatment choice"],
   "f171/2.3":[3,"Revisit screening and diagnostic follow-up"],
@@ -486,20 +519,25 @@ function reteachFor(q,answer){
  if(reproduction)return {route:route,href:route+"?stage="+reproduction[0],label:reproduction[1]};
  var target=targets[route.slice("catchup/".length)];
  target=({
+  "f170-microscopy-preparation-transfer":[0,"Revisit choosing a preparation for microscopy"],
+  "f171-expiratory-evidence-transfer":[2,"Revisit flow and volume measurements"],
   "f172-diagram-alleles":[1,"Revisit alleles on homologous chromosomes"],
   "f172-recessive":[2,"Revisit combining parental alleles"],
   "f172-carrier":[2,"Revisit reading the Punnett square"],
   "f173-tests":[1,"Revisit choosing a microscope for the feature"],
   "f173-micro-contrast":[1,"Revisit surface and internal views"],
   "f173-mag":[3,"Revisit scale and magnification"],
+  "f173-chromatogram-transfer":[1,"Revisit measuring from the chromatogram baseline"],
   "f174-digestion":[1,"Revisit digestion and absorption"],
   "f174-enzymes":[2,"Revisit how glucose reaches the blood"],
   "f174-hormones":[3,"Revisit glucose uptake and storage"],
   "f174-diagram-glucose":[3,"Revisit insulin action in target tissues"],
   "f176-synapse":[4,"Revisit what crosses a chemical synapse"],
+  "f176-relay-threshold":[6,"Revisit the threshold comparison"],
   "f177-placebo":[2,"Revisit the purpose of the comparison group"],
   "f177-diagram-randomise":[2,"Revisit what random allocation changes"],
-  "f177-blinding":[3,"Revisit how blinding reduces bias"]
+  "f177-blinding":[3,"Revisit how blinding reduces bias"],
+  "f177-safety-signal":[3,"Revisit what suspected adverse-event reports show"]
  })[q.id]||target;
  if(route==="catchup/f170/1.1.2"&&(q.type==="number"||q.id==="p-cell-actual-width-diagnostic")){
   target=[4,"Revisit the worked unit conversion"];
@@ -507,7 +545,7 @@ function reteachFor(q,answer){
  if(route==="catchup/f171/4.2.1"&&(q.stage==="foundation"||q.stage==="diagnostic"||q.type==="number")){
   target=[2,"Revisit why a positive screen can be false"];
  }
- return { route:route, href:route+(target?"?review="+target[0]:""),
+ return { route:route, href:route+(target?.[0]?"?review="+target[0]:""),
   label:target?target[1]:"Need more help? Catch up on this idea" };
 }
 window.KeystoneHumanCatchup={route:function(hash,render){
@@ -517,7 +555,7 @@ window.KeystoneHumanCatchup={route:function(hash,render){
  if(!m[2])return showUnit(m[1],render);
  var simulationStage=m[1]==="f175"&&m[2]==="a1"?m[5]:null;
  return showConcept(m[1],m[2],m[3],render,Number(m[4])||0,simulationStage);
-},linkFor:linkFor,reteachFor:reteachFor,practiceScope:practiceScope,searchTopics:function(){
+},linkFor:linkFor,reteachFor:reteachFor,practiceScope:practiceScope,topicPracticeScope:topicPracticeScope,searchTopics:function(){
  var f170=Object.values(sectionById).map(function(item){
   var s=item.section;
   return {group:"f170",title:s.title,context:"F170 · "+s.id,concept:true,actions:[["Catch up","#catchup/f170/"+s.id],["Flashcards","#cards/"+s.id]]};

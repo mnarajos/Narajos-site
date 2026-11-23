@@ -51,7 +51,8 @@ for(const unit of ["f170","f171","f172","f173","f174","f175","f176","f177"]){
   companion.route(topic,h=>{help=h;});
   const href=help.match(/href="#(challenge\/f17[0-7]\/[a-z0-9.]+\?from=catchup[^"]+)"/)?.[1];
   assert(href,"No practice route for "+topic);
-  const scope=topic.split("/")[2];
+  const scope=href.split("?")[0].split("/")[2];
+  assert.equal(scope,companion.topicPracticeScope(unit,topic.split("/")[2]),topic);
   app.route(href,h=>{main.innerHTML=h;});
   const state=JSON.parse(data.get("narajos-human-challenge-v2-session-topic-"+unit+"/"+scope));
   assert.equal(state.returnTo,topic);
@@ -65,10 +66,10 @@ for(const unit of ["f170","f171","f172","f173","f174","f175","f176","f177"]){
   app.discard();
  }
 }
-assert.equal(db.questions.length,562);
-assert.equal(db.questions.filter(q=>q.unit==="f170").length,253);
-assert.equal(db.questions.filter(q=>q.unit==="f171").length,230);
-for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,u==="f175"?14:13,u+" knowledge bank missing");
+assert.equal(db.questions.length,569);
+assert.equal(db.questions.filter(q=>q.unit==="f170").length,254);
+assert.equal(db.questions.filter(q=>q.unit==="f171").length,231);
+for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,u==="f175"?15:["f172","f173","f176","f177"].includes(u)?14:13,u+" knowledge bank missing");
 assert.deepEqual([...new Set(db.questions.map(q=>q.type))].sort(),["best","diagram","match","multi","number","order","short","single","sort","written"].sort());
 const ids=new Set();
 const validUnits=new Set(["f170","f171","f172","f173","f174","f175","f176","f177"]);
@@ -237,7 +238,7 @@ assert(window.KeystoneHumanChallenge.stats("f170").weak>=1,"Not sure should reco
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"next"}}:null;}}});
 record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert(record.index>=1,"Question did not advance");
-assert.equal(window.KeystoneHumanChallenge.questionCount,562);
+assert.equal(window.KeystoneHumanChallenge.questionCount,569);
 // Verify the entire deterministic answer flow, not merely presence of new item types.
 function forcedQuestion(id){
  const q=db.questions.find(x=>x.id===id);assert(q,"Unknown forced test item: "+id);
@@ -464,7 +465,7 @@ for(const id of ["p-cell-membrane-transport-challenge","p-health-screening-found
  assert(main.innerHTML.includes("Hint 2")&&!main.innerHTML.includes("Expected answer"),id);
  assert(question.hintCue&&!question.explain.includes(question.hintCue)&&!question.model.includes(question.hintCue),id);
 }
-console.log("Human Biology checks passed: 562 questions, 91 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
+console.log("Human Biology checks passed: 569 questions, 91 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
 
 
 // Point practice must preserve one biological idea while support is withdrawn.
@@ -494,3 +495,48 @@ for(const point of ladders.points){
 }
 app.discard();
 console.log("49 teaching-idea sequences passed: prior knowledge, misconception, same-idea rotating core, transfer challenge and exact resume.");
+
+// Validate the register against the same resources the site uses.
+load("human-biology/skills.js");
+load("human-biology/teaching.js");
+load("human-biology/teaching-f170.js");
+load("human-biology/teaching-f171.js");
+load("human-biology/teaching-knowledge.js");
+const register = readFileSync("docs/human-biology-curriculum-quality-register.md", "utf8");
+const files = ["f170","f171","f172","f173","f174","f175","f176","f177","shared-skills"];
+const expectedSections = [28,18,21,29,25,16,17,18,39];
+const validStatuses = new Set(["Verified","Taught","Practised","Represented","Gap","Review","Unresolved","Centre-only"]);
+const checkedRoutes = new Set();
+let mapped = 0;
+for (const [i, unit] of files.entries()) {
+ const path = "human-biology-curriculum/" + unit + ".md";
+ assert(register.includes("(" + path + ")"), "Unlinked register unit: " + unit);
+ const doc = readFileSync("docs/" + path, "utf8");
+ const headings = [...doc.matchAll(/^## (\S+)$/gm)].map(match => match[1]);
+ assert.equal(headings.length, expectedSections[i], "Coverage headings for " + unit);
+ const refs = new Set();
+ for (const row of doc.split("\n").filter(line => /^\| (?:\d|HSW|M\d|E-r)/.test(line))) {
+  const cells = row.split("|").slice(1, -1).map(cell => cell.trim());
+  const [id, requirement, demand, teachingRef, model, practice, representation, note, status] = cells;
+  assert.equal(cells.length, 11, row);
+  assert(!refs.has(id), "Duplicate curriculum row " + unit + "/" + id);
+  assert(headings.includes(id.replace(/-r\d+$/, "")), "Unmapped OCR reference: " + id);
+  assert(requirement && demand && note && validStatuses.has(status), "Incomplete curriculum row: " + id);
+  const route = teachingRef.match(/#catchup\/([a-z0-9./]+)\)/)?.[1];
+  if (status === "Verified") assert(route && model !== "—", "Verified row needs reviewed teaching evidence: " + id);
+  if (route && !checkedRoutes.has(route)) {
+   companion.route("catchup/" + route, html => { help = html; });
+   assert(help.includes("k-catchup-concept"), "Missing mapped lesson or recap: " + route);
+   checkedRoutes.add(route);
+  }
+  if (route && model !== "—") assert(window.KeystoneHumanLessons[route], "Missing worked lesson: " + route);
+  for (const [, item] of practice.matchAll(/`([^`]+)`/g)) {
+   assert(item.startsWith("skills:") ? window.KeystoneHumanSkills.get(item.slice(7)) : ids.has(item),
+    "Missing mapped practice evidence " + item + " in " + unit + "/" + id);
+  }
+  refs.add(id);
+  mapped++;
+ }
+ for (const heading of headings) assert([...refs].some(id => id.startsWith(heading + "-r")), "Empty curriculum section: " + heading);
+}
+console.log("Curriculum register checked " + mapped + " requirement rows, specification headings and live evidence identifiers.");
