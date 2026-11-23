@@ -53,7 +53,7 @@ export async function checkExistingRoutes(browser, base) {
 
 export async function checkALevelExam(browser, base) {
   checkALevelStatistics();
-  await checkDrawingObservations(browser, base);
+  await checkDrawingObservations(browser, base, axe.source);
   const page = await browser.newPage({ viewport: { width: 320, height: 780 } });
   await page.emulateMedia({ reducedMotion: "reduce" });
   const errors = [];

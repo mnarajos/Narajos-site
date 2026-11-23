@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import axe from "axe-core";
 
 // Native photo coordinates read from the source fields independently of the SVG paths.
 // Boundary tolerances allow the line width and indistinct edges in a micrograph.
@@ -20,7 +19,7 @@ const alterations = {
   "redcell.interior":["inner"],"redcell.bar":["bar"]
 };
 
-export async function checkDrawingObservations(browser,base) {
+export async function checkDrawingObservations(browser,base,axeSource) {
   const page = await browser.newPage({viewport:{width:390,height:800},hasTouch:true});
   const url = base + "/alevel/#exam-drawings";
   const key = "keystone.alevel.exam-skills.v1";
@@ -175,8 +174,10 @@ export async function checkDrawingObservations(browser,base) {
       assert(await enlarge.evaluate(el=>el===document.activeElement));
     }
     await page.getByText("Read the visual evidence",{exact:true}).click();
-    await page.addScriptTag({content:axe.source});
-    const violations=await page.evaluate(async()=>(await axe.run(document.querySelector(".al-drawing"),{runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21aa"]}})).violations.map(v=>v.id));
-    assert.deepEqual(violations,[]);
+    if (axeSource) {
+      await page.addScriptTag({content:axeSource});
+      const violations=await page.evaluate(async()=>(await axe.run(document.querySelector(".al-drawing"),{runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21aa"]}})).violations.map(v=>v.id));
+      assert.deepEqual(violations,[]);
+    }
   }finally{await page.close();}
 }
