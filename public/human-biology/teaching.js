@@ -89,7 +89,7 @@
       '<textarea id="' + id + '" rows="4" maxlength="3000" aria-labelledby="' + id + '-prompt" required></textarea>';
     return '<details class="paper panel hb-teach-stage" data-hb-stage="' + stage + '">' +
       stageSummary(stage === "guided" ? "steps" : choice ? "target" : "pen", title) + '<form novalidate><fieldset><legend id="' + id + '-prompt">' + escape(question.prompt) +
-      '</legend>' + figure(question.photo) + (question.photos || []).map((photo, index) => figure(photo, index + 1)).join("") + table(question.table) + paragraphs(question.starter ? [question.starter] : []) +
+      '</legend>' + (question.illustration ? '<img style="display:block;width:100%;max-width:30rem;height:auto" width="360" height="212" src="' + escape(question.illustration.src) + '" alt="' + escape(question.illustration.alt) + '">' : '') + figure(question.photo) + (question.photos || []).map((photo, index) => figure(photo, index + 1)).join("") + table(question.table) + paragraphs(question.starter ? [question.starter] : []) +
       inputs + '</fieldset><ol class="hb-hints" hidden></ol><div class="actions hb-controls">' +
       '<button type="submit" class="button primary">' + (!choice && sequence ? icon("pen") : "") +
       (choice ? "Check answer" : "Compare my explanation") + '</button>' +

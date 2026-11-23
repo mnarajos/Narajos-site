@@ -486,4 +486,8 @@
     "Two pupils say walking is tiring. One has evidence of poor bone mineralisation, the other of disrupted central nerve conduction. Explain why the same daily difficulty does not identify the same disorder.",
     ["Link mineralisation to bone strength.", "Link nerve conduction to movement control.", "Use the limits of the symptom evidence."],
     "Weak growing bones can deform under load, making walking difficult. Disrupted nerve conduction can instead impair control of movement. Feeling tired when walking cannot distinguish these mechanisms.");
+  window.KeystoneHumanLessons["f171/1.2.1.aorta"].apply.illustration = {
+    src: "/human-biology/aorta-comparison.svg",
+    alt: "Two longitudinal views of the abdominal aorta above its iliac branches. The line across the local widening measures 3.4 cm at visit one and 4.1 cm at visit two. Schematic, not to scale."
+  };
 })();
