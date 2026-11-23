@@ -55,7 +55,7 @@ function svgElement(name, attributes) {
   return node;
 }
 
-function draw(state, marks = []) {
+function draw(state, marks = [], tools = {}) {
   const figure = el("figure", "", "dp-figure");
   const stage = el("div", "", "dp-stage");
   const image = el("img");
@@ -83,7 +83,37 @@ function draw(state, marks = []) {
     }
     stage.append(node);
   }
-  figure.append(stage);
+  const inspect = button("Enlarge diagram", () => {
+    const dialog = el("dialog", "", "dp-inspect");
+    dialog.setAttribute("aria-label", "Enlarged diagram · " + state[1]);
+    const close = button("Close enlarged diagram", () => dialog.close());
+    const region = el("div", "", "dp-pan");
+    region.tabIndex = 0;
+    region.setAttribute("role","region");
+    region.setAttribute("aria-label","Diagram detail. Swipe or use arrow keys to pan.");
+    dialog.append(close, region);
+    figure.append(dialog);
+    const moved = [];
+    function move(node, target) {
+      if (!node) return;
+      const placeholder = document.createComment("diagram position");
+      node.before(placeholder);
+      moved.push([node,placeholder]);
+      target.append(node);
+    }
+    move(stage, region);
+    move(tools.bank, dialog);
+    move(tools.check, dialog);
+    move(tools.report, dialog);
+    dialog.addEventListener("close", () => {
+      for (const [node,placeholder] of moved) placeholder.replaceWith(node);
+      dialog.remove();
+      inspect.focus();
+    }, {once:true});
+    dialog.showModal();
+    region.focus();
+  });
+  figure.append(stage, inspect);
   return figure;
 }
 
@@ -120,10 +150,12 @@ function buildModel(topic) {
 }
 
 function checkButton(section, report, check) {
-  section.append(button("Check answer", () => {
+  const control = button("Check answer", () => {
     const result = check();
     report.textContent = result;
-  }, "dp-primary"), report);
+  }, "dp-primary");
+  section.append(control, report);
+  return control;
 }
 
 function makeDiagramTask(section, topic, task, report) {
@@ -197,6 +229,9 @@ function makeDiagramTask(section, topic, task, report) {
         report.textContent = selected ? "Selected " + labelFor(key) + ". Choose a letter." : "Selection cleared.";
         renderPlacements();
       }, "dp-chip");
+      const badge = el("span", "Selected · ", "dp-selection");
+      badge.setAttribute("aria-hidden", "true");
+      chip.prepend(badge);
       chips.set(key, chip);
       addDrag(chip, target => drop(key, target), section);
       labelBank.append(chip);
@@ -205,13 +240,14 @@ function makeDiagramTask(section, topic, task, report) {
   } else {
     for (const target of targets.values()) target.setAttribute("aria-pressed", "false");
   }
-  section.append(draw(topic.states[0], marks));
+  const tools = {bank: task.type === "label" ? labelBank : null, report};
+  section.append(draw(topic.states[0], marks, tools));
   if (task.type === "label") {
     section.append(placements);
     renderPlacements();
   }
 
-  checkButton(section, report, () => {
+  tools.check = checkButton(section, report, () => {
     if (task.type === "point") {
       if (!selected) return "Select a letter first.";
       return (selected === task.answer ? "Correct. " : "Look again. The answer is " + task.answer + ". ") + task.feedback;
@@ -255,9 +291,9 @@ function addDrag(chip, drop, section) {
   chip.addEventListener("pointermove", event => {
     if (!active || active.id !== event.pointerId) return;
     if (!active.ghost && Math.hypot(event.clientX - active.x, event.clientY - active.y) > 7) {
-      active.ghost = el("span", chip.textContent, "dp-ghost");
+      active.ghost = el("span", chip.innerText, "dp-ghost");
       active.ghost.setAttribute("aria-hidden", "true");
-      document.body.append(active.ghost);
+      (chip.closest("dialog") || document.body).append(active.ghost);
     }
     if (active.ghost) position(event);
   });
