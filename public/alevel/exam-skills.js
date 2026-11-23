@@ -830,7 +830,7 @@
     const prompt = node("section", null, "al-paper-prompt");
     const picture = node("div");
     picture.innerHTML = drawing.svg(item,true);
-    prompt.append(node("h3", s.name), node("p", s.task), picture,
+    prompt.append(node("h3", s.name), node("p", s.task + " Use a sharp pencil and give your drawing a title."), picture,
       node("p", "Use the reference bar to set the length on your page. If you enlarge the cell, enlarge the bar in the same proportion."), drawingCredit(item));
     const print = button("Print observation and instructions", () => window.print());
     print.classList.add("al-secondary");
@@ -891,6 +891,8 @@
     preview.setAttribute("aria-label","Enlarged image. Use the arrow keys or swipe to move across it.");
     const close = button("Close enlarged image", () => dialog.close());
     dialog.append(title, close, preview);
+    let opener;
+    dialog.addEventListener("close", () => opener?.focus());
     const labels = [["reference", "Reference observation"], ["candidate", "Candidate drawing"]];
     function update() {
       root.dataset.active = session.view || "reference";
@@ -911,6 +913,7 @@
       const image = node("div");
       image.innerHTML = drawing.svg(item, isReference, Boolean(session.outcome));
       const enlarge = button("Enlarge " + label.toLowerCase(), () => {
+        opener = enlarge;
         title.textContent = label;
         preview.innerHTML = image.innerHTML;
         dialog.showModal();
@@ -1001,7 +1004,7 @@
     steps.append(node("li","Carry across the unequal side lengths and the slope of the upper wall. The pink colour comes from the specimen. A single unshaded outline records the visible boundary."),
       node("li","End the ruled label line on the right wall. The photograph resolves no nucleus in this cell, so leave the interior clear."),
       node("li","The full photograph’s 200 µm bar spans 357 image units. One quarter of that length gives 89.25 units for a 50 µm bar. The crop and drawing use the same linear scale."));
-    introduction.append(comparison, corners, steps, drawingCredit(model));
+    introduction.append(comparison, corners, steps, node("p","On your own microscope drawing, give the specimen a title and record a measured size, scale bar or known magnification. Enlarging an image on screen changes its display size."), drawingCredit(model));
     block.append(introduction);
     const start = button(
       read().drawingSession ? "Resume drawing set" : "Start a six-drawing set",

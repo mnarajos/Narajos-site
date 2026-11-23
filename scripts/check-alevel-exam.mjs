@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import axe from "axe-core";
+import { checkDrawingObservations } from "./check-drawing-observations.mjs";
 import { checkALevelStatistics } from "./check-alevel-statistics.mjs";
 
 export async function checkExistingRoutes(browser, base) {
@@ -52,6 +53,7 @@ export async function checkExistingRoutes(browser, base) {
 
 export async function checkALevelExam(browser, base) {
   checkALevelStatistics();
+  await checkDrawingObservations(browser, base);
   const page = await browser.newPage({ viewport: { width: 320, height: 780 } });
   await page.emulateMedia({ reducedMotion: "reduce" });
   const errors = [];
@@ -77,8 +79,8 @@ export async function checkALevelExam(browser, base) {
         criterion: x.criterion,
       })),
     );
-    assert.equal(bank.length, 56);
-    assert.equal(new Set(bank.map((x) => x.id)).size, 56);
+    assert.equal(bank.length, 18);
+    assert.equal(new Set(bank.map((x) => x.id)).size, 18);
     const beginGuided = async family => {
       assert.equal(await page.locator(".al-stages [aria-current=step]").innerText(), "Key idea");
       await page.getByRole("button", { name: "See worked example", exact: true }).press("Enter");
@@ -311,7 +313,7 @@ export async function checkALevelExam(browser, base) {
     assert(await finder.getByRole("link", { name: /Resume: Dihybrid/ }).isVisible());
     // Every original drawing appears in the rotating short sets and accepts its authored category combination.
     const seen = new Set();
-    for (let round = 0; round < 56; round++) {
+    for (let round = 0; round < bank.length; round++) {
       if (round % 6 === 0) {
         await page.goto(base + "/alevel/#exam-drawings");
         await page
@@ -320,8 +322,8 @@ export async function checkALevelExam(browser, base) {
       }
       const set = Math.floor(round / 6),
         offset = round % 6,
-        index = ((set * 6 + offset) * 9) % 56,
-        item = bank[index];
+        currentId = await page.evaluate(([n,i]) => window.ALevelDrawingBank.setFor(n)[i].id,[set,offset]),
+        item = bank.find(candidate => candidate.id === currentId);
       seen.add(item.id);
       const comparison = page.locator(".al-drawing-comparison");
       if (round === 0) {
@@ -370,7 +372,7 @@ export async function checkALevelExam(browser, base) {
         .getByRole("button", { name: offset === 5 ? "Review progress" : "Next drawing", exact: true })
         .click();
     }
-    assert.equal(seen.size, 56);
+    assert.equal(seen.size, 18);
     for (const width of [320, 390, 768, 1280]) {
       await page.setViewportSize({ width, height: 800 });
       for (const route of [
@@ -528,7 +530,7 @@ export async function checkALevelExam(browser, base) {
     await checkExistingRoutes(browser, base);
     assert.deepEqual(errors, []);
     console.log(
-      "A-level exam skills: 70 authored tasks, 56 drawing judgements, saved support state, and responsive accessibility passed.",
+      "A-level exam skills: 70 authored tasks, 18 observation-based drawing judgements, saved support state, and responsive accessibility passed.",
     );
   } finally {
     await page.close();
