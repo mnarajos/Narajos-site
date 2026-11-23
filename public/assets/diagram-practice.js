@@ -269,33 +269,77 @@ function addDrag(chip, drop, section) {
 function makeOrder(section, task, report) {
   const bank = el("div", "", "dp-bank");
   const answer = el("ol", "", "dp-order");
-  const reset = button("Start order again", () => {
-    chosen = [];
-    answer.replaceChildren();
-    for (const node of bank.children) node.disabled = false;
-    bank.querySelector("button").focus();
-    report.textContent = "";
-  });
-  let chosen = [];
-
-  const rotation = task.items.length - 1;
-  for (let index = 0; index < task.items.length; index++) {
-    // The bank order and the stored scientific order are deliberately separate.
-    const original = (index + rotation) % task.items.length;
-    bank.append(button(task.items[original], () => {
-      chosen.push(original);
-      answer.replaceChildren(...chosen.map(i => el("li", task.items[i])));
-      bank.children[index].disabled = true;
-      (bank.querySelector("button:not([disabled])") || reset).focus();
-      report.textContent = "Added step " + chosen.length + ".";
-    }));
+  const topic = section.closest("diagram-practice").getAttribute("topic");
+  const key = "narajos-diagram-order:v1:" + topic + ":" + task.prompt;
+  const signature = JSON.stringify(task.items);
+  let chosen = [], compared = false, checked = false;
+  const correct = () => chosen.length === task.items.length && chosen.every((id,i) => id === i);
+  try {
+    const saved = JSON.parse(localStorage.getItem(key));
+    if (saved?.signature === signature && Array.isArray(saved.chosen) &&
+        saved.chosen.every(i => Number.isInteger(i) && i >= 0 && i < task.items.length) &&
+        new Set(saved.chosen).size === saved.chosen.length) {
+      chosen = saved.chosen;
+      compared = saved.compared === true;
+      checked = saved.checked === true && correct();
+    }
+  } catch {}
+  function save() {
+    try { localStorage.setItem(key, JSON.stringify({signature,chosen,compared,checked})); } catch {}
   }
-  section.append(el("p", "Choose the steps in order."), bank, answer, reset);
+  function draw() {
+    answer.replaceChildren();
+    chosen.forEach((id,index) => {
+      const row = el("li");
+      row.append(el("span",task.items[id]));
+      const actions = el("div", "", "dp-move");
+      for (const [name,offset] of [["Earlier",-1],["Later",1],["Remove",0]]) {
+        const control = button(name, () => {
+          const next = index + offset;
+          chosen.splice(index,1);
+          if (offset) chosen.splice(next,0,id);
+          checked = false;
+          draw();
+          save();
+          report.textContent = offset ? "Moved to step " + (next+1) + "." : "Step returned to the choices.";
+          if (offset) (answer.children[next].querySelector('button:not(:disabled)')).focus();
+          else bank.querySelector('[data-item="'+id+'"]').focus();
+        });
+        control.setAttribute("aria-label",name + " · step " + (index+1));
+        control.disabled = index + offset < 0 || index + offset >= chosen.length;
+        actions.append(control);
+      }
+      row.append(actions);
+      answer.append(row);
+    });
+    for (const control of bank.children) control.disabled = chosen.includes(Number(control.dataset.item));
+  }
+  const rotation = task.items.length - 1;
+  for (let index=0;index<task.items.length;index++) {
+    const id = (index + rotation) % task.items.length;
+    const choice = button(task.items[id], () => {
+      chosen.push(id);
+      checked = false;
+      draw();
+      save();
+      (bank.querySelector("button:not(:disabled)") || section.querySelector(".dp-primary")).focus();
+      report.textContent = "Added step " + chosen.length + ".";
+    });
+    choice.dataset.item = id;
+    bank.append(choice);
+  }
+  section.append(el("p","Choose the steps in order. Use Earlier or Later to move one."), bank, answer);
+  const success = () => (compared ? "Correct after a retry. " : "Correct. ") + task.feedback;
   checkButton(section, report, () => {
     if (chosen.length < task.items.length) return "Choose all the steps first.";
-    const wrong = chosen.findIndex((index, position) => index !== position);
-    return wrong < 0 ? "Correct. " + task.feedback : "Recheck step " + (wrong + 1) + ". " + task.feedback;
+    const wrong = chosen.findIndex((id,index) => id !== index);
+    checked = wrong === -1;
+    if (!checked) compared = true;
+    save();
+    return checked ? success() : "Recheck step " + (wrong + 1) + ". Compare it with the steps immediately before and after it.";
   });
+  draw();
+  if (checked) report.textContent = success();
 }
 
 function makeCheck(section, task, report) {

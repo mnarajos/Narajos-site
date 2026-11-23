@@ -77,16 +77,17 @@ try {
   assert(await page.locator(".home-option--sim p").evaluate(p => parseFloat(getComputedStyle(p).fontSize) >= 16));
 
   await page.goto(base + "/teaching/focused-writing/order/");
-  await page.getByRole("button", { name: "Choose sentence for topic sentence" }).click();
-  const sentencePicker = page.getByRole("dialog", { name: "Topic sentence" });
-  assert(await sentencePicker.isVisible());
-  assert(await sentencePicker.evaluate(dialog => dialog.scrollWidth <= dialog.clientWidth + 2), "Sentence picker needs horizontal scrolling at 320px");
+  const paragraphOrder = page.locator('[data-writing-order="sandstone"]');
+  await paragraphOrder.getByRole("button",{name:/^Sand grains settled/}).click();
+  await paragraphOrder.locator("[data-order-position]").first().getByRole("button").click();
+  assert(await paragraphOrder.getByRole("button",{name:/Topic sentence.*Selected/}).isVisible());
+  assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 2));
   await page.addScriptTag({ content: axe.source });
   const pickerIssues = await page.evaluate(async () => {
     const result = await window.axe.run({ runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] } });
     return result.violations.map(rule => rule.id);
   });
-  assert.deepEqual(pickerIssues, [], "Accessibility findings while the sentence picker is open");
+  assert.deepEqual(pickerIssues, [], "Accessibility findings while a sentence is selected");
 
   await page.goto(base + "/teaching/");
   assert.equal(await page.locator('main a[href="/support/"]').count(), 1);
