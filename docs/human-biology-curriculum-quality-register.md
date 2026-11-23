@@ -10,18 +10,18 @@ Verified means the mapped teaching and corresponding practice have specific scie
 
 Review marks candidate references found in the source. Unresolved marks requirements for which this pass did not locate direct evidence. Neither status establishes absence or completeness. These rows require a teacher to check the exact scientific breadth and demand. Centre-only indicates assessed production or supervised enactment, with general knowledge and method reasoning recorded separately. The count is a coverage ledger, rather than a percentage of the curriculum taught.
 
-Priority reflects the examined units first, together with specific high-value transfer gaps. The earlier overview remains below as a record of previous batches. Where it differs, use the individual row and its evidence.
+Priority reflects the examined units first, together with specific high-value transfer gaps. For the remaining work, check the examined-unit Review and Unresolved rows against the exact named examples and practical demand before authoring. Then address specific Gap and Taught rows with a minimal worked example or independent task. The earlier overview remains below as a record of previous batches. Where it differs, use the individual row and its evidence.
 
 | Requirements | Rows | Verified | Taught | Practised | Represented | Gap | Review | Unresolved | Centre-only |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| [F170](human-biology-curriculum/f170.md) | 226 | 16 | 2 | 21 | 2 | 1 | 75 | 109 | 0 |
-| [F171](human-biology-curriculum/f171.md) | 148 | 12 | 0 | 11 | 3 | 3 | 37 | 82 | 0 |
-| [F172](human-biology-curriculum/f172.md) | 67 | 2 | 1 | 0 | 1 | 1 | 15 | 47 | 0 |
-| [F173](human-biology-curriculum/f173.md) | 88 | 3 | 2 | 1 | 1 | 1 | 6 | 68 | 6 |
-| [F174](human-biology-curriculum/f174.md) | 66 | 2 | 1 | 1 | 0 | 1 | 12 | 49 | 0 |
-| [F175](human-biology-curriculum/f175.md) | 57 | 7 | 1 | 0 | 1 | 1 | 4 | 41 | 2 |
-| [F176](human-biology-curriculum/f176.md) | 60 | 1 | 3 | 0 | 1 | 0 | 15 | 39 | 1 |
-| [F177](human-biology-curriculum/f177.md) | 46 | 4 | 1 | 2 | 1 | 1 | 3 | 33 | 1 |
+| [F170](human-biology-curriculum/f170.md) | 226 | 21 | 4 | 18 | 3 | 1 | 73 | 106 | 0 |
+| [F171](human-biology-curriculum/f171.md) | 148 | 15 | 1 | 9 | 4 | 2 | 35 | 82 | 0 |
+| [F172](human-biology-curriculum/f172.md) | 67 | 2 | 1 | 1 | 1 | 0 | 16 | 46 | 0 |
+| [F173](human-biology-curriculum/f173.md) | 88 | 5 | 1 | 1 | 1 | 0 | 6 | 68 | 6 |
+| [F174](human-biology-curriculum/f174.md) | 66 | 3 | 0 | 1 | 1 | 0 | 12 | 49 | 0 |
+| [F175](human-biology-curriculum/f175.md) | 57 | 8 | 3 | 0 | 0 | 0 | 6 | 38 | 2 |
+| [F176](human-biology-curriculum/f176.md) | 60 | 3 | 2 | 0 | 0 | 0 | 16 | 38 | 1 |
+| [F177](human-biology-curriculum/f177.md) | 46 | 7 | 1 | 2 | 0 | 0 | 3 | 32 | 1 |
 | [Shared skills](human-biology-curriculum/shared-skills.md) | 49 | 3 | 0 | 0 | 0 | 0 | 20 | 26 | 0 |
 
 ## Earlier overview of examined units
