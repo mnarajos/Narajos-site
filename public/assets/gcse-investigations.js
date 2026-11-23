@@ -39,3 +39,31 @@ export const investigations = {
     ["All quadrats lie along one stream bank. An investigator claims the entire meadow has high plant density because of moisture. Evaluate this.","The sample describes the bank. Sample the whole meadow randomly for abundance and measure moisture across replicated transects for association.","Bank sites may differ in shade and soil as well as moisture.",["More quadrats along the same bank prove moisture caused growth.","Narrow coverage and other variables still limit the claim."]],
     ["What does the hedge transect suggest?","Counts increased with distance along this line.","A trend along one line needs replication.",["The hedge poisons the plants.","The observations do not identify a causal mechanism."]])
 };
+
+Object.assign(investigations, {
+  "electrode-evidence": investigation(10,"C4","Electrolysis from ions to observations","In a molten ionic compound the mobile ions come from the compound. In water, hydrogen and hydroxide ions can also contribute to electrode products.",
+    ["Aqueous copper sulfate and inert graphite electrodes",["Electrode","Observation"],[["Negative","Reddish solid forms"],["Positive","Gas relights a glowing splint"]]],
+    ["Connect two separate inert electrodes to a dc supply and immerse both in the electrolyte. Collect the products separately.",
+    "Positive copper ions move towards the negative cathode and gain electrons to form copper metal. The positive anode attracts anions. With sulfate solution and inert electrodes, oxygen forms there.",
+    "A glowing splint relighting identifies oxygen. Bubbles alone would show gas formation without identifying the gas."],
+    ["Which observation supports oxygen formation?","A glowing splint relights.","This is the characteristic test for oxygen.",["Bubbles appear.","Several gases produce bubbles."]],
+    ["Molten magnesium chloride produces magnesium at the cathode. Can the same prediction be made for its aqueous solution with inert electrodes?","No. Hydrogen forms in the aqueous case because magnesium is more reactive than hydrogen.","Water provides an alternative source of cathode product.",["Yes, all positive metal ions always form metals.","That overlooks competition in aqueous electrolytes."]],
+    ["Which electrode attracts copper ions?","The negative cathode.","Opposite charges attract.",["The positive anode.","Copper ions carry a positive charge."]],
+    ["Higher Tier","Write the half-equations for copper deposition and oxygen formation from hydroxide ions.","Cu²⁺ + 2e⁻ → Cu. At the anode, 4OH⁻ → O₂ + 2H₂O + 4e⁻. Atoms and total charge balance in each equation."]),
+  "reacting-masses": investigation(10,"C3","Reacting masses and limiting reactants · Higher Tier","Use the balanced equation to compare amounts in moles. The reactant that runs out sets the maximum product.",
+    ["2Mg + O₂ → 2MgO",["Particle model","Count"],[["Mg atoms available","6"],["O₂ molecules available","4"]]],
+    ["Two Mg atoms react with one O₂ molecule. Six Mg atoms use three O₂ molecules, leaving one O₂ molecule. Both sides conserve each kind of atom.",
+    "Now compare masses: 4.8 g Mg ÷ 24 g/mol = 0.20 mol. 4.8 g O₂ ÷ 32 g/mol = 0.15 mol. Only 0.10 mol O₂ is needed, so Mg limits the yield.",
+    "0.20 mol Mg gives 0.20 mol MgO. Maximum mass = 0.20 × 40 = 8.0 g."],
+    ["What limits product in the particle model?","Magnesium","Three reaction groups use all six Mg atoms.",["Oxygen because there are fewer molecules.","Use the coefficient ratio before comparing counts."]],
+    ["A batch contains 2.4 g Mg and 1.6 g O₂. Which change alone can increase the theoretical yield?","Increase both reactants.","0.10 mol Mg and 0.050 mol O₂ are exactly in the required ratio. Adding just one leaves the other limiting.",["Add magnesium only.","All the available oxygen is already required."],["Add oxygen only.","All the available magnesium is already required."]],
+    ["Why convert grams to moles?","Equation coefficients compare numbers of particles or amounts in moles.","Different substances have different molar masses.",["Coefficients are ratios of masses in grams.","One mole of Mg and one mole of oxygen molecules have different masses."]]),
+  "temperature-evidence": investigation(10,"C5","What a temperature change can show","Measure the temperature change of the mixture as energy transfers between reaction and surroundings.",
+    ["Equal reactant amounts and starting temperatures",["Method","Start (°C)","Maximum (°C)"],[["Glass beaker","20","26"],["Insulated cup with lid","20","29"]]],
+    ["Subtract initial temperature from maximum: +6 °C versus +9 °C. An exothermic reaction warms the mixture. An endothermic reaction can cool it.",
+    "A lid and insulation reduce energy transfer to the surroundings. Stir and monitor temperature to detect the peak or minimum. Repeat to examine variation.",
+    "Use equal volumes and concentrations and the same initial temperature. A different temperature change alone does not establish a different energy release per mole."],
+    ["Which method recorded the larger rise?","Insulated cup","29 − 20 = 9 °C.",["Glass beaker","Its rise was 6 °C."]],
+    ["A pupil reads a warming reaction only two minutes after mixing. The peak has already passed. Which change improves the estimate?","Record temperature throughout mixing and cooling to capture the maximum.","The delayed reading underestimates the peak rise.",["Use better equipment.","Specify which measurement misses the peak and how the change captures it."],["Repeat the same delayed reading.","Repeats cannot recover an unmeasured peak."]],
+    ["Why should both reactants start at the same temperature?","Mixing alone could otherwise change the measured temperature.","A temperature difference introduces heat transfer independent of the reaction.",["It ensures no heat escapes.","Heat can still transfer through the container."]])
+});
