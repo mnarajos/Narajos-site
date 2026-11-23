@@ -555,7 +555,7 @@ window.KeystoneHumanCatchup={route:function(hash,render){
  if(!m[2])return showUnit(m[1],render);
  var simulationStage=m[1]==="f175"&&m[2]==="a1"?m[5]:null;
  return showConcept(m[1],m[2],m[3],render,Number(m[4])||0,simulationStage);
-},linkFor:linkFor,reteachFor:reteachFor,practiceScope:practiceScope,topicPracticeScope:topicPracticeScope,searchTopics:function(){
+},unitList:units,linkFor:linkFor,reteachFor:reteachFor,practiceScope:practiceScope,topicPracticeScope:topicPracticeScope,searchTopics:function(){
  var f170=Object.values(sectionById).map(function(item){
   var s=item.section;
   return {group:"f170",title:s.title,context:"F170 · "+s.id,concept:true,actions:[["Catch up","#catchup/f170/"+s.id],["Flashcards","#cards/"+s.id]]};

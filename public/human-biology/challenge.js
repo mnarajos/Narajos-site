@@ -72,6 +72,20 @@ function savedSession(origin){
  if(origin)return candidates.find(function(item){return item.reteachTo===origin;})||candidates.find(function(item){return item.returnTo===origin;})||null;
  return candidates[0]||null;
 }
+function resumeActivities(){
+ const keys=[SK,...localSessionKeys().filter(key=>key!==CK)].sort((a,b)=>a===SK?-1:b===SK?1:a.localeCompare(b));
+ const labels={all:"Quick mix",core:"Core questions",sam:"Exam-style questions",stretch:"Challenge",weak:"Fix mistakes",methods:"Choosing a method"};
+ return Array.from(new Set(keys)).map(key=>restore(key)).filter(Boolean).map(item=>{
+  const question=byId[item.queue[item.index]];
+  const skill=item.skillId&&skills?.get(item.skillId);
+  const point=item.point&&ladders?.get(item.point);
+  const topic=/^a[1-5]$/.test(item.scope)?areaName(item.unit,Number(item.scope.slice(1))):null;
+  return {route:item.route,unit:item.unit.toUpperCase(),
+   title:skill?.name||point?.statement||question?.caseTitle||topic||labels[item.scope]||
+    ("Topic practice"+(question?.section?" · "+question.section:"")),
+   position:"Question "+(item.index+1)+(skill?"":" of "+item.queue.length)};
+ });
+}
 function icon(name){
  var paths={
  brain:'<path d="M12 18V5a4 4 0 0 0-7.5-1.9A4 4 0 0 0 3 10a4 4 0 0 0 1 7.5A4 4 0 0 0 12 18ZM12 18V5a4 4 0 0 1 7.5-1.9A4 4 0 0 1 21 10a4 4 0 0 1-1 7.5A4 4 0 0 1 12 18Z" transform="translate(0 2) scale(1 .9)"/>',
@@ -86,6 +100,7 @@ function icon(name){
  graph:'<path d="M4 4v16h16M7 16l4-5 4 2 5-7"/>',
  calc:'<rect x="5" y="2" width="14" height="20" rx="2"/><rect x="8" y="5" width="8" height="4"/><path d="M8 13h2m3 0h3m-8 4h2m3 0h3"/>',
  check:'<path d="m4 12 5 5L20 6"/>',
+ play:'<path d="m8 5 11 7-11 7z"/>',
  alert:'<circle cx="12" cy="12" r="9"/><path d="M12 7v6m0 4h.01"/>',
  chevron:'<path d="m9 5 7 7-7 7"/>'
  };
@@ -979,5 +994,5 @@ main.addEventListener("click",function(e){
 });
 main.addEventListener("keydown",function(e){if(e.target&&e.target.closest&&e.target.closest('[data-k-action="hint"]'))return;if(e.key!=="Tab"&&e.key!=="Shift")noteAnswerActivity();});
 window.addEventListener("beforeunload",function(e){if(isActive()){e.preventDefault();e.returnValue="";}});
-window.KeystoneHumanChallenge={route:route,isActive:isActive,discard:discard,pause:pause,stats:unitStats,questionCount:all.length,types:Array.from(new Set(all.map(function(q){return q.type;}))),icon:icon,localSessionKeys:localSessionKeys,hasResume:function(){return !!savedSession();},resumeRoute:function(origin){var old=savedSession(origin);return old?old.route:null;}};
+window.KeystoneHumanChallenge={route:route,isActive:isActive,discard:discard,pause:pause,stats:unitStats,questionCount:all.length,types:Array.from(new Set(all.map(function(q){return q.type;}))),icon:icon,resumeActivities:resumeActivities,localSessionKeys:localSessionKeys,hasResume:function(){return !!savedSession();},resumeRoute:function(origin){var old=savedSession(origin);return old?old.route:null;}};
 })();

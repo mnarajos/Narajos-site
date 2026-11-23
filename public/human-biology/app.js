@@ -57,33 +57,43 @@ function areaHtml(a){
  return '<article class="paper area-card"><span class="number">TOPIC AREA '+a.number+'</span><h3>'+esc(a.title)+'</h3><p>'+esc(a.intro)+'</p><p class="summary">'+a.sections.length+' learning sections · '+count+' flashcards</p><div class="area-actions">'+link("area/"+a.id,"Explore topics","primary")+link("cards/"+a.id,"Flashcards")+link("practice/"+a.id,"Practice")+'</div></article>';
 }
 function kIcon(name){var E=window.KeystoneHumanChallenge;return E&&E.icon?E.icon(name):"▤";}
+function savedActivities(){
+ const old=restoreSession();
+ const questions=window.KeystoneHumanChallenge?.resumeActivities()||[];
+ if(!old)return questions;
+ const unit=old.scope?.startsWith("f171")?"F171":"F170";
+ return [{route:"resume",unit,title:old.type==="cards"?"Flashcards":"Explanation practice",
+  position:Number.isInteger(old.completed)&&Number.isInteger(old.initial)?old.completed+" of "+old.initial+" completed":""},...questions];
+}
+function continueLearning(){
+ const [first,...others]=savedActivities();
+ if(!first)return "";
+ const description=item=>esc(item.unit)+" · "+esc(item.title)+(item.position?" · "+esc(item.position):"");
+ return '<section class="hb-continue" aria-labelledby="hb-continue-heading"><h2 id="hb-continue-heading">Continue learning</h2>'+
+  '<div class="hb-continue-row"><p>'+description(first)+'</p><a class="button primary" href="#'+esc(first.route)+'">'+kIcon("play")+
+  'Resume<span class="sr-only"> '+esc(first.unit+" "+first.title)+'</span></a></div>'+
+  (others.length?'<details class="hb-saved-list"><summary>Other saved activities</summary><ul class="hb-link-list">'+
+   others.map(item=>'<li><a href="#'+esc(item.route)+'"><span>'+description(item)+'</span><span>Resume</span></a></li>').join("")+'</ul></details>':"")+'</section>';
+}
+function unitLinks(units){
+ const [f170,f171,...nea]=units;
+ const exams=[f170,f171].filter(Boolean);
+ return '<div class="hb-unit-list" id="hb-units" tabindex="-1"><section aria-labelledby="hb-exams-heading"><h2 id="hb-exams-heading">Externally assessed units</h2><div class="k-home-units">'+
+  exams.map((unit,i)=>'<a class="k-home-unit '+(i?"blue":"teal")+'" href="#challenge/'+unit.id+'"><span class="k-unit-symbol">'+
+   kIcon(i?"flask":"brain")+'</span><span class="k-unit-copy"><small>'+unit.id.toUpperCase()+'</small><strong>'+esc(unit.title)+
+   '</strong></span><span class="k-unit-chev" aria-hidden="true">›</span></a>').join("")+'</div></section>'+
+  (nea.length?'<section aria-labelledby="hb-nea-heading"><h2 id="hb-nea-heading">NEA units <span class="hb-heading-note">Knowledge support</span></h2>'+
+   '<p class="hb-section-note">Study the biology behind your NEA units. For assessed coursework, follow your school or college’s guidance.</p>'+
+   '<ul class="hb-link-list hb-nea-list">'+nea.map(unit=>'<li><a href="#challenge/'+unit.id+'"><span class="hb-unit-code">'+
+    unit.id.toUpperCase()+'</span><strong>'+esc(unit.title)+'</strong>'+kIcon("chevron")+'</a></li>').join("")+'</ul></section>':"")+'</div>';
+}
 function showHome(){
- var st=stats(),old=restoreSession(),E=window.KeystoneHumanChallenge,fs=E?E.stats("f170"):null,hs=E?E.stats("f171"):null;
- var icon=E&&E.icon?E.icon:function(){return "▤";};
- var h='<div class="k-wrap"><section class="k-home-hero"><span class="k-eyebrow">Narajos Keystone · Cambridge OCR AAQ</span><h1>Ready to revise?</h1><p>Choose a unit to catch up, revise or practise.</p></section>';
+ const units=window.KeystoneHumanCatchup?.unitList||[
+  {id:"f170",title:"Fundamentals of human biology"},{id:"f171",title:"Health and disease"}];
+ var h='<div class="k-wrap hb-overview"><section class="k-home-hero"><span class="k-eyebrow">Cambridge OCR AAQ</span><h1>Human Biology</h1></section>';
+ h+=continueLearning()+unitLinks(units);
  if(window.NarajosTopicFinder)h+=window.NarajosTopicFinder.markup;
- h+='<section class="k-home-units" aria-label="Choose your exam unit">';
- h+='<a class="k-home-unit teal" href="#challenge/f170"><span class="k-unit-symbol">'+icon("brain")+'</span><span class="k-unit-copy"><small>F170 · Exam unit</small><strong>Fundamentals of human biology</strong><em>'+(fs?fs.questions:0)+' varied questions · '+(fs?fs.seen:0)+' attempted</em></span><span class="k-unit-chev">›</span></a>';
- h+='<a class="k-home-unit blue" href="#challenge/f171"><span class="k-unit-symbol">'+icon("flask")+'</span><span class="k-unit-copy"><small>F171 · Exam unit · Preview</small><strong>Health and disease</strong><em>'+(hs?hs.questions:0)+' original questions · '+(hs?hs.seen:0)+' attempted</em></span><span class="k-unit-chev">›</span></a>';
- h+='</section>';
- h+='<section class="k-companion-entry"><div class="k-companion-symbol">'+kIcon("book")+'</div><div><strong>Missed a lesson or feeling unsure?</strong><p>Follow a worked example or review key ideas.</p></div>'+link("catchup","Catch up","secondary")+'</section>';
- h+='<a class="k-more-units" href="#knowledge"><span>'+kIcon("book")+'</span><span><strong>Other Human Biology units</strong><small>F172–F177 · NEA knowledge support</small></span><span aria-hidden="true">›</span></a>';
- h+='<a class="k-more-units k-skills-entry" href="#skills"><span>'+kIcon("calc")+'</span><span><strong>Skills practice</strong><small>F170 and F171 · Worked examples and fresh practice sets</small></span><span aria-hidden="true">›</span></a>';
- h+='<h2 class="k-subhead">Other ways to revise F170</h2><section class="k-home-actions">';
- h+='<a href="#flashcards" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("layers")+'</span><strong>Flashcards</strong><small>Recall and spaced review</small></a>';
- h+='<a href="#catchup/f170" class="k-mini-action learn"><span class="k-mini-symbol">'+kIcon("book")+'</span><strong>Catch up</strong><small>Guided lessons and recaps</small></a>';
- h+='<a href="#challenge/f170/weak" class="k-mini-action fix"><span class="k-mini-symbol">'+kIcon("rotate")+'</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
- h+='</section>';
- h+='<h2 class="k-subhead">Other ways to revise F171</h2><section class="k-home-actions">';
- if(f171Cards.length)h+='<a href="#flashcards/f171" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("layers")+'</span><strong>F171 flashcards</strong><small>Recall across all five topic areas</small></a>';
- h+='<a href="#catchup/f171" class="k-mini-action learn"><span class="k-mini-symbol">'+kIcon("book")+'</span><strong>Catch up</strong><small>Guided clinical reasoning</small></a>';
- h+='<a href="#skills/f171" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("calc")+'</span><strong>Skills practice</strong><small>Calculations, data, and evidence</small></a>';
- h+='<a href="#challenge/f171/weak" class="k-mini-action fix"><span class="k-mini-symbol">'+kIcon("rotate")+'</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
- h+='</section>';
- if(old)h+='<section class="k-continue"><div><strong>Unfinished flashcards or explanation practice</strong><p>Continue your saved set.</p></div>'+link("resume","Resume","primary")+'</section>';
- var savedChallenge=E&&E.hasResume();
- if(savedChallenge){var route=E.resumeRoute();h+='<section class="k-continue"><div><strong>Revision questions in progress</strong><p>Return to your unfinished questions.</p></div>'+link(route,"Resume questions","primary")+'</section>';}
- h+='<p class="k-small-note">F170 covers the four topic areas in this first learning bank; F171 exam questions are an initial selection. This is not yet complete specification coverage. Original questions only; no coursework assistance.</p><p class="k-privacy-small">Your progress stays in this browser. <button class="k-local-reset" id="clear-human-bio" type="button">Clear progress on this device</button></p></div>';
+ h+='<p class="k-privacy-small">Your progress stays in this browser. <button class="k-local-reset" id="clear-human-bio" type="button">Clear progress on this device</button></p></div>';
  render(h);
  mountStudyFinder();
 }

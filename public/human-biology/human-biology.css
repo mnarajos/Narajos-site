@@ -325,3 +325,33 @@ main[tabindex="-1"]:focus{outline:none}
 .k-evidence-table .k-evidence-focus { outline:2px solid currentColor; outline-offset:-3px; font-weight:700; }
 .flash-panel button[hidden] { display:none; }
 .k-case-annotations blockquote { margin:.2rem 0; padding-inline-start:.65rem; border-inline-start:2px solid currentColor; }
+
+/* Unit-first overview and compact link lists. */
+.hb-overview h2,.hb-unit-overview h2{font-size:1.2rem}
+.hb-unit-list,.hb-unit-list>section{min-inline-size:0}
+.hb-overview .k-home-units{grid-template-columns:repeat(2,minmax(0,1fr));margin:0 0 1.5rem}
+.hb-overview .k-home-unit{min-height:100px;padding:16px;gap:12px}
+.hb-overview .k-unit-symbol{width:44px;height:44px;border-radius:10px}
+.hb-overview .k-unit-symbol svg{width:25px;height:25px}
+.hb-heading-note{color:var(--muted);font:600 .9rem/1.5 system-ui,sans-serif}
+.hb-section-note{color:var(--muted);margin:0 0 .55rem;max-inline-size:64ch}
+.hb-link-list{margin:0;padding:0;list-style:none;border-block-start:1px solid var(--line)}
+.hb-link-list li{border-block-end:1px solid var(--line)}
+.hb-link-list a{display:flex;align-items:center;gap:.7rem;min-height:46px;padding:.35rem .6rem;color:var(--ink);text-decoration:none;overflow-wrap:anywhere}
+.hb-link-list a:hover{background:var(--k-teal-soft);text-decoration:underline}
+.hb-link-list a>:last-child{margin-inline-start:auto;color:var(--brand);flex-shrink:0}
+.hb-link-list svg{width:17px;height:17px}
+.hb-nea-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:1.25rem}
+.hb-unit-code{font-size:.88rem;color:var(--brand);font-weight:700}
+.hb-continue{padding:.75rem 1rem;background:#fff;border:1px solid var(--line);border-radius:12px;margin:0 0 1.35rem}
+.hb-continue h2{margin:0 0 .2rem}
+.hb-continue-row{display:flex;align-items:center;justify-content:space-between;gap:.65rem;flex-wrap:wrap}
+.hb-continue-row p{margin:0;max-inline-size:62ch}
+.hb-continue .button svg{width:1.15em;height:1.15em;margin-inline-end:.25em}
+.hb-saved-list{margin-block-start:.2rem}
+.hb-saved-list summary{cursor:pointer;min-height:44px;padding:.55rem 0;font-weight:650;color:var(--brand)}
+@media(max-width:600px){
+ .hb-overview .k-home-units,.hb-nea-list{grid-template-columns:minmax(0,1fr)}
+ .hb-overview .k-home-unit{min-height:76px;padding:11px 13px}
+ .hb-overview .k-home-units{gap:8px}
+}
