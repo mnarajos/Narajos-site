@@ -67,3 +67,38 @@ Object.assign(investigations, {
     ["A pupil reads a warming reaction only two minutes after mixing. The peak has already passed. Which change improves the estimate?","Record temperature throughout mixing and cooling to capture the maximum.","The delayed reading underestimates the peak rise.",["Use better equipment.","Specify which measurement misses the peak and how the change captures it."],["Repeat the same delayed reading.","Repeats cannot recover an unmeasured peak."]],
     ["Why should both reactants start at the same temperature?","Mixing alone could otherwise change the measured temperature.","A temperature difference introduces heat transfer independent of the reaction.",["It ensures no heat escapes.","Heat can still transfer through the container."]])
 });
+
+Object.assign(investigations, {
+  "spring-evidence": investigation(11,"P5","Force, length and spring extension","Measure length from the same fixed reference. Subtract the unloaded length to obtain extension.",
+    ["Vertical spring beside a fixed ruler",["Force (N)","Length (cm)"],[["0","8"],["1","10"],["2","12"],["3","14"]]],
+    ["Clamp the same spring beside a vertical ruler. Align your eye with the pointer after oscillations settle.",
+    "At 2 N, extension = 12 − 8 = 4 cm. Plot extension against force. Here the straight line passes through the origin and each newton adds 2 cm.",
+    "A departure from the straight line marks departure from proportionality. Remove the load and check the original length to test whether deformation was elastic."],
+    ["At 3 N what is the extension?","6 cm","14 − 8 = 6 cm.",["14 cm","That is loaded length."]],
+    ["A second spring extends 0, 3, 6 and 11 mm at 0, 1, 2 and 3 N. What conclusion is supported?","By 3 N the data depart from proportionality. Unload the spring to test for permanent deformation.","The earlier pattern predicts 9 mm. Nonlinearity alone does not demonstrate permanent extension.",["Permanent deformation definitely starts at exactly 2 N.","There are no intermediate measurements or unloading data."]],
+    ["Why read at pointer height?","To reduce parallax.","Viewing at an angle can shift the apparent position.",["To reduce the applied force.","Eye position does not change the load."]]),
+  "trolley-evidence": investigation(11,"P5","Separating force and mass in a trolley investigation","Acceleration depends on resultant force and total moving mass. Isolate one variable to investigate its effect.",
+    ["Trolley joined by a string over a pulley to a hanger",["Driving weight (N)","Total moving mass (kg)","Acceleration (m/s²)"],[["0.2","0.8","0.24"],["0.4","0.8","0.48"]]],
+    ["Use a level track, low friction and a consistent release. Light gates and a data logger can measure acceleration.",
+    "Move a slotted mass from trolley to hanger. Driving weight rises but total moving mass stays constant. Account for friction when interpreting resultant force.",
+    "To test mass instead, keep the driving force fixed and add mass to the trolley. Check friction remains small and comparable."],
+    ["What is held constant in the table?","Total moving mass","Include trolley, hanger and carried masses.",["Driving force","The hanging weight changes."]],
+    ["A pupil tests the effect of force by adding new masses directly to the hanger. Identify the flaw and improve the test.","Both driving force and total mass increase. Transfer masses from trolley to hanger instead.","Increased mass opposes the acceleration increase expected from the larger force. The original method cannot isolate force.",["Repeat each run and keep adding new masses.","Repeats do not separate the two changing variables."]],
+    ["Why use the same release procedure?","A push could change the measured motion.","Release without giving the trolley an extra force.",["It makes the trolley mass constant.","Mass depends on the apparatus and added loads."]]),
+  "wave-measurement": investigation(11,"P6","Measuring waves across space and time","Wavelength measures the distance between successive points in phase. Frequency counts complete oscillations per second.",
+    ["A ripple tank viewed from above",["Observation","Reading"],[["First crest to fifth crest","24 cm"],["Oscillations at a fixed marker","10 in 5 s"]]],
+    ["Measure across several crests in a still image with a calibrated scale. From first crest to fifth there are four intervals: wavelength = 24 ÷ 4 = 6 cm.",
+    "Time several complete oscillations at one fixed point. Frequency = 10 ÷ 5 = 2 Hz. Wave speed = 2 × 0.06 = 0.12 m/s.",
+    "Amplitude is the maximum displacement from equilibrium. A floating marker oscillates while the wave pattern moves across the tank."],
+    ["How many wavelengths separate the first and fifth crests?","Four","Count spaces between crests.",["Five","Five positions enclose four intervals."]],
+    ["A rope marker rises and falls 12 times in 6 s. Crests are 0.8 m apart. Does the marker travel along the rope at 1.6 m/s?","The pattern travels at 1.6 m/s. The marker oscillates about its own position.","Frequency is 2 Hz; wave speed is 2 × 0.8. Local displacement differs from propagation.",["Yes, each crest carries the same marker along.","A crest passes successive points on the rope."]],
+    ["Why measure four intervals rather than one?","The same reading uncertainty is a smaller fraction of the total distance.","Divide the measured span by the number of intervals.",["It removes every scale error.","A miscalibrated scale still biases every measurement."]]),
+  "infrared-evidence": investigation(11,"P6","Surface finish and infrared transfer","Compare surfaces at equal temperature, area and distance. A good absorber of infrared is also a good emitter under comparable conditions.",
+    ["Detector facing equal-sized faces of a hot metal cube",["Face","Detector reading (arbitrary units)"],[["Matt black","78"],["Polished metal","24"]]],
+    ["Hot water keeps the faces of one cube at similar temperatures. Point the same infrared detector squarely at each face from the same distance.",
+    "The larger reading supports greater infrared emission from the matt black surface under these conditions. Repeat readings while monitoring cube temperature.",
+    "For absorption, use identical plates with different finishes at the same distance from one source. Compare their temperature rises over the same time."],
+    ["What is measured in the cube experiment?","The detector response to infrared from each face.","Keep background and geometry comparable.",["The rate of water evaporation.","The detector measures radiation."]],
+    ["A black thin aluminium tray warms more than a thick shiny steel block under a lamp. How should the claim about surface finish be tested?","Compare identical plates differing only in finish, with equal initial temperatures and lamp distances.","Mass, material and geometry can all affect warming. A temperature rise alone does not isolate the finish.",["Repeat using the same different objects.","Repeats leave the confounding differences in place."]],
+    ["Why keep the detector distance fixed?","Changing distance can change the radiation reaching the detector.","A change in reading should reflect the tested surface.",["Distance changes the colour of the face.","Its finish remains the same."]])
+});

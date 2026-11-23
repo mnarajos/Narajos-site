@@ -1,3 +1,4 @@
+import { investigations } from "./gcse-investigations.js";
 import { question } from "./school-catchup-journey.js";
 import { priorityCatchup } from "./gcse-catchup-priority.js";
 
@@ -570,4 +571,4 @@ scaffold(year11Catchup["inheritance-cross"], "Build a genetic cross", [
   "Count phenotypes after filling the boxes. Three outcomes contain at least one dominant allele. Only aa shows the recessive phenotype in this example."
 ], "Count how many of the four equally likely boxes show two recessive alleles.");
 
-export const gcseCatchup = {...year10Catchup, ...year11Catchup, ...complementary, ...furtherCatchup, ...priorityCatchup};
+export const gcseCatchup = {...year10Catchup, ...year11Catchup, ...complementary, ...furtherCatchup, ...priorityCatchup, ...investigations};
