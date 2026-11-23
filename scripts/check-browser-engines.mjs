@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { firefox, webkit } from "playwright";
 import { checkHumanReliability } from "./check-human-reliability.mjs";
+import { checkSharedInteractions } from "./check-shared-interactions.mjs";
 import { checkDrawingObservations } from "./check-drawing-observations.mjs";
 import { servePublic } from "./browser-test-site.mjs";
 
@@ -13,6 +14,7 @@ let route = "/";
 const errors = [];
 
 try {
+  await checkSharedInteractions(browser,base);
   await checkDrawingObservations(browser,base);
   await checkHumanReliability(browser, base, { touch: engine === "webkit" });
   const page = await browser.newPage({

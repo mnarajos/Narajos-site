@@ -20,19 +20,21 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
   const correct = () => slots.every((id, index) => id === index);
   let slots = empty();
   let checked = false;
+  let usedFeedback = false;
   try {
     const saved = JSON.parse(localStorage.getItem(key));
     if (saved?.slots?.length === cards.length && saved.slots.every(id => id === null || Number.isInteger(id) && id >= 0 && id < cards.length)) {
       const used = saved.slots.filter(id => id !== null);
       if (new Set(used).size === used.length) {
         slots = saved.slots;
+        usedFeedback = saved.usedFeedback === true;
         checked = saved.checked === true && correct();
       }
     }
   } catch { /* Storage can be unavailable on a shared device. */ }
 
   function save() {
-    try { localStorage.setItem(key, JSON.stringify({ slots, checked })); } catch { /* Keep the activity usable. */ }
+    try { localStorage.setItem(key, JSON.stringify({ slots, checked, usedFeedback })); } catch { /* Keep the activity usable. */ }
     onChange?.();
   }
 
@@ -60,11 +62,15 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
   const tip = element("details", "", "paragraph-hint");
   const tipText = element("p");
   tip.append(element("summary","Hint"), tipText);
+  tip.addEventListener("toggle", () => {
+    if (tip.open && !usedFeedback) { usedFeedback = true; save(); }
+  });
   const undo = button("Return selected sentence to choices", () => {
     const position = moving;
     slots[position] = null;
     moving = null;
     destination = position;
+    usedFeedback ||= checked;
     checked = false;
     draw();
     save();
@@ -82,6 +88,8 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
       save();
       return;
     }
+    usedFeedback = true;
+    save();
     clearReview();
     const { item, feedback, control } = entries[firstError];
     item.dataset.orderReview = "";
@@ -95,6 +103,7 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
     slots = empty();
     destination = 0;
     moving = null;
+    usedFeedback ||= checked;
     checked = false;
     draw();
     save();
@@ -112,6 +121,7 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
     slots[position] = id;
     destination = slots.indexOf(null);
     moving = null;
+    usedFeedback ||= checked;
     checked = false;
     draw();
     save();
@@ -204,7 +214,7 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
     model.hidden = !checked;
     if (checked) {
       result.dataset.result = "correct";
-      result.replaceChildren(element("strong", "Correct."), " " + success);
+      result.replaceChildren(element("strong", "Correct."), (usedFeedback ? " You used feedback on this order. " : " ") + success);
     } else {
       delete result.dataset.result;
       result.textContent = "";

@@ -21,12 +21,14 @@ export function mountSequence(root, {
   const slots = cards.map(() => null);
   const signature = JSON.stringify(cards);
   let completed = false;
+  let usedFeedback = false;
   if (storageKey) {
     try {
       const saved = JSON.parse(localStorage.getItem(storageKey));
       if (saved?.signature === signature && Array.isArray(saved.slots) && saved.slots.length === slots.length) {
         const used = saved.slots.filter(id => id !== null);
         if (used.every(id => Number.isInteger(id) && id >= 0 && id < cards.length) && new Set(used).size === used.length) {
+          usedFeedback = saved.usedFeedback === true;
           slots.splice(0, slots.length, ...saved.slots);
           completed = saved.completed === true && slots.every((id,index) => id === index);
         }
@@ -34,7 +36,7 @@ export function mountSequence(root, {
     } catch {}
   }
   function save() {
-    if (storageKey) try { localStorage.setItem(storageKey, JSON.stringify({signature,slots,completed})); } catch {}
+    if (storageKey) try { localStorage.setItem(storageKey, JSON.stringify({signature,slots,completed,usedFeedback})); } catch {}
   }
   let selected = null;
   let drag = null;
@@ -56,6 +58,7 @@ export function mountSequence(root, {
   if (answer) model.append(element("summary", answerTitle), ...answer.map(text => element("p", text, "model")));
 
   function refreshAssessment() {
+    usedFeedback ||= completed;
     completed = false;
     save();
     feedback.textContent = "";
@@ -71,9 +74,11 @@ export function mountSequence(root, {
     if (firstError === -1) {
       completed = true;
       save();
-      feedback.replaceChildren(element("strong", "Correct."), " " + success);
+      feedback.replaceChildren(element("strong", "Correct."), (usedFeedback ? " You used feedback on this order. " : " ") + success);
       model.hidden = !answer;
     } else {
+      usedFeedback = true;
+      save();
       draw(firstError);
       const { label, hint } = positions[firstError];
       feedback.replaceChildren(element("strong", "Not quite."), " Review " + label.toLowerCase() + ". " + hint);
@@ -266,6 +271,6 @@ export function mountSequence(root, {
   model.hidden = !completed || !answer;
   if (completed) {
     feedback.dataset.result = "correct";
-    feedback.replaceChildren(element("strong", "Correct."), " " + success);
+    feedback.replaceChildren(element("strong", "Correct."), (usedFeedback ? " You used feedback on this order. " : " ") + success);
   }
 }

@@ -403,6 +403,17 @@ function makeOrder(section, task, report) {
     save();
     return checked ? success() : "Recheck step " + (wrong + 1) + ". Compare it with the steps immediately before and after it.";
   });
+  const options = el("details");
+  options.append(el("summary","Order options"),button("Start order again", () => {
+    chosen = [];
+    checked = false;
+    draw();
+    save();
+    options.open = false;
+    report.textContent = "Order cleared. Choose the first step.";
+    bank.querySelector("button").focus();
+  }));
+  section.append(options);
   draw();
   if (checked) report.textContent = success();
 }
