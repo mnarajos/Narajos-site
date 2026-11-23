@@ -2,6 +2,8 @@
 
 The governing source is the [October 2026 OCR Version 8 specification](https://www.ocr.org.uk/Images/697578-specification-cambridge-advanced-national-in-human-biology.pdf), confirmed on the [qualification page](https://www.ocr.org.uk/qualifications/cambridge-advanced-nationals/human-biology-level-3-h049-h149/). The unit tables below extend the topic-level evidence already in this register. See the [Batch 14 report](human-biology-batch-14.md), [question coverage](HUMAN_BIOLOGY_QUESTION_COVERAGE.md) and [question-writing standard](HUMAN_BIOLOGY_QUESTION_WRITING_STANDARD.md).
 
+[Batch 16 implementation report](human-biology-batch-16.md) and [evidence decisions](human-biology-curriculum/batch-16-audit.md) record the examined-unit review.
+
 ## Statement-level register
 
 There are 807 authored rows, covering the 172 numbered teaching headings in F170–F177 and cross-unit mathematical and How Science Works requirements. The unit and exact OCR reference appear with every group. An r-number identifies an authored audit row, since OCR does not number every bullet. A row may group closely related examples where they require one shared method. A result about one example does not transfer to other examples in the group.
@@ -14,8 +16,8 @@ Priority reflects the examined units first, together with specific high-value tr
 
 | Requirements | Rows | Verified | Taught | Practised | Represented | Gap | Review | Unresolved | Centre-only |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| [F170](human-biology-curriculum/f170.md) | 226 | 21 | 4 | 18 | 3 | 1 | 73 | 106 | 0 |
-| [F171](human-biology-curriculum/f171.md) | 148 | 15 | 1 | 9 | 4 | 2 | 35 | 82 | 0 |
+| [F170](human-biology-curriculum/f170.md) | 226 | 37 | 7 | 16 | 12 | 0 | 56 | 98 | 0 |
+| [F171](human-biology-curriculum/f171.md) | 148 | 24 | 4 | 7 | 13 | 0 | 19 | 81 | 0 |
 | [F172](human-biology-curriculum/f172.md) | 67 | 2 | 1 | 1 | 1 | 0 | 16 | 46 | 0 |
 | [F173](human-biology-curriculum/f173.md) | 88 | 5 | 1 | 1 | 1 | 0 | 6 | 68 | 6 |
 | [F174](human-biology-curriculum/f174.md) | 66 | 3 | 0 | 1 | 1 | 0 | 12 | 49 | 0 |
@@ -23,6 +25,7 @@ Priority reflects the examined units first, together with specific high-value tr
 | [F176](human-biology-curriculum/f176.md) | 60 | 3 | 2 | 0 | 0 | 0 | 16 | 38 | 1 |
 | [F177](human-biology-curriculum/f177.md) | 46 | 7 | 1 | 2 | 0 | 0 | 3 | 32 | 1 |
 | [Shared skills](human-biology-curriculum/shared-skills.md) | 49 | 3 | 0 | 0 | 0 | 0 | 20 | 26 | 0 |
+| **All rows** | **807** | **92** | **19** | **28** | **28** | **0** | **154** | **476** | **10** |
 
 ## Earlier overview of examined units
 

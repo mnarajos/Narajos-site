@@ -86,9 +86,15 @@ export async function checkHumanCatchup(browser, base) {
         const anatomy = page.getByRole("img", {name: /stomach have slid above the diaphragm/});
         assert(await anatomy.isVisible());
         assert(await widthFits(), "Hiatus diagram overflow at 320 px");
+        await page.addScriptTag({content: axe.source});
+        const issues = await page.evaluate(async () => (await window.axe.run("[data-hb-model-step]", {
+          runOnly: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]
+        })).violations.map(rule => rule.id));
+        assert.deepEqual(issues, []);
       }
       const practice = page.locator("[data-hb-practice]");
       await practice.press("Enter");
+      await page.locator(".k-question-view").waitFor();
       const itemKey = practiceKey + "-topic-" + route.split("/")[0] + "/" + questionId;
       assert.deepEqual((await saved(itemKey)).queue, [questionId]);
       await page.getByRole("radio", {name: wrongAnswer}).check();

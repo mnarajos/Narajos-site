@@ -509,6 +509,7 @@ const files = ["f170","f171","f172","f173","f174","f175","f176","f177","shared-s
 const expectedSections = [28,18,21,29,25,16,17,18,39];
 const validStatuses = new Set(["Verified","Taught","Practised","Represented","Gap","Review","Unresolved","Centre-only"]);
 const checkedRoutes = new Set();
+const totalStatuses = Object.fromEntries([...validStatuses].map(status => [status, 0]));
 let mapped = 0;
 for (const [i, unit] of files.entries()) {
  const path = "human-biology-curriculum/" + unit + ".md";
@@ -537,6 +538,7 @@ for (const [i, unit] of files.entries()) {
     "Missing mapped practice evidence " + item + " in " + unit + "/" + id);
   }
   refs.add(id);
+  totalStatuses[status]++;
   mapped++;
  }
  for (const heading of headings) assert([...refs].some(id => id.startsWith(heading + "-r")), "Empty curriculum section: " + heading);
