@@ -493,8 +493,8 @@ export async function checkHumanCatchup(browser, base) {
     assert.deepEqual(reviewResults, [], "Written review accessibility at 320px");
     await text.evaluate(element => element.remove());
     await open("catchup/f173/a3");
-    await page.getByRole("link", { name: "Practise biomolecule tests", exact: true }).press("Enter");
-    const chromatographyKey = practiceKey + "-topic-f173/a3";
+    await page.getByRole("link", { name: "Practise chromatogram interpretation", exact: true }).press("Enter");
+    const chromatographyKey = practiceKey + "-topic-f173/3.4";
     const chromatogramId = "f173-chromatogram-transfer";
     await page.locator(".k-question-view").waitFor();
     await page.evaluate(([key, id]) => {

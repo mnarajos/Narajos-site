@@ -51,7 +51,8 @@ for(const unit of ["f170","f171","f172","f173","f174","f175","f176","f177"]){
   companion.route(topic,h=>{help=h;});
   const href=help.match(/href="#(challenge\/f17[0-7]\/[a-z0-9.]+\?from=catchup[^"]+)"/)?.[1];
   assert(href,"No practice route for "+topic);
-  const scope=topic.split("/")[2];
+  const scope=href.split("?")[0].split("/")[2];
+  assert.equal(scope,companion.topicPracticeScope(unit,topic.split("/")[2]),topic);
   app.route(href,h=>{main.innerHTML=h;});
   const state=JSON.parse(data.get("narajos-human-challenge-v2-session-topic-"+unit+"/"+scope));
   assert.equal(state.returnTo,topic);

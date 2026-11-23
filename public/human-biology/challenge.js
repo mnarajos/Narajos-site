@@ -910,7 +910,7 @@ function route(r,renderer){
  if(!scope){visible=false;return intro(unit);}
  if(origin){
   var source=origin.split("/");
-  var topicScope=source[2]===scope&&/^(?:a[1-5]|\d+(?:\.\d+)*)$/.test(scope);
+  var topicScope=(source[2]===scope||window.KeystoneHumanCatchup?.topicPracticeScope(unit,source[2])===scope)&&/^(?:a[1-5]|\d+(?:\.\d+)*)$/.test(scope);
   var buildScope=window.KeystoneHumanCatchup?.practiceScope(unit,source[2])===scope;
   var reproductionTransfer=unit==="f175"&&source[2]==="a1"&&scope==="f175-transport";
   if(source[1]!==unit||(!topicScope&&!buildScope&&!reproductionTransfer)||!filter(unit,scope).length)return intro(unit);

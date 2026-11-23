@@ -346,6 +346,9 @@ function practiceScope(unit,id){
  var point=buildPractice[unit+"/"+id];
  return point&&window.KeystoneHumanProgressions?.get(point)?point:null;
 }
+function topicPracticeScope(unit,id){
+ return ({"f173/a3":"3.4","f177/a3":"2.6"})[unit+"/"+id]||id;
+}
 function buildLink(unit,id,origin){
  var scope=practiceScope(unit,id);
  return scope?'<a data-hb-build href="#challenge/'+esc(unit)+'/'+esc(scope)+'?from='+esc(origin)+'">Build understanding</a>':"";
@@ -435,7 +438,9 @@ function showConcept(unit,id,step,render,review,simulationStage){
  if(!Array.isArray(points)||!points.length)return showUnit(unit,render);
  step=Math.max(0,Math.min(points.length-1,Number(step)||0));
  var origin="catchup/"+unit+"/"+id+(step?"/"+step:""),key="#catchup/"+unit+"/"+id;
- var practice="challenge/"+unit+"/"+id+"?from="+origin,label=practiceLabel(unit,id,topic);
+ var scope=topicPracticeScope(unit,id);
+ var practice="challenge/"+unit+"/"+scope+"?from="+origin,label=practiceLabel(unit,id,topic);
+ if(scope!==id)label=unit==="f173"?"Practise chromatogram interpretation":"Practise medicine safety surveillance";
  var related=relatedLinks(unit,id,origin,practice,label);
  var lesson=lessonFor(unit,id),teaching=window.KeystoneHumanTeaching;
  var lessonId=unit==="f171"?({"a2":"2.1","a4":"4.2.2"}[id]||id):id;
@@ -550,7 +555,7 @@ window.KeystoneHumanCatchup={route:function(hash,render){
  if(!m[2])return showUnit(m[1],render);
  var simulationStage=m[1]==="f175"&&m[2]==="a1"?m[5]:null;
  return showConcept(m[1],m[2],m[3],render,Number(m[4])||0,simulationStage);
-},linkFor:linkFor,reteachFor:reteachFor,practiceScope:practiceScope,searchTopics:function(){
+},linkFor:linkFor,reteachFor:reteachFor,practiceScope:practiceScope,topicPracticeScope:topicPracticeScope,searchTopics:function(){
  var f170=Object.values(sectionById).map(function(item){
   var s=item.section;
   return {group:"f170",title:s.title,context:"F170 · "+s.id,concept:true,actions:[["Catch up","#catchup/f170/"+s.id],["Flashcards","#cards/"+s.id]]};
