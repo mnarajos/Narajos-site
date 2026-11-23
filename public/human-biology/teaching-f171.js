@@ -25,7 +25,8 @@
       prior: ["f170/2.1.3", "Work through the alveolar diffusion model"],
       explain: [
         "COPD involves persistent difficulty moving air out of the lungs. Narrowed small airways and excess mucus can reduce airflow. In emphysema, destruction of alveolar walls reduces the surface for gas exchange and loss of elastic recoil adds to difficulty breathing out.",
-        "Breathlessness is a symptom. Measured expiratory airflow is a sign. Similar symptoms can occur with different conditions, so symptoms alone do not establish which mechanism is involved."
+        "Breathlessness during daily activity and a persistent cough with mucus are common symptoms. An examiner may hear wheeze, and spirometry can provide objective evidence of airflow obstruction. Similar symptoms can occur with different conditions.",
+        "Reduced airway clearance can contribute to chest infections, which can worsen symptoms. Persistent breathlessness can limit activities such as climbing stairs. Repeated flare-ups can mean missed work, greater healthcare use and extra help from family."
       ],
       table: {caption: "Match a structural change to its most direct consequence", head: ["Change", "Direct consequence"], rows: [
         ["Smaller airway opening", "Greater resistance to airflow"], ["Loss of alveolar walls", "Less gas exchange area and reduced recoil"]
@@ -44,15 +45,105 @@
         ["Air can move more easily through the airways.", "Loss of alveolar walls leaves less exchange area.", "The evidence about airflow does not measure diffusion or show that the lost walls were restored."],
         "Airflow describes ventilation. Oxygen transfer also depends on surviving exchange surfaces. Better flow can coexist with reduced diffusion area, so the two effects require different evidence.")
     },
+    "f171/1.2.1.hiatus": {
+      revision: 1,
+      goal: "Explain how a sliding hiatus hernia can change digestive function and cause symptoms.",
+      activate: ["What separates the chest from the abdomen?", "The diaphragm is a sheet of muscle. The oesophagus normally passes through an opening in it before joining the stomach."],
+      explain: [
+        "In a sliding hiatus hernia, the junction of the oesophagus and stomach and part of the upper stomach move through the opening into the chest. Normally the lower oesophageal sphincter and the surrounding diaphragm work together to reduce backflow.",
+        "The displacement can weaken this barrier. Stomach contents can then reflux into the oesophagus and irritate its lining. Heartburn or a sour taste are possible symptoms. The displaced junction seen on imaging is objective evidence of the anatomical change. Some people have no symptoms.",
+        "Recurrent reflux can disturb meals or sleep. The impact on an individual and their family depends on symptom frequency and severity."
+      ],
+      visual: "model",
+      modelTitle: "Trace the change from stomach position to heartburn",
+      nodes: ["Locate the change", "Explain the effect", "Separate sign and symptom"],
+      model: [
+        "In the sliding example, the stomach joins the oesophagus above the diaphragm. Look for the junction marker relative to the diaphragm.",
+        "The displaced junction can separate the two parts of the barrier to reflux. This makes it easier for existing acidic stomach contents to move up into the oesophagus. Irritation can cause a burning feeling.",
+        "In a fictional case, the raised junction on imaging is objective evidence. Waking with a burning feeling is an experienced symptom. Either the hernia or reflux can be present without the other."
+      ],
+      guided: choice("A fictional image shows the junction above the diaphragm. Which function is most directly affected?",
+        1, [["Bile entering the small intestine.", "The change is at the stomach entrance, not the bile duct."], ["The barrier to stomach contents moving back up the oesophagus.", ""], ["Acid being made by the diaphragm.", "Acid is made in the stomach. The diaphragm helps the barrier to backflow."]],
+        "Relate the changed location of the junction to loss of support for the reflux barrier."),
+      apply: choice("A fictional study finds that reflux episodes fall after the position of the junction is restored, even though stomach acidity stays similar. Which explanation fits?",
+        2, [["The diaphragm now neutralises the acid.", "The diaphragm contributes to the barrier. The evidence does not show chemical neutralisation."], ["The stomach must be making less acid despite the unchanged acidity.", "Reflux can fall because less of the stomach contents travels upwards."], ["Restoring the position can improve the barrier and reduce entry of acidic contents into the oesophagus.", ""]],
+        "How much acid reaches the oesophagus depends on both stomach contents and the barrier to backflow.")
+    },
+    "f171/1.2.1.hodgkin": {
+      revision: 1,
+      goal: "Relate Hodgkin lymphoma in lymphatic tissue to enlarged nodes and effects on nearby structures.",
+      activate: ["What do lymph nodes normally do?", "Lymph nodes filter lymph and provide places where immune cells encounter material carried from tissues."],
+      explain: [
+        "Hodgkin lymphoma is a cancer of the lymphatic system. In classical Hodgkin lymphoma the cancer cells come from B lymphocytes. Tumour tissue and surrounding inflammatory cells accumulate in affected lymph nodes, which can become visibly or palpably enlarged and are often painless.",
+        "Effects depend partly on where the enlarged nodes are. Nodes in the chest can press on nearby structures and contribute to cough or breathlessness. Some people also experience fever, drenching night sweats, unexplained weight loss or fatigue. A measured temperature is a sign. Reported tiredness is a symptom.",
+        "Fatigue and appointments can affect daily life and family routines. Swollen nodes can have other causes, including infection. Tissue examined after a biopsy can establish a diagnosis."
+      ],
+      table: {caption: "Separate local effects, symptoms and diagnostic evidence", head: ["Finding", "Biological interpretation"], rows: [
+        ["An enlarged node", "More tissue within an affected node can increase its size"],
+        ["Cough with enlarged chest nodes", "Pressure on a nearby airway can contribute to cough"],
+        ["Reported night sweats", "A symptom that can occur in several conditions"],
+        ["Diagnostic tissue changes in a biopsy", "Evidence about what is causing the enlargement"]
+      ]},
+      focusCells: [["0:0"],["1:0","2:0"],["3:0"]],
+      nodes: ["Identify the tissue", "Trace the local effect", "Limit the conclusion"],
+      model: [
+        "A swollen node can develop where the cancer and the surrounding inflammatory response increase the volume of lymphatic tissue. The swelling is an observable sign.",
+        "In a fictional case, enlarged chest nodes press against a large airway. The pressure can contribute to cough, even without a primary tumour in the lung tissue.",
+        "A cough or enlarged node alone is not specific to lymphoma. Use tissue findings to decide the cause and the site of affected nodes to explain local effects."
+      ],
+      guided: choice("In a fictional case, enlarged nodes press on an airway. Which reasoning connects the changes?",
+        0, [["Expansion of lymphatic tissue narrows the space available to the airway.", ""], ["A cough proves that the cancer began inside the lung.", "Nearby enlarged nodes can compress an airway from outside."], ["Painless swelling rules out a cancer.", "A node can enlarge without causing pain."]],
+        "The relationship between the node and the airway explains a possible local consequence."),
+      apply: choice("A fictional person with confirmed Hodgkin lymphoma has a painless lump in the armpit and swelling of the nearby arm. Imaging shows the enlarged nodes impeding lymph drainage from the arm. What explains the swelling?",
+        1, [["The blocked nodes increase drainage, so fluid collects in the arm.", "Greater drainage would remove more tissue fluid. The evidence shows reduced drainage."], ["The enlarged nodes restrict drainage, allowing tissue fluid to accumulate in the arm.", ""], ["Any painless lump blocks lymph because it is painless.", "Pain does not indicate drainage. The anatomical relationship on the image is the relevant evidence."]],
+        "Impaired lymph drainage can leave excess fluid in the tissue. The supplied imaging is needed to connect that effect to the enlarged nodes.")
+    },
+    "f171/1.2.1.pkd": {
+      goal: "Explain how cysts can change kidney function and interpret urine volume alongside other evidence.",
+      activate: ["What does a kidney do besides making urine?", "It removes wastes and helps regulate the amount of water and dissolved ions in the blood."],
+      explain: [
+        "Autosomal dominant polycystic kidney disease is an inherited disorder. Fluid-filled cysts can enlarge the kidneys and disrupt functioning tissue over time. This can reduce the kidneys’ capacity to remove wastes and regulate water and ions.",
+        "Some people experience pain in the side or back. Blood in the urine and raised blood pressure can be signs. Kidney function can decline even while the person continues to pass urine.",
+        "Symptoms vary. Pain or repeated hospital appointments can affect everyday activities. If kidney failure develops, treatment can affect work, household routines and healthcare use."
+      ],
+      table: {caption: "Identify what each observation measures", head: ["Fictional finding", "What it establishes"], rows: [
+        ["Imaging shows both kidneys are enlarged with multiple cysts", "Structural change"],
+        ["Urine continues to be produced", "Some fluid still leaves the body via the kidneys"],
+        ["Repeat blood tests indicate falling filtration", "Loss of functional clearance despite continued urine production"]
+      ]},
+      focusCells: [["0:0"],["1:0","2:0"]],
+      modelTitle: "Separate urine production from filtration",
+      nodes: ["Link cysts to function", "Interpret two measures"],
+      model: [
+        "Follow the effect of the structural change. Enlarging cysts can displace and damage functioning kidney tissue, leaving less capacity to regulate the blood and remove waste.",
+        "In a fictional example, the urine volume stays similar but blood tests indicate reduced clearance. The volume measures the amount of fluid passed. It does not measure how effectively wastes were removed from the blood."
+      ],
+      guided: choice("An image shows large cysts and less remaining functioning kidney tissue. Which effect is plausible?",
+        0, [["The kidneys may remove wastes from blood less effectively.", ""], ["The remaining tissue must compensate fully.", "The image alone cannot establish how well the remaining tissue works."], ["Normal urine colour confirms normal filtration.", "Appearance does not measure filtration."]],
+        "Start with the change in working kidney tissue and ask which normal functions could be affected."),
+      apply: written("Two fictional people with polycystic kidney disease report similar pain. One has blood in the urine but similar filtration results at both visits. Explain how the findings can coexist and what they establish.",
+        ["Blood in urine is an observed sign and pain is a reported symptom.", "Urine composition and filtration measure different aspects of kidney function.", "The results do not establish that filtration declined over the two visits."],
+        "Blood in the urine can be present even when there is little detectable change in filtration over the stated interval. The observations answer different questions.")
+    },
     "f171/4.1": {
       revision: 1,
       goal: "Choose a measurement for a biological question and state what its result can establish.",
       activate: ["What is the difference between a symptom and a measurement?", "A symptom is reported by the person. A measurement records a specific feature, such as oxygen saturation or airflow."],
       prior: ["f171/4.2.2", "Compare serial readings taken under different conditions"],
       explain: [
-        "Initial assessment combines the history, examination and relevant measurements. Peak expiratory flow estimates the greatest flow during a forced breath out. Spirometry can record both volume and flow.",
-        "Pulse oximetry estimates the percentage of haemoglobin carrying oxygen. A saturation reading gives no direct measure of expiratory flow or of the cause of a change. Measurement conditions and technical quality affect interpretation."
+        "Start with the medical history. Ask when symptoms began, what affects them, and what else might explain them. Clear language, enough time to answer, and a private, accessible room can improve the information a person is able to share. Inspection means looking, palpation means feeling, percussion means tapping and judging the sound, and auscultation means listening to body sounds.",
+        "Initial measurements target different features. A cuff reading of 128/76 mmHg gives systolic pressure first, when the ventricles contract, and diastolic pressure second, between contractions. A single reading is affected by conditions such as rest, position and cuff fit. Temperature is an objective measurement but by itself cannot establish why someone feels feverish.",
+        "BMI is mass in kilograms divided by height in metres squared. For a fictional adult of 80 kg and 2.00 m, BMI is 80 ÷ 4 = 20 kg/m². It puts mass in context of height but does not distinguish fat from muscle or diagnose disease.",
+        "Peak expiratory flow estimates the greatest flow during a forced breath out. Spirometry can record both volume and flow. Pulse oximetry estimates the percentage of haemoglobin carrying oxygen. Saturation gives no direct measure of expiratory flow or of the cause of a change.",
+        "Choose further tests for the information still missing. For example, an image can show an area of altered tissue. Examining a sample from that area under a microscope addresses whether the tissue itself has changed."
       ],
+      compare: {caption: "What further investigations can contribute", head: ["Investigation", "Evidence it provides", "One limit"], rows: [
+        ["Biopsy", "A sample of tissue for examination", "The sample represents only the site taken"],
+        ["Blood test", "A chosen blood cell count or substance concentration", "An abnormal level may have several causes"],
+        ["Cognitive assessment", "Performance on defined thinking tasks", "Language or hearing can affect the result"],
+        ["Mammogram", "An X-ray image of breast tissue", "An abnormal image alone may not establish its cause"],
+        ["Urine test", "Evidence such as blood, protein or glucose in urine", "A finding usually needs other clinical context"]
+      ]},
       table: {caption: "Three measurements used in fictional initial assessments", head: ["Tool", "Readout", "One limitation"], rows: [
         ["Peak flow meter", "Maximum expiratory flow", "Effort and technique matter"],
         ["Spirometer", "Volume and flow during breathing manoeuvres", "Technique and appropriate reference values matter"],

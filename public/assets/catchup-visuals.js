@@ -17,6 +17,22 @@ function arrow(x1,y1,x2,y2,color){
  return '<path d="M'+x1+' '+y1+' L'+x2+' '+y2+'" stroke="'+(color||"#477184")+'" stroke-width="2.8" fill="none" stroke-linecap="round"/><path d="M'+ax+' '+ay+' L'+x2+' '+y2+' L'+bx+' '+by+'" fill="none" stroke="'+(color||"#477184")+'" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>';
 }
 var diagrams={
+ hiatus:{
+  label:"Sliding hiatus hernia",
+  caption:"The dashed bands show the diaphragm. Compare the black dots marking the gastro-oesophageal junction. In the sliding example the junction and part of the stomach are above the diaphragm.",
+  image:svg("Two simplified side views. In the left view the oesophagus passes through the diaphragm and joins the stomach below it. In the right view the junction and the upper part of the stomach have slid above the diaphragm. The stomach still communicates with the oesophagus.",
+   text(118,22,"Usual position",17,700)+text(356,22,"Sliding hiatus hernia",17,700)+
+   '<path d="M240 36V222" stroke="#9aabba" stroke-width="1.5"/>'+
+   '<path d="M15 116H87m37 0h99m33 0h60m56 0h92" stroke="#527086" stroke-width="8" stroke-dasharray="12 4"/>'+
+   '<g fill="#f7d4c4" stroke="#873d35" stroke-width="3">'+
+   '<path d="M96 42H114V129Q126 133 137 127Q166 111 179 144Q193 174 163 193Q135 213 94 193L67 203L63 190Q101 176 99 148Z"/>'+
+   '<path d="M326 42H344V85Q360 77 370 92Q379 105 363 116Q396 135 393 166Q391 197 352 199Q329 201 309 191L286 203L280 190Q321 169 320 145Q316 130 320 111Q317 99 326 85Z"/>'+
+   '</g><g fill="#192f3c"><circle cx="105" cy="131" r="5"/><circle cx="335" cy="87" r="5"/></g>'+
+   text(145,65,"Oesophagus",13,600)+text(376,65,"Oesophagus",13,600)+
+   text(35,103,"Diaphragm",13,650)+text(281,103,"Diaphragm",13,650)+
+   text(144,168,"Stomach",15,650)+text(355,168,"Stomach",15,650),230)
+ },
+
  osmosis:{
   label:"Osmosis and water potential",
   caption:"At equal pressure, the solution with more dissolved solute has a lower water potential. Water moves in both directions; the net movement is towards the lower water potential.",
@@ -273,6 +289,7 @@ var curated={
  "f170/2.2.1":{diagram:"systems"},
  "f170/3.2.1":{sequence:"reflex"},
  "f170/3.3.1":{diagram:"reproduction",outside:true},
+ "f171/1.2.1.hiatus":{diagram:"hiatus"},
  "f171/a3":{diagram:"vaccines"},
  "f171/3.2.2":{diagram:"vaccines"},
  "f172/a1":{diagram:"dna"},

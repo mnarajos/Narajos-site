@@ -19,14 +19,20 @@ export async function checkHumanCatchup(browser, base) {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await open("catchup");
     const chapters = await page.evaluate(() => Object.entries(window.KeystoneHumanLessons));
-    assert.equal(chapters.length, 49, "Retain the 44 existing routes and add five targeted guided routes");
+    assert.equal(chapters.length, 54, "Retain the 49 existing routes and add five targeted guided routes");
     assert.equal(new Set(chapters.map(([key]) => key.split("/")[0])).size, 8);
     for (const [key, lesson] of chapters) {
       await page.evaluate(key => localStorage.removeItem(key), localPractice);
       await open("catchup/" + key);
       await page.getByText(lesson.goal, { exact: true }).waitFor();
       assert(await page.getByRole("heading", { name: "Understand the idea" }).isVisible(), key);
-      if (lesson.revision && (key.startsWith("f170/") || key.startsWith("f171/"))) {
+      const focused = /\.(counting|hiatus|hodgkin)$/.test(key);
+      if (focused) {
+        const morePractice = page.locator("[data-hb-practice]");
+        const href = await morePractice.getAttribute("href");
+        assert(href.includes("-transfer?from=catchup/" + key), key);
+      }
+      if (lesson.revision && !focused && (key.startsWith("f170/") || key.startsWith("f171/"))) {
         const buildLink = page.getByRole("link", { name: "Build understanding", exact: true });
         const href = await buildLink.getAttribute("href");
         assert(href.endsWith("?from=catchup/" + key), key);
@@ -67,6 +73,38 @@ export async function checkHumanCatchup(browser, base) {
         assert.match(await page.locator(".k-catchup-concept .k-eyebrow").innerText(), /NEA knowledge support/i);
         assert.equal(await page.locator('input[type="file"]').count(), 0);
       }
+    }
+
+    for (const [route, questionId, wrongAnswer, diagnosis] of [
+      ["f170/1.1.2.counting", "f170-cell-counting-transfer", /target volume/, /overlap the cells in volume/],
+      ["f171/1.2.1.hiatus", "f171-hiatus-mechanism-transfer", /effective reflux barrier/, /Increased secretion was not measured/],
+      ["f171/1.2.1.hodgkin", "f171-hodgkin-mechanism-transfer", /only affect immunity/, /local effect on another structure/]
+    ]) {
+      await open("catchup/" + route);
+      if (route.endsWith(".hiatus")) {
+        await page.getByRole("button", {name: "See worked example"}).press("Enter");
+        const anatomy = page.getByRole("img", {name: /stomach have slid above the diaphragm/});
+        assert(await anatomy.isVisible());
+        assert(await widthFits(), "Hiatus diagram overflow at 320 px");
+        await page.addScriptTag({content: axe.source});
+        const issues = await page.evaluate(async () => (await window.axe.run("[data-hb-model-step]", {
+          runOnly: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]
+        })).violations.map(rule => rule.id));
+        assert.deepEqual(issues, []);
+      }
+      const practice = page.locator("[data-hb-practice]");
+      await practice.press("Enter");
+      await page.locator(".k-question-view").waitFor();
+      const itemKey = practiceKey + "-topic-" + route.split("/")[0] + "/" + questionId;
+      assert.deepEqual((await saved(itemKey)).queue, [questionId]);
+      await page.getByRole("radio", {name: wrongAnswer}).check();
+      await page.getByRole("button", {name: "Check answer", exact: false}).press("Enter");
+      await page.getByText(diagnosis).waitFor();
+      await page.getByRole("link", {name: "Revisit the worked example", exact: true}).press("Enter");
+      await page.locator("#leave-confirm").press("Enter");
+      await page.locator("[data-hb-model-step][open]").waitFor({state: "visible"});
+      await page.getByRole("link", {name: "Return to your unfinished question set", exact: true}).press("Enter");
+      await page.getByText(diagnosis).waitFor();
     }
 
     const pilots = [

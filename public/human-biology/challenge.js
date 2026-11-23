@@ -121,7 +121,7 @@ function filter(unit,scope){
  else if(scope==="methods")list=list.filter(function(q){return q.methodOrder;});
  else if(scope==="core"||scope==="apply"||scope==="stretch")list=list.filter(function(q){return q.level===scope;});
  else if(scope.startsWith("case-"))list=list.filter(q=>q.id===scope&&q.caseTitle);
- else if(scope==="f175-transport")list=list.filter(q=>q.id===scope);
+ else if(scope==="f175-transport"||byId[scope]?.catchup)list=list.filter(q=>q.id===scope);
  else if(scope==="sam")list=list.filter(function(q){return q.samAligned;});
  else if(scope==="weak")list=list.filter(function(q){return needsPractice(progress[q.id]);});
  return list;
@@ -923,9 +923,10 @@ function route(r,renderer){
  if(origin){
   var source=origin.split("/");
   var topicScope=(source[2]===scope||window.KeystoneHumanCatchup?.topicPracticeScope(unit,source[2])===scope)&&/^(?:a[1-5]|\d+(?:\.\d+)*)$/.test(scope);
+  var focusedScope=byId[scope]?.unit===unit&&byId[scope].catchup===source[2]&&window.KeystoneHumanCatchup?.topicPracticeScope(unit,source[2])===scope;
   var buildScope=window.KeystoneHumanCatchup?.practiceScope(unit,source[2])===scope;
   var reproductionTransfer=unit==="f175"&&source[2]==="a1"&&scope==="f175-transport";
-  if(source[1]!==unit||(!topicScope&&!buildScope&&!reproductionTransfer)||!filter(unit,scope).length)return intro(unit);
+  if(source[1]!==unit||(!topicScope&&!focusedScope&&!buildScope&&!reproductionTransfer)||!filter(unit,scope).length)return intro(unit);
  }
  var key=scope==="methods"?methodKey:origin?topicKey(unit,scope):SK;
  var old=sessionKey(session)===key?session:null;

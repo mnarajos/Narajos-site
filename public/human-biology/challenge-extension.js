@@ -1234,6 +1234,80 @@ additions.push({
  misconception:"A peak rate and the amount moved over an interval are different measurements.",
  hintCue:"Find the column measuring the amount of air moved in the first second."
 });
+additions.push({
+ id:"f170-cell-counting-transfer",unit:"f170",area:1,section:"1.1.2",catchup:"1.1.2.counting",type:"single",level:"apply",
+ stem:"Two small samples contain round intact cells and irregular fragments of similar volume. The aim is to estimate the concentration of the intact cells only. What approach provides the most useful evidence?",
+ options:["Take a Coulter count and treat every pulse as an intact cell.","Use a haemocytometer and count cells that meet the visible criteria in the known grid volume.","Use a Coulter counter and assume particles of the target volume are intact cells.","Count intact cells in any area of an ordinary slide and report the total as cells per mL."],
+ correct:1,model:"Inspect and count intact cells in the haemocytometer’s known volume, then account for any dilution.",
+ explain:"The distinction depends on appearance rather than volume alone. The chamber allows visual selection and supplies the volume needed for concentration.",
+ optionFeedback:["Both fragments and cells can produce pulses.","", "Fragments overlap the cells in volume. This size filter cannot reliably distinguish them.","Visible identification is useful, but concentration also needs a known sampled volume."],
+ misconception:"An electrical pulse indicates a particle. It does not identify that particle as an intact cell.",
+ hintCue:"Decide what distinguishes the intact cells in this particular mixture."
+},{
+ id:"f171-hiatus-mechanism-transfer",unit:"f171",area:1,section:"1.2.1",catchup:"1.2.1.hiatus",type:"single",level:"apply",
+ stem:"A fictional image shows the stomach junction above the diaphragm. After a meal, stomach contents are detected in the lower oesophagus and the person reports a sour taste. Which mechanism best connects the findings?",
+ options:["The shifted junction increases acid secretion, which explains the findings even with an effective reflux barrier.","The findings are better explained by a sensitive oesophagus, with no change in the movement of stomach contents.","The raised junction establishes that slowed gastric emptying is driving reflux after meals.","Displacement can weaken the barrier to backflow, allowing stomach contents to reach the oesophagus."],
+ correct:3,model:"Weaker resistance to backflow can explain why stomach contents reached the oesophagus.",
+ explain:"The junction normally works with the diaphragm to reduce reflux. If the two no longer align, the barrier can be less effective. Finding a hernia on its own would not establish that reflux occurred.",
+ optionFeedback:["The evidence records the presence of stomach contents in the oesophagus. Increased secretion was not measured.","Sensitivity might affect how the person feels. It does not explain the detected movement of contents.","The observations show reflux but do not measure how quickly the stomach empties.",""],
+ misconception:"Reflux describes movement of existing contents rather than production of more acid.",
+ hintCue:"Trace which way the stomach contents have travelled and what would normally resist that movement."
+},{
+ id:"f171-hodgkin-mechanism-transfer",unit:"f171",area:1,section:"1.2.1",catchup:"1.2.1.hodgkin",type:"single",level:"apply",
+ stem:"In a fictional case, a biopsy confirms Hodgkin lymphoma. Imaging shows enlarged lymph nodes alongside the oesophagus. The person reports difficulty swallowing. Which conclusion is best supported?",
+ options:["Expansion of affected lymphatic tissue can press on the oesophagus and contribute to the swallowing difficulty.","Difficulty swallowing proves that the cancer began in the oesophagus.","Lymphoma can only affect immunity, so the location of the nodes cannot explain the symptom.","Enlarged nodes establish that stomach acid has damaged the oesophageal lining."],
+ correct:0,model:"The enlarged lymph nodes could compress the adjacent oesophagus.",
+ explain:"Tumour tissue and accompanying inflammation can enlarge lymph nodes. A nearby structure may then be compressed, providing a plausible mechanism for the symptom. The symptom alone would not identify the cause.",
+ optionFeedback:["","The biopsy identifies the disease in lymphatic tissue. A symptom can come from pressure outside the oesophagus.","An enlarged node can have a local effect on another structure as well as lymphatic or immune effects.","Neither the location of the nodes nor the report of difficulty swallowing measures reflux or injury to the lining."],
+ misconception:"Symptoms can arise from the position of an enlarged lymph node rather than from where a person feels the effect.",
+ hintCue:"Use the location of the enlarged nodes in relation to the structure involved in swallowing."
+});
+additions.push({
+ id:"f170-organelle-coordination-transfer",unit:"f170",area:1,section:"1.1.3",type:"single",level:"apply",
+ stem:"In a fictional cell model, one nuclear gene stops producing a protein normally imported into mitochondria for aerobic respiration. The mitochondrial DNA has not changed. What is the most direct prediction?",
+ options:["ATP production stays normal because imported proteins cannot affect mitochondria.","ATP production may fall because mitochondria rely on some proteins encoded by nuclear genes.","ATP production rises because mitochondria can translate the missing nuclear gene directly.","ATP production moves to the nucleolus because it assembles ribosome subunits."],
+ correct:1,model:"Loss of a nuclear-encoded mitochondrial protein may reduce ATP production.",
+ explain:"The nucleus supplies instructions for most mitochondrial proteins. A protein made in the cytoplasm may be imported and act inside mitochondria. Unchanged mitochondrial DNA does not guarantee unchanged mitochondrial function.",
+ optionFeedback:["The stated protein is needed inside the mitochondrion. Its source does not make it dispensable.","","Mitochondria cannot replace every missing nuclear-encoded protein using their own DNA.","The nucleolus makes ribosomal components. It does not take over aerobic ATP production."],
+ misconception:"Having its own DNA does not make a mitochondrion independent of nuclear gene expression.",
+ hintCue:"Separate where the protein is encoded from where it acts."
+},{
+ id:"f170-microvilli-transfer",unit:"f170",area:1,section:"1.1.1",type:"single",level:"apply",
+ stem:"Two fictional epithelial samples have the same number of cells and the same footprint. In sample P the exposed cell membranes have many short projections. In sample Q the membranes are relatively flat. With similar transporter density per unit of membrane, which prediction is most reasonable?",
+ options:["P could transfer solute faster because more exposed membrane is available for transport.","P could transfer solute faster because the projections pump liquid along the surface.","Both must transfer solute at the same rate because cell number and footprint match.","Q could transfer solute faster because a flat surface provides more membrane per cell."],
+ correct:0,model:"Microvilli increase the exposed cell membrane area and can increase transport capacity.",
+ explain:"The projections are extensions of the membrane. They increase the area available for transport even when the cell count and footprint are unchanged.",
+ optionFeedback:["","This confuses microvilli with motile cilia, whose movement can move material along a surface.","The footprint omits the extra membrane covering the projections.","A flat surface has less area than the same footprint with membrane projections."],
+ misconception:"Microvilli increase membrane area. Motile cilia have a different function.",
+ hintCue:"Compare the exposed membrane area rather than the overall footprint."
+},{
+ id:"f170-microscopy-slide-transfer",unit:"f170",area:1,section:"1.1.2",type:"single",level:"apply",
+ stem:"A wet mount drifts and wrinkles on its slide, and its cell boundaries are difficult to see. A separate thick fixed tissue sample shows many overlapping layers. Which plan best addresses the problems?",
+ options:["Stain both samples more strongly; stronger staining makes the fixed tissue thinner.","Use a coverslip to improve contrast and cut thicker fixed sections to keep cells in view.","Use a coverslip to hold the wet mount flat and a suitable stain if compatible with the aim; cut a thin fixed section with a microtome.","Use higher magnification for the wet mount and increase lamp brightness for the fixed sample."],
+ correct:2,model:"Use physical support for the wet mount, suitable contrast and a thin section for overlapping layers.",
+ explain:"The slide supports the sample and the coverslip steadies and flattens it. A stain can improve contrast. In the fixed sample, cutting a thin slice reduces overlapping layers and lets transmitted light pass through.",
+ optionFeedback:["Stain changes contrast. It does not remove overlapping layers.","A coverslip holds the mount flat. Cutting a thicker section increases overlap.","","Magnification and brightness do not stabilise a wet mount or remove overlying cells."],
+ misconception:"Physical support, optical contrast and tissue thickness are distinct preparation choices.",
+ hintCue:"Identify which problem is due to movement, weak contrast or superimposed layers."
+},{
+ id:"f171-bmi-interpretation-transfer",unit:"f171",area:4,section:"4.1",type:"single",level:"apply",
+ stem:"A fictional adult has a mass of 75.0 kg and a height of 1.65 m. The adult asks whether BMI shows how much of their mass is body fat. Which result and interpretation are appropriate?",
+ options:["45.5 kg/m²; the result cannot distinguish fat from muscle.","27.5 kg/m²; the number gives the percentage of body mass made up of fat.","1.4 kg/m²; the result describes mass relative to height.","27.5 kg/m²; the result describes mass relative to height but cannot distinguish fat from muscle."],
+ correct:3,model:"75.0 ÷ (1.65 × 1.65) ≈ 27.5 kg/m². BMI does not give the percentage of body fat.",
+ explain:"Use height squared in metres. The result represents mass relative to height. It can be used alongside other evidence but it does not measure body composition directly.",
+ optionFeedback:["The limitation is right, but this value uses the height only once.","The number is right, but BMI and percentage body fat are different quantities.","Square the height alone, then divide the mass by it.",""],
+ misconception:"Correct calculation and appropriate interpretation are separate steps.",
+ hintCue:"Check which term is squared and what the resulting units describe."
+},{
+ id:"f171-next-investigation-transfer",unit:"f171",area:4,section:"4.1",type:"single",level:"apply",
+ stem:"In a fictional investigation, two breast images show a similar patch of altered density. The team needs to distinguish benign changes from malignant cells within that specific patch. Which test gives evidence directly relevant to that decision?",
+ options:["Compare repeat mammograms to see whether the patch remains visible.","Examine a targeted tissue sample to inspect cell and tissue features in the patch.","Measure a blood-cell count to see whether it is outside the reference range.","Collect a urine sample to check for a change in protein concentration."],
+ correct:1,model:"Examine a biopsy sample taken from the patch to assess its tissue and cell features.",
+ explain:"Repeat imaging can compare appearance or change over time. A biopsy can provide evidence directly from the tissue in question. The result still depends on adequate sampling and appropriate examination.",
+ optionFeedback:["Further images can show persistence or change, but they do not directly inspect the cell types in the patch.","","A blood count is useful for different questions. It does not directly show the cells in the patch.","Urine protein measures a different biological feature and cannot characterise the patch."],
+ misconception:"A test must provide the evidence needed for the inference, even when another test can measure a related change.",
+ hintCue:"Decide whether the requested evidence concerns location, blood composition or the nature of the tissue."
+});
 var ids=new Set(bank.questions.map(function(q){return q.id;}));
 additions.forEach(function(q){if(!ids.has(q.id)){bank.questions.push(q);ids.add(q.id);}});
 })();
