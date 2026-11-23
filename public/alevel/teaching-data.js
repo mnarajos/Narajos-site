@@ -1033,3 +1033,70 @@ window.ALevelTeachingFamilies.practical = {
   specification: "7.2–7.4, PS 1.1–2.4, RP1, RP2, RP4, RP7 and RP9",
   schemaVersion: 1,
 };
+
+window.ALevelTeachingFamilies.precision = {
+  id: "precision",
+  title: "Explain precisely",
+  topics: ["a1", "a2", "a3", "a4", "a6", "a8"],
+  papers: ["p1", "p2", "p3"],
+  principle: "Decide what the biology means, name the relevant entity or process, then connect it to the context. Different wording can convey the same scientific relationship.",
+  model: [
+    "A synthetic change makes sodium ion channels stay open longer in a sensory neurone. The extracellular sodium ion concentration is higher than inside. Explain why the membrane potential initially becomes less negative.",
+    "‘Sodium enters and stimulates the cell’ leaves the particle and the change imprecise. The particles moving are sodium ions, Na⁺. Their inward movement makes the inside less negative relative to the outside.",
+    "‘Sodium ions diffuse into the neurone through the open channels’ and ‘Na⁺ moves passively into the neurone through the channels, down its electrochemical gradient’ express the same transport mechanism here.",
+    "Carry the explanation to the target: inward movement of positive charge depolarises the membrane. Depolarisation alone does not establish that the threshold for an action potential is reached.",
+  ],
+  tasks: [
+    {
+      kind: "choice", guided: true, catchup: "a2-osmosis",
+      prompt: "The water potential inside a plant cell is −600 kPa. Outside it is −200 kPa. Which answer accurately explains why the cell gains water?",
+      options: [
+        "Water moves by osmosis across the partially permeable membrane, from −200 kPa outside to −600 kPa inside.",
+        "Water moves by osmosis across the partially permeable membrane, from −600 kPa inside to −200 kPa outside.",
+        "Solute diffuses out down its water-potential gradient, and that movement of solute is osmosis.",
+      ],
+      answer: 0,
+      why: "Osmosis refers to net water movement from higher to lower water potential across a partially permeable membrane. −200 is higher than −600.",
+      feedback: [null, "The mechanism is osmosis, but −600 kPa is the lower value. The net movement is towards the more negative water potential.", "Water potential predicts the direction of net water movement. A movement of solute is not itself osmosis."],
+      hints: ["Compare the two signed values using their positions on a number line."],
+    },
+    {
+      kind: "choice", catchup: "a2-mitosis",
+      prompt: "A diploid cell has completed DNA replication. One maternal chromosome and its paternal counterpart both carry a locus for the same gene. Which description preserves the distinction between the chromosome copies and the partners?",
+      options: [
+        "Each chromosome has two sister chromatids. The maternal and paternal chromosomes are homologues.",
+        "The maternal and paternal chromosomes are sister chromatids. Each chromosome contains two homologues.",
+        "The maternal and paternal chromosomes are homologues only if the alleles at that locus are identical.",
+      ],
+      answer: 0,
+      why: "Sister chromatids are the replicated copies of one chromosome. Homologues carry corresponding loci and can carry different alleles.",
+      feedback: [null, "Replication produces the two sister chromatids of each chromosome. The maternal and paternal partners were homologues before replication.", "Homologues carry the same genes at corresponding loci. Their alleles need not be identical."],
+      hints: ["Which term describes two copies produced from a single chromosome?"],
+    },
+    {
+      kind: "choice", catchup: "a4-translation",
+      prompt: "A substitution changes an mRNA codon to one specifying a different amino acid. Which wording accurately describes how the change can affect the polypeptide?",
+      options: [
+        "During translation, the changed codon corresponds to a different amino acid, which is delivered by an appropriate tRNA and incorporated.",
+        "During transcription, the changed codon causes RNA polymerase to add a different amino acid to the polypeptide.",
+        "During translation, the ribosome uses the changed codon to make a new amino acid from nucleotides.",
+      ],
+      answer: 0,
+      why: "The codon specifies an amino acid. A charged tRNA supplies it at translation. The nucleotide sequence does not make the amino acid.",
+      feedback: [null, "RNA polymerase makes RNA from nucleotides. Adding an amino acid to a polypeptide occurs during translation at a ribosome.", "The ribosome links amino acids supplied by tRNAs. It does not turn the codon's nucleotides into an amino acid."],
+      hints: ["Separate what carries the information from what carries the amino acid."],
+    },
+    {
+      kind: "writing", catchup: "a3-heart",
+      prompt: "A learner writes, ‘The ventricle contracts so the valve opens.’ Using the left side of the heart, rewrite this to explain why the aortic valve stays shut briefly after ventricular contraction begins and then opens.",
+      points: [
+        "The ventricular pressure initially remains below aortic pressure, so the aortic valve stays shut.",
+        "Contraction raises ventricular pressure. The valve opens when left ventricular pressure exceeds aortic pressure.",
+        "The valve opens because of the pressure difference. Blood then flows from the ventricle into the aorta.",
+      ],
+    },
+  ],
+  misconception: "Using a related term or generic event in place of the specified entity and causal link.",
+  specification: "3.2.2, 3.2.3, 3.3.4.1, 3.4.2 and 3.6.2",
+  schemaVersion: 1,
+};

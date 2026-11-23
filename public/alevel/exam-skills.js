@@ -639,7 +639,13 @@
 
       form.oninput = () => {
         if (hasCompletedTask(i)) return;
-        if (writing) state.drafts[i] = form.elements.draft.value;
+        if (writing) {
+          state.drafts[i] = form.elements.draft.value;
+          if (review.open && review.original) {
+            const firstDraft = form.querySelector(".al-criteria details");
+            firstDraft.hidden = review.original === state.drafts[i];
+          }
+        }
         else if (q.kind === "number") state.responses[i] = form.elements.number.value;
         else if (q.kind === "group") state.responses[i] = [...form.querySelectorAll("select")].map(select => select.value);
         else state.responses[i] = [...form.querySelectorAll('input[name="answer"]:checked')].map(input => +input.value);
@@ -652,6 +658,12 @@
         criteria.append(node("h3", "Check and improve"));
         const model = node("details");
         model.append(node("summary", "Compare with a model explanation"), node("p", q.points.join(" ")));
+        if (review.original) {
+          const original = node("details");
+          original.hidden = review.original === state.drafts[i];
+          original.append(node("summary", "Read your first draft"), node("p", review.original));
+          criteria.append(original);
+        }
         criteria.append(model);
         q.points.forEach((point, j) => {
           const field = node("fieldset");
@@ -738,6 +750,7 @@
           state.drafts[i] = form.elements.draft.value;
           if (!review.open) {
             review.open = true;
+            review.original = state.drafts[i];
             state.reviews[i] = review;
             persist();
             render();
@@ -1071,12 +1084,13 @@
   const catalogue = [
     ["Question interpretation and practical reasoning", ["interpret", "practical"]],
     ["Drawing and observation", ["drawings"]],
-    ["Mark schemes and explanations", ["points", "mechanisms", "pressures", "regulation"]],
+    ["Scientific precision and explanations", ["precision", "points", "mechanisms", "pressures", "regulation"]],
     ["Unfamiliar contexts", ["causal"]],
     ["Data, calculations and models", ["osmosis", "countercurrent", "calvin", "dihybrid", "hardy"]],
   ];
   const skillDetails = {
     interpret: ["Understand the question", "Identify the target, select evidence and build a relevant answer.", "idea", "interpret question command words task target use data relevant answering suggest explain"],
+    precision: ["Explain precisely", "Compare scientific statements and improve your own explanation.", "pen", "precise terminology scientific language osmosis chromatids homologous transcription translation"],
     practical: ["Reason through practicals", "Explain how the method affects the result and the claim.", "guided", "practical reasoning method controls confounding accuracy repeatability colorimeter stain chromatography"],
     drawings: ["Biological drawings", "Compare drawings and identify defects.", "diagram", "biological drawing scientific drawing tissue plan observation accept reject scale bar"],
     points: ["Independent marking points", "Recognise distinct criteria in an answer.", "review", "marking points mark schemes marking scheme group criteria"],
@@ -1144,6 +1158,7 @@
   }
   const contextualLabels = {
     "a2-mitosis": "Review mitosis",
+    "a4-translation": "Review translation",
     "a2-diffusion": "Review diffusion distance",
     "a2-active": "Review active transport",
     "a2-osmosis": "Review water potential",
