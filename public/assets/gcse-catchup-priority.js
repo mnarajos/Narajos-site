@@ -82,7 +82,7 @@ function motor() {
     text(27,70,"N",ink,20)+text(293,70,"S",ink,20)+arrow(46,38,274,38,blue)+text(160,25,"Magnetic field",blue,15)+
     circle(109,91,14,"white")+circle(210,91,14,"white")+text(109,96,"×",ink,17)+circle(210,91,4,ink)+
     arrow(109,109,109,150,rust)+arrow(210,73,210,50,rust)+text(153,134,"Force down",rust,14)+
-    text(260,75,"Force up",rust,14)+line(216,58,234,70,rust,1)+
+    text(256,92,"Force up",rust,14)+line(217,62,243,79,rust,1)+
     text(160,169,"× into page     • out of page",ink,15),320,185),
     "The opposite forces act on different sides of the coil, so they can turn it.");
 }

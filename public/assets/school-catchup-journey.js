@@ -162,6 +162,7 @@ export function mountJourney(host, model, lesson) {
   }
 
   function renderStages() {
+    if (workedReview) workedReview.hidden = state.step === 0 && !state.done;
     checkHeading.hidden = Boolean(state.done);
     versions.textContent = state.done ? "Lesson complete" : "Step " + (state.step + 1) + " of " + steps.length;
     versions.classList.toggle("school-visually-hidden", Boolean(state.done));
