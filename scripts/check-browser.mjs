@@ -366,13 +366,13 @@ try{
    const id=new URL(url).searchParams.get("topic");
    await pilotPage.goto(url);
    await pilotPage.locator("#catchup-evidence").waitFor({timeout:10000});
-   assert(await pilotPage.locator("#catchup-evidence").locator('.catchup-picture,.gcse-catchup-punnett').count()>0,id);
+   assert(await pilotPage.locator("#catchup-evidence").locator('.catchup-picture,.gcse-catchup-punnett,.school-lesson-table').count()>0,id);
    assert.equal(await pilotPage.getByRole("link",{name:"← Year "+year+" topics"}).count(),1,id);
    assert((await pilotPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,id+" overflows at phone width");
    seniorLessonIds.add(id);
   }
  }
- assert.equal(seniorLessonIds.size,30);
+ assert.equal(seniorLessonIds.size,37);
  await pilotPage.goto(base+"/science-catch-up/lesson/?topic=vaccine-memory&year=10");
  for(const [index,answer] of ["Specific antigens","Their immune system has already responded to its antigens.","The virus lacks the bacterial targets of antibiotics.","Those antibodies may not bind to the new pathogen’s antigens."].entries()){
   await guide.getByRole("button",{name:"Check",exact:true}).click();
