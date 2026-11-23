@@ -1,13 +1,30 @@
 # Human Biology curriculum quality register
 
-Checked against [OCR Human Biology specification v8, October 2026](https://www.ocr.org.uk/Images/697578-specification-cambridge-advanced-national-in-human-biology.pdf) and the [official qualification page](https://www.ocr.org.uk/qualifications/cambridge-advanced-nationals/human-biology-level-3-h049-h149/). See the [previous question coverage](HUMAN_BIOLOGY_QUESTION_COVERAGE.md) and [question-writing standard](HUMAN_BIOLOGY_QUESTION_WRITING_STANDARD.md).
+The governing source is the [October 2026 OCR Version 8 specification](https://www.ocr.org.uk/Images/697578-specification-cambridge-advanced-national-in-human-biology.pdf), confirmed on the [qualification page](https://www.ocr.org.uk/qualifications/cambridge-advanced-nationals/human-biology-level-3-h049-h149/). The unit tables below extend the topic-level evidence already in this register. See the [Batch 14 report](human-biology-batch-14.md), [question coverage](HUMAN_BIOLOGY_QUESTION_COVERAGE.md) and [question-writing standard](HUMAN_BIOLOGY_QUESTION_WRITING_STANDARD.md).
 
-- **Represented** means the topic appears in a recap, question or visual.
-- **Taught** means the related lesson explicitly explains and models a selected idea. Other material in that section may still be recap-only.
-- **Practised** means an authored task is available. Counts in the examined-unit table include rotating variants and all fixed questions tagged to the section.
-- **Verified** means a specific claim or teaching journey was checked. The links, queue scopes and representative Batch 10 interactions were checked across units. Only the highlighted scientific changes below were rechecked for this batch. Other rows are indexed for further scientific and demand review.
+## Statement-level register
 
-## Examined units
+There are 807 authored rows, covering the 172 numbered teaching headings in F170–F177 and cross-unit mathematical and How Science Works requirements. The unit and exact OCR reference appear with every group. An r-number identifies an authored audit row, since OCR does not number every bullet. A row may group closely related examples where they require one shared method. A result about one example does not transfer to other examples in the group.
+
+Verified means the mapped teaching and corresponding practice have specific scientific and instructional evidence. Taught means sufficient explanation or modelling was found and independent practice is incomplete. Practised means an appropriate task exists and teaching remains incomplete or requires stronger modelling. Represented denotes partial evidence such as recognition, a single example within a group or a recap. A gap is a specific shortfall established by review.
+
+Review marks candidate references found in the source. Unresolved marks requirements for which this pass did not locate direct evidence. Neither status establishes absence or completeness. These rows require a teacher to check the exact scientific breadth and demand. Centre-only indicates assessed production or supervised enactment, with general knowledge and method reasoning recorded separately. The count is a coverage ledger, rather than a percentage of the curriculum taught.
+
+Priority reflects the examined units first, together with specific high-value transfer gaps. The earlier overview remains below as a record of previous batches. Where it differs, use the individual row and its evidence.
+
+| Requirements | Rows | Verified | Taught | Practised | Represented | Gap | Review | Unresolved | Centre-only |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| [F170](human-biology-curriculum/f170.md) | 226 | 16 | 2 | 21 | 2 | 1 | 75 | 109 | 0 |
+| [F171](human-biology-curriculum/f171.md) | 148 | 12 | 0 | 11 | 3 | 3 | 37 | 82 | 0 |
+| [F172](human-biology-curriculum/f172.md) | 67 | 2 | 1 | 0 | 1 | 1 | 15 | 47 | 0 |
+| [F173](human-biology-curriculum/f173.md) | 88 | 3 | 2 | 1 | 1 | 1 | 6 | 68 | 6 |
+| [F174](human-biology-curriculum/f174.md) | 66 | 2 | 1 | 1 | 0 | 1 | 12 | 49 | 0 |
+| [F175](human-biology-curriculum/f175.md) | 57 | 7 | 1 | 0 | 1 | 1 | 4 | 41 | 2 |
+| [F176](human-biology-curriculum/f176.md) | 60 | 1 | 3 | 0 | 1 | 0 | 15 | 39 | 1 |
+| [F177](human-biology-curriculum/f177.md) | 46 | 4 | 1 | 2 | 1 | 1 | 3 | 33 | 1 |
+| [Shared skills](human-biology-curriculum/shared-skills.md) | 49 | 3 | 0 | 0 | 0 | 0 | 20 | 26 | 0 |
+
+## Earlier overview of examined units
 
 Each row identifies a selected teaching idea within an OCR heading. The diagnostic IDs locate the existing misconception checks. The gaps column records audit targets and does not imply that all listed material is absent.
 
@@ -65,7 +82,7 @@ Each row identifies a selected teaching idea within an OCR heading. The diagnost
 
 **Verified syllabus amendments.** F170 3.3.1 now asks students to recognise uterus, ovarian tissue and testis in micrographs. Batch 8 provides all three specimen types and models a uterine example. Transfer to fresh images of each tissue remains a priority. F175’s corrected reference is from the P1 guidance to section 3.4. The app provides general biology and avoids reproducing the assessed health plan. Batch 10 checked F175 1.2’s fertilisation, cleavage, blastocyst and implantation chronology in both teaching and practice.
 
-## NEA units
+## Earlier overview of NEA units
 
 The rows locate general knowledge support by OCR topic area. Question tags are authoring evidence and need item-level checks before they serve as an OCR mapping. Read the recap or guided lesson and the individual question together when adding a new mapping. Each fixed question has a misconception explanation.
 
