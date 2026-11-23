@@ -1,3 +1,4 @@
+import {appendTransfer} from "./school-catchup-transfer.js";
 import { readCatchup, saveCatchup } from "./school-catchup-progress.js";
 
 const lessonStages = ["Notice", "Practise", "Apply it", "Try it on your own"];
@@ -212,7 +213,9 @@ export function mountJourney(host, model, lesson) {
       tick.setAttribute("aria-hidden", "true");
       heading.prepend(tick);
       next.append(heading);
-      if (code) next.append(link("Revise " + code, "/gcse/#topic-" + code.toLowerCase(), "school-primary"));
+      const transfer = appendTransfer(next, id, state, write, () => id === "quadrat-evidence"
+        ? steps.at(-1).reference?.render() : model.querySelector("figure")?.cloneNode(true));
+      if (code) next.append(link("Revise " + code, "/gcse/#topic-" + code.toLowerCase(), transfer ? "school-secondary" : "school-primary"));
       if (id === "enzymes") next.append(link("Try a guided enzyme investigation",
         "/teaching/enzyme-investigations/gcse/", "school-secondary"));
       if (practice) next.append(button("Try it yourself", () => {

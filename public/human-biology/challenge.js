@@ -626,7 +626,7 @@ function writtenReview(q,a){
  return '<div class="k-feedback pending"><h2 data-feedback-heading tabindex="-1">'+(finished?"Self-review complete":"Compare your reasoning")+'</h2><div class="k-review-grid">'+student+model+'</div>'+
   (q.levelsNote?'<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>':'')+
   (q.comparison?'<p>Use the criteria to assess how well your answer applies biology and evidence across the whole response.</p>':'')+
-  '<fieldset class="k-review-criteria"><legend>Key points to look for</legend><p>Check where your answer explains each point. Choose Needs work where a link is missing.</p>'+criteria+'</fieldset>'+
+  '<fieldset class="k-review-criteria"><legend>Key points to look for</legend><p>Rate each point against your first answer. Then improve one missing link in the box below.</p>'+criteria+'</fieldset>'+
   '<label class="k-field" for="k-revised">Improve your answer</label><textarea id="k-revised" rows="5"'+(finished?' readonly':'')+'>'+esc(review.revised==null?a.text||"":review.revised)+'</textarea>'+
   (finished?'<p role="status">Self-reviewed'+(session.outcomes[session.index]==="review-needs-work"?' · further practice useful':'')+'</p>':'')+'</div>';
 }

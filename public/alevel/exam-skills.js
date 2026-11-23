@@ -656,7 +656,7 @@
       form.append(status);
       if (review.open && writing) {
         const criteria = node("section", null, "al-criteria");
-        criteria.append(node("h3", "Check and improve"));
+        criteria.append(node("h3", "Check and improve"), node("p", "Compare each point with your draft. Add any missing scientific link before finishing your review."));
         const model = node("details");
         model.append(node("summary", "Compare with a model explanation"), node("p", q.points.join(" ")));
         if (review.original) {

@@ -219,3 +219,20 @@
 .practice-page:has([data-catchup-lesson]) {
   overflow-wrap: anywhere;
 }
+
+.school-completion form {
+  flex: 1 1 100%;
+  min-width: 0;
+  display: grid;
+  gap: .5rem;
+}
+.school-completion form :is(h4,p) { margin: 0; }
+.school-completion form textarea, .school-completion form input {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 36rem;
+  padding: .5rem;
+  font: inherit;
+}
+.school-completion form textarea { min-height: 4rem; }
+.school-completion form button { justify-self: start; }
