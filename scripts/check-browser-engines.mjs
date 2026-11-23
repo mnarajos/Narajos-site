@@ -98,7 +98,7 @@ try {
   assert((await reflex.getByRole("status").innerText()).trim());
   await fits();
 
-  await open("/human-biology/#catchup/f170/1.1.5.meiosis");
+  await open("/human-biology/?pilot=meiosis#catchup/f170/1.1.5.meiosis");
   const meioticTask = page.locator('[data-hb-stage="independent"]');
   await meioticTask.locator("summary").press("Enter");
   const fields = meioticTask.getByRole("img", {name:/Two unlabelled stages/});
