@@ -30,16 +30,18 @@
       content + scaleBar(24, 354));
   }
 
-  function leader(label, startX, y) {
-    return '<g data-worked-label="' + label + '"><line x1="' + startX + '" x2="377" y1="' + y + '" y2="' + y +
-      '" stroke="' + ink + '" stroke-width="1.35"/><text x="384" y="' + (y + 6) + '" font-size="19">' + label + '</text></g>';
+  function leader(label, startX, y, endX, placeTextBefore = false) {
+    const textX = endX + (placeTextBefore ? -7 : 7);
+    return '<g data-worked-label="' + label + '"><line x1="' + startX + '" x2="' + endX + '" y1="' + y + '" y2="' + y +
+      '" stroke="' + ink + '" stroke-width="1.35"/><text x="' + textX + '" y="' + (y + 6) + '" text-anchor="' +
+      (placeTextBefore ? "end" : "start") + '" font-size="19">' + label + '</text></g>';
   }
 
   function modelSvg() {
     const outlines = '<g fill="none" stroke="' + ink + '" stroke-width="2.2" stroke-linejoin="round">' +
       '<path data-worked-contour="cell" d="' + cell + '"/><path data-worked-contour="nucleus" d="' + nucleus + '"/></g>';
-    const drawing = '<g transform="translate(6 35)">' + outlines + leader("Cell boundary", 310, 71) +
-      leader("Nucleus", 233, 146) + leader("Cytoplasm", 308, 216) + '</g>';
+    const drawing = '<g transform="translate(6 35)">' + outlines + leader("Cell boundary", 310, 71, 377) +
+      leader("Nucleus", 233, 146, 253) + leader("Cytoplasm", 300, 216, 280, true) + '</g>';
     return frame(516, 374, "Drawing of the stained tiger frog erythrocyte in the photograph. The larger oblique contour encloses a smaller oval nucleus. Labels identify the cell boundary, nucleus and surrounding cytoplasm. The bar represents five micrometres.",
       '<text x="14" y="24" font-weight="bold" font-size="19">Wright–Giemsa-stained tiger frog erythrocyte</text>' +
       drawing + scaleBar(24, 354));

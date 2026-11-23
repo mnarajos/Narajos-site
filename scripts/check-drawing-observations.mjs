@@ -217,8 +217,15 @@ export async function checkDrawingObservations(browser,base,axeSource) {
           label==="Nucleus"?boundaryDistance(nucleus,tip.x,tip.y)<2:
           label==="Cytoplasm"&&cell.isPointInFill(tip)&&!nucleus.isPointInFill(tip);
         check(meets,"frog "+label+" endpoint");
+        if(label!=="Cell boundary"){
+          const box=group.querySelector("text").getBBox();
+          for(const x of [box.x,box.x+box.width])for(const y of [box.y,box.y+box.height]){
+            const corner=new DOMPoint(x,y);
+            check(cell.isPointInFill(corner)&&!nucleus.isPointInFill(corner),"frog "+label+" text stays in clear cytoplasm");
+          }
+        }
         const hits=lineCrossings(start,tip,contours);
-        check(hits.join()===(label==="Cell boundary"?"":"cell"),"frog "+label+" full leader");
+        check(hits.length===0,"frog "+label+" full leader crosses "+hits.join("/"));
       }
       for(const label of drawing.querySelectorAll("text")){
         const box=label.getBBox(), bounds=label.ownerSVGElement.viewBox.baseVal;
