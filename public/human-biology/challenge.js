@@ -101,6 +101,7 @@ function icon(name){
  calc:'<rect x="5" y="2" width="14" height="20" rx="2"/><rect x="8" y="5" width="8" height="4"/><path d="M8 13h2m3 0h3m-8 4h2m3 0h3"/>',
  check:'<path d="m4 12 5 5L20 6"/>',
  play:'<path d="m8 5 11 7-11 7z"/>',
+ eye:'<path d="M2 12s3-6 10-6 10 6 10 6-3 6-10 6-10-6-10-6Z"/><circle cx="12" cy="12" r="2.5"/>',
  alert:'<circle cx="12" cy="12" r="9"/><path d="M12 7v6m0 4h.01"/>',
  chevron:'<path d="m9 5 7 7-7 7"/>'
  };
@@ -129,58 +130,52 @@ function unitStats(u){var qs=filter(u,"all"),seen=0,weak=0;
 function source(){return '<p class="k-source">Original revision questions mapped against <a href="https://www.ocr.org.uk/Images/697578-specification-cambridge-advanced-national-in-human-biology.pdf" target="_blank" rel="noopener">OCR specification v8</a> and informed by the <a href="https://www.ocr.org.uk/qualifications/cambridge-advanced-nationals/human-biology-level-3-h049-h149/assessment/" target="_blank" rel="noopener">public sample assessment materials</a>. Examples are not official OCR questions, and sample alignment does not imply exam frequency.</p>';}
 function title(u){var U=unitMeta(u);return u.toUpperCase()+" · "+(U?U.title:"Human Biology");}
 function show(html){if(render)render(html);}
+function unitRow(route,label,number){
+ return '<li><a href="#'+esc(route)+'">'+(number?'<span class="hb-unit-code">'+esc(number)+'</span>':"")+
+  '<strong>'+esc(label)+'</strong>'+icon("chevron")+'</a></li>';
+}
 function knowledgeLanding(){
- var modules=db.units.filter(function(u){return isKnowledge(u.id);});
- var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">Cambridge AAQ · Knowledge learning</div><h1>More Human Biology</h1><p>Study the biology in F172–F177 and practise with original examples.</p></div><div class="k-unit-tiles">';
- modules.forEach(function(u){var n=filter(u.id,"all").length;
-  h+='<a class="k-unit-tile k-knowledge-tile" href="#challenge/'+u.id+'"><span class="k-icon">'+icon("book")+'</span><span><small>'+u.id.toUpperCase()+' · NEA knowledge support</small><strong>'+esc(u.title)+'</strong><em>'+n+' short practice questions · starter bank</em></span>'+icon("chevron")+'</a>';
- });
- h+='</div><p class="k-source">Use these activities for general learning. Submit assessed coursework through your school or college.</p></div>';show(h);
+ const modules=db.units.filter(u=>isKnowledge(u.id));
+ show('<div class="k-wrap hb-unit-overview"><p class="crumb"><a href="#home">← Human Biology overview</a></p>'+
+  '<div class="k-unit-hero"><h1>NEA units</h1><p>General knowledge support for F172–F177.</p></div><ul class="hb-link-list">'+
+  modules.map(u=>unitRow("challenge/"+u.id,u.title,u.id.toUpperCase())).join("")+'</ul></div>');
 }
 function actionTile(route,label,description,symbol,colour){
- return '<a class="k-action '+colour+'" href="#'+route+'"><span class="k-icon">'+icon(symbol)+'</span><span><strong>'+label+'</strong><small>'+description+'</small></span><span class="k-arrow">'+icon("chevron")+'</span></a>';
+ return '<a class="k-action '+colour+'" href="#'+route+'"><span class="k-icon">'+icon(symbol)+'</span>'+
+  '<span><strong>'+label+'</strong><small>'+description+'</small></span><span class="k-arrow">'+icon("chevron")+'</span></a>';
 }
 function intro(unit){
- var f=unit==="f170",knowledge=isKnowledge(unit),meta=unitMeta(unit),stats=unitStats(unit);
- var areas=knowledge?meta.areas.map(function(_,i){return i;}).filter(function(i){return i>0&&filter(unit,"a"+i).length>0;}):(f?[1,2,3,4]:[1,2,3,4,5]),colors=["","#58bcb0","#7da8df","#a18bdd","#e2a05c","#e18c96"];
- var h='<div class="k-wrap"><p class="crumb"><a href="'+(knowledge?"#knowledge":"#home")+'">← '+(knowledge?"Other units":"Home")+'</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+(knowledge?unit.toUpperCase()+" · NEA knowledge support":f?"F170 · Externally assessed":"F171 · Externally assessed")+'</div><h1>'+esc(meta?meta.title:"Human Biology")+'</h1><p>'+esc(knowledge?"General science questions and guided lessons for independent learning.":f?"Choose how you want to revise.":"Apply knowledge in clinical contexts. F171 is an early question-bank preview.")+'</p></div>';
- if(f){
-  h+='<section class="k-action-grid k-f170-start" aria-label="Start F170 revision">'+
-   actionTile("catchup/f170","Catch up","Learn from guided examples","book","teal")+
-   actionTile("challenge/f170/all","Practise questions","Start easy, then build up","bolt","teal")+
-   (skills?actionTile("skills/f170","Practise skills","Calculations, data, and evidence","calc","blue"):"")+'</section>';
-  h+='<details class="k-f170-more"><summary>More practice options</summary>';
- } else {
-  h+='<div class="k-mini-stats"><span><strong>'+stats.questions+'</strong> original questions</span><span><strong>'+stats.seen+'</strong> attempted</span><span><strong>'+stats.weak+'</strong> to revisit</span></div>';
-  h+='<p><a href="#catchup/'+unit+'">Catch up on this unit</a></p><h2 class="k-subhead">Start practising</h2>';
-  if(unit==="f175")h+='<p><a href="#catchup/f175/a1?stage=follicle">Open the reproductive pathway model</a></p>';
- }
- h+='<div class="k-action-grid">';
- var tiles=[
-  ...(!knowledge&&ladders?[["build","Build understanding","One idea, four progressive steps","layers","teal"]]:[]),
-  ...(unit==="f171"?[["clinical","Clinical case questions","Practise 6-mark and 9-mark responses","book","blue"]]:[]),
-  ...(!f?[["all","Quick mix","Start easy, then build up","bolt","teal"]]:[]),
-  [knowledge?"core":"sam",knowledge?"Core knowledge":"Exam-style focus",knowledge?"Learn the essentials":"Skills found in OCR samples","target","blue"],
-  ["weak","Fix mistakes","Revisit questions you missed","rotate","orange"],
-  ["stretch","Challenge","Apply your understanding","brain","purple"]];
- tiles.forEach(function(t){h+=actionTile("challenge/"+unit+"/"+t[0],t[1],t[2],t[3],t[4]);});
- h+='</div>';
- if(f)h+='</details>';
- if(skills&&!knowledge&&!f)h+='<a class="k-more-units" href="#skills/'+unit+'"><span>'+icon("calc")+'</span><span><strong>Skills practice</strong><small>Worked examples and fresh practice sets</small></span>'+icon("chevron")+'</a>';
- h+='<div class="k-headrow"><h2>Choose a topic</h2><small>'+areas.length+' areas</small></div><div class="k-areas">';
- areas.forEach(function(a){var n=filter(unit,"a"+a).length;h+='<a href="#challenge/'+unit+'/a'+a+'" class="k-area" style="--topic-color:'+colors[a]+'"><span class="k-area-num">'+a+'</span><span class="k-area-label"><strong>'+esc(areaName(unit,a))+'</strong><small>'+n+' questions</small></span>'+icon("chevron")+'</a>';});
- h+='</div>';
- if(unit==="f171"){
-  h+='<details class="k-coverage"><summary>What practice is available?</summary><ul>';
-  areas.forEach(function(a){
-   var qs=filter(unit,"a"+a);
-   var cases=qs.filter(function(q){return q.caseTitle;}).length;
-   var evidence=qs.filter(function(q){return q.evidenceTable||q.figure||q.graph||q.type==="number";}).length;
-   h+='<li><strong>'+esc(areaName(unit,a))+'</strong>. '+evidence+' diagram, data, or calculation questions. '+cases+' extended case '+(cases===1?"response":"responses")+'.</li>';
-  });
-  h+='</ul><p>Counts include alternative versions of some questions. Topic areas have different depths of coverage.</p></details>';
- }
- h+='<p class="k-source">'+(knowledge?"Practise general biology here. Discuss assessed coursework with your school or college.":f?"Includes all four F170 areas.":"F171 questions cover selected specification content.")+'</p>'+(knowledge?"":source())+'</div>';show(h);
+ const f170=unit==="f170",knowledge=isKnowledge(unit),meta=unitMeta(unit),prefix="challenge/"+unit+"/";
+ const areas=knowledge?meta.areas.map((_,i)=>i).filter(i=>i>0&&filter(unit,"a"+i).length>0):f170?[1,2,3,4]:[1,2,3,4,5];
+ const titleText=meta.title.replace(/^F17[01] /,"");
+ const primary=knowledge?[
+  ["catchup/"+unit,"Learn concepts","Learn with explanations and worked examples.","book","blue"],
+  [prefix+"all","Check knowledge","Apply the biology in general examples.","target","teal"]
+ ]:[
+  ["catchup/"+unit,"Catch up","Learn with explanations and worked examples.","book","blue"],
+  [prefix+"core","Practise questions","Check understanding and apply the biology.","target","teal"],
+  [f170?"flashcards":"flashcards/f171","Flashcards","Recall knowledge and review it over time.","layers","purple"]
+ ];
+ const extra=knowledge?[
+  [prefix+"core","Core knowledge"],[prefix+"weak","Fix mistakes"],[prefix+"stretch","Challenge"]
+ ]:[
+  ...(ladders?[[prefix+"build","Build Understanding"]]:[]),
+  [prefix+"weak","Fix mistakes"],[prefix+"all","Quick Mix"],[prefix+"stretch","Challenge"],
+  ...(skills?[["skills/"+unit,"Skills Practice"]]:[]),
+  ...(f170?[["practice","Explanation practice"]]:[[prefix+"clinical","Clinical case questions"]]),
+  [prefix+"sam","Exam-style focus"]
+ ];
+ let h='<div class="k-wrap hb-unit-overview"><p class="crumb"><a href="#home">← Human Biology overview</a></p>'+
+  '<div class="k-unit-hero"><p class="k-eyebrow">'+unit.toUpperCase()+(knowledge?" · NEA knowledge support":" · Externally assessed")+
+  '</p><h1>'+esc(titleText)+'</h1>'+(knowledge?'<p>General biology for independent study. Follow your school or college’s guidance for assessed coursework.</p>':"")+'</div>'+
+  '<section class="k-action-grid hb-unit-actions" aria-label="Learning activities">'+primary.map(t=>actionTile(...t)).join("")+'</section>';
+ if(unit==="f175")h+='<p class="hb-model-link"><a href="#catchup/f175/a1?stage=follicle">'+icon("eye")+'Interactive reproduction model</a></p>';
+ h+='<details class="hb-more-practice"><summary>'+(knowledge?"Further practice":"More practice options")+
+  '</summary><ul class="hb-link-list">'+extra.map(t=>unitRow(...t)).join("")+'</ul></details>'+
+  '<section class="hb-unit-topics" aria-labelledby="hb-topics-heading"><h2 id="hb-topics-heading">Choose a topic</h2>'+
+  '<ul class="hb-link-list">'+areas.map(a=>unitRow(prefix+"a"+a,areaName(unit,a),String(a))).join("")+'</ul></section>'+
+  (knowledge?"":source())+'</div>';
+ show(h);
 }
 function landing(){
  var h='<div class="k-wrap"><p class="crumb"><a href="#home">← Home</a></p><div class="k-unit-hero"><div class="k-eyebrow">Keystone Human Biology</div><h1>Choose an exam unit</h1><p>Short, varied questions first. See an explanation when you need it.</p></div><div class="k-unit-tiles">'+["f170","f171"].map(function(u){var s=unitStats(u);return '<a href="#challenge/'+u+'" class="k-unit-tile '+(u==="f170"?"teal":"blue")+'"><span class="k-icon">'+icon(u==="f170"?"brain":"flask")+'</span><span><small>'+u.toUpperCase()+' · 60-mark paper</small><strong>'+esc(u==="f170"?"Fundamentals of human biology":"Health and disease")+'</strong><em>'+s.questions+' questions · '+s.seen+' attempted'+(u==="f171"?" · preview":"")+'</em></span>'+icon("chevron")+'</a>';}).join("")+'</div>'+source()+'</div>';show(h);

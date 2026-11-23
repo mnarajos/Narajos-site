@@ -355,3 +355,16 @@ main[tabindex="-1"]:focus{outline:none}
  .hb-overview .k-home-unit{min-height:76px;padding:11px 13px}
  .hb-overview .k-home-units{gap:8px}
 }
+
+.hb-unit-actions{grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr));margin:.3rem 0 1rem}
+.hb-unit-actions .k-action{min-height:88px;padding:12px;gap:10px}
+.hb-unit-actions .k-action small{font-size:.9rem}
+.hb-unit-actions .k-icon{width:36px;height:36px}
+.hb-unit-actions .k-icon svg{width:20px;height:20px}
+.hb-more-practice{margin:0 0 1rem}
+.hb-more-practice summary{min-height:44px;cursor:pointer;padding:.55rem .45rem;color:var(--brand);font-weight:700}
+.hb-unit-topics{margin-top:1rem}
+.hb-model-link{margin:0 0 .4rem}
+.hb-model-link a{display:inline-flex;align-items:center;gap:.5rem;min-height:44px;font-weight:650}
+.hb-model-link svg{width:1.25rem;height:1.25rem}
+.hb-unit-overview .k-unit-hero>p:not(.k-eyebrow){max-inline-size:64ch;font-size:1rem}
