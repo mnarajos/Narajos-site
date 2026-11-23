@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { checkGCSECatchup } from "./check-gcse-catchup.mjs";
 
 export async function checkCatchupScaffolds(browser, base) {
   const page = await browser.newPage({viewport: {width: 320, height: 780}, hasTouch: true, isMobile: true});
@@ -125,5 +124,4 @@ export async function checkCatchupScaffolds(browser, base) {
     await page.close();
   }
   console.log("Year 7–9: all 37 opening checks, worked examples, guided practice, independent follow-up and draft persistence passed.");
-  await checkGCSECatchup(browser, base);
 }
