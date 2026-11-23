@@ -33,7 +33,7 @@
     </div>
     <div class="site-dropdown-group" role="group" aria-labelledby="nav-qualifications">
      <p id="nav-qualifications">By qualification</p>
-     <a href="/gcse/">GCSE Combined Science — AQA Trilogy</a><a href="/alevel/#catchup">A-level Biology — Catch up</a><a href="/human-biology/#catchup">Human Biology — Catch up</a>
+     <a href="/gcse/">GCSE Combined Science — AQA Trilogy</a><a href="/alevel/">A-level Biology — AQA</a><a href="/human-biology/">Human Biology — Cambridge OCR AAQ</a>
     </div>
    </div>
   </details>

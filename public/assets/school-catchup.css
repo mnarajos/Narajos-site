@@ -201,3 +201,17 @@
 .catchup-periodic .catchup-hydrogen { width: calc((100% - clamp(1px,.35vw,4px)) / 2); justify-self: center; }
 .catchup-periodic span { display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #203c43; }
 .catchup-periodic .catchup-group-zero { color: #fff; }
+
+.school-continue {
+  border: 1px solid var(--line, #d4dcd8);
+  border-radius: var(--narajos-panel-radius, .875rem);
+  background: var(--paper, #fff);
+  margin-block: 1rem;
+  padding: .75rem 1rem;
+}
+.school-continue h2 { margin: 0; font-size: 1.2rem; }
+.school-continue-row { display: flex; justify-content: space-between; align-items: center; gap: .65rem; flex-wrap: wrap; }
+.school-continue-row p { margin: .4rem 0; }
+.school-continue-row a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
+.school-continue summary { cursor: pointer; min-height: 44px; padding-block: .55rem; font-weight: 650; }
+.school-continue li a { display: inline-flex; align-items: center; min-height: 44px; }

@@ -126,8 +126,36 @@ export async function checkLearningNavigation(browser, base) {
         await text.evaluate(style => style.remove());
       }
     }
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(base + "/science-catch-up/");
+    await search.fill("osmosis");
+    const school = main.getByRole("link", { name: /^Open lesson:.*osmosis/i }).first();
+    await school.press("Enter");
+    await page.getByRole("button", { name: "Check", exact: true }).first().press("Enter");
+    await page.getByRole("dialog").waitFor();
+    const schoolLesson = new URL(page.url());
+    await page.goto(base + "/science-catch-up/");
+    const schoolResume = main.getByRole("region", { name: "Continue learning" });
+    assert.match(await schoolResume.textContent(), /Step 1/);
+    await schoolResume.getByRole("link", { name: "Resume", exact: true }).press("Enter");
+    await page.waitForURL(url => url.searchParams.get("topic") === schoolLesson.searchParams.get("topic"));
+    await page.getByRole("dialog").waitFor();
+
+    for (const [path, name, term] of [
+      ["/alevel/", "A-level Biology revision home", "osmosis"],
+      ["/gcse/", "GCSE revision home", "amylase"]
+    ]) {
+      await page.goto(base + path);
+      await main.getByRole("heading", { name: "Find a topic", exact: true }).waitFor();
+      await search.fill(term);
+      assert((await results.getByRole("link").count()) > 0);
+      const appHome = page.getByRole("link", { name, exact: true });
+      await appHome.focus();
+      assert.equal(await appHome.evaluate(link => getComputedStyle(link).outlineStyle), "solid");
+      assert.equal(await page.getByRole("link", { name: "Narajos homepage" }).getAttribute("href"), "/");
+    }
     assert.deepEqual(errors, []);
-    console.log("Human Biology unit navigation, discovery, learning stages, activity guard and saved-work journeys passed.");
+    console.log("Learning navigation passed across Human Biology, AQA Biology, GCSE and school Catch-up.");
   } finally {
     await page.close();
   }

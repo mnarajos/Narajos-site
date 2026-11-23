@@ -428,11 +428,11 @@ try{
  assert.deepEqual(await desktop.locator(".home-option--questions .home-links a").evaluateAll(links=>links.map(a=>a.pathname)),["/teacher/","/teaching/focused-writing/"]);
  const homeMenu=desktop.locator(".site-nav details").first();
  await homeMenu.locator("summary").click();
- assert(await homeMenu.locator('a[href="/human-biology/#catchup"]').isVisible(),"Human Biology missing from homepage dropdown");
+ assert(await homeMenu.locator('a[href="/human-biology/"]').isVisible(),"Human Biology missing from homepage dropdown");
  assert.equal(await homeMenu.getByRole("link",{name:/^Year (7|8|9|10|11)$/}).count(),5);
  for(const [label, route, heading] of [
-  ["A-level Biology — Catch up", "/alevel/#catchup", "Catch up on a concept"],
-  ["Human Biology — Catch up", "/human-biology/#catchup", "Catch up and understand"]
+  ["A-level Biology — AQA", "/alevel/", "Ready to revise?"],
+  ["Human Biology — Cambridge OCR AAQ", "/human-biology/", "Human Biology"]
  ]){
   await homeMenu.getByRole("link",{name:label,exact:true}).press("Enter");
   await desktop.waitForURL(base+route);
@@ -444,7 +444,7 @@ try{
  const navTargets=await desktop.locator(".site-nav a").evaluateAll(links=>links.map(a=>[a.getAttribute("href"),a.textContent]));
  assert.deepEqual(navTargets.slice(0,8).map(([route])=>route),[
   ...[7,8,9,10,11].map(year=>"/science-catch-up/?year="+year),
-  "/gcse/","/alevel/#catchup","/human-biology/#catchup"
+  "/gcse/","/alevel/","/human-biology/"
  ]);
  for(const path of ["/teaching/","/privacy/","/teaching/simulations/","/science-catch-up/?year=8","/teaching/focused-writing/"]){
   await desktop.goto(base+path);
@@ -717,7 +717,7 @@ try{
  await mobile.locator(".home-philosophy").waitFor({state:"visible"});
  const mobileMenu=mobile.locator(".site-nav details").first();
  await mobileMenu.locator("summary").click();
- assert(await mobileMenu.locator('a[href="/human-biology/#catchup"]').isVisible(),"Human Biology missing from mobile homepage dropdown");
+ assert(await mobileMenu.locator('a[href="/human-biology/"]').isVisible(),"Human Biology missing from mobile homepage dropdown");
  assert((await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth))<=3,"Mobile homepage has horizontal overflow");
  await mobile.setViewportSize({width:320,height:780});
  assert.equal(await mobileMenu.getByRole("group",{name:"Catch up by year"}).getByRole("link").count(),5);
