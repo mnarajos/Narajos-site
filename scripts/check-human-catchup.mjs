@@ -19,7 +19,7 @@ export async function checkHumanCatchup(browser, base) {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await open("catchup");
     const chapters = await page.evaluate(() => Object.entries(window.KeystoneHumanLessons));
-    assert.equal(chapters.length, 54, "Retain the 49 existing routes and add five targeted guided routes");
+    assert.equal(chapters.length, 61, "Retain 54 routes and add seven F171 comparisons");
     assert.equal(new Set(chapters.map(([key]) => key.split("/")[0])).size, 8);
     for (const [key, lesson] of chapters) {
       await page.evaluate(key => localStorage.removeItem(key), localPractice);
@@ -32,7 +32,7 @@ export async function checkHumanCatchup(browser, base) {
         const href = await morePractice.getAttribute("href");
         assert(href.includes("-transfer?from=catchup/" + key), key);
       }
-      if (lesson.revision && !focused && (key.startsWith("f170/") || key.startsWith("f171/"))) {
+      if (lesson.revision && !focused && !lesson.title && (key.startsWith("f170/") || key.startsWith("f171/"))) {
         const buildLink = page.getByRole("link", { name: "Build understanding", exact: true });
         const href = await buildLink.getAttribute("href");
         assert(href.endsWith("?from=catchup/" + key), key);
@@ -48,10 +48,20 @@ export async function checkHumanCatchup(browser, base) {
         assert(await model.locator(".hb-model-steps li").nth(1).isVisible(), key);
       }
       await expand(stage("guided"));
+      if (key === "f171/1.2.1.aorta") {
+        await stage("guided").getByRole("radio").nth(1 - lesson.guided.answer).check();
+        await stage("guided").getByRole("button", {name:"Check answer"}).click();
+        await stage("guided").getByText(/pressure reading does not show vessel shape/).waitFor();
+      }
       await stage("guided").getByRole("radio").nth(lesson.guided.answer).check();
       await stage("guided").getByRole("button", { name: "Check answer" }).click();
-      assert.match(await stage("guided").getByRole("status").innerText(), /Correct with support/);
+      assert.match(await stage("guided").getByRole("status").innerText(), key === "f171/1.2.1.aorta" ? /Correct on retry/ : /Correct with support/);
       await expand(stage("independent"));
+      if (key === "f171/1.2.1.aorta") {
+        const image = stage("independent").getByRole("img", {name:/abdominal aorta/});
+        await image.waitFor();
+        assert(await image.evaluate(async el => { await el.decode(); return el.naturalWidth > 0; }));
+      }
       if (lesson.apply.options) {
         await stage("independent").getByRole("radio").nth(lesson.apply.answer).check();
         await stage("independent").getByRole("button", { name: "Check answer" }).click();
