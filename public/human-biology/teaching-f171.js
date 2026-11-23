@@ -18,6 +18,60 @@
   };
 
   Object.assign(window.KeystoneHumanLessons, {
+    "f171/1.2.1": {
+      revision: 1,
+      goal: "Explain how a change in airway or alveolar structure affects a different part of breathing.",
+      activate: ["How do ventilation and gas exchange differ?", "Ventilation moves air into and out of the lungs. Gas exchange moves oxygen and carbon dioxide across the surfaces of the alveoli."],
+      prior: ["f170/2.1.3", "Work through the alveolar diffusion model"],
+      explain: [
+        "COPD involves persistent difficulty moving air out of the lungs. Narrowed small airways and excess mucus can reduce airflow. In emphysema, destruction of alveolar walls reduces the surface for gas exchange and loss of elastic recoil adds to difficulty breathing out.",
+        "Breathlessness is a symptom. Measured expiratory airflow is a sign. Similar symptoms can occur with different conditions, so symptoms alone do not establish which mechanism is involved."
+      ],
+      table: {caption: "Match a structural change to its most direct consequence", head: ["Change", "Direct consequence"], rows: [
+        ["Smaller airway opening", "Greater resistance to airflow"], ["Loss of alveolar walls", "Less gas exchange area and reduced recoil"]
+      ]},
+      focusCells: [["0:0"], ["1:0"], ["0:0","1:0"]],
+      nodes: ["Identify the structure", "Identify the second effect", "Limit the conclusion"],
+      model: [
+        "In a fictional model, mucus narrows the airway opening. Air meets greater resistance, so the same driving pressure can move less air.",
+        "In a different part of the model, alveolar walls have been lost. This reduces the area across which gas can diffuse. The amount of mucus does not measure this loss of area.",
+        "Breathlessness can occur with either problem. To distinguish them, compare evidence about airflow with evidence about the tissue and gas exchange."
+      ],
+      guided: choice("The same pressure moves less air through a model airway after its lumen narrows. Which explanation fits?", 1,
+        [["The smaller lumen increases the area available for diffusion.", "The measurement concerns movement of air along a tube."], ["Narrowing increases resistance to air movement.", ""], ["The alveoli have necessarily lost their walls.", "The model changed the airway. It supplied no alveolar evidence."]],
+        "Explain the observation using the structure that changed.", ["Locate the change on the pathway taken by air."]),
+      apply: written("In another fictional lung, an intervention improves airflow through narrowed airways. Imaging still shows loss of alveolar walls. Explain why better airflow does not establish that gas exchange has recovered.",
+        ["Air can move more easily through the airways.", "Loss of alveolar walls leaves less exchange area.", "The evidence about airflow does not measure diffusion or show that the lost walls were restored."],
+        "Airflow describes ventilation. Oxygen transfer also depends on surviving exchange surfaces. Better flow can coexist with reduced diffusion area, so the two effects require different evidence.")
+    },
+    "f171/4.1": {
+      revision: 1,
+      goal: "Choose a measurement for a biological question and state what its result can establish.",
+      activate: ["What is the difference between a symptom and a measurement?", "A symptom is reported by the person. A measurement records a specific feature, such as oxygen saturation or airflow."],
+      prior: ["f171/4.2.2", "Compare serial readings taken under different conditions"],
+      explain: [
+        "Initial assessment combines the history, examination and relevant measurements. Peak expiratory flow estimates the greatest flow during a forced breath out. Spirometry can record both volume and flow.",
+        "Pulse oximetry estimates the percentage of haemoglobin carrying oxygen. A saturation reading gives no direct measure of expiratory flow or of the cause of a change. Measurement conditions and technical quality affect interpretation."
+      ],
+      table: {caption: "Three measurements used in fictional initial assessments", head: ["Tool", "Readout", "One limitation"], rows: [
+        ["Peak flow meter", "Maximum expiratory flow", "Effort and technique matter"],
+        ["Spirometer", "Volume and flow during breathing manoeuvres", "Technique and appropriate reference values matter"],
+        ["Pulse oximeter", "Estimated oxygen saturation", "Does not measure the volume or flow of air"]
+      ]},
+      focusCells: [["0:0","1:0","2:0"], ["1:0","1:1"], ["2:0","2:1"]],
+      nodes: ["Name the variable", "Choose a tool", "Limit the inference"],
+      model: [
+        "An investigator wants to compare how much air two people exhale in the first second. The target variable is exhaled volume over a defined time.",
+        "Spirometry can provide that volume. A peak-flow reading reports an instant of highest flow, which could be similar even if the first-second volumes differ.",
+        "A saturation reading answers an oxygenation question. Using the right variable under comparable conditions improves the comparison, though one result is still only part of an assessment."
+      ],
+      guided: choice("A pupil wants the highest flow reached during a forced breath out. Which readout answers that question?", 0,
+        [["Peak expiratory flow.", ""], ["The percentage of haemoglobin carrying oxygen.", "This estimates oxygen saturation."], ["The total expired volume.", "Two people can reach the same total volume at different rates."]],
+        "Peak flow is a maximum rate rather than the total volume.", ["Separate the amount of air from its rate of movement."]),
+      apply: written("Two fictional records have the same maximum expiratory flow. An investigator wants to know whether the percentage of oxygenated haemoglobin fell during walking. Which measurement addresses the question, and what does it leave uncertain?",
+        ["Pulse oximetry estimates oxygen saturation.", "Comparable readings before and during walking can show whether the estimate changed.", "Saturation does not establish the cause of a change or show how much air is exhaled."],
+        "Compare oxygen saturation estimates obtained under defined conditions. Matching peak-flow readings give no direct evidence about this variable. A saturation change alone cannot establish the underlying cause.")
+    },
     "f171/2.1": {
       revision: 1,
       goal: "Use evidence about a fictional patient to explain a treatment mechanism and justify a choice.",

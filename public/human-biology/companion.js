@@ -5,6 +5,14 @@ var root=window.KeystoneHumanData,bank=window.KeystoneHumanChallenges,other=wind
 if(!root||!bank||!other)return;
 var notes={
   "f171": {
+    "1.2.1": {
+      title: "How airway and alveolar damage affect breathing",
+      lines: ["Airway narrowing can reduce airflow. Loss of alveolar walls reduces the area for gas exchange.", "A symptom can have more than one cause. Compare the function measured with the tissue affected."]
+    },
+    "4.1": {
+      title: "Choosing a physiological measurement",
+      lines: ["Spirometry, peak flow and pulse oximetry measure different features.", "Check the measurement conditions and distinguish a reading from a clinical conclusion."]
+    },
     "2.1": {
       "title": "Choosing a treatment",
       "lines": [
@@ -316,6 +324,8 @@ var buildPractice={
  "f170/3.1.2":"p-endo-type1",
  "f170/3.3.1":"p-endo-gametes",
  "f170/4.1.4":"p-micro-culture-phases",
+ "f171/1.2.1":"p-health-copd",
+ "f171/4.1":"p-health-bp-repeat",
  "f171/2.1":"p-f171-local-systemic",
  "f171/2.2":"p-health-parkinsons-therapy",
  "f171/a2":"p-f171-local-systemic",
@@ -388,11 +398,14 @@ function showUnit(unit,render){
    h+='</div></section>';
   }else{
    h+='<a class="k-area k-catchup-area" href="#catchup/'+unit+'/'+a.code+'"><span class="k-area-num">'+a.code.slice(1)+'</span><span class="k-area-label"><strong>'+esc(a.title)+'</strong><small>'+(lessonFor(unit,a.code)?'Guided lesson':'Short recap')+'</small></span><span aria-hidden="true">›</span></a>';
+   if(unit==="f171"&&a.code==="a1"){
+    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/1.2.1">Airway and alveolar damage</a></div>';
+   }
    if(unit==="f171"&&a.code==="a2"){
     h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/2.1">Choosing a treatment</a><a class="button secondary" href="#catchup/f171/2.2">Managing symptoms and function</a><a class="button secondary" href="#catchup/f171/2.3">Prevention and early detection</a></div>';
    }
    if(unit==="f171"&&a.code==="a4"){
-    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/4.2.1">Interpreting screening results</a><a class="button secondary" href="#catchup/f171/4.2.2">Taking repeat measurements</a></div>';
+    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/4.1">Choosing a physiological measurement</a><a class="button secondary" href="#catchup/f171/4.2.1">Interpreting screening results</a><a class="button secondary" href="#catchup/f171/4.2.2">Taking repeat measurements</a></div>';
    }
    if(unit==="f171"&&a.code==="a3"){
     h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/3.2.1">Immune dysfunction</a><a class="button secondary" href="#catchup/f171/3.2.2">Vaccine types</a></div>';
