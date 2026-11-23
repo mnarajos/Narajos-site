@@ -973,6 +973,7 @@ window.ALevelTeachingFamilies.practical = {
     ["Treatment", "Temperature (°C)", "Absorbance"],
     [["Water", "20", "0.12"], ["20% ethanol", "30", "0.38"]],
   ],
+  evidenceHighlights: [[], [1], [1], [2]],
   model: [
     "The method compares how much pigment has leaked by a fixed time. Absorbance is a proxy for dissolved pigment if the same wavelength and optical path are used and the reading is within the useful range.",
     "Find the weakness in the comparison. Both the solvent and temperature change. A warmer treatment can itself affect membrane permeability and pigment release.",
@@ -1007,7 +1008,7 @@ window.ALevelTeachingFamilies.practical = {
       hints: ["Ask which decision has already biased the sample before any cells are counted."],
     },
     {
-      kind: "choice",
+      kind: "choice", catchup: "a5-chromat",
       prompt: "An unknown pigment and a reference pigment travel the same fraction of the distance to the solvent front on one chromatogram. Suggest the best next comparison to investigate whether they are the same compound.",
       options: [
         "Run both under the same second set of conditions and compare whether they still co-migrate.",
@@ -1120,7 +1121,7 @@ window.ALevelTeachingFamilies.evidence = {
   ],
   tasks: [
     {
-      kind: "choice", guided: true,
+      kind: "choice", guided: true, catchup: "a6-glucal",
       prompt: "A calibration for glucose is linear from 0 to 8 mmol dm⁻³. An unknown reads 0.42 absorbance. The nearest standards read 0.30 at 4 mmol dm⁻³ and 0.54 at 6 mmol dm⁻³. Which method gives the appropriate estimate?",
       options: [
         "Interpolate between the two standards. The sample is halfway between them, so estimate 5 mmol dm⁻³.",

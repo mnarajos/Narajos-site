@@ -389,6 +389,7 @@
         const content = practise(active, family, state, {
           stage: (id, symbol) => currentStage(bar, id, symbol),
           context: options.context,
+          back: options.back,
           moved: () => { review.open = false; },
         });
         review.append(node("summary", "Review the worked example"));
@@ -498,10 +499,10 @@
       const actions = node("div", null, "al-controls");
       const recommendation = revisit.length
         ? button("Retry questions I needed help with", () => begin(revisit))
-        : link("Choose another skill", "#exam");
+        : flow.back ? button("Back to your question", flow.back) : link("Choose another skill", "#exam");
       recommendation.classList.add("primary");
       actions.append(recommendation);
-      if (revisit.length) actions.append(quietLink("Exam Skills catalogue", "#exam"));
+      if (revisit.length && !flow.back) actions.append(quietLink("Exam Skills catalogue", "#exam"));
       const details = node("details");
       details.append(node("summary", "Review the completed questions"));
       const completed = node("ol");
@@ -1165,6 +1166,8 @@
   const contextualLabels = {
     "a2-mitosis": "Review mitosis",
     "a4-translation": "Review translation",
+    "a5-chromat": "Review chromatography",
+    "a6-glucal": "Review glucose calibration",
     "a2-diffusion": "Review diffusion distance",
     "a2-active": "Review active transport",
     "a2-osmosis": "Review water potential",
@@ -1206,6 +1209,62 @@
     "a8-transfac": "regulation",
     "a3-heart": "pressures",
   };
+  const questionSkills = {
+    "a2-mitosis": "interpret",
+    "a2-mitindex": "practical",
+    "a2-membrane": "practical",
+    "a2-osmosis": "evidence",
+    "a3-digestion": "interpret",
+    "a3-heart": "precision",
+    "a4-translation": "precision",
+    "a5-chromat": "practical",
+    "a5-respiro": "practical",
+    "a6-adh": "interpret",
+    "a6-glucal": "evidence",
+    "a8-transfac": "interpret",
+    "p3e-usedata": "evidence",
+    "p3s-methods": "practical",
+    "p3w-eplan": "extended",
+  };
+
+  function addQuestionSupport() {
+    const main = document.getElementById("main");
+    if (!main) return;
+    function offer() {
+      const family = families[questionSkills[location.hash.slice("#lesson-".length)]];
+      const feedback = main.querySelector("#qf #fb");
+      if (!location.hash.startsWith("#lesson-") || !family || !feedback || feedback.hidden ||
+          !feedback.matches(".bad, .idk") || feedback.querySelector(".al-question-skill")) return;
+
+      const open = button(family.title, () => {
+        const dialog = node("dialog", null, "al-question-dialog al-exam");
+        const heading = node("h2", family.title);
+        const close = () => dialog.close();
+        heading.id = "al-question-skill-title";
+        dialog.setAttribute("aria-labelledby", heading.id);
+        dialog.append(heading, button("Close skill lesson", close));
+        journey(dialog, family, { context: () => null, back: close });
+        // Keep activity-wide shortcuts from changing the question behind the modal.
+        dialog.addEventListener("keydown", event => event.stopPropagation());
+        dialog.addEventListener("close", () => {
+          dialog.remove();
+          open.focus();
+        }, { once: true });
+        main.append(dialog);
+        dialog.showModal();
+        focus(heading);
+      });
+      open.classList.add("al-question-skill");
+      feedback.append(open);
+    }
+    // Topic questions replace the main content and then expose their existing feedback panel.
+    new MutationObserver(records => {
+      if (records.some(record => record.target === main || record.target.id === "fb")) offer();
+    }).observe(main, { childList: true, subtree: true, attributes: true, attributeFilter: ["hidden"] });
+    offer();
+  }
+  document.addEventListener("DOMContentLoaded", addQuestionSupport, { once: true });
+
   window.ALevelExamSkills = {
     families,
     model,
