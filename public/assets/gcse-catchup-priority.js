@@ -7,7 +7,7 @@ function check([prompt, answer, reasoning, ...distractors], evidence) {
   return item;
 }
 
-function sequence(year, code, title, hook, idea, options) {
+export function sequence(year, code, title, hook, idea, options) {
   const {visual, model, guide, independent, retry, higher, earlier} = options;
   const [modelTitle, lines, modelCheck] = model;
   const [guidance, guidedCheck, guideVisual] = guide;
@@ -25,7 +25,7 @@ function sequence(year, code, title, hook, idea, options) {
   };
 }
 
-function table(title, headers, rows) {
+export function table(title, headers, rows) {
   const container = node("div", "", "writing-data");
   const data = node("table", "", "school-lesson-table");
   data.createCaption().textContent = title;
