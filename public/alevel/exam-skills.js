@@ -836,7 +836,16 @@
     print.classList.add("al-secondary");
     panel.append(prompt, print);
     const review = node("section", null, "al-paper-review");
-    const points = ["I followed the changes in direction around this cell.", "My label line reaches the wall.", "My bar has the same length relative to the cell as the reference bar."];
+    // The first three indices are also used by earlier saved paper reviews.
+    const points = [
+      "I followed the changes in direction around this cell.",
+      "My label line reaches the wall.",
+      "My bar has the same length relative to the cell as the reference bar.",
+      "My title names the specimen and the cell I drew.",
+      "I used clear, single pencil lines and left out shading and unresolved detail.",
+      "I ruled the label line and kept the rest of the wall outline clear.",
+      "I labelled my scale bar in µm."
+    ];
     const getPaper = () => read().drawingPaper || {};
     function update(patch) {
       const saved = read();
@@ -939,6 +948,95 @@
     return root;
   }
 
+  function drawingTypes() {
+    const comparison = node("details", null, "al-drawing-example");
+    comparison.append(node("summary", "Cell drawing or tissue plan?"));
+    const figures = node("div", null, "al-figures");
+    const examples = [
+      [drawing.bank[0], "Cell drawing · onion epidermis", "Follow the outline of the selected cell. Include internal structures only when the observation resolves them."],
+      [drawing.bank.find(item => item.specimen.id === "privet"), "Tissue plan · privet leaf", "Trace the boundaries of tissue regions. Show the relative thickness of the epidermis and the position of the bundle. Leave out divisions between individual cells."]
+    ];
+    for (const [item, title, instruction] of examples) {
+      const figure = node("figure"), observation = node("div");
+      observation.innerHTML = drawing.svg(item, true);
+      figure.append(node("figcaption", title), observation, node("p", instruction), drawingCredit(item));
+      figures.append(figure);
+    }
+    comparison.append(figures);
+    return comparison;
+  }
+
+  function scalePractice() {
+    const panel = node("details", null, "al-scale-practice");
+    const title = "Calculate a scale bar for a resized drawing";
+    panel.append(node("summary", title),
+      node("p", "The buttercup micrograph’s 0.31 mm bar spans 123 image units. A pupil draws a 246-unit length from the same field as 36 mm on paper."));
+    const form = node("form"), label = node("label", "How long on paper should a 100 µm scale bar be? Give the length in mm to 1 decimal place.");
+    const input = node("input"), check = node("button", "Check length"), hint = node("details");
+    input.type = "text";
+    input.inputMode = "decimal";
+    input.autocomplete = "off";
+    label.append(input);
+    check.type = "submit";
+    hint.append(node("summary", "Hint about the two scales"),
+      node("p", "First find the real length of the 246-unit segment in µm. Then find the same fraction of the 36 mm drawing."));
+    const feedback = node("p", null, "al-feedback");
+    feedback.setAttribute("role", "status");
+    feedback.setAttribute("aria-atomic", "true");
+    const state = {...read().drawingCalibration};
+    function persist() {
+      const data = read();
+      data.drawingCalibration = {...state};
+      save(data);
+    }
+    function render() {
+      input.value = state.draft || "";
+      input.readOnly = Boolean(state.outcome);
+      check.hidden = Boolean(state.outcome);
+      feedback.textContent = state.feedback || "";
+    }
+    input.oninput = () => {
+      state.draft = input.value;
+      if (state.feedback) {
+        state.feedback = "Answer changed. Check your new length.";
+        feedback.textContent = state.feedback;
+      }
+      persist();
+    };
+    hint.ontoggle = () => {
+      if (hint.open && !state.outcome) { state.helped = true; persist(); }
+    };
+    form.onsubmit = event => {
+      event.preventDefault();
+      if (state.outcome) return;
+      const answer = input.value.trim(), quantity = window.NarajosAssessment.parse(answer, "mm");
+      if (!Number.isFinite(quantity.value)) {
+        state.draft = input.value;
+        state.feedback = quantity.message;
+        if (answer) state.helped = true;
+        persist(); render(); input.focus(); return;
+      }
+      const correct = window.NarajosAssessment.matches(quantity.value, 36*100/620, 0, "to 1 decimal place", "mm");
+      state.attempts = (state.attempts || 0) + 1;
+      state.firstAttempt ||= {answer, correct, helped:Boolean(state.helped || hint.open)};
+      state.draft = input.value;
+      if (correct) {
+        state.outcome = state.attempts > 1 ? "corrected" : state.helped || hint.open ? "hint-supported" : "independent";
+        state.feedback = outcomeNames[state.outcome] + ". Two reference bars represent 0.62 mm, or 620 µm. The line on paper is 36 × 100 ÷ 620 = 5.8 mm to 1 decimal place.";
+      } else {
+        state.feedback = Math.abs(quantity.value - 18) < 1e-6 ? "18 mm is the drawn length for 310 µm. Use the fraction that represents 100 µm." :
+          Math.abs(quantity.value - 0.1) < 1e-6 ? "0.1 mm is the real length of 100 µm. Use the enlargement to find the length on paper." :
+          "Recheck the scale. The 246-unit segment spans two reference bars. Use its real length and the 36 mm drawn length, then round.";
+        state.helped = true;
+      }
+      persist(); render(); focus(feedback);
+    };
+    form.append(label, check, feedback);
+    panel.append(hint, form);
+    render();
+    return panel;
+  }
+
   function drawings(host) {
     const stored = read();
     if ((stored.drawingSession || stored.drawingReview) && stored.drawingVersion !== drawing.version) {
@@ -1005,15 +1103,15 @@
       node("li","End the ruled label line on the right wall. The photograph resolves no nucleus in this cell, so leave the interior clear."),
       node("li","The full photograph’s 200 µm bar spans 357 image units. One quarter of that length gives 89.25 units for a 50 µm bar. The crop and drawing use the same linear scale."));
     introduction.append(comparison, corners, steps, node("p","On your own microscope drawing, give the specimen a title and record a measured size, scale bar or known magnification. Enlarging an image on screen changes its display size."), drawingCredit(model));
-    block.append(introduction);
+    block.append(introduction, drawingTypes());
     const start = button(
       read().drawingSession ? "Resume drawing set" : "Start a six-drawing set",
       () => round(true),
     );
     start.classList.add("primary");
     block.append(start);
-    const exercise = node("section");
-    block.append(exercise, paperDrawing());
+    const exercise = node("section", null, "al-drawing-judgement");
+    block.append(exercise, scalePractice(), paperDrawing());
     function drawReview(review, moveFocus) {
       currentStage(bar, "review");
       const heading = node("h3", "Review your drawings");
@@ -1081,11 +1179,11 @@
         const criteria = node("ul", null, "al-drawing-criteria");
         criteria.append(node("li", item.criterion),
           node("li", "Use single, unshaded outlines. Label the " + item.specimen.label.toLowerCase() + "."),
-          node("li", item.specimen.scale ? "Use the observation’s length calibration for the scale bar." : "Preserve relative proportions. This photograph has no length calibration."));
+          node("li", item.specimen.scale ? "Use the observation’s length calibration for the scale bar." : "Judge visible form and relative proportions only. Accept applies to those features. This photograph has no length calibration."));
         exercise.append(criteria, drawingComparison(item, session, persistDrawing));
         const verdict = node("fieldset");
         verdict.append(
-          node("legend", "Does the candidate meet the stated task?"),
+          node("legend", item.specimen.scale ? "Does the candidate meet the stated task, including scale?" : "Does the candidate meet the stated drawing criteria for visible features?"),
         );
         ["Accept", "Reject"].forEach((text, j) => {
           const label = node("label"),
@@ -1131,7 +1229,8 @@
         feedback.setAttribute("aria-atomic", "true");
         if (session.outcome) feedback.textContent = outcomeNames[session.outcome] + ". " + item.why;
         else if (session.attempts) {
-          const extra = (session.categories || []).find(category => !item.defects.includes(category));
+          const previous = session.lastAttempt || session.firstAttempt;
+          const extra = (previous?.categories || []).find(category => !item.defects.includes(category));
           const lead = extra === undefined ? "Compare again. " : "Recheck your choice of " + drawing.categories[extra].toLowerCase() + ". ";
           feedback.textContent = lead + (session.attempts > 1 ? item.why : drawing.cues[item.id]?.[1] || item.specimen.clue);
         }
@@ -1170,10 +1269,11 @@
           }
           const ok = session.verdict === Number(item.defects.length > 0) &&
             cats.length === item.defects.length && item.defects.every(value => cats.includes(value));
-          session.firstAttempt ||= {verdict:session.verdict, categories:cats.slice(), correct:ok, withClue:session.helped};
+          session.lastAttempt = {verdict:session.verdict, categories:cats.slice(), correct:ok, withClue:session.helped};
+          session.firstAttempt ||= session.lastAttempt;
           session.attempts++;
           session.view = "candidate";
-          if (ok) session.outcome = at === 0 ? "guided" : session.attempts > 1 ? "corrected" : session.helped ? "hint-supported" : "independent";
+          if (ok) session.outcome = session.attempts > 1 ? "corrected" : at === 0 ? "guided" : session.helped ? "hint-supported" : "independent";
           persistDrawing();
           if (ok) {
             const stored = read();

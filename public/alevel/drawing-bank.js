@@ -26,7 +26,7 @@
     {
       id:"privet", name:"Privet leaf transverse section", type:"plan", image:"drawing-privet.webp",
       source:"Angiosperm_Morphology_The_Mesophytic_Dicotyledonous_Leaf_of_Ligustrum_(36845190976).jpg", author:"Berkshire Community College Bioscience Image Library", licence:"CC0", licenceUrl:"https://creativecommons.org/publicdomain/zero/1.0/",
-      size:[950,536], crop:[250,23,540,486], label:"Upper surface", target:[715,76], leaderRise:19,
+      size:[950,536], crop:[250,23,540,486], label:"Upper surface", target:[548,129], labelStart:[199,13],
       task:"Make a partial tissue map across the midrib. Show the two surfaces, the inner edge of the upper epidermis and the outline of the main vascular bundle. Stop at the field edges.",
       observation:"The upper surface dips above the midrib. A thin epidermal band follows it. The lower surface bulges down. The compact oval bundle lies inside that bulge and spans about two fifths of the field width.",
       paths:{upper:"M250 66 Q330 77 378 89 Q441 105 484 129 Q512 146 548 129 Q615 100 662 90 Q733 70 790 58",epidermis:"M250 87 Q321 96 375 110 Q428 122 477 148 Q512 167 548 147 Q605 120 664 111 Q730 89 790 81",lower:"M250 425 Q299 446 352 452 Q410 462 455 484 Q510 499 570 482 Q621 471 657 445 Q704 434 728 417 Q751 397 763 373 Q770 389 790 384",bundle:"M414 245 C429 210 461 197 498 196 Q559 188 598 219 Q630 244 626 278 Q624 315 598 335 Q571 357 530 362 Q471 356 441 332 Q400 300 414 245Z"},
@@ -34,14 +34,14 @@
       why:"The dip, thin upper band and oval bundle are retained at their observed positions. Individual cell outlines are unnecessary in this partial tissue map.",
       clue:"Track the band thickness from the field edge down into the dip.",
       alternatives:[
-        {key:"band",defects:[3],replace:{epidermis:"M250 139 Q352 149 421 176 Q500 211 543 186 Q668 133 790 130"}, evidence:"An uninterrupted deep band follows the dip and occupies about one fifth of the section depth near the right edge. An oval near the centre spans about two fifths of the field width. The lower edge bulges below it. The leader touches the upper surface.",why:"The upper epidermis is only a narrow band. The inner boundary here includes much of the elongated tissue below it. Move that boundary closer to the upper surface."},
+        {key:"band",defects:[3],replace:{epidermis:"M250 139 Q352 149 421 163 Q500 187 543 169 Q668 129 790 130"}, evidence:"An uninterrupted deep band follows the dip and occupies about one fifth of the section depth near the right edge. An oval near the centre spans about two fifths of the field width. The lower edge bulges below it. The leader touches the upper surface.",why:"The upper epidermis is only a narrow band. The inner boundary here includes much of the elongated tissue below it. Move that boundary closer to the upper surface."},
         {key:"cells",defects:[2],add:{partitions:"M268 69L263 89 M291 72L286 92 M315 76L311 96 M337 81L333 99 M359 85L354 105"},evidence:"A narrow band follows the dip. Five short lines divide its left end into compartments. An oval near the centre spans about two fifths of the field width. The lower edge bulges below it. The leader touches the upper surface.",why:"The micrograph resolves cells, but this task asks for tissue boundaries. Keep the continuous epidermal band and leave out the partitions between cells."}
       ]
     },
     {
       id:"buttercup",name:"Buttercup root transverse section",type:"plan",image:"drawing-buttercup.webp",
       source:"Ranunculus_root.jpg",author:"Jon Houseman (source credited to Jon Houseman and Matthew Ford)",licence:"CC BY-SA 4.0",licenceUrl:bysa("4.0"),
-      size:[840,750],crop:[0,0,840,750],label:"Cortex",target:[704,434],scale:{pixels:123,microns:310,draw:310},scaleNote:"The author identifies the original black bar as 0.31 mm. It spans approximately 123 image units here. 0.31 mm equals 310 µm.",
+      size:[840,750],crop:[0,0,840,750],label:"Cortex",target:[728,434],scale:{pixels:123,microns:310,draw:310},scaleNote:"The author identifies the original black bar as 0.31 mm. It spans approximately 123 image units here. 0.31 mm equals 310 µm.",
       task:"Map the root surface, the central cylinder and the shape occupied by xylem within it. Leave individual vessels and cells out.",
       observation:"A broad cortex encloses a small approximately circular central cylinder, about one seventh of the root width. Xylem forms a four-armed figure in its centre.",
       paths:{surface:"M399 29 Q469 23 521 57 Q590 76 644 115 Q705 153 733 217 Q759 279 761 350 Q766 428 739 486 Q719 549 674 588 Q642 636 588 655 Q532 691 445 696 Q355 699 291 676 Q220 649 167 611 Q118 578 100 511 L87 480 Q55 419 57 356 Q53 298 80 245 Q108 184 141 159 Q175 106 214 82 Q298 34 399 29Z",cylinder:"M373 374 Q373 347 393 335 Q417 320 440 332 Q463 341 469 365 Q474 393 452 413 Q430 431 406 422 Q375 410 373 386Z",xylem:"M390 345 Q406 352 417 359 Q435 358 449 350 Q445 363 432 376 Q438 386 448 401 Q430 399 418 388 Q404 391 391 401 Q393 388 406 376 Q395 360 390 345Z"},
@@ -64,7 +64,7 @@
       why:"The shapes preserve the angle and wall thickness of the observed band. The endpoint identifies the space enclosed by the wall.",
       clue:"Compare the rim at the lower right and trace the lumen leader to its tip.",
       alternatives:[
-        {key:"rim",defects:[3],replace:{lumen:"M286 161 Q291 144 309 139 Q332 134 352 151 Q372 165 373 184 Q378 208 358 216 Q345 222 324 210 Q301 200 291 183 Q282 173 286 161Z"},evidence:"An oblique lumen almost reaches the outer boundary, leaving a narrow unfilled band around it. The lumen leader ends in the enclosed space.",why:"The lumen has been enlarged into the muscular wall. There is a broad band at the lower right of the photograph. Restore that thickness."},
+        {key:"rim",defects:[3],replace:{lumen:"M292.16 156.80 Q299.84 140.16 315.20 141.44 Q331.84 141.44 345.92 149.12 Q362.56 156.80 366.40 172.16 Q371.52 187.52 368.96 204.16 Q366.40 213.12 354.88 209.28 Q333.12 205.44 320.32 195.20 Q312.64 195.20 306.24 187.52 Q301.12 179.84 294.72 178.56 Q287.04 170.88 292.16 156.80Z"},evidence:"An enlarged oblique lumen leaves a narrower band, including at the lower right. The lumen leader ends in the enclosed space.",why:"The lumen has been enlarged into the muscular wall. There is a broad band at the lower right of the photograph. Restore that thickness."},
         {key:"hatch-tip",defects:[1,4],target:[370,178],add:{hatch:"M364 178l7 -4 M365 182l8 -5 M365 186l9 -6 M366 190l8 -6 M365 194l8 -6"},evidence:"An oblique lumen with an uneven edge sits inside a broad band. Five sloping strokes lie in the band at the right. The lumen leader ends in the band.",why:"The strokes shade the muscular band. Outline its edges instead. The lumen leader also stops in the wall and should reach the space it encloses."}
       ]
     },
@@ -124,6 +124,7 @@
     const model = {key:"outline", defects:[], evidence:specimen.model, why:specimen.why};
     return [model, ...specimen.alternatives].map(variant => ({
       ...variant, id:specimen.id + "." + variant.key, specimen,
+      why:variant.why + (!specimen.scale && !variant.defects.length ? " This judgement covers the visible features and their relative proportions. Absolute scale cannot be checked in this field." : ""),
       criterion:specimen.task, credit:commons + specimen.source
     }));
   });
@@ -163,7 +164,7 @@
       '<path data-feature="' + name + '" d="' + d + '" vector-effect="non-scaling-stroke"/>').join("");
     const [tx,ty] = item.target || s.target;
     const endX = (tx-x)*ratio, endY = (ty-y)*ratio;
-    const startY = endY - (s.leaderRise || 0);
+    const [startX,startY] = s.labelStart || [304,endY];
     let guide = "";
     if (highlight && cues[item.id]) {
       const box = cues[item.id][0];
@@ -173,7 +174,7 @@
       guide = '<rect data-defect-overlay="" aria-hidden="true" x="'+left+'" y="'+top+'" width="'+wide+'" height="'+tall+'" fill="none" stroke="#364c60" stroke-dasharray="4 3" stroke-width="1.5"/>';
     }
     return outer + '<svg width="300" height="' + height + '" viewBox="' + s.crop.join(" ") + '"><g fill="none" stroke="#18232a" stroke-width="1.25" stroke-linejoin="round" stroke-linecap="round">' + paths +
-      '</g></svg><line data-label-line="" x1="304" y1="' + startY + '" x2="' + endX + '" y2="' + endY + '" stroke="#18232a" stroke-width="1"/><text x="309" y="' + (startY+4) + '" font-family="sans-serif" font-size="13">' +
+      '</g></svg><line data-label-line="" x1="' + startX + '" y1="' + startY + '" x2="' + endX + '" y2="' + endY + '" stroke="#18232a" stroke-width="1"/><text x="' + (startX+5) + '" y="' + (startY+4) + '" font-family="sans-serif" font-size="13">' +
       escape(s.label) + '</text>' + scaleBar(s,ratio,height,item.barLabel || s.scale?.draw) + guide + '</svg>';
   }
   function scaleBar(s,ratio,height,label) {
