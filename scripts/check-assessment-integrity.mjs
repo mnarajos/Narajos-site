@@ -27,6 +27,18 @@ assert(shellsMatch("2.8.1","2,8,1"));
 assert(!shellsMatch("28,1","2,8,1"));
 assert(!shellsMatch("2,-8,1","2,8,1"));
 
+const {recordLessonAnswer,lessonEvidence}=context.NarajosAssessment;
+const lesson={first:new Map()}, written={t:"short"}, independent={t:"num"}, corrected={t:"num"}, shown={t:"mcq"}, guided={t:"mcq"};
+for(const [item,outcome] of [[written,"self-reviewed"],[written,"self-reviewed"],[independent,"independent"],
+  [corrected,"incorrect"],[corrected,"corrected"],[shown,"revealed"],[shown,"corrected"],[guided,"supported"]]){
+  recordLessonAnswer(lesson,item,outcome);
+}
+assert.deepEqual({...lessonEvidence(lesson)},{checked:4,independent:1,supported:1,revealed:1,reviewed:1,corrected:2,percent:25});
+const proseOnly={first:new Map()};recordLessonAnswer(proseOnly,written,"self-reviewed");
+assert.equal(lessonEvidence(proseOnly).checked,0);
+assert.equal(lessonEvidence(proseOnly).independent,0);
+assert(parse("0.1 kg","mm").incompatibleUnit && !parse("","mm").incompatibleUnit);
+
 const html=read("alevel/index.html");
 for(const name of ["CARDS","BRAIN","ALTS"]){
   const declaration=html.split("\n").find(l=>l.startsWith("var "+name+"="));

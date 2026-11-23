@@ -10,11 +10,17 @@
   try{var stored=JSON.parse(localStorage.getItem(key)||"null");if(stored&&stored.v===1&&stored.cards&&typeof stored.cards==="object"&&!Array.isArray(stored.cards))records=stored.cards;}catch(_){}
   function persist(){try{localStorage.setItem(key,JSON.stringify({v:1,cards:records}));return true;}catch(_){return false;}}
   function get(id){return Object.prototype.hasOwnProperty.call(records,id)?records[id]:null;}
-  function mark(id,gotIt,when){
+  function mark(id,gotIt,when,evidence){
    if(typeof id!=="string"||!id||id.length>120)throw new Error("Invalid card id");
    var now=Number.isFinite(when)?when:Date.now(),old=get(id)||{};
-   var n={seen:(old.seen||0)+1,good:(old.good||0)+(gotIt?1:0),again:(old.again||0)+(gotIt?0:1),
+   var n={seen:(old.seen||0)+1,good:(old.good||0)+(gotIt?1:0),again:(old.again||0)+(gotIt||evidence==="revealed"?0:1),
     last:now,stage:0,due:now,lastGood:!!gotIt,first:old.first||now};
+   if(old.evidence)n.evidence={...old.evidence};
+   if(evidence){
+    n.evidence ||= {};
+    n.evidence[evidence]=(n.evidence[evidence]||0)+1;
+    n.lastEvidence=evidence;
+   }
    if(gotIt){
     // A second success on the same day should not simulate a second spaced session.
     var repeatSameDay=old.lastGood&&old.last&&now-old.last<DAY*0.7;
@@ -77,7 +83,7 @@
  function recordReview(session, engine, outcome){
   if(session.phase!=="back"||!session.queue.length)return;
   var id=session.queue.shift(),known=outcome==="matched"||outcome==="self-rated";
-  engine.mark(id,known);
+  engine.mark(id,known,undefined,outcome);
   if(session.first[id]===undefined){
    session.first[id]=known;
    (session.firstEvidence ||= {})[id]=outcome;
@@ -92,8 +98,8 @@
    var outcome=session.firstEvidence?.[id];
    counts[Object.hasOwn(counts,outcome)?outcome:"earlier"]++;
   });
-  var labels={matched:"typed matches","self-rated":"self-reported recalls",revealed:"reviewed after revealing",again:"marked for another try",earlier:"earlier ratings"};
-  return "First review of each card · "+Object.keys(counts).filter(key=>counts[key]).map(key=>counts[key]+" "+labels[key]).join(" · ")+".";
+  var labels={matched:["typed match","typed matches"],"self-rated":["self-reported recall","self-reported recalls"],revealed:["reviewed after revealing"],again:["marked for another try"],earlier:["earlier rating","earlier ratings"]};
+  return "First review of each card · "+Object.keys(counts).filter(key=>counts[key]).map(key=>counts[key]+" "+(labels[key][Number(counts[key]!==1)]||labels[key][0])).join(" · ")+".";
  }
  root.KeystoneReview={open:open,bindReview:bindReview,recordReview:recordReview,firstReviewText:firstReviewText,VERSION:1};
 })(window);

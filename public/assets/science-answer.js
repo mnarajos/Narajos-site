@@ -83,6 +83,42 @@
     const given=shells(raw), key=shells(answer);
     return given.length===key.length && given.every((n,i)=>/^\d+$/.test(n) && Number(n)===Number(key[i]));
   }
+  // Keep each original alongside its revision while the lesson is open in this browser tab.
+  function bindWrittenDraft(prompt, input) {
+    const key = "narajos-lesson-writing-v1:" + location.pathname + location.hash;
+    function stored() {
+      try { return JSON.parse(sessionStorage.getItem(key)) || {}; } catch { return {}; }
+    }
+    const draft = stored()[prompt] || {};
+    function save() {
+      try { sessionStorage.setItem(key, JSON.stringify({...stored(), [prompt]:draft})); } catch {}
+    }
+    input.value = draft.original || "";
+    input.readOnly = Boolean(draft.compared);
+    input.oninput = () => { draft.original = input.value; save(); };
+    return function compare(panel) {
+      draft.original = input.value;
+      draft.compared = true;
+      const label = document.createElement("label"), revision = document.createElement("textarea");
+      label.textContent = "Improve your answer (optional)";
+      label.htmlFor = revision.id = "short-revision";
+      revision.rows = 4;
+      revision.value = draft.revision ?? draft.original;
+      revision.oninput = () => { draft.revision = revision.value; save(); };
+      panel.append(label, revision);
+      const points = [...panel.querySelectorAll('input[name="mk"]')];
+      for (const point of points) {
+        point.checked = (draft.points || []).includes(point.value);
+        point.onchange = () => { draft.points = points.filter(p => p.checked).map(p => p.value); save(); };
+      }
+      save();
+    };
+  }
+
+  function finishWrittenDrafts() {
+    try { sessionStorage.removeItem("narajos-lesson-writing-v1:" + location.pathname + location.hash); } catch {}
+  }
+
   function recordLessonAnswer(lesson, item, outcome) {
     const first = lesson.first.get(item);
     if (first === undefined) lesson.first.set(item, outcome);
@@ -111,5 +147,5 @@
     return parts.join(" · ");
   }
 
-  root.NarajosAssessment = {parse,matches,shellsMatch,recordLessonAnswer,lessonEvidence,evidenceNote};
+  root.NarajosAssessment = {parse,matches,shellsMatch,bindWrittenDraft,finishWrittenDrafts,recordLessonAnswer,lessonEvidence,evidenceNote};
 })(globalThis);

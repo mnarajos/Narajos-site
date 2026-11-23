@@ -5919,10 +5919,11 @@ function checkExtra(q,f){
    var ul=Object.keys(used);
    $("#ms").innerHTML='<h2 class="q2" tabindex="-1">Compare your answer with the model points</h2>'+(ul.length?'<p class="kwused">Related words found in your answer: '+ul.map(function(w){return '<mark>'+esc(w)+'</mark>';}).join(" ")+'</p>':'<p class="kwused">Compare your wording with each model point, including ideas expressed in different words.</p>')+
     '<p class="hint">Tick the points you think your answer explains. Check the scientific relationship and its direction. A highlighted word is only a prompt for comparison.</p>'+mh.join("");
+   L.cur.compareDraft($("#ms"));
    $("#act").textContent="Finish self-review";$("#ms h2").focus();return null;
   }
   var got=$$("input[name=mk]:checked",f).length;
-  return {ok:true,head:"Written response self-reviewed",note:"You ticked "+got+" of "+n+" model points. Compare the reasoning and revise your wording where needed."};
+  return {ok:true,head:"Written response self-reviewed",note:"You ticked "+got+" of "+n+" model points. Your original answer and your revision are shown above."};
  }
  if(q.t==="sort"){
   var miss=q.items.some(function(it,i){return !$("input[name=s"+i+"]:checked",f);});
@@ -6227,7 +6228,7 @@ function showQ(){
  }else if(q.t==="cloze"){
   var cp=clozeParts(q),bank=cp.gaps.concat(q.extra||[]).filter(function(w,i,a){return a.indexOf(w)===i;}).sort(function(a,b){return a.localeCompare(b);});
   L.cur.gaps=cp.gaps;var gst=L.cur.gstart=gapStarts(cp.parts);
-  body=q.six?'<p class="hint"><strong>'+cp.gaps.length+'-mark question.</strong> A full-mark answer is built for you below. Choose the key words to complete it. Each gap is worth 1 mark.</p><p class="cloze six">':
+  body=q.six?'<p class="hint"><strong>'+cp.gaps.length+' gaps.</strong> Complete the model explanation by choosing a word for each gap. You can check each choice afterwards.</p><p class="cloze six">':
    '<p class="hint">Drag or tap a word to fill each gap. Tap a filled gap to put its word back. Some words are not needed.</p>'+
    '<div class="bank dnd" role="group" aria-label="Word bank">'+bank.map(function(w,i){return '<button type="button" class="wchip" draggable="true" data-ci="'+i+'">'+esc(caseAt(w,false))+'</button>';}).join("")+'</div><p class="cloze">';
   L.cur.bank=bank;
@@ -6247,6 +6248,7 @@ function showQ(){
   '<p id="msg" class="msg" aria-live="assertive"></p><div id="fb" class="fb" hidden></div>'+
   '<div class="actions'+(q.graphs||q.dc?' flow':'')+'"><button class="btn primary big" id="act" type="submit">Check</button><button type="button" class="dkbtn" id="dk">I don’t know – show me</button></div></form>';
  render(h);wireTop();
+ if(q.t==="short")L.cur.compareDraft=NarajosAssessment.bindWrittenDraft(q.q,$("#sa"));
  if(q.t==="order")drawOrder(false);
  var dkb=$("#dk");if(dkb)dkb.onclick=dontKnow;var rsb=$("#resbtn");if(rsb)rsb.onclick=function(){openRes(rsb.dataset.k);};if(q.t==="tap")wireTap(q);if(q.t==="build")wireBuild(q);if(q.t==="match"&&q.tp)wirePairs(q);if(q.t==="dotx")wireDx(q);
  $("#hint").onclick=function(){if(!this.disabled)showHint();};hintWait(HINT_FIRST);if($(".dgap"))wireDnd($("#qf"));
@@ -6468,6 +6470,7 @@ function nextConcept(t,c){var T=DATA[t],list=T.concepts,i=list.indexOf(c);
  var cand=(c.unlocks||[]).map(function(id){return T.byId[id];}).concat(list.slice(i+1));
  for(var k=0;k<cand.length;k++){var x=cand[k];if(x&&x!==c&&avail(x))return x;}return null;}
 function finish(){
+ NarajosAssessment.finishWrittenDrafts();
  L.over=true;
  var t=L.t,c=L.c,result=NarajosAssessment.lessonEvidence(L),pct=result.percent,ms=result.checked>0&&pct>=80;
  var leads=c.unlocks.map(function(id){return DATA[t].byId[id];}).filter(avail);

@@ -2,6 +2,7 @@
  * Distinct from unit tests: these exercise rendered DOM, navigation and mobile layout.
  * Run after: npm install --no-save playwright@1.56.1 && npx playwright install chromium
  */
+import {checkAssessmentJourneys} from "./check-assessment-journeys.mjs";
 import assert from "node:assert/strict";
 import {checkSharedInteractions} from "./check-shared-interactions.mjs";
 import {checkBrowserZoom} from "./check-browser-zoom.mjs";
@@ -34,7 +35,8 @@ async function checkPage(page,name){
  assert(overflow<=3,name+" overflows viewport horizontally by "+overflow+"px");
 }
 try{
- await checkSharedInteractions(browser,base,true);
+ await checkAssessmentJourneys(browser,base);
+  await checkSharedInteractions(browser,base,true);
  await checkBrowserZoom(base);
  await checkCatchupScaffolds(browser,base);
  {

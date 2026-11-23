@@ -5838,10 +5838,11 @@ function checkExtra(q,f){
    $("#ms").innerHTML='<h2 class="q2" tabindex="-1">Compare your answer with the model points</h2>'+(anotes.length?'<div class="hintbox"><p>'+anotes.map(esc).join('</p><p>')+'</p></div>':'')+(ul.length?'<p class="kwused">Related words found in your answer: '+ul.map(function(w){return '<mark>'+esc(w)+'</mark>';}).join(" ")+'</p>':'<p class="kwused">Compare your wording with each model point, including ideas expressed in different words.</p>')+
     (q.sugg?'<div class="suggbox"><p><strong>Suggested answer'+(q.sugg.length>1?'s':'')+'</strong></p>'+q.sugg.map(function(x){return '<p>'+fmt(x)+'</p>';}).join("")+'</div>':'')+
     '<p class="hint">Tick the points you think your answer explains. Check the scientific relationship and its direction. A highlighted word is only a prompt for comparison.</p>'+mh.join("");
+   L.cur.compareDraft($("#ms"));
    $("#act").textContent="Finish self-review";$("#ms h2").focus();return null;
   }
   var got=$$("input[name=mk]:checked",f).length;
-  return {ok:true,head:"Written response self-reviewed",note:"You ticked "+got+" of "+n+" model points. Compare the reasoning and revise your wording where needed."};
+  return {ok:true,head:"Written response self-reviewed",note:"You ticked "+got+" of "+n+" model points. Your original answer and your revision are shown above."};
  }
  if(q.t==="pairs"){
   if(L.cur.pm.some(function(r){return r<0;})){msg.textContent="Find every pair first.";return null;}
@@ -6448,7 +6449,7 @@ function showQ(){
  }else if(q.t==="cloze"){
   var cp=clozeParts(q),bank=cp.gaps.concat(q.extra||[]).filter(function(w,i,a){return a.indexOf(w)===i;}).sort(function(a,b){return a.localeCompare(b);});
   L.cur.gaps=cp.gaps;
-  body=q.six?'<p class="hint"><strong>'+cp.gaps.length+'-mark question.</strong> A full-mark answer is built for you below. Choose the key words to complete it. Each gap is worth 1 mark.</p><p class="cloze six">':
+  body=q.six?'<p class="hint"><strong>'+cp.gaps.length+' gaps.</strong> Complete the model explanation by choosing a word for each gap. You can check each choice afterwards.</p><p class="cloze six">':
    '<p class="hint">Choose a word for each gap. Each word is used once at most, and some are not needed.</p>'+
    '<ul class="bank" aria-label="Word bank">'+bank.map(function(w){return '<li>'+esc(w)+'</li>';}).join("")+'</ul><p class="cloze">';
   cp.parts.forEach(function(pt,i){
@@ -6469,6 +6470,7 @@ function showQ(){
   '<p id="msg" class="msg" aria-live="assertive"></p><div id="fb" class="fb" hidden></div>'+
   '<div class="actions"><button class="btn primary big" id="act" type="submit">Check</button><button class="linkbtn idk" id="idk" type="button">I don’t know – show me</button></div></form>';
  render(h);wireTop();
+ if(q.t==="short")L.cur.compareDraft=NarajosAssessment.bindWrittenDraft(q.q,$("#sa"));
  if(q.t==="order")drawOrder(false);
  if(q.t==="tap")wireTap(q);if(q.t==="build")wireBuild(q);if(q.t==="pairs")wirePairs(q);
  $("#hint").onclick=function(){showHint();};hintWait();
@@ -6767,6 +6769,7 @@ function showReteach(w,hinted){
  return true;
 }
 function finish(){
+ NarajosAssessment.finishWrittenDrafts();
  L.fin=true;var t=L.t,c=L.c,result=NarajosAssessment.lessonEvidence(L),correct=result.independent;
  var pct=result.percent,k=bkey(t,c);
  var b=S.best[k]||(S.best[k]={}),lv0=levelOf(t,c);if(result.checked){b[L.tier]=Math.max(b[L.tier]||0,pct);b.checkedIndependent=b.checkedIndependent||{};b.checkedIndependent[L.tier]=Math.max(b.checkedIndependent[L.tier]||0,pct);}
