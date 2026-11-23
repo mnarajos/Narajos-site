@@ -325,6 +325,10 @@ const focusedLessons={
   "In a sliding hiatus hernia, the junction between the oesophagus and stomach and part of the upper stomach move above the diaphragm.",
   "This can weaken the barrier to reflux. Reflux can irritate the oesophagus and cause heartburn, but a hernia may cause no symptoms."
  ]},
+ "f171/1.2.1.pkd":{area:"a1",title:"Polycystic kidney disease and filtration",practice:"1.2.1",lines:[
+  "In autosomal dominant polycystic kidney disease, enlarging cysts can damage functioning kidney tissue.",
+  "Someone may pass urine while the kidneys become less able to clear wastes from the blood."
+ ]},
  "f171/1.2.1.hodgkin":{area:"a1",title:"Hodgkin lymphoma and lymph nodes",practice:"f171-hodgkin-mechanism-transfer",lines:[
   "Hodgkin lymphoma is a cancer of lymphatic tissue. Affected nodes may enlarge as tumour tissue and surrounding inflammatory cells accumulate.",
   "The effects depend on the sites involved. A swollen node or a report of night sweats alone cannot establish the diagnosis."
@@ -344,6 +348,7 @@ var buildPractice={
  "f170/4.1.1":"p-micro-gram",
  "f170/4.1.4":"p-micro-culture-phases",
  "f171/1.2.1":"p-health-copd",
+ "f171/1.2.1.pkd":"p-f171-pkd-physiology",
  "f171/4.1":"p-health-bp-repeat",
  "f171/2.1":"p-f171-local-systemic",
  "f171/2.2":"p-health-parkinsons-therapy",

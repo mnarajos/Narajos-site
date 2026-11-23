@@ -25,7 +25,8 @@
       prior: ["f170/2.1.3", "Work through the alveolar diffusion model"],
       explain: [
         "COPD involves persistent difficulty moving air out of the lungs. Narrowed small airways and excess mucus can reduce airflow. In emphysema, destruction of alveolar walls reduces the surface for gas exchange and loss of elastic recoil adds to difficulty breathing out.",
-        "Breathlessness is a symptom. Measured expiratory airflow is a sign. Similar symptoms can occur with different conditions, so symptoms alone do not establish which mechanism is involved."
+        "Breathlessness during daily activity and a persistent cough with mucus are common symptoms. An examiner may hear wheeze, and spirometry can provide objective evidence of airflow obstruction. Similar symptoms can occur with different conditions.",
+        "Reduced airway clearance can contribute to chest infections, which can worsen symptoms. Persistent breathlessness can limit activities such as climbing stairs. Repeated flare-ups can mean missed work, greater healthcare use and extra help from family."
       ],
       table: {caption: "Match a structural change to its most direct consequence", head: ["Change", "Direct consequence"], rows: [
         ["Smaller airway opening", "Greater resistance to airflow"], ["Loss of alveolar walls", "Less gas exchange area and reduced recoil"]
@@ -97,15 +98,52 @@
         1, [["The blocked nodes increase drainage, so fluid collects in the arm.", "Greater drainage would remove more tissue fluid. The evidence shows reduced drainage."], ["The enlarged nodes restrict drainage, allowing tissue fluid to accumulate in the arm.", ""], ["Any painless lump blocks lymph because it is painless.", "Pain does not indicate drainage. The anatomical relationship on the image is the relevant evidence."]],
         "Impaired lymph drainage can leave excess fluid in the tissue. The supplied imaging is needed to connect that effect to the enlarged nodes.")
     },
+    "f171/1.2.1.pkd": {
+      goal: "Explain how cysts can change kidney function and interpret urine volume alongside other evidence.",
+      activate: ["What does a kidney do besides making urine?", "It removes wastes and helps regulate the amount of water and dissolved ions in the blood."],
+      explain: [
+        "Autosomal dominant polycystic kidney disease is an inherited disorder. Fluid-filled cysts can enlarge the kidneys and disrupt functioning tissue over time. This can reduce the kidneys’ capacity to remove wastes and regulate water and ions.",
+        "Some people experience pain in the side or back. Blood in the urine and raised blood pressure can be signs. Kidney function can decline even while the person continues to pass urine.",
+        "Symptoms vary. Pain or repeated hospital appointments can affect everyday activities. If kidney failure develops, treatment can affect work, household routines and healthcare use."
+      ],
+      table: {caption: "Identify what each observation measures", head: ["Fictional finding", "What it establishes"], rows: [
+        ["Imaging shows both kidneys are enlarged with multiple cysts", "Structural change"],
+        ["Urine continues to be produced", "Some fluid still leaves the body via the kidneys"],
+        ["Repeat blood tests indicate falling filtration", "Loss of functional clearance despite continued urine production"]
+      ]},
+      focusCells: [["0:0"],["1:0","2:0"]],
+      modelTitle: "Separate urine production from filtration",
+      nodes: ["Link cysts to function", "Interpret two measures"],
+      model: [
+        "Follow the effect of the structural change. Enlarging cysts can displace and damage functioning kidney tissue, leaving less capacity to regulate the blood and remove waste.",
+        "In a fictional example, the urine volume stays similar but blood tests indicate reduced clearance. The volume measures the amount of fluid passed. It does not measure how effectively wastes were removed from the blood."
+      ],
+      guided: choice("An image shows large cysts and less remaining functioning kidney tissue. Which effect is plausible?",
+        0, [["The kidneys may remove wastes from blood less effectively.", ""], ["The remaining tissue must compensate fully.", "The image alone cannot establish how well the remaining tissue works."], ["Normal urine colour confirms normal filtration.", "Appearance does not measure filtration."]],
+        "Start with the change in working kidney tissue and ask which normal functions could be affected."),
+      apply: written("Two fictional people with polycystic kidney disease report similar pain. One has blood in the urine but similar filtration results at both visits. Explain how the findings can coexist and what they establish.",
+        ["Blood in urine is an observed sign and pain is a reported symptom.", "Urine composition and filtration measure different aspects of kidney function.", "The results do not establish that filtration declined over the two visits."],
+        "Blood in the urine can be present even when there is little detectable change in filtration over the stated interval. The observations answer different questions.")
+    },
     "f171/4.1": {
       revision: 1,
       goal: "Choose a measurement for a biological question and state what its result can establish.",
       activate: ["What is the difference between a symptom and a measurement?", "A symptom is reported by the person. A measurement records a specific feature, such as oxygen saturation or airflow."],
       prior: ["f171/4.2.2", "Compare serial readings taken under different conditions"],
       explain: [
-        "Initial assessment combines the history, examination and relevant measurements. Peak expiratory flow estimates the greatest flow during a forced breath out. Spirometry can record both volume and flow.",
-        "Pulse oximetry estimates the percentage of haemoglobin carrying oxygen. A saturation reading gives no direct measure of expiratory flow or of the cause of a change. Measurement conditions and technical quality affect interpretation."
+        "Start with the medical history. Ask when symptoms began, what affects them, and what else might explain them. Clear language, enough time to answer, and a private, accessible room can improve the information a person is able to share. Inspection means looking, palpation means feeling, percussion means tapping and judging the sound, and auscultation means listening to body sounds.",
+        "Initial measurements target different features. A cuff reading of 128/76 mmHg gives systolic pressure first, when the ventricles contract, and diastolic pressure second, between contractions. A single reading is affected by conditions such as rest, position and cuff fit. Temperature is an objective measurement but by itself cannot establish why someone feels feverish.",
+        "BMI is mass in kilograms divided by height in metres squared. For a fictional adult of 80 kg and 2.00 m, BMI is 80 ÷ 4 = 20 kg/m². It puts mass in context of height but does not distinguish fat from muscle or diagnose disease.",
+        "Peak expiratory flow estimates the greatest flow during a forced breath out. Spirometry can record both volume and flow. Pulse oximetry estimates the percentage of haemoglobin carrying oxygen. Saturation gives no direct measure of expiratory flow or of the cause of a change.",
+        "Choose further tests for the information still missing. For example, an image can show an area of altered tissue. Examining a sample from that area under a microscope addresses whether the tissue itself has changed."
       ],
+      compare: {caption: "What further investigations can contribute", head: ["Investigation", "Evidence it provides", "One limit"], rows: [
+        ["Biopsy", "A sample of tissue for examination", "The sample represents only the site taken"],
+        ["Blood test", "A chosen blood cell count or substance concentration", "An abnormal level may have several causes"],
+        ["Cognitive assessment", "Performance on defined thinking tasks", "Language or hearing can affect the result"],
+        ["Mammogram", "An X-ray image of breast tissue", "An abnormal image alone may not establish its cause"],
+        ["Urine test", "Evidence such as blood, protein or glucose in urine", "A finding usually needs other clinical context"]
+      ]},
       table: {caption: "Three measurements used in fictional initial assessments", head: ["Tool", "Readout", "One limitation"], rows: [
         ["Peak flow meter", "Maximum expiratory flow", "Effort and technique matter"],
         ["Spirometer", "Volume and flow during breathing manoeuvres", "Technique and appropriate reference values matter"],
