@@ -1,7 +1,7 @@
 /* One main-site return control across pages, apps and simulations. */
 a.narajos-home{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;gap:8px;flex:none;min-height:44px;padding:8px 11px;border:1px solid #d4dcd8;border-radius:10px;background:#fff;color:#24313b;text-decoration:none;white-space:nowrap;font:700 16px/1.2 system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:0}
 a.narajos-home img{display:block;flex:none;width:28px;height:28px;object-fit:contain}
-a.narajos-home span{display:inline;letter-spacing:0}
+a.narajos-home span{display:inline;letter-spacing:0;text-transform:lowercase}
 a.narajos-home:hover{color:#9b4614;border-color:#c96a25;background:#fff9f3;text-decoration:none}
 a.narajos-home:focus-visible{outline:3px solid var(--narajos-focus-ring);outline-offset:3px}
 header.brand>a.narajos-home{margin-left:auto}
@@ -37,6 +37,12 @@ main .opt:focus-within, main .k-option:focus-within {
 
 /* Small footer link in the independently styled revision and teaching tools. */
 footer .resource-terms{display:inline-block;margin:.3rem .5rem .25rem 0;color:inherit;font-size:.85rem;text-underline-offset:.15em}
+
+/* Lowercase the visual wordmarks while retaining their full names in the markup. */
+.keystone-lockup .keystone-type,
+header.top > .top-inner > a.brand .eyebrow,
+header.brand > h1 > .eyebrow { text-transform:lowercase; }
+.keystone-lockup .keystone-type .keystone-first { font-weight:700; }
 
 /* Keep the orange wordmark legible on both application palettes. */
 .keystone-lockup .keystone-type .keystone-second{color:#a4470d}
