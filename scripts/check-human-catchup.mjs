@@ -19,7 +19,7 @@ export async function checkHumanCatchup(browser, base) {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await open("catchup");
     const chapters = await page.evaluate(() => Object.entries(window.KeystoneHumanLessons));
-    assert.equal(chapters.length, 61, "Retain 54 routes and add seven F171 comparisons");
+    assert.equal(chapters.length, 66, "Retain 61 routes and add five communicable disease comparisons");
     assert.equal(new Set(chapters.map(([key]) => key.split("/")[0])).size, 8);
     for (const [key, lesson] of chapters) {
       await page.evaluate(key => localStorage.removeItem(key), localPractice);
@@ -85,7 +85,25 @@ export async function checkHumanCatchup(browser, base) {
       }
     }
 
+    // The exact linked item, its edited answers and corrected outcome survive reopening.
+    await open("catchup/f171/1.3.1.fungi");
+    await page.locator("[data-hb-practice]").press("Enter");
+    const matches = page.locator("select[data-match]");
+    await matches.first().waitFor();
+    assert.equal(await matches.count(), 5);
+    for (let i = 0; i < 5; i++) await matches.nth(i).selectOption(String(i === 4 ? 3 : i));
+    await page.getByRole("button", {name: /Check answer/}).press("Enter");
+    const matchKey = practiceKey + "-topic-f171/f171-infection-group-transfer";
+    assert.deepEqual((await saved(matchKey)).queue, ["f171-infection-group-transfer"]);
+    await page.reload();
+    await page.getByRole("button", {name: "Try again", exact: true}).first().press("Enter");
+    assert(await matches.nth(0).isDisabled());
+    await matches.nth(4).selectOption("4");
+    await page.getByRole("button", {name: /Check answer/}).press("Enter");
+    assert.equal((await saved(matchKey)).outcomes[0], "corrected");
+
     for (const [route, questionId, wrongAnswer, diagnosis] of [
+      ["f171/1.3.1.viruses", "f171-route-prevention-transfer", /ventilation reduces exposure to all viruses/, /Viral classification does not imply a shared route/],
       ["f170/1.1.2.counting", "f170-cell-counting-transfer", /target volume/, /overlap the cells in volume/],
       ["f171/1.2.1.hiatus", "f171-hiatus-mechanism-transfer", /effective reflux barrier/, /Increased secretion was not measured/],
       ["f171/1.2.1.hodgkin", "f171-hodgkin-mechanism-transfer", /only affect immunity/, /local effect on another structure/]

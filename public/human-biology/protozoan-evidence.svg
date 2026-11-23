@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 212" role="img" aria-labelledby="t d">
+<title id="t">Two patient records</title><desc id="d">A reports fatigue. In A's blood film a trained microscopist identifies Plasmodium inside red cells. B reports fatigue and has enlarged lymph nodes on examination. No pathogen test result is available for B.</desc>
+<rect width="360" height="212" fill="white"/>
+<g font-family="sans-serif" fill="#183848"><text x="12" y="22" font-weight="bold">A · Blood film (schematic)</text>
+<g fill="#f4d9d5" stroke="#8b524a" stroke-width="2"><ellipse cx="48" cy="67" rx="26" ry="21"/><ellipse cx="111" cy="74" rx="24" ry="20"/><ellipse cx="177" cy="61" rx="25" ry="19"/></g>
+<ellipse cx="111" cy="70" rx="7" ry="5" fill="none" stroke="#594373" stroke-width="2"/><circle cx="117" cy="68" r="2.5" fill="#594373"/>
+<path d="M119 66l18-30h69" fill="none" stroke="#183848"/><text x="210" y="40" font-size="14">Identified parasite</text>
+<text x="12" y="114" font-size="14">Report: Plasmodium seen in a red blood cell.</text>
+<path d="M12 130h336" stroke="#697983"/><text x="12" y="154" font-weight="bold">B · Examination</text>
+<text x="12" y="177" font-size="15">Enlarged lymph nodes. Reports fatigue.</text><text x="12" y="198" font-size="15">No pathogen test result recorded.</text></g></svg>
