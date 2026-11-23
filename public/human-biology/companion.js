@@ -357,11 +357,6 @@ function questionReturn(origin){
  var engine=window.KeystoneHumanChallenge;
  return engine&&(engine.resumeRoute(origin)||engine.resumeRoute(origin.replace(/\/\d+$/,"")));
 }
-function resumeLinks(back){
- var simple=window.KeystoneHumanApp&&window.KeystoneHumanApp.hasResume&&window.KeystoneHumanApp.hasResume();
- return (back?'<a data-hb-resume href="#'+esc(back)+'">Return to your unfinished question set</a>':'')+
-  (simple?'<a href="#resume">Resume flashcards or explanation practice</a>':'');
-}
 function skillLinks(unit,id,lesson){
  var library=window.KeystoneHumanSkills;
  if(!library||!lesson.skills)return "";
@@ -378,14 +373,18 @@ function practiceLabel(unit,id,topic){
  return (unit==="f171"&&labels[id])||"Practise "+topic.toLowerCase();
 }
 function relatedLinks(unit,id,origin,practice,label){
- var knowledge=/^f17[2-7]$/.test(unit),back=questionReturn(origin);
- var links=back===practice&&knowledge?"":'<a'+(knowledge?" data-hb-practice":"")+' href="#'+esc(practice)+'">'+esc(label)+'</a>';
- if(unit==="f170")links+='<a href="#cards/'+esc(id)+'">Flashcards for this topic</a>';
+ const back=questionReturn(origin);
+ const build=buildLink(unit,id,origin);
+ const resume=back?'<a data-hb-resume href="#'+esc(back)+'">Return to your unfinished question set</a>':"";
+ const practiceLink=back===practice?"":'<a data-hb-practice href="#'+esc(practice)+'">'+esc(label)+'</a>';
+ let further=build||resume?practiceLink:"";
+ if(unit==="f170")further+='<a href="#cards/'+esc(id)+'">Flashcards for this topic</a>';
  if(unit==="f171"){
-  var deck=(window.KeystoneF171Recall||[]).find(function(d){return d[0]===id;});
-  links+='<a href="#'+(deck?"cards/f171-"+id:"flashcards/f171")+'">'+(deck?"Flashcards for this topic":"F171 flashcards")+'</a>';
+  const deck=(window.KeystoneF171Recall||[]).find(d=>d[0]===id);
+  further+='<a href="#'+(deck?"cards/f171-"+id:"flashcards/f171")+'">'+(deck?"Flashcards for this topic":"F171 flashcards")+'</a>';
  }
- return '<nav class="hb-teach-related" aria-label="Related learning">'+resumeLinks(back===practice&&!knowledge?null:back)+buildLink(unit,id,origin)+links+'</nav>';
+ return '<nav class="hb-teach-related" aria-label="Related learning">'+resume+build+(!resume&&!build?practiceLink:"")+
+  (further?'<details><summary>More practice for this topic</summary>'+further+'</details>':"")+'</nav>';
 }
 function showHome(render){
  var h='<div class="k-wrap">'+crumb("home","Home")+'<div class="k-unit-hero"><div class="k-eyebrow">Your learning companion</div><h1>Catch up and understand</h1><p>Choose an idea to learn or revisit. Guided lessons show the reasoning before you practise.</p></div><div class="k-unit-tiles">';

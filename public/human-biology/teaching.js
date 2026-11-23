@@ -94,10 +94,10 @@
     const activate = lesson.activate
       ? '<details class="hb-prerequisite"><summary>' + escape(lesson.activate[0]) + '</summary><p>' +
         escape(lesson.activate[1]) + '</p>' + prior + '</details>' : prior;
-    const explanation = '<section class="paper panel hb-teach-explain"><h2>Understand the idea</h2>' +
+    const explanation = '<details class="paper panel hb-teach-explain" open><summary><h2>Understand the idea</h2></summary>' +
       paragraphs(lesson.explain) + table(lesson.compare) + context.inline +
       (lesson.revision ? '<div class="actions hb-start">' + openStageButton("model", "See worked example", "primary") + '</div>' : '') +
-      '</section>';
+      '</details>';
     const evidenceModel = lesson.revision && (lesson.focusCells || lesson.graph || lesson.visual === "model");
     const model = lesson.model?.length ?
       '<details class="paper panel hb-teach-stage' + (evidenceModel ? ' hb-model-with-evidence' : '') +
@@ -333,18 +333,27 @@
         showModelStep(Math.min(reviewStep, steps.children.length) - 1, true);
       } else showModelStep(0, false);
     }
-    root.addEventListener("click", event => {
-      const button = event.target.closest("[data-hb-open]");
-      if (!button) return;
-      const id = button.dataset.hbOpen;
-      const next = id === "model" ? root.querySelector("[data-hb-model-step]") :
-        root.querySelector('[data-hb-stage="' + id + '"]');
-      if (!next) return;
+    const explanation = root.querySelector(".hb-teach-explain");
+    function prepareStage(next) {
       root.querySelectorAll("details.hb-teach-stage[open]").forEach(stage => {
         if (stage !== next) stage.open = false;
       });
-      next.open = true;
-      next.querySelector("summary").focus();
+      if (next.hasAttribute("data-hb-stage")) explanation.open = false;
+    }
+    root.addEventListener("click", event => {
+      const button = event.target.closest("[data-hb-open]");
+      if (button) {
+        const id = button.dataset.hbOpen;
+        const next = id === "model" ? root.querySelector("[data-hb-model-step]") :
+          root.querySelector('[data-hb-stage="' + id + '"]');
+        if (!next) return;
+        prepareStage(next);
+        next.open = true;
+        next.querySelector("summary").focus();
+      } else {
+        const summary = event.target.closest(".hb-teach-stage > summary");
+        if (summary && !summary.parentElement.open) prepareStage(summary.parentElement);
+      }
     });
     updateFollowup();
   }

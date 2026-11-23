@@ -218,3 +218,29 @@
   outline: 3px solid var(--ring);
   outline-offset: 3px;
 }
+
+.hb-teach-explain > summary h2 {
+  display: inline;
+  font-size: 1.2rem;
+}
+.hb-teach-explain > summary { min-height: 44px; }
+.hb-teach-stage:not([open]),.hb-teach-explain:not([open]) {
+  padding-block: .15rem;
+  box-shadow: none;
+}
+.hb-teach-related { align-items: baseline; }
+.hb-teach-related a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  text-underline-offset: .15em;
+}
+.hb-teach-related > details {
+  flex-basis: 100%;
+}
+.hb-teach-related > details > summary {
+  width: fit-content;
+  min-height: 44px;
+  color: var(--brand);
+}
+.hb-teach-related > details a { margin-inline-end: 1rem; }
