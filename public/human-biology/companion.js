@@ -336,7 +336,7 @@ const focusedLessons={
 };
 function indexComparisons(){
  for(const [key,lesson] of Object.entries(window.KeystoneHumanLessons || {})){
- if(/^f171\/1\.[23]\.1\./.test(key) && lesson.title && !focusedLessons[key]){
+ if((/^f171\/1\.[23]\.1\./.test(key) || /^f170\/1\.1\.[1345]\./.test(key)) && lesson.title && !focusedLessons[key]){
   focusedLessons[key]={area:"a1",title:lesson.title,practice:lesson.practice || key.split("/")[1].split(".").slice(0,3).join("."),lines:lesson.explain};
  }
 }
@@ -344,6 +344,7 @@ function indexComparisons(){
 indexComparisons();
 function lessonFor(unit,id){return (window.KeystoneHumanLessons||{})[unit+"/"+id];}
 var buildPractice={
+ "f170/1.1.1":"p-cell-stem-benefits",
  "f170/1.1.2":"p-cell-actual-width",
  "f170/1.1.3":"p-cell-protein-route",
  "f170/2.1.2":"p-phys-heart-septum",
@@ -406,13 +407,18 @@ function relatedLinks(unit,id,origin,practice,label){
  const resume=back?'<a data-hb-resume href="#'+esc(back)+'">Return to your unfinished question set</a>':"";
  const practiceLink=back===practice?"":'<a data-hb-practice href="#'+esc(practice)+'">'+esc(label)+'</a>';
  let further=build||resume?practiceLink:"";
+ const other=lessonFor(unit,id)?.further || [];
+ for(const [route,title] of other){
+  const href=route.startsWith("challenge/")?route+"?from="+origin:route;
+  further+='<a href="#'+esc(href)+'">'+esc(title)+'</a>';
+ }
  if(unit==="f170"&&sectionById[id])further+='<a href="#cards/'+esc(id)+'">Flashcards for this topic</a>';
  if(unit==="f171"){
   const deck=(window.KeystoneF171Recall||[]).find(d=>d[0]===id);
   further+='<a href="#'+(deck?"cards/f171-"+id:"flashcards/f171")+'">'+(deck?"Flashcards for this topic":"F171 flashcards")+'</a>';
  }
  return '<nav class="hb-teach-related" aria-label="Related learning">'+resume+build+(!resume&&!build?practiceLink:"")+
-  (further?'<details><summary>More practice for this topic</summary>'+further+'</details>':"")+'</nav>';
+  (further?'<details><summary>'+(other.length?'Related learning and practice':'More practice for this topic')+'</summary>'+further+'</details>':"")+'</nav>';
 }
 function showHome(render){
  var h='<div class="k-wrap">'+crumb("home","Home")+'<div class="k-unit-hero"><div class="k-eyebrow">Your learning companion</div><h1>Catch up and understand</h1><p>Choose an idea to learn or revisit. Guided lessons show the reasoning before you practise.</p></div><div class="k-unit-tiles">';
@@ -509,6 +515,7 @@ function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
 }
 function linkFor(q){
  if(!q)return null;
+ if(q.unit==="f170" && sectionById[q.catchup])return "catchup/f170/"+q.catchup;
  if(q.id==="f170-microvilli-transfer")return "catchup/f170/1.2.1";
  if(focusedLessons[q.unit+"/"+q.catchup])return "catchup/"+q.unit+"/"+q.catchup;
  if(q.unit==="f170"&&sectionById[q.section])return "catchup/f170/"+q.section;

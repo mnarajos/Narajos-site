@@ -1327,6 +1327,14 @@ additions.push({
  misconception:"Preventive measures must act on the relevant route of exposure.",
  hintCue:"Identify the route affected by each proposed measure.",catchup:"1.3.1.viruses"
 });
+additions.push({
+ id:"f170-gamete-contributions",unit:"f170",area:1,section:"1.1.1",catchup:"3.3.1",type:"written",level:"apply",
+ stem:"A student argues that either gamete could supply all the materials for the first stages of development because both contribute a set of chromosomes. Use one feature of each gamete to evaluate that argument.",
+ markPoints:["The sperm head delivers a haploid set of chromosomes, and its flagellum helps it reach the oocyte.", "The oocyte contributes a haploid set and substantial cytoplasm with organelles and stored molecules used in early development.", "Equal numbers of chromosomes do not imply equal contributions of cytoplasmic material."],
+ model:"A sperm transports its chromosomes in a small, mobile cell. The large oocyte supplies chromosomes and most of the cytoplasm, including organelles and stored molecules for early development. A chromosome count misses that functional difference.",
+ explain:"Connect the structure of each gamete to a contribution. Accept egg cell or ovum for the female gamete here, and tail or flagellum for the sperm's propulsive structure.",
+ misconception:"A chromosome count measures only one part of a gamete's contribution.", hintCue:"Think about what surrounds the chromosomes in each cell."
+});
 var ids=new Set(bank.questions.map(function(q){return q.id;}));
 additions.forEach(function(q){if(!ids.has(q.id)){bank.questions.push(q);ids.add(q.id);}});
 })();

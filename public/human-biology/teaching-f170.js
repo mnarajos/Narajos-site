@@ -395,6 +395,11 @@ window.KeystoneHumanLessons = {
         "The endometrium is the uterine lining, with glands. Ovarian follicles enclose developing oocytes. Seminiferous tubules in testes have layers of developing germ cells around a lumen.",
         "Use the positions and sizes of cells and spaces as evidence. The colour depends on the stain and is less useful for identification."
       ],
+      compare: {caption: "Two gametes and their contributions", head: ["Gamete", "Feature and function"], rows: [
+        ["Sperm cell", "A flagellum propels the cell. Mitochondria in the midpiece supply some of the ATP for movement. The head carries a haploid nucleus and an acrosome whose contents help the sperm penetrate the coverings around the oocyte."],
+        ["Oocyte (egg cell)", "The large cytoplasm provides organelles, stored RNA and nutrients for early development. Following sperm entry, cortical granules release material that changes the surrounding coat and helps prevent entry by another sperm."]
+      ]},
+      further: [["challenge/f170/f170-gamete-contributions", "Explain what each gamete contributes"]],
       photo: uterine,
       modelTitle: "Identify the uterine lining from its glands",
       model: [
@@ -435,6 +440,109 @@ window.KeystoneHumanLessons = {
       apply: choice("LH signalling to Leydig cells falls. Which change is most direct?", 2,
         [["Leydig cells release more progesterone to maintain the endometrium.", "The tissue is testis and the direct signal is to Leydig cells."], ["FSH can no longer act on any Sertoli cells.", "The disrupted signal is LH. Sertoli cells are targets for FSH."], ["Leydig cells produce less testosterone.", ""]],
         "Reduced LH stimulation of Leydig cells can lower testosterone production.", ["Match LH to its target cell and that cell to its product."])
+    }
+  });
+})();
+
+(function () {
+  const { choice, written } = window.KeystoneHumanTeaching;
+  Object.assign(window.KeystoneHumanLessons, {
+    "f170/1.1.1": {
+      revision: 1,
+      goal: "Use the shape and contents of a blood cell to predict what it can do.",
+      activate: ["What is a structural adaptation?", "A feature can help a cell perform a particular job. Explain the step between the feature and the job."],
+      explain: [
+        "A mature erythrocyte (red blood cell) is a flexible biconcave disc. Its thin centre shortens the diffusion distance for oxygen. Loss of the nucleus leaves room for haemoglobin, which binds oxygen. Its flexible membrane helps it pass through narrow capillaries.",
+        "White blood cells have nuclei. A nuclear outline can help you recognise a cell. To explain its function, look for the equipment it uses to recognise, engulf or release material."
+      ],
+      compare: {caption: "How four white cells defend the body", head: ["Cell", "Feature and consequence"], rows: [
+        ["Neutrophil", "A flexible cell with a multi-lobed nucleus can move through tissue. It engulfs particles and delivers granule contents to the compartment holding them."],
+        ["Lymphocyte", "Many small lymphocytes have a large rounded nucleus and little visible cytoplasm. Specific receptors on B and T cells recognise particular antigens. Activated B cells can give rise to antibody-secreting plasma cells."],
+        ["Eosinophil", "Often has two nuclear lobes and conspicuous granules. Releasing granule proteins outside the cell helps it act against parasites too large to engulf."],
+        ["Monocyte", "A large cell with an indented nucleus and ample cytoplasm. It can engulf material and can develop into a macrophage after entering tissue."]
+      ]},
+      modelTitle: "Trace oxygen from the surface into a red cell",
+      nodes: ["Distance", "Capacity", "Limit"],
+      model: ["Oxygen crosses the cell membrane and diffuses a short distance to haemoglobin in the thin disc.",
+        "Without a nucleus there is more internal space for haemoglobin. Oxygen can bind there and later be released in tissues.",
+        "Shape and haemoglobin do different jobs. A flexible cell with very little haemoglobin could still enter a capillary but would carry less oxygen."],
+      guided: choice("A large target stays outside two white cells. Which observation best explains how one cell acts on it?", 1,
+        [["An indented nucleus takes the target inside.", "Nuclear shape can help identification. Engulfment involves the cell surface."], ["An eosinophil releases proteins from its granules onto the target.", ""], ["A small lymphocyte carries oxygen to the target.", "Haemoglobin in erythrocytes carries most blood oxygen."]],
+        "Granule release can act on an external target without enclosing the whole target.", ["Consider which material can reach the outside."]),
+      apply: written("A white cell still surrounds particles with its membrane. Its granules can no longer deliver enzymes into the compartment around each particle. Predict what a time-lapse study would show after uptake. Explain why.",
+        ["Particles can still be taken inside.", "Less digestive enzyme reaches the enclosed material.", "Engulfed material may remain visible for longer or be broken down more slowly."],
+        "Entry could look normal. Once inside, particles would receive fewer digestive enzymes, so their breakdown could be slower. Counting only how many particles enter could miss the defect.",
+        ["Separate the evidence for entry from the evidence for breakdown."]),
+      further: [
+        ["catchup/f170/1.1.1.surfaces", "Compare transporting and protective surfaces"],
+        ["catchup/f170/1.1.1.signals", "Compare neurones, rods and cones"],
+        ["catchup/f170/1.1.1.muscle", "Compare muscle cells"],
+        ["catchup/f170/3.3.1", "Compare sperm and oocytes and study reproductive micrographs"],
+        ["catchup/f170/1.1.2", "Measure a real red cell"]
+      ]
+    },
+    "f170/1.1.1.surfaces": {
+      revision: 1, title: "Transporting and protective cell surfaces",
+      goal: "Use the surface facing a space to explain how a cell absorbs, moves or secretes material.",
+      explain: ["Find the lumen, the space beside the lining. Short microvilli give the cell more membrane for transport. Longer motile cilia beat to move material along the surface. A single thin layer gives a short diffusion distance."],
+      compare: {caption: "Match the structure to the movement", head: ["Cell and site", "How the feature helps"], rows: [
+        ["Proximal renal tubule", "Microvilli increase the membrane area facing the filtrate. Many mitochondria supply ATP for ion pumps. The gradients these pumps maintain also support glucose reabsorption."],
+        ["Hepatocyte", "Ribosomes on rough ER make plasma proteins for secretion. Smooth ER contains enzymes that help process lipids and some drugs. Glycogen granules store a supply of glucose units."],
+        ["Trachea and oviduct", "Tracheal cilia move mucus and trapped particles towards the throat. Cilia in the oviduct help move the oocyte towards the uterus, alongside muscular contractions."],
+        ["Alveolus", "A thin, flattened squamous cell forms part of a very short path between air and blood for oxygen and carbon dioxide."],
+        ["Surface and upper gastric pits", "Surface mucous cells release mucus from vesicles at their exposed end. The mucus retains bicarbonate and protects the lining from acid and digestive enzymes."]
+      ]},
+      modelTitle: "Explain reabsorption at two surfaces of a tubule cell",
+      model: ["Start at the filtrate. The brush border provides room for more transporters per cell.",
+        "At the blood-facing side, sodium pumps use ATP to maintain an ion gradient. Uptake of some solutes from the filtrate depends on this gradient.",
+        "Losing brush-border area can limit uptake even when ATP is available. Losing ATP can impair uptake even with the brush border intact."],
+      guided: choice("Two linings have equal area. Oxygen crosses one flattened cell layer faster than several layers. Which feature explains this?", 2,
+        [["More cilia beat oxygen into blood.", "Cilia move material along a surface. Alveolar gases diffuse across the barrier."], ["A longer path lets more oxygen enter per second.", "Increasing diffusion distance slows exchange when other conditions match."], ["There is a shorter diffusion path across the single layer.", ""]],
+        "Use the direction of movement. The gas crosses the lining.", ["Is the substance travelling along or across the lining?"]),
+      apply: written("Two preparations keep their normal number of cells. In A, oviduct cilia stop beating. In B, gastric pit surface cells make mucus but their vesicles cannot fuse with the exposed membrane. Predict a different consequence in each preparation.",
+        ["A loses part of the mechanism moving the oocyte along the oviduct.", "B can make mucus but releases less onto the stomach surface.", "Reduced mucus weakens protection against acid or digestive enzymes."],
+        "In A, ciliary transport is impaired even though muscle may still move the oocyte. In B, mucus can remain inside vesicles. Less reaches the surface, weakening the protective layer.",
+        ["Trace where movement or delivery stops in each lining."]),
+      practice: "f170-microvilli-transfer"
+    },
+    "f170/1.1.1.signals": {
+      revision: 1, title: "From light detection to a nerve signal",
+      goal: "Explain how cell shape, connections and light-sensitive membranes contribute to signalling.",
+      explain: ["Rods and cones have outer segments with folded or stacked membranes containing visual pigments. Light absorption changes the signal sent to connected retinal cells. Rod pathways are sensitive in dim light. Three cone types have different wavelength sensitivities, allowing colour discrimination in brighter light.",
+        "In a typical sensory neurone, a long fibre carries impulses from the receptor region towards the central nervous system. Relay neurones have branching processes that connect neurones within it. A motor neurone has branched inputs and a long axon ending at an effector. Myelin on many long axons speeds conduction."],
+      visual: "model", visualFrom: ["f170","3.2.1"],
+      modelTitle: "Read a pathway by following its connections",
+      model: ["In the withdrawal reflex diagram, find the fibre that carries information from the receptor into the spinal cord. Its destination identifies the sensory route.",
+        "The relay neurone links incoming activity to a motor neurone. The motor axon carries the output to muscle. The reflex illustrates these directions. The retina has its own circuits."],
+      guided: choice("A branching cell connects two neurones entirely inside the spinal cord. Which evidence supports a relay role?", 0,
+        [["Its connections link the input pathway to another neurone within the CNS.", ""], ["Its branches prove that it detects light.", "Branches indicate possible connections. Light detection needs visual pigments."], ["Every neurone with branches directly activates muscle.", "Follow the destination. This cell ends on another neurone."]],
+        "Use the connections to infer the role.", ["Follow where the output goes."]),
+      apply: written("In a vision study a person detects faint white lights as well as the comparison group. In bright light they struggle to distinguish two colours that the group can separate. Which receptor pathway would you investigate first? Use both findings and state a limit of your conclusion.",
+        ["The colour result points towards cone signals or their comparison.", "Preserved faint-light detection is consistent with functioning rod pathways.", "These results cannot locate the change to the receptor itself or prove one particular diagnosis."],
+        "Investigate cone pathways first. Comparing signals from different cone types supports colour discrimination. Faint-light detection can remain effective through rods. A later change in the visual pathway could also affect the colour task.",
+        ["Which condition depends on comparing wavelength sensitivities?"]),
+      practice: "p-endo-reflex-arc"
+    },
+    "f170/1.1.1.muscle": {
+      revision: 1, title: "How muscle cells produce force together",
+      goal: "Use cell shape and connections to explain how three muscle tissues produce movement.",
+      explain: ["Actin and myosin filaments slide to generate force. In skeletal and cardiac muscle, repeating sarcomeres give the cells a banded appearance. The way cells are arranged affects where force is applied."],
+      compare: {caption: "Three arrangements of contractile cells", head: ["Muscle", "Structure and consequence"], rows: [
+        ["Skeletal", "Long, multinucleate striated fibres contain parallel myofibrils. Shortening along the fibres pulls on a tendon."],
+        ["Cardiac", "Branched, striated cells meet at intercalated discs. Mechanical junctions transmit force and gap junctions allow excitation to spread between cells."],
+        ["Smooth", "Spindle-shaped cells have contractile filaments arranged without visible striations. Slow, sustained contraction in a ring of cells can narrow a hollow organ."]
+      ]},
+      modelTitle: "Follow the force around a small artery",
+      model: ["Imagine a ring of smooth muscle around a lumen. Shortening around the ring makes the lumen narrower.",
+        "The absence of stripes does not mean these cells lack contractile proteins. It reflects how the filaments are organised."],
+      guided: choice("A sample has striations. What further observation most strongly supports cardiac rather than skeletal muscle?", 2,
+        [["It contains actin and myosin.", "Both tissues contain those filaments."], ["It shortens when stimulated.", "Both muscle types can shorten."], ["Branched cells join end to end at intercalated discs.", ""]],
+        "Striations occur in both. Look at the boundaries between cells.", ["Which feature links one cell to its neighbours?"]),
+      apply: written("In an experimental strip of heart muscle, a single cell still shortens when directly stimulated. Electrical signals spread poorly across its junctions with neighbouring cells. Explain how the strip can produce a weaker coordinated contraction.",
+        ["Direct stimulation shows that the cell can still generate force.", "Poor electrical coupling impairs excitation of neighbouring cells.", "Fewer cells contract together, reducing coordinated force."],
+        "The first cell can generate force. Poor signal transfer through gap junctions prevents nearby cells from being activated together, reducing the force of the coordinated contraction.",
+        ["Separate the cell's ability to shorten from the timing across the strip."]),
+      practice: "p-f170-tissue-hierarchy"
     }
   });
 })();
