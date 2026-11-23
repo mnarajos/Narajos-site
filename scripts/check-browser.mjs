@@ -563,6 +563,8 @@ try{
  await desktop.getByText("More practice options",{exact:true}).press("Enter");
  await desktop.getByRole("link",{name:"Skills Practice",exact:true}).click();
  await desktop.getByRole("link",{name:"All skills",exact:true}).click();
+ await desktop.waitForURL("**/#skills");
+ await desktop.locator(".k-skill-card").nth(13).waitFor();
  assert.equal(await desktop.locator(".k-skill-card").count(),14);
  await screen(desktop,"human-skills-desktop");
  await desktop.locator('a[href="#skills/f170/magnification"]').click();
