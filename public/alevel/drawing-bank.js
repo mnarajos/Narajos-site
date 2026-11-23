@@ -157,5 +157,13 @@
     const length = ratio * s.scale.pixels * s.scale.draw / s.scale.microns;
     return '<g fill="#18232a"><rect data-scale-bar="" x="12" y="' + (height+7) + '" width="' + length + '" height="3"/><text x="12" y="' + (height+29) + '" font-family="sans-serif" font-size="15">' + label + ' µm</text></g>';
   }
-  window.ALevelDrawingBank = {version:2, bank, categories, specimens, svg, evidence, scaleText, setFor};
+  // A neighbouring cell from the full onion field is reserved for paper work.
+  const paperSpecimen = {...specimens[0], name:"A neighbouring onion cell", crop:[437,72,214,224],
+    label:"Cell wall", target:[616,201],
+    task:"On paper, draw the one complete central cell. Preserve its wall shape, label the wall and add a 50 µm scale bar.",
+    observation:"The central cell is taller than it is wide. Its left edge bends inwards near the upper third. Three wall junctions are visible towards the base. Its widest span is about 160 source-image units.",
+    paths:{wall:"M492 96 Q528 98 580 116 Q588 115 590 125 Q600 158 616 201 L622 224 Q597 235 571 263 Q559 270 542 263 Q500 250 470 232 Q475 215 467 186 Q458 159 461 151 Q479 126 492 96Z"}};
+  const paper = {specimen:paperSpecimen,credit:commons+paperSpecimen.source,
+    evidence:"An irregular, upright polygon with a narrow lower-right corner. Its leader meets the right wall."};
+  window.ALevelDrawingBank = {version:2, bank, categories, specimens, paper, svg, evidence, scaleText, setFor};
 })();

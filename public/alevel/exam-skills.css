@@ -524,3 +524,16 @@ main:has(.al-catchup-journey) > h1 {
 .al-question-dialog::backdrop {
   background: rgb(0 0 0 / 55%);
 }
+
+.al-drawing-credit { display: block; margin-block: .45rem; overflow-wrap: anywhere; }
+.al-paper { margin-block: 1rem; }
+.al-paper summary, .al-drawing-example summary { padding-block: .65rem; cursor: pointer; }
+.al-paper-prompt, .al-paper-review { max-width: 36rem; }
+.al-paper-review label { display: block; padding-block: .35rem; }
+.al-paper-review textarea { display: block; width: 100%; box-sizing: border-box; font: inherit; }
+.al-paper button { margin: .4rem .4rem .4rem 0; }
+@media print {
+  body:has(.al-paper[open]) :is(header,footer,nav,button,dialog) { display: none !important; }
+  body:has(.al-paper[open]) :is(body,main,section,div,article,details):has(.al-paper-prompt) > :not(:has(.al-paper-prompt),.al-paper-prompt) { display:none !important; }
+  .al-paper[open] .al-paper-prompt { display:block; max-width:16cm; color:black; background:white; }
+}

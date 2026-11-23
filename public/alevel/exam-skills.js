@@ -815,6 +815,66 @@
     render();
     return block;
   }
+  function drawingCredit(item) {
+    const s = item.specimen, credit = node("small", null, "al-drawing-credit");
+    const source = node("a", s.author), licence = node("a", s.licence);
+    source.href = item.credit;
+    licence.href = s.licenceUrl;
+    credit.append(source, " · ", licence, " · photograph cropped for comparison. Drawing adapted under the same terms.");
+    return credit;
+  }
+
+  function paperDrawing() {
+    const item = drawing.paper, s = item.specimen, panel = node("details", null, "al-paper");
+    panel.append(node("summary", "Draw a specimen on paper"));
+    const prompt = node("section", null, "al-paper-prompt");
+    const picture = node("div");
+    picture.innerHTML = drawing.svg(item,true);
+    prompt.append(node("h3", s.name), node("p", s.task), picture,
+      node("p", "Use the reference bar to set the length on your page. If you enlarge the cell, enlarge the bar in the same proportion."), drawingCredit(item));
+    const print = button("Print observation and instructions", () => window.print());
+    print.classList.add("al-secondary");
+    panel.append(prompt, print);
+    const review = node("section", null, "al-paper-review");
+    const points = ["I followed the changes in direction around this cell.", "My label line reaches the wall.", "My bar has the same length relative to the cell as the reference bar."];
+    const getPaper = () => read().drawingPaper || {};
+    function update(patch) {
+      const saved = read();
+      saved.drawingPaper = {...saved.drawingPaper, ...patch};
+      save(saved);
+    }
+    const reveal = button("I’ve drawn it · compare with the model", () => {
+      update({compared:true});
+      showReview(true);
+    });
+    function showReview(moveFocus) {
+      reveal.hidden = true;
+      const state = getPaper(), heading = node("h4", "Self-review your paper drawing");
+      const picture = node("div");
+      picture.innerHTML = drawing.svg(item);
+      const checks = node("fieldset");
+      checks.append(node("legend", "Check your drawing against the model"));
+      points.forEach((point,index) => {
+        const input = node("input"), label = node("label");
+        input.type = "checkbox";
+        input.checked = Boolean(state.checks?.[index]);
+        input.onchange = () => update({checks:{...getPaper().checks,[index]:input.checked}});
+        label.append(input, " ", point);
+        checks.append(label);
+      });
+      const note = node("label", "One change I would make"), response = node("textarea");
+      response.rows = 2;
+      response.value = state.improvement || "";
+      response.oninput = () => update({improvement:response.value});
+      note.append(response);
+      review.replaceChildren(heading, picture, checks, note, node("p","Your checklist and improvement are saved on this device as self-review."));
+      if (moveFocus) focus(heading);
+    }
+    panel.append(reveal, review);
+    if (getPaper().compared) showReview(false);
+    return panel;
+  }
+
   function drawingComparison(item, session, persist) {
     const root = node("div", null, "al-drawing-comparison");
     const switcher = node("div", null, "al-drawing-switch");
@@ -846,8 +906,7 @@
       const figure = node("figure");
       figure.dataset.view = id;
       const image = node("div");
-      const mark = session.verdict === 1 && session.attempts > 0;
-      image.innerHTML = drawing.svg(item, isReference, mark);
+      image.innerHTML = drawing.svg(item, isReference);
       const enlarge = button("Enlarge " + label.toLowerCase(), () => {
         title.textContent = label;
         preview.innerHTML = image.innerHTML;
@@ -858,7 +917,7 @@
       figure.append(node("figcaption", label), image, enlarge);
       figures.append(figure);
     }
-    root.append(switcher, figures, dialog);
+    root.append(switcher, figures, drawingCredit(item), dialog);
     update();
     return root;
   }
@@ -896,23 +955,39 @@
     host.append(bar, block);
     const introduction = node("details", null, "al-drawing-example");
     introduction.open = !read().drawingSession && !read().drawingReview;
-    introduction.append(node("summary", "Worked example · Compare two drawings"),
-      node("p", "Use the requirements for the drawing. Several problems with outlines can belong to one category."));
+    const model = drawing.bank[0];
+    introduction.append(node("summary", "Worked example · From a micrograph to a drawing"),
+      node("p", "Trace the one complete onion cell in the centre. Follow the high corner to its rounded base before looking at the drawing."));
     const comparison = node("div", null, "al-figures");
-    [drawing.bank[0], drawing.bank[1]].forEach((item, i) => {
-      const fig = node("figure");
-      fig.innerHTML = drawing.svg(item);
-      fig.append(
-        node(
-          "figcaption",
-          i
-            ? "Reject for line quality · overlapping outlines"
-            : "Accept · clear, single outlines",
-        ),
-      );
+    for (const [reference, title] of [[true,"Red onion epidermis"],[false,"Model cell drawing"]]) {
+      const fig = node("figure"), pic = node("div");
+      pic.innerHTML = drawing.svg(model,reference);
+      fig.append(node("figcaption", title), pic);
       comparison.append(fig);
+    }
+    const corners = button("Locate the high corner in both images", () => {
+      const active = corners.getAttribute("aria-pressed") !== "true";
+      corners.setAttribute("aria-pressed", String(active));
+      comparison.querySelectorAll("figure > div > svg").forEach(svg => {
+        svg.querySelector("[data-worked-corner]")?.remove();
+        if (active) {
+          const ring = document.createElementNS("http://www.w3.org/2000/svg","circle");
+          ring.setAttribute("cx", "85.6"); ring.setAttribute("cy", "41.1");
+          ring.setAttribute("r","12"); ring.setAttribute("fill","none");
+          ring.setAttribute("stroke","#123349"); ring.setAttribute("stroke-width","3");
+          ring.setAttribute("stroke-dasharray","5 3"); ring.setAttribute("aria-hidden","true");
+          ring.dataset.workedCorner = "";
+          svg.append(ring);
+        }
+      });
     });
-    introduction.append(comparison);
+    corners.classList.add("al-secondary");
+    corners.setAttribute("aria-pressed","false");
+    const steps = node("ol");
+    steps.append(node("li","Carry across the unequal side lengths and the slope of the upper wall. The pink colour comes from the specimen. A single unshaded outline records the visible boundary."),
+      node("li","End the ruled label line on the right wall. The photograph resolves no nucleus in this cell, so leave the interior clear."),
+      node("li","The full photograph’s 200 µm bar spans 357 image units. One quarter of that length gives 89.25 units for a 50 µm bar. The crop and drawing use the same linear scale."));
+    introduction.append(comparison, corners, steps, drawingCredit(model));
     block.append(introduction);
     const start = button(
       read().drawingSession ? "Resume drawing set" : "Start a six-drawing set",
@@ -921,7 +996,7 @@
     start.classList.add("primary");
     block.append(start);
     const exercise = node("section");
-    block.append(exercise);
+    block.append(exercise, paperDrawing());
     function drawReview(review, moveFocus) {
       currentStage(bar, "review");
       const heading = node("h3", "Review your drawings");
@@ -1091,7 +1166,7 @@
             node("summary", "Help with this judgement"),
             node(
               "p",
-              "Compare outlines, fill, detail, relative sizes, label endpoints, and then the scale bar with the reference.",
+              item.specimen.clue,
             ),
           );
           hint.ontoggle = () => {
@@ -1121,7 +1196,7 @@
     practical: ["Reason through practicals", "Explain how the method affects the result and the claim.", "guided", "practical reasoning method controls confounding accuracy repeatability colorimeter stain chromatography"],
     evidence: ["Interpret data", "Choose the method and decide what the evidence supports.", "calculator", "interpret data statistical significance p values graph rate percentage calibration uncertainty extrapolation"],
     extended: ["Develop extended answers", "Connect relevant mechanisms and develop the answer to a title.", "pen", "extended response synoptic essay title relevance application breadth"],
-    drawings: ["Biological drawings", "Compare drawings and identify defects.", "diagram", "biological drawing scientific drawing tissue plan observation accept reject scale bar"],
+    drawings: ["Biological drawings", "Compare real specimens with drawings, then try drawing on paper.", "diagram", "biological drawing scientific drawing tissue plan observation accept reject scale bar"],
     points: ["Independent marking points", "Recognise distinct criteria in an answer.", "review", "marking points mark schemes marking scheme group criteria"],
     mechanisms: ["Biological mechanisms", "Connect a biological change to its effect.", "pen", "scientific explanations diffusion distance mechanism active transport synapse"],
     pressures: ["Cardiac valve movements", "Compare pressures across the heart valves.", "pathway", "cardiac pressure cardiac pressures heart valves ventricular atrial aortic", "a3-heart"],
