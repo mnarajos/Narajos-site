@@ -104,6 +104,22 @@
   function scaleText(s) {
     return s.scale ? s.scaleNote : "This field has no length calibration. Compare relative dimensions only.";
   }
+  // Coordinates enclose the specific comparison area in native photo units.
+  // Scale-bar feedback uses the measured bar rectangle below the field.
+  const cues = {
+    "epidermis.leader":[[410,143,68,48],"Compare where the line ends with the visible right wall."],
+    "epidermis.bar":[null,"Compare the printed value with one quarter of the original bar."],
+    "privet.band":[[269,62,160,111],"Trace the inner edge of the upper epidermis on the left."],
+    "privet.cells":[[255,58,122,58],"Decide which boundaries belong in a tissue map."],
+    "buttercup.core":[[280,243,280,269],"Compare the diameter of the central cylinder with the root diameter."],
+    "buttercup.xylem":[[368,325,108,104],"Trace the tissue shape within the central cylinder."],
+    "arterial.rim":[[330,178,50,48],"Compare the thickness of the dark wall below and to the right of the lumen."],
+    "arterial.hatch-tip":[[345,166,36,37],"Inspect the marks beside the lumen and the endpoint of its leader."],
+    "buccal.nucleus-size":[[362,210,111,80],"Compare nucleus width with the cell’s width."],
+    "buccal.sketch":[[285,177,75,102],"Follow the left contour of the upper cell, one stroke at a time."],
+    "redcell.interior":[[303,226,20,18],"Look for a bounded body at the same position in the observation."],
+    "redcell.bar":[null,"Use the ratio of the drawing bar to the source’s 20 µm bar."]
+  };
   const bank = specimens.flatMap(specimen => {
     const model = {key:"outline", defects:[], evidence:specimen.model, why:specimen.why};
     return [model, ...specimen.alternatives].map(variant => ({
@@ -133,7 +149,7 @@
     }
     return description;
   }
-  function svg(item, reference = false) {
+  function svg(item, reference = false, highlight = false) {
     const s = item.specimen, [x,y,w,h] = s.crop;
     const width = 300, height = width * h / w, total = height + (s.scale ? 49 : 13);
     const ratio = width / w, title = (reference ? "Observation of " : "Drawing of ") + s.name;
@@ -148,9 +164,17 @@
     const [tx,ty] = item.target || s.target;
     const endX = (tx-x)*ratio, endY = (ty-y)*ratio;
     const startY = endY - (s.leaderRise || 0);
+    let guide = "";
+    if (highlight && cues[item.id]) {
+      const box = cues[item.id][0];
+      const [left,top,wide,tall] = box
+        ? [(box[0]-x)*ratio,(box[1]-y)*ratio,box[2]*ratio,box[3]*ratio]
+        : [7,height+2,ratio*s.scale.pixels*s.scale.draw/s.scale.microns+11,34];
+      guide = '<rect data-defect-overlay="" aria-hidden="true" x="'+left+'" y="'+top+'" width="'+wide+'" height="'+tall+'" fill="none" stroke="#364c60" stroke-dasharray="4 3" stroke-width="1.5"/>';
+    }
     return outer + '<svg width="300" height="' + height + '" viewBox="' + s.crop.join(" ") + '"><g fill="none" stroke="#18232a" stroke-width="1.25" stroke-linejoin="round" stroke-linecap="round">' + paths +
       '</g></svg><line data-label-line="" x1="304" y1="' + startY + '" x2="' + endX + '" y2="' + endY + '" stroke="#18232a" stroke-width="1"/><text x="309" y="' + (startY+4) + '" font-family="sans-serif" font-size="13">' +
-      escape(s.label) + '</text>' + scaleBar(s,ratio,height,item.barLabel || s.scale?.draw) + '</svg>';
+      escape(s.label) + '</text>' + scaleBar(s,ratio,height,item.barLabel || s.scale?.draw) + guide + '</svg>';
   }
   function scaleBar(s,ratio,height,label) {
     if (!s.scale) return "";
@@ -165,5 +189,5 @@
     paths:{wall:"M492 96 Q528 98 580 116 Q588 115 590 125 Q600 158 616 201 L622 224 Q597 235 571 263 Q559 270 542 263 Q500 250 470 232 Q475 215 467 186 Q458 159 461 151 Q479 126 492 96Z"}};
   const paper = {specimen:paperSpecimen,credit:commons+paperSpecimen.source,
     evidence:"An irregular, upright polygon with a narrow lower-right corner. Its leader meets the right wall."};
-  window.ALevelDrawingBank = {version:2, bank, categories, specimens, paper, svg, evidence, scaleText, setFor};
+  window.ALevelDrawingBank = {version:2, bank, categories, specimens, cues, paper, svg, evidence, scaleText, setFor};
 })();

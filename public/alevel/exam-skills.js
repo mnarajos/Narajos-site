@@ -885,7 +885,10 @@
     dialog.setAttribute("aria-labelledby", "al-enlarged-title");
     const title = node("h2");
     title.id = "al-enlarged-title";
-    const preview = node("div");
+    const preview = node("div", null, "al-drawing-zoom");
+    preview.tabIndex = 0;
+    preview.setAttribute("role","region");
+    preview.setAttribute("aria-label","Enlarged image. Use the arrow keys or swipe to move across it.");
     const close = button("Close enlarged image", () => dialog.close());
     dialog.append(title, close, preview);
     const labels = [["reference", "Reference observation"], ["candidate", "Candidate drawing"]];
@@ -906,7 +909,7 @@
       const figure = node("figure");
       figure.dataset.view = id;
       const image = node("div");
-      image.innerHTML = drawing.svg(item, isReference);
+      image.innerHTML = drawing.svg(item, isReference, Boolean(session.outcome));
       const enlarge = button("Enlarge " + label.toLowerCase(), () => {
         title.textContent = label;
         preview.innerHTML = image.innerHTML;
@@ -917,7 +920,18 @@
       figure.append(node("figcaption", label), image, enlarge);
       figures.append(figure);
     }
-    root.append(switcher, figures, drawingCredit(item), dialog);
+    const descriptions = node("details", null, "al-drawing-evidence");
+    descriptions.append(node("summary", "Read the visual evidence"),
+      node("h4","Observation"), node("p",drawing.evidence(item,true)),
+      node("h4","Candidate"), node("p",drawing.evidence(item,false)));
+    const full = node("details");
+    full.append(node("summary","Inspect the full photograph"));
+    const photo = node("img");
+    photo.loading = "lazy";
+    photo.src = "/assets/micrographs/" + item.specimen.image;
+    photo.alt = "Full field before cropping. " + drawing.scaleText(item.specimen);
+    full.append(photo, drawingCredit(item));
+    root.append(switcher, figures, descriptions, full, dialog);
     update();
     return root;
   }
@@ -1000,7 +1014,8 @@
     function drawReview(review, moveFocus) {
       currentStage(bar, "review");
       const heading = node("h3", "Review your drawings");
-      exercise.replaceChildren(heading, outcomeOverview(review.entries.map(entry => entry.outcome)));
+      exercise.replaceChildren(heading, outcomeOverview(review.entries.map(entry => entry.outcome)),
+        node("p","These results record your judgements of supplied drawings. Use the paper task to practise producing your own."));
       const detail = node("details");
       detail.append(node("summary", "Review the completed drawings"));
       const entries = node("ol");
@@ -1092,9 +1107,8 @@
           }
           persistDrawing();
         };
-        categories.append(
-          node("legend", "If rejected, select every category affected"),
-        );
+        categories.append(node("legend", "Which features need correcting?"),
+          node("p","Use biological detail for structures added or left out. Use proportions for the size or shape of a structure that is present. Count each issue once."));
         drawing.categories.forEach((name, j) => {
           const label = node("label"),
             input = node("input");
@@ -1113,11 +1127,14 @@
         feedback.setAttribute("role", "status");
         feedback.setAttribute("aria-atomic", "true");
         if (session.outcome) feedback.textContent = outcomeNames[session.outcome] + ". " + item.why;
-        else if (session.attempts) feedback.textContent = "Review and improve. " +
-          (session.verdict === 1 ? item.why : "Compare the candidate with each stated requirement.");
+        else if (session.attempts) {
+          const extra = (session.categories || []).find(category => !item.defects.includes(category));
+          const lead = extra === undefined ? "Compare again. " : "Recheck your choice of " + drawing.categories[extra].toLowerCase() + ". ";
+          feedback.textContent = lead + (session.attempts > 1 ? item.why : drawing.cues[item.id]?.[1] || item.specimen.clue);
+        }
         const next = button(at < pool.length - 1 ? "Next drawing" : "Review progress", () => {
           if (!session.outcome) return;
-          session.entries[at] = { id: item.id, outcome: session.outcome };
+          session.entries[at] = { id:item.id, outcome:session.outcome, firstAttempt:session.firstAttempt, attempts:session.attempts };
           const entries = session.entries;
           at++;
           session = { round, index: at, attempts: 0, helped: false, entries, ids: session.ids };
@@ -1143,8 +1160,14 @@
             return;
           }
           const cats = session.categories || [];
+          if (session.verdict === 1 && !cats.length) {
+            feedback.textContent = "Select the feature that needs correcting.";
+            focus(categories.querySelector("input"));
+            return;
+          }
           const ok = session.verdict === Number(item.defects.length > 0) &&
             cats.length === item.defects.length && item.defects.every(value => cats.includes(value));
+          session.firstAttempt ||= {verdict:session.verdict, categories:cats.slice(), correct:ok, withClue:session.helped};
           session.attempts++;
           session.view = "candidate";
           if (ok) session.outcome = at === 0 ? "guided" : session.attempts > 1 ? "corrected" : session.helped ? "hint-supported" : "independent";
@@ -1160,13 +1183,13 @@
         });
         check.classList.add("primary");
         exercise.append(verdict, categories, feedback, session.outcome ? next : check);
-        if (at === 0 && !session.outcome) {
+        if (!session.outcome) {
           const hint = node("details");
           hint.append(
             node("summary", "Help with this judgement"),
             node(
               "p",
-              item.specimen.clue,
+              drawing.cues[item.id]?.[1] || item.specimen.clue,
             ),
           );
           hint.ontoggle = () => {
