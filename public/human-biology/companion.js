@@ -500,6 +500,7 @@ function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
 }
 function linkFor(q){
  if(!q)return null;
+ if(q.id==="f170-microvilli-transfer")return "catchup/f170/1.2.1";
  if(focusedLessons[q.unit+"/"+q.catchup])return "catchup/"+q.unit+"/"+q.catchup;
  if(q.unit==="f170"&&sectionById[q.section])return "catchup/f170/"+q.section;
  if(q.unit==="f171"&&q.section==="5.2")return "catchup/f171/a5";
@@ -549,6 +550,11 @@ function reteachFor(q,answer){
  var target=targets[route.slice("catchup/".length)];
  target=({
   "f170-microscopy-preparation-transfer":[0,"Revisit choosing a preparation for microscopy"],
+  "f170-microvilli-transfer":[1,"Revisit epithelial surface area"],
+  "f170-microscopy-slide-transfer":[0,"Revisit coverslips, contrast and thin sections"],
+  "f170-organelle-coordination-transfer":[0,"Revisit the nucleus and mitochondrial proteins"],
+  "f171-bmi-interpretation-transfer":[0,"Revisit how BMI is calculated and interpreted"],
+  "f171-next-investigation-transfer":[0,"Revisit how to select a further investigation"],
   "f171-expiratory-evidence-transfer":[2,"Revisit flow and volume measurements"],
   "f172-diagram-alleles":[1,"Revisit alleles on homologous chromosomes"],
   "f172-recessive":[2,"Revisit combining parental alleles"],
