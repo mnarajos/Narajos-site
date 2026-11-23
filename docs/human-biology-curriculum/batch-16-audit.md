@@ -103,4 +103,3 @@ Each row gives the curriculum classification before and after this review. The e
 | `4.1-r10` | Review | Taught | Teaching | The five modalities now have purposes and limits. The new case checks biopsy against alternative evidence. Independent assessment of all five comparisons remains incomplete. [f171/4.1](https://narajos.com/human-biology/#catchup/f171/4.1). `f171-next-investigation-transfer`. |
 | `4.1-r11` | Taught | Verified | Teaching and practice | Learners select respiratory evidence in the existing task and tissue sampling for a different biological inference in the new case. [f171/4.1](https://narajos.com/human-biology/#catchup/f171/4.1). `f171-expiratory-evidence-transfer`, `f171-next-investigation-transfer`. |
 | `4.1-r12` | Unresolved | Unresolved | Evidence only | The lesson explains the sequence from history to tests. It does not establish the different responsibilities of named practitioners in that sequence. |
-
