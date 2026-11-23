@@ -453,6 +453,7 @@ table.eqs-t{width:auto;border-collapse:collapse}table.eqs-t th{text-align:left;f
 <a class="resource-terms" href="/terms/">Terms of Use</a></footer>
 <div id="live" class="sr-only" role="status" aria-live="polite"></div>
 
+<script src="/assets/science-answer.js"></script>
 <script src="/assets/spaced-review.js"></script>
 <script src="/gcse/cards-biology.js"></script>
 <script src="/gcse/cards-chemistry.js"></script>
@@ -991,8 +992,8 @@ DATA.p1={
 
  {id:"efficiency",st:4,title:"Efficiency",spec:"6.1.2.2",needs:["conserve","power"],key:["<b>Efficiency = useful output energy transfer ÷ total input energy transfer</b>.","Or: <b>efficiency = useful power output ÷ total power input</b>. You need to remember both.","Efficiency can be a decimal (0.25) or a percentage (25%). It can never be more than 1 (100%), because energy cannot be created.","HT only: efficiency can be increased by reducing wasted energy, for example by lubricating moving parts, using thermal insulation or streamlining."],gate:"Efficiency brings together conservation of energy and power.",
   qs:[
-   {"t":"num","tier":"F","fig":"sankey","q":"The diagram shows energy transfers in a lamp. Calculate its efficiency as a percentage.","a":20,"alts":[0.2],"unit":"%","why":"Efficiency = useful ÷ total = 20 ÷ 100 = 0.2, or 20%."},
-   {"t":"num","tier":"F","q":"A motor is supplied with 500 J. It transfers 400 J usefully. Calculate its efficiency as a percentage.","a":80,"alts":[0.8],"unit":"%","why":"400 ÷ 500 = 0.8, or 80%."},
+   {"t":"num","tier":"F","fig":"sankey","q":"The diagram shows energy transfers in a lamp. Calculate its efficiency as a percentage.","a":20,"unit":"%","why":"Efficiency = useful ÷ total = 20 ÷ 100 = 0.2, or 20%."},
+   {"t":"num","tier":"F","q":"A motor is supplied with 500 J. It transfers 400 J usefully. Calculate its efficiency as a percentage.","a":80,"unit":"%","why":"400 ÷ 500 = 0.8, or 80%."},
    {"t":"mcq","tier":"F","q":"Why can efficiency never be more than 100%?","opts":["Energy can’t be created, so output can’t exceed input","Machines break down if their efficiency goes above 100%","Efficiency is measured in joules, not percentages","Wasted energy is at least half of the input"],"a":0,"fb":[null,"There is no such limit – the reason is conservation of energy.","Efficiency has no units: it is a ratio.","Wasted energy can be any amount – some machines are very efficient."],"why":"Useful output is part of the input, so it can’t be bigger than the input."},
    {"t":"cloze","tier":"F","q":"Complete the efficiency equation and the sentence after it.","text":"Efficiency = {useful} output energy transfer ÷ {total} input energy transfer. Energy that is not transferred usefully is usually dissipated to the {thermal} store of the surroundings.","extra":["wasted","kinetic"],"why":"Useful out ÷ total in."},
    {"t":"num","tier":"F","q":"A 60 W lamp has an efficiency of 0.25. Calculate its useful power output.","a":15,"unit":"W","why":"Useful power = efficiency × total power = 0.25 × 60 = 15 W."},
@@ -2159,7 +2160,7 @@ DATA.b6={
    {"t":"mcq","tier":"F","q":"Which sex chromosomes does a human male have?","opts":["XY","XX","YY","A single X"],"a":0,"fb":[null,"XX is female.","A Y chromosome must come with an X from the mother.","Body cells have a pair of sex chromosomes."],"why":"Females are XX and males are XY."},
    {"t":"num","tier":"F","q":"What is the percentage probability that a baby will be female?","a":50,"unit":"%","why":"Half of sperm carry X and half carry Y. All eggs carry X. So half of babies are XX."},
    {"t":"cloze","tier":"F","q":"Complete the sentences about inheritance.","text":"Polydactyly is caused by a/an {dominant} allele. Cystic fibrosis is caused by a/an {recessive} allele. Human body cells have {23} pairs of chromosomes.","extra":["46","mutated"],"why":"Polydactyly – dominant. Cystic fibrosis – recessive."},
-   {"t":"num","tier":"F","q":"Look at the Punnett square. What is the probability that a child is male? Give your answer as a percentage.","a":50,"unit":"%","why":"Two of the four boxes are XY (male), so the probability is 2 in 4, or 50%.","fig":"sexPunnett","alts":[0.5]},
+   {"t":"num","tier":"F","q":"Look at the Punnett square. What is the probability that a child is male? Give your answer as a percentage.","a":50,"unit":"%","why":"Two of the four boxes are XY (male), so the probability is 2 in 4, or 50%.","fig":"sexPunnett"},
    {"t":"short","tier":"H","q":"Give arguments for and against embryo screening.","marks":["For: it can reduce suffering / prevent a child being born with a serious disorder","For: it avoids the high cost of treating a serious disorder","Against: embryos with the allele may be destroyed, which some people believe is wrong","Against: it could lead to people choosing other characteristics / it is expensive"]}
   ]},
 
@@ -5063,7 +5064,7 @@ GEN.power=function(h){
 };
 GEN.eff=function(h){
  var T=pick([200,400,500,800,1000,2000]),p=5*ri(2,18),u=r6(T*p/100),dec=r6(p/100);
- if(!h)return numQ("A device is supplied with "+nf(T)+" J of energy. It transfers "+nf(u)+" J usefully. Calculate its efficiency as a percentage.",p,"%","Efficiency = useful output ÷ total input = "+nf(u)+" ÷ "+nf(T)+" = "+dec+", which is "+p+"%.",{alts:[dec]});
+ if(!h)return numQ("A device is supplied with "+nf(T)+" J of energy. It transfers "+nf(u)+" J usefully. Calculate its efficiency as a percentage.",p,"%","Efficiency = useful output ÷ total input = "+nf(u)+" ÷ "+nf(T)+" = "+dec+", which is "+p+"%.");
  if(Math.random()<0.5)return numQ("A device has an efficiency of "+dec+". It is supplied with "+nf(T)+" J of energy. Calculate the useful energy output.",u,"J","Useful output = efficiency × total input = "+dec+" × "+nf(T)+" = "+nf(u)+" J.");
  return numQ("A device has an efficiency of "+dec+". Its useful energy output is "+nf(u)+" J. Calculate the total energy input.",T,"J","Total input = useful output ÷ efficiency = "+nf(u)+" ÷ "+dec+" = "+nf(T)+" J.");
 };
@@ -5903,9 +5904,9 @@ function checkExtra(q,f){
   return {ok:a===q.x&&b===q.y};
  }
  if(q.t==="estruct"){
-  var dg=$("#esin").value.replace(/\D/g,"");
+  var dg=$("#esin").value.trim();
   if(!dg){msg.textContent="Type the numbers first, for example 2,8,1.";return null;}
-  return {ok:dg===q.a.replace(/\D/g,"")};
+  return {ok:NarajosAssessment.shellsMatch(dg,q.a)};
  }
  if(q.t==="short"){
   var n=q.marks.length,need=Math.ceil(n*2/3);
@@ -6271,23 +6272,6 @@ function drawOrder(done){
  };});
 }
 
-/* Forgiving number input: units, ×/x, commas, spaces, standard form, ratios and fractions all accepted */
-function parseNum(raw){
- var s=String(raw).toLowerCase().replace(/[−–—]/g,"-").replace(/\s+/g,"").replace(/μ/g,"µ");
- s=s.replace(/^(±|\+\/-|\+-)/,"").replace(/^(x|×)(?=[\d.])/,"");
- var mult=1;
- s=s.replace(/(cm|m)\^?[23²³]$/,"");
- if(/k(j|w)$/.test(s)){mult=1000;s=s.replace(/k(j|w)$/,"");}
- s=s.replace(/[a-zµωΩ°%²³\/×]+$/,"");
- s=s.replace(/,(?=\d{3}(\D|$))/g,"").replace(/,/g,".");
- var N="([-+]?(?:\\d+\\.?\\d*|\\.\\d+))",m;
- if((m=new RegExp("^"+N+"$").exec(s)))return +m[1]*mult;
- if((m=new RegExp("^"+N+"e([-+]?\\d+)$").exec(s)))return +m[1]*Math.pow(10,+m[2])*mult;
- if((m=new RegExp("^"+N+"[x×*]10\\^?([-+]?\\d+)$").exec(s)))return +m[1]*Math.pow(10,+m[2])*mult;
- if((m=new RegExp("^"+N+"[:/]"+N+"$").exec(s))&&+m[2]!==0)return m[1]/m[2];
- return NaN;
-}
-
 document.addEventListener("click",function(e){var b=e.target.closest?e.target.closest(".tok"):null;if(!b||!L||L.phase!=="q"||b.disabled)return;
  $$(".tok").forEach(function(x){x.classList.remove("sel");x.setAttribute("aria-pressed","false");});b.classList.add("sel");b.setAttribute("aria-pressed","true");});
 function answerHTML(q){
@@ -6302,7 +6286,7 @@ function answerHTML(q){
  if(q.t==="dotx")return dxAnswer(q);
  if(q.t==="sort"&&q.venn)return '<p><strong>The completed Venn diagram</strong> is shown above.</p>';
  if(q.t==="multi")return '<p><strong>Answer:</strong> '+q.a.map(function(i){return fmt(q.opts[i]);}).join("; ")+'</p>';
- if(q.t==="num")return '<p><strong>Answer:</strong> '+(q.disp?fmt(q.disp):q.a)+(q.unit?' '+esc(q.unit):'')+(q.alts?' (or '+q.alts.join(", ")+' as a decimal)':'')+'</p>';
+ if(q.t==="num")return '<p><strong>Answer:</strong> '+(q.disp?fmt(q.disp):q.a)+(q.unit?' '+esc(q.unit):'')+'</p>';
  if(q.t==="order")return '<p><strong>Correct order:</strong></p><ol>'+q.items.map(function(x){return '<li>'+fmt(x)+'</li>';}).join("")+'</ol>';
  if(q.t==="match"||q.t==="cloze")return '<p><strong>The correct answers</strong> are shown above.</p>';
  if(q.t==="balance")return '<p><strong>Answer:</strong></p><p class="eqn">'+q.eq.split(" → ").map(function(x,i){return '<span class="eqside">'+(i?'→ ':'')+fmt(x)+'</span>';}).join(" ")+'</p>';
@@ -6332,10 +6316,10 @@ function check(){
     else if(pk){l.classList.add("wrong");mk.textContent="✗ Not correct";}});}
  }else if(q.t==="num"){
   var raw=$("#numin").value.trim();
-  if(!raw)given=false;else{var n=parseNum(raw),tol=q.tol!=null?q.tol:Math.max(1e-9,Math.abs(q.a)*0.005);
-   if(isNaN(n)){$("#msg").textContent="Type a number, for example 0.05 or 25.";return;}
+  if(!raw)given=false;else{var reading=NarajosAssessment.parse(raw,q.unit,q.q),n=reading.value,tol=q.tol!=null?q.tol:Math.max(1e-9,Math.abs(q.a)*0.005);
+   if(!Number.isFinite(n)){$("#msg").textContent=reading.message;return;}
    if(q.abs)n=Math.abs(n);
-   ok=[q.a].concat(q.alts||[]).some(function(v){return Math.abs(n-v)<=(q.alts?Math.max(tol,Math.abs(v)*0.005):tol);});}
+   ok=NarajosAssessment.matches(n,q.a,q.tol,q.q,q.unit);}
  }else if(q.t==="order"){
   ok=L.cur.list.every(function(ii,p){return ii===p;});drawOrder(true);
  }else if(q.t==="match"&&!q.tp){

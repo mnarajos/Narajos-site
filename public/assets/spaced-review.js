@@ -36,7 +36,12 @@
   function matches(value,expected,alternatives){
    var v=normal(value);
    if(!v)return false;
-   return [expected].concat(Array.isArray(alternatives)?alternatives:[]).some(function(s){return normal(s)===v;});
+   return [expected].concat(Array.isArray(alternatives)?alternatives:[]).some(function(s){
+    // Element symbols and charges carry meaning even when subscripts were typed on a phone.
+    if (/^(?:[A-Z][a-z]?[₀-₉ₙ₊⁺⁻0-9n+-]*)+$/.test(s) && /[₀-₉ₙ₊⁺⁻0-9+-]/.test(s))
+      return String(value).trim().normalize("NFKC").replace(/−/g,"-") === s.normalize("NFKC").replace(/−/g,"-");
+    return normal(s)===v;
+   });
   }
   function snapshot(){return JSON.parse(JSON.stringify(records));}
   return {get:get,mark:mark,due:due,weak:weak,stats:stats,matches:matches,normal:normal,snapshot:snapshot,storageKey:key};

@@ -1,3 +1,4 @@
+import "./check-assessment-integrity.mjs";
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
@@ -115,7 +116,7 @@ for(const [name,html] of [["GCSE",gcse],["A-level",alevel]]){
  requireTrue(html.includes('class="narajos-home"'),name+" main site return link missing");
  requireTrue(html.includes("beforeunload"),name+" browser exit protection missing");
 }
-requireTrue(alevel.includes('"The stage of the cell cycle in which DNA replicates","S phase",["interphase","synthesis phase","S phase of interphase","S"]'),"A-level S phase or S answer missing");
+requireTrue(alevel.includes('"The stage of the cell cycle in which DNA replicates","S phase"'),"A-level replication card missing");
 const sitemap=[...read("sitemap.xml").matchAll(/<loc>([^<]+)<\/loc>/g)].map(match=>match[1]);
 requireTrue(new Set(sitemap).size===sitemap.length,"Sitemap contains duplicate URLs");
 requireTrue(sitemap.includes("https://narajos.com/science-catch-up/"),"Sitemap must contain the catch-up catalogue");

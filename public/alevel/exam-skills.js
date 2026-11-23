@@ -771,14 +771,14 @@
 
         let correct, matched, feedback;
         if (q.kind === "number") {
-          const raw = form.elements.number.value.trim().replace(/−/g, "-");
-          if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(raw)) {
-            announce("Enter a number in the stated units, including any negative sign.", "improve");
+          const reading = NarajosAssessment.parse(form.elements.number.value, q.unit, q.prompt);
+          if (!Number.isFinite(reading.value)) {
+            announce(reading.message, "improve");
             return;
           }
           state.responses[i] = form.elements.number.value;
-          const value = Number(raw);
-          correct = Math.abs(value - q.answer) < 1e-6;
+          const value = reading.value;
+          correct = NarajosAssessment.matches(value, q.answer, 1e-6, q.prompt, q.unit);
           if (!correct) feedback = q.numberFeedback?.[value];
         } else if (q.kind === "group") {
           const values = [...form.querySelectorAll("select")].map(select => select.value);

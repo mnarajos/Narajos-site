@@ -658,7 +658,7 @@ function misconceptionFeedback(q,a){
  var messages=[];
  if(q.optionFeedback&&a.selected)messages=a.selected.map(function(i){return q.optionFeedback[i];}).filter(Boolean);
  if(q.numberFeedback&&a.text){
-  var value=Number(String(a.text).trim().replace(/,/g,"").replace(/^×\s*/,""));
+  var value=NarajosAssessment.parse(a.text,q.answerUnit,q.stem).value;
   var error=q.numberFeedback.find(function(entry){return Math.abs(value-entry[0])<=(entry[2]??1e-6);});
   if(error)messages.push(error[1]);
  }
@@ -753,7 +753,11 @@ function validateAnswer(q,a){
  if(q.type==="order")return {ready:usableOrder(q,a.order),correct:usableOrder(q,a.order)&&a.order.every(function(v,i){return v===i;})};
  if(q.type==="sort"){if(!a.sort||a.sort.length!==q.rows.length||a.sort.some(function(v){return v===""||v==null;}))return {ready:false,msg:"Choose a group for each statement."};return {ready:true,correct:a.sort.every(function(v,i){return +v===q.rows[i][1];})};}
  if(q.type==="match"){if(!a.match||a.match.length!==q.pairs.length||a.match.some(function(v){return v===""||v==null;}))return {ready:false,msg:"Choose a match for each row."};return {ready:true,correct:a.match.every(function(v,i){return +v===i;})};}
- if(q.type==="number"){var val=String(a.text||"").trim().replace(/,/g,"").replace(/^×\s*/,"");if(!/^[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[-+]?\d+)?$/i.test(val))return {ready:false,msg:"Enter a number only. The expected unit is shown above the box."};return {ready:true,correct:Math.abs(Number(val)-q.correct)<=(q.tolerance||1e-9)};}
+ if(q.type==="number"){
+  var answer=NarajosAssessment.parse(a.text,q.answerUnit,q.stem);
+  if(!Number.isFinite(answer.value))return {ready:false,msg:answer.message};
+  return {ready:true,correct:NarajosAssessment.matches(answer.value,q.correct,q.tolerance??1e-9,q.stem,q.answerUnit)};
+ }
  if(q.type==="short"){if(!String(a.text||"").trim())return {ready:false,msg:"Enter an answer first, or choose Not sure."};return {ready:true,correct:q.accepted.some(function(x){return norm(x)===norm(a.text);})};}
  return {ready:!!String(a.text||"").trim(),correct:null,msg:"Write an explanation first, or choose I don’t know."};
 }
