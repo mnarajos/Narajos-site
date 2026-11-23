@@ -1100,3 +1100,74 @@ window.ALevelTeachingFamilies.precision = {
   specification: "3.2.2, 3.2.3, 3.3.4.1, 3.4.2 and 3.6.2",
   schemaVersion: 1,
 };
+
+window.ALevelTeachingFamilies.evidence = {
+  id: "evidence",
+  title: "Interpret data",
+  topics: ["a2", "a5", "a6", "a7", "p3e"],
+  papers: ["p1", "p2", "p3"],
+  principle: "Identify the quantity required, select a method, calculate with the appropriate units, and state what the result means in this investigation.",
+  evidence: [
+    "Illustrative respirometer readings",
+    ["Time (min)", "Estimated O₂ uptake (µL)"],
+    [["0", "0"], ["2", "8"], ["4", "14"], ["6", "14"]],
+  ],
+  model: [
+    "Question: How quickly was oxygen taken up between minutes 2 and 4, and how does this compare with minutes 4 to 6? The readings are cumulative volumes.",
+    "Use change in volume divided by elapsed time. Between 2 and 4 minutes, oxygen uptake is (14 − 8) ÷ (4 − 2) = 3 µL min⁻¹. Dividing 14 by 4 would give a different interval.",
+    "Between 4 and 6 minutes the readings show no further measurable uptake. The plateau supports that observation for the measured interval. It cannot show why uptake levelled off or predict later readings.",
+    "A numerical change may be biologically small or large. To make a statistical claim, consider sampling variation and the test used. A significant association does not itself establish a cause.",
+  ],
+  tasks: [
+    {
+      kind: "choice", guided: true,
+      prompt: "A calibration for glucose is linear from 0 to 8 mmol dm⁻³. An unknown reads 0.42 absorbance. The nearest standards read 0.30 at 4 mmol dm⁻³ and 0.54 at 6 mmol dm⁻³. Which method gives the appropriate estimate?",
+      options: [
+        "Interpolate between the two standards. The sample is halfway between them, so estimate 5 mmol dm⁻³.",
+        "Use the midpoint of the full concentration range and estimate 4 mmol dm⁻³.",
+        "Choose the lower standard and report 4 mmol dm⁻³ because the unknown has no exact match.",
+      ],
+      answer: 0,
+      why: "For a linear calibration, the fractional change in absorbance corresponds to the same fractional change in concentration within that interval.",
+      feedback: [null, "The full range tells you where the method is calibrated. Locate the sample between the standards that bracket its absorbance.", "The calibration permits interpolation. An unknown does not have to match a standard exactly."],
+      hints: ["How far is 0.42 from each neighbouring absorbance?"],
+    },
+    {
+      kind: "number", unit: "%", answer: 25, catchup: "a2-osmosis",
+      prompt: "A tissue sample has a mass of 1.60 g before immersion and 1.20 g afterwards. What percentage of its starting mass was lost?",
+      why: "The loss is 0.40 g. Divide by the starting mass of 1.60 g and multiply by 100 to obtain 25%. The question asks for the magnitude of the loss.",
+      numberFeedback: { "33.3": "The final mass is the wrong denominator. The question asks how large the loss is relative to the starting mass.", "0.25": "0.25 is the proportion. Express it as a percentage.", "-25": "−25% is the signed percentage change. Enter the magnitude because the question asks how much was lost.", "75": "That is the percentage of the starting mass left. The question asks for the fraction that was lost." },
+      hints: ["Find the mass lost before choosing the reference mass."],
+    },
+    {
+      kind: "choice",
+      prompt: "A randomised experiment compares mean leaf growth between two treatments. Before collecting data the investigators set a 5% threshold. An appropriate test gives P = 0.18. Which statement is supported?",
+      options: [
+        "The observed difference does not meet the stated threshold. The results do not establish that the treatments have identical effects.",
+        "There is an 18% probability that the null hypothesis is true, so an effect is more likely than no effect.",
+        "The treatments have identical effects because the test does not reach the threshold.",
+      ],
+      answer: 0,
+      why: "At the stated threshold this test does not reject the null hypothesis. It supplies neither the probability that the null is true nor proof that there is no effect.",
+      feedback: [null, "A P value is conditional on the null model. It does not give the probability that the null hypothesis is true.", "Failure to detect a difference at the threshold does not establish identical effects. The size of the plausible difference depends on the evidence and its uncertainty."],
+      hints: ["Compare P with the threshold, then consider what that comparison can establish."],
+    },
+    {
+      kind: "writing", catchup: "p3s-methods",
+      prompt: "River sites downstream of towns were warmer and had fewer mayfly larvae per sample. The researchers also recorded dissolved oxygen. Use the evidence to evaluate the claim that temperature alone reduced larval abundance.",
+      evidence: [
+        "Illustrative means from six sites in each group",
+        ["Sites", "Temperature (°C)", "Dissolved oxygen (mg L⁻¹)", "Mayfly larvae per sample"],
+        [["Upstream", "14", "9.8", "21"], ["Downstream", "19", "7.2", "8"]],
+      ],
+      points: [
+        "The downstream sites were 5 °C warmer and averaged 8 larvae per sample compared with 21 upstream. This is an observed association.",
+        "Dissolved oxygen also differed, 7.2 rather than 9.8 mg L⁻¹. Oxygen could affect survival and may depend on temperature or other site conditions.",
+        "These observational comparisons cannot isolate temperature's effect. Compare sites or experimental groups where temperature varies and oxygen and other relevant conditions are controlled.",
+      ],
+    },
+  ],
+  misconception: "Dividing by the wrong reference, reading a cumulative volume as a rate, or treating a numerical or statistical difference as a causal explanation.",
+  specification: "Section 6, especially MS 0.1, 0.3, 1.9–1.11 and 3.1–3.6, and PS 2.3–2.4",
+  schemaVersion: 1,
+};

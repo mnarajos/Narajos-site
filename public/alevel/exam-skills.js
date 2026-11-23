@@ -776,7 +776,9 @@
             return;
           }
           state.responses[i] = form.elements.number.value;
-          correct = Math.abs(Number(raw) - q.answer) < 1e-6;
+          const value = Number(raw);
+          correct = Math.abs(value - q.answer) < 1e-6;
+          if (!correct) feedback = q.numberFeedback?.[value];
         } else if (q.kind === "group") {
           const values = [...form.querySelectorAll("select")].map(select => select.value);
           if (values.some(value => value === "")) {
@@ -1086,12 +1088,13 @@
     ["Drawing and observation", ["drawings"]],
     ["Scientific precision and explanations", ["precision", "points", "mechanisms", "pressures", "regulation"]],
     ["Unfamiliar contexts", ["causal"]],
-    ["Data, calculations and models", ["osmosis", "countercurrent", "calvin", "dihybrid", "hardy"]],
+    ["Data, calculations and models", ["evidence", "osmosis", "countercurrent", "calvin", "dihybrid", "hardy"]],
   ];
   const skillDetails = {
     interpret: ["Understand the question", "Identify the target, select evidence and build a relevant answer.", "idea", "interpret question command words task target use data relevant answering suggest explain"],
     precision: ["Explain precisely", "Compare scientific statements and improve your own explanation.", "pen", "precise terminology scientific language osmosis chromatids homologous transcription translation"],
     practical: ["Reason through practicals", "Explain how the method affects the result and the claim.", "guided", "practical reasoning method controls confounding accuracy repeatability colorimeter stain chromatography"],
+    evidence: ["Interpret data", "Choose the method and decide what the evidence supports.", "calculator", "interpret data statistical significance p values graph rate percentage calibration uncertainty extrapolation"],
     drawings: ["Biological drawings", "Compare drawings and identify defects.", "diagram", "biological drawing scientific drawing tissue plan observation accept reject scale bar"],
     points: ["Independent marking points", "Recognise distinct criteria in an answer.", "review", "marking points mark schemes marking scheme group criteria"],
     mechanisms: ["Biological mechanisms", "Connect a biological change to its effect.", "pen", "scientific explanations diffusion distance mechanism active transport synapse"],
