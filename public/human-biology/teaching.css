@@ -244,3 +244,11 @@
   color: var(--brand);
 }
 .hb-teach-related > details a { margin-inline-end: 1rem; }
+
+.hb-evidence-image {
+  display: block;
+  width: 100%;
+  max-width: 30rem;
+  height: auto;
+  margin-block: .65rem;
+}

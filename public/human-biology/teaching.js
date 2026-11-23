@@ -58,12 +58,18 @@
           '>' + escape(cell) + '</td>').join("") + '</tr>').join("") + '</tbody></table>';
   }
 
+  function illustration(item) {
+    if (!item) return "";
+    return '<img class="hb-evidence-image" src="' + escape(item.src) + '" alt="' + escape(item.alt) +
+      '" width="' + (item.width || 360) + '" height="' + (item.height || 212) + '">';
+  }
+
   function figure(photo, field) {
     if (!photo) return "";
     return '<figure class="hb-teach-photo"><img src="' + escape(photo.src) + '" alt="' +
       escape(photo.alt) + '" width="' + photo.width + '" height="' + photo.height + '" loading="lazy" decoding="async">' +
       '<figcaption>' + (field ? '<strong>Field ' + field + '</strong> · ' : '') + '<a href="' + escape(photo.source) + '">' + escape(photo.credit) + '</a> · ' +
-      '<a href="' + escape(photo.licenceUrl) + '">' + escape(photo.licence) + '</a> · Resized and converted to WebP</figcaption></figure>';
+      '<a href="' + escape(photo.licenceUrl) + '">' + escape(photo.licence) + '</a> · ' + escape(photo.changes || 'Resized and converted to WebP') + '</figcaption></figure>';
   }
 
   function writingExample(example) {
@@ -89,7 +95,7 @@
       '<textarea id="' + id + '" rows="4" maxlength="3000" aria-labelledby="' + id + '-prompt" required></textarea>';
     return '<details class="paper panel hb-teach-stage" data-hb-stage="' + stage + '">' +
       stageSummary(stage === "guided" ? "steps" : choice ? "target" : "pen", title) + '<form novalidate><fieldset><legend id="' + id + '-prompt">' + escape(question.prompt) +
-      '</legend>' + (question.illustration ? '<img style="display:block;width:100%;max-width:30rem;height:auto" width="360" height="212" src="' + escape(question.illustration.src) + '" alt="' + escape(question.illustration.alt) + '">' : '') + figure(question.photo) + (question.photos || []).map((photo, index) => figure(photo, index + 1)).join("") + table(question.table) + paragraphs(question.starter ? [question.starter] : []) +
+      '</legend>' + illustration(question.illustration) + figure(question.photo) + (question.photos || []).map((photo, index) => figure(photo, index + 1)).join("") + table(question.table) + paragraphs(question.starter ? [question.starter] : []) +
       inputs + '</fieldset><ol class="hb-hints" hidden></ol><div class="actions hb-controls">' +
       '<button type="submit" class="button primary">' + (!choice && sequence ? icon("pen") : "") +
       (choice ? "Check answer" : "Compare my explanation") + '</button>' +
@@ -117,7 +123,7 @@
     const evidenceModel = lesson.revision && (lesson.focusCells || lesson.graph || lesson.visual === "model");
     const model = lesson.model?.length ?
       '<details class="paper panel hb-teach-stage' + (evidenceModel ? ' hb-model-with-evidence' : '') +
-      '" data-hb-model-step="1">' + stageSummary("eye", "Worked example", lesson.modelTitle) + context.modelVisual + figure(lesson.photo) +
+      '" data-hb-model-step="1">' + stageSummary("eye", "Worked example", lesson.modelTitle) + context.modelVisual + illustration(lesson.illustration) + figure(lesson.photo) +
       (lesson.graph ? window.KeystoneHumanSkills.graphHTML(lesson.graph) : "") + table(lesson.table, lesson.focusCells) +
       '<ol class="hb-model-steps' + (lesson.nodes ? ' hb-model-path' : '') + '">' + lesson.model.map((step, i) =>
         '<li value="' + (i + 1) + '"' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
@@ -144,7 +150,7 @@
     selfReview: "Compare your reasoning with each point."
   };
 
-  function reviewFields(stage, question, state) {
+  function reviewFields(stage, question, state, evidenceVisible) {
     const complete = state.outcome === "selfReview";
     const checks = question.points.map((point, index) => {
       const id = "hb-" + stage + "-criterion-" + index;
@@ -154,8 +160,8 @@
         '<option value="included"' + (value === "included" ? ' selected' : '') + '>Included</option>' +
         '<option value="revise"' + (value === "revise" ? ' selected' : '') + '>Needs work</option></select></li>';
     }).join("");
-    return '<h3 tabindex="-1">Review your explanation</h3><p>' + escape(question.prompt) +
-      '</p><div class="hb-review-answers">' +
+    return '<h3 tabindex="-1">Review your explanation</h3>' +
+      (evidenceVisible ? "" : paragraphs([question.prompt])) + '<div class="hb-review-answers">' +
       '<section><h4>Your answer</h4><p>' + escape(state.original) + '</p></section>' +
       '<section><h4>Model explanation</h4><p>' + escape(question.explanation) + '</p></section></div>' +
       '<p>Compare the reasoning against each criterion.</p><ul>' + checks + '</ul>' +
@@ -232,8 +238,11 @@
       }
       review.hidden = !comparing;
       if (comparing) {
-        review.innerHTML = reviewFields(section.dataset.hbStage, question, state);
-        section.querySelector("fieldset").hidden = true;
+        const fieldset = section.querySelector("fieldset");
+        const evidenceVisible = Boolean(fieldset.querySelector("img, table"));
+        review.innerHTML = reviewFields(section.dataset.hbStage, question, state, evidenceVisible);
+        fieldset.hidden = !evidenceVisible;
+        fieldset.querySelector("textarea").hidden = true;
         section.querySelector(".hb-controls").hidden = true;
       }
       feedback.innerHTML = html;

@@ -79,6 +79,7 @@ window.KeystoneHumanLessons = {
         "The aim is a fast concentration comparison. In these checked suspensions pulses are a useful proxy for cells, provided clumping remains limited.")
     },
     "f170/1.1.3": {
+      further: [["catchup/f170/1.1.3.evidence", "Investigate ribosomes, ER and lysosome delivery"]],
       revision: 1,
       goal: "Trace a secreted protein through a cell and predict where it will collect if one step fails.",
       activate: ["What do ribosomes make?", "They join amino acids into a polypeptide. Some ribosomes are attached to the rough endoplasmic reticulum (RER)."],
@@ -191,6 +192,7 @@ window.KeystoneHumanLessons = {
         "8 mm = 8,000 µm. The image is 8,000 ÷ 2 = 4,000 times its actual size.")
     },
     "f170/1.1.4": {
+      further: [["catchup/f170/1.1.4.surface", "Interpret a membrane and investigate its components"]],
       goal: "Use gradients and the membrane to explain the direction of net transport.",
       activate: ["What is a concentration gradient?", "A difference in concentration between two places. Name the substance before comparing its concentrations."],
       explain: [
@@ -395,6 +397,11 @@ window.KeystoneHumanLessons = {
         "The endometrium is the uterine lining, with glands. Ovarian follicles enclose developing oocytes. Seminiferous tubules in testes have layers of developing germ cells around a lumen.",
         "Use the positions and sizes of cells and spaces as evidence. The colour depends on the stain and is less useful for identification."
       ],
+      compare: {caption: "Two gametes and their contributions", head: ["Gamete", "Feature and function"], rows: [
+        ["Sperm cell", "A flagellum propels the cell. Mitochondria in the midpiece supply some of the ATP for movement. The head carries a haploid nucleus and an acrosome whose contents help the sperm penetrate the coverings around the oocyte."],
+        ["Oocyte (egg cell)", "The large cytoplasm provides organelles, stored RNA and nutrients for early development. Following sperm entry, cortical granules release material that changes the surrounding coat and helps prevent entry by another sperm."]
+      ]},
+      further: [["challenge/f170/f170-gamete-contributions", "Explain what each gamete contributes"]],
       photo: uterine,
       modelTitle: "Identify the uterine lining from its glands",
       model: [
@@ -435,6 +442,242 @@ window.KeystoneHumanLessons = {
       apply: choice("LH signalling to Leydig cells falls. Which change is most direct?", 2,
         [["Leydig cells release more progesterone to maintain the endometrium.", "The tissue is testis and the direct signal is to Leydig cells."], ["FSH can no longer act on any Sertoli cells.", "The disrupted signal is LH. Sertoli cells are targets for FSH."], ["Leydig cells produce less testosterone.", ""]],
         "Reduced LH stimulation of Leydig cells can lower testosterone production.", ["Match LH to its target cell and that cell to its product."])
+    }
+  });
+})();
+
+(function () {
+  const { choice, written } = window.KeystoneHumanTeaching;
+  Object.assign(window.KeystoneHumanLessons, {
+    "f170/1.1.1": {
+      revision: 1,
+      goal: "Use the shape and contents of a blood cell to predict what it can do.",
+      activate: ["What is a structural adaptation?", "A feature can help a cell perform a particular job. Explain the step between the feature and the job."],
+      explain: [
+        "A mature erythrocyte (red blood cell) is a flexible biconcave disc. Its thin centre shortens the diffusion distance for oxygen. Loss of the nucleus leaves room for haemoglobin, which binds oxygen. Its flexible membrane helps it pass through narrow capillaries.",
+        "White blood cells have nuclei. A nuclear outline can help you recognise a cell. To explain its function, look for the equipment it uses to recognise, engulf or release material."
+      ],
+      compare: {caption: "How four white cells defend the body", head: ["Cell", "Feature and consequence"], rows: [
+        ["Neutrophil", "A flexible cell with a multi-lobed nucleus can move through tissue. It engulfs particles and delivers granule contents to the compartment holding them."],
+        ["Lymphocyte", "Many small lymphocytes have a large rounded nucleus and little visible cytoplasm. Specific receptors on B and T cells recognise particular antigens. Activated B cells can give rise to antibody-secreting plasma cells."],
+        ["Eosinophil", "Often has two nuclear lobes and conspicuous granules. Releasing granule proteins outside the cell helps it act against parasites too large to engulf."],
+        ["Monocyte", "A large cell with an indented nucleus and ample cytoplasm. It can engulf material and can develop into a macrophage after entering tissue."]
+      ]},
+      modelTitle: "Trace oxygen from the surface into a red cell",
+      nodes: ["Distance", "Capacity", "Limit"],
+      model: ["Oxygen crosses the cell membrane and diffuses a short distance to haemoglobin in the thin disc.",
+        "Without a nucleus there is more internal space for haemoglobin. Oxygen can bind there and later be released in tissues.",
+        "Shape and haemoglobin do different jobs. A flexible cell with very little haemoglobin could still enter a capillary but would carry less oxygen."],
+      guided: choice("A large target stays outside two white cells. Which observation best explains how one cell acts on it?", 1,
+        [["An indented nucleus takes the target inside.", "Nuclear shape can help identification. Engulfment involves the cell surface."], ["An eosinophil releases proteins from its granules onto the target.", ""], ["A small lymphocyte carries oxygen to the target.", "Haemoglobin in erythrocytes carries most blood oxygen."]],
+        "Granule release can act on an external target without enclosing the whole target.", ["Consider which material can reach the outside."]),
+      apply: written("A white cell still surrounds particles with its membrane. Its granules can no longer deliver enzymes into the compartment around each particle. Predict what a time-lapse study would show after uptake. Explain why.",
+        ["Particles can still be taken inside.", "Less digestive enzyme reaches the enclosed material.", "Engulfed material may remain visible for longer or be broken down more slowly."],
+        "Entry could look normal. Once inside, particles would receive fewer digestive enzymes, so their breakdown could be slower. Counting only how many particles enter could miss the defect.",
+        ["Separate the evidence for entry from the evidence for breakdown."]),
+      practice: "f170-blood-cell-evidence",
+      further: [
+        ["catchup/f170/1.1.1.surfaces", "Compare transporting and protective surfaces"],
+        ["catchup/f170/1.1.1.signals", "Compare neurones, rods and cones"],
+        ["catchup/f170/1.1.1.muscle", "Compare muscle cells"],
+        ["catchup/f170/3.3.1", "Compare sperm and oocytes and study reproductive micrographs"],
+        ["catchup/f170/1.1.2", "Measure a real red cell"]
+      ]
+    },
+    "f170/1.1.1.surfaces": {
+      revision: 1, title: "Transporting and protective cell surfaces",
+      goal: "Use the surface facing a space to explain how a cell absorbs, moves or secretes material.",
+      explain: ["Find the lumen, the space beside the lining. Short microvilli give the cell more membrane for transport. Longer motile cilia beat to move material along the surface. A single thin layer gives a short diffusion distance."],
+      compare: {caption: "Match the structure to the movement", head: ["Cell and site", "How the feature helps"], rows: [
+        ["Proximal renal tubule", "Microvilli increase the membrane area facing the filtrate. Many mitochondria supply ATP for ion pumps. The gradients these pumps maintain also support glucose reabsorption."],
+        ["Hepatocyte", "Ribosomes on rough ER make plasma proteins for secretion. Smooth ER contains enzymes that help process lipids and some drugs. Glycogen granules store a supply of glucose units."],
+        ["Trachea and oviduct", "Tracheal cilia move mucus and trapped particles towards the throat. Cilia in the oviduct help move the oocyte towards the uterus, alongside muscular contractions."],
+        ["Alveolus", "A thin, flattened squamous cell forms part of a very short path between air and blood for oxygen and carbon dioxide."],
+        ["Surface and upper gastric pits", "Surface mucous cells release mucus from vesicles at their exposed end. The mucus retains bicarbonate and protects the lining from acid and digestive enzymes."]
+      ]},
+      modelTitle: "Explain reabsorption at two surfaces of a tubule cell",
+      model: ["Start at the filtrate. The brush border provides room for more transporters per cell.",
+        "At the blood-facing side, sodium pumps use ATP to maintain an ion gradient. Uptake of some solutes from the filtrate depends on this gradient.",
+        "Losing brush-border area can limit uptake even when ATP is available. Losing ATP can impair uptake even with the brush border intact."],
+      guided: choice("Two linings have equal area. Oxygen crosses one flattened cell layer faster than several layers. Which feature explains this?", 2,
+        [["More cilia beat oxygen into blood.", "Cilia move material along a surface. Alveolar gases diffuse across the barrier."], ["A longer path lets more oxygen enter per second.", "Increasing diffusion distance slows exchange when other conditions match."], ["There is a shorter diffusion path across the single layer.", ""]],
+        "Use the direction of movement. The gas crosses the lining.", ["Is the substance travelling along or across the lining?"]),
+      apply: written("Two preparations keep their normal number of cells. In A, oviduct cilia stop beating. In B, gastric pit surface cells make mucus but their vesicles cannot fuse with the exposed membrane. Predict a different consequence in each preparation.",
+        ["A loses part of the mechanism moving the oocyte along the oviduct.", "B can make mucus but releases less onto the stomach surface.", "Reduced mucus weakens protection against acid or digestive enzymes."],
+        "In A, ciliary transport is impaired even though muscle may still move the oocyte. In B, mucus can remain inside vesicles. Less reaches the surface, weakening the protective layer.",
+        ["Trace where movement or delivery stops in each lining."]),
+      practice: "f170-tubule-liver-evidence",
+      further: [["challenge/f170/f170-microvilli-transfer","Compare two absorptive surfaces"]]
+    },
+    "f170/1.1.1.signals": {
+      revision: 1, title: "From light detection to a nerve signal",
+      goal: "Explain how cell shape, connections and light-sensitive membranes contribute to signalling.",
+      explain: ["Rods have long, roughly cylindrical outer segments. Cones have tapering outer segments. Both pack visual pigment into layers of membrane. Light absorption changes the signal sent to connected retinal cells. Rod pathways are sensitive in dim light. Three cone types have different wavelength sensitivities, allowing colour discrimination in brighter light.",
+        "In a typical sensory neurone, a long fibre carries impulses from the receptor region towards the central nervous system. Relay neurones have branching processes that connect neurones within it. A motor neurone has branched inputs and a long axon ending at an effector. Myelin on many long axons speeds conduction."],
+      visual: "model", visualFrom: ["f170","3.2.1"],
+      modelTitle: "Read a pathway by following its connections",
+      model: ["In the withdrawal reflex diagram, find the fibre that carries information from the receptor into the spinal cord. Its destination identifies the sensory route.",
+        "The relay neurone links incoming activity to a motor neurone. The motor axon carries the output to muscle. The reflex illustrates these directions. The retina has its own circuits.",
+        "In the retina, signals from many rods can converge on one pathway. Small signals can add together in dim light, at the cost of locating the light precisely. Cone pathways in the centre of the fovea preserve much finer spatial detail in good light."],
+      guided: choice("A branching cell connects two neurones entirely inside the spinal cord. Which evidence supports a relay role?", 0,
+        [["Its connections link the input pathway to another neurone within the CNS.", ""], ["Its branches prove that it detects light.", "Branches indicate possible connections. Light detection needs visual pigments."], ["Every neurone with branches directly activates muscle.", "Follow the destination. This cell ends on another neurone."]],
+        "Use the connections to infer the role.", ["Follow where the output goes."]),
+      apply: written("In a vision study a person detects faint white lights as well as the comparison group. In bright light they struggle to distinguish two colours that the group can separate. Which receptor pathway would you investigate first? Relate one adaptation to the findings and state a limit of your conclusion.",
+        ["Cone types contain pigments with different wavelength sensitivities. Comparing their signals supports colour discrimination.", "Preserved faint-light detection is consistent with functioning rod pathways.", "These results cannot locate the change to the receptor itself or prove one particular diagnosis."],
+        "Investigate cone pathways first. Their different pigments respond best to different wavelengths, so comparing signals supports colour discrimination. Faint-light detection can remain effective through rods. A later change in the visual pathway could also affect the colour task.",
+        ["Which condition depends on comparing wavelength sensitivities?"]),
+      practice: "p-endo-reflex-arc"
+    },
+    "f170/1.1.1.muscle": {
+      revision: 1, title: "How muscle cells produce force together",
+      goal: "Use cell shape and connections to explain how three muscle tissues produce movement.",
+      explain: ["Actin and myosin filaments slide to generate force. In skeletal and cardiac muscle, repeating sarcomeres give the cells a banded appearance. The way cells are arranged affects where force is applied."],
+      compare: {caption: "Three arrangements of contractile cells", head: ["Muscle", "Structure and consequence"], rows: [
+        ["Skeletal", "Long, multinucleate striated fibres contain parallel myofibrils. Shortening along the fibres pulls on a tendon."],
+        ["Cardiac", "Branched, striated cells meet at intercalated discs. Mechanical junctions transmit force and gap junctions allow excitation to spread between cells."],
+        ["Smooth", "Spindle-shaped cells have contractile filaments arranged without visible striations. Slow, sustained contraction in a ring of cells can narrow a hollow organ."]
+      ]},
+      modelTitle: "Follow the force around a small artery",
+      model: ["Imagine a ring of smooth muscle around a lumen. Shortening around the ring makes the lumen narrower.",
+        "The absence of stripes does not mean these cells lack contractile proteins. It reflects how the filaments are organised."],
+      guided: choice("A sample has striations. What further observation most strongly supports cardiac rather than skeletal muscle?", 2,
+        [["It contains actin and myosin.", "Both tissues contain those filaments."], ["It shortens when stimulated.", "Both muscle types can shorten."], ["Branched cells join end to end at intercalated discs.", ""]],
+        "Striations occur in both. Look at the boundaries between cells.", ["Which feature links one cell to its neighbours?"]),
+      apply: written("In an experimental strip of heart muscle, a single cell still shortens when directly stimulated. Electrical signals spread poorly across its junctions with neighbouring cells. Explain how the strip can produce a weaker coordinated contraction.",
+        ["Direct stimulation shows that the cell can still generate force.", "Poor electrical coupling impairs excitation of neighbouring cells.", "Fewer cells contract together, reducing coordinated force."],
+        "The first cell can generate force. Poor signal transfer through gap junctions prevents nearby cells from being activated together, reducing the force of the coordinated contraction.",
+        ["Separate the cell's ability to shorten from the timing across the strip."]),
+      followup: choice("Strip X has long, parallel, multinucleate fibres attached to a tendon. Strip Y forms a band of spindle-shaped cells around a narrow tube. What change would shortening cause?", 1,
+        [["X narrows a lumen and Y pulls a tendon.", "Trace the direction of each strip. The tube is surrounded by Y."], ["X pulls along the tendon and Y reduces the lumen diameter.", ""], ["Only X can shorten because Y lacks visible stripes.", "Smooth muscle also has contractile filaments."]],
+        "The orientation of the cells determines where force acts. Striations alone do not determine whether tissue can generate force."),
+      practice: "p-f170-tissue-hierarchy"
+    }
+  });
+})();
+
+(function () {
+  const { choice, written } = window.KeystoneHumanTeaching;
+  Object.assign(window.KeystoneHumanLessons, {
+    "f170/1.1.3.evidence": {
+      revision: 1, title: "What organelle evidence can tell us",
+      goal: "Use a location, a ribosome reading or a changed product to explain where a cell process takes place.",
+      prior: ["f170/1.1.3","Trace a secreted protein through a cell"],
+      explain: ["The nucleus contains chromosomes. Inside it the nucleolus makes much of the ribosomal RNA and assembles ribosomal subunits. The subunits leave through nuclear pores. In the cytoplasm they can join on an mRNA to make a polypeptide.",
+        "Human cytosolic ribosomes are 80S, including those attached to rough ER. Typical bacterial ribosomes are 70S. The S value measures how a particle sediments. Free and ER-bound cytosolic ribosomes are the same type. Human mitochondrial ribosomes are a distinct type.",
+        "Rough ER receives many newly made proteins. Smooth ER makes many lipids. At the Golgi, different proteins can enter vesicles bound for different destinations. Some digestive enzymes reach acidic lysosomes, where they break down material."],
+      table: {caption: "A tagged digestive enzyme in a fictional cell", head: ["Observation", "Finding"], rows:[
+        ["New protein in rough ER", "Present"], ["Processed protein leaving Golgi", "Present"], ["Enzyme in lysosomes", "Very little"], ["Tagged enzyme outside cell", "Much more than usual"]
+      ]},
+      focusCells: [["0:0","1:0"],["2:0","3:0"]],
+      modelTitle: "Locate a delivery fault",
+      model: ["Start at the beginning. Finding the protein in rough ER and in the Golgi supports synthesis and passage between these compartments.",
+        "Now compare destinations. Finding much of the enzyme outside and little in lysosomes suggests misdirected delivery. It does not by itself identify which sorting molecule failed."],
+      writing: {
+        title: "Work through a second result", prompt: "A human cell temporarily stops making new ribosomal RNA in the nucleolus. Its nuclear pores still work. Why might new cytoplasmic ribosomes gradually become scarce?",
+        responses: [["First idea", "The pores must have stopped every molecule leaving."], ["Trace the steps", "Less new rRNA is available to assemble subunits, so fewer new subunits are available for export even though the pores still function."]],
+        compare: ["Ask what is made, where it is assembled and whether it can move. A shortage of new parts can gradually reduce the supply of cytoplasmic ribosomes without immediately disabling existing ones."]
+      },
+      guided: choice("A preparation from human cells contains 80S ribosomes on membranes. A second contains 80S ribosomes free in the cytosol. Which conclusion fits?", 1,
+        [["The membrane sample must come from bacteria.", "Typical bacterial ribosomes are 70S. Position is a separate observation."], ["A human cytosolic ribosome can attach to the ER while making certain proteins.", ""], ["Attachment converts a 70S ribosome into an 80S ribosome.", "Attachment changes location without changing the ribosome type."]],
+        "Use the S value to compare ribosome type and the attachment to infer location.", ["Which observation describes position?"]),
+      apply: { ...written("The drawings show two regions of ER from different secretory cells. Cell P exports a protein hormone. Cell Q makes a steroid hormone from lipids. Use a visible feature to explain why each region suits its cell's product.",
+        ["P has ribosomes on the surface of flattened sacs.", "These ribosomes synthesise the polypeptide that enters the rough ER.", "Q's tubules lack attached ribosomes and contain enzymes involved in lipid and steroid synthesis."],
+        "The dots on P's sacs are attached ribosomes, linking rough ER to production of the exported protein. Q shows smooth tubules without attached ribosomes. Enzymes in smooth ER participate in making steroids. An ER profile alone would not identify a particular hormone.",
+        ["Compare the outer faces of the membranes, then consider what each product is made of."]),
+        illustration: {src:"/human-biology/er-profiles.svg", width:360,height:186,alt:"P shows flattened sacs with small dots along the outside. Q shows branching tubules with no surface dots. Same-scale schematics."}
+      },
+      followup: choice("This transmission electron micrograph shows part of a mammalian pancreatic cell. Which conclusion is supported by the closely spaced membranes outside the large central region?", 2,
+        [["The cell is releasing twice as much digestive enzyme as a resting cell.", "A single section shows structures. To compare release rates, measure product leaving comparable cells over time."], ["The dark particles show that the digestive enzymes are already active in the cytoplasm.", "Small particles along membrane surfaces are consistent with ribosomes. Their appearance cannot establish digestive enzyme activity."], ["Membranes with particles along their surfaces support a capacity to make proteins on rough ER.", ""]],
+        "The membrane profiles and attached particles support an interpretation of rough ER in a secretory cell. The image gives structural evidence and cannot measure secretion rate.",
+        ["Find the stacks outside the large pale region. What kind of evidence can a still section provide?"], {
+          photo:{src:"/assets/micrographs/hb-secretory-field.webp",width:640,height:454,alt:"Grayscale thin section. A large mottled region fills the centre. Closely spaced membrane profiles run beside its edges, with small dark particles along them.",source:"https://commons.wikimedia.org/wiki/File:Mammalian_pancreatic_tissue,_nuclear_pores_and_rough_endoplasmic_reticulum.jpg",credit:"Louisa Howard, Dartmouth College",licence:"Public domain",licenceUrl:"https://commons.wikimedia.org/wiki/File:Mammalian_pancreatic_tissue,_nuclear_pores_and_rough_endoplasmic_reticulum.jpg#Licensing",changes:"Footer cropped and image converted to WebP"}
+        }),
+      practice: "f170-lysosome-evidence",
+      further: [["challenge/f170/f170-nucleolus-export","Distinguish assembly from export"],["challenge/f170/f170-ribosome-fractions","Interpret ribosome measurements"]]
+    },
+    "f170/1.1.4.surface": {
+      revision: 1, title: "How a membrane's components work together",
+      goal: "Use the position of a membrane component to predict what changes when it is altered.",
+      prior: ["f170/1.1.4","Review transport down and against gradients"],
+      explain: ["In the fluid mosaic model, hydrophilic phospholipid heads face water on both sides. Hydrophobic tails point inwards. Many lipids and proteins move laterally. Small nonpolar molecules can diffuse through the core. Charged particles need a suitable transport protein.",
+        "Intrinsic proteins are embedded in the bilayer and some span it. Extrinsic (peripheral) proteins attach at a surface. A receptor must have an accessible binding site of the right shape for its signal. Some receptors are surface-associated and many span the membrane. Binding can change activity inside the cell.",
+        "Glycoproteins have carbohydrate chains on the extracellular side. Cell-surface antigens, including HLA proteins, allow immune recognition. Recognition of a donor's different antigens can trigger a response that damages a graft.",
+        "In endocytosis the membrane encloses material in an inward-moving vesicle. In exocytosis a vesicle fuses with the surface and releases its contents. Both can move large cargo without the cargo crossing the hydrophobic core."],
+      illustration: {src:"/human-biology/membrane-section.svg",width:384,height:232,alt:"Membrane cross-section. 1 points to a head at the fluid boundary, 2 to a small molecule among the tails, 3 to a chain on an outward-facing spanning protein and 4 to a protein on the cytoplasmic surface."},
+      modelTitle: "Read from the water into the membrane",
+      model: ["At 1, polar heads face the fluid. Between the two head layers is the oily core. Cholesterol (2) sits among the tails with its small polar end close to the heads.",
+        "At body temperature cholesterol restrains some movement of nearby tails and can reduce leakage of small polar molecules. This stabilises the exposed membrane of a blood-vessel lining cell. Excessive ordering can reduce flexibility. At low temperatures cholesterol also prevents tight packing.",
+        "At 3, a chain on a glycoprotein faces the outside, where other cells can encounter it. At 4, a peripheral protein is attached at the cytoplasmic face. Which side a binding site faces matters."],
+      guided: choice("An external signal no longer binds to its receptor. A separate glucose carrier still moves glucose down its gradient. Which account fits?", 2,
+        [["Glucose must enter by active transport because a protein is present.", "Facilitated diffusion uses a protein and can proceed down a gradient."], ["The signal must cross the bilayer to act.", "A signal can bind outside and trigger an intracellular response."], ["The accessible binding site for the signal may have changed while the carrier still functions.", ""]],
+        "Recognition and transport rely on different interactions. A signal can cause a response without entering the cell.", ["Separate what binds from what crosses."]),
+      apply: {...written("Two models of the blood-facing membrane of an endothelial cell have the same proteins and are tested at 37 °C. Use both readings to explain one benefit and one possible cost of the higher cholesterol content.",
+        ["Lower tracer leakage supports a stronger barrier to this small polar tracer.", "Lower lateral mobility indicates more restricted movement within the membrane.", "This can limit flexibility or rearrangement. The experiment measures membrane properties, not a person's artery narrowing."],
+        "The higher-cholesterol model leaks less tracer, which could help maintain a barrier. Its lipids also move laterally more slowly, consistent with greater ordering that could limit membrane flexibility. These findings concern cholesterol in the cell membrane.",
+        ["Read the direction of each change separately."]),
+        table: {caption:"Fictional membrane measurements at 37 °C",head:["Membrane","Tracer leakage (units/min)","Lateral lipid mobility (relative units)"],rows:[["Lower cholesterol","8","10"],["Higher cholesterol","3","6"]]}
+      },
+      followup: choice("A large probe cannot cross an intact membrane. It binds a carbohydrate chain on intact cells. After cells are opened, a second probe binds a protein on the inner surface. Which arrangement fits?", 1,
+        [["Both sites must face the extracellular fluid.", "The second site only became accessible after the boundary was opened."], ["The chain is exposed outside and the second site faces the cytoplasm. The readings alone cannot show whether the second protein spans the bilayer.", ""], ["The outer chain must be buried among the tails because the probe cannot cross.", "A site buried in the oily core would be inaccessible to this external probe."]],
+        "Use probe access to infer sidedness. Observing one exposed binding site does not reveal how far the whole protein extends."),
+      practice: "f170-graft-recognition", further: [["challenge/f170/f170-vesicle-directions","Follow labelled cargo across a cell boundary"]]
+    }
+  });
+})();
+
+(function () {
+  const { choice, written } = window.KeystoneHumanTeaching;
+  const commons = "https://commons.wikimedia.org/wiki/File:";
+  const chromosomeSource = commons + "Condensation_and_resolution_of_human_sister_chromatids_in_early_mitosis.svg";
+  Object.assign(window.KeystoneHumanLessons, {
+    "f170/1.1.5": {
+      revision: 1,
+      goal: "Distinguish copying DNA from separating chromosomes, and support an interpretation of a real micrograph.",
+      activate: ["What changes during interphase?", "Cells grow, make proteins and copy their DNA during S (synthesis) phase. They continue preparing for division in G2. Individual chromosomes are usually too diffuse to distinguish in an ordinary light micrograph of interphase."],
+      explain: ["One unreplicated chromosome contains one double-stranded DNA molecule. After S phase it has two sister chromatids held together around their centromere regions. It is still one replicated chromosome. A chromatid runs lengthways along the chromosome.",
+        "In prophase, chromosomes condense and the spindle begins to form. Once the nuclear envelope breaks down, spindle fibres attach at the centromere regions. In metaphase the chromosomes align at the equator. In anaphase sister chromatids separate. Each is now a daughter chromosome. In telophase nuclei re-form around the two sets.",
+        "Mitosis divides the nucleus. Cytokinesis divides the cytoplasm and can overlap the end of mitosis. An animal cell forms a cleavage furrow. A plant cell forms a cell plate. Early erythroblasts in marrow can divide. Mature human erythrocytes have lost their nucleus and cannot enter another mitosis."],
+      photo: {src:"/assets/micrographs/hb-chromosome-sem.webp",width:230,height:268,alt:"Scanning electron micrograph of an isolated human metaphase chromosome. Two ridged lengths run alongside each other and narrow near the same point, closer to one end.",source:chromosomeSource,credit:"Adrian T. Sumner, figure by David O. Morgan",licence:"Attribution terms",licenceUrl:chromosomeSource+"#Licensing",changes:"Metaphase panel cropped and converted to WebP"},
+      modelTitle: "Count one replicated chromosome in an electron micrograph",
+      model: ["Follow one sister chromatid from one tip through the narrow region to its other tip. The short and long arms on that side belong to the same chromatid.",
+        "Trace the other length. The two sisters are closely joined near the constriction, the centromere region. This is one replicated chromosome with two DNA molecules.",
+        "In a model body cell with four chromosomes before S phase, the replicated cell has four chromosomes and eight DNA molecules before separation. At the end of mitosis and cytokinesis, each daughter has four chromosomes and four DNA molecules."],
+      guided: choice("A marrow cell's DNA content doubles. Later, two nuclei form inside a single outer cell boundary. What has happened at this point?", 1,
+        [["DNA replication alone made the two nuclei.", "S phase copies DNA. The two sets must subsequently separate to form nuclei."], ["DNA has been replicated and nuclear division has occurred. Cytokinesis is still incomplete.", ""], ["Two daughter cells already exist because two nuclei are visible.", "Check whether there are two separate cell boundaries."]],
+        "Count nuclei and cell boundaries separately. DNA copying precedes division.", ["Which evidence concerns DNA, a nucleus or a whole cell?"]),
+      apply: {...written("In the onion-root field, compare the cell just right of centre in the upper part with a neighbouring cell that has a round, evenly outlined nucleus. Which visible evidence supports mitosis in the first cell? Can this photograph show that DNA is being copied in its neighbour?",
+        ["The upper cell contains distinct condensed rods concentrated across a central region.", "There are no two clearly separated groups at opposite ends. The arrangement is consistent with an alignment stage of mitosis.", "A single image of a diffuse nucleus cannot establish S phase or active DNA synthesis."],
+        "The dark chromosome profiles are individually visible and gathered near the middle. That supports mitosis, with an arrangement consistent with metaphase. The neighbouring intact nucleus could be in interphase, but its appearance does not distinguish G1, S and G2. A convincing description of the visible evidence is more important here than a precise stage label.",
+        ["Use the positions of the stained structures. Which claim would require tracking DNA synthesis?"]),
+        photo: {src:"/assets/micrographs/hb-root-field.webp",width:840,height:630,alt:"Light micrograph of onion-root cells. Above the centre and slightly to the right, dark short curved rods cluster across one cell. Several neighbouring cells have rounded nuclei with a diffuse, speckled interior.",source:commons+"Mitosis_in_Onion_Root_various_stages_(Metaphase).jpg",credit:"Natalierussell77",licence:"CC BY-SA 4.0",licenceUrl:"https://creativecommons.org/licenses/by-sa/4.0/"}
+      },
+      further: [["catchup/f170/1.1.5.meiosis","Compare the two meiotic divisions"],["catchup/f170/1.1.2","Revisit microscope choice and resolution"]]
+    },
+    "f170/1.1.5.meiosis": {
+      revision: 1, title: "Follow homologues and sister chromatids through meiosis",
+      goal: "Identify what separates in each division and predict what each resulting nucleus contains.",
+      prior: ["f170/1.1.5","Trace one replicated chromosome"],
+      explain: ["Homologous chromosomes carry the same genes at corresponding positions. They can carry different alleles. In prophase I homologues pair and non-sister chromatids can exchange corresponding DNA segments (crossing over).",
+        "In metaphase I homologous pairs line up. Each pair can face either way independently of the other pairs. In anaphase I the homologues move apart while sisters stay joined. By telophase I each pole has one chromosome of each pair.",
+        "There is no new S phase between divisions. In prophase II new spindles form. In metaphase II individual duplicated chromosomes align. In anaphase II sisters separate. By telophase II each new nucleus has a single set of unduplicated chromosomes. Cytokinesis can be unequal, as in human oocyte formation."],
+      table: {caption:"A model cell starts with two homologous pairs",head:["Moment","Chromosomes per nucleus","DNA molecules per nucleus"],rows:[
+        ["Before S phase","4","4"],["After S phase","4","8"],["After division I","2","4"],["After division II","2","2"]
+      ]},
+      focusCells:[["0:0","1:0","0:1","1:1"],["2:0","2:1"],["3:0","3:1"]],
+      modelTitle: "Follow one long pair and one short pair",
+      model: ["Call the two homologues of each pair maternal and paternal. Copying them makes sisters. The cell still has two long homologues and two short homologues.",
+        "In division I, each pole receives one long and one short chromosome, each still duplicated. Independent orientation allows either long homologue to travel with either short one.",
+        "In division II the sisters separate. Each product has one long and one short chromosome, each containing one DNA molecule. Crossing over can give a chromatid a new combination of alleles."],
+      guided: choice("In a different model, a nucleus just after meiosis I has three chromosomes. Each is still duplicated. How many DNA molecules are present?", 2,
+        [["Three, because a chromosome always contains one DNA molecule.", "Each duplicated chromosome here still has two chromatids."], ["Twelve, because DNA is copied again before meiosis II.", "There is no second S phase before meiosis II."], ["Six, one in each of the two chromatids of each chromosome.", ""]],
+        "Three duplicated chromosomes each have two DNA molecules.", ["Track a single duplicated chromosome before multiplying."]),
+      apply:{...written("Fields A and B are from different cells in one meiotic preparation with two homologous pairs. Arrows show movement. Identify the division in each field. Explain your decision and predict the chromosome and DNA-molecule counts at one pole in A.",
+        ["In A, doubled structures move apart with sisters joined. Homologues separate in anaphase I.", "In B, the moving structures are single. Sisters have separated in anaphase II.", "One pole in A contains two duplicated chromosomes, so it has four DNA molecules."],
+        "A fits anaphase I because each moving chromosome retains two attached chromatids. At one pole the long and the short chromosome together carry four DNA molecules. B fits anaphase II because the moving chromosomes are single former chromatids. Count what travels to one pole, not everything in the cell.",
+        ["Trace the long structure in each field. How many lengths remain attached?"]),
+        illustration:{src:"/human-biology/division-fields.svg",width:360,height:298,alt:"Two unlabelled stages. A has a long and a short doubled structure moving towards each end. B has a long and a short single structure moving towards each end."}
+      },
+      practice:"f170-division-variation"
     }
   });
 })();

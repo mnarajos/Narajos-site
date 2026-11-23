@@ -66,8 +66,8 @@ for(const unit of ["f170","f171","f172","f173","f174","f175","f176","f177"]){
   app.discard();
  }
 }
-assert.equal(db.questions.length,579);
-assert.equal(db.questions.filter(q=>q.unit==="f170").length,258);
+assert.equal(db.questions.length,588);
+assert.equal(db.questions.filter(q=>q.unit==="f170").length,267);
 assert.equal(db.questions.filter(q=>q.unit==="f171").length,237);
 for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,u==="f175"?15:["f172","f173","f176","f177"].includes(u)?14:13,u+" knowledge bank missing");
 assert.deepEqual([...new Set(db.questions.map(q=>q.type))].sort(),["best","diagram","match","multi","number","order","short","single","sort","written"].sort());
@@ -240,7 +240,7 @@ assert(window.KeystoneHumanChallenge.stats("f170").weak>=1,"Not sure should reco
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"next"}}:null;}}});
 record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert(record.index>=1,"Question did not advance");
-assert.equal(window.KeystoneHumanChallenge.questionCount,579);
+assert.equal(window.KeystoneHumanChallenge.questionCount,588);
 // Verify the entire deterministic answer flow, not merely presence of new item types.
 function forcedQuestion(id){
  const q=db.questions.find(x=>x.id===id);assert(q,"Unknown forced test item: "+id);
@@ -467,7 +467,7 @@ for(const id of ["p-cell-membrane-transport-challenge","p-health-screening-found
  assert(main.innerHTML.includes("Hint 2")&&!main.innerHTML.includes("Expected answer"),id);
  assert(question.hintCue&&!question.explain.includes(question.hintCue)&&!question.model.includes(question.hintCue),id);
 }
-console.log("Human Biology checks passed: 579 questions, 91 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
+console.log("Human Biology checks passed: 588 questions, 91 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
 
 
 // Point practice must preserve one biological idea while support is withdrawn.
@@ -504,6 +504,19 @@ load("human-biology/teaching.js");
 load("human-biology/teaching-f170.js");
 load("human-biology/teaching-f171.js");
 load("human-biology/teaching-knowledge.js");
+for (const [id, route, expected] of [
+ ["f170-nucleolus-export","1.1.3.evidence",/transport out through the nuclear pores/],
+ ["f170-ribosome-fractions","1.1.3.evidence",/falls in X, while Y remains active/],
+ ["f170-graft-recognition","1.1.4.surface",/accessible donor antigens/],
+ ["f170-division-variation","1.1.5.meiosis",/crossover between the two positions/]
+]) {
+ const q=db.questions.find(item=>item.id===id);
+ assert.match(q.options[q.correct],expected,id);
+ // Resolve focused lessons even when modules are loaded after the companion in this harness.
+ companion.route("catchup/f170/"+route, html=>{help=html;});
+ assert.equal(companion.linkFor(q),"catchup/f170/"+route,id);
+ assert.equal(companion.reteachFor(q).route,companion.linkFor(q),id);
+}
 const register = readFileSync("docs/human-biology-curriculum-quality-register.md", "utf8");
 const files = ["f170","f171","f172","f173","f174","f175","f176","f177","shared-skills"];
 const expectedSections = [28,18,21,29,25,16,17,18,39];
@@ -518,6 +531,7 @@ for (const [i, unit] of files.entries()) {
  const headings = [...doc.matchAll(/^## (\S+)$/gm)].map(match => match[1]);
  assert.equal(headings.length, expectedSections[i], "Coverage headings for " + unit);
  const refs = new Set();
+ const unitStatuses = Object.fromEntries([...validStatuses].map(status=>[status,0]));
  for (const row of doc.split("\n").filter(line => /^\| (?:\d|HSW|M\d|E-r)/.test(line))) {
   const cells = row.split("|").slice(1, -1).map(cell => cell.trim());
   const [id, requirement, demand, teachingRef, model, practice, representation, note, status] = cells;
@@ -539,8 +553,13 @@ for (const [i, unit] of files.entries()) {
   }
   refs.add(id);
   totalStatuses[status]++;
+  unitStatuses[status]++;
   mapped++;
  }
+ const summary=register.split("\n").find(line=>line.startsWith("| [")&&line.includes("]("+path+")"));
+ assert.deepEqual(summary.split("|").slice(2,-1).map(Number), [refs.size,...Object.values(unitStatuses)], "Stale coverage counts for "+unit);
  for (const heading of headings) assert([...refs].some(id => id.startsWith(heading + "-r")), "Empty curriculum section: " + heading);
 }
+const totalRow=register.split("\n").find(line=>line.startsWith("| **All rows**"));
+assert.deepEqual(totalRow.split("|").slice(2,-1).map(value=>Number(value.replace(/\*/g,""))), [mapped,...Object.values(totalStatuses)]);
 console.log("Curriculum register checked " + mapped + " requirement rows, specification headings and live evidence identifiers.");

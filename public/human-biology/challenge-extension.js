@@ -1327,6 +1327,77 @@ additions.push({
  misconception:"Preventive measures must act on the relevant route of exposure.",
  hintCue:"Identify the route affected by each proposed measure.",catchup:"1.3.1.viruses"
 });
+additions.push({
+ id:"f170-gamete-contributions",unit:"f170",area:1,section:"1.1.1",catchup:"3.3.1",type:"written",level:"apply",
+ stem:"A student argues that either gamete could supply all the materials for the first stages of development because both contribute a set of chromosomes. Use one feature of each gamete to evaluate that argument.",
+ markPoints:["A feature of the sperm is linked to delivery of its haploid nucleus, such as the flagellum providing propulsion or the acrosome helping penetration.", "The oocyte contributes a haploid set and substantial cytoplasm with organelles and stored molecules used in early development.", "Equal numbers of chromosomes do not imply equal contributions of cytoplasmic material."],
+ model:"A sperm transports its chromosomes in a small, mobile cell. The large oocyte supplies chromosomes and most of the cytoplasm, including organelles and stored molecules for early development. A chromosome count misses that functional difference.",
+ explain:"Connect the structure of each gamete to a contribution. Accept egg cell or ovum for the female gamete here, and tail or flagellum for the sperm's propulsive structure.",
+ misconception:"A chromosome count measures only one part of a gamete's contribution.", hintCue:"Think about what surrounds the chromosomes in each cell."
+});
+additions.push({
+ id:"f170-nucleolus-export",unit:"f170",area:1,section:"1.1.3",catchup:"1.1.3.evidence",type:"single",level:"apply",
+ stem:"A label enters newly assembled ribosomal subunits in a human cell. The labelled subunits build up inside the nucleus and few reach the cytoplasm. Which interpretation uses both observations?",
+ options:["Nucleolar assembly has stopped, since few labelled subunits reach the cytoplasm.","The subunits are made in the Golgi and then transferred into the nucleus.","Assembly still occurs. Investigate transport out through the nuclear pores.","Translation has moved into the nucleolus, where the subunits accumulate."],correct:2,
+ model:"Subunits are being assembled in the nucleolus, but their appearance in the cytoplasm is reduced.",
+ explain:"The build-up distinguishes production inside the nucleus from export through its envelope. A failure somewhere in the export process fits these data. They do not identify a particular defective pore.",
+ optionFeedback:["The presence of newly assembled labelled subunits is evidence that assembly still occurs.","The Golgi sorts cellular products. Ribosomal subunit assembly occurs mainly in the nucleolus.","","Finding subunits in a location does not show that they make polypeptides there."],
+ misconception:"A low amount at the destination can reflect delivery even when assembly continues.",hintCue:"Where was the newly assembled material actually found?"
+},{
+ id:"f170-ribosome-fractions",unit:"f170",area:1,section:"1.1.3",catchup:"1.1.3.evidence",type:"single",level:"apply",
+ stem:"A lab mixes two purified preparations, typical bacterial ribosomes and human cytosolic ribosomes. It then separates particles by sedimentation. Peak X is 70S and peak Y is 80S. Which result would fit a reagent that acts only on these bacterial ribosomes?",
+ options:["Protein synthesis falls in X, while Y remains active.","Protein synthesis falls in Y, because attachment to human rough ER produces 70S particles.","Both peaks stop working because all ribosomes have the same sedimentation behaviour.","X loses the ability to make lipids, while Y can still assemble proteins."],correct:0,
+ model:"The bacterial 70S preparation is affected. The human cytosolic 80S preparation remains active.",
+ explain:"Both preparations make polypeptides. Their different sedimentation properties distinguish the two populations specified here. Attachment of a human cytosolic ribosome to ER does not make it 70S.",
+ optionFeedback:["","This reverses the two preparations and confuses location with type.","A shared function does not make the two particles structurally identical.","Ribosomes join amino acids to make polypeptides."],
+ misconception:"A shared job does not imply identical ribosome structure.",hintCue:"Use the two stated sources of the purified particles."
+},{
+ id:"f170-lysosome-evidence",unit:"f170",area:1,section:"1.1.3",catchup:"1.1.3.evidence",type:"written",level:"apply",
+ stem:"A cell takes material into a lysosome. Tagged digestive enzymes reach it in normal amounts. Its interior becomes less acidic and material persists. Explain which stage is most likely impaired, using the delivery evidence.",
+ markPoints:["Usual amounts of tagged enzymes reach the lysosome, supporting delivery from the Golgi via vesicles.","The change in pH can reduce activity of the lysosomal enzymes.","Slower digestion can explain why material persists despite enzyme delivery."],
+ model:"The evidence supports delivery of the tagged enzymes. Lysosomal hydrolases usually work best in acidic conditions. A less acidic lumen can slow breakdown, leaving material behind.",
+ explain:"Distinguish location from function. Accumulation alone cannot show whether the problem is sorting, delivery or activity after arrival.",
+ misconception:"Finding an enzyme in the right place does not establish that conditions support its activity.",hintCue:"Which observation tests delivery, and which changes the conditions for digestion?"
+},{
+ id:"f170-graft-recognition",unit:"f170",area:1,section:"1.1.4",catchup:"1.1.4.surface",type:"single",level:"apply",
+ stem:"Recipient immune cells respond strongly to donor cells but weakly to the recipient's own cells. Masking particular external donor HLA proteins reduces the response. Donor cells remain alive and still take up glucose. Which conclusion fits?",
+ options:["Masking the donor cells blocked all membrane transport.","The donor proteins normally carry glucose through the bilayer.","Masking the proteins proves that rejection is impossible in the recipient.","Recognition of accessible donor antigens contributes to the immune response."],correct:3,
+ model:"Recognition of the donor's surface antigens contributes to immune activation and can lead to tissue rejection.",
+ explain:"The response falls when the donor markers are masked while uptake of glucose continues. The experiment supports a role for surface recognition, without measuring the eventual outcome of a transplant.",
+ optionFeedback:["Glucose uptake continues, so general transport failure does not fit.","The evidence links the protein to recognition and provides no evidence that it carries glucose.","A reduced response in this experiment cannot predict every immune pathway in a recipient.",""],
+ misconception:"Recognition and transport can be tested separately.",hintCue:"Which measured function changed when the external marker was masked?"
+},{
+ id:"f170-vesicle-directions",unit:"f170",area:1,section:"1.1.4",catchup:"1.1.4.surface",type:"written",level:"apply",
+ stem:"In film A, a protein particle outside a cell becomes enclosed as the surface pinches inward. In film B, a sac of protein inside joins the surface and its contents appear outside. Explain how each protein changes location without passing through lipid tails.",
+ markPoints:["In A, endocytosis encloses the outside material in a vesicle.","In B, exocytosis involves fusion of the vesicle membrane with the cell surface and release of its contents.","In both cases the membrane changes shape or joins another membrane. The protein stays on the same side of the lipid boundary."],
+ model:"A pocket of surface membrane encloses the particle during endocytosis. In B, fusion during exocytosis opens the vesicle lumen to the outside. Neither protein has to diffuse through the hydrophobic interior.",
+ explain:"Describe the direction, the membrane event and where the cargo ends up. A receptor may help select cargo, but binding alone cannot explain the movement.",
+ misconception:"A macromolecule in a vesicle need not cross the phospholipid core.",hintCue:"Track the membrane around the cargo in each film."
+});
+additions.push({
+ id:"f170-division-variation",unit:"f170",area:1,section:"1.1.5",catchup:"1.1.5.meiosis",type:"single",level:"apply",
+ stem:"In a model germ cell, one homologue carries A and B together and the other carries a and b at the same two positions. After meiosis an intact chromosome carrying A and b is recovered. No mutations occurred. Which event explains that new combination on one chromosome?",
+ options:["Independent orientation of intact homologues at metaphase I, without exchange of DNA.","A crossover between the two positions on non-sister chromatids during prophase I.","Copying an intact AB chromosome during the interval between meiosis I and II.","Separating unchanged sister chromatids during mitosis."],correct:1,
+ model:"Crossing over between the loci can put A and b on the same chromatid.",
+ explain:"Independent orientation changes which whole homologues from different pairs travel together. It cannot alone rearrange two alleles on the same chromosome. Exchanging corresponding segments between homologues can.",
+ optionFeedback:["Orientation can change the combination across chromosomes. These markers are on the same chromosome.","","There is no additional S phase between the divisions. Copying an intact AB sequence also keeps the two alleles together.","Separating unchanged copies does not exchange their segments."],
+ misconception:"Recombination within a chromosome and assortment of entire homologues can give different evidence.",hintCue:"Are the two markers on one chromosome or on separate pairs?"
+});
+additions.push({
+ id:"f170-blood-cell-evidence",unit:"f170",area:1,section:"1.1.1",type:"match",level:"apply",
+ stem:"Each observation points to a different cellular job. Match the observation to the function it best supports.",
+ pairs:[["A haemoglobin-rich disc bends through a narrow passage","Carrying oxygen through a capillary"],["A cell with a multi-lobed nucleus encloses a small particle and delivers enzymes into the pocket","Neutrophil digestion of an engulfed particle"],["A B cell binds one antigen and its descendants secrete matching antibodies","Antigen-specific lymphocyte response"],["A cell with a two-lobed nucleus releases large granules against an external target","Eosinophil action without engulfing the target"],["A labelled blood cell enters tissue and matures into a large phagocyte","Monocyte contribution to tissue macrophages"]],
+ model:"The disc carries haemoglobin through a narrow capillary. The neutrophil digests material inside a compartment. Specific binding initiates a B-cell response. Eosinophil granules can act outside the cell. A monocyte can mature into a tissue macrophage.",
+ explain:"Use the process as well as the outline. A lobed nucleus alone would not tell you where granule contents acted. Detecting a macrophage in a tissue does not by itself establish its origin.",
+ misconception:"All white cells do not handle a target in the same way.",correctionHint:"Locate the target, identify whether it is taken inside and look for evidence of a change of cell type.",hintCue:"Which observation follows a cell over time? Which follows material across its surface?"
+},{
+ id:"f170-tubule-liver-evidence",unit:"f170",area:1,section:"1.1.1",catchup:"1.1.1.surfaces",type:"written",level:"apply",
+ stem:"In kidney sample K the proximal tubule cells retain their brush border, but ATP supply falls and less glucose is recovered from the filtrate. In liver sample L, pulse labelling shows new plasma protein accumulating in rough ER while less appears outside. Explain why intact microvilli in K and abundant rough ER in L are insufficient evidence of normal function.",
+ markPoints:["Microvilli provide membrane area for uptake in K.","Reduced ATP can weaken the ion gradient maintained by pumps, reducing glucose reabsorption.","L can still make protein in rough ER. Less release with accumulation suggests a later delivery or secretion problem."],
+ model:"K has absorptive surface area, but reabsorption also depends on gradients maintained using ATP. In L the protein is made, but transfer through the secretory pathway must also work. The readings do not locate one precise fault in L.",
+ explain:"Use the readout of solute recovery or protein release. The abundance of a structure cannot establish the rate of a process that needs several steps.",
+ misconception:"Seeing the expected structures cannot establish that their whole pathway works.",hintCue:"After identifying each structure, ask which other step is needed for the measured output."
+});
 var ids=new Set(bank.questions.map(function(q){return q.id;}));
 additions.forEach(function(q){if(!ids.has(q.id)){bank.questions.push(q);ids.add(q.id);}});
 })();

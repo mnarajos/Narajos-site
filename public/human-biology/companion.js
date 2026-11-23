@@ -336,7 +336,7 @@ const focusedLessons={
 };
 function indexComparisons(){
  for(const [key,lesson] of Object.entries(window.KeystoneHumanLessons || {})){
- if(/^f171\/1\.[23]\.1\./.test(key) && lesson.title && !focusedLessons[key]){
+ if((/^f171\/1\.[23]\.1\./.test(key) || /^f170\/1\.1\.[1345]\./.test(key)) && lesson.title && !focusedLessons[key]){
   focusedLessons[key]={area:"a1",title:lesson.title,practice:lesson.practice || key.split("/")[1].split(".").slice(0,3).join("."),lines:lesson.explain};
  }
 }
@@ -344,8 +344,10 @@ function indexComparisons(){
 indexComparisons();
 function lessonFor(unit,id){return (window.KeystoneHumanLessons||{})[unit+"/"+id];}
 var buildPractice={
+ "f170/1.1.1":"p-cell-stem-benefits",
  "f170/1.1.2":"p-cell-actual-width",
  "f170/1.1.3":"p-cell-protein-route",
+ "f170/1.1.5":"p-cell-stage-metaphase",
  "f170/2.1.2":"p-phys-heart-septum",
  "f170/2.1.3":"p-phys-homeostasis-cross",
  "f170/2.2.2":"p-phys-homeostasis-cross",
@@ -375,7 +377,7 @@ function practiceScope(unit,id){
  return point&&window.KeystoneHumanProgressions?.get(point)?point:null;
 }
 function topicPracticeScope(unit,id){
- return focusedLessons[unit+"/"+id]?.practice||({"f173/a3":"3.4","f177/a3":"2.6"})[unit+"/"+id]||id;
+ return focusedLessons[unit+"/"+id]?.practice||lessonFor(unit,id)?.practice||({"f173/a3":"3.4","f177/a3":"2.6"})[unit+"/"+id]||id;
 }
 function buildLink(unit,id,origin){
  var scope=practiceScope(unit,id);
@@ -405,14 +407,21 @@ function relatedLinks(unit,id,origin,practice,label){
  const build=buildLink(unit,id,origin);
  const resume=back?'<a data-hb-resume href="#'+esc(back)+'">Return to your unfinished question set</a>':"";
  const practiceLink=back===practice?"":'<a data-hb-practice href="#'+esc(practice)+'">'+esc(label)+'</a>';
- let further=build||resume?practiceLink:"";
+ const exactLessonPractice=unit==="f170"&&lessonFor(unit,id)?.practice;
+ const primary=exactLessonPractice?(resume||practiceLink):resume+build+(!resume&&!build?practiceLink:"");
+ let further=exactLessonPractice?build+(resume?practiceLink:""):(build||resume?practiceLink:"");
+ const other=lessonFor(unit,id)?.further || [];
+ for(const [route,title] of other){
+  const href=route.startsWith("challenge/")?route+"?from="+origin:route;
+  further+='<a href="#'+esc(href)+'">'+esc(title)+'</a>';
+ }
  if(unit==="f170"&&sectionById[id])further+='<a href="#cards/'+esc(id)+'">Flashcards for this topic</a>';
  if(unit==="f171"){
   const deck=(window.KeystoneF171Recall||[]).find(d=>d[0]===id);
   further+='<a href="#'+(deck?"cards/f171-"+id:"flashcards/f171")+'">'+(deck?"Flashcards for this topic":"F171 flashcards")+'</a>';
  }
- return '<nav class="hb-teach-related" aria-label="Related learning">'+resume+build+(!resume&&!build?practiceLink:"")+
-  (further?'<details><summary>More practice for this topic</summary>'+further+'</details>':"")+'</nav>';
+ return '<nav class="hb-teach-related" aria-label="Related learning">'+primary+
+  (further?'<details><summary>'+(other.length?'Related learning and practice':'More practice for this topic')+'</summary>'+further+'</details>':"")+'</nav>';
 }
 function showHome(render){
  var h='<div class="k-wrap">'+crumb("home","Home")+'<div class="k-unit-hero"><div class="k-eyebrow">Your learning companion</div><h1>Catch up and understand</h1><p>Choose an idea to learn or revisit. Guided lessons show the reasoning before you practise.</p></div><div class="k-unit-tiles">';
@@ -475,7 +484,7 @@ function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
  var origin="catchup/"+unit+"/"+id+(step?"/"+step:""),key="#catchup/"+unit+"/"+id;
  var scope=topicPracticeScope(unit,id);
  var practice="challenge/"+unit+"/"+scope+"?from="+origin,label=practiceLabel(unit,id,topic);
- if(scope!==id&&!focus)label=unit==="f173"?"Practise chromatogram interpretation":"Practise medicine safety surveillance";
+ if(scope!==id&&!focus&&unit!=="f170")label=unit==="f173"?"Practise chromatogram interpretation":"Practise medicine safety surveillance";
  var related=relatedLinks(unit,id,origin,practice,label);
  var lesson=lessonFor(unit,id),teaching=window.KeystoneHumanTeaching;
  var lessonId=unit==="f171"?({"a2":"2.1","a4":"4.2.2"}[id]||id):id;
@@ -509,6 +518,7 @@ function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
 }
 function linkFor(q){
  if(!q)return null;
+ if(q.unit==="f170" && sectionById[q.catchup])return "catchup/f170/"+q.catchup;
  if(q.id==="f170-microvilli-transfer")return "catchup/f170/1.2.1";
  if(focusedLessons[q.unit+"/"+q.catchup])return "catchup/"+q.unit+"/"+q.catchup;
  if(q.unit==="f170"&&sectionById[q.section])return "catchup/f170/"+q.section;
@@ -555,6 +565,18 @@ function reteachFor(q,answer){
  }[q.id];
  if(reproduction)return {route:route,href:route+"?stage="+reproduction[0],label:reproduction[1]};
  const focus=focusedLessons[route.slice("catchup/".length)];
+ const foundationReview={
+  "f170-gamete-contributions":[0,"Compare what the sperm and oocyte contribute"],
+  "f170-blood-cell-evidence":[0,"Revisit blood-cell structures and functions"],
+  "f170-tubule-liver-evidence":[1,"Revisit the steps in reabsorption"],
+  "f170-ribosome-fractions":[0,"Revisit ribosome type and location"],
+  "f170-nucleolus-export":[0,"Revisit assembly in the nucleolus and export"],
+  "f170-lysosome-evidence":[2,"Revisit delivery and the conditions for digestion"],
+  "f170-graft-recognition":[0,"Revisit surface antigens and recognition"],
+  "f170-vesicle-directions":[0,"Revisit inward and outward vesicle movement"],
+  "f170-division-variation":[3,"Revisit assortment and crossing over"]
+ }[q.id];
+ if(foundationReview)return {route:route,href:route+(foundationReview[0]?"?review="+foundationReview[0]:""),label:foundationReview[1]};
  if(focus)return {route:route,href:route+"?review=1",label:"Revisit the worked example"};
  var target=targets[route.slice("catchup/".length)];
  target=({
