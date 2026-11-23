@@ -2,6 +2,13 @@ import assert from "node:assert/strict";
 import { reviewWriting } from "../public/assets/writing-marking.js";
 
 const checks = [
+  ["potato","short","In dilute solution the potato gained 7%. In dilute solution the potato did not gain 7%.",["revise","compare"]],
+  ["potato","reason","As water entered the cells, the potato became heavier.",["detected"]],
+  ["potato","reason","The potato gained mass because water moved into the cells. Water did not enter the cells.",["revise"]],
+  ["dye","short","The dye spread further because its particles moved faster. Its particles did not move faster.",["revise"]],
+  ["insulation","short","The bare can cooled by 13 °C. The bare can did not cool by 13 °C.",["revise","compare"]],
+  ["insulation","short","The bare can was filled by 13 °C. The felt-wrapped can heated by 7 °C.",["compare","compare"]],
+  ["potato","paragraph","The potato gained 7% in dilute solution because water left its cells. The potato lost 9% in concentrated solution because water entered its cells.",["matched","matched","revise","revise"]],
   ["insulation", "short", "The bare can cooled by 13 °C, while the felt-wrapped can cooled by 7 °C.", ["matched", "matched"]],
   ["insulation", "short", "The bare can cooled to 13 °C, while the felt-wrapped can cooled by 7 °F.", ["compare", "compare"]],
   ["potato", "short", "The potato gained 7% in dilute solution and lost 9% in concentrated solution.", ["matched", "matched"]],

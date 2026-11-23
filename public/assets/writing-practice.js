@@ -28,6 +28,7 @@ for (const activity of activities) {
 
   field.addEventListener("input", () => {
     if (!results.hidden) status.textContent = "You’ve edited your sentence. Check it again when ready.";
+    activity.closest(".writing-card")?.querySelector("[data-sentence-selection]")?.remove();
     results.hidden = true;
     comparison.hidden = true;
   });
@@ -79,23 +80,45 @@ for (const button of document.querySelectorAll("[data-use-sentences]")) {
       return;
     }
 
-    const checkedSentences = Array.from(card.querySelectorAll("[data-writing-exercise]"))
-      .filter(section => section.dataset.writingKind !== "transfer")
-      .map(section => {
-        const answer = section.querySelector("textarea").value.trim();
-        return answer && answer === section.dataset.checkedSentence && reviewWriting(section.dataset.writingExercise, section.dataset.writingKind, answer)
-          .every(item => item.state === "matched" || item.state === "detected") ? answer : "";
-      }).filter(Boolean);
-    if (!checkedSentences.length) {
-      status.textContent = "Check a practice sentence and use its feedback before adding it to the draft.";
+    const sentences = [...card.querySelectorAll("[data-writing-exercise]")].filter(section =>
+      section.dataset.writingKind !== "transfer").map(section => section.querySelector("textarea").value.trim()).filter(Boolean);
+    if (!sentences.length) {
+      status.textContent = "Write a practice sentence first, or start directly in the paragraph box.";
       return;
     }
-
-    paragraph.value = checkedSentences.map(text => /[.!?]$/.test(text) ? text : text + ".").join(" ");
-    paragraph.dispatchEvent(new Event("input", { bubbles: true }));
-    status.textContent = "Added. Use your plan to explain the remaining ideas.";
-    paragraph.focus();
-    paragraph.setSelectionRange(paragraph.value.length, paragraph.value.length);
+    // Copy only a pupil's own live text. They can choose to keep a useful
+    // sentence even when its wording is outside the pattern checker's scope.
+    function add(selected) {
+      if (!selected.length) { status.textContent = "Choose a sentence to add."; return; }
+      if (paragraph.value.trim()) { status.textContent = "Your draft already has text. Copy across the changes you want."; return; }
+      paragraph.value = selected.map(text => /[.!?]$/.test(text) ? text : text + ".").join(" ");
+      paragraph.dispatchEvent(new Event("input", {bubbles:true}));
+      card.querySelector("[data-sentence-selection]")?.remove();
+      status.textContent = "Added your wording. Check the evidence and explanation as you revise.";
+      paragraph.focus();
+      paragraph.setSelectionRange(paragraph.value.length,paragraph.value.length);
+    }
+    card.querySelector("[data-sentence-selection]")?.remove();
+    if (sentences.length === 1) { add(sentences); return; }
+    const group = document.createElement("fieldset");
+    group.dataset.sentenceSelection = "";
+    const legend = document.createElement("legend");
+    legend.textContent = "Which of your sentences do you want to use?";
+    group.append(legend);
+    for (const text of sentences) {
+      const label = document.createElement("label"), choice = document.createElement("input");
+      choice.type = "checkbox";
+      choice.value = text;
+      label.append(choice, " " + text);
+      group.append(label);
+    }
+    const insert = document.createElement("button");
+    insert.type = "button";
+    insert.textContent = "Add selected sentences";
+    insert.onclick = () => add([...group.querySelectorAll("input:checked")].map(input => input.value));
+    group.append(insert);
+    button.before(group);
+    group.querySelector("input").focus();
   });
 }
 

@@ -44,15 +44,20 @@ function massChange(text) {
 
 function readPotatoEvidence(parts, expected) {
   const changes = { dilute: [], concentrated: [] };
+  const denied = new Set();
   for (const part of parts) {
     const type = solutionIn(part);
-    if (type) changes[type].push(massChange(part));
+    if (!type) continue;
+    changes[type].push(massChange(part));
+    if (denial.test(part) && massChange(part.replace(denial," ")) === expected[type]) denied.add(type);
   }
 
   return Object.entries(expected).map(([type, value]) => {
     const matches = changes[type].filter(change => change !== null);
     const otherType = type === "dilute" ? "concentrated" : "dilute";
     const label = "Result in " + type + " solution";
+    if (matches.includes(value) && denied.has(type))
+      return result(label, "revise", "Your sentences both state and deny this result. Check the direction against the data.");
     if (matches.length && matches.every(change => change === value)) {
       return result(label, "matched", "You matched the direction and percentage to the " + type + " solution.");
     }
@@ -74,6 +79,8 @@ const intoCells = new RegExp(String.raw`\bwater\b.{0,90}\b(?:in ?to|enter\w*)\s+
 const outOfCells = new RegExp(String.raw`\bwater\b.{0,90}\b(?:out of|leav\w*|left|from)\s+` + cellTarget);
 
 function causalParts(part) {
+  const initial = part.match(/^(?:because|as)\s+(.+?),\s*(.+)$/);
+  if (initial) return {cause:initial[1],outcome:initial[2]};
   const reason = part.match(/^(.*?)\s*,?\s*\b(?:because|due to(?: the fact that)?)\b\s*(.+)$/);
   if (reason) return { outcome: reason[1], cause: reason[2] };
   const consequence = part.match(/^(.*?)\s*,?\s*\b(?:so|therefore|which (?:made|makes|caused|causes)|causing|led to|caused|made|makes)\b\s*(.+)$/);
@@ -105,6 +112,8 @@ function readWaterMovement(parts, type, assumeSample) {
     return opposite.test(cause) && !flow.test(cause);
   });
 
+  const denied = waterClaims.some(part => denial.test(part) && flow.test(part));
+  if (matches && denied) return reasoningResult(label,"revise","You describe water moving in this direction and also deny that movement. Reconcile the two statements.");
   if (matches && !reversed) return reasoningResult(label, "detected", "Your draft appears to link water movement to mass change. Compare the direction and cause with the model.");
   if (reversed) return reasoningResult(label, "revise", entering ? "If mass increased, did more water enter the potato or leave it?"
     : "If mass decreased, did more water enter the potato or leave it?");
@@ -140,6 +149,8 @@ function readDiffusion(parts) {
       linked = true;
     }
   }
+  if (linked && parts.some(part => denial.test(part) && /\b(?:particles?|molecules?)\b/.test(part) && faster.test(part)))
+    return reasoningResult(label, "revise", "One sentence links spread to faster movement. Another denies faster movement. Check both against the observation.");
   if (linked) return reasoningResult(label, "detected", "Your draft appears to link faster particle movement with faster spread. Check which particles moved and how the speed affected the spread.");
   return reasoningResult(label, "compare", "Link the two ideas in one sentence. What moved faster, and how did that affect the spread?");
 }
@@ -151,8 +162,8 @@ const visualEvidence = {
       {label: "Felt-wrapped can", signal: /\b(?:felt|wrapped|insulated|covered)\b/, value: 7}
     ],
     quantity: /(?<![\d.])(-?\d+(?:\.\d+)?)\s*(?:°\s*c|degrees?\s*c(?:elsius)?\b)/g,
-    usedMeasure: /\b(?:by|drop\w*|fell|decreas\w*|lost|change)\b/,
-    oppositeMeasure: /\b(?:rose|increas\w*|warmed|cooled to|fell to|dropped to)\b/,
+    usedMeasure: /\b(?:cool\w*|drop\w*|fell|fall|decreas\w*|lost|change)\b/,
+    oppositeMeasure: /\b(?:rose|increas\w*|warm\w*|heat\w*|cooled to|fell to|dropped to)\b/,
     hint: "Match the temperature drop in °C to this can. State how far the temperature fell."
   },
   quadrats: {
@@ -172,17 +183,22 @@ function reviewVisualEvidence(task, parts) {
   return rule.cases.map(({label,signal,value}, i) => {
     const other = rule.cases[1-i].signal;
     const values = [];
+    let denied = false;
     for (const part of parts) {
       if (!signal.test(part) || other.test(part.replace(signal, "")) ||
-          denial.test(part.replace(/\bno (?:felt|wrapping|insulation)\b/, "")) ||
           uncertainty.test(part) || !rule.usedMeasure.test(part) || rule.oppositeMeasure.test(part)) continue;
       const matches = Array.from(part.matchAll(rule.quantity), match =>
         match[1] === "four" ? 4 : match[1] === "nine" ? 9 : Number(match[1]));
       if (matches.length === 1) {
+        if (denial.test(part.replace(/\bno (?:felt|wrapping|insulation)\b/, ""))) {
+          if (Math.abs(matches[0]) === value) denied = true;
+          continue;
+        }
         const signedChange = task === "insulation" && /\bchange\b/.test(part);
         values.push(signedChange ? -matches[0] : matches[0]);
       }
     }
+    if (denied && values.includes(value)) return result(label,"revise","You both state and deny this result. Check your two descriptions against the data.");
     if (values.length && values.every(item => item === value)) {
       return result(label, "matched", "The result and condition match.");
     }
