@@ -482,6 +482,7 @@ function reteachFor(q,answer){
  var route=linkFor(q);
  var targets={
   "f170/1.1.2":[3,"Revisit the scale-bar calculation"],
+  "f170/1.1.3":[2,"Revisit how proteins move through the cell"],
   "f170/2.1.2":[1,"Revisit blood flow and valve pressure"],
   "f170/2.1.3":[2,"Revisit oxygen diffusion into blood"],
   "f170/2.2.2":[3,"Revisit how circulation supports oxygen delivery"],
@@ -489,6 +490,8 @@ function reteachFor(q,answer){
   "f170/3.1.2":[3,"Revisit comparing glucose with baseline"],
   "f170/3.1.1":[3,"Revisit insulin action on target tissues"],
   "f170/3.3.1":[3,"Revisit the features that identify reproductive tissues"],
+  "f170/4.1.4":[3,"Revisit what a population plateau can show"],
+  "f171/1.2.1":[2,"Revisit how tissue damage changes breathing"],
   "f171/2.2":[3,"Revisit what improvement in function shows"],
   "f171/2.1":[3,"Revisit how evidence supports a treatment choice"],
   "f171/2.3":[3,"Revisit screening and diagnostic follow-up"],
@@ -511,20 +514,25 @@ function reteachFor(q,answer){
  if(reproduction)return {route:route,href:route+"?stage="+reproduction[0],label:reproduction[1]};
  var target=targets[route.slice("catchup/".length)];
  target=({
+  "f170-microscopy-preparation-transfer":[0,"Revisit choosing a preparation for microscopy"],
+  "f171-expiratory-evidence-transfer":[2,"Revisit flow and volume measurements"],
   "f172-diagram-alleles":[1,"Revisit alleles on homologous chromosomes"],
   "f172-recessive":[2,"Revisit combining parental alleles"],
   "f172-carrier":[2,"Revisit reading the Punnett square"],
   "f173-tests":[1,"Revisit choosing a microscope for the feature"],
   "f173-micro-contrast":[1,"Revisit surface and internal views"],
   "f173-mag":[3,"Revisit scale and magnification"],
+  "f173-chromatogram-transfer":[1,"Revisit measuring from the chromatogram baseline"],
   "f174-digestion":[1,"Revisit digestion and absorption"],
   "f174-enzymes":[2,"Revisit how glucose reaches the blood"],
   "f174-hormones":[3,"Revisit glucose uptake and storage"],
   "f174-diagram-glucose":[3,"Revisit insulin action in target tissues"],
   "f176-synapse":[4,"Revisit what crosses a chemical synapse"],
+  "f176-relay-threshold":[6,"Revisit the threshold comparison"],
   "f177-placebo":[2,"Revisit the purpose of the comparison group"],
   "f177-diagram-randomise":[2,"Revisit what random allocation changes"],
-  "f177-blinding":[3,"Revisit how blinding reduces bias"]
+  "f177-blinding":[3,"Revisit how blinding reduces bias"],
+  "f177-safety-signal":[3,"Revisit what suspected adverse-event reports show"]
  })[q.id]||target;
  if(route==="catchup/f170/1.1.2"&&(q.type==="number"||q.id==="p-cell-actual-width-diagnostic")){
   target=[4,"Revisit the worked unit conversion"];
@@ -532,7 +540,7 @@ function reteachFor(q,answer){
  if(route==="catchup/f171/4.2.1"&&(q.stage==="foundation"||q.stage==="diagnostic"||q.type==="number")){
   target=[2,"Revisit why a positive screen can be false"];
  }
- return { route:route, href:route+(target?"?review="+target[0]:""),
+ return { route:route, href:route+(target?.[0]?"?review="+target[0]:""),
   label:target?target[1]:"Need more help? Catch up on this idea" };
 }
 window.KeystoneHumanCatchup={route:function(hash,render){
