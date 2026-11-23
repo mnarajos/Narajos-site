@@ -182,6 +182,14 @@ export async function checkHumanCatchup(browser, base) {
 
     await open("challenge/f170/1.1.2");
     await page.locator(".k-question-view").waitFor();
+    await page.evaluate(key => {
+      const practice = JSON.parse(localStorage.getItem(key));
+      const conversion = "p-cell-actual-width-diagnostic";
+      practice.queue = [conversion, ...practice.queue.filter(id => id !== conversion)];
+      localStorage.setItem(key, JSON.stringify(practice));
+    }, practiceKey);
+    await page.reload();
+    await page.locator(".k-question-view").waitFor();
     const standard = await saved(practiceKey);
     assert.equal(standard.scope, "1.1.2");
     await open("catchup/f170/1.1.2");

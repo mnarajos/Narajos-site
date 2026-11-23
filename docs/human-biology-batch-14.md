@@ -33,7 +33,7 @@ The exact outcome by unit is in the register. There are 672 candidate or unresol
 
 ## Teaching and assessment changes
 
-Five guided lessons were added to established routes. Five existing lessons were refined. The 44 earlier routes, 49 progressions, 14 Skills Practice families, 42 F171 flashcards, F175 simulation, self-review and existing identifiers were retained.
+Two F170 recaps became guided lessons and three new guided routes were added. Five existing guided lessons were refined. The 44 earlier routes, 49 progressions, 14 Skills Practice families, 42 F171 flashcards, F175 simulation, self-review and existing identifiers were retained.
 
 | Unit | Worked teaching or independent transfer | Limits of the change |
 | --- | --- | --- |
