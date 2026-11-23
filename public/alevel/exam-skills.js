@@ -864,6 +864,31 @@
   }
 
   function drawings(host) {
+    const stored = read();
+    if ((stored.drawingSession || stored.drawingReview) && stored.drawingVersion !== drawing.version) {
+      stored.previousDrawingSet = { session: stored.drawingSession, review: stored.drawingReview, round: stored.drawingRound };
+      delete stored.drawingSession;
+      delete stored.drawingReview;
+      stored.drawingRound = 0;
+      stored.drawingVersion = drawing.version;
+      save(stored);
+    }
+    if (stored.previousDrawingSet || Object.keys(stored.drawingOutcomes || {}).some(id => /-\d$/.test(id))) {
+      const history = node("details");
+      history.append(node("summary", "Earlier schematic drawing practice"));
+      const previous = stored.previousDrawingSet || {};
+      history.append(node("p", previous.session ? "Your earlier set was saved at drawing " + (previous.session.index + 1) + " of 6." : "Your earlier practice is saved."));
+      const records = node("ul");
+      for (const [id, result] of Object.entries(stored.drawingOutcomes || {})) {
+        if (/-\d$/.test(id)) records.append(node("li", id + " · " + (outcomeNames[result] || result)));
+      }
+      history.append(records);
+      host.append(history);
+    }
+    if (!drawing.bank.length) {
+      host.append(node("p", "The schematic examples have been retired for scientific review."));
+      return;
+    }
     const block = node("section", null, "al-teaching al-drawing");
     const bar = stageBar([["model", "Compare"], ["guided", "With support"],
       ["independent", "Your turn"], ["review", "Review"]]);
@@ -936,6 +961,7 @@
       let at = session.index;
       function persistDrawing() {
         const stored = read();
+        stored.drawingVersion = drawing.version;
         stored.drawingRound = data.drawingRound;
         stored.drawingSession = session;
         save(stored);
@@ -1112,6 +1138,7 @@
   };
   function activityStatus(id, saved) {
     if (id === "drawings") {
+      if (saved.drawingVersion !== drawing.version) return ["Start", ""];
       if (saved.drawingSession) return ["Resume", "Drawing " + (saved.drawingSession.index + 1) + " of 6"];
       return saved.drawingReview ? ["Review", "Six-drawing set"] : ["Start", ""];
     }
