@@ -91,7 +91,7 @@ try {
   await fits();
 
   await open("/human-biology/#catchup/f170/3.2.1");
-  await page.getByText("I do · Follow a worked example", { exact: true }).click();
+  await page.locator("[data-hb-model-step] > summary").click();
   await page.getByText("Trace a withdrawal reflex", { exact: true }).click();
   const reflex = page.locator('science-sequence[kind="reflex"]');
   await reflex.getByRole("button", { name: "Next step" }).click();

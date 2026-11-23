@@ -101,6 +101,8 @@ function icon(name){
  calc:'<rect x="5" y="2" width="14" height="20" rx="2"/><rect x="8" y="5" width="8" height="4"/><path d="M8 13h2m3 0h3m-8 4h2m3 0h3"/>',
  check:'<path d="m4 12 5 5L20 6"/>',
  play:'<path d="m8 5 11 7-11 7z"/>',
+ steps:'<path d="M3 19h6v-5h6V9h6M17 5l4 4-4 4"/>',
+ bulb:'<path d="M9 18h6m-5 3h4M9 15c0-2-3-3-3-6a6 6 0 0 1 12 0c0 3-3 4-3 6Z"/>',
  eye:'<path d="M2 12s3-6 10-6 10 6 10 6-3 6-10 6-10-6-10-6Z"/><circle cx="12" cy="12" r="2.5"/>',
  alert:'<circle cx="12" cy="12" r="9"/><path d="M12 7v6m0 4h.01"/>',
  chevron:'<path d="m9 5 7 7-7 7"/>'

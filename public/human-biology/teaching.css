@@ -190,3 +190,31 @@
 }
 
 .hb-teaching-sequence :is(summary, [tabindex="-1"]) { scroll-margin-block-start: 8rem; }
+
+.hb-teach-stage {
+  --hb-stage-border: #8ab5ad;
+  border-inline-start: 4px solid var(--hb-stage-border);
+}
+.hb-teach-stage[data-hb-model-step] { --hb-stage-border: #82a9cf; }
+.hb-teach-stage[data-hb-stage="guided"] { --hb-stage-border: #ad98cc; }
+.hb-teach-stage > summary {
+  min-height: 44px;
+  line-height: 1.5;
+}
+.hb-teach-stage > summary svg {
+  width: 1.15em;
+  height: 1.15em;
+  margin-inline: .35em;
+  vertical-align: -.18em;
+}
+.hb-teach-stage > summary small {
+  display: inline-block;
+  margin-inline-start: .55em;
+  font-size: .875em;
+  font-weight: 500;
+  color: var(--muted);
+}
+.hb-teaching :is(summary, button, a):focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px;
+}

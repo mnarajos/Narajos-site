@@ -58,6 +58,11 @@
       '</dl><details><summary>Compare the reasoning</summary>' + paragraphs(example.compare) + '</details></details>';
   }
 
+  function stageSummary(symbol, label, detail) {
+    return '<summary>' + icon(symbol) + '<span>' + escape(label) + '</span>' +
+      (detail ? '<small>' + escape(detail) + '</small>' : '') + '</summary>';
+  }
+
   function task(stage, title, question, sequence) {
     if (!question) return "";
     const id = "hb-" + stage;
@@ -66,13 +71,13 @@
       '<label class="hb-teach-option"><input name="' + id + '" type="radio" value="' + i +
       '" required> <span>' + escape(option[0]) + '</span></label>').join("") :
       '<textarea id="' + id + '" rows="4" maxlength="3000" aria-labelledby="' + id + '-prompt" required></textarea>';
-    return '<details class="paper panel hb-teach-stage" data-hb-stage="' + stage + '"><summary>' + title +
-      '</summary><form novalidate><fieldset><legend id="' + id + '-prompt">' + escape(question.prompt) +
+    return '<details class="paper panel hb-teach-stage" data-hb-stage="' + stage + '">' +
+      stageSummary(stage === "guided" ? "steps" : choice ? "target" : "pen", title) + '<form novalidate><fieldset><legend id="' + id + '-prompt">' + escape(question.prompt) +
       '</legend>' + figure(question.photo) + (question.photos || []).map((photo, index) => figure(photo, index + 1)).join("") + table(question.table) + paragraphs(question.starter ? [question.starter] : []) +
       inputs + '</fieldset><ol class="hb-hints" hidden></ol><div class="actions hb-controls">' +
       '<button type="submit" class="button primary">' + (!choice && sequence ? icon("pen") : "") +
       (choice ? "Check answer" : "Compare my explanation") + '</button>' +
-      (question.hints?.length ? '<button type="button" class="button secondary" data-hb-action="hint">Get a hint</button>' : '') +
+      (question.hints?.length ? '<button type="button" class="button secondary" data-hb-action="hint">' + icon("bulb") + '<span>Get a hint</span></button>' : '') +
       '<button type="button" class="button quiet" data-hb-action="explain">Show explanation</button>' +
       '</div><div class="hb-feedback" role="status" aria-atomic="true" tabindex="-1"></div>' +
       '<div data-hb-review hidden></div><div class="actions hb-stage-next" hidden></div></form></details>';
@@ -80,7 +85,7 @@
 
   function openStageButton(stage, label, style) {
     return '<button type="button" data-hb-open="' + stage + '" class="button ' + style + '">' +
-      (stage === "model" ? icon("book") : "") + label + '</button>';
+      (stage === "model" ? icon("eye") : "") + label + '</button>';
   }
 
   function render(lesson, context) {
@@ -96,8 +101,7 @@
     const evidenceModel = lesson.revision && (lesson.focusCells || lesson.graph || lesson.visual === "model");
     const model = lesson.model?.length ?
       '<details class="paper panel hb-teach-stage' + (evidenceModel ? ' hb-model-with-evidence' : '') +
-      '" data-hb-model-step="1"><summary>I do · ' + escape(lesson.modelTitle || "Follow a worked example") +
-      '</summary>' + context.modelVisual + figure(lesson.photo) +
+      '" data-hb-model-step="1">' + stageSummary("eye", "Worked example", lesson.modelTitle) + context.modelVisual + figure(lesson.photo) +
       (lesson.graph ? window.KeystoneHumanSkills.graphHTML(lesson.graph) : "") + table(lesson.table, lesson.focusCells) +
       '<ol class="hb-model-steps' + (lesson.nodes ? ' hb-model-path' : '') + '">' + lesson.model.map((step, i) =>
         '<li value="' + (i + 1) + '"' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
@@ -108,9 +112,9 @@
       (lesson.revision ? '<div class="actions" data-hb-after-model hidden>' +
         openStageButton("guided", "Try with support", "primary") + '</div>' : '') + '</details>' : "";
     return '<div class="hb-teaching' + (lesson.revision ? ' hb-teaching-sequence' : '') + '"><p class="lead hb-objective">' + escape(lesson.goal) + '</p>' + activate +
-      explanation + model + context.method + task("guided", "We do · Try it with support", lesson.guided) +
+      explanation + model + context.method + task("guided", "With support", lesson.guided) +
       writingExample(lesson.writing) +
-      task("independent", "You do · Apply it independently", lesson.apply, lesson.revision) +
+      task("independent", "Your turn", lesson.apply, lesson.revision) +
       '<div data-hb-followup hidden>' + task("followup", "Try a fresh check", lesson.followup) + '</div>' +
       context.related + '</div>';
   }
@@ -195,7 +199,7 @@
       const hint = section.querySelector('[data-hb-action="hint"]');
       if (hint) {
         hint.setAttribute("aria-disabled", String(count >= question.hints.length));
-        hint.textContent = count >= question.hints.length ? "All hints shown" : count ? "Another hint" : "Get a hint";
+        hint.querySelector("span").textContent = count >= question.hints.length ? "All hints shown" : count ? "Another hint" : "Get a hint";
       }
       let html = "";
       const submitted = state.outcome && state.outcome !== "explained" && !question.points;

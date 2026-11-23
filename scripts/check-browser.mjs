@@ -609,7 +609,7 @@ try{
  assert((await desktop.locator("main").innerText()).includes("Key idea 2"),"Catch-up step did not advance");
  await screen(desktop,"human-vaccines");
  await desktop.goto(base+"/human-biology/#catchup/f170/3.2.1",{waitUntil:"load"});
- await desktop.getByText("I do · Follow a worked example",{exact:true}).click();
+ await desktop.locator("[data-hb-model-step] > summary").click();
  await desktop.getByText("Trace a withdrawal reflex",{exact:true}).click();
  const reflex=desktop.locator('science-sequence[kind="reflex"]');
  await reflex.locator("svg").waitFor({state:"visible"});
@@ -620,7 +620,7 @@ try{
  await reflex.getByRole("button",{name:"Previous step"}).press("Enter");
  await reflex.getByRole("status").filter({hasText:"Motor neuron"}).waitFor();
  await desktop.goto(base+"/human-biology/#catchup/f170/1.1.2",{waitUntil:"load"});
- await desktop.getByText("I do · Measure a red cell from its scale bar",{exact:true}).click();
+ await desktop.locator("[data-hb-model-step] > summary").click();
  const microscope=desktop.locator("[data-hb-model-step]");
  assert(await microscope.locator(".micrograph-single img").evaluate(async img=>{await img.decode();return img.naturalWidth===386;}));
  assert(await microscope.locator(".hb-bar-length").isVisible());
