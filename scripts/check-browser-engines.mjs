@@ -1,3 +1,4 @@
+import {checkAssessmentJourneys} from "./check-assessment-journeys.mjs";
 import assert from "node:assert/strict";
 import { firefox, webkit } from "playwright";
 import { checkHumanReliability } from "./check-human-reliability.mjs";
@@ -14,6 +15,7 @@ let route = "/";
 const errors = [];
 
 try {
+  await checkAssessmentJourneys(browser,base);
   await checkSharedInteractions(browser,base);
   await checkDrawingObservations(browser,base);
   await checkHumanReliability(browser, base, { touch: engine === "webkit" });

@@ -51,6 +51,12 @@ assert.equal(engine.stats(["a"],t0+4*86400000+2000).retained,1);
 assert(engine.matches("S","S phase",["S"]),"Explicitly approved alias not accepted");
 assert(!engine.matches("ion","iron",[]),"Unsafe fuzzy acceptance");
 assert(!engine.matches("H+","H-",[]),"Meaningful chemical charges should not be normalised away");
+const co=Object.values(decks).flat().find(row=>row[1]==="Carbon monoxide");
+for(const answer of ["CO","carbon monoxide"])assert(engine.matches(answer,co[1],co[2]));
+for(const answer of ["Co","co","CO₂"])assert(!engine.matches(answer,co[1],co[2]));
+assert(!engine.matches("j","Joule",["J"]));assert(engine.matches("J","Joule",["J"]));
+const oldReview={first:{one:true,two:false}};
+assert.match(box.window.KeystoneReview.firstReviewText(oldReview),/2 earlier ratings/);
 // Mock presentation scaffolding: menu, session, reveal and rating must all run.
 const SCI=[
  {name:"Biology",topics:topics.filter(x=>x.startsWith("b")).map(x=>[x,"","Biology "+x])},

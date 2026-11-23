@@ -71,7 +71,7 @@ for (const area of document.querySelectorAll("[data-writing-check]")) {
     detail.hidden = !cues.length;
     const separate = /\n[ \t]*\n|(?:^|\n)[ \t]*(?:[-*•]|\d+[.)])[ \t]+/.test(draft);
     status.textContent = separate ? messages.separate : messages.connected;
-    if (criteria.some(item => item.kind === "reasoning")) status.textContent += " Compare any reasoning links with the model.";
+    if (criteria.some(item => item.kind === "reasoning")) status.textContent += " Compare the direction of cause and effect with the model.";
     if (next) status.textContent += " " + next.feedback;
     report.hidden = false;
   });

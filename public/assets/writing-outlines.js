@@ -172,7 +172,7 @@ function mount(closing, id, guide) {
       const unseen = targets.filter(([, pattern]) => !pattern.test(values[1])).map(([value]) => value);
       const message = unseen.length
         ? "Look for " + unseen.join(" and ") + " in your supporting notes. Include the figures you are comparing."
-        : "Both figures appear in your supporting notes. " + guidance;
+        : "Both figures appear. Check which condition each figure describes. " + guidance;
       report.prepend(element("p", message));
     }
     report.hidden = false;

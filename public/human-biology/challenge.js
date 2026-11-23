@@ -44,15 +44,29 @@ function rememberVersions(ids){ids.forEach(function(id){var q=byId[id];if(!q||!q
 function familyInQueue(q){return session&&session.queue.some(function(id){var x=byId[id];return x&&(x.family||x.id)===(q.family||q.id);});}
 function restore(key=SK){try{var x=JSON.parse(localStorage.getItem(key)||"null");if(x&&x.skillId){if(!skills||x.skillsVersion!==skills.version||!skills.get(x.skillId)||!Array.isArray(x.generated)||x.generated.length>10)return null;x.generated.forEach(function(g){var q=skills.generate(x.skillId,g.level,g.seed);byId[q.id]=q;});}if(x&&Array.isArray(x.queue)&&x.queue.length&&x.queue.every(function(id){return !!byId[id];})&&x.index<x.queue.length&&!x.complete&&x.route&&x.unit){x.hintsUsed=x.hintsUsed||{};x.quickCheckIds=x.quickCheckIds||{};x.quickCheckLinks=x.quickCheckLinks||{};x.guidedFirst=x.guidedFirst||0;x.quickChecksSeen=x.quickChecksSeen||0;x.quickChecksPassed=x.quickChecksPassed||0;initialiseOutcomes(x);return x;}}catch(_){}return null;}
 function initialiseOutcomes(item){
- if(item.outcomes)return;
+ if(item.evidenceVersion===2)return;
+ item.evidenceVersion=2;
+ if(item.outcomes){
+  // Older sessions sometimes inferred an independent result from a first-attempt flag.
+  // An actual independent submission can be traced to its position in the saved queue.
+  const observed=new Set(Object.entries(item.outcomes).filter(([,outcome])=>outcome==="independent").map(([index])=>item.queue[index]));
+  const inferred=Object.keys(item.objectiveFirst||{}).filter(id=>item.objectiveFirst[id]==="independent"&&!observed.has(id));
+  if(inferred.length){
+   item.earlierPractice ||= {first:{},correctFirst:item.correctFirst};
+   inferred.forEach(id=>{item.earlierPractice.first[id]=item.first[id];item.first[id]=false;delete item.objectiveFirst[id];});
+   item.correctFirst=Object.values(item.objectiveFirst).filter(outcome=>outcome==="independent").length;
+  }
+  return;
+ }
  item.outcomes={};item.objectiveFirst={};
- // Historical first-attempt flags do not distinguish a submitted error from a reveal.
- // Never carry a written or unmatched short-answer self-rating into objective evidence.
- Object.keys(item.first||{}).forEach(function(id){
-  var q=byId[id];if(!q||q.type==="written"||q.type==="short")item.first[id]=false;
- });
- item.correctFirst=Object.keys(item.first||{}).filter(function(id){return item.first[id]===true;}).length;
- Object.keys(item.first||{}).filter(function(id){return item.first[id]===true;}).forEach(function(id){item.objectiveFirst[id]="independent";});
+ // Old flags record practice without identifying which help or feedback a pupil saw.
+ const ids=Object.keys(item.first||{});
+ if(ids.length){
+  item.earlierPractice={first:{...item.first},correctFirst:item.correctFirst,guidedFirst:item.guidedFirst,
+   quickChecksPassed:item.quickChecksPassed,quickChecksSeen:item.quickChecksSeen};
+  ids.forEach(function(id){item.first[id]=false;});
+ }
+ item.correctFirst=0;item.guidedFirst=0;item.quickChecksPassed=0;item.quickChecksSeen=0;
 }
 function progressEntry(id){
  var old=progress[id];if(old&&old.outcomeVersion===1)return old;
@@ -316,7 +330,7 @@ function makeSession(unit,scope,route,origin){
   for(var b=0;b<buckets.length&&arr.length<size;b++)while(buckets[b].length&&arr.length<size)arr.push(buckets[b].shift());
   ids=arr.sort(function(a,b){return stage(a)-stage(b);}).map(function(q){return q.id;});
  }else ids=shuffle(chosen).map(function(x){return x.id;});
- session={unit:unit,scope:scope,route:route,queue:ids,index:0,first:{},correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,quickMixVersion:scope==="all"?2:null,quickMixBase:scope==="all"?ids.slice():null,quickMixFinalId:scope==="all"?ids[ids.length-1]:null,quickMixAdjusted:false,complete:false,started:Date.now()};
+ session={unit:unit,scope:scope,route:route,queue:ids,index:0,first:{},outcomes:{},objectiveFirst:{},evidenceVersion:2,correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,quickMixVersion:scope==="all"?2:null,quickMixBase:scope==="all"?ids.slice():null,quickMixFinalId:scope==="all"?ids[ids.length-1]:null,quickMixAdjusted:false,complete:false,started:Date.now()};
  if(point)session.point=point.id;
  if(origin){session.topicContext=true;session.returnTo=origin;}
  rememberVersions(ids);save();drawQuestion();
@@ -370,7 +384,7 @@ function addSkillQuestion(){
  session.maxSkillLevel=Math.max(session.maxSkillLevel||1,session.skillLevel);
 }
 function startSkill(sk,r){
- session={unit:sk.unit,scope:"skill",route:r,returnTo:parseSkillRoute(r).returnTo,skillId:sk.id,skillsVersion:skills.version,skillLevel:1,maxSkillLevel:1,skillStreak:0,generated:[],queue:[],index:0,first:{},correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,complete:false,started:Date.now()};
+ session={unit:sk.unit,scope:"skill",route:r,returnTo:parseSkillRoute(r).returnTo,skillId:sk.id,skillsVersion:skills.version,skillLevel:1,maxSkillLevel:1,skillStreak:0,generated:[],queue:[],index:0,first:{},outcomes:{},objectiveFirst:{},evidenceVersion:2,correctFirst:0,guidedFirst:0,phase:"ask",answers:{},retries:{},hintsUsed:{},quickCheckIds:{},quickCheckLinks:{},quickChecksPassed:0,quickChecksSeen:0,complete:false,started:Date.now()};
  addSkillQuestion();save();drawQuestion();
 }
 function skillRoute(r){
@@ -658,7 +672,7 @@ function misconceptionFeedback(q,a){
  var messages=[];
  if(q.optionFeedback&&a.selected)messages=a.selected.map(function(i){return q.optionFeedback[i];}).filter(Boolean);
  if(q.numberFeedback&&a.text){
-  var value=Number(String(a.text).trim().replace(/,/g,"").replace(/^×\s*/,""));
+  var value=NarajosAssessment.parse(a.text,q.answerUnit,q.stem).value;
   var error=q.numberFeedback.find(function(entry){return Math.abs(value-entry[0])<=(entry[2]??1e-6);});
   if(error)messages.push(error[1]);
  }
@@ -753,7 +767,11 @@ function validateAnswer(q,a){
  if(q.type==="order")return {ready:usableOrder(q,a.order),correct:usableOrder(q,a.order)&&a.order.every(function(v,i){return v===i;})};
  if(q.type==="sort"){if(!a.sort||a.sort.length!==q.rows.length||a.sort.some(function(v){return v===""||v==null;}))return {ready:false,msg:"Choose a group for each statement."};return {ready:true,correct:a.sort.every(function(v,i){return +v===q.rows[i][1];})};}
  if(q.type==="match"){if(!a.match||a.match.length!==q.pairs.length||a.match.some(function(v){return v===""||v==null;}))return {ready:false,msg:"Choose a match for each row."};return {ready:true,correct:a.match.every(function(v,i){return +v===i;})};}
- if(q.type==="number"){var val=String(a.text||"").trim().replace(/,/g,"").replace(/^×\s*/,"");if(!/^[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[-+]?\d+)?$/i.test(val))return {ready:false,msg:"Enter a number only. The expected unit is shown above the box."};return {ready:true,correct:Math.abs(Number(val)-q.correct)<=(q.tolerance||1e-9)};}
+ if(q.type==="number"){
+  var answer=NarajosAssessment.parse(a.text,q.answerUnit,q.stem);
+  if(!Number.isFinite(answer.value))return {ready:false,msg:answer.message,incompatibleUnit:answer.incompatibleUnit};
+  return {ready:true,correct:NarajosAssessment.matches(answer.value,q.correct,q.tolerance??1e-9,q.stem,q.answerUnit)};
+ }
  if(q.type==="short"){if(!String(a.text||"").trim())return {ready:false,msg:"Enter an answer first, or choose Not sure."};return {ready:true,correct:q.accepted.some(function(x){return norm(x)===norm(a.text);})};}
  return {ready:!!String(a.text||"").trim(),correct:null,msg:"Write an explanation first, or choose I don’t know."};
 }
@@ -794,7 +812,7 @@ function record(q,outcome){
  if(session.outcomes[session.index])return;
  var helped=!!session.hintsUsed[q.id],quick=isQuickCheck(q);
  var previous=Object.prototype.hasOwnProperty.call(session.first,q.id);
- if(outcome==="correct")outcome=!previous||quick?(helped?"supported":"independent"):"corrected";
+ if(outcome==="correct")outcome=previous || currentAnswer().unitCorrection?"corrected":helped?"supported":"independent";
  var independent=outcome==="independent",got=independent||outcome==="supported"||outcome==="corrected";
  var objective=got||outcome==="incorrect";
  session.outcomes[session.index]=outcome;
@@ -842,7 +860,7 @@ function readForm(){
 function check(skip){
  var q=current();if(!q||session.phase==="feedback")return;
  var a=readForm()||{},v=validateAnswer(q,a);
- if(!skip&&!v.ready){var msg=main.querySelector(".k-error");if(!msg){msg=document.createElement("p");msg.className="k-error";msg.setAttribute("role","alert");main.querySelector(".k-foot-actions").prepend(msg);}msg.textContent=v.msg||"Choose an answer before checking.";return;}
+ if(!skip&&!v.ready){if(v.incompatibleUnit){a.unitCorrection ||= a.text;save();}var msg=main.querySelector(".k-error");if(!msg){msg=document.createElement("p");msg.className="k-error";msg.setAttribute("role","alert");main.querySelector(".k-foot-actions").prepend(msg);}msg.textContent=v.msg||"Choose an answer before checking.";return;}
  session.lastResult=skip?false:v.correct;
  session.wasSkipped=!!skip;
  if(!skip&&q.type==="short"&&session.lastResult===false)session.lastResult=null; // allow scientifically equivalent synonyms to be self-assessed
@@ -878,10 +896,12 @@ function next(){
  if(session.index>=session.queue.length)finish();else drawQuestion();
 }
 function outcomeSummary(old){
+ if(!old.outcomes || !old.objectiveFirst)return '<p class="lead">You completed this earlier set. The saved result does not identify the support used on each answer.</p>';
  var outcomes=Object.values(old.outcomes||{}),total=Object.keys(old.objectiveFirst||{}).length;
  var count=function(type){return outcomes.filter(function(result){return result===type;}).length;};
  var review=total?old.correctFirst+' of '+total+' objectively checked questions answered independently on the first submission.':'No objective first submissions were recorded in this set.';
  var stats=[[(old.guidedFirst||0),"answered with help"],[count("corrected"),"correct after a retry"],[(old.selfReviewed||0),"self-reviewed"],[count("revealed"),"explanations revealed"],[(old.quickChecksPassed||0)+"/"+(old.quickChecksSeen||0),"quick checks without help"]];
+ if(old.earlierPractice)stats.push([Object.keys(old.earlierPractice.first).length,"earlier responses with unclassified support"]);
  if(old.needsReview)stats.push([old.needsReview,"to revisit from this set"]);
  return '<p class="lead">'+review+'</p><dl class="k-mini-stats k-outcome-stats">'+stats.map(function(stat){return '<div><dt>'+stat[1]+'</dt><dd>'+stat[0]+'</dd></div>';}).join("")+'</dl>';
 }
@@ -890,7 +910,7 @@ function finish(){
  var old=session;clearSession(old);session=null;visible=false;
  old.needsReview=old.skillId?0:Object.keys(old.first).filter(function(id){return needsPractice(progress[id]);}).length;
  var result={};
- ["correctFirst","objectiveFirst","outcomes","guidedFirst","selfReviewed","quickChecksPassed","quickChecksSeen","unit","skillId","point","returnTo","route","maxSkillLevel","needsReview"].forEach(function(key){result[key]=old[key];});
+ ["correctFirst","objectiveFirst","outcomes","earlierPractice","guidedFirst","selfReviewed","quickChecksPassed","quickChecksSeen","unit","skillId","point","returnTo","route","maxSkillLevel","needsReview"].forEach(function(key){result[key]=old[key];});
  try{localStorage.setItem(CK,JSON.stringify(result));}catch(_){}
  if(window.KeystoneHumanApp)window.KeystoneHumanApp.replaceRoute("challenge/review");
  showCompletion(result);

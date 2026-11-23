@@ -41,7 +41,7 @@ function create(env){
   var h='<p class="crumb"><a href="#">← Home</a></p><h1>Flashcards</h1>'+
    '<p class="lead">Recall essential GCSE science knowledge, then check and mark your answer. Cards you miss return later in the session; successful cards come back on later days.</p>'+
    '<section class="kr-entry"><h2>Review for today</h2>'+
-   '<div class="kr-metrics"><span><strong>'+st.due+'</strong> due</span><span><strong>'+st.seen+'</strong> practised</span><span><strong>'+st.weak+'</strong> needing attention</span><span><strong>'+st.retained+'</strong> recalled on separate occasions</span></div>'+
+   '<div class="kr-metrics"><span><strong>'+st.due+'</strong> due</span><span><strong>'+st.seen+'</strong> practised</span><span><strong>'+st.weak+'</strong> needing attention</span><span><strong>'+st.retained+'</strong> at a longer review interval</span></div>'+
    '<div class="kr-actions"><a class="btn primary" href="#flashreview">Review due cards</a><a class="btn" href="#flashweak">My weak cards</a><a class="btn" href="#flashmixed">Mixed new cards</a></div>'+
    (resume?'<p class="kr-subtle" style="margin-top:12px"><a class="btn" href="#flashresume">Resume unfinished flashcards ('+resume.queue.length+' remaining)</a></p>':'')+
    '<p class="kr-subtle" style="margin-top:12px">Progress stays in this browser. No login required. New cards are not considered overdue until you have studied them.</p></section>'+
@@ -86,7 +86,8 @@ function create(env){
  function applyTier(session){
   if(!session)return session;
   var allowed=function(id){return valid(card(id));};
-  session.queue=session.queue.filter(allowed);
+  var oldFront=session.queue[0];session.queue=session.queue.filter(allowed);
+  if(oldFront!==session.queue[0]){session.phase="front";delete session.draftId;delete session.draft;}
   session.original=session.original.filter(allowed);
   session.complete=Math.min(session.complete,session.original.length);
   return session;
@@ -120,38 +121,19 @@ function create(env){
    '<div class="kr-result" id="kr-result" hidden><p class="kr-label">Expected answer</p><p class="kr-answer">'+E.esc(c.back)+'</p>'+
    '<p class="kr-typed-feedback" id="kr-comparison" aria-live="polite"></p>'+
    '<p class="kr-subtle">Did you recall the essential idea? If your scientifically correct answer uses different wording, mark it yourself.</p>'+
-   '<div class="kr-grade"><button type="button" class="btn" id="kr-again">Not yet — show again</button><button type="button" class="btn primary" id="kr-good">Got it</button></div></div></section>';
+   '<div class="kr-grade"><button type="button" class="btn" id="kr-again">Not yet — show again</button><button type="button" class="btn primary" id="kr-good">Record my recall</button><button type="button" class="btn" id="kr-reviewed">Finish as reviewed</button></div></div></section>';
   E.render(h,false);
-  var r=document.getElementById("kr-reveal"),result=document.getElementById("kr-result"),inp=document.getElementById("kr-input");
-  if(inp){inp.focus();inp.onkeydown=function(e){if(e.key==="Enter"){e.preventDefault();r.click();}};}else r.focus();
-  r.onclick=function(){
-   if(s.phase==="back")return;s.phase="back";saveActive();
-   r.hidden=true;result.hidden=false;
-   if(inp){inp.readOnly=true;var value=inp.value.trim(),matched=engine.matches(value,c.back,c.aliases);
-    document.getElementById("kr-comparison").textContent=value?(matched?"Your wording matches an accepted answer.":"Your wording is not an exact match. Check whether the scientific meaning is correct."):"You did not enter an answer.";
-   }
-   document.getElementById("kr-good").focus();
-  };
-  document.getElementById("kr-again").onclick=function(){rate(false);};
-  document.getElementById("kr-good").onclick=function(){rate(true);};
-  s.phase="front";saveActive();
- }
- function rate(known){
-  if(!active||!active.queue.length)return;
-  var id=active.queue.shift(),done=active.first[id]===undefined;
-  engine.mark(id,known);
-  if(done)active.first[id]=known;
-  if(!known){active.queue.push(id);active.attempts[id]=(active.attempts[id]||0)+1;}
-  else active.complete++;
-  active.phase="front";saveActive();
-  if(!active.queue.length)finished();else show();
+  root.KeystoneReview.bindReview(active,active.queue[0],function(value){return engine.matches(value,c.back,c.aliases);},saveActive,function(outcome){
+   root.KeystoneReview.recordReview(active,engine,outcome);saveActive();
+   if(active.queue.length)show();else finished();
+  });
  }
  function finished(){
   if(!active)return menu();
-  var total=active.original.length,clean=Object.values(active.first).filter(Boolean).length;
+  var total=active.original.length;
   active.over=true;saveActive();
   var h='<p class="crumb"><a href="#flashcards">← Flashcards</a></p><h1>Review complete</h1>'+
-   '<div class="kr-entry"><h2>'+total+' cards completed</h2><p>'+clean+' recalled first time. Cards you needed to revisit were repeated until you could recall them.</p>'+
+   '<div class="kr-entry"><h2>'+total+' cards completed</h2><p>'+root.KeystoneReview.firstReviewText(active)+'</p>'+
    '<p>Successful cards will reappear after a delay, rather than counting as permanently mastered today.</p>'+
    '<div class="kr-actions"><a class="btn primary" href="#flashcards">Choose another set</a><a class="btn" href="#flashreview">Review due cards</a></div></div>';
   E.render(h);active=null;

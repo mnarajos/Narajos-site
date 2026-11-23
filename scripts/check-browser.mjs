@@ -2,6 +2,7 @@
  * Distinct from unit tests: these exercise rendered DOM, navigation and mobile layout.
  * Run after: npm install --no-save playwright@1.56.1 && npx playwright install chromium
  */
+import {checkAssessmentJourneys} from "./check-assessment-journeys.mjs";
 import assert from "node:assert/strict";
 import {checkSharedInteractions} from "./check-shared-interactions.mjs";
 import {checkBrowserZoom} from "./check-browser-zoom.mjs";
@@ -34,7 +35,8 @@ async function checkPage(page,name){
  assert(overflow<=3,name+" overflows viewport horizontally by "+overflow+"px");
 }
 try{
- await checkSharedInteractions(browser,base,true);
+ await checkAssessmentJourneys(browser,base);
+  await checkSharedInteractions(browser,base,true);
  await checkBrowserZoom(base);
  await checkCatchupScaffolds(browser,base);
  {
@@ -1299,7 +1301,10 @@ try{
  await checkDraft.click();
  await navPage.getByRole("status").filter({hasText:"Write a draft before checking it."}).waitFor();
  assert(await draft.evaluate(element=>element===document.activeElement));
- await navPage.getByRole("button",{name:"Use my checked sentences",exact:true}).click();
+ await navPage.getByRole("button",{name:"Use my practice sentences",exact:true}).click();
+ const choices=navPage.locator("[data-sentence-selection]");
+ for(const choice of await choices.getByRole("checkbox").all())await choice.check();
+ await choices.getByRole("button",{name:"Add selected sentences"}).click();
  assert((await draft.inputValue()).includes("The potato gained 7%") &&
   (await draft.inputValue()).includes("water moved into the potato cells"),"Checked sentences should be available to build a paragraph");
 
