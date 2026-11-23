@@ -698,7 +698,7 @@ try{
  await desktop.goto(base+"/human-biology/#challenge/f171/a3",{waitUntil:"load"});
  await desktop.locator(".k-question-view").waitFor({state:"visible"});
  const count=await desktop.evaluate(()=>window.KeystoneHumanChallenge?.questionCount);
- assert.equal(count,566,"Live engine did not load all questions");
+ assert.equal(count,568,"Live engine did not load all questions");
  assert((await desktop.locator("main").innerText()).length>90,"Question activity is blank");
  await desktop.locator("#site-home").click();
  const dialog=desktop.locator("#leave-dialog");
@@ -1956,7 +1956,7 @@ try{
  await mobile.close();
  await desktop.close();
  assert.deepEqual(errors,[],"Uncaught page errors: "+errors.join("; "));
- console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 566 questions and mobile layout.");
+ console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 568 questions and mobile layout.");
 }finally{
  await browser.close();await new Promise(done=>server.close(done));
 }

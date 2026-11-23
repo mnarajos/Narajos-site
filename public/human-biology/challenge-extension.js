@@ -1213,6 +1213,27 @@ additions.push({
  misconception:"Agreement between readings and agreement with a reference answer different questions.",
  hintCue:"Distinguish comparisons within the group of readings from comparisons with the reference."
 });
+additions.push({
+ id:"f170-microscopy-preparation-transfer",unit:"f170",area:1,section:"1.1.2",type:"single",level:"apply",
+ stem:"A team needs to compare the beating of cilia on living epithelial cells over a short period. Which preparation would let them record the required observation?",
+ options:["A living specimen observed with a light microscope.","A fixed, thin section examined with TEM.","A prepared surface examined with SEM.","An enlarged print of a stained section."],
+ correct:0,model:"Light microscopy of a living specimen can show movement over time.",
+ explain:"The required evidence is change in position. A fixed electron micrograph can reveal detail of a structure, and an enlarged still image cannot record its movement.",
+ optionFeedback:[null,"TEM can show internal structure in a thin fixed section. That does not record live movement.","SEM can show surface detail. The preparation does not show living cilia beating.","A larger still image cannot supply a record over time."],
+ misconception:"Higher resolution is useful only when the method records the feature being investigated.",
+ hintCue:"Decide whether the evidence needs to show fine structure or movement over time."
+},{
+ id:"f171-expiratory-evidence-transfer",unit:"f171",area:4,section:"4.1",type:"single",level:"apply",
+ stem:"Two fictional records show technically acceptable readings under comparable conditions. Which comparison is supported?",
+ evidenceTable:{caption:"Fictional respiratory measurements",columns:["Record","Peak expiratory flow (L/min)","Volume expired in the first second (L)","Estimated oxygen saturation (%)"],
+  rows:[["A","400","2.0","97"],["B","400","2.6","97"]],focus:[[0,2],[1,2]]},
+ options:["A and B must have expelled the same volume in the first second.","B had the higher peak expiratory flow.","B expelled more air in the first second, despite reaching the same recorded peak flow.","B achieved higher oxygen saturation because the expired volume was larger."],
+ correct:2,model:"Record B shows 2.6 L in the first second, compared with 2.0 L in A. The highest measured flow was the same.",
+ explain:"Peak expiratory flow is the highest recorded rate. The volume over the first second depends on flow throughout that second. The recorded saturations are also equal.",
+ optionFeedback:["The first-second volumes are shown in their own column. A matching peak rate does not imply matching volumes.","The peak-flow column is 400 L/min for both records.",null,"The recorded estimates are both 97%. Volume expired is a different measurement."],
+ misconception:"A peak rate and the amount moved over an interval are different measurements.",
+ hintCue:"Find the column measuring the amount of air moved in the first second."
+});
 var ids=new Set(bank.questions.map(function(q){return q.id;}));
 additions.forEach(function(q){if(!ids.has(q.id)){bank.questions.push(q);ids.add(q.id);}});
 })();

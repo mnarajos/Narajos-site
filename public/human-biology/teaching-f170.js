@@ -108,7 +108,8 @@ window.KeystoneHumanLessons = {
       activate: ["Quick check: how many µm are in 1 mm?", "1 mm = 1,000 µm and 1 µm = 1,000 nm. Convert to the same unit before dividing two lengths."],
       explain: [
         "A scale bar labels a known actual length. The structure and bar are measured on the same image, so resizing both together preserves their ratio.",
-        "Magnification is image size ÷ actual size. Resolution is the ability to distinguish two nearby points. Enlarging a blurred image spreads out the same information."
+        "Magnification is image size ÷ actual size. Resolution is the ability to distinguish two nearby points. Enlarging a blurred image spreads out the same information.",
+        "In transmitted light microscopy, a thin specimen lets light pass through and reduces overlapping layers. A microtome cuts thin sections of fixed tissues. A temporary mount can hold a thin living specimen in liquid. A stain can improve contrast, but a preparation that kills cells cannot show their motion."
       ],
       compare: {
         caption: "What kind of representation am I reading?",
