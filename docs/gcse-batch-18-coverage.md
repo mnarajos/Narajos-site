@@ -78,3 +78,19 @@ These are the 21 Trilogy activities in §10.2. Each has a revision route. Qs abo
 | 21 | Infrared absorption/emission | P6 infrared; practical coverage primarily revision. |
 
 The first group to build is electrical supply/transmission, motion graphs and the missing method models. Use the existing Year 9 membrane, energy and bonding lessons and the KS3 particle and motion models as prerequisites. Main-app material remains the follow-up for syllabus areas still outside the guided catalogue.
+
+## Batch 19 update
+
+The 37 senior routes after Batch 18 now have eleven additions. See the [21-practical register](gcse-batch-19-practicals.md) for reasoning demands and the [implementation report](gcse-batch-19-report.md) for limits of verification.
+
+|Spec area|Year|Guided teaching and independent application added|
+|---|---|---|
+|4.2 Organisation|10|Amylase endpoint and controlled comparison; plant transport from a storage organ to a growing shoot|
+|4.4 Bioenergetics and 4.5 Homeostasis|10|Circulatory explanation in respiration; Higher glucagon feedback; ruler-drop order effects|
+|4.7 Ecology|10|Quadrat population estimates and evaluation of stream-bank sampling|
+|5.3 Quantitative chemistry|10|Higher mole ratios, limiting reactants and theoretical yield|
+|5.4 Chemical changes and 5.5 Energy changes|10|Electrode evidence with Higher half-equations; temperature-change measurement and evaluation|
+|6.5 Forces|11|Force–extension evidence, elastic recovery and trolley controls|
+|6.6 Waves|11|Spatial and temporal wave measurements; infrared absorption and emission comparisons|
+
+The circulation and glucagon additions are explanations within existing routes. Independent transfer specific to those additions remains to be tested.

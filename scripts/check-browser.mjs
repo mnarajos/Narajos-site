@@ -351,7 +351,7 @@ try{
  }
  await helpPage.close();
  const seniorLessonIds=new Set();
- for(const [year,count] of [[10,10],[11,11]]){
+ for(const [year,count] of [[10,11],[11,11]]){
   await pilotPage.goto(base+"/science-catch-up/?year="+year);
   assert(await pilotPage.getByText(/if you missed the topic or need it explained again/).isVisible());
   assert(await pilotPage.getByRole("link",{name:"Open GCSE revision"}).isVisible());
@@ -372,7 +372,7 @@ try{
    seniorLessonIds.add(id);
   }
  }
- assert.equal(seniorLessonIds.size,37);
+ assert.equal(seniorLessonIds.size,48);
  await pilotPage.goto(base+"/science-catch-up/lesson/?topic=vaccine-memory&year=10");
  for(const [index,answer] of ["Specific antigens","Their immune system has already responded to its antigens.","The virus lacks the bacterial targets of antibiotics.","Those antibodies may not bind to the new pathogen’s antigens."].entries()){
   await guide.getByRole("button",{name:"Check",exact:true}).click();

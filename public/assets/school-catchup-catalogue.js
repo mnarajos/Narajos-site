@@ -24,6 +24,7 @@ const gcseYears = {
     ["C2", "Bonding", ["ionic-conduction", "molecular-melting"]]
   ],
   10: [
+    ["B2", "Organisation and enzyme investigations"],
     ["B3", "Infection and response"], ["B4", "Bioenergetics"], ["P3", "Particle model of matter"],
     ["P4", "Radioactivity"], ["P2", "Electricity"], ["C3", "Quantitative chemistry"], ["C4", "Chemical changes"],
     ["C5", "Energy changes"], ["B5", "Homeostasis"], ["B7", "Ecology"]
