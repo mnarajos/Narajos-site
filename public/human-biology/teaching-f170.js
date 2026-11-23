@@ -586,6 +586,12 @@ window.KeystoneHumanLessons = {
         ["Compare the outer faces of the membranes, then consider what each product is made of."]),
         illustration: {src:"/human-biology/er-profiles.svg", width:360,height:186,alt:"P shows flattened sacs with small dots along the outside. Q shows branching tubules with no surface dots. Same-scale schematics."}
       },
+      followup: choice("This transmission electron micrograph shows part of a mammalian pancreatic cell. Which conclusion is supported by the closely spaced membranes outside the large central region?", 2,
+        [["The cell is releasing twice as much digestive enzyme as a resting cell.", "A single section shows structures. To compare release rates, measure product leaving comparable cells over time."], ["The dark particles show that the digestive enzymes are already active in the cytoplasm.", "Small particles along membrane surfaces are consistent with ribosomes. Their appearance cannot establish digestive enzyme activity."], ["Membranes with particles along their surfaces support a capacity to make proteins on rough ER.", ""]],
+        "The membrane profiles and attached particles support an interpretation of rough ER in a secretory cell. The image gives structural evidence and cannot measure secretion rate.",
+        ["Find the stacks outside the large pale region. What kind of evidence can a still section provide?"], {
+          photo:{src:"/assets/micrographs/hb-secretory-field.webp",width:640,height:454,alt:"Grayscale thin section. A large mottled region fills the centre. Closely spaced membrane profiles run beside its edges, with small dark particles along them.",source:"https://commons.wikimedia.org/wiki/File:Mammalian_pancreatic_tissue,_nuclear_pores_and_rough_endoplasmic_reticulum.jpg",credit:"Louisa Howard, Dartmouth College",licence:"Public domain",licenceUrl:"https://commons.wikimedia.org/wiki/File:Mammalian_pancreatic_tissue,_nuclear_pores_and_rough_endoplasmic_reticulum.jpg#Licensing",changes:"Footer cropped and image converted to WebP"}
+        }),
       practice: "f170-lysosome-evidence",
       further: [["challenge/f170/f170-nucleolus-export","Distinguish assembly from export"],["challenge/f170/f170-ribosome-fractions","Interpret ribosome measurements"]]
     },

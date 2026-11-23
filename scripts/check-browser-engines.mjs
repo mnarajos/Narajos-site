@@ -98,6 +98,17 @@ try {
   assert((await reflex.getByRole("status").innerText()).trim());
   await fits();
 
+  await open("/human-biology/#catchup/f170/1.1.5.meiosis");
+  const meioticTask = page.locator('[data-hb-stage="independent"]');
+  await meioticTask.locator("summary").press("Enter");
+  const fields = meioticTask.getByRole("img", {name:/Two unlabelled stages/});
+  assert(await fields.evaluate(async img => { await img.decode(); return img.naturalWidth === 360; }));
+  await meioticTask.getByRole("textbox").fill("Field A has doubled structures at each pole.");
+  await meioticTask.getByRole("button", {name:"Compare my explanation"}).press("Enter");
+  assert(await fields.isVisible());
+  assert(await meioticTask.getByRole("heading", {name:"Model explanation"}).isVisible());
+  await fits();
+
   await open("/human-biology/?pilot=screening#catchup/f171/4.2.1");
   await page.getByRole("button", { name: "See worked example", exact: true }).press("Enter");
   const screening = page.locator("[data-hb-model-step]");

@@ -111,6 +111,23 @@ export async function checkHumanCatchup(browser, base) {
     await review.getByRole("button", {name:"Finish review"}).press("Enter");
     assert.equal((await saved(localPractice))["f170/1.1.5/1"].independent.outcome, "selfReview");
 
+    await open("catchup/f170/1.1.3.evidence");
+    const erAnswer = stage("independent");
+    await expand(erAnswer);
+    await erAnswer.getByRole("textbox").fill("P has dots outside the sacs. Q shows tubules.");
+    await erAnswer.getByRole("button", {name:"Compare my explanation"}).press("Enter");
+    await erAnswer.getByRole("button", {name:"Finish review"}).press("Enter");
+    await erAnswer.getByRole("button", {name:"Try a fresh check"}).press("Enter");
+    const em = stage("followup");
+    assert(await em.getByRole("img", {name:/Grayscale thin section/}).evaluate(async img=>{await img.decode(); return img.naturalWidth===640;}));
+    await em.getByRole("radio", {name:/twice as much/}).check();
+    await em.getByRole("button", {name:"Check answer"}).press("Enter");
+    assert.match(await em.getByRole("status").innerText(), /measure product leaving/);
+    await em.getByRole("radio", {name:/capacity to make proteins/}).check();
+    await em.getByRole("button", {name:"Check answer"}).press("Enter");
+    assert.match(await em.getByRole("status").innerText(), /Correct on retry/);
+    assert.equal((await saved(localPractice))["f170/1.1.3.evidence/1"].independent.outcome, "selfReview");
+
     // The exact linked item, its edited answers and corrected outcome survive reopening.
     await open("catchup/f171/1.3.1.fungi");
     await page.locator("[data-hb-practice]").press("Enter");
