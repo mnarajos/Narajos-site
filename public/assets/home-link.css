@@ -51,3 +51,9 @@ footer .resource-terms{display:inline-block;margin:.3rem .5rem .25rem 0;color:in
     min-block-size:100svh;
   }
 }
+
+/* Distinguish the app overview from the Narajos homepage in both AQA apps. */
+header.top > .top-inner > a.brand { min-height:44px; }
+header.top > .top-inner :is(a.brand, #bnav a):focus-visible {
+  outline:3px solid var(--narajos-focus-ring);outline-offset:3px;
+}

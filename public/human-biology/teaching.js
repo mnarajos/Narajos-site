@@ -29,6 +29,22 @@
     }
   }
 
+  function savedStages() {
+    const saved = load();
+    const started = state => state && (
+      Number.isInteger(state.selected) || state.draft?.trim() || state.original ||
+      state.outcome || state.wrong || state.hint
+    );
+    const complete = state => state && (state.accepted || state.outcome === "selfReview");
+    return Object.fromEntries(Object.entries(saved).flatMap(([key, record]) => {
+      if (!record || typeof record !== "object") return [];
+      if (started(record.followup) && !complete(record.followup)) return [[key, "followup"]];
+      if (complete(record.independent)) return [];
+      if (started(record.independent) || complete(record.guided)) return [[key, "independent"]];
+      return started(record.guided) ? [[key, "guided"]] : [];
+    }));
+  }
+
   const icon = name => window.KeystoneHumanChallenge?.icon(name) || "";
   const paragraphs = lines => (lines || []).map(line => '<p>' + escape(line) + '</p>').join("");
   const list = lines => '<ul>' + lines.map(line => '<li>' + escape(line) + '</li>').join("") + '</ul>';
@@ -58,6 +74,11 @@
       '</dl><details><summary>Compare the reasoning</summary>' + paragraphs(example.compare) + '</details></details>';
   }
 
+  function stageSummary(symbol, label, detail) {
+    return '<summary>' + icon(symbol) + '<span>' + escape(label) + '</span>' +
+      (detail ? '<small>' + escape(detail) + '</small>' : '') + '</summary>';
+  }
+
   function task(stage, title, question, sequence) {
     if (!question) return "";
     const id = "hb-" + stage;
@@ -66,13 +87,13 @@
       '<label class="hb-teach-option"><input name="' + id + '" type="radio" value="' + i +
       '" required> <span>' + escape(option[0]) + '</span></label>').join("") :
       '<textarea id="' + id + '" rows="4" maxlength="3000" aria-labelledby="' + id + '-prompt" required></textarea>';
-    return '<details class="paper panel hb-teach-stage" data-hb-stage="' + stage + '"><summary>' + title +
-      '</summary><form novalidate><fieldset><legend id="' + id + '-prompt">' + escape(question.prompt) +
+    return '<details class="paper panel hb-teach-stage" data-hb-stage="' + stage + '">' +
+      stageSummary(stage === "guided" ? "steps" : choice ? "target" : "pen", title) + '<form novalidate><fieldset><legend id="' + id + '-prompt">' + escape(question.prompt) +
       '</legend>' + figure(question.photo) + (question.photos || []).map((photo, index) => figure(photo, index + 1)).join("") + table(question.table) + paragraphs(question.starter ? [question.starter] : []) +
       inputs + '</fieldset><ol class="hb-hints" hidden></ol><div class="actions hb-controls">' +
       '<button type="submit" class="button primary">' + (!choice && sequence ? icon("pen") : "") +
       (choice ? "Check answer" : "Compare my explanation") + '</button>' +
-      (question.hints?.length ? '<button type="button" class="button secondary" data-hb-action="hint">Get a hint</button>' : '') +
+      (question.hints?.length ? '<button type="button" class="button secondary" data-hb-action="hint">' + icon("bulb") + '<span>Get a hint</span></button>' : '') +
       '<button type="button" class="button quiet" data-hb-action="explain">Show explanation</button>' +
       '</div><div class="hb-feedback" role="status" aria-atomic="true" tabindex="-1"></div>' +
       '<div data-hb-review hidden></div><div class="actions hb-stage-next" hidden></div></form></details>';
@@ -80,7 +101,7 @@
 
   function openStageButton(stage, label, style) {
     return '<button type="button" data-hb-open="' + stage + '" class="button ' + style + '">' +
-      (stage === "model" ? icon("book") : "") + label + '</button>';
+      (stage === "model" ? icon("eye") : "") + label + '</button>';
   }
 
   function render(lesson, context) {
@@ -89,15 +110,14 @@
     const activate = lesson.activate
       ? '<details class="hb-prerequisite"><summary>' + escape(lesson.activate[0]) + '</summary><p>' +
         escape(lesson.activate[1]) + '</p>' + prior + '</details>' : prior;
-    const explanation = '<section class="paper panel hb-teach-explain"><h2>Understand the idea</h2>' +
+    const explanation = '<details class="paper panel hb-teach-explain" open><summary><h2>Understand the idea</h2></summary>' +
       paragraphs(lesson.explain) + table(lesson.compare) + context.inline +
       (lesson.revision ? '<div class="actions hb-start">' + openStageButton("model", "See worked example", "primary") + '</div>' : '') +
-      '</section>';
+      '</details>';
     const evidenceModel = lesson.revision && (lesson.focusCells || lesson.graph || lesson.visual === "model");
     const model = lesson.model?.length ?
       '<details class="paper panel hb-teach-stage' + (evidenceModel ? ' hb-model-with-evidence' : '') +
-      '" data-hb-model-step="1"><summary>I do · ' + escape(lesson.modelTitle || "Follow a worked example") +
-      '</summary>' + context.modelVisual + figure(lesson.photo) +
+      '" data-hb-model-step="1">' + stageSummary("eye", "Worked example", lesson.modelTitle) + context.modelVisual + figure(lesson.photo) +
       (lesson.graph ? window.KeystoneHumanSkills.graphHTML(lesson.graph) : "") + table(lesson.table, lesson.focusCells) +
       '<ol class="hb-model-steps' + (lesson.nodes ? ' hb-model-path' : '') + '">' + lesson.model.map((step, i) =>
         '<li value="' + (i + 1) + '"' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
@@ -108,9 +128,9 @@
       (lesson.revision ? '<div class="actions" data-hb-after-model hidden>' +
         openStageButton("guided", "Try with support", "primary") + '</div>' : '') + '</details>' : "";
     return '<div class="hb-teaching' + (lesson.revision ? ' hb-teaching-sequence' : '') + '"><p class="lead hb-objective">' + escape(lesson.goal) + '</p>' + activate +
-      explanation + model + context.method + task("guided", "We do · Try it with support", lesson.guided) +
+      explanation + model + context.method + task("guided", "With support", lesson.guided) +
       writingExample(lesson.writing) +
-      task("independent", "You do · Apply it independently", lesson.apply, lesson.revision) +
+      task("independent", "Your turn", lesson.apply, lesson.revision) +
       '<div data-hb-followup hidden>' + task("followup", "Try a fresh check", lesson.followup) + '</div>' +
       context.related + '</div>';
   }
@@ -145,7 +165,7 @@
       (complete ? '<p>Your self-review is saved.</p>' : '<div class="actions"><button type="button" class="button primary" data-hb-action="finish-review">' + icon("check") + 'Finish review</button></div>');
   }
 
-  function mount(key, lesson, reviewStep) {
+  function mount(key, lesson, reviewStep, resumeStage) {
     const root = main.querySelector(".hb-teaching");
     if (!root) return;
     // Keep responses to earlier task versions separate from the new questions.
@@ -195,7 +215,7 @@
       const hint = section.querySelector('[data-hb-action="hint"]');
       if (hint) {
         hint.setAttribute("aria-disabled", String(count >= question.hints.length));
-        hint.textContent = count >= question.hints.length ? "All hints shown" : count ? "Another hint" : "Get a hint";
+        hint.querySelector("span").textContent = count >= question.hints.length ? "All hints shown" : count ? "Another hint" : "Get a hint";
       }
       let html = "";
       const submitted = state.outcome && state.outcome !== "explained" && !question.points;
@@ -329,25 +349,40 @@
         showModelStep(Math.min(reviewStep, steps.children.length) - 1, true);
       } else showModelStep(0, false);
     }
-    root.addEventListener("click", event => {
-      const button = event.target.closest("[data-hb-open]");
-      if (!button) return;
-      const id = button.dataset.hbOpen;
-      const next = id === "model" ? root.querySelector("[data-hb-model-step]") :
-        root.querySelector('[data-hb-stage="' + id + '"]');
-      if (!next) return;
+    const explanation = root.querySelector(".hb-teach-explain");
+    function prepareStage(next) {
       root.querySelectorAll("details.hb-teach-stage[open]").forEach(stage => {
         if (stage !== next) stage.open = false;
       });
-      next.open = true;
-      next.querySelector("summary").focus();
+      if (next.hasAttribute("data-hb-stage")) explanation.open = false;
+    }
+    root.addEventListener("click", event => {
+      const button = event.target.closest("[data-hb-open]");
+      if (button) {
+        const id = button.dataset.hbOpen;
+        const next = id === "model" ? root.querySelector("[data-hb-model-step]") :
+          root.querySelector('[data-hb-stage="' + id + '"]');
+        if (!next) return;
+        prepareStage(next);
+        next.open = true;
+        next.querySelector("summary").focus();
+      } else {
+        const summary = event.target.closest(".hb-teach-stage > summary");
+        if (summary && !summary.parentElement.open) prepareStage(summary.parentElement);
+      }
     });
     updateFollowup();
+    const resume = resumeStage && root.querySelector('[data-hb-stage="' + resumeStage + '"]');
+    if (resume && !resume.closest("[hidden]")) {
+      prepareStage(resume);
+      resume.open = true;
+      resume.querySelector("summary").focus();
+    }
   }
 
   const choice = (prompt, answer, options, explanation, hints, extra) =>
     ({ prompt, answer, options, explanation, hints, ...extra });
   const written = (prompt, points, explanation, hints) => ({ prompt, points, explanation, hints });
 
-  window.KeystoneHumanTeaching = { render, mount, storageKey, choice, written };
+  window.KeystoneHumanTeaching = { render, mount, savedStages, storageKey, choice, written };
 })();

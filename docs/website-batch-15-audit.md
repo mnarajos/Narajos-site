@@ -1,0 +1,19 @@
+# Batch 15 interface audit
+
+## Baseline
+The baseline Chromium capture measured the 390-pixel Human Biology navigation at 358 pixels wide with 499 pixels of link content. The full page fit, but the header concealed destinations horizontally.
+
+Human Biology Batches 10–14 are on main after PRs 61–65. The separate A-level Batch 9 pull request originally targeted Batch 8 and its eight commits were absent from main. The reconciliation in PR 60 retains the A-level changes and combines its restored-answer browser check with the later Human Biology checks. Batch 14's curriculum verification follow-up belongs in its own release.
+
+| Companion | Finding | Implementation priority |
+| --- | --- | --- |
+| Cambridge AAQ Human Biology homepage | The six NEA units are one link away. The first screen gives topic search more room than the unit list. Catch-up, Flashcards and Skills Practice appear in overlapping sections. Two kinds of saved activity use separate panels below the navigation. | Put all eight units on the overview, with compact NEA rows and a single Continue learning block for saved sets. |
+| Human Biology unit pages | F170 has progressive disclosure. F171 and the NEA units show a full grid of equally prominent practice modes. F171 still says it is a preview. Counts on unit and topic cards compete with the actions. | Give examined units the same three primary choices and put specialist modes in a native disclosure. Use two primary choices and a general knowledge note for NEA, with the reproduction model on F175. |
+| Human Biology header and lesson pages | Six header destinations duplicate unit actions and the mobile header scrolls horizontally. Guided lessons already keep feedback with the response and restore previous work. The example can remain visually prominent after moving into practice. | Use three short header links. Keep the activity guard and current assessments. Give each stage one prominent next action and retain a labelled way to reopen the worked example. |
+| Human Biology discovery | Catch-up search covers F170 and F171. Progression and catch-up hits can repeat the same concept. NEA topic data and Skills Practice already have stable routes. | Build on the shared topic finder, grouping unit, concept and method results by their distinct destinations. |
+| AQA A-level Biology | Batch 9 has a compact Exam Skills catalogue with Start, Resume or Review, diagrams by the task and honest saved outcomes. The homepage, topics and search already provide the main entry points. | Preserve Batch 9. Align any remaining duplicate entry points and search/overview labels only where useful. |
+| AQA GCSE Combined Science | Topic search, subject entry points and resumable activities are already available. The overview also links to Maths Skills, flashcards and curriculum modes. | Keep subject and tier choices. Align topic-search wording and the treatment of secondary links without flattening the routes. |
+| Years 7–11 Science Catch-up | Year-group links and topic lists are already scannable. Pupils looking for a named concept need to choose a year and then read down the list. | Reuse the shared finder over existing year and lesson entries. Keep labels and context suitable for younger readers. |
+| Shared navigation | The main site menu uses native disclosures with Escape and focus handling. Qualification links point to different depths of their companions. | Send each qualification entry to its overview and keep the site homepage identifiable separately. |
+
+Verify the existing routes and progress formats as well as the pupil's view of the new pages. Use automated checks for routes, accessibility and restoration, with comparable screenshots at the same viewport and activity state. Record separately whether pupils or dedicated assistive technologies were available.

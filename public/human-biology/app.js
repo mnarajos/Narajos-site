@@ -23,7 +23,7 @@ const f171Cards=f171Decks.flatMap(([sectionId,sectionTitle,items])=>items.map(([
 var review=scheduler.open("ocr-human-biology-f170");
 var sessionKey="narajos-human-biology-session-v1",practiceKey="narajos-human-biology-practice-v1";
 var progress={};try{var raw=JSON.parse(localStorage.getItem(practiceKey)||"null");if(raw&&typeof raw==="object"&&!Array.isArray(raw))progress=raw;}catch(_){}
-var active=null,previousRoute="",allowRoute=false,pending=null;
+var active=null,previousRoute="",previousEntry=0,pending=null;
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(x){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[x];});}
 function slugArea(id){return id==="all"?"all":(id||"").replace(/^area-/,"");}
 function shuffle(input){var a=input.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),v=a[i];a[i]=a[j];a[j]=v;}return a;}
@@ -34,7 +34,12 @@ function restoreSession(){try{var old=JSON.parse(localStorage.getItem(sessionKey
  if(old.type==="practice"&&!old.queue.every(function(id){return !!bySection[id];}))return null;
  return old;}catch(_){return null;}}
 function render(html){main.innerHTML=html;window.scrollTo(0,0);main.focus({preventScroll:true});updateNav();}
-function updateNav(){var here=previousRoute.split("/")[0]||"home";document.querySelectorAll(".nav a").forEach(function(a){var r=a.getAttribute("href").slice(1);if((r==="home"&&here==="home")||(r==="topics"&&(here==="area"||here==="learn"||here==="topics"))||(r==="flashcards"&&(here==="flashcards"||here==="cards"||here==="review"))||(r==="practice"&&here==="practice")||(r==="skills"&&here==="skills")||(r==="challenge"&&here==="challenge")||(r==="knowledge"&&here==="knowledge")||(r==="catchup"&&here==="catchup"))a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});}
+function updateNav(){
+ document.querySelectorAll(".nav a").forEach(a=>{
+  if(a.getAttribute("href")==="#"+previousRoute)a.setAttribute("aria-current",previousRoute==="home"?"page":"location");
+  else a.removeAttribute("aria-current");
+ });
+}
 function link(h,label,cls){return '<a class="button '+(cls||"secondary")+'" href="#'+esc(h)+'">'+esc(label)+'</a>';}
 function metric(n,label){return '<div class="metric"><strong>'+esc(n)+'</strong><span>'+esc(label)+'</span></div>';}
 function stats(){var ids=cards.map(function(c){return c.id;}),r=review.stats(ids);var done=Object.keys(progress).filter(function(id){return progress[id]&&progress[id].good>0;}).length;
@@ -57,53 +62,66 @@ function areaHtml(a){
  return '<article class="paper area-card"><span class="number">TOPIC AREA '+a.number+'</span><h3>'+esc(a.title)+'</h3><p>'+esc(a.intro)+'</p><p class="summary">'+a.sections.length+' learning sections · '+count+' flashcards</p><div class="area-actions">'+link("area/"+a.id,"Explore topics","primary")+link("cards/"+a.id,"Flashcards")+link("practice/"+a.id,"Practice")+'</div></article>';
 }
 function kIcon(name){var E=window.KeystoneHumanChallenge;return E&&E.icon?E.icon(name):"▤";}
-function showHome(){
- var st=stats(),old=restoreSession(),E=window.KeystoneHumanChallenge,fs=E?E.stats("f170"):null,hs=E?E.stats("f171"):null;
- var icon=E&&E.icon?E.icon:function(){return "▤";};
- var h='<div class="k-wrap"><section class="k-home-hero"><span class="k-eyebrow">Narajos Keystone · Cambridge OCR AAQ</span><h1>Ready to revise?</h1><p>Choose a unit to catch up, revise or practise.</p></section>';
+function savedActivities(){
+ const old=restoreSession();
+ const questions=window.KeystoneHumanChallenge?.resumeActivities()||[];
+ questions.push(...(window.KeystoneHumanCatchup?.resumeActivities()||[]));
+ if(!old)return questions;
+ const unit=old.scope?.startsWith("f171")?"F171":"F170";
+ return [{route:"resume",unit,title:old.type==="cards"?"Flashcards":"Explanation practice",
+  position:Number.isInteger(old.completed)&&Number.isInteger(old.initial)?old.completed+" of "+old.initial+" completed":""},...questions];
+}
+function continueLearning(){
+ const [first,...others]=savedActivities();
+ if(!first)return "";
+ const description=item=>esc(item.unit)+" · "+esc(item.title)+(item.position?" · "+esc(item.position):"");
+ return '<section class="hb-continue" aria-labelledby="hb-continue-heading"><h2 id="hb-continue-heading">Continue learning</h2>'+
+  '<div class="hb-continue-row"><p>'+description(first)+'</p><a class="button primary" href="#'+esc(first.route)+'">'+kIcon("play")+
+  'Resume<span class="sr-only"> '+esc(first.unit+" "+first.title)+'</span></a></div>'+
+  (others.length?'<details class="hb-saved-list"><summary>Other saved activities</summary><ul class="hb-link-list">'+
+   others.map(item=>'<li><a href="#'+esc(item.route)+'"><span>'+description(item)+'</span><span>Resume</span></a></li>').join("")+'</ul></details>':"")+'</section>';
+}
+function unitLinks(units){
+ const [f170,f171,...nea]=units;
+ const exams=[f170,f171].filter(Boolean);
+ return '<div class="hb-unit-list" id="hb-units" tabindex="-1"><section aria-labelledby="hb-exams-heading"><h2 id="hb-exams-heading">Externally assessed units</h2><div class="k-home-units">'+
+  exams.map((unit,i)=>'<a class="k-home-unit '+(i?"blue":"teal")+'" href="#challenge/'+unit.id+'"><span class="k-unit-symbol">'+
+   kIcon(i?"flask":"brain")+'</span><span class="k-unit-copy"><small>'+unit.id.toUpperCase()+'</small><strong>'+esc(unit.title)+
+   '</strong></span><span class="k-unit-chev" aria-hidden="true">›</span></a>').join("")+'</div></section>'+
+  (nea.length?'<section aria-labelledby="hb-nea-heading"><h2 id="hb-nea-heading">NEA units <span class="hb-heading-note">Knowledge support</span></h2>'+
+   '<p class="hb-section-note">Study the biology behind your NEA units. For assessed coursework, follow your school or college’s guidance.</p>'+
+   '<ul class="hb-link-list hb-nea-list">'+nea.map(unit=>'<li><a href="#challenge/'+unit.id+'"><span class="hb-unit-code">'+
+    unit.id.toUpperCase()+'</span><strong>'+esc(unit.title)+'</strong>'+kIcon("chevron")+'</a></li>').join("")+'</ul></section>':"")+'</div>';
+}
+function showHome(section){
+ const units=window.KeystoneHumanCatchup?.unitList||[
+  {id:"f170",title:"Fundamentals of human biology"},{id:"f171",title:"Health and disease"}];
+ var h='<div class="k-wrap hb-overview"><section class="k-home-hero"><span class="k-eyebrow">Cambridge OCR AAQ</span><h1>Human Biology</h1></section>';
+ h+=continueLearning()+unitLinks(units);
  if(window.NarajosTopicFinder)h+=window.NarajosTopicFinder.markup;
- h+='<section class="k-home-units" aria-label="Choose your exam unit">';
- h+='<a class="k-home-unit teal" href="#challenge/f170"><span class="k-unit-symbol">'+icon("brain")+'</span><span class="k-unit-copy"><small>F170 · Exam unit</small><strong>Fundamentals of human biology</strong><em>'+(fs?fs.questions:0)+' varied questions · '+(fs?fs.seen:0)+' attempted</em></span><span class="k-unit-chev">›</span></a>';
- h+='<a class="k-home-unit blue" href="#challenge/f171"><span class="k-unit-symbol">'+icon("flask")+'</span><span class="k-unit-copy"><small>F171 · Exam unit · Preview</small><strong>Health and disease</strong><em>'+(hs?hs.questions:0)+' original questions · '+(hs?hs.seen:0)+' attempted</em></span><span class="k-unit-chev">›</span></a>';
- h+='</section>';
- h+='<section class="k-companion-entry"><div class="k-companion-symbol">'+kIcon("book")+'</div><div><strong>Missed a lesson or feeling unsure?</strong><p>Follow a worked example or review key ideas.</p></div>'+link("catchup","Catch up","secondary")+'</section>';
- h+='<a class="k-more-units" href="#knowledge"><span>'+kIcon("book")+'</span><span><strong>Other Human Biology units</strong><small>F172–F177 · NEA knowledge support</small></span><span aria-hidden="true">›</span></a>';
- h+='<a class="k-more-units k-skills-entry" href="#skills"><span>'+kIcon("calc")+'</span><span><strong>Skills practice</strong><small>F170 and F171 · Worked examples and fresh practice sets</small></span><span aria-hidden="true">›</span></a>';
- h+='<h2 class="k-subhead">Other ways to revise F170</h2><section class="k-home-actions">';
- h+='<a href="#flashcards" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("layers")+'</span><strong>Flashcards</strong><small>Recall and spaced review</small></a>';
- h+='<a href="#catchup/f170" class="k-mini-action learn"><span class="k-mini-symbol">'+kIcon("book")+'</span><strong>Catch up</strong><small>Guided lessons and recaps</small></a>';
- h+='<a href="#challenge/f170/weak" class="k-mini-action fix"><span class="k-mini-symbol">'+kIcon("rotate")+'</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
- h+='</section>';
- h+='<h2 class="k-subhead">Other ways to revise F171</h2><section class="k-home-actions">';
- if(f171Cards.length)h+='<a href="#flashcards/f171" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("layers")+'</span><strong>F171 flashcards</strong><small>Recall across all five topic areas</small></a>';
- h+='<a href="#catchup/f171" class="k-mini-action learn"><span class="k-mini-symbol">'+kIcon("book")+'</span><strong>Catch up</strong><small>Guided clinical reasoning</small></a>';
- h+='<a href="#skills/f171" class="k-mini-action flash"><span class="k-mini-symbol">'+kIcon("calc")+'</span><strong>Skills practice</strong><small>Calculations, data, and evidence</small></a>';
- h+='<a href="#challenge/f171/weak" class="k-mini-action fix"><span class="k-mini-symbol">'+kIcon("rotate")+'</span><strong>Fix mistakes</strong><small>Try missed questions</small></a>';
- h+='</section>';
- if(old)h+='<section class="k-continue"><div><strong>Unfinished flashcards or explanation practice</strong><p>Continue your saved set.</p></div>'+link("resume","Resume","primary")+'</section>';
- var savedChallenge=E&&E.hasResume();
- if(savedChallenge){var route=E.resumeRoute();h+='<section class="k-continue"><div><strong>Revision questions in progress</strong><p>Return to your unfinished questions.</p></div>'+link(route,"Resume questions","primary")+'</section>';}
- h+='<p class="k-small-note">F170 covers the four topic areas in this first learning bank; F171 exam questions are an initial selection. This is not yet complete specification coverage. Original questions only; no coursework assistance.</p><p class="k-privacy-small">Your progress stays in this browser. <button class="k-local-reset" id="clear-human-bio" type="button">Clear progress on this device</button></p></div>';
+ h+='<p class="k-privacy-small">Your progress stays in this browser. <button class="k-local-reset" id="clear-human-bio" type="button">Clear progress on this device</button></p></div>';
  render(h);
  mountStudyFinder();
+ const focus=section==="find"?main.querySelector("[data-topic-finder] input"):section==="units"?document.getElementById("hb-units"):null;
+ if(focus)focus.focus();
 }
 function mountStudyFinder(){
- const finder=window.NarajosTopicFinder;
- const progressions=window.KeystoneHumanProgressions;
- if(!finder||!progressions)return;
- const groups=[{id:"f170",label:"F170 · Fundamentals of human biology"},{id:"f171",label:"F171 · Health and disease"}];
- const companion=window.KeystoneHumanCatchup;
- const entries=progressions.points.map(point=>{
-  const section=point.unit==="f170"?bySection[point.section]:null;
-  const catchup=window.KeystoneHumanCatchup&&window.KeystoneHumanCatchup.linkFor(point);
-  const actions=[["Practise","#challenge/"+point.unit+"/"+point.id]];
-  if(catchup)actions.push([catchup.endsWith("/"+point.section)?"Catch up":"Related catch-up","#"+catchup]);
-  if(section)actions.push(["Flashcards","#cards/"+section.id]);
-  else if(f171Decks.some(deck=>deck[0]===point.section))actions.push(["Flashcards","#cards/f171-"+point.section]);
-  return {group:point.unit,title:point.statement,context:point.unit.toUpperCase()+" · "+point.section,
-   keywords:section?section.title:"",actions};
- });
- if(companion)entries.unshift(...companion.searchTopics());
+ const finder=window.NarajosTopicFinder,companion=window.KeystoneHumanCatchup;
+ if(!finder||!companion)return;
+ const groups=companion.unitList.map(unit=>({id:unit.id,label:unit.id.toUpperCase()+" · "+unit.title}));
+ const entries=companion.searchTopics();
+ const lessonsByRoute=new Map(entries.filter(entry=>entry.actions[0][1].startsWith("#catchup/")).map(entry=>[entry.actions[0][1],entry]));
+ for(const point of window.KeystoneHumanProgressions?.points||[]){
+  const route=companion.linkFor(point);
+  const lesson=lessonsByRoute.get("#"+route);
+  if(lesson?.actions.some(([,href])=>href.split("?")[0].endsWith("/"+point.id)))lesson.keywords+=" "+point.statement;
+  else entries.push({group:point.unit,title:point.statement,context:point.unit.toUpperCase()+" · Build Understanding",
+   concept:true,actions:[["Practise","#challenge/"+point.unit+"/"+point.id]]});
+ }
+ for(const skill of window.KeystoneHumanSkills?.definitions||[]){
+  entries.push({group:skill.unit,title:skill.name,context:skill.unit.toUpperCase()+" · Skills Practice",
+   concept:true,keywords:skill.description,actions:[["Practise skill","#skills/"+skill.unit+"/"+skill.id]]});
+ }
  finder.mount(main,{groups,entries});
 }
 function showTopics(){render(crumb("home","Overview")+'<div class="hero"><div class="eyebrow">F170 topic map</div><h1>Explore the specification</h1><p class="lead">Select an area to study its learning sections. This pilot does not yet cover every individual breadth-and-depth statement.</p></div><div class="grid">'+areas.map(areaHtml).join("")+'</div>'+sourceNote());}
@@ -232,9 +250,20 @@ function finish(){
 }
 function empty(message){render(crumb("home","Overview")+'<div class="empty"><h2>Nothing to review here</h2><p>'+esc(message)+'</p><div class="actions">'+link("flashcards","Choose flashcards","primary")+link("practice","Practice instead")+'</div></div>');}
 function notFound(){render('<div class="empty"><h1>Topic not found</h1><p>Try the topic overview to choose a current F170 section.</p>'+link("topics","Browse topics","primary")+'</div>');}
+function currentRoute(){
+ const route=location.hash.slice(1)||"home";
+ try{return decodeURIComponent(route);}catch(_){return route;}
+}
+function hasActiveActivity(){return !!active||!!window.KeystoneHumanChallenge?.isActive();}
+function recordEntry(){
+ if(typeof history==="undefined")return;
+ const position=history.state?.humanBiologyEntry;
+ if(Number.isInteger(position))previousEntry=position;
+ else history.replaceState({...history.state,humanBiologyEntry:++previousEntry},"");
+}
 function runRoute(){
- var r=decodeURIComponent(location.hash.replace(/^#/,""))||"home";previousRoute=r;
- if(r==="home"){showHome();return;}
+ var r=currentRoute();previousRoute=r;recordEntry();
+ if(r==="home"||r==="units"||r==="find"){showHome(r);return;}
  if(r==="catchup"||r.startsWith("catchup/")){if(window.KeystoneHumanCatchup)return window.KeystoneHumanCatchup.route(r,render);return notFound();}
  if(r==="knowledge"||r==="challenge"||r.startsWith("challenge/")||r==="skills"||r.startsWith("skills/")){if(window.KeystoneHumanChallenge)return window.KeystoneHumanChallenge.route(r,render);return notFound();}
  if(r==="topics"){showTopics();return;}
@@ -248,12 +277,12 @@ function runRoute(){
  if(m[1]==="learn")return showLearn(m[2]);
  if(m[1]==="cards"||m[1]==="practice"){var type=m[1]==="cards"?"cards":"practice";if(!active){var old=restoreSession();if(old&&old.type===type&&old.scope===m[2])active=old;}if(!active||active.type!==type||active.scope!==m[2])createSession(type,m[2]);else drawSession();return;}
 }
-function showLeave(callback){
+function showLeave(callback,stay){
  var modal=document.getElementById("leave-dialog");
  pending=callback;var returnFocus=document.activeElement;modal.hidden=false;
  var keep=document.getElementById("leave-stay"),go=document.getElementById("leave-confirm");
  keep.focus();
- keep.onclick=function(){modal.hidden=true;pending=null;if(returnFocus&&returnFocus.isConnected)returnFocus.focus();};
+ keep.onclick=function(){modal.hidden=true;pending=null;if(stay)stay();if(returnFocus&&returnFocus.isConnected)returnFocus.focus();};
  go.onclick=function(){var cb=pending;pending=null;modal.hidden=true;active=null;if(window.KeystoneHumanChallenge)window.KeystoneHumanChallenge.pause();if(cb)cb();};
 }
 document.addEventListener("click",function(e){
@@ -277,27 +306,35 @@ document.addEventListener("keydown",function(e){
 document.addEventListener("click",function(e){
  var action=e.target.closest("[data-action]");
  if(action){if(action.getAttribute("data-action")==="reveal")reveal(false);if(action.getAttribute("data-action")==="recalled")reveal(false,true);if(action.getAttribute("data-action")==="again")rate(false);if(action.getAttribute("data-action")==="got-it")rate(true);return;}
- var a=e.target.closest("a[href]");if(!a||(!active&&!(window.KeystoneHumanChallenge&&window.KeystoneHumanChallenge.isActive())))return;
+ var a=e.target.closest("a[href]");
+ if(!a||e.defaultPrevented||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||e.button>0)return;
  var href=a.getAttribute("href")||"";
- if(href.startsWith("#")&&href.replace(/^#/,"")===previousRoute)return;
+ if(href==="#main"){e.preventDefault();main.focus();return;}
+ if(!hasActiveActivity()||href==="#"+previousRoute)return;
  if(href.startsWith("#")||href.startsWith("/")){
   e.preventDefault();
-  showLeave(function(){allowRoute=true;location.assign(href);if(href.startsWith("#")&&href.slice(1)===previousRoute)runRoute();});
+  showLeave(function(){location.assign(href);});
  }
 });
 window.addEventListener("hashchange",function(){
- var next=decodeURIComponent(location.hash.replace(/^#/,""))||"home";
- if((active||(window.KeystoneHumanChallenge&&window.KeystoneHumanChallenge.isActive()))&&next!==previousRoute&&!allowRoute){
-  var restore=previousRoute;location.hash="#"+restore;
-  showLeave(function(){allowRoute=true;location.hash="#"+next;});
+ const next=currentRoute();
+ if(hasActiveActivity()){
+  if(next===previousRoute)return;
+  const position=typeof history==="undefined"?null:history.state?.humanBiologyEntry;
+  showLeave(runRoute,function(){
+   if(Number.isInteger(position)&&position!==previousEntry)history.go(previousEntry-position);
+   else if(typeof history!=="undefined"){
+    history.replaceState({...history.state,humanBiologyEntry:++previousEntry},"","#"+previousRoute);
+   }else location.hash="#"+previousRoute;
+  });
   return;
  }
- allowRoute=false;runRoute();
+ runRoute();
 });
-window.addEventListener("beforeunload",function(e){if(active||(window.KeystoneHumanChallenge&&window.KeystoneHumanChallenge.isActive())){e.preventDefault();e.returnValue="";}});
+window.addEventListener("beforeunload",function(e){if(hasActiveActivity()){e.preventDefault();e.returnValue="";}});
 function replaceRoute(route){
  if(typeof history==="undefined")return;
- history.replaceState(null,"","#"+route);
+ history.replaceState(history.state,"","#"+route);
  previousRoute=route;
 }
 window.KeystoneHumanApp={stats:stats,replaceRoute:replaceRoute,hasResume:()=>!!restoreSession(),content:function(){return {areas:areas.length,sections:sections.length,cards:cards.length};}};

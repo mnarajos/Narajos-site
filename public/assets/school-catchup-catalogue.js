@@ -2,7 +2,7 @@ import { identifyCatchupYear } from "./school-catchup-journey.js";
 import { curriculum, motionLessons } from "./ks3-lessons.js";
 import { year9 } from "./school-catchup-year9.js";
 import { gcseCatchup } from "./gcse-catchup-data.js";
-import { clearCatchupProgress, hasCatchupProgress } from "./school-catchup-progress.js";
+import { clearCatchupProgress, hasCatchupProgress, readCatchup } from "./school-catchup-progress.js";
 
 const root = "/science-catch-up/";
 const revision = code => "/gcse/#topic-" + code.toLowerCase();
@@ -56,11 +56,112 @@ function link(text, href, className) {
   return el;
 }
 
+function juniorTopics(number) {
+  return number === "8" ? [...curriculum[number], ...motionLessons] : curriculum[number];
+}
+
+function seniorTopics(number, code, lessonIds) {
+  return number === "9" ? lessonIds.map(id => [id, year9[id]]) : lessonsByCode[code] || [];
+}
+
+function juniorHref(topic) {
+  return guidedHref(topic.href || "/ks3/lesson/?topic=" + topic.id);
+}
+
+function seniorHref(number, id) {
+  return root + "lesson/?topic=" + id + (number === "9" ? "" : "&year=" + number);
+}
+
+function catalogueEntries() {
+  const entries = new Map();
+  for (const number of years) {
+    const context = "Year " + number;
+    const add = (key, title, detail, keywords, href) => {
+      const existing = entries.get(key);
+      if (existing) {
+        existing.groups.push(number);
+        existing.context = existing.groups.map(group => "Year " + group).join(" / ") + " · " + detail;
+        if (year === number) existing.actions = [["Open lesson", href]];
+      } else {
+        entries.set(key, {key, group: number, groups: [number], title, context: context + " · " + detail,
+          keywords, actions: [["Open lesson", href]]});
+      }
+    };
+    if (Number(number) < 9) {
+      for (const topic of juniorTopics(number)) {
+        const id = topic.id || topic.href.split("/").filter(Boolean).at(-1);
+        add(number + "." + id, topic.unit, topic.title, id.replaceAll("-", " "), juniorHref(topic));
+      }
+    } else {
+      for (const [code, name, lessonIds] of gcseYears[number]) {
+        for (const [id, lesson] of seniorTopics(number, code, lessonIds)) {
+          add(lesson.year + "." + id, lesson.title, name, id.replaceAll("-", " ") + " " + code + " " + lesson.hook,
+            seniorHref(number, id));
+        }
+      }
+    }
+  }
+  return Array.from(entries.values());
+}
+
+function resumeHref(entry) {
+  const url = new URL(entry.actions[0][1], location.origin);
+  url.searchParams.set("resume", "1");
+  return url.pathname + url.search;
+}
+
+function renderContinue(main, entries) {
+  main.querySelector(".school-continue")?.remove();
+  const unfinished = entries.filter(entry => !years.includes(year) || entry.groups.includes(year)).flatMap(entry => {
+    const state = readCatchup(entry.key);
+    return !state.done && (state.step || state.open || state.draft?.trim()) ? [{entry, step: state.step + 1}] : [];
+  });
+  if (unfinished.length) {
+    const panel = element("section", "", "school-continue");
+    panel.setAttribute("aria-labelledby", "school-continue-title");
+    const heading = element("h2", "Continue learning");
+    heading.id = "school-continue-title";
+    panel.append(heading);
+    const [first, ...others] = unfinished;
+    const row = element("div", "", "school-continue-row");
+    row.append(element("p", first.entry.title + " · Step " + first.step),
+      link("Resume", resumeHref(first.entry), "school-primary"));
+    panel.append(row);
+    if (others.length) {
+      const more = element("details");
+      more.append(element("summary", "Other saved lessons"));
+      const list = element("ul");
+      for (const {entry, step} of others) {
+        const item = element("li");
+        item.append(link("Resume " + entry.title + " · Step " + step, resumeHref(entry)));
+        list.append(item);
+      }
+      more.append(list);
+      panel.append(more);
+    }
+    main.prepend(panel);
+  }
+}
+
+function learningTools(main) {
+  const entries = catalogueEntries();
+  renderContinue(main, entries);
+  window.addEventListener("pageshow", event => {
+    if (event.persisted) renderContinue(main, entries);
+  });
+  const finder = window.NarajosTopicFinder;
+  if (finder) {
+    main.insertAdjacentHTML("beforeend", finder.markup);
+    finder.mount(main, {groups: years.map(number => ({id: number, label: "Year " + number})), entries});
+  }
+}
+
 const yearNav = document.querySelector("[data-catchup-years]");
 const yearSelected = years.includes(year);
 if (!yearSelected) yearNav.classList.add("school-year-chooser");
 
 const main = document.querySelector("[data-catchup-catalogue]");
+learningTools(main);
 if (yearSelected) {
   identifyCatchupYear(year);
   for (const number of years) {
@@ -76,10 +177,10 @@ if (yearSelected) {
   main.append(headings);
   const list = element("ul", "", "school-topic-list");
   if (year === "7" || year === "8") {
-    const topics = year === "8" ? [...curriculum[year], ...motionLessons] : curriculum[year];
+    const topics = juniorTopics(year);
     for (const topic of topics) {
       const item = element("li");
-      const href = guidedHref(topic.href || "/ks3/lesson/?topic=" + topic.id);
+      const href = juniorHref(topic);
       item.append(link(topic.unit, href, "school-topic-link"), element("p", topic.title));
       list.append(item);
     }
@@ -95,10 +196,10 @@ if (yearSelected) {
       const title = element("h3");
       title.append(element("span", code, "school-code"), document.createTextNode(" " + topic));
       const links = element("ul", "", "school-concept-list");
-      const lessons = year === "9" ? lessonIds.map(id => [id, year9[id]]) : lessonsByCode[code] || [];
+      const lessons = seniorTopics(year, code, lessonIds);
       for (const [id, lesson] of lessons) {
         const row = element("li");
-        const url = root + "lesson/?topic=" + id + (year === "9" ? "" : "&year=" + year);
+        const url = seniorHref(year, id);
         row.append(link(lesson.title, url), element("p", lesson.hook, "school-concept-question"));
         links.append(row);
       }

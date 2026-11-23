@@ -357,11 +357,6 @@ function questionReturn(origin){
  var engine=window.KeystoneHumanChallenge;
  return engine&&(engine.resumeRoute(origin)||engine.resumeRoute(origin.replace(/\/\d+$/,"")));
 }
-function resumeLinks(back){
- var simple=window.KeystoneHumanApp&&window.KeystoneHumanApp.hasResume&&window.KeystoneHumanApp.hasResume();
- return (back?'<a data-hb-resume href="#'+esc(back)+'">Return to your unfinished question set</a>':'')+
-  (simple?'<a href="#resume">Resume flashcards or explanation practice</a>':'');
-}
 function skillLinks(unit,id,lesson){
  var library=window.KeystoneHumanSkills;
  if(!library||!lesson.skills)return "";
@@ -378,14 +373,18 @@ function practiceLabel(unit,id,topic){
  return (unit==="f171"&&labels[id])||"Practise "+topic.toLowerCase();
 }
 function relatedLinks(unit,id,origin,practice,label){
- var knowledge=/^f17[2-7]$/.test(unit),back=questionReturn(origin);
- var links=back===practice&&knowledge?"":'<a'+(knowledge?" data-hb-practice":"")+' href="#'+esc(practice)+'">'+esc(label)+'</a>';
- if(unit==="f170")links+='<a href="#cards/'+esc(id)+'">Flashcards for this topic</a>';
+ const back=questionReturn(origin);
+ const build=buildLink(unit,id,origin);
+ const resume=back?'<a data-hb-resume href="#'+esc(back)+'">Return to your unfinished question set</a>':"";
+ const practiceLink=back===practice?"":'<a data-hb-practice href="#'+esc(practice)+'">'+esc(label)+'</a>';
+ let further=build||resume?practiceLink:"";
+ if(unit==="f170")further+='<a href="#cards/'+esc(id)+'">Flashcards for this topic</a>';
  if(unit==="f171"){
-  var deck=(window.KeystoneF171Recall||[]).find(function(d){return d[0]===id;});
-  links+='<a href="#'+(deck?"cards/f171-"+id:"flashcards/f171")+'">'+(deck?"Flashcards for this topic":"F171 flashcards")+'</a>';
+  const deck=(window.KeystoneF171Recall||[]).find(d=>d[0]===id);
+  further+='<a href="#'+(deck?"cards/f171-"+id:"flashcards/f171")+'">'+(deck?"Flashcards for this topic":"F171 flashcards")+'</a>';
  }
- return '<nav class="hb-teach-related" aria-label="Related learning">'+resumeLinks(back===practice&&!knowledge?null:back)+buildLink(unit,id,origin)+links+'</nav>';
+ return '<nav class="hb-teach-related" aria-label="Related learning">'+resume+build+(!resume&&!build?practiceLink:"")+
+  (further?'<details><summary>More practice for this topic</summary>'+further+'</details>':"")+'</nav>';
 }
 function showHome(render){
  var h='<div class="k-wrap">'+crumb("home","Home")+'<div class="k-unit-hero"><div class="k-eyebrow">Your learning companion</div><h1>Catch up and understand</h1><p>Choose an idea to learn or revisit. Guided lessons show the reasoning before you practise.</p></div><div class="k-unit-tiles">';
@@ -424,7 +423,7 @@ function showUnit(unit,render){
  });
  h+='</div></div>';render(h);
 }
-function showConcept(unit,id,step,render,review,simulationStage){
+function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
  var u=units.filter(function(x){return x.id===unit;})[0];
  if(!u)return showHome(render);
  var topic,points;
@@ -453,7 +452,7 @@ function showConcept(unit,id,step,render,review,simulationStage){
   render('<div class="k-wrap k-catchup-concept" data-unit="'+unit+'">'+crumb("catchup/"+unit,u.title)+
    '<div class="k-eyebrow">'+unitKind(unit)+'</div><h1>'+esc(topic)+'</h1>'+
    teaching.render(lesson,{inline:lesson.visual==="model"?"":visual,method:skillLinks(unit,id,lesson),modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:recap+related})+'</div>');
-  teaching.mount(unit+"/"+lessonId,lesson,simulationStage?1:review);
+  teaching.mount(unit+"/"+lessonId,lesson,simulationStage?1:review,resumeStage);
   if(sim)sim.mount(document,simulationStage,simulationStage&&document.querySelector("[data-hb-resume]"));
   return;
  }
@@ -548,21 +547,67 @@ function reteachFor(q,answer){
  return { route:route, href:route+(target?.[0]?"?review="+target[0]:""),
   label:target?target[1]:"Need more help? Catch up on this idea" };
 }
+function resumeActivities(){
+ const stages=window.KeystoneHumanTeaching?.savedStages()||{};
+ const labels={guided:"With support",independent:"Your turn",followup:"Fresh check"};
+ const items=[];
+ for(const key of Object.keys(stages).sort()){
+  const [unit,id]=key.split("/");
+  const lesson=lessonFor(unit,id);
+  if(!lesson||key!==unit+"/"+id+(lesson.revision?"/"+lesson.revision:""))continue;
+  const title=unit==="f170"?sectionById[id]?.section.title:notes[unit]?.[id]?.title;
+  const stage=stages[key];
+  if(title)items.push({route:"catchup/"+unit+"/"+id+"?continue="+stage,unit:unit.toUpperCase(),title,position:labels[stage]});
+ }
+ return items;
+}
 window.KeystoneHumanCatchup={route:function(hash,render){
  if(hash==="catchup")return showHome(render);
- var m=/^catchup\/(f17[0-7])(?:\/([a-z0-9.]+))?(?:\/(\d+))?(?:\?review=(\d+)|\?stage=(follicle|ovulation|transport|fertilisation|development|implantation))?$/.exec(hash);
+ var m=/^catchup\/(f17[0-7])(?:\/([a-z0-9.]+))?(?:\/(\d+))?(?:\?review=(\d+)|\?stage=(follicle|ovulation|transport|fertilisation|development|implantation)|\?continue=(guided|independent|followup))?$/.exec(hash);
  if(!m)return showHome(render);
  if(!m[2])return showUnit(m[1],render);
  var simulationStage=m[1]==="f175"&&m[2]==="a1"?m[5]:null;
- return showConcept(m[1],m[2],m[3],render,Number(m[4])||0,simulationStage);
-},linkFor:linkFor,reteachFor:reteachFor,practiceScope:practiceScope,topicPracticeScope:topicPracticeScope,searchTopics:function(){
- var f170=Object.values(sectionById).map(function(item){
-  var s=item.section;
-  return {group:"f170",title:s.title,context:"F170 · "+s.id,concept:true,actions:[["Catch up","#catchup/f170/"+s.id],["Flashcards","#cards/"+s.id]]};
- });
- var f171=Object.entries(notes.f171).map(function(entry){
-  return {group:"f171",title:entry[1].title,context:"F171 · "+entry[0],concept:true,actions:[["Catch up","#catchup/f171/"+entry[0]]]};
- });
- return f170.concat(f171);
+ return showConcept(m[1],m[2],m[3],render,Number(m[4])||0,simulationStage,m[6]);
+},unitList:units,resumeActivities:resumeActivities,linkFor:linkFor,reteachFor:reteachFor,practiceScope:practiceScope,topicPracticeScope:topicPracticeScope,searchTopics:function(){
+ const aliases={
+  "f170/1.1.2":"microscope micrograph magnification resolution scale bar TEM SEM",
+  "f170/3.1.1":"glucose insulin hormones blood sugar negative feedback",
+  "f171/4.2.1":"screen false positive false negative sensitivity specificity screening test",
+  "f171/a3":"immunity antibody antibodies antigen adaptive innate vaccination lymphocytes",
+  "f171/a5":"clinical research studies evidence trial data controls",
+  "f173/a2":"photomicrographs magnification scale bar light microscope TEM SEM",
+  "f173/a3":"chromatography chromatogram retention factor solvent front biochemical test",
+  "f174/a4":"BMI nutrient intake dietary measurements",
+  "f175/a1":"FSH LH ovulation follicle gamete oocyte fertilisation implantation menstrual cycle",
+  "f175/a4":"assisted reproduction IVF fertility",
+  "f176/a2":"synapse synaptic transmission inhibition excitation disinhibition neurotransmitter",
+  "f176/a5":"EEG MRI CT scan brain investigations electroencephalogram",
+  "f177/a2":"clinical trials trial randomisation blinding placebo controlled study",
+  "f177/a3":"preclinical testing safety pharmacovigilance adverse events surveillance"
+ };
+ const entries=[];
+ for(const unit of units){
+  const code=unit.id.toUpperCase();
+  const unitKindText=unitKind(unit.id);
+  entries.push({group:unit.id,title:unit.title,context:code+" · "+unitKindText,keywords:code,actions:[["Open unit","#challenge/"+unit.id]]});
+  if(unit.id==="f170")for(const area of unit.areas){
+   entries.push({group:unit.id,title:area.title,context:code+" · Topic "+area.code.slice(1),actions:[["Practise","#challenge/"+unit.id+"/"+area.code]]});
+  }
+  const topics=unit.id==="f170"?Object.entries(sectionById).map(([id,item])=>[id,item.section]):Object.entries(notes[unit.id]||{});
+  for(const [id,topic] of topics){
+   const studyRoute="#catchup/"+unit.id+"/"+id;
+   const point=practiceScope(unit.id,id);
+   const actions=[["Catch up",studyRoute]];
+   if(point)actions.push(["Build Understanding","#challenge/"+unit.id+"/"+point+"?from="+studyRoute.slice(1)]);
+   if(unit.id==="f175"&&id==="a1")actions.push(["Open interactive model",studyRoute+"?stage=follicle"]);
+   if((unit.id==="f173"&&id==="a3")||(unit.id==="f177"&&id==="a3")){
+    actions.push(["Practise","#challenge/"+unit.id+"/"+topicPracticeScope(unit.id,id)+"?from="+studyRoute.slice(1)]);
+   }
+   entries.push({group:unit.id,title:unit.id==="f173"&&id==="a3"?"Biomolecule tests and chromatography":topic.title,
+    context:code+" · "+unit.title,keywords:(aliases[unit.id+"/"+id]||"")+" "+id,
+    concept:!id.startsWith("a"),actions});
+  }
+ }
+ return entries;
 },count:function(){return {units:units.length,concepts:Object.values(notes).reduce(function(n,x){return n+Object.keys(x).length;},0)+Object.keys(sectionById).length};}};
 })();

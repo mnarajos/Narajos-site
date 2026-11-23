@@ -39,7 +39,7 @@ assert(D.areas[3].sections.some(s=>s.id==="4.1.2"&&s.cards.some(c=>c.a==="Tinea 
 assert(!JSON.stringify(D).match(/set assignment task|complete.*coursework|submit.*NEA/i),"Coursework content detected");
 load("human-biology/app.js");
 assert.equal(window.KeystoneHumanApp.stats().cards,112);
-assert(main.innerHTML.includes("Ready to revise?")&&main.innerHTML.includes("Fundamentals of human biology"),"Paper-first overview failed");
+assert(main.innerHTML.includes("<h1>Human Biology</h1>")&&main.innerHTML.includes("Fundamentals of human biology"),"Unit overview failed");
 location.hash="#topics";listeners.hashchange();
 assert(main.innerHTML.includes("Explore the specification")&&main.innerHTML.includes("Basics of microbiology"));
 location.hash="#area/area-2";listeners.hashchange();

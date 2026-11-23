@@ -135,7 +135,9 @@ assert(!knowledgeQuestions.some(q=>/draft|complete the coursework|report for you
 assert(knowledgeQuestions.filter(q=>q.figure).length>=6,"Each NEA-unit knowledge bank needs visual understanding checks");
 assert(db.questions.filter(q=>["single","diagram","best"].includes(q.type)).every(q=>q.options.length===4),"Four-option rule not met");
 load("human-biology/app.js");
-assert(main.innerHTML.includes("Ready to revise?"));
+assert(main.innerHTML.includes("<h1>Human Biology</h1>"));
+for(const unit of db.units)assert(main.innerHTML.includes('href="#challenge/'+unit.id+'"'),"Missing overview link for "+unit.id);
+assert(!main.innerHTML.includes("Continue learning"),"An empty browser should not show a resume panel");
 
 function route(hash){location.hash="#"+hash;events.hashchange();
  const modal=elem("leave-dialog");
@@ -157,7 +159,7 @@ const selectedTypes=new Set(mixed.queue.map(id=>db.questions.find(q=>q.id===id).
 assert(selectedTypes.size>=6,"Mixed sessions must deliberately use varied question types");
 assert(new Set(mixed.queue.map(id=>db.questions.find(q=>q.id===id).area)).size>=3,"Mixed session should span multiple topic areas");
 route("home");
-assert(main.innerHTML.includes("Resume questions"),"Leaving exam questions should offer a direct resume link");
+assert(main.innerHTML.includes("Continue learning")&&main.innerHTML.includes('href="#challenge/f170/all"'),"Leaving exam questions should offer a direct resume link");
 const paused=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert.deepEqual(paused.queue,mixed.queue,"Leaving an unfinished set must preserve its queue");
 route("challenge/f170/all");

@@ -4,12 +4,17 @@
 .study-finder label,.study-route-links label{display:grid;gap:.3rem;font-weight:600}
 .study-finder input,.study-finder select,.study-route-links select{width:100%;min-height:44px;min-width:0;border:1px solid #879993;border-radius:8px;padding:.5rem;font:inherit;color:#24313b;background:#fff}
 .study-finder [role=status]{margin:.65rem 0;font-size:.9rem}
-.study-finder [role=status]:empty,.study-finder ul:empty{display:none}
+.study-finder [role=status]:empty{height:0;margin:0;overflow:hidden}
+.study-finder ul:empty{display:none}
 .study-finder ul{list-style:none;padding:0;margin:.3rem 0 0;display:grid;gap:.5rem}
 .study-finder-result{border-top:1px solid #d4dcd8;padding:.65rem 0 0;display:grid;gap:.15rem}
 .study-finder-result small{color:#485a60}
 .study-finder-actions,.study-route-links .study-actions{display:flex;flex-wrap:wrap;gap:.3rem 1rem}
 .study-finder-actions a,.study-route-links a{display:inline-flex;align-items:center;min-height:44px;text-underline-offset:3px;font-weight:650}
-.study-finder a:focus-visible,.study-finder :is(input,select):focus-visible,.study-route-links :is(select,a):focus-visible{outline:3px solid #d66b1c;outline-offset:3px}
+.study-finder a:focus-visible,.study-finder :is(input,select):focus-visible,.study-route-links :is(select,a):focus-visible{outline:3px solid var(--narajos-focus-ring,#a34b1c);outline-offset:3px}
 .study-route-links select{max-width:17rem}
 @media(max-width:560px){.study-finder-fields{grid-template-columns:1fr}}
+
+.study-finder-actions a:not(:first-child){font-weight:500}
+
+.study-finder :is(input,select,a){scroll-margin-block:7rem 1rem}

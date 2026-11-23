@@ -428,11 +428,11 @@ try{
  assert.deepEqual(await desktop.locator(".home-option--questions .home-links a").evaluateAll(links=>links.map(a=>a.pathname)),["/teacher/","/teaching/focused-writing/"]);
  const homeMenu=desktop.locator(".site-nav details").first();
  await homeMenu.locator("summary").click();
- assert(await homeMenu.locator('a[href="/human-biology/#catchup"]').isVisible(),"Human Biology missing from homepage dropdown");
+ assert(await homeMenu.locator('a[href="/human-biology/"]').isVisible(),"Human Biology missing from homepage dropdown");
  assert.equal(await homeMenu.getByRole("link",{name:/^Year (7|8|9|10|11)$/}).count(),5);
  for(const [label, route, heading] of [
-  ["A-level Biology — Catch up", "/alevel/#catchup", "Catch up on a concept"],
-  ["Human Biology — Catch up", "/human-biology/#catchup", "Catch up and understand"]
+  ["A-level Biology — AQA", "/alevel/", "Ready to revise?"],
+  ["Human Biology — Cambridge OCR AAQ", "/human-biology/", "Human Biology"]
  ]){
   await homeMenu.getByRole("link",{name:label,exact:true}).press("Enter");
   await desktop.waitForURL(base+route);
@@ -444,7 +444,7 @@ try{
  const navTargets=await desktop.locator(".site-nav a").evaluateAll(links=>links.map(a=>[a.getAttribute("href"),a.textContent]));
  assert.deepEqual(navTargets.slice(0,8).map(([route])=>route),[
   ...[7,8,9,10,11].map(year=>"/science-catch-up/?year="+year),
-  "/gcse/","/alevel/#catchup","/human-biology/#catchup"
+  "/gcse/","/alevel/","/human-biology/"
  ]);
  for(const path of ["/teaching/","/privacy/","/teaching/simulations/","/science-catch-up/?year=8","/teaching/focused-writing/"]){
   await desktop.goto(base+path);
@@ -525,14 +525,13 @@ try{
  await screen(desktop,"alevel-enzyme-visual");
 
  await checkPage(desktop,"human-biology");
- assert(await desktop.getByRole("heading",{name:"Other ways to revise F170",exact:true}).isVisible());
- assert(await desktop.getByRole("heading",{name:"Other ways to revise F171",exact:true}).isVisible());
- assert(await desktop.locator('.k-home-actions a[href="#skills/f171"]').isVisible());
+ assert(await desktop.getByRole("heading",{name:"Externally assessed units",exact:true}).isVisible());
+ assert.equal(await desktop.locator(".hb-nea-list a").count(),6);
  assert.equal(await desktop.locator("main").evaluate(el=>getComputedStyle(el).outlineStyle),"none","Main-content focus outline should not frame the whole app");
  await desktop.goto(base+"/human-biology/#challenge/f170");
- const firstF170Actions=desktop.getByRole("region",{name:"Start F170 revision"});
+ const firstF170Actions=desktop.getByRole("region",{name:"Learning activities"});
  assert.deepEqual(await firstF170Actions.locator("a").evaluateAll(links=>links.map(a=>a.hash)),
-  ["#catchup/f170","#challenge/f170/all","#skills/f170"]);
+  ["#catchup/f170","#challenge/f170/core","#flashcards"]);
  const examFocus=desktop.getByRole("link",{name:/Exam-style focus/});
  assert(await examFocus.isHidden());
  await desktop.getByText("More practice options",{exact:true}).click();
@@ -560,8 +559,12 @@ try{
  await desktop.locator("#leave-confirm").click();
  await desktop.getByRole("link",{name:"← Home",exact:true}).click();
  // Generated skills use the same real DOM checker and navigation protection.
- await desktop.getByRole("link",{name:"Skills practice",exact:true}).first().click();
- await desktop.getByRole("heading",{name:"Skills practice",exact:true}).waitFor();
+ await desktop.locator('.hb-unit-list a[href="#challenge/f170"]').click();
+ await desktop.getByText("More practice options",{exact:true}).press("Enter");
+ await desktop.getByRole("link",{name:"Skills Practice",exact:true}).click();
+ await desktop.getByRole("link",{name:"All skills",exact:true}).click();
+ await desktop.waitForURL("**/#skills");
+ await desktop.locator(".k-skill-card").nth(13).waitFor();
  assert.equal(await desktop.locator(".k-skill-card").count(),14);
  await screen(desktop,"human-skills-desktop");
  await desktop.locator('a[href="#skills/f170/magnification"]').click();
@@ -609,7 +612,7 @@ try{
  assert((await desktop.locator("main").innerText()).includes("Key idea 2"),"Catch-up step did not advance");
  await screen(desktop,"human-vaccines");
  await desktop.goto(base+"/human-biology/#catchup/f170/3.2.1",{waitUntil:"load"});
- await desktop.getByText("I do · Follow a worked example",{exact:true}).click();
+ await desktop.locator("[data-hb-model-step] > summary").click();
  await desktop.getByText("Trace a withdrawal reflex",{exact:true}).click();
  const reflex=desktop.locator('science-sequence[kind="reflex"]');
  await reflex.locator("svg").waitFor({state:"visible"});
@@ -620,7 +623,7 @@ try{
  await reflex.getByRole("button",{name:"Previous step"}).press("Enter");
  await reflex.getByRole("status").filter({hasText:"Motor neuron"}).waitFor();
  await desktop.goto(base+"/human-biology/#catchup/f170/1.1.2",{waitUntil:"load"});
- await desktop.getByText("I do · Measure a red cell from its scale bar",{exact:true}).click();
+ await desktop.locator("[data-hb-model-step] > summary").click();
  const microscope=desktop.locator("[data-hb-model-step]");
  assert(await microscope.locator(".micrograph-single img").evaluate(async img=>{await img.decode();return img.naturalWidth===386;}));
  assert(await microscope.locator(".hb-bar-length").isVisible());
@@ -692,7 +695,7 @@ try{
  await desktop.getByRole("link",{name:"← Leave this set"}).click();
  await desktop.locator("#leave-confirm").click();
  await desktop.waitForURL("**/#challenge/f171");
- await desktop.getByRole("heading",{name:"F171 Health and disease",exact:true,level:1}).waitFor();
+ await desktop.getByRole("heading",{name:"Health and disease",exact:true,level:1}).waitFor();
 
 
  await desktop.goto(base+"/human-biology/#challenge/f171/a3",{waitUntil:"load"});
@@ -716,7 +719,7 @@ try{
  await mobile.locator(".home-philosophy").waitFor({state:"visible"});
  const mobileMenu=mobile.locator(".site-nav details").first();
  await mobileMenu.locator("summary").click();
- assert(await mobileMenu.locator('a[href="/human-biology/#catchup"]').isVisible(),"Human Biology missing from mobile homepage dropdown");
+ assert(await mobileMenu.locator('a[href="/human-biology/"]').isVisible(),"Human Biology missing from mobile homepage dropdown");
  assert((await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth))<=3,"Mobile homepage has horizontal overflow");
  await mobile.setViewportSize({width:320,height:780});
  assert.equal(await mobileMenu.getByRole("group",{name:"Catch up by year"}).getByRole("link").count(),5);
@@ -742,7 +745,7 @@ try{
  await mobile.goto(base+"/human-biology/#skills");
  await mobile.getByRole("heading",{name:"Skills practice",exact:true}).waitFor();
  assert((await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth))<=3,"Skills menu overflows on phone");
- assert(await mobile.locator('.nav a[href="#skills"]').getAttribute("aria-current"),"Skills navigation state missing");
+ assert.equal(await mobile.getByRole("navigation",{name:"Human Biology app navigation"}).getByRole("link").count(),3);
  await screen(mobile,"human-skills-mobile");
  await mobile.locator('a[href="#skills/f171/rate"]').click();
  await mobile.locator(".k-skill-graph svg").waitFor();
@@ -1152,6 +1155,7 @@ try{
  await navPage.getByRole("heading",{name:/main purpose of a cast/}).waitFor();
  await navPage.getByRole("link",{name:"← Leave this set"}).click();
  await navPage.locator("#leave-confirm").click();
+ await navPage.getByText("More practice options",{exact:true}).click();
  await navPage.getByRole("link",{name:/Clinical case questions/}).click();
  await navPage.getByRole("link",{name:/Follow-up after screening/}).click();
  await navPage.locator("#k-written").fill("Only 45 of the 60 people with a positive screen attended follow-up.");

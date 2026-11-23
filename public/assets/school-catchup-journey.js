@@ -462,4 +462,5 @@ export function mountJourney(host, model, lesson) {
 
   dialog.addEventListener("cancel", event => { event.preventDefault(); pause(); });
   renderStages();
+  if (state.open && !state.done && new URLSearchParams(location.search).has("resume")) showCheck();
 }
