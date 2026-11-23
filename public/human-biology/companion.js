@@ -316,6 +316,20 @@ other.units.forEach(function(u){units.push({id:u.id,title:u.title,areas:u.areas.
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
 function crumb(to,text){return '<p class="crumb"><a href="#'+esc(to)+'">← '+esc(text)+'</a></p>';}
 function unitKind(unit){return unit==="f170"||unit==="f171"?"Externally assessed":"NEA knowledge support";}
+const focusedLessons={
+ "f170/1.1.2.counting":{area:"a1",title:"Choosing a cell-counting method",practice:"f170-cell-counting-transfer",lines:[
+  "A haemocytometer uses a ruled grid and known depth. Visible cells are counted in a defined volume, with any dilution allowed for.",
+  "A Coulter counter registers electrical pulses when particles pass through an aperture, allowing rapid counting and size estimation. Clumps and similarly sized debris can distort the result."
+ ]},
+ "f171/1.2.1.hiatus":{area:"a1",title:"Hiatus hernia and reflux",practice:"f171-hiatus-mechanism-transfer",lines:[
+  "In a sliding hiatus hernia, the junction between the oesophagus and stomach and part of the upper stomach move above the diaphragm.",
+  "This can weaken the barrier to reflux. Reflux can irritate the oesophagus and cause heartburn, but a hernia may cause no symptoms."
+ ]},
+ "f171/1.2.1.hodgkin":{area:"a1",title:"Hodgkin lymphoma and lymph nodes",practice:"f171-hodgkin-mechanism-transfer",lines:[
+  "Hodgkin lymphoma is a cancer of lymphatic tissue. Affected nodes may enlarge as tumour tissue and surrounding inflammatory cells accumulate.",
+  "The effects depend on the sites involved. A swollen node or a report of night sweats alone cannot establish the diagnosis."
+ ]}
+};
 function lessonFor(unit,id){return (window.KeystoneHumanLessons||{})[unit+"/"+id];}
 var buildPractice={
  "f170/1.1.2":"p-cell-actual-width",
@@ -347,7 +361,7 @@ function practiceScope(unit,id){
  return point&&window.KeystoneHumanProgressions?.get(point)?point:null;
 }
 function topicPracticeScope(unit,id){
- return ({"f173/a3":"3.4","f177/a3":"2.6"})[unit+"/"+id]||id;
+ return focusedLessons[unit+"/"+id]?.practice||({"f173/a3":"3.4","f177/a3":"2.6"})[unit+"/"+id]||id;
 }
 function buildLink(unit,id,origin){
  var scope=practiceScope(unit,id);
@@ -378,7 +392,7 @@ function relatedLinks(unit,id,origin,practice,label){
  const resume=back?'<a data-hb-resume href="#'+esc(back)+'">Return to your unfinished question set</a>':"";
  const practiceLink=back===practice?"":'<a data-hb-practice href="#'+esc(practice)+'">'+esc(label)+'</a>';
  let further=build||resume?practiceLink:"";
- if(unit==="f170")further+='<a href="#cards/'+esc(id)+'">Flashcards for this topic</a>';
+ if(unit==="f170"&&sectionById[id])further+='<a href="#cards/'+esc(id)+'">Flashcards for this topic</a>';
  if(unit==="f171"){
   const deck=(window.KeystoneF171Recall||[]).find(d=>d[0]===id);
   further+='<a href="#'+(deck?"cards/f171-"+id:"flashcards/f171")+'">'+(deck?"Flashcards for this topic":"F171 flashcards")+'</a>';
@@ -394,6 +408,11 @@ function showHome(render){
  h+='</div><p class="k-small-note">Guided lessons and short recaps cover selected content. NEA units use general examples for independent learning.</p></div>';
  render(h);
 }
+function focusedLessonLinks(unit,area){
+ const links=Object.entries(focusedLessons).filter(([key,lesson])=>key.startsWith(unit+"/")&&lesson.area===area);
+ return links.map(([key,lesson])=>'<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/'+
+  esc(key)+'">'+esc(lesson.title)+'</a></div>').join("");
+}
 function showUnit(unit,render){
  var u=units.filter(function(x){return x.id===unit;})[0];if(!u)return showHome(render);
  var h='<div class="k-wrap">'+crumb("catchup","All units")+'<div class="k-compact-hero"><div class="k-eyebrow">'+unit.toUpperCase()+' · Catch up · '+unitKind(unit)+'</div><h1>'+esc(u.title)+'</h1><p>Select the part you want to revisit.</p></div><div class="lesson-list">';
@@ -401,11 +420,11 @@ function showUnit(unit,render){
   if(unit==="f170"){
    h+='<section class="paper panel"><h2>'+esc(a.title)+'</h2><div class="lesson-list">';
    a.sections.forEach(function(s){h+='<div class="lesson"><div><span class="num">'+esc(s.id)+'</span><h3>'+esc(s.title)+'</h3></div><div class="right"><a class="button secondary" href="#catchup/'+unit+'/'+esc(s.id)+'">'+(lessonFor(unit,s.id)?'Guided lesson':'Recap')+'</a></div></div>';});
-   h+='</div></section>';
+   h+=focusedLessonLinks(unit,a.code)+'</div></section>';
   }else{
    h+='<a class="k-area k-catchup-area" href="#catchup/'+unit+'/'+a.code+'"><span class="k-area-num">'+a.code.slice(1)+'</span><span class="k-area-label"><strong>'+esc(a.title)+'</strong><small>'+(lessonFor(unit,a.code)?'Guided lesson':'Short recap')+'</small></span><span aria-hidden="true">›</span></a>';
    if(unit==="f171"&&a.code==="a1"){
-    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/1.2.1">Airway and alveolar damage</a></div>';
+    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/1.2.1">Airway and alveolar damage</a></div>'+focusedLessonLinks(unit,a.code);
    }
    if(unit==="f171"&&a.code==="a2"){
     h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/2.1">Choosing a treatment</a><a class="button secondary" href="#catchup/f171/2.2">Managing symptoms and function</a><a class="button secondary" href="#catchup/f171/2.3">Prevention and early detection</a></div>';
@@ -426,8 +445,10 @@ function showUnit(unit,render){
 function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
  var u=units.filter(function(x){return x.id===unit;})[0];
  if(!u)return showHome(render);
+ const focus=focusedLessons[unit+"/"+id];
  var topic,points;
- if(unit==="f170"){
+ if(focus){topic=focus.title;points=focus.lines;}
+ else if(unit==="f170"){
   var item=sectionById[id];if(!item)return showUnit(unit,render);
   topic=item.section.title;points=item.section.points;
  }else{
@@ -439,7 +460,7 @@ function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
  var origin="catchup/"+unit+"/"+id+(step?"/"+step:""),key="#catchup/"+unit+"/"+id;
  var scope=topicPracticeScope(unit,id);
  var practice="challenge/"+unit+"/"+scope+"?from="+origin,label=practiceLabel(unit,id,topic);
- if(scope!==id)label=unit==="f173"?"Practise chromatogram interpretation":"Practise medicine safety surveillance";
+ if(scope!==id&&!focus)label=unit==="f173"?"Practise chromatogram interpretation":"Practise medicine safety surveillance";
  var related=relatedLinks(unit,id,origin,practice,label);
  var lesson=lessonFor(unit,id),teaching=window.KeystoneHumanTeaching;
  var lessonId=unit==="f171"?({"a2":"2.1","a4":"4.2.2"}[id]||id):id;
@@ -473,6 +494,7 @@ function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
 }
 function linkFor(q){
  if(!q)return null;
+ if(focusedLessons[q.unit+"/"+q.catchup])return "catchup/"+q.unit+"/"+q.catchup;
  if(q.unit==="f170"&&sectionById[q.section])return "catchup/f170/"+q.section;
  if(q.unit==="f171"&&q.section==="5.2")return "catchup/f171/a5";
  if(q.unit==="f175"&&q.section==="1.3")return "catchup/f175/a2";
@@ -516,6 +538,8 @@ function reteachFor(q,answer){
   "f175-implant":["implantation","Revisit implantation in the uterine lining"]
  }[q.id];
  if(reproduction)return {route:route,href:route+"?stage="+reproduction[0],label:reproduction[1]};
+ const focus=focusedLessons[route.slice("catchup/".length)];
+ if(focus)return {route:route,href:route+"?review=1",label:"Revisit the worked example"};
  var target=targets[route.slice("catchup/".length)];
  target=({
   "f170-microscopy-preparation-transfer":[0,"Revisit choosing a preparation for microscopy"],
@@ -555,7 +579,7 @@ function resumeActivities(){
   const [unit,id]=key.split("/");
   const lesson=lessonFor(unit,id);
   if(!lesson||key!==unit+"/"+id+(lesson.revision?"/"+lesson.revision:""))continue;
-  const title=unit==="f170"?sectionById[id]?.section.title:notes[unit]?.[id]?.title;
+  const title=focusedLessons[unit+"/"+id]?.title||(unit==="f170"?sectionById[id]?.section.title:notes[unit]?.[id]?.title);
   const stage=stages[key];
   if(title)items.push({route:"catchup/"+unit+"/"+id+"?continue="+stage,unit:unit.toUpperCase(),title,position:labels[stage]});
  }
@@ -570,6 +594,9 @@ window.KeystoneHumanCatchup={route:function(hash,render){
  return showConcept(m[1],m[2],m[3],render,Number(m[4])||0,simulationStage,m[6]);
 },unitList:units,resumeActivities:resumeActivities,linkFor:linkFor,reteachFor:reteachFor,practiceScope:practiceScope,topicPracticeScope:topicPracticeScope,searchTopics:function(){
  const aliases={
+  "f170/1.1.2.counting":"haemocytometer coulter electronic impedance cell count",
+  "f171/1.2.1.hiatus":"sliding hiatal hernia heartburn gastro oesophageal reflux",
+  "f171/1.2.1.hodgkin":"lymphatic lymph node cancer",
   "f170/1.1.2":"microscope micrograph magnification resolution scale bar TEM SEM",
   "f170/3.1.1":"glucose insulin hormones blood sugar negative feedback",
   "f171/4.2.1":"screen false positive false negative sensitivity specificity screening test",
@@ -594,13 +621,14 @@ window.KeystoneHumanCatchup={route:function(hash,render){
    entries.push({group:unit.id,title:area.title,context:code+" · Topic "+area.code.slice(1),actions:[["Practise","#challenge/"+unit.id+"/"+area.code]]});
   }
   const topics=unit.id==="f170"?Object.entries(sectionById).map(([id,item])=>[id,item.section]):Object.entries(notes[unit.id]||{});
+  topics.push(...Object.entries(focusedLessons).filter(([key])=>key.startsWith(unit.id+"/")).map(([key,lesson])=>[key.split("/")[1],lesson]));
   for(const [id,topic] of topics){
    const studyRoute="#catchup/"+unit.id+"/"+id;
    const point=practiceScope(unit.id,id);
    const actions=[["Catch up",studyRoute]];
    if(point)actions.push(["Build Understanding","#challenge/"+unit.id+"/"+point+"?from="+studyRoute.slice(1)]);
    if(unit.id==="f175"&&id==="a1")actions.push(["Open interactive model",studyRoute+"?stage=follicle"]);
-   if((unit.id==="f173"&&id==="a3")||(unit.id==="f177"&&id==="a3")){
+   if(topic.practice||(unit.id==="f173"&&id==="a3")||(unit.id==="f177"&&id==="a3")){
     actions.push(["Practise","#challenge/"+unit.id+"/"+topicPracticeScope(unit.id,id)+"?from="+studyRoute.slice(1)]);
    }
    entries.push({group:unit.id,title:unit.id==="f173"&&id==="a3"?"Biomolecule tests and chromatography":topic.title,
@@ -609,5 +637,5 @@ window.KeystoneHumanCatchup={route:function(hash,render){
   }
  }
  return entries;
-},count:function(){return {units:units.length,concepts:Object.values(notes).reduce(function(n,x){return n+Object.keys(x).length;},0)+Object.keys(sectionById).length};}};
+},count:function(){return {units:units.length,concepts:Object.values(notes).reduce(function(n,x){return n+Object.keys(x).length;},0)+Object.keys(sectionById).length+Object.keys(focusedLessons).length};}};
 })();

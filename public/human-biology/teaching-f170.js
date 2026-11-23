@@ -51,6 +51,33 @@ window.KeystoneHumanLessons = {
     "Nephron", "BY-SA 3.0", 479, 590, "A pale central lumen is edged by several layers of cells. Fine dark profiles project into the lumen.");
 
   Object.assign(window.KeystoneHumanLessons, {
+    "f170/1.1.2.counting": {
+      revision: 1,
+      goal: "Compare how a haemocytometer and a Coulter counter obtain a cell count and choose a method for a stated purpose.",
+      activate: ["What does cells per mL tell you?", "It is the number of cells per millilitre, a concentration. A count to estimate concentration needs a known volume."],
+      prior: ["f170/1.1.2", "Review light microscopy and measurement"],
+      explain: [
+        "A haemocytometer is a ruled counting chamber of known depth. Under a light microscope, the area counted and the chamber depth give the sampled volume. Apply a consistent boundary rule and account for dilution. Mix the suspension so the small sample is representative. Dilution can make an overcrowded field countable.",
+        "A Coulter counter passes particles suspended in a conducting liquid through a narrow aperture. A brief change in electrical impedance is registered as a pulse. Pulse number gives a particle count in the sampled volume and pulse size can estimate particle volume. A mixture of clumps, debris and cells may give misleading results. The electrical count alone does not establish whether cells are alive."
+      ],
+      table: {caption: "What each method records", head: ["Method", "Readout", "Trade-off"], rows: [
+        ["Haemocytometer", "Visible cells in a known volume", "Can inspect cell appearance; slower and dependent on the observer and sampling"],
+        ["Coulter counter", "Electrical pulses from particles in a measured volume", "Fast for many comparable suspensions; similar-sized debris can be counted and clumps can distort the result"]
+      ]},
+      focusCells: [["0:0","0:1"],["1:0","1:1"]],
+      modelTitle: "Choose what information the count must contain",
+      nodes: ["Inspect selectively", "Count efficiently"],
+      model: [
+        "A researcher needs to exclude clearly recognisable fragments that overlap the target cells in size. A chamber lets the observer inspect appearance before counting each target cell. Counting takes longer and is sensitive to how the grid and cell features are judged.",
+        "For many already separated suspensions of similar intact cells with little debris, a Coulter counter can obtain a rapid concentration estimate. If particles clump, one pulse may represent several cells, so the numerical result needs that limitation."
+      ],
+      guided: choice("Which part of a manual chamber makes it possible to turn a grid count into a concentration?",
+        0, [["The counted grid area together with the known chamber depth.", ""], ["The microscope magnification alone.", "Magnification changes apparent size. Concentration needs the sampled volume."], ["The total depth of the liquid in the original tube.", "Use the depth and grid area of the volume that was counted."]],
+        "Area × depth gives the counted volume. Account for any dilution when estimating the concentration of the original suspension."),
+      apply: choice("A laboratory must compare the concentration of intact cells in 40 prepared suspensions. Checks show separate cells with very little debris. The count is needed quickly and there is no requirement to assess viability. Which choice fits?",
+        2, [["Use the chamber because grid counts are independent of how the suspension is sampled.", "A small chamber sample still needs to be representative."], ["Use an electrical counter because every pulse proves that the particle was a live cell.", "A pulse signals a particle. It does not establish viability."], ["Use a Coulter counter for rapid counts, and check that the suspensions stay sufficiently dispersed.", ""]],
+        "The aim is a fast concentration comparison. In these checked suspensions pulses are a useful proxy for cells, provided clumping remains limited.")
+    },
     "f170/1.1.3": {
       revision: 1,
       goal: "Trace a secreted protein through a cell and predict where it will collect if one step fails.",

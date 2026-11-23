@@ -19,14 +19,20 @@ export async function checkHumanCatchup(browser, base) {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await open("catchup");
     const chapters = await page.evaluate(() => Object.entries(window.KeystoneHumanLessons));
-    assert.equal(chapters.length, 49, "Retain the 44 existing routes and add five targeted guided routes");
+    assert.equal(chapters.length, 52, "Retain the 49 existing routes and add three targeted guided routes");
     assert.equal(new Set(chapters.map(([key]) => key.split("/")[0])).size, 8);
     for (const [key, lesson] of chapters) {
       await page.evaluate(key => localStorage.removeItem(key), localPractice);
       await open("catchup/" + key);
       await page.getByText(lesson.goal, { exact: true }).waitFor();
       assert(await page.getByRole("heading", { name: "Understand the idea" }).isVisible(), key);
-      if (lesson.revision && (key.startsWith("f170/") || key.startsWith("f171/"))) {
+      const focused = /\.(counting|hiatus|hodgkin)$/.test(key);
+      if (focused) {
+        const morePractice = page.locator("[data-hb-practice]");
+        const href = await morePractice.getAttribute("href");
+        assert(href.includes("-transfer?from=catchup/" + key), key);
+      }
+      if (lesson.revision && !focused && (key.startsWith("f170/") || key.startsWith("f171/"))) {
         const buildLink = page.getByRole("link", { name: "Build understanding", exact: true });
         const href = await buildLink.getAttribute("href");
         assert(href.endsWith("?from=catchup/" + key), key);

@@ -1234,6 +1234,34 @@ additions.push({
  misconception:"A peak rate and the amount moved over an interval are different measurements.",
  hintCue:"Find the column measuring the amount of air moved in the first second."
 });
+additions.push({
+ id:"f170-cell-counting-transfer",unit:"f170",area:1,section:"1.1.2",catchup:"1.1.2.counting",type:"single",level:"apply",
+ stem:"Two small samples contain round intact cells and irregular fragments of similar volume. The aim is to estimate the concentration of the intact cells only. What approach provides the most useful evidence?",
+ options:["Take a Coulter count and treat every pulse as an intact cell.","Use a haemocytometer and count cells that meet the visible criteria in the known grid volume.","Use a Coulter counter and assume particles of the target volume are intact cells.","Count intact cells in any area of an ordinary slide and report the total as cells per mL."],
+ correct:1,model:"Inspect and count intact cells in the haemocytometer’s known volume, then account for any dilution.",
+ explain:"The distinction depends on appearance rather than volume alone. The chamber allows visual selection and supplies the volume needed for concentration.",
+ optionFeedback:["Both fragments and cells can produce pulses.","", "Fragments overlap the cells in volume. This size filter cannot reliably distinguish them.","Visible identification is useful, but concentration also needs a known sampled volume."],
+ misconception:"An electrical pulse indicates a particle. It does not identify that particle as an intact cell.",
+ hintCue:"Decide what distinguishes the intact cells in this particular mixture."
+},{
+ id:"f171-hiatus-mechanism-transfer",unit:"f171",area:1,section:"1.2.1",catchup:"1.2.1.hiatus",type:"single",level:"apply",
+ stem:"A fictional image shows the stomach junction above the diaphragm. After a meal, stomach contents are detected in the lower oesophagus and the person reports a sour taste. Which mechanism best connects the findings?",
+ options:["The shifted junction increases acid secretion, which explains the findings even with an effective reflux barrier.","The findings are better explained by a sensitive oesophagus, with no change in the movement of stomach contents.","The raised junction establishes that slowed gastric emptying is driving reflux after meals.","Displacement can weaken the barrier to backflow, allowing stomach contents to reach the oesophagus."],
+ correct:3,model:"Weaker resistance to backflow can explain why stomach contents reached the oesophagus.",
+ explain:"The junction normally works with the diaphragm to reduce reflux. If the two no longer align, the barrier can be less effective. Finding a hernia on its own would not establish that reflux occurred.",
+ optionFeedback:["The evidence records the presence of stomach contents in the oesophagus. Increased secretion was not measured.","Sensitivity might affect how the person feels. It does not explain the detected movement of contents.","The observations show reflux but do not measure how quickly the stomach empties.",""],
+ misconception:"Reflux describes movement of existing contents rather than production of more acid.",
+ hintCue:"Trace which way the stomach contents have travelled and what would normally resist that movement."
+},{
+ id:"f171-hodgkin-mechanism-transfer",unit:"f171",area:1,section:"1.2.1",catchup:"1.2.1.hodgkin",type:"single",level:"apply",
+ stem:"In a fictional case, a biopsy confirms Hodgkin lymphoma. Imaging shows enlarged lymph nodes alongside the oesophagus. The person reports difficulty swallowing. Which conclusion is best supported?",
+ options:["Expansion of affected lymphatic tissue can press on the oesophagus and contribute to the swallowing difficulty.","Difficulty swallowing proves that the cancer began in the oesophagus.","Lymphoma can only affect immunity, so the location of the nodes cannot explain the symptom.","Enlarged nodes establish that stomach acid has damaged the oesophageal lining."],
+ correct:0,model:"The enlarged lymph nodes could compress the adjacent oesophagus.",
+ explain:"Tumour tissue and accompanying inflammation can enlarge lymph nodes. A nearby structure may then be compressed, providing a plausible mechanism for the symptom. The symptom alone would not identify the cause.",
+ optionFeedback:["","The biopsy identifies the disease in lymphatic tissue. A symptom can come from pressure outside the oesophagus.","An enlarged node can have a local effect on another structure as well as lymphatic or immune effects.","Neither the location of the nodes nor the report of difficulty swallowing measures reflux or injury to the lining."],
+ misconception:"Symptoms can arise from the position of an enlarged lymph node rather than from where a person feels the effect.",
+ hintCue:"Use the location of the enlarged nodes in relation to the structure involved in swallowing."
+});
 var ids=new Set(bank.questions.map(function(q){return q.id;}));
 additions.forEach(function(q){if(!ids.has(q.id)){bank.questions.push(q);ids.add(q.id);}});
 })();
