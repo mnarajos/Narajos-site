@@ -307,6 +307,7 @@ function unitKind(unit){return unit==="f170"||unit==="f171"?"Externally assessed
 function lessonFor(unit,id){return (window.KeystoneHumanLessons||{})[unit+"/"+id];}
 var buildPractice={
  "f170/1.1.2":"p-cell-actual-width",
+ "f170/1.1.3":"p-cell-protein-route",
  "f170/2.1.2":"p-phys-heart-septum",
  "f170/2.1.3":"p-phys-homeostasis-cross",
  "f170/2.2.2":"p-phys-homeostasis-cross",
@@ -314,6 +315,7 @@ var buildPractice={
  "f170/3.1.1":"p-endo-insulin-loop",
  "f170/3.1.2":"p-endo-type1",
  "f170/3.3.1":"p-endo-gametes",
+ "f170/4.1.4":"p-micro-culture-phases",
  "f171/2.1":"p-f171-local-systemic",
  "f171/2.2":"p-health-parkinsons-therapy",
  "f171/a2":"p-f171-local-systemic",
