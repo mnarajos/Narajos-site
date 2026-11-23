@@ -219,6 +219,7 @@ export async function checkHumanCatchup(browser, base) {
     await page.locator(".k-question-view").waitFor();
     assert.deepEqual((await saved(skillKey)).queue, skill.queue);
     await open("catchup/f170/1.1.2");
+    await page.getByText("More practice for this topic", { exact: true }).click();
     await page.getByRole("link", { name: /Practise microscopy and cell measurements/i }).click();
     await page.locator(".k-question-view").waitFor();
     assert.deepEqual((await saved(practiceKey)).queue, standard.queue);
@@ -228,7 +229,7 @@ export async function checkHumanCatchup(browser, base) {
     await page.locator("#leave-confirm").click();
     await page.getByRole("heading", { name: "Microscopy and cell measurements", exact: true }).waitFor();
     assert(await page.locator("[data-hb-model-step][open]").isVisible());
-    await page.getByRole("link", { name: /Practise microscopy and cell measurements/i }).click();
+    await page.getByRole("link", { name: "Return to your unfinished question set" }).click();
     await page.getByText("Explanation revealed", { exact: true }).waitFor();
 
     await open("catchup/f171/4.2.1");
@@ -251,11 +252,9 @@ export async function checkHumanCatchup(browser, base) {
 
     await open("cards/f171-2.3");
     await page.getByRole("textbox").fill("A saved flashcard draft.");
-    await page.getByRole("link", { name: "Catch up", exact: true }).click();
+    await page.getByRole("link", { name: "Overview", exact: true }).click();
     await page.locator("#leave-confirm").click();
-    await page.locator('a[href="#catchup/f171"]').click();
-    await page.locator('a[href="#catchup/f171/4.2.1"]').click();
-    await page.getByRole("link", { name: "Resume flashcards or explanation practice" }).click();
+    await page.getByRole("region", { name: "Continue learning" }).getByRole("link", { name: /Resume F171 Flashcards/ }).click();
     assert.equal(await page.getByRole("textbox").inputValue(), "A saved flashcard draft.");
 
     await open("catchup/f170/3.3.1");

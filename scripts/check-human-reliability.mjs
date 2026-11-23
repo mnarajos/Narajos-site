@@ -19,6 +19,7 @@ export async function checkHumanReliability(browser, base, { touch = false, audi
     await page.goto(root + "?lesson#catchup/f171/4.2.1");
     const lesson = "catchup/f171/4.2.1", slot = "session-topic-f171/4.2.1";
     const practice = page.getByRole("link", { name: "Practise interpreting screening results", exact: true }).first();
+    await page.getByText("More practice for this topic", { exact: true }).press("Enter");
     await practice.press("Enter");
     await page.locator(".k-question-view").waitFor();
     const contextual = await read(slot);
@@ -27,7 +28,7 @@ export async function checkHumanReliability(browser, base, { touch = false, audi
     await page.getByRole("link", { name: "Return to the catch-up lesson" }).press("Enter");
     await page.locator("#leave-confirm").press("Enter");
     await page.waitForURL(url => url.hash === "#" + lesson);
-    await practice.press("Enter");
+    await page.getByRole("link", { name: "Return to your unfinished question set" }).press("Enter");
     assert.deepEqual((await read(slot)).queue, contextual.queue);
 
     // Seed a fixed queue so the same choice and review can be reproduced in each engine.

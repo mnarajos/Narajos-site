@@ -525,14 +525,13 @@ try{
  await screen(desktop,"alevel-enzyme-visual");
 
  await checkPage(desktop,"human-biology");
- assert(await desktop.getByRole("heading",{name:"Other ways to revise F170",exact:true}).isVisible());
- assert(await desktop.getByRole("heading",{name:"Other ways to revise F171",exact:true}).isVisible());
- assert(await desktop.locator('.k-home-actions a[href="#skills/f171"]').isVisible());
+ assert(await desktop.getByRole("heading",{name:"Externally assessed units",exact:true}).isVisible());
+ assert.equal(await desktop.locator(".hb-nea-list a").count(),6);
  assert.equal(await desktop.locator("main").evaluate(el=>getComputedStyle(el).outlineStyle),"none","Main-content focus outline should not frame the whole app");
  await desktop.goto(base+"/human-biology/#challenge/f170");
- const firstF170Actions=desktop.getByRole("region",{name:"Start F170 revision"});
+ const firstF170Actions=desktop.getByRole("region",{name:"Learning activities"});
  assert.deepEqual(await firstF170Actions.locator("a").evaluateAll(links=>links.map(a=>a.hash)),
-  ["#catchup/f170","#challenge/f170/all","#skills/f170"]);
+  ["#catchup/f170","#challenge/f170/core","#flashcards"]);
  const examFocus=desktop.getByRole("link",{name:/Exam-style focus/});
  assert(await examFocus.isHidden());
  await desktop.getByText("More practice options",{exact:true}).click();
@@ -560,8 +559,10 @@ try{
  await desktop.locator("#leave-confirm").click();
  await desktop.getByRole("link",{name:"← Home",exact:true}).click();
  // Generated skills use the same real DOM checker and navigation protection.
- await desktop.getByRole("link",{name:"Skills practice",exact:true}).first().click();
- await desktop.getByRole("heading",{name:"Skills practice",exact:true}).waitFor();
+ await desktop.locator('.hb-unit-list a[href="#challenge/f170"]').click();
+ await desktop.getByText("More practice options",{exact:true}).press("Enter");
+ await desktop.getByRole("link",{name:"Skills Practice",exact:true}).click();
+ await desktop.getByRole("link",{name:"All skills",exact:true}).click();
  assert.equal(await desktop.locator(".k-skill-card").count(),14);
  await screen(desktop,"human-skills-desktop");
  await desktop.locator('a[href="#skills/f170/magnification"]').click();
@@ -742,7 +743,7 @@ try{
  await mobile.goto(base+"/human-biology/#skills");
  await mobile.getByRole("heading",{name:"Skills practice",exact:true}).waitFor();
  assert((await mobile.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth))<=3,"Skills menu overflows on phone");
- assert(await mobile.locator('.nav a[href="#skills"]').getAttribute("aria-current"),"Skills navigation state missing");
+ assert.equal(await mobile.getByRole("navigation",{name:"Human Biology app navigation"}).getByRole("link").count(),3);
  await screen(mobile,"human-skills-mobile");
  await mobile.locator('a[href="#skills/f171/rate"]').click();
  await mobile.locator(".k-skill-graph svg").waitFor();
