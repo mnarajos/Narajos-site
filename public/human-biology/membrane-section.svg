@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="384" height="232" viewBox="0 0 384 232" role="img" aria-labelledby="title description">
+  <title id="title">Cross-section of a cell surface membrane</title>
+  <desc id="description">Two rows of round heads face the fluids. Their tails meet inside. A carbohydrate chain projects outside from a spanning protein. Small cholesterol molecules sit between tails. A peripheral protein attaches on the cytoplasmic surface.</desc>
+  <rect width="384" height="232" rx="12" fill="#f8f7f3"/>
+  <defs>
+    <g id="lipid" stroke="#274557" stroke-width="2.4" stroke-linecap="round">
+      <path d="M-3 4v16l-2 9m8-25v12l4 10" fill="none"/><circle r="6" fill="#a7d6d4"/>
+    </g>
+    <g id="row">
+      <use href="#lipid" x="22"/><use href="#lipid" x="39"/><use href="#lipid" x="56"/>
+      <use href="#lipid" x="73"/><use href="#lipid" x="90"/><use href="#lipid" x="107"/>
+      <use href="#lipid" x="124"/><use href="#lipid" x="141"/><use href="#lipid" x="158"/>
+      <use href="#lipid" x="175"/><use href="#lipid" x="192"/><use href="#lipid" x="209"/>
+      <use href="#lipid" x="226"/><use href="#lipid" x="243"/><use href="#lipid" x="260"/>
+      <use href="#lipid" x="315"/><use href="#lipid" x="332"/><use href="#lipid" x="349"/><use href="#lipid" x="366"/>
+    </g>
+  </defs>
+  <use href="#row" y="104"/><use href="#row" transform="translate(0 162) scale(1 -1)"/>
+  <g stroke="#723f25" fill="#d59559" stroke-width="2"><path d="m147 110 5-3 5 4-1 6 4 4-2 6-6 1-4-5-1-8z"/><path d="m219 155-4 3-5-4 1-6-4-4 2-6 6-1 4 5 1 8z"/></g>
+  <g fill="#9baccd" stroke="#344663" stroke-width="2.5">
+    <path d="M270 96q6-15 19-10t12 18l-4 28 7 26q4 15-11 18t-23-6l5-34z"/>
+    <path d="M65 169q9-7 18-2t17 0q11-3 16 8t-7 14q-14 3-25-1t-22-7z"/>
+  </g>
+  <path d="m287 88-3-13 10-10-4-12m4 12 13-4" fill="none" stroke="#3c6a50" stroke-width="3"/>
+  <g fill="#bed3af" stroke="#31593d" stroke-width="2"><circle cx="284" cy="75" r="4"/><circle cx="294" cy="65" r="4"/><circle cx="290" cy="53" r="4"/><circle cx="307" cy="61" r="4"/></g>
+  <g font-family="system-ui,sans-serif" fill="#1c3041" font-size="16" font-weight="600">
+    <text x="16" y="24">Extracellular fluid</text><text x="16" y="218">Cytoplasm</text>
+    <text x="16" y="70">1</text><text x="128" y="70">2</text><text x="331" y="55">3</text><text x="150" y="204">4</text>
+  </g>
+  <g fill="none" stroke="#233645" stroke-width="1.8"><path d="m25 74 14 23"/><path d="m138 74 12 33"/><path d="m327 56-15 5"/><path d="m146 198-33-16"/></g>
+</svg>

@@ -79,6 +79,7 @@ window.KeystoneHumanLessons = {
         "The aim is a fast concentration comparison. In these checked suspensions pulses are a useful proxy for cells, provided clumping remains limited.")
     },
     "f170/1.1.3": {
+      further: [["catchup/f170/1.1.3.evidence", "Investigate ribosomes, ER and lysosome delivery"]],
       revision: 1,
       goal: "Trace a secreted protein through a cell and predict where it will collect if one step fails.",
       activate: ["What do ribosomes make?", "They join amino acids into a polypeptide. Some ribosomes are attached to the rough endoplasmic reticulum (RER)."],
@@ -191,6 +192,7 @@ window.KeystoneHumanLessons = {
         "8 mm = 8,000 µm. The image is 8,000 ÷ 2 = 4,000 times its actual size.")
     },
     "f170/1.1.4": {
+      further: [["catchup/f170/1.1.4.surface", "Interpret a membrane and investigate its components"]],
       goal: "Use gradients and the membrane to explain the direction of net transport.",
       activate: ["What is a concentration gradient?", "A difference in concentration between two places. Name the substance before comparing its concentrations."],
       explain: [
@@ -543,6 +545,62 @@ window.KeystoneHumanLessons = {
         "The first cell can generate force. Poor signal transfer through gap junctions prevents nearby cells from being activated together, reducing the force of the coordinated contraction.",
         ["Separate the cell's ability to shorten from the timing across the strip."]),
       practice: "p-f170-tissue-hierarchy"
+    }
+  });
+})();
+
+(function () {
+  const { choice, written } = window.KeystoneHumanTeaching;
+  Object.assign(window.KeystoneHumanLessons, {
+    "f170/1.1.3.evidence": {
+      revision: 1, title: "What organelle evidence can tell us",
+      goal: "Use a location, a ribosome reading or a changed product to explain where a cell process takes place.",
+      prior: ["f170/1.1.3","Trace a secreted protein through a cell"],
+      explain: ["The nucleus contains chromosomes. Inside it the nucleolus makes much of the ribosomal RNA and assembles ribosomal subunits. The subunits leave through nuclear pores. In the cytoplasm they can join on an mRNA to make a polypeptide.",
+        "Human cytosolic ribosomes are 80S, including those attached to rough ER. Typical bacterial ribosomes are 70S. The S value measures how a particle sediments. Free and ER-bound cytosolic ribosomes are the same type. Human mitochondrial ribosomes are a distinct type.",
+        "Rough ER receives many newly made proteins. Smooth ER makes many lipids. At the Golgi, different proteins can enter vesicles bound for different destinations. Some digestive enzymes reach acidic lysosomes, where they break down material."],
+      table: {caption: "A tagged digestive enzyme in a fictional cell", head: ["Observation", "Finding"], rows:[
+        ["New protein in rough ER", "Present"], ["Processed protein leaving Golgi", "Present"], ["Enzyme in lysosomes", "Very little"], ["Tagged enzyme outside cell", "Much more than usual"]
+      ]},
+      focusCells: [["0:0","1:0"],["2:0","3:0"]],
+      modelTitle: "Locate a delivery fault",
+      model: ["Start at the beginning. Finding the protein in rough ER and in the Golgi supports synthesis and passage between these compartments.",
+        "Now compare destinations. Finding much of the enzyme outside and little in lysosomes suggests misdirected delivery. It does not by itself identify which sorting molecule failed."],
+      guided: choice("A preparation from human cells contains 80S ribosomes on membranes. A second contains 80S ribosomes free in the cytosol. Which conclusion fits?", 1,
+        [["The membrane sample must come from bacteria.", "Typical bacterial ribosomes are 70S. Position is a separate observation."], ["A human cytosolic ribosome can attach to the ER while making certain proteins.", ""], ["Attachment converts a 70S ribosome into an 80S ribosome.", "Attachment changes location without changing the ribosome type."]],
+        "Use the S value to compare ribosome type and the attachment to infer location.", ["Which observation describes position?"]),
+      apply: { ...written("The drawings show two regions of ER from different secretory cells. Cell P exports a protein hormone. Cell Q makes a steroid hormone from lipids. Use a visible feature to explain why each region suits its cell's product.",
+        ["P has ribosomes on the surface of flattened sacs.", "These ribosomes synthesise the polypeptide that enters the rough ER.", "Q's tubules lack attached ribosomes and contain enzymes involved in lipid and steroid synthesis."],
+        "The dots on P's sacs are attached ribosomes, linking rough ER to production of the exported protein. Q shows smooth tubules without attached ribosomes. Enzymes in smooth ER participate in making steroids. An ER profile alone would not identify a particular hormone.",
+        ["Compare the outer faces of the membranes, then consider what each product is made of."]),
+        illustration: {src:"/human-biology/er-profiles.svg", width:360,height:186,alt:"P shows flattened sacs with small dots along the outside. Q shows branching tubules with no surface dots. Same-scale schematics."}
+      },
+      practice: "f170-lysosome-evidence",
+      further: [["challenge/f170/f170-nucleolus-export","Distinguish assembly from export"],["challenge/f170/f170-ribosome-fractions","Interpret ribosome measurements"]]
+    },
+    "f170/1.1.4.surface": {
+      revision: 1, title: "How a membrane's components work together",
+      goal: "Use the position of a membrane component to predict what changes when it is altered.",
+      prior: ["f170/1.1.4","Review transport down and against gradients"],
+      explain: ["In the fluid mosaic model, hydrophilic phospholipid heads face water on both sides. Hydrophobic tails point inwards. Many lipids and proteins move laterally. Small nonpolar molecules can diffuse through the core. Charged particles need a suitable transport protein.",
+        "Intrinsic proteins are embedded in the bilayer and some span it. Extrinsic (peripheral) proteins attach at a surface. A receptor must have an accessible binding site of the right shape for its signal. Some receptors are surface-associated and many span the membrane. Binding can change activity inside the cell.",
+        "Glycoproteins have carbohydrate chains on the extracellular side. Cell-surface antigens, including HLA proteins, allow immune recognition. Recognition of a donor's different antigens can trigger a response that damages a graft.",
+        "In endocytosis the membrane encloses material in an inward-moving vesicle. In exocytosis a vesicle fuses with the surface and releases its contents. Both can move large cargo without the cargo crossing the hydrophobic core."],
+      illustration: {src:"/human-biology/membrane-section.svg",width:384,height:232,alt:"Membrane cross-section. 1 points to a head at the fluid boundary, 2 to a small molecule among the tails, 3 to a chain on an outward-facing spanning protein and 4 to a protein on the cytoplasmic surface."},
+      modelTitle: "Read from the water into the membrane",
+      model: ["At 1, polar heads face the fluid. Between the two head layers is the oily core. Cholesterol (2) sits among the tails with its small polar end close to the heads.",
+        "At body temperature cholesterol restrains some movement of nearby tails and can reduce leakage of small polar molecules. This stabilises the exposed membrane of a blood-vessel lining cell. Excessive ordering can reduce flexibility. At low temperatures cholesterol also prevents tight packing.",
+        "At 3, a chain on a glycoprotein faces the outside, where other cells can encounter it. At 4, a peripheral protein is attached at the cytoplasmic face. Which side a binding site faces matters."],
+      guided: choice("An external signal no longer binds to its receptor. A separate glucose carrier still moves glucose down its gradient. Which account fits?", 2,
+        [["Glucose must enter by active transport because a protein is present.", "Facilitated diffusion uses a protein and can proceed down a gradient."], ["The signal must cross the bilayer to act.", "A signal can bind outside and trigger an intracellular response."], ["The accessible binding site for the signal may have changed while the carrier still functions.", ""]],
+        "Recognition and transport rely on different interactions. A signal can cause a response without entering the cell.", ["Separate what binds from what crosses."]),
+      apply: {...written("Two models of the blood-facing membrane of an endothelial cell have the same proteins and are tested at 37 °C. Use both readings to explain one benefit and one possible cost of the higher cholesterol content.",
+        ["Lower tracer leakage supports a stronger barrier to this small polar tracer.", "Lower lateral mobility indicates more restricted movement within the membrane.", "This can limit flexibility or rearrangement. The experiment measures membrane properties, not a person's artery narrowing."],
+        "The higher-cholesterol model leaks less tracer, which could help maintain a barrier. Its lipids also move laterally more slowly, consistent with greater ordering that could limit membrane flexibility. These findings concern cholesterol in the cell membrane.",
+        ["Read the direction of each change separately."]),
+        table: {caption:"Fictional membrane measurements at 37 °C",head:["Membrane","Tracer leakage (units/min)","Lateral lipid mobility (relative units)"],rows:[["Lower cholesterol","8","10"],["Higher cholesterol","3","6"]]}
+      },
+      practice: "f170-graft-recognition", further: [["challenge/f170/f170-vesicle-directions","Follow labelled cargo across a cell boundary"]]
     }
   });
 })();
