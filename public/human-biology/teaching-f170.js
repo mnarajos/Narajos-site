@@ -83,8 +83,10 @@ window.KeystoneHumanLessons = {
       goal: "Trace a secreted protein through a cell and predict where it will collect if one step fails.",
       activate: ["What do ribosomes make?", "They join amino acids into a polypeptide. Some ribosomes are attached to the rough endoplasmic reticulum (RER)."],
       explain: [
-        "The nucleus holds the DNA instructions. The nucleolus helps assemble ribosome subunits. Mitochondria supply much of the ATP that supports cell activity.",
-        "The RER receives many proteins made for secretion. The smooth ER has different roles, including making lipids. The Golgi modifies and sorts proteins, and vesicles carry them between compartments or to the cell surface."
+        "The nuclear envelope surrounds most of the cell’s DNA. Its pores allow selected molecules, such as messenger RNA and ribosome subunits, to pass into the cytoplasm. The nucleolus is a region inside the nucleus where ribosomal RNA is made and ribosome subunits are assembled.",
+        "Mitochondria supply much of the ATP for cell processes. Their own DNA specifies a small fraction of their proteins. Most mitochondrial proteins are encoded by nuclear genes, made on cytoplasmic ribosomes and imported. Nuclear gene expression can therefore affect ATP supply even if mitochondrial DNA is unchanged.",
+        "Rough ER has ribosomes on its cytoplasmic surface and receives many proteins made for secretion. Smooth ER lacks these attached ribosomes and makes many lipids. Cytoplasmic ribosomes in human cells are 80S. Typical bacterial ribosomes are 70S. The S values describe sedimentation behaviour. Human mitochondrial ribosomes differ from both.",
+        "The Golgi modifies and sorts proteins. For example, it sends some hydrolytic enzymes towards lysosomes. A lysosome is a membrane-bound compartment where these enzymes work in acidic conditions to break down material, such as components of worn-out organelles."
       ],
       table: {caption: "Route of a secreted digestive enzyme", head: ["Structure", "What happens to the protein"], rows: [
         ["Ribosomes on rough ER", "The polypeptide is made and enters the RER"], ["Golgi apparatus", "The protein is processed and sorted"],
@@ -106,6 +108,31 @@ window.KeystoneHumanLessons = {
       followup: choice("A new secreted protein is absent even in the RER. Where should the investigation start?", 0,
         [["Protein production or entry into the RER.", ""], ["Fusion of Golgi-derived vesicles at the surface.", "A late fault cannot explain a missing protein at the start."], ["Secretion into the space outside the cell.", "Use the first missing compartment."]],
         "Check production or the earliest delivery step before investigating later transport.")
+    },
+    "f170/4.1.1": {
+      goal: "Use the arrangement of cell-envelope layers to distinguish Gram-positive and Gram-negative bacteria.",
+      activate: ["What is a cell envelope?", "It is the set of layers surrounding the cell contents. Compare the layers from inside to outside."],
+      explain: [
+        "Both groups have a cell membrane and a peptidoglycan wall. A typical Gram-positive wall has a thick peptidoglycan layer outside the membrane. A typical Gram-negative envelope has a thin peptidoglycan layer between the inner and outer membranes.",
+        "Gram-positive cells typically retain the first purple stain. Gram-negative cells typically lose it and appear pink or red after a contrasting stain. Treat this as evidence about the envelope. Gram class alone cannot identify a species or establish which antibiotic will work."
+      ],
+      table: {caption: "Read envelope layers from the cytoplasm outwards", head: ["Group", "Layers in order", "Typical result"], rows: [
+        ["Gram-positive", "Cell membrane → thick peptidoglycan", "Purple"],
+        ["Gram-negative", "Inner membrane → thin peptidoglycan → outer membrane", "Pink or red"]
+      ]},
+      focusCells: [["1:0","1:1"],["0:0","0:1"]],
+      modelTitle: "Read the outer membrane and wall together",
+      nodes: ["Trace the layers", "Predict the result"],
+      model: [
+        "In an unfamiliar description, a thin wall lies between two membranes. That arrangement indicates a typical Gram-negative envelope. Start with the number and position of membranes rather than just noticing that a wall exists.",
+        "In a second specimen there is one membrane and thick peptidoglycan. This is typical of Gram-positive bacteria, for which a purple result is expected. The structural class does not tell you what species was examined."
+      ],
+      guided: choice("A drawing shows thin peptidoglycan outside the inner membrane. Which additional feature supports a Gram-negative interpretation?",
+        1, [["A second wall made of chitin.", "Chitin is characteristic of fungal walls, not a bacterial Gram distinction."], ["A membrane outside the peptidoglycan.", ""], ["A nucleus enclosed by its own membrane.", "Bacteria lack a membrane-bound nucleus."]],
+        "Locate the peptidoglycan relative to both membranes."),
+      apply: choice("Two fictional samples contain rods of similar size. X has a single cell membrane and a thick peptidoglycan layer. Y has thin peptidoglycan between two membranes. Which interpretation is supported?",
+        0, [["X usually stains purple and Y usually stains pink; the shared shape does not make their envelopes alike.", ""], ["Both should stain purple because both are rods.", "Gram staining depends on envelope structure rather than cell shape."], ["X usually stains pink because thick peptidoglycan makes it Gram-negative.", "Thick peptidoglycan favours retention of the purple stain in a typical Gram-positive envelope."]],
+        "Use both observations about layers. Cell shape is a separate feature.")
     },
     "f170/4.1.4": {
       revision: 1,
@@ -136,7 +163,7 @@ window.KeystoneHumanLessons = {
       explain: [
         "A scale bar labels a known actual length. The structure and bar are measured on the same image, so resizing both together preserves their ratio.",
         "Magnification is image size ÷ actual size. Resolution is the ability to distinguish two nearby points. Enlarging a blurred image spreads out the same information.",
-        "In transmitted light microscopy, a thin specimen lets light pass through and reduces overlapping layers. A microtome cuts thin sections of fixed tissues. A temporary mount can hold a thin living specimen in liquid. A stain can improve contrast, but a preparation that kills cells cannot show their motion."
+        "In transmitted light microscopy, a thin specimen lets light pass through and reduces overlapping layers. A microtome cuts thin sections of prepared tissue. In a temporary wet mount the slide supports the specimen and the coverslip holds it flat in the liquid. A stain can improve contrast, but a preparation that kills cells cannot show their motion."
       ],
       compare: {
         caption: "What kind of representation am I reading?",
@@ -261,7 +288,10 @@ window.KeystoneHumanLessons = {
       revision: 1,
       goal: "Interpret ventilation measurements and explain what they tell you about oxygen delivery.",
       activate: ["Quick check: what does tidal volume measure?", "It is the volume of air moved in one breath. Breathing rate tells you how many breaths occur each minute."],
-      explain: ["Pulmonary ventilation is tidal volume multiplied by breathing rate. This measures air moved per minute. Oxygen transfer also depends on gas exchange and blood flow."],
+      explain: [
+        "Pulmonary ventilation is tidal volume multiplied by breathing rate. This measures air moved per minute. Oxygen transfer also depends on gas exchange and blood flow.",
+        "Peak expiratory flow is the greatest rate during a forceful blow out after a full breath in. A weak effort, obstructing the mouthpiece or a poor seal can distort a reading. Record the highest of repeated acceptable blows rather than simply averaging good and poor efforts. Compare results obtained using a consistent procedure."
+      ],
       model: [
         "At rest the tidal volume is 500 mL and the rate is 12 breaths per minute. Convert to 0.50 L per breath before multiplying if the answer is required in litres.",
         "0.50 L per breath × 12 breaths per minute gives 6.0 L per minute. The unit tells us this is air volume, not oxygen absorbed.",
@@ -310,7 +340,10 @@ window.KeystoneHumanLessons = {
       revision: 1,
       goal: "Interpret fictional glucose-tolerance data and separate a slower return from an explanation of its cause.",
       activate: ["Quick check: what is a baseline?", "A value at the start that you compare later readings with. Fasting helps reduce the immediate influence of a recent meal before the starting measurement."],
-      explain: ["A glucose-tolerance test tracks blood glucose after a measured glucose load under a standard procedure. Compare the starting value, peak and later readings. The graph shows how glucose changes over time. Several physiological processes can contribute to its shape."],
+      explain: [
+        "A glucose-tolerance test tracks blood glucose after a measured glucose load under a standard procedure. Compare the starting value, peak and later readings. The graph shows how glucose changes over time.",
+        "In type 1 diabetes, autoimmune damage to pancreatic beta cells can lead to very little insulin being produced. In type 2 diabetes, target tissues respond poorly to insulin, and insulin secretion may later become insufficient. Both can result in raised blood glucose. A glucose curve alone does not identify the type."
+      ],
       prior: ["f170/3.1.1", "Review the insulin feedback loop"],
       graph: { times: [0, 30, 60, 90, 120], values: [5, 8.8, 7.6, 6.1, 5.3], scaleMax: 12,
         xLabel: "Time (min)", yLabel: "Glucose (mmol/L)", caption: "Fictional glucose data" },
@@ -336,7 +369,10 @@ window.KeystoneHumanLessons = {
     "f170/3.2.1": {
       goal: "Follow a reflex pathway and predict which parts still work if one link is interrupted.",
       activate: ["What is an effector?", "A muscle or gland that produces a response to a signal."],
-      explain: ["Electrical signals travel along neurones. At a chemical synapse, a neurotransmitter carries information across the gap. A relay neurone in the spinal cord can connect sensory input to a motor response."],
+      explain: [
+        "Electrical signals travel along neurones. At a chemical synapse, a neurotransmitter carries information across the gap. A relay neurone in the spinal cord can connect sensory input to a motor response.",
+        "Myelin insulates sections of an axon. Current spreads quickly under myelin and action potentials are regenerated at nodes of Ranvier, the small gaps in the sheath. This faster node-to-node propagation is saltatory conduction. Loss of myelin can slow or interrupt conduction along the axon."
+      ],
       visual: "model",
       nodes: ["Receptor and sensory neurone", "Relay in the spinal cord", "Motor neurone and effector"],
       model: [

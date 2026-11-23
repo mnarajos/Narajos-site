@@ -19,7 +19,7 @@ export async function checkHumanCatchup(browser, base) {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await open("catchup");
     const chapters = await page.evaluate(() => Object.entries(window.KeystoneHumanLessons));
-    assert.equal(chapters.length, 52, "Retain the 49 existing routes and add three targeted guided routes");
+    assert.equal(chapters.length, 53, "Retain the 49 existing routes and add four targeted guided routes");
     assert.equal(new Set(chapters.map(([key]) => key.split("/")[0])).size, 8);
     for (const [key, lesson] of chapters) {
       await page.evaluate(key => localStorage.removeItem(key), localPractice);
