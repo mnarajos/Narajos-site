@@ -161,8 +161,23 @@ function checkButton(section, report, check) {
 function makeDiagramTask(section, topic, task, report) {
   const keys = task.parts || Object.keys(topic.parts);
   const labelFor = key => task.assignments?.[key] || topic.parts[key].name;
-  let selected = null;
+  const storageKey = "narajos-diagram-response:v1:" + section.closest("diagram-practice").getAttribute("topic") + ":" + task.prompt;
+  const signature = JSON.stringify([task.type,keys.map(key => [key,labelFor(key)]),task.answer]);
+  let selected = null, receivedFeedback = false;
   const placed = new Map();
+  try {
+    const saved = JSON.parse(localStorage.getItem(storageKey));
+    if (saved?.signature === signature) {
+      selected = keys.includes(saved.selected) ? saved.selected : null;
+      receivedFeedback = saved.receivedFeedback === true;
+      for (const [key,label] of Object.entries(saved.placed || {})) {
+        if (keys.includes(key) && keys.includes(label) && ![...placed.values()].includes(label)) placed.set(key,label);
+      }
+    }
+  } catch {}
+  function save() {
+    try { localStorage.setItem(storageKey,JSON.stringify({signature,selected,receivedFeedback,placed:Object.fromEntries(placed)})); } catch {}
+  }
   const chips = new Map();
   const targets = new Map();
   const placements = el("ul", "", "dp-placements");
@@ -180,6 +195,7 @@ function makeDiagramTask(section, topic, task, report) {
       const row = el("li", key + " · " + (label ? labelFor(label) : "empty"));
       if (label) row.append(button("Remove", () => {
         placed.delete(key);
+        save();
         report.textContent = "Label removed from " + key + ".";
         renderPlacements();
         chips.get(label).focus();
@@ -200,6 +216,7 @@ function makeDiagramTask(section, topic, task, report) {
   function selectTarget(key) {
     if (task.type === "point") {
       selected = key;
+      save();
       targets.forEach((target, targetKey) => target.setAttribute("aria-pressed", String(targetKey === key)));
       report.textContent = "Selected " + key + ".";
       return;
@@ -212,9 +229,16 @@ function makeDiagramTask(section, topic, task, report) {
   }
 
   function drop(label, key) {
-    for (const [target, value] of placed) if (value === label) placed.delete(target);
+    const previousLabel = placed.get(key);
+    for (const [target,value] of placed) {
+      if (value !== label || target === key) continue;
+      if (previousLabel) placed.set(target,previousLabel);
+      else placed.delete(target);
+      break;
+    }
     placed.set(key, label);
     selected = null;
+    save();
     report.textContent = labelFor(label) + " placed at " + key + ".";
     renderPlacements();
   }
@@ -226,6 +250,7 @@ function makeDiagramTask(section, topic, task, report) {
     for (const key of [...keys.slice(1), keys[0]]) {
       const chip = button(labelFor(key), () => {
         selected = selected === key ? null : key;
+        save();
         report.textContent = selected ? "Selected " + labelFor(key) + ". Choose a letter." : "Selection cleared.";
         renderPlacements();
       }, "dp-chip");
@@ -238,7 +263,7 @@ function makeDiagramTask(section, topic, task, report) {
     }
     section.append(hint, labelBank);
   } else {
-    for (const target of targets.values()) target.setAttribute("aria-pressed", "false");
+    for (const [key,target] of targets) target.setAttribute("aria-pressed", String(selected === key));
   }
   const tools = {bank: task.type === "label" ? labelBank : null, report};
   section.append(draw(topic.states[0], marks, tools));
@@ -250,15 +275,19 @@ function makeDiagramTask(section, topic, task, report) {
   tools.check = checkButton(section, report, () => {
     if (task.type === "point") {
       if (!selected) return "Select a letter first.";
-      return (selected === task.answer ? "Correct. " : "Look again. The answer is " + task.answer + ". ") + task.feedback;
+      if (selected === task.answer) return (receivedFeedback ? "Correct after feedback. " : "Correct. ") + task.feedback;
+      receivedFeedback = true;
+      save();
+      return "You chose " + selected + ". Its line points to " + topic.parts[selected].cue.toLowerCase() + ". Compare that feature with the question.";
     }
     if (placed.size < keys.length) return "Place the remaining labels first.";
     const correct = keys.filter(key => placed.get(key) === key);
-    if (correct.length === keys.length) return "All labels correct. " + task.feedback;
+    if (correct.length === keys.length) return (receivedFeedback ? "All labels correct after feedback. " : "All labels correct. ") + task.feedback;
     const retry = keys.filter(key => !correct.includes(key));
-    for (const key of retry) placed.delete(key);
-    renderPlacements();
-    return correct.length + " of " + keys.length + " correct. Try " + retry.join(", ") + " again. " + task.feedback;
+    receivedFeedback = true;
+    save();
+    return correct.length + " of " + keys.length + " correct. Recheck " + retry.join(", ") + ". At " + retry[0] +
+      " you placed " + labelFor(placed.get(retry[0])) + ". Follow its line to " + topic.parts[retry[0]].cue.toLowerCase() + ".";
   });
 }
 
@@ -380,6 +409,8 @@ function makeOrder(section, task, report) {
 
 function makeCheck(section, task, report) {
   if (task.type === "order") return makeOrder(section, task, report);
+  let receivedFeedback = false;
+  const correctMessage = () => (receivedFeedback ? "Correct after feedback. " : "Correct. ") + task.feedback;
   if (task.type === "choice") {
     const options = el("div", "", "dp-bank");
     options.setAttribute("role", "group");
@@ -395,8 +426,12 @@ function makeCheck(section, task, report) {
       options.append(choice);
     });
     section.append(options);
-    checkButton(section, report, () => selected === null ? "Choose an answer first."
-      : (selected === task.answer ? "Correct. " : "Try again. ") + task.feedback);
+    checkButton(section, report, () => {
+      if (selected === null) return "Choose an answer first.";
+      if (selected === task.answer) return correctMessage();
+      receivedFeedback = true;
+      return "Recheck “" + task.options[selected] + "”. " + task.feedback;
+    });
     return;
   }
   const field = el("label", "", "dp-field");
@@ -410,7 +445,9 @@ function makeCheck(section, task, report) {
     checkButton(section, report, () => {
       const value = input.value.trim().replace("−", "-");
       if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(value)) return "Enter a number in " + task.unit + ".";
-      return (Number(value) === task.answer ? "Correct. " : "Check the calculation. ") + task.feedback;
+      if (Number(value) === task.answer) return correctMessage();
+      receivedFeedback = true;
+      return "Recheck " + value + " " + task.unit + ". " + task.feedback;
     });
     return;
   }
