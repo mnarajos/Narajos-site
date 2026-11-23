@@ -539,7 +539,24 @@ main:has(.al-catchup-journey) > h1 {
 }
 .al-drawing-comparison details > summary { padding-block: .55rem; cursor: pointer; }
 .al-drawing-comparison details img { display:block; max-width:100%; height:auto; }
-.al-drawing-zoom { overflow:auto; max-height:68vh; max-width:100%; background:white; }
+.al-drawing-worked .al-figures { max-width: 58rem; }
+.al-drawing-worked .al-figures:has(figure:only-child) { grid-template-columns: minmax(0, 30rem); }
+.al-inspector-tools, .al-inspector-views { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem; }
+.al-inspector-tools > button { margin-inline-start: auto; }
+.al-inspector-tools .btn { min-width: 44px; padding: .2em .4em; line-height: 1.2; }
+.al-inspector-views [aria-pressed="true"] { box-shadow: inset 0 0 0 2px currentColor; }
+.al-figure-dialog[open]:has(.al-drawing-zoom) {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+  height: min(50rem, 94vh);
+  height: min(50rem, 94dvh);
+  max-height: none;
+  max-width: 96vw;
+  padding: .5rem;
+}
+.al-figure-dialog:has(.al-drawing-zoom) h2 { overflow-wrap: anywhere; }
+.al-drawing-zoom { flex: 1 1 auto; overflow: auto; max-width: 100%; min-height: 0; background: white; }
 .al-drawing-zoom svg { min-width:42rem; }
 .al-drawing-zoom:focus-visible { outline:3px solid var(--acc); outline-offset:2px; }
 

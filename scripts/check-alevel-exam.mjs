@@ -77,6 +77,7 @@ export async function checkALevelExam(browser, base) {
         id: x.id,
         defects: x.defects,
         criterion: x.criterion,
+        scope: x.scope,
       })),
     );
     assert.equal(bank.length, 18);
@@ -336,12 +337,21 @@ export async function checkALevelExam(browser, base) {
         assert(await enlarge.evaluate(el => el === document.activeElement));
       }
       assert.equal(await comparison.locator("[data-defect-overlay]").count(), 0);
+      const focused=item.scope==="focused";
+      assert.equal(await page.getByRole("radio",{name:"Accept",exact:true}).count(),focused?0:1);
+      const judgement=page.locator(".al-drawing-judgement");
+      if(focused)assert.match(await judgement.locator(".al-drawing-criteria").innerText(),/verified (?:size information|length calibration)/);
+      const choices=focused?["Features match","Features need correction"]:["Accept","Reject"];
       await page
         .getByRole("radio", {
-          name: item.defects.length ? "Reject" : "Accept",
+          name: choices[Number(item.defects.length>0)],
           exact: true,
         })
         .check();
+      if(focused && item.defects.length){
+        const options=await judgement.getByRole("checkbox").evaluateAll(checks=>checks.map(box=>Number(box.value)));
+        assert.deepEqual(options,[2,3],"privet assesses tissue detail and proportions");
+      }
       for (const defect of item.defects)
         await page
           .getByRole("checkbox", {
@@ -358,6 +368,7 @@ export async function checkALevelExam(browser, base) {
       await page
         .getByRole("button", { name: offset === 5 ? "Review progress" : "Next drawing", exact: true })
         .waitFor();
+      assert.match(await judgement.getByRole("status").innerText(),focused?/focused judgement/:/complete drawing judgement/);
       if (item.defects.length) assert(await comparison.locator("[data-defect-overlay]").first().isVisible());
       if (round === 1) {
         await page.reload();

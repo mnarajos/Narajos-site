@@ -6,8 +6,9 @@ const landmarks = {
   epidermis: [["wall",320,107,5],["wall",416,276,5],["wall",279,171,5]],
   privet: [["upper",510,136,5],["epidermis",508,157,6],["lower",505,491,6],["bundle",626,277,7]],
   buttercup: [["surface",413,28,6],["cylinder",419,328,6],["xylem",392,346,6]],
-  arterial: [["band",322,130,5],["lumen",319,150,4],["lumen",359,197,4]],
-  buccal: [["outline",370,164,5],["outline",460,318,5],["nucleus",416,239,3]],
+  arterial: [["band",412,394,5],["band",721,394,5],["lumen",444,394,5],["lumen",702,394,5],
+    ["band",560,223,5],["band",560,580,5],["lumen",560,254,5],["lumen",560,550,5]],
+  buccal: [["outline",240,118,7],["outline",20,191,6],["outline",594,354,7],["nucleus",244,286,5],["nucleus",296,330,5]],
   redcell: [["edge",309,215,4],["edge",332,224,4],["edge",316,258,4]]
 };
 const alterations = {
@@ -19,14 +20,24 @@ const alterations = {
   "redcell.interior":["inner"],"redcell.bar":["bar"]
 };
 
+// Independent answer register. Keys are the defects visible in the source comparisons.
+const defects = {
+  "epidermis.outline":[], "epidermis.leader":[4], "epidermis.bar":[5],
+  "privet.outline":[], "privet.band":[3], "privet.cells":[2],
+  "buttercup.outline":[], "buttercup.core":[3], "buttercup.xylem":[2],
+  "arterial.outline":[], "arterial.rim":[3], "arterial.hatch-tip":[1,4],
+  "buccal.outline":[], "buccal.nucleus-size":[3], "buccal.sketch":[0],
+  "redcell.outline":[], "redcell.interior":[2], "redcell.bar":[5]
+};
+
 export async function checkDrawingObservations(browser,base,axeSource) {
   const page = await browser.newPage({viewport:{width:390,height:800},hasTouch:true});
   const url = base + "/alevel/#exam-drawings";
   const key = "keystone.alevel.exam-skills.v1";
   try {
     await page.goto(url);
-    await page.waitForFunction(() => window.ALevelDrawingBank?.version === 2);
-    const failures = await page.evaluate(async ({landmarks,alterations}) => {
+    await page.waitForFunction(() => window.ALevelDrawingBank?.version === 3 && window.ALevelDrawingWorked);
+    const failures = await page.evaluate(async ({landmarks,alterations,defects}) => {
       const bank = window.ALevelDrawingBank, problems = [];
       function check(ok,why) { if (!ok) problems.push(why); }
       const mount = document.createElement("div");
@@ -50,11 +61,13 @@ export async function checkDrawingObservations(browser,base,axeSource) {
       function crossings(svg,specimen) {
         const [x,y,width]=specimen.crop, line=svg.querySelector("[data-label-line]");
         const point=n=>({x:x+Number(line.getAttribute("x"+n))*width/300,y:y+Number(line.getAttribute("y"+n))*width/300});
-        const start=point(1), end=point(2), dx=end.x-start.x, dy=end.y-start.y;
-        const length=Math.hypot(dx,dy), hits=[];
-        for(const name of Object.keys(specimen.paths)){
-          const path=svg.querySelector('[data-feature="'+name+'"]');
-          if(!path)continue;
+        const paths=[...svg.querySelectorAll("[data-feature]")].filter(path=>Object.hasOwn(specimen.paths,path.dataset.feature));
+        return lineCrossings(point(1),point(2),paths);
+      }
+      function lineCrossings(start,end,paths) {
+        const dx=end.x-start.x, dy=end.y-start.y, length=Math.hypot(dx,dy), hits=[];
+        for(const path of paths){
+          const name=path.dataset.feature || path.dataset.workedContour;
           const size=path.getTotalLength(), steps=Math.ceil(size);
           let prev=path.getPointAtLength(0);
           for(let i=1;i<=steps;i++){
@@ -89,8 +102,11 @@ export async function checkDrawingObservations(browser,base,axeSource) {
       const calibrated = {
         epidermis: {span:357, value:200, draw:50, from:[610,613], to:[966,613], light:false},
         buttercup: {span:123, value:310, draw:310, from:[682,719], to:[804,719], light:false},
+        arterial: {span:164, value:100, draw:100, from:[3398,685], to:[3561,685], light:false},
+        buccal: {span:198, value:20, draw:10, from:[412,597], to:[609,597], light:false},
         redcell: {span:122, value:20, draw:5, from:[244,366], to:[365,366], light:true}
       };
+      check(bank.bank.map(item=>item.id).sort().join()===Object.keys(defects).sort().join(),"verified judgement register");
       for (const s of bank.specimens) {
         const items=bank.bank.filter(it=>it.specimen===s), model=render(items[0]);
         const reference=render(items[0],true), photo=new Image();
@@ -123,11 +139,23 @@ export async function checkDrawingObservations(browser,base,axeSource) {
           const text=svg.getAttribute("aria-label");
           check(!/\b(correct|incorrect|accept|reject|error|defect|should|missing|omitted)\b/i.test(text), item.id+" neutral description");
           check(!svg.querySelector("[data-defect-overlay]"),item.id+" pre-attempt cue");
+          const heading=svg.querySelector("[data-drawing-title]");
+          check(heading?.textContent.trim().length>10,item.id+" explanatory title belongs to the drawing");
+          if(heading){
+            const box=heading.getBBox(), frame=svg.viewBox.baseVal;
+            check(box.width>0&&box.x>=-1&&box.x+box.width<=frame.width+1&&box.y+box.height<=frame.height+1,item.id+" title visible within drawing");
+          }
+          check(item.scope===(cal?"complete":"focused"),item.id+" scope backed by source calibration");
+          check(item.defects.slice().sort().join()===defects[item.id]?.join(),item.id+" evidenced answer key");
           const actual=svg.querySelector("[data-scale-bar]");
           check(Boolean(actual)===Boolean(cal),item.id+" bar presence");
-          if(cal) check(Math.abs(+actual.getAttribute("width")-300/w*cal.span*cal.draw/cal.value)<0.01,item.id+" displayed length");
-          const expected={epidermis:item.key==="leader"?["wall"]:[],privet:[],buttercup:["surface"],
-            arterial:item.key==="hatch-tip"?["band"]:["band","lumen"],buccal:["outline"],redcell:[]};
+          if(cal && actual){
+            const expectedLabel={"epidermis.bar":100,"redcell.bar":10}[item.id] ?? cal.draw;
+            check(actual.parentNode.textContent.trim()===expectedLabel+" µm",item.id+" physical scale value");
+            check(Math.abs(+actual.getAttribute("width")-300/w*cal.span*cal.draw/cal.value)<0.01,item.id+" displayed length");
+          }
+          const expected={epidermis:item.key==="leader"?["wall"]:[],privet:[],buttercup:[],
+            arterial:item.key==="hatch-tip"?["lumen"]:[],buccal:[],redcell:[]};
           const hits=crossings(svg,s);
           check(hits.join()===expected[s.id].join(),item.id+" full leader crossed "+hits.join("/"));
           if(s.id==="arterial"){
@@ -136,7 +164,7 @@ export async function checkDrawingObservations(browser,base,axeSource) {
               if(!band.isPointInFill(lumen.getPointAtLength(pos))){check(false,item.id+" lumen escaped wall");break;}
             }
           }
-          if(!s.scale&&!item.defects.length)check(/Absolute scale cannot be checked/.test(item.why),item.id+" scope of judgement");
+          if(!s.scale)check(Boolean(item.focus?.trim()),item.id+" named partial criteria");
           if(!item.defects.length)continue;
           const names=new Set([...model.querySelectorAll("[data-feature]"),...svg.querySelectorAll("[data-feature]")].map(p=>p.dataset.feature));
           const changed=[...names].filter(n=>path(model,n)?.getAttribute("d")!==path(svg,n)?.getAttribute("d"));
@@ -151,11 +179,120 @@ export async function checkDrawingObservations(browser,base,axeSource) {
         mount.replaceChildren();
       }
       const paper=render(bank.paper);
+      check(paper.querySelector("[data-drawing-title]")?.textContent.trim().length>10,"paper model includes its title");
+      const paperBar=paper.querySelector("[data-scale-bar]");
+      check(paperBar?.parentNode.textContent.trim()==="50 µm" &&
+        Math.abs(Number(paperBar.getAttribute("width"))-300/bank.paper.specimen.crop[2]*357/4)<0.01,"paper model calibrated 50 µm bar");
       check(crossings(paper,bank.paper.specimen).length===0,"paper model crosses an unrelated boundary");
       check(boundaryDistance(paper.querySelector('[data-feature="wall"]'),...bank.paper.specimen.target)<2.5,"paper label tip at wall");
+      const worked=window.ALevelDrawingWorked;
+      const reference=document.createElement("div"), drawing=document.createElement("div");
+      reference.innerHTML=worked.observationSvg();drawing.innerHTML=worked.modelSvg();mount.append(reference,drawing);
+      const frogField=reference.querySelector("svg svg");
+      check(reference.firstElementChild.getAttribute("viewBox")===drawing.firstElementChild.getAttribute("viewBox"),"worked images share an inspection frame");
+      check(frogField.getAttribute("viewBox")==="256 208 392 300","frog crop in source coordinates");
+      const photo=new Image();photo.src=frogField.querySelector("image").getAttribute("href");await photo.decode();
+      check(photo.naturalWidth===780&&photo.naturalHeight===590,"published frog panel dimensions");
+      const canvas=document.createElement("canvas");canvas.width=photo.width;canvas.height=photo.height;
+      const ctx=canvas.getContext("2d");ctx.drawImage(photo,0,0);
+      const darkAt=x=>Math.max(...ctx.getImageData(x,556,1,1).data.slice(0,3))<60;
+      check(darkAt(32)&&darkAt(285)&&!darkAt(30)&&!darkAt(287),"original black 10 µm bar, about 255 pixels");
+      for(const figure of [drawing,reference]){
+        const scale=figure.querySelector("[data-worked-scale]"), line=scale.querySelector("line");
+        check(scale.textContent.trim()==="5 µm"&&Number(line.getAttribute("x2"))-Number(line.getAttribute("x1"))===127.5,"frog 5 µm reference length");
+      }
+      const contours=[...drawing.querySelectorAll("[data-worked-contour]")];
+      check(contours.length===2&&contours.every(path=>getComputedStyle(path).fill==="none"),"worked cell contains two unshaded observed contours");
+      const [cell,nucleus]=contours;
+      for(const [path,x,y] of [[cell,398,233],[cell,276,339],[cell,626,374],[cell,484,480],
+                               [nucleus,382,347],[nucleus,489,354],[nucleus,440,393],[nucleus,421,305]])
+        check(boundaryDistance(path,x-256,y-208)<7,"frog observed landmark "+x+","+y);
+      const workedLabels=[...drawing.querySelectorAll("[data-worked-label]")];
+      check(workedLabels.length===3,"worked labelled structures");
+      for(const group of workedLabels){
+        const label=group.dataset.workedLabel,line=group.querySelector("line");
+        const point=n=>new DOMPoint(Number(line.getAttribute("x"+n)),Number(line.getAttribute("y"+n)));
+        const tip=point(1),start=point(2);
+        const meets=label==="Cell boundary"?boundaryDistance(cell,tip.x,tip.y)<2:
+          label==="Nucleus"?boundaryDistance(nucleus,tip.x,tip.y)<2:
+          label==="Cytoplasm"&&cell.isPointInFill(tip)&&!nucleus.isPointInFill(tip);
+        check(meets,"frog "+label+" endpoint");
+        if(label!=="Cell boundary"){
+          const box=group.querySelector("text").getBBox();
+          for(const x of [box.x,box.x+box.width])for(const y of [box.y,box.y+box.height]){
+            const corner=new DOMPoint(x,y);
+            check(cell.isPointInFill(corner)&&!nucleus.isPointInFill(corner),"frog "+label+" text stays in clear cytoplasm");
+          }
+        }
+        const hits=lineCrossings(start,tip,contours);
+        check(hits.length===0,"frog "+label+" full leader crosses "+hits.join("/"));
+      }
+      for(const label of drawing.querySelectorAll("text")){
+        const box=label.getBBox(), bounds=label.ownerSVGElement.viewBox.baseVal;
+        check(box.width>0 && box.x+box.width<=bounds.width,"worked graphic title and labels fit: "+label.textContent);
+      }
       mount.remove();return problems;
-    }, {landmarks,alterations});
+    }, {landmarks,alterations,defects});
     assert.deepEqual(failures,[]);
+    async function audit(selector){
+      if(!axeSource)return;
+      if(!await page.evaluate(()=>Boolean(window.axe)))await page.addScriptTag({content:axeSource});
+      const violations=await page.evaluate(async selector=>(await window.axe.run(document.querySelector(selector),{
+        runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21aa","wcag22aa"]}
+      })).violations.map(rule=>({id:rule.id,nodes:rule.nodes.map(node=>node.target)})),selector);
+      assert.deepEqual(violations,[],selector+" accessibility");
+    }
+    const worked=page.locator(".al-drawing-worked");
+    const model=worked.locator(".al-worked-model");
+    assert(!await model.isVisible());
+    const observation=worked.getByRole("button",{name:"Enlarge observation",exact:true});
+    await observation.tap();
+    const observed=page.getByRole("dialog");
+    await observed.getByRole("region").waitFor();
+    assert.equal(await observed.getByRole("button",{name:"Worked drawing",exact:true}).count(),0);
+    await audit("dialog[open]");
+    await page.keyboard.press("Escape");
+    assert(await observation.evaluate(el=>document.activeElement===el));
+    await worked.getByRole("button",{name:"Show the worked drawing",exact:true}).press("Enter");
+    assert(await model.isVisible());
+    const workedEnlarge=worked.getByRole("button",{name:"Enlarge worked drawing",exact:true});
+    await workedEnlarge.press("Enter");
+    const enlargedModel=page.getByRole("dialog",{name:"Worked drawing",exact:true});
+    await enlargedModel.getByRole("region").waitFor();
+    await enlargedModel.getByRole("button",{name:"Observation",exact:true}).tap();
+    const enlargedObservation=page.getByRole("dialog",{name:"Observation",exact:true});
+    assert(await enlargedObservation.locator(".al-drawing-zoom > svg[role=img]").isVisible());
+    await enlargedObservation.getByRole("button",{name:"Worked drawing",exact:true}).press("Enter");
+    assert.equal(await enlargedModel.getByRole("button",{name:"Worked drawing",exact:true}).getAttribute("aria-pressed"),"true");
+    await page.keyboard.press("Escape");
+    assert(await workedEnlarge.evaluate(el=>document.activeElement===el));
+    await audit(".al-drawing-worked");
+
+    const oldSet={round:2,index:1,ids:["epidermis.bar","privet.outline"],attempts:1,verdict:0};
+    const oldReview={entries:[{id:"buccal.outline",outcome:"independent"}]};
+    const oldOutcomes={"privet.outline":"independent","buccal.outline":"hint-supported"};
+    await page.evaluate(({key,oldSet,oldReview,oldOutcomes})=>{
+      localStorage.setItem(key,JSON.stringify({drawingVersion:2,drawingSession:oldSet,drawingRound:3,
+        drawingReview:oldReview,drawingOutcomes:oldOutcomes,drawingPaper:{improvement:"Retain my note."},
+        drawingCalibration:{draft:"5.8",outcome:"independent"}}));
+    },{key,oldSet,oldReview,oldOutcomes});
+    await page.reload();
+    await page.getByRole("button",{name:"Start a six-drawing set"}).waitFor();
+    const migrated=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),key);
+    assert.equal(migrated.drawingVersion,3);
+    assert.deepEqual(migrated.earlierObservationSet.session,oldSet);
+    assert.deepEqual(migrated.earlierObservationSet.review,oldReview);
+    assert.deepEqual(migrated.earlierObservationSet.outcomes,oldOutcomes);
+    assert.equal(migrated.earlierObservationSet.round,3);
+    assert(!migrated.drawingSession && !migrated.drawingReview);
+    assert.equal(migrated.drawingRound,0);
+    await page.getByText("Earlier observation judgements",{exact:true}).click();
+    assert(await page.getByText(/privet\.outline · /).isVisible());
+    assert.equal(migrated.drawingOutcomes?.["privet.outline"],undefined);
+    assert.equal(migrated.drawingPaper.improvement,"Retain my note.");
+    assert.equal(migrated.drawingCalibration.outcome,"independent");
+    await page.reload();
+    assert.deepEqual(await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).earlierObservationSet,key),migrated.earlierObservationSet);
 
     await page.evaluate(key=>localStorage.setItem(key,JSON.stringify({
       drawingRound:3,drawingSession:{round:2,index:1,verdict:1,categories:[4]},drawingOutcomes:{"yeast-3":"corrected"},causal:{phase:"review"}
@@ -169,7 +306,7 @@ export async function checkDrawingObservations(browser,base,axeSource) {
     await page.getByText("Draw a specimen on paper",{exact:true}).click();
     assert.equal(await page.locator(".al-paper-review svg").count(),0);
     await page.getByRole("button",{name:/I’ve drawn it/}).click();
-    assert.equal(await page.locator(".al-paper-review input[type=checkbox]").count(),7);
+    assert.equal(await page.locator(".al-paper-review input[type=checkbox]").count(),8);
     await page.getByLabel("My title names the specimen and the cell I drew.").check();
     await page.getByLabel("I followed the changes in direction around this cell.").check();
     await page.getByLabel("One change I would make").fill("Move my label to the right wall.");
@@ -184,8 +321,8 @@ export async function checkDrawingObservations(browser,base,axeSource) {
     await page.emulateMedia({media:"screen"});
 
     await page.getByText("Cell drawing or tissue plan?",{exact:true}).press("Enter");
-    assert(await page.getByText("Cell drawing · onion epidermis",{exact:true}).isVisible());
-    assert(await page.getByText("Tissue plan · privet leaf",{exact:true}).isVisible());
+    assert(await page.getByRole("figure",{name:/^Cell drawing · /}).isVisible());
+    assert(await page.getByRole("figure",{name:/^Tissue plan · /}).isVisible());
     const scalePanel=page.locator(".al-scale-practice"), scaleInput=scalePanel.getByRole("textbox");
     await scalePanel.locator("summary").first().tap();
     await scaleInput.fill("18");
@@ -225,29 +362,34 @@ export async function checkDrawingObservations(browser,base,axeSource) {
     await page.getByText("Help with this judgement",{exact:true}).click();
     await page.waitForFunction(key=>JSON.parse(localStorage.getItem(key)).drawingSession.helped,key);
     await page.reload();
-    const current=await page.evaluate(id=>window.ALevelDrawingBank.bank.find(i=>i.id===id).defects,state.ids[1]);
-    await page.getByRole("radio",{name:current.length?"Reject":"Accept",exact:true}).check();
+    const current=defects[state.ids[1]];
+    assert(!await page.getByRole("radio",{name:"Accept",exact:true}).count());
+    await page.getByRole("radio",{name:current.length?"Features need correction":"Features match",exact:true}).check();
     for(const d of current)await page.getByLabel(await page.evaluate(d=>window.ALevelDrawingBank.categories[d],d),{exact:true}).check();
     await page.getByRole("button",{name:"Check judgement"}).click();
     assert.match(await page.locator(".al-drawing-judgement .al-feedback").innerText(),/Correct with a clue/);
-    for(const width of [320,390,768,1280]){
-      await page.setViewportSize({width,height:780});
-      await page.evaluate(()=>document.documentElement.style.fontSize="150%");
+    for(const [width,height] of [[320,700],[390,844],[667,320],[768,1024],[1280,780]]){
+      await page.setViewportSize({width,height});
+      await page.evaluate(size=>document.documentElement.style.fontSize=size,width===320||height===320?"200%":"150%");
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
       const enlarge=comparison.getByRole("button",{name:"Enlarge candidate drawing"});
       await enlarge.press("Enter");
       const dialog=page.getByRole("dialog",{name:"Candidate drawing"});
       assert(await dialog.isVisible());
-      await dialog.getByRole("region").focus();
+      assert(await dialog.evaluate(el=>el.getBoundingClientRect().width<=innerWidth+2 && el.getBoundingClientRect().height<=innerHeight));
+      const region=dialog.getByRole("region");
+      assert(await region.evaluate(el=>el.clientHeight>=80),"room to inspect the enlarged field at "+width+"×"+height);
+      await region.focus();
       await page.keyboard.press("ArrowRight");
-      await page.keyboard.press("Escape");
+      if(width<=390)assert(await region.evaluate(el=>el.scrollWidth>el.clientWidth),"expanded field can be panned at "+width);
+      await dialog.getByRole("button",{name:"Reference observation",exact:true}).press("Enter");
+      const reference=page.getByRole("dialog",{name:"Reference observation",exact:true});
+      assert(await reference.locator(".al-drawing-zoom > svg[role=img]").isVisible());
+      if(width===320)await reference.getByRole("button",{name:"Close enlarged image",exact:true}).tap();
+      else await page.keyboard.press("Escape");
       assert(await enlarge.evaluate(el=>el===document.activeElement));
     }
     await page.getByText("Read the visual evidence",{exact:true}).click();
-    if (axeSource) {
-      await page.addScriptTag({content:axeSource});
-      const violations=await page.evaluate(async()=>(await axe.run(document.querySelector(".al-drawing"),{runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21aa"]}})).violations.map(v=>v.id));
-      assert.deepEqual(violations,[]);
-    }
+    await audit(".al-drawing");
   }finally{await page.close();}
 }
