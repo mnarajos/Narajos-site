@@ -318,7 +318,7 @@
     function update() {
       panel.replaceChildren(node("p", family.model[index]),
         node("p", (index + 1) + " of " + (last + 1), "al-task-count"));
-      art.replaceChildren(visual(family.visual, index));
+      art.replaceChildren(family.evidence ? table(...family.evidence, family.evidenceHighlights?.[index]) : visual(family.visual, index));
       previous.disabled = index === 0;
       next.textContent = index < last ? "Next step" : revisiting ? "Back to the question" : "Try with support";
       replay.hidden = index === 0;
@@ -367,7 +367,7 @@
           const entries = node("dl");
           for (const [term, meaning] of family.commandGuide)
             entries.append(node("dt", term), node("dd", meaning));
-          guide.append(node("summary", "Common command words"), entries);
+          guide.append(node("summary", family.guideLabel || "Common command words"), entries);
           panel.append(guide);
         }
         panel.append(start);
@@ -553,6 +553,7 @@
       prompt.id = "al-current-question";
       block.append(heading, node("p", "Task " + (at + 1) + " of " + state.queue.length, "al-task-count"), prompt);
       if (q.visual) block.append(visual(q.visual));
+      if (q.evidence) block.append(table(...q.evidence));
 
       const form = node("form");
       form.setAttribute("aria-labelledby", prompt.id);
@@ -1068,7 +1069,7 @@
     }
   }
   const catalogue = [
-    ["Question interpretation", ["interpret"]],
+    ["Question interpretation and practical reasoning", ["interpret", "practical"]],
     ["Drawing and observation", ["drawings"]],
     ["Mark schemes and explanations", ["points", "mechanisms", "pressures", "regulation"]],
     ["Unfamiliar contexts", ["causal"]],
@@ -1076,6 +1077,7 @@
   ];
   const skillDetails = {
     interpret: ["Understand the question", "Identify the target, select evidence and build a relevant answer.", "idea", "interpret question command words task target use data relevant answering suggest explain"],
+    practical: ["Reason through practicals", "Explain how the method affects the result and the claim.", "guided", "practical reasoning method controls confounding accuracy repeatability colorimeter stain chromatography"],
     drawings: ["Biological drawings", "Compare drawings and identify defects.", "diagram", "biological drawing scientific drawing tissue plan observation accept reject scale bar"],
     points: ["Independent marking points", "Recognise distinct criteria in an answer.", "review", "marking points mark schemes marking scheme group criteria"],
     mechanisms: ["Biological mechanisms", "Connect a biological change to its effect.", "pen", "scientific explanations diffusion distance mechanism active transport synapse"],

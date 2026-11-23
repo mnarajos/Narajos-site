@@ -954,3 +954,82 @@ window.ALevelTeachingFamilies.interpret = {
   specification: "AO2 and AO3 across Papers 1–3",
   schemaVersion: 1,
 };
+
+window.ALevelTeachingFamilies.practical = {
+  id: "practical",
+  title: "Reason through practicals",
+  topics: ["a1", "a2", "a5", "p3s"],
+  papers: ["p1", "p2", "p3"],
+  principle: "Identify what the method measures. For each decision, link the method to its purpose, the mechanism and the limit on the claim. These tasks prepare for the written papers. The practical endorsement is assessed separately through practical work.",
+  commandGuide: [
+    ["Validity", "Does the method and design address the intended question? A confound can prevent attributing the outcome to the tested variable."],
+    ["Accuracy and precision", "Accuracy is closeness to the true value. Precision concerns how close repeated measured values are to one another. Tight agreement can coexist with a systematic error."],
+    ["Repeatability and reproducibility", "Repeatability concerns agreement when the same person uses the same method and equipment. Reproducibility concerns agreement under changed conditions, such as different operators or equipment."],
+    ["Error and uncertainty", "Random error contributes to scatter. Systematic error shifts results consistently. Uncertainty describes the range of plausible measurement values. Repetition can reduce the effect of random variation on a mean, while calibration against a reference can identify systematic offset."],
+  ],
+  guideLabel: "Measurement and investigation terms",
+  evidence: [
+    "Illustrative beetroot readings at 10 minutes",
+    ["Treatment", "Temperature (°C)", "Absorbance"],
+    [["Water", "20", "0.12"], ["20% ethanol", "30", "0.38"]],
+  ],
+  model: [
+    "The method compares how much pigment has leaked by a fixed time. Absorbance is a proxy for dissolved pigment if the same wavelength and optical path are used and the reading is within the useful range.",
+    "Find the weakness in the comparison. Both the solvent and temperature change. A warmer treatment can itself affect membrane permeability and pigment release.",
+    "Hold temperature constant across solvent treatments. Use the same tissue dimensions, rinse off pigment from cut surfaces and keep the time constant. Use matched solvent blanks to account for background readings.",
+    "A larger absorbance under these controlled conditions supports greater pigment release by 10 minutes. It does not directly give the initial rate of release. To estimate an initial rate, collect early time readings and use the initial gradient.",
+  ],
+  tasks: [
+    {
+      kind: "choice", guided: true, catchup: "p3s-methods",
+      prompt: "A colour assay darkens as an enzyme forms a product. The investigation compares the time taken to reach a fixed amount of product. Which change makes the endpoint more objectively comparable?",
+      options: [
+        "Use the same colorimeter setting and record when each reaction reaches the same absorbance within the calibrated range.",
+        "Measure the absorbance of every tube after the same elapsed time and record those readings as the endpoint times.",
+        "Repeat the colour judgement three times with the same observer and average the times.",
+      ],
+      answer: 0,
+      why: "A common calibrated absorbance is a consistent endpoint. The measured quantity remains the elapsed time.",
+      feedback: [null, "This compares the amount present after a fixed interval. It does not return the time each treatment took to reach the specified amount.", "A mean can reduce the effect of random variation. It does not set an objective colour threshold or address consistent observer bias."],
+      hints: ["Separate the quantity you hold fixed from the quantity you record."],
+    },
+    {
+      kind: "choice", catchup: "a2-mitosis",
+      prompt: "Two root-tip slides are used to compare the proportion of cells in mitosis. The observer chooses fields that contain many dark chromosome clusters. What change best addresses the bias?",
+      options: [
+        "Sample fields chosen without reference to visible mitoses from the same defined region on both slides.",
+        "Count every cell twice in the selected fields and take the mean of the two estimates.",
+        "Choose the same number of fields on each slide, keeping the visible-cluster rule.",
+      ],
+      answer: 0,
+      why: "Choosing fields for visible mitoses favours the outcome being measured. Comparable regions and an outcome-independent sampling rule address this source of bias.",
+      feedback: [null, "Recounting checks counting consistency. It cannot undo the biased choice of fields.", "Equal field counts balance sample size. Both sets of fields are still selected for having the outcome of interest."],
+      hints: ["Ask which decision has already biased the sample before any cells are counted."],
+    },
+    {
+      kind: "choice",
+      prompt: "An unknown pigment and a reference pigment travel the same fraction of the distance to the solvent front on one chromatogram. Suggest the best next comparison to investigate whether they are the same compound.",
+      options: [
+        "Run both under the same second set of conditions and compare whether they still co-migrate.",
+        "Measure both distances from the top edge of the paper and compare the absolute distances.",
+        "Repeat the readings on this chromatogram and conclude identity if the repeat measurements agree.",
+      ],
+      answer: 0,
+      why: "Different pigments can have the same retention factor under one set of conditions. A second separation can distinguish some coincident spots. Continued agreement supports, but does not prove, identity.",
+      feedback: [null, "Measure from the baseline relative to the solvent front. Changing the reference point does not add independent evidence about the compounds.", "More consistent readings improve precision on this chromatogram. They cannot tell whether two substances co-migrated."],
+      hints: ["Would a closer measurement of the same result resolve co-migration?"],
+    },
+    {
+      kind: "writing", catchup: "p3s-methods",
+      prompt: "Two respirometers contain equal masses of the same seeds and the same amount of carbon dioxide absorbent. The germinating seeds are held at 25 °C and the dormant seeds at 15 °C. The marker moves faster in the first instrument. Explain the key limitation of the comparison and justify one change.",
+      points: [
+        "Germination state and temperature differ. Temperature can affect enzyme-controlled respiration and hence oxygen uptake.",
+        "With carbon dioxide absorbed, the marker movement is used to infer oxygen uptake under stable measurement conditions. The difference cannot be assigned to germination alone.",
+        "Hold both groups at the same controlled temperature and allow them and the apparatus to equilibrate before recording. This removes temperature as a competing explanation.",
+      ],
+    },
+  ],
+  misconception: "Naming a technique, repeating trials or equalising sample sizes without addressing the actual source of bias.",
+  specification: "7.2–7.4, PS 1.1–2.4, RP1, RP2, RP4, RP7 and RP9",
+  schemaVersion: 1,
+};
