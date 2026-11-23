@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 212" role="img" aria-labelledby="t d">
+<title id="t">Two skin findings in separate patients</title><desc id="d">A has an intact skin surface and a positive MRSA screen. B has a break in the skin, visible pus and reported pain. B has no organism result.</desc>
+<rect width="360" height="212" fill="white"/><g font-family="sans-serif" fill="#183848">
+<text x="12" y="25" font-weight="bold">A · Screening</text><text x="190" y="25" font-weight="bold">B · Wound</text>
+<path d="M14 66h138v33H14Z M190 66h57l12 13 13-13h71v33H190Z" fill="#eac6a9" stroke="#735749" stroke-width="2"/>
+<path d="M144 41l-31 23" stroke="#46555e" stroke-width="3"/><ellipse cx="108" cy="64" rx="8" ry="3.5" fill="#fff" stroke="#46555e"/>
+<path d="M252 70q7-12 14 0l-7 6Z" fill="#f3e4aa" stroke="#765f45"/>
+<g font-size="15"><text x="12" y="128">Intact skin</text><text x="12" y="151">MRSA on screen</text><text x="12" y="174">Feels well</text><text x="190" y="128">Pus seen</text><text x="190" y="151">Reports pain</text><text x="190" y="174">No organism result</text></g></g></svg>

@@ -502,30 +502,30 @@
     window.KeystoneHumanLessons["f171/1.3.1." + key] = {revision: 1, ...lesson};
   }
   add("viruses", {
-    title: "COVID-19 and HIV: which evidence matters?",
+    title: "COVID-19 and HIV: which evidence matters?", practice: "f171-route-prevention-transfer",
     goal: "Use the route of exposure to explain prevention, and distinguish HIV infection from AIDS.",
     explain: [
       "A virus is a type of pathogen. Different viruses can reach the body by different routes. COVID-19 is caused by SARS-CoV-2. HIV is the virus that can cause AIDS, an advanced stage of HIV infection involving severe damage to immune defences.",
-      "A sign can be observed or measured, such as a raised temperature. A symptom is experienced and reported, such as loss of smell or fatigue. Either can prompt assessment. Their usefulness depends on how specifically they point to a cause."
+      "A sign can be observed or measured, such as a raised temperature. A symptom is experienced and reported, such as loss of smell or fatigue. Either can prompt assessment. They are quick to collect and can guide further assessment. Overlap between infections, and infection without symptoms, limit what they can establish."
     ],
     compare: {caption:"Two viral infections",head:["Infection","Prevention and evidence"],rows:[
       ["COVID-19","Infectious respiratory particles can be breathed in. Ventilation reduces the amount in shared indoor air. Cough, fever and altered smell can occur; other infections can cause overlapping findings."],
-      ["HIV","Certain body fluids can transmit HIV during sex, through blood exposure or from parent to child during pregnancy, birth or breastfeeding. Condoms and screened blood products address different routes. Ordinary social contact and saliva do not transmit HIV."],
-      ["HIV over time","There may be an early flu-like illness, or no obvious symptoms. With advanced untreated infection, opportunistic infections can occur. Effective treatment protects immune function. A person maintaining an undetectable viral load does not pass HIV on through sex."]
+      ["HIV","Certain body fluids can transmit HIV during sex, through blood exposure or from parent to child during pregnancy, birth or breastfeeding. Condoms and screened blood products address sexual and blood exposure respectively. HIV care during pregnancy and birth reduces transmission to the baby. Ordinary social contact and saliva do not transmit HIV."],
+      ["HIV over time","Early HIV may cause measured fever or swollen lymph nodes and reported tiredness or sore throat. There can also be no obvious illness. With advanced untreated infection, opportunistic infections can occur. Effective treatment protects immune function. A person maintaining an undetectable viral load does not pass HIV on through sex."]
     ]},
     prior:["f171/3.2.1","Revisit immune dysfunction"],
     model:["A school records three pupils who feel tired and have measured fevers. Fatigue is a symptom; the thermometer readings are signs.",
       "These findings justify attention but cannot distinguish COVID-19 from other causes. Appropriate testing provides different evidence from counting people with fever."],
     guided:choice("A patient feels hot but has no temperature reading. What has been recorded?",0,
       [["A reported symptom.",""],["A measured sign of fever.","Feeling hot and recording a temperature are different observations."]],"Use how the information was obtained.",["Who made a measurement?"]),
-    apply:written("A fictional survey labels every participant with a positive confirmed HIV result as having AIDS. Some report no symptoms. Explain two problems with using symptoms or HIV status this way.",
+    apply:written("A fictional survey labels everyone with confirmed HIV infection as having AIDS. Some report no symptoms. Explain two problems with using symptoms or HIV status this way.",
       ["HIV infection can be present without symptoms.","AIDS refers to advanced HIV disease; a positive HIV result alone does not establish this stage."],
       "Absence of symptoms does not rule out HIV. A confirmed positive result establishes infection, but classifying AIDS requires evidence of advanced immune damage or an AIDS-defining illness.")
   });
   add("bacteria", {
-    title:"Lyme disease, MRSA and TB: three bacterial examples",
+    title:"Lyme disease, MRSA and TB: three bacterial examples", practice:"p-f171-tb-transmission",
     goal:"Distinguish the cause from its carrier, and a positive screen from evidence of disease.",
-    explain:["A bacterium can cause disease; a vector carries a pathogen between hosts. The tick in Lyme disease is the vector. The bacterium it carries is the cause. The route suggests what a preventive action must interrupt."],
+    explain:["A bacterium can cause disease; a vector carries a pathogen between hosts. The tick in Lyme disease is the vector. The bacterium it carries is the cause. The route describes how exposure occurs. The portal is where the organism enters: for example, a break in the skin or the respiratory tract. Hand hygiene interrupts contact transmission."],
     compare:{caption:"Bacterial causes with different routes",head:["Example","Route and prevention","Findings"],rows:[
       ["Lyme disease","An infected tick can transmit Borrelia bacteria through a bite. Cover exposed skin and check for ticks after outdoor activity.","An expanding rash can be a distinctive visible sign. Fatigue or headache may be reported. Some people never notice a rash."],
       ["MRSA","Methicillin-resistant Staphylococcus aureus can spread by contact. Clean hands and covered wounds reduce risk. Intact skin may carry the bacteria harmlessly.","An infected wound may be swollen or discharge pus; it may feel painful. Appearance alone cannot show antibiotic resistance."],
@@ -540,11 +540,11 @@
       "The screen establishes carriage at the sampled site. Pain is reported and pus is observed. Neither tells us the organism or its antibiotic susceptibility.")
   });
   add("fungi", {
-    title:"Vaginal thrush and histoplasmosis: two fungal diseases",
+    title:"Vaginal thrush and histoplasmosis: two fungal diseases", practice:"f171-infection-group-transfer",
     goal:"Explain how different sources of fungi change the interpretation of an exposure history.",
     explain:["Fungi include yeasts. An infection can follow overgrowth of organisms already present in the body. In other cases a person encounters a fungus in the environment."],
     compare:{caption:"Source and findings",head:["Example","What happens","Evidence and prevention"],rows:[
-      ["Vaginal candidiasis (thrush)","Candida yeast already present can overgrow. It is not usually acquired through sex.","Itching and soreness may be reported; white discharge may be observed. The symptoms overlap with other conditions. Avoiding irritating perfumed washes may help reduce irritation."],
+      ["Vaginal candidiasis (thrush)","Candida yeast already present can overgrow. It is not usually acquired through sex.","Itching and soreness may be reported; white discharge may be observed. The symptoms overlap with other conditions. Breathable clothing can help reduce the risk of vaginal thrush. A precaution against environmental dust addresses a different source."],
       ["Histoplasmosis","Histoplasma spores from the environment can be inhaled. Ordinary contact with a patient is not the usual route.","Many infections cause no symptoms. Lung illness may include cough, measured fever and chest discomfort. Public-health precautions against relevant environmental dust exposure address this route."]
     ]},
     model:["Several people report chest discomfort. That symptom does not identify a fungus. A shared environmental exposure can guide further investigation.",
@@ -555,7 +555,7 @@
       "Both could independently have inhaled the fungus from the environment. Attendance is a clue, not proof of the source. Candida can overgrow in the body. Neither fungal classification nor timing establishes person-to-person spread.")
   });
   add("protozoa", {
-    title:"Malaria and toxoplasmosis: interpreting exposure and blood evidence",
+    title:"Malaria and toxoplasmosis: interpreting exposure and blood evidence", practice:"p-f171-malaria-anaemia",
     goal:"Separate a vector from a protozoan pathogen and explain what a microscopic finding adds.",
     explain:["Protozoans are single-celled parasites. A mosquito transmits the malaria parasite; the mosquito itself is not the cause of malaria. Toxoplasmosis shows why a mosquito-control measure cannot prevent all protozoan infections."],
     compare:{caption:"Contrasting protozoan infections",head:["Example","Route and prevention","Possible findings"],rows:[
@@ -571,9 +571,9 @@
       "Identified Plasmodium supports malaria in A. In B, the observed nodes and reported fatigue could occur in toxoplasmosis but are nonspecific. The shared trip cannot settle B’s diagnosis.")
   });
   add("worms", {
-    title:"Fasciolosis and hydatid disease: following the route to prevention",
+    title:"Fasciolosis and hydatid disease: following the route to prevention", practice:"f171-infection-group-transfer",
     goal:"Link an exposure to ingestion and explain why liver symptoms alone do not identify a parasite.",
-    explain:["Flukes, tapeworms and roundworms are helminths: multicellular parasitic worms. Fasciolosis and hydatid disease are caused by different flatworms. Ectoparasites live on the outside of a host; a tick can also act as a vector. A parasite group is not a route of entry."],
+    explain:["Flukes, tapeworms and roundworms are helminths: multicellular parasitic worms. Fasciolosis and hydatid disease are caused by different flatworms. Ectoparasites live on the outside of a host; a tick can also act as a vector. Mites can also be ectoparasites. In the two worm examples below, the portal of entry is the gastrointestinal tract."],
     compare:{caption:"Two parasites, two preventive decisions",head:["Example","Exposure and prevention","Possible findings"],rows:[
       ["Fasciolosis (fascioliasis)","People can acquire liver fluke infection by eating contaminated raw freshwater plants. Avoid eating uncooked aquatic plants from unsafe sources.","Fever or liver enlargement may be observed. Abdominal pain and nausea may be reported. Some people have few symptoms."],
       ["Hydatid disease","People can accidentally swallow Echinococcus tapeworm eggs from dog faecal contamination of hands, food or water. Hand hygiene, veterinary control and safe food and water reduce risk.","Cysts can grow slowly in organs such as the liver or lungs. A scan may show a cyst; pain or chest discomfort may develop. A cyst alone does not identify a tapeworm."]
@@ -585,4 +585,13 @@
       [["Give mosquito nets to all workers.","Nets address a biting vector. The described exposure concerns accidental ingestion."],["Provide handwashing facilities and time to wash before eating.",""],["Screen every worker with abdominal pain and stop there.","Assessment may investigate illness, but it does not interrupt exposure."]],
       "Eggs from faecal contamination can reach the mouth from hands. Washing before eating interrupts that route even where the water supply is safe.")
   });
+  const chapters = window.KeystoneHumanLessons;
+  chapters["f171/1.3.1.protozoa"].apply.illustration = {
+    src: "/human-biology/protozoan-evidence.svg",
+    alt: "Record A includes a blood film with Plasmodium identified by a microscopist. Record B has enlarged lymph nodes and reported fatigue, with no organism test result."
+  };
+  chapters["f171/1.3.1.bacteria"].apply.illustration = {
+    src: "/human-biology/mrsa-evidence.svg",
+    alt: "A has intact skin, a positive MRSA screen and feels well. B has pus at a wound and reports pain. B has no organism result."
+  };
 })();

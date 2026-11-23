@@ -85,6 +85,23 @@ export async function checkHumanCatchup(browser, base) {
       }
     }
 
+    // The exact linked item, its edited answers and corrected outcome survive reopening.
+    await open("catchup/f171/1.3.1.fungi");
+    await page.locator("[data-hb-practice]").press("Enter");
+    const matches = page.locator("select[data-match]");
+    await matches.first().waitFor();
+    assert.equal(await matches.count(), 5);
+    for (let i = 0; i < 5; i++) await matches.nth(i).selectOption(String(i === 4 ? 3 : i));
+    await page.getByRole("button", {name: /Check answer/}).press("Enter");
+    const matchKey = practiceKey + "-topic-f171/f171-infection-group-transfer";
+    assert.deepEqual((await saved(matchKey)).queue, ["f171-infection-group-transfer"]);
+    await page.reload();
+    await page.getByRole("button", {name: "Try again", exact: true}).first().press("Enter");
+    assert(await matches.nth(0).isDisabled());
+    await matches.nth(4).selectOption("4");
+    await page.getByRole("button", {name: /Check answer/}).press("Enter");
+    assert.equal((await saved(matchKey)).outcomes[0], "corrected");
+
     for (const [route, questionId, wrongAnswer, diagnosis] of [
       ["f170/1.1.2.counting", "f170-cell-counting-transfer", /target volume/, /overlap the cells in volume/],
       ["f171/1.2.1.hiatus", "f171-hiatus-mechanism-transfer", /effective reflux barrier/, /Increased secretion was not measured/],

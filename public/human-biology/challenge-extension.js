@@ -1308,6 +1308,25 @@ additions.push({
  misconception:"A test must provide the evidence needed for the inference, even when another test can measure a related change.",
  hintCue:"Decide whether the requested evidence concerns location, blood composition or the nature of the tissue."
 });
+additions.push({
+ id:"f171-infection-group-transfer",catchup:"1.3.1.fungi",unit:"f171",area:1,section:"1.3.1",type:"match",level:"apply",
+ stem:"A public-health report groups infections by cause. Match each named cause to its broad group.",
+ pairs:[["SARS-CoV-2 (COVID-19)","Virus"],["Borrelia (Lyme disease)","Bacterium"],["Candida (vaginal thrush)","Fungus"],["Toxoplasma (toxoplasmosis)","Protozoan"],["Liver fluke (fasciolosis)","Multicellular parasite"]],
+ model:"SARS-CoV-2 is a virus, Borrelia a bacterium, Candida a fungal yeast, Toxoplasma a single-celled protozoan, and a liver fluke a multicellular worm.",
+ explain:"Classify the organism responsible. A tick can carry Borrelia but does not determine its biological group.",
+ misconception:"A vector and the organism that causes the disease may belong to different groups.",
+ correctionHint:"Keep the single-celled protozoan separate from the multicellular worm. A yeast belongs with fungi.",
+ hintCue:"Which names refer to worms or yeasts? Then distinguish the remaining pathogen groups."
+},{
+ id:"f171-route-prevention-transfer",unit:"f171",area:1,section:"1.3.1",type:"single",level:"apply",
+ stem:"A youth centre improves ventilation to reduce respiratory infection risk. Its report calls this an HIV prevention measure too, since HIV and SARS-CoV-2 are both viruses. Which revision is justified?",
+ options:["Keep the claim because ventilation reduces exposure to all viruses.","Explain the respiratory benefit. For HIV, describe a measure such as condom use that addresses sexual transmission.","Replace ventilation with blood-product screening to prevent both infections in shared air.","Remove both claims because ventilation cannot guarantee that nobody will become infected."],
+ correct:1,model:"Ventilation addresses shared air. Condoms address one route by which HIV can be transmitted.",
+ explain:"The biological group does not specify the exposure. HIV is not acquired by sharing air. Blood-product screening addresses a blood route.",
+ optionFeedback:["Viral classification does not imply a shared route.","","Screening donated blood does not reduce exposure to respiratory particles in a room.","A measure can reduce risk without preventing every case."],
+ misconception:"Preventive measures must act on the relevant route of exposure.",
+ hintCue:"Identify the route affected by each proposed measure.",catchup:"1.3.1.viruses"
+});
 var ids=new Set(bank.questions.map(function(q){return q.id;}));
 additions.forEach(function(q){if(!ids.has(q.id)){bank.questions.push(q);ids.add(q.id);}});
 })();
