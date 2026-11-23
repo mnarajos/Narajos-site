@@ -2171,6 +2171,35 @@ window.KeystoneHumanKnowledge={
       ],
       "samAligned": false,
       "knowledgeOnly": true
+    },
+    {
+      "id": "f173-chromatogram-transfer",
+      "unit": "f173",
+      "area": 3,
+      "section": "3.4",
+      "type": "diagram",
+      "level": "apply",
+      "stem": "Use positions on the schematic to calculate the retention factor (Rf) of the upper unknown spot. What does it support about the spot?",
+      "figure": "practice-chromatogram",
+      "options": [
+        "Rf 0.80, so the spot is consistent with standard K.",
+        "Rf 0.75, so the spot is consistent with standard K in this run.",
+        "Rf 0.75, so the spot is definitely identical to standard K.",
+        "Rf 0.50, so the spot is consistent with standard J."
+      ],
+      "correct": 1,
+      "model": "Rf 0.75, consistent with standard K in this run.",
+      "explain": "Use the baseline at 2 cm. The upper unknown spot travelled 8 − 2 = 6 cm. The solvent front travelled 10 − 2 = 8 cm. Therefore Rf = 6 ÷ 8 = 0.75. The same height as K is consistent with a match under these conditions and is insufficient to prove identity.",
+      "optionFeedback": [
+        "0.80 divides positions from the bottom edge. Subtract the baseline from both readings first.",
+        null,
+        "Different substances can move the same relative distance under one set of conditions.",
+        "0.50 applies to the lower unknown spot. The question asks about the upper one, which aligns with K."
+      ],
+      "misconception": "Distance travelled starts at the baseline. Matching movement supports a possible match.",
+      "hintCue": "Compare where the spot and solvent front ended with where each started.",
+      "samAligned": false,
+      "knowledgeOnly": true
     }
   ]
 };
