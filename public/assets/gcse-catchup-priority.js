@@ -76,6 +76,17 @@ function ivCircuit() {
     "One meter measures the current through the lamp. The other measures the potential difference across it.");
 }
 
+function motor() {
+  return picture("Two sides of a motor coil viewed end-on", diagram(
+    "The field goes from N on the left to S on the right. On the left, current goes into the page and the force is down. On the right, current comes out of the page and the force is up.",
+    text(27,70,"N",ink,20)+text(293,70,"S",ink,20)+arrow(46,38,274,38,blue)+text(160,25,"Magnetic field",blue,15)+
+    circle(109,91,14,"white")+circle(210,91,14,"white")+text(109,96,"×",ink,17)+circle(210,91,4,ink)+
+    arrow(109,109,109,150,rust)+arrow(210,73,210,50,rust)+text(153,134,"Force down",rust,14)+
+    text(260,75,"Force up",rust,14)+line(216,58,234,70,rust,1)+
+    text(160,169,"× into page     • out of page",ink,15),320,185),
+    "The opposite forces act on different sides of the coil, so they can turn it.");
+}
+
 function motionGraph(title, unit, values, max) {
   const points = values.map(([t,y]) => [47 + t * 36, 142 - y * 106 / max]);
   const path = points.map(point => point.join(",")).join(" ");
@@ -90,6 +101,11 @@ function motionGraph(title, unit, values, max) {
     text(48,18,title,ink,15,"start")+
     '<polyline points="' + path + '" fill="none" stroke="' + blue + '" stroke-width="3"/>'+
     points.map(([x,y]) => circle(x,y,3,rust)).join(""),320,193));
+}
+
+function equilibriumRates() {
+  return table("A reversible reaction in a closed vessel",["Time (min)","Forward rate (arbitrary units)","Reverse rate (arbitrary units)"],
+    [["0","8","0"],["2","5","3"],["4","4","4"],["6","4","4"]]);
 }
 
 function pairedMotion() {
@@ -145,8 +161,8 @@ export const priorityCatchup = {
         ["Use a step-down transformer so the cable current is smaller.","Lower transmission voltage requires more current for the same transmitted power."]]],
       retry: ["Two equal-resistance cables carry 4 A and 8 A. Which has greater heating power?","The 8 A cable.","Heating power increases with I² at fixed R.",
         ["The 4 A cable.","Lower current reduces heating at the same resistance."]],
-      higher: ["Quantitative stretch","Line A carries 12 A and line B carries 2 A. Their resistances are the same. How many times as much heating power does line A dissipate?",
-        "36 times. The resistances cancel in the ratio, leaving 12² ÷ 2² = 36."]
+      higher: ["Higher Tier","An ideal transformer has a 500 V primary carrying 12 A and a 3,000 V secondary. Find the secondary current. If each current flowed in an identical cable, compare the heating powers.",
+        "Primary power equals secondary power in this model. The secondary current is (500 × 12) ÷ 3,000 = 2 A. At equal cable resistance, 12 A would produce 12² ÷ 2² = 36 times as much heating power."]
     }),
 
   "solution-concentration": sequence(10,"C3","Concentration in g/dm³",
@@ -205,8 +221,7 @@ export const priorityCatchup = {
   "dynamic-equilibrium": sequence(11,"C6","What changes at dynamic equilibrium?",
     "Can two reactions keep happening while the amounts stay steady?",
     "In a closed system at dynamic equilibrium, forward and reverse reactions continue at equal rates. Concentrations stay constant and may be unequal.", {
-      visual: () => table("A reversible reaction in a closed vessel",["Time (min)","Forward rate (arbitrary units)","Reverse rate (arbitrary units)"],
-        [["0","8","0"],["2","5","3"],["4","4","4"],["6","4","4"]]),
+      visual: equilibriumRates,
       earlier: ["Rates, collisions, and reversible reactions","reaction-rate"],
       model: ["Track two directions at once",[
         "Start with mostly reactant. The forward reaction is initially faster, so the product concentration rises.",
@@ -216,7 +231,7 @@ export const priorityCatchup = {
         ["Only the forward reaction continues.","The reverse rate is also 4."],["Both reactions have stopped.","Constant concentrations can result from balanced rates."]]],
       guide: ["Read the row and compare the two rate columns. Decide which direction is making the larger change.",
         ["What happens to the product concentration at minute 2?","It is increasing.","The forward reaction produces product faster than the reverse reaction uses it.",
-          ["It is decreasing.","The reverse rate is smaller than the forward rate."],["It is constant.","Equal rates would be needed for no net change."]]],
+          ["It is decreasing.","The reverse rate is smaller than the forward rate."],["It is constant.","Equal rates would be needed for no net change."]], equilibriumRates],
       independent: [["A different sealed vessel has steady concentrations of 0.2 mol/dm³ of reactant and 0.8 mol/dm³ of product. Evidence shows molecules still change in both directions. What can you infer?",
         "The forward and reverse rates are equal.","Constant concentrations with both directions continuing show dynamic equilibrium. The concentrations themselves can differ.",
         ["The rates must be in a 1:4 ratio.","Concentrations do not give that ratio for the two rates at equilibrium."],
@@ -251,5 +266,27 @@ export const priorityCatchup = {
         "Speed is the distance gradient, 15 ÷ 3.",["45 m/s","Divide distance by elapsed time."]],
       higher: ["Higher Tier","A trolley moves from 0 to 4 m/s in 2 s at constant acceleration, then moves at 4 m/s for 3 s. Find its total distance. How could you estimate the speed at an instant on a curved distance–time graph?",
         "The area under the velocity–time graph is (½ × 2 × 4) + (3 × 4) = 16 m. On a curved distance–time graph, draw a tangent and calculate its gradient at that instant."]
+    }),
+
+  "motor-effect": sequence(11,"P7","Motor effect and electric motors · Higher Tier",
+    "How can two opposite forces turn a coil?",
+    "A wire carrying a current across a magnetic field experiences a force. Forces in opposite directions on the two sides of a coil can make it turn.", {
+      visual: motor,
+      earlier: ["Magnetic fields from electric currents","electromagnet-switch"],
+      model: ["Work out the direction, then find the turning effect",[
+        "Point the first finger of your left hand from north to south. Point the second finger along the conventional current. Your thumb gives the force direction.",
+        "In the diagram the current goes into the page on one side and comes out on the other. The field direction is the same for both, so the forces act in opposite directions.",
+        "A split-ring commutator reverses the current in the coil each half-turn. As the sides swap positions, the force on each side reverses, so the motor keeps turning in the same sense."
+      ], ["Which direction does the first finger represent?","The magnetic field","The first finger points along the field, from north to south.",
+        ["The current","The second finger points along the conventional current."],["The force","The thumb gives the force direction."]]],
+      guide: ["Use F = BIl for a wire at right angles to the field. Convert the length from centimetres to metres first.",
+        ["A 20 cm wire carries 3 A at right angles to a 0.40 T field. Find the force.","0.24 N",
+          "F = 0.40 × 3 × 0.20 = 0.24 N.",["24 N","Use 0.20 m, not 20 cm, in the equation."],["0.12 N","Multiply by the full 0.20 m in the field."]]],
+      independent: [["A pupil swaps the supply terminals on a simple dc motor. The magnets stay in the same positions. What happens to the initial turning effect?",
+        "It reverses, because the forces on both sides reverse.","The current reverses and the field stays the same. Fleming’s left-hand rule gives the opposite force on each side.",
+        ["It stays the same because the magnetic field has not changed.","The force direction depends on current direction as well as the field."],
+        ["It disappears because the two forces cancel.","The opposite forces can still turn the coil because they act on different sides."]]],
+      retry: ["A straight wire is turned so its current is parallel to the magnetic field. What is the force from the motor effect?","Zero",
+        "The motor effect requires a component of current across the field.",["It is at its maximum.","The force is greatest at right angles to the field."]]
     })
 };

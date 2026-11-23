@@ -122,6 +122,16 @@ export function mountJourney(host, model, lesson) {
     model.after(journey);
   }
 
+  const workedModel = Number(year) >= 10 && steps.find(step => step.worked)?.worked;
+  const workedReview = workedModel ? element("details", "", "school-worked-example") : null;
+  if (workedReview) {
+    const workedLines = element("ol");
+    workedLines.append(...workedModel.lines.map(line => element("li", line)));
+    workedReview.append(element("summary", "Review the worked example"),
+      element("h3", workedModel.title), workedLines);
+    model.append(workedReview);
+  }
+
   function addQuestionEvidence(q) {
     if (!q.image && !q.reference) return;
     const support = element("details", "", "school-question-evidence");
@@ -167,6 +177,7 @@ export function mountJourney(host, model, lesson) {
         if (step.guide) stageName = "We do · Guided practice";
         else if (step.worked) stageName = "I do · Worked example";
         else if (state.step === steps.length - 1) stageName = "You do · On your own";
+        else if (Number(year) >= 10) stageName = "Apply it";
       }
       const heading = element("h3", stageName);
       heading.tabIndex = -1;
@@ -348,6 +359,11 @@ export function mountJourney(host, model, lesson) {
       renderClues();
       clueText.focus();
     });
+    if (workedReview && state.step > 0) support.append(button("Revisit the worked example", () => {
+      state.helped = true;
+      pause();
+      showEvidence(workedReview);
+    }));
     const clueText = element("p", "", "school-clue");
     clueText.tabIndex = -1;
     function renderClues() {
