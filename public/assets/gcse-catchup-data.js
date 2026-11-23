@@ -1,4 +1,5 @@
 import { question } from "./school-catchup-journey.js";
+import { priorityCatchup } from "./gcse-catchup-priority.js";
 
 function lesson(year, code, title, hook, notice, idea, visual, stages, independent, retry, higher) {
   return {year, code, title, hook, notice, idea, visual, higher,
@@ -539,4 +540,4 @@ const furtherCatchup = {
     ["A dead plant breaks down. What type of organism helps this happen?","Decomposer","Decomposers break down dead material and recycle substances.","Only a producer","Only a large herbivore."])
 };
 
-export const gcseCatchup = {...year10Catchup, ...year11Catchup, ...complementary, ...furtherCatchup};
+export const gcseCatchup = {...year10Catchup, ...year11Catchup, ...complementary, ...furtherCatchup, ...priorityCatchup};

@@ -131,5 +131,5 @@ function punnett() {
 
 const types = {curve,bars,pairs,circuit,web,column,chromatogram,wave,coil,punnett};
 export function gcseVisual([type,...args]){
-  return types[type](args);
+  return type === "custom" ? args[0]() : types[type](args);
 }

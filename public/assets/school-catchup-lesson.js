@@ -72,13 +72,13 @@ if (Object.hasOwn(year9, id) || Object.hasOwn(gcseCatchup, id)) {
     } else model.append(box);
   }
   model.append(idea);
-  const earlier = {
+  const earlier = lesson.earlier ? [lesson.earlier[0], "/science-catch-up/lesson/?topic=" + lesson.earlier[1]] : {
     osmosis: ["States of matter", "/ks3/lesson/?topic=states-of-matter&guided=1"],
     "active-transport": ["Osmosis and partially permeable membranes", "/science-catch-up/lesson/?topic=osmosis"],
     "gas-exchange": ["How blood carries oxygen to the muscles", "/ks3/lesson/?topic=the-body&guided=1"],
     "ionic-conduction": ["Atomic number, isotopes and ions", "/science-catch-up/lesson/?topic=atomic-number"]
   }[id];
-  if (!senior && earlier) {
+  if (earlier) {
     const prerequisite = document.createElement("details");
     const summary = document.createElement("summary");
     const link = document.createElement("a");
@@ -90,10 +90,23 @@ if (Object.hasOwn(year9, id) || Object.hasOwn(gcseCatchup, id)) {
   if (lesson.higher) {
     const extension = document.createElement("details");
     const summary = document.createElement("summary");
-    summary.textContent = "Higher Tier";
     const detail = document.createElement("p");
-    detail.textContent = lesson.higher.replace(/^Higher Tier · /, "");
-    extension.append(summary, detail);
+    if (Array.isArray(lesson.higher)) {
+      const [label, prompt, answer] = lesson.higher;
+      summary.textContent = label;
+      detail.textContent = prompt;
+      const worked = document.createElement("details");
+      const reveal = document.createElement("summary");
+      reveal.textContent = "Check your reasoning";
+      const reasoning = document.createElement("p");
+      reasoning.textContent = answer;
+      worked.append(reveal, reasoning);
+      extension.append(summary, detail, worked);
+    } else {
+      summary.textContent = "Higher Tier";
+      detail.textContent = lesson.higher.replace(/^Higher Tier · /, "");
+      extension.append(summary, detail);
+    }
     model.append(extension);
   }
   host.replaceChildren(model);
