@@ -138,17 +138,18 @@ function mount(closing, id, guide) {
 
   button.addEventListener("click", () => {
     const values = [fields[0].value.trim(), development.notes.map(note => note.value.trim()).filter(Boolean).join("\n"), fields[2].value.trim()];
-    const missing = sections.filter((_, index) => !values[index]);
+    const required = id === "ramp" ? sections : sections.slice(0,2);
+    const missing = required.filter((_, index) => !values[index]);
     const numberOfNotes = development.notes.filter(note => note.value.trim()).length;
     const sameOpeningAndClosing = values[0] && values[2] && normalise(values[0]) === normalise(values[2]);
     if (missing.length) {
       status.textContent = "Still to add: " + missing.map((label) => label.toLowerCase()).join(", ") + ".";
     } else if (sameOpeningAndClosing) {
       status.textContent = "Your opening and ending repeat each other. Use the ending to show what you can now conclude.";
-    } else if (numberOfNotes < 2) {
+    } else if (id === "ramp" && numberOfNotes < 2) {
       status.textContent = "Add a second note so the reader can follow how the explanation develops.";
     } else {
-      status.textContent = "The three parts have entries. Use the prompts, then develop each note into a supporting sentence.";
+      status.textContent = id === "ramp" ? "The three parts have entries. Use the prompts, then develop each note into a supporting sentence." : "Your opening and notes are ready to develop. Check that the science answers the question.";
     }
 
     const prompts = element("ul");

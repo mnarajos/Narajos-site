@@ -1272,10 +1272,10 @@ try{
  const outlineCheck=navPage.getByRole("button",{name:"Check my outline",exact:true});
  const outlineReview=navPage.locator(".writing-outline-review");
  await outlineCheck.click();
- await outlineReview.getByRole("status").filter({hasText:"Still to add: topic sentence, supporting notes, concluding sentence."}).waitFor();
+ await outlineReview.getByRole("status").filter({hasText:"Still to add: topic sentence, supporting notes."}).waitFor();
  const opening=navPage.getByLabel("Topic sentence:",{exact:true});
  const supports=navPage.getByLabel("Supporting note 1",{exact:true});
- const concluding=navPage.getByLabel("Concluding sentence:",{exact:true});
+ const concluding=navPage.getByLabel("Concluding sentence (if useful):",{exact:true});
  await opening.fill("The potato mass changed.");
  await supports.fill("The potato gained 17%.");
  await concluding.fill("The potato mass changed!");
