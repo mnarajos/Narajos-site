@@ -510,12 +510,13 @@
     ],
     compare: {caption:"Two viral infections",head:["Infection","Prevention and evidence"],rows:[
       ["COVID-19","Infectious respiratory particles can be breathed in. Ventilation reduces the amount in shared indoor air. Cough, fever and altered smell can occur; other infections can cause overlapping findings."],
-      ["HIV","Certain body fluids can transmit HIV during sex, through blood exposure or from parent to child during pregnancy, birth or breastfeeding. Condoms and screened blood products address sexual and blood exposure respectively. HIV care during pregnancy and birth reduces transmission to the baby. Ordinary social contact and saliva do not transmit HIV."],
+      ["HIV","Certain body fluids can transmit HIV during sex, through blood exposure or from parent to child during pregnancy, birth or breastfeeding. During sexual exposure, the genital lining is one possible portal of entry. Condoms and screened blood products address sexual and blood exposure respectively. HIV care during pregnancy and birth reduces transmission to the baby. Ordinary social contact and saliva do not transmit HIV."],
       ["HIV over time","Early HIV may cause measured fever or swollen lymph nodes and reported tiredness or sore throat. There can also be no obvious illness. With advanced untreated infection, opportunistic infections can occur. Effective treatment protects immune function. A person maintaining an undetectable viral load does not pass HIV on through sex."]
     ]},
     prior:["f171/3.2.1","Revisit immune dysfunction"],
     model:["A school records three pupils who feel tired and have measured fevers. Fatigue is a symptom; the thermometer readings are signs.",
-      "These findings justify attention but cannot distinguish COVID-19 from other causes. Appropriate testing provides different evidence from counting people with fever."],
+      "These findings justify attention but cannot distinguish COVID-19 from other causes. Appropriate testing provides different evidence from counting people with fever.",
+      "Suppose the review now concerns safety of donated blood. Screening donations can reduce blood-borne infection risk. It cannot change the air shared in a classroom. Check which exposure a measure actually changes."],
     guided:choice("A patient feels hot but has no temperature reading. What has been recorded?",0,
       [["A reported symptom.",""],["A measured sign of fever.","Feeling hot and recording a temperature are different observations."]],"Use how the information was obtained.",["Who made a measurement?"]),
     apply:written("A fictional survey labels everyone with confirmed HIV infection as having AIDS. Some report no symptoms. Explain two problems with using symptoms or HIV status this way.",
@@ -533,7 +534,7 @@
     ]},
     model:["A tick is seen attached to skin. That establishes a possible exposure. It does not show that the tick carried the Lyme bacterium.",
       "A characteristic expanding rash can support a clinical diagnosis of Lyme disease. A tired person after a walk, without this evidence, gives a much weaker basis for that conclusion."],
-    guided:choice("A cough improves after ventilation in a classroom. Does this identify the cause as TB?",1,
+    guided:choice("Two pupils in the same classroom have a persistent cough. Does this identify the cause as TB?",1,
       [["Yes. Airborne spread is unique to TB.","Several infections spread through shared air, and cough has many possible causes."],["No. An improvement in cough does not identify a bacterium.",""]],"Separate the observation from a conclusion about its cause."),
     apply:choice("Patient A has MRSA on a routine skin screen and feels well. Patient B has a painful wound with visible pus but no organism result. Which conclusion fits both records?",2,
       [["Both have active MRSA disease.","Carriage is possible without illness. Pus alone cannot identify a resistant strain."],["Only B has confirmed MRSA.","The wound findings support infection but do not identify its cause."],["A may be colonised. B has findings compatible with wound infection; its cause remains uncertain.",""]],
@@ -544,7 +545,7 @@
     goal:"Explain how different sources of fungi change the interpretation of an exposure history.",
     explain:["Fungi include yeasts. An infection can follow overgrowth of organisms already present in the body. In other cases a person encounters a fungus in the environment."],
     compare:{caption:"Source and findings",head:["Example","What happens","Evidence and prevention"],rows:[
-      ["Vaginal candidiasis (thrush)","Candida yeast already present can overgrow. It is not usually acquired through sex.","Itching and soreness may be reported; white discharge may be observed. The symptoms overlap with other conditions. Breathable clothing can help reduce the risk of vaginal thrush. A precaution against environmental dust addresses a different source."],
+      ["Vaginal candidiasis (thrush)","Candida yeast already present can overgrow. It is not usually acquired through sex.","Itching and soreness may be reported; white discharge may be observed. Microscopy showing yeast can support the interpretation alongside these findings. Candida can also be present without illness. Breathable clothing can help reduce the risk of vaginal thrush. A precaution against environmental dust addresses a different source."],
       ["Histoplasmosis","Histoplasma spores from the environment can be inhaled. Ordinary contact with a patient is not the usual route.","Many infections cause no symptoms. Lung illness may include cough, measured fever and chest discomfort. Public-health precautions against relevant environmental dust exposure address this route."]
     ]},
     model:["Several people report chest discomfort. That symptom does not identify a fungus. A shared environmental exposure can guide further investigation.",

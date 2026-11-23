@@ -103,6 +103,7 @@ export async function checkHumanCatchup(browser, base) {
     assert.equal((await saved(matchKey)).outcomes[0], "corrected");
 
     for (const [route, questionId, wrongAnswer, diagnosis] of [
+      ["f171/1.3.1.viruses", "f171-route-prevention-transfer", /ventilation reduces exposure to all viruses/, /Viral classification does not imply a shared route/],
       ["f170/1.1.2.counting", "f170-cell-counting-transfer", /target volume/, /overlap the cells in volume/],
       ["f171/1.2.1.hiatus", "f171-hiatus-mechanism-transfer", /effective reflux barrier/, /Increased secretion was not measured/],
       ["f171/1.2.1.hodgkin", "f171-hodgkin-mechanism-transfer", /only affect immunity/, /local effect on another structure/]
