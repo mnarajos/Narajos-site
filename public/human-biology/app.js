@@ -23,7 +23,7 @@ const f171Cards=f171Decks.flatMap(([sectionId,sectionTitle,items])=>items.map(([
 var review=scheduler.open("ocr-human-biology-f170");
 var sessionKey="narajos-human-biology-session-v1",practiceKey="narajos-human-biology-practice-v1";
 var progress={};try{var raw=JSON.parse(localStorage.getItem(practiceKey)||"null");if(raw&&typeof raw==="object"&&!Array.isArray(raw))progress=raw;}catch(_){}
-var active=null,previousRoute="",allowRoute=false,pending=null;
+var active=null,previousRoute="",pending=null;
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(x){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[x];});}
 function slugArea(id){return id==="all"?"all":(id||"").replace(/^area-/,"");}
 function shuffle(input){var a=input.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),v=a[i];a[i]=a[j];a[j]=v;}return a;}
@@ -34,7 +34,12 @@ function restoreSession(){try{var old=JSON.parse(localStorage.getItem(sessionKey
  if(old.type==="practice"&&!old.queue.every(function(id){return !!bySection[id];}))return null;
  return old;}catch(_){return null;}}
 function render(html){main.innerHTML=html;window.scrollTo(0,0);main.focus({preventScroll:true});updateNav();}
-function updateNav(){var here=previousRoute.split("/")[0]||"home";document.querySelectorAll(".nav a").forEach(function(a){var r=a.getAttribute("href").slice(1);if((r==="home"&&here==="home")||(r==="topics"&&(here==="area"||here==="learn"||here==="topics"))||(r==="flashcards"&&(here==="flashcards"||here==="cards"||here==="review"))||(r==="practice"&&here==="practice")||(r==="skills"&&here==="skills")||(r==="challenge"&&here==="challenge")||(r==="knowledge"&&here==="knowledge")||(r==="catchup"&&here==="catchup"))a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});}
+function updateNav(){
+ document.querySelectorAll(".nav a").forEach(a=>{
+  if(a.getAttribute("href")==="#"+previousRoute)a.setAttribute("aria-current",previousRoute==="home"?"page":"location");
+  else a.removeAttribute("aria-current");
+ });
+}
 function link(h,label,cls){return '<a class="button '+(cls||"secondary")+'" href="#'+esc(h)+'">'+esc(label)+'</a>';}
 function metric(n,label){return '<div class="metric"><strong>'+esc(n)+'</strong><span>'+esc(label)+'</span></div>';}
 function stats(){var ids=cards.map(function(c){return c.id;}),r=review.stats(ids);var done=Object.keys(progress).filter(function(id){return progress[id]&&progress[id].good>0;}).length;
@@ -87,7 +92,7 @@ function unitLinks(units){
    '<ul class="hb-link-list hb-nea-list">'+nea.map(unit=>'<li><a href="#challenge/'+unit.id+'"><span class="hb-unit-code">'+
     unit.id.toUpperCase()+'</span><strong>'+esc(unit.title)+'</strong>'+kIcon("chevron")+'</a></li>').join("")+'</ul></section>':"")+'</div>';
 }
-function showHome(){
+function showHome(section){
  const units=window.KeystoneHumanCatchup?.unitList||[
   {id:"f170",title:"Fundamentals of human biology"},{id:"f171",title:"Health and disease"}];
  var h='<div class="k-wrap hb-overview"><section class="k-home-hero"><span class="k-eyebrow">Cambridge OCR AAQ</span><h1>Human Biology</h1></section>';
@@ -96,6 +101,8 @@ function showHome(){
  h+='<p class="k-privacy-small">Your progress stays in this browser. <button class="k-local-reset" id="clear-human-bio" type="button">Clear progress on this device</button></p></div>';
  render(h);
  mountStudyFinder();
+ const focus=section==="find"?main.querySelector("[data-topic-finder] input"):section==="units"?document.getElementById("hb-units"):null;
+ if(focus)focus.focus();
 }
 function mountStudyFinder(){
  const finder=window.NarajosTopicFinder;
@@ -242,9 +249,14 @@ function finish(){
 }
 function empty(message){render(crumb("home","Overview")+'<div class="empty"><h2>Nothing to review here</h2><p>'+esc(message)+'</p><div class="actions">'+link("flashcards","Choose flashcards","primary")+link("practice","Practice instead")+'</div></div>');}
 function notFound(){render('<div class="empty"><h1>Topic not found</h1><p>Try the topic overview to choose a current F170 section.</p>'+link("topics","Browse topics","primary")+'</div>');}
+function currentRoute(){
+ const route=location.hash.slice(1)||"home";
+ try{return decodeURIComponent(route);}catch(_){return route;}
+}
+function hasActiveActivity(){return !!active||!!window.KeystoneHumanChallenge?.isActive();}
 function runRoute(){
- var r=decodeURIComponent(location.hash.replace(/^#/,""))||"home";previousRoute=r;
- if(r==="home"){showHome();return;}
+ var r=currentRoute();previousRoute=r;
+ if(r==="home"||r==="units"||r==="find"){showHome(r);return;}
  if(r==="catchup"||r.startsWith("catchup/")){if(window.KeystoneHumanCatchup)return window.KeystoneHumanCatchup.route(r,render);return notFound();}
  if(r==="knowledge"||r==="challenge"||r.startsWith("challenge/")||r==="skills"||r.startsWith("skills/")){if(window.KeystoneHumanChallenge)return window.KeystoneHumanChallenge.route(r,render);return notFound();}
  if(r==="topics"){showTopics();return;}
@@ -258,12 +270,12 @@ function runRoute(){
  if(m[1]==="learn")return showLearn(m[2]);
  if(m[1]==="cards"||m[1]==="practice"){var type=m[1]==="cards"?"cards":"practice";if(!active){var old=restoreSession();if(old&&old.type===type&&old.scope===m[2])active=old;}if(!active||active.type!==type||active.scope!==m[2])createSession(type,m[2]);else drawSession();return;}
 }
-function showLeave(callback){
+function showLeave(callback,stay){
  var modal=document.getElementById("leave-dialog");
  pending=callback;var returnFocus=document.activeElement;modal.hidden=false;
  var keep=document.getElementById("leave-stay"),go=document.getElementById("leave-confirm");
  keep.focus();
- keep.onclick=function(){modal.hidden=true;pending=null;if(returnFocus&&returnFocus.isConnected)returnFocus.focus();};
+ keep.onclick=function(){modal.hidden=true;pending=null;if(stay)stay();if(returnFocus&&returnFocus.isConnected)returnFocus.focus();};
  go.onclick=function(){var cb=pending;pending=null;modal.hidden=true;active=null;if(window.KeystoneHumanChallenge)window.KeystoneHumanChallenge.pause();if(cb)cb();};
 }
 document.addEventListener("click",function(e){
@@ -287,24 +299,28 @@ document.addEventListener("keydown",function(e){
 document.addEventListener("click",function(e){
  var action=e.target.closest("[data-action]");
  if(action){if(action.getAttribute("data-action")==="reveal")reveal(false);if(action.getAttribute("data-action")==="recalled")reveal(false,true);if(action.getAttribute("data-action")==="again")rate(false);if(action.getAttribute("data-action")==="got-it")rate(true);return;}
- var a=e.target.closest("a[href]");if(!a||(!active&&!(window.KeystoneHumanChallenge&&window.KeystoneHumanChallenge.isActive())))return;
+ var a=e.target.closest("a[href]");
+ if(!a||e.defaultPrevented||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey||e.button>0)return;
  var href=a.getAttribute("href")||"";
- if(href.startsWith("#")&&href.replace(/^#/,"")===previousRoute)return;
+ if(href==="#main"){e.preventDefault();main.focus();return;}
+ if(!hasActiveActivity()||href==="#"+previousRoute)return;
  if(href.startsWith("#")||href.startsWith("/")){
   e.preventDefault();
-  showLeave(function(){allowRoute=true;location.assign(href);if(href.startsWith("#")&&href.slice(1)===previousRoute)runRoute();});
+  showLeave(function(){location.assign(href);});
  }
 });
 window.addEventListener("hashchange",function(){
- var next=decodeURIComponent(location.hash.replace(/^#/,""))||"home";
- if((active||(window.KeystoneHumanChallenge&&window.KeystoneHumanChallenge.isActive()))&&next!==previousRoute&&!allowRoute){
-  var restore=previousRoute;location.hash="#"+restore;
-  showLeave(function(){allowRoute=true;location.hash="#"+next;});
+ const next=currentRoute();
+ if(hasActiveActivity()&&next!==previousRoute){
+  showLeave(runRoute,function(){
+   if(typeof history!=="undefined")history.replaceState(history.state,"","#"+previousRoute);
+   else location.hash="#"+previousRoute;
+  });
   return;
  }
- allowRoute=false;runRoute();
+ runRoute();
 });
-window.addEventListener("beforeunload",function(e){if(active||(window.KeystoneHumanChallenge&&window.KeystoneHumanChallenge.isActive())){e.preventDefault();e.returnValue="";}});
+window.addEventListener("beforeunload",function(e){if(hasActiveActivity()){e.preventDefault();e.returnValue="";}});
 function replaceRoute(route){
  if(typeof history==="undefined")return;
  history.replaceState(null,"","#"+route);
