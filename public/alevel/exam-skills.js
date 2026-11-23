@@ -1085,6 +1085,7 @@
   }
   const catalogue = [
     ["Question interpretation and practical reasoning", ["interpret", "practical"]],
+    ["Extended answers", ["extended"]],
     ["Drawing and observation", ["drawings"]],
     ["Scientific precision and explanations", ["precision", "points", "mechanisms", "pressures", "regulation"]],
     ["Unfamiliar contexts", ["causal"]],
@@ -1095,6 +1096,7 @@
     precision: ["Explain precisely", "Compare scientific statements and improve your own explanation.", "pen", "precise terminology scientific language osmosis chromatids homologous transcription translation"],
     practical: ["Reason through practicals", "Explain how the method affects the result and the claim.", "guided", "practical reasoning method controls confounding accuracy repeatability colorimeter stain chromatography"],
     evidence: ["Interpret data", "Choose the method and decide what the evidence supports.", "calculator", "interpret data statistical significance p values graph rate percentage calibration uncertainty extrapolation"],
+    extended: ["Develop extended answers", "Connect relevant mechanisms and develop the answer to a title.", "pen", "extended response synoptic essay title relevance application breadth"],
     drawings: ["Biological drawings", "Compare drawings and identify defects.", "diagram", "biological drawing scientific drawing tissue plan observation accept reject scale bar"],
     points: ["Independent marking points", "Recognise distinct criteria in an answer.", "review", "marking points mark schemes marking scheme group criteria"],
     mechanisms: ["Biological mechanisms", "Connect a biological change to its effect.", "pen", "scientific explanations diffusion distance mechanism active transport synapse"],
@@ -1147,7 +1149,8 @@
       host.append(section);
     }
     const other = node("p", null, "al-journey-links");
-    other.append(quietLink("Evaluate unfamiliar data", "/alevel/evidence/"), quietLink("Maths Skills", "#practice"));
+    other.append(quietLink("Evaluate unfamiliar data", "/alevel/evidence/"),
+      quietLink("Maths Skills", "#practice"), quietLink("Paper 3 essay practice", "#topic-p3w"));
     host.append(other);
   }
 

@@ -1171,3 +1171,45 @@ window.ALevelTeachingFamilies.evidence = {
   specification: "Section 6, especially MS 0.1, 0.3, 1.9–1.11 and 3.1–3.6, and PS 2.3–2.4",
   schemaVersion: 1,
 };
+
+window.ALevelTeachingFamilies.extended = {
+  id: "extended",
+  title: "Develop extended answers",
+  topics: ["a3", "a5", "a6", "a7", "a8", "p3w"],
+  papers: ["p1", "p2", "p3"],
+  principle: "Select the concepts that explain the outcome in the title or question. Make each causal link explicit and use separate details only when they explain something new.",
+  model: [
+    "A runner's cardiac output rises but oxygen delivery to the working muscles plateaus. The arterial oxygen content falls and the fraction of cardiac output reaching the working muscles is unchanged. Explain why the two observations can coexist.",
+    "The target is oxygen delivery per unit time. Muscle blood flow increases with cardiac output at the stated fraction. A second quantity matters: the oxygen carried in each unit volume of arterial blood.",
+    "If muscle flow rises from 2.0 to 2.5 L min⁻¹ and arterial oxygen content falls from 200 to 160 mL L⁻¹, delivery remains 400 mL min⁻¹. More blood reaches muscle per minute while each litre delivers less oxygen.",
+    "Review relevance. Explaining how oxygen is used in aerobic respiration would describe what happens after delivery. It does not explain why delivery plateaued. Repeating that blood moves faster adds no new causal step.",
+  ],
+  tasks: [
+    {
+      kind: "choice", guided: true,
+      prompt: "An essay title asks why gradients matter for cell function. A pupil develops an accurate paragraph on pumping hydrogen ions across the inner mitochondrial membrane. Which ending makes that paragraph most relevant?",
+      options: [
+        "Link hydrogen ion flow through ATP synthase to ATP production and explain why that ATP matters for a named cellular process.",
+        "Add the locations of glycolysis, the link reaction and the Krebs cycle to show breadth.",
+        "Explain how hydrogen ions are pumped again, using 'protons' in place of 'hydrogen ions'.",
+      ],
+      answer: 0,
+      why: "The title asks why the gradient matters. Hydrogen ion flow provides the missing link between the gradient and ATP production, and the use of ATP establishes importance.",
+      feedback: [null, "Those locations can be accurate but do not explain the importance of the gradient in this example.", "Hydrogen ion and proton convey equivalent information here. Rephrasing the same step does not extend the causal chain."],
+      hints: ["What does the gradient enable the cell to do?"],
+    },
+    {
+      kind: "writing",
+      prompt: "A plant grown in dry soil closes its stomata. Light intensity is stable. Over several hours its net carbon dioxide uptake falls and root growth later slows. Explain one chain connecting the stomatal change to root growth. State one reason the available evidence cannot isolate this effect.",
+      points: [
+        "Stomatal closure restricts diffusion of carbon dioxide into the leaf, reducing the supply for carbon fixation.",
+        "Reduced fixation can reduce the production of carbohydrates and the supply of assimilate carried in phloem to the roots.",
+        "Roots may have less substrate for respiration and less carbon for building biomass, reducing growth.",
+        "The observations are consistent with this chain. Dry soil can also affect root growth directly, for example by reducing cell turgor. The evidence does not separate the two effects.",
+      ],
+    },
+  ],
+  misconception: "Adding accurate but irrelevant breadth or restating a single explanation as if it were two.",
+  specification: "AO2 and AO3, 3.3.2, 3.3.4, 3.5.1–3.5.2 and Paper 3 extended responses",
+  schemaVersion: 1,
+};
