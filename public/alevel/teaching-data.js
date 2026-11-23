@@ -878,3 +878,79 @@ window.ALevelTeachingFamilies = {
     schemaVersion: 1,
   },
 };
+
+window.ALevelTeachingFamilies.interpret = {
+  id: "interpret",
+  title: "Understand the question",
+  topics: ["a1", "a2", "a3", "a6", "a8"],
+  papers: ["p1", "p2", "p3"],
+  principle: "Read the whole question. Identify the task and its target, select the evidence that matters, plan the reasoning, answer, then check that every part is addressed.",
+  commandGuide: [
+    ["State / name", "Give the requested fact or term. Check exactly what is being named."],
+    ["Describe / compare", "Report the relevant feature or pattern. For a comparison, refer to both sides on the same basis."],
+    ["Explain / suggest", "Connect the evidence to a biological mechanism or a methodological purpose. A suggestion must fit the stated conditions. If asked to suggest and explain, do both."],
+    ["Calculate", "Identify the quantity required, choose the operation and check the units and precision."],
+    ["Analyse / evaluate", "Work out what the evidence shows. If asked to evaluate, judge the claim using the relevant strengths and limitations."],
+  ],
+  model: [
+    "Read: A small uncharged lipid-soluble molecule is already dissolved in the fluid of the small intestine. It crosses the epithelial membrane intact. Its concentration is higher outside the cell. Explain how it enters without ATP. An enzyme that digests triglycerides is also present.",
+    "Identify the target: explain entry of the intact molecule through the membrane. There is no need to explain how triglycerides are broken down. That would answer a different question.",
+    "Select evidence: the molecule is small and lipid-soluble, and the concentration is higher outside. Those details tell you both the route through the bilayer and the direction of net movement.",
+    "Plan and answer: the molecule dissolves in the hydrophobic interior of the phospholipid bilayer and diffuses down its concentration gradient into the epithelial cell. ATP is not required for simple diffusion.",
+    "Review: ‘Lipase hydrolyses triglycerides’ can be true and still earn no credit for this task. ‘It enters by diffusion’ gives the process but omits how the molecule crosses and why net movement is inwards.",
+  ],
+  tasks: [
+    {
+      kind: "choice", guided: true, catchup: "a2-mitosis",
+      prompt: "A chemical prevents spindle microtubules shortening. A cell has aligned its duplicated chromosomes but has not separated them. Explain why the nucleus cannot divide normally. What must your answer explain?",
+      options: [
+        "Why the duplicated DNA cannot be distributed to opposite poles",
+        "How the cell increased its DNA content before mitosis",
+        "Why more cells are observed in interphase than in mitosis",
+      ],
+      answer: 0,
+      why: "Link spindle action to sister chromatid separation. The DNA has already been copied, and the question asks about this cell's nuclear division.",
+      feedback: [null, "Replication explains how sister chromatids formed earlier. Use the blocked spindle to explain what cannot happen to them now.", "The relative time spent in each phase can explain cell counts in a tissue. The target here is chromosome movement within one cell."],
+      hints: ["Find the event that has already happened and the event that is blocked."],
+    },
+    {
+      kind: "choice", catchup: "a6-adh",
+      prompt: "Two collecting ducts receive the same concentration of ADH. Only one can insert additional aquaporins. What is the most direct explanation for why less water enters the interstitial fluid from the other duct, given the same water-potential difference?",
+      options: [
+        "The other duct has fewer water channels in its membrane, so less water moves by osmosis in the same time.",
+        "The other duct receives less ADH because the blood water potential is higher.",
+        "The other duct has a smaller water-potential difference because water has already left it.",
+      ],
+      answer: 0,
+      why: "The stem holds ADH and the gradient constant. Different membrane water permeability explains the different movement.",
+      feedback: [null, "ADH release can vary in vivo, but the stem supplies equal ADH. Follow the affected pathway after the hormone reaches the duct.", "The question supplies the same water-potential difference. Compare the route available for water movement instead."],
+      hints: ["Which condition differs after both ducts receive the same ADH?"],
+    },
+    {
+      kind: "choice", catchup: "a8-transfac",
+      prompt: "A plant cell produces less of a transporter after a regulatory DNA sequence is changed. Its mRNA is unchanged in quantity and sequence. Which response contains relevant biology but explains the wrong stage?",
+      options: [
+        "Less RNA polymerase binding reduces synthesis of the transporter mRNA.",
+        "Fewer ribosomes initiate translation on each transporter mRNA.",
+        "The transporter is degraded faster after it is made.",
+      ],
+      answer: 0,
+      why: "A transcription explanation predicts a change in mRNA quantity here. The given data direct attention to translation or protein turnover, without settling which.",
+      feedback: [null, "Translation can alter protein output without changing the mRNA. Look for the explanation that contradicts the unchanged RNA.", "Faster breakdown can reduce protein abundance while the mRNA is unchanged. Look for a route that would change RNA production."],
+      hints: ["Which proposed explanation requires an outcome the stem rules out?"],
+    },
+    {
+      kind: "writing", catchup: "p3s-methods",
+      prompt: "Pigment leaking from plant tissue is measured by absorbance. The solvent itself also absorbs light. Suggest one comparison and explain what it would let you infer about the absorbance of a tube containing treated tissue.",
+      hints: ["Name what you would put in a tube, then explain why comparing its reading is useful."],
+      points: [
+        "Compare with an otherwise matched tube containing the same concentration of solvent but no tissue.",
+        "That reading estimates the background absorbance from the solvent under those conditions.",
+        "Accounting for the background helps isolate absorbance associated with released pigment, provided other light-absorbing contributions are controlled.",
+      ],
+    },
+  ],
+  misconception: "Answering a familiar related question instead of the target specified in the stem.",
+  specification: "AO2 and AO3 across Papers 1–3",
+  schemaVersion: 1,
+};

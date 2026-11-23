@@ -362,6 +362,14 @@
         start.classList.add("primary");
         panel.append(heading, node("p", family.principle));
         if (options.notes) panel.append(options.notes);
+        if (family.commandGuide) {
+          const guide = node("details", null, "al-key-notes");
+          const entries = node("dl");
+          for (const [term, meaning] of family.commandGuide)
+            entries.append(node("dt", term), node("dd", meaning));
+          guide.append(node("summary", "Common command words"), entries);
+          panel.append(guide);
+        }
         panel.append(start);
         active.append(panel);
         if (moveFocus) focus(heading);
@@ -624,7 +632,7 @@
       else if (result?.clue && state.hints[i]) announce("Clue · " + hintsFor(q)[state.hints[i] - 1], "hint");
       else if (result?.kind === "incorrect")
         announce(q.kind === "group" ? "Review and improve the flagged rows. Your correct groups are kept." :
-          "Review and improve. " + q.why, "improve");
+          "Review and improve. " + (result.feedback ?? q.why), "improve");
       else if (state.hints[i]) announce("Clue · " + hintsFor(q)[state.hints[i] - 1], "hint");
       else announce("", "");
 
@@ -746,7 +754,7 @@
           return;
         }
 
-        let correct, matched;
+        let correct, matched, feedback;
         if (q.kind === "number") {
           const raw = form.elements.number.value.trim().replace(/−/g, "-");
           if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(raw)) {
@@ -774,10 +782,11 @@
           correct = q.kind === "multi"
             ? values.length === q.answer.length && q.answer.every(value => values.includes(value))
             : values[0] === q.answer;
+          if (!correct && q.kind === "choice") feedback = q.feedback?.[values[0]];
         }
         const attempts = (state.attempts[i] || 0) + 1;
         state.attempts[i] = attempts;
-        state.results[i] = { kind: correct ? "accepted" : "incorrect", ...(matched ? { matched } : {}) };
+        state.results[i] = { kind: correct ? "accepted" : "incorrect", ...(matched ? { matched } : {}), ...(feedback ? { feedback } : {}) };
         state.outcomes[i] = !correct ? "needs-practice" : q.guided ? "guided" :
           attempts > 1 ? "corrected" : state.hints[i] ? "hint-supported" :
             state.modelAssists[i] ? "model-supported" : "independent";
@@ -1059,12 +1068,14 @@
     }
   }
   const catalogue = [
+    ["Question interpretation", ["interpret"]],
     ["Drawing and observation", ["drawings"]],
     ["Mark schemes and explanations", ["points", "mechanisms", "pressures", "regulation"]],
     ["Unfamiliar contexts", ["causal"]],
     ["Data, calculations and models", ["osmosis", "countercurrent", "calvin", "dihybrid", "hardy"]],
   ];
   const skillDetails = {
+    interpret: ["Understand the question", "Identify the target, select evidence and build a relevant answer.", "idea", "interpret question command words task target use data relevant answering suggest explain"],
     drawings: ["Biological drawings", "Compare drawings and identify defects.", "diagram", "biological drawing scientific drawing tissue plan observation accept reject scale bar"],
     points: ["Independent marking points", "Recognise distinct criteria in an answer.", "review", "marking points mark schemes marking scheme group criteria"],
     mechanisms: ["Biological mechanisms", "Connect a biological change to its effect.", "pen", "scientific explanations diffusion distance mechanism active transport synapse"],
@@ -1130,6 +1141,7 @@
     });
   }
   const contextualLabels = {
+    "a2-mitosis": "Review mitosis",
     "a2-diffusion": "Review diffusion distance",
     "a2-active": "Review active transport",
     "a2-osmosis": "Review water potential",
