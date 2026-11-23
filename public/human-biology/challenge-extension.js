@@ -1374,6 +1374,15 @@ additions.push({
  explain:"Describe the direction, the membrane event and where the cargo ends up. A receptor may help select cargo, but binding alone cannot explain the movement.",
  misconception:"A macromolecule in a vesicle need not cross the phospholipid core.",hintCue:"Track the membrane around the cargo in each film."
 });
+additions.push({
+ id:"f170-division-variation",unit:"f170",area:1,section:"1.1.5",catchup:"1.1.5.meiosis",type:"single",level:"apply",
+ stem:"In a model germ cell, one homologue carries A and B together and the other carries a and b at the same two positions. After meiosis an intact chromosome carrying A and b is recovered. No mutations occurred. Which event explains that new combination on one chromosome?",
+ options:["Independent orientation of intact homologues at metaphase I, without exchange of DNA.","A crossover between the two positions on non-sister chromatids during prophase I.","Copying an intact AB chromosome during the interval between meiosis I and II.","Separating unchanged sister chromatids during mitosis."],correct:1,
+ model:"Crossing over between the loci can put A and b on the same chromatid.",
+ explain:"Independent orientation changes which whole homologues from different pairs travel together. It cannot alone rearrange two alleles on the same chromosome. Exchanging corresponding segments between homologues can.",
+ optionFeedback:["Orientation can change the combination across chromosomes. These markers are on the same chromosome.","","There is no additional S phase between the divisions. Copying an intact AB sequence also keeps the two alleles together.","Separating unchanged copies does not exchange their segments."],
+ misconception:"Recombination within a chromosome and assortment of entire homologues can give different evidence.",hintCue:"Are the two markers on one chromosome or on separate pairs?"
+});
 var ids=new Set(bank.questions.map(function(q){return q.id;}));
 additions.forEach(function(q){if(!ids.has(q.id)){bank.questions.push(q);ids.add(q.id);}});
 })();

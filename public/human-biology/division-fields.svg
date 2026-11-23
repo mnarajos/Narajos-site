@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="298" viewBox="0 0 360 298" role="img" aria-labelledby="title description">
+  <title id="title">Two cells from the same meiotic preparation</title>
+  <desc id="description">In field A, a long and a short doubled structure move to each end. Each doubled structure has two attached lengths. In field B, a long and a short single structure move to each end. Arrows show movement.</desc>
+  <rect x="0" y="0" width="360" height="298" rx="12" fill="#f8f7f3"/>
+  <g fill="#eaf2ef" stroke="#45616b" stroke-width="2"><rect x="18" y="32" width="324" height="104" rx="52"/><rect x="18" y="180" width="324" height="104" rx="52"/></g>
+  <g font-family="system-ui,sans-serif" font-size="18" font-weight="700" fill="#1c3041"><text x="18" y="23">Field A</text><text x="18" y="171">Field B</text></g>
+  <defs>
+    <g id="double" fill="none" stroke="#415773" stroke-width="5" stroke-linecap="round"><path d="M-7-17q0 9 5 17-5 9-5 17m14-34q0 9-5 17 5 9 5 17"/><path d="M-2 0h4" stroke-width="3"/></g>
+    <path id="single" d="M8-16-4 0 8 16" fill="none" stroke="#415773" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path id="arrow" d="M8 0H-8m5-5-5 5 5 5" fill="none" stroke="#314b4f" stroke-width="2.4" stroke-linejoin="round"/>
+  </defs>
+  <use href="#double" transform="translate(107 68)"/><use href="#double" transform="translate(106 109) scale(.68)"/>
+  <use href="#double" transform="translate(253 68)"/><use href="#double" transform="translate(254 109) scale(.68)"/>
+  <use href="#single" transform="translate(103 215)"/><use href="#single" transform="translate(103 253) scale(.68)"/>
+  <use href="#single" transform="translate(257 215) scale(-1 1)"/><use href="#single" transform="translate(257 253) scale(-.68 .68)"/>
+  <use href="#arrow" transform="translate(68 84)"/><use href="#arrow" transform="translate(292 84) scale(-1 1)"/>
+  <use href="#arrow" transform="translate(68 232)"/><use href="#arrow" transform="translate(292 232) scale(-1 1)"/>
+</svg>

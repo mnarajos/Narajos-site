@@ -604,3 +604,60 @@ window.KeystoneHumanLessons = {
     }
   });
 })();
+
+(function () {
+  const { choice, written } = window.KeystoneHumanTeaching;
+  const commons = "https://commons.wikimedia.org/wiki/File:";
+  const chromosomeSource = commons + "Condensation_and_resolution_of_human_sister_chromatids_in_early_mitosis.svg";
+  Object.assign(window.KeystoneHumanLessons, {
+    "f170/1.1.5": {
+      revision: 1,
+      goal: "Distinguish copying DNA from separating chromosomes, and support an interpretation of a real micrograph.",
+      activate: ["What changes during interphase?", "Cells grow, make proteins and copy their DNA during S (synthesis) phase. They continue preparing for division in G2. Individual chromosomes are usually too diffuse to distinguish in an ordinary light micrograph of interphase."],
+      explain: ["One unreplicated chromosome contains one double-stranded DNA molecule. After S phase it has two sister chromatids held together around their centromere regions. It is still one replicated chromosome. A chromatid runs lengthways along the chromosome.",
+        "In prophase, chromosomes condense and the spindle begins to form. Once the nuclear envelope breaks down, spindle fibres attach at the centromere regions. In metaphase the chromosomes align at the equator. In anaphase sister chromatids separate. Each is now a daughter chromosome. In telophase nuclei re-form around the two sets.",
+        "Mitosis divides the nucleus. Cytokinesis divides the cytoplasm and can overlap the end of mitosis. An animal cell forms a cleavage furrow. A plant cell forms a cell plate. Early erythroblasts in marrow can divide. Mature human erythrocytes have lost their nucleus and cannot enter another mitosis."],
+      photo: {src:"/assets/micrographs/hb-chromosome-sem.webp",width:230,height:268,alt:"Scanning electron micrograph of an isolated human metaphase chromosome. Two ridged lengths run alongside each other and narrow near the same point, closer to one end.",source:chromosomeSource,credit:"Adrian T. Sumner, figure by David O. Morgan",licence:"Attribution terms",licenceUrl:chromosomeSource+"#Licensing",changes:"Metaphase panel cropped and converted to WebP"},
+      modelTitle: "Count one replicated chromosome in an electron micrograph",
+      model: ["Follow one sister chromatid from one tip through the narrow region to its other tip. The short and long arms on that side belong to the same chromatid.",
+        "Trace the other length. The two sisters are closely joined near the constriction, the centromere region. This is one replicated chromosome with two DNA molecules.",
+        "In a model body cell with four chromosomes before S phase, the replicated cell has four chromosomes and eight DNA molecules before separation. At the end of mitosis and cytokinesis, each daughter has four chromosomes and four DNA molecules."],
+      guided: choice("A marrow cell's DNA content doubles. Later, two nuclei form inside a single outer cell boundary. What has happened at this point?", 1,
+        [["DNA replication alone made the two nuclei.", "S phase copies DNA. The two sets must subsequently separate to form nuclei."], ["DNA has been replicated and nuclear division has occurred. Cytokinesis is still incomplete.", ""], ["Two daughter cells already exist because two nuclei are visible.", "Check whether there are two separate cell boundaries."]],
+        "Count nuclei and cell boundaries separately. DNA copying precedes division.", ["Which evidence concerns DNA, a nucleus or a whole cell?"]),
+      apply: {...written("In the onion-root field, compare the cell just right of centre in the upper part with a neighbouring cell that has a round, evenly outlined nucleus. Which visible evidence supports mitosis in the first cell? Can this photograph show that DNA is being copied in its neighbour?",
+        ["The upper cell contains distinct condensed rods concentrated across a central region.", "There are no two clearly separated groups at opposite ends. The arrangement is consistent with an alignment stage of mitosis.", "A single image of a diffuse nucleus cannot establish S phase or active DNA synthesis."],
+        "The dark chromosome profiles are individually visible and gathered near the middle. That supports mitosis, with an arrangement consistent with metaphase. The neighbouring intact nucleus could be in interphase, but its appearance does not distinguish G1, S and G2. A convincing description of the visible evidence is more important here than a precise stage label.",
+        ["Use the positions of the stained structures. Which claim would require tracking DNA synthesis?"]),
+        photo: {src:"/assets/micrographs/hb-root-field.webp",width:840,height:630,alt:"Light micrograph of onion-root cells. Above the centre and slightly to the right, dark short curved rods cluster across one cell. Several neighbouring cells have rounded nuclei with a diffuse, speckled interior.",source:commons+"Mitosis_in_Onion_Root_various_stages_(Metaphase).jpg",credit:"Natalierussell77",licence:"CC BY-SA 4.0",licenceUrl:"https://creativecommons.org/licenses/by-sa/4.0/"}
+      },
+      further: [["catchup/f170/1.1.5.meiosis","Compare the two meiotic divisions"],["catchup/f170/1.1.2","Revisit microscope choice and resolution"]]
+    },
+    "f170/1.1.5.meiosis": {
+      revision: 1, title: "Follow homologues and sister chromatids through meiosis",
+      goal: "Identify what separates in each division and predict what each resulting nucleus contains.",
+      prior: ["f170/1.1.5","Trace one replicated chromosome"],
+      explain: ["Homologous chromosomes carry the same genes at corresponding positions. They can carry different alleles. In prophase I homologues pair and non-sister chromatids can exchange corresponding DNA segments (crossing over).",
+        "In metaphase I homologous pairs line up. Each pair can face either way independently of the other pairs. In anaphase I the homologues move apart while sisters stay joined. By telophase I each pole has one chromosome of each pair.",
+        "There is no new S phase between divisions. In prophase II new spindles form. In metaphase II individual duplicated chromosomes align. In anaphase II sisters separate. By telophase II each new nucleus has a single set of unduplicated chromosomes. Cytokinesis can be unequal, as in human oocyte formation."],
+      table: {caption:"A model cell starts with two homologous pairs",head:["Moment","Chromosomes per nucleus","DNA molecules per nucleus"],rows:[
+        ["Before S phase","4","4"],["After S phase","4","8"],["After division I","2","4"],["After division II","2","2"]
+      ]},
+      focusCells:[["0:0","1:0","0:1","1:1"],["2:0","2:1"],["3:0","3:1"]],
+      modelTitle: "Follow one long pair and one short pair",
+      model: ["Call the two homologues of each pair maternal and paternal. Copying them makes sisters. The cell still has two long homologues and two short homologues.",
+        "In division I, each pole receives one long and one short chromosome, each still duplicated. Independent orientation allows either long homologue to travel with either short one.",
+        "In division II the sisters separate. Each product has one long and one short chromosome, each containing one DNA molecule. Crossing over can give a chromatid a new combination of alleles."],
+      guided: choice("In a different model, a nucleus just after meiosis I has three chromosomes. Each is still duplicated. How many DNA molecules are present?", 2,
+        [["Three, because a chromosome always contains one DNA molecule.", "Each duplicated chromosome here still has two chromatids."], ["Twelve, because DNA is copied again before meiosis II.", "There is no second S phase before meiosis II."], ["Six, one in each of the two chromatids of each chromosome.", ""]],
+        "Three duplicated chromosomes each have two DNA molecules.", ["Track a single duplicated chromosome before multiplying."]),
+      apply:{...written("Fields A and B are from different cells in one meiotic preparation with two homologous pairs. Arrows show movement. Identify the division in each field. Explain your decision and predict the chromosome and DNA-molecule counts at one pole in A.",
+        ["In A, doubled structures move apart with sisters joined. Homologues separate in anaphase I.", "In B, the moving structures are single. Sisters have separated in anaphase II.", "One pole in A contains two duplicated chromosomes, so it has four DNA molecules."],
+        "A fits anaphase I because each moving chromosome retains two attached chromatids. At one pole the long and the short chromosome together carry four DNA molecules. B fits anaphase II because the moving chromosomes are single former chromatids. Count what travels to one pole, not everything in the cell.",
+        ["Trace the long structure in each field. How many lengths remain attached?"]),
+        illustration:{src:"/human-biology/division-fields.svg",width:360,height:298,alt:"Two unlabelled stages. A has a long and a short doubled structure moving towards each end. B has a long and a short single structure moving towards each end."}
+      },
+      practice:"f170-division-variation"
+    }
+  });
+})();

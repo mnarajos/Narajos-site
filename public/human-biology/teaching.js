@@ -69,7 +69,7 @@
     return '<figure class="hb-teach-photo"><img src="' + escape(photo.src) + '" alt="' +
       escape(photo.alt) + '" width="' + photo.width + '" height="' + photo.height + '" loading="lazy" decoding="async">' +
       '<figcaption>' + (field ? '<strong>Field ' + field + '</strong> · ' : '') + '<a href="' + escape(photo.source) + '">' + escape(photo.credit) + '</a> · ' +
-      '<a href="' + escape(photo.licenceUrl) + '">' + escape(photo.licence) + '</a> · Resized and converted to WebP</figcaption></figure>';
+      '<a href="' + escape(photo.licenceUrl) + '">' + escape(photo.licence) + '</a> · ' + escape(photo.changes || 'Resized and converted to WebP') + '</figcaption></figure>';
   }
 
   function writingExample(example) {

@@ -347,6 +347,7 @@ var buildPractice={
  "f170/1.1.1":"p-cell-stem-benefits",
  "f170/1.1.2":"p-cell-actual-width",
  "f170/1.1.3":"p-cell-protein-route",
+ "f170/1.1.5":"p-cell-stage-metaphase",
  "f170/2.1.2":"p-phys-heart-septum",
  "f170/2.1.3":"p-phys-homeostasis-cross",
  "f170/2.2.2":"p-phys-homeostasis-cross",
