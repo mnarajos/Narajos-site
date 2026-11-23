@@ -9,7 +9,7 @@ function elem(id){if(id==="main")return main;return elements[id]||(elements[id]=
 const document={getElementById:elem,querySelectorAll(){return[];},addEventListener(name,fn){events["doc:"+name]=fn;},createElement(){return {className:"",setAttribute(){},textContent:""};}};
 const location={hash:"#home",assign(x){this.hash=x;}};
 const window={addEventListener(name,fn){events[name]=fn;},scrollTo(){}};
-const store={getItem(k){return data.get(k)||null;},setItem(k,v){data.set(k,String(v));},removeItem(k){data.delete(k);}};
+const store={get length(){return data.size;},key(i){return [...data.keys()][i]||null;},getItem(k){return data.get(k)||null;},setItem(k,v){data.set(k,String(v));},removeItem(k){data.delete(k);}};
 const c=vm.createContext({window,document,location,localStorage:store,Date,Math,console,setTimeout:fn=>fn()});
 function load(p){vm.runInContext(read(p),c,{filename:p});}
 load("assets/spaced-review.js");
@@ -42,10 +42,34 @@ assert(help.includes("Vaccine types")&&help.includes("Key idea 1"),"Vaccine type
 companion.route("catchup/f171",h=>{help=h;});
 assert(help.includes("Immune dysfunction")&&help.includes("Vaccine types"),"Missing F171 subsections from catch-up navigation");
 
-assert.equal(db.questions.length,552);
-assert.equal(db.questions.filter(q=>q.unit==="f170").length,252);
-assert.equal(db.questions.filter(q=>q.unit==="f171").length,222);
-for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,13,u+" knowledge bank missing");
+// Every generated topic practice link must open a queue at the requested scope.
+for(const unit of ["f170","f171","f172","f173","f174","f175","f176","f177"]){
+ companion.route("catchup/"+unit,h=>{help=h;});
+ const topics=[...new Set([...help.matchAll(/href="#(catchup\/f17[0-7]\/[a-z0-9.]+)"/g)].map(m=>m[1]))];
+ assert(topics.length>=3,unit);
+ for(const topic of topics){
+  companion.route(topic,h=>{help=h;});
+  const href=help.match(/href="#(challenge\/f17[0-7]\/[a-z0-9.]+\?from=catchup[^"]+)"/)?.[1];
+  assert(href,"No practice route for "+topic);
+  const scope=href.split("?")[0].split("/")[2];
+  assert.equal(scope,companion.topicPracticeScope(unit,topic.split("/")[2]),topic);
+  app.route(href,h=>{main.innerHTML=h;});
+  const state=JSON.parse(data.get("narajos-human-challenge-v2-session-topic-"+unit+"/"+scope));
+  assert.equal(state.returnTo,topic);
+  assert(main.innerHTML.includes('href="#'+topic+'"')&&main.innerHTML.includes("Return to the catch-up lesson"));
+  assert(state.queue.every(id=>{
+   const q=db.questions.find(q=>q.id===id);
+   return q&&q.unit===unit&&(scope.startsWith("a")?q.area===+scope.slice(1):q.section===scope);
+  }),topic);
+  app.pause();app.route(href,h=>{main.innerHTML=h;});
+  assert.deepEqual(JSON.parse(data.get("narajos-human-challenge-v2-session-topic-"+unit+"/"+scope)).queue,state.queue);
+  app.discard();
+ }
+}
+assert.equal(db.questions.length,569);
+assert.equal(db.questions.filter(q=>q.unit==="f170").length,254);
+assert.equal(db.questions.filter(q=>q.unit==="f171").length,231);
+for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,u==="f175"?15:["f172","f173","f176","f177"].includes(u)?14:13,u+" knowledge bank missing");
 assert.deepEqual([...new Set(db.questions.map(q=>q.type))].sort(),["best","diagram","match","multi","number","order","short","single","sort","written"].sort());
 const ids=new Set();
 const validUnits=new Set(["f170","f171","f172","f173","f174","f175","f176","f177"]);
@@ -77,6 +101,20 @@ for(const q of db.questions){
  if(q.type==="number")assert(Number.isFinite(q.correct)&&q.answerUnit!==undefined,"Missing numeric answer and units: "+q.id);
  if(q.type==="best")assert(q.options.length===4&&q.reasons.length===4&&q.correct>=0&&q.correct<q.options.length&&q.reasonCorrect>=0&&q.reasonCorrect<q.reasons.length,"Two-stage reasoning needs four options in both steps: "+q.id);
  if(q.warmup)assert(q.level==="warmup"&&q.type==="single","Warm-up should be a low-load single-answer question");
+ if(q.optionFeedback){
+  assert.equal(q.optionFeedback.length,q.options.length,q.id);
+  const correct=[].concat(q.correct);
+  for(const [index,feedback] of q.optionFeedback.entries())assert.equal(Boolean(feedback),!correct.includes(index),q.id+" feedback for option "+index);
+ }
+ if(q.numberFeedback){
+  assert.equal(q.type,"number",q.id);
+  for(const [value,message] of q.numberFeedback)assert(Number.isFinite(value)&&value!==q.correct&&message,q.id);
+ }
+ if(q.comparison){
+  assert(q.caseTitle&&q.comparison.order.includes("model")&&q.comparison.order.includes("partial"),q.id);
+  assert(q.comparison.notes.length&&q.comparison.comparison,q.id);
+  for(const note of q.comparison.notes)assert(q.model.includes(note[2]),q.id+" annotation should quote the model");
+ }
  if(q.type==="multi")assert(Array.isArray(q.correct)&&q.correct.length>=2,"Invalid multi-answer: "+q.id);
  if(q.type==="match")assert(q.pairs.length>=2,"Too few match pairs: "+q.id);
  if(q.type==="sort")assert(q.groups.length>=2&&q.rows.length>=4&&q.rows.every(r=>Number.isInteger(r[1])&&r[1]>=0&&r[1]<q.groups.length),"Invalid sort: "+q.id);
@@ -91,6 +129,8 @@ assert.equal(db.questions.find(q=>q.id==="health-parkinsons-therapy").marks,6);
 assert.equal(db.questions.find(q=>q.id==="health-care-records").marks,9);
 const knowledgeQuestions=db.questions.filter(q=>/^f17[2-7]$/.test(q.unit));
 assert(knowledgeQuestions.every(q=>q.knowledgeOnly),"Knowledge-only unit item missing safety scope");
+assert(knowledgeQuestions.every(q=>!q.marks&&!q.levelsNote&&!q.caseTitle),
+ "NEA knowledge practice must use general questions and unmarked self-review");
 assert(!knowledgeQuestions.some(q=>/draft|complete the coursework|report for your assignment|submit your assignment|meet the assessment criteria/i.test(q.stem)),"Assessment-writing task leaked into knowledge bank");
 assert(knowledgeQuestions.filter(q=>q.figure).length>=6,"Each NEA-unit knowledge bank needs visual understanding checks");
 assert(db.questions.filter(q=>["single","diagram","best"].includes(q.type)).every(q=>q.options.length===4),"Four-option rule not met");
@@ -189,7 +229,7 @@ assert(main.innerHTML.includes("Hint 1"),"A learner-controlled hint should appea
 assert(JSON.parse(data.get("narajos-human-challenge-v2-session")).hintsUsed[record.queue[0]]===1,"Hint use should be recorded on the local session");
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"skip"}}:null;}}});
 assert(main.innerHTML.includes("Expected answer"),"Answer reveal failed");
-assert(main.innerHTML.includes("Here’s how it works"),"Unknown answers should not be treated as punitive errors");
+assert(main.innerHTML.includes("Explanation revealed"),"Unknown answers should not be treated as punitive errors");
 const afterSkip=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 for(const id of Object.keys(afterSkip.quickCheckIds)){const next=db.questions.find(q=>q.id===id),missed=db.questions.find(q=>q.id===record.queue[0]);assert.equal(next.family,missed.family,"A warm-up follow-up must test the same idea");assert.equal(next.level,"warmup","A missed warm-up must not trigger a harder follow-up");}
 assert(afterSkip.queue.includes(record.queue[0]),"Missed warm-up should be returned to later");
@@ -198,7 +238,7 @@ assert(window.KeystoneHumanChallenge.stats("f170").weak>=1,"Not sure should reco
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"next"}}:null;}}});
 record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert(record.index>=1,"Question did not advance");
-assert.equal(window.KeystoneHumanChallenge.questionCount,552);
+assert.equal(window.KeystoneHumanChallenge.questionCount,569);
 // Verify the entire deterministic answer flow, not merely presence of new item types.
 function forcedQuestion(id){
  const q=db.questions.find(x=>x.id===id);assert(q,"Unknown forced test item: "+id);
@@ -213,6 +253,56 @@ main.querySelector=selector=>selector==='input[name="kbest"]:checked'?{value:Str
 clickAction("check");
 assert(main.innerHTML.includes("Correct")&&main.innerHTML.includes("Expected answer"),"Two-step answer should require both correct components");
 assert(JSON.parse(data.get("narajos-human-challenge-v2-progress"))[best.id].independent===1,"Correct independent reasoning should be counted");
+const written=forcedQuestion("health-parkinsons-therapy");
+main.querySelector=selector=>selector==="#k-number, #k-text, #k-written"?{value:"Treatment can reduce tremor."}:null;
+clickAction("reveal");
+assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-progress"))[written.id],undefined,"Opening the model must not record an outcome");
+assert(main.innerHTML.includes("Your answer")&&main.innerHTML.includes("Treatment can reduce tremor."));
+mainEvents.change({target:{matches:selector=>selector==="[data-review-criterion]",dataset:{reviewCriterion:"0"},value:"work"}});
+mainEvents.input({target:{matches:selector=>selector==="#k-revised",value:"Revision after comparing."}});
+app.pause();app.route("challenge/f171/a2",html=>{main.innerHTML=html;});
+assert(main.innerHTML.includes("Revision after comparing.")&&main.innerHTML.includes('value="work" selected'));
+clickAction("finish-review");
+assert(main.innerHTML.includes("Self-review complete"));
+clickAction("finish-review");
+clickAction("next");
+const reviewProgress=JSON.parse(data.get("narajos-human-challenge-v2-progress"))[written.id];
+assert.equal(reviewProgress.selfReviewed,1);
+assert.equal(reviewProgress.independent,0);
+assert.equal(reviewProgress.checked,0,"Written reviews must not enter objective accuracy");
+assert.match(main.innerHTML,/No objective first submissions were recorded/);
+assert.match(main.innerHTML,/<dt>self-reviewed<\/dt><dd>1<\/dd>/);
+app.route("challenge/review",h=>main.innerHTML=h);
+assert.match(main.innerHTML,/<dt>self-reviewed<\/dt><dd>1<\/dd>/);
+assert(!data.get("narajos-human-challenge-v2-completed").includes("Revision after comparing."));
+
+clickAction("self-good");
+assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-progress"))[written.id].seen,1,"Repeated review must not create another attempt");
+// Legacy records with unreliable provenance remain available as history.
+const legacy=forcedQuestion("health-care-records");
+let legacySave=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+legacySave.first={[legacy.id]:true};legacySave.correctFirst=1;delete legacySave.outcomes;delete legacySave.objectiveFirst;
+data.set("narajos-human-challenge-v2-session",JSON.stringify(legacySave));
+app.pause();app.route(legacySave.route,h=>main.innerHTML=h);
+main.querySelector=selector=>selector==="#k-number, #k-text, #k-written"?{value:"Consider consent and confidentiality."}:null;
+clickAction("reveal");
+legacySave=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.equal(legacySave.correctFirst,0);
+assert.deepEqual(legacySave.objectiveFirst,{});
+assert.equal(legacySave.first[legacy.id],false);
+const sequence=forcedQuestion("f175-early");
+let sequenceSave=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+sequenceSave.answers[sequence.id].order=[0,1,2,3]; // a pre-Batch-10 saved draft
+data.set("narajos-human-challenge-v2-session",JSON.stringify(sequenceSave));
+app.pause();app.route(sequenceSave.route,h=>main.innerHTML=h);
+sequenceSave=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.equal(sequenceSave.answers[sequence.id].order.length,5);
+sequenceSave.answers[sequence.id].order=[0,1,2,3,4];
+data.set("narajos-human-challenge-v2-session",JSON.stringify(sequenceSave));
+app.pause();app.route(sequenceSave.route,h=>main.innerHTML=h);
+clickAction("check");
+assert.match(main.innerHTML,/<li>Fertilisation<\/li><li>Cleavage.*<\/li><li>Blastocyst formation.*<\/li><li>Implantation.*<\/li><li>Continued embryonic development<\/li>/);
+assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-session")).lastResult,true);
 const warm=forcedQuestion("warm-f170-cells");
 main.querySelector=()=>null;main.querySelectorAll=()=>[{value:String(warm.correct)}];
 unlockHintClock();clickAction("hint");assert(main.innerHTML.includes("Hint 1"),"Warm-up should offer a hint");
@@ -253,21 +343,54 @@ const physical=forcedQuestion("warm-f170-cells");
 main.querySelector=selector=>selector==='input[name="kchoice"]:checked'?{value:String(physical.correct)}:null;
 main.querySelectorAll=selector=>selector==='input[name="kchoice"]:checked'?[{value:String(physical.correct)}]:[];
 mainEvents.click({detail:1,target:{closest(selector){return selector===".k-option"?{}:null;}}});
-assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-session")).phase,"feedback","First correct physical tap should auto-check");
+assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-session")).phase,"ask","A correct first selection waits for submission");
+clickAction("check");clickAction("check");
+let submitted=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.deepEqual(submitted.outcomes,{"0":"independent"});
+assert.equal(submitted.correctFirst,1);
+app.pause();app.route(submitted.route,h=>main.innerHTML=h);
+assert(main.innerHTML.includes("Expected answer")&&main.innerHTML.includes("Next question"));
+clickAction("check");
+assert.deepEqual(JSON.parse(data.get("narajos-human-challenge-v2-session")).outcomes,submitted.outcomes);
 const falseFirst=forcedQuestion("warm-f170-physiology");
 main.querySelector=selector=>selector==='input[name="kchoice"]:checked'?{value:String((falseFirst.correct+1)%4)}:null;
 main.querySelectorAll=()=>[{value:String((falseFirst.correct+1)%4)}];
 mainEvents.click({detail:1,target:{closest(selector){return selector===".k-option"?{}:null;}}});
 let wrongState=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert.equal(wrongState.phase,"ask","First wrong tap should remain unanswered");
-assert.equal(wrongState.quickTapAttempted,true,"Wrong first tap must disable further automatic grading");
+assert.equal(Object.keys(wrongState.first).length,0,"Changing a selection before Check is not a graded correction");
 main.querySelector=selector=>selector==='input[name="kchoice"]:checked'?{value:String(falseFirst.correct)}:null;
 main.querySelectorAll=()=>[{value:String(falseFirst.correct)}];
 mainEvents.click({detail:1,target:{closest(selector){return selector===".k-option"?{}:null;}}});
 assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-session")).phase,"ask","Correcting an earlier wrong tap should require Check");
 clickAction("check");
-assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-session")).phase,"feedback","Check should credit the corrected answer");
+submitted=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.equal(submitted.phase,"feedback");
+assert.deepEqual(submitted.outcomes,{"0":"independent"},"Check grades the submitted answer only");
 
+const sort=forcedQuestion(db.questions.find(q=>q.type==="sort").id);
+let wrongRow=true;
+main.querySelector=selector=>{
+ const index=selector.match(/ksort-(\d+)/)?.[1];
+ if(index===undefined)return null;
+ return {value:String(wrongRow&&index==="0"?(sort.rows[0][1]+1)%sort.groups.length:sort.rows[+index][1])};
+};
+clickAction("check");
+assert(main.innerHTML.includes("1 row needs another look")&&!main.innerHTML.includes("Expected answer"));
+clickAction("correct");
+let sorting=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.deepEqual(sorting.answers[sort.id].correction,Array.from(sort.rows,(_,i)=>i!==0));
+assert(main.innerHTML.includes("Review this row")&&main.innerHTML.includes("Correct so far"));
+app.pause();app.route(sorting.route,h=>main.innerHTML=h);
+assert(main.innerHTML.includes("Review this row"),"Correction should restore the submitted work");
+wrongRow=false;
+clickAction("check");
+assert(main.innerHTML.includes("Correct after a retry"));
+sorting=JSON.parse(data.get("narajos-human-challenge-v2-session"));
+assert.equal(sorting.outcomes[0],"corrected");
+assert.equal(sorting.objectiveFirst[sort.id],"incorrect");
+clickAction("next");
+assert.match(main.innerHTML,/<dt>correct after a retry<\/dt><dd>1<\/dd>/);
 // Each new schematic must support feedback, without disclosing an answer in alt text.
 for(const id of ["f172-diagram-alleles","f173-diagram-blood","f174-diagram-glucose","f175-diagram-oviduct","f176-diagram-brain","f177-diagram-randomise"]){
  const question=forcedQuestion(id);
@@ -291,7 +414,7 @@ for(const family of db.families){
  const members=family.members.map(id=>db.questions.find(q=>q.id===id));
  assert.equal(new Set(members.map(q=>q.stem)).size,3,"Alternatives need distinct tasks: "+family.id);
  assert(members.every(q=>q.section===family.section&&q.objective===family.objective&&q.level===members[0].level),"Alternatives must preserve mapping and broad demand");
- assert(members.every(q=>Array.isArray(q.hints)&&q.hints.length===2&&q.hints.every(h=>h.length>30)),"Missing authored conceptual hints: "+family.id);
+ assert(members.every(q=>(q.hintCue?.length>30||Array.isArray(q.hints)&&q.hints.length===2&&q.hints.every(h=>h.length>30))),"Missing authored conceptual hints: "+family.id);
 }
 const recentVersions={};
 for(const unit of ["f170","f171"]){
@@ -322,7 +445,7 @@ forcedQuestion("cell-ser");
 assert(hintButton.hidden,"Hint must initially be invisible");
 assert(!main.innerHTML.includes("hint-wait")&&!main.innerHTML.includes("--hint-progress"),"Countdown/fill styling returned");
 tick(9999);assert(hintButton.hidden);
-mainEvents.input({target:{matches:()=>true,value:"starting an answer"}});
+mainEvents.input({target:{matches:selector=>selector.includes("#k-written"),value:"starting an answer"}});
 tick(20);assert(hintButton.hidden,"Activity must reset the ten-second inactivity period");
 tick(10000);assert(!hintButton.hidden,"Hint must appear after inactivity");
 assert.equal(hintButton.textContent,"Hint");
@@ -333,7 +456,16 @@ assert(main.innerHTML.includes("A new cell membrane needs material"),"First hint
 assert(hintButton.hidden,"More help must wait for another inactive interval");
 tick(10010);clickAction("hint");
 assert(main.innerHTML.includes("Separate the production of membrane lipids"),"Second hint must teach the prerequisite principle");
-console.log("Human Biology checks passed: 552 questions, 91 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
+// Exercise the learner-visible progression hints before submitting an answer.
+for(const id of ["p-cell-membrane-transport-challenge","p-health-screening-foundation","p-f171-monitoring-repeats-diagnostic",...["f172","f173","f174","f175","f176","f177"].map(unit=>db.questions.find(q=>q.unit===unit&&q.hintCue).id)]){
+ const question=forcedQuestion(id);
+ tick(10010);clickAction("hint");
+ assert(main.innerHTML.includes("Hint 1")&&!main.innerHTML.includes("Hint 2"),id);
+ tick(10010);clickAction("hint");
+ assert(main.innerHTML.includes("Hint 2")&&!main.innerHTML.includes("Expected answer"),id);
+ assert(question.hintCue&&!question.explain.includes(question.hintCue)&&!question.model.includes(question.hintCue),id);
+}
+console.log("Human Biology checks passed: 569 questions, 91 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
 
 
 // Point practice must preserve one biological idea while support is withdrawn.
@@ -363,3 +495,48 @@ for(const point of ladders.points){
 }
 app.discard();
 console.log("49 teaching-idea sequences passed: prior knowledge, misconception, same-idea rotating core, transfer challenge and exact resume.");
+
+// Validate the register against the same resources the site uses.
+load("human-biology/skills.js");
+load("human-biology/teaching.js");
+load("human-biology/teaching-f170.js");
+load("human-biology/teaching-f171.js");
+load("human-biology/teaching-knowledge.js");
+const register = readFileSync("docs/human-biology-curriculum-quality-register.md", "utf8");
+const files = ["f170","f171","f172","f173","f174","f175","f176","f177","shared-skills"];
+const expectedSections = [28,18,21,29,25,16,17,18,39];
+const validStatuses = new Set(["Verified","Taught","Practised","Represented","Gap","Review","Unresolved","Centre-only"]);
+const checkedRoutes = new Set();
+let mapped = 0;
+for (const [i, unit] of files.entries()) {
+ const path = "human-biology-curriculum/" + unit + ".md";
+ assert(register.includes("(" + path + ")"), "Unlinked register unit: " + unit);
+ const doc = readFileSync("docs/" + path, "utf8");
+ const headings = [...doc.matchAll(/^## (\S+)$/gm)].map(match => match[1]);
+ assert.equal(headings.length, expectedSections[i], "Coverage headings for " + unit);
+ const refs = new Set();
+ for (const row of doc.split("\n").filter(line => /^\| (?:\d|HSW|M\d|E-r)/.test(line))) {
+  const cells = row.split("|").slice(1, -1).map(cell => cell.trim());
+  const [id, requirement, demand, teachingRef, model, practice, representation, note, status] = cells;
+  assert.equal(cells.length, 11, row);
+  assert(!refs.has(id), "Duplicate curriculum row " + unit + "/" + id);
+  assert(headings.includes(id.replace(/-r\d+$/, "")), "Unmapped OCR reference: " + id);
+  assert(requirement && demand && note && validStatuses.has(status), "Incomplete curriculum row: " + id);
+  const route = teachingRef.match(/#catchup\/([a-z0-9./]+)\)/)?.[1];
+  if (status === "Verified") assert(route && model !== "—", "Verified row needs reviewed teaching evidence: " + id);
+  if (route && !checkedRoutes.has(route)) {
+   companion.route("catchup/" + route, html => { help = html; });
+   assert(help.includes("k-catchup-concept"), "Missing mapped lesson or recap: " + route);
+   checkedRoutes.add(route);
+  }
+  if (route && model !== "—") assert(window.KeystoneHumanLessons[route], "Missing worked lesson: " + route);
+  for (const [, item] of practice.matchAll(/`([^`]+)`/g)) {
+   assert(item.startsWith("skills:") ? window.KeystoneHumanSkills.get(item.slice(7)) : ids.has(item),
+    "Missing mapped practice evidence " + item + " in " + unit + "/" + id);
+  }
+  refs.add(id);
+  mapped++;
+ }
+ for (const heading of headings) assert([...refs].some(id => id.startsWith(heading + "-r")), "Empty curriculum section: " + heading);
+}
+console.log("Curriculum register checked " + mapped + " requirement rows, specification headings and live evidence identifiers.");

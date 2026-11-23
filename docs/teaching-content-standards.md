@@ -24,3 +24,11 @@ A visual can invite curiosity and discussion, show a scientific idea, or do both
 ## Checks and privacy
 
 Use deterministic checking for answers the software can judge reliably. For open scientific prose, give question-specific criteria, a model and a chance to revise. Treat understandable scientific errors as genuine attempts and use them to prompt feedback and reflection. Keep pupil drafts and progress on the device. Avoid bespoke speech controls and semantic marking claims.
+
+## Human Biology Catch-up
+
+For a process, measurement method, visual interpretation or judgement, start with a short prerequisite check. Provide the answer on the lesson so a learner can recover immediately. Explain the science in accessible language, then introduce the specialist term. Model the evidence to notice, the scientific principle that applies and the conclusion it supports. Include a useful check or a likely error.
+
+In supported practice, ask the learner to complete a step of the reasoning. Offer a clue that points to the next step. For independent practice, change the situation or representation and withdraw the worked steps. Give option-specific feedback or explicit written criteria, with a model the learner can compare after attempting the task. Offer a fresh independent check after help where useful. Keep written self-review distinct from objective first-attempt evidence.
+
+A definition can use a shorter sequence. Reuse existing diagrams, Skills Practice and Build Understanding where they already provide the right next step. Record the idea actually taught and the limits of its specification coverage.

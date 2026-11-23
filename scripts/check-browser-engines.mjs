@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { firefox, webkit } from "playwright";
+import { checkHumanReliability } from "./check-human-reliability.mjs";
 import { servePublic } from "./browser-test-site.mjs";
 
 const engine = process.argv[2];
@@ -11,6 +12,7 @@ let route = "/";
 const errors = [];
 
 try {
+  await checkHumanReliability(browser, base, { touch: engine === "webkit" });
   const page = await browser.newPage({
     viewport: { width: 320, height: 780 },
     hasTouch: true,
@@ -95,6 +97,31 @@ try {
   await reflex.getByRole("button", { name: "Next step" }).click();
   assert((await reflex.getByRole("status").innerText()).trim());
   await fits();
+
+  await open("/human-biology/?pilot=screening#catchup/f171/4.2.1");
+  await page.getByRole("button", { name: "See worked example", exact: true }).press("Enter");
+  const screening = page.locator("[data-hb-model-step]");
+  await screening.getByRole("button", { name: "Show next step", exact: true }).press("Enter");
+  assert.equal(await screening.locator(".hb-cell-focus").innerText(), "12");
+  await page.locator('[data-hb-stage="independent"] summary').press("Enter");
+  const response = page.locator('[data-hb-stage="independent"]');
+  await response.getByRole("radio", { name: /7 of 24/ }).check();
+  await response.getByRole("button", { name: "Check answer", exact: true }).press("Enter");
+  assert.match(await response.getByRole("status").innerText(), /Correct independently/);
+  assert(await response.getByRole("button", { name: "Check answer", exact: true }).isHidden());
+  await fits();
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await open("/human-biology/#catchup/f175/a1?stage=follicle");
+  const model = page.locator("#krp-model");
+  await model.getByRole("radio", { name: "The ovarian follicle." }).check();
+  await model.getByRole("button", { name: "Check prediction" }).press("Enter");
+  await model.getByRole("button", { name: /FSH Develop/ }).press("Enter");
+  assert.match(await model.locator(".krp-observation").innerText(), /follicle enlarges/);
+  await model.getByRole("button", { name: "Next checkpoint" }).press("Enter");
+  assert.equal(await model.getByLabel("Revisit a stage").inputValue(), "ovulation");
+  await fits();
+  await page.emulateMedia({ reducedMotion: "no-preference" });
 
   await open("/teaching/focused-writing/ks3/");
   const writing = page.locator('[data-writing-exercise="dye"][data-writing-kind="short"]');

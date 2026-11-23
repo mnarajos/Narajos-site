@@ -69,6 +69,7 @@ window.KeystoneHumanData={
           "points": [
             "A light microscope can examine live cells; electron microscopes offer much greater resolution but require extensive specimen preparation.",
             "TEM reveals thin internal sections; SEM provides detailed images of surfaces.",
+            "Preparation affects the evidence. Thin sections help transmitted light pass through and reduce overlap. Stains increase contrast. Observations of living motion need a preparation that preserves cell activity.",
             "Magnification = image size ÷ actual size. Differential centrifugation separates components by sedimentation; a haemocytometer estimates cell concentration from a known chamber volume."
           ],
           "cards": [

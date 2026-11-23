@@ -29,26 +29,36 @@
     }
   }
 
+  const icon = name => window.KeystoneHumanChallenge?.icon(name) || "";
   const paragraphs = lines => (lines || []).map(line => '<p>' + escape(line) + '</p>').join("");
   const list = lines => '<ul>' + lines.map(line => '<li>' + escape(line) + '</li>').join("") + '</ul>';
 
-  function table(data) {
+  function table(data, markCells) {
     if (!data) return "";
     return '<table class="hb-teach-table"><caption>' + escape(data.caption) + '</caption><thead><tr>' +
       data.head.map(cell => '<th scope="col">' + escape(cell) + '</th>').join("") + '</tr></thead><tbody>' +
-      data.rows.map(row => '<tr><th scope="row">' + escape(row[0]) + '</th>' +
-        row.slice(1).map(cell => '<td>' + escape(cell) + '</td>').join("") + '</tr>').join("") + '</tbody></table>';
+      data.rows.map((row, r) => '<tr><th scope="row">' + escape(row[0]) + '</th>' +
+        row.slice(1).map((cell, c) => '<td' + (markCells ? ' data-hb-cell="' + r + ':' + c + '"' : '') +
+          '>' + escape(cell) + '</td>').join("") + '</tr>').join("") + '</tbody></table>';
   }
 
-  function figure(photo) {
+  function figure(photo, field) {
     if (!photo) return "";
     return '<figure class="hb-teach-photo"><img src="' + escape(photo.src) + '" alt="' +
       escape(photo.alt) + '" width="' + photo.width + '" height="' + photo.height + '" loading="lazy" decoding="async">' +
-      '<figcaption><a href="' + escape(photo.source) + '">' + escape(photo.credit) + '</a> · ' +
+      '<figcaption>' + (field ? '<strong>Field ' + field + '</strong> · ' : '') + '<a href="' + escape(photo.source) + '">' + escape(photo.credit) + '</a> · ' +
       '<a href="' + escape(photo.licenceUrl) + '">' + escape(photo.licence) + '</a> · Resized and converted to WebP</figcaption></figure>';
   }
 
-  function task(stage, title, question) {
+  function writingExample(example) {
+    if (!example) return "";
+    return '<details class="hb-prerequisite hb-writing-example"><summary>' + escape(example.title) +
+      '</summary>' + paragraphs([example.prompt, example.choose].filter(Boolean)) + '<dl>' + example.responses.map(([name, response]) =>
+        '<dt><strong>' + escape(name) + '</strong></dt><dd>' + escape(response) + '</dd>').join("") +
+      '</dl><details><summary>Compare the reasoning</summary>' + paragraphs(example.compare) + '</details></details>';
+  }
+
+  function task(stage, title, question, sequence) {
     if (!question) return "";
     const id = "hb-" + stage;
     const choice = Array.isArray(question.options);
@@ -58,32 +68,49 @@
       '<textarea id="' + id + '" rows="4" maxlength="3000" aria-labelledby="' + id + '-prompt" required></textarea>';
     return '<details class="paper panel hb-teach-stage" data-hb-stage="' + stage + '"><summary>' + title +
       '</summary><form novalidate><fieldset><legend id="' + id + '-prompt">' + escape(question.prompt) +
-      '</legend>' + figure(question.photo) + table(question.table) + paragraphs(question.starter ? [question.starter] : []) +
+      '</legend>' + figure(question.photo) + (question.photos || []).map((photo, index) => figure(photo, index + 1)).join("") + table(question.table) + paragraphs(question.starter ? [question.starter] : []) +
       inputs + '</fieldset><ol class="hb-hints" hidden></ol><div class="actions hb-controls">' +
-      '<button type="submit" class="button primary">' + (choice ? "Check answer" : "Compare my explanation") + '</button>' +
+      '<button type="submit" class="button primary">' + (!choice && sequence ? icon("pen") : "") +
+      (choice ? "Check answer" : "Compare my explanation") + '</button>' +
       (question.hints?.length ? '<button type="button" class="button secondary" data-hb-action="hint">Get a hint</button>' : '') +
       '<button type="button" class="button quiet" data-hb-action="explain">Show explanation</button>' +
-      '</div><div class="hb-feedback" role="status" aria-atomic="true"></div></form></details>';
+      '</div><div class="hb-feedback" role="status" aria-atomic="true" tabindex="-1"></div>' +
+      '<div data-hb-review hidden></div><div class="actions hb-stage-next" hidden></div></form></details>';
+  }
+
+  function openStageButton(stage, label, style) {
+    return '<button type="button" data-hb-open="' + stage + '" class="button ' + style + '">' +
+      (stage === "model" ? icon("book") : "") + label + '</button>';
   }
 
   function render(lesson, context) {
+    const prior = lesson.prior ?
+      '<a href="#catchup/' + escape(lesson.prior[0]) + '">' + escape(lesson.prior[1]) + '</a>' : "";
     const activate = lesson.activate
       ? '<details class="hb-prerequisite"><summary>' + escape(lesson.activate[0]) + '</summary><p>' +
-        escape(lesson.activate[1]) + '</p>' + (lesson.prior ?
-          '<a href="#catchup/' + escape(lesson.prior[0]) + '">' + escape(lesson.prior[1]) + '</a>' : '') + '</details>' : '';
+        escape(lesson.activate[1]) + '</p>' + prior + '</details>' : prior;
     const explanation = '<section class="paper panel hb-teach-explain"><h2>Understand the idea</h2>' +
-      paragraphs(lesson.explain) + table(lesson.compare) + context.inline + '</section>';
+      paragraphs(lesson.explain) + table(lesson.compare) + context.inline +
+      (lesson.revision ? '<div class="actions hb-start">' + openStageButton("model", "See worked example", "primary") + '</div>' : '') +
+      '</section>';
+    const evidenceModel = lesson.revision && (lesson.focusCells || lesson.graph || lesson.visual === "model");
     const model = lesson.model?.length ?
-      '<details class="paper panel hb-teach-stage"><summary>I do · ' + escape(lesson.modelTitle || "Follow a worked example") +
-      '</summary>' + context.modelVisual + figure(lesson.photo) + table(lesson.table) +
+      '<details class="paper panel hb-teach-stage' + (evidenceModel ? ' hb-model-with-evidence' : '') +
+      '" data-hb-model-step="1"><summary>I do · ' + escape(lesson.modelTitle || "Follow a worked example") +
+      '</summary>' + context.modelVisual + figure(lesson.photo) +
+      (lesson.graph ? window.KeystoneHumanSkills.graphHTML(lesson.graph) : "") + table(lesson.table, lesson.focusCells) +
       '<ol class="hb-model-steps' + (lesson.nodes ? ' hb-model-path' : '') + '">' + lesson.model.map((step, i) =>
-        '<li' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
+        '<li value="' + (i + 1) + '"' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
         escape(step) + '</li>').join("") +
       '</ol>' + (lesson.model.length > 1 ?
-        '<button type="button" class="button secondary" data-hb-action="model">Show next step</button>' : '') + '</details>' : "";
-    return '<div class="hb-teaching"><p class="lead hb-objective">' + escape(lesson.goal) + '</p>' + activate +
+        '<button type="button" class="button secondary" data-hb-action="model">Show next step</button>' : '') +
+      (evidenceModel ? '<button type="button" class="button quiet hb-model-back" hidden>Previous step</button>' : '') +
+      (lesson.revision ? '<div class="actions" data-hb-after-model hidden>' +
+        openStageButton("guided", "Try with support", "primary") + '</div>' : '') + '</details>' : "";
+    return '<div class="hb-teaching' + (lesson.revision ? ' hb-teaching-sequence' : '') + '"><p class="lead hb-objective">' + escape(lesson.goal) + '</p>' + activate +
       explanation + model + context.method + task("guided", "We do · Try it with support", lesson.guided) +
-      task("independent", "You do · Apply it independently", lesson.apply) +
+      writingExample(lesson.writing) +
+      task("independent", "You do · Apply it independently", lesson.apply, lesson.revision) +
       '<div data-hb-followup hidden>' + task("followup", "Try a fresh check", lesson.followup) + '</div>' +
       context.related + '</div>';
   }
@@ -97,11 +124,35 @@
     selfReview: "Compare your reasoning with each point."
   };
 
-  function mount(key, lesson) {
+  function reviewFields(stage, question, state) {
+    const complete = state.outcome === "selfReview";
+    const checks = question.points.map((point, index) => {
+      const id = "hb-" + stage + "-criterion-" + index;
+      const value = state.criteria?.[index];
+      return '<li><label for="' + id + '">' + escape(point) + '</label><select id="' + id + '" data-hb-criterion="' +
+        index + '"' + (complete ? ' disabled' : '') + '><option value="">Choose</option>' +
+        '<option value="included"' + (value === "included" ? ' selected' : '') + '>Included</option>' +
+        '<option value="revise"' + (value === "revise" ? ' selected' : '') + '>Needs work</option></select></li>';
+    }).join("");
+    return '<h3 tabindex="-1">Review your explanation</h3><p>' + escape(question.prompt) +
+      '</p><div class="hb-review-answers">' +
+      '<section><h4>Your answer</h4><p>' + escape(state.original) + '</p></section>' +
+      '<section><h4>Model explanation</h4><p>' + escape(question.explanation) + '</p></section></div>' +
+      '<p>Compare the reasoning against each criterion.</p><ul>' + checks + '</ul>' +
+      '<label for="hb-' + stage + '-revision">Improve your answer (optional)</label>' +
+      '<textarea id="hb-' + stage + '-revision" data-hb-revision rows="4" maxlength="3000"' +
+      (complete ? ' readonly' : '') + '>' + escape(state.revised ?? state.original) + '</textarea>' +
+      (complete ? '<p>Your self-review is saved.</p>' : '<div class="actions"><button type="button" class="button primary" data-hb-action="finish-review">' + icon("check") + 'Finish review</button></div>');
+  }
+
+  function mount(key, lesson, reviewStep) {
     const root = main.querySelector(".hb-teaching");
     if (!root) return;
+    // Keep responses to earlier task versions separate from the new questions.
+    key += lesson.revision ? "/" + lesson.revision : "";
     const record = load()[key] || {};
     const questions = { guided: lesson.guided, independent: lesson.apply, followup: lesson.followup };
+    const recommended = root.querySelector("[data-hb-resume], [data-hb-build], [data-hb-practice]");
 
     function updateFollowup() {
       const state = record.independent;
@@ -109,9 +160,35 @@
         !state || !(state.wrong || state.hint || state.revealed || state.outcome === "selfReview");
     }
 
+    function nextAction(section, state) {
+      if (!lesson.revision) return;
+      const stage = section.dataset.hbStage;
+      const actions = section.querySelector(".hb-stage-next");
+      const completed = state.accepted || state.outcome === "selfReview";
+      const controls = section.querySelector(".hb-controls");
+      if (completed) controls.hidden = true;
+      actions.innerHTML = "";
+      if (completed && stage === "guided") {
+        actions.innerHTML = openStageButton("independent", "Apply it independently", "primary");
+      } else if (completed && stage === "independent" && !root.querySelector("[data-hb-followup]").hidden) {
+        actions.innerHTML = openStageButton("followup", record.followup?.accepted ? "Review fresh check" : "Try a fresh check", "primary");
+      } else if (completed && recommended) {
+        const next = document.createElement("a");
+        next.className = "button primary";
+        next.href = recommended.href;
+        next.textContent = recommended.hasAttribute("data-hb-resume") ? "Continue your saved questions" : "Continue to practice";
+        actions.append(next);
+      } else if (state.wrong || state.revealed) {
+        actions.innerHTML = openStageButton("model", "Revisit worked example", "quiet");
+      }
+      actions.hidden = !actions.hasChildNodes();
+    }
+
     function showState(section, state, question) {
       const hintList = section.querySelector(".hb-hints");
       const feedback = section.querySelector(".hb-feedback");
+      const review = section.querySelector("[data-hb-review]");
+      const comparing = state.original !== undefined;
       const count = state.hint || 0;
       hintList.hidden = !count;
       hintList.innerHTML = count ? question.hints.slice(0, count).map(hint => '<li>' + escape(hint) + '</li>').join("") : "";
@@ -127,14 +204,22 @@
         section.querySelector('button[type="submit"]').disabled = true;
       }
       if (state.note) html = '<p>' + escape(state.note) + '</p>';
-      if (state.outcome) {
+      if (state.outcome === "selfReview" && comparing) html = '<p>Self-review saved.</p>';
+      if (state.outcome && !comparing) {
         html = '<p><strong>' + outcomeLabels[state.outcome] + '</strong></p>' + html;
         if (question.points) html += list(question.points);
         html += '<p>' + escape(question.explanation) + '</p>';
       }
+      review.hidden = !comparing;
+      if (comparing) {
+        review.innerHTML = reviewFields(section.dataset.hbStage, question, state);
+        section.querySelector("fieldset").hidden = true;
+        section.querySelector(".hb-controls").hidden = true;
+      }
       feedback.innerHTML = html;
       feedback.classList.toggle("hb-feedback-visible", Boolean(html));
       updateFollowup();
+      nextAction(section, state);
     }
 
     root.querySelectorAll("[data-hb-stage]").forEach(section => {
@@ -142,6 +227,7 @@
       const question = questions[stage];
       const form = section.querySelector("form");
       const textarea = form.querySelector("textarea");
+      const detailedReview = lesson.revision && textarea;
       const state = record[stage] ||= {};
       if (textarea) textarea.value = state.draft || "";
       else if (Number.isInteger(state.selected)) {
@@ -149,32 +235,40 @@
         if (choice) choice.checked = true;
       }
 
-      form.addEventListener("input", () => {
-        if (textarea) state.draft = textarea.value;
-        else state.selected = Number(form.querySelector("input:checked").value);
+      form.addEventListener("input", event => {
+        const input = event.target;
+        if (input.matches("[data-hb-revision]")) state.revised = input.value;
+        else if (input.matches("[data-hb-criterion]")) (state.criteria ||= {})[input.dataset.hbCriterion] = input.value;
+        else if (input === textarea) state.draft = textarea.value;
+        else if (input.matches('input[type="radio"]')) state.selected = Number(input.value);
         save(key, record);
       });
 
       form.addEventListener("click", event => {
         const button = event.target.closest("[data-hb-action]");
-        if (!button) return;
-        if (button.dataset.hbAction === "hint") {
+        if (!button || button.hasAttribute("data-hb-open")) return;
+        if (button.dataset.hbAction === "finish-review") {
+          state.outcome = "selfReview";
+          state.note = "";
+        } else if (button.dataset.hbAction === "hint") {
           if ((state.hint || 0) >= question.hints.length) return;
           state.hint = (state.hint || 0) + 1;
         } else {
           state.revealed = true;
           state.note = "";
-          state.outcome ||= textarea ? "selfReview" : "explained";
+          state.outcome ||= textarea && !detailedReview ? "selfReview" : "explained";
         }
         save(key, record);
         showState(section, state, question);
+        if (button.dataset.hbAction === "finish-review") section.querySelector("[data-hb-review] h3").focus();
       });
 
       form.addEventListener("submit", event => {
         event.preventDefault();
         state.note = "";
         if (textarea) {
-          if (textarea.value.trim()) state.outcome = "selfReview";
+          if (detailedReview && textarea.value.trim()) state.original = textarea.value.trim();
+          else if (textarea.value.trim()) state.outcome = "selfReview";
           else state.note = "Write an explanation first, or show the model for help.";
         } else {
           const selected = form.querySelector("input:checked");
@@ -183,27 +277,70 @@
             state.note = question.options[Number(selected.value)][1];
             state.wrong = true;
           } else if (!state.outcome || state.outcome === "explained") {
+            state.accepted = true;
             state.outcome = state.revealed ? "explained" : state.wrong ? "corrected" :
               stage === "guided" || state.hint ? "guided" : stage === "followup" ? "followup" : "independent";
           }
         }
         save(key, record);
         showState(section, state, question);
+        if (state.original !== undefined) section.querySelector("[data-hb-review] h3").focus();
+        else if (lesson.revision && state.accepted) section.querySelector(".hb-feedback").focus();
       });
 
       showState(section, state, question);
     });
-    root.querySelector('[data-hb-action="model"]')?.addEventListener("click", event => {
-      const button = event.currentTarget;
-      const steps = button.previousElementSibling;
-      const next = steps.querySelector("[hidden]");
-      if (next) next.hidden = false;
-      else Array.from(steps.children).slice(1).forEach(step => { step.hidden = true; });
-      if (next) {
-        next.tabIndex = -1;
-        next.focus();
+    const modelButton = root.querySelector('[data-hb-action="model"]');
+    if (modelButton) {
+      const model = modelButton.closest("details");
+      const steps = modelButton.previousElementSibling;
+      const cells = Array.from(model.querySelectorAll("[data-hb-cell]"));
+      const advance = model.querySelector("[data-hb-after-model]");
+      const back = model.querySelector(".hb-model-back");
+      function showModelStep(index, focus) {
+        model.dataset.hbModelStep = index + 1;
+        Array.from(steps.children).forEach((step, i) => {
+          step.hidden = i > index;
+          if (i === index) step.setAttribute("aria-current", "step");
+          else step.removeAttribute("aria-current");
+        });
+        const active = lesson.focusCells?.[index] || [];
+        cells.forEach(cell => cell.classList.toggle("hb-cell-focus", active.includes(cell.dataset.hbCell)));
+        const finished = index === steps.children.length - 1;
+        if (back) back.hidden = index === 0;
+        modelButton.textContent = finished ? "Replay example" : "Show next step";
+        if (advance) {
+          advance.hidden = !finished;
+          modelButton.classList.toggle("primary", !finished);
+          modelButton.classList.toggle("secondary", finished);
+        }
+        if (focus) {
+          steps.children[index].tabIndex = -1;
+          steps.children[index].focus();
+        }
       }
-      button.textContent = steps.querySelector("[hidden]") ? "Show next step" : "Replay example";
+      modelButton.addEventListener("click", () => {
+        const next = Array.from(steps.children).findIndex(step => step.hidden);
+        showModelStep(next < 0 ? 0 : next, true);
+      });
+      back?.addEventListener("click", () => showModelStep(Number(model.dataset.hbModelStep) - 2, true));
+      if (reviewStep) {
+        model.open = true;
+        showModelStep(Math.min(reviewStep, steps.children.length) - 1, true);
+      } else showModelStep(0, false);
+    }
+    root.addEventListener("click", event => {
+      const button = event.target.closest("[data-hb-open]");
+      if (!button) return;
+      const id = button.dataset.hbOpen;
+      const next = id === "model" ? root.querySelector("[data-hb-model-step]") :
+        root.querySelector('[data-hb-stage="' + id + '"]');
+      if (!next) return;
+      root.querySelectorAll("details.hb-teach-stage[open]").forEach(stage => {
+        if (stage !== next) stage.open = false;
+      });
+      next.open = true;
+      next.querySelector("summary").focus();
     });
     updateFollowup();
   }

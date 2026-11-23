@@ -5,11 +5,26 @@ var root=window.KeystoneHumanData,bank=window.KeystoneHumanChallenges,other=wind
 if(!root||!bank||!other)return;
 var notes={
   "f171": {
+    "1.2.1": {
+      title: "How airway and alveolar damage affect breathing",
+      lines: ["Airway narrowing can reduce airflow. Loss of alveolar walls reduces the area for gas exchange.", "A symptom can have more than one cause. Compare the function measured with the tissue affected."]
+    },
+    "4.1": {
+      title: "Choosing a physiological measurement",
+      lines: ["Spirometry, peak flow and pulse oximetry measure different features.", "Check the measurement conditions and distinguish a reading from a clinical conclusion."]
+    },
     "2.1": {
       "title": "Choosing a treatment",
       "lines": [
         "A cast immobilises the injured part to protect alignment while bone heals. Plaster moulds closely; fibreglass is generally lighter and more durable. A waterproof outer shell does not make the entire cast waterproof.",
         "Surgery can treat a local tumour or relieve pressure at its site. A systemic drug can reach cancer cells at several sites. Treatment decisions consider the location of disease, likely response, adverse effects, and recovery time."
+      ]
+    },
+    "2.2": {
+      "title": "Managing symptoms and function",
+      "lines": [
+        "Management therapies can relieve symptoms or support quality of life.",
+        "An improvement in function can be valuable even when the underlying condition persists."
       ]
     },
     "2.3": {
@@ -188,11 +203,15 @@ var notes={
     }
   },
   "f175": {
+    "2.1": {
+      title: "First antenatal appointment and later monitoring",
+      lines: ["Booking history supplies context for later care. Starting measurements provide a baseline.", "Later measures can address a separate question about fetal growth or a possible condition."]
+    },
     "a1": {
       "title": "Conception and pregnancy",
       "lines": [
         "An oviduct is also called a Fallopian tube or uterine tube. Fertilisation usually occurs within an oviduct.",
-        "After fertilisation, the early embryo divides and later implants within the uterine lining.",
+        "The zygote begins cleavage as it travels towards the uterus. The embryo develops into a blastocyst that may implant in the uterine lining. Development continues after implantation.",
         "FSH supports follicle development, while a surge in LH normally triggers ovulation."
       ]
     },
@@ -298,11 +317,49 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){retur
 function crumb(to,text){return '<p class="crumb"><a href="#'+esc(to)+'">← '+esc(text)+'</a></p>';}
 function unitKind(unit){return unit==="f170"||unit==="f171"?"Externally assessed":"NEA knowledge support";}
 function lessonFor(unit,id){return (window.KeystoneHumanLessons||{})[unit+"/"+id];}
-function resumeLinks(){
+var buildPractice={
+ "f170/1.1.2":"p-cell-actual-width",
+ "f170/1.1.3":"p-cell-protein-route",
+ "f170/2.1.2":"p-phys-heart-septum",
+ "f170/2.1.3":"p-phys-homeostasis-cross",
+ "f170/2.2.2":"p-phys-homeostasis-cross",
+ "f170/2.2.3":"p-phys-peakflow-technique",
+ "f170/3.1.1":"p-endo-insulin-loop",
+ "f170/3.1.2":"p-endo-type1",
+ "f170/3.3.1":"p-endo-gametes",
+ "f170/4.1.4":"p-micro-culture-phases",
+ "f171/1.2.1":"p-health-copd",
+ "f171/4.1":"p-health-bp-repeat",
+ "f171/2.1":"p-f171-local-systemic",
+ "f171/2.2":"p-health-parkinsons-therapy",
+ "f171/a2":"p-f171-local-systemic",
+ "f171/2.3":"p-f171-treatment-prevention",
+ "f171/a3":"p-f171-antigen-antibody-complex",
+ "f171/3.2.1":"p-f171-transplant-immunosuppression",
+ "f171/3.2.2":"p-f171-vaccine-types",
+ "f171/4.2.1":"p-health-screening",
+ "f171/a4":"p-f171-monitoring-repeats",
+ "f171/4.2.2":"p-f171-monitoring-repeats",
+ "f171/a5":"p-f171-research-designs"
+};
+function practiceScope(unit,id){
+ var point=buildPractice[unit+"/"+id];
+ return point&&window.KeystoneHumanProgressions?.get(point)?point:null;
+}
+function topicPracticeScope(unit,id){
+ return ({"f173/a3":"3.4","f177/a3":"2.6"})[unit+"/"+id]||id;
+}
+function buildLink(unit,id,origin){
+ var scope=practiceScope(unit,id);
+ return scope?'<a data-hb-build href="#challenge/'+esc(unit)+'/'+esc(scope)+'?from='+esc(origin)+'">Build understanding</a>':"";
+}
+function questionReturn(origin){
  var engine=window.KeystoneHumanChallenge;
- var back=engine&&engine.resumeRoute();
+ return engine&&(engine.resumeRoute(origin)||engine.resumeRoute(origin.replace(/\/\d+$/,"")));
+}
+function resumeLinks(back){
  var simple=window.KeystoneHumanApp&&window.KeystoneHumanApp.hasResume&&window.KeystoneHumanApp.hasResume();
- return (back?'<a href="#'+esc(back)+'">Return to your unfinished question set</a>':'')+
+ return (back?'<a data-hb-resume href="#'+esc(back)+'">Return to your unfinished question set</a>':'')+
   (simple?'<a href="#resume">Resume flashcards or explanation practice</a>':'');
 }
 function skillLinks(unit,id,lesson){
@@ -316,14 +373,19 @@ function skillLinks(unit,id,lesson){
     esc(skill.name)+'</a><p>'+esc(skill.description)+'</p></li>';
   }).join("")+'</ul></details>';
 }
-function relatedLinks(unit,id,practice){
- var links='<a href="#'+esc(practice)+'">'+(unitKind(unit)==="Externally assessed"?"Practise questions":"Practise general knowledge")+'</a>';
- if(unit==="f170")links+='<a href="#challenge/f170/'+esc(id)+'">Varied topic questions</a><a href="#cards/'+esc(id)+'">Flashcards for this topic</a>';
+function practiceLabel(unit,id,topic){
+ var labels={"2.1":"Practise treatment decisions","2.3":"Practise prevention and early detection","3.2.1":"Practise immune dysfunction","3.2.2":"Practise vaccine types","4.2.1":"Practise interpreting screening results","4.2.2":"Practise monitoring and repeat measurements"};
+ return (unit==="f171"&&labels[id])||"Practise "+topic.toLowerCase();
+}
+function relatedLinks(unit,id,origin,practice,label){
+ var knowledge=/^f17[2-7]$/.test(unit),back=questionReturn(origin);
+ var links=back===practice&&knowledge?"":'<a'+(knowledge?" data-hb-practice":"")+' href="#'+esc(practice)+'">'+esc(label)+'</a>';
+ if(unit==="f170")links+='<a href="#cards/'+esc(id)+'">Flashcards for this topic</a>';
  if(unit==="f171"){
   var deck=(window.KeystoneF171Recall||[]).find(function(d){return d[0]===id;});
   links+='<a href="#'+(deck?"cards/f171-"+id:"flashcards/f171")+'">'+(deck?"Flashcards for this topic":"F171 flashcards")+'</a>';
  }
- return '<nav class="hb-teach-related" aria-label="Related learning">'+links+resumeLinks()+'</nav>';
+ return '<nav class="hb-teach-related" aria-label="Related learning">'+resumeLinks(back===practice&&!knowledge?null:back)+buildLink(unit,id,origin)+links+'</nav>';
 }
 function showHome(render){
  var h='<div class="k-wrap">'+crumb("home","Home")+'<div class="k-unit-hero"><div class="k-eyebrow">Your learning companion</div><h1>Catch up and understand</h1><p>Choose an idea to learn or revisit. Guided lessons show the reasoning before you practise.</p></div><div class="k-unit-tiles">';
@@ -343,46 +405,56 @@ function showUnit(unit,render){
    h+='</div></section>';
   }else{
    h+='<a class="k-area k-catchup-area" href="#catchup/'+unit+'/'+a.code+'"><span class="k-area-num">'+a.code.slice(1)+'</span><span class="k-area-label"><strong>'+esc(a.title)+'</strong><small>'+(lessonFor(unit,a.code)?'Guided lesson':'Short recap')+'</small></span><span aria-hidden="true">›</span></a>';
+   if(unit==="f171"&&a.code==="a1"){
+    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/1.2.1">Airway and alveolar damage</a></div>';
+   }
    if(unit==="f171"&&a.code==="a2"){
-    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/2.1">Choosing a treatment</a><a class="button secondary" href="#catchup/f171/2.3">Prevention and early detection</a></div>';
+    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/2.1">Choosing a treatment</a><a class="button secondary" href="#catchup/f171/2.2">Managing symptoms and function</a><a class="button secondary" href="#catchup/f171/2.3">Prevention and early detection</a></div>';
    }
    if(unit==="f171"&&a.code==="a4"){
-    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/4.2.1">Interpreting screening results</a><a class="button secondary" href="#catchup/f171/4.2.2">Taking repeat measurements</a></div>';
+    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/4.1">Choosing a physiological measurement</a><a class="button secondary" href="#catchup/f171/4.2.1">Interpreting screening results</a><a class="button secondary" href="#catchup/f171/4.2.2">Taking repeat measurements</a></div>';
    }
    if(unit==="f171"&&a.code==="a3"){
     h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/3.2.1">Immune dysfunction</a><a class="button secondary" href="#catchup/f171/3.2.2">Vaccine types</a></div>';
+   }
+   if(unit==="f175"&&a.code==="a2"){
+    h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f175/2.1">First antenatal appointment</a></div>';
    }
   }
  });
  h+='</div></div>';render(h);
 }
-function showConcept(unit,id,step,render){
+function showConcept(unit,id,step,render,review,simulationStage){
  var u=units.filter(function(x){return x.id===unit;})[0];
  if(!u)return showHome(render);
- var topic,points,practice;
+ var topic,points;
  if(unit==="f170"){
   var item=sectionById[id];if(!item)return showUnit(unit,render);
-  topic=item.section.title;points=item.section.points;practice="practice/"+id;
+  topic=item.section.title;points=item.section.points;
  }else{
   var item=(notes[unit]||{})[id];if(!item)return showUnit(unit,render);
-  topic=item.title;points=item.lines;practice="challenge/"+unit+"/"+id;
+  topic=item.title;points=item.lines;
  }
  if(!Array.isArray(points)||!points.length)return showUnit(unit,render);
  step=Math.max(0,Math.min(points.length-1,Number(step)||0));
- var key="#catchup/"+unit+"/"+id;
+ var origin="catchup/"+unit+"/"+id+(step?"/"+step:""),key="#catchup/"+unit+"/"+id;
+ var scope=topicPracticeScope(unit,id);
+ var practice="challenge/"+unit+"/"+scope+"?from="+origin,label=practiceLabel(unit,id,topic);
+ if(scope!==id)label=unit==="f173"?"Practise chromatogram interpretation":"Practise medicine safety surveillance";
+ var related=relatedLinks(unit,id,origin,practice,label);
  var lesson=lessonFor(unit,id),teaching=window.KeystoneHumanTeaching;
  var lessonId=unit==="f171"?({"a2":"2.1","a4":"4.2.2"}[id]||id):id;
  if(lesson&&teaching&&step===0){
-  var visual=window.KeystoneCatchupVisuals?window.KeystoneCatchupVisuals.render.apply(null,lesson.visualFrom||[unit,id]):"";
+  var visual=window.KeystoneCatchupVisuals?window.KeystoneCatchupVisuals.render(...(lesson.visualFrom||[unit,id]),Boolean(lesson.revision&&lesson.visual==="model")):"";
   var recap='<details class="paper panel"><summary>Review the key ideas</summary><ul class="keylines">'+
    points.map(function(point){return "<li>"+esc(point)+"</li>";}).join("")+"</ul></details>";
   var sim=lesson.simulation&&window.KeystoneReproductionSimulation;
-  var interactive=sim?'<details class="hb-inline-model"><summary>Open the reproductive pathway model</summary>'+sim.render()+'</details>':"";
-  render('<div class="k-wrap k-catchup-concept">'+crumb("catchup/"+unit,u.title)+
+  var interactive=sim?'<details class="hb-inline-model"'+(simulationStage?' open':'')+'><summary>Open the reproductive pathway model</summary>'+sim.render()+'</details>':"";
+  render('<div class="k-wrap k-catchup-concept" data-unit="'+unit+'">'+crumb("catchup/"+unit,u.title)+
    '<div class="k-eyebrow">'+unitKind(unit)+'</div><h1>'+esc(topic)+'</h1>'+
-   teaching.render(lesson,{inline:lesson.visual==="model"?"":visual,method:skillLinks(unit,id,lesson),modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:recap+relatedLinks(unit,id,practice)})+'</div>');
-  teaching.mount(unit+"/"+lessonId,lesson);
-  if(sim)window.KeystoneReproductionSimulation.mount(document);
+   teaching.render(lesson,{inline:lesson.visual==="model"?"":visual,method:skillLinks(unit,id,lesson),modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:recap+related})+'</div>');
+  teaching.mount(unit+"/"+lessonId,lesson,simulationStage?1:review);
+  if(sim)sim.mount(document,simulationStage,simulationStage&&document.querySelector("[data-hb-resume]"));
   return;
  }
 
@@ -390,8 +462,8 @@ function showConcept(unit,id,step,render){
  h+='<section class="paper panel"><h2>Key idea '+(step+1)+'</h2><p class="k-catchup-text">'+esc(points[step])+'</p></section>';
  if(step===0&&window.KeystoneCatchupVisuals)h+=window.KeystoneCatchupVisuals.render(unit,id);
  h+='<div class="k-catchup-controls">'+(step>0?'<a class="button secondary" href="'+key+'/'+(step-1)+'">Previous</a>':'')+
- (step<points.length-1?'<a class="button primary" href="'+key+'/'+(step+1)+'">Next key idea →</a>':'<a class="button primary" href="#'+practice+'">Practise questions →</a>')+'</div>';
- h+='<p class="k-small-note">Short recap of selected key ideas.</p>'+relatedLinks(unit,id,practice);
+ (step<points.length-1?'<a class="button primary" href="'+key+'/'+(step+1)+'">Next key idea →</a>':'<a class="button primary" href="#'+esc(practice)+'">'+esc(label)+' →</a>')+'</div>';
+ h+='<p class="k-small-note">Short recap of selected key ideas.</p>'+related;
  if(unit==="f175"&&id==="a1"&&step===points.length-1&&window.KeystoneReproductionSimulation){
   h+=window.KeystoneReproductionSimulation.render();
  }
@@ -400,19 +472,90 @@ function showConcept(unit,id,step,render){
   window.KeystoneReproductionSimulation.mount(document);
  }
 }
-window.KeystoneHumanCatchup={route:function(hash,render){
- if(hash==="catchup")return showHome(render);
- var m=/^catchup\/(f17[0-7])(?:\/([a-z0-9.]+))?(?:\/(\d+))?$/.exec(hash);
- if(!m)return showHome(render);
- if(!m[2])return showUnit(m[1],render);
- return showConcept(m[1],m[2],m[3],render);
-},linkFor:function(q){
+function linkFor(q){
  if(!q)return null;
  if(q.unit==="f170"&&sectionById[q.section])return "catchup/f170/"+q.section;
+ if(q.unit==="f171"&&q.section==="5.2")return "catchup/f171/a5";
+ if(q.unit==="f175"&&q.section==="1.3")return "catchup/f175/a2";
+ if(q.unit==="f176"&&q.section==="3.2.1")return "catchup/f176/a2";
+ if(q.unit==="f177"&&["2.3","2.6"].includes(q.section))return "catchup/f177/a3";
  if(q.section&&notes[q.unit]&&notes[q.unit][q.section])return "catchup/"+q.unit+"/"+q.section;
- var a="a"+q.area;
- return notes[q.unit]&&notes[q.unit][a]?"catchup/"+q.unit+"/"+a:null;
-},searchTopics:function(){
+ var area="a"+q.area;
+ return notes[q.unit]&&notes[q.unit][area]?"catchup/"+q.unit+"/"+area:null;
+}
+function reteachFor(q,answer){
+ var route=linkFor(q);
+ var targets={
+  "f170/1.1.2":[3,"Revisit the scale-bar calculation"],
+  "f170/1.1.3":[2,"Revisit how proteins move through the cell"],
+  "f170/2.1.2":[1,"Revisit blood flow and valve pressure"],
+  "f170/2.1.3":[2,"Revisit oxygen diffusion into blood"],
+  "f170/2.2.2":[3,"Revisit how circulation supports oxygen delivery"],
+  "f170/2.2.3":[2,"Revisit what ventilation measures"],
+  "f170/3.1.2":[3,"Revisit comparing glucose with baseline"],
+  "f170/3.1.1":[3,"Revisit insulin action on target tissues"],
+  "f170/3.3.1":[3,"Revisit the features that identify reproductive tissues"],
+  "f170/4.1.4":[3,"Revisit what a population plateau can show"],
+  "f171/1.2.1":[2,"Revisit how tissue damage changes breathing"],
+  "f171/2.2":[3,"Revisit what improvement in function shows"],
+  "f171/2.1":[3,"Revisit how evidence supports a treatment choice"],
+  "f171/2.3":[3,"Revisit screening and diagnostic follow-up"],
+  "f171/a3":[3,"Revisit the roles of immune cells"],
+  "f171/3.2.1":[2,"Revisit rejection and infection risk"],
+  "f171/4.2.1":[3,"Revisit where missed cases appear in the table"],
+  "f171/4.2.2":[2,"Revisit when repeat readings are comparable"],
+  "f171/a5":[3,"Revisit what the evidence supports"]
+ };
+ if(!route)return null;
+ var reproduction={
+  "f175-w1":["transport","Revisit where the gametes can meet"],
+  "f175-hormones":["follicle","Revisit follicle development and ovulation"],
+  "f175-ovulation":answer?.selected?.[0]===1?["follicle","Revisit what FSH does"]:["ovulation","Revisit what the LH surge triggers"],
+  "f175-transport":["ovulation","Revisit how the oocyte enters the oviduct"],
+  "f175-diagram-oviduct":["transport","Revisit the oviduct and the gamete routes"],
+  "f175-early":["development","Revisit cleavage and blastocyst formation"],
+  "f175-implant":["implantation","Revisit implantation in the uterine lining"]
+ }[q.id];
+ if(reproduction)return {route:route,href:route+"?stage="+reproduction[0],label:reproduction[1]};
+ var target=targets[route.slice("catchup/".length)];
+ target=({
+  "f170-microscopy-preparation-transfer":[0,"Revisit choosing a preparation for microscopy"],
+  "f171-expiratory-evidence-transfer":[2,"Revisit flow and volume measurements"],
+  "f172-diagram-alleles":[1,"Revisit alleles on homologous chromosomes"],
+  "f172-recessive":[2,"Revisit combining parental alleles"],
+  "f172-carrier":[2,"Revisit reading the Punnett square"],
+  "f173-tests":[1,"Revisit choosing a microscope for the feature"],
+  "f173-micro-contrast":[1,"Revisit surface and internal views"],
+  "f173-mag":[3,"Revisit scale and magnification"],
+  "f173-chromatogram-transfer":[1,"Revisit measuring from the chromatogram baseline"],
+  "f174-digestion":[1,"Revisit digestion and absorption"],
+  "f174-enzymes":[2,"Revisit how glucose reaches the blood"],
+  "f174-hormones":[3,"Revisit glucose uptake and storage"],
+  "f174-diagram-glucose":[3,"Revisit insulin action in target tissues"],
+  "f176-synapse":[4,"Revisit what crosses a chemical synapse"],
+  "f176-relay-threshold":[6,"Revisit the threshold comparison"],
+  "f177-placebo":[2,"Revisit the purpose of the comparison group"],
+  "f177-diagram-randomise":[2,"Revisit what random allocation changes"],
+  "f177-blinding":[3,"Revisit how blinding reduces bias"],
+  "f177-safety-signal":[3,"Revisit what suspected adverse-event reports show"]
+ })[q.id]||target;
+ if(route==="catchup/f170/1.1.2"&&(q.type==="number"||q.id==="p-cell-actual-width-diagnostic")){
+  target=[4,"Revisit the worked unit conversion"];
+ }
+ if(route==="catchup/f171/4.2.1"&&(q.stage==="foundation"||q.stage==="diagnostic"||q.type==="number")){
+  target=[2,"Revisit why a positive screen can be false"];
+ }
+ return { route:route, href:route+(target?.[0]?"?review="+target[0]:""),
+  label:target?target[1]:"Need more help? Catch up on this idea" };
+}
+window.KeystoneHumanCatchup={route:function(hash,render){
+ if(hash==="catchup")return showHome(render);
+ var m=/^catchup\/(f17[0-7])(?:\/([a-z0-9.]+))?(?:\/(\d+))?(?:\?review=(\d+)|\?stage=(follicle|ovulation|transport|fertilisation|development|implantation))?$/.exec(hash);
+ if(!m)return showHome(render);
+ if(!m[2])return showUnit(m[1],render);
+ var simulationStage=m[1]==="f175"&&m[2]==="a1"?m[5]:null;
+ return showConcept(m[1],m[2],m[3],render,Number(m[4])||0,simulationStage);
+},linkFor:linkFor,reteachFor:reteachFor,practiceScope:practiceScope,topicPracticeScope:topicPracticeScope,searchTopics:function(){
  var f170=Object.values(sectionById).map(function(item){
   var s=item.section;
   return {group:"f170",title:s.title,context:"F170 · "+s.id,concept:true,actions:[["Catch up","#catchup/f170/"+s.id],["Flashcards","#cards/"+s.id]]};

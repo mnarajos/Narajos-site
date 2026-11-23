@@ -1,6 +1,6 @@
 # Human Biology — question-writing and diagram standard
 
-**Status:** working authoring standard · 21 November 2026 · Cambridge OCR Advanced National Human Biology (H049/H149).
+**Status:** working authoring standard · Batch 12 · 22 November 2026 · Cambridge OCR Advanced National Human Biology (H049/H149).
 
 Based on the Oracle pedagogy project, the AQA A-level Biology question-development work, OCR specification v8 (October 2026), and the limitations of a free, browser-only revision application. This is a standard for **independent learning**, not official OCR assessment material.
 
@@ -21,7 +21,7 @@ Within a concept lesson, keep linked questions together. In Quick Mix, begin wit
 
 ## 3. Options, alternatives and distractors
 
-- Ordinary multiple-choice questions and each stage of a two-step choice-and-justify question use **four plausible answers**, not three. Shuffle their order, except numeric/ordinal sequences or labelled options that must be ordered.
+- Aim for four plausible answers in ordinary choice questions. Write each as a distinct scientific claim. Use a different response format when further options would add weak distractors. The app shuffles choice options and persists that order for the attempt.
 - Each wrong option must represent a plausible **alternative conception**, often a genuine student or exam mistake (e.g., FSH versus LH, sign versus symptom, scanning versus transmission electron microscopy, treatment versus prevention, assisted reproduction versus tubal repair).
 - Avoid nonsense distractors, identical alternatives, two defensible answers, clues from answer length, awkwardly distinct grammatical structures, or making the correct answer consistently the most detailed.
 - Preserve correct science and exact terminology in the *answer*. Correct a flawed option by rewriting a distractor, not by weakening a technically necessary definition.
@@ -52,7 +52,7 @@ Keep a short lesson to around 6–12 purposeful questions. Never require long ty
 2. **Clue:** one authored, question-specific cue pointing to the key discriminating principle, not the complete answer.
 3. **Narrow:** remove **one** wrong option from a four-choice question, give a first step of a long sequence or another small portion of support. Never reveal every missing word, the correct choice or a full model answer.
 
-Use the A-level least-help-first structure as the exemplar, with authored first-principles cues. Show **Hint** only after ten seconds without an answer interaction, and **More help** after another inactive ten seconds. Typing, selecting and ordering reset the delay. Keep the control hidden during the wait: no filling bar, countdown or attention animation. The independent "I don't know — show me" action remains available immediately. Correct first *physical* taps on ordinary four-choice questions may auto-check; an initial wrong tap shows no correction, and pupils then press Check. Keyboard selection should not auto-check.
+Use the A-level least-help-first structure as the exemplar, with authored first-principles cues. Show **Hint** only after ten seconds without an answer interaction, and **More help** after another inactive ten seconds. Typing, selecting and ordering reset the delay. Keep the control hidden during the wait: no filling bar, countdown or attention animation. The independent "I don't know — show me" action remains available immediately. Choice questions follow **Select → Check → Feedback**. Mouse, touch and keyboard selection update the draft. Check answer submits it. Feedback follows the submitted option’s authored index, regardless of its displayed order.
 
 ## 6. Diagrams as questions and feedback
 
@@ -90,8 +90,24 @@ For every question:
 2. Check exactly one intended answer (or a clear, constrained self-check rubric) and review distractors for misconceptions.
 3. Check language load, student accessibility, unusual vocabulary, maths difficulty and any diagram's scientific accuracy.
 4. Verify that hint steps never contain the answer and can be used without artificially inflating independent scores.
-5. Test answer formatting, quick-tap rules, cooldowns, correct/wrong/unknown paths and local-only progress.
+5. Test units and tolerances, explicit submission, graduated hints, correction, saved drafts and restoration, and the distinctions among independent, supported, corrected, revealed and self-reviewed outcomes.
 6. Verify visually on desktop and mobile; automated syntax and assertion tests are **not a substitute for teacher scientific review or visual testing**.
 7. Check that no question or feedback in F172–F177 is tied to assessed assignment evidence or model coursework.
 
 This document is the standard for future additions. Existing content remains a **starter bank** pending statement-by-statement mapping and teacher close-reading.
+
+## 10. Diagnose and support improvement
+
+Write the intended knowledge or reasoning first. A foundation item activates a prerequisite. A diagnostic item separates two or more realistic explanations. The core item tests the target independently. The challenge changes the evidence or context while retaining the principle. In Quick Mix, interleave already taught ideas. In a worked sequence, keep the guided tasks together.
+
+For a revised choice item, each wrong option should have a distinct reason why it fails under the stated conditions. Test that feedback remains valid after shuffling. In a sorting or matching activity, identify the rows needing attention and preserve correct rows. In sequencing, identify positions for reconsideration and cue which event depends on another. In numeric work, identify the likely wrong denominator, unit or operation when the submitted number supports that inference. A related check should use fresh evidence or a different representation of the same idea.
+
+- **Ovulation.** Unrelated ADH and insulin distractors can be discarded from general knowledge. Alternatives involving FSH, oestrogen and progesterone instead test follicle growth, feedback and post-ovulatory support.
+- **Screening.** A standalone count can leave the denominator obvious. A full screen-by-diagnosis table requires the learner to select the relevant group. Use fictional counts and explain what a different denominator would measure.
+- **Data.** Asking which inhibition zone is largest chiefly checks reading. Asking what the observed difference can establish checks the distinction between a measurement and a clinical inference.
+
+Check the scientific mechanism and qualifiers, exact question demand, plausibility, independent solution path, accessible description and feedback in the rendered interface. A figure should add evidence. Alt text should make the same visible features available without naming the inferred answer. Reserve emphasis on the relevant evidence for feedback. Review keyboard focus, narrow widths, enlarged text and the feedback reading order.
+
+For extended writing, use **Write → Compare → Identify missing reasoning → Revise → Finish review**. A model analysis explains relationships in the supplied information. A model discussion weighs applicable evidence and reaches a qualified judgement. Show why a plausible alternative is weaker. Use question-specific criteria to support self-review of the whole response. The original, review choices and revision stay available during the activity. The app records self-review separately from objective accuracy and assigns no automatic OCR marks.
+
+A response following a hint is supported. A reveal alone is a study action. An F171 flashcard learner can type an answer or indicate that they retrieved it mentally before seeing the model. Revealing with a blank response offers another attempt. Saved card identifiers retain their scheduled review history.

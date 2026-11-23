@@ -111,13 +111,13 @@ function generate(id,level,seed){
 }
 function esc(s){return String(s).replace(/[&<>"']/g,function(x){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[x];});}
 function graphHTML(g){
- if(!g)return "";var max=Math.ceil(Math.max.apply(null,g.values)/40)*40,top=32,bottom=248,left=78,right=430,step=max/4;
+ if(!g)return "";var max=g.scaleMax||Math.ceil(Math.max.apply(null,g.values)/40)*40,top=32,bottom=248,left=78,right=430,step=max/4;
  function y(v){return bottom-v/max*(bottom-top);}function x(i){return left+(g.times[i]-g.times[0])/(g.times[g.times.length-1]-g.times[0])*(right-left);}
  var h='<figure class="k-skill-graph"><svg viewBox="0 0 480 320" role="img" aria-label="'+esc(g.yLabel+' against '+g.xLabel+'. The following table gives the plotted values.')+'">';
  for(var i=0;i<=4;i++){var v=step*i;h+='<path d="M'+left+' '+y(v)+'H'+right+'" stroke="#ddd"/><text x="68" y="'+(y(v)+5)+'" text-anchor="end">'+fmt(v)+'</text>';}
  h+='<path d="M'+left+' '+top+'V'+bottom+'H'+right+'" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="'+g.values.map(function(v,i){return x(i)+','+y(v);}).join(' ')+'" fill="none" stroke="#14796f" stroke-width="3"/>';
  g.values.forEach(function(v,i){h+='<circle cx="'+x(i)+'" cy="'+y(v)+'" r="5" fill="#14796f"/><text x="'+x(i)+'" y="275" text-anchor="middle">'+g.times[i]+'</text>';});
- h+='<text x="254" y="305" text-anchor="middle">'+esc(g.xLabel)+'</text><text transform="translate(22 145) rotate(-90)" text-anchor="middle">'+esc(g.yLabel)+'</text></svg><details><summary>Graph values in a table</summary><table><caption>Antibody-response data</caption><thead><tr><th scope="col">'+esc(g.xLabel)+'</th><th scope="col">'+esc(g.yLabel)+'</th></tr></thead><tbody>'+g.values.map(function(v,i){return '<tr><th scope="row">'+g.times[i]+'</th><td>'+v+'</td></tr>';}).join('')+'</tbody></table></details></figure>';
+ h+='<text x="254" y="305" text-anchor="middle">'+esc(g.xLabel)+'</text><text transform="translate(22 145) rotate(-90)" text-anchor="middle">'+esc(g.yLabel)+'</text></svg><details><summary>Graph values in a table</summary><table><caption>'+esc(g.caption||"Antibody-response data")+'</caption><thead><tr><th scope="col">'+esc(g.xLabel)+'</th><th scope="col">'+esc(g.yLabel)+'</th></tr></thead><tbody>'+g.values.map(function(v,i){return '<tr><th scope="row">'+g.times[i]+'</th><td>'+v+'</td></tr>';}).join('')+'</tbody></table></details></figure>';
  return h;
 }
 window.KeystoneHumanSkills={definitions:definitions,get:get,generate:generate,graphHTML:graphHTML,version:1};

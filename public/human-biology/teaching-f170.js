@@ -51,30 +51,90 @@ window.KeystoneHumanLessons = {
     "Nephron", "BY-SA 3.0", 479, 590, "A pale central lumen is edged by several layers of cells. Fine dark profiles project into the lumen.");
 
   Object.assign(window.KeystoneHumanLessons, {
-    "f170/1.1.2": {
-      goal: "Read a photomicrograph and use a scale bar to estimate actual size.",
-      activate: ["Which is smaller, a micrometre or a nanometre?", "One micrometre (µm) equals 1,000 nanometres (nm). One millimetre (mm) equals 1,000 µm."],
+    "f170/1.1.3": {
+      revision: 1,
+      goal: "Trace a secreted protein through a cell and predict where it will collect if one step fails.",
+      activate: ["What do ribosomes make?", "They join amino acids into a polypeptide. Some ribosomes are attached to the rough endoplasmic reticulum (RER)."],
       explain: [
-        "A schematic selects features to make a structure clear. A photomicrograph shows what was actually captured from a specimen. Stain, viewing angle and section thickness can change its appearance.",
-        "Magnification is how many times larger an image is than the object. Resolution is the ability to distinguish nearby points. Electron microscopy can resolve smaller details than light microscopy. Conventional electron microscopy uses prepared, non-living specimens."
+        "The nucleus holds the DNA instructions. The nucleolus helps assemble ribosome subunits. Mitochondria supply much of the ATP that supports cell activity.",
+        "The RER receives many proteins made for secretion. The smooth ER has different roles, including making lipids. The Golgi modifies and sorts proteins, and vesicles carry them between compartments or to the cell surface."
       ],
+      table: {caption: "Route of a secreted digestive enzyme", head: ["Structure", "What happens to the protein"], rows: [
+        ["Ribosomes on rough ER", "The polypeptide is made and enters the RER"], ["Golgi apparatus", "The protein is processed and sorted"],
+        ["Secretory vesicle", "The protein travels towards the cell surface"], ["Cell surface membrane", "The vesicle fuses and releases its contents"]
+      ]},
+      focusCells: [["0:0"], ["1:0", "2:0"], ["3:0"]],
+      nodes: ["Make the protein", "Process and move it", "Release it"],
+      model: [
+        "Ribosomes attached to the RER make a digestive enzyme using instructions from the nucleus. The polypeptide enters the RER, where it can fold.",
+        "Carrier vesicles move it to the Golgi for processing and sorting. A secretory vesicle carries the enzyme from the Golgi to the surface. Some other proteins are sorted for a different destination, such as a lysosome.",
+        "If the surface fusion step fails, the enzyme can still be made and carried there. It collects in vesicles inside the cell and less appears outside."
+      ],
+      guided: choice("A protein is present in the RER but absent from the Golgi and extracellular fluid. Which step would you check first?", 1,
+        [["Assembly of the protein by ribosomes.", "The protein is already present in the RER."], ["Delivery from the RER to the Golgi.", ""], ["Fusion with the cell surface.", "Loss of surface fusion would not explain why the protein is absent from the Golgi."]],
+        "Follow the route to the first point where the protein is missing.", ["Start with the last compartment where the protein was detected."]),
+      apply: written("A cell releases less collagen than usual. New collagen precursor is still made and processed in the Golgi, but it accumulates there. Explain which step has most likely been affected and why.",
+        ["Synthesis and Golgi delivery still occur.", "Sorting into secretory vesicles or exit from the Golgi is impaired.", "Less precursor reaches the cell surface for secretion."],
+        "The location of accumulation points to sorting or transport out of the Golgi. Loss of synthesis would lower the amount reaching the Golgi, rather than produce a build-up there."),
+      followup: choice("A new secreted protein is absent even in the RER. Where should the investigation start?", 0,
+        [["Protein production or entry into the RER.", ""], ["Fusion of Golgi-derived vesicles at the surface.", "A late fault cannot explain a missing protein at the start."], ["Secretion into the space outside the cell.", "Use the first missing compartment."]],
+        "Check production or the earliest delivery step before investigating later transport.")
+    },
+    "f170/4.1.4": {
+      revision: 1,
+      goal: "Read a supplied microbial population graph and explain net change from the direction of the curve.",
+      activate: ["What does a viable count estimate?", "The number of living cells in the sample represented by the count."],
+      explain: ["Binary fission produces two daughter cells. A population increases when more cells are added than lost. A constant viable count can conceal simultaneous division and death."],
+      graph: {times: [0, 1, 2, 3, 4, 5, 6], values: [2, 2, 4, 6, 6, 6, 5], scaleMax: 8,
+        xLabel: "Time (intervals)", yLabel: "Log₁₀ viable count", caption: "Illustrative microbial population graph"},
+      nodes: ["Read the axes", "Identify each phase", "Explain the balance"],
+      model: [
+        "This teaching graph uses a logarithmic vertical axis. A rise from 2 to 4 means a rise from 100 to 10,000, not an increase of two cells.",
+        "The first period shows little net increase (lag). The straight rising part represents exponential growth on a logarithmic scale. The later plateau is stationary phase. Then the viable count falls.",
+        "From intervals 3 to 5 the viable count remains about the same. Division could be continuing at roughly the same rate as cell death. Between 5 and 6 the net loss exceeds any new additions."
+      ],
+      skills: ["growth", "graph"],
+      guided: choice("At interval 5, a pupil says every cell stopped dividing when the graph first flattened. What can the graph establish?", 1,
+        [["No new cells were produced.", "Net count does not measure division separately from death."], ["The viable count stayed roughly constant over the plateau.", ""], ["No cells died during the plateau.", "Cells may be lost even if the total remains steady."]],
+        "A horizontal line establishes little net change. It gives no separate count of divisions and deaths.", ["What does the vertical axis measure?"]),
+      apply: {...written("A second dataset shows a fall from 7 to 5 on the log scale and then a plateau at 5. Explain what happened to the viable count and what the plateau cannot establish.",
+        ["The viable count became 100 times smaller.", "A fall is evidence of net loss rather than a total of two cells lost.", "The plateau does not establish that division or death stopped."],
+        "The count falls from 10⁷ to 10⁵. That is a hundredfold fall and shows net loss. At the later plateau, additions and losses may be balanced."),
+        table: {caption: "Independent population readings", head: ["Time interval", "Log₁₀ viable count"], rows: [["A", "7"], ["B", "5"], ["C", "5"]]} }
+    },
+    "f170/1.1.2": {
+      revision: 1,
+      goal: "Use a micrograph's scale bar or stated magnification to estimate size. Explain whether a larger image shows finer detail.",
+      activate: ["Quick check: how many µm are in 1 mm?", "1 mm = 1,000 µm and 1 µm = 1,000 nm. Convert to the same unit before dividing two lengths."],
+      explain: [
+        "A scale bar labels a known actual length. The structure and bar are measured on the same image, so resizing both together preserves their ratio.",
+        "Magnification is image size ÷ actual size. Resolution is the ability to distinguish two nearby points. Enlarging a blurred image spreads out the same information.",
+        "In transmitted light microscopy, a thin specimen lets light pass through and reduces overlapping layers. A microtome cuts thin sections of fixed tissues. A temporary mount can hold a thin living specimen in liquid. A stain can improve contrast, but a preparation that kills cells cannot show their motion."
+      ],
+      compare: {
+        caption: "What kind of representation am I reading?",
+        head: ["Representation", "What it shows"],
+        rows: [["Schematic", "Selected features drawn for clarity. Check whether it is to scale."], ["Light micrograph", "An image made with light. Some preparations can show living material."], ["Electron micrograph", "Finer detail in a prepared specimen. TEM shows internal details in a thin section. SEM shows surface detail."]]
+      },
       visual: "model",
       modelTitle: "Measure a red cell from its scale bar",
+      nodes: ["Identify the two lengths", "Compare like with like", "Calculate actual size", "Check the result and magnification"],
       model: [
-        "Find the two lengths on the photograph below. The marked cell spans 48 pixels. The bar spans 122 pixels and represents 20 µm.",
-        "Divide the marked width by the bar width: 48 ÷ 122 ≈ 0.39. The cell is a little under half a scale bar wide.",
-        "Multiply this ratio by the length represented: 0.39 × 20 µm ≈ 8 µm. Both pixel lengths change by the same factor if you resize the image."
+        "Measure the marked width of one cell and the length of the bar on the same image. Here they are 48 pixels and 122 pixels. The 20 µm label describes the actual length represented by the bar.",
+        "Both image readings use pixels. Divide the cell width by the bar width: 48 ÷ 122 ≈ 0.39. This number is a fraction of one bar and has no units.",
+        "Multiply the ratio by 20 µm: 0.39 × 20 µm ≈ 8 µm. The cell is less than half a bar wide, so the result should be below 10 µm.",
+        "If the 20 µm bar is 30 mm in print, convert 30 mm to 30,000 µm. Printed magnification is 30,000 ÷ 20 = ×1,500. Reprinting at another size changes this number, but no additional detail becomes resolvable."
       ],
       skills: ["magnification", "units"],
-      guided: choice("A second cell spans 60 pixels. The 20 µm bar still spans 122 pixels. What is the closest estimate?",
-        1, [["3 µm", "At roughly half the bar width, the answer should be roughly half of 20 µm."], ["10 µm", ""], ["61 µm", "The measurement in pixels needs to be converted using the scale bar."]],
-        "60 ÷ 122 is close to 0.5. Half of 20 µm is about 10 µm.", ["Compare the cell width with the bar width.", "Multiply the fraction of the bar by 20 µm."]),
-      apply: choice("On another image, a nucleus is 18 mm wide and the 5 µm scale bar is 15 mm long. Estimate the actual width.",
-        2, [["4.2 µm", "The nucleus is wider than the bar, so it must be larger than 5 µm."], ["1.2 µm", "1.2 is the ratio in scale-bar lengths. It has no units."], ["6 µm", ""]],
-        "18 ÷ 15 = 1.2. The nucleus is 1.2 × 5 µm = 6 µm wide.", ["Work out how many scale bars fit across the nucleus."]),
-      followup: choice("A bacterium spans 45 pixels. A 2 µm bar spans 30 pixels. What is the actual length?",
-        0, [["3 µm", ""], ["1.3 µm", "The bacterium is longer than the bar. Start with 45 ÷ 30."], ["15 µm", "The pixel difference is not a physical length."]],
-        "The bacterium spans 1.5 scale bars: 1.5 × 2 µm = 3 µm.")
+      guided: choice("A second cell spans 60 pixels. The 20 µm bar is 122 pixels. The cell spans about 0.49 of a bar. Use this ratio to estimate actual width.",
+        1, [["41 µm", "You divided by the fraction. A cell shorter than one bar must be smaller than 20 µm."], ["10 µm", ""], ["0.49 µm", "0.49 describes a fraction of the bar. Multiply it by the actual length one bar represents."]],
+        "0.49 × 20 µm ≈ 10 µm. The marked cell is just under half as wide as the bar.", ["Convert the fraction of one bar into a physical length."]),
+      apply: choice("A printed image of a nucleus is 12 mm wide at ×2,000. Two structures merge into one blur. Which gives its actual width and the effect of enlarging this print?",
+        0, [["6 µm; the structures remain unresolved.", ""], ["0.006 µm; enlargement reveals the two structures.", "12 ÷ 2,000 gives 0.006 mm, which is 6 µm. Enlarging the print does not resolve the original detail."], ["24,000 µm; the structures remain unresolved.", "Actual size is image size divided by magnification. Multiply only when finding image size."]],
+        "12 mm ÷ 2,000 = 0.006 mm = 6 µm. The same blurred detail stays unresolved in a larger print.", ["Rearrange magnification = image size ÷ actual size. Check what units the division leaves."]),
+      followup: choice("A printed 2 µm bar is 8 mm long. What is the magnification of that print?",
+        2, [["×4", "The ratio uses one unit. Convert the 8 mm to µm before dividing."], ["×0.00025", "That reverses image size and actual size."], ["×4,000", ""]],
+        "8 mm = 8,000 µm. The image is 8,000 ÷ 2 = 4,000 times its actual size.")
     },
     "f170/1.1.4": {
       goal: "Use gradients and the membrane to explain the direction of net transport.",
@@ -110,23 +170,24 @@ window.KeystoneHumanLessons = {
         "At equal concentrations, the rates of crossing balance.")
     },
     "f170/2.1.2": {
-      goal: "Trace blood through the heart and use chamber pressure to explain blood flow.",
-      activate: ["What happens when a muscle chamber contracts?", "Its pressure rises if the blood is confined. A valve opens when the pressure on its upstream side exceeds downstream pressure."],
-      explain: ["The right side of the heart pumps blood to the lungs. The left side pumps blood to the body. Valves respond to pressure differences and help keep flow one-way."],
+      revision: 1,
+      goal: "Use chamber pressure to explain blood flow and trace how circulation delivers oxygen in different situations.",
+      activate: ["What makes blood flow through an open valve?", "Blood moves from higher to lower pressure. A valve opens when its upstream pressure exceeds its downstream pressure."],
+      explain: ["The right heart pumps to the lungs. The left heart pumps to the body. Ventilation moves air, diffusion moves oxygen across the exchange surface, and circulation carries oxygen in blood."],
       modelTitle: "Follow a red cell from the right ventricle",
-      nodes: ["Right ventricle", "Lungs", "Left heart and body"],
+      nodes: ["Right ventricle", "Lung capillaries", "Left heart and body"],
       model: [
-        "The right ventricle contracts. When its pressure exceeds pulmonary-artery pressure, the pulmonary valve opens and blood enters the pulmonary artery.",
-        "Blood passes through capillaries next to alveoli. Oxygen diffuses into the blood and binds to haemoglobin.",
-        "Pulmonary veins carry blood to the left atrium. Blood then enters the left ventricle, which pumps it into the aorta towards the body."
+        "The right ventricle contracts. Compare its pressure with the pulmonary artery. When ventricular pressure is higher, the pulmonary valve opens and blood enters the pulmonary artery.",
+        "Follow the blood into capillaries beside alveoli. Air does not enter the blood. Oxygen diffuses across the barrier and binds to haemoglobin.",
+        "Pulmonary veins return this blood to the left atrium. The left ventricle pumps it into the body, where oxygen can diffuse from blood into respiring tissues."
       ],
       skills: ["cardiac"],
       guided: choice("Pressure in the left ventricle rises above the left atrium but stays below the aorta. Which valves are closed?", 1,
-        [["Only the aortic valve.", "A high ventricular pressure also closes the valve leading back to the atrium."], ["Both the mitral and aortic valves.", ""], ["Only the mitral valve.", "Check whether the ventricle can push open the valve against aortic pressure."]],
-        "The mitral valve closes when ventricular pressure exceeds atrial pressure. Aortic pressure still exceeds ventricular pressure, so the aortic valve stays closed.", ["Compare pressures across one valve at a time."]),
-      apply: choice("A tracer is injected into a vein returning blood from the leg. Where does it pass before reaching the left atrium?", 2,
-        [["Aorta, left ventricle, lungs.", "The aorta carries blood out of the left ventricle towards the body."], ["Right atrium, left ventricle, pulmonary vein.", "The right atrium empties to the right ventricle."], ["Right atrium, right ventricle, lungs, pulmonary vein.", ""]],
-        "Systemic veins return to the right heart. Pulmonary veins return blood from the lungs to the left atrium.", ["Veins return blood towards the heart. Which side receives blood from the body first?"])
+        [["Only the aortic valve.", "Ventricular pressure also exceeds atrial pressure, closing the mitral valve."], ["Both the mitral and aortic valves.", ""], ["Only the mitral valve.", "Ventricular pressure has not yet exceeded aortic pressure."]],
+        "Compare each pair: ventricular pressure closes the mitral valve, but aortic pressure keeps the aortic valve closed.", ["Compare pressures across one valve at a time."]),
+      apply: written("During exercise, blood picks up oxygen normally in the lungs. A narrowing limits blood flow to one leg. Explain why its working muscles could still receive too little oxygen.",
+        ["Oxygen is carried mainly bound to haemoglobin.", "Reduced blood flow can lower oxygen delivery per minute even if oxygen loading in the lungs is normal.", "The working muscle's demand for oxygen rises with aerobic respiration."],
+        "Normal gas exchange can supply oxygen to each volume of blood. If less blood reaches the working muscles each minute, oxygen delivery may fail to meet their greater demand.", ["Separate the oxygen carried in a volume of blood from the volume arriving each minute."])
     },
     "f170/2.1.3": {
       goal: "Explain how oxygen travels from air to respiring tissues and predict what a damaged exchange surface changes.",
@@ -147,35 +208,103 @@ window.KeystoneHumanLessons = {
         ["Less surface is available for diffusion.", "At a similar gradient, less oxygen can enter blood per unit time.", "Working muscles require more oxygen for aerobic respiration."],
         "Loss of alveolar surface can reduce the rate of oxygen entry into the blood. Circulation may deliver less oxygen relative to the increased demand of working muscles.", ["Start at the alveolar surface and end at the muscle."])
     },
+    "f170/2.2.2": {
+      revision: 1,
+      goal: "Explain how the respiratory and circulatory systems cooperate as working muscles demand more oxygen.",
+      activate: ["Quick check: why can working muscle need more oxygen?", "More contractions require more ATP. An increase in aerobic respiration can increase demand for oxygen."],
+      explain: ["Follow three transfers: air moves into alveoli, oxygen diffuses into blood, and circulation delivers oxygen to tissues. Changing one process does not guarantee that the others keep pace."],
+      prior: ["f170/2.1.3", "Review diffusion from an alveolus"],
+      nodes: ["Demand", "Exchange", "Delivery"],
+      model: [
+        "When a cyclist's leg muscles work harder, their demand for oxygen rises as aerobic respiration increases.",
+        "Deeper or more frequent breaths renew alveolar air. Oxygen diffuses into the blood and binds to haemoglobin.",
+        "If more blood reaches the working muscles per minute, delivery can rise. Oxygen leaves haemoglobin and diffuses towards respiring cells."
+      ],
+      guided: choice("Lung exchange is normal and the oxygen content of arterial blood stays similar, but blood flow to a working muscle falls. Which link limits delivery?", 1,
+        [["Oxygen can no longer diffuse into the lungs from the air.", "Ventilation brings air into the lungs. Exchange is stated to be normal."], ["Less oxygen-carrying blood reaches the muscle per minute.", ""], ["The muscle must now require less ATP.", "The change in blood flow does not establish lower demand."]],
+        "Track the quantity delivered per minute. Similar oxygen content does not compensate for a lower volume of blood arriving.", ["Identify which of the three transfers is affected."]),
+      apply: written("Two runners have similar blood flow to their muscles. One has fewer circulating red cells and a lower concentration of haemoglobin. Explain why oxygen delivery may differ even if breathing rates match.",
+        ["Haemoglobin carries most oxygen in blood.", "At comparable loading, less haemoglobin can reduce oxygen content per volume.", "With comparable blood flow, lower oxygen content can reduce oxygen delivered per minute."],
+        "Equal flow delivers a similar blood volume each minute. If there is less haemoglobin in that volume, it can carry less oxygen even when the runners breathe at similar rates.", ["Identify what carries oxygen and what matching flow actually tells you."]),
+      followup: choice("A person's blood flow is unchanged but alveolar oxygen falls. Which step would help explain less oxygen reaching the tissues?", 0,
+        [["Less oxygen may diffuse into the blood and bind to haemoglobin.", ""], ["Oxygen uptake is unaffected by the gradient.", "Oxygen transfer depends on the gradient between alveolar air and blood."], ["Air would enter a vein and increase O₂ delivery.", "Oxygen diffuses across the barrier; air does not travel in veins."]],
+        "A fall in alveolar oxygen partial pressure can reduce diffusion into the blood when other conditions are similar.")
+    },
     "f170/2.2.3": {
-      goal: "Interpret a change in breathing measurements using tidal volume and breathing rate.",
-      explain: ["Tidal volume is the volume moved per breath. Pulmonary ventilation per minute is tidal volume multiplied by breaths per minute."],
-      model: ["Read the units first. A tidal volume of 500 mL is 0.50 L.", "Multiply by 12 breaths per minute to get 6.0 L per minute. The same calculation works even when both factors change."],
-      skills: ["ventilation", "cardiac"],
-      guided: choice("A tidal volume of 0.60 L and 15 breaths per minute give what ventilation?", 1,
-        [["0.04 L/min", "Multiply the volume per breath by the number of breaths."], ["9.0 L/min", ""], ["25 L/min", "Using consistent units, calculate 0.60 × 15."]],
-        "0.60 × 15 = 9.0 L/min.", ["The two quantities are multiplied."]),
-      apply: choice("Breathing changes from 12 × 0.50 L to 24 × 0.30 L per minute. How does pulmonary ventilation change?", 0,
-        [["It rises from 6.0 to 7.2 L/min.", ""], ["It doubles to 12 L/min.", "Breathing rate doubles but tidal volume also changes."], ["It falls to 3.6 L/min.", "Use the new tidal volume and the new rate together."]],
-        "Compare both products: 12 × 0.50 = 6.0 and 24 × 0.30 = 7.2 L/min.")
+      revision: 1,
+      goal: "Interpret ventilation measurements and explain what they tell you about oxygen delivery.",
+      activate: ["Quick check: what does tidal volume measure?", "It is the volume of air moved in one breath. Breathing rate tells you how many breaths occur each minute."],
+      explain: ["Pulmonary ventilation is tidal volume multiplied by breathing rate. This measures air moved per minute. Oxygen transfer also depends on gas exchange and blood flow."],
+      model: [
+        "At rest the tidal volume is 500 mL and the rate is 12 breaths per minute. Convert to 0.50 L per breath before multiplying if the answer is required in litres.",
+        "0.50 L per breath × 12 breaths per minute gives 6.0 L per minute. The unit tells us this is air volume, not oxygen absorbed.",
+        "When a muscle works harder its oxygen demand can rise. More ventilation can renew alveolar air, but oxygen must still diffuse into blood and be delivered by circulation."
+      ],
+      skills: ["ventilation"],
+      guided: choice("Breaths become shallower and more frequent. The calculated air volume per minute is unchanged. What can you conclude?", 1,
+        [["The oxygen delivered to muscle must be unchanged.", "The calculation measures total air movement. Gas exchange and blood transport can differ."], ["The measured volume of air moved per minute is unchanged.", ""], ["Less total air moves because only breath size matters.", "Changes in rate and volume per breath can offset one another."]],
+        "The product of the two readings measures total airflow. In particular, each breath also moves some air in airways where exchange does not occur.", ["Check the quantity and units calculated."]),
+      apply: written("During exercise a student records a higher ventilation rate. A second student claims this proves that twice as much oxygen reaches the working muscles. Explain what other evidence or processes matter.",
+        ["Higher ventilation measures greater air movement.", "Oxygen must diffuse from alveoli into blood and be carried to the tissues.", "Blood flow and the oxygen content of blood matter. The ventilation data alone do not quantify the change in delivery."],
+        "More ventilation can help maintain alveolar oxygen, but oxygen delivery also depends on exchange into blood and circulation to the muscle. Airflow alone cannot establish the increase in delivery.", ["Follow the oxygen from the alveoli to the cells."])
     },
     "f170/3.1.1": {
-      goal: "Use a feedback loop to explain a change in blood glucose and predict the effect of an interrupted response.",
-      activate: ["What are the target cells in a hormonal response?", "They have receptors for the hormone and can change their activity when they receive the signal."],
-      explain: ["Negative feedback counteracts a deviation in a regulated variable. Track the variable at the start and at the end of the loop."],
-      nodes: ["Blood glucose rises", "Insulin release rises", "Target tissues respond", "Blood glucose falls"],
+      revision: 1,
+      goal: "Explain how insulin opposes a rise in blood glucose and predict the effect of a weaker response.",
+      activate: ["Quick check: what do glucose concentration and target cell mean?", "Concentration is the amount of glucose in a volume of blood. Insulin is a hormone, a chemical signal. Target cells have receptors that allow them to respond."],
+      explain: ["In negative feedback, a response opposes a change in the regulated variable. Identify the variable first. A hormone may increase during the response."],
+      nodes: ["Disturbance: glucose rises", "Signal: insulin secretion rises", "Response: target tissues act", "Effect: glucose moves back towards range"],
       model: [
-        "After a meal, absorbed glucose enters the blood.",
-        "Pancreatic beta cells detect the rise and release more insulin.",
-        "Muscle and adipose cells take up more glucose. The liver and muscle promote glycogen storage.",
-        "The response opposes the original rise. As glucose falls towards its usual range, the stimulus for extra insulin release diminishes."
+        "After a meal, glucose absorbed from the gut raises its concentration in the blood. Blood glucose concentration is the regulated variable.",
+        "Pancreatic beta cells respond by releasing more insulin into blood. Insulin is a signal to target cells, not a digestive enzyme or a source of glucose.",
+        "Muscle and fat cells can take up more glucose. Insulin promotes glycogen synthesis in liver and muscle and reduces glucose output from the liver.",
+        "Removing glucose from the blood and reducing its release into the blood oppose the initial rise. As the concentration moves back towards its usual range, the extra stimulus for insulin release falls."
       ],
-      guided: choice("After a meal, muscle cells respond poorly to insulin. What happens compared with an otherwise similar person?", 2,
-        [["Muscle takes up extra glucose in direct response to impaired signalling.", "Reduced sensitivity weakens the effect of a given insulin signal."], ["The meal can no longer raise blood glucose.", "Glucose can still be absorbed from the gut."], ["Glucose uptake by muscle may rise less, so the rise in blood glucose may last longer.", ""]],
-        "Follow the failure at the target tissue through to its effect on the original variable.", ["Identify the step after insulin release."]),
-      apply: written("Between meals, blood glucose begins to fall. Explain how glucagon can help oppose this change.",
-        ["Pancreatic alpha cells increase glucagon release.", "Glucagon acts on the liver, increasing glycogen breakdown and glucose release.", "Blood glucose rises towards its usual range."],
-        "Glucagon signals the liver to release more glucose, partly by breaking down glycogen. The response counteracts the original decrease.", ["Start with a fall. Which response tends to raise blood glucose?"])
+      guided: choice("In a fictional comparison, beta-cell secretion rises normally after a meal, but the muscle cells respond less strongly. Which change is most likely, other things being similar?", 2,
+        [["Less insulin must have been secreted.", "Secretion is the release of the signal. Tissue responsiveness is a separate step."], ["Insulin converts into glucose to compensate.", "Insulin binds to receptors and changes cell activity. It is not converted into glucose in this response."], ["Muscle glucose uptake rises less, so the raised blood glucose can last longer.", ""]],
+        "Follow the effect from the target step onwards. A normal signal can have a smaller effect when target cells respond less strongly.", ["Locate the altered step: signal production or tissue response?", "Now predict what changes about the removal of glucose from blood."]),
+      writing: {
+        title: "Build a short causal explanation",
+        prompt: "Why can glucose uptake rise more slowly when muscle cells respond weakly to insulin?",
+        responses: [
+          ["Description", "Glucose uptake rises more slowly."],
+          ["Explanation", "Muscle cells respond less strongly to the same insulin signal, so less extra glucose is taken up from the blood."]
+        ],
+        compare: ["The description states what changes. The explanation links a cause, a biological mechanism and a consequence in one sentence. Add a second sentence only if it develops the next causal link."]
+      },
+      apply: written("Body temperature drops in cold surroundings. Muscles begin shivering, releasing more heat. Explain why this is an example of negative feedback.",
+        ["Body temperature is the regulated variable and it initially falls.", "Shivering increases heat production.", "Increased heat production helps raise temperature towards its usual range, opposing the fall."],
+        "Shivering increases heat production when body temperature drops. Its effect tends to reverse the disturbance. Negative describes the direction of the effect relative to the change.", ["Compare the direction of the initial change with the effect of the response."]),
+      followup: choice("After a meal, a beta-cell disorder reduces insulin release. Target cells respond normally to the insulin they receive. Which part of the loop has primarily changed?", 0,
+        [["Secretion of the signal.", ""], ["Target cells' sensitivity to insulin.", "Their sensitivity is stated to be normal."], ["The identity of the regulated variable.", "Blood glucose concentration is still the variable being regulated."]],
+        "The signal is weaker because less insulin is released, even though the target cells remain responsive.")
+    },
+    "f170/3.1.2": {
+      revision: 1,
+      goal: "Interpret fictional glucose-tolerance data and separate a slower return from an explanation of its cause.",
+      activate: ["Quick check: what is a baseline?", "A value at the start that you compare later readings with. Fasting helps reduce the immediate influence of a recent meal before the starting measurement."],
+      explain: ["A glucose-tolerance test tracks blood glucose after a measured glucose load under a standard procedure. Compare the starting value, peak and later readings. The graph shows how glucose changes over time. Several physiological processes can contribute to its shape."],
+      prior: ["f170/3.1.1", "Review the insulin feedback loop"],
+      graph: { times: [0, 30, 60, 90, 120], values: [5, 8.8, 7.6, 6.1, 5.3], scaleMax: 12,
+        xLabel: "Time (min)", yLabel: "Glucose (mmol/L)", caption: "Fictional glucose data" },
+      nodes: ["Read the baseline", "Locate the highest reading", "Compare the late value with the baseline"],
+      model: [
+        "The x-axis shows time from the glucose load. The y-axis is blood glucose concentration in mmol/L. At time 0 the reading is 5.0 mmol/L.",
+        "The highest measured point is 8.8 at 30 minutes. A peak shows the period when glucose is elevated. It does not give the rate of insulin release.",
+        "By 120 minutes the reading is 5.3 mmol/L, close to its starting value. This is consistent with glucose disposal and regulation. The data cannot identify the contribution of secretion or target tissue sensitivity on their own."
+      ],
+      guided: choice("Another fictional series starts at 5.0, reaches 8.8 at 30 minutes and is 7.2 mmol/L at 120 minutes. What is the direct comparison with the worked data?", 2,
+        [["The second series had the higher measured peak.", "The two measured peaks are the same."], ["The second series proves that the pancreas released no insulin.", "Glucose data alone cannot identify the source of the difference."], ["At 120 minutes the second series is further above its own baseline.", ""]],
+        "Subtract each baseline from the late reading: 2.2 versus 0.3 mmol/L above baseline.", ["Compare the late value with the starting value for each series."]),
+      apply: {
+        ...written("Use these fictional readings to evaluate the claim that Sample B cleared glucose more slowly simply because its final reading is higher. Identify what further evidence would help.",
+          ["A falls by 2.5 mmol/L from the 30-minute reading, while B falls by 2.7 mmol/L.", "B starts higher. A's final reading is 0.7 above baseline and B's is 0.4 above baseline.", "More time points under the same protocol would help compare the pattern. Separate measures would be needed to infer a specific hormonal cause."],
+          "The final value alone does not establish slower clearance. B begins higher, ends closer to its own baseline and has a slightly larger measured drop. More measurements under comparable conditions would improve the inference.", ["Compare each final reading with its own starting value and highest measured reading."]),
+        table: {caption: "Fictional blood glucose concentrations (mmol/L)", head: ["Sample", "0 min", "30 min", "120 min"], rows: [["A", "4.8", "8.0", "5.5"], ["B", "6.2", "9.3", "6.6"]] }
+      },
+      followup: choice("A curve falls slowly after a glucose load. Which conclusion follows from this curve alone?", 1,
+        [["It establishes that insulin receptors do not function.", "The curve does not identify a specific mechanism."], ["It describes a slower fall in recorded glucose during those observations.", ""], ["It shows that no glucose was absorbed.", "Glucose initially rose after the load."]],
+        "Describe the time pattern directly. Additional evidence is necessary to identify its mechanism.")
     },
     "f170/3.2.1": {
       goal: "Follow a reflex pathway and predict which parts still work if one link is interrupted.",
@@ -196,29 +325,32 @@ window.KeystoneHumanLessons = {
         "The interruption is upstream of the spinal relay and motor neurone. The effector may still respond to other signals, but this input cannot trigger the reflex.", ["Trace the affected pathway in order before deciding what the muscle can do."])
     },
     "f170/3.3.1": {
-      goal: "Recognise reproductive tissues in photomicrographs using visible features.",
-      activate: ["How does a tissue section differ from an anatomy diagram?", "It shows a thin slice through part of a structure. A single field may show only one region, and a tube may appear round or elongated depending on the cut."],
+      revision: 1,
+      goal: "Use visible features to distinguish uterine lining, ovarian follicle and testicular tissue in micrographs.",
+      activate: ["How does a tissue section differ from an anatomy diagram?", "A section is a thin slice. A tube may look round or elongated depending on the cut, and a field of view may show only part of the tissue."],
       explain: [
-        "The uterine endometrium is the inner lining, with glands. The deeper myometrium is smooth muscle. Ovarian follicles enclose developing oocytes. Seminiferous tubules in testes are lined by layers of developing germ cells.",
-        "Use the arrangement of structures as evidence. Staining colour can vary across preparations."
+        "The endometrium is the uterine lining, with glands. Ovarian follicles enclose developing oocytes. Seminiferous tubules in testes have layers of developing germ cells around a lumen.",
+        "Use the positions and sizes of cells and spaces as evidence. The colour depends on the stain and is less useful for identification."
       ],
       photo: uterine,
       modelTitle: "Identify the uterine lining from its glands",
       model: [
-        "Find the free surface at the top of the field. The pale spaces below are sections through glands in surrounding tissue.",
-        "The surface and multiple gland profiles support identification of the endometrium. The image shows a gland-rich field, not the full uterine wall.",
-        "A round outline alone is weak evidence. Look for an oocyte surrounded by follicle cells in ovary, or layers of germ cells around a lumen in testis."
+        "Start at the upper free surface. The pale shapes below it are profiles of glands, set within darker supporting tissue.",
+        "The surface and the distribution of multiple small gland profiles support endometrium. This field does not show the whole uterine wall.",
+        "A round space alone is weak evidence. Ask whether the field shows multiple small gland profiles, one unusually large cell with a surrounding layer, or a lumen lined by layers of developing germ cells."
       ],
-      guided: choice("Which visible feature supports identification of an ovarian follicle?", 1,
-        [["Small glands scattered beneath a free surface.", "That arrangement fits uterine lining."], ["A large cell encircled by much smaller cells.", ""], ["A broad lumen with many layers of cells along one edge.", "A lumen with layered developing germ cells is typical of a seminiferous tubule."]],
-        "The large central cell is an oocyte with surrounding follicle cells. The source is a close view of a mature follicle.",
-        ["Look for one unusually large cell near the centre."], { photo: ovarian }),
-      apply: choice("Identify the tissue using the cell arrangement around the pale space.", 2,
-        [["Uterine endometrium.", "Look for layers of germ cells and profiles near the lumen rather than scattered glands beneath a surface."], ["Ovarian follicle.", "The field does not contain a single large oocyte surrounded by follicle cells."], ["Testis, showing part of a seminiferous tubule.", ""]],
-        "Developing germ cells are arranged in layers towards the lumen of the tubule. The dark profiles near the lumen are compatible with later stages of sperm development.", ["Ask whether the pale space is surrounded by several layers of developing cells."], { photo: testicular }),
-      followup: choice("A new tissue section shows closely packed tube profiles with layered cells around their lumens. A second section shows glands under an epithelial surface. Which is which?", 0,
-        [["First testis; second uterine endometrium.", ""], ["First endometrium; second testis.", "Use the layered tubule lining and the free surface to distinguish the specimens."], ["Both are ovarian follicles.", "No large oocyte enclosed by follicle cells is described."]],
-        "The combination of repeated tube profiles and layered germ cells supports testis. Glands below a lining are consistent with endometrium.")
+      guided: choice("In an unlabelled field, pale spaces lie beneath an exposed surface. Each has a small rim of cells, and none encloses a large cell. Which feature supports the identity best?", 1,
+        [["The image is pink, so it must be ovary.", "Stain colour is not specific to a tissue."], ["Multiple gland profiles beneath a free surface support uterine lining.", ""], ["Any round space indicates a seminiferous tubule.", "Look for the layered germ cells and the spatial pattern, not a round space alone."]],
+        "Use the combination of surface and scattered glands to justify the identification.", ["Identify the free surface first, then compare the pattern beneath it."]),
+      apply: {
+        ...written("The first and second fields show different reproductive tissues. Identify each and give a separate visible reason for each decision.",
+          ["First: ovarian follicle, supported by one large oocyte surrounded by smaller follicle cells.", "Second: testis, supported by layers of developing germ cells lining a seminiferous tubule around a lumen."],
+          "In the first field, the very large cell and the ring of smaller cells indicate an ovarian follicle. In the second, several layers lining the pale lumen indicate a seminiferous tubule. The organ names alone do not explain the identification."),
+        photos: [ovarian, testicular]
+      },
+      followup: choice("A new low-power field shows many neighbouring tube profiles. Each has layers of cells arranged towards its lumen. Which inference uses the best evidence?", 0,
+        [["Testis, from repeated layered tubule profiles.", ""], ["Endometrium, because the profiles are rounded.", "Both tissues can contain rounded profiles. The layers around many lumens are the stronger evidence."], ["Ovary, because the largest space must be an oocyte.", "A lumen is a space. An oocyte is a large cell."]],
+        "Identify what sits around the space. Repeated profiles with layers of germ cells support seminiferous tubules.")
     },
     "f170/3.3.2": {
       goal: "Connect reproductive hormones to the processes they regulate.",

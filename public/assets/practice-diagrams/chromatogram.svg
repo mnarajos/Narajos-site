@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360">
+  <rect width="600" height="360" rx="18" fill="#f4f8f7"/>
+  <rect x="104" y="30" width="392" height="280" rx="8" fill="#fff" stroke="#879d9b" stroke-width="2"/>
+  <g fill="none" stroke="#9bacac" stroke-dasharray="4 5">
+    <path d="M104 112h392m0 56H104m0 56h392"/>
+    <path d="M175 60v218m125-218v218m125-218v218"/>
+  </g>
+  <path d="M104 56h392" stroke="#30474c" stroke-width="3" stroke-dasharray="12 8"/>
+  <path d="M104 280h392" stroke="#30474c" stroke-width="3"/>
+  <g fill="#203034" font-family="system-ui,sans-serif" font-size="20" text-anchor="middle">
+    <text x="300" y="47">Solvent front</text>
+    <text x="300" y="304">Baseline</text>
+    <text x="175" y="338">J</text>
+    <text x="300" y="338">K</text>
+    <text x="425" y="338">Unknown</text>
+  </g>
+  <g fill="#203034" font-family="system-ui,sans-serif" font-size="20" text-anchor="end">
+    <text x="90" y="62">10 cm</text><text x="90" y="118">8 cm</text><text x="90" y="174">6 cm</text>
+    <text x="90" y="230">4 cm</text><text x="90" y="286">2 cm</text>
+  </g>
+  <g fill="#22756f" stroke="#174c48" stroke-width="2.5">
+    <ellipse cx="175" cy="224" rx="14" ry="8"/><ellipse cx="300" cy="112" rx="14" ry="8"/>
+    <ellipse cx="425" cy="112" rx="14" ry="8"/><ellipse cx="425" cy="168" rx="14" ry="8"/>
+  </g>
+</svg>

@@ -621,10 +621,12 @@ try{
  await reflex.getByRole("status").filter({hasText:"Motor neuron"}).waitFor();
  await desktop.goto(base+"/human-biology/#catchup/f170/1.1.2",{waitUntil:"load"});
  await desktop.getByText("I do · Measure a red cell from its scale bar",{exact:true}).click();
- await desktop.getByText("Estimate the size of a red blood cell",{exact:true}).click();
- assert(await desktop.locator(".micrograph-single img").evaluate(async img=>{await img.decode();return img.naturalWidth===386;}));
- await desktop.getByText("Check the calculation",{exact:true}).click();
- await desktop.locator(".kc-catchup-extra").getByText(/≈ 8 µm/).waitFor();
+ const microscope=desktop.locator("[data-hb-model-step]");
+ assert(await microscope.locator(".micrograph-single img").evaluate(async img=>{await img.decode();return img.naturalWidth===386;}));
+ assert(await microscope.locator(".hb-bar-length").isVisible());
+ await microscope.getByRole("button",{name:"Show next step"}).press("Enter");
+ await microscope.getByRole("button",{name:"Show next step"}).press("Enter");
+ await microscope.getByText(/≈ 8 µm/).waitFor();
  await desktop.goto(base+"/human-biology/#catchup/f170/2.1.2",{waitUntil:"load"});
  await desktop.locator(".kc-simulation-link").waitFor({state:"visible"});
  assert((await desktop.locator(".kc-simulation-link").getAttribute("href"))==="/teaching/simulations/cardiac-cycle/","Heart concept should link to cardiac-cycle simulation");
@@ -673,8 +675,8 @@ try{
  await desktop.getByRole("status").filter({hasText:"are in the same oviduct"}).waitFor();
  assert(await desktop.locator("#krp-egg").isVisible() && await desktop.locator("#krp-sperm").isVisible(),"Gametes must appear in the diagram");
  await desktop.locator('[data-krp="fert"]').click();
- await desktop.waitForFunction(()=>document.querySelector(".krp-status")?.textContent.includes("Early embryo"));
- assert(await desktop.locator("#krp-embryo").isVisible(),"The early embryo must be visible in the uterus");
+ await desktop.getByRole("status").filter({hasText:"The blastocyst is now shown in the uterus"}).waitFor();
+ assert(await desktop.locator("#krp-blastocyst").isVisible(),"The blastocyst must be distinct from the earlier cleavage stage");
  await screen(desktop,"human-f175-embryo");
  await desktop.locator('[data-krp="reset"]').click();
  assert(await desktop.locator('[data-krp="lh"]').isHidden(),"Reset should hide LH until follicle matures");
@@ -696,7 +698,7 @@ try{
  await desktop.goto(base+"/human-biology/#challenge/f171/a3",{waitUntil:"load"});
  await desktop.locator(".k-question-view").waitFor({state:"visible"});
  const count=await desktop.evaluate(()=>window.KeystoneHumanChallenge?.questionCount);
- assert.equal(count,552,"Live engine did not load all questions");
+ assert.equal(count,569,"Live engine did not load all questions");
  assert((await desktop.locator("main").innerText()).length>90,"Question activity is blank");
  await desktop.locator("#site-home").click();
  const dialog=desktop.locator("#leave-dialog");
@@ -1096,7 +1098,8 @@ try{
   if(task.type==="written"){
    await navPage.locator("#k-written").fill("Sister chromatids separate to opposite poles. Each pole receives one copy of each of the 46 chromosomes, so each daughter cell receives 46.");
    await navPage.locator('[data-k-action="reveal"]').click();
-   await navPage.locator('[data-k-action="self-good"]').click();
+   await navPage.locator('[data-k-action="finish-review"]').click();
+   await navPage.locator('[data-k-action="next"]').click();
   }else{
    await navPage.locator('input[name="kchoice"][value="'+task.correct+'"]').focus();await navPage.keyboard.press("Space");
    if(await navPage.locator('[data-k-action="check"]').count())await navPage.locator('[data-k-action="check"]').click();
@@ -1154,7 +1157,24 @@ try{
  await navPage.locator("#k-written").fill("Only 45 of the 60 people with a positive screen attended follow-up.");
  await navPage.locator('[data-k-action="reveal"]').click();
  await navPage.getByText("Key points to look for").waitFor();
- await navPage.locator('[data-k-action="self-good"]').click();
+ const originalClinical="Only 45 of the 60 people with a positive screen attended follow-up.";
+ const revisedClinical=originalClinical+" Those who did not attend may have differed from those who did.";
+ assert.equal(await navPage.locator(".k-review-draft").textContent(),originalClinical);
+ assert.equal(await navPage.locator("[data-feedback-heading]").evaluate(el=>document.activeElement===el),true);
+ const reviewCriterion=navPage.locator("[data-review-criterion]").first();
+ await reviewCriterion.selectOption("work");
+ await navPage.locator("#k-revised").fill(revisedClinical);
+ await navPage.reload();
+ assert.equal(await reviewCriterion.inputValue(),"work");
+ assert.equal(await navPage.locator("#k-revised").inputValue(),revisedClinical);
+ assert.equal(await navPage.locator(".k-review-draft").textContent(),originalClinical);
+ assert.equal(await navPage.evaluate(()=>JSON.parse(localStorage.getItem("narajos-human-challenge-v2-session")).selfReviewed||0),0);
+ await navPage.locator('[data-k-action="finish-review"]').click();
+ await navPage.reload();
+ await navPage.getByText("Self-reviewed · further practice useful").waitFor();
+ assert.equal(await navPage.locator("#k-revised").inputValue(),revisedClinical);
+ assert.equal(await navPage.evaluate(()=>JSON.parse(localStorage.getItem("narajos-human-challenge-v2-session")).selfReviewed),1);
+ await navPage.locator('[data-k-action="next"]').click();
  await navPage.getByRole("heading",{name:"Practice complete"}).waitFor();
  await navPage.goto(base+"/human-biology/#flashcards/f171");
  await navPage.getByRole("link",{name:"Practise monitoring",exact:true}).click();
@@ -1936,7 +1956,7 @@ try{
  await mobile.close();
  await desktop.close();
  assert.deepEqual(errors,[],"Uncaught page errors: "+errors.join("; "));
- console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 552 questions and mobile layout.");
+ console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 569 questions and mobile layout.");
 }finally{
  await browser.close();await new Promise(done=>server.close(done));
 }
