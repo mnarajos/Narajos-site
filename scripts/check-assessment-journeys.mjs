@@ -70,20 +70,29 @@ export async function checkAssessmentJourneys(browser,base) {
         await page.locator("#kr-typed").check();
       }
       await open("/"+course+"/#"+route);
-      const draft=page.locator("#kr-input"), expected=page.locator(".kr-answer");
+      const draft=page.locator("#kr-input");
       await draft.waitFor({state:"visible"});
       const id=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).queue[0],storage);
       await draft.fill("my first draft");
       await reload();
       assert.equal(await draft.inputValue(),"my first draft");
       await page.locator("#kr-reveal").tap();
+      // Open the saved set from a fresh tab as a pupil can after closing the browser.
+      // Then test a real reload without a pending native leave-confirmation dialog.
+      const oldTab=page;
+      page=await context.newPage();
+      await open("/"+course+"/#"+route);
+      await page.locator("#kr-result").waitFor({state:"visible"});
+      await oldTab.close();
       await reload();
       await page.locator("#kr-result").waitFor({state:"visible"});
-      assert(await draft.evaluate(el=>el.readOnly));
+      const resumedDraft=page.locator("#kr-input");
+      assert.equal(await resumedDraft.inputValue(),"my first draft");
+      assert(await resumedDraft.evaluate(el=>el.readOnly));
       await page.getByRole("button",{name:"Finish as reviewed"}).press("Enter");
       const matchedId=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).queue[0],storage);
-      await draft.fill(await expected.textContent());
-      await draft.press("Enter");
+      await resumedDraft.fill(await page.locator(".kr-answer").textContent());
+      await resumedDraft.press("Enter");
       await page.getByRole("button",{name:"Record typed match"}).press("Enter");
       const recalledId=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).queue[0],storage);
       await page.locator("#kr-reveal").tap();
