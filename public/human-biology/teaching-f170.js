@@ -371,7 +371,7 @@ window.KeystoneHumanLessons = {
       activate: ["What is an effector?", "A muscle or gland that produces a response to a signal."],
       explain: [
         "Electrical signals travel along neurones. At a chemical synapse, a neurotransmitter carries information across the gap. A relay neurone in the spinal cord can connect sensory input to a motor response.",
-        "Myelin insulates sections of an axon. Current spreads quickly under myelin and action potentials are regenerated at nodes of Ranvier, the small gaps in the sheath. This faster node-to-node propagation is saltatory conduction. Loss of myelin can slow or interrupt conduction along the axon."
+        "Myelin insulates sections of an axon. Current spreads quickly under myelin and action potentials are regenerated at nodes of Ranvier, the small gaps in the sheath. This faster node-to-node propagation is saltatory conduction. In multiple sclerosis, damage to myelin in the CNS can slow or interrupt conduction along affected axons."
       ],
       visual: "model",
       nodes: ["Receptor and sensory neurone", "Relay in the spinal cord", "Motor neurone and effector"],

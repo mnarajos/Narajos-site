@@ -96,7 +96,7 @@ export async function checkHumanCatchup(browser, base) {
       await page.getByText(diagnosis).waitFor();
       await page.getByRole("link", {name: "Revisit the worked example", exact: true}).press("Enter");
       await page.locator("#leave-confirm").press("Enter");
-      assert(await page.locator("[data-hb-model-step][open]").isVisible());
+      await page.locator("[data-hb-model-step][open]").waitFor({state: "visible"});
       await page.getByRole("link", {name: "Return to your unfinished question set", exact: true}).press("Enter");
       await page.getByText(diagnosis).waitFor();
     }
