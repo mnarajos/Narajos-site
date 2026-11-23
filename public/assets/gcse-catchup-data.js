@@ -572,3 +572,8 @@ scaffold(year11Catchup["inheritance-cross"], "Build a genetic cross", [
 ], "Count how many of the four equally likely boxes show two recessive alleles.");
 
 export const gcseCatchup = {...year10Catchup, ...year11Catchup, ...complementary, ...furtherCatchup, ...priorityCatchup, ...investigations};
+
+gcseCatchup["glucose-control"].higher = [
+  "Higher Tier", "After exercise, blood glucose falls. Trace the response from detection to recovery. What happens to the signal as the level recovers?",
+  "The pancreas releases glucagon. Liver cells convert glycogen to glucose and release glucose into the blood. As the concentration rises towards its normal level, the stimulus for glucagon secretion decreases. This is negative feedback."
+];

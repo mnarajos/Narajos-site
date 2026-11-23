@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import axe from "axe-core";
 import { gcseCatchup } from "../public/assets/gcse-catchup-data.js";
 import { priorityCatchup } from "../public/assets/gcse-catchup-priority.js";
+import { investigations } from "../public/assets/gcse-investigations.js";
 
 export async function checkGCSECatchup(browser, base) {
   const page = await browser.newPage({viewport: {width: 320, height: 820}, hasTouch: true, reducedMotion: "reduce"});
@@ -28,7 +29,7 @@ export async function checkGCSECatchup(browser, base) {
       }
     }
 
-    for (const [id, lesson] of Object.entries(priorityCatchup)) {
+    for (const [id, lesson] of Object.entries({...priorityCatchup, ...investigations})) {
       await page.goto(lessonURL(id, lesson.year));
       await journey.getByRole("heading", {name: /I do/}).waitFor();
       assert(await page.locator(".school-worked-example ol").last().isVisible());
@@ -92,7 +93,7 @@ export async function checkGCSECatchup(browser, base) {
     const violations = await page.evaluate(async () => (await window.axe.run({runOnly: ["wcag2a","wcag2aa"]})).violations);
     assert.deepEqual(violations.map(({id,nodes}) => [id,nodes.map(node => node.target)]), []);
     assert.deepEqual(errors, []);
-    console.log("GCSE catch-up: 37 routes, seven learning journeys, old responses, phone/tablet/desktop, enlarged text and axe passed.");
+    console.log("GCSE catch-up: 47 routes, seventeen learning journeys, old responses, phone/tablet/desktop, enlarged text and axe passed.");
   } finally {
     await page.close();
   }

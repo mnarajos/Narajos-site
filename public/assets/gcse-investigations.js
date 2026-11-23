@@ -1,3 +1,5 @@
+import {question} from "./school-catchup-journey.js";
+import {investigationFigure} from "./gcse-investigation-figures.js";
 import {sequence, table} from "./gcse-catchup-priority.js";
 
 function investigation(year, code, title, idea, evidence, lines, guided, transfer, retry, higher) {
@@ -56,7 +58,7 @@ Object.assign(investigations, {
     "Now compare masses: 4.8 g Mg ÷ 24 g/mol = 0.20 mol. 4.8 g O₂ ÷ 32 g/mol = 0.15 mol. Only 0.10 mol O₂ is needed, so Mg limits the yield.",
     "0.20 mol Mg gives 0.20 mol MgO. Maximum mass = 0.20 × 40 = 8.0 g."],
     ["What limits product in the particle model?","Magnesium","Three reaction groups use all six Mg atoms.",["Oxygen because there are fewer molecules.","Use the coefficient ratio before comparing counts."]],
-    ["A batch contains 2.4 g Mg and 1.6 g O₂. Which change alone can increase the theoretical yield?","Increase both reactants.","0.10 mol Mg and 0.050 mol O₂ are exactly in the required ratio. Adding just one leaves the other limiting.",["Add magnesium only.","All the available oxygen is already required."],["Add oxygen only.","All the available magnesium is already required."]],
+    ["A batch contains 2.4 g Mg and 1.6 g O₂. Which adjustment can increase the theoretical yield?","Increase both reactants.","0.10 mol Mg and 0.050 mol O₂ are exactly in the required ratio. Adding just one leaves the other limiting.",["Add magnesium only.","All the available oxygen is already required."],["Add oxygen only.","All the available magnesium is already required."]],
     ["Why convert grams to moles?","Equation coefficients compare numbers of particles or amounts in moles.","Different substances have different molar masses.",["Coefficients are ratios of masses in grams.","One mole of Mg and one mole of oxygen molecules have different masses."]]),
   "temperature-evidence": investigation(10,"C5","What a temperature change can show","Measure the temperature change of the mixture as energy transfers between reaction and surroundings.",
     ["Equal reactant amounts and starting temperatures",["Method","Start (°C)","Maximum (°C)"],[["Glass beaker","20","26"],["Insulated cup with lid","20","29"]]],
@@ -102,3 +104,25 @@ Object.assign(investigations, {
     ["A black thin aluminium tray warms more than a thick shiny steel block under a lamp. How should the claim about surface finish be tested?","Compare identical plates differing only in finish, with equal initial temperatures and lamp distances.","Mass, material and geometry can all affect warming. A temperature rise alone does not isolate the finish.",["Repeat using the same different objects.","Repeats leave the confounding differences in place."]],
     ["Why keep the detector distance fixed?","Changing distance can change the radiation reaching the detector.","A change in reading should reflect the tested surface.",["Distance changes the colour of the face.","Its finish remains the same."]])
 });
+
+for (const [id, activity] of Object.entries(investigations)) {
+  if (id !== "reacting-masses") activity.steps[0].worked.visual = () => investigationFigure(id);
+}
+investigations["quadrat-evidence"].steps[2].reference = {
+  label: "Meadow sampling locations", render: () => investigationFigure("quadrat-evidence")
+};
+
+// A supported retry checks the same reasoning with fresh evidence.
+const retryItems = {
+  "amylase-endpoint": ["A group doubles enzyme concentration only at pH 8. Can its faster endpoint establish a pH effect?", "No. Match enzyme concentration across pH values.", "More enzyme can change the rate independently.", ["Yes, because the buffer was accurate.", "Buffer controls pH only."]],
+  "ruler-drop": ["One group is warned before each drop. Can you compare its reaction time with an unwarned group?", "Use the same unpredictable release for both groups.", "Anticipation can shorten the distance before the catch.", ["Convert both distances to seconds first.", "Conversion cannot remove a difference in release procedure."]],
+  "quadrat-evidence": ["A class counts daisies only near gates. How should it estimate whole-field density?", "Use random coordinates across the whole field.", "Gateways can have different trampling and plant cover.", ["Count the same gateways twice.", "Repeats still omit the field interior."]],
+  "electrode-evidence": ["Bubbles appear at the negative electrode in aqueous sodium chloride. Which evidence supports hydrogen?", "A sample gives a squeaky pop with a lit splint.", "Gas appearance alone cannot identify the product.", ["A glowing splint relights.", "That identifies oxygen."]],
+  "reacting-masses": ["For 2H₂ + O₂ → 2H₂O, a tank contains 4 mol H₂ and 3 mol O₂. Which addition can increase yield?", "Add hydrogen.", "Only 2 mol oxygen are needed initially, so oxygen remains.", ["Add oxygen.", "Hydrogen has already run out."]],
+  "temperature-evidence": ["A cooling reaction is read after the cup has started warming again. What error results?", "The measured temperature fall is too small.", "Record the minimum during the reaction.", ["The fall is too large.", "Warming moves the reading closer to its starting value."]],
+  "spring-evidence": ["A curved loading graph returns to zero extension after unloading. What does that show?", "The spring recovered its original length despite the nonlinear region.", "Elastic recovery and proportionality are separate observations.", ["Any curve proves permanent deformation.", "Permanent extension must remain after unloading."]],
+  "trolley-evidence": ["To investigate increasing mass, a pupil keeps adding weights to the hanger. What should change?", "Keep the hanger fixed and add mass to the trolley.", "With small comparable friction this varies moving mass at approximately constant resultant force.", ["Keep the trolley unchanged.", "The hanger also changes the driving weight."]],
+  "wave-measurement": ["A photo shows 1.2 m from the first crest to the fourth. What is the wavelength?", "0.40 m", "Three complete intervals fit between four successive crests.", ["0.30 m", "Divide by the number of intervals."]],
+  "infrared-evidence": ["A detector reads a shiny face from twice the distance used for a matt face. What improvement matters?", "Repeat with the same detector distance and angle.", "Geometry affects how much radiation reaches the detector.", ["Average ten readings at the original distances.", "The systematic difference remains."]]
+};
+for (const [id, item] of Object.entries(retryItems)) investigations[id].retry = question(...item);
