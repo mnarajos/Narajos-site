@@ -412,7 +412,10 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .practice-page :is(textarea,input,select){scroll-margin-block:5rem 1rem}
 
 .paragraph-board{grid-template-columns:minmax(0,1fr)}
-.paragraph-bank{display:none}
+.paragraph-bank{display:block}
+.paragraph-next{font-weight:650;margin:.25rem 0}
+.paragraph-bank .paragraph-drag-card{text-align:start;width:100%;min-height:44px}
+.paragraph-slots button[aria-pressed=true]{outline:2px solid currentColor;outline-offset:-3px}
 .paragraph-bank h4{margin:.25rem 0 .5rem}
 .paragraph-drag-card{display:block;padding:.5rem .65rem;border:1px solid #7f9a94;border-radius:7px;background:#fff;cursor:grab}
 .paragraph-order .paragraph-slots li[hidden],.paragraph-order .writing-order-options li[hidden]{display:none}
@@ -423,11 +426,6 @@ details.ks3-home-activity{margin:1rem 0;padding-block:.25rem}
 .paragraph-position-feedback{margin:0;padding:.2rem .35rem;color:#613717}
 .paragraph-order .paragraph-status:empty{margin:0}
 .paragraph-restart summary,.paragraph-picker summary,.paragraph-model summary{min-height:44px;align-content:center;cursor:pointer}
-.paragraph-picker{width:min(36rem,calc(100% - 1.25rem));max-height:min(82dvh,40rem);margin:auto;padding:1rem;border:1px solid #7f9a94;border-radius:12px;color:var(--ink,#24343b);background:#fcfcfa;overscroll-behavior:contain}
-.paragraph-picker::backdrop{background:rgba(24,37,42,.6)}
-.paragraph-picker h3{margin:0 0 .65rem}
-.paragraph-picker ul button{width:100%;padding:.6rem .75rem}
-.paragraph-picker-tools{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
 .paragraph-hint{background:#eef6f3;border-radius:7px;padding:.2rem .6rem}
 .paragraph-order button{overflow-wrap:anywhere}
 @media(min-width:761px) and (pointer:fine){

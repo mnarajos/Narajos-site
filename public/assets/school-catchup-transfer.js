@@ -12,6 +12,16 @@ const tasks = {
   "spring-evidence": ["A spring extends 4, 8 and 15 mm at 1, 2 and 3 N. A pupil says the final point proves permanent deformation. Correct the claim using a number and a further measurement.", "Compare 15 mm with the proportional prediction. Describe an unloaded-length test.", "Proportional extension would be 12 mm at 3 N. The 15 mm reading shows a departure from proportionality. Remove the load and compare the length with the original to test for permanent extension."]
 };
 
+export function applicationStatus(id, record = {}) {
+  if (!Object.hasOwn(tasks,id)) return null;
+  const outcomes = {
+    independent: "Calculation correct independently", supported: "Calculation correct after support",
+    attempted: "Written response saved · compare with the model",
+    "self-reviewed": "Written response self-reviewed"
+  };
+  return outcomes[record.outcome] || (record.draft || record.helped ? "Application in progress" : "Application ready to try");
+}
+
 export function appendTransfer(host, id, state, save, evidence) {
   const task = tasks[id];
   if (!task) return false;
@@ -24,7 +34,12 @@ export function appendTransfer(host, id, state, save, evidence) {
     return el;
   };
   const numeric = typeof task[2] === "number";
-  add("h4", "Apply it yourself");
+  add("h4", "Independent application");
+  const progress = add("p", applicationStatus(id,record));
+  function saveApplication() {
+    progress.textContent = applicationStatus(id,record);
+    save();
+  }
   if (id === "quadrat-evidence" || id === "cell-structures") {
     const figure = evidence?.();
     if (figure) form.append(figure);
@@ -45,7 +60,7 @@ export function appendTransfer(host, id, state, save, evidence) {
   if (numeric) { input.type = "number"; input.step = "any"; }
   input.value = record.first ?? record.draft ?? "";
   input.readOnly = record.first !== undefined;
-  input.oninput = () => { record.draft = input.value; save(); };
+  input.oninput = () => { record.draft = input.value; saveApplication(); };
   const submit = add("button", numeric ? "Check calculation" : "Compare with model");
   submit.className = "school-primary";
   const feedback = add("p", record.feedback || "");
@@ -60,7 +75,7 @@ export function appendTransfer(host, id, state, save, evidence) {
       const revision = add("textarea","");
       revision.id = revisionLabel.htmlFor = "catchup-transfer-revision";
       revision.value = record.revision || "";
-      revision.oninput = () => { record.revision = revision.value; save(); };
+      revision.oninput = () => { record.revision = revision.value; saveApplication(); };
       if (record.outcome !== "self-reviewed") {
         const done = add("button","Finish self-review");
         done.type = "button";
@@ -71,7 +86,7 @@ export function appendTransfer(host, id, state, save, evidence) {
           done.hidden = true;
           feedback.tabIndex = -1;
           feedback.focus();
-          save();
+          saveApplication();
         };
       }
       if (focus) revision.focus();
@@ -80,6 +95,7 @@ export function appendTransfer(host, id, state, save, evidence) {
   form.onsubmit = event => {
     event.preventDefault();
     if (!input.value.trim() || record.first !== undefined) return;
+    record.firstAttempt ??= input.value;
     if (numeric && input.valueAsNumber !== task[2]) {
       record.helped = true;
       feedback.textContent = record.feedback = task[3];
@@ -87,10 +103,10 @@ export function appendTransfer(host, id, state, save, evidence) {
     } else {
       record.first = input.value;
       record.outcome = numeric ? (record.helped ? "supported" : "independent") : "attempted";
-      feedback.textContent = record.feedback = numeric ? "Correct. " + (id === "motion-graphs" ? "Velocity decreases by 1.5 m/s each second." : "The shorter endpoint gives the greater estimated rate.") : "Review the first answer you wrote. Compare it with the model, then finish your self-review.";
+      feedback.textContent = record.feedback = numeric ? (record.helped ? "Correct after support. " : "Correct. ") + (id === "motion-graphs" ? "Velocity decreases by 1.5 m/s each second." : "The shorter endpoint gives the greater estimated rate.") : "Review the first answer you wrote. Compare it with the model, then finish your self-review.";
       finish(true);
     }
-    save();
+    saveApplication();
   };
   if (record.first !== undefined) finish(false);
   host.append(form);

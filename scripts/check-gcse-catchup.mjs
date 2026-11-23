@@ -51,17 +51,17 @@ export async function checkGCSECatchup(browser, base) {
         }
         await choose(question.answer);
         await submit();
-        await dialog.getByRole("button", {name: /^(Continue|Finish catch-up)$/}).press("Enter");
+        await dialog.getByRole("button", {name: /^(Continue|Finish guided checks)$/}).press("Enter");
       }
       if (id === "national-grid") {
         assert(await dialog.getByText("Try one more on your own", {exact: true}).isVisible());
         await choose(lesson.retry.answer);
         await submit();
-        await dialog.getByRole("button", {name: "Finish catch-up"}).press("Enter");
+        await dialog.getByRole("button", {name: "Finish guided checks"}).press("Enter");
       }
       await journey.getByRole("link", {name: "Revise " + lesson.code}).waitFor();
       await page.reload();
-      await journey.getByRole("heading", {name: /Catch-up complete/}).waitFor();
+      await journey.getByRole("heading", {name: /Guided checks complete/}).waitFor();
       const progress = await page.evaluate(key => JSON.parse(localStorage.getItem(key)), "narajos.catchup.v1." + lesson.year + "." + id);
       assert.deepEqual(Object.values(progress.outcomes), ["supported","supported",id === "national-grid" ? "supported" : "independent"]);
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 2), id);

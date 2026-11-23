@@ -24,6 +24,7 @@ export function separationOrder() {
   mountSequence(activity, {
     groups: [{ title: "Method", cards, roles: hints.map((hint, index) => ({ label: "Step " + (index + 1), hint })) }],
     order: [2, 0, 3, 1],
+    storageKey: "narajos-sequence:recover-salt:v1",
     bankTitle: "Steps to choose from",
     itemName: "step",
     reviewLabel: "Review this step",

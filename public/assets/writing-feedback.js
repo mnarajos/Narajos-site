@@ -3,7 +3,6 @@ import { createRow } from "./writing-practice.js";
 
 const messages = {
   empty: "Write a draft before checking it.",
-  short: "You have a start. Read the feedback and decide what your reader still needs.",
   separate: "There are separate blocks or list points. Turn your notes into connected sentences.",
   connected: "Read your paragraph aloud. Check that each sentence follows from the one before it."
 };
@@ -71,8 +70,7 @@ for (const area of document.querySelectorAll("[data-writing-check]")) {
     detail.open = false;
     detail.hidden = !cues.length;
     const separate = /\n[ \t]*\n|(?:^|\n)[ \t]*(?:[-*•]|\d+[.)])[ \t]+/.test(draft);
-    const sentences = draft.split(/[.!?]+(?=\s|$)/).filter(part => part.trim());
-    status.textContent = separate ? messages.separate : sentences.length < 3 ? messages.short : messages.connected;
+    status.textContent = separate ? messages.separate : messages.connected;
     if (criteria.some(item => item.kind === "reasoning")) status.textContent += " Compare any reasoning links with the model.";
     if (next) status.textContent += " " + next.feedback;
     report.hidden = false;

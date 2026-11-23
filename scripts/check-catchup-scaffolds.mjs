@@ -74,8 +74,8 @@ export async function checkCatchupScaffolds(browser, base) {
     assert.match(await dialog.locator(".school-clue").innerText(), /Subtract 30 N/);
     await choose("It speeds up. The resultant force is 40 N to the right.");
     await dialog.getByRole("heading", {name: /A skateboard moves right/}).waitFor();
-    await choose("It speeds up. The resultant force is 30 N to the right.", "Finish catch-up");
-    await journey.getByRole("heading", {name: "Catch-up complete!"}).waitFor();
+    await choose("It speeds up. The resultant force is 30 N to the right.", "Finish guided checks");
+    await journey.getByRole("heading", {name: "Guided checks complete"}).waitFor();
     const evidence = await page.evaluate(() => JSON.parse(localStorage.getItem("narajos.catchup.v1.7.forces")));
     assert.deepEqual(Object.values(evidence.outcomes), ["supported", "supported", "supported"]);
     assert.equal(evidence.followUp, "independent");
@@ -96,7 +96,7 @@ export async function checkCatchupScaffolds(browser, base) {
     assert.match(await dialog.ariaSnapshot(), /img "12 N acts down/);
     await choose("2 m from the pivot");
     await check.press("Enter");
-    await choose("Yes. Both moments are 40 N m in opposite directions.", "Finish catch-up");
+    await choose("Yes. Both moments are 40 N m in opposite directions.", "Finish guided checks");
 
     await page.goto(base + "/science-catch-up/lesson/?topic=atomic-number");
     assert(await journey.getByText(/\+11 from the protons and −10/).isVisible());
@@ -106,7 +106,7 @@ export async function checkCatchupScaffolds(browser, base) {
     await check.press("Enter");
     await choose("−1");
     await check.press("Enter");
-    await choose("A magnesium ion with charge +2", "Finish catch-up");
+    await choose("A magnesium ion with charge +2", "Finish guided checks");
     await journey.getByRole("link", {name: "Revise C1", exact: true}).waitFor();
 
     await page.goto(base + "/science-catch-up/lesson/?topic=energy-transfer");
@@ -116,7 +116,7 @@ export async function checkCatchupScaffolds(browser, base) {
     await check.press("Enter");
     await choose("40%");
     await check.press("Enter");
-    await choose("35%, because 70 ÷ 200 = 0.35", "Finish catch-up");
+    await choose("35%, because 70 ÷ 200 = 0.35", "Finish guided checks");
     const powerProgress = await page.evaluate(() => JSON.parse(localStorage.getItem("narajos.catchup.v1.9.energy-transfer")));
     assert.deepEqual(Object.values(powerProgress.outcomes), ["supported", "supported", "independent"]);
     assert.deepEqual(errors, [], "JavaScript errors in Year 7–9 catch-up");

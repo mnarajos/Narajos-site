@@ -55,7 +55,7 @@ function svgElement(name, attributes) {
   return node;
 }
 
-function draw(state, marks = []) {
+function draw(state, marks = [], tools = {}) {
   const figure = el("figure", "", "dp-figure");
   const stage = el("div", "", "dp-stage");
   const image = el("img");
@@ -83,7 +83,37 @@ function draw(state, marks = []) {
     }
     stage.append(node);
   }
-  figure.append(stage);
+  const inspect = button("Enlarge diagram", () => {
+    const dialog = el("dialog", "", "dp-inspect");
+    dialog.setAttribute("aria-label", "Enlarged diagram · " + state[1]);
+    const close = button("Close enlarged diagram", () => dialog.close());
+    const region = el("div", "", "dp-pan");
+    region.tabIndex = 0;
+    region.setAttribute("role","region");
+    region.setAttribute("aria-label","Diagram detail. Swipe or use arrow keys to pan.");
+    dialog.append(close, region);
+    figure.append(dialog);
+    const moved = [];
+    function move(node, target) {
+      if (!node) return;
+      const placeholder = document.createComment("diagram position");
+      node.before(placeholder);
+      moved.push([node,placeholder]);
+      target.append(node);
+    }
+    move(stage, region);
+    move(tools.bank, dialog);
+    move(tools.check, dialog);
+    move(tools.report, dialog);
+    dialog.addEventListener("close", () => {
+      for (const [node,placeholder] of moved) placeholder.replaceWith(node);
+      dialog.remove();
+      inspect.focus();
+    }, {once:true});
+    dialog.showModal();
+    region.focus();
+  });
+  figure.append(stage, inspect);
   return figure;
 }
 
@@ -120,17 +150,34 @@ function buildModel(topic) {
 }
 
 function checkButton(section, report, check) {
-  section.append(button("Check answer", () => {
+  const control = button("Check answer", () => {
     const result = check();
     report.textContent = result;
-  }, "dp-primary"), report);
+  }, "dp-primary");
+  section.append(control, report);
+  return control;
 }
 
 function makeDiagramTask(section, topic, task, report) {
   const keys = task.parts || Object.keys(topic.parts);
   const labelFor = key => task.assignments?.[key] || topic.parts[key].name;
-  let selected = null;
+  const storageKey = "narajos-diagram-response:v1:" + section.closest("diagram-practice").getAttribute("topic") + ":" + task.prompt;
+  const signature = JSON.stringify([task.type,keys.map(key => [key,labelFor(key)]),task.answer]);
+  let selected = null, receivedFeedback = false;
   const placed = new Map();
+  try {
+    const saved = JSON.parse(localStorage.getItem(storageKey));
+    if (saved?.signature === signature) {
+      selected = keys.includes(saved.selected) ? saved.selected : null;
+      receivedFeedback = saved.receivedFeedback === true;
+      for (const [key,label] of Object.entries(saved.placed || {})) {
+        if (keys.includes(key) && keys.includes(label) && ![...placed.values()].includes(label)) placed.set(key,label);
+      }
+    }
+  } catch {}
+  function save() {
+    try { localStorage.setItem(storageKey,JSON.stringify({signature,selected,receivedFeedback,placed:Object.fromEntries(placed)})); } catch {}
+  }
   const chips = new Map();
   const targets = new Map();
   const placements = el("ul", "", "dp-placements");
@@ -148,6 +195,7 @@ function makeDiagramTask(section, topic, task, report) {
       const row = el("li", key + " · " + (label ? labelFor(label) : "empty"));
       if (label) row.append(button("Remove", () => {
         placed.delete(key);
+        save();
         report.textContent = "Label removed from " + key + ".";
         renderPlacements();
         chips.get(label).focus();
@@ -168,6 +216,7 @@ function makeDiagramTask(section, topic, task, report) {
   function selectTarget(key) {
     if (task.type === "point") {
       selected = key;
+      save();
       targets.forEach((target, targetKey) => target.setAttribute("aria-pressed", String(targetKey === key)));
       report.textContent = "Selected " + key + ".";
       return;
@@ -180,9 +229,16 @@ function makeDiagramTask(section, topic, task, report) {
   }
 
   function drop(label, key) {
-    for (const [target, value] of placed) if (value === label) placed.delete(target);
+    const previousLabel = placed.get(key);
+    for (const [target,value] of placed) {
+      if (value !== label || target === key) continue;
+      if (previousLabel) placed.set(target,previousLabel);
+      else placed.delete(target);
+      break;
+    }
     placed.set(key, label);
     selected = null;
+    save();
     report.textContent = labelFor(label) + " placed at " + key + ".";
     renderPlacements();
   }
@@ -194,35 +250,44 @@ function makeDiagramTask(section, topic, task, report) {
     for (const key of [...keys.slice(1), keys[0]]) {
       const chip = button(labelFor(key), () => {
         selected = selected === key ? null : key;
+        save();
         report.textContent = selected ? "Selected " + labelFor(key) + ". Choose a letter." : "Selection cleared.";
         renderPlacements();
       }, "dp-chip");
+      const badge = el("span", "Selected · ", "dp-selection");
+      badge.setAttribute("aria-hidden", "true");
+      chip.prepend(badge);
       chips.set(key, chip);
       addDrag(chip, target => drop(key, target), section);
       labelBank.append(chip);
     }
     section.append(hint, labelBank);
   } else {
-    for (const target of targets.values()) target.setAttribute("aria-pressed", "false");
+    for (const [key,target] of targets) target.setAttribute("aria-pressed", String(selected === key));
   }
-  section.append(draw(topic.states[0], marks));
+  const tools = {bank: task.type === "label" ? labelBank : null, report};
+  section.append(draw(topic.states[0], marks, tools));
   if (task.type === "label") {
     section.append(placements);
     renderPlacements();
   }
 
-  checkButton(section, report, () => {
+  tools.check = checkButton(section, report, () => {
     if (task.type === "point") {
       if (!selected) return "Select a letter first.";
-      return (selected === task.answer ? "Correct. " : "Look again. The answer is " + task.answer + ". ") + task.feedback;
+      if (selected === task.answer) return (receivedFeedback ? "Correct after feedback. " : "Correct. ") + task.feedback;
+      receivedFeedback = true;
+      save();
+      return "You chose " + selected + ". Its line points to " + topic.parts[selected].cue.toLowerCase() + ". Compare that feature with the question.";
     }
     if (placed.size < keys.length) return "Place the remaining labels first.";
     const correct = keys.filter(key => placed.get(key) === key);
-    if (correct.length === keys.length) return "All labels correct. " + task.feedback;
+    if (correct.length === keys.length) return (receivedFeedback ? "All labels correct after feedback. " : "All labels correct. ") + task.feedback;
     const retry = keys.filter(key => !correct.includes(key));
-    for (const key of retry) placed.delete(key);
-    renderPlacements();
-    return correct.length + " of " + keys.length + " correct. Try " + retry.join(", ") + " again. " + task.feedback;
+    receivedFeedback = true;
+    save();
+    return correct.length + " of " + keys.length + " correct. Recheck " + retry.join(", ") + ". At " + retry[0] +
+      " you placed " + labelFor(placed.get(retry[0])) + ". Follow its line to " + topic.parts[retry[0]].cue.toLowerCase() + ".";
   });
 }
 
@@ -255,9 +320,9 @@ function addDrag(chip, drop, section) {
   chip.addEventListener("pointermove", event => {
     if (!active || active.id !== event.pointerId) return;
     if (!active.ghost && Math.hypot(event.clientX - active.x, event.clientY - active.y) > 7) {
-      active.ghost = el("span", chip.textContent, "dp-ghost");
+      active.ghost = el("span", chip.innerText, "dp-ghost");
       active.ghost.setAttribute("aria-hidden", "true");
-      document.body.append(active.ghost);
+      (chip.closest("dialog") || document.body).append(active.ghost);
     }
     if (active.ghost) position(event);
   });
@@ -269,37 +334,94 @@ function addDrag(chip, drop, section) {
 function makeOrder(section, task, report) {
   const bank = el("div", "", "dp-bank");
   const answer = el("ol", "", "dp-order");
-  const reset = button("Start order again", () => {
-    chosen = [];
-    answer.replaceChildren();
-    for (const node of bank.children) node.disabled = false;
-    bank.querySelector("button").focus();
-    report.textContent = "";
-  });
-  let chosen = [];
-
-  const rotation = task.items.length - 1;
-  for (let index = 0; index < task.items.length; index++) {
-    // The bank order and the stored scientific order are deliberately separate.
-    const original = (index + rotation) % task.items.length;
-    bank.append(button(task.items[original], () => {
-      chosen.push(original);
-      answer.replaceChildren(...chosen.map(i => el("li", task.items[i])));
-      bank.children[index].disabled = true;
-      (bank.querySelector("button:not([disabled])") || reset).focus();
-      report.textContent = "Added step " + chosen.length + ".";
-    }));
+  const topic = section.closest("diagram-practice").getAttribute("topic");
+  const key = "narajos-diagram-order:v1:" + topic + ":" + task.prompt;
+  const signature = JSON.stringify(task.items);
+  let chosen = [], compared = false, checked = false;
+  const correct = () => chosen.length === task.items.length && chosen.every((id,i) => id === i);
+  try {
+    const saved = JSON.parse(localStorage.getItem(key));
+    if (saved?.signature === signature && Array.isArray(saved.chosen) &&
+        saved.chosen.every(i => Number.isInteger(i) && i >= 0 && i < task.items.length) &&
+        new Set(saved.chosen).size === saved.chosen.length) {
+      chosen = saved.chosen;
+      compared = saved.compared === true;
+      checked = saved.checked === true && correct();
+    }
+  } catch {}
+  function save() {
+    try { localStorage.setItem(key, JSON.stringify({signature,chosen,compared,checked})); } catch {}
   }
-  section.append(el("p", "Choose the steps in order."), bank, answer, reset);
+  function draw() {
+    answer.replaceChildren();
+    chosen.forEach((id,index) => {
+      const row = el("li");
+      row.append(el("span",task.items[id]));
+      const actions = el("div", "", "dp-move");
+      for (const [name,offset] of [["Earlier",-1],["Later",1],["Remove",0]]) {
+        const control = button(name, () => {
+          const next = index + offset;
+          chosen.splice(index,1);
+          if (offset) chosen.splice(next,0,id);
+          checked = false;
+          draw();
+          save();
+          report.textContent = offset ? "Moved to step " + (next+1) + "." : "Step returned to the choices.";
+          if (offset) (answer.children[next].querySelector('button:not(:disabled)')).focus();
+          else bank.querySelector('[data-item="'+id+'"]').focus();
+        });
+        control.setAttribute("aria-label",name + " · step " + (index+1));
+        control.disabled = index + offset < 0 || index + offset >= chosen.length;
+        actions.append(control);
+      }
+      row.append(actions);
+      answer.append(row);
+    });
+    for (const control of bank.children) control.disabled = chosen.includes(Number(control.dataset.item));
+  }
+  const rotation = task.items.length - 1;
+  for (let index=0;index<task.items.length;index++) {
+    const id = (index + rotation) % task.items.length;
+    const choice = button(task.items[id], () => {
+      chosen.push(id);
+      checked = false;
+      draw();
+      save();
+      (bank.querySelector("button:not(:disabled)") || section.querySelector(".dp-primary")).focus();
+      report.textContent = "Added step " + chosen.length + ".";
+    });
+    choice.dataset.item = id;
+    bank.append(choice);
+  }
+  section.append(el("p","Choose the steps in order. Use Earlier or Later to move one."), bank, answer);
+  const success = () => (compared ? "Correct after a retry. " : "Correct. ") + task.feedback;
   checkButton(section, report, () => {
     if (chosen.length < task.items.length) return "Choose all the steps first.";
-    const wrong = chosen.findIndex((index, position) => index !== position);
-    return wrong < 0 ? "Correct. " + task.feedback : "Recheck step " + (wrong + 1) + ". " + task.feedback;
+    const wrong = chosen.findIndex((id,index) => id !== index);
+    checked = wrong === -1;
+    if (!checked) compared = true;
+    save();
+    return checked ? success() : "Recheck step " + (wrong + 1) + ". Compare it with the steps immediately before and after it.";
   });
+  const options = el("details");
+  options.append(el("summary","Order options"),button("Start order again", () => {
+    chosen = [];
+    checked = false;
+    draw();
+    save();
+    options.open = false;
+    report.textContent = "Order cleared. Choose the first step.";
+    bank.querySelector("button").focus();
+  }));
+  section.append(options);
+  draw();
+  if (checked) report.textContent = success();
 }
 
 function makeCheck(section, task, report) {
   if (task.type === "order") return makeOrder(section, task, report);
+  let receivedFeedback = false;
+  const correctMessage = () => (receivedFeedback ? "Correct after feedback. " : "Correct. ") + task.feedback;
   if (task.type === "choice") {
     const options = el("div", "", "dp-bank");
     options.setAttribute("role", "group");
@@ -315,8 +437,12 @@ function makeCheck(section, task, report) {
       options.append(choice);
     });
     section.append(options);
-    checkButton(section, report, () => selected === null ? "Choose an answer first."
-      : (selected === task.answer ? "Correct. " : "Try again. ") + task.feedback);
+    checkButton(section, report, () => {
+      if (selected === null) return "Choose an answer first.";
+      if (selected === task.answer) return correctMessage();
+      receivedFeedback = true;
+      return "Recheck “" + task.options[selected] + "”. " + task.feedback;
+    });
     return;
   }
   const field = el("label", "", "dp-field");
@@ -330,7 +456,9 @@ function makeCheck(section, task, report) {
     checkButton(section, report, () => {
       const value = input.value.trim().replace("−", "-");
       if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(value)) return "Enter a number in " + task.unit + ".";
-      return (Number(value) === task.answer ? "Correct. " : "Check the calculation. ") + task.feedback;
+      if (Number(value) === task.answer) return correctMessage();
+      receivedFeedback = true;
+      return "Recheck " + value + " " + task.unit + ". " + task.feedback;
     });
     return;
   }

@@ -20,24 +20,26 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
   const correct = () => slots.every((id, index) => id === index);
   let slots = empty();
   let checked = false;
+  let usedFeedback = false;
   try {
     const saved = JSON.parse(localStorage.getItem(key));
     if (saved?.slots?.length === cards.length && saved.slots.every(id => id === null || Number.isInteger(id) && id >= 0 && id < cards.length)) {
       const used = saved.slots.filter(id => id !== null);
       if (new Set(used).size === used.length) {
         slots = saved.slots;
+        usedFeedback = saved.usedFeedback === true;
         checked = saved.checked === true && correct();
       }
     }
   } catch { /* Storage can be unavailable on a shared device. */ }
 
   function save() {
-    try { localStorage.setItem(key, JSON.stringify({ slots, checked })); } catch { /* Keep the activity usable. */ }
+    try { localStorage.setItem(key, JSON.stringify({ slots, checked, usedFeedback })); } catch { /* Keep the activity usable. */ }
     onChange?.();
   }
 
   root.classList.add("sequence-order", "paragraph-order");
-  const instructions = element("p", "Choose a position, then pick a sentence.");
+  const instructions = element("p", "Choose sentences in paragraph order. To swap two placed sentences, select one and then the other.");
   const bank = element("section", "", "writing-order-bank paragraph-bank");
   const bankCards = element("ul", "", "writing-order-options");
   const bankEmpty = element("p", "All sentences are in the paragraph.");
@@ -54,16 +56,29 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
   const model = element("details", "", "paragraph-model");
   model.append(element("summary", "Read the completed paragraph"), element("p", cards.join(" "), "model"));
   const controls = element("div", "", "writing-order-controls");
-  const picker = element("dialog", "", "paragraph-picker");
-  const pickerTitle = element("h3");
-  pickerTitle.id = key.replaceAll(":", "-") + "-picker";
-  pickerTitle.tabIndex = -1;
-  picker.setAttribute("aria-labelledby", pickerTitle.id);
-  const pickerTools = element("div", "", "paragraph-picker-tools");
-  const pickerContent = element("div", "", "paragraph-picker-content");
-  const close = button("Close", () => picker.close());
-  picker.append(pickerTitle, pickerContent, pickerTools);
-
+  let destination = slots.indexOf(null);
+  let moving = null;
+  const nextPosition = element("p", "", "paragraph-next");
+  const tip = element("details", "", "paragraph-hint");
+  const tipText = element("p");
+  tip.append(element("summary","Hint"), tipText);
+  tip.addEventListener("toggle", () => {
+    if (tip.open && !usedFeedback) { usedFeedback = true; save(); }
+  });
+  const undo = button("Return selected sentence to choices", () => {
+    const position = moving;
+    slots[position] = null;
+    moving = null;
+    destination = position;
+    usedFeedback ||= checked;
+    checked = false;
+    draw();
+    save();
+    status.textContent = "Sentence returned to the choices.";
+    entries[position].control.focus();
+  });
+  bank.prepend(nextPosition);
+  bank.append(tip);
   const check = button("Check order", () => {
     if (slots.includes(null)) return;
     const firstError = slots.findIndex((id, index) => id !== index);
@@ -73,6 +88,8 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
       save();
       return;
     }
+    usedFeedback = true;
+    save();
     clearReview();
     const { item, feedback, control } = entries[firstError];
     item.dataset.orderReview = "";
@@ -84,6 +101,9 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
   });
   const restart = button("Start again", () => {
     slots = empty();
+    destination = 0;
+    moving = null;
+    usedFeedback ||= checked;
     checked = false;
     draw();
     save();
@@ -92,63 +112,33 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
   });
   const restartPrompt = element("details", "", "paragraph-restart");
   restartPrompt.append(element("summary", "Restart paragraph"), restart);
-  controls.append(check, restartPrompt);
-  root.append(instructions, board, controls, status, result, model, picker);
+  controls.append(check, undo, restartPrompt);
+  root.append(instructions, board, controls, status, result, model);
 
   function place(id, position) {
     const previousPosition = slots.indexOf(id);
     if (previousPosition !== -1) slots[previousPosition] = slots[position];
     slots[position] = id;
+    destination = slots.indexOf(null);
+    moving = null;
+    usedFeedback ||= checked;
     checked = false;
     draw();
     save();
     status.textContent = "Updated " + roles[position].toLowerCase() + ".";
   }
 
-  function remove(position) {
-    slots[position] = null;
-    checked = false;
-    draw();
-    save();
-    status.textContent = "Sentence returned to the choices.";
-  }
-
-  function openPicker(position) {
-    pickerTitle.textContent = roles[position];
-    pickerContent.replaceChildren();
-    pickerTools.replaceChildren();
-    const current = slots[position];
-    if (current !== null) pickerContent.append(element("p", "Current sentence: " + cards[current]));
-    if (guidance) pickerContent.append(element("p", guidance[position], "paragraph-hint"));
-    const help = element("details", "", "paragraph-hint");
-    const hint = hints[position].replace(/^Review [^.]+\. /, "");
-    help.append(element("summary", "Hint"), element("p", hint));
-    pickerContent.append(help);
-    const choices = element("ul", "", "writing-order-options");
-    for (const id of order) {
-      if (id === current || slots.includes(id)) continue;
-      const item = element("li");
-      item.append(button(cards[id], () => { place(id, position); picker.close(); }));
-      choices.append(item);
+  function choosePosition(position) {
+    if (moving !== null && moving !== position) {
+      place(slots[moving], position);
+      entries[position].control.focus();
+      return;
     }
-    if (choices.childElementCount) pickerContent.append(choices);
-    const taken = slots.map((id, index) => [id, index]).filter(([id, index]) => id !== null && index !== position);
-    if (taken.length) {
-      const exchange = element("details");
-      const other = element("ul", "", "writing-order-options");
-      for (const [id, index] of taken) {
-        const item = element("li");
-        item.append(button(roles[index] + " · " + cards[id], () => { place(id, position); picker.close(); }));
-        other.append(item);
-      }
-      exchange.append(element("summary", current === null ? "Move a sentence from another position" : "Swap with another position"), other);
-      pickerContent.append(exchange);
-    }
-    if (current !== null) pickerTools.append(button("Remove sentence", () => { remove(position); picker.close(); }));
-    pickerTools.append(close);
-    entries[position].control.focus({ preventScroll: true });
-    picker.showModal();
-    pickerTitle.focus({ preventScroll: true });
+    moving = slots[position] === null || moving === position ? null : position;
+    destination = position;
+    updateSelection();
+    status.textContent = moving === null ? "Choose a sentence for " + roles[position].toLowerCase() + "." :
+      "Selected " + roles[position].toLowerCase() + ". Choose another position to move or swap it.";
   }
 
   const canDrag = matchMedia("(min-width: 761px) and (pointer: fine)");
@@ -168,9 +158,9 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
     const item = element("li");
     item.dataset.orderPosition = index;
     if (index === 0 || index === roles.length - 1) item.classList.add("paragraph-boundary");
-    const control = button("", () => openPicker(index));
+    const control = button("", () => choosePosition(index));
     const feedback = element("p", "", "paragraph-position-feedback");
-    feedback.id = pickerTitle.id + "-feedback-" + index;
+    feedback.id = key.replaceAll(":", "-") + "-feedback-" + index;
     feedback.setAttribute("role", "status");
     draggable(control, () => slots[index]);
     item.addEventListener("dragover", event => {
@@ -192,7 +182,13 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
 
   const sources = order.map(id => {
     const item = element("li");
-    const control = element("span", cards[id], "paragraph-drag-card");
+    const control = button(cards[id], () => {
+      if (destination < 0) return;
+      place(id, destination);
+      const next = sources.find(source => !source.item.hidden);
+      (next?.item.querySelector("button") || check).focus({preventScroll:Boolean(next)});
+    });
+    control.className = "paragraph-drag-card";
     control.draggable = true;
     draggable(control, () => id);
     item.append(control);
@@ -218,7 +214,7 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
     model.hidden = !checked;
     if (checked) {
       result.dataset.result = "correct";
-      result.replaceChildren(element("strong", "Correct."), " " + success);
+      result.replaceChildren(element("strong", "Correct."), (usedFeedback ? " You used feedback on this order. " : " ") + success);
     } else {
       delete result.dataset.result;
       result.textContent = "";
@@ -226,14 +222,24 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
     }
   }
 
+  function updateSelection() {
+    for (const [i,entry] of entries.entries()) {
+      const selected = moving === i;
+      entry.control.setAttribute("aria-pressed", String(selected));
+      const prefix = selected ? "Selected · " : i === destination && slots[i] === null ? "Next · " : "";
+      entry.control.textContent = prefix + (slots[i] === null ? "Place here" : cards[slots[i]]);
+      entry.control.setAttribute("aria-label", roles[i] + ". " + entry.control.textContent);
+    }
+    nextPosition.textContent = destination < 0 ? "All sentences placed. Check the order." :
+      (moving === null ? "Next position · " : "Selected position · ") + roles[destination];
+    const index = destination < 0 ? 0 : destination;
+    tipText.textContent = (guidance?.[index] || "") + " " + hints[index];
+    tip.hidden = destination < 0;
+    undo.hidden = moving === null;
+  }
   function draw() {
     clearReview();
-    for (const [index, { control }] of entries.entries()) {
-      const id = slots[index];
-      control.textContent = id === null ? "Choose sentence" : cards[id];
-      control.setAttribute("aria-label", id === null ? "Choose sentence for " + roles[index].toLowerCase()
-        : cards[id] + " Change " + roles[index].toLowerCase() + ".");
-    }
+    updateSelection();
     for (const { id, item } of sources) item.hidden = slots.includes(id);
     bankEmpty.hidden = slots.includes(null);
     check.disabled = slots.includes(null);

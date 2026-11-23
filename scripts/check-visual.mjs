@@ -77,16 +77,41 @@ try {
   assert(await page.locator(".home-option--sim p").evaluate(p => parseFloat(getComputedStyle(p).fontSize) >= 16));
 
   await page.goto(base + "/teaching/focused-writing/order/");
-  await page.getByRole("button", { name: "Choose sentence for topic sentence" }).click();
-  const sentencePicker = page.getByRole("dialog", { name: "Topic sentence" });
-  assert(await sentencePicker.isVisible());
-  assert(await sentencePicker.evaluate(dialog => dialog.scrollWidth <= dialog.clientWidth + 2), "Sentence picker needs horizontal scrolling at 320px");
+  const paragraphOrder = page.locator('[data-writing-order="sandstone"]');
+  await paragraphOrder.getByRole("button",{name:/^Sand grains settled/}).click();
+  await paragraphOrder.locator("[data-order-position]").first().getByRole("button").click();
+  assert(await paragraphOrder.getByRole("button",{name:/Topic sentence.*Selected/}).isVisible());
+  assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 2));
   await page.addScriptTag({ content: axe.source });
   const pickerIssues = await page.evaluate(async () => {
     const result = await window.axe.run({ runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] } });
     return result.violations.map(rule => rule.id);
   });
-  assert.deepEqual(pickerIssues, [], "Accessibility findings while the sentence picker is open");
+  assert.deepEqual(pickerIssues, [], "Accessibility findings while a sentence is selected");
+
+  async function scanState(name) {
+    await page.addScriptTag({content:axe.source});
+    const violations=await page.evaluate(async () => (await window.axe.run({
+      runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21aa","wcag22aa"]}
+    })).violations.map(rule=>({id:rule.id,nodes:rule.nodes.map(node=>node.target)})));
+    assert.deepEqual(violations,[],name);
+  }
+  await page.goto(base+"/ks3/lesson/?topic=separating-techniques");
+  const diagram=page.locator('diagram-practice[topic="filtration"] .dp-question').first();
+  await diagram.locator(":scope > summary").tap();
+  await diagram.getByRole("button",{name:"Enlarge diagram"}).tap();
+  await scanState("Enlarged diagram inspection");
+  await page.keyboard.press("Escape");
+  await page.goto(base+"/teaching/focused-writing/gcse/");
+  await page.getByRole("button",{name:"Write my response"}).tap();
+  await page.locator("#gcse-paragraph").fill("Water entered by osmosis.");
+  await page.getByRole("button",{name:"Check my paragraph"}).tap();
+  await scanState("Paragraph feedback");
+  await page.evaluate(()=>localStorage.setItem("narajos.catchup.v1.10.amylase-endpoint",JSON.stringify({step:2,done:true})));
+  await page.goto(base+"/science-catch-up/lesson/?topic=amylase-endpoint&year=10");
+  await page.getByRole("spinbutton").fill("25");
+  await page.getByRole("button",{name:"Check calculation"}).tap();
+  await scanState("Independent calculation after feedback");
 
   await page.goto(base + "/teaching/");
   assert.equal(await page.locator('main a[href="/support/"]').count(), 1);

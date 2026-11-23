@@ -1,3 +1,4 @@
+import { applicationStatus } from "./school-catchup-transfer.js";
 import { identifyCatchupYear } from "./school-catchup-journey.js";
 import { curriculum, motionLessons } from "./ks3-lessons.js";
 import { year9 } from "./school-catchup-year9.js";
@@ -115,7 +116,13 @@ function renderContinue(main, entries) {
   main.querySelector(".school-continue")?.remove();
   const unfinished = entries.filter(entry => !years.includes(year) || entry.groups.includes(year)).flatMap(entry => {
     const state = readCatchup(entry.key);
-    return !state.done && (state.step || state.open || state.draft?.trim()) ? [{entry, step: state.step + 1}] : [];
+    if (state.done) {
+      const record = state.transfer20 || {};
+      if (["independent","supported","self-reviewed"].includes(record.outcome)) return [];
+      const stage = applicationStatus(entry.key.split(".")[1], record);
+      return stage ? [{entry, stage}] : [];
+    }
+    return state.step || state.open || state.draft?.trim() ? [{entry, stage:"Step " + (state.step + 1)}] : [];
   });
   if (unfinished.length) {
     const panel = element("section", "", "school-continue");
@@ -125,16 +132,16 @@ function renderContinue(main, entries) {
     panel.append(heading);
     const [first, ...others] = unfinished;
     const row = element("div", "", "school-continue-row");
-    row.append(element("p", first.entry.title + " · Step " + first.step),
+    row.append(element("p", first.entry.title + " · " + first.stage),
       link("Resume", resumeHref(first.entry), "school-primary"));
     panel.append(row);
     if (others.length) {
       const more = element("details");
       more.append(element("summary", "Other saved lessons"));
       const list = element("ul");
-      for (const {entry, step} of others) {
+      for (const {entry, stage} of others) {
         const item = element("li");
-        item.append(link("Resume " + entry.title + " · Step " + step, resumeHref(entry)));
+        item.append(link("Resume " + entry.title + " · " + stage, resumeHref(entry)));
         list.append(item);
       }
       more.append(list);

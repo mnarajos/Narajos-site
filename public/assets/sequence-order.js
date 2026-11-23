@@ -14,11 +14,30 @@ function button(text, action, label = text) {
 }
 
 export function mountSequence(root, {
-  groups, order, bankTitle, itemName, reviewLabel, success, answerTitle, answer
+  groups, order, bankTitle, itemName, reviewLabel, success, answerTitle, answer, storageKey
 }) {
   const cards = groups.flatMap(group => group.cards);
   const positions = groups.flatMap(group => group.roles);
   const slots = cards.map(() => null);
+  const signature = JSON.stringify(cards);
+  let completed = false;
+  let usedFeedback = false;
+  if (storageKey) {
+    try {
+      const saved = JSON.parse(localStorage.getItem(storageKey));
+      if (saved?.signature === signature && Array.isArray(saved.slots) && saved.slots.length === slots.length) {
+        const used = saved.slots.filter(id => id !== null);
+        if (used.every(id => Number.isInteger(id) && id >= 0 && id < cards.length) && new Set(used).size === used.length) {
+          usedFeedback = saved.usedFeedback === true;
+          slots.splice(0, slots.length, ...saved.slots);
+          completed = saved.completed === true && slots.every((id,index) => id === index);
+        }
+      }
+    } catch {}
+  }
+  function save() {
+    if (storageKey) try { localStorage.setItem(storageKey, JSON.stringify({signature,slots,completed,usedFeedback})); } catch {}
+  }
   let selected = null;
   let drag = null;
   let suppressDragClick = false;
@@ -39,6 +58,9 @@ export function mountSequence(root, {
   if (answer) model.append(element("summary", answerTitle), ...answer.map(text => element("p", text, "model")));
 
   function refreshAssessment() {
+    usedFeedback ||= completed;
+    completed = false;
+    save();
     feedback.textContent = "";
     delete feedback.dataset.result;
     model.hidden = true;
@@ -50,9 +72,13 @@ export function mountSequence(root, {
     const firstError = slots.findIndex((id, index) => id !== index);
     feedback.dataset.result = firstError === -1 ? "correct" : "retry";
     if (firstError === -1) {
-      feedback.replaceChildren(element("strong", "Correct."), " " + success);
+      completed = true;
+      save();
+      feedback.replaceChildren(element("strong", "Correct."), (usedFeedback ? " You used feedback on this order. " : " ") + success);
       model.hidden = !answer;
     } else {
+      usedFeedback = true;
+      save();
       draw(firstError);
       const { label, hint } = positions[firstError];
       feedback.replaceChildren(element("strong", "Not quite."), " Review " + label.toLowerCase() + ". " + hint);
@@ -241,5 +267,10 @@ export function mountSequence(root, {
   }, true);
 
   draw();
-  refreshAssessment();
+  check.disabled = slots.includes(null);
+  model.hidden = !completed || !answer;
+  if (completed) {
+    feedback.dataset.result = "correct";
+    feedback.replaceChildren(element("strong", "Correct."), (usedFeedback ? " You used feedback on this order. " : " ") + success);
+  }
 }

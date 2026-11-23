@@ -204,6 +204,7 @@ const sessionKey = id => "narajos-writing-first-assembly:" + id;
 
 export function mountDevelopment(card, id, fields, guide, resetOutlineReport) {
   const [topic, previousNote, conclusion] = fields;
+  const introductory = id === "ramp";
   const paragraph = document.getElementById(id + "-paragraph");
   if (!paragraph) return null;
   const model = guide[1][1].split(/;\s*/);
@@ -211,7 +212,7 @@ export function mountDevelopment(card, id, fields, guide, resetOutlineReport) {
   const oldNotes = [older[0] || "", older[1] || "", older.slice(2).join("\n")];
   const plan = previousNote.closest("details.writing-step");
   const group = element("div", "", "spo-notes");
-  group.append(element("p", "Jot down two or three ideas in the order you will explain them."));
+  group.append(element("p", introductory ? "Jot down two or three ideas in the order you will explain them." : "Use notes if they help. You can develop an idea straight into a sentence."));
   const notes = oldNotes.map((value, index) => {
     const item = savedField(id + "-note-" + (index + 1), "Supporting note " + (index + 1), value);
     group.append(item.wrapper);
@@ -290,14 +291,27 @@ export function mountDevelopment(card, id, fields, guide, resetOutlineReport) {
     original.textContent = first;
     revised.textContent = paragraph.value || "Your current paragraph is empty.";
   }
+  function rememberFirst(text) {
+    if (!first && text.trim()) {
+      first = text.trim();
+      try { sessionStorage.setItem(sessionKey(id), first); } catch {}
+      update();
+    }
+  }
+  card.querySelector("[data-writing-check] button")?.addEventListener("click", () => rememberFirst(paragraph.value));
   const assemble = button("Assemble my paragraph", () => {
     const active = slots.map(({field}, index) => [notes[index], field]).filter(([note, field]) => note.value.trim() || field.value.trim());
     const incomplete = active.find(([note, field]) => !note.value.trim() || !field.value.trim());
-    if (!topic.value.trim() || !conclusion.value.trim() || active.length < 2 || incomplete) {
+    if (introductory && (!topic.value.trim() || !conclusion.value.trim() || active.length < 2 || incomplete)) {
       status.textContent = "Add a topic sentence, at least two notes and their supporting sentences, and a concluding sentence.";
       return;
     }
-    const ordered = [topic, ...active.map(([, field]) => field), conclusion];
+    const developed = slots.map(slot => slot.field).filter(field => field.value.trim());
+    if (!introductory && (!topic.value.trim() || !developed.length)) {
+      status.textContent = "Add an opening and one developed explanation to assemble, or write directly in the paragraph box.";
+      return;
+    }
+    const ordered = [topic, ...developed, conclusion].filter(field => field.value.trim());
     const needsStop = ordered.find(field => !/[.!?][”"')\]]*$/.test(field.value.trim()));
     if (needsStop) {
       status.textContent = "Read each sentence back. Finish " + needsStop.labels[0].textContent.trim().replace(/:$/, "").toLowerCase() + " with punctuation.";
@@ -316,10 +330,7 @@ export function mountDevelopment(card, id, fields, guide, resetOutlineReport) {
       preview.focus();
       return;
     }
-    if (!first) {
-      first = text;
-      try { sessionStorage.setItem(sessionKey(id), first); } catch {}
-    }
+    rememberFirst(text);
     setValue(paragraph, text);
     preview.hidden = true;
     update();
@@ -327,11 +338,27 @@ export function mountDevelopment(card, id, fields, guide, resetOutlineReport) {
     paragraph.focus();
   });
   assembly.append(assemble, status, preview);
+  if (!introductory) {
+    const draftStep = paragraph.closest("details.writing-step");
+    const direct = button("Write my response", () => {
+      draftStep.open = true;
+      paragraph.focus();
+    });
+    const prompt = element("p", "Write your explanation, or use the plan for support. ");
+    prompt.append(direct);
+    plan.before(prompt);
+    draftStep.querySelector("summary").after(element("p", "Answer the science question in connected sentences. Add a conclusion when it draws together evidence or answers part of the question."));
+    // Keep assembly available to returning writers who already have a plan.
+    const assemblyFields = [topic, ...slots.map(slot => slot.field), conclusion];
+    const toggleAssembly = () => { assemble.hidden = !assemblyFields.some(field => field.value.trim()); };
+    for (const field of assemblyFields) field.addEventListener("input", toggleAssembly);
+    toggleAssembly();
+  }
   const improve = disclosure("Improve your paragraph", element("ul"));
   for (const question of [
     "Does your opening answer the science question?",
     "Does each sentence build on the previous one and get the science right?",
-    "Does the ending say what your reasoning shows or why it matters?",
+    introductory ? "Does the ending say what your reasoning shows or why it matters?" : "Have you answered every part of the question?",
     "Which sentence could you make clearer or more precise?"
   ]) improve.querySelector("ul").append(element("li", question));
   paragraph.before(assembly);

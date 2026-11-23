@@ -3,6 +3,8 @@
  * Run after: npm install --no-save playwright@1.56.1 && npx playwright install chromium
  */
 import assert from "node:assert/strict";
+import {checkSharedInteractions} from "./check-shared-interactions.mjs";
+import {checkBrowserZoom} from "./check-browser-zoom.mjs";
 import {servePublic} from "./browser-test-site.mjs";
 import {chromium} from "playwright";
 import "./check-writing-marking.mjs";
@@ -32,6 +34,8 @@ async function checkPage(page,name){
  assert(overflow<=3,name+" overflows viewport horizontally by "+overflow+"px");
 }
 try{
+ await checkSharedInteractions(browser,base,true);
+ await checkBrowserZoom(base);
  await checkCatchupScaffolds(browser,base);
  {
  const writingTouch=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
@@ -40,22 +44,16 @@ try{
  const touchOrder=writingTouch.locator('[data-writing-order="sandstone"]');
  const touchSlot=touchOrder.locator('[data-order-position="0"]');
  const touchControl=touchSlot.getByRole("button");
- const dialog=touchOrder.getByRole("dialog",{name:"Topic sentence"});
- assert(await touchOrder.locator(".paragraph-bank").isHidden());
- await touchControl.scrollIntoViewIfNeeded();
- await touchControl.tap();
- await dialog.waitFor({timeout:3000}).catch(async error=>{
-  await screen(writingTouch,"writing-touch-picker-not-open");
-  throw new Error("Tap should open the picker. "+await touchSlot.innerText(),{cause:error});
- });
- await dialog.getByRole("button",{name:/^Sand grains settled/}).tap();
+ const choices=touchOrder.locator(".paragraph-bank");
+ assert(await choices.isVisible());
+ await choices.getByRole("button",{name:/^Sand grains settled/}).tap();
  assert.match(await touchSlot.innerText(),/Sand grains settled/);
  await touchControl.tap();
- await dialog.getByRole("button",{name:/^This sandstone/}).tap();
+ await choices.getByRole("button",{name:/^This sandstone/}).tap();
  assert.match(await touchSlot.innerText(),/This sandstone/);
  await touchControl.tap();
- await dialog.getByRole("button",{name:"Remove sentence",exact:true}).tap();
- assert(await touchSlot.getByRole("button",{name:"Choose sentence for topic sentence"}).isVisible());
+ await touchOrder.getByRole("button",{name:"Return selected sentence to choices"}).tap();
+ assert.match(await touchControl.innerText(),/Place here/);
  await writingTouch.close();
  }
  {
@@ -150,8 +148,8 @@ try{
  const boilingCheck=pilotPage.getByRole("dialog");
  await boilingCheck.getByRole("radio",{name:"It stays steady while the liquid boils.",exact:true}).check();
  await boilingCheck.getByRole("button",{name:"Check answer",exact:true}).click();
- await boilingCheck.getByRole("button",{name:"Finish catch-up",exact:true}).click();
- await pilotPage.getByRole("heading",{name:"Catch-up complete!",exact:true}).waitFor();
+ await boilingCheck.getByRole("button",{name:"Finish guided checks",exact:true}).click();
+ await pilotPage.getByRole("heading",{name:"Guided checks complete",exact:true}).waitFor();
  await pilotPage.goto(base+"/science-catch-up/?year=9");
  assert.equal(await pilotPage.locator(".school-topic-list > li").count(),5);
  await pilotPage.evaluate(()=>{
@@ -278,11 +276,11 @@ try{
  await check.getByText("Try one more on your own",{exact:true}).waitFor();
  await check.getByRole("radio",{name:"From the water into the potato cells",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
- await check.getByRole("button",{name:"Finish catch-up",exact:true}).click();
+ await check.getByRole("button",{name:"Finish guided checks",exact:true}).click();
  assert.equal(await guide.getByRole("link",{name:"Revise B1",exact:true}).getAttribute("href"),"/gcse/#topic-b1");
  assert.equal(await guide.getByRole("link",{name:/Choose another Year/}).count(),0);
  await pilotPage.reload();
- await guide.getByRole("heading",{name:"Catch-up complete!",exact:true}).waitFor();
+ await guide.getByRole("heading",{name:"Guided checks complete",exact:true}).waitFor();
  await guide.getByText("Review answers",{exact:true}).click();
  await guide.getByRole("button",{name:"Check 1",exact:true}).click();
  assert(await check.getByText("Water can move in both directions.",{exact:true}).isVisible());
@@ -333,14 +331,14 @@ try{
     await helpJourney.getByRole("button",{name:"Resume check",exact:true}).tap();
     assert(await helpDialog.getByRole("heading",{name:"Explanation",exact:true}).isVisible());
    }
-   await helpDialog.getByRole("button",{name:index===steps-1&&!hasFollowUp?"Finish catch-up":"Continue",exact:true}).tap();
+   await helpDialog.getByRole("button",{name:index===steps-1&&!hasFollowUp?"Finish guided checks":"Continue",exact:true}).tap();
   }
   if(hasFollowUp){
    assert(await helpDialog.getByText("Try one more on your own",{exact:true}).isVisible());
    await askForHelp();
-   await helpDialog.getByRole("button",{name:"Finish catch-up",exact:true}).tap();
+   await helpDialog.getByRole("button",{name:"Finish guided checks",exact:true}).tap();
   }
-  await helpJourney.getByRole("heading",{name:"Catch-up complete!",exact:true}).waitFor();
+  await helpJourney.getByRole("heading",{name:"Guided checks complete",exact:true}).waitFor();
   const saved=await helpPage.evaluate(key=>JSON.parse(localStorage.getItem("narajos.catchup.v1."+key)),year+"."+id);
   assert.deepEqual(Object.values(saved.outcomes),Array(steps).fill("explained"));
   assert.equal(saved.followUp,hasFollowUp?"explained":undefined);
@@ -383,7 +381,7 @@ try{
   }
   await check.getByRole("radio",{name:answer,exact:true}).check();
   await check.getByRole("button",{name:"Check answer",exact:true}).click();
-  await check.getByRole("button",{name:index===3?"Finish catch-up":"Continue",exact:true}).click();
+  await check.getByRole("button",{name:index===3?"Finish guided checks":"Continue",exact:true}).click();
  }
  await guide.getByRole("link",{name:"Revise B3",exact:true}).click();
  await pilotPage.getByRole("link",{name:"Catch up on this topic",exact:true}).click();
@@ -392,7 +390,7 @@ try{
  await vaccineLesson.waitFor();
  assert.equal(await pilotPage.locator(".school-topic-list > li").count(),1);
  await vaccineLesson.click();
- await guide.getByRole("heading",{name:"Catch-up complete!",exact:true}).waitFor();
+ await guide.getByRole("heading",{name:"Guided checks complete",exact:true}).waitFor();
  await pilotPage.goto(base+"/science-catch-up/?year=11");
  await pilotPage.evaluate(()=>localStorage.setItem("gcse-test-progress","kept"));
  const clearCatchup=pilotPage.getByRole("button",{name:"Clear catch-up progress",exact:true});
@@ -1272,10 +1270,10 @@ try{
  const outlineCheck=navPage.getByRole("button",{name:"Check my outline",exact:true});
  const outlineReview=navPage.locator(".writing-outline-review");
  await outlineCheck.click();
- await outlineReview.getByRole("status").filter({hasText:"Still to add: topic sentence, supporting notes, concluding sentence."}).waitFor();
+ await outlineReview.getByRole("status").filter({hasText:"Still to add: topic sentence, supporting notes."}).waitFor();
  const opening=navPage.getByLabel("Topic sentence:",{exact:true});
  const supports=navPage.getByLabel("Supporting note 1",{exact:true});
- const concluding=navPage.getByLabel("Concluding sentence:",{exact:true});
+ const concluding=navPage.getByLabel("Concluding sentence (if useful):",{exact:true});
  await opening.fill("The potato mass changed.");
  await supports.fill("The potato gained 17%.");
  await concluding.fill("The potato mass changed!");
@@ -1391,10 +1389,8 @@ try{
   await slot(activity,index).locator("[data-order-place]").click();
  };
  const chooseSentence=async(activity,start,index)=>{
-  await slot(activity,index).getByRole("button").press("Enter");
-  const dialog=activity.getByRole("dialog");
-  await dialog.getByRole("button",{name:new RegExp("^"+start)}).press("Enter");
-  await dialog.waitFor({state:"hidden"});
+  await bankCard(activity,start).press("Enter");
+  assert.match(await slot(activity,index).innerText(), new RegExp(start));
  };
  const rampModel=navPage.locator("[data-ramp-model]");
  await rampModel.getByText("Reveal the topic sentence",{exact:true}).press("Enter");
@@ -1410,9 +1406,7 @@ try{
  assert.match(await rampReview.getByRole("status").textContent(),/^Not quite. Review the topic sentence/);
  assert(await rampReview.getByRole("button").evaluate(el=>el===document.activeElement));
  await slot(oneParagraph,0).getByRole("button").press("Enter");
- const rampPicker=oneParagraph.getByRole("dialog");
- await rampPicker.getByText("Swap with another position",{exact:true}).press("Enter");
- await rampPicker.getByRole("button",{name:/Supporting sentence 1 · Using the same car each time helps/}).press("Enter");
+ await slot(oneParagraph,1).getByRole("button").press("Enter");
  await checkOrder(oneParagraph).click();
  await oneParagraph.getByRole("status").filter({hasText:"Correct."}).waitFor();
  await oneParagraph.getByText("Read the completed paragraph",{exact:true}).click();
@@ -1454,9 +1448,8 @@ try{
  assert(await igneous.isHidden());
  assert(await advance.isHidden());
  await slot(sand,0).getByRole("button").press("Enter");
- assert(await sand.getByRole("dialog").getByText("Which sentence gives the overall explanation?").isVisible());
- await navPage.keyboard.press("Escape");
- assert(await slot(sand,0).getByRole("button").evaluate(el=>el===document.activeElement));
+ await sand.getByText("Hint",{exact:true}).press("Enter");
+ assert(await sand.getByText(/Which sentence gives the overall explanation/).isVisible());
  for(const [i,start] of ["This sandstone","Sand grains","The weight","Minerals deposited","Deposition"].entries()){
   await chooseSentence(sand,start,i);
  }
@@ -1464,17 +1457,15 @@ try{
  await advance.press("Enter");
  assert(await sand.isHidden());
  await slot(igneous,0).getByRole("button").press("Enter");
- assert(await igneous.getByRole("dialog").getByText("Hint",{exact:true}).isVisible());
- assert(await igneous.getByRole("dialog").getByText("Introduce what the granite formed from.").isHidden());
- await navPage.keyboard.press("Escape");
+ assert(await igneous.getByText("Hint",{exact:true}).isVisible());
+ assert(await igneous.getByText(/Introduce what the granite formed from/).isHidden());
  for(const [i,start] of ["This granite","As the temperature","The molten rock","The crystals had","Slow cooling"].entries()){
   await chooseSentence(igneous,start,i);
  }
  await checkOrder(igneous).press("Enter");
  assert.match(await igneous.locator("[data-order-review]").innerText(),/Review supporting sentence 1/);
  await slot(igneous,1).getByRole("button").press("Enter");
- await igneous.getByRole("dialog").getByText("Swap with another position",{exact:true}).press("Enter");
- await igneous.getByRole("button",{name:/Supporting sentence 2 · The molten rock/}).press("Enter");
+ await slot(igneous,2).getByRole("button").press("Enter");
  await checkOrder(igneous).press("Enter");
  await navPage.getByRole("button",{name:"Compare both paragraphs",exact:true}).press("Enter");
  const comparison=navPage.locator("#rock-review");
