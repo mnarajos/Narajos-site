@@ -961,7 +961,7 @@ try{
  for(const path of ["/","/404.html","/privacy/","/terms/","/teaching/","/teacher/","/gcse/","/alevel/","/human-biology/","/science-practice/","/teaching/simulations/",...['bioenergetics','cardiac-cycle','enzyme-inhibition','enzyme-kinetics','molecular-biology'].map(x=>"/teaching/simulations/"+x+"/")]){
   await navPage.goto(base+path,{waitUntil:"load"});
   const control=navPage.locator("#site-home");assert(await control.isVisible(),"Missing homepage control: "+path);
-  assert.equal(await control.getAttribute("href"),"/");assert.equal(await control.innerText(),"Narajos");
+  assert.equal(await control.getAttribute("href"),"/");assert.equal(await control.innerText(),"narajos");
   const style=await control.evaluate(el=>{const s=getComputedStyle(el);return [s.fontSize,s.fontWeight,s.color,s.backgroundColor,s.borderRadius,s.minHeight];});
   if(!standard)standard=style;else assert.deepEqual(style,standard,"Homepage control style differs: "+path);
  }
