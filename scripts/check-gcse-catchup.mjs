@@ -67,6 +67,35 @@ export async function checkGCSECatchup(browser, base) {
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 2), id);
     }
 
+    for (const width of [320, 390, 768, 1280]) {
+      await page.setViewportSize({width, height: 840});
+      await page.goto(lessonURL("amylase-endpoint", 10));
+      const answer = page.getByRole("spinbutton");
+      if (width === 320) {
+        await answer.fill("25");
+        await page.getByRole("button", {name: "Check calculation"}).press("Enter");
+        await page.getByText(/Use the shorter endpoint time/).waitFor();
+        await page.reload();
+        assert.equal(await answer.inputValue(), "25");
+        await answer.fill("0.04");
+        await page.getByRole("button", {name: "Check calculation"}).press("Enter");
+      }
+      assert(await answer.evaluate(el => el.readOnly));
+      assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 2));
+    }
+    await page.goto(lessonURL("spring-evidence", 11));
+    const first = page.getByRole("textbox").first();
+    await first.fill("Unloading evidence is missing.");
+    assert.equal(await page.getByText(/Model explanation[.] Proportional/).count(), 0);
+    await page.getByRole("button", {name:"Compare with model"}).press("Enter");
+    await page.getByLabel("Your revised explanation (optional)", {exact:true}).fill("Unload the spring and compare its length with the original.");
+    await page.reload();
+    assert.equal(await first.inputValue(), "Unloading evidence is missing.");
+    assert(await first.evaluate(el => el.readOnly));
+    assert.match(await page.getByLabel("Your revised explanation (optional)").inputValue(), /Unload/);
+    const transferOutcome = id => page.evaluate(key => JSON.parse(localStorage.getItem("narajos.catchup.v1." + key)).transfer20.outcome, id);
+    assert.equal(await transferOutcome("11.spring-evidence"), "self-reviewed");
+    assert.equal(await transferOutcome("10.amylase-endpoint"), "supported");
     const existing = gcseCatchup["inheritance-cross"];
     await page.goto(lessonURL("inheritance-cross", 11));
     await page.evaluate(({prompt, answer}) => localStorage.setItem("narajos.catchup.v1.11.inheritance-cross",

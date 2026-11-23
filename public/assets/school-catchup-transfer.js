@@ -1,3 +1,5 @@
+import {diagram, line, picture, text} from "./catchup-models.js";
+
 // Keep transfer evidence separate from the scored checks and their historic outcomes.
 const tasks = {
   "fair-tests": ["Two groups compare how ramp height affects the distance a toy car travels. Name what to change, what to measure and one control. Explain why that control matters.", "Identify ramp height and distance travelled. Connect a named control to a possible effect on distance.", "Change ramp height and measure distance travelled from the ramp. Release the same car without pushing so a different starting push cannot explain a longer distance."],
@@ -26,6 +28,15 @@ export function appendTransfer(host, id, state, save, evidence) {
   if (id === "quadrat-evidence" || id === "cell-structures") {
     const figure = evidence?.();
     if (figure) form.append(figure);
+  }
+  if (id === "motion-graphs") {
+    const axes = line(48,24,48,132)+line(48,132,260,132);
+    const points = line(108,42,228,102)+line(108,42,108,132,undefined,1,"4 3")+
+      line(48,42,108,42,undefined,1,"4 3")+line(228,102,228,132,undefined,1,"4 3")+
+      line(48,102,228,102,undefined,1,"4 3");
+    form.append(picture("Velocity against time", diagram("A straight line decreases from 9 metres per second at 2 seconds to 3 metres per second at 6 seconds.",
+      axes+points+text(78,17,"Velocity (m/s)")+text(39,46,"9")+text(39,106,"3")+
+      text(108,150,"2")+text(228,150,"6")+text(151,172,"Time (s)"), 285,180)));
   }
   const label = add("label", task[0] + (numeric ? " Answer in " + task[1] + "." : ""));
   const input = add(numeric ? "input" : "textarea", "");
@@ -63,7 +74,7 @@ export function appendTransfer(host, id, state, save, evidence) {
     } else {
       record.first = input.value;
       record.outcome = numeric ? (record.helped ? "supported" : "independent") : "self-reviewed";
-      feedback.textContent = record.feedback = numeric ? "Correct. " + (id === "motion-graphs" ? "Velocity decreases by 1.5 m/s each second." : "The shorter endpoint gives the greater estimated rate.") : "Compare your first attempt below. Your explanation is self-reviewed.";
+      feedback.textContent = record.feedback = numeric ? "Correct. " + (id === "motion-graphs" ? "Velocity decreases by 1.5 m/s each second." : "The shorter endpoint gives the greater estimated rate.") : "Review the first answer you wrote. Your explanation is self-reviewed.";
       finish(true);
     }
     save();
