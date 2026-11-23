@@ -6353,7 +6353,7 @@ function check(){
     else{ok=false;s.classList.add("wrong");mk.className="gmark wrong";mk.textContent="✗ "+caseAt(ans,(L.cur.gstart||[])[g]);}});
    if(q.six){var got=gs.filter(function(s){return s.classList.contains("right");}).length;ok=got>=Math.ceil(gs.length*2/3);head=(ok?"✓ ":"✗ ")+got+" of "+gs.length+" marks";note=ok?(got<gs.length?"That is enough to count as correct. Check the gaps you missed.":"Full marks. Read the complete answer once more – this is what a top answer looks like."):"You need "+Math.ceil(gs.length*2/3)+" marks. Read the corrected answer above.";}}
  }else{var ex=checkExtra(q,f);if(ex===null)return;ok=ex.ok;head=ex.head||"";note=ex.note||"";}
- if(!given){$("#msg").textContent=(q.t==="match"||q.t==="cloze")?"Choose an answer for every gap first.":q.t==="num"?"Type an answer first.":q.t==="multi"?"Select "+q.n+" answers first.":"Choose an answer first.";return;}
+ if(!given){$("#msg").textContent=q.t==="match"?"Choose a match for every item first.":q.t==="cloze"?"Choose a word for every gap first.":q.t==="num"?"Type an answer first.":q.t==="multi"?"Select "+q.n+" answers first.":"Choose an answer first.";return;}
  $("#msg").textContent="";$("#hint").hidden=true;var dkb=$("#dk");if(dkb)dkb.hidden=true;
  $$("input,select,textarea,.wchip,.dgap",f).forEach(function(x){x.disabled=true;});
  if(L.dk){$$("button",f).forEach(function(b){if(b.id!=="act")b.disabled=true;});if(q.t==="mcq"||q.t==="multi"||q.t==="two"){var want=[].concat(q.a);$$("#p1 .opt, .opt",f).forEach(function(l){if(!l.closest("#p2")&&want.indexOf(+l.dataset.i)>-1){l.classList.add("right");var mk=$(".mark",l);if(mk)mk.textContent="✓ Correct answer";}});}if(q.t==="tap"&&q.mode==="spot"){var rt=$('.tgt[data-k="'+q.a+'"]',f);if(rt)rt.classList.add("right");}if(q.t==="match"&&q.tp){$$(".ptile",f).forEach(function(t){t.classList.remove("sel");t.classList.add("done");});pairLines(f);}}
@@ -6539,7 +6539,16 @@ function mixPick(b){var M=L.mix,done=L.done||new Set(),fresh=function(x){return 
  if(L.qcNext&&L.c)cand=M.all.filter(function(x){return x.c===L.c&&QC_T[x.q.t]&&fresh(x);});
  for(var d=0;d<3&&!cand.length;d++)[b-d,b+d].forEach(function(k){if(cand.length||!M.bands[k])return;var f=M.bands[k].filter(fresh);cand=f.filter(function(x){return x.c!==L.c;});if(!cand.length)cand=f;});
  if(!cand.length)cand=M.all.filter(function(x){return x.q!==L.mixLast;});if(!cand.length)cand=M.all;
- var x=pick(cand);L.c=x.c;L.t=x.t;L.mixLast=x.q;return Object.assign({},x.q);}
+ // Keep targeted follow-ups and difficulty bands. After two identical formats,
+ // prefer an available alternative within the already eligible candidates.
+ if(!L.qcNext && M.runLength>=2){
+  var different=cand.filter(function(item){return item.q.t!==M.lastFormat;});
+  if(different.length)cand=different;
+ }
+ var x=pick(cand);
+ M.runLength=x.q.t===M.lastFormat?M.runLength+1:1;
+ M.lastFormat=x.q.t;
+ L.c=x.c;L.t=x.t;L.mixLast=x.q;return Object.assign({},x.q);}
 function startMix(cfg,lv0){var p=cfg.p,all=mixPool(cfg.topics,cfg.topics.length===p.topics.length).sort(function(a,b){return a.r-b.r;}),
   hard=all.filter(function(x){return x.hard;}),rest=all.filter(function(x){return !x.hard;}),k=Math.ceil(rest.length/2);
  if(hard.length<4){hard=all.slice(Math.floor(all.length*2/3));rest=all.slice(0,Math.floor(all.length*2/3));k=Math.ceil(rest.length/2);}
