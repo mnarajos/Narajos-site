@@ -948,12 +948,13 @@
         !Number.isInteger(session.round) ||
         !Number.isInteger(session.index) ||
         session.index < 0 ||
-        session.index > 5
+        session.index > 5 || !Array.isArray(session.ids) || session.ids.length !== 6 ||
+        !session.ids.every(id => drawing.bank.some(item => item.id === id))
       ) {
         const round = Number.isInteger(data.drawingRound)
           ? data.drawingRound
           : 0;
-        session = { round, index: 0, attempts: 0, helped: false };
+        session = { round, index: 0, attempts: 0, helped: false, ids: drawing.setFor(round).map(item => item.id) };
         data.drawingRound = round + 1;
       }
       const round = session.round;
@@ -969,10 +970,7 @@
       persistDrawing();
       start.hidden = true;
       introduction.open = false;
-      const pool = Array.from(
-        { length: 6 },
-        (_, j) => drawing.bank[((round * 6 + j) * 9) % drawing.bank.length],
-      );
+      const pool = session.ids.map(id => drawing.bank.find(item => item.id === id));
       function show() {
         exercise.replaceChildren();
         const item = pool[at];
@@ -988,10 +986,9 @@
           node("p", item.specimen.name),
         );
         const criteria = node("ul", null, "al-drawing-criteria");
-        const detail = item.specimen.type === "plan" ? "Show tissue boundaries only." : "Show cell boundaries and visible internal structures.";
-        criteria.append(node("li", "Use single, clear, unshaded outlines. " + detail),
-          node("li", "Preserve relative sizes. Label " + item.specimen.label.toLowerCase() + "."),
-          node("li", "Include a calibrated scale bar."));
+        criteria.append(node("li", item.criterion),
+          node("li", "Use single, unshaded outlines. Label the " + item.specimen.label.toLowerCase() + "."),
+          node("li", item.specimen.scale ? "Use the observation’s length calibration for the scale bar." : "Preserve relative proportions. This photograph has no length calibration."));
         exercise.append(criteria, drawingComparison(item, session, persistDrawing));
         const verdict = node("fieldset");
         verdict.append(
@@ -1048,7 +1045,7 @@
           session.entries[at] = { id: item.id, outcome: session.outcome };
           const entries = session.entries;
           at++;
-          session = { round, index: at, attempts: 0, helped: false, entries };
+          session = { round, index: at, attempts: 0, helped: false, entries, ids: session.ids };
           if (at < pool.length) {
             persistDrawing();
             show();
