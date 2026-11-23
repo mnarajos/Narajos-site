@@ -102,7 +102,14 @@ try {
   const meioticTask = page.locator('[data-hb-stage="independent"]');
   await meioticTask.locator("summary").press("Enter");
   const fields = meioticTask.getByRole("img", {name:/Two unlabelled stages/});
-  assert(await fields.evaluate(async img => { await img.decode(); return img.naturalWidth === 360; }));
+  assert.equal(await fields.getAttribute("src"), "/human-biology/division-fields.svg");
+  const visibleDiagram = await fields.evaluate(async img => {
+    await img.decode();
+    const {width,height} = img.getBoundingClientRect();
+    return {width,height,decoded:img.complete && img.naturalWidth>0 && img.naturalHeight>0};
+  });
+  assert(visibleDiagram.decoded && visibleDiagram.width>0 && visibleDiagram.height>0, JSON.stringify(visibleDiagram));
+  assert(Math.abs(visibleDiagram.width/visibleDiagram.height - 360/298)<0.02, "Meiotic fields must retain their aspect ratio");
   await meioticTask.getByRole("textbox").fill("Field A has doubled structures at each pole.");
   await meioticTask.getByRole("button", {name:"Compare my explanation"}).press("Enter");
   assert(await fields.isVisible());
