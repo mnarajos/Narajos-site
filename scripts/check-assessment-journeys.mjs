@@ -1,9 +1,15 @@
 import assert from "node:assert/strict";
 
 export async function checkAssessmentJourneys(browser,base) {
-  const page=await browser.newPage({viewport:{width:390,height:844},hasTouch:true});
+  const context=await browser.newContext({viewport:{width:390,height:844},hasTouch:true});
+  // These functional checks navigate away from active practice and deliberately reload drafts.
+  context.on("page",tab=>tab.on("dialog",dialog=>dialog.type()==="beforeunload"?dialog.accept():dialog.dismiss()));
+  await context.route(/^https:\/\/fonts\.(?:googleapis|gstatic)\.com\//,route=>route.abort());
+  let page=await context.newPage();
+  const open=path=>page.goto(base+path,{waitUntil:"domcontentloaded"});
+  const reload=()=>page.reload({waitUntil:"domcontentloaded"});
   try {
-    await page.goto(base+"/gcse/#lesson-b1-micro2");
+    await open("/gcse/#lesson-b1-micro2");
     const number=page.locator("#numin"), check=page.locator("#act");
     await number.fill("0.1 kg");
     await check.click();
@@ -12,7 +18,7 @@ export async function checkAssessmentJourneys(browser,base) {
     await check.click();
     assert.match(await page.locator("#fb").innerText(),/Correct after feedback/);
 
-    await page.goto(base+"/alevel/#lesson-p3w-epara");
+    await open("/alevel/#lesson-p3w-epara");
     await page.locator("#go").click();
     let selfReviews=0, reveals=0;
     for(let i=0;i<60 && await page.locator("#qf,#rtgo").count();i++){
@@ -29,7 +35,7 @@ export async function checkAssessmentJourneys(browser,base) {
         assert(saved.some(record=>record.original===original && record.revision==="My revised explanation." && record.points.length));
         if(selfReviews===0){
           const prompt=await page.locator("legend").last().innerText();
-          await page.reload();
+          await reload();
           await page.locator("#go").click();
           for(let step=0;step<12 && !await page.locator("#sa").count();step++){
             if(await page.locator("#rtgo").isVisible())await page.locator("#rtgo").click();
@@ -58,19 +64,21 @@ export async function checkAssessmentJourneys(browser,base) {
     assert.equal(await page.getByRole("heading",{name:"Independent practice passed"}).count(),0);
 
     for(const [course,route,storage] of [["gcse","cards-b1","narajos-gcse-fc-active-v1"],["alevel","spaced-new","narajos-alevel-spaced-active-v1"]]){
+      page=await context.newPage();
       if(course==="gcse"){
-        await page.goto(base+"/gcse/#flashcards");
+        await open("/gcse/#flashcards");
         await page.locator("#kr-typed").check();
       }
-      await page.goto(base+"/"+course+"/#"+route);
+      await open("/"+course+"/#"+route);
       const draft=page.locator("#kr-input"), expected=page.locator(".kr-answer");
+      await draft.waitFor({state:"visible"});
       const id=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).queue[0],storage);
       await draft.fill("my first draft");
-      await page.reload();
+      await reload();
       assert.equal(await draft.inputValue(),"my first draft");
       await page.locator("#kr-reveal").tap();
-      await page.reload();
-      assert(await page.locator("#kr-result").isVisible());
+      await reload();
+      await page.locator("#kr-result").waitFor({state:"visible"});
       assert(await draft.evaluate(el=>el.readOnly));
       await page.getByRole("button",{name:"Finish as reviewed"}).press("Enter");
       const matchedId=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).queue[0],storage);
@@ -90,5 +98,5 @@ export async function checkAssessmentJourneys(browser,base) {
       assert.equal(history[recalledId].evidence["self-rated"],1);
     }
     console.log("Lesson scoring and flashcard draft, reveal, retry and recall evidence verified.");
-  }finally{await page.close();}
+  }finally{await context.close();}
 }
