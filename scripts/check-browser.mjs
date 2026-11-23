@@ -372,7 +372,7 @@ try{
    seniorLessonIds.add(id);
   }
  }
- assert.equal(seniorLessonIds.size,47);
+ assert.equal(seniorLessonIds.size,48);
  await pilotPage.goto(base+"/science-catch-up/lesson/?topic=vaccine-memory&year=10");
  for(const [index,answer] of ["Specific antigens","Their immune system has already responded to its antigens.","The virus lacks the bacterial targets of antibiotics.","Those antibodies may not bind to the new pathogen’s antigens."].entries()){
   await guide.getByRole("button",{name:"Check",exact:true}).click();

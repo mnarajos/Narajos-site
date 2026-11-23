@@ -93,7 +93,7 @@ export async function checkGCSECatchup(browser, base) {
     const violations = await page.evaluate(async () => (await window.axe.run({runOnly: ["wcag2a","wcag2aa"]})).violations);
     assert.deepEqual(violations.map(({id,nodes}) => [id,nodes.map(node => node.target)]), []);
     assert.deepEqual(errors, []);
-    console.log("GCSE catch-up: 47 routes, seventeen learning journeys, old responses, phone/tablet/desktop, enlarged text and axe passed.");
+    console.log("GCSE catch-up: 48 routes, eighteen learning journeys, old responses, phone/tablet/desktop, enlarged text and axe passed.");
   } finally {
     await page.close();
   }

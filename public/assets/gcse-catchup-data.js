@@ -577,3 +577,9 @@ gcseCatchup["glucose-control"].higher = [
   "Higher Tier", "After exercise, blood glucose falls. Trace the response from detection to recovery. What happens to the signal as the level recovers?",
   "The pancreas releases glucagon. Liver cells convert glycogen to glucose and release glucose into the blood. As the concentration rises towards its normal level, the stimulus for glucagon secretion decreases. This is negative feedback."
 ];
+
+scaffold(complementary["respiration-exercise"], "Trace oxygen from the lungs to a working muscle", [
+  "The right ventricle pumps blood to the lungs. Oxygen diffuses across the thin exchange surface into the blood and binds to haemoglobin in red blood cells.",
+  "Blood returns to the left atrium and then the left ventricle. Its thicker muscular wall generates the pressure needed to send blood around the body.",
+  "At muscle capillaries oxygen leaves the blood and diffuses into cells. During exercise an increased heart rate can increase oxygen delivery for aerobic respiration."
+], "Compare oxygen delivery with the working muscle’s demand.");

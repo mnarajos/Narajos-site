@@ -126,3 +126,20 @@ const retryItems = {
   "infrared-evidence": ["A detector reads a shiny face from twice the distance used for a matt face. What improvement matters?", "Repeat with the same detector distance and angle.", "Geometry affects how much radiation reaches the detector.", ["Average ten readings at the original distances.", "The systematic difference remains."]]
 };
 for (const [id, item] of Object.entries(retryItems)) investigations[id].retry = question(...item);
+
+investigations["plant-transport"] = sequence(10, "B2", "Two transport systems in plants",
+  "How does a leaf receive water while a developing fruit receives sugar?",
+  "Water evaporates from leaf cells and diffuses out through stomata as vapour. This water loss draws a column of water up the xylem. Phloem carries dissolved sugars from sources to sinks.", {
+    visual: () => table("Follow the material", ["Material", "Route", "Destination"], [
+      ["Water and mineral ions", "Roots → xylem", "Stem and leaves"],
+      ["Dissolved sugars", "Mature leaf → phloem", "Growing fruit or storage root"]]),
+    model: ["Trace the two routes", [
+      "Root hair cells take in water by osmosis. Hollow xylem vessels carry water and mineral ions upwards. Evaporation from moist leaf cells and diffusion of water vapour through stomata maintain the transpiration stream.",
+      "A mature leaf makes sugars by photosynthesis. Translocation carries dissolved sugars in phloem from that source to sinks such as growing fruit. A storage organ can later become a source.",
+      "In moving air the moist layer next to a leaf disperses. If stomata remain open, the steeper water-vapour concentration gradient can increase transpiration."],
+      ["Which tissue supplies a fruit with sugars from a leaf?", "Phloem", "The growing fruit is a sink for sugar.", ["Xylem", "Xylem supplies water and mineral ions."]]],
+    guide: ["Compare the air immediately outside an open stoma with the moist air inside the leaf.",
+      ["Humidity rises around the leaf. What happens to transpiration under otherwise constant conditions?", "It usually falls.", "The water-vapour concentration gradient out of the leaf decreases.", ["It rises because more water is available in the air.", "Water vapour diffuses down its concentration gradient."]]],
+    independent: [["A leafless bulb grows a shoot in spring. Which tissue can supply sugar to the shoot, and from where?", "Phloem carries sugar from reserves in the bulb to the growing shoot.", "The bulb now acts as a source and the growing shoot as a sink.", ["Sugar must travel downwards from a leaf.", "Source and sink determine the direction. The plant can mobilise stored reserves."]]],
+    retry: ["A developing potato tuber gains starch while mature leaves photosynthesise. What reaches the tuber?", "Dissolved sugars arrive through phloem and can be stored as starch.", "The tuber is a sink.", ["Starch grains travel through xylem.", "Xylem transports water and mineral ions."]]
+});
