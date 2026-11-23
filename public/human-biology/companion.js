@@ -336,8 +336,8 @@ const focusedLessons={
 };
 function indexComparisons(){
  for(const [key,lesson] of Object.entries(window.KeystoneHumanLessons || {})){
- if(key.startsWith("f171/1.2.1.") && lesson.title && !focusedLessons[key]){
-  focusedLessons[key]={area:"a1",title:lesson.title,practice:"1.2.1",lines:lesson.explain};
+ if(/^f171\/1\.[23]\.1\./.test(key) && lesson.title && !focusedLessons[key]){
+  focusedLessons[key]={area:"a1",title:lesson.title,practice:lesson.practice || key.split("/")[1].split(".").slice(0,3).join("."),lines:lesson.explain};
  }
 }
 }

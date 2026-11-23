@@ -19,7 +19,7 @@ export async function checkHumanCatchup(browser, base) {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await open("catchup");
     const chapters = await page.evaluate(() => Object.entries(window.KeystoneHumanLessons));
-    assert.equal(chapters.length, 61, "Retain 54 routes and add seven F171 comparisons");
+    assert.equal(chapters.length, 66, "Retain 61 routes and add five communicable disease comparisons");
     assert.equal(new Set(chapters.map(([key]) => key.split("/")[0])).size, 8);
     for (const [key, lesson] of chapters) {
       await page.evaluate(key => localStorage.removeItem(key), localPractice);
