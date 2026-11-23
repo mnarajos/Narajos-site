@@ -48,10 +48,20 @@ export async function checkHumanCatchup(browser, base) {
         assert(await model.locator(".hb-model-steps li").nth(1).isVisible(), key);
       }
       await expand(stage("guided"));
+      if (key === "f171/1.2.1.aorta") {
+        await stage("guided").getByRole("radio").nth(1 - lesson.guided.answer).check();
+        await stage("guided").getByRole("button", {name:"Check answer"}).click();
+        await stage("guided").getByText(/pressure reading does not show vessel shape/).waitFor();
+      }
       await stage("guided").getByRole("radio").nth(lesson.guided.answer).check();
       await stage("guided").getByRole("button", { name: "Check answer" }).click();
       assert.match(await stage("guided").getByRole("status").innerText(), /Correct with support/);
       await expand(stage("independent"));
+      if (key === "f171/1.2.1.aorta") {
+        const image = stage("independent").getByRole("img", {name:/abdominal aorta/});
+        await image.waitFor();
+        assert(await image.evaluate(async el => { await el.decode(); return el.naturalWidth > 0; }));
+      }
       if (lesson.apply.options) {
         await stage("independent").getByRole("radio").nth(lesson.apply.answer).check();
         await stage("independent").getByRole("button", { name: "Check answer" }).click();

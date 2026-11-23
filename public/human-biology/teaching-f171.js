@@ -400,11 +400,14 @@
 (function () {
   const {choice, written} = window.KeystoneHumanTeaching;
   function comparison(id, title, normal, changes, impact, model, check, transfer, criteria, answer) {
+    const options = [[check[1], check[3]], [check[2], ""]];
+    const correct = ["aorta", "digestive", "oxygen"].includes(id) ? 0 : 1;
+    if (correct === 0) options.reverse();
     window.KeystoneHumanLessons["f171/1.2.1." + id] = {
       title, revision: 1, goal: title + " — trace the change from structure to daily function.",
       explain: [normal, ...changes, impact],
       modelTitle: "Reason from the evidence", model,
-      guided: choice(check[0], 1, [[check[1], check[3]], [check[2], ""]], check[4], [normal]),
+      guided: choice(check[0], correct, options, check[4], [normal]),
       apply: written(transfer, criteria, answer)
     };
   }
