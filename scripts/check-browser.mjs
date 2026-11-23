@@ -144,8 +144,8 @@ try{
  const boilingCheck=pilotPage.getByRole("dialog");
  await boilingCheck.getByRole("radio",{name:"It stays steady while the liquid boils.",exact:true}).check();
  await boilingCheck.getByRole("button",{name:"Check answer",exact:true}).click();
- await boilingCheck.getByRole("button",{name:"Finish catch-up",exact:true}).click();
- await pilotPage.getByRole("heading",{name:"Catch-up complete!",exact:true}).waitFor();
+ await boilingCheck.getByRole("button",{name:"Finish guided checks",exact:true}).click();
+ await pilotPage.getByRole("heading",{name:"Guided checks complete",exact:true}).waitFor();
  await pilotPage.goto(base+"/science-catch-up/?year=9");
  assert.equal(await pilotPage.locator(".school-topic-list > li").count(),5);
  await pilotPage.evaluate(()=>{
@@ -272,11 +272,11 @@ try{
  await check.getByText("Try one more on your own",{exact:true}).waitFor();
  await check.getByRole("radio",{name:"From the water into the potato cells",exact:true}).check();
  await check.getByRole("button",{name:"Check answer",exact:true}).click();
- await check.getByRole("button",{name:"Finish catch-up",exact:true}).click();
+ await check.getByRole("button",{name:"Finish guided checks",exact:true}).click();
  assert.equal(await guide.getByRole("link",{name:"Revise B1",exact:true}).getAttribute("href"),"/gcse/#topic-b1");
  assert.equal(await guide.getByRole("link",{name:/Choose another Year/}).count(),0);
  await pilotPage.reload();
- await guide.getByRole("heading",{name:"Catch-up complete!",exact:true}).waitFor();
+ await guide.getByRole("heading",{name:"Guided checks complete",exact:true}).waitFor();
  await guide.getByText("Review answers",{exact:true}).click();
  await guide.getByRole("button",{name:"Check 1",exact:true}).click();
  assert(await check.getByText("Water can move in both directions.",{exact:true}).isVisible());
@@ -327,14 +327,14 @@ try{
     await helpJourney.getByRole("button",{name:"Resume check",exact:true}).tap();
     assert(await helpDialog.getByRole("heading",{name:"Explanation",exact:true}).isVisible());
    }
-   await helpDialog.getByRole("button",{name:index===steps-1&&!hasFollowUp?"Finish catch-up":"Continue",exact:true}).tap();
+   await helpDialog.getByRole("button",{name:index===steps-1&&!hasFollowUp?"Finish guided checks":"Continue",exact:true}).tap();
   }
   if(hasFollowUp){
    assert(await helpDialog.getByText("Try one more on your own",{exact:true}).isVisible());
    await askForHelp();
-   await helpDialog.getByRole("button",{name:"Finish catch-up",exact:true}).tap();
+   await helpDialog.getByRole("button",{name:"Finish guided checks",exact:true}).tap();
   }
-  await helpJourney.getByRole("heading",{name:"Catch-up complete!",exact:true}).waitFor();
+  await helpJourney.getByRole("heading",{name:"Guided checks complete",exact:true}).waitFor();
   const saved=await helpPage.evaluate(key=>JSON.parse(localStorage.getItem("narajos.catchup.v1."+key)),year+"."+id);
   assert.deepEqual(Object.values(saved.outcomes),Array(steps).fill("explained"));
   assert.equal(saved.followUp,hasFollowUp?"explained":undefined);
@@ -377,7 +377,7 @@ try{
   }
   await check.getByRole("radio",{name:answer,exact:true}).check();
   await check.getByRole("button",{name:"Check answer",exact:true}).click();
-  await check.getByRole("button",{name:index===3?"Finish catch-up":"Continue",exact:true}).click();
+  await check.getByRole("button",{name:index===3?"Finish guided checks":"Continue",exact:true}).click();
  }
  await guide.getByRole("link",{name:"Revise B3",exact:true}).click();
  await pilotPage.getByRole("link",{name:"Catch up on this topic",exact:true}).click();
@@ -386,7 +386,7 @@ try{
  await vaccineLesson.waitFor();
  assert.equal(await pilotPage.locator(".school-topic-list > li").count(),1);
  await vaccineLesson.click();
- await guide.getByRole("heading",{name:"Catch-up complete!",exact:true}).waitFor();
+ await guide.getByRole("heading",{name:"Guided checks complete",exact:true}).waitFor();
  await pilotPage.goto(base+"/science-catch-up/?year=11");
  await pilotPage.evaluate(()=>localStorage.setItem("gcse-test-progress","kept"));
  const clearCatchup=pilotPage.getByRole("button",{name:"Clear catch-up progress",exact:true});

@@ -165,7 +165,7 @@ export function mountJourney(host, model, lesson) {
   function renderStages() {
     if (workedReview) workedReview.hidden = state.step === 0 && !state.done;
     checkHeading.hidden = Boolean(state.done);
-    versions.textContent = state.done ? "Lesson complete" : "Step " + (state.step + 1) + " of " + steps.length;
+    versions.textContent = state.done ? "Guided checks complete" : "Step " + (state.step + 1) + " of " + steps.length;
     versions.classList.toggle("school-visually-hidden", Boolean(state.done));
     progress.hidden = Boolean(state.done);
     progress.value = state.done ? steps.length : state.step;
@@ -207,7 +207,7 @@ export function mountJourney(host, model, lesson) {
     }
     if (state.done) {
       const next = element("div", "", "school-completion");
-      const heading = element("h3", "Catch-up complete!");
+      const heading = element("h3", "Guided checks complete");
       heading.tabIndex = -1;
       const tick = element("span", "✓", "school-completion-tick");
       tick.setAttribute("aria-hidden", "true");
@@ -215,6 +215,7 @@ export function mountJourney(host, model, lesson) {
       next.append(heading);
       const transfer = appendTransfer(next, id, state, write, () => id === "quadrat-evidence"
         ? steps.at(-1).reference?.render() : model.querySelector("figure")?.cloneNode(true));
+      if (transfer) next.append(element("p", "You can also review your checks or move on to revision."));
       if (code) next.append(link("Revise " + code, "/gcse/#topic-" + code.toLowerCase(), transfer ? "school-secondary" : "school-primary"));
       if (id === "enzymes") next.append(link("Try a guided enzyme investigation",
         "/teaching/enzyme-investigations/gcse/", "school-secondary"));
@@ -419,7 +420,7 @@ export function mountJourney(host, model, lesson) {
 
   function nextLabel() {
     return shownIndex === steps.length - 1 && (!retry || state.repeating || !state.helped)
-      ? "Finish catch-up" : "Continue";
+      ? "Finish guided checks" : "Continue";
   }
 
   function renderExplanation(q) {

@@ -236,3 +236,5 @@
 }
 .school-completion form textarea { min-height: 4rem; }
 .school-completion form button { justify-self: start; }
+
+.school-completion [hidden] { display:none; }
