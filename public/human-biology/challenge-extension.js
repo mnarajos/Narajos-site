@@ -1330,7 +1330,7 @@ additions.push({
 additions.push({
  id:"f170-gamete-contributions",unit:"f170",area:1,section:"1.1.1",catchup:"3.3.1",type:"written",level:"apply",
  stem:"A student argues that either gamete could supply all the materials for the first stages of development because both contribute a set of chromosomes. Use one feature of each gamete to evaluate that argument.",
- markPoints:["The sperm head delivers a haploid set of chromosomes, and its flagellum helps it reach the oocyte.", "The oocyte contributes a haploid set and substantial cytoplasm with organelles and stored molecules used in early development.", "Equal numbers of chromosomes do not imply equal contributions of cytoplasmic material."],
+ markPoints:["A feature of the sperm is linked to delivery of its haploid nucleus, such as the flagellum providing propulsion or the acrosome helping penetration.", "The oocyte contributes a haploid set and substantial cytoplasm with organelles and stored molecules used in early development.", "Equal numbers of chromosomes do not imply equal contributions of cytoplasmic material."],
  model:"A sperm transports its chromosomes in a small, mobile cell. The large oocyte supplies chromosomes and most of the cytoplasm, including organelles and stored molecules for early development. A chromosome count misses that functional difference.",
  explain:"Connect the structure of each gamete to a contribution. Accept egg cell or ovum for the female gamete here, and tail or flagellum for the sperm's propulsive structure.",
  misconception:"A chromosome count measures only one part of a gamete's contribution.", hintCue:"Think about what surrounds the chromosomes in each cell."
@@ -1382,6 +1382,21 @@ additions.push({
  explain:"Independent orientation changes which whole homologues from different pairs travel together. It cannot alone rearrange two alleles on the same chromosome. Exchanging corresponding segments between homologues can.",
  optionFeedback:["Orientation can change the combination across chromosomes. These markers are on the same chromosome.","","There is no additional S phase between the divisions. Copying an intact AB sequence also keeps the two alleles together.","Separating unchanged copies does not exchange their segments."],
  misconception:"Recombination within a chromosome and assortment of entire homologues can give different evidence.",hintCue:"Are the two markers on one chromosome or on separate pairs?"
+});
+additions.push({
+ id:"f170-blood-cell-evidence",unit:"f170",area:1,section:"1.1.1",type:"match",level:"apply",
+ stem:"Each observation points to a different cellular job. Match the observation to the function it best supports.",
+ pairs:[["A haemoglobin-rich disc bends through a narrow passage","Carrying oxygen through a capillary"],["A cell with a multi-lobed nucleus encloses a small particle and delivers enzymes into the pocket","Neutrophil digestion of an engulfed particle"],["A B cell binds one antigen and its descendants secrete matching antibodies","Antigen-specific lymphocyte response"],["A cell with a two-lobed nucleus releases large granules against an external target","Eosinophil action without engulfing the target"],["A labelled blood cell enters tissue and matures into a large phagocyte","Monocyte contribution to tissue macrophages"]],
+ model:"The disc carries haemoglobin through a narrow capillary. The neutrophil digests material inside a compartment. Specific binding initiates a B-cell response. Eosinophil granules can act outside the cell. A monocyte can mature into a tissue macrophage.",
+ explain:"Use the process as well as the outline. A lobed nucleus alone would not tell you where granule contents acted. Detecting a macrophage in a tissue does not by itself establish its origin.",
+ misconception:"All white cells do not handle a target in the same way.",correctionHint:"Locate the target, identify whether it is taken inside and look for evidence of a change of cell type.",hintCue:"Which observation follows a cell over time? Which follows material across its surface?"
+},{
+ id:"f170-tubule-liver-evidence",unit:"f170",area:1,section:"1.1.1",catchup:"1.1.1.surfaces",type:"written",level:"apply",
+ stem:"In kidney sample K the proximal tubule cells retain their brush border, but ATP supply falls and less glucose is recovered from the filtrate. In liver sample L, pulse labelling shows new plasma protein accumulating in rough ER while less appears outside. Explain why intact microvilli in K and abundant rough ER in L are insufficient evidence of normal function.",
+ markPoints:["Microvilli provide membrane area for uptake in K.","Reduced ATP can weaken the ion gradient maintained by pumps, reducing glucose reabsorption.","L can still make protein in rough ER. Less release with accumulation suggests a later delivery or secretion problem."],
+ model:"K has absorptive surface area, but reabsorption also depends on gradients maintained using ATP. In L the protein is made, but transfer through the secretory pathway must also work. The readings do not locate one precise fault in L.",
+ explain:"Use the readout of solute recovery or protein release. The abundance of a structure cannot establish the rate of a process that needs several steps.",
+ misconception:"Seeing the expected structures cannot establish that their whole pathway works.",hintCue:"After identifying each structure, ask which other step is needed for the measured output."
 });
 var ids=new Set(bank.questions.map(function(q){return q.id;}));
 additions.forEach(function(q){if(!ids.has(q.id)){bank.questions.push(q);ids.add(q.id);}});

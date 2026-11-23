@@ -66,8 +66,8 @@ for(const unit of ["f170","f171","f172","f173","f174","f175","f176","f177"]){
   app.discard();
  }
 }
-assert.equal(db.questions.length,586);
-assert.equal(db.questions.filter(q=>q.unit==="f170").length,265);
+assert.equal(db.questions.length,588);
+assert.equal(db.questions.filter(q=>q.unit==="f170").length,267);
 assert.equal(db.questions.filter(q=>q.unit==="f171").length,237);
 for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,u==="f175"?15:["f172","f173","f176","f177"].includes(u)?14:13,u+" knowledge bank missing");
 assert.deepEqual([...new Set(db.questions.map(q=>q.type))].sort(),["best","diagram","match","multi","number","order","short","single","sort","written"].sort());
@@ -240,7 +240,7 @@ assert(window.KeystoneHumanChallenge.stats("f170").weak>=1,"Not sure should reco
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"next"}}:null;}}});
 record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert(record.index>=1,"Question did not advance");
-assert.equal(window.KeystoneHumanChallenge.questionCount,586);
+assert.equal(window.KeystoneHumanChallenge.questionCount,588);
 // Verify the entire deterministic answer flow, not merely presence of new item types.
 function forcedQuestion(id){
  const q=db.questions.find(x=>x.id===id);assert(q,"Unknown forced test item: "+id);
@@ -467,7 +467,7 @@ for(const id of ["p-cell-membrane-transport-challenge","p-health-screening-found
  assert(main.innerHTML.includes("Hint 2")&&!main.innerHTML.includes("Expected answer"),id);
  assert(question.hintCue&&!question.explain.includes(question.hintCue)&&!question.model.includes(question.hintCue),id);
 }
-console.log("Human Biology checks passed: 586 questions, 91 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
+console.log("Human Biology checks passed: 588 questions, 91 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
 
 
 // Point practice must preserve one biological idea while support is withdrawn.

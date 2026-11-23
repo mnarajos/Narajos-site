@@ -475,6 +475,7 @@ window.KeystoneHumanLessons = {
         ["Particles can still be taken inside.", "Less digestive enzyme reaches the enclosed material.", "Engulfed material may remain visible for longer or be broken down more slowly."],
         "Entry could look normal. Once inside, particles would receive fewer digestive enzymes, so their breakdown could be slower. Counting only how many particles enter could miss the defect.",
         ["Separate the evidence for entry from the evidence for breakdown."]),
+      practice: "f170-blood-cell-evidence",
       further: [
         ["catchup/f170/1.1.1.surfaces", "Compare transporting and protective surfaces"],
         ["catchup/f170/1.1.1.signals", "Compare neurones, rods and cones"],
@@ -505,23 +506,25 @@ window.KeystoneHumanLessons = {
         ["A loses part of the mechanism moving the oocyte along the oviduct.", "B can make mucus but releases less onto the stomach surface.", "Reduced mucus weakens protection against acid or digestive enzymes."],
         "In A, ciliary transport is impaired even though muscle may still move the oocyte. In B, mucus can remain inside vesicles. Less reaches the surface, weakening the protective layer.",
         ["Trace where movement or delivery stops in each lining."]),
-      practice: "f170-microvilli-transfer"
+      practice: "f170-tubule-liver-evidence",
+      further: [["challenge/f170/f170-microvilli-transfer","Compare two absorptive surfaces"]]
     },
     "f170/1.1.1.signals": {
       revision: 1, title: "From light detection to a nerve signal",
       goal: "Explain how cell shape, connections and light-sensitive membranes contribute to signalling.",
-      explain: ["Rods and cones have outer segments with folded or stacked membranes containing visual pigments. Light absorption changes the signal sent to connected retinal cells. Rod pathways are sensitive in dim light. Three cone types have different wavelength sensitivities, allowing colour discrimination in brighter light.",
+      explain: ["Rods have long, roughly cylindrical outer segments. Cones have tapering outer segments. Both pack visual pigment into layers of membrane. Light absorption changes the signal sent to connected retinal cells. Rod pathways are sensitive in dim light. Three cone types have different wavelength sensitivities, allowing colour discrimination in brighter light.",
         "In a typical sensory neurone, a long fibre carries impulses from the receptor region towards the central nervous system. Relay neurones have branching processes that connect neurones within it. A motor neurone has branched inputs and a long axon ending at an effector. Myelin on many long axons speeds conduction."],
       visual: "model", visualFrom: ["f170","3.2.1"],
       modelTitle: "Read a pathway by following its connections",
       model: ["In the withdrawal reflex diagram, find the fibre that carries information from the receptor into the spinal cord. Its destination identifies the sensory route.",
-        "The relay neurone links incoming activity to a motor neurone. The motor axon carries the output to muscle. The reflex illustrates these directions. The retina has its own circuits."],
+        "The relay neurone links incoming activity to a motor neurone. The motor axon carries the output to muscle. The reflex illustrates these directions. The retina has its own circuits.",
+        "In the retina, signals from many rods can converge on one pathway. Small signals can add together in dim light, at the cost of locating the light precisely. Cone pathways in the centre of the fovea preserve much finer spatial detail in good light."],
       guided: choice("A branching cell connects two neurones entirely inside the spinal cord. Which evidence supports a relay role?", 0,
         [["Its connections link the input pathway to another neurone within the CNS.", ""], ["Its branches prove that it detects light.", "Branches indicate possible connections. Light detection needs visual pigments."], ["Every neurone with branches directly activates muscle.", "Follow the destination. This cell ends on another neurone."]],
         "Use the connections to infer the role.", ["Follow where the output goes."]),
-      apply: written("In a vision study a person detects faint white lights as well as the comparison group. In bright light they struggle to distinguish two colours that the group can separate. Which receptor pathway would you investigate first? Use both findings and state a limit of your conclusion.",
-        ["The colour result points towards cone signals or their comparison.", "Preserved faint-light detection is consistent with functioning rod pathways.", "These results cannot locate the change to the receptor itself or prove one particular diagnosis."],
-        "Investigate cone pathways first. Comparing signals from different cone types supports colour discrimination. Faint-light detection can remain effective through rods. A later change in the visual pathway could also affect the colour task.",
+      apply: written("In a vision study a person detects faint white lights as well as the comparison group. In bright light they struggle to distinguish two colours that the group can separate. Which receptor pathway would you investigate first? Relate one adaptation to the findings and state a limit of your conclusion.",
+        ["Cone types contain pigments with different wavelength sensitivities. Comparing their signals supports colour discrimination.", "Preserved faint-light detection is consistent with functioning rod pathways.", "These results cannot locate the change to the receptor itself or prove one particular diagnosis."],
+        "Investigate cone pathways first. Their different pigments respond best to different wavelengths, so comparing signals supports colour discrimination. Faint-light detection can remain effective through rods. A later change in the visual pathway could also affect the colour task.",
         ["Which condition depends on comparing wavelength sensitivities?"]),
       practice: "p-endo-reflex-arc"
     },
@@ -544,6 +547,9 @@ window.KeystoneHumanLessons = {
         ["Direct stimulation shows that the cell can still generate force.", "Poor electrical coupling impairs excitation of neighbouring cells.", "Fewer cells contract together, reducing coordinated force."],
         "The first cell can generate force. Poor signal transfer through gap junctions prevents nearby cells from being activated together, reducing the force of the coordinated contraction.",
         ["Separate the cell's ability to shorten from the timing across the strip."]),
+      followup: choice("Strip X has long, parallel, multinucleate fibres attached to a tendon. Strip Y forms a band of spindle-shaped cells around a narrow tube. What change would shortening cause?", 1,
+        [["X narrows a lumen and Y pulls a tendon.", "Trace the direction of each strip. The tube is surrounded by Y."], ["X pulls along the tendon and Y reduces the lumen diameter.", ""], ["Only X can shorten because Y lacks visible stripes.", "Smooth muscle also has contractile filaments."]],
+        "The orientation of the cells determines where force acts. Striations alone do not determine whether tissue can generate force."),
       practice: "p-f170-tissue-hierarchy"
     }
   });
@@ -566,6 +572,11 @@ window.KeystoneHumanLessons = {
       modelTitle: "Locate a delivery fault",
       model: ["Start at the beginning. Finding the protein in rough ER and in the Golgi supports synthesis and passage between these compartments.",
         "Now compare destinations. Finding much of the enzyme outside and little in lysosomes suggests misdirected delivery. It does not by itself identify which sorting molecule failed."],
+      writing: {
+        title: "Work through a second result", prompt: "A human cell temporarily stops making new ribosomal RNA in the nucleolus. Its nuclear pores still work. Why might new cytoplasmic ribosomes gradually become scarce?",
+        responses: [["First idea", "The pores must have stopped every molecule leaving."], ["Trace the steps", "Less new rRNA is available to assemble subunits, so fewer new subunits are available for export even though the pores still function."]],
+        compare: ["Ask what is made, where it is assembled and whether it can move. A shortage of new parts can gradually reduce the supply of cytoplasmic ribosomes without immediately disabling existing ones."]
+      },
       guided: choice("A preparation from human cells contains 80S ribosomes on membranes. A second contains 80S ribosomes free in the cytosol. Which conclusion fits?", 1,
         [["The membrane sample must come from bacteria.", "Typical bacterial ribosomes are 70S. Position is a separate observation."], ["A human cytosolic ribosome can attach to the ER while making certain proteins.", ""], ["Attachment converts a 70S ribosome into an 80S ribosome.", "Attachment changes location without changing the ribosome type."]],
         "Use the S value to compare ribosome type and the attachment to infer location.", ["Which observation describes position?"]),
@@ -600,6 +611,9 @@ window.KeystoneHumanLessons = {
         ["Read the direction of each change separately."]),
         table: {caption:"Fictional membrane measurements at 37 °C",head:["Membrane","Tracer leakage (units/min)","Lateral lipid mobility (relative units)"],rows:[["Lower cholesterol","8","10"],["Higher cholesterol","3","6"]]}
       },
+      followup: choice("A large probe cannot cross an intact membrane. It binds a carbohydrate chain on intact cells. After cells are opened, a second probe binds a protein on the inner surface. Which arrangement fits?", 1,
+        [["Both sites must face the extracellular fluid.", "The second site only became accessible after the boundary was opened."], ["The chain is exposed outside and the second site faces the cytoplasm. The readings alone cannot show whether the second protein spans the bilayer.", ""], ["The outer chain must be buried among the tails because the probe cannot cross.", "A site buried in the oily core would be inaccessible to this external probe."]],
+        "Use probe access to infer sidedness. Observing one exposed binding site does not reveal how far the whole protein extends."),
       practice: "f170-graft-recognition", further: [["challenge/f170/f170-vesicle-directions","Follow labelled cargo across a cell boundary"]]
     }
   });

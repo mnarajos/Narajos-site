@@ -33,6 +33,9 @@ export async function checkHumanCatchup(browser, base) {
         assert(href.includes("-transfer?from=catchup/" + key), key);
       }
       if (lesson.revision && !focused && !lesson.title && (key.startsWith("f170/") || key.startsWith("f171/"))) {
+        if (key === "f170/1.1.1") {
+          await page.getByText("Related learning and practice", {exact:true}).press("Enter");
+        }
         const buildLink = page.getByRole("link", { name: "Build understanding", exact: true });
         const href = await buildLink.getAttribute("href");
         assert(href.endsWith("?from=catchup/" + key), key);
@@ -85,6 +88,29 @@ export async function checkHumanCatchup(browser, base) {
       }
     }
 
+    // The original answer and its source field remain available during self-review and on reload.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f170/1.1.5");
+    const division = stage("independent");
+    await expand(division);
+    const field = division.getByRole("img", {name: /onion-root/});
+    assert(await field.evaluate(async el => { await el.decode(); return el.naturalWidth === 840; }));
+    assert.equal(await division.getByRole("heading", {name:"Model explanation"}).count(), 0);
+    const original = "I can see a group of dark rods near the middle of the upper cell.";
+    await division.getByRole("textbox").fill(original);
+    await division.getByRole("button", {name:"Compare my explanation"}).press("Enter");
+    const review = division.locator("[data-hb-review]");
+    assert(await field.isVisible());
+    await review.getByRole("combobox").last().selectOption("revise");
+    await review.getByRole("textbox").fill(original + " The other nucleus alone cannot show S phase.");
+    await page.reload();
+    await expand(division);
+    assert(await field.isVisible());
+    assert(await review.getByText(original, {exact:true}).isVisible());
+    assert.match(await review.getByRole("textbox").inputValue(), /cannot show S phase/);
+    await review.getByRole("button", {name:"Finish review"}).press("Enter");
+    assert.equal((await saved(localPractice))["f170/1.1.5/1"].independent.outcome, "selfReview");
+
     // The exact linked item, its edited answers and corrected outcome survive reopening.
     await open("catchup/f171/1.3.1.fungi");
     await page.locator("[data-hb-practice]").press("Enter");
@@ -102,7 +128,8 @@ export async function checkHumanCatchup(browser, base) {
     await page.getByRole("button", {name: /Check answer/}).press("Enter");
     assert.equal((await saved(matchKey)).outcomes[0], "corrected");
 
-    for (const [route, questionId, wrongAnswer, diagnosis] of [
+    for (const [route, questionId, wrongAnswer, diagnosis, reteachLabel = "Revisit the worked example"] of [
+      ["f170/1.1.5.meiosis", "f170-division-variation", /Independent orientation of intact/, /markers are on the same chromosome/, "Revisit assortment and crossing over"],
       ["f171/1.3.1.viruses", "f171-route-prevention-transfer", /ventilation reduces exposure to all viruses/, /Viral classification does not imply a shared route/],
       ["f170/1.1.2.counting", "f170-cell-counting-transfer", /target volume/, /overlap the cells in volume/],
       ["f171/1.2.1.hiatus", "f171-hiatus-mechanism-transfer", /effective reflux barrier/, /Increased secretion was not measured/],
@@ -128,7 +155,7 @@ export async function checkHumanCatchup(browser, base) {
       await page.getByRole("radio", {name: wrongAnswer}).check();
       await page.getByRole("button", {name: "Check answer", exact: false}).press("Enter");
       await page.getByText(diagnosis).waitFor();
-      await page.getByRole("link", {name: "Revisit the worked example", exact: true}).press("Enter");
+      await page.getByRole("link", {name: reteachLabel, exact: true}).press("Enter");
       await page.locator("#leave-confirm").press("Enter");
       await page.locator("[data-hb-model-step][open]").waitFor({state: "visible"});
       await page.getByRole("link", {name: "Return to your unfinished question set", exact: true}).press("Enter");

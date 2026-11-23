@@ -150,7 +150,7 @@
     selfReview: "Compare your reasoning with each point."
   };
 
-  function reviewFields(stage, question, state) {
+  function reviewFields(stage, question, state, evidenceVisible) {
     const complete = state.outcome === "selfReview";
     const checks = question.points.map((point, index) => {
       const id = "hb-" + stage + "-criterion-" + index;
@@ -160,8 +160,8 @@
         '<option value="included"' + (value === "included" ? ' selected' : '') + '>Included</option>' +
         '<option value="revise"' + (value === "revise" ? ' selected' : '') + '>Needs work</option></select></li>';
     }).join("");
-    return '<h3 tabindex="-1">Review your explanation</h3><p>' + escape(question.prompt) +
-      '</p><div class="hb-review-answers">' +
+    return '<h3 tabindex="-1">Review your explanation</h3>' +
+      (evidenceVisible ? "" : paragraphs([question.prompt])) + '<div class="hb-review-answers">' +
       '<section><h4>Your answer</h4><p>' + escape(state.original) + '</p></section>' +
       '<section><h4>Model explanation</h4><p>' + escape(question.explanation) + '</p></section></div>' +
       '<p>Compare the reasoning against each criterion.</p><ul>' + checks + '</ul>' +
@@ -238,8 +238,11 @@
       }
       review.hidden = !comparing;
       if (comparing) {
-        review.innerHTML = reviewFields(section.dataset.hbStage, question, state);
-        section.querySelector("fieldset").hidden = true;
+        const fieldset = section.querySelector("fieldset");
+        const evidenceVisible = Boolean(fieldset.querySelector("img, table"));
+        review.innerHTML = reviewFields(section.dataset.hbStage, question, state, evidenceVisible);
+        fieldset.hidden = !evidenceVisible;
+        fieldset.querySelector("textarea").hidden = true;
         section.querySelector(".hb-controls").hidden = true;
       }
       feedback.innerHTML = html;
