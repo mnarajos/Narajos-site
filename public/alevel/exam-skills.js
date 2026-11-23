@@ -318,7 +318,7 @@
     function update() {
       panel.replaceChildren(node("p", family.model[index]),
         node("p", (index + 1) + " of " + (last + 1), "al-task-count"));
-      art.replaceChildren(visual(family.visual, index));
+      art.replaceChildren(family.evidence ? table(...family.evidence, family.evidenceHighlights?.[index]) : visual(family.visual, index));
       previous.disabled = index === 0;
       next.textContent = index < last ? "Next step" : revisiting ? "Back to the question" : "Try with support";
       replay.hidden = index === 0;
@@ -362,6 +362,14 @@
         start.classList.add("primary");
         panel.append(heading, node("p", family.principle));
         if (options.notes) panel.append(options.notes);
+        if (family.commandGuide) {
+          const guide = node("details", null, "al-key-notes");
+          const entries = node("dl");
+          for (const [term, meaning] of family.commandGuide)
+            entries.append(node("dt", term), node("dd", meaning));
+          guide.append(node("summary", family.guideLabel || "Common command words"), entries);
+          panel.append(guide);
+        }
         panel.append(start);
         active.append(panel);
         if (moveFocus) focus(heading);
@@ -381,6 +389,7 @@
         const content = practise(active, family, state, {
           stage: (id, symbol) => currentStage(bar, id, symbol),
           context: options.context,
+          back: options.back,
           moved: () => { review.open = false; },
         });
         review.append(node("summary", "Review the worked example"));
@@ -490,10 +499,10 @@
       const actions = node("div", null, "al-controls");
       const recommendation = revisit.length
         ? button("Retry questions I needed help with", () => begin(revisit))
-        : link("Choose another skill", "#exam");
+        : flow.back ? button("Back to your question", flow.back) : link("Choose another skill", "#exam");
       recommendation.classList.add("primary");
       actions.append(recommendation);
-      if (revisit.length) actions.append(quietLink("Exam Skills catalogue", "#exam"));
+      if (revisit.length && !flow.back) actions.append(quietLink("Exam Skills catalogue", "#exam"));
       const details = node("details");
       details.append(node("summary", "Review the completed questions"));
       const completed = node("ol");
@@ -545,6 +554,7 @@
       prompt.id = "al-current-question";
       block.append(heading, node("p", "Task " + (at + 1) + " of " + state.queue.length, "al-task-count"), prompt);
       if (q.visual) block.append(visual(q.visual));
+      if (q.evidence) block.append(table(...q.evidence));
 
       const form = node("form");
       form.setAttribute("aria-labelledby", prompt.id);
@@ -624,13 +634,19 @@
       else if (result?.clue && state.hints[i]) announce("Clue · " + hintsFor(q)[state.hints[i] - 1], "hint");
       else if (result?.kind === "incorrect")
         announce(q.kind === "group" ? "Review and improve the flagged rows. Your correct groups are kept." :
-          "Review and improve. " + q.why, "improve");
+          "Review and improve. " + (result.feedback ?? q.why), "improve");
       else if (state.hints[i]) announce("Clue · " + hintsFor(q)[state.hints[i] - 1], "hint");
       else announce("", "");
 
       form.oninput = () => {
         if (hasCompletedTask(i)) return;
-        if (writing) state.drafts[i] = form.elements.draft.value;
+        if (writing) {
+          state.drafts[i] = form.elements.draft.value;
+          if (review.open && review.original) {
+            const firstDraft = form.querySelector(".al-criteria details");
+            firstDraft.hidden = review.original === state.drafts[i];
+          }
+        }
         else if (q.kind === "number") state.responses[i] = form.elements.number.value;
         else if (q.kind === "group") state.responses[i] = [...form.querySelectorAll("select")].map(select => select.value);
         else state.responses[i] = [...form.querySelectorAll('input[name="answer"]:checked')].map(input => +input.value);
@@ -643,6 +659,12 @@
         criteria.append(node("h3", "Check and improve"));
         const model = node("details");
         model.append(node("summary", "Compare with a model explanation"), node("p", q.points.join(" ")));
+        if (review.original) {
+          const original = node("details");
+          original.hidden = review.original === state.drafts[i];
+          original.append(node("summary", "Read your first draft"), node("p", review.original));
+          criteria.append(original);
+        }
         criteria.append(model);
         q.points.forEach((point, j) => {
           const field = node("fieldset");
@@ -729,6 +751,7 @@
           state.drafts[i] = form.elements.draft.value;
           if (!review.open) {
             review.open = true;
+            review.original = state.drafts[i];
             state.reviews[i] = review;
             persist();
             render();
@@ -746,7 +769,7 @@
           return;
         }
 
-        let correct, matched;
+        let correct, matched, feedback;
         if (q.kind === "number") {
           const raw = form.elements.number.value.trim().replace(/−/g, "-");
           if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(raw)) {
@@ -754,7 +777,9 @@
             return;
           }
           state.responses[i] = form.elements.number.value;
-          correct = Math.abs(Number(raw) - q.answer) < 1e-6;
+          const value = Number(raw);
+          correct = Math.abs(value - q.answer) < 1e-6;
+          if (!correct) feedback = q.numberFeedback?.[value];
         } else if (q.kind === "group") {
           const values = [...form.querySelectorAll("select")].map(select => select.value);
           if (values.some(value => value === "")) {
@@ -774,10 +799,11 @@
           correct = q.kind === "multi"
             ? values.length === q.answer.length && q.answer.every(value => values.includes(value))
             : values[0] === q.answer;
+          if (!correct && q.kind === "choice") feedback = q.feedback?.[values[0]];
         }
         const attempts = (state.attempts[i] || 0) + 1;
         state.attempts[i] = attempts;
-        state.results[i] = { kind: correct ? "accepted" : "incorrect", ...(matched ? { matched } : {}) };
+        state.results[i] = { kind: correct ? "accepted" : "incorrect", ...(matched ? { matched } : {}), ...(feedback ? { feedback } : {}) };
         state.outcomes[i] = !correct ? "needs-practice" : q.guided ? "guided" :
           attempts > 1 ? "corrected" : state.hints[i] ? "hint-supported" :
             state.modelAssists[i] ? "model-supported" : "independent";
@@ -1059,12 +1085,19 @@
     }
   }
   const catalogue = [
+    ["Question interpretation and practical reasoning", ["interpret", "practical"]],
+    ["Extended answers", ["extended"]],
     ["Drawing and observation", ["drawings"]],
-    ["Mark schemes and explanations", ["points", "mechanisms", "pressures", "regulation"]],
+    ["Scientific precision and explanations", ["precision", "points", "mechanisms", "pressures", "regulation"]],
     ["Unfamiliar contexts", ["causal"]],
-    ["Data, calculations and models", ["osmosis", "countercurrent", "calvin", "dihybrid", "hardy"]],
+    ["Data, calculations and models", ["evidence", "osmosis", "countercurrent", "calvin", "dihybrid", "hardy"]],
   ];
   const skillDetails = {
+    interpret: ["Understand the question", "Identify the target, select evidence and build a relevant answer.", "idea", "interpret question command words task target use data relevant answering suggest explain"],
+    precision: ["Explain precisely", "Compare scientific statements and improve your own explanation.", "pen", "precise terminology scientific language osmosis chromatids homologous transcription translation"],
+    practical: ["Reason through practicals", "Explain how the method affects the result and the claim.", "guided", "practical reasoning method controls confounding accuracy repeatability colorimeter stain chromatography"],
+    evidence: ["Interpret data", "Choose the method and decide what the evidence supports.", "calculator", "interpret data statistical significance p values graph rate percentage calibration uncertainty extrapolation"],
+    extended: ["Develop extended answers", "Connect relevant mechanisms and develop the answer to a title.", "pen", "extended response synoptic essay title relevance application breadth"],
     drawings: ["Biological drawings", "Compare drawings and identify defects.", "diagram", "biological drawing scientific drawing tissue plan observation accept reject scale bar"],
     points: ["Independent marking points", "Recognise distinct criteria in an answer.", "review", "marking points mark schemes marking scheme group criteria"],
     mechanisms: ["Biological mechanisms", "Connect a biological change to its effect.", "pen", "scientific explanations diffusion distance mechanism active transport synapse"],
@@ -1117,7 +1150,8 @@
       host.append(section);
     }
     const other = node("p", null, "al-journey-links");
-    other.append(quietLink("Evaluate unfamiliar data", "/alevel/evidence/"), quietLink("Maths Skills", "#practice"));
+    other.append(quietLink("Evaluate unfamiliar data", "/alevel/evidence/"),
+      quietLink("Maths Skills", "#practice"), quietLink("Paper 3 essay practice", "#topic-p3w"));
     host.append(other);
   }
 
@@ -1130,6 +1164,10 @@
     });
   }
   const contextualLabels = {
+    "a2-mitosis": "Review mitosis",
+    "a4-translation": "Review translation",
+    "a5-chromat": "Review chromatography",
+    "a6-glucal": "Review glucose calibration",
     "a2-diffusion": "Review diffusion distance",
     "a2-active": "Review active transport",
     "a2-osmosis": "Review water potential",
@@ -1171,6 +1209,62 @@
     "a8-transfac": "regulation",
     "a3-heart": "pressures",
   };
+  const questionSkills = {
+    "a2-mitosis": "interpret",
+    "a2-mitindex": "practical",
+    "a2-membrane": "practical",
+    "a2-osmosis": "evidence",
+    "a3-digestion": "interpret",
+    "a3-heart": "precision",
+    "a4-translation": "precision",
+    "a5-chromat": "practical",
+    "a5-respiro": "practical",
+    "a6-adh": "interpret",
+    "a6-glucal": "evidence",
+    "a8-transfac": "interpret",
+    "p3e-usedata": "evidence",
+    "p3s-methods": "practical",
+    "p3w-eplan": "extended",
+  };
+
+  function addQuestionSupport() {
+    const main = document.getElementById("main");
+    if (!main) return;
+    function offer() {
+      const family = families[questionSkills[location.hash.slice("#lesson-".length)]];
+      const feedback = main.querySelector("#qf #fb");
+      if (!location.hash.startsWith("#lesson-") || !family || !feedback || feedback.hidden ||
+          !feedback.matches(".bad, .idk") || feedback.querySelector(".al-question-skill")) return;
+
+      const open = button(family.title, () => {
+        const dialog = node("dialog", null, "al-question-dialog al-exam");
+        const heading = node("h2", family.title);
+        const close = () => dialog.close();
+        heading.id = "al-question-skill-title";
+        dialog.setAttribute("aria-labelledby", heading.id);
+        dialog.append(heading, button("Close skill lesson", close));
+        journey(dialog, family, { context: () => null, back: close });
+        // Keep activity-wide shortcuts from changing the question behind the modal.
+        dialog.addEventListener("keydown", event => event.stopPropagation());
+        dialog.addEventListener("close", () => {
+          dialog.remove();
+          open.focus();
+        }, { once: true });
+        main.append(dialog);
+        dialog.showModal();
+        focus(heading);
+      });
+      open.classList.add("al-question-skill");
+      feedback.append(open);
+    }
+    // Topic questions replace the main content and then expose their existing feedback panel.
+    new MutationObserver(records => {
+      if (records.some(record => record.target === main || record.target.id === "fb")) offer();
+    }).observe(main, { childList: true, subtree: true, attributes: true, attributeFilter: ["hidden"] });
+    offer();
+  }
+  document.addEventListener("DOMContentLoaded", addQuestionSupport, { once: true });
+
   window.ALevelExamSkills = {
     families,
     model,
