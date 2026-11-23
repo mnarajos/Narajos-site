@@ -93,6 +93,7 @@ export async function checkGCSECatchup(browser, base) {
     assert.equal(await first.inputValue(), "Unloading evidence is missing.");
     assert(await first.evaluate(el => el.readOnly));
     assert.match(await page.getByLabel("Your revised explanation (optional)").inputValue(), /Unload/);
+    await page.getByRole("button",{name:"Finish self-review"}).press("Enter");
     const transferOutcome = id => page.evaluate(key => JSON.parse(localStorage.getItem("narajos.catchup.v1." + key)).transfer20.outcome, id);
     assert.equal(await transferOutcome("11.spring-evidence"), "self-reviewed");
     assert.equal(await transferOutcome("10.amylase-endpoint"), "supported");

@@ -61,6 +61,19 @@ export function appendTransfer(host, id, state, save, evidence) {
       revision.id = revisionLabel.htmlFor = "catchup-transfer-revision";
       revision.value = record.revision || "";
       revision.oninput = () => { record.revision = revision.value; save(); };
+      if (record.outcome !== "self-reviewed") {
+        const done = add("button","Finish self-review");
+        done.type = "button";
+        done.className = "school-primary";
+        done.onclick = () => {
+          record.outcome = "self-reviewed";
+          feedback.textContent = record.feedback = "Self-review complete. Your first answer and any revision are saved.";
+          done.hidden = true;
+          feedback.tabIndex = -1;
+          feedback.focus();
+          save();
+        };
+      }
       if (focus) revision.focus();
     } else if (focus) { feedback.tabIndex = -1; feedback.focus(); }
   }
@@ -73,8 +86,8 @@ export function appendTransfer(host, id, state, save, evidence) {
       input.focus();
     } else {
       record.first = input.value;
-      record.outcome = numeric ? (record.helped ? "supported" : "independent") : "self-reviewed";
-      feedback.textContent = record.feedback = numeric ? "Correct. " + (id === "motion-graphs" ? "Velocity decreases by 1.5 m/s each second." : "The shorter endpoint gives the greater estimated rate.") : "Review the first answer you wrote. Your explanation is self-reviewed.";
+      record.outcome = numeric ? (record.helped ? "supported" : "independent") : "attempted";
+      feedback.textContent = record.feedback = numeric ? "Correct. " + (id === "motion-graphs" ? "Velocity decreases by 1.5 m/s each second." : "The shorter endpoint gives the greater estimated rate.") : "Review the first answer you wrote. Compare it with the model, then finish your self-review.";
       finish(true);
     }
     save();
