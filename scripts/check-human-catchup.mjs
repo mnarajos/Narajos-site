@@ -55,7 +55,7 @@ export async function checkHumanCatchup(browser, base) {
       }
       await stage("guided").getByRole("radio").nth(lesson.guided.answer).check();
       await stage("guided").getByRole("button", { name: "Check answer" }).click();
-      assert.match(await stage("guided").getByRole("status").innerText(), /Correct with support/);
+      assert.match(await stage("guided").getByRole("status").innerText(), key === "f171/1.2.1.aorta" ? /Correct on retry/ : /Correct with support/);
       await expand(stage("independent"));
       if (key === "f171/1.2.1.aorta") {
         const image = stage("independent").getByRole("img", {name:/abdominal aorta/});
