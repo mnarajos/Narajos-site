@@ -80,7 +80,13 @@ export async function checkGCSECatchup(browser, base) {
       await page.goto(lessonURL("chromatography", 11));
       await page.locator("main").getByRole("img", {name: /shallow layer of solvent/}).waitFor();
       await page.addStyleTag({content: "html {font-size: 125%} p, h1, h2, h3, label {line-height: 1.6; letter-spacing: .055em}"});
-      assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 2), "Enlarged text at " + width);
+      await page.evaluate(() => document.fonts.ready);
+      const overflow = await page.evaluate(() => {
+        if (document.documentElement.scrollWidth <= innerWidth + 2) return [];
+        return [document.documentElement.scrollWidth, ...[...document.body.querySelectorAll("*")].filter(el => el.getBoundingClientRect().right > innerWidth + 2)
+          .slice(0, 10).map(el => [el.tagName, el.getAttribute("class"), Math.round(el.getBoundingClientRect().right)])];
+      });
+      assert.deepEqual(overflow, [], "Enlarged text at " + width);
     }
     await page.addScriptTag({content: axe.source});
     const violations = await page.evaluate(async () => (await window.axe.run({runOnly: ["wcag2a","wcag2aa"]})).violations);
