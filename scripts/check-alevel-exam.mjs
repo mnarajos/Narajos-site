@@ -15,7 +15,7 @@ export async function checkExistingRoutes(browser, base) {
       assert(await page.locator("html").evaluate(el => el.classList.contains("big")));
       await route("exam");
       await main.getByRole("heading", { name: "Exam Skills", exact: true }).waitFor();
-      assert.equal(await main.locator(".al-catalogue-row").count(), 11);
+      assert.equal(await main.locator(".al-catalogue-row").count(), 16);
       await route("lesson-a1-monopoly");
       await main.locator(".ltop").waitFor();
       assert.match(await main.innerText(), /starch is a large molecule/);
@@ -62,7 +62,12 @@ export async function checkALevelExam(browser, base) {
     const families = await page.evaluate(() =>
       Object.values(window.ALevelTeachingFamilies),
     );
-    assert.equal(families.length, 10);
+    assert.equal(families.length, 15);
+    const newFamilies = ["interpret", "practical", "precision", "evidence", "extended"];
+    assert.equal(families.filter(family => !newFamilies.includes(family.id))
+      .reduce((total, family) => total + family.tasks.length, 0), 52);
+    assert.equal(families.filter(family => newFamilies.includes(family.id))
+      .reduce((total, family) => total + family.tasks.length, 0), 18);
     const bank = await page.evaluate(() =>
       window.ALevelDrawingBank.bank.map((x) => ({
         id: x.id,
@@ -261,6 +266,8 @@ export async function checkALevelExam(browser, base) {
     await form.getByRole("textbox").fill(revised);
     await page.reload();
     assert.equal(await form.getByRole("textbox").inputValue(), revised);
+    await form.getByText("Read your first draft", { exact: true }).click();
+    assert(await form.getByText("Acetylcholine binds to the receptors for longer.", { exact: true }).isVisible());
     assert(await form.locator('input[name="criterion-0"][value="revise"]').isChecked());
     for (let j = 1; j < written.points.length; j++)
       await form.locator('input[name="criterion-' + j + '"][value="included"]').check();
@@ -368,6 +375,8 @@ export async function checkALevelExam(browser, base) {
         "#exam",
         "#exam-drawings",
         "#exam-causal",
+        "#exam-evidence",
+        "#exam-practical",
         "#catchup-a2-osmosis",
         "#catchup-a7-dihybrid",
       ]) {
@@ -469,10 +478,55 @@ export async function checkALevelExam(browser, base) {
     await page.getByRole("button", { name: "Retry questions I needed help with" }).press("Enter");
     assert.equal((await saved("osmosis")).outcomes[1], "independent");
     assert.equal((await saved("osmosis")).outcomes[2], undefined);
+    await page.evaluate(key => {
+      const state = JSON.parse(localStorage.getItem(key));
+      delete state.interpret;
+      delete state.evidence;
+      localStorage.setItem(key, JSON.stringify(state));
+    }, key);
+    await page.goto(base + "/alevel/#exam-interpret");
+    await page.getByRole("button", { name: "Go straight to questions" }).click();
+    const interpretation = families.find(family => family.id === "interpret").tasks[1];
+    const displayed = page.locator(".al-practice input[type=radio]");
+    assert.notEqual(await displayed.first().getAttribute("value"), String(interpretation.answer));
+    await page.getByRole("radio", { name: interpretation.options[2], exact: true }).check();
+    await page.getByRole("button", { name: "Check answer" }).press("Enter");
+    await page.reload();
+    const feedback = page.locator(".al-practice [role=status]");
+    assert((await feedback.innerText()).includes(interpretation.feedback[2]));
+    await page.getByRole("radio", { name: interpretation.options[1], exact: true }).check();
+    await page.getByRole("button", { name: "Try again" }).click();
+    assert((await feedback.innerText()).includes(interpretation.feedback[1]));
+
+    await page.goto(base + "/alevel/#exam-evidence");
+    await page.getByRole("button", { name: "Go straight to questions" }).click();
+    await page.getByRole("textbox", { name: "Your answer (%)" }).fill("33.3");
+    await page.getByRole("button", { name: "Check answer" }).click();
+    assert.match(await feedback.innerText(), /wrong denominator/);
+    await page.getByRole("textbox", { name: "Your answer (%)" }).fill("25");
+    await page.getByRole("button", { name: "Try again" }).press("Enter");
+    assert.match(await feedback.innerText(), /Correct after correction/);
+    assert.equal((await saved("evidence")).outcomes[1], "corrected");
+
+    await page.goto(base + "/alevel/#lesson-a2-mitosis");
+    const originalQuestion = page.locator("#qf fieldset.q > legend").first();
+    const originalPrompt = await originalQuestion.innerText();
+    await page.getByRole("button", { name: "I don’t know – show me", exact: true }).click();
+    const offer = page.locator("#qf #fb button.al-question-skill");
+    await offer.press("Enter");
+    const dialog = page.getByRole("dialog", { name: "Understand the question" });
+    await dialog.waitFor();
+    assert(await dialog.getByRole("heading", { name: "Understand the question" }).evaluate(el => el === document.activeElement));
+    await dialog.getByRole("button", { name: "Close skill lesson" }).press("Escape");
+    await dialog.waitFor({ state: "hidden" });
+    assert.equal(await originalQuestion.innerText(), originalPrompt);
+    assert(await offer.evaluate(el => el === document.activeElement));
+    assert(await page.getByRole("button", { name: /Continue|Quick check/ }).first().isVisible());
+    await page.goto(base + "/alevel/?check=batch17#exam");
     await checkExistingRoutes(browser, base);
     assert.deepEqual(errors, []);
     console.log(
-      "A-level exam skills: 52 authored tasks, 56 drawing judgements, saved support state, and responsive accessibility passed.",
+      "A-level exam skills: 70 authored tasks, 56 drawing judgements, saved support state, and responsive accessibility passed.",
     );
   } finally {
     await page.close();
