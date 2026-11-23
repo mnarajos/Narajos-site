@@ -12,7 +12,7 @@ function fixture(data=new Map()){
  const window={scrollTo(){},addEventListener(n,fn){events[n]=fn;}};
  let seed=42;const math=Object.create(Math);math.random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
  const c=vm.createContext({window,document,Math:math,Date,console,localStorage:{getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,v),removeItem:k=>data.delete(k)},setInterval:()=>1,clearInterval(){}});
- for(const file of ["challenge-bank.js","content-knowledge.js","challenge-extension.js","question-families.js","progressions.js","skills.js","challenge.js"])vm.runInContext(read(file),c,{filename:file});
+ for(const file of ["../assets/science-answer.js","challenge-bank.js","content-knowledge.js","challenge-extension.js","question-families.js","progressions.js","skills.js","challenge.js"])vm.runInContext(read(file),c,{filename:file});
  const api=window.KeystoneHumanChallenge,skills=window.KeystoneHumanSkills;
  function route(r){api.route(r,h=>main.innerHTML=h);}
  function action(key){mainEvents.click({target:{closest:sel=>sel==="[data-k-action]"?{dataset:{kAction:key}}:null}});}

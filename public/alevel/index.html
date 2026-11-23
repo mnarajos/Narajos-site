@@ -4885,7 +4885,7 @@ function qsFor(c){var g={},out=[];c.qs.filter(tierOK).forEach(function(q){if(!q.
  if(c.pick&&res.length>c.pick+1){var wu=res.filter(function(q){return q.warm;}),rest=res.filter(function(q){return !q.warm;});for(var i=rest.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=rest[i];rest[i]=rest[j];rest[j]=tmp;}res=wu.concat(rest.slice(0,c.pick));}
  return res;}
 function bkey(t,c){return t+":"+c.id;}
-function isMastered(t,c){var old=S.best[bkey(t,c)]||{},b=old.independent||{};return S.tier==="F"?((b.F||0)>=80||(b.FH||0)>=80):(b.FH||0)>=80;}
+function isMastered(t,c){var old=S.best[bkey(t,c)]||{},b=old.checkedIndependent||{};return S.tier==="F"?((b.F||0)>=80||(b.FH||0)>=80):(b.FH||0)>=80;}
 function passedAny(t,c){var b=S.best[bkey(t,c)]||{};return (b.F||0)>=80||(b.FH||0)>=80;}
 function bestFor(t,c){var b=S.best[bkey(t,c)];return b?b[S.tier]:undefined;}
 function avail(c){return !((c.tier==="HT"||c.tier==="H")&&S.tier==="F");}
@@ -5640,7 +5640,7 @@ function slopFinish(){var sk=L.slop,n=L.n,r=L.right,mx=slopMax(sk),lv=L.maxLv,nx
  var pct=Math.round(r/n*100),line=pct===100?"Every one right – you smashed it!":pct>=80?"Bang on – that skill is getting easy for you.":pct>=50?"Solid practice – every go makes it stick.":"No stress – practising the tricky ones is exactly how it gets easier.";
  var h='<div class="kbadge'+(L.top>=3?' gold':'')+'" aria-hidden="true"><span class="disc"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="9" cy="16" r="6.5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M15.5 16H29M24 16v5M28 16v4" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span></div>'+
   '<h1>Well done for practising</h1><p class="endmsg">'+line+'</p><p class="score">You practised <strong>'+n+'</strong> question'+(n===1?'':'s')+' and got <strong>'+r+'</strong> correct independently ('+pct+'%).</p><p>Highest level reached: Level '+lv+' of '+mx+' – '+LADDER[lv].n+'.</p>'+
-  (L.top>=3?'<p>Skill secure: you got 3 right at the top level.</p>':lv<mx?'<p>Next time, aim for Level '+Math.min(mx,lv+1)+'.</p>':'')+
+  (L.top>=3?'<p>You answered three questions correctly without help at the top level.</p>':lv<mx?'<p>Next time, aim for Level '+Math.min(mx,lv+1)+'.</p>':'')+
   '<div class="endbtns">'+(nx?'<a class="btn primary big" href="#practice-'+nx.id+'">Next skill: '+esc(nx.name)+'</a>':'')+'<a class="btn big" href="#practice-'+sk.id+'">Practise this skill again</a><a class="btn big" href="#'+bk.h+'">'+esc(bk.label)+'</a></div>';
  L=null;render(h);if(n>=5)confetti(r/n>=0.8?100:50);}
 function startSlop(sk){L={slop:sk,t:sk.t,queue:[],total:0,i:-1,first:new Map(),retried:new Set(),phase:"ex",n:0,right:0,tier:S.tier,lv:1,streak:0,lvWrong:false,maxLv:1,top:0,seenQ:{}};showSlopExample(sk);}
@@ -5749,7 +5749,7 @@ function renderExtra(q){
  if(q.t==="balance"){var k=0;
   return '<p class="hint">Type the number in front of each formula. Leave a box empty for 1.</p><p class="eqn">'+q.L.map(function(x){return termHTML(x,k++);}).join(" + ")+' → '+q.R.map(function(x){return termHTML(x,k++);}).join(" + ")+'</p>';}
  if(q.t==="ions")return '<p class="hint">Use the smallest whole numbers that make the charges balance.</p>'+[q.c,q.an].map(function(p,i){return '<div class="numrow ionrow"><label for="ion'+i+'">Number of '+fmt(p.ion)+' ions</label><input class="cin" id="ion'+i+'" type="text" inputmode="numeric" autocomplete="off"></div>';}).join("");
- if(q.t==="short")return '<p class="hint">Write your answer. Then you will mark it yourself against the mark scheme.</p><textarea id="sa" rows="5" aria-label="Your answer"></textarea><div id="ms"></div>';
+ if(q.t==="short")return '<p class="hint">Write your answer, then compare it with the model points.</p><textarea id="sa" rows="5" aria-label="Your answer"></textarea><div id="ms"></div>';
  if(q.t==="estruct")return '<label class="numlab" for="esin">Electronic structure</label><div class="numrow"><input id="esin" type="text" inputmode="decimal" autocomplete="off"></div><p class="hint">Type the numbers in order, for example 2,8,1.</p>';
  if(q.t==="tick"){
   var tro=shuffle(q.rows.map(function(_,i){return i;}));
@@ -5823,39 +5823,38 @@ function checkExtra(q,f){
   return {ok:NarajosAssessment.shellsMatch(dg,q.a)};
  }
  if(q.t==="short"){
-  var n=q.marks.length,need=Math.ceil(n*2/3);
+  var n=q.marks.length;
   if(!L.cur.step){
    if(!$("#sa").value.trim()){msg.textContent="Write your answer first.";return null;}
    msg.textContent="";$("#sa").readOnly=true;L.cur.step=1;$("#hint").hidden=true;
    var ans=$("#sa").value,used={},kwa=q.marks.map(function(m2){return kwList(m2);});
-   var KN={yes:"Looks like you made this point – check",part:"Partly there – check your wording",no:"Not found – tick only if you made this point in other words"};
+   var KN={yes:"Several related words found · compare the meaning",part:"Some related wording · compare the meaning",no:"Compare this point with your wording"};
    var mh=q.marks.map(function(m2,i){var st=kwState(kwa[i],ans),html=fmt(m2).replace(/(<[^>]+>)|([A-Za-z][A-Za-z0-9\-’]*)/g,function(x,tag,w){if(tag)return tag;var u=kwUsed(w,ans);if(u){used[u]=1;return '<mark>'+w+'</mark>';}return w;});
     return '<label class="opt mk-'+st+'"><input type="checkbox" name="mk" value="'+i+'"><span class="otext">'+html+'<span class="kwnote">'+KN[st]+'</span></span></label>';});
    var ul=Object.keys(used),anotes=[];
    ALTS.avoid.forEach(function(k){k[1].forEach(function(x){var re=new RegExp("(^|[^A-Za-z])"+x.replace(/[.*+?^${}()|[\]\\\/]/g,"\\$&")+"(?![A-Za-z])",/[a-z]/.test(x)?"i":"");if(re.test(ans))anotes.push("You wrote “"+x+"”. Compare the term with the question. Write “"+k[0]+"” in full when it asks for the name.");});});
    (ALTS.beyond||[]).forEach(function(k){var hit=k[1].filter(function(x){return new RegExp("(^|[^A-Za-z])"+x.replace(/[.*+?^${}()|[\]\\\/]/g,"\\$&")+"(?![A-Za-z])").test(ans);})[0];if(hit)anotes.push("You wrote “"+hit+"”. Check which molecule the question asks about. These terms can have different roles.");});
-   ALTS.reject.forEach(function(k){k[1].forEach(function(x){if(new RegExp("(^|[^A-Za-z])"+x+"(?![A-Za-z])").test(ans))anotes.push("You wrote “"+x+"”. AQA does not credit this – write “"+k[0]+"”. Do not tick a point that depends on it.");});});
-   $("#ms").innerHTML='<h2 class="q2" tabindex="-1">Mark your answer</h2>'+(anotes.length?'<div class="hintbox"><p>'+anotes.map(esc).join('</p><p>')+'</p></div>':'')+(ul.length?'<p class="kwused">Key words you used: '+ul.map(function(w){return '<mark>'+esc(w)+'</mark>';}).join(" ")+'</p>':'<p class="kwused">None of the mark-scheme key words were found in your answer. Read the points below carefully.</p>')+
+   ALTS.reject.forEach(function(k){k[1].forEach(function(x){if(new RegExp("(^|[^A-Za-z])"+x+"(?![A-Za-z])").test(ans))anotes.push("You wrote “"+x+"”. Check the spelling and meaning of “"+k[0]+"” in this context.");});});
+   $("#ms").innerHTML='<h2 class="q2" tabindex="-1">Compare your answer with the model points</h2>'+(anotes.length?'<div class="hintbox"><p>'+anotes.map(esc).join('</p><p>')+'</p></div>':'')+(ul.length?'<p class="kwused">Related words found in your answer: '+ul.map(function(w){return '<mark>'+esc(w)+'</mark>';}).join(" ")+'</p>':'<p class="kwused">Compare your wording with each model point, including ideas expressed in different words.</p>')+
     (q.sugg?'<div class="suggbox"><p><strong>Suggested answer'+(q.sugg.length>1?'s':'')+'</strong></p>'+q.sugg.map(function(x){return '<p>'+fmt(x)+'</p>';}).join("")+'</div>':'')+
-    '<p class="hint">Tick each point you made. Highlighted words show where your answer matches – check you used them in the same way. Your wording does not need to match exactly.</p>'+mh.join("");
-   $("#act").textContent="Done marking";$("#ms h2").focus();return null;
+    '<p class="hint">Tick the points you think your answer explains. Check the scientific relationship and its direction. A highlighted word is only a prompt for comparison.</p>'+mh.join("");
+   $("#act").textContent="Finish self-review";$("#ms h2").focus();return null;
   }
-  var got=$$("input[name=mk]:checked",f).length,ok2=got>=need;
-  return {ok:ok2,head:(ok2?"✓ ":"✗ ")+got+" of "+n+" marks",note:ok2?"":"You need "+need+" of "+n+" marks for this to count as correct."};
+  var got=$$("input[name=mk]:checked",f).length;
+  return {ok:true,head:"Written response self-reviewed",note:"You ticked "+got+" of "+n+" model points. Compare the reasoning and revise your wording where needed."};
  }
  if(q.t==="pairs"){
   if(L.cur.pm.some(function(r){return r<0;})){msg.textContent="Find every pair first.";return null;}
   $$(".ptile",f).forEach(function(b){b.disabled=true;});msg.textContent="";
-  var okp=L.cur.wt<=1;
-  return {ok:okp,head:(okp?"✓ ":"✗ ")+"All pairs found with "+L.cur.wt+" wrong tap"+(L.cur.wt===1?"":"s"),note:okp?"":"It counts as correct with no more than 1 wrong tap."};
+  return {ok:true,head:L.cur.wt?"All pairs matched after "+L.cur.wt+" incorrect selection"+(L.cur.wt===1?"":"s"):"All pairs matched first time"};
  }
  if(q.t==="tick"){
   var wr=0;q.rows.forEach(function(r,i){var row=$(".trow[data-i='"+i+"']",f),got=$$("input[name=t"+i+"]",f).filter(function(x){return x.checked;}).map(function(x){return +x.value;}),right=got.length===r[1].length&&got.every(function(j){return r[1].indexOf(j)>-1;});
    $$("input[name=t"+i+"]",f).forEach(function(x){var j=+x.value,want=r[1].indexOf(j)>-1,lb=x.parentNode;if(want&&x.checked)lb.classList.add("tok-right");else if(want)lb.classList.add("tok-missed");else if(x.checked)lb.classList.add("tok-wrong");});
    var mk=$(".gmark",row);if(right){row.classList.add("right");mk.className="gmark right";mk.textContent=" ✓";}else{wr++;row.classList.add("wrong");mk.className="gmark wrong";mk.textContent=" ✗ "+r[1].map(function(j){return plain(q.cols[j]);}).join(", ");}});
   $$("input",f).forEach(function(x){x.disabled=true;});msg.textContent="";
-  var allowt=q.rows.length>=6?1:0,okt=wr<=allowt;
-  return {ok:okt,head:(okt?"✓ ":"✗ ")+(q.rows.length-wr)+" of "+q.rows.length+" rows correct",note:okt?"":"You need "+(q.rows.length-allowt)+" of "+q.rows.length+" rows for this to count as correct."};
+  var okt=wr===0;
+  return {ok:okt,head:(okt?"✓ ":"✗ ")+(q.rows.length-wr)+" of "+q.rows.length+" rows correct",note:okt?"":"Review the marked rows."};
  }
  if(q.t==="sort"){
   var miss=q.items.some(function(it,i){return !$("input[name=s"+i+"]:checked",f);});
@@ -5864,8 +5863,8 @@ function checkExtra(q,f){
    if(v===it[1]){row.classList.add("right");mk.className="gmark right";mk.textContent="✓";}else{wr++;row.classList.add("wrong");mk.className="gmark wrong";mk.textContent="✗ "+plain(q.cats[it[1]]);}});
   $$("input",f).forEach(function(x){x.disabled=true;});msg.textContent="";
   if(q.venn){var vd=$(".vennfig",f);if(vd)vd.outerHTML=vennSVG(q,true);}
-  var allow=q.items.length>=6?1:0,oks=wr<=allow;
-  return {ok:oks,head:(oks?"✓ ":"✗ ")+(q.items.length-wr)+" of "+q.items.length+" correct",note:oks?"":"You need "+(q.items.length-allow)+" of "+q.items.length+" for this to count as correct."};
+  var oks=wr===0;
+  return {ok:oks,head:(oks?"✓ ":"✗ ")+(q.items.length-wr)+" of "+q.items.length+" correct",note:oks?"":"Compare each misplaced item with its group."};
  }
  if(q.t==="pick"){
   var st=L.cur.step||0,sel=$(".tok.sel",f);
@@ -5875,9 +5874,9 @@ function checkExtra(q,f){
   $("#pkr").insertAdjacentHTML("beforeend",'<p class="'+(okp?'pkok':'pkno')+'">'+(okp?'✓ ':'✗ ')+fmt(q.asks[st][0])+' <strong>'+esc(ans)+'</strong></p>');
   $$(".tok",f).forEach(function(b){b.classList.remove("sel");b.setAttribute("aria-pressed","false");});
   if(st+1<q.asks.length){L.cur.step=st+1;if(okp)chime();$("#pkq").innerHTML="Part "+(st+2)+" of "+q.asks.length+": "+fmt(q.asks[st+1][0]);$("#hint").hidden=false;$("#hintbox").hidden=true;hintWait();$("#pkq").focus({preventScroll:true});return null;}
-  var gotp=L.cur.res.filter(function(x){return x;}).length,needp=Math.ceil(q.asks.length*2/3),okk=gotp>=needp;
+  var gotp=L.cur.res.filter(function(x){return x;}).length,okk=gotp===q.asks.length;
   $("#pkq").hidden=true;$$(".tok",f).forEach(function(b){b.disabled=true;});
-  return {ok:okk,head:(okk?"✓ ":"✗ ")+gotp+" of "+q.asks.length+" correct",note:okk?"":"You need "+needp+" of "+q.asks.length+" for this to count as correct."};
+  return {ok:okk,head:(okk?"✓ ":"✗ ")+gotp+" of "+q.asks.length+" correct",note:okk?"":"Compare the word for each part with the text."};
  }
  if(q.t==="tap"){
   msg.textContent="";
@@ -5888,8 +5887,8 @@ function checkExtra(q,f){
   var wr2=0,res="";P.forEach(function(l,k){var b=$('.tgt[data-k="'+k+'"]',f),okk=l===k,lt=l<q.labels.length?q.labels[l]:q.extra[l-q.labels.length];if(!okk)wr2++;b.classList.add(okk?"right":"wrong");
    res+='<li>'+(okk?'✓ '+fmt(q.labels[k]):'✗ You put '+fmt(lt)+'. It is '+fmt(q.labels[k])+'.')+'</li>';});
   $$(".tgt,.chip",f).forEach(function(b){b.disabled=true;});var tr=$("#tapres");tr.innerHTML=res;tr.hidden=false;
-  var al=q.labels.length>=6?1:0,ok3=wr2<=al;
-  return {ok:ok3,head:(ok3?"✓ ":"✗ ")+(q.labels.length-wr2)+" of "+q.labels.length+" correct",note:ok3?"":"You need "+(q.labels.length-al)+" of "+q.labels.length+" for this to count as correct."};
+  var ok3=wr2===0;
+  return {ok:ok3,head:(ok3?"✓ ":"✗ ")+(q.labels.length-wr2)+" of "+q.labels.length+" correct",note:ok3?"":"Recheck the labels identified above."};
  }
  if(q.t==="build"){
   var seq=L.cur.seq;if(!seq.length){msg.textContent="Tap the tiles to build your answer first.";return null;}
@@ -6239,7 +6238,8 @@ function showTopic(t,focus){
   h+='<section class="stage" aria-labelledby="st'+d+'"><h2 id="st'+d+'">'+STN[d]+'</h2><ul class="concepts">';
   list.forEach(function(c){
    var ms=isMastered(t,c),best=bestFor(t,c),cls=ms?"mastered":"ready";
-   var st=ms?"✓ Independent pass":best!=null?"In progress":"Not started";
+   var historical=best!=null && S.best[bkey(t,c)]?.checkedIndependent?.[S.tier]==null;
+   var st=ms?"✓ Independent pass":historical?"Earlier practice":best!=null?"In progress":"Not started";
    h+='<li class="concept '+cls+'"><div class="chead"><h3>'+esc(c.title)+(c.tier==="H"?' <span class="badge">Stretch</span>':'')+'</h3><span class="status">'+st+'</span></div>';
    h+='<p class="spec">'+qsFor(c).length+' questions'+(best!=null?' · Recorded best '+best+'%':'')+'</p>';
    var pr=c.needs.filter(function(nid){return avail(T.byId[nid]);});
@@ -6605,7 +6605,7 @@ function check(){
  }else if(q.t==="num"){
   var raw=$("#numin").value.trim();$("#msg").textContent="";$("#msg").className="msg";
   if(!raw)given=false;else{var reading=NarajosAssessment.parse(raw,q.unit,q.q),n=reading.value,tol=q.tol!=null?q.tol:Math.max(1e-9,Math.abs(q.a)*0.005);
-   if(!Number.isFinite(n)){$("#msg").textContent=reading.message;return;}
+   if(!Number.isFinite(n)){if(reading.incompatibleUnit)L.cur.quantityFeedback=true;$("#msg").textContent=reading.message;return;}
    if(q.abs)n=Math.abs(n);
    ok=NarajosAssessment.matches(n,q.a,q.tol,q.q,q.unit);
    /* Right size, wrong sign: not marked – a nudge, then the pupil fixes it and presses Check (no penalty) */
@@ -6630,37 +6630,43 @@ function check(){
    gs.forEach(function(s){var g=+s.dataset.g,ans=L.cur.gaps[g],mk=$('.gmark[data-g="'+g+'"]',f);
     if(s.value===ans){s.classList.add("right");mk.className="gmark right";mk.textContent="✓";}
     else{ok=false;s.classList.add("wrong");mk.className="gmark wrong";mk.textContent="✗ "+ans;}});
-   if(q.six){var got=gs.filter(function(s){return s.classList.contains("right");}).length;ok=got>=Math.ceil(gs.length*2/3);head=(ok?"✓ ":"✗ ")+got+" of "+gs.length+" marks";note=ok?(got<gs.length?"That is enough to count as correct. Check the gaps you missed.":"Full marks. Read the complete answer once more – this is what a top answer looks like."):"You need "+Math.ceil(gs.length*2/3)+" marks. Read the corrected answer above.";}}
+   if(q.six){var got=gs.filter(function(s){return s.classList.contains("right");}).length;ok=got===gs.length;head=got+" of "+gs.length+" gaps correct";note=ok?"Read the completed explanation.":"Review the corrected gaps above.";}}
  }else{var ex=checkExtra(q,f);if(ex===null)return;ok=ex.ok;head=ex.head||"";note=ex.note||"";}
  if(!given){$("#msg").textContent=(q.t==="match"||q.t==="cloze")?"Choose an answer for every gap first.":q.t==="num"?"Type an answer first.":q.t==="multi"?"Select "+q.n+" answers first.":"Choose an answer first.";return;}
  $("#msg").textContent="";$("#hint").hidden=true;var idb=$("#idk");if(idb)idb.hidden=true;
  $$("input,select,textarea",f).forEach(function(x){x.disabled=true;});
- var second=false,isQC=!L.slop&&L.qc===q0&&!L.first.has(q0);
- if(isQC){L.qcN=(L.qcN||0)+1;if(ok)L.qcOK=(L.qcOK||0)+1;}
- if(isQC&&ok&&!second)head=!!L.cur.rung?"✓ Quick check correct with support":"✓ Related check correct independently";
+ var firstTime=!L.first.has(q0), written=q.t==="short", helped=Boolean(L.cur.rung);
+ var outcome=L.cur.idk?"revealed":written?"self-reviewed":!ok?"incorrect":
+   L.cur.quantityFeedback||L.cur.signNudge||(q.t==="pairs"&&L.cur.wt>0)||(!firstTime&&L.first.get(q0)!=="independent")?"corrected":helped?"supported":"independent";
+ var independent=outcome==="independent";
+ NarajosAssessment.recordLessonAnswer(L,q0,outcome);
+ if(outcome==="supported" || outcome==="corrected"){
+  var label=outcome==="supported"?"Correct with a hint":"Correct after feedback";
+  if(head)note=label+". "+note;else head=label;
+ }
+ var second=false,isQC=!L.slop&&L.qc===q0&&firstTime;
+ if(isQC){L.qcN=(L.qcN||0)+1;if(independent)L.qcOK=(L.qcOK||0)+1;}
+ if(isQC&&ok&&!written)head=independent?"✓ Related check correct independently":outcome==="corrected"?"Quick check correct after feedback":"Quick check correct with support";
  if(isQC&&!ok)note="Not yet. Read the explanation, and you will see this idea again before the end of the lesson."+(note?" "+note:"");
  if(second){head="✓ Correct, on a second try";note="Your first tap was a different answer, so this one does not count towards your score."+(note?" "+note:"");}
- L.run=ok&&!second?(L.run||0)+1:0;
- if(ok&&!second){var tier=Math.min(Math.floor(L.run/3),4);if(L.run%3===0){comboUp(tier);flash(tier);}else chime(TIER_CHIME[tier]);}
- var firstTime=!L.first.has(q0);
- var hinted=!!(L.cur.rung);
- if(firstTime)L.first.set(q0,ok&&!second&&!hinted);
- if(firstTime&&ok&&!second&&!L.slop){if(hinted)L.hintN=(L.hintN||0)+1;else L.ownN=(L.ownN||0)+1;}
- if(firstTime&&ok&&!second&&hinted&&!L.slop&&!q.warm&&!isQC){L.reteachQ=q;L.reteachHint=true;note="Right with a hint. A quick check is next, to make sure it has stuck."+(note?" "+note:"");}
+ L.run=independent?(L.run||0)+1:0;
+ if(independent){var tier=Math.min(Math.floor(L.run/3),4);if(L.run%3===0){comboUp(tier);flash(tier);}else chime(TIER_CHIME[tier]);}
+ var hinted=helped&&!written;
+ if(firstTime&&ok&&!second&&hinted&&!L.slop&&!q.warm&&!isQC){L.reteachQ=q;L.reteachHint=true;note="Right with a hint. A quick check is next to try the idea again."+(note?" "+note:"");}
  var requeue=!L.slop&&!ok&&!L.retried.has(q0);
  if(requeue){L.retried.add(q0);L.queue.push(q0);
   /* Another go at a fixed calculation: use its other version, with different numbers, if it has one */
   if(q0.t==="num"&&q0._sib&&q0._sib.length){L.swapAt=L.swapAt||{};L.swapAt[L.queue.length-1]=pick(q0._sib);}}
  if(!L.slop&&!ok&&firstTime&&!q.warm){L.reteachQ=q;L.reteachHint=false;}
- if(L.slop&&!L.cur.q0.counted){L.cur.q0.counted=1;L.n++;if(ok&&!second){L.right++;S.slop[L.slop.id]=(S.slop[L.slop.id]||0)+1;save();}
+ if(L.slop&&!L.cur.q0.counted){L.cur.q0.counted=1;L.n++;if(independent){L.right++;S.slop[L.slop.id]=(S.slop[L.slop.id]||0)+1;save();}
   var mx=slopMax(L.slop),was=L.lv;
   /* Two right in a row moves up a level; three if one at this level went wrong. A wrong answer steps back one level. */
-  if(second){L.streak=0;L.lvWrong=true;}else if(ok){L.streak++;if(L.streak>=(L.lvWrong?3:2)&&L.lv<mx){L.lv++;L.streak=0;L.lvWrong=false;}}else{L.streak=0;L.lvWrong=true;if(L.lv>1){L.lv--;}}
-  L.maxLv=Math.max(L.maxLv,L.lv);if(ok&&!second&&was===mx)L.top++;
+  if(ok&&!independent){L.streak=0;}else if(independent){L.streak++;if(L.streak>=(L.lvWrong?3:2)&&L.lv<mx){L.lv++;L.streak=0;L.lvWrong=false;}}else{L.streak=0;L.lvWrong=true;if(L.lv>1){L.lv--;}}
+  L.maxLv=Math.max(L.maxLv,L.lv);if(independent&&was===mx)L.top++;
   L.lvMsg=L.lv>was?"Level up – you’re on a roll! Next: Level "+L.lv+" of "+mx+" – "+LADDER[L.lv].n+".":L.lv<was?"No worries – the next one is a step easier.":"";
-  if(L.top===3&&!L.done3){L.done3=true;L.lvMsg="Skill secure – absolute legend! Finish here, or try the next skill.";L.showNext=true;}var tl=$("#tally");if(tl)tl.textContent="Score: "+L.right+" of "+L.n;}
+  if(L.top===3&&!L.done3){L.done3=true;L.lvMsg="Three questions correct without help at the top level. Finish here, or try the next skill.";L.showNext=true;}var tl=$("#tally");if(tl)tl.textContent="Score: "+L.right+" of "+L.n;}
  L.phase="fb";
- var fb=$("#fb");fb.className="fb "+(ok?"good":L.cur.idk?"idk":"bad");
+ var fb=$("#fb");fb.className="fb "+(written||L.cur.idk?"idk":ok?"good":"bad");
  fb.innerHTML='<h2 tabindex="-1">'+(head||(ok?pick(PRAISE):pick(NOPE)))+'</h2>'+(ok&&L.run>=2?'<p class="runline"><span class="combo'+(L.run%3===0?' big':'')+'" style="background:'+TIER_INK[Math.min(Math.floor(L.run/3),4)]+'">Combo ×'+L.run+'</span></p>':'')+(fastOK(ok)?fastHTML():'')+(backOK(ok)?backHTML():'')+(ok?'':answerHTML(q,L.cur.idk))+(whyNot?'<p class="why-not"><strong>About your answer:</strong> '+fmt(whyNot)+'</p>':'')+(note?'<p>'+fmt(note)+'</p>':'')+(q.why?'<p>'+fmt(q.why)+'</p>':'')+(!ok&&q.aqa?aqaHTML(q.aqa):'')+((ok||L.slop||q.warm||!(L.reteachQ===q&&reteachLines(q).length))?mnemHTML(mnemQ(q)):'')+(requeue?'<p class="small">This question will come back at the end of the lesson.</p>':'');
  if(!L.slop&&L.t&&L.c&&(!ok||hinted)){fb.insertAdjacentHTML("beforeend",'<p><a class="btn" href="#catchup-'+L.t+'-'+L.c.id+'">Revisit the catch-up explanation</a></p>');}
  fb.hidden=false;
@@ -6677,7 +6683,7 @@ function check(){
 
 /* ---------- Fast track: skip ahead on a combo ---------- */
 var FAST_RUN=5;
-function fastStats(){var a=0,r=0;L.first.forEach(function(v){a++;if(v)r++;});return {a:a,r:r,pct:a?Math.round(r/a*100):0};}
+function fastStats(){var result=NarajosAssessment.lessonEvidence(L);return {a:result.checked,r:result.independent,pct:result.percent};}
 function nextConcept(t,c){var T=DATA[t],list=T.concepts,i=list.indexOf(c);
  var cand=(c.unlocks||[]).map(function(id){return T.byId[id];}).concat(list.slice(i+1),list.slice(0,i));
  for(var k=0;k<cand.length;k++){var x=cand[k];if(x&&x!==c&&avail(x)&&isUnlocked(t,x)&&!isMastered(t,x))return x;}return null;}
@@ -6761,23 +6767,23 @@ function showReteach(w,hinted){
  return true;
 }
 function finish(){
- L.fin=true;var t=L.t,c=L.c,correct=0;L.first.forEach(function(v){if(v)correct++;});
- var pct=Math.round(correct/L.total*100),k=bkey(t,c);
- var b=S.best[k]||(S.best[k]={}),lv0=levelOf(t,c);b[L.tier]=Math.max(b[L.tier]||0,pct);b.independent=b.independent||{};b.independent[L.tier]=Math.max(b.independent[L.tier]||0,pct);
+ L.fin=true;var t=L.t,c=L.c,result=NarajosAssessment.lessonEvidence(L),correct=result.independent;
+ var pct=result.percent,k=bkey(t,c);
+ var b=S.best[k]||(S.best[k]={}),lv0=levelOf(t,c);if(result.checked){b[L.tier]=Math.max(b[L.tier]||0,pct);b.checkedIndependent=b.checkedIndependent||{};b.checkedIndependent[L.tier]=Math.max(b.checkedIndependent[L.tier]||0,pct);}
  save();
- var ms=pct>=80,lv1=levelOf(t,c);
+ var ms=result.checked>0&&pct>=80,lv1=levelOf(t,c);
  var newly=S.guided?DATA[t].concepts.filter(function(x){return !L.before[x.id]&&isUnlocked(t,x);}):[];
  var leads=c.unlocks.map(function(id){return DATA[t].byId[id];}).filter(function(x){return !isMastered(t,x);});
  var h='<div class="kbadge'+(pct===100?' gold':'')+'" aria-hidden="true"><span class="disc"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="9" cy="16" r="6.5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M15.5 16H29M24 16v5M28 16v4" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span>'+(ms?'<span class="spark s1">✦</span><span class="spark s2">✦</span><span class="spark s3">✦</span>':'')+'</div><h1>'+(ms?'Independent practice passed':'Lesson complete')+'</h1>'+
-  '<p class="endmsg">'+(pct===100?'Every assessed question was correct without a hint.':ms?'That’s a pass – you bossed it!':pct>=50?'Solid effort – you’re over halfway there.':'No stress – every go helps it stick.')+'</p>'+
-  '<p class="score"><strong>'+correct+' of '+L.total+'</strong> correct independently ('+pct+'%).</p>'+(L.qcN?'<p class="small">Quick checks after a reteach: '+(L.qcOK||0)+' of '+L.qcN+' right.</p>':'')+(L.hintN?'<p class="small">Right on your own: '+(L.ownN||0)+'. Right with a hint: '+L.hintN+'.</p>':'')+
+  '<p class="endmsg">'+(!result.checked?'This lesson contained written self-review only.':pct===100?'Every objectively checked answer was correct without help.':ms?'That’s a pass – you bossed it!':pct>=50?'Solid effort – you’re over halfway there.':'No stress – every go helps it stick.')+'</p>'+
+  (result.checked?'<p class="score"><strong>'+correct+' of '+result.checked+'</strong> objective answers correct independently ('+pct+'%).</p>':'')+(L.qcN?'<p class="small">Quick checks after a reteach: '+(L.qcOK||0)+' of '+L.qcN+' correct without help.</p>':'')+(NarajosAssessment.evidenceNote(result)?'<p class="small">'+NarajosAssessment.evidenceNote(result)+'</p>':'')+
   (L.fast?'<p class="small">⚡ Fast-tracked: you skipped '+L.fast.skip+' practice question'+(L.fast.skip===1?'':'s')+' and did the later questions.</p>':'')+
-  (ms?'<p>✓ Independent practice passed for <strong>'+esc(c.title)+'</strong>.</p>':'<p>An independent pass requires 80% correct without hints. Supported answers help you learn and lead to further checks. Have another go – the quick reteach after each wrong answer will help.</p>');
+  (!result.checked?'':ms?'<p>✓ Independent practice passed for <strong>'+esc(c.title)+'</strong>.</p>':'<p>An independent pass requires 80% correct without hints. Supported answers help you learn and lead to further checks. Have another go – the quick reteach after each wrong answer will help.</p>');
  var nextC=null;
  if(newly.length){h+='<section class="key" aria-labelledby="nu"><h2 id="nu">Now unlocked</h2><ul>'+newly.map(function(x){return '<li>'+esc(x.title)+'</li>';}).join("")+'</ul></section>';nextC=newly[0];}
  else if(ms&&leads.length&&!S.guided){h+='<section class="key" aria-labelledby="nu"><h2 id="nu">This leads to</h2><ul>'+leads.map(function(x){return '<li>'+esc(x.title)+'</li>';}).join("")+'</ul></section>';nextC=leads[0];}
  if(!nextC&&ms&&L.fast)nextC=nextConcept(t,c);
- var back=null;if(pct<60){var TT=DATA[t],li=TT.concepts.indexOf(c);back=(c.needs||[]).map(function(id){return TT.byId[id];}).filter(function(x){return x&&avail(x);})[0]||(li>0?TT.concepts[li-1]:null);}
+ var back=null;if(result.checked&&pct<60){var TT=DATA[t],li=TT.concepts.indexOf(c);back=(c.needs||[]).map(function(id){return TT.byId[id];}).filter(function(x){return x&&avail(x);})[0]||(li>0?TT.concepts[li-1]:null);}
  if(back)h+='<section class="key" aria-labelledby="bk"><h2 id="bk">Suggestion</h2><p>This lesson builds on <strong>'+esc(back.title)+'</strong>. Try that lesson first, then come back to this one.</p></section>';
  h+='<div class="endbtns">';
  if(back)h+='<a class="btn primary big" href="#lesson-'+t+'-'+back.id+'">Go to: '+esc(back.title)+'</a>';

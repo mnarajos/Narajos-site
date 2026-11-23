@@ -29,7 +29,7 @@ function create(E){
   var h='<p class="crumb"><a href="#flashcards">← Flashcards</a></p><h1>Spaced flashcard review</h1>'+
    '<p class="lead">Cards you know return after increasingly long intervals. Cards you miss return during the session and are scheduled for further review. Progress is kept in this browser.</p>'+
    '<section class="kr-entry"><h2>Review for today</h2><div class="kr-metrics">'+
-   '<span><strong>'+st.due+'</strong> due</span><span><strong>'+st.seen+'</strong> practised</span><span><strong>'+st.weak+'</strong> needing attention</span><span><strong>'+st.retained+'</strong> retained</span><span><strong>'+total+'</strong> in the bank</span></div>'+
+   '<span><strong>'+st.due+'</strong> due</span><span><strong>'+st.seen+'</strong> practised</span><span><strong>'+st.weak+'</strong> needing attention</span><span><strong>'+st.retained+'</strong> at a longer review interval</span><span><strong>'+total+'</strong> in the bank</span></div>'+
    '<div class="kr-actions"><a href="#spaced-due" class="btn primary">Review due cards</a>'+
    '<a href="#spaced-new" class="btn">Learn new cards</a><a href="#spaced-weak" class="btn">My weak cards</a><a href="#spaced-reverse" class="btn">Reverse definitions</a></div>'+
    (r?'<p style="margin-top:14px"><a href="#spaced-resume" class="btn">Resume unfinished set ('+r.queue.length+' remaining)</a></p>':'')+
@@ -74,33 +74,18 @@ function create(E){
     '<div class="kr-result" id="kr-result" hidden><p class="kr-label">Expected answer</p><p class="kr-answer">'+(reverse?E.fmt(answer):E.esc(answer))+'</p>'+
     (base.note&&!reverse?'<p class="kr-subtle">'+E.esc(base.note)+'</p>':'')+
     '<p class="kr-typed-feedback" id="kr-comparison" aria-live="polite"></p><p class="kr-subtle">Mark your understanding honestly. Equivalent scientific wording may be acceptable.</p>'+
-    '<div class="kr-grade"><button type="button" class="btn" id="kr-again">Not yet — show again</button><button type="button" class="btn primary" id="kr-good">Got it</button></div></div></section>';
+    '<div class="kr-grade"><button type="button" class="btn" id="kr-again">Not yet — show again</button><button type="button" class="btn primary" id="kr-good">Record my recall</button><button type="button" class="btn" id="kr-reviewed">Finish as reviewed</button></div></div></section>';
   E.render(h,false);
-  var input=document.getElementById("kr-input"),reveal=document.getElementById("kr-reveal");input.focus();
-  input.onkeydown=function(e){if(e.key==="Enter"){e.preventDefault();reveal.click();}};
-  reveal.onclick=function(){if(active.phase==="back")return;active.phase="back";saveActive();reveal.hidden=true;
-   input.readOnly=true;document.getElementById("kr-result").hidden=false;
-   var v=input.value.trim(),exact=engine.matches(v,answer,reverse?[]:base.aliases);
-   document.getElementById("kr-comparison").textContent=v?(exact?"Your answer matches an accepted wording.":"Not an exact match. Check whether you recalled the essential idea."):"No typed answer entered.";
-   document.getElementById("kr-good").focus();
-  };
-  document.getElementById("kr-again").onclick=function(){rate(false);};
-  document.getElementById("kr-good").onclick=function(){rate(true);};
-  active.phase="front";saveActive();
- }
- function rate(good){
-  var id=active.queue.shift();
-  engine.mark(id,good);
-  if(active.first[id]===undefined)active.first[id]=good;
-  if(good)active.complete++;else active.queue.push(id);
-  active.phase="front";saveActive();
-  if(active.queue.length)show();else finish();
+  root.KeystoneReview.bindReview(active,active.queue[0],function(value){return engine.matches(value,answer,reverse?[]:base.aliases);},saveActive,function(outcome){
+   root.KeystoneReview.recordReview(active,engine,outcome);saveActive();
+   if(active.queue.length)show();else finish();
+  });
  }
  function finish(){
   if(!active)return menu();
-  var total=active.original.length,first=Object.values(active.first).filter(Boolean).length;
+  var total=active.original.length;
   active.over=true;saveActive();
-  E.render('<p class="crumb"><a href="#spaced">← Spaced review</a></p><h1>Review complete</h1><div class="kr-entry"><h2>'+total+' cards reviewed</h2><p>'+first+' recalled first time. Missed cards were revisited until you could recall them.</p><p>Successful cards will return after a delay.</p><div class="kr-actions"><a href="#spaced" class="btn primary">Review dashboard</a><a href="#flashcards" class="btn">Other flashcard modes</a></div></div>');
+  E.render('<p class="crumb"><a href="#spaced">← Spaced review</a></p><h1>Review complete</h1><div class="kr-entry"><h2>'+total+' cards reviewed</h2><p>'+root.KeystoneReview.firstReviewText(active)+'</p><p>Successful cards will return after a delay.</p><div class="kr-actions"><a href="#spaced" class="btn primary">Review dashboard</a><a href="#flashcards" class="btn">Other flashcard modes</a></div></div>');
   active=null;
  }
  function route(hash){if(hash==="spaced")return menu();if(/^spaced-(?:due|new|weak|reverse|resume)$/.test(hash))return start(hash);menu();}

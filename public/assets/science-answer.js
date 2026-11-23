@@ -59,7 +59,7 @@
       if (!actual || actual !== expected) {
         const from = units.get(actual), to = units.get(expected);
         if (!from || !to || from.dimension !== to.dimension)
-          return {value:NaN,message:expectedUnit ? "Check the unit. This answer is measured in "+expectedUnit+"." : "Enter a value without a unit for this quantity."};
+          return {value:NaN,incompatibleUnit:true,message:expectedUnit ? "Check the unit. This answer is measured in "+expectedUnit+"." : "Enter a value without a unit for this quantity."};
         value *= from.factor / to.factor;
       }
     }
@@ -83,5 +83,33 @@
     const given=shells(raw), key=shells(answer);
     return given.length===key.length && given.every((n,i)=>/^\d+$/.test(n) && Number(n)===Number(key[i]));
   }
-  root.NarajosAssessment = {parse,matches,shellsMatch};
+  function recordLessonAnswer(lesson, item, outcome) {
+    const first = lesson.first.get(item);
+    if (first === undefined) lesson.first.set(item, outcome);
+    if (outcome === "self-reviewed") (lesson.selfReviews ||= new Set()).add(item);
+    if (outcome === "corrected") (lesson.corrections ||= new Set()).add(item);
+  }
+
+  function lessonEvidence(lesson) {
+    let checked = 0, independent = 0, supported = 0, revealed = 0;
+    for (const [item, outcome] of lesson.first) {
+      if (item.t !== "short" && outcome !== "self-reviewed") checked++;
+      if (outcome === "independent") independent++;
+      if (outcome === "supported") supported++;
+      if (outcome === "revealed") revealed++;
+    }
+    return {checked, independent, supported, revealed, reviewed:lesson.selfReviews?.size || 0,
+      corrected:lesson.corrections?.size || 0, percent:checked ? Math.round(100*independent/checked) : 0};
+  }
+
+  function evidenceNote(result) {
+    const parts = [];
+    if (result.supported) parts.push("Correct with a hint: " + result.supported);
+    if (result.corrected) parts.push("Correct after feedback: " + result.corrected);
+    if (result.revealed) parts.push("Answers revealed: " + result.revealed);
+    if (result.reviewed) parts.push("Written responses self-reviewed: " + result.reviewed);
+    return parts.join(" · ");
+  }
+
+  root.NarajosAssessment = {parse,matches,shellsMatch,recordLessonAnswer,lessonEvidence,evidenceNote};
 })(globalThis);

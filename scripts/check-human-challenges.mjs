@@ -12,6 +12,7 @@ const window={addEventListener(name,fn){events[name]=fn;},scrollTo(){}};
 const store={get length(){return data.size;},key(i){return [...data.keys()][i]||null;},getItem(k){return data.get(k)||null;},setItem(k,v){data.set(k,String(v));},removeItem(k){data.delete(k);}};
 const c=vm.createContext({window,document,location,localStorage:store,Date,Math,console,setTimeout:fn=>fn()});
 function load(p){vm.runInContext(read(p),c,{filename:p});}
+load("assets/science-answer.js");
 load("assets/spaced-review.js");
 load("human-biology/content-f170.js");
 load("human-biology/challenge-bank.js");
@@ -291,6 +292,7 @@ clickAction("reveal");
 legacySave=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert.equal(legacySave.correctFirst,0);
 assert.deepEqual(legacySave.objectiveFirst,{});
+assert.equal(legacySave.earlierPractice.first[legacy.id],true);
 assert.equal(legacySave.first[legacy.id],false);
 const sequence=forcedQuestion("f175-early");
 let sequenceSave=JSON.parse(data.get("narajos-human-challenge-v2-session"));
