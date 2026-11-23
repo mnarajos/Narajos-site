@@ -74,13 +74,23 @@ function column() {
 }
 
 function chromatogram() {
-  return picture("Paper chromatography of two inks",diagram("Paper with two lanes. Ink A has two separate spots and ink B has one. Both started from the same baseline. The solvent front is above the spots.",`
+  const results = picture("Paper chromatography of two inks",diagram("Paper with two lanes. Ink A has two separate spots and ink B has one. Both started from the same baseline. The solvent front is above the spots.",`
     <rect x="55" y="12" width="214" height="173" rx="4" fill="#fffdf3" stroke="${ink}" stroke-width="2"/>
     ${line(69,42,253,42,teal,2,"5 4")}${line(69,152,253,152,ink)}
     ${text(196,35,"Solvent front",teal,14)}${text(215,145,"Baseline",ink,14)}
     ${circle(107,69,8,"#9981b1",violet)}${circle(107,100,8,"#e8a35c",rust)}${circle(165,100,8,"#e8a35c",rust)}
     ${text(107,175,"Ink A")}${text(165,175,"Ink B")}`,320,195),
     "Measure from the baseline to the centre of the spot, and from the baseline to the solvent front.");
+  const setup = picture("Before the run", diagram(
+    "Paper hangs into a shallow layer of solvent. A pencil baseline and sample spots are above the liquid level.",
+    '<path d="M55 37V159H261V37" fill="none" stroke="currentColor" stroke-width="2.5"/>'+
+    '<rect x="57" y="119" width="202" height="38" fill="#cde6ef"/>'+
+    '<rect x="98" y="31" width="56" height="111" fill="#fffdf3" stroke="currentColor"/>'+
+    line(101,86,151,86)+circle(111,86,4,rust)+circle(139,86,4,violet)+
+    line(57,119,259,119,blue,2,"4 3")+text(164,90,"Pencil baseline",ink,15,"start")+
+    text(175,142,"Solvent",blue,15,"start"),320,175),
+    "Set the solvent level below both sample spots.");
+  return compare(setup, results);
 }
 
 function wave() {
@@ -131,5 +141,5 @@ function punnett() {
 
 const types = {curve,bars,pairs,circuit,web,column,chromatogram,wave,coil,punnett};
 export function gcseVisual([type,...args]){
-  return types[type](args);
+  return type === "custom" ? args[0]() : types[type](args);
 }

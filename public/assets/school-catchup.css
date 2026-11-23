@@ -215,3 +215,7 @@
 .school-continue-row a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
 .school-continue summary { cursor: pointer; min-height: 44px; padding-block: .55rem; font-weight: 650; }
 .school-continue li a { display: inline-flex; align-items: center; min-height: 44px; }
+
+.practice-page:has([data-catchup-lesson]) {
+  overflow-wrap: anywhere;
+}

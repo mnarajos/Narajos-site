@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import axe from "axe-core";
+import { checkALevelStatistics } from "./check-alevel-statistics.mjs";
 
 export async function checkExistingRoutes(browser, base) {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 }, hasTouch: true });
@@ -50,6 +51,7 @@ export async function checkExistingRoutes(browser, base) {
 }
 
 export async function checkALevelExam(browser, base) {
+  checkALevelStatistics();
   const page = await browser.newPage({ viewport: { width: 320, height: 780 } });
   await page.emulateMedia({ reducedMotion: "reduce" });
   const errors = [];

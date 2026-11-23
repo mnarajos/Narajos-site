@@ -1,4 +1,5 @@
 import { question } from "./school-catchup-journey.js";
+import { priorityCatchup } from "./gcse-catchup-priority.js";
 
 function lesson(year, code, title, hook, notice, idea, visual, stages, independent, retry, higher) {
   return {year, code, title, hook, notice, idea, visual, higher,
@@ -539,4 +540,34 @@ const furtherCatchup = {
     ["A dead plant breaks down. What type of organism helps this happen?","Decomposer","Decomposers break down dead material and recycle substances.","Only a producer","Only a large herbivore."])
 };
 
-export const gcseCatchup = {...year10Catchup, ...year11Catchup, ...complementary, ...furtherCatchup};
+// Add modelling to the existing steps without changing question order, prompts or saved option labels.
+function scaffold(item, title, lines, guide) {
+  item.steps[0].worked = {title, lines};
+  item.steps[1].guide = guide;
+}
+
+scaffold(year10Catchup["photosynthesis-limits"], "Compare oxygen production fairly", [
+  "Count the volume of oxygen collected in the same time. For example, 8 cm³ in 4 minutes is 2 cm³ per minute.",
+  "To test light intensity, vary the plant’s distance from the lamp. Keep the same plant and carbon dioxide supply.",
+  "Keep the water temperature steady. If the lamp warms the plant, a faster rate could be due to the higher temperature as well as the light."
+], "Compare the oxygen collected per minute at medium and high light before deciding whether the rate changed.");
+
+year10Catchup["photosynthesis-limits"].higher = [
+  "Higher Tier",
+  "A lamp moves from 10 cm to 20 cm away from pondweed. Estimate the new light intensity as a fraction of the old intensity. Why might the oxygen production rate change by a different factor?",
+  "For a point light source, doubling distance gives about one quarter of the original light intensity. The rate also depends on factors such as carbon dioxide supply and temperature."
+];
+
+scaffold(year11Catchup["chromatography"], "Set up the paper and measure both distances", [
+  "Draw a pencil baseline and place the sample there. Start with the solvent below the baseline so the samples stay on the paper.",
+  "Mark the solvent front as soon as you remove the paper. Measure from the baseline to the centre of the spot, then from the baseline to the front.",
+  "For a spot at 4 cm and a front at 8 cm, Rf = 4 ÷ 8 = 0.50. The two distances have the same units, so the ratio has no unit."
+], "Put the distance travelled by the spot on top and the distance travelled by the solvent on the bottom.");
+
+scaffold(year11Catchup["inheritance-cross"], "Build a genetic cross", [
+  "A parent with genotype Aa can produce gametes carrying A or a. Put one parent’s gametes across the top and the other parent’s down the side.",
+  "Fill each box with one allele from its row and one from its column. The four possible genotypes are AA, Aa, Aa and aa.",
+  "Count phenotypes after filling the boxes. Three outcomes contain at least one dominant allele. Only aa shows the recessive phenotype in this example."
+], "Count how many of the four equally likely boxes show two recessive alleles.");
+
+export const gcseCatchup = {...year10Catchup, ...year11Catchup, ...complementary, ...furtherCatchup, ...priorityCatchup};
