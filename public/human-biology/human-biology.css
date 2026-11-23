@@ -29,16 +29,8 @@ h1{font-size:clamp(1.65rem,3.5vw,2.2rem);letter-spacing:-.028em}
 .k-home-unit em,.k-unit-tile em{font-size:.82rem;color:#ffffffd4;font-style:normal;line-height:1.5}
 .k-unit-chev{font-size:2rem;color:#ffffffa8;line-height:1}
 .k-subhead{font-size:1.05rem;line-height:1.45;margin:24px 0 11px}
-.k-home-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
-.k-mini-action{display:flex;flex-direction:column;gap:3px;min-height:118px;padding:16px 13px;border-radius:13px;background:#fff;border:1px solid var(--line);text-decoration:none;color:var(--ink)}
-.k-mini-action:hover{text-decoration:none;border-color:#adc5bb;box-shadow:0 4px 12px #12332d15}
-.k-mini-action strong{font:700 .88rem/1.35 Poppins,system-ui}
-.k-mini-action small{font-size:.74rem;color:var(--muted);line-height:1.5}
 .k-mini-symbol{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;font:800 1rem/1 Poppins,system-ui;background:var(--k-teal-soft);color:var(--k-teal);margin-bottom:6px}
 .k-mini-symbol svg{width:20px;height:20px;stroke-width:2}
-.k-mini-action.flash .k-mini-symbol{background:var(--k-blue-soft);color:var(--k-blue)}
-.k-mini-action.learn .k-mini-symbol{background:var(--k-purple-soft);color:var(--k-purple)}
-.k-mini-action.fix .k-mini-symbol{background:var(--k-orange-soft);color:var(--k-orange)}
 .k-small-note{color:var(--muted);font-size:.79rem;line-height:1.6;margin:19px 0 0}
 .k-continue{display:flex;gap:20px;justify-content:space-between;align-items:center;padding:16px 19px;background:#fff;border:1px solid var(--line);border-radius:13px;margin:17px 0}
 .k-continue strong{font-size:.88rem}.k-continue p{font-size:.82rem;color:var(--muted);margin:3px 0 0}
@@ -139,15 +131,11 @@ h1{font-size:clamp(1.65rem,3.5vw,2.2rem);letter-spacing:-.028em}
 .k-misconception p{margin:4px 0}
 .k-done{padding-top:20px}.k-done-icon{display:grid;place-items:center;width:65px;height:65px;border-radius:20px;background:var(--k-teal-soft);color:var(--k-teal);margin-bottom:17px}.k-done-icon svg{width:38px;height:38px}
 @media(max-width:620px){
- .k-home-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
  .k-home-unit,.k-unit-tile{min-height:115px;padding:17px 15px;gap:11px}
  .k-unit-symbol{width:43px;height:43px;font-size:1.25rem;border-radius:11px}
  .k-unit-symbol svg{width:24px;height:24px}
  .k-home-unit strong{font-size:.99rem}
  .k-home-unit em{font-size:.75rem}
- .k-mini-action{padding:12px 10px;min-height:118px}
- .k-mini-action strong{font-size:.78rem}
- .k-mini-action small{font-size:.69rem}
  .k-areas{grid-template-columns:1fr}
  .k-action-grid{grid-template-columns:1fr;gap:9px}
  .k-action{min-height:78px}
@@ -190,13 +178,6 @@ main[tabindex="-1"]:focus{outline:none}
 
 
 /* Separate examined units from standalone NEA-unit science knowledge. */
-.k-more-units{display:flex;gap:13px;align-items:center;margin:4px 0 24px;padding:16px 18px;background:#fff;border:1px solid #c8d6d4;border-left:4px solid #7d68ac;border-radius:12px;text-decoration:none;color:var(--ink)}
-.k-more-units>span:nth-child(2){flex:1;display:flex;flex-direction:column;gap:2px}
-.k-more-units strong{font:700 .95rem/1.4 Poppins,system-ui}
-.k-more-units small{color:var(--muted);font-size:.78rem}
-.k-more-units svg{width:25px;height:25px;color:#7357a1}
-.k-more-units>span:last-child{font-size:1.6rem;color:#7357a1}
-.k-more-units:hover{text-decoration:none;border-color:#8d7db4;background:#fcfaff}
 .k-knowledge-tile{background:#615783!important;min-height:95px;padding:15px 19px}
 .k-knowledge-tile .k-icon{background:#ffffff29}
 .k-knowledge-tile strong{font-size:1.06rem}
@@ -224,13 +205,6 @@ main[tabindex="-1"]:focus{outline:none}
 .k-ruled-out{font-size:.7rem;font-weight:750;color:#566a67;margin-left:auto;white-space:nowrap}
 
 /* Optional Catch up / Reteach companion, without enlarging the main practice screen. */
-.k-companion-entry{display:flex;align-items:center;gap:12px;margin:0 0 21px;padding:16px;border:1px solid #c5dcd5;border-left:4px solid var(--brand);border-radius:13px;background:#fff;flex-wrap:wrap}
-.k-companion-entry>div:nth-child(2){flex:1;min-width:190px}
-.k-companion-entry strong{display:block;font:700 .88rem/1.4 Poppins,system-ui}
-.k-companion-entry p{color:var(--muted);font-size:.78rem;line-height:1.5;margin:3px 0 0}
-.k-companion-entry .button{white-space:nowrap}
-.k-companion-symbol{display:grid;place-items:center;width:40px;height:40px;border-radius:11px;color:var(--brand);background:var(--brandlight)}
-.k-companion-symbol svg{width:23px;height:23px}
 .k-catchup-tile{min-height:94px;background:#456e81!important}
 .k-catchup-tile .k-icon{background:#ffffff27;display:grid;place-items:center;font-size:1.15rem}
 .k-catchup-area{margin:0 0 4px}
@@ -244,7 +218,7 @@ main[tabindex="-1"]:focus{outline:none}
 .k-catchup-controls .button{flex:1 0 150px}
 .k-catchup-resume a,.k-catchup-after a{font-size:.87rem;font-weight:650}
 .k-catchup-after{margin:15px 0 0;border-top:1px solid #d4dedb;padding-top:12px}
-@media(max-width:560px){.k-companion-entry .button{width:100%}.k-catchup-concept .panel{padding:19px}.k-catchup-text{font-size:1.02rem}}
+@media(max-width:560px){.k-catchup-concept .panel{padding:19px}.k-catchup-text{font-size:1.02rem}}
 
 /* Skill methods share the existing question, feedback and button styles. */
 .k-skills-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1rem 0 1.6rem}
@@ -257,7 +231,6 @@ main[tabindex="-1"]:focus{outline:none}
 .k-skill-graph summary{cursor:pointer;font-size:1rem;padding:.55rem 0}
 .k-skill-graph table{border-collapse:collapse;width:100%;font-size:1rem}
 .k-skill-graph th,.k-skill-graph td{border:1px solid #ccd5d3;padding:.55rem;text-align:left}
-.k-skills-entry{border-left:4px solid #e97620}
 @media(max-width:620px){.k-skills-grid{grid-template-columns:minmax(0,1fr)}}
 
 /* Accessible labels stay available without repeating visible button text. */
@@ -278,8 +251,6 @@ main[tabindex="-1"]:focus{outline:none}
 .k-coverage summary{min-height:40px;font-weight:700;cursor:pointer}
 
 .k-f170-start { grid-template-columns: 1fr; margin-block: 1rem; }
-.k-f170-more { margin-block: 1rem; }
-.k-f170-more summary { cursor: pointer; font-weight: 650; padding-block: .4rem; }
 .k-reading-context {
   margin: 0 0 .75rem;
   padding: .65rem .85rem;
@@ -293,12 +264,12 @@ main[tabindex="-1"]:focus{outline:none}
 
 
 /* Explanations and help should remain easy to read in the learner flow. */
-.k-home-unit em,.k-unit-tile em,.k-mini-action small,.lesson .button,.k-action small,
-.k-hint-box strong,.k-field,.k-shortcut small,.k-companion-entry p,.k-privacy-small{font-size:.875rem}
+.k-home-unit em,.k-unit-tile em,.lesson .button,.k-action small,
+.k-hint-box strong,.k-field,.k-shortcut small,.k-privacy-small{font-size:.875rem}
 .k-hint,.k-hint-box p,.k-quick-label,.k-quick-note,.k-diagnostic-note,
 .k-diagram-answer,.k-level-guidance,.k-misconception,.k-error,.k-continue p{font-size:1rem;line-height:1.55}
 
-.lesson .button,.k-skill-graph summary,.k-coverage summary,.k-f170-more summary{min-height:44px}
+.lesson .button,.k-skill-graph summary,.k-coverage summary{min-height:44px}
 #main :is(input,textarea,select){scroll-margin-block:5rem 1rem}
 @media(max-height:480px){.top{position:relative}}
 

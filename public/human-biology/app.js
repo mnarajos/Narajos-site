@@ -23,7 +23,7 @@ const f171Cards=f171Decks.flatMap(([sectionId,sectionTitle,items])=>items.map(([
 var review=scheduler.open("ocr-human-biology-f170");
 var sessionKey="narajos-human-biology-session-v1",practiceKey="narajos-human-biology-practice-v1";
 var progress={};try{var raw=JSON.parse(localStorage.getItem(practiceKey)||"null");if(raw&&typeof raw==="object"&&!Array.isArray(raw))progress=raw;}catch(_){}
-var active=null,previousRoute="",pending=null;
+var active=null,previousRoute="",previousEntry=0,pending=null;
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(x){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[x];});}
 function slugArea(id){return id==="all"?"all":(id||"").replace(/^area-/,"");}
 function shuffle(input){var a=input.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),v=a[i];a[i]=a[j];a[j]=v;}return a;}
@@ -255,8 +255,14 @@ function currentRoute(){
  try{return decodeURIComponent(route);}catch(_){return route;}
 }
 function hasActiveActivity(){return !!active||!!window.KeystoneHumanChallenge?.isActive();}
+function recordEntry(){
+ if(typeof history==="undefined")return;
+ const position=history.state?.humanBiologyEntry;
+ if(Number.isInteger(position))previousEntry=position;
+ else history.replaceState({...history.state,humanBiologyEntry:++previousEntry},"");
+}
 function runRoute(){
- var r=currentRoute();previousRoute=r;
+ var r=currentRoute();previousRoute=r;recordEntry();
  if(r==="home"||r==="units"||r==="find"){showHome(r);return;}
  if(r==="catchup"||r.startsWith("catchup/")){if(window.KeystoneHumanCatchup)return window.KeystoneHumanCatchup.route(r,render);return notFound();}
  if(r==="knowledge"||r==="challenge"||r.startsWith("challenge/")||r==="skills"||r.startsWith("skills/")){if(window.KeystoneHumanChallenge)return window.KeystoneHumanChallenge.route(r,render);return notFound();}
@@ -312,10 +318,14 @@ document.addEventListener("click",function(e){
 });
 window.addEventListener("hashchange",function(){
  const next=currentRoute();
- if(hasActiveActivity()&&next!==previousRoute){
+ if(hasActiveActivity()){
+  if(next===previousRoute)return;
+  const position=typeof history==="undefined"?null:history.state?.humanBiologyEntry;
   showLeave(runRoute,function(){
-   if(typeof history!=="undefined")history.replaceState(history.state,"","#"+previousRoute);
-   else location.hash="#"+previousRoute;
+   if(Number.isInteger(position)&&position!==previousEntry)history.go(previousEntry-position);
+   else if(typeof history!=="undefined"){
+    history.replaceState({...history.state,humanBiologyEntry:++previousEntry},"","#"+previousRoute);
+   }else location.hash="#"+previousRoute;
   });
   return;
  }
@@ -324,7 +334,7 @@ window.addEventListener("hashchange",function(){
 window.addEventListener("beforeunload",function(e){if(hasActiveActivity()){e.preventDefault();e.returnValue="";}});
 function replaceRoute(route){
  if(typeof history==="undefined")return;
- history.replaceState(null,"","#"+route);
+ history.replaceState(history.state,"","#"+route);
  previousRoute=route;
 }
 window.KeystoneHumanApp={stats:stats,replaceRoute:replaceRoute,hasResume:()=>!!restoreSession(),content:function(){return {areas:areas.length,sections:sections.length,cards:cards.length};}};

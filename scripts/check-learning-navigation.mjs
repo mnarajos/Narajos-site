@@ -82,6 +82,13 @@ export async function checkLearningNavigation(browser, base) {
     await page.keyboard.press("Escape");
     await page.waitForURL(url => url.hash === route);
     assert.equal(await main.locator("h1").textContent(), question);
+    await page.goBack();
+    await leave.press("Enter");
+    await page.waitForURL("**/#catchup/f171/4.2.1");
+    await main.getByRole("heading", { name: "Interpreting screening and diagnostic results" }).waitFor();
+    await page.goForward();
+    await main.locator(".k-question-paper").waitFor();
+    assert.equal(await main.locator("h1").textContent(), question);
     await overview.press("Enter");
     await leave.press("Enter");
     await main.getByRole("heading", { name: "Continue learning" }).waitFor();
