@@ -19,6 +19,7 @@ export async function checkHumanCatchup(browser, base) {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await open("catchup");
     const chapters = await page.evaluate(() => Object.entries(window.KeystoneHumanLessons));
+    assert.equal(chapters.length, 49, "Retain the 44 existing routes and add five targeted guided routes");
     assert.equal(new Set(chapters.map(([key]) => key.split("/")[0])).size, 8);
     for (const [key, lesson] of chapters) {
       await page.evaluate(key => localStorage.removeItem(key), localPractice);
@@ -491,6 +492,29 @@ export async function checkHumanCatchup(browser, base) {
     )).violations.map(violation => [violation.id, violation.nodes.map(node => node.target)]));
     assert.deepEqual(reviewResults, [], "Written review accessibility at 320px");
     await text.evaluate(element => element.remove());
+    await open("catchup/f173/a3");
+    await page.getByRole("link", { name: "Practise biomolecule tests", exact: true }).press("Enter");
+    const chromatographyKey = practiceKey + "-topic-f173/a3";
+    const chromatogramId = "f173-chromatogram-transfer";
+    await page.locator(".k-question-view").waitFor();
+    await page.evaluate(([key, id]) => {
+      const practice = JSON.parse(localStorage.getItem(key));
+      practice.queue = [id];
+      localStorage.setItem(key, JSON.stringify(practice));
+    }, [chromatographyKey, chromatogramId]);
+    await page.reload();
+    const chromatogram = page.getByRole("img", { name: /baseline at 2 cm and a solvent front at 10 cm/ });
+    assert.equal(await chromatogram.evaluate(async img => { await img.decode(); return img.naturalWidth; }), 600);
+    assert(await widthFits(), "Independent chromatogram does not fit at 320px");
+    const incorrectRatio = page.getByRole("radio", { name: /Rf 0.80/ });
+    await incorrectRatio.press("Space");
+    await page.getByRole("button", { name: /Check answer/ }).press("Enter");
+    const ratioFeedback = page.getByText(/Subtract the baseline from both readings first/);
+    await ratioFeedback.waitFor();
+    await page.reload();
+    await ratioFeedback.waitFor();
+    assert.equal((await saved(chromatographyKey)).outcomes[0], "incorrect");
+
     assert.deepEqual(errors, []);
     console.log("Human Biology Catch-up: " + chapters.length + " routes across eight units, feedback, saved drafts, session return, licensed images, reproduction controls, and responsive accessibility passed.");
   } finally {
