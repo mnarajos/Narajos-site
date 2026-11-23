@@ -75,6 +75,32 @@ export async function checkHumanCatchup(browser, base) {
       }
     }
 
+    for (const [route, questionId, wrongAnswer, diagnosis] of [
+      ["f170/1.1.2.counting", "f170-cell-counting-transfer", /target volume/, /overlap the cells in volume/],
+      ["f171/1.2.1.hiatus", "f171-hiatus-mechanism-transfer", /effective reflux barrier/, /Increased secretion was not measured/],
+      ["f171/1.2.1.hodgkin", "f171-hodgkin-mechanism-transfer", /only affect immunity/, /local effect on another structure/]
+    ]) {
+      await open("catchup/" + route);
+      if (route.endsWith(".hiatus")) {
+        await page.getByRole("button", {name: "See worked example"}).press("Enter");
+        const anatomy = page.getByRole("img", {name: /stomach have slid above the diaphragm/});
+        assert(await anatomy.isVisible());
+        assert(await widthFits(), "Hiatus diagram overflow at 320 px");
+      }
+      const practice = page.locator("[data-hb-practice]");
+      await practice.press("Enter");
+      const itemKey = practiceKey + "-topic-" + route.split("/")[0] + "/" + questionId;
+      assert.deepEqual((await saved(itemKey)).queue, [questionId]);
+      await page.getByRole("radio", {name: wrongAnswer}).check();
+      await page.getByRole("button", {name: "Check answer", exact: false}).press("Enter");
+      await page.getByText(diagnosis).waitFor();
+      await page.getByRole("link", {name: "Revisit the worked example", exact: true}).press("Enter");
+      await page.locator("#leave-confirm").press("Enter");
+      assert(await page.locator("[data-hb-model-step][open]").isVisible());
+      await page.getByRole("link", {name: "Return to your unfinished question set", exact: true}).press("Enter");
+      await page.getByText(diagnosis).waitFor();
+    }
+
     const pilots = [
       ["f170/1.1.2", /48 pixels and 122 pixels/, /6 µm; the structures remain unresolved/, null],
       ["f170/3.1.1", /regulated variable/, null, "Shivering releases heat after temperature falls, returning body temperature towards its usual range."],
