@@ -65,6 +65,7 @@ function kIcon(name){var E=window.KeystoneHumanChallenge;return E&&E.icon?E.icon
 function savedActivities(){
  const old=restoreSession();
  const questions=window.KeystoneHumanChallenge?.resumeActivities()||[];
+ questions.push(...(window.KeystoneHumanCatchup?.resumeActivities()||[]));
  if(!old)return questions;
  const unit=old.scope?.startsWith("f171")?"F171":"F170";
  return [{route:"resume",unit,title:old.type==="cards"?"Flashcards":"Explanation practice",
@@ -113,7 +114,7 @@ function mountStudyFinder(){
  for(const point of window.KeystoneHumanProgressions?.points||[]){
   const route=companion.linkFor(point);
   const lesson=lessonsByRoute.get("#"+route);
-  if(lesson)lesson.keywords+=" "+point.statement;
+  if(lesson?.actions.some(([,href])=>href.split("?")[0].endsWith("/"+point.id)))lesson.keywords+=" "+point.statement;
   else entries.push({group:point.unit,title:point.statement,context:point.unit.toUpperCase()+" · Build Understanding",
    concept:true,actions:[["Practise","#challenge/"+point.unit+"/"+point.id]]});
  }

@@ -73,7 +73,7 @@ function savedSession(origin){
  return candidates[0]||null;
 }
 function resumeActivities(){
- const keys=[SK,...localSessionKeys().filter(key=>key!==CK)].sort((a,b)=>a===SK?-1:b===SK?1:a.localeCompare(b));
+ const keys=[SK,...localSessionKeys().filter(key=>key!==CK).sort()];
  const labels={all:"Quick mix",core:"Core questions",sam:"Exam-style questions",stretch:"Challenge",weak:"Fix mistakes",methods:"Choosing a method"};
  return Array.from(new Set(keys)).map(key=>restore(key)).filter(Boolean).map(item=>{
   const question=byId[item.queue[item.index]];

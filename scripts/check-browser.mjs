@@ -1152,6 +1152,7 @@ try{
  await navPage.getByRole("heading",{name:/main purpose of a cast/}).waitFor();
  await navPage.getByRole("link",{name:"← Leave this set"}).click();
  await navPage.locator("#leave-confirm").click();
+ await navPage.getByText("More practice options",{exact:true}).click();
  await navPage.getByRole("link",{name:/Clinical case questions/}).click();
  await navPage.getByRole("link",{name:/Follow-up after screening/}).click();
  await navPage.locator("#k-written").fill("Only 45 of the 60 people with a positive screen attended follow-up.");

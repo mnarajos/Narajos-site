@@ -29,6 +29,22 @@
     }
   }
 
+  function savedStages() {
+    const saved = load();
+    const started = state => state && (
+      Number.isInteger(state.selected) || state.draft?.trim() || state.original ||
+      state.outcome || state.wrong || state.hint
+    );
+    const complete = state => state && (state.accepted || state.outcome === "selfReview");
+    return Object.fromEntries(Object.entries(saved).flatMap(([key, record]) => {
+      if (!record || typeof record !== "object") return [];
+      if (started(record.followup) && !complete(record.followup)) return [[key, "followup"]];
+      if (complete(record.independent)) return [];
+      if (started(record.independent) || complete(record.guided)) return [[key, "independent"]];
+      return started(record.guided) ? [[key, "guided"]] : [];
+    }));
+  }
+
   const icon = name => window.KeystoneHumanChallenge?.icon(name) || "";
   const paragraphs = lines => (lines || []).map(line => '<p>' + escape(line) + '</p>').join("");
   const list = lines => '<ul>' + lines.map(line => '<li>' + escape(line) + '</li>').join("") + '</ul>';
@@ -149,7 +165,7 @@
       (complete ? '<p>Your self-review is saved.</p>' : '<div class="actions"><button type="button" class="button primary" data-hb-action="finish-review">' + icon("check") + 'Finish review</button></div>');
   }
 
-  function mount(key, lesson, reviewStep) {
+  function mount(key, lesson, reviewStep, resumeStage) {
     const root = main.querySelector(".hb-teaching");
     if (!root) return;
     // Keep responses to earlier task versions separate from the new questions.
@@ -356,11 +372,17 @@
       }
     });
     updateFollowup();
+    const resume = resumeStage && root.querySelector('[data-hb-stage="' + resumeStage + '"]');
+    if (resume && !resume.closest("[hidden]")) {
+      prepareStage(resume);
+      resume.open = true;
+      resume.querySelector("summary").focus();
+    }
   }
 
   const choice = (prompt, answer, options, explanation, hints, extra) =>
     ({ prompt, answer, options, explanation, hints, ...extra });
   const written = (prompt, points, explanation, hints) => ({ prompt, points, explanation, hints });
 
-  window.KeystoneHumanTeaching = { render, mount, storageKey, choice, written };
+  window.KeystoneHumanTeaching = { render, mount, savedStages, storageKey, choice, written };
 })();

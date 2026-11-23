@@ -423,7 +423,7 @@ function showUnit(unit,render){
  });
  h+='</div></div>';render(h);
 }
-function showConcept(unit,id,step,render,review,simulationStage){
+function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
  var u=units.filter(function(x){return x.id===unit;})[0];
  if(!u)return showHome(render);
  var topic,points;
@@ -452,7 +452,7 @@ function showConcept(unit,id,step,render,review,simulationStage){
   render('<div class="k-wrap k-catchup-concept" data-unit="'+unit+'">'+crumb("catchup/"+unit,u.title)+
    '<div class="k-eyebrow">'+unitKind(unit)+'</div><h1>'+esc(topic)+'</h1>'+
    teaching.render(lesson,{inline:lesson.visual==="model"?"":visual,method:skillLinks(unit,id,lesson),modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:recap+related})+'</div>');
-  teaching.mount(unit+"/"+lessonId,lesson,simulationStage?1:review);
+  teaching.mount(unit+"/"+lessonId,lesson,simulationStage?1:review,resumeStage);
   if(sim)sim.mount(document,simulationStage,simulationStage&&document.querySelector("[data-hb-resume]"));
   return;
  }
@@ -547,14 +547,28 @@ function reteachFor(q,answer){
  return { route:route, href:route+(target?.[0]?"?review="+target[0]:""),
   label:target?target[1]:"Need more help? Catch up on this idea" };
 }
+function resumeActivities(){
+ const stages=window.KeystoneHumanTeaching?.savedStages()||{};
+ const labels={guided:"With support",independent:"Your turn",followup:"Fresh check"};
+ const items=[];
+ for(const key of Object.keys(stages).sort()){
+  const [unit,id]=key.split("/");
+  const lesson=lessonFor(unit,id);
+  if(!lesson||key!==unit+"/"+id+(lesson.revision?"/"+lesson.revision:""))continue;
+  const title=unit==="f170"?sectionById[id]?.section.title:notes[unit]?.[id]?.title;
+  const stage=stages[key];
+  if(title)items.push({route:"catchup/"+unit+"/"+id+"?continue="+stage,unit:unit.toUpperCase(),title,position:labels[stage]});
+ }
+ return items;
+}
 window.KeystoneHumanCatchup={route:function(hash,render){
  if(hash==="catchup")return showHome(render);
- var m=/^catchup\/(f17[0-7])(?:\/([a-z0-9.]+))?(?:\/(\d+))?(?:\?review=(\d+)|\?stage=(follicle|ovulation|transport|fertilisation|development|implantation))?$/.exec(hash);
+ var m=/^catchup\/(f17[0-7])(?:\/([a-z0-9.]+))?(?:\/(\d+))?(?:\?review=(\d+)|\?stage=(follicle|ovulation|transport|fertilisation|development|implantation)|\?continue=(guided|independent|followup))?$/.exec(hash);
  if(!m)return showHome(render);
  if(!m[2])return showUnit(m[1],render);
  var simulationStage=m[1]==="f175"&&m[2]==="a1"?m[5]:null;
- return showConcept(m[1],m[2],m[3],render,Number(m[4])||0,simulationStage);
-},unitList:units,linkFor:linkFor,reteachFor:reteachFor,practiceScope:practiceScope,topicPracticeScope:topicPracticeScope,searchTopics:function(){
+ return showConcept(m[1],m[2],m[3],render,Number(m[4])||0,simulationStage,m[6]);
+},unitList:units,resumeActivities:resumeActivities,linkFor:linkFor,reteachFor:reteachFor,practiceScope:practiceScope,topicPracticeScope:topicPracticeScope,searchTopics:function(){
  const aliases={
   "f170/1.1.2":"microscope micrograph magnification resolution scale bar TEM SEM",
   "f170/3.1.1":"glucose insulin hormones blood sugar negative feedback",
