@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
 import axe from "axe-core";
+import { chromium, firefox, webkit } from "playwright";
+import { pathToFileURL } from "node:url";
+import { servePublic } from "./browser-test-site.mjs";
 
 const storageKey = "keystone.alevel.exam-skills.v1";
 const entries = {
@@ -190,4 +193,19 @@ export async function checkALevelPaperPractice(browser, base) {
     }
   }
   console.log("A-level paper practice: worked and direct routes, unseen reassessment, draft integrity and accessibility passed.");
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  const engine = process.argv[2];
+  const type = { chromium, firefox, webkit }[engine];
+  assert(type, "Choose chromium, firefox or webkit");
+  const { server, base } = await servePublic();
+  let browser;
+  try {
+    browser = await type.launch();
+    await checkALevelPaperPractice(browser, base);
+  } finally {
+    await browser?.close();
+    await new Promise(done => server.close(done));
+  }
 }

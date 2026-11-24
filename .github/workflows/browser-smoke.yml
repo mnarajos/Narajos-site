@@ -57,8 +57,10 @@ jobs:
           node-version: '22'
       - name: Install browser and test runner
         run: |
-          npm install --no-save playwright@1.56.1
+          npm install --no-save playwright@1.56.1 axe-core@4.10.3
           npx playwright install --with-deps ${{ matrix.engine }}
+      - name: Test A-level independent paper practice
+        run: node scripts/check-alevel-paper-practice.mjs ${{ matrix.engine }}
       - name: Check representative Narajos flows
         run: node scripts/check-browser-engines.mjs ${{ matrix.engine }}
 
@@ -75,6 +77,8 @@ jobs:
         run: |
           npm install --no-save playwright@1.56.1 axe-core@4.10.3
           npx playwright install --with-deps chromium
+      - name: Test A-level independent paper practice
+        run: node scripts/check-alevel-paper-practice.mjs chromium
       - name: Audit representative pages and touch journeys
         run: node scripts/check-visual.mjs
 

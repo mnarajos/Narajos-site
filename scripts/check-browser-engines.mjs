@@ -78,21 +78,6 @@ try {
   await page.getByRole("heading", { name: /Organisation/, level: 1 }).waitFor();
   await fits();
 
-  await open("/alevel/#exam-investigations");
-  await page.getByRole("button", { name: "Try an independent question", exact: true }).press("Enter");
-  const investigation = page.locator(".al-practice");
-  const draft = "The film group lost less mass in six hours.";
-  assert.equal(await investigation.locator(".al-criteria").count(), 0);
-  await investigation.getByRole("textbox").fill(draft);
-  await investigation.getByRole("button", { name: "Compare with the checklist" }).press("Enter");
-  const firstCriterion = investigation.locator(".al-criteria fieldset").first();
-  await firstCriterion.getByRole("radio", { name: "Needs work" }).check();
-  await page.reload();
-  assert.equal(await investigation.getByRole("textbox").inputValue(), draft);
-  assert(await firstCriterion.getByRole("radio", { name: "Needs work" }).isChecked());
-  await firstCriterion.locator(".al-repair").waitFor({ state: "visible" });
-  await fits();
-
   await open("/alevel/#catchup-a1-enzfactors");
   const diagram = page.locator(".kc-visual-art");
   await diagram.locator("svg").waitFor({ state: "visible" });
