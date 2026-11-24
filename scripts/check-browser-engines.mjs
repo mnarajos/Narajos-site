@@ -97,7 +97,7 @@ try {
   await fits();
 
   await open("/human-biology/#catchup/f170/3.2.1");
-  await page.locator("[data-hb-model-step] > summary").click();
+  assert(await page.locator("[data-hb-model-step]").evaluate(el => el.open), "Worked example is visible on arrival");
   await page.getByText("Trace a withdrawal reflex", { exact: true }).click();
   const reflex = page.locator('science-sequence[kind="reflex"]');
   await reflex.getByRole("button", { name: "Next step" }).click();
@@ -106,7 +106,7 @@ try {
 
   await open("/human-biology/?pilot=meiosis#catchup/f170/1.1.5.meiosis");
   const meioticTask = page.locator('[data-hb-stage="independent"]');
-  await meioticTask.locator("summary").press("Enter");
+  assert(await meioticTask.evaluate(el => el.open), "Independent task is visible on arrival");
   const fields = meioticTask.getByRole("img", {name:/Two unlabelled stages/});
   assert.equal(await fields.getAttribute("src"), "/human-biology/division-fields.svg");
   const visibleDiagram = await fields.evaluate(async img => {
@@ -123,12 +123,12 @@ try {
   await fits();
 
   await open("/human-biology/?pilot=screening#catchup/f171/4.2.1");
-  await page.getByRole("button", { name: "See worked example", exact: true }).press("Enter");
   const screening = page.locator("[data-hb-model-step]");
+  assert(await screening.evaluate(el => el.open), "Screening example is visible on arrival");
   await screening.getByRole("button", { name: "Show next step", exact: true }).press("Enter");
   assert.equal(await screening.locator(".hb-cell-focus").innerText(), "12");
-  await page.locator('[data-hb-stage="independent"] summary').press("Enter");
   const response = page.locator('[data-hb-stage="independent"]');
+  assert(await response.evaluate(el => el.open), "Screening question is visible on arrival");
   await response.getByRole("radio", { name: /7 of 24/ }).check();
   await response.getByRole("button", { name: "Check answer", exact: true }).press("Enter");
   assert.match(await response.getByRole("status").innerText(), /Correct!/);
