@@ -1,9 +1,11 @@
 (window.ALevelPaperPractice ||= {}).essaywriting = {
   id: "essaywriting",
   title: "Paper 3 essay writing",
-  principle: "Try an essay question for yourself or follow a worked example of developing an answer across topics.",
+  principle: "Choose examples from different areas of biology and use each one to answer the title.",
+  modelStimulus: "The importance of membranes in the functioning of cells",
+  modelQuestion: "Develop two examples from different areas of biology that answer this title.",
   model: [
-    "Take the title ‘The importance of membranes in the functioning of cells’. I’ll use a chloroplast and an epithelial cell in the ileum. For each, I need a process that depends on a membrane and a reason that process matters to the cell or organism.",
+    "I’ll use a photosynthesising cell and an epithelial cell in the ileum. For each, I need a process that depends on a membrane and a reason that process matters to the functioning of that cell.",
     "In a chloroplast, energy released as electrons pass along carriers powers the transfer of protons from the stroma into the thylakoid space. The thylakoid membrane restricts the free diffusion of protons. Their flow back into the stroma through ATP synthase drives ATP synthesis. This ATP helps regenerate RuBP in the Calvin cycle, allowing carbon fixation to continue.",
     "In the ileum, sodium–potassium pumps in the membrane facing the blood use ATP to move sodium ions out of epithelial cells. This maintains a low sodium ion concentration inside. At the membrane facing the gut lumen, sodium ions can enter down their gradient through co-transport proteins, carrying glucose into the cell even when its concentration is higher inside. The arrangement of proteins in the two membranes allows glucose uptake to continue as its concentration in the gut falls.",
     "I would leave out a description of the molecular structure of glucose. It adds little to the explanation of how these membranes enable absorption. Both paragraphs use a gradient, but each develops a distinct consequence for the title. One explains the supply of ATP for carbon fixation. The other explains how cells take up a nutrient.",
@@ -12,8 +14,8 @@
     {
       kind: "writing",
       guided: true,
+      essayTitle: "The importance of enzymes in organisms",
       passage: [
-        "The essay title is ‘The importance of enzymes in organisms’.",
         "A pupil begins a paragraph. ‘Amylase hydrolyses glycosidic bonds in starch, producing shorter carbohydrates including maltose. At the surface of epithelial cells in the ileum, maltase hydrolyses maltose to glucose.’",
       ],
       prompt: "Finish the paragraph by explaining why these reactions matter to a person after a meal.",
@@ -23,7 +25,7 @@
         "It follows that process to a specific benefit, such as supplying a respiratory substrate to cells after absorption.",
       ],
       modelAnswer: [
-        "The glucose can enter an epithelial cell from the gut lumen by co-transport with sodium ions. It can then pass into the blood by facilitated diffusion down its concentration gradient. The blood delivers glucose to tissues where its oxidation in respiration can supply energy for ATP synthesis. The action of the digestive enzymes makes carbohydrate in the meal available for this process.",
+        "The glucose can enter an epithelial cell from the gut lumen by co-transport with sodium ions. Glucose can then leave the epithelial cell by facilitated diffusion down its concentration gradient and enter the blood in a nearby capillary. The blood delivers glucose to tissues where its oxidation in respiration can supply energy for ATP synthesis. The action of the digestive enzymes makes carbohydrate in the meal available for this process.",
       ],
       repairs: [
         "Look at the final reaction in the opening. Which molecule can now reach the transport proteins in the gut lining?",
@@ -34,8 +36,8 @@
     {
       kind: "writing",
       guided: true,
+      essayTitle: "The importance of proteins to the functioning of organisms",
       passage: [
-        "The essay title is ‘The importance of proteins to the functioning of organisms’.",
         "A pupil starts with ‘Haemoglobin binds oxygen in the lungs.’",
       ],
       prompt: "Develop the pupil’s opening and choose a second example from another area of biology. Explain how the roles of the two proteins differ.",
@@ -46,7 +48,7 @@
       ],
       modelAnswer: [
         "At the high partial pressure of oxygen in the lungs, haemoglobin binds oxygen in red blood cells. In an actively respiring tissue the partial pressure is lower, favouring dissociation of oxyhaemoglobin. Oxygen can diffuse into cells and acts as the final electron acceptor in aerobic respiration. Reversible binding therefore allows a large quantity of oxygen to be transported and released where it is needed.",
-        "An insulin receptor in the cell-surface membrane of a muscle cell also binds a molecule specifically. Binding of insulin initiates signalling that increases the number of glucose transporters in the membrane. When glucose concentration is higher outside than inside, glucose can enter faster by facilitated diffusion. Haemoglobin carries and releases the molecule that it binds. Binding at the insulin receptor changes the activity of the target cell.",
+        "An insulin receptor in the cell-surface membrane of a muscle cell also binds a molecule specifically. Binding of insulin initiates signalling that increases the number of glucose transporters in the membrane. When glucose concentration is higher outside than inside, glucose can enter faster by facilitated diffusion. Haemoglobin carries and releases the molecule that it binds. Binding at the insulin receptor increases uptake of a substrate the muscle can use for respiration.",
       ],
       repairs: [
         "What is different about oxygen partial pressure at a working muscle and in the lungs? Trace what happens to the bound oxygen.",
@@ -56,7 +58,8 @@
     },
     {
       kind: "writing",
-      prompt: "Write two developed paragraphs from different areas of biology on the following title. ‘Why the removal of substances matters to the functioning of organisms.’",
+      essayTitle: "Why the removal of substances matters to the functioning of organisms",
+      prompt: "Write two developed paragraphs from different areas of biology in response to the title above.",
       points: [
         "Each paragraph identifies a particular substance and the site from which it is removed. The two examples draw on different areas of biology.",
         "Each example explains how removal happens. Removal can involve chemical breakdown at a site or movement out of it. Other biologically accurate examples are welcome.",
@@ -77,7 +80,8 @@
     },
     {
       kind: "writing",
-      prompt: "Write two developed paragraphs from different areas of biology on the following title. ‘The importance of movement within cells.’",
+      essayTitle: "The importance of movement within cells",
+      prompt: "Write two developed paragraphs from different areas of biology in response to the title above.",
       points: [
         "The two examples come from different areas. In each, the answer locates a movement inside a cell and identifies what moves.",
         "Each account explains the mechanism producing or directing the movement. Examples can involve molecules, ions or larger cell structures.",

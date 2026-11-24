@@ -1,14 +1,16 @@
 (window.ALevelPaperPractice ||= {}).investigations = {
   id: "investigations",
   title: "Paper 3 investigations",
-  principle: "Write a judgement about an investigation. You can start with the question or work through an example first.",
+  principle: "Decide how far an investigation supports its claim.",
+  modelStimulus: "Students measured oxygen uptake using equal masses of germinating seeds at the same temperature. Each reading comes from a separate batch. One packet supplied the unstirred group and a different packet supplied the stirred group.",
+  modelQuestion: "How far do the results support the claim that stirring increases oxygen uptake? Explain how you would test the claim more convincingly.",
   evidence: [
     "Initial oxygen uptake by germinating seeds (µL g⁻¹ min⁻¹)",
     ["Batch number within group", "Unstirred", "Stirred"],
     [["1", "3.2", "4.2"], ["2", "3.8", "4.9"], ["3", "4.4", "3.8"]],
   ],
   model: [
-    "Does stirring increase oxygen uptake? The students used equal masses of seeds at the same temperature. Each reading comes from a separate batch. One packet supplied the unstirred group and a different packet supplied the stirred group.",
+    "The batch numbers start again in each group. Batch 1 in one packet has no particular match in the other packet. I’ll compare the two groups as a whole.",
     "The mean rates are (3.2 + 3.8 + 4.4) ÷ 3 = 3.8 and (4.2 + 4.9 + 3.8) ÷ 3 = 4.3 µL g⁻¹ min⁻¹. The stirred group took up 0.5 µL g⁻¹ min⁻¹ more on average. Individual batches varied. The lowest stirred rate was lower than the highest unstirred rate.",
     "Could a property of the seeds account for the difference? If seeds from the second packet were further through germination, they might respire faster. Using a different packet for each treatment leaves that explanation open, even with equal masses and temperatures.",
     "Use several packets. Randomly split comparable batches from each packet between the two conditions. That gives a comparison of stirring within each packet. Include seed-free chambers in both conditions to check whether stirring changes the reading through the apparatus itself.",
@@ -32,7 +34,7 @@
         "Reading the same tube again follows the same reaction. What would provide separate estimates of the initial rate at one temperature?",
       ],
       modelAnswer: [
-        "Bring the enzyme and substrate to the selected temperature separately, then mix, start timing and monitor the temperature in the water bath. Try temperatures from 30 to 50 °C at 2 °C intervals. This distinguishes possible peaks that fell between the original readings.",
+        "Bring enzyme and substrate to the selected temperature separately. Use the same equilibration time in each trial. Mix, start timing and check the temperature of the reacting mixture. Try temperatures from 30 to 50 °C at 2 °C intervals. This distinguishes possible peaks that fell between the original readings.",
         "Set up fresh reaction mixtures independently at each temperature. Report their mean initial rate and a measure of variation, such as the standard deviation. This shows how consistent the rates are near the apparent peak.",
       ],
     },
@@ -75,8 +77,8 @@
       ],
       prompt: "How far do the results support the supplier’s claim? Use the investigation to justify your answer.",
       points: [
-        "Compare plants at the same humidity. At 35% the mean loss fell from 5.1 to 3.2 g, a reduction of about 37% relative to the carrier.",
-        "At 80% humidity mean loss fell from 2.1 to 1.9 g, about 10%. The observed means therefore support the claimed size of reduction at only one humidity.",
+        "Compare plants at the same humidity. At 35% the mean loss fell from 5.1 to 3.2 g, a reduction of about 37% relative to the carrier. Comparing 3.2 g with the 3.4 g maximum allowed by the claim also works.",
+        "At 80% humidity mean loss fell from 2.1 to 1.9 g, about 10%. Equivalently, a one-third reduction would require a mean of 1.4 g or less. The observed means reach the claimed reduction at only one humidity.",
         "Use the SDs as measures of variation among plants. The 0.2 g difference at 80% is small relative to the SD of 0.5 g in each group. A population effect or its size would need an estimate of uncertainty for the treatment comparison.",
         "The measurements covered mass loss over six hours. Wilting over two days would need direct observation over that period.",
       ],
@@ -104,7 +106,7 @@
       ],
       prompt: "Evaluate the ecologist’s conclusion and justify one change that would make the evidence stronger.",
       points: [
-        "Alder sightings doubled from 12 to 24 per walk. Sightings also doubled at Birch, from 8 to 16, under its usual mowing schedule.",
+        "Compare the changes in both meadows. Sightings doubled in each. In absolute terms the increases were 12 per walk at Alder and 8 at Birch, a difference of 4. Either comparison leaves the cause of the increase uncertain.",
         "Ranges describe variation between walks. Repeated walks in one meadow under each schedule give no estimate of how the effect varies between independently treated meadows.",
         "Explain a limit on the conclusion in context, such as a change affecting both meadows between years, or differences in butterfly activity or visibility affecting sightings.",
         "Propose a change that addresses a specific limitation and explain how it would strengthen the comparison or the estimate of the resident population.",

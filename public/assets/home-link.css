@@ -35,6 +35,15 @@ main .opt:focus-within, main .k-option:focus-within {
 }
 @media print{a.narajos-home{display:none}}
 
+/* Plain inline copyright on every page, using the page's secondary text colour. */
+.site-copyright {
+  margin: 0;
+  color: var(--muted, var(--dim, currentColor));
+  font: 400 .875rem/1.5 system-ui, sans-serif;
+}
+.site-copyright strong { font-weight: 700; }
+.site-copyright em { font-style: italic; }
+
 /* Small footer link in the independently styled revision and teaching tools. */
 footer .resource-terms{display:inline-block;margin:.3rem .5rem .25rem 0;color:inherit;font-size:.85rem;text-underline-offset:.15em}
 

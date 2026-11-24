@@ -2,9 +2,11 @@
   id: "passages",
   title: "Paper 2 comprehension",
   principle: "Read the passage and decide which observations your answer needs to explain.",
+  modelStimulus: "Coral cells contain algae that supply them with sugars. After several weeks in unusually warm water, the algae have damaged thylakoid membranes. The carbon dioxide concentration around the algae remains unchanged.",
+  modelQuestion: "Explain why the algae might now make less sugar.",
   model: [
-    "Coral cells contain algae that supply them with sugars. After several weeks in unusually warm water, the algae have damaged thylakoid membranes. They still receive carbon dioxide from the coral. Why might the algae now make less sugar?",
-    "The question concerns an alga that is still inside the coral. The continued supply of carbon dioxide makes a shortage of carbon dioxide a poor explanation. The changed condition is the damage to the thylakoids.",
+    "The question asks about sugar production in the alga. I’ll follow what happens inside its chloroplast.",
+    "The measured carbon dioxide concentration has stayed the same. It cannot by itself explain the drop in sugar production. The changed condition is the damage to the thylakoids.",
     "The thylakoid membranes contain the electron transfer chains and ATP synthase used in the light-dependent reaction. Damage can reduce the supply of ATP and reduced NADP. Now connect that change to the product the question asks about.",
     "A complete answer could read, ‘Damage to the thylakoids can reduce production of ATP and reduced NADP in the light-dependent reaction. The alga then has less ATP and reducing power to convert glycerate 3-phosphate to triose phosphate. Less triose phosphate is available to make sugars even though carbon dioxide is still supplied.’",
   ],
@@ -35,17 +37,17 @@
       kind: "writing",
       guided: true,
       passage: [
-        "Red and grey squirrels eat seeds and nuts. Grey squirrels digest acorns more effectively than red squirrels. Red squirrels compete better than greys for the small seeds in conifer forests. Both species use trees for nesting.",
+        "Red and grey squirrels eat seeds and nuts. Oak trees produce acorns, which grey squirrels digest more effectively than red squirrels. Red squirrels compete better than greys for the small seeds in conifer forests. Both species use trees for nesting.",
         "In otherwise similar woods, red squirrels raise fewer young when they share oak woodland with greys than when they share conifer woodland with greys.",
       ],
       prompt: "Suggest an explanation for the difference in the number of young. Decide which detail distinguishes the two woods before you write.",
       points: [
         "Use the difference between acorns and small seeds to compare the relative feeding advantage of the two species.",
         "Explain how competition for a limited food supply can reduce the amount available to red squirrels.",
-        "Connect food intake to the red squirrels’ ability to produce or rear young.",
+        "Connect the food or energy available to red squirrels to a particular cost of producing or rearing young.",
       ],
       modelAnswer: [
-        "Where acorns are the main food, greys can obtain more energy from them than reds can. If food is limited, acorns eaten by greys also leave less for reds. Reds compete more successfully for small seeds in conifer woodland. The difference in food intake could leave red squirrels in oak woods with less energy or material to produce milk and rear their young.",
+        "Where acorns are the main food, greys can obtain more energy than reds from the same mass of acorns. If food is limited, acorns eaten by greys also leave less for reds. Reds compete more successfully for small seeds in conifer woodland. The difference in food intake could leave red squirrels in oak woods with less energy or material to produce milk and rear their young.",
       ],
       repairs: [
         "Which species has the feeding advantage for the main seeds in each wood?",
@@ -73,7 +75,7 @@
       ],
       modelAnswer: [
         "Leaves supplied sugar made from ordinary carbon dioxide to both sets of pods. The seeds could use this sugar to make starch under either cover. In an illuminated green pod wall, rubisco can fix ¹³CO₂ by combining it with RuBP. The resulting glycerate 3-phosphate is converted to triose phosphate using ATP and reduced NADP from the light-dependent reaction.",
-        "Some of this carbon can reach the seeds in sugar from the pod wall and be incorporated into starch, accounting for the rise to 9.6% ¹³C. In the covered wall, darkness restricts the light-dependent supply of ATP and reduced NADP. The seeds still gain starch from incoming sugar, but its ¹³C proportion stays at the initial 1.1%.",
+        "Some of this carbon can reach the seeds in sugar from the pod wall and be incorporated into starch, accounting for the rise to 9.6% ¹³C. Under the opaque cover, darkness restricts the light-dependent supply of ATP and reduced NADP. The seeds still gain starch from incoming sugar, but its ¹³C proportion stays at the initial 1.1%.",
       ],
       repairs: [
         "Trace the origin of the sugar that reached the seeds in both treatments.",
@@ -95,11 +97,11 @@
         "Use the fixed-socket result to judge the proposed recovery time, while allowing for a refractory period between successive impulses.",
       ],
       modelAnswer: [
-        "Stretch could open stretch-mediated sodium ion channels. Sodium ion entry depolarises the sensory ending, and a large enough generator potential brings the neurone to threshold. As the socket shifts, the membrane is stretched less even though the hair stays bent. Fewer channels may remain open, so the generator potential can fall below threshold.",
+        "Stretch could open mechanically gated ion channels. An inward flow of positive ions would depolarise the sensory ending, and a large enough generator potential would bring the neurone to threshold. The recording establishes when impulses occur. Identifying the ions would require a separate measurement. As the socket shifts, the membrane is stretched less even though the hair stays bent. Fewer channels may remain open, so the generator potential can fall below threshold.",
         "Holding the socket fixed preserves the stretch and the neurone fires repeatedly. There can still be a short refractory period after each action potential, but the repeated firing shows that recovery need not take the rest of the recording. The change in the stimulus at the membrane accounts for the silence.",
       ],
       repairs: [
-        "How could a change in permeability to sodium ions bring the sensory neurone to threshold?",
+        "Which way would positive charge have to move across the sensory membrane to depolarise it? How could stretching the membrane cause that movement?",
         "Which part of the receptor stops being stretched as much, despite the hair staying bent?",
         "Could recovery take the rest of the recording? Which observation tests that claim?",
       ],

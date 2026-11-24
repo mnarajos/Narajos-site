@@ -1,4 +1,4 @@
-.study-finder,.study-route-links{margin:1rem 0;padding:clamp(.85rem,2.5vw,1.35rem);border:1px solid #d4dcd8;border-radius:14px;background:var(--paper,#fff)}
+.study-finder{margin:1rem 0;padding:clamp(.85rem,2.5vw,1.35rem);border:1px solid #d4dcd8;border-radius:14px;background:var(--paper,#fff)}
 .study-finder h2{margin:0 0 .7rem;font-size:1.25rem}
 .study-finder-fields{display:grid;grid-template-columns:2fr 1fr;gap:.75rem}
 .study-finder label,.study-route-links label{display:grid;gap:.3rem;font-weight:600}
@@ -9,12 +9,16 @@
 .study-finder ul{list-style:none;padding:0;margin:.3rem 0 0;display:grid;gap:.5rem}
 .study-finder-result{border-top:1px solid #d4dcd8;padding:.65rem 0 0;display:grid;gap:.15rem}
 .study-finder-result small{color:#485a60}
-.study-finder-actions,.study-route-links .study-actions{display:flex;flex-wrap:wrap;gap:.3rem 1rem}
-.study-finder-actions a,.study-route-links a{display:inline-flex;align-items:center;min-height:44px;text-underline-offset:3px;font-weight:650}
-.study-finder a:focus-visible,.study-finder :is(input,select):focus-visible,.study-route-links :is(select,a):focus-visible{outline:3px solid var(--narajos-focus-ring,#a34b1c);outline-offset:3px}
-.study-route-links select{max-width:17rem}
+.study-finder-actions{display:flex;flex-wrap:wrap;gap:.3rem 1rem}
+.study-finder-actions a{display:inline-flex;align-items:center;min-height:44px;text-underline-offset:3px;font-weight:650}
+.study-finder a:focus-visible,.study-finder :is(input,select):focus-visible,.study-route-links select:focus-visible{outline:3px solid var(--narajos-focus-ring,#a34b1c);outline-offset:3px}
+.study-route-links{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem .75rem;margin:.35rem 0}
+.study-route-links select{width:auto;max-width:100%}
 @media(max-width:560px){.study-finder-fields{grid-template-columns:1fr}}
 
 .study-finder-actions a:not(:first-child){font-weight:500}
 
 .study-finder :is(input,select,a){scroll-margin-block:7rem 1rem}
+
+.course-home-links{display:flex;flex-wrap:wrap;gap:0 1rem;margin:.35rem 0}
+.course-home-links a{display:inline-flex;align-items:center;min-height:44px;text-underline-offset:3px}

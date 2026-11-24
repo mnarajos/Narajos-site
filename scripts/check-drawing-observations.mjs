@@ -464,7 +464,8 @@ export async function checkDrawingObservations(browser,base,axeSource) {
       await page.evaluate(size=>document.documentElement.style.fontSize=size,width===320||height===320?"200%":"150%");
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
       const enlarge=comparison.getByRole("button",{name:"Enlarge candidate drawing"});
-      await enlarge.press("Enter");
+      if(width===320)await enlarge.tap();
+      else await enlarge.press("Enter");
       const dialog=page.getByRole("dialog",{name:"Candidate drawing"});
       assert(await dialog.isVisible());
       assert(await dialog.evaluate(el=>el.getBoundingClientRect().width<=innerWidth+2 && el.getBoundingClientRect().height<=innerHeight));
@@ -476,8 +477,16 @@ export async function checkDrawingObservations(browser,base,axeSource) {
       await dialog.getByRole("button",{name:"Reference observation",exact:true}).press("Enter");
       const reference=page.getByRole("dialog",{name:"Reference observation",exact:true});
       assert(await reference.locator(".al-drawing-zoom > svg[role=img]").isVisible());
+      if(width===320||width===390) await reference.evaluate((inspector,opener)=>{
+        window.drawingFocusRestoredAtDismiss=false;
+        const eventTarget=innerWidth===320 ? inspector.querySelector('[aria-label="Close enlarged image"]') : inspector;
+        eventTarget.addEventListener(innerWidth===320 ? "click" : "cancel",()=>{
+          window.drawingFocusRestoredAtDismiss=document.activeElement===opener && !inspector.open;
+        },{once:true});
+      },await enlarge.elementHandle());
       if(width===320)await reference.getByRole("button",{name:"Close enlarged image",exact:true}).tap();
       else await page.keyboard.press("Escape");
+      if(width===320||width===390) assert(await page.evaluate(()=>window.drawingFocusRestoredAtDismiss),"Focus returns to the opener when the inspector closes at "+width+"px");
       assert(await enlarge.evaluate(el=>el===document.activeElement));
     }
     await page.getByText("Read the visual evidence",{exact:true}).click();

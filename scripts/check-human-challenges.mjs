@@ -211,7 +211,7 @@ route("challenge/f171");
 assert(main.innerHTML.includes("Health and disease")&&main.innerHTML.includes("Diagnosis and monitoring"),"F171 chooser missing");
 route("challenge/f170/a1");
 assert(app.isActive(),"New challenge session was not started");
-assert(main.innerHTML.includes("Check answer")||main.innerHTML.includes("Compare with key points"),"Practice question not rendered");
+assert(main.innerHTML.includes("Check")||main.innerHTML.includes("Compare with key points"),"Practice question not rendered");
 let record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert.equal(record.unit,"f170");
 assert(record.queue.every(id=>db.questions.some(q=>q.id===id&&q.area===1)),"Area filter selected other questions");

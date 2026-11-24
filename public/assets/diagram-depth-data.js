@@ -39,10 +39,10 @@ export const depthTopics={
  screening:topic("Human Biology F171","Interpreting screening results","Read the screening result across rows and the actual condition down columns.",[
   ["screening-grid","Fictional results","Of 200 people, 28 screened positive. A separate assessment established who actually had the condition.","Positive row: 16 with the condition and 12 without it. Negative row: 4 with the condition and 168 without it."]
  ],{
-  A:part(206,153,"Positive row, condition-present column","True positive","Screened positive and had the condition."),
-  B:part(438,153,"Positive row, condition-absent column","False positive","Screened positive without having the condition."),
-  C:part(206,252,"Negative row, condition-present column","False negative","Screened negative despite having the condition."),
-  D:part(438,252,"Negative row, condition-absent column","True negative","Screened negative and did not have the condition.")
+  A:part(250,140,"Positive row, condition-present column","True positive","Screened positive and had the condition."),
+  B:part(380,140,"Positive row, condition-absent column","False positive","Screened positive without having the condition."),
+  C:part(250,210,"Negative row, condition-present column","False negative","Screened negative despite having the condition."),
+  D:part(380,210,"Negative row, condition-absent column","True negative","Screened negative and did not have the condition.")
  },[
   label(["A","B","C","D"],"Compare the screening result with the actual condition."),
   point("Select the people the screening test missed.","C","Four people had the condition despite screening negative."),

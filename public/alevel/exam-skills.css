@@ -107,6 +107,13 @@
 .al-teaching .al-step p {
   margin-block: 0.4rem;
 }
+.al-model-steps {
+  margin: 0;
+  padding-left: 1.4rem;
+}
+.al-model-steps li + li {
+  margin-top: .65rem;
+}
 .al-teaching .al-note {
   font-size: 1rem;
 }
@@ -380,7 +387,7 @@ button.al-secondary {
 }
 .al-catalogue-row {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
   gap: .7rem;
   padding: .65rem .35rem;
@@ -400,6 +407,7 @@ button.al-secondary {
   display: grid;
   gap: .1rem;
 }
+.al-catalogue-copy strong { text-decoration: underline; text-underline-offset: .16em; }
 .al-catalogue-copy small { font-weight: 650; }
 .al-row-action {
   align-self: center;
@@ -492,6 +500,135 @@ main:has(.al-catchup-journey) > h1 {
 .al-journey-stage .al-controls > button {
   min-inline-size: 0;
   max-inline-size: 100%;
+}
+.al-practice-help summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding-block: .6rem;
+}
+.al-practice-help > button,
+.al-practice-help > a {
+  display: flex;
+}
+.al-practice form > fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.al-practice .al-task-prompt {
+  font-size: 1.08rem;
+  line-height: 1.5;
+  font-weight: 650;
+}
+.al-task-stimulus {
+  border-inline-start: 2px solid var(--line);
+  padding-inline-start: .75rem;
+  margin-block: .65rem .9rem;
+}
+.al-practice :is(.al-stimulus-heading, .al-instruction-heading) {
+  font-size: 1rem;
+  margin-block: 0 .3rem;
+}
+.al-task-stimulus > p,
+.al-task-prompt > p {
+  margin-block: 0 .45rem;
+}
+
+.al-paper-practice .al-teaching {
+  margin-block: .75rem;
+}
+.al-paper-practice :is(.al-task-heading, .al-model > h2) {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: .15rem .65rem;
+  margin-block: 0 .55rem;
+  font-size: 1.12rem;
+}
+.al-paper-practice .al-task-count {
+  margin: 0;
+  font-size: .87rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+.al-paper-practice .al-task-stimulus {
+  margin-block: 0 .65rem;
+  padding-inline-start: .65rem;
+}
+.al-paper-practice .al-stimulus-heading {
+  margin: 0 0 .25rem;
+  font-size: 1rem;
+  font-weight: 650;
+}
+.al-paper-practice .al-essay-title {
+  font-style: italic;
+  font-size: 1.12rem;
+}
+.al-paper-practice .al-task-prompt {
+  margin-block: .55rem .25rem;
+  font-size: 1.12rem;
+  line-height: 1.4;
+  font-weight: 700;
+}
+.al-paper-practice :is(td, th) {
+  overflow-wrap: normal;
+  padding: .25rem .35rem;
+}
+.al-paper-practice caption {
+  padding-bottom: .25rem;
+  font-weight: 600;
+  text-align: start;
+}
+.al-paper-practice .al-response-label {
+  border: 0;
+  padding: 0;
+  margin: .35rem 0;
+  font-weight: 600;
+}
+.al-paper-practice textarea {
+  box-sizing: border-box;
+  margin-top: .2rem;
+  min-height: 6rem;
+  font-weight: normal;
+  scroll-margin-block: 5rem;
+}
+.al-paper-practice .al-controls {
+  margin-block: .45rem;
+}
+.al-paper-practice .al-model .al-step {
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+.al-paper-practice .al-criteria h3 {
+  margin: .55rem 0 0;
+}
+.al-paper-practice .al-criteria fieldset {
+  border: 0;
+  border-block-end: 1px solid var(--line);
+  margin: .4rem 0;
+  padding: 0 0 .3rem;
+}
+.al-paper-practice .al-criteria legend {
+  padding: 0;
+}
+.al-paper-practice .al-criteria .al-choice {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: .2rem .45rem;
+  margin-block: .1rem;
+}
+.al-paper-practice summary {
+  align-content: center;
+  padding-block: .4rem;
+  font-weight: 600;
+}
+.al-paper-practice .al-repair {
+  margin-block: .25rem;
+  padding-inline-start: .6rem;
+  border-inline-start: 2px solid var(--acc);
 }
 @media (max-width: 480px) {
   header .brand {
