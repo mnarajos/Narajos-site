@@ -214,7 +214,7 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
     model.hidden = !checked;
     if (checked) {
       result.dataset.result = "correct";
-      result.replaceChildren(element("strong", "Correct."), (usedFeedback ? " You used feedback on this order. " : " ") + success);
+      result.replaceChildren(element("strong", "Correct!"), " " + success);
     } else {
       delete result.dataset.result;
       result.textContent = "";

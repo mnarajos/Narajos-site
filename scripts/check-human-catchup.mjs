@@ -58,7 +58,7 @@ export async function checkHumanCatchup(browser, base) {
       }
       await stage("guided").getByRole("radio").nth(lesson.guided.answer).check();
       await stage("guided").getByRole("button", { name: "Check answer" }).click();
-      assert.match(await stage("guided").getByRole("status").innerText(), key === "f171/1.2.1.aorta" ? /Correct on retry/ : /Correct with support/);
+      assert.match(await stage("guided").getByRole("status").innerText(), /Correct!/);
       await expand(stage("independent"));
       if (key === "f171/1.2.1.aorta") {
         const image = stage("independent").getByRole("img", {name:/abdominal aorta/});
@@ -68,7 +68,7 @@ export async function checkHumanCatchup(browser, base) {
       if (lesson.apply.options) {
         await stage("independent").getByRole("radio").nth(lesson.apply.answer).check();
         await stage("independent").getByRole("button", { name: "Check answer" }).click();
-        assert.match(await stage("independent").getByRole("status").innerText(), /Correct independently/);
+        assert.match(await stage("independent").getByRole("status").innerText(), /Correct!/);
       } else {
         await stage("independent").getByRole("textbox").fill("An explanation to compare with the key points.");
         await stage("independent").getByRole("button", { name: "Compare my explanation" }).press("Enter");
@@ -77,6 +77,7 @@ export async function checkHumanCatchup(browser, base) {
           assert.equal(await review.getByRole("listitem").count(), lesson.apply.points.length);
           await review.getByRole("button", { name: "Finish review" }).click();
           assert(await review.getByText("Your self-review is saved.").isVisible());
+          assert.equal(await review.getByText("Correct!", {exact:true}).count(), 0, "Self-review is not a checked answer");
         } else {
           assert.equal(await stage("independent").getByRole("status").getByRole("listitem").count(), lesson.apply.points.length);
         }
@@ -125,7 +126,7 @@ export async function checkHumanCatchup(browser, base) {
     assert.match(await em.getByRole("status").innerText(), /measure product leaving/);
     await em.getByRole("radio", {name:/capacity to make proteins/}).check();
     await em.getByRole("button", {name:"Check answer"}).press("Enter");
-    assert.match(await em.getByRole("status").innerText(), /Correct on retry/);
+    assert.match(await em.getByRole("status").innerText(), /Correct!/);
     assert.equal((await saved(localPractice))["f170/1.1.3.evidence/1"].independent.outcome, "selfReview");
 
     // The exact linked item, its edited answers and corrected outcome survive reopening.
@@ -221,7 +222,7 @@ export async function checkHumanCatchup(browser, base) {
       if (correctChoice) {
         await independent.getByRole("radio", { name: correctChoice }).check();
         await independent.getByRole("button", { name: "Check answer" }).press("Enter");
-        assert.match(await independent.getByRole("status").innerText(), /Correct independently/, key);
+        assert.match(await independent.getByRole("status").innerText(), /Correct!/, key);
       } else {
         await independent.getByRole("textbox").fill(response);
         await independent.getByRole("button", { name: "Compare my explanation" }).press("Enter");
@@ -250,7 +251,8 @@ export async function checkHumanCatchup(browser, base) {
         assert.equal(await independent.getByRole("status").innerText(), definition.apply.options[wrong][1], key);
       } else {
         await independent.getByRole("button", { name: "Show explanation" }).press("Enter");
-        assert.match(await independent.getByRole("status").innerText(), /after seeing the explanation/, key);
+        assert.match(await independent.getByRole("status").innerText(), /Explanation shown/, key);
+        assert.equal(await independent.getByText("Correct!", {exact:true}).count(), 0, "Revealing an explanation is not a checked answer");
       }
       await independent.getByRole("button", { name: "Revisit worked example" }).press("Enter");
       assert(await model.evaluate(el => el.open), key);
@@ -258,7 +260,7 @@ export async function checkHumanCatchup(browser, base) {
       if (correctChoice) {
         await independent.getByRole("radio", { name: correctChoice }).check();
         await independent.getByRole("button", { name: "Check answer" }).press("Enter");
-        assert.match(await independent.getByRole("status").innerText(), /Correct on retry/, key);
+        assert.match(await independent.getByRole("status").innerText(), /Correct!/, key);
       }
       assert(await page.locator("[data-hb-followup]").isVisible(), key);
     }
@@ -272,16 +274,18 @@ export async function checkHumanCatchup(browser, base) {
     await stage("independent").getByRole("button", { name: "Get a hint" }).press("Enter");
     assert.match(await stage("independent").locator(".hb-hints").innerText(), /denominator/);
     await stage("independent").getByRole("button", { name: "Show explanation" }).press("Enter");
+    assert.match(await stage("independent").getByRole("status").innerText(), /Explanation shown/);
     await stage("independent").getByRole("radio").first().check();
     await stage("independent").getByRole("button", { name: "Check answer" }).press("Enter");
-    assert.match(await stage("independent").getByRole("status").innerText(), /after seeing the explanation/);
+    assert.match(await stage("independent").getByRole("status").innerText(), /Correct!/);
+    assert.equal((await saved(localPractice))["f171/4.2.1/1"].independent.outcome, "explained");
     await expand(stage("followup"));
     await stage("followup").getByRole("radio").last().check();
     await stage("followup").getByRole("button", { name: "Check answer" }).press("Enter");
-    assert.match(await stage("followup").getByRole("status").innerText(), /independently on a fresh check/);
+    assert.match(await stage("followup").getByRole("status").innerText(), /Correct!/);
     await page.reload();
     await expand(stage("followup"));
-    assert.match(await stage("followup").getByRole("status").innerText(), /independently on a fresh check/);
+    assert.match(await stage("followup").getByRole("status").innerText(), /Correct!/);
 
     await open("catchup/f171/2.1");
     await expand(stage("independent"));
@@ -493,7 +497,7 @@ export async function checkHumanCatchup(browser, base) {
       await touch.goto(base + "/human-biology/#" + transportRoute);
       await touch.getByRole("radio", { name: /Entry of the released oocyte into the oviduct/ }).locator("..").tap();
       await touch.getByRole("button", { name: /Check answer/ }).tap();
-      assert.equal(await touch.locator("[data-feedback-heading]").innerText(), "Correct");
+      assert.equal(await touch.locator("[data-feedback-heading]").innerText(), "Correct!");
       assert.equal(await touch.evaluate(key => JSON.parse(localStorage.getItem(key)).outcomes[0],
         practiceKey + "-topic-f175/f175-transport"), "independent");
     } finally {

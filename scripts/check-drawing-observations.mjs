@@ -342,7 +342,7 @@ export async function checkDrawingObservations(browser,base,axeSource) {
     await scaleInput.press("Enter");
     assert.match(await scalePanel.getByRole("status").innerText(),/310 µm/);
     await scaleInput.fill("0.58 cm");await scaleInput.press("Enter");
-    assert.match(await scalePanel.getByRole("status").innerText(),/Correct after correction/);
+    assert.match(await scalePanel.getByRole("status").innerText(),/Correct!/);
     await page.reload();
     const loaded=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),key);
     assert.deepEqual(loaded.drawingCalibration.firstAttempt,{answer:"18",correct:false,helped:false});
@@ -354,7 +354,10 @@ export async function checkDrawingObservations(browser,base,axeSource) {
       await scalePanel.locator("summary").first().press("Enter");
       if(helped)await scalePanel.getByText("Hint about the two scales",{exact:true}).press("Enter");
       await scaleInput.fill("5.8 mm");await scaleInput.press("Enter");
-      assert.match(await scalePanel.getByRole("status").innerText(),helped?/Correct with a clue/:/Independently correct/);
+      assert.match(await scalePanel.getByRole("status").innerText(),/Correct!/);
+      const calibration=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).drawingCalibration,key);
+      assert.equal(calibration.firstAttempt.helped,helped);
+      assert.equal(calibration.outcome,helped?"hint-supported":"independent");
     }
     await page.getByRole("button",{name:"Start a six-drawing set"}).click();
     const comparison=page.locator(".al-drawing-comparison");
@@ -377,7 +380,7 @@ export async function checkDrawingObservations(browser,base,axeSource) {
     await page.getByRole("radio",{name:current.length?"Features need correction":"Features match",exact:true}).check();
     for(const d of current)await page.getByLabel(await page.evaluate(d=>window.ALevelDrawingBank.categories[d],d),{exact:true}).check();
     await page.getByRole("button",{name:"Check judgement"}).click();
-    assert.match(await page.locator(".al-drawing-judgement .al-feedback").innerText(),/Correct with a clue/);
+    assert.match(await page.locator(".al-drawing-judgement .al-feedback").innerText(),/Correct!/);
     for(const [width,height] of [[320,700],[390,844],[667,320],[768,1024],[1280,780]]){
       await page.setViewportSize({width,height});
       await page.evaluate(size=>document.documentElement.style.fontSize=size,width===320||height===320?"200%":"150%");

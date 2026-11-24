@@ -275,14 +275,14 @@ function makeDiagramTask(section, topic, task, report) {
   tools.check = checkButton(section, report, () => {
     if (task.type === "point") {
       if (!selected) return "Select a letter first.";
-      if (selected === task.answer) return (receivedFeedback ? "Correct after feedback. " : "Correct. ") + task.feedback;
+      if (selected === task.answer) return "Correct!";
       receivedFeedback = true;
       save();
       return "You chose " + selected + ". Its line points to " + topic.parts[selected].cue.toLowerCase() + ". Compare that feature with the question.";
     }
     if (placed.size < keys.length) return "Place the remaining labels first.";
     const correct = keys.filter(key => placed.get(key) === key);
-    if (correct.length === keys.length) return (receivedFeedback ? "All labels correct after feedback. " : "All labels correct. ") + task.feedback;
+    if (correct.length === keys.length) return "Correct!";
     const retry = keys.filter(key => !correct.includes(key));
     receivedFeedback = true;
     save();
@@ -394,7 +394,7 @@ function makeOrder(section, task, report) {
     bank.append(choice);
   }
   section.append(el("p","Choose the steps in order. Use Earlier or Later to move one."), bank, answer);
-  const success = () => (compared ? "Correct after a retry. " : "Correct. ") + task.feedback;
+  const success = () => "Correct!";
   checkButton(section, report, () => {
     if (chosen.length < task.items.length) return "Choose all the steps first.";
     const wrong = chosen.findIndex((id,index) => id !== index);
@@ -421,7 +421,7 @@ function makeOrder(section, task, report) {
 function makeCheck(section, task, report) {
   if (task.type === "order") return makeOrder(section, task, report);
   let receivedFeedback = false;
-  const correctMessage = () => (receivedFeedback ? "Correct after feedback. " : "Correct. ") + task.feedback;
+  const correctMessage = () => "Correct!";
   if (task.type === "choice") {
     const options = el("div", "", "dp-bank");
     options.setAttribute("role", "group");

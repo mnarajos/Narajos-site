@@ -74,7 +74,7 @@ export function mountSequence(root, {
     if (firstError === -1) {
       completed = true;
       save();
-      feedback.replaceChildren(element("strong", "Correct."), (usedFeedback ? " You used feedback on this order. " : " ") + success);
+      feedback.replaceChildren(element("strong", "Correct!"), " " + success);
       model.hidden = !answer;
     } else {
       usedFeedback = true;
@@ -271,6 +271,6 @@ export function mountSequence(root, {
   model.hidden = !completed || !answer;
   if (completed) {
     feedback.dataset.result = "correct";
-    feedback.replaceChildren(element("strong", "Correct."), (usedFeedback ? " You used feedback on this order. " : " ") + success);
+    feedback.replaceChildren(element("strong", "Correct!"), " " + success);
   }
 }

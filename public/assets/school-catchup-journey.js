@@ -21,7 +21,7 @@ function distractorFeedback(option, question) {
 }
 
 function feedbackFor(question, selected) {
-  if (selected === question.answer) return ["Correct.", question.reasoning];
+  if (selected === question.answer) return ["Correct!", ""];
   const detail = distractorFeedback(question.options.find(option => option.label === selected), question);
   return detail ? ["Incorrect.", detail]
     : ["Incorrect.", "Key idea: " + question.reasoning];
@@ -29,8 +29,8 @@ function feedbackFor(question, selected) {
 
 function supportStatus(outcome) {
   return {
-    independent: "Correct without extra help",
-    supported: "Correct with guidance, a clue or a retry",
+    independent: "Correct!",
+    supported: "Correct!",
     explained: "Explanation used"
   }[outcome] || "";
 }

@@ -402,12 +402,12 @@ app.pause();app.route(sorting.route,h=>main.innerHTML=h);
 assert(main.innerHTML.includes("Review this row"),"Correction should restore the submitted work");
 wrongRow=false;
 clickAction("check");
-assert(main.innerHTML.includes("Correct after a retry"));
+assert(main.innerHTML.includes("Correct!"));
 sorting=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert.equal(sorting.outcomes[0],"corrected");
 assert.equal(sorting.objectiveFirst[sort.id],"incorrect");
 clickAction("next");
-assert.match(main.innerHTML,/<dt>correct after a retry<\/dt><dd>1<\/dd>/);
+assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-completed")).outcomes[0],"corrected","Retry evidence must remain saved on completion");
 // Each new schematic must support feedback, without disclosing an answer in alt text.
 for(const id of ["f172-diagram-alleles","f173-diagram-blood","f174-diagram-glucose","f175-diagram-oviduct","f176-diagram-brain","f177-diagram-randomise"]){
  const question=forcedQuestion(id);

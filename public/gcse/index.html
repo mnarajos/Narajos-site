@@ -4490,7 +4490,7 @@ function scheduleQC(q0){
   var sc=overlap(stemSet(qText(x)),ref)*10-qRank(x);if(sc>bs){bs=sc;best=j;}}
  if(best<0)return;var x=L.queue.splice(best,1)[0];L.queue.splice(L.i+1,0,x);L.qc=x;}
 function qcResult(ok,independent){L.qcN=(L.qcN||0)+1;if(independent)L.qcOk=(L.qcOk||0)+1;
- return ok?'<p class="qcres good">'+(independent?"Quick check correct independently.":"Quick check correct after support.")+'</p>':'<p class="qcres">Not yet. Read the key idea again – you will see this idea again before the end.</p>';}
+ return ok?"":'<p class="qcres">Not yet. Read the key idea again – you will see this idea again before the end.</p>';}
 /* Hint timing (v1.1, 18 November, teacher): the ladder waits 15 s after a question (or a new step) appears, and 30 s after
    a hint before the next one. While waiting it shows greyed out with a ring filling up, so pupils know help is coming.
    "I don't know – show me" is never delayed. */
@@ -5726,7 +5726,7 @@ function skNext(id){var out=[],flat=[],isCh={};for(var k in CHALLENGE)isCh[CHALL
  order.forEach(function(x){var s=skById(x);if(out.length<2&&s&&!(s.ht&&S.tier==="F")&&!isCh[x]&&out.indexOf(x)<0)out.push(x);});
  return out.map(skById);}
 function masteredHTML(sk){var nx=skNext(sk.id),isCh={};for(var k in CHALLENGE)isCh[CHALLENGE[k]]=1;
- return '<div class="mastered"><p class="lvup">🏆 Skill complete! You’ve nailed '+esc(sk.name.toLowerCase())+'.</p>'+(nx.length?'<p>Practise next:</p><p class="sklinks">'+nx.map(function(x){return '<a class="btn'+(isCh[x.id]?' chal':'')+'" href="#practice-'+x.id+'">'+(isCh[x.id]?'⭐ ':'')+esc(x.name)+' →</a>';}).join("")+'</p>':'')+'<p class="small">Or keep going here for more questions.</p></div>';}
+ return '<div class="mastered"><p class="lvup">Practice level complete: '+esc(sk.name)+'.</p>'+(nx.length?'<p>Practise next:</p><p class="sklinks">'+nx.map(function(x){return '<a class="btn'+(isCh[x.id]?' chal':'')+'" href="#practice-'+x.id+'">'+(isCh[x.id]?'⭐ ':'')+esc(x.name)+' →</a>';}).join("")+'</p>':'')+'<p class="small">Or keep going here for more questions.</p></div>';}
 /* Skills practice page: short sections. A basic skill can lead to a "challenge" skill that covers the same ground in more depth. */
 var SKSEC=[["All sciences",[["Working scientifically",["ws"]]]],["Biology",[["Biology calculations",["mag","pct","sav"]]]],
  ["Chemistry",[["Quick recall",["ioncharge","gastest","rxprod"]],["Atoms and the periodic table",["pne","ptread","estruct","dotx","bond","ram"]],["Formulae and reactions",["ions","salts","balance","elec","halfeq"]],["Chemistry calculations",["mr","conc","moles","rmass","rate","rf"]]]],
@@ -5999,7 +5999,7 @@ function chime(notes){
   });
  }catch(e){}
 }
-var PRAISE=["✓ You smashed it!","✓ Nailed it!","✓ Spot on!","✓ Bang on!","✓ Sorted!","✓ Easy work!","✓ Big brain!","✓ Calm – you got it!","✓ Proper good!","✓ Clean!","✓ You ate that!","✓ W answer!"],NOPE=["✗ Not quite – no stress","✗ Unlucky – have a look below","✗ Close, but not this one","✗ Nearly! Check it out below","✗ Not this time – you’ve got this"];
+var PRAISE=["Correct!"],NOPE=["Not quite."];
 function confetti(){
  if(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches)return;
  var d=document.createElement("div"),cols=["#0a6b66","#e2a100","#d9534f","#4a7bd0","#6aa84f","#8e5bc4","#f472b6","#22d3ee"],h="",n=arguments[0]||60;d.className="confetti";d.setAttribute("aria-hidden","true");
@@ -6348,15 +6348,11 @@ function check(){
    L.cur.quantityFeedback||(q.t==="match"&&q.tp&&L.cur.miss>0)||(!firstTime&&L.first.get(q0)!=="independent")?"corrected":helped?"supported":"independent";
  var independent=outcome==="independent";
  NarajosAssessment.recordLessonAnswer(L,q0,outcome);
- if(outcome==="supported" || outcome==="corrected"){
-  var label=outcome==="supported"?"Correct with a hint":"Correct after feedback";
-  if(head)note=label+". "+note;else head=label;
- }
+ if(ok&&!written&&!L.dk)head="Correct!";
  L.run=independent?(L.run||0)+1:0;
  L.mtype=null;if(!ok&&!L.dk){var mtv=null;if(q.t==="mcq"&&q.mt){var rr=$("input[name=a]:checked",f);if(rr)mtv=q.mt[+rr.value];}
   else if(q.t==="two"&&(q.mt2||q.mt)){var r2=$("input[name=b]:checked",f),r1=$("input[name=a]:checked",f);if(q.mt2&&r2&&+r2.value!==q.a2)mtv=q.mt2[+r2.value];if(!mtv&&q.mt&&r1&&+r1.value!==q.a)mtv=typeof q.mt==="string"?q.mt:q.mt[+r1.value];}
   if(!mtv&&typeof q.mt==="string")mtv=q.mt;L.mtype=mtv||null;}
- if(independent){var tier=Math.min(Math.floor(L.run/3),4);if(L.run%3===0){comboUp(tier);flash(tier);}else chime(TIER_CHIME[tier]);}
 
  var requeue=!L.slop&&!ok&&!L.retried.has(q0);
  if(requeue){L.retried.add(q0);L.queue.push(q0);}
@@ -6365,12 +6361,12 @@ function check(){
  helped=ok&&helped&&!written;
  if(helped&&firstTime&&!L.slop)(L.helped=L.helped||new Set()).add(q0);
  if((!ok||helped)&&!isQC){if(L.slop)L.qcNext=true;else if(!L.qc)scheduleQC(q0);}
- var helpMsg=helped&&!isQC&&(L.slop||L.qc)?'<p class="small">Right with a hint. A quick check is next to try the idea again.</p>':'';
+ var helpMsg=helped&&!isQC&&(L.slop||L.qc)?'<p class="small">A quick check is next to try the idea again.</p>':'';
  if(L.slop){L.n++;if(independent)L.right++;var tl=$("#tally");if(tl&&!L.rvMode)tl.textContent="Score: "+L.right+" of "+L.n;L.lvMsg=L.rvMode?"":lvStep(independent,q0);}
  L.phase="fb";
  if(!L.rvMode)(L.past=L.past||[]).push({q:q,q0:q0});
  var fb=$("#fb");fb.className="fb "+(written||L.dk?"dk":ok?"good":"bad");
- fb.innerHTML='<h2 tabindex="-1">'+(head||(ok?pick(PRAISE):pick(NOPE)))+'</h2>'+qcMsg+helpMsg+(L.dk?'<p>No problem. Read the answer and the key idea'+(L.rvMode?'.':', then try the quick check.')+'</p>':'')+(L.slop&&L.lvMsg?L.lvMsg:'')+(ok&&L.run>=2?'<p class="runline"><span class="combo'+(L.run%3===0?' big':'')+'" style="background:'+TIER_INK[Math.min(Math.floor(L.run/3),4)]+'">Combo ×'+L.run+'</span></p>':'')+(fastOK(ok)?fastHTML():'')+(backOK(ok)?backHTML():'')+(ok?'':L.dk?dkAnswer(q):answerHTML(q))+(!ok&&L.mtype?'<p><span class="mtype">'+esc(L.mtype)+'</span></p>':'')+(whyNot?'<p class="why-not"><strong>About your answer:</strong> '+fmt(whyNot)+'</p>':'')+(note?'<p>'+fmt(note)+'</p>':'')+(q.why?'<p>'+fmt(q.why)+'</p>':'')+(ok||(isQC&&!L.dk)?'':reteachHTML(q0.t==="gen"?q:q0))+(requeue?'<p class="small">This question will come back at the end of the lesson.</p>':'');
+ fb.innerHTML='<h2 tabindex="-1">'+(head||(ok?pick(PRAISE):pick(NOPE)))+'</h2>'+qcMsg+helpMsg+(L.dk?'<p>No problem. Read the answer and the key idea'+(L.rvMode?'.':', then try the quick check.')+'</p>':'')+(L.slop&&L.lvMsg?L.lvMsg:'')+(fastOK(ok)?fastHTML():'')+(backOK(ok)?backHTML():'')+(ok?'':L.dk?dkAnswer(q):answerHTML(q))+(!ok&&L.mtype?'<p><span class="mtype">'+esc(L.mtype)+'</span></p>':'')+(whyNot?'<p class="why-not"><strong>About your answer:</strong> '+fmt(whyNot)+'</p>':'')+(note?'<p>'+fmt(note)+'</p>':'')+(q.why?'<p>'+fmt(q.why)+'</p>':'')+(ok||(isQC&&!L.dk)?'':reteachHTML(q0.t==="gen"?q:q0))+(requeue?'<p class="small">This question will come back at the end of the lesson.</p>':'');
  fb.hidden=false;
  var old=$(".ltop .bar");if(old)old.outerHTML=bar(L.first.size,L.total,"Lesson progress");
  if(L.slop&&!L.rvMode&&!$("#act").nextElementSibling.classList.contains("finpr"))$("#act").insertAdjacentHTML("afterend",'<button type="button" class="btn big finpr fin2">Finish practice</button>'),$(".fin2").onclick=finishSlop;
@@ -6395,7 +6391,7 @@ function fastPlan(){var rest=L.queue.slice(L.i+1),fresh=rest.filter(function(q){
 function fastOK(ok){if(L.rvMode||L.slop||L.fast||!ok||(L.run||0)<FAST_RUN)return false;var st=fastStats();
  if(!(st.a>=Math.ceil(L.total/2)&&st.pct>=80))return false;return fastPlan().skip>=1;}
 function fastHTML(){var p=fastPlan(),k=p.hard.length;
- return '<div class="fast"><p>⚡ '+L.run+' in a row! You clearly know this. Skip '+p.skip+' practice question'+(p.skip===1?'':'s')+' and go to the '+k+' harder question'+(k===1?'':'s')+' left in this lesson?</p><button type="button" class="btn primary" id="fast">Jump to the challenge questions</button></div>';}
+ return '<div class="fast"><p>⚡ '+L.run+' correct answers in a row. Skip '+p.skip+' practice question'+(p.skip===1?'':'s')+' and go to the '+k+' harder question'+(k===1?'':'s')+' left in this lesson?</p><button type="button" class="btn primary" id="fast">Jump to the challenge questions</button></div>';}
 function backOK(ok){return !L.rvMode&&!!(L.fast&&!ok&&L.fast.skipped&&L.fast.skipped.length);}
 function backHTML(){var n=L.fast.skipped.length;return '<div class="fast"><p>These questions are harder. Want to go back to the '+n+' question'+(n===1?'':'s')+' you skipped first?</p><button type="button" class="btn" id="back">Back to the skipped questions</button></div>';}
 function backFinish(){var sk=L.fast.skipped;L.queue=L.queue.slice(0,L.i+1).concat(sk,L.queue.slice(L.i+1));L.total+=sk.length;L.fast=null;L.run=0;next();}
@@ -6460,9 +6456,9 @@ var RI={tick:'<path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor"
  steps:'<path d="M3 20h5v-5h5v-5h5V5h3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>',
  star:'<path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3-4.6-4.4 6.3-.9z" fill="currentColor"/>'};
 function stat(ic,big,small,lab){return '<li class="rstat" aria-label="'+esc(lab)+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+RI[ic]+'</svg><span><b>'+big+'</b>'+small+'</span></li>';}
-function resStats(result){var correct=result.independent,checked=result.checked,pct=result.percent,hs=L.helped?L.helped.size:0,h='<ul class="rstats">';
- if(checked)h+=stat("tick",correct+'/'+checked,'objective answers correct independently',correct+' of '+checked+' objective answers correct independently');
- if(L.hints)h+=stat("ladder",String(L.hints),hs?'hints · '+hs+' right with one':'hint'+(L.hints===1?'':'s'),L.hints+' hints used'+(hs?', '+hs+' right with a hint':''));
+function resStats(result){var correct=result.independent,checked=result.checked,pct=result.percent,h='<ul class="rstats">';
+ if(checked)h+=stat("tick",correct+'/'+checked,'objective first-attempt score (no help)',correct+' of '+checked+' objective answers correct on the first attempt without help');
+ if(L.hints)h+=stat("ladder",String(L.hints),'hint'+(L.hints===1?'':'s'),L.hints+' hints used');
  if(L.qcN)h+=stat("loop",(L.qcOk||0)+'/'+L.qcN,'quick checks',(L.qcOk||0)+' of '+L.qcN+' quick checks correct without help');
  if(L.fast)h+=stat("bolt",String(L.fast.skip),'skipped (fast track)',L.fast.skip+' practice questions skipped by fast track');
  return h+'</ul>';}
@@ -6475,7 +6471,7 @@ function finish(){
  var t=L.t,c=L.c,result=NarajosAssessment.lessonEvidence(L),pct=result.percent,ms=result.checked>0&&pct>=80;
  var leads=c.unlocks.map(function(id){return DATA[t].byId[id];}).filter(avail);
  var h='<svg class="resbadge" viewBox="0 0 72 72" aria-hidden="true">'+(pct===100?'<circle cx="36" cy="36" r="35" fill="#f2b705"/>':'')+'<circle cx="36" cy="36" r="'+(pct===100?30:34)+'" fill="var(--acc)"/><g transform="rotate(-35 36 36)" fill="none" stroke="var(--acc-ink)" stroke-width="5" stroke-linecap="round"><circle cx="25" cy="36" r="8.5"/><path d="M33.5 36h21M48 36v6.5M54 36v5"/></g>'+(ms?'<path d="M58 9l2 5 5 2-5 2-2 5-2-5-5-2 5-2z M14 52l1.4 3.4 3.4 1.4-3.4 1.4L14 61.6l-1.4-3.4L9.2 56.8l3.4-1.4z" fill="#f2b705"/>':'')+'</svg><p class="cele" aria-hidden="true">'+(pct===100?'🌟':ms?'🎉':'💪')+'</p><h1>'+(ms?'Lesson passed':'Lesson complete')+'</h1>'+
-  '<p class="endmsg">'+(!result.checked?'This lesson contained written self-review only.':pct===100?'Every objectively checked answer was correct without help.':ms?'You smashed it – that’s a pass!':pct>=50?'Good effort – you’re over half way there. Keep going!':'Good effort – every go helps it stick.')+'</p>'+
+  '<p class="endmsg">'+(!result.checked?'This lesson contained written self-review only.':pct===100?'Practice complete.':ms?'You smashed it – that’s a pass!':pct>=50?'Good effort – you’re over half way there. Keep going!':'Good effort – every go helps it stick.')+'</p>'+
   resStats(result)+(NarajosAssessment.evidenceNote(result)?'<p class="small">'+NarajosAssessment.evidenceNote(result)+'</p>':'')+
   (ms||!result.checked?'':'<p class="small">A pass requires 80% of the objective answers correct without help on first submission.</p>');
  var nextC=null;
@@ -6489,7 +6485,7 @@ function finish(){
  if(nextC)h+='<a class="btn primary big" href="#lesson-'+t+'-'+nextC.id+'">Next: '+esc(nextC.title)+'</a>';
  h+='<a class="btn big" href="'+backTo("#topic-"+t).href+'">'+backTo("#topic-"+t).label+'</a></div>';
  render(h);
- confetti(pct===100?150:ms?100:50);pops(pct===100?5:3);if(pct===100)applause();else if(ms)setTimeout(fanfare,500);
+
  var ag=$("#again");if(ag)ag.onclick=function(){startLesson(t,c);};
 }
 /* End of a skills practice session: praise, what they did, and where to go next. Nothing is saved. */

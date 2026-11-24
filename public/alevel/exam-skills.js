@@ -419,11 +419,11 @@
     show();
   }
   const outcomeNames = {
-    independent: "Independently correct",
-    "hint-supported": "Correct with a clue",
-    corrected: "Correct after correction",
-    "model-supported": "Correct after revisiting the model",
-    guided: "Correct in guided practice",
+    independent: "Correct",
+    "hint-supported": "Correct",
+    corrected: "Correct",
+    "model-supported": "Correct",
+    guided: "Correct",
     "self-reviewed": "Written response self-reviewed",
     "needs-practice": "Still needs practice",
   };
@@ -463,8 +463,8 @@
 
   function outcomeOverview(entries) {
     const list = node("ul", null, "al-outcomes");
-    for (const [value, label] of Object.entries(outcomeNames)) {
-      const count = entries.filter(entry => entry === value).length;
+    for (const label of new Set(Object.values(outcomeNames))) {
+      const count = entries.filter(entry => outcomeNames[entry] === label).length;
       if (count) list.append(node("li", count + " · " + label));
     }
     return list;
@@ -629,7 +629,7 @@
       }
       const result = state.results[i];
       if (accepted) announce(writing ? "Review finished. Your draft and judgements are saved." :
-        outcomeNames[state.outcomes[i]] + ". " + q.why, writing ? "review" : "correct");
+        "Correct!", writing ? "review" : "correct");
       else if (revealed) announce("Explanation revealed. " + q.why, "explained");
       else if (result?.clue && state.hints[i]) announce("Clue · " + hintsFor(q)[state.hints[i] - 1], "hint");
       else if (result?.kind === "incorrect")
@@ -1061,7 +1061,7 @@
       input.value = state.draft || "";
       input.readOnly = Boolean(state.outcome);
       check.hidden = Boolean(state.outcome);
-      feedback.textContent = state.feedback || "";
+      feedback.textContent = state.outcome ? "Correct!" : state.feedback || "";
     }
     input.oninput = () => {
       state.draft = input.value;
@@ -1090,7 +1090,7 @@
       state.draft = input.value;
       if (correct) {
         state.outcome = state.attempts > 1 ? "corrected" : state.helped || hint.open ? "hint-supported" : "independent";
-        state.feedback = outcomeNames[state.outcome] + ". Two reference bars represent 0.62 mm, or 620 µm. The line on paper is 36 × 100 ÷ 620 = 5.8 mm to 1 decimal place.";
+        state.feedback = "Correct!";
       } else {
         state.feedback = Math.abs(quantity.value - 18) < 1e-6 ? "18 mm is the drawn length for 310 µm. Use the fraction that represents 100 µm." :
           Math.abs(quantity.value - 0.1) < 1e-6 ? "0.1 mm is the real length of 100 µm. Use the enlargement to find the length on paper." :
@@ -1290,7 +1290,7 @@
         const feedback = node("p", null, "al-feedback");
         feedback.setAttribute("role", "status");
         feedback.setAttribute("aria-atomic", "true");
-        if (session.outcome) feedback.textContent = outcomeNames[session.outcome] + (complete ? " · complete drawing judgement. " : " · focused judgement. ") + item.why;
+        if (session.outcome) feedback.textContent = "Correct!";
         else if (session.attempts) {
           const previous = session.lastAttempt || session.firstAttempt;
           const extra = (previous?.categories || []).find(category => !item.defects.includes(category));

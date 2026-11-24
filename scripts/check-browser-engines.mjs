@@ -92,7 +92,7 @@ try {
   await page.getByRole("button", { name: "Check answer", exact: true }).press("Enter");
   await page.reload();
   assert.equal(await numeric.inputValue(), "−500");
-  assert.match(await page.locator(".al-practice [role=status]").innerText(), /Independently correct/);
+  assert.match(await page.locator(".al-practice [role=status]").innerText(), /Correct!/);
   assert(await page.getByRole("button", { name: "Next task", exact: true }).isVisible());
   await fits();
 
@@ -131,7 +131,7 @@ try {
   const response = page.locator('[data-hb-stage="independent"]');
   await response.getByRole("radio", { name: /7 of 24/ }).check();
   await response.getByRole("button", { name: "Check answer", exact: true }).press("Enter");
-  assert.match(await response.getByRole("status").innerText(), /Correct independently/);
+  assert.match(await response.getByRole("status").innerText(), /Correct!/);
   assert(await response.getByRole("button", { name: "Check answer", exact: true }).isHidden());
   await fits();
 

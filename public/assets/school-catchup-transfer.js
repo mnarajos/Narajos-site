@@ -15,7 +15,7 @@ const tasks = {
 export function applicationStatus(id, record = {}) {
   if (!Object.hasOwn(tasks,id)) return null;
   const outcomes = {
-    independent: "Calculation correct independently", supported: "Calculation correct after support",
+    independent: "Application complete", supported: "Application complete",
     attempted: "Written response saved · compare with the model",
     "self-reviewed": "Written response self-reviewed"
   };
@@ -63,7 +63,7 @@ export function appendTransfer(host, id, state, save, evidence) {
   input.oninput = () => { record.draft = input.value; saveApplication(); };
   const submit = add("button", numeric ? "Check calculation" : "Compare with model");
   submit.className = "school-primary";
-  const feedback = add("p", record.feedback || "");
+  const feedback = add("p", numeric && ["independent", "supported"].includes(record.outcome) ? "Correct!" : record.feedback || "");
   feedback.setAttribute("role","status");
   function finish(focus) {
     input.readOnly = true;
@@ -103,7 +103,7 @@ export function appendTransfer(host, id, state, save, evidence) {
     } else {
       record.first = input.value;
       record.outcome = numeric ? (record.helped ? "supported" : "independent") : "attempted";
-      feedback.textContent = record.feedback = numeric ? (record.helped ? "Correct after support. " : "Correct. ") + (id === "motion-graphs" ? "Velocity decreases by 1.5 m/s each second." : "The shorter endpoint gives the greater estimated rate.") : "Review the first answer you wrote. Compare it with the model, then finish your self-review.";
+      feedback.textContent = record.feedback = numeric ? "Correct!" : "Review the first answer you wrote. Compare it with the model, then finish your self-review.";
       finish(true);
     }
     saveApplication();

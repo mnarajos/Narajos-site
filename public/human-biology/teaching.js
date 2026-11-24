@@ -142,11 +142,11 @@
   }
 
   const outcomeLabels = {
-    guided: "Correct with support.",
-    independent: "Correct independently on the first attempt.",
-    explained: "Completed after seeing the explanation.",
-    corrected: "Correct on retry.",
-    followup: "Correct independently on a fresh check.",
+    guided: "Correct!",
+    independent: "Correct!",
+    explained: "Explanation shown.",
+    corrected: "Correct!",
+    followup: "Correct!",
     selfReview: "Compare your reasoning with each point."
   };
 
@@ -232,7 +232,7 @@
       if (state.note) html = '<p>' + escape(state.note) + '</p>';
       if (state.outcome === "selfReview" && comparing) html = '<p>Self-review saved.</p>';
       if (state.outcome && !comparing) {
-        html = '<p><strong>' + outcomeLabels[state.outcome] + '</strong></p>' + html;
+        html = '<p><strong>' + (state.outcome === "explained" && state.accepted ? "Correct!" : outcomeLabels[state.outcome]) + '</strong></p>' + html;
         if (question.points) html += list(question.points);
         html += '<p>' + escape(question.explanation) + '</p>';
       }

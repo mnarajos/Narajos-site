@@ -226,7 +226,7 @@ export async function checkALevelExam(browser, base) {
     const key = "keystone.alevel.exam-skills.v1";
     const saved = id => page.evaluate(([key, id]) => JSON.parse(localStorage.getItem(key))[id], [key, id]);
     await page.reload();
-    assert.match(await page.locator(".al-practice [role=status]").innerText(), /Correct after correction/);
+    assert.match(await page.locator(".al-practice [role=status]").innerText(), /Correct!/);
     assert(await page.getByRole("button", { name: "Next task", exact: true }).isVisible());
 
     await page.goto(base + "/alevel/#exam-mechanisms");
@@ -239,12 +239,12 @@ export async function checkALevelExam(browser, base) {
       shuffledPositions.add((await options.evaluateAll(inputs => inputs.map(input => +input.value))).indexOf(q.answer));
       await page.getByRole("radio", { name: q.options[q.answer], exact: true }).check();
       await page.getByRole("button", { name: "Check answer", exact: true }).click();
-      assert.match(await page.locator(".al-practice [role=status]").innerText(), new RegExp(i === 0 ? "shorter diffusion distance" : "Correct|correct"));
+      assert.match(await page.locator(".al-practice [role=status]").innerText(), /Correct!/);
       if (i === 0) {
         await page.getByRole("link", { name: "Review diffusion distance", exact: true }).click();
         await page.getByRole("heading", { name: "Simple and facilitated diffusion", exact: true }).waitFor();
         await page.getByRole("link", { name: /Return to your question/ }).press("Enter");
-        assert.match(await page.locator(".al-practice [role=status]").innerText(), /shorter diffusion distance/);
+        assert.match(await page.locator(".al-practice [role=status]").innerText(), /Correct!/);
         assert(await page.getByRole("button", { name: "Next task", exact: true }).isVisible());
       }
       if (i === 1) {
@@ -282,7 +282,7 @@ export async function checkALevelExam(browser, base) {
     assert(await form.getByRole("button", { name: "Review progress" }).isVisible());
     await form.getByRole("button", { name: "Review progress" }).click();
     await page.reload();
-    assert.match(await page.locator(".al-outcomes").innerText(), /3 · Independently correct/);
+    assert.match(await page.locator(".al-outcomes").innerText(), /4 · Correct/);
     assert.match(await page.locator(".al-outcomes").innerText(), /1 · Written response self-reviewed/);
     assert(await page.getByRole("button", { name: "Retry questions I needed help with" }).isVisible());
     await page.getByText("Review the completed questions", { exact: true }).click();
@@ -368,7 +368,7 @@ export async function checkALevelExam(browser, base) {
       await page
         .getByRole("button", { name: offset === 5 ? "Review progress" : "Next drawing", exact: true })
         .waitFor();
-      assert.match(await judgement.getByRole("status").innerText(),focused?/focused judgement/:/complete drawing judgement/);
+      assert.match(await judgement.getByRole("status").innerText(),/Correct!/);
       if (item.defects.length) assert(await comparison.locator("[data-defect-overlay]").first().isVisible());
       if (round === 1) {
         await page.reload();
@@ -473,7 +473,7 @@ export async function checkALevelExam(browser, base) {
     await page.goto(base + "/alevel/#exam-osmosis");
     const old = await saved("osmosis");
     assert.equal(await page.locator(".al-practice input[name=number]").inputValue(), "−500");
-    assert.match(await page.locator(".al-practice [role=status]").innerText(), /Independently correct/);
+    assert.match(await page.locator(".al-practice [role=status]").innerText(), /Correct!/);
     await page.reload();
     assert(await page.getByRole("button", { name: "Next task", exact: true }).isVisible());
     await page.locator(".al-practice form").evaluate(form => form.requestSubmit());
@@ -520,7 +520,7 @@ export async function checkALevelExam(browser, base) {
     assert.match(await feedback.innerText(), /wrong denominator/);
     await page.getByRole("textbox", { name: "Your answer (%)" }).fill("25");
     await page.getByRole("button", { name: "Try again" }).press("Enter");
-    assert.match(await feedback.innerText(), /Correct after correction/);
+    assert.match(await feedback.innerText(), /Correct!/);
     assert.equal((await saved("evidence")).outcomes[1], "corrected");
 
     await page.goto(base + "/alevel/#lesson-a2-mitosis");
