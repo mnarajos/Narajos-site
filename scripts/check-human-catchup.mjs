@@ -137,6 +137,30 @@ export async function checkHumanCatchup(browser, base) {
       }
     }
 
+    // The existing microscopy lesson leads to supported fractionation and a distinct written transfer.
+    await open("catchup/f170/1.1.2");
+    assert(await page.getByText(/particles that collect at the bottom|material that collects at the bottom/).isVisible());
+    await page.getByText("Related learning and practice", {exact:true}).press("Enter");
+    await page.getByRole("link", {name:"Practise separating cell fractions"}).press("Enter");
+    await page.getByRole("radio", {name:/Pellet P, containing most of the nuclei/}).check();
+    await page.locator('[data-k-action="check"]').press("Enter");
+    await page.getByText("The first pellet is left in its tube. Follow the liquid transferred into the clean tube.", {exact:true}).waitFor();
+    const fractionGuided = practiceKey + "-topic-f170/f170-fractionation-guided";
+    assert.equal((await saved(fractionGuided)).outcomes[0], "incorrect");
+    await page.reload();
+    await page.getByText("The first pellet is left in its tube. Follow the liquid transferred into the clean tube.", {exact:true}).waitFor();
+    await open("catchup/f170/1.1.2");
+    await page.getByText("Related learning and practice", {exact:true}).press("Enter");
+    await page.getByRole("link", {name:"Apply fractionation to a fresh sample"}).press("Enter");
+    const fractionAnswer = "The supernatant moved on; the target organelles later settled in B. Other material could still be there.";
+    await page.locator("#k-written").fill(fractionAnswer);
+    await page.locator('[data-k-action="reveal"]').press("Enter");
+    await page.getByText(/Finding many in B does not show that other components are absent/).waitFor();
+    await page.reload();
+    assert.equal(await page.locator(".k-review-draft").innerText(), fractionAnswer, "Original explanation is retained for self-review");
+    assert.equal(await page.getByRole("heading", {name:"Correct!", exact:true}).count(), 0, "Extended answers must not be automatically marked correct");
+    assert(await widthFits(), "Fractionation practice overflows at 320px");
+
     // The original answer and its source field remain available during self-review and on reload.
     await page.evaluate(key => localStorage.removeItem(key), localPractice);
     await open("catchup/f170/1.1.5");
@@ -387,7 +411,7 @@ export async function checkHumanCatchup(browser, base) {
     await page.locator(".k-question-view").waitFor();
     assert.deepEqual((await saved(skillKey)).queue, skill.queue);
     await open("catchup/f170/1.1.2");
-    await page.getByText("More practice for this topic", { exact: true }).click();
+    await page.getByText("Related learning and practice", { exact: true }).click();
     await page.getByRole("link", { name: /Practise microscopy and cell measurements/i }).click();
     await page.locator(".k-question-view").waitFor();
     assert.deepEqual((await saved(practiceKey)).queue, standard.queue);

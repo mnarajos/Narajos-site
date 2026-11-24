@@ -159,12 +159,16 @@ window.KeystoneHumanLessons = {
     },
     "f170/1.1.2": {
       revision: 1,
-      goal: "Use a micrograph's scale bar or stated magnification to estimate size. Explain whether a larger image shows finer detail.",
+      further: [["challenge/f170/f170-fractionation-guided", "Practise separating cell fractions"], ["challenge/f170/f170-fractionation-transfer", "Apply fractionation to a fresh sample"]],
+      goal: "Use microscopy measurements and explain how cell components can be separated into fractions.",
       activate: ["Quick check: how many µm are in 1 mm?", "1 mm = 1,000 µm and 1 µm = 1,000 nm. Convert to the same unit before dividing two lengths."],
       explain: [
         "A scale bar labels a known actual length. The structure and bar are measured on the same image, so resizing both together preserves their ratio.",
         "Magnification is image size ÷ actual size. Resolution is the ability to distinguish two nearby points. Enlarging a blurred image spreads out the same information.",
-        "In transmitted light microscopy, a thin specimen lets light pass through and reduces overlapping layers. A microtome cuts thin sections of prepared tissue. In a temporary wet mount the slide supports the specimen and the coverslip holds it flat in the liquid. A stain can improve contrast, but a preparation that kills cells cannot show their motion."
+        "In transmitted light microscopy, a thin specimen lets light pass through and reduces overlapping layers. A microtome cuts thin sections of prepared tissue. In a temporary wet mount the slide supports the specimen and the coverslip holds it flat in the liquid. A stain can improve contrast, but a preparation that kills cells cannot show their motion.",
+        "To separate cell components, cells are broken open in a suitable cold, buffered isotonic solution. The homogenate is filtered to remove larger debris. Differential centrifugation then separates the remaining particles by how readily they sediment. The material that collects at the bottom is the pellet; the liquid above is the supernatant.",
+        "Worked example: a first, relatively low-speed spin sediments most nuclei into a pellet. Mitochondria that have not sedimented remain in the supernatant. Transfer that supernatant to a fresh tube and spin faster: many mitochondria now form a second pellet, while many smaller particles remain suspended in the new supernatant. The first pellet is not carried forward in this example.",
+        "Try predicting the next step: if a particle remains in the liquid after the first spin but sediments during the second, where is it now? It is in the second pellet, because the liquid from the first spin was spun again. A fraction is enriched in particular components, not necessarily pure: sedimentation also depends on size, shape and density, as well as the spin conditions."
       ],
       compare: {
         caption: "What kind of representation am I reading?",

@@ -14,6 +14,33 @@ export async function checkAssessmentJourneys(browser,base) {
     await page.locator("#idk").click();
   };
   try {
+    // The food-test lesson starts with teaching in the existing question view.
+    // Jump to authored application questions via the existing test hook after
+    // checking normal entry; responses are synthetic and are never uploaded.
+    const food=await context.newPage();
+    await food.addInitScript(()=>{window.name="kstest";});
+    await food.goto(base+"/gcse/#lesson-b2-foodtests",{waitUntil:"domcontentloaded"});
+    assert(await food.getByRole("heading",{name:"Food tests: learn the method"}).isVisible());
+    assert.match(await food.locator(".key").innerText(),/Worked example:[\s\S]*non-reducing sugars/);
+    assert((await food.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3);
+    await food.evaluate(()=>window.__k.ev('L.i=L.queue.findIndex(q=>q.q.includes("A food sample turns iodine"));L.phase="q";showQ()'));
+    await food.getByText("Both starch and reducing sugar detected",{exact:true}).click();
+    await food.locator("#act").click();
+    assert.match(await food.locator("#fb").innerText(),/does not rule out non-reducing sugars/);
+    await food.evaluate(()=>window.__k.ev('L.i=L.queue.findIndex(q=>q.q.includes("known glucose solution, tested"));L.phase="q";showQ()'));
+    assert.equal(await food.getByRole("heading",{name:"Food tests: learn the method"}).count(),0);
+    const foodDraft="The result is inconclusive because the glucose control failed.";
+    await food.locator("#sa").fill(foodDraft);
+    await food.locator("#act").click();
+    assert.match(await food.locator("#ms").innerText(),/positive colour change/);
+    await food.locator('input[name="mk"]').first().check();
+    await food.getByLabel("Improve your answer (optional)").fill("Repeat with fresh reagent and positive and negative controls.");
+    await food.locator("#act").click();
+    assert.match(await food.locator("#fb").innerText(),/Written response self-reviewed/);
+    assert.doesNotMatch(await food.locator("#fb").innerText(),/Correct!/);
+    assert.equal(await food.locator("#sa").inputValue(),foodDraft);
+    await food.close();
+
     await open("/gcse/#lesson-b1-micro2");
     const number=page.locator("#numin"), check=page.locator("#act");
     await number.fill("0.1 kg");

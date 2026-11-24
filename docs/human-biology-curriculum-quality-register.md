@@ -16,7 +16,7 @@ Priority reflects the examined units first, together with specific high-value tr
 
 | Requirements | Rows | Verified | Taught | Practised | Represented | Gap | Review | Unresolved | Centre-only |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| [F170](human-biology-curriculum/f170.md) | 226 | 62 | 15 | 13 | 11 | 0 | 50 | 75 | 0 |
+| [F170](human-biology-curriculum/f170.md) | 226 | 63 | 15 | 13 | 10 | 0 | 50 | 75 | 0 |
 | [F171](human-biology-curriculum/f171.md) | 148 | 32 | 38 | 5 | 1 | 0 | 17 | 55 | 0 |
 | [F172](human-biology-curriculum/f172.md) | 67 | 2 | 1 | 1 | 1 | 0 | 16 | 46 | 0 |
 | [F173](human-biology-curriculum/f173.md) | 88 | 5 | 1 | 1 | 1 | 0 | 6 | 68 | 6 |
@@ -25,7 +25,7 @@ Priority reflects the examined units first, together with specific high-value tr
 | [F176](human-biology-curriculum/f176.md) | 60 | 3 | 2 | 0 | 0 | 0 | 16 | 38 | 1 |
 | [F177](human-biology-curriculum/f177.md) | 46 | 7 | 1 | 2 | 0 | 0 | 3 | 32 | 1 |
 | [Shared skills](human-biology-curriculum/shared-skills.md) | 49 | 3 | 0 | 0 | 0 | 0 | 20 | 26 | 0 |
-| **All rows** | **807** | **125** | **61** | **23** | **15** | **0** | **146** | **427** | **10** |
+| **All rows** | **807** | **126** | **61** | **23** | **14** | **0** | **146** | **427** | **10** |
 
 [Batch 23 foundations audit, scientific evidence and outstanding applications](human-biology-curriculum/batch-23.md).
 

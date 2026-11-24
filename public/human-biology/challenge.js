@@ -944,9 +944,10 @@ function route(r,renderer){
   var source=origin.split("/");
   var topicScope=(source[2]===scope||window.KeystoneHumanCatchup?.topicPracticeScope(unit,source[2])===scope)&&/^(?:a[1-5]|\d+(?:\.\d+)*)$/.test(scope);
   var focusedScope=byId[scope]?.unit===unit&&byId[scope].catchup===source[2]&&window.KeystoneHumanCatchup?.topicPracticeScope(unit,source[2])===scope;
+  var relatedScope=byId[scope]?.unit===unit&&(window.KeystoneHumanLessons?.[unit+"/"+source[2]]?.further||[]).some(function(item){return item[0]==="challenge/"+unit+"/"+scope;});
   var buildScope=window.KeystoneHumanCatchup?.practiceScope(unit,source[2])===scope;
   var reproductionTransfer=unit==="f175"&&source[2]==="a1"&&scope==="f175-transport";
-  if(source[1]!==unit||(!topicScope&&!focusedScope&&!buildScope&&!reproductionTransfer)||!filter(unit,scope).length)return intro(unit);
+  if(source[1]!==unit||(!topicScope&&!focusedScope&&!relatedScope&&!buildScope&&!reproductionTransfer)||!filter(unit,scope).length)return intro(unit);
  }
  var key=scope==="methods"?methodKey:origin?topicKey(unit,scope):SK;
  var old=sessionKey(session)===key?session:null;
