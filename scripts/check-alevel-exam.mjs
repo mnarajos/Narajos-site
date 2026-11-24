@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import axe from "axe-core";
 import { checkDrawingObservations } from "./check-drawing-observations.mjs";
 import { checkALevelStatistics } from "./check-alevel-statistics.mjs";
+import { checkALevelPaperPractice } from "./check-alevel-paper-practice.mjs";
 
 export async function checkExistingRoutes(browser, base) {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 }, hasTouch: true });
@@ -53,6 +54,7 @@ export async function checkExistingRoutes(browser, base) {
 
 export async function checkALevelExam(browser, base) {
   checkALevelStatistics();
+  await checkALevelPaperPractice(browser, base);
   await checkDrawingObservations(browser, base, axe.source);
   const page = await browser.newPage({ viewport: { width: 320, height: 780 } });
   await page.emulateMedia({ reducedMotion: "reduce" });
