@@ -723,13 +723,13 @@ function drawQuestion(){
  }
  else{
   var correct=session.lastResult===true,subjective=!session.wasSkipped&&(session.lastResult===null||q.type==="written");
-  var helped=!!used,unknown=!!session.wasSkipped,quick=isQuickCheck(q);
-  var neutral=unknown||subjective||(correct&&helped);
-  var header=unknown?"Explanation revealed":subjective?"Check your explanation":correct&&session.outcomes[session.index]==="corrected"?"Correct after a retry":correct&&helped?"Correct with a hint":correct&&quick?"Quick check passed":correct?"Correct":"Not yet";
+  var helped=!!used,unknown=!!session.wasSkipped;
+  var neutral=unknown||subjective;
+  var header=unknown?"Explanation revealed":subjective?"Check your explanation":correct?"Correct!":"Not yet";
   h+='<div class="k-feedback '+(neutral?"pending":correct?"correct":"incorrect")+'"><h2 class="k-feedback-head" data-feedback-heading tabindex="-1">'+icon(neutral?"book":correct?"check":"alert")+header+'</h2>';
   if(q.figure)h+=figure(q.figure,true);
   h+='<div'+(q.unit==="f170"?' class="reading-copy"':'')+'>'+
-   '<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p><strong>'+(correct&&!helped?'Why it works':unknown?'Explanation':'Quick reteach')+':</strong> '+esc(q.explain)+'</p></div>';
+   '<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p><strong>'+(correct?'Why it works':unknown?'Explanation':'Quick reteach')+':</strong> '+esc(q.explain)+'</p></div>';
   if(a.priorResponse)h+='<p>Your saved result is from an earlier version of this question.</p>';
   if(!correct&&!unknown&&a.selected&&q.options)h+='<p><strong>Your selection</strong> '+a.selected.map(function(i){return esc(q.options[i]);}).join('; ')+'</p>';
   if(q.type==='best'&&!correct&&!unknown){var partial=session.answers[q.id]||{};if(partial.choice===q.correct&&partial.reason!==q.reasonCorrect)h+='<p class="k-diagnostic-note">You chose the correct explanation; now focus on why it is correct.</p>';}
@@ -900,7 +900,7 @@ function outcomeSummary(old){
  var outcomes=Object.values(old.outcomes||{}),total=Object.keys(old.objectiveFirst||{}).length;
  var count=function(type){return outcomes.filter(function(result){return result===type;}).length;};
  var review=total?old.correctFirst+' of '+total+' objectively checked questions answered independently on the first submission.':'No objective first submissions were recorded in this set.';
- var stats=[[(old.guidedFirst||0),"answered with help"],[count("corrected"),"correct after a retry"],[(old.selfReviewed||0),"self-reviewed"],[count("revealed"),"explanations revealed"],[(old.quickChecksPassed||0)+"/"+(old.quickChecksSeen||0),"quick checks without help"]];
+ var stats=[[(old.selfReviewed||0),"self-reviewed"],[count("revealed"),"explanations revealed"],[(old.quickChecksPassed||0)+"/"+(old.quickChecksSeen||0),"quick checks without help"]];
  if(old.earlierPractice)stats.push([Object.keys(old.earlierPractice.first).length,"earlier responses with unclassified support"]);
  if(old.needsReview)stats.push([old.needsReview,"to revisit from this set"]);
  return '<p class="lead">'+review+'</p><dl class="k-mini-stats k-outcome-stats">'+stats.map(function(stat){return '<div><dt>'+stat[1]+'</dt><dd>'+stat[0]+'</dd></div>';}).join("")+'</dl>';

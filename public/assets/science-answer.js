@@ -140,8 +140,6 @@
 
   function evidenceNote(result) {
     const parts = [];
-    if (result.supported) parts.push("Correct with a hint: " + result.supported);
-    if (result.corrected) parts.push("Correct after feedback: " + result.corrected);
     if (result.revealed) parts.push("Answers revealed: " + result.revealed);
     if (result.reviewed) parts.push("Written responses self-reviewed: " + result.reviewed);
     return parts.join(" · ");

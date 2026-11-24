@@ -16,7 +16,7 @@ export async function checkAssessmentJourneys(browser,base) {
     assert.match(await page.locator("#msg").innerText(),/Check the unit/);
     await number.fill("100 µm");
     await check.click();
-    assert.match(await page.locator("#fb").innerText(),/Correct after feedback/);
+    assert.match(await page.locator("#fb").innerText(),/Correct!/);
 
     await open("/alevel/#lesson-p3w-epara");
     await page.locator("#go").click();
@@ -59,7 +59,7 @@ export async function checkAssessmentJourneys(browser,base) {
       }
     }
     assert(selfReviews>0&&reveals>0);
-    assert.match(await page.locator("main").innerText(),/0 of [1-9]\d* objective answers correct independently/);
+    assert.match(await page.locator("main").innerText(),/0 of [1-9]\d* objective first-attempt score without help/i);
     assert.match(await page.locator("main").innerText(),new RegExp("Written responses self-reviewed: "+selfReviews));
     assert.equal(await page.getByRole("heading",{name:"Independent practice passed"}).count(),0);
 

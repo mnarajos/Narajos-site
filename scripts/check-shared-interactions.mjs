@@ -47,7 +47,7 @@ export async function checkStudentJourney(page, base, touch = false) {
   await activate(slots.nth(1));
   await activate(order.getByRole("button",{name:"Check order"}));
   await page.reload();
-  assert.match(await order.locator(".writing-order-feedback").innerText(), /Correct. You used feedback/);
+  assert.match(await order.locator(".writing-order-feedback").innerText(), /Correct!/);
   await fits(page,"sentence order");
 
   await page.goto(base + "/ks3/lesson/?topic=separating-techniques");
@@ -62,7 +62,7 @@ export async function checkStudentJourney(page, base, touch = false) {
   await activate(sequence.locator('[data-order-card="0"]'));
   await activate(sequence.locator("[data-order-position]").first().locator("[data-order-place]"));
   await activate(sequence.getByRole("button",{name:"Check order"}));
-  assert.match(await sequence.locator(".writing-order-feedback").innerText(),/Correct. You used feedback/);
+  assert.match(await sequence.locator(".writing-order-feedback").innerText(),/Correct!/);
 
   const labels=page.locator('diagram-practice[topic="filtration"] .dp-question').first();
   await activate(labels.locator("summary"));
@@ -100,7 +100,7 @@ export async function checkStudentJourney(page, base, touch = false) {
   assert.match(await labels.locator(".dp-placements").innerText(),/C · Filtrate/);
   await place(labels,"Filter paper","A");
   await activate(labels.getByRole("button",{name:"Check answer"}));
-  assert.match(await labels.getByRole("status").innerText(),/All labels correct after feedback/);
+  assert.match(await labels.getByRole("status").innerText(),/Correct!/);
   await fits(page,"diagram");
 
   const steps = page.locator("diagram-practice .dp-question").filter({has:page.locator(".dp-order")});
@@ -119,7 +119,7 @@ export async function checkStudentJourney(page, base, touch = false) {
   assert.equal(await steps.locator(".dp-order li").count(),numberOfSteps-1);
   await activate(stepChoice(numberOfSteps-1));
   await activate(steps.getByRole("button",{name:"Check answer"}));
-  assert.match(await steps.getByRole("status").innerText(), /Correct after a retry/);
+  assert.match(await steps.getByRole("status").innerText(), /Correct!/);
   await activate(steps.getByText("Order options",{exact:true}));
   await activate(steps.getByRole("button",{name:"Start order again"}));
   assert.equal(await steps.locator(".dp-order li").count(),0);
@@ -142,7 +142,7 @@ export async function checkStudentJourney(page, base, touch = false) {
   assert.equal(await answer.inputValue(),"25");
   await answer.fill("0.04");
   await activate(page.getByRole("button",{name:"Check calculation"}));
-  await page.getByText("Calculation correct after support",{exact:true}).waitFor();
+  await page.getByText("Correct!",{exact:true}).waitFor();
   assert.equal(await page.getByRole("button",{name:"Check calculation"}).count(),0);
   const saved=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),key);
   assert.deepEqual(saved.outcomes,{0:"explained",1:"supported",2:"independent"});
