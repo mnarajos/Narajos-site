@@ -781,11 +781,15 @@ try{
  await navPage.setViewportSize({width:320,height:800});
  await navPage.goto(base+"/");
  const homeFooter=navPage.locator("footer");
- const copyright=homeFooter.getByText("© 2026 Narajos",{exact:false});
- assert(await copyright.isVisible());
- const pronunciation=homeFooter.locator("em.site-pronunciation");
- assert.equal(await pronunciation.textContent(),"It’s /nerr-RA-hoss/.");
- assert.equal(await pronunciation.evaluate(node=>getComputedStyle(node).fontStyle),"italic");
+ const copyright=homeFooter.locator(".site-copyright");
+ const constrained=await navPage.addStyleTag({content:".site-copyright { max-inline-size: 12ch; }"});
+ assert(await copyright.evaluate(line=>{
+  const name=line.querySelector("strong").getBoundingClientRect();
+  const pronunciation=line.querySelector("em").getBoundingClientRect();
+  return pronunciation.bottom>name.bottom && line.scrollWidth<=line.clientWidth+1;
+ }),"The copyright must wrap within a narrow column");
+ await constrained.evaluate(style=>style.remove());
+ assert.equal(await homeFooter.getByRole("link",{name:"Privacy",exact:true}).getAttribute("href"),"/privacy/");
  await homeFooter.getByRole("link",{name:"Terms of Use",exact:true}).click();
  await navPage.getByRole("heading",{name:"Terms of Use",exact:true}).waitFor();
  assert(await navPage.getByRole("heading",{name:"Third-party materials",exact:true}).isVisible());
@@ -985,6 +989,20 @@ try{
   assert.equal(await control.getAttribute("href"),"/");assert.equal(await control.innerText(),"narajos");
   const style=await control.evaluate(el=>{const s=getComputedStyle(el);return [s.fontSize,s.fontWeight,s.color,s.backgroundColor,s.borderRadius,s.minHeight];});
   if(!standard)standard=style;else assert.deepEqual(style,standard,"Homepage control style differs: "+path);
+  const line=navPage.locator(".site-copyright");
+  assert(await line.isVisible(),"Missing copyright: "+path);
+  assert.equal((await line.textContent()).replace(/\s+/g," ").trim(),"© 2026 Narajos /nerr-RA-hoss/",path);
+  const [baseStyle,name,pronunciation]=await line.evaluate(el=>
+   [el,el.querySelector("strong"),el.querySelector("em")].map(node=>{
+    const {fontFamily,fontSize,color,fontStyle,fontWeight}=getComputedStyle(node);
+    return {type:[fontFamily,fontSize,color],fontStyle,fontWeight};
+   })
+  );
+  assert.deepEqual(name.type,baseStyle.type,path);
+  assert.deepEqual(pronunciation.type,baseStyle.type,path);
+  assert.deepEqual([baseStyle.fontStyle,name.fontStyle,pronunciation.fontStyle],["normal","normal","italic"],path);
+  assert.equal(pronunciation.fontWeight,baseStyle.fontWeight,path);
+  assert(Number(name.fontWeight)>=600 && Number(baseStyle.fontWeight)<600,"Only the name should be bold: "+path);
  }
  await navPage.goto(base+"/teaching/simulations/molecular-biology/");
  const molecularPlay=navPage.getByRole("button",{name:/Play/});
