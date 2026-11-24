@@ -24,7 +24,7 @@
 
   function observationSvg() {
     const content = '<svg x="6" y="35" width="' + crop[2] + '" height="' + crop[3] + '" viewBox="' + crop.join(" ") +
-      '" overflow="hidden"><image href="' + imagePath + '" width="780" height="590"/></svg>';
+      '" overflow="hidden" style="width:' + crop[2] + 'px;height:' + crop[3] + 'px;max-width:none;margin:0"><image href="' + imagePath + '" width="780" height="590"/></svg>';
     return frame(516, 374, "Light micrograph of a Wright–Giemsa-stained tiger frog blood smear. One whole, oblique pink cell fills the centre. A smaller dark purple region lies within it. The bar represents five micrometres.",
       '<text x="14" y="24" font-weight="bold" font-size="19">Tiger frog blood smear under a light microscope</text>' +
       content + scaleBar(24, 354));
@@ -39,8 +39,8 @@
     const outlines = '<g fill="none" stroke="' + ink + '" stroke-width="2.2" stroke-linejoin="round">' +
       '<path data-worked-contour="cell" d="' + cell + '"/><path data-worked-contour="nucleus" d="' + nucleus + '"/></g>';
     const drawing = '<g transform="translate(6 35)">' + outlines + leader("Cell boundary", 310, 71) +
-      leader("Nucleus", 233, 146) + leader("Cytoplasm", 300, 216) + '</g>';
-    return frame(516, 374, "Drawing of the stained tiger frog erythrocyte in the photograph. The larger oblique contour encloses a smaller oval nucleus. Labels identify the cell boundary, nucleus and surrounding cytoplasm. The bar represents five micrometres.",
+      leader("Nucleus", 233, 146) + '</g>';
+    return frame(516, 374, "Drawing of the stained tiger frog erythrocyte in the photograph. The larger oblique contour encloses a smaller oval nucleus. Labels identify the cell boundary and nucleus. The bar represents five micrometres.",
       '<text x="14" y="24" font-weight="bold" font-size="19">Wright–Giemsa-stained tiger frog erythrocyte</text>' +
       drawing + scaleBar(24, 354));
   }
@@ -53,7 +53,7 @@
       "Trace the slightly tilted outer edge with one continuous pencil line. Leave out the fragments of neighbouring cells at the edge of the photograph.",
       "The dark purple nucleus lies near the centre, slightly to the left. Its width along the page is about a third of the cell’s. Outline it once and leave the lighter cytoplasm unshaded.",
       "The stain lets you distinguish nucleus from cytoplasm. It does not resolve the identity of every patch of colour. Leave out a nucleolus, chromosomes and other structures whose boundaries you cannot identify here.",
-      "Write the labels together beside the cell. Use a ruler to take each line to its feature without crossing another label line. Stop the nucleus line at its edge and the cytoplasm line in the pale region. Add a title naming the specimen and preparation. If asked to annotate it, explain how staining helps you identify the nucleus.",
+      "Write the labels outside the cell and rule each line to its feature. The nucleus line enters the cell because the nucleus is inside it; it stops at the nuclear edge. The cell-boundary line stops at the outer edge. Neither line crosses another label line or hides a feature. Add a title naming the specimen and preparation. If asked to annotate it, explain how staining helps identify the nucleus.",
       "The published 10 µm bar spans 255 source pixels. The 5 µm bar shown here spans half that distance. On paper, compare the same dimension of your cell with the photograph and resize the bar in the same proportion."
     ],
     observationSvg,

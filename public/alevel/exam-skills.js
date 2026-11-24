@@ -995,6 +995,11 @@
       const image = node("div");
       image.innerHTML = drawing.svg(item, isReference, Boolean(session.outcome));
       figure.append(node("figcaption", label), image, inspector.add(label, image, isReference ? "Reference" : "Candidate"));
+      if (item.specimen.id === "buttercup") {
+        const detail = node("div", null, "al-vascular-detail");
+        detail.innerHTML = drawing.vascularDetail(item, isReference);
+        figure.append(node("p", "Vascular region · enlarged"), detail);
+      }
       figures.append(figure);
     }
     const descriptions = node("details", null, "al-drawing-evidence");
@@ -1018,7 +1023,7 @@
     comparison.append(node("summary", "Cell drawing or tissue plan?"));
     const figures = node("div", null, "al-figures");
     const worked = window.ALevelDrawingWorked;
-    const section = drawing.bank.find(item => item.specimen.id === "privet");
+    const section = drawing.bank.find(item => item.specimen.id === "leaf");
     const examples = [
       ["Cell drawing · " + worked.name, worked.observationSvg(), "Trace the cell boundaries and the internal structures you can resolve. Preserve their positions and proportions.", workedCredit(worked)],
       ["Tissue plan · " + section.specimen.name, drawing.svg(section, true), "Follow the boundaries between the tissue regions. Compare their relative thickness and position. A plan shows the distribution of tissues and leaves out individual cells.", drawingCredit(section)]
@@ -1114,7 +1119,12 @@
       const hasObservationSet = stored.drawingVersion === 2 ||
         stored.drawingSession?.ids?.some(oldObservation) || stored.drawingReview?.entries?.some(entry => oldObservation(entry.id));
       const prior = {session:stored.drawingSession, review:stored.drawingReview, round:stored.drawingRound};
-      if (hasObservationSet || observations.length) {
+      if (stored.drawingVersion === 3 && (hasObservationSet || observations.length)) {
+        // The images and criteria changed. Keep the previous attempts as
+        // history rather than applying their scores to the revised bank.
+        stored.batch27DrawingSet = {...(hasObservationSet ? prior : {}), outcomes:Object.fromEntries(observations)};
+        stored.drawingOutcomes = Object.fromEntries(outcomes.filter(([id]) => !oldObservation(id)));
+      } else if (hasObservationSet || observations.length) {
         stored.earlierObservationSet = {...(hasObservationSet ? prior : {}), outcomes:Object.fromEntries(observations)};
         stored.drawingOutcomes = Object.fromEntries(outcomes.filter(([id]) => !oldObservation(id)));
       }
@@ -1131,6 +1141,16 @@
         node("p", "These attempts used the earlier drawings and criteria. Your current set starts with the revised questions."));
       if (prior.session) history.append(node("p", "Your earlier set reached drawing " + (prior.session.index + 1) + " of 6."));
       if (prior.review) history.append(node("p", "Your completed earlier set contains " + prior.review.entries.length + " judgements."));
+      const records = node("ul");
+      for (const [id, result] of Object.entries(prior.outcomes || {}))
+        records.append(node("li", id + " · " + (outcomeNames[result] || result)));
+      history.append(records);
+      host.append(history);
+    }
+    if (stored.batch27DrawingSet) {
+      const prior = stored.batch27DrawingSet, history = node("details");
+      history.append(node("summary", "Previous drawing judgements"),
+        node("p", "These attempts used the previous photographs and drawings. They are kept separately from the revised practice."));
       const records = node("ul");
       for (const [id, result] of Object.entries(prior.outcomes || {}))
         records.append(node("li", id + " · " + (outcomeNames[result] || result)));
@@ -1161,6 +1181,17 @@
     const introduction = drawingWorked(bar);
     introduction.open = !stored.drawingSession && !stored.drawingReview;
     block.append(introduction, drawingTypes());
+    const conventions = node("section", null, "al-drawing-conventions");
+    conventions.append(node("h3", "Before you judge a drawing"));
+    const reminders = node("ul");
+    [
+      "Use single, continuous outlines, without shading. Keep the observed shapes and proportions.",
+      "Put labels beside the drawing. Follow each line to the feature it names; entering a cell to reach its nucleus is different from continuing past the boundary being labelled.",
+      "Draw only structures the observation supports. In a tissue map, show tissue boundaries rather than individual cells.",
+      "Give the drawing an explanatory title and an indication of size. A calibrated scale bar must change length in proportion when the drawing is resized."
+    ].forEach(text => reminders.append(node("li", text)));
+    conventions.append(reminders, node("p", "Start with a guided cell-wall comparison, then practise cell drawings before the tissue maps."));
+    block.append(conventions);
     const start = button(
       read().drawingSession ? "Resume drawing set" : "Start a six-drawing set",
       () => round(true),

@@ -1,0 +1,43 @@
+# Biological Drawing: revised observation review
+
+This record covers the revised AQA A-level Biological Drawing activity. It follows the independent audit of commit `5938083` and uses the [AQA practical handbook, version 2.3, pp. 54–55](https://cdn.sanity.io/files/p28bar15/green/2563b719d41442e27a14abbb2ae5360b85ca38c9.pdf#page=55) and the [Keystone pedagogy standard](ORACLE_KEYSTONE_PEDAGOGY.md). The screenshots are for review, not evidence of a pupil trial or a biology teacher's sign-off.
+
+## Review images
+
+- [Contact sheet: all six reference fields and all 18 accepted/rejected candidates, plus the worked and paper models](biological-drawing-visual-review/contact-sheet.png). The sheets use the activity's own SVG renderer and reproduce the live task instructions. The headings show the existing answer key; the live activity displays one candidate at a time.
+- Individual comparisons: [onion](biological-drawing-visual-review/epidermis.png), [tomato leaf](biological-drawing-visual-review/leaf.png), [buttercup](biological-drawing-visual-review/buttercup.png), [artery](biological-drawing-visual-review/arterial.png), [cheek cell](biological-drawing-visual-review/buccal.png), [human erythrocyte](biological-drawing-visual-review/redcell.png), [frog worked example](biological-drawing-visual-review/worked.png), and [paper model](biological-drawing-visual-review/paper.png).
+- Actual activity at [desktop width](biological-drawing-visual-review/desktop-root.png), and phone width with the [reference](biological-drawing-visual-review/phone-reference.png) and [candidate](biological-drawing-visual-review/phone-candidate.png) selected. These screenshots use local browser state to reach the representative items.
+- Regenerate the images with `node scripts/capture-drawing-review.mjs` after installing Playwright Chromium. The generated contact sheet is an audit arrangement; the viewport images are screenshots of the activity itself.
+
+## Specimen and calibration evidence
+
+| Observation | Source and check |
+| --- | --- |
+| Red onion | Adrian J. Hunter's [epidermal peel](https://commons.wikimedia.org/wiki/File:Cells_from_a_red_onion_epidermal_peel.tif), CC BY-SA 3.0. The existing 357-unit source bar represents 200 µm; the 89.25-unit bar represents 50 µm. The wall-only judgement and a separate neighbouring cell for paper drawing are retained. |
+| Tomato leaf | Žanić and colleagues, [Figure 2A](https://doi.org/10.3389/fpls.2018.00086), CC BY 4.0, describes a tomato leaf transverse section with upper epidermis, palisade and spongy mesophyll, lower epidermis and hairs. The local file is a lossless crop of the [published WebP plate](https://www.frontiersin.org/files/Articles/319970/xml-images/fpls-09-00086-g0002.webp), panel A, without rescaling. The black bar spans 94 source pixels (x 966–1059 on row 588) and its caption states 50 µm. The comparison uses crop `[100,0,430,390]`; it deliberately maps only the surfaces and upper epidermal boundary and asks students to omit cells and hairs. Local SHA-256: `43cf7911652152eba5bc2148adfdb4512b7231b13d5741ef39596828b8543d7c`. |
+| Buttercup root | Houseman and Ford's [root section](https://commons.wikimedia.org/wiki/File:Ranunculus_root.jpg), CC BY-SA 4.0. The original 123-unit bar represents 0.31 mm (310 µm). The matched detail crops use the same `[280,240,280,280]` source coordinates in the photograph and each candidate. The cortex label enters the root briefly and stops in the cortex. |
+| Mouse carotid | Brown and colleagues' [young control, Figure 1A](https://doi.org/10.3390/ijms262110274), CC BY 4.0. The published 100 µm bar spans approximately 164 units in the local plate. A tighter crop enlarges the dark medial band; the lumen leader crosses the two wall contours only to reach the lumen. The pale tissue outside the selected band is explicitly excluded by the task. |
+| Human cheek | Batran and colleagues' [Feulgen control, Figure 5a](https://doi.org/10.21203/rs.3.rs-7919116/v1), CC BY 4.0; this source is a preprint. Its 198-unit source bar represents 20 µm; the displayed 99-unit bar represents 10 µm. The observed nucleus is about 96 units wide compared with about 570 for the cell. A margin label enters the cell once and ends at the nuclear edge. |
+| Human erythrocyte | Alummoottil and colleagues' [healthy-control light micrograph, Figure 1A](https://doi.org/10.3390/hemato4010009), CC BY 4.0. The local file is an unscaled crop of panel A from the [published plate](https://mdpi-res.com/hemato/hemato-04-00009/article_deploy/html/images/hemato-04-00009-g001.png). The black 10 µm bar spans approximately 128 pixels (x 841–968 on row 622); a 64-unit bar therefore represents 5 µm. The selected rounded cell has a gradual pale centre, not a resolved boundary around a separate organelle. Local SHA-256: `5c4db451fe76585c2ed967e10429a101f3a21d9e94e43544369a07705e707a7b`. |
+| Tiger frog | Chen and colleagues' [Figure 1A](https://doi.org/10.7717/peerj.13915/fig-1), CC BY 4.0. The nucleus is visibly enclosed. The 5 µm bar is half the 255-unit published 10 µm bar. The nucleus leader enters the cell and stops on the nucleus; the boundary leader stops on the cell boundary. The cytoplasm leader was removed. |
+
+The bar values above describe physical distances; a microscope's original acquisition setting alone would not establish the magnification of a resized on-screen drawing. The two new source images are cropped and converted, without altering the source-to-drawing scale. See the earlier [frog source record](drawing-worked-source.md), [artery source record](drawing-artery-source.md) and [calibration review](drawing-calibration-search.md) for the retained images.
+
+## Judgement register
+
+| Set | Accepted model | Rejected variations and feedback |
+| --- | --- | --- |
+| Onion | `epidermis.outline`: one wall, external label and 50 µm bar. | `epidermis.leader`: wall leader overshoots its target. `epidermis.bar`: identical length incorrectly called 100 µm. |
+| Tomato leaf | `leaf.outline`: narrow upper epidermis, selected surfaces, external label and 50 µm bar. | `leaf.band`: epidermis is disproportionately deep. `leaf.cells`: individual cell partitions are inappropriate in this requested tissue map. |
+| Buttercup | `buttercup.outline`: the small cylinder and four-armed xylem are shown; a short leader ends in the cortex. | `buttercup.core`: cylinder is too large relative to the whole root. `buttercup.xylem`: the requested observed xylem is absent. Both have matching enlarged comparison details. |
+| Artery | `arterial.outline`: medial band and lumen follow the selected observation; label ends in the lumen. | `arterial.rim`: the band at the base is too thin. `arterial.hatch`: hatching is the only assessed fault. |
+| Cheek | `buccal.outline`: unshaded cell and nucleus, with the nucleus label outside the cell. | `buccal.nucleus-size`: nucleus much too large. `buccal.sketch`: competing strokes obscure the upper-left contour. |
+| Human erythrocyte | `redcell.outline`: the observed outer contour is drawn without inventing an internal organelle. | `redcell.interior`: a separately enclosed body is unsupported by the photograph. `redcell.bar`: a 5 µm length is incorrectly labelled 10 µm. |
+
+The model contours were inspected over the source images as well as side by side. Label routes were followed from word to endpoint; leaders to interior regions necessarily cross enclosing contours. Titles, annotations and source-relative bar lengths were checked in all variants. Each rejected candidate now has one keyed fault. Interpretation of a gradual stain boundary remains an observational judgement, not proof that an unlabelled structure is absent from a living cell.
+
+## Learning sequence and rendering
+
+The worked cell is followed by a short, non-interactive conventions reminder. A six-item set starts with a guided onion judgement, moves through two cell examples and then the leaf, root and artery tissue maps. The three consecutive sets still cover all 18 variants. Paper drawing remains self-reviewed; no AI marking or learner data upload is added. Earlier version-3 observation attempts are archived separately so their scores are not applied to the replacement pictures; paper notes and the scale calculation remain available.
+
+During visual review, the general `.al-teaching svg` CSS was found to override the dimensions of SVGs nested inside the comparison figures. That enlarged the photograph or outline independently of its leader, title and bar. The nested viewports now retain their intended dimensions. The drawing checks compare the **rendered browser transforms** of the specimen, reference and label, including the frog photograph; inspecting authored endpoints alone would not detect that error.

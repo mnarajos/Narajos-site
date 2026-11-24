@@ -314,6 +314,12 @@ button.al-secondary {
   border-radius: .5rem;
 }
 .al-drawing-comparison .al-secondary { font-size: .9rem; }
+.al-drawing-comparison figure > p { margin: .65rem 0 .3rem; font-weight: 700; font-size: .9rem; }
+.al-vascular-detail { max-width: 19rem; border: 1px solid var(--line); background: white; }
+.al-drawing-conventions { margin-block: 1rem; }
+.al-drawing-conventions h3 { margin-bottom: .4rem; }
+.al-drawing-conventions ul { padding-inline-start: 1.25rem; }
+.al-drawing-conventions li { margin-block: .3rem; }
 .al-figure-dialog {
   box-sizing: border-box;
   width: min(92vw, 55rem);
