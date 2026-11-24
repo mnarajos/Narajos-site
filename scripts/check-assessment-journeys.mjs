@@ -69,7 +69,7 @@ export async function checkAssessmentJourneys(browser,base) {
     await food.evaluate(()=>window.__k.ev('L.i=L.queue.findIndex(q=>q.q.includes("A sample stays blue after a Benedict"));L.phase="q";showQ()'));
     const worked=food.getByRole("heading",{name:"Worked example",exact:true});
     assert(await worked.isVisible());
-    assert.match(await food.locator(".food-worked").innerText(),/drink turns green[\s\S]*reducing sugar was detected/i);
+    assert.match(await food.locator(".food-worked").innerText(),/drink heated with Benedict’s turns green[\s\S]*reducing sugar was detected/i);
     assert.match(await food.locator("#qf legend").innerText(),/A sample stays blue after a Benedict/);
     assert(await worked.evaluate(el=>Boolean(el.compareDocumentPosition(document.querySelector("#qf")) & Node.DOCUMENT_POSITION_FOLLOWING)));
     await food.getByText("No reducing sugar was detected in the sample",{exact:true}).click();
