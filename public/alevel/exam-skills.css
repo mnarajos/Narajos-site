@@ -107,6 +107,13 @@
 .al-teaching .al-step p {
   margin-block: 0.4rem;
 }
+.al-model-steps {
+  margin: 0;
+  padding-left: 1.4rem;
+}
+.al-model-steps li + li {
+  margin-top: .65rem;
+}
 .al-teaching .al-note {
   font-size: 1rem;
 }
@@ -380,7 +387,7 @@ button.al-secondary {
 }
 .al-catalogue-row {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
   gap: .7rem;
   padding: .65rem .35rem;
@@ -400,6 +407,7 @@ button.al-secondary {
   display: grid;
   gap: .1rem;
 }
+.al-catalogue-copy strong { text-decoration: underline; text-underline-offset: .16em; }
 .al-catalogue-copy small { font-weight: 650; }
 .al-row-action {
   align-self: center;
@@ -492,6 +500,39 @@ main:has(.al-catchup-journey) > h1 {
 .al-journey-stage .al-controls > button {
   min-inline-size: 0;
   max-inline-size: 100%;
+}
+.al-practice-help summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding-block: .6rem;
+}
+.al-practice-help > button,
+.al-practice-help > a {
+  display: flex;
+}
+.al-practice form > fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.al-practice .al-task-prompt {
+  font-size: 1.08rem;
+  line-height: 1.5;
+  font-weight: 650;
+}
+.al-task-stimulus {
+  border-inline-start: 2px solid var(--line);
+  padding-inline-start: .75rem;
+  margin-block: .65rem .9rem;
+}
+.al-practice :is(.al-stimulus-heading, .al-instruction-heading) {
+  font-size: 1rem;
+  margin-block: 0 .3rem;
+}
+.al-task-stimulus > p,
+.al-task-prompt > p {
+  margin-block: 0 .45rem;
 }
 @media (max-width: 480px) {
   header .brand {

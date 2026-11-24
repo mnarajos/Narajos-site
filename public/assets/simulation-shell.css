@@ -11,6 +11,7 @@
 .sim-utility-nav img{display:block;width:18px;height:18px}
 .sim-utility-nav .sim-site-link{white-space:nowrap}
 .sim-footer { padding-block: .25rem; }
+.sim-footer .site-copyright { color: inherit; }
 .sim-fullscreen > .sim-footer { flex: none; padding-inline: .875rem; }
 .brand h1.t{margin:0;line-height:1.15}
 @supports(height:100dvh){body.sim-fullscreen:not(.enzyme-simulation){height:100dvh}}

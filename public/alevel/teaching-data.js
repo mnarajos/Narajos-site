@@ -1,4 +1,12 @@
 /* Original teaching families. Each task states the conditions needed for its predictions. */
+(() => {
+function withStimulus(stimulus, instruction, { examQuestion = false, instructionFirst = false } = {}) {
+  const task = Array.isArray(instruction) ? instruction.join(" ") : instruction;
+  // Keep the full prompt available to the assessment parser and saved-work review.
+  const prompt = instructionFirst ? task + " " + stimulus : stimulus + " " + task;
+  return { prompt, stimulus, instruction, examQuestion };
+}
+
 window.ALevelTeachingFamilies = {
   osmosis: {
     id: "osmosis",
@@ -16,8 +24,10 @@ window.ALevelTeachingFamilies = {
     tasks: [
       {
         kind: "choice",
-        prompt:
-          "Guided practice. A cell is at −700 kPa and the surrounding solution at −300 kPa. Predict net movement.",
+        ...withStimulus(
+          "Guided practice. A cell is at −700 kPa and the surrounding solution at −300 kPa.",
+          "Predict net movement.",
+        ),
         options: ["Into the cell", "Out of the cell", "No net movement"],
         answer: 0,
         why: "−300 kPa is higher than −700 kPa. Water enters across the partially permeable membrane.",
@@ -26,8 +36,10 @@ window.ALevelTeachingFamilies = {
       },
       {
         kind: "number",
-        prompt:
-          "A calibration line crosses 0% change at −500 kPa. Estimate the tissue water potential in kPa.",
+        ...withStimulus(
+          "A calibration line crosses 0% change at −500 kPa.",
+          "Estimate the tissue water potential in kPa.",
+        ),
         answer: -500,
         why: "The intercept estimates the tissue water potential. Include the negative sign.",
         hints: ["Start at 0% mass change. Which axis gives the tissue estimate?", "Read the intercept on the horizontal axis, including its sign."],
@@ -35,7 +47,10 @@ window.ALevelTeachingFamilies = {
       },
       {
         kind: "choice",
-        prompt: "A cell and solution are both at −450 kPa. What occurs?",
+        ...withStimulus(
+          "A cell and solution are both at −450 kPa.",
+          "What occurs?",
+        ),
         options: [
           "Water crosses in both directions with no net movement",
           "All water movement stops",
@@ -79,8 +94,10 @@ window.ALevelTeachingFamilies = {
     tasks: [
       {
         kind: "choice",
-        prompt:
-          "Guided practice. At one position, water is 60 units and blood is 50 units. Which way does oxygen diffuse?",
+        ...withStimulus(
+          "Guided practice. At one position, water is 60 units and blood is 50 units.",
+          "Which way does oxygen diffuse?",
+        ),
         options: ["Water to blood", "Blood to water", "Neither"],
         answer: 0,
         why: "Compare the adjacent values. Water has the higher oxygen concentration.",
@@ -89,8 +106,10 @@ window.ALevelTeachingFamilies = {
       },
       {
         kind: "choice",
-        prompt:
-          "An unfamiliar membrane exchanger carries a dissolved nutrient. Both fluids flow oppositely and the donor concentration exceeds the receiver concentration at every position. What follows?",
+        ...withStimulus(
+          "An unfamiliar membrane exchanger carries a dissolved nutrient. Both fluids flow oppositely and the donor concentration exceeds the receiver concentration at every position.",
+          "What follows?",
+        ),
         options: [
           "Net diffusion can continue along its length",
           "Opposite flow makes diffusion active transport",
@@ -134,8 +153,10 @@ window.ALevelTeachingFamilies = {
     tasks: [
       {
         kind: "choice",
-        prompt:
-          "Guided practice. Reduced NADP becomes scarce while ATP remains available. Which stage is directly restricted?",
+        ...withStimulus(
+          "Guided practice. Reduced NADP becomes scarce while ATP remains available.",
+          "Which stage is directly restricted?",
+        ),
         options: [
           "Reduction of GP to TP",
           "Fixation of CO₂ by rubisco",
@@ -148,7 +169,10 @@ window.ALevelTeachingFamilies = {
       },
       {
         kind: "choice",
-        prompt: "ATP production stops. Which conclusion is justified?",
+        ...withStimulus(
+          "ATP production stops.",
+          "Which conclusion is justified?",
+        ),
         options: [
           "Both GP reduction and RuBP regeneration are restricted",
           "Only CO₂ entry is restricted",
@@ -212,8 +236,10 @@ window.ALevelTeachingFamilies = {
       },
       {
         kind: "choice",
-        prompt:
-          "Two heterozygous parents have linked loci. Can you immediately apply 9:3:3:1?",
+        ...withStimulus(
+          "Two heterozygous parents have linked loci.",
+          "Can you immediately apply 9:3:3:1?",
+        ),
         options: [
           "No, independent assortment cannot be assumed",
           "Yes, it applies to every two-gene cross",
@@ -247,8 +273,10 @@ window.ALevelTeachingFamilies = {
     tasks: [
       {
         kind: "number",
-        prompt:
-          "Guided practice. 16% show the recessive phenotype under the stated assumptions. Find q.",
+        ...withStimulus(
+          "Guided practice. 16% show the recessive phenotype under the stated assumptions.",
+          "Find q.",
+        ),
         answer: 0.4,
         why: "q² = 0.16, so q = √0.16 = 0.4.",
         hints: ["Identify the recessive phenotype frequency before taking a square root.", "q² = 0.16, so q = √0.16 = 0.4."],
@@ -257,8 +285,10 @@ window.ALevelTeachingFamilies = {
       },
       {
         kind: "number",
-        prompt:
-          "In a different equilibrium population 4% have the recessive phenotype. Find the heterozygote frequency.",
+        ...withStimulus(
+          "In a different equilibrium population 4% have the recessive phenotype.",
+          "Find the heterozygote frequency.",
+        ),
         answer: 0.32,
         why: "q² = 0.04, q = 0.2, p = 0.8, and 2pq = 0.32.",
         hints: ["Find q and p separately before multiplying the two frequencies.", "q² = 0.04, q = 0.2, p = 0.8, and 2pq = 0.32."],
@@ -266,8 +296,10 @@ window.ALevelTeachingFamilies = {
       },
       {
         kind: "number",
-        prompt:
-          "In an equilibrium population of 500, q² = 0.25. How many heterozygotes are expected?",
+        ...withStimulus(
+          "In an equilibrium population of 500, q² = 0.25.",
+          "How many heterozygotes are expected?",
+        ),
         answer: 250,
         why: "q = 0.5, p = 0.5, 2pq = 0.5, and 0.5 × 500 = 250.",
         hints: ["Write q² for the recessive genotype and compare it with 2pq.", "q = 0.5, p = 0.5, 2pq = 0.5, and 0.5 × 500 = 250."],
@@ -297,8 +329,10 @@ window.ALevelTeachingFamilies = {
       {
         catchup: "a8-epigen",
         kind: "choice",
-        prompt:
-          "Guided practice. Promoter methylation increases at a gene where it reduces access. Predict transcription.",
+        ...withStimulus(
+          "Guided practice. Promoter methylation increases at a gene where it reduces access.",
+          "Predict transcription.",
+        ),
         options: [
           "It decreases",
           "It must increase",
@@ -312,8 +346,10 @@ window.ALevelTeachingFamilies = {
       {
         catchup: "a8-epigen",
         kind: "choice",
-        prompt:
-          "Histones become acetylated but a necessary activator is absent. Is increased transcription guaranteed?",
+        ...withStimulus(
+          "Histones become acetylated but a necessary activator is absent.",
+          "Is increased transcription guaranteed?",
+        ),
         options: [
           "No, increased access alone is insufficient",
           "Yes, acetylation replaces all activators",
@@ -326,8 +362,10 @@ window.ALevelTeachingFamilies = {
       {
         catchup: "a8-transfac",
         kind: "choice",
-        prompt:
-          "An activator normally increases RNA polymerase binding at a promoter. Activator activity falls, with other requirements unchanged. Predict the effect.",
+        ...withStimulus(
+          "An activator normally increases RNA polymerase binding at a promoter. Activator activity falls, with other requirements unchanged.",
+          "Predict the effect.",
+        ),
         options: [
           "Transcription rate can fall because polymerase binding is reduced",
           "Transcription must rise because regulation decreased",
@@ -341,7 +379,10 @@ window.ALevelTeachingFamilies = {
         catchup: "a8-transfac",
         hints: ["What was the repressor doing before it was removed?"],
         kind: "writing",
-        prompt: "A repressor is degraded. Explain why transcription can rise.",
+        ...withStimulus(
+          "A repressor is degraded.",
+          "Explain why transcription can rise.",
+        ),
         points: [
           "Less active repressor binds its regulatory site.",
           "Inhibition of transcription decreases.",
@@ -374,8 +415,10 @@ window.ALevelTeachingFamilies = {
     tasks: [
       {
         kind: "choice",
-        prompt:
-          "Guided practice. Pressures are atrium 8, ventricle 20, aorta 80 mmHg. Which valves are closed?",
+        ...withStimulus(
+          "Guided practice. Pressures are atrium 8, ventricle 20, aorta 80 mmHg.",
+          "Which valves are closed?",
+        ),
         options: ["Both mitral and aortic", "Only mitral", "Only aortic"],
         answer: 0,
         why: "20 > 8 closes the mitral valve. 20 < 80 keeps the aortic valve closed.",
@@ -384,8 +427,10 @@ window.ALevelTeachingFamilies = {
       },
       {
         kind: "choice",
-        prompt:
-          "Atrium 8, ventricle 110, aorta 90 mmHg. What permits ejection?",
+        ...withStimulus(
+          "Atrium 8, ventricle 110, aorta 90 mmHg.",
+          "What permits ejection?",
+        ),
         options: [
           "Ventricular pressure exceeds aortic pressure",
           "The atrium contracts more strongly than the aorta",
@@ -410,8 +455,10 @@ window.ALevelTeachingFamilies = {
       },
       {
         kind: "choice",
-        prompt:
-          "During relaxation the atrial, ventricular and aortic pressures are 9, 4 and 75 mmHg. What happens?",
+        ...withStimulus(
+          "During relaxation the atrial, ventricular and aortic pressures are 9, 4 and 75 mmHg.",
+          "What happens?",
+        ),
         options: [
           "The mitral valve opens and the aortic valve stays closed",
           "Both valves open because the ventricle relaxes",
@@ -423,8 +470,10 @@ window.ALevelTeachingFamilies = {
       },
       {
         kind: "choice",
-        prompt:
-          "“The ventricle contracts, so the mitral valve closes.” What reasoning is missing?",
+        ...withStimulus(
+          "“The ventricle contracts, so the mitral valve closes.”",
+          "What reasoning is missing?",
+        ),
         options: [
           "Ventricular pressure becomes greater than atrial pressure",
           "The name ventricular systole",
@@ -436,8 +485,10 @@ window.ALevelTeachingFamilies = {
       },
       {
         kind: "choice",
-        prompt:
-          "On the graph, ventricular pressure falls through aortic pressure at D. Which event follows?",
+        ...withStimulus(
+          "On the graph, ventricular pressure falls through aortic pressure at D.",
+          "Which event follows?",
+        ),
         options: [
           "Aortic valve closes",
           "Mitral valve closes",
@@ -488,8 +539,10 @@ window.ALevelTeachingFamilies = {
       {
         catchup: "a1-enzfactors",
         kind: "choice",
-        prompt:
-          "Level 1 · Guided. A reversible inhibitor concentration falls. Other conditions stay suitable. Predict enzyme rate.",
+        ...withStimulus(
+          "Level 1 · Guided. A reversible inhibitor concentration falls. Other conditions stay suitable.",
+          "Predict enzyme rate.",
+        ),
         options: [
           "It can increase",
           "It must decrease",
@@ -504,8 +557,10 @@ window.ALevelTeachingFamilies = {
         visual: "pathway-enzyme",
         catchup: "a1-enzfactors",
         kind: "choice",
-        prompt:
-          "Level 2. A protease is reversibly inhibited. Inhibitor falls, with equal starting protein and fixed time before depletion. What remains?",
+        ...withStimulus(
+          "Level 2. A protease is reversibly inhibited. Inhibitor falls, with equal starting protein and fixed time before depletion.",
+          "What remains?",
+        ),
         options: [
           "Less intact protein",
           "More intact protein",
@@ -518,8 +573,10 @@ window.ALevelTeachingFamilies = {
       {
         catchup: "a1-enzfactors",
         kind: "choice",
-        prompt:
-          "An enzyme was irreversibly inactivated. Free inhibitor is washed away, and no new enzyme is supplied. What can be inferred?",
+        ...withStimulus(
+          "An enzyme was irreversibly inactivated. Free inhibitor is washed away, and no new enzyme is supplied.",
+          "What can be inferred?",
+        ),
         options: [
           "Previously inactivated enzyme need not regain activity",
           "All enzyme activity immediately returns",
@@ -532,8 +589,10 @@ window.ALevelTeachingFamilies = {
       {
         catchup: "a1-enzfactors",
         kind: "choice",
-        prompt:
-          "A reaction has already used all its substrate. Reversible inhibitor concentration then falls. What happens to product formation without added substrate?",
+        ...withStimulus(
+          "A reaction has already used all its substrate. Reversible inhibitor concentration then falls.",
+          "What happens to product formation without added substrate?",
+        ),
         options: [
           "It remains limited by lack of substrate",
           "It must immediately increase",
@@ -547,8 +606,10 @@ window.ALevelTeachingFamilies = {
         visual: "pathway-double",
         catchup: null,
         kind: "group",
-        prompt:
-          "Level 3 · Complete the chain when A increases. A inhibits B, and B inhibits C.",
+        ...withStimulus(
+          "A inhibits B, and B inhibits C.",
+          "Level 3 · Complete the chain when A increases.", { instructionFirst: true },
+        ),
         groups: ["Increases", "Decreases"],
         items: [
           ["B activity", 1],
@@ -562,8 +623,10 @@ window.ALevelTeachingFamilies = {
         visual: "pathway-double",
         catchup: null,
         kind: "choice",
-        prompt:
-          "A inhibits B and B inhibits C. A falls. Other conditions are suitable. Predict C.",
+        ...withStimulus(
+          "A inhibits B and B inhibits C. A falls. Other conditions are suitable.",
+          "Predict C.",
+        ),
         options: [
           "C can decrease as B becomes more active",
           "C must rise because A is lower",
@@ -577,8 +640,10 @@ window.ALevelTeachingFamilies = {
         visual: "pathway-neural",
         catchup: "a6-synapse",
         kind: "choice",
-        prompt:
-          "Level 4. In a model inhibitory input hyperpolarises a neurone. The input decreases, but excitation remains weak. What can be concluded?",
+        ...withStimulus(
+          "Level 4. In a model inhibitory input hyperpolarises a neurone. The input decreases, but excitation remains weak.",
+          "What can be concluded?",
+        ),
         options: [
           "Threshold becomes more likely, but an action potential is not guaranteed",
           "An action potential must occur immediately",
@@ -591,8 +656,10 @@ window.ALevelTeachingFamilies = {
       {
         catchup: "a8-transfac",
         kind: "choice",
-        prompt:
-          "Level 4. A repressor is inhibited by a newly described molecule R. R increases. RNA polymerase and activators remain available. Predict transcription.",
+        ...withStimulus(
+          "Level 4. A repressor is inhibited by a newly described molecule R. R increases. RNA polymerase and activators remain available.",
+          "Predict transcription.",
+        ),
         options: [
           "It can increase as repressor activity falls",
           "It must decrease because R is an inhibitor",
@@ -605,8 +672,10 @@ window.ALevelTeachingFamilies = {
       {
         catchup: "a1-enzfactors",
         kind: "choice",
-        prompt:
-          "Level 5. A signal both activates an enzyme and increases its inhibitor concentration. Magnitudes are unknown. Predict net rate.",
+        ...withStimulus(
+          "Level 5. A signal both activates an enzyme and increases its inhibitor concentration. Magnitudes are unknown.",
+          "Predict net rate.",
+        ),
         options: [
           "The information is insufficient",
           "It must increase",
@@ -619,8 +688,10 @@ window.ALevelTeachingFamilies = {
       {
         catchup: "a6-homeo",
         kind: "group",
-        prompt:
-          "A hypothetical homeostatic pathway uses hormone H to promote hormone J. J inhibits H release. Immediately after J rises, classify the direct change.",
+        ...withStimulus(
+          "A hypothetical homeostatic pathway uses hormone H to promote hormone J. J inhibits H release.",
+          "Immediately after J rises, classify the direct change.",
+        ),
         groups: ["Increases", "Decreases"],
         items: [
           ["Inhibition of H release", 0],
@@ -632,8 +703,10 @@ window.ALevelTeachingFamilies = {
       {
         catchup: "a1-enzfactors",
         kind: "choice",
-        prompt:
-          "Experimental data. At 0, 2 and 4 µmol dm⁻³ reversible inhibitor, product after 30 s is 12, 8 and 4 units. What does this support?",
+        ...withStimulus(
+          "Experimental data. At 0, 2 and 4 µmol dm⁻³ reversible inhibitor, product after 30 s is 12, 8 and 4 units.",
+          "What does this support?",
+        ),
         options: [
           "Higher inhibitor reduced product formation under these conditions",
           "Inhibitor permanently destroyed every enzyme",
@@ -692,8 +765,10 @@ window.ALevelTeachingFamilies = {
       {
         catchup: null,
         kind: "number",
-        prompt:
-          "Continuous outlines, no shading, correct proportions and a scale bar. How many of these drawing categories are addressed?",
+        ...withStimulus(
+          "Continuous outlines, no shading, correct proportions and a scale bar.",
+          "How many of these drawing categories are addressed?",
+        ),
         answer: 4,
         why: "Line quality, shading, proportions, and scale are four separate categories in this framework.",
         hints: ["Assign each statement to a drawing criterion before counting.", "Line quality, shading, proportions, and scale are four separate categories in this framework."],
@@ -720,8 +795,10 @@ window.ALevelTeachingFamilies = {
       {
         catchup: "a1-enzfactors",
         kind: "choice",
-        prompt:
-          "An enzyme-rate answer repeats “more collisions” twice. The framework credits collision frequency and active-site shape. Which replacement adds a distinct point?",
+        ...withStimulus(
+          "An enzyme-rate answer repeats “more collisions” twice. The framework credits collision frequency and active-site shape.",
+          "Which replacement adds a distinct point?",
+        ),
         options: [
           "Strong heat changes active-site shape and reduces substrate binding",
           "Particles hit each other more often",
@@ -734,8 +811,10 @@ window.ALevelTeachingFamilies = {
       {
         catchup: "p3s-methods",
         kind: "choice",
-        prompt:
-          "Framework: control temperature, measure rate, and repeat. Which response covers more criteria?",
+        ...withStimulus(
+          "Framework: control temperature, measure rate, and repeat.",
+          "Which response covers more criteria?",
+        ),
         options: [
           "Keep temperature fixed, measure product per minute, repeat trials",
           "Use a water bath, keep temperature constant, avoid temperature change",
@@ -748,8 +827,10 @@ window.ALevelTeachingFamilies = {
       {
         catchup: "p3s-methods",
         kind: "choice",
-        prompt:
-          "Framework: state the trend, quote data, and qualify uncertainty. Which response covers more criteria?",
+        ...withStimulus(
+          "Framework: state the trend, quote data, and qualify uncertainty.",
+          "Which response covers more criteria?",
+        ),
         options: [
           "Rate increases from 3 to 7 units, but the small sample limits confidence",
           "Rate rises, increases, and goes up",
@@ -762,8 +843,10 @@ window.ALevelTeachingFamilies = {
       {
         catchup: "p3s-methods",
         kind: "number",
-        prompt:
-          "New framework: numerical comparison, trend, limitation. Answer “A is 12 and B is 8, a difference of 4.” How many categories are addressed?",
+        ...withStimulus(
+          "New framework: numerical comparison, trend, limitation. Answer “A is 12 and B is 8, a difference of 4.”",
+          "How many categories are addressed?",
+        ),
         answer: 1,
         why: "These are numerical comparisons. The answer still lacks a trend across conditions and a limitation.",
         hints: ["Decide whether the sentence describes a trend, gives a numerical comparison or identifies a limitation.", "These are numerical comparisons. The answer still lacks a trend across conditions and a limitation."],
@@ -773,8 +856,10 @@ window.ALevelTeachingFamilies = {
         catchup: "p3s-methods",
         hints: ["Keep one statement about repeats. Identify the two criteria it leaves uncovered."],
         kind: "writing",
-        prompt:
-          "Improve “use many repeats, repeat again, do more repeats”. Framework: random-error reduction, control of temperature, and calibration.",
+        ...withStimulus(
+          "Framework: random-error reduction, control of temperature, and calibration.",
+          "Improve “use many repeats, repeat again, do more repeats”.", { instructionFirst: true },
+        ),
         points: [
           "Use repeats to reduce random error in the mean.",
           "Control temperature so it does not confound the comparison.",
@@ -820,8 +905,10 @@ window.ALevelTeachingFamilies = {
       {
         catchup: "a2-active",
         kind: "choice",
-        prompt:
-          "A membrane transport protein is inhibited. Which explanation is complete if it normally carries ions against their gradient?",
+        ...withStimulus(
+          "A membrane transport protein is inhibited.",
+          "Which explanation is complete if it normally carries ions against their gradient?",
+        ),
         options: [
           "Active transport falls because fewer functional carriers can move ions against the gradient",
           "Ions stop being charged",
@@ -847,8 +934,10 @@ window.ALevelTeachingFamilies = {
       {
         catchup: "a6-adh",
         kind: "choice",
-        prompt:
-          "A collecting duct has more aquaporins after ADH binding. Which explanation links mechanism to water movement?",
+        ...withStimulus(
+          "A collecting duct has more aquaporins after ADH binding.",
+          "Which explanation links mechanism to water movement?",
+        ),
         options: [
           "Water permeability increases, allowing more osmosis down the water-potential gradient",
           "ADH pumps water against its gradient",
@@ -902,7 +991,10 @@ window.ALevelTeachingFamilies.interpret = {
   tasks: [
     {
       kind: "choice", guided: true, catchup: "a2-mitosis",
-      prompt: "A chemical prevents spindle microtubules shortening. A cell has aligned its duplicated chromosomes but has not separated them. Explain why the nucleus cannot divide normally. What must your answer explain?",
+      ...withStimulus(
+          "A chemical prevents spindle microtubules shortening. A cell has aligned its duplicated chromosomes but has not separated them. Explain why the nucleus cannot divide normally.",
+          "What must your answer explain?", { examQuestion: true },
+        ),
       options: [
         "Why the duplicated DNA cannot be distributed to opposite poles",
         "How the cell increased its DNA content before mitosis",
@@ -915,7 +1007,10 @@ window.ALevelTeachingFamilies.interpret = {
     },
     {
       kind: "choice", catchup: "a6-adh",
-      prompt: "Two collecting ducts receive the same concentration of ADH. Only one can insert additional aquaporins. What is the most direct explanation for why less water enters the interstitial fluid from the other duct, given the same water-potential difference?",
+      ...withStimulus(
+          "Two collecting ducts receive the same concentration of ADH. Only one can insert additional aquaporins.",
+          "What is the most direct explanation for why less water enters the interstitial fluid from the other duct, given the same water-potential difference?",
+        ),
       options: [
         "The other duct has fewer water channels in its membrane, so less water moves by osmosis in the same time.",
         "The other duct receives less ADH because the blood water potential is higher.",
@@ -928,7 +1023,10 @@ window.ALevelTeachingFamilies.interpret = {
     },
     {
       kind: "choice", catchup: "a8-transfac",
-      prompt: "A plant cell produces less of a transporter after a regulatory DNA sequence is changed. Its mRNA is unchanged in quantity and sequence. Which response contains relevant biology but explains the wrong stage?",
+      ...withStimulus(
+          "A plant cell produces less of a transporter after a regulatory DNA sequence is changed. Its mRNA is unchanged in quantity and sequence.",
+          "Which response contains relevant biology but explains the wrong stage?",
+        ),
       options: [
         "Less RNA polymerase binding reduces synthesis of the transporter mRNA.",
         "Fewer ribosomes initiate translation on each transporter mRNA.",
@@ -941,7 +1039,10 @@ window.ALevelTeachingFamilies.interpret = {
     },
     {
       kind: "writing", catchup: "p3s-methods",
-      prompt: "Pigment leaking from plant tissue is measured by absorbance. The solvent itself also absorbs light. Suggest one comparison and explain what it would let you infer about the absorbance of a tube containing treated tissue.",
+      ...withStimulus(
+          "Pigment leaking from plant tissue is measured by absorbance. The solvent itself also absorbs light.",
+          "Suggest one comparison and explain what it would let you infer about the absorbance of a tube containing treated tissue.",
+        ),
       hints: ["Name what you would put in a tube, then explain why comparing its reading is useful."],
       points: [
         "Compare with an otherwise matched tube containing the same concentration of solvent but no tissue.",
@@ -983,7 +1084,10 @@ window.ALevelTeachingFamilies.practical = {
   tasks: [
     {
       kind: "choice", guided: true, catchup: "p3s-methods",
-      prompt: "A colour assay darkens as an enzyme forms a product. The investigation compares the time taken to reach a fixed amount of product. Which change makes the endpoint more objectively comparable?",
+      ...withStimulus(
+          "A colour assay darkens as an enzyme forms a product. The investigation compares the time taken to reach a fixed amount of product.",
+          "Which change makes the endpoint more objectively comparable?",
+        ),
       options: [
         "Use the same colorimeter setting and record when each reaction reaches the same absorbance within the calibrated range.",
         "Measure the absorbance of every tube after the same elapsed time and record those readings as the endpoint times.",
@@ -996,7 +1100,10 @@ window.ALevelTeachingFamilies.practical = {
     },
     {
       kind: "choice", catchup: "a2-mitosis",
-      prompt: "Two root-tip slides are used to compare the proportion of cells in mitosis. The observer chooses fields that contain many dark chromosome clusters. What change best addresses the bias?",
+      ...withStimulus(
+          "Two root-tip slides are used to compare the proportion of cells in mitosis. The observer chooses fields that contain many dark chromosome clusters.",
+          "What change best addresses the bias?",
+        ),
       options: [
         "Sample fields chosen without reference to visible mitoses from the same defined region on both slides.",
         "Count every cell twice in the selected fields and take the mean of the two estimates.",
@@ -1009,7 +1116,10 @@ window.ALevelTeachingFamilies.practical = {
     },
     {
       kind: "choice", catchup: "a5-chromat",
-      prompt: "An unknown pigment and a reference pigment travel the same fraction of the distance to the solvent front on one chromatogram. Suggest the best next comparison to investigate whether they are the same compound.",
+      ...withStimulus(
+          "An unknown pigment and a reference pigment travel the same fraction of the distance to the solvent front on one chromatogram.",
+          "Suggest the best next comparison to investigate whether they are the same compound.",
+        ),
       options: [
         "Run both under the same second set of conditions and compare whether they still co-migrate.",
         "Measure both distances from the top edge of the paper and compare the absolute distances.",
@@ -1022,7 +1132,10 @@ window.ALevelTeachingFamilies.practical = {
     },
     {
       kind: "writing", catchup: "p3s-methods",
-      prompt: "Two respirometers contain equal masses of the same seeds and the same amount of carbon dioxide absorbent. The germinating seeds are held at 25 °C and the dormant seeds at 15 °C. The marker moves faster in the first instrument. Explain the key limitation of the comparison and justify one change.",
+      ...withStimulus(
+          "Two respirometers contain equal masses of the same seeds and the same amount of carbon dioxide absorbent. The germinating seeds are held at 25 °C and the dormant seeds at 15 °C. The marker moves faster in the first instrument.",
+          "Explain the key limitation of the comparison and justify one change.",
+        ),
       points: [
         "Germination state and temperature differ. Temperature can affect enzyme-controlled respiration and hence oxygen uptake.",
         "With carbon dioxide absorbed, the marker movement is used to infer oxygen uptake under stable measurement conditions. The difference cannot be assigned to germination alone.",
@@ -1050,7 +1163,10 @@ window.ALevelTeachingFamilies.precision = {
   tasks: [
     {
       kind: "choice", guided: true, catchup: "a2-osmosis",
-      prompt: "The water potential inside a plant cell is −600 kPa. Outside it is −200 kPa. Which answer accurately explains why the cell gains water?",
+      ...withStimulus(
+          "The water potential inside a plant cell is −600 kPa. Outside it is −200 kPa.",
+          "Which answer accurately explains why the cell gains water?",
+        ),
       options: [
         "Water moves by osmosis across the partially permeable membrane, from −200 kPa outside to −600 kPa inside.",
         "Water moves by osmosis across the partially permeable membrane, from −600 kPa inside to −200 kPa outside.",
@@ -1063,7 +1179,10 @@ window.ALevelTeachingFamilies.precision = {
     },
     {
       kind: "choice", catchup: "a2-mitosis",
-      prompt: "A diploid cell has completed DNA replication. One maternal chromosome and its paternal counterpart both carry a locus for the same gene. Which description preserves the distinction between the chromosome copies and the partners?",
+      ...withStimulus(
+          "A diploid cell has completed DNA replication. One maternal chromosome and its paternal counterpart both carry a locus for the same gene.",
+          "Which description preserves the distinction between the chromosome copies and the partners?",
+        ),
       options: [
         "Each chromosome has two sister chromatids. The maternal and paternal chromosomes are homologues.",
         "The maternal and paternal chromosomes are sister chromatids. Each chromosome contains two homologues.",
@@ -1076,7 +1195,10 @@ window.ALevelTeachingFamilies.precision = {
     },
     {
       kind: "choice", catchup: "a4-translation",
-      prompt: "A substitution changes an mRNA codon to one specifying a different amino acid. Which wording accurately describes how the change can affect the polypeptide?",
+      ...withStimulus(
+          "A substitution changes an mRNA codon to one specifying a different amino acid.",
+          "Which wording accurately describes how the change can affect the polypeptide?",
+        ),
       options: [
         "During translation, the changed codon corresponds to a different amino acid, which is delivered by an appropriate tRNA and incorporated.",
         "During transcription, the changed codon causes RNA polymerase to add a different amino acid to the polypeptide.",
@@ -1089,7 +1211,10 @@ window.ALevelTeachingFamilies.precision = {
     },
     {
       kind: "writing", catchup: "a3-heart",
-      prompt: "A learner writes, ‘The ventricle contracts so the valve opens.’ Using the left side of the heart, rewrite this to explain why the aortic valve stays shut briefly after ventricular contraction begins and then opens.",
+      ...withStimulus(
+          "A learner writes, ‘The ventricle contracts so the valve opens.’",
+          "Using the left side of the heart, rewrite this to explain why the aortic valve stays shut briefly after ventricular contraction begins and then opens.",
+        ),
       points: [
         "The ventricular pressure initially remains below aortic pressure, so the aortic valve stays shut.",
         "Contraction raises ventricular pressure. The valve opens when left ventricular pressure exceeds aortic pressure.",
@@ -1122,7 +1247,10 @@ window.ALevelTeachingFamilies.evidence = {
   tasks: [
     {
       kind: "choice", guided: true, catchup: "a6-glucal",
-      prompt: "A calibration for glucose is linear from 0 to 8 mmol dm⁻³. An unknown reads 0.42 absorbance. The nearest standards read 0.30 at 4 mmol dm⁻³ and 0.54 at 6 mmol dm⁻³. Which method gives the appropriate estimate?",
+      ...withStimulus(
+          "A calibration for glucose is linear from 0 to 8 mmol dm⁻³. An unknown reads 0.42 absorbance. The nearest standards read 0.30 at 4 mmol dm⁻³ and 0.54 at 6 mmol dm⁻³.",
+          "Which method gives the appropriate estimate?",
+        ),
       options: [
         "Interpolate between the two standards. The sample is halfway between them, so estimate 5 mmol dm⁻³.",
         "Use the midpoint of the full concentration range and estimate 4 mmol dm⁻³.",
@@ -1135,14 +1263,20 @@ window.ALevelTeachingFamilies.evidence = {
     },
     {
       kind: "number", unit: "%", answer: 25, catchup: "a2-osmosis",
-      prompt: "A tissue sample has a mass of 1.60 g before immersion and 1.20 g afterwards. What percentage of its starting mass was lost?",
+      ...withStimulus(
+          "A tissue sample has a mass of 1.60 g before immersion and 1.20 g afterwards.",
+          "What percentage of its starting mass was lost?",
+        ),
       why: "The loss is 0.40 g. Divide by the starting mass of 1.60 g and multiply by 100 to obtain 25%. The question asks for the magnitude of the loss.",
       numberFeedback: { "33.3": "The final mass is the wrong denominator. The question asks how large the loss is relative to the starting mass.", "0.25": "0.25 is the proportion. Express it as a percentage.", "-25": "−25% is the signed percentage change. Enter the magnitude because the question asks how much was lost.", "75": "That is the percentage of the starting mass left. The question asks for the fraction that was lost." },
       hints: ["Find the mass lost before choosing the reference mass."],
     },
     {
       kind: "choice",
-      prompt: "A randomised experiment compares mean leaf growth between two treatments. Before collecting data the investigators set a 5% threshold. An appropriate test gives P = 0.18. Which statement is supported?",
+      ...withStimulus(
+          "A randomised experiment compares mean leaf growth between two treatments. Before collecting data the investigators set a 5% threshold. An appropriate test gives P = 0.18.",
+          "Which statement is supported?",
+        ),
       options: [
         "The observed difference does not meet the stated threshold. The results do not establish that the treatments have identical effects.",
         "There is an 18% probability that the null hypothesis is true, so an effect is more likely than no effect.",
@@ -1155,7 +1289,10 @@ window.ALevelTeachingFamilies.evidence = {
     },
     {
       kind: "writing", catchup: "p3s-methods",
-      prompt: "River sites downstream of towns were warmer and had fewer mayfly larvae per sample. The researchers also recorded dissolved oxygen. Use the evidence to evaluate the claim that temperature alone reduced larval abundance.",
+      ...withStimulus(
+          "River sites downstream of towns were warmer and had fewer mayfly larvae per sample. The researchers also recorded dissolved oxygen.",
+          "Use the evidence to evaluate the claim that temperature alone reduced larval abundance.",
+        ),
       evidence: [
         "Illustrative means from six sites in each group",
         ["Sites", "Temperature (°C)", "Dissolved oxygen (mg L⁻¹)", "Mayfly larvae per sample"],
@@ -1188,7 +1325,10 @@ window.ALevelTeachingFamilies.extended = {
   tasks: [
     {
       kind: "choice", guided: true,
-      prompt: "An essay title asks why gradients matter for cell function. A pupil develops an accurate paragraph on pumping hydrogen ions across the inner mitochondrial membrane. Which ending makes that paragraph most relevant?",
+      ...withStimulus(
+          "An essay title asks why gradients matter for cell function. A pupil develops an accurate paragraph on pumping hydrogen ions across the inner mitochondrial membrane.",
+          "Which ending makes that paragraph most relevant?",
+        ),
       options: [
         "Link hydrogen ion flow through ATP synthase to ATP production and explain why that ATP matters for a named cellular process.",
         "Add the locations of glycolysis, the link reaction and the Krebs cycle to show breadth.",
@@ -1201,7 +1341,10 @@ window.ALevelTeachingFamilies.extended = {
     },
     {
       kind: "writing",
-      prompt: "A plant grown in dry soil closes its stomata. Light intensity is stable. Over several hours its net carbon dioxide uptake falls and root growth later slows. Explain one chain connecting the stomatal change to root growth. State one reason the available evidence cannot isolate this effect.",
+      ...withStimulus(
+          "A plant grown in dry soil closes its stomata. Light intensity is stable. Over several hours its net carbon dioxide uptake falls and root growth later slows.",
+          ["Explain one chain connecting the stomatal change to root growth.","State one reason the available evidence cannot isolate this effect."],
+        ),
       points: [
         "Stomatal closure restricts diffusion of carbon dioxide into the leaf, reducing the supply for carbon fixation.",
         "Reduced fixation can reduce the production of carbohydrates and the supply of assimilate carried in phloem to the roots.",
@@ -1214,3 +1357,5 @@ window.ALevelTeachingFamilies.extended = {
   specification: "AO2 and AO3, 3.3.2, 3.3.4, 3.5.1–3.5.2 and Paper 3 extended responses",
   schemaVersion: 1,
 };
+
+})();

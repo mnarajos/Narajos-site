@@ -89,7 +89,7 @@ try {
   await page.getByRole("button", { name: "Go straight to questions", exact: true }).press("Enter");
   const numeric = page.locator(".al-practice input[name=number]");
   await numeric.fill("−500");
-  await page.getByRole("button", { name: "Check answer", exact: true }).press("Enter");
+  await page.getByRole("button", { name: "Check", exact: true }).press("Enter");
   await page.reload();
   assert.equal(await numeric.inputValue(), "−500");
   assert.match(await page.locator(".al-practice [role=status]").innerText(), /Correct!/);
@@ -97,7 +97,7 @@ try {
   await fits();
 
   await open("/human-biology/#catchup/f170/3.2.1");
-  await page.locator("[data-hb-model-step] > summary").click();
+  await page.locator("[data-hb-model-step]").waitFor({ state: "visible" });
   await page.getByText("Trace a withdrawal reflex", { exact: true }).click();
   const reflex = page.locator('science-sequence[kind="reflex"]');
   await reflex.getByRole("button", { name: "Next step" }).click();
@@ -106,7 +106,8 @@ try {
 
   await open("/human-biology/?pilot=meiosis#catchup/f170/1.1.5.meiosis");
   const meioticTask = page.locator('[data-hb-stage="independent"]');
-  await meioticTask.locator("summary").press("Enter");
+  await page.locator("[data-hb-model-step]").getByRole("button", { name: "Skip to independent practice" }).press("Enter");
+  await meioticTask.waitFor({ state: "visible" });
   const fields = meioticTask.getByRole("img", {name:/Two unlabelled stages/});
   assert.equal(await fields.getAttribute("src"), "/human-biology/division-fields.svg");
   const visibleDiagram = await fields.evaluate(async img => {
@@ -123,16 +124,17 @@ try {
   await fits();
 
   await open("/human-biology/?pilot=screening#catchup/f171/4.2.1");
-  await page.getByRole("button", { name: "See worked example", exact: true }).press("Enter");
   const screening = page.locator("[data-hb-model-step]");
+  await screening.waitFor({ state: "visible" });
   await screening.getByRole("button", { name: "Show next step", exact: true }).press("Enter");
   assert.equal(await screening.locator(".hb-cell-focus").innerText(), "12");
-  await page.locator('[data-hb-stage="independent"] summary').press("Enter");
   const response = page.locator('[data-hb-stage="independent"]');
+  await screening.getByRole("button", { name: "Skip to independent practice" }).press("Enter");
+  await response.waitFor({ state: "visible" });
   await response.getByRole("radio", { name: /7 of 24/ }).check();
-  await response.getByRole("button", { name: "Check answer", exact: true }).press("Enter");
+  await response.getByRole("button", { name: "Check", exact: true }).press("Enter");
   assert.match(await response.getByRole("status").innerText(), /Correct!/);
-  assert(await response.getByRole("button", { name: "Check answer", exact: true }).isHidden());
+  assert(await response.getByRole("button", { name: "Check", exact: true }).isHidden());
   await fits();
 
   await page.emulateMedia({ reducedMotion: "reduce" });

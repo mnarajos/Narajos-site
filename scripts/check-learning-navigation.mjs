@@ -60,18 +60,20 @@ export async function checkLearningNavigation(browser, base) {
 
     await search.fill("screening");
     await results.locator('a[href="#catchup/f171/4.2.1"]').press("Enter");
-    await main.getByRole("button", { name: "See worked example" }).press("Enter");
     const model = main.locator("[data-hb-model-step]");
+    const independent = main.locator('[data-hb-stage="independent"]');
+    await model.waitFor({ state: "visible" });
+    assert(await independent.isHidden());
     await model.getByRole("button", { name: "Show next step" }).press("Enter");
     assert.equal(await model.locator(".hb-cell-focus").textContent(), "12");
-    const independent = main.locator('[data-hb-stage="independent"]');
-    await independent.locator("summary").press("Enter");
-    assert.equal(await model.getAttribute("open"), null);
-    assert.equal(await main.locator(".hb-teach-explain").getAttribute("open"), null);
+    await model.getByRole("button", { name: "Skip to independent practice" }).press("Enter");
+    await independent.waitFor({ state: "visible" });
+    assert(await model.isHidden());
+    assert(await main.locator(".hb-teach-explain").isVisible());
     await independent.getByRole("radio", { name: /7 of 24/ }).check();
-    await independent.getByRole("button", { name: "Check answer" }).press("Enter");
+    await independent.getByRole("button", { name: "Check", exact: true }).press("Enter");
     await independent.getByRole("status").filter({ hasText: /Correct!/ }).waitFor();
-    assert(await independent.getByRole("button", { name: "Check answer" }).isHidden());
+    assert(await independent.getByRole("button", { name: "Check", exact: true }).isHidden());
     await independent.getByRole("link", { name: "Continue to practice" }).press("Enter");
     await main.locator(".k-question-paper").waitFor();
     const route = new URL(page.url()).hash;
@@ -100,7 +102,8 @@ export async function checkLearningNavigation(browser, base) {
     await leave.press("Enter");
     await go("catchup/f171/2.1");
     const written = main.locator('[data-hb-stage="independent"]');
-    await written.locator("summary").press("Enter");
+    await main.locator("[data-hb-model-step]").getByRole("button", { name: "Skip to independent practice" }).press("Enter");
+    await written.waitFor({ state: "visible" });
     const draft = "A systemic medicine can reach disease at several sites.";
     await written.getByRole("textbox").fill(draft);
     await overview.press("Enter");

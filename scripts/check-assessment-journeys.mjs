@@ -8,6 +8,11 @@ export async function checkAssessmentJourneys(browser,base) {
   let page=await context.newPage();
   const open=path=>page.goto(base+path,{waitUntil:"domcontentloaded"});
   const reload=()=>page.reload({waitUntil:"domcontentloaded"});
+  const reveal=async()=>{
+    const help=page.locator("#qhelp");
+    if(await help.count() && !(await help.evaluate(el=>el.open))) await help.locator("summary").click();
+    await page.locator("#idk").click();
+  };
   try {
     await open("/gcse/#lesson-b1-micro2");
     const number=page.locator("#numin"), check=page.locator("#act");
@@ -40,7 +45,7 @@ export async function checkAssessmentJourneys(browser,base) {
           for(let step=0;step<12 && !await page.locator("#sa").count();step++){
             if(await page.locator("#rtgo").isVisible())await page.locator("#rtgo").click();
             else if(await page.locator("#fb").isVisible())await check.click();
-            else await page.locator("#idk").click();
+            else await reveal();
           }
           assert.equal(await page.locator("legend").last().innerText(),prompt);
           assert.equal(await page.locator("#sa").inputValue(),original);
@@ -54,7 +59,7 @@ export async function checkAssessmentJourneys(browser,base) {
         assert.match(await page.locator("#fb").innerText(),/Written response self-reviewed/);
         selfReviews++;
       }else{
-        await page.locator("#idk").click();
+        await reveal();
         reveals++;
       }
     }

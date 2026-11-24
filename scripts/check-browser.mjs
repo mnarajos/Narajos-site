@@ -296,13 +296,18 @@ try{
   assert.equal(await catalogueWithoutGroupBy.locator(".site-nav [aria-current=page]").textContent(),"Year "+year);
   const topic=catalogueWithoutGroupBy.locator(".school-topic-list").getByRole("link").first();
   await topic.click();
-  await catalogueWithoutGroupBy.locator(".school-journey").getByRole("button",{name:"Check",exact:true}).waitFor();
+  if(year < 10) await catalogueWithoutGroupBy.locator(".school-journey").getByRole("button",{name:"Check",exact:true}).waitFor();
+  else await catalogueWithoutGroupBy.locator(".school-check-inline input").first().waitFor();
  }
  await catalogueWithoutGroupBy.close();
  const helpPage=await browser.newPage({viewport:{width:320,height:780},isMobile:true,hasTouch:true});
  const helpJourney=helpPage.locator(".school-journey");
- const helpDialog=helpJourney.getByRole("dialog");
- const askForHelp=()=>helpDialog.getByRole("button",{name:"I don’t know — explain it",exact:true}).tap();
+ const helpDialog=helpJourney.locator(".school-check");
+ const openHelp=async()=>{
+  const support=helpDialog.locator("details.school-check-support");
+  if(await support.count() && !(await support.evaluate(el=>el.open))) await support.locator("summary").tap();
+ };
+ const askForHelp=async()=>{await openHelp();await helpDialog.getByRole("button",{name:"I don’t know — explain it",exact:true}).tap();};
  for(const [year,id,path,steps,hasFollowUp] of [
   [7,"fair-tests","/ks3/lesson/?topic=fair-tests&guided=1",4,false],
   [8,"separating-techniques","/ks3/lesson/?topic=separating-techniques&guided=1",3,false],
@@ -312,8 +317,9 @@ try{
  ]){
   await helpPage.goto(base+path);
   for(let index=0;index<steps;index++){
-   await helpJourney.getByRole("button",{name:"Check",exact:true}).tap();
+   if(year < 10) await helpJourney.getByRole("button",{name:"Check",exact:true}).tap();
    if(index===0){
+    await openHelp();
     await helpDialog.getByRole("button",{name:"Need a clue?",exact:true}).press("Enter");
     assert(await helpDialog.locator(".school-clue").isVisible());
     assert.equal(await helpDialog.getByRole("radio",{checked:true}).count(),0);
@@ -328,9 +334,10 @@ try{
     if(await helpDialog.getByRole("button",{name:"See lesson visual",exact:true}).count()){
      await helpDialog.getByRole("button",{name:"See lesson visual",exact:true}).tap();
      await helpJourney.getByRole("button",{name:"Resume check",exact:true}).tap();
-    } else await helpDialog.getByRole("button",{name:"Save and pause",exact:true}).tap();
+    } else if(year >= 10) await helpPage.getByRole("button",{name:"Pause check",exact:true}).tap();
+    else await helpDialog.getByRole("button",{name:"Save and pause",exact:true}).tap();
     await helpPage.reload();
-    await helpJourney.getByRole("button",{name:"Resume check",exact:true}).tap();
+    if(year < 10) await helpJourney.getByRole("button",{name:"Resume check",exact:true}).tap();
     assert(await helpDialog.getByRole("heading",{name:"Explanation",exact:true}).isVisible());
    }
    await helpDialog.getByRole("button",{name:index===steps-1&&!hasFollowUp?"Finish guided checks":"Continue",exact:true}).tap();
@@ -374,16 +381,16 @@ try{
  }
  assert.equal(seniorLessonIds.size,48);
  await pilotPage.goto(base+"/science-catch-up/lesson/?topic=vaccine-memory&year=10");
+ const seniorCheck=guide.locator(".school-check-inline");
  for(const [index,answer] of ["Specific antigens","Their immune system has already responded to its antigens.","The virus lacks the bacterial targets of antibiotics.","Those antibodies may not bind to the new pathogen’s antigens."].entries()){
-  await guide.getByRole("button",{name:"Check",exact:true}).click();
   if(index===0){
-   await check.getByRole("radio",{name:"Any body cell",exact:true}).check();
-   await check.getByRole("button",{name:"Check answer",exact:true}).click();
-   assert(await check.getByRole("status").filter({hasText:"Recognition depends on the antigen"}).isVisible());
+   await seniorCheck.getByRole("radio",{name:"Any body cell",exact:true}).check();
+   await seniorCheck.getByRole("button",{name:"Check",exact:true}).click();
+   assert(await seniorCheck.getByRole("status").filter({hasText:"Recognition depends on the antigen"}).isVisible());
   }
-  await check.getByRole("radio",{name:answer,exact:true}).check();
-  await check.getByRole("button",{name:"Check answer",exact:true}).click();
-  await check.getByRole("button",{name:index===3?"Finish guided checks":"Continue",exact:true}).click();
+  await seniorCheck.getByRole("radio",{name:answer,exact:true}).check();
+  await seniorCheck.getByRole("button",{name:"Check",exact:true}).click();
+  await seniorCheck.getByRole("button",{name:index===3?"Finish guided checks":"Continue",exact:true}).click();
  }
  await guide.getByRole("link",{name:"Revise B3",exact:true}).click();
  await pilotPage.getByRole("link",{name:"Catch up on this topic",exact:true}).click();
@@ -431,7 +438,7 @@ try{
  assert(await homeMenu.locator('a[href="/human-biology/"]').isVisible(),"Human Biology missing from homepage dropdown");
  assert.equal(await homeMenu.getByRole("link",{name:/^Year (7|8|9|10|11)$/}).count(),5);
  for(const [label, route, heading] of [
-  ["A-level Biology — AQA", "/alevel/", "Ready to revise?"],
+  ["A-level Biology — AQA", "/alevel/", "Choose a paper"],
   ["Human Biology — Cambridge OCR AAQ", "/human-biology/", "Human Biology"]
  ]){
   await homeMenu.getByRole("link",{name:label,exact:true}).press("Enter");
@@ -507,9 +514,21 @@ try{
  for(const width of [1024,1280]){
   await desktop.setViewportSize({width,height:900});
   const gear=await settingsLink.boundingBox();
-  const flash=await desktop.locator('.top-inner a[href="#flashcards"]').boundingBox();
-  if(flash)assert(gear.x>=flash.x+flash.width+8||gear.y>=flash.y+flash.height||flash.y>=gear.y+gear.height,"Settings overlaps or crowds Flashcards on a laptop");
+  const brand=await desktop.locator(".top-inner .brand").boundingBox();
+  assert(gear.x>=brand.x+brand.width+8||gear.y>=brand.y+brand.height||brand.y>=gear.y+gear.height,"Settings overlaps or crowds the course name on a laptop");
  }
+ const flashHome=await browser.newPage({viewport:{width:320,height:844},hasTouch:true});
+ for(const subject of ["alevel","gcse"]) for(const width of [320,390]){
+  await flashHome.setViewportSize({width,height:844});
+  await flashHome.goto(base+"/"+subject+"/");
+  const link=flashHome.locator('main a[href="#flashcards"]');
+  await link.waitFor({state:"visible"});
+  assert.equal(await link.count(),1,subject+" Flashcards home entry");
+  assert((await flashHome.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,subject+" home overflows at "+width);
+  await link.click();
+  await flashHome.getByRole("heading",{name:"Flashcards",exact:true}).waitFor();
+ }
+ await flashHome.close();
  await desktop.locator('a[href="#catchup-a1"]').first().click();
  await desktop.waitForURL("**/alevel/#catchup-a1");
  const firstConcept=desktop.locator('a[href^="#catchup-a1-"]').first();
@@ -604,7 +623,9 @@ try{
  await desktop.locator(".k-skill-graph svg").waitFor();
  await screen(desktop,"human-skill-graph");
  await desktop.goto(base+"/human-biology/#catchup/f171",{waitUntil:"load"});
- await desktop.locator('a[href="#catchup/f171/3.2.2"]').first().click();
+ const immuneArea=desktop.locator(".hb-unit-area-f171").filter({has:desktop.locator('a[href="#catchup/f171/3.2.2"]')});
+ await immuneArea.getByText("Focused lessons",{exact:true}).press("Enter");
+ await immuneArea.locator('a[href="#catchup/f171/3.2.2"]').click();
  await desktop.locator(".k-catchup-concept").waitFor({state:"visible",timeout:10000});
  assert((await desktop.locator("main").innerText()).includes("Vaccine types"),"F171 vaccine catch-up not visible");
  await desktop.goto(base+"/human-biology/#catchup/f171/3.2.2/1");
@@ -612,7 +633,7 @@ try{
  assert((await desktop.locator("main").innerText()).includes("Key idea 2"),"Catch-up step did not advance");
  await screen(desktop,"human-vaccines");
  await desktop.goto(base+"/human-biology/#catchup/f170/3.2.1",{waitUntil:"load"});
- await desktop.locator("[data-hb-model-step] > summary").click();
+ await desktop.locator("[data-hb-model-step]").waitFor({state:"visible"});
  await desktop.getByText("Trace a withdrawal reflex",{exact:true}).click();
  const reflex=desktop.locator('science-sequence[kind="reflex"]');
  await reflex.locator("svg").waitFor({state:"visible"});
@@ -623,7 +644,7 @@ try{
  await reflex.getByRole("button",{name:"Previous step"}).press("Enter");
  await reflex.getByRole("status").filter({hasText:"Motor neuron"}).waitFor();
  await desktop.goto(base+"/human-biology/#catchup/f170/1.1.2",{waitUntil:"load"});
- await desktop.locator("[data-hb-model-step] > summary").click();
+ await desktop.locator("[data-hb-model-step]").waitFor({state:"visible"});
  const microscope=desktop.locator("[data-hb-model-step]");
  assert(await microscope.locator(".micrograph-single img").evaluate(async img=>{await img.decode();return img.naturalWidth===386;}));
  assert(await microscope.locator(".hb-bar-length").isVisible());
@@ -1431,7 +1452,7 @@ try{
  await slot(oneParagraph,0).getByRole("button").press("Enter");
  await slot(oneParagraph,1).getByRole("button").press("Enter");
  await checkOrder(oneParagraph).click();
- await oneParagraph.getByRole("status").filter({hasText:"Correct."}).waitFor();
+ await oneParagraph.getByRole("status").filter({hasText:"Correct!"}).waitFor();
  await oneParagraph.getByText("Read the completed paragraph",{exact:true}).click();
  assert(await oneParagraph.locator(".model").isVisible());
  const spoRamp=navPage.locator("[data-ramp-practice]");
@@ -1886,7 +1907,7 @@ try{
   await placeCard(desktopSequence,start,i+1);
  }
  await checkOrder(desktopSequence).click();
- await desktopSequence.locator(".writing-order-feedback").filter({hasText:"Correct."}).waitFor();
+ await desktopSequence.locator(".writing-order-feedback").filter({hasText:"Correct!"}).waitFor();
  const visualLab=navPage.locator('diagram-practice[topic="filtration"]');
  const labels=visualLab.locator(".dp-question").first();
  await labels.locator("summary").click();
@@ -1898,12 +1919,12 @@ try{
  await labels.getByRole("button",{name:"Filtrate",exact:true}).click();
  await labels.getByRole("button",{name:/^C\./}).click();
  await labels.getByRole("button",{name:"Check answer",exact:true}).click();
- await labels.getByRole("status").filter({hasText:"All labels correct"}).waitFor();
+ await labels.getByRole("status").filter({hasText:"Correct!"}).waitFor();
  const point=visualLab.locator(".dp-question").nth(1);
  await point.locator("summary").click();
  await point.getByRole("button",{name:/^C\./}).click();
  await point.getByRole("button",{name:"Check answer",exact:true}).click();
- await point.getByRole("status").filter({hasText:"Correct."}).waitFor();
+ await point.getByRole("status").filter({hasText:"Correct!"}).waitFor();
  assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Diagram practice overflows on mobile");
  await screen(navPage,"diagram-practice-mobile");
 
@@ -1961,7 +1982,7 @@ try{
  await gridQuestion.getByRole("button",{name:"Homozygous recessive",exact:true}).press("Enter");
  await gridQuestion.getByRole("button",{name:/^D\./}).press("Enter");
  await gridQuestion.getByRole("button",{name:"Check answer",exact:true}).click();
- await gridQuestion.getByRole("status").filter({hasText:"All labels correct"}).waitFor();
+ await gridQuestion.getByRole("status").filter({hasText:"Correct!"}).waitFor();
  await navPage.goto(base+"/teaching/focused-writing/gcse/compare-insulation/");
  const cooling=navPage.locator('[data-writing-exercise="insulation"]');
  await cooling.getByRole("textbox").fill("The bare can cooled by 7 °C while the felt-wrapped can cooled by 13 °C.");

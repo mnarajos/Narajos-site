@@ -8,7 +8,46 @@ export async function checkHumanCatchup(browser, base) {
   let visits = 0;
   const open = route => page.goto(base + "/human-biology/?check=" + (++visits) + "#" + route);
   const stage = name => page.locator('[data-hb-stage="' + name + '"]');
-  const expand = loc => loc.locator(":scope > summary").click();
+  async function help(loc) {
+    const details = loc.locator(".hb-help");
+    if (await details.count() && !(await details.evaluate(el => el.open))) await details.locator("summary").click();
+  }
+  const expand = async loc => {
+    if (await loc.evaluate(el => el.tagName === "DETAILS")) {
+      if (!(await loc.evaluate(el => el.open))) await loc.locator(":scope > summary").click();
+      return;
+    }
+    if (await loc.isVisible()) return;
+    const name = await loc.getAttribute("data-hb-stage") || "model";
+    const model = page.locator("[data-hb-model-step]");
+    const guided = stage("guided"), independent = stage("independent"), followup = stage("followup");
+    if (name === "followup") {
+      await expand(independent);
+      await independent.getByRole("button", {name: /(?:Try|Review) (?:a )?fresh check/}).click();
+    } else if (name === "model") {
+      const active = await guided.isVisible() ? guided : await independent.isVisible() ? independent : followup;
+      const review = active.getByRole("button", {name: "Review worked example"});
+      if (await review.isVisible()) await review.click();
+      else { await help(active); await active.getByRole("button", {name: "Revisit worked example"}).click(); }
+    } else if (name === "independent") {
+      if (await followup.isVisible()) await expand(model);
+      const primary = guided.getByRole("button", {name: "Apply it independently"});
+      if (await guided.isVisible() && await primary.isVisible()) await primary.click();
+      else await page.getByRole("button", {name: "Skip to independent practice"}).click();
+    } else if (name === "guided") {
+      if (await independent.isVisible() && await independent.locator(".hb-help").isVisible()) {
+        await help(independent);
+        await independent.getByRole("button", {name: "Try with support"}).click();
+      } else {
+        await expand(model);
+        const next = model.getByRole("button", {name: "Show next step"});
+        const stepLimit = await model.locator(".hb-model-steps li").count();
+        for (let step = 0; step < stepLimit && await next.isVisible(); step++) await next.click();
+        await model.getByRole("button", {name: "Try with support"}).click();
+      }
+    }
+    assert(await loc.isVisible(), "Requested teaching stage is visible: " + name);
+  };
   const saved = key => page.evaluate(key => JSON.parse(localStorage.getItem(key)), key);
   const widthFits = () => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 3);
   const localPractice = "narajos-human-catchup-v1";
@@ -18,6 +57,15 @@ export async function checkHumanCatchup(browser, base) {
   try {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await open("catchup");
+    await open("catchup/f171");
+    const areas = page.locator(".hb-unit-area-f171");
+    assert.equal(await areas.count(), 5);
+    assert.equal(await page.getByText("Focused lessons", {exact:true}).count(), 4);
+    assert(await areas.nth(1).getByText("Treating disease").isVisible(), "Later areas remain visible");
+    await areas.first().locator("summary").press("Enter");
+    assert(await areas.first().getByRole("link", {name:"Hiatus hernia and reflux"}).isVisible());
+    await areas.first().getByRole("link", {name:"Hiatus hernia and reflux"}).press("Enter");
+    assert.match(page.url(), /#catchup\/f171\/1\.2\.1\.hiatus$/);
     const chapters = await page.evaluate(() => Object.entries(window.KeystoneHumanLessons));
     assert.equal(chapters.length, 74, "Retain 66 routes and add eight F170 teaching sequences");
     assert.equal(new Set(chapters.map(([key]) => key.split("/")[0])).size, 8);
@@ -53,11 +101,11 @@ export async function checkHumanCatchup(browser, base) {
       await expand(stage("guided"));
       if (key === "f171/1.2.1.aorta") {
         await stage("guided").getByRole("radio").nth(1 - lesson.guided.answer).check();
-        await stage("guided").getByRole("button", {name:"Check answer"}).click();
+        await stage("guided").getByRole("button", {name: "Check", exact: true}).click();
         await stage("guided").getByText(/pressure reading does not show vessel shape/).waitFor();
       }
       await stage("guided").getByRole("radio").nth(lesson.guided.answer).check();
-      await stage("guided").getByRole("button", { name: "Check answer" }).click();
+      await stage("guided").getByRole("button", { name: "Check", exact: true }).click();
       assert.match(await stage("guided").getByRole("status").innerText(), /Correct!/);
       await expand(stage("independent"));
       if (key === "f171/1.2.1.aorta") {
@@ -67,7 +115,7 @@ export async function checkHumanCatchup(browser, base) {
       }
       if (lesson.apply.options) {
         await stage("independent").getByRole("radio").nth(lesson.apply.answer).check();
-        await stage("independent").getByRole("button", { name: "Check answer" }).click();
+        await stage("independent").getByRole("button", { name: "Check", exact: true }).click();
         assert.match(await stage("independent").getByRole("status").innerText(), /Correct!/);
       } else {
         await stage("independent").getByRole("textbox").fill("An explanation to compare with the key points.");
@@ -122,10 +170,10 @@ export async function checkHumanCatchup(browser, base) {
     const em = stage("followup");
     assert(await em.getByRole("img", {name:/Grayscale thin section/}).evaluate(async img=>{await img.decode(); return img.naturalWidth===640;}));
     await em.getByRole("radio", {name:/twice as much/}).check();
-    await em.getByRole("button", {name:"Check answer"}).press("Enter");
+    await em.getByRole("button", {name: "Check", exact: true}).press("Enter");
     assert.match(await em.getByRole("status").innerText(), /measure product leaving/);
     await em.getByRole("radio", {name:/capacity to make proteins/}).check();
-    await em.getByRole("button", {name:"Check answer"}).press("Enter");
+    await em.getByRole("button", {name: "Check", exact: true}).press("Enter");
     assert.match(await em.getByRole("status").innerText(), /Correct!/);
     assert.equal((await saved(localPractice))["f170/1.1.3.evidence/1"].independent.outcome, "selfReview");
 
@@ -136,14 +184,14 @@ export async function checkHumanCatchup(browser, base) {
     await matches.first().waitFor();
     assert.equal(await matches.count(), 5);
     for (let i = 0; i < 5; i++) await matches.nth(i).selectOption(String(i === 4 ? 3 : i));
-    await page.getByRole("button", {name: /Check answer/}).press("Enter");
+    await page.getByRole("button", {name: /^Check$/}).press("Enter");
     const matchKey = practiceKey + "-topic-f171/f171-infection-group-transfer";
     assert.deepEqual((await saved(matchKey)).queue, ["f171-infection-group-transfer"]);
     await page.reload();
     await page.getByRole("button", {name: "Try again", exact: true}).first().press("Enter");
     assert(await matches.nth(0).isDisabled());
     await matches.nth(4).selectOption("4");
-    await page.getByRole("button", {name: /Check answer/}).press("Enter");
+    await page.getByRole("button", {name: /^Check$/}).press("Enter");
     assert.equal((await saved(matchKey)).outcomes[0], "corrected");
 
     for (const [route, questionId, wrongAnswer, diagnosis, reteachLabel = "Revisit the worked example"] of [
@@ -155,7 +203,7 @@ export async function checkHumanCatchup(browser, base) {
     ]) {
       await open("catchup/" + route);
       if (route.endsWith(".hiatus")) {
-        await page.getByRole("button", {name: "See worked example"}).press("Enter");
+        await expand(page.locator("[data-hb-model-step]"));
         const anatomy = page.getByRole("img", {name: /stomach have slid above the diaphragm/});
         assert(await anatomy.isVisible());
         assert(await widthFits(), "Hiatus diagram overflow at 320 px");
@@ -171,11 +219,11 @@ export async function checkHumanCatchup(browser, base) {
       const itemKey = practiceKey + "-topic-" + route.split("/")[0] + "/" + questionId;
       assert.deepEqual((await saved(itemKey)).queue, [questionId]);
       await page.getByRole("radio", {name: wrongAnswer}).check();
-      await page.getByRole("button", {name: "Check answer", exact: false}).press("Enter");
+      await page.getByRole("button", {name: "Check", exact: true}).press("Enter");
       await page.getByText(diagnosis).waitFor();
       await page.getByRole("link", {name: reteachLabel, exact: true}).press("Enter");
       await page.locator("#leave-confirm").press("Enter");
-      await page.locator("[data-hb-model-step][open]").waitFor({state: "visible"});
+      await page.locator("[data-hb-model-step]:not([hidden])").waitFor({state: "visible"});
       await page.getByRole("link", {name: "Return to your unfinished question set", exact: true}).press("Enter");
       await page.getByText(diagnosis).waitFor();
     }
@@ -196,9 +244,10 @@ export async function checkHumanCatchup(browser, base) {
       await prerequisite.locator("summary").press("Enter");
       assert((await prerequisite.locator("p").innerText()).trim().length > 10, key);
       await prerequisite.locator("summary").press("Enter");
-      const start = page.getByRole("button", { name: "See worked example", exact: true });
-      await start.press("Enter");
       const model = page.locator("[data-hb-model-step]");
+      assert(await model.isVisible(), "Worked example is visible on arrival: " + key);
+      assert(!(await stage("guided").isVisible()), "Guided practice is initially out of the way: " + key);
+      assert(!(await stage("independent").isVisible()), "Independent practice is initially out of the way: " + key);
       assert.match(await model.locator(".hb-model-steps li").first().innerText(), worked, key);
       await model.getByRole("button", { name: "Show next step" }).press("Enter");
       assert.equal(await model.getAttribute("data-hb-model-step"), "2", key);
@@ -207,21 +256,24 @@ export async function checkHumanCatchup(browser, base) {
         await model.getByRole("button", { name: "Previous step" }).press("Enter");
         assert.equal(await model.locator(".hb-cell-focus").innerText(), "18");
       }
-      while (await model.getByRole("button", { name: "Show next step" }).count()) {
+      const stepLimit = await model.locator(".hb-model-steps li").count();
+      for (let step = 0; step < stepLimit && await model.getByRole("button", { name: "Show next step" }).isVisible(); step++) {
         await model.getByRole("button", { name: "Show next step" }).press("Enter");
       }
+      assert(await model.getByRole("button", { name: "Try with support" }).isVisible(), "Worked example must finish: " + key);
       await model.getByRole("button", { name: "Try with support" }).press("Enter");
-      assert(await model.isVisible() && !(await model.evaluate(el => el.open)), key);
+      assert(!(await model.isVisible()), "Only the current stage is shown: " + key);
+      assert(await page.locator(".hb-teach-explain").isVisible(), "Explanation remains available: " + key);
       const definition = Object.fromEntries(chapters)[key];
       const guided = stage("guided");
       await guided.getByRole("radio").nth(definition.guided.answer).check();
-      await guided.getByRole("button", { name: "Check answer" }).press("Enter");
-      assert(await guided.getByRole("button", { name: "Check answer" }).isHidden(), key);
+      await guided.getByRole("button", { name: "Check", exact: true }).press("Enter");
+      assert(await guided.getByRole("button", { name: "Check", exact: true }).isHidden(), key);
       await guided.getByRole("button", { name: "Apply it independently" }).press("Enter");
       const independent = stage("independent");
       if (correctChoice) {
         await independent.getByRole("radio", { name: correctChoice }).check();
-        await independent.getByRole("button", { name: "Check answer" }).press("Enter");
+        await independent.getByRole("button", { name: "Check", exact: true }).press("Enter");
         assert.match(await independent.getByRole("status").innerText(), /Correct!/, key);
       } else {
         await independent.getByRole("textbox").fill(response);
@@ -242,12 +294,13 @@ export async function checkHumanCatchup(browser, base) {
       await page.evaluate(key => localStorage.removeItem(key), localPractice);
       await open("catchup/" + key);
       await expand(independent);
+      await help(independent);
       await independent.getByRole("button", { name: "Get a hint" }).press("Enter");
       assert(await independent.locator(".hb-hints").isVisible(), key);
       if (correctChoice) {
         const wrong = definition.apply.options.findIndex((_, i) => i !== definition.apply.answer);
         await independent.getByRole("radio").nth(wrong).check();
-        await independent.getByRole("button", { name: "Check answer" }).press("Enter");
+        await independent.getByRole("button", { name: "Check", exact: true }).press("Enter");
         assert.equal(await independent.getByRole("status").innerText(), definition.apply.options[wrong][1], key);
       } else {
         await independent.getByRole("button", { name: "Show explanation" }).press("Enter");
@@ -255,33 +308,34 @@ export async function checkHumanCatchup(browser, base) {
         assert.equal(await independent.getByText("Correct!", {exact:true}).count(), 0, "Revealing an explanation is not a checked answer");
       }
       await independent.getByRole("button", { name: "Revisit worked example" }).press("Enter");
-      assert(await model.evaluate(el => el.open), key);
+      assert(await model.isVisible(), key);
       await expand(independent);
       if (correctChoice) {
         await independent.getByRole("radio", { name: correctChoice }).check();
-        await independent.getByRole("button", { name: "Check answer" }).press("Enter");
+        await independent.getByRole("button", { name: "Check", exact: true }).press("Enter");
         assert.match(await independent.getByRole("status").innerText(), /Correct!/, key);
       }
-      assert(await page.locator("[data-hb-followup]").isVisible(), key);
+      assert(!(await page.locator("[data-hb-followup]").evaluate(el => el.hidden)), key);
     }
 
     await page.evaluate(key => localStorage.removeItem(key), localPractice);
     await open("catchup/f171/4.2.1");
     await expand(stage("independent"));
     await stage("independent").getByRole("radio").nth(1).check();
-    await stage("independent").getByRole("button", { name: "Check answer" }).click();
+    await stage("independent").getByRole("button", { name: "Check", exact: true }).click();
     assert.match(await stage("independent").getByRole("status").innerText(), /all positive screens/);
+    await help(stage("independent"));
     await stage("independent").getByRole("button", { name: "Get a hint" }).press("Enter");
     assert.match(await stage("independent").locator(".hb-hints").innerText(), /denominator/);
     await stage("independent").getByRole("button", { name: "Show explanation" }).press("Enter");
     assert.match(await stage("independent").getByRole("status").innerText(), /Explanation shown/);
     await stage("independent").getByRole("radio").first().check();
-    await stage("independent").getByRole("button", { name: "Check answer" }).press("Enter");
+    await stage("independent").getByRole("button", { name: "Check", exact: true }).press("Enter");
     assert.match(await stage("independent").getByRole("status").innerText(), /Correct!/);
     assert.equal((await saved(localPractice))["f171/4.2.1/1"].independent.outcome, "explained");
     await expand(stage("followup"));
     await stage("followup").getByRole("radio").last().check();
-    await stage("followup").getByRole("button", { name: "Check answer" }).press("Enter");
+    await stage("followup").getByRole("button", { name: "Check", exact: true }).press("Enter");
     assert.match(await stage("followup").getByRole("status").innerText(), /Correct!/);
     await page.reload();
     await expand(stage("followup"));
@@ -342,7 +396,7 @@ export async function checkHumanCatchup(browser, base) {
     await page.getByRole("link", { name: /Revisit the (scale-bar calculation|worked unit conversion)/ }).click();
     await page.locator("#leave-confirm").click();
     await page.getByRole("heading", { name: "Microscopy and cell measurements", exact: true }).waitFor();
-    assert(await page.locator("[data-hb-model-step][open]").isVisible());
+    assert(await page.locator("[data-hb-model-step]:not([hidden])").isVisible());
     await page.getByRole("link", { name: "Return to your unfinished question set" }).click();
     await page.getByText("Explanation revealed", { exact: true }).waitFor();
 
@@ -470,7 +524,7 @@ export async function checkHumanCatchup(browser, base) {
     const transportWrong = page.getByRole("radio", { name: /Release of the secondary oocyte from its follicle/ });
     await caseStem.waitFor();
     await transportWrong.check();
-    await page.getByRole("button", { name: /Check answer/ }).press("Enter");
+    await page.getByRole("button", { name: /^Check$/ }).press("Enter");
     const transportFeedback = page.getByText(/Find the next step after release that depends on the fimbriae/);
     await transportFeedback.waitFor();
     await page.getByRole("link", { name: "Revisit how the oocyte enters the oviduct" }).press("Enter");
@@ -496,7 +550,7 @@ export async function checkHumanCatchup(browser, base) {
       assert.equal(await touch.getByLabel("Revisit a stage").inputValue(), "ovulation");
       await touch.goto(base + "/human-biology/#" + transportRoute);
       await touch.getByRole("radio", { name: /Entry of the released oocyte into the oviduct/ }).locator("..").tap();
-      await touch.getByRole("button", { name: /Check answer/ }).tap();
+      await touch.getByRole("button", { name: /^Check$/ }).tap();
       assert.equal(await touch.locator("[data-feedback-heading]").innerText(), "Correct!");
       assert.equal(await touch.evaluate(key => JSON.parse(localStorage.getItem(key)).outcomes[0],
         practiceKey + "-topic-f175/f175-transport"), "independent");
@@ -538,7 +592,7 @@ export async function checkHumanCatchup(browser, base) {
     }, f177Key);
     await page.reload();
     await page.getByRole("radio", { name: "Guarantee the treatment works" }).check();
-    await page.getByRole("button", { name: /Check answer/ }).press("Enter");
+    await page.getByRole("button", { name: /^Check$/ }).press("Enter");
     await page.getByRole("link", { name: "Revisit what random allocation changes" }).press("Enter");
     await page.locator("#leave-confirm").press("Enter");
     await page.locator('[data-hb-model-step="2"] [aria-current="step"]').waitFor();
@@ -564,7 +618,7 @@ export async function checkHumanCatchup(browser, base) {
     }
     await page.setViewportSize({ width: 640, height: 900 });
     await open("catchup/f170/3.1.2");
-    await page.getByRole("button", { name: "See worked example" }).press("Enter");
+    await expand(page.locator("[data-hb-model-step]"));
     const glucoseGraph = page.getByRole("img", { name: /Glucose.*Time/ });
     assert(await glucoseGraph.isVisible());
     await page.getByText("Graph values in a table", { exact: true }).press("Enter");
@@ -629,7 +683,7 @@ export async function checkHumanCatchup(browser, base) {
     assert(await widthFits(), "Independent chromatogram does not fit at 320px");
     const incorrectRatio = page.getByRole("radio", { name: /Rf 0.80/ });
     await incorrectRatio.press("Space");
-    await page.getByRole("button", { name: /Check answer/ }).press("Enter");
+    await page.getByRole("button", { name: /^Check$/ }).press("Enter");
     const ratioFeedback = page.getByText(/Subtract the baseline from both readings first/);
     await ratioFeedback.waitFor();
     await page.reload();
