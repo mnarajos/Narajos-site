@@ -4,11 +4,11 @@ The comparisons use the same learning stage before and after the change. The bas
 
 ## AQA A-level Biology
 
-Open A-level Biology, choose Paper 2 and find **Photosynthesis** under **Topics**. Choose a concept and start its questions. Choose an answer and check it. Open **Need help?** if you want a hint or explanation. After feedback, continue through the existing question sequence.
+Open A-level Biology, choose Paper 2 and open **Topics**, then choose **Energy transfers in and between organisms** and **The light-dependent reaction**. Choose an answer and check it. Open **Need help?** if you want a hint or explanation. After feedback, continue through the existing question sequence.
 
 From the course home, open **Exam Skills** and select **Understand the question**. Read the key idea, then follow the worked example. The opening question remains visible as the reasoning advances. You can also go straight to the questions. During practice, use **Check answer** and continue after feedback. Clues, explanations and the worked example are available through a single help control. Returning to the activity restores the saved position.
 
-The course home removes the introductory panels and duplicate bottom navigation. The first paper link starts around 165 px down the 320 px screen, compared with more than 1,200 px before. Exam Skills removes its five-stage strip, repeated “Start” labels and the replay control. The sampled guided question is about 330 px shorter at 320 px.
+The course home removes the introductory panels and duplicate bottom navigation. Each topic concept title opens its questions, eliminating the repeated Start buttons and the default Not started labels. The first paper link starts around 165 px down the 320 px screen, compared with more than 1,200 px before. Exam Skills removes its five-stage strip, repeated “Start” labels and the replay control. The sampled guided question is about 330 px shorter at 320 px.
 
 | Stage | Before | After |
 | --- | --- | --- |

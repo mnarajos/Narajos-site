@@ -6199,13 +6199,13 @@ function showTopic(t,focus){
   list.forEach(function(c){
    var ms=isMastered(t,c),best=bestFor(t,c),cls=ms?"mastered":"ready";
    var historical=best!=null && S.best[bkey(t,c)]?.checkedIndependent?.[S.tier]==null;
-   var st=ms?"✓ Independent pass":historical?"Earlier practice":best!=null?"In progress":"Not started";
-   h+='<li class="concept '+cls+'"><div class="chead"><h3>'+esc(c.title)+(c.tier==="H"?' <span class="badge">Stretch</span>':'')+'</h3><span class="status">'+st+'</span></div>';
+   var st=ms?"✓ Independent pass":historical?"Earlier practice":best!=null?"In progress":"";
+   h+='<li class="concept '+cls+'"><div class="chead"><h3><a href="#lesson-'+t+'-'+c.id+'">'+esc(c.title)+'</a>'+(c.tier==="H"?' <span class="badge">Stretch</span>':'')+'</h3>'+(st?'<span class="status">'+st+'</span>':'')+'</div>';
    h+='<p class="spec">'+qsFor(c).length+' questions'+(best!=null?' · Recorded best '+best+'%':'')+'</p>';
    var pr=c.needs.filter(function(nid){return avail(T.byId[nid]);});
    if(pr.length)h+='<p class="rel">Prior understanding of '+names(t,pr).map(function(x){return '<strong>'+esc(x)+'</strong>';}).join(" and ")+' recommended.</p>';
    if(/^\d/.test(c.spec))h+='<p class="specref"><em>AQA spec '+esc(c.spec)+'</em></p>';
-   h+='<div class="companion-lesson-actions"><a class="btn'+(ms?'':' primary')+'" href="#lesson-'+t+'-'+c.id+'">'+(ms?'Review':best!=null?'Try again':'Start')+'<span class="sr-only">: '+esc(c.title)+'</span></a><a class="btn" href="#catchup-'+t+'-'+c.id+'">Catch up<span class="sr-only">: '+esc(c.title)+'</span></a></div>';
+   h+='<a class="al-quiet-link" href="#catchup-'+t+'-'+c.id+'">Catch up<span class="sr-only">: '+esc(c.title)+'</span></a>';
    h+='</li>';
   });
   if(t==="p3w"&&d===2)h+='<li class="concept ready"><div class="chead"><h3>Brainstorm: a warm-up for planning</h3></div><p class="spec">Name as many enzymes, proteins, hormones or ions as you can against the clock, then use them to plan an essay.</p><a class="btn primary" href="#brain">Start<span class="sr-only">: Brainstorm</span></a></li>';

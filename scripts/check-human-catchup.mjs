@@ -35,9 +35,16 @@ export async function checkHumanCatchup(browser, base) {
       if (await guided.isVisible() && await primary.isVisible()) await primary.click();
       else await page.getByRole("button", {name: "Skip to independent practice"}).click();
     } else if (name === "guided") {
-      await expand(independent);
-      await help(independent);
-      await independent.getByRole("button", {name: "Try with support"}).click();
+      if (await independent.isVisible() && await independent.locator(".hb-help").isVisible()) {
+        await help(independent);
+        await independent.getByRole("button", {name: "Try with support"}).click();
+      } else {
+        await expand(model);
+        const next = model.getByRole("button", {name: "Show next step"});
+        const stepLimit = await model.locator(".hb-model-steps li").count();
+        for (let step = 0; step < stepLimit && await next.isVisible(); step++) await next.click();
+        await model.getByRole("button", {name: "Try with support"}).click();
+      }
     }
     assert(await loc.isVisible(), "Requested teaching stage is visible: " + name);
   };
