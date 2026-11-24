@@ -81,6 +81,12 @@ a.topic:hover{border-color:var(--acc)}
 .key h2{margin-top:1rem}
 .key ul{padding-left:1.2rem;margin:.3rem 0}
 .key li{margin:.45rem 0}
+.food-method{padding:.65rem .75rem .75rem;margin:.5rem 0 1rem}
+.food-method h2{font-size:1.1rem;margin:0 0 .45rem}.food-method table{width:100%;border-collapse:collapse;font-size:.9rem;line-height:1.3}
+.food-method th,.food-method td{text-align:left;vertical-align:top;padding:.35rem .3rem;border-bottom:1px solid var(--line)}
+.food-method p{margin:.55rem 0 0;font-size:.93rem;line-height:1.4}.food-practice-title{font-size:1.1rem;margin:0 0 .5rem}
+.food-worked{margin:.5rem 0 .8rem;padding:.65rem .8rem;background:var(--acc-soft);border-radius:10px}.food-worked h2{font-size:1rem;margin:0 0 .25rem}.food-worked p{margin:0}
+.food-start .actions{position:static}
 .gate{background:var(--acc-soft);padding:.6rem .8rem;border-radius:10px;margin:.8rem 0 0}
 .qh{font-size:1rem;color:var(--muted);font-weight:700;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:0 0 .5rem}
 .ht{font-size:.7rem;font-weight:600;color:var(--muted);opacity:.75;letter-spacing:.04em;margin-left:.35rem;vertical-align:middle}
@@ -6259,8 +6265,10 @@ function showQ(){
   body+='</p>';
  }else{body=renderExtra(q);}
  var badge=(q.qc||(!L.slop&&L.qc===q0)?'<span class="qcb">Quick check</span> ':'')+(q.tier==="HT"?'<span class="ht" title="Higher tier content">HT</span>':'');
- var foodTeaching=!L.slop&&!L.rvMode&&L.t==="b2"&&L.c.id==="foodtests"&&L.i===0?'<section class="key" aria-labelledby="food-teaching-title"><h2 id="food-teaching-title">Food tests: learn the method</h2><ul>'+L.c.key.map(function(k){return '<li>'+rich(k)+'</li>';}).join("")+'</ul></section>':'';
- var h=lessonTop()+foodTeaching+'<form id="qf" novalidate><div class="qtop"><h1 class="qh"><span class="sr-only">'+(L.rvMode?'Looking again at question '+(RV.k+1):L.slop?'Question '+(L.n+1):'Question '+(L.first.size+1)+' of '+L.total)+'. </span>'+(retry?'Have another go ':'')+badge+'</h1>'+resBtn(q)+'</div>'+
+ var foodLesson=!L.slop&&!L.rvMode&&L.t==="b2"&&L.c.id==="foodtests";
+ var foodTeaching=foodLesson&&L.i===0?'<section class="key food-method" aria-labelledby="food-teaching-title"><h2 id="food-teaching-title">Learn the method</h2><table><caption class="sr-only">Food tests and positive results</caption><thead><tr><th scope="col">Food</th><th scope="col">Reagent / method</th><th scope="col">Positive result</th></tr></thead><tbody><tr><th scope="row">Reducing sugar</th><td>Benedict’s; heat in a water bath</td><td>Blue → green, yellow, orange or brick-red</td></tr><tr><th scope="row">Starch</th><td>Iodine</td><td>Orange-brown → blue-black</td></tr><tr><th scope="row">Protein</th><td>Biuret</td><td>Blue → purple</td></tr><tr><th scope="row">Lipid</th><td>Shake with ethanol, then add water; keep away from flames</td><td>Cloudy white emulsion</td></tr></tbody></table><p>Benedict’s detects reducing sugars such as glucose. If the test works, blue means none was detected; non-reducing sugars such as sucrose could still be present.</p><p>Test a known positive and a water negative control in the same way. If the positive control fails, a negative sample is inconclusive.</p></section><h2 class="food-practice-title">Practise the method</h2>':'';
+ var foodWorked=foodLesson&&q.q.indexOf("A sample stays blue after a Benedict’s test.")===0?'<section class="food-worked" aria-labelledby="food-worked-title"><h2 id="food-worked-title">Worked example</h2><p>A drink turns green with Benedict’s; a glucose control turns orange and a water control stays blue. The controls support the test, so reducing sugar was detected in the drink.</p></section>':'';
+ var h=lessonTop()+foodTeaching+foodWorked+'<form id="qf"'+(foodTeaching?' class="food-start"':'')+' novalidate><div class="qtop"><h1 class="qh"><span class="sr-only">'+(L.rvMode?'Looking again at question '+(RV.k+1):L.slop?'Question '+(L.n+1):'Question '+(L.first.size+1)+' of '+L.total)+'. </span>'+(retry?'Have another go ':'')+badge+'</h1>'+resBtn(q)+'</div>'+
   (q.fig&&q.t!=="tap"?figHTML(q.fig):'')+
   '<fieldset class="q"><legend>'+fmt(q.q)+(q.t==="short"?' <span class="mk">('+q.marks.length+' marks)</span>':'')+'</legend>'+(q.tip?'<p class="tipbox"><strong>How to do it:</strong> '+fmt(q.tip)+'</p>':'')+(q.eqshow?'<p class="eqn">'+q.eqshow.map(function(sd,i){return '<span class="eqside">'+(i?'→ ':'')+sd.map(fmt).join(" + ")+'</span>';}).join(" ")+'</p>':'')+body+'</fieldset>'+
   '<div id="hintbox" class="hintbox" tabindex="-1" hidden></div>'+
