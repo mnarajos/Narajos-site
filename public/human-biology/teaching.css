@@ -264,3 +264,12 @@
   padding: 1rem 0;
 }
 .hb-teaching-booklet .hb-teach-stage[open] > summary { border: 0; padding-block-end: .2rem; }
+
+.hb-teaching-booklet .hb-stage-heading { font-size: 1.2rem; color: var(--brand); margin: 0 0 .75rem; scroll-margin-block-start: 8rem; }
+.hb-teaching-booklet .hb-stage-heading small { display: block; color: var(--muted); font-size: .8em; font-weight: 500; margin-top: .2rem; }
+.hb-teaching-booklet .hb-controls { align-items: baseline; }
+.hb-teaching-booklet .hb-help { flex-basis: 100%; }
+.hb-teaching-booklet .hb-help > summary { width: fit-content; min-height: 44px; color: var(--brand); }
+.hb-teaching-booklet .hb-help .actions { margin-top: .25rem; }
+.hb-teaching-booklet .hb-skip .button { border: 0; background: transparent; padding-inline: 0; color: var(--brand); text-decoration: underline; text-underline-offset: .15em; }
+.hb-teaching-booklet .hb-stage-next [data-hb-open="model"] { border: 0; background: transparent; color: var(--brand); text-decoration: underline; text-underline-offset: .15em; }

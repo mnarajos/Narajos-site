@@ -287,7 +287,7 @@
     }
   }
 
-  function model(host, family, state, persist, finish, revisiting = false) {
+  function model(host, family, state, persist, finish, revisiting = false, backToIdea = null) {
     const block = node("section", null, "al-teaching al-model");
     const heading = node("h2", "Worked example");
     const panel = node("div", null, "al-step");
@@ -304,16 +304,11 @@
       persist();
       update();
     }
-    const previous = button("Previous step", () => show(index - 1));
+    const previous = button("Previous step", () => index ? show(index - 1) : backToIdea?.());
     const next = button("Next step", () => index < last ? show(index + 1) : finish());
     next.classList.add("primary");
-    const replay = button("Replay example", () => {
-      show(0);
-      next.focus();
-    });
     previous.classList.add("al-secondary");
-    replay.classList.add("al-secondary");
-    controls.append(next, previous, replay);
+    controls.append(next, previous);
     block.append(heading, panel, announcement, art, controls);
     host.append(block);
     function update() {
@@ -332,9 +327,9 @@
       panel.replaceChildren(steps, node("p", (index + 1) + " of " + (last + 1), "al-task-count"));
       announcement.textContent = "Step " + (index + 1) + " of " + (last + 1) + ". " + family.model[index];
       art.replaceChildren(family.evidence ? table(...family.evidence, family.evidenceHighlights?.[index]) : visual(family.visual, index));
-      previous.disabled = index === 0;
+      previous.disabled = index === 0 && !backToIdea;
+      previous.textContent = index === 0 && backToIdea ? "Key idea" : "Previous step";
       next.textContent = index < last ? "Next step" : revisiting ? "Back to the question" : "Try with support";
-      replay.hidden = index === 0;
     }
     update();
     return block;
@@ -345,10 +340,9 @@
     const savedPractice = ["outcomes", "drafts", "hints", "responses", "reviews"].some(field => Object.keys(state[field]).length);
     state.phase ||= savedPractice || state.completed ? "practice" : "idea";
     const persist = () => saveFamily(family, state);
-    const bar = stageBar();
     const active = node("div", null, "al-journey-stage");
     const secondary = node("div", null, "al-journey-links");
-    host.append(bar, active, secondary);
+    host.append(active, secondary);
 
     function practiseNow(moveFocus, independent = false) {
       if (independent) {
@@ -364,7 +358,6 @@
       active.replaceChildren();
       secondary.replaceChildren();
       if (state.phase === "idea") {
-        currentStage(bar, "idea");
         const heading = node("h2", "Key idea");
         const panel = node("section", null, "al-teaching al-key");
         const start = button("See worked example", () => {
@@ -387,22 +380,22 @@
         active.append(panel);
         if (moveFocus) focus(heading);
       } else if (state.phase === "model") {
-        currentStage(bar, "model");
-        const content = model(active, family, state, persist, () => practiseNow(true));
-        const key = button("Review the key idea", () => {
+        const content = model(active, family, state, persist, () => practiseNow(true), false, () => {
           state.phase = "idea";
           persist();
           show(true);
         });
-        key.classList.add("al-secondary");
-        secondary.append(key);
+        const skip = button("Go straight to questions", () => practiseNow(true, true));
+        skip.classList.add("al-secondary");
+        secondary.append(skip);
         if (moveFocus) focus(content.querySelector("h2"));
       } else {
         const review = node("details", null, "al-review-example");
         const content = practise(active, family, state, {
-          stage: (id, symbol) => currentStage(bar, id, symbol),
           context: options.context,
           back: options.back,
+          review,
+          extra: options.extra,
           moved: () => { review.open = false; },
         });
         review.append(node("summary", "Review the worked example"));
@@ -419,15 +412,14 @@
             persist();
           }
         };
-        secondary.append(review);
         if (moveFocus) focus(content.querySelector(".al-task-prompt") || content.querySelector("h2"));
       }
-      if (state.phase !== "practice") {
+      if (state.phase === "idea") {
         const skip = button("Go straight to questions", () => practiseNow(true, true));
         skip.classList.add("al-secondary");
         secondary.append(skip);
       }
-      if (options.extra) secondary.append(options.extra);
+      if (options.extra && state.phase !== "practice") secondary.append(options.extra);
     }
     show();
   }
@@ -548,7 +540,6 @@
     function render(moveFocus = false) {
       block.replaceChildren();
       if (state.completed) {
-        flow.stage?.("review");
         renderReview(moveFocus);
         return;
       }
@@ -559,9 +550,6 @@
       const accepted = isAccepted(i);
       const revealed = state.results[i]?.kind === "revealed";
       const review = state.reviews[i] || { choices: {} };
-      const symbol = { writing: "pen", group: "guided", number: "calculator" }[q.kind] ||
-        (q.visual?.startsWith("pathway") ? "pathway" : q.visual ? "diagram" : "independent");
-      flow.stage?.(q.guided ? "guided" : "independent", q.guided ? "guided" : symbol);
       const heading = node("h2", q.guided ? "With support" : "Your turn", "al-task-heading");
       const prompt = node("h3", q.prompt, "al-task-prompt");
       prompt.id = "al-current-question";
@@ -633,6 +621,8 @@
       status.setAttribute("role", "status");
       status.setAttribute("aria-atomic", "true");
       const controls = node("div", null, "al-controls");
+      const help = node("details", null, "al-practice-help");
+      help.append(node("summary", "Help with this question"));
       function announce(text, kind) {
         const symbol = { correct: "check", improve: "retry", hint: "bulb", explained: "model", review: "review" }[kind];
         status.replaceChildren();
@@ -728,13 +718,14 @@
           state.hints[i] = count;
           state.results[i] = { ...state.results[i], clue: true };
           announce("Clue · " + hints[count - 1], "hint");
+          focus(status);
           labelHint(count < hints.length ? "Another clue" : "Clues shown");
           hint.setAttribute("aria-disabled", String(count >= hints.length));
           persist();
         });
         labelHint(state.hints[i] ? "Another clue" : "Need a clue?");
         hint.classList.add("al-secondary");
-        if ((!writing || (q.hints && !review.open)) && (state.hints[i] || 0) < hints.length) controls.append(hint);
+        if ((!writing || (q.hints && !review.open)) && (state.hints[i] || 0) < hints.length) help.append(hint);
         if (!writing) {
           const reveal = button("Show explanation", () => {
             state.results[i] = { kind: "revealed" };
@@ -744,13 +735,16 @@
             focus(block.querySelector('[role="status"]'));
           });
           reveal.classList.add("al-secondary");
-          controls.append(reveal);
+          help.append(reveal);
         }
       }
       form.append(controls);
       block.append(form);
       const catchup = flow.context ? flow.context(q) : (family.catchup ? ["Revisit catch-up teaching", "#catchup-" + family.catchup] : null);
-      if (catchup) block.append(quietLink(...catchup));
+      if (catchup) help.append(quietLink(...catchup));
+      if (flow.review) help.append(flow.review);
+      if (flow.extra) help.append(flow.extra);
+      if (help.children.length > 1) block.append(help);
       if (moveFocus) focus(prompt);
 
       form.onsubmit = event => {
@@ -1471,7 +1465,7 @@
       const rows = node("ul", null, "al-catalogue");
       section.append(node("h2", title));
       for (const id of ids) {
-        const [name, description, symbol] = skillDetails[id];
+        const [name, description] = skillDetails[id];
         const [action, progress] = activityStatus(id, saved);
         const row = node("li");
         const entry = node("a", null, "al-catalogue-row");
@@ -1479,7 +1473,8 @@
         const copy = node("span", null, "al-catalogue-copy");
         copy.append(node("strong", name), node("span", description));
         if (progress) copy.append(node("small", progress));
-        entry.append(icon(symbol), copy, node("span", action, "al-row-action"));
+        entry.append(copy);
+        if (action !== "Start") entry.append(node("span", action, "al-row-action"));
         row.append(entry);
         rows.append(row);
       }

@@ -98,7 +98,11 @@ export function mountJourney(host, model, lesson) {
   dialog.setAttribute("aria-labelledby", "school-check-heading");
 
   const checkHeading = element("h2", "Checks");
-  journey.append(checkHeading, versions, progress, checkList, storageNote, dialog);
+  if (inlineCheck) checkHeading.classList.add("school-visually-hidden");
+  const pauseControl = inlineCheck ? button("Pause check", pause, "school-pause") : null;
+  if (pauseControl) document.querySelector(".resource-breadcrumb")?.after(pauseControl);
+  journey.append(checkHeading, versions, progress, checkList, storageNote);
+  if (!inlineCheck) journey.append(dialog);
   const opening = element("h2", hook, "school-opening-hook");
   const evidence = guided ? element("div", "", "school-evidence-panel") : null;
   if (evidence) {
@@ -136,9 +140,9 @@ export function mountJourney(host, model, lesson) {
 
   function addQuestionEvidence(q) {
     if (!q.image && !q.reference) return;
-    const support = element("details", "", "school-question-evidence");
-    support.open = true;
-    support.append(element("summary", q.reference?.label || "Question diagram"));
+    const support = element(inlineCheck ? "section" : "details", "", "school-question-evidence");
+    if (!inlineCheck) support.open = true;
+    support.append(element(inlineCheck ? "h3" : "summary", q.reference?.label || "Question diagram"));
     if (q.image) {
       const img = element("img", "", "school-question-diagram");
       [img.src, img.alt] = q.image;
@@ -165,6 +169,7 @@ export function mountJourney(host, model, lesson) {
   }
 
   function renderStages() {
+    if (pauseControl) pauseControl.hidden = Boolean(state.done || paused);
     if (workedReview) workedReview.hidden = state.step === 0 && !state.done;
     checkHeading.hidden = Boolean(state.done);
     versions.textContent = state.done ? "Guided checks complete" : "Step " + (state.step + 1) + " of " + steps.length;
@@ -178,9 +183,9 @@ export function mountJourney(host, model, lesson) {
       const stage = element("section", "", "school-current-stage");
       let stageName = lessonStages[state.step];
       if (hasScaffolding) {
-        if (step.guide) stageName = "We do · Guided practice";
-        else if (step.worked) stageName = "I do · Worked example";
-        else if (state.step === steps.length - 1) stageName = "You do · On your own";
+        if (step.guide) stageName = inlineCheck ? "Guided practice" : "We do · Guided practice";
+        else if (step.worked) stageName = inlineCheck ? "Worked example" : "I do · Worked example";
+        else if (state.step === steps.length - 1) stageName = inlineCheck ? "Independent practice" : "You do · On your own";
         else if (Number(year) >= 10) stageName = "Apply it";
       }
       const heading = element("h3", stageName);
@@ -369,16 +374,18 @@ export function mountJourney(host, model, lesson) {
     const next = checkButton(nextLabel(), advance);
     next.hidden = !state.correct;
     const tools = element("div", "", "school-journey-actions");
-    tools.append(submit, next, button("Save and pause", pause));
+    tools.append(submit, next);
+    if (!inlineCheck) tools.append(button("Save and pause", pause));
     if (guided && q.guide) form.append(element("p", q.guide, "school-guided-prompt"));
-    if (shownIndex === steps.length - 1 && !state.repeating) form.append(element("p", "Say how you know, then choose."));
+    if (!inlineCheck && shownIndex === steps.length - 1 && !state.repeating) form.append(element("p", "Say how you know, then choose."));
     form.append(choices, result, tools);
     if (state.draft?.trim()) {
       const note = element("details");
       note.append(element("summary", "Saved note"), element("p", state.draft));
       form.append(note);
     }
-    const support = element("div", "", "school-check-support");
+    const support = element(inlineCheck ? "details" : "div", "", "school-check-support");
+    if (inlineCheck) support.append(element("summary", "Need help?"));
     support.hidden = Boolean(state.correct);
     const clue = button("Need a clue?", () => {
       state.clues++;
@@ -462,7 +469,8 @@ export function mountJourney(host, model, lesson) {
       compare);
     section.append(quickCheck);
     const tools = element("div", "", "school-journey-actions");
-    tools.append(checkButton(nextLabel(), advance), button("Save and pause", pause));
+    tools.append(checkButton(nextLabel(), advance));
+    if (!inlineCheck) tools.append(button("Save and pause", pause));
     const visual = !q.image && !q.reference && model.querySelector(
       "[data-catchup-first-evidence], .catchup-model, .gcse-catchup-visual, .writing-data, .ks3-illustration, .ks3-visual");
     if (visual) tools.append(button("See lesson visual", () => {

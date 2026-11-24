@@ -83,10 +83,12 @@ export async function checkALevelExam(browser, base) {
     assert.equal(bank.length, 18);
     assert.equal(new Set(bank.map((x) => x.id)).size, 18);
     const beginGuided = async family => {
-      assert.equal(await page.locator(".al-stages [aria-current=step]").innerText(), "Key idea");
+      assert.equal(await page.locator(".al-journey-stage > .al-key > h2").innerText(), "Key idea");
+      assert.equal(await page.locator(".al-journey-stage .al-stages").count(), 0);
       await page.getByRole("button", { name: "See worked example", exact: true }).press("Enter");
-      assert.equal(await page.locator(".al-stages [aria-current=step]").innerText(), "Worked example");
-      assert(await page.getByRole("button", { name: "Previous step", exact: true }).isDisabled());
+      assert.equal(await page.locator(".al-journey-stage > .al-model > h2").innerText(), "Worked example");
+      assert(await page.getByRole("button", { name: "Key idea", exact: true }).isVisible());
+      assert(await page.getByRole("button", { name: "Go straight to questions", exact: true }).isVisible());
       const art = page.locator(".al-model-visual");
       if (family.id === "dihybrid") {
         assert.equal(await art.getByRole("table").count(), 0);
@@ -123,7 +125,9 @@ export async function checkALevelExam(browser, base) {
           assert(await art.getByText("Postsynaptic neurone", {exact:true}).first().isVisible());
       }
       await page.getByRole("button", { name: "Try with support", exact: true }).press("Enter");
-      assert.equal(await page.locator(".al-stages [aria-current=step]").innerText(), "With support");
+      assert.equal(await page.locator(".al-journey-stage > .al-practice > h2").innerText(), "With support");
+      assert.equal(await page.locator(".al-practice .al-controls .primary:visible").count(), 1);
+      assert.equal(await page.locator(".al-practice-help").getAttribute("open"), null);
       assert(await page.locator(".al-task-prompt").evaluate(el => el === document.activeElement));
       assert.equal(await page.locator(".al-model:visible").count(), 0);
     };
@@ -207,6 +211,7 @@ export async function checkALevelExam(browser, base) {
     );
     await page.goto(base + "/alevel/#exam-hardy");
     await beginGuided(families.find(family => family.id === "hardy"));
+    await page.locator(".al-practice-help > summary").click();
     await page
       .getByRole("button", { name: "Need a clue?", exact: true })
       .click();
@@ -249,6 +254,7 @@ export async function checkALevelExam(browser, base) {
       await page.getByRole("button", { name: "Check answer", exact: true }).click();
       assert.match(await page.locator(".al-practice [role=status]").innerText(), /Correct!/);
       if (i === 0) {
+        await page.locator(".al-practice-help > summary").click();
         await page.getByRole("link", { name: "Review diffusion distance", exact: true }).click();
         await page.getByRole("heading", { name: "Simple and facilitated diffusion", exact: true }).waitFor();
         await page.getByRole("link", { name: /Return to your question/ }).press("Enter");
@@ -299,15 +305,16 @@ export async function checkALevelExam(browser, base) {
     await page.goto(base + "/alevel/#catchup-a7-dihybrid");
     await page.getByRole("heading", { name: /Dihybrid/, level: 1 }).waitFor();
     await page.getByRole("button", { name: "Go straight to questions", exact: true }).click();
-    assert.equal(await page.locator(".al-stages [aria-current=step]").innerText(), "Your turn");
+    assert.equal(await page.locator(".al-journey-stage > .al-practice > h2").innerText(), "Your turn");
     await page.locator(".al-practice input").first().fill("9");
+    await page.locator(".al-practice-help > summary").click();
     await page.getByText("Review the worked example", { exact: true }).press("Enter");
     await page.locator(".al-review-example .al-model").waitFor();
     assert.equal(await page.locator(".al-practice input").first().inputValue(), "9");
     await page.getByText("Review the worked example", { exact: true }).press("Enter");
     assert.equal(await page.locator(".al-model:visible").count(), 0);
     await page.goto(base + "/alevel/");
-    assert.equal(await page.getByRole("link", { name: /Exam Skills.*Drawings/ }).count(), 1);
+    assert.equal(await page.getByRole("link", { name: "Exam Skills", exact: true }).count(), 1);
     const finder = page.locator("[data-topic-finder]");
     for (const [query, route] of [
       ["scientific drawing", "exam-drawings"], ["mark schemes", "exam-points"], ["cardiac pressure", "catchup-a3-heart"],
@@ -488,6 +495,7 @@ export async function checkALevelExam(browser, base) {
     assert.deepEqual(await saved("osmosis"), old);
 
     await page.getByRole("button", { name: "Next task", exact: true }).click();
+    await page.locator(".al-practice-help > summary").click();
     await page.getByRole("button", { name: "Show explanation", exact: true }).press("Enter");
     assert.match(await page.locator(".al-practice [role=status]").innerText(), /Explanation revealed/);
     await page.getByRole("button", { name: "Next task", exact: true }).click();
@@ -531,10 +539,19 @@ export async function checkALevelExam(browser, base) {
     assert.match(await feedback.innerText(), /Correct!/);
     assert.equal((await saved("evidence")).outcomes[1], "corrected");
 
+    await page.clock.install();
     await page.goto(base + "/alevel/#lesson-a2-mitosis");
     const originalQuestion = page.locator("#qf fieldset.q > legend").first();
     const originalPrompt = await originalQuestion.innerText();
+    assert.equal(await page.locator("#qhelp").getAttribute("open"), null);
+    await page.locator("#qhelp > summary").press("Enter");
+    assert(await page.locator("#hint").isDisabled());
+    await page.clock.fastForward(10000);
+    await page.locator("#hint").click();
+    assert(await page.locator("#hintbox").isVisible());
     await page.getByRole("button", { name: "I don’t know – show me", exact: true }).click();
+    assert(await page.locator("#qhelp").isHidden());
+    await page.clock.resume();
     const offer = page.locator("#qf #fb button.al-question-skill");
     await offer.press("Enter");
     const dialog = page.getByRole("dialog", { name: "Understand the question" });

@@ -499,7 +499,7 @@ function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
   var interactive=sim?'<details class="hb-inline-model"'+(simulationStage?' open':'')+'><summary>Open the reproductive pathway model</summary>'+sim.render()+'</details>':"";
   render('<div class="k-wrap k-catchup-concept" data-unit="'+unit+'">'+crumb("catchup/"+unit,u.title)+
    '<div class="k-eyebrow">'+unitKind(unit)+'</div><h1>'+esc(topic)+'</h1>'+
-   teaching.render(lesson,{booklet:unit==="f170"||unit==="f171",inline:lesson.visual==="model"?"":visual,method:skillLinks(unit,id,lesson),modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:recap+related})+'</div>');
+   teaching.render(lesson,{booklet:unit==="f170"||unit==="f171",inline:lesson.visual==="model"?"":visual,method:skillLinks(unit,id,lesson),modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:(unit==="f170"||unit==="f171"?"":recap)+related})+'</div>');
   teaching.mount(unit+"/"+lessonId,lesson,simulationStage?1:review,resumeStage);
   if(sim)sim.mount(document,simulationStage,simulationStage&&document.querySelector("[data-hb-resume]"));
   return;

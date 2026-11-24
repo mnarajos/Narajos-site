@@ -8,7 +8,39 @@ export async function checkHumanCatchup(browser, base) {
   let visits = 0;
   const open = route => page.goto(base + "/human-biology/?check=" + (++visits) + "#" + route);
   const stage = name => page.locator('[data-hb-stage="' + name + '"]');
-  const expand = async loc => { if (!(await loc.evaluate(el => el.open))) await loc.locator(":scope > summary").click(); };
+  async function help(loc) {
+    const details = loc.locator(".hb-help");
+    if (await details.count() && !(await details.evaluate(el => el.open))) await details.locator("summary").click();
+  }
+  const expand = async loc => {
+    if (await loc.evaluate(el => el.tagName === "DETAILS")) {
+      if (!(await loc.evaluate(el => el.open))) await loc.locator(":scope > summary").click();
+      return;
+    }
+    if (await loc.isVisible()) return;
+    const name = await loc.getAttribute("data-hb-stage") || "model";
+    const model = page.locator("[data-hb-model-step]");
+    const guided = stage("guided"), independent = stage("independent"), followup = stage("followup");
+    if (name === "followup") {
+      await expand(independent);
+      await independent.getByRole("button", {name: /(?:Try|Review) (?:a )?fresh check/}).click();
+    } else if (name === "model") {
+      const active = await guided.isVisible() ? guided : await independent.isVisible() ? independent : followup;
+      const review = active.getByRole("button", {name: "Review worked example"});
+      if (await review.isVisible()) await review.click();
+      else { await help(active); await active.getByRole("button", {name: "Revisit worked example"}).click(); }
+    } else if (name === "independent") {
+      if (await followup.isVisible()) await expand(model);
+      const primary = guided.getByRole("button", {name: "Apply it independently"});
+      if (await guided.isVisible() && await primary.isVisible()) await primary.click();
+      else await page.getByRole("button", {name: "Skip to independent practice"}).click();
+    } else if (name === "guided") {
+      await expand(independent);
+      await help(independent);
+      await independent.getByRole("button", {name: "Try with support"}).click();
+    }
+    assert(await loc.isVisible(), "Requested teaching stage is visible: " + name);
+  };
   const saved = key => page.evaluate(key => JSON.parse(localStorage.getItem(key)), key);
   const widthFits = () => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 3);
   const localPractice = "narajos-human-catchup-v1";
@@ -184,7 +216,7 @@ export async function checkHumanCatchup(browser, base) {
       await page.getByText(diagnosis).waitFor();
       await page.getByRole("link", {name: reteachLabel, exact: true}).press("Enter");
       await page.locator("#leave-confirm").press("Enter");
-      await page.locator("[data-hb-model-step][open]").waitFor({state: "visible"});
+      await page.locator("[data-hb-model-step]:not([hidden])").waitFor({state: "visible"});
       await page.getByRole("link", {name: "Return to your unfinished question set", exact: true}).press("Enter");
       await page.getByText(diagnosis).waitFor();
     }
@@ -206,9 +238,9 @@ export async function checkHumanCatchup(browser, base) {
       assert((await prerequisite.locator("p").innerText()).trim().length > 10, key);
       await prerequisite.locator("summary").press("Enter");
       const model = page.locator("[data-hb-model-step]");
-      assert(await model.evaluate(el => el.open), "Worked example is visible on arrival: " + key);
-      assert(await stage("guided").evaluate(el => el.open), "Guided practice is visible on arrival: " + key);
-      assert(await stage("independent").evaluate(el => el.open), "Independent practice is visible on arrival: " + key);
+      assert(await model.isVisible(), "Worked example is visible on arrival: " + key);
+      assert(!(await stage("guided").isVisible()), "Guided practice is initially out of the way: " + key);
+      assert(!(await stage("independent").isVisible()), "Independent practice is initially out of the way: " + key);
       assert.match(await model.locator(".hb-model-steps li").first().innerText(), worked, key);
       await model.getByRole("button", { name: "Show next step" }).press("Enter");
       assert.equal(await model.getAttribute("data-hb-model-step"), "2", key);
@@ -217,12 +249,14 @@ export async function checkHumanCatchup(browser, base) {
         await model.getByRole("button", { name: "Previous step" }).press("Enter");
         assert.equal(await model.locator(".hb-cell-focus").innerText(), "18");
       }
-      while (await model.getByRole("button", { name: "Show next step" }).count()) {
+      const stepLimit = await model.locator(".hb-model-steps li").count();
+      for (let step = 0; step < stepLimit && await model.getByRole("button", { name: "Show next step" }).isVisible(); step++) {
         await model.getByRole("button", { name: "Show next step" }).press("Enter");
       }
+      assert(await model.getByRole("button", { name: "Try with support" }).isVisible(), "Worked example must finish: " + key);
       await model.getByRole("button", { name: "Try with support" }).press("Enter");
-      assert(await model.isVisible() && await model.evaluate(el => el.open), "Worked example remains available alongside practice: " + key);
-      assert(await page.locator(".hb-teach-explain").evaluate(el => el.open), "Explanation remains available: " + key);
+      assert(!(await model.isVisible()), "Only the current stage is shown: " + key);
+      assert(await page.locator(".hb-teach-explain").isVisible(), "Explanation remains available: " + key);
       const definition = Object.fromEntries(chapters)[key];
       const guided = stage("guided");
       await guided.getByRole("radio").nth(definition.guided.answer).check();
@@ -253,6 +287,7 @@ export async function checkHumanCatchup(browser, base) {
       await page.evaluate(key => localStorage.removeItem(key), localPractice);
       await open("catchup/" + key);
       await expand(independent);
+      await help(independent);
       await independent.getByRole("button", { name: "Get a hint" }).press("Enter");
       assert(await independent.locator(".hb-hints").isVisible(), key);
       if (correctChoice) {
@@ -266,14 +301,14 @@ export async function checkHumanCatchup(browser, base) {
         assert.equal(await independent.getByText("Correct!", {exact:true}).count(), 0, "Revealing an explanation is not a checked answer");
       }
       await independent.getByRole("button", { name: "Revisit worked example" }).press("Enter");
-      assert(await model.evaluate(el => el.open), key);
+      assert(await model.isVisible(), key);
       await expand(independent);
       if (correctChoice) {
         await independent.getByRole("radio", { name: correctChoice }).check();
         await independent.getByRole("button", { name: "Check answer" }).press("Enter");
         assert.match(await independent.getByRole("status").innerText(), /Correct!/, key);
       }
-      assert(await page.locator("[data-hb-followup]").isVisible(), key);
+      assert(!(await page.locator("[data-hb-followup]").evaluate(el => el.hidden)), key);
     }
 
     await page.evaluate(key => localStorage.removeItem(key), localPractice);
@@ -282,6 +317,7 @@ export async function checkHumanCatchup(browser, base) {
     await stage("independent").getByRole("radio").nth(1).check();
     await stage("independent").getByRole("button", { name: "Check answer" }).click();
     assert.match(await stage("independent").getByRole("status").innerText(), /all positive screens/);
+    await help(stage("independent"));
     await stage("independent").getByRole("button", { name: "Get a hint" }).press("Enter");
     assert.match(await stage("independent").locator(".hb-hints").innerText(), /denominator/);
     await stage("independent").getByRole("button", { name: "Show explanation" }).press("Enter");
@@ -353,7 +389,7 @@ export async function checkHumanCatchup(browser, base) {
     await page.getByRole("link", { name: /Revisit the (scale-bar calculation|worked unit conversion)/ }).click();
     await page.locator("#leave-confirm").click();
     await page.getByRole("heading", { name: "Microscopy and cell measurements", exact: true }).waitFor();
-    assert(await page.locator("[data-hb-model-step][open]").isVisible());
+    assert(await page.locator("[data-hb-model-step]:not([hidden])").isVisible());
     await page.getByRole("link", { name: "Return to your unfinished question set" }).click();
     await page.getByText("Explanation revealed", { exact: true }).waitFor();
 

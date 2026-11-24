@@ -80,12 +80,14 @@
       '</dl><details><summary>Compare the reasoning</summary>' + paragraphs(example.compare) + '</details></details>';
   }
 
-  function stageSummary(symbol, label, detail) {
+  function stageSummary(symbol, label, detail, booklet) {
+    if (booklet) return '<h2 class="hb-stage-heading" tabindex="-1">' + escape(label) +
+      (detail ? '<small>' + escape(detail) + '</small>' : '') + '</h2>';
     return '<summary>' + icon(symbol) + '<span>' + escape(label) + '</span>' +
       (detail ? '<small>' + escape(detail) + '</small>' : '') + '</summary>';
   }
 
-  function task(stage, title, question, sequence, booklet) {
+  function task(stage, title, question, sequence, booklet, extra) {
     if (!question) return "";
     const id = "hb-" + stage;
     const choice = Array.isArray(question.options);
@@ -93,16 +95,21 @@
       '<label class="hb-teach-option"><input name="' + id + '" type="radio" value="' + i +
       '" required> <span>' + escape(option[0]) + '</span></label>').join("") :
       '<textarea id="' + id + '" rows="4" maxlength="3000" aria-labelledby="' + id + '-prompt" required></textarea>';
-    return '<details class="paper panel hb-teach-stage" data-hb-stage="' + stage + '"' + (booklet ? ' open' : '') + '>' +
-      stageSummary(stage === "guided" ? "steps" : choice ? "target" : "pen", title) + '<form novalidate><fieldset><legend id="' + id + '-prompt">' + escape(question.prompt) +
+    const tag = booklet ? "section" : "details";
+    const help = (question.hints?.length ? '<button type="button" class="button secondary" data-hb-action="hint">' + icon("bulb") + '<span>Get a hint</span></button>' : '') +
+      '<button type="button" class="button quiet" data-hb-action="explain">Show explanation</button>';
+    return '<' + tag + ' class="paper panel hb-teach-stage" data-hb-stage="' + stage + '"' + (booklet ? ' hidden' : '') + '>' +
+      stageSummary(stage === "guided" ? "steps" : choice ? "target" : "pen", title, null, booklet) + (extra || '') + '<form novalidate><fieldset><legend id="' + id + '-prompt">' + escape(question.prompt) +
       '</legend>' + illustration(question.illustration) + figure(question.photo) + (question.photos || []).map((photo, index) => figure(photo, index + 1)).join("") + table(question.table) + paragraphs(question.starter ? [question.starter] : []) +
       inputs + '</fieldset><ol class="hb-hints" hidden></ol><div class="actions hb-controls">' +
       '<button type="submit" class="button primary">' + (!choice && sequence ? icon("pen") : "") +
       (choice ? "Check answer" : "Compare my explanation") + '</button>' +
-      (question.hints?.length ? '<button type="button" class="button secondary" data-hb-action="hint">' + icon("bulb") + '<span>Get a hint</span></button>' : '') +
-      '<button type="button" class="button quiet" data-hb-action="explain">Show explanation</button>' +
-      '</div><div class="hb-feedback" role="status" aria-atomic="true" tabindex="-1"></div>' +
-      '<div data-hb-review hidden></div><div class="actions hb-stage-next" hidden></div></form></details>';
+      (booklet ? '</div><details class="hb-help"><summary>Need help?</summary><div class="actions">' + help +
+        (stage === "independent" ? openStageButton("guided", "Try with support", "quiet") : '') +
+        openStageButton("model", "Revisit worked example", "quiet") + '</div></details>' : help) +
+      (booklet ? '' : '</div>') + '<div class="hb-feedback" role="status" aria-atomic="true" tabindex="-1"></div>' +
+      '<div data-hb-review hidden></div><div class="actions hb-stage-next" hidden></div></form></' + tag + '>' +
+      (booklet && stage === "guided" ? '<div class="hb-skip" data-hb-guided-skip hidden>' + openStageButton("independent", "Skip to independent practice", "quiet") + '</div>' : '');
   }
 
   function openStageButton(stage, label, style) {
@@ -116,14 +123,14 @@
     const activate = lesson.activate
       ? '<details class="hb-prerequisite"><summary>' + escape(lesson.activate[0]) + '</summary><p>' +
         escape(lesson.activate[1]) + '</p>' + prior + '</details>' : prior;
-    const explanation = '<details class="paper panel hb-teach-explain" open><summary><h2>Understand the idea</h2></summary>' +
+    const explanation = (context.booklet ? '<section class="paper panel hb-teach-explain"><h2>Understand the idea</h2>' : '<details class="paper panel hb-teach-explain" open><summary><h2>Understand the idea</h2></summary>') +
       paragraphs(lesson.explain) + table(lesson.compare) + context.inline +
       (lesson.revision && !context.booklet ? '<div class="actions hb-start">' + openStageButton("model", "See worked example", "primary") + '</div>' : '') +
-      '</details>';
+      (context.booklet ? '</section>' : '</details>');
     const evidenceModel = lesson.revision && (lesson.focusCells || lesson.graph || lesson.visual === "model");
     const model = lesson.model?.length ?
-      '<details class="paper panel hb-teach-stage' + (evidenceModel ? ' hb-model-with-evidence' : '') +
-      '" data-hb-model-step="1"' + (context.booklet ? ' open' : '') + '>' + stageSummary("eye", "Worked example", lesson.modelTitle) + context.modelVisual + illustration(lesson.illustration) + figure(lesson.photo) +
+      '<' + (context.booklet ? 'section' : 'details') + ' class="paper panel hb-teach-stage' + (evidenceModel ? ' hb-model-with-evidence' : '') +
+      '" data-hb-model-step="1">' + stageSummary("eye", "Worked example", lesson.modelTitle, context.booklet) + context.modelVisual + illustration(lesson.illustration) + figure(lesson.photo) +
       (lesson.graph ? window.KeystoneHumanSkills.graphHTML(lesson.graph) : "") + table(lesson.table, lesson.focusCells) +
       '<ol class="hb-model-steps' + (lesson.nodes ? ' hb-model-path' : '') + '">' + lesson.model.map((step, i) =>
         '<li value="' + (i + 1) + '"' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
@@ -131,14 +138,15 @@
       '</ol>' + (lesson.model.length > 1 ?
         '<button type="button" class="button secondary" data-hb-action="model">Show next step</button>' : '') +
       (evidenceModel ? '<button type="button" class="button quiet hb-model-back" hidden>Previous step</button>' : '') +
-      (lesson.revision ? '<div class="actions" data-hb-after-model hidden>' +
-        openStageButton("guided", "Try with support", "primary") + '</div>' : '') + '</details>' : "";
+      (lesson.revision || context.booklet ? '<div class="actions" data-hb-after-model' + (lesson.model.length > 1 ? ' hidden' : '') + '>' +
+        openStageButton("guided", "Try with support", "primary") + '</div>' : '') +
+      (context.booklet ? '<div class="hb-skip">' + openStageButton("independent", "Skip to independent practice", "quiet") + '</div></section>' : '</details>') : "";
     return '<div class="hb-teaching' + (lesson.revision ? ' hb-teaching-sequence' : '') + (context.booklet ? ' hb-teaching-booklet' : '') + '"><p class="lead hb-objective">' + escape(lesson.goal) + '</p>' + activate +
-      explanation + model + context.method + task("guided", "With support", lesson.guided, false, context.booklet) +
-      writingExample(lesson.writing) +
-      task("independent", "Your turn", lesson.apply, lesson.revision, context.booklet) +
+      explanation + model + (context.booklet ? '' : context.method) + task("guided", "With support", lesson.guided, false, context.booklet) +
+      (context.booklet ? '' : writingExample(lesson.writing)) +
+      task("independent", "Your turn", lesson.apply, lesson.revision, context.booklet, context.booklet ? writingExample(lesson.writing) : '') +
       '<div data-hb-followup hidden>' + task("followup", "Try a fresh check", lesson.followup, false, context.booklet) + '</div>' +
-      context.related + '</div>';
+      (context.booklet ? context.method : '') + context.related + '</div>';
   }
 
   const outcomeLabels = {
@@ -177,6 +185,8 @@
     // Keep responses to earlier task versions separate from the new questions.
     key += lesson.revision ? "/" + lesson.revision : "";
     const record = load()[key] || {};
+    const booklet = root.classList.contains("hb-teaching-booklet");
+    let resetModel = () => {};
     const questions = { guided: lesson.guided, independent: lesson.apply, followup: lesson.followup };
     const recommended = root.querySelector("[data-hb-resume], [data-hb-build], [data-hb-practice]");
 
@@ -187,12 +197,14 @@
     }
 
     function nextAction(section, state) {
-      if (!lesson.revision) return;
+      if (!lesson.revision && !root.classList.contains("hb-teaching-booklet")) return;
       const stage = section.dataset.hbStage;
       const actions = section.querySelector(".hb-stage-next");
       const completed = state.accepted || state.outcome === "selfReview";
       const controls = section.querySelector(".hb-controls");
       if (completed) controls.hidden = true;
+      const skip = root.querySelector("[data-hb-guided-skip]");
+      if (skip && stage === "guided" && completed) skip.hidden = true;
       actions.innerHTML = "";
       if (completed && stage === "guided") {
         actions.innerHTML = openStageButton("independent", "Apply it independently", "primary");
@@ -204,9 +216,10 @@
         next.href = recommended.href;
         next.textContent = recommended.hasAttribute("data-hb-resume") ? "Continue your saved questions" : "Continue to practice";
         actions.append(next);
-      } else if (state.wrong || state.revealed) {
+      } else if ((state.wrong || state.revealed) && !root.classList.contains("hb-teaching-booklet")) {
         actions.innerHTML = openStageButton("model", "Revisit worked example", "quiet");
       }
+      if (completed && booklet) actions.insertAdjacentHTML("beforeend", openStageButton("model", "Review worked example", "quiet"));
       actions.hidden = !actions.hasChildNodes();
     }
 
@@ -215,6 +228,8 @@
       const feedback = section.querySelector(".hb-feedback");
       const review = section.querySelector("[data-hb-review]");
       const comparing = state.original !== undefined;
+      const help = section.querySelector(".hb-help");
+      if (help) help.hidden = comparing || Boolean(state.accepted);
       const count = state.hint || 0;
       hintList.hidden = !count;
       hintList.innerHTML = count ? question.hints.slice(0, count).map(hint => '<li>' + escape(hint) + '</li>').join("") : "";
@@ -234,7 +249,11 @@
       if (state.outcome && !comparing) {
         html = '<p><strong>' + (state.outcome === "explained" && state.accepted ? "Correct!" : outcomeLabels[state.outcome]) + '</strong></p>' + html;
         if (question.points) html += list(question.points);
-        html += '<p>' + escape(question.explanation) + '</p>';
+        if (!booklet || !state.accepted || state.wrong || state.revealed) {
+          html += '<p>' + escape(question.explanation) + '</p>';
+        } else {
+          html += '<details><summary>Why?</summary><p>' + escape(question.explanation) + '</p></details>';
+        }
       }
       review.hidden = !comparing;
       if (comparing) {
@@ -321,12 +340,12 @@
     });
     const modelButton = root.querySelector('[data-hb-action="model"]');
     if (modelButton) {
-      const model = modelButton.closest("details");
+      const model = modelButton.closest(".hb-teach-stage");
       const steps = modelButton.previousElementSibling;
       const cells = Array.from(model.querySelectorAll("[data-hb-cell]"));
       const advance = model.querySelector("[data-hb-after-model]");
       const back = model.querySelector(".hb-model-back");
-      function showModelStep(index, focus) {
+      function showModelStep(index, focus, persist) {
         model.dataset.hbModelStep = index + 1;
         Array.from(steps.children).forEach((step, i) => {
           step.hidden = i > index;
@@ -336,6 +355,8 @@
         const active = lesson.focusCells?.[index] || [];
         cells.forEach(cell => cell.classList.toggle("hb-cell-focus", active.includes(cell.dataset.hbCell)));
         const finished = index === steps.children.length - 1;
+        if (booklet) modelButton.hidden = finished;
+        if (persist && booklet) { record.modelStep = index; save(key, record); }
         if (back) back.hidden = index === 0;
         modelButton.textContent = finished ? "Replay example" : "Show next step";
         if (advance) {
@@ -350,17 +371,32 @@
       }
       modelButton.addEventListener("click", () => {
         const next = Array.from(steps.children).findIndex(step => step.hidden);
-        showModelStep(next < 0 ? 0 : next, true);
+        showModelStep(next < 0 ? 0 : next, true, true);
       });
-      back?.addEventListener("click", () => showModelStep(Number(model.dataset.hbModelStep) - 2, true));
+      back?.addEventListener("click", () => showModelStep(Number(model.dataset.hbModelStep) - 2, true, true));
+      resetModel = () => showModelStep(0, false, true);
       if (reviewStep) {
         model.open = true;
         showModelStep(Math.min(reviewStep, steps.children.length) - 1, true);
-      } else showModelStep(0, false);
+      } else showModelStep(booklet ? Math.min(record.modelStep || 0, steps.children.length - 1) : 0, false);
     }
     const explanation = root.querySelector(".hb-teach-explain");
+    function showBookletStage(id, focus, persist) {
+      const stages = {
+        model: root.querySelector("[data-hb-model-step]"),
+        guided: root.querySelector('[data-hb-stage="guided"]'),
+        independent: root.querySelector('[data-hb-stage="independent"]'),
+        followup: root.querySelector('[data-hb-stage="followup"]')
+      };
+      const next = stages[id];
+      if (!next || (id === "followup" && root.querySelector("[data-hb-followup]").hidden)) return;
+      Object.entries(stages).forEach(([name, stage]) => { if (stage) stage.hidden = name !== id; });
+      const skip = root.querySelector("[data-hb-guided-skip]");
+      if (skip) skip.hidden = id !== "guided" || Boolean(record.guided?.accepted || record.guided?.outcome === "selfReview");
+      if (persist) { record.view = id; save(key, record); }
+      if (focus) next.querySelector(".hb-stage-heading")?.focus();
+    }
     function prepareStage(next) {
-      if (root.classList.contains("hb-teaching-booklet")) return;
       root.querySelectorAll("details.hb-teach-stage[open]").forEach(stage => {
         if (stage !== next) stage.open = false;
       });
@@ -373,6 +409,7 @@
         const next = id === "model" ? root.querySelector("[data-hb-model-step]") :
           root.querySelector('[data-hb-stage="' + id + '"]');
         if (!next) return;
+        if (booklet) { if (id === "model") resetModel(); showBookletStage(id, true, true); return; }
         prepareStage(next);
         next.open = true;
         next.querySelector("summary").focus();
@@ -382,6 +419,10 @@
       }
     });
     updateFollowup();
+    if (booklet) {
+      showBookletStage(resumeStage || (reviewStep ? "model" : record.view) || "model", Boolean(resumeStage), false);
+      return;
+    }
     const resume = resumeStage && root.querySelector('[data-hb-stage="' + resumeStage + '"]');
     if (resume && !resume.closest("[hidden]")) {
       prepareStage(resume);

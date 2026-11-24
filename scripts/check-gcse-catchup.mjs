@@ -35,14 +35,18 @@ export async function checkGCSECatchup(browser, base) {
 
     for (const [id, lesson] of Object.entries({...priorityCatchup, ...investigations})) {
       await page.goto(lessonURL(id, lesson.year));
-      await journey.getByRole("heading", {name: /I do/}).waitFor();
+      await journey.getByRole("heading", {name: "Worked example", exact: true}).waitFor();
       assert(await page.locator(".school-worked-example ol").last().isVisible());
       for (const [index, question] of lesson.steps.entries()) {
         await openCheck();
         assert(await dialog.getByRole("heading", {name: question.prompt, exact: true}).isVisible());
         assert(await page.locator(".school-evidence-panel").isVisible());
         if (id === "motor-effect" && index === 0) {
-          await dialog.getByRole("button", {name: "Save and pause"}).press("Enter");
+          assert.equal(await dialog.getByRole("button", {name: "Need a clue?"}).isVisible(), false);
+          await dialog.getByText("Need help?", {exact: true}).press("Enter");
+          await dialog.getByRole("button", {name: "Need a clue?"}).press("Enter");
+          assert(await dialog.locator(".school-clue").isVisible());
+          await page.getByRole("button", {name: "Pause check"}).press("Enter");
           const resume = journey.getByRole("button", {name: "Resume check"});
           assert(await resume.evaluate(el => el === document.activeElement));
           await resume.press("Enter");
@@ -57,6 +61,7 @@ export async function checkGCSECatchup(browser, base) {
           await choose(question.options[0].label);
           await submit();
           assert.match(await dialog.locator('[data-verdict="incorrect"]').innerText(), /fixed power/);
+          await dialog.getByText("Need help?", {exact: true}).press("Enter");
           await dialog.getByRole("button", {name: "Revisit the worked example"}).press("Enter");
           assert(await page.locator("details.school-worked-example").evaluate(el => el.open && el === document.activeElement));
           await page.reload();
@@ -149,6 +154,27 @@ export async function checkGCSECatchup(browser, base) {
     await page.addScriptTag({content: axe.source});
     const violations = await page.evaluate(async () => (await window.axe.run({runOnly: ["wcag2a","wcag2aa"]})).violations);
     assert.deepEqual(violations.map(({id,nodes}) => [id,nodes.map(node => node.target)]), []);
+    // Revision help keeps the timed hint and show-me path available from one disclosure.
+    await page.clock.install();
+    await page.goto(base + "/gcse/");
+    await page.locator("#study-tier").selectOption("F");
+    await page.goto(base + "/gcse/#lesson-b1-cells");
+    const revisionHelp = page.locator("#question-help");
+    assert(!(await page.locator("#dk").isVisible()));
+    await revisionHelp.locator("summary").press("Enter");
+    assert(await page.locator("#hint").isDisabled());
+    await page.clock.fastForward("00:10");
+    assert(await page.locator("#hint").isEnabled());
+    await page.locator("#hint").press("Enter");
+    assert(await page.locator("#hintbox").isVisible());
+    await page.locator("#dk").press("Enter");
+    assert(await page.locator("#fb").isVisible());
+    assert(!(await revisionHelp.isVisible()));
+    await page.reload();
+    await page.getByText("Mitochondria", {exact: true}).click();
+    await page.getByRole("button", {name: "Check", exact: true}).press("Enter");
+    assert.match(await page.locator("#fb").innerText(), /Correct/);
+    assert(!(await revisionHelp.isVisible()));
     assert.deepEqual(errors, []);
     console.log("GCSE catch-up: 48 routes, eighteen learning journeys, old responses, phone/tablet/desktop, enlarged text and axe passed.");
   } finally {

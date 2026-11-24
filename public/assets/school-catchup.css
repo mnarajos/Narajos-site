@@ -246,3 +246,21 @@ html[data-catchup-year="11"] .school-check-inline {
   margin: .8rem 0 0; padding: .8rem 0 0; border: 0; border-top: 1px solid #adc8c9;
   border-radius: 0; background: transparent;
 }
+
+/* GCSE lessons use one continuous page for evidence, teaching and practice. */
+:is(html[data-catchup-year="10"], html[data-catchup-year="11"]) :is(.school-journey, .school-evidence-panel > .practice-card) {
+  background: transparent; border: 0; border-radius: 0; padding: 0;
+}
+:is(html[data-catchup-year="10"], html[data-catchup-year="11"]) .school-current-stage > .school-worked-example {
+  background: transparent; border: 0; border-radius: 0; padding: 0; margin: .4rem 0 .8rem;
+}
+.school-check-inline .school-check-support { display: block; }
+.school-check-inline .school-check-support summary { cursor: pointer; min-height: 44px; padding: .65rem 0; font-weight: 700; }
+.school-check-inline .school-check-support button { margin: 0 .4rem .4rem 0; }
+.school-pause { background: none; border: 0; padding: .4rem 0; min-height: 44px; color: #175466; font: inherit; text-decoration: underline; cursor: pointer; }
+.school-pause:focus-visible { outline: 3px solid var(--narajos-focus-ring,#a34b1c); outline-offset: 3px; }
+
+.school-check-inline .school-check-support[hidden] { display: none; }
+
+.school-check-inline .school-question-evidence { background: transparent; border: 0; border-radius: 0; padding: 0; }
+.school-check-inline .school-question-evidence h3 { font-size: 1rem; margin: .5rem 0 .25rem; }
