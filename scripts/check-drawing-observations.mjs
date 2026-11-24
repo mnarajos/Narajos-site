@@ -208,7 +208,19 @@ export async function checkDrawingObservations(browser,base,axeSource) {
                                [nucleus,382,347],[nucleus,489,354],[nucleus,440,393],[nucleus,421,305]])
         check(boundaryDistance(path,x-256,y-208)<7,"frog observed landmark "+x+","+y);
       const workedLabels=[...drawing.querySelectorAll("[data-worked-label]")];
-      check(workedLabels.length===3,"worked labelled structures");
+      const labelNames=workedLabels.map(group=>group.dataset.workedLabel).sort();
+      check(labelNames.join()==="Cell boundary,Cytoplasm,Nucleus","worked labelled structures");
+      // The worked drawing has straight horizontal leaders and an external label column.
+      // Include text extents and the complete leaders, not just their endpoints.
+      function overlaps(a,b) {
+        return a.left<=b.right && a.right>=b.left && a.top<=b.bottom && a.bottom>=b.top;
+      }
+      const ink=[...drawing.querySelectorAll("text,line")].map(element=>({
+        name:element.textContent || element.parentElement.dataset.workedLabel || "scale bar",
+        bounds:element.getBoundingClientRect()
+      }));
+      for(let i=0;i<ink.length;i++)for(let j=0;j<i;j++)
+        check(!overlaps(ink[i].bounds,ink[j].bounds),"frog overlapping text or lines: "+ink[i].name+" / "+ink[j].name);
       for(const group of workedLabels){
         const label=group.dataset.workedLabel,line=group.querySelector("line");
         const point=n=>new DOMPoint(Number(line.getAttribute("x"+n)),Number(line.getAttribute("y"+n)));
@@ -217,15 +229,13 @@ export async function checkDrawingObservations(browser,base,axeSource) {
           label==="Nucleus"?boundaryDistance(nucleus,tip.x,tip.y)<2:
           label==="Cytoplasm"&&cell.isPointInFill(tip)&&!nucleus.isPointInFill(tip);
         check(meets,"frog "+label+" endpoint");
-        if(label!=="Cell boundary"){
-          const box=group.querySelector("text").getBBox();
-          for(const x of [box.x,box.x+box.width])for(const y of [box.y,box.y+box.height]){
-            const corner=new DOMPoint(x,y);
-            check(cell.isPointInFill(corner)&&!nucleus.isPointInFill(corner),"frog "+label+" text stays in clear cytoplasm");
-          }
-        }
+        const word=group.querySelector("text");
+        check(word.textContent.trim()===label && !overlaps(word.getBoundingClientRect(),cell.getBoundingClientRect()),
+          "frog "+label+" word is outside the cell");
+        check(!cell.isPointInFill(start),"frog "+label+" leader starts outside the cell");
         const hits=lineCrossings(start,tip,contours);
-        check(hits.length===0,"frog "+label+" full leader crosses "+hits.join("/"));
+        const expected=label==="Cell boundary"?"":"cell";
+        check(hits.join()===expected,"frog "+label+" full leader crosses "+hits.join("/"));
       }
       for(const label of drawing.querySelectorAll("text")){
         const box=label.getBBox(), bounds=label.ownerSVGElement.viewBox.baseVal;

@@ -30,18 +30,16 @@
       content + scaleBar(24, 354));
   }
 
-  function leader(label, startX, y, endX, placeTextBefore = false) {
-    const textX = endX + (placeTextBefore ? -7 : 7);
-    return '<g data-worked-label="' + label + '"><line x1="' + startX + '" x2="' + endX + '" y1="' + y + '" y2="' + y +
-      '" stroke="' + ink + '" stroke-width="1.35"/><text x="' + textX + '" y="' + (y + 6) + '" text-anchor="' +
-      (placeTextBefore ? "end" : "start") + '" font-size="19">' + label + '</text></g>';
+  function leader(label, targetX, y) {
+    return '<g data-worked-label="' + label + '"><line x1="' + targetX + '" x2="377" y1="' + y + '" y2="' + y +
+      '" stroke="' + ink + '" stroke-width="1.35"/><text x="384" y="' + (y + 6) + '" font-size="19">' + label + '</text></g>';
   }
 
   function modelSvg() {
     const outlines = '<g fill="none" stroke="' + ink + '" stroke-width="2.2" stroke-linejoin="round">' +
       '<path data-worked-contour="cell" d="' + cell + '"/><path data-worked-contour="nucleus" d="' + nucleus + '"/></g>';
-    const drawing = '<g transform="translate(6 35)">' + outlines + leader("Cell boundary", 310, 71, 377) +
-      leader("Nucleus", 233, 146, 253) + leader("Cytoplasm", 300, 216, 280, true) + '</g>';
+    const drawing = '<g transform="translate(6 35)">' + outlines + leader("Cell boundary", 310, 71) +
+      leader("Nucleus", 233, 146) + leader("Cytoplasm", 300, 216) + '</g>';
     return frame(516, 374, "Drawing of the stained tiger frog erythrocyte in the photograph. The larger oblique contour encloses a smaller oval nucleus. Labels identify the cell boundary, nucleus and surrounding cytoplasm. The bar represents five micrometres.",
       '<text x="14" y="24" font-weight="bold" font-size="19">Wright–Giemsa-stained tiger frog erythrocyte</text>' +
       drawing + scaleBar(24, 354));
@@ -55,7 +53,7 @@
       "Trace the slightly tilted outer edge with one continuous pencil line. Leave out the fragments of neighbouring cells at the edge of the photograph.",
       "The dark purple nucleus lies near the centre, slightly to the left. Its width along the page is about a third of the cell’s. Outline it once and leave the lighter cytoplasm unshaded.",
       "The stain lets you distinguish nucleus from cytoplasm. It does not resolve the identity of every patch of colour. Leave out a nucleolus, chromosomes and other structures whose boundaries you cannot identify here.",
-      "Label the nucleus, cytoplasm and cell boundary with straight lines. Add a title naming the specimen and preparation. If asked to annotate it, explain how the staining makes the nucleus distinguishable.",
+      "Write the labels together beside the cell. Use a ruler to take each line to its feature without crossing another label line. Stop the nucleus line at its edge and the cytoplasm line in the pale region. Add a title naming the specimen and preparation. If asked to annotate it, explain how staining helps you identify the nucleus.",
       "The published 10 µm bar spans 255 source pixels. The 5 µm bar shown here spans half that distance. On paper, compare the same dimension of your cell with the photograph and resize the bar in the same proportion."
     ],
     observationSvg,
