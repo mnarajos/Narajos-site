@@ -461,6 +461,9 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <script src="/alevel/spaced-review-app.js"></script>
 <link rel="stylesheet" href="/alevel/exam-skills.css">
 <script src="/alevel/teaching-data.js"></script>
+<script src="/alevel/passage-practice.js"></script>
+<script src="/alevel/investigation-practice.js"></script>
+<script src="/alevel/essay-practice.js"></script>
 <script src="/alevel/drawing-bank.js"></script>
 <script src="/alevel/drawing-worked.js"></script>
 <script src="/alevel/exam-skills.js"></script>
@@ -3631,7 +3634,7 @@ DATA.p3e={
 
 DATA.p3w={
  title:"Essay",code:"Paper 3",paper:"Paper 3",
- note:"Work through the stages in order. Each stage adds one thing. The full 25-mark essay comes last, once each part is secure.",
+ note:"Try writing about an unfamiliar title, or choose a lesson on planning, paragraphs or the full 25-mark essay.",
  concepts:[
  {id:"echecks",title:"What examiners want: the five checks",spec:"Paper 3 essay",needs:[],key:["The essay is worth <b>25 marks</b>. Allow about <b>45 minutes</b>: about 5 minutes to plan and about 10 minutes for each of four areas.","Use these <b>five checks</b> on your whole essay – and on each part of it as you write.","<b>1. Breadth.</b> At least four different areas of the specification.","<b>2. Relevance – did I choose the right biology?</b> Every area fits this title. Nothing is off-topic or there just to fill space.","<b>3. Accuracy.</b> No biological errors – a serious error can hold back the whole essay.","<b>4. Depth.</b> A-level detail: name the molecules, structures, and processes, and explain the mechanism, not just the outcome.","<b>5. Read the Full Question.</b> A title has two parts: the biology (for example ‘water’) and what to do with it (for example ‘the importance of’). Describing the biology answers only half. In every area, answer the whole title: for ‘The importance of…’, say why it matters; for ‘How … is related to …’, say how one makes the other possible.","No introduction or conclusion is needed, and your areas do not need to link to each other – each one links to the title."],gate:"The next stages practise these checks one or two at a time.",st:1,
   qs:[
@@ -6121,6 +6124,7 @@ function showPaper(p,focus){
  if(p.id==="p3")h+='<ul class="rows">'+
   rowA("/alevel/evidence/","Evaluate unfamiliar data","Practise selecting evidence and qualifying a scientific conclusion.")+'</ul>';
  var rows="";
+ if(p.id==="p2")rows+=rowA("#exam-passages","Paper 2 comprehension","Read an unfamiliar passage and write your response.");
  /* Paper 3 (20 November, teacher): the three real sections, marks as small text; extra practice in its own group */
  var sect="";if(p.skills3)p.skills3.forEach(function(x){var T=DATA[x[0]];if(T)sect+=rowA("#topic-"+x[0],T.title,(x[0]==="p3w"?"25 marks":x[0]==="p3e"?"15 marks":"38 marks")+" · "+x[1]);});
  if(sect)h+='<h2>Paper 3 sections</h2><ul class="rows">'+sect+'</ul>';
@@ -6199,6 +6203,8 @@ function showTopic(t,focus){
  var pp=PAPERS.filter(function(p){return p.topics.indexOf(t)>-1||(p.skills3&&p.skills3.some(function(x){return x[0]===t;}));})[0];
  var h='<p class="crumb">'+(pp?(T.code==="Paper 3"?'<a href="#paper-'+pp.id+'">← '+esc(pp.name)+'</a>':'<a href="#ptopics-'+pp.id+'">← '+esc(pp.name)+' topics</a>'):'<a href="#">← Home</a>')+'</p><h1>'+T.code+': '+esc(T.title)+'</h1><p class="spec">'+esc(T.paper)+' · '+n+' concepts</p>';
  if(S.tier==="FH"&&T.note)h+='<p class="note">'+esc(T.note)+'</p>';
+ if(t==="p3w")h+='<p><a class="btn" href="#exam-essaywriting">Paper 3 essay writing</a></p>';
+ if(t==="p3e")h+='<p><a class="btn" href="#exam-investigations">Paper 3 investigations</a></p>';
  var sks=SKILLS.filter(function(x){return (x.t===t||(x.ts&&x.ts.indexOf(t)>-1)||(t==="p3s"&&x.p3))&&!(x.ht&&S.tier==="F");});
  if(sks.length)h+='<div class="modebar"><p><strong>Skills practice:</strong> unlimited questions with new values each time.</p><p class="sklinks">'+sks.map(function(x){return '<a class="btn" href="#practice-'+x.id+'">'+esc(x.name)+'</a>';}).join("")+'</p></div>';
  var STN=["The Basics","Core Knowledge","Deeper Understanding","Application","Exam Technique"],stages=[];T.concepts.forEach(function(c){if(!avail(c))return;var k=(c.st||1)-1;(stages[k]=stages[k]||[]).push(c);});

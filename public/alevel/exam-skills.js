@@ -3,6 +3,11 @@
   const families = window.ALevelTeachingFamilies;
   const drawing = window.ALevelDrawingBank;
   const storageKey = "keystone.alevel.exam-skills.v1";
+  const paperRoutes = {
+    passages: { stimulus: "Passage", back: ["Paper 2", "#paper-p2"], related: [["Passage and topic questions", "#ptopics-p2"], ["Understand the question", "#exam-interpret"]] },
+    investigations: { stimulus: "Investigation", back: ["Evidence practice", "/alevel/evidence/"], related: [["Paper 3 Maths Skills", "#pskills-p3"], ["Practical reasoning", "#exam-practical"]] },
+    essaywriting: { stimulus: "Essay title", back: ["Paper 3 essay", "#topic-p3w"], related: [["Develop extended answers", "#exam-extended"]] },
+  };
   function read() {
     try {
       const data = JSON.parse(localStorage.getItem(storageKey));
@@ -42,9 +47,33 @@
     element.tabIndex = -1;
     element.focus();
   }
-  function table(caption, headers, rows, highlights = []) {
-    const wrap = node("div", null, "al-table"),
+  customElements.define("al-paper-scroll", class extends HTMLElement {
+    connectedCallback() {
+      const update = () => {
+        if (this.scrollWidth > this.clientWidth || this.scrollHeight > this.clientHeight) {
+          this.tabIndex = 0;
+          this.setAttribute("role", "region");
+          this.setAttribute("aria-label", this.dataset.label);
+        } else {
+          this.removeAttribute("tabindex");
+          this.removeAttribute("role");
+          this.removeAttribute("aria-label");
+        }
+      };
+      this.sizeObserver = new ResizeObserver(update);
+      this.sizeObserver.observe(this);
+      this.sizeObserver.observe(this.firstElementChild);
+      update();
+    }
+    disconnectedCallback() {
+      this.sizeObserver.disconnect();
+    }
+  });
+
+  function table(caption, headers, rows, highlights = [], paper = false) {
+    const wrap = node(paper ? "al-paper-scroll" : "div", null, "al-table"),
       t = node("table");
+    if (paper) wrap.dataset.label = caption;
     t.createCaption().textContent = caption;
     const hr = t.createTHead().insertRow();
     headers.forEach((h, i) => {
@@ -287,7 +316,8 @@
     }
   }
 
-  function model(host, family, state, persist, finish, revisiting = false, backToIdea = null) {
+  function model(host, family, state, persist, finish, finishLabel = "Try with support", backToIdea = null) {
+    const paper = paperRoutes[family.id];
     const block = node("section", null, "al-teaching al-model");
     const heading = node("h2", "Worked example");
     const panel = node("div", null, "al-step");
@@ -310,26 +340,38 @@
     previous.classList.add("al-secondary");
     controls.append(next, previous);
     block.append(heading, panel, announcement, art, controls);
+    const count = node("span", null, "al-task-count");
+    if (paper) {
+      const context = node("div", null, "al-task-stimulus");
+      context.append(node("h3", paper.stimulus, "al-stimulus-heading"));
+      context.append(node("p", family.modelStimulus, family.id === "essaywriting" ? "al-essay-title" : null));
+      if (family.evidence) context.append(art);
+      heading.append(count);
+      block.replaceChildren(heading, context, node("h3", family.modelQuestion, "al-task-prompt"), panel, announcement, controls);
+    }
     host.append(block);
     function update() {
       // Keep the opening context beside each new step. Earlier steps remain
       // available with Previous without making the controls recede down a phone.
-      const steps = node("ol", null, "al-model-steps");
-      family.model.forEach((text, i) => {
-        if (i !== 0 && i !== index) return;
-        const step = node("li", text);
-        step.value = i + 1;
-        if (i === index) {
-          step.setAttribute("aria-current", "step");
-        }
-        steps.append(step);
-      });
-      panel.replaceChildren(steps, node("p", (index + 1) + " of " + (last + 1), "al-task-count"));
+      if (paper) {
+        count.textContent = "Step " + (index + 1) + " of " + (last + 1);
+        panel.replaceChildren(node("p", family.model[index]));
+      } else {
+        const steps = node("ol", null, "al-model-steps");
+        family.model.forEach((text, i) => {
+          if (i !== 0 && i !== index) return;
+          const step = node("li", text);
+          step.value = i + 1;
+          if (i === index) step.setAttribute("aria-current", "step");
+          steps.append(step);
+        });
+        panel.replaceChildren(steps, node("p", (index + 1) + " of " + (last + 1), "al-task-count"));
+      }
       announcement.textContent = "Step " + (index + 1) + " of " + (last + 1) + ". " + family.model[index];
-      art.replaceChildren(family.evidence ? table(...family.evidence, family.evidenceHighlights?.[index]) : visual(family.visual, index));
+      art.replaceChildren(family.evidence ? table(...family.evidence, family.evidenceHighlights?.[index], paper) : visual(family.visual, index));
       previous.disabled = index === 0 && !backToIdea;
       previous.textContent = index === 0 && backToIdea ? "Key idea" : "Previous step";
-      next.textContent = index < last ? "Next step" : revisiting ? "Back to the question" : "Try with support";
+      next.textContent = index < last ? "Next step" : finishLabel;
     }
     update();
     return block;
@@ -344,8 +386,28 @@
     const secondary = node("div", null, "al-journey-links");
     host.append(active, secondary);
 
+    function pendingIndependent() {
+      return family.tasks.flatMap((q, i) => q.guided || state.reviews[i]?.finished ? [] : [i]);
+    }
+    function skipLabel() {
+      return pendingIndependent().some(i => !state.modelAssists[i]) ? "Try an independent question" : "Return to your response";
+    }
+    function openModel() {
+      state.phase = "model";
+      state.modelIndex = 0;
+      persist();
+      show(true);
+    }
     function practiseNow(moveFocus, independent = false) {
-      if (independent) {
+      if (options.paper) {
+        const pending = family.tasks.map((_, i) => i).filter(i => !state.reviews[i]?.finished);
+        // Reserve a different context when a pupil leaves a question to get help.
+        const unassisted = pending.filter(i => !family.tasks[i].guided && !state.modelAssists[i]);
+        const written = unassisted.length ? unassisted : pendingIndependent();
+        state.queue = independent ? written : [...pending.filter(i => family.tasks[i].guided), ...written];
+        state.completed = !state.queue.length;
+        state.index = state.queue[0] ?? state.index;
+      } else if (independent) {
         state.queue = family.tasks.flatMap((q, i) => q.guided ? [] : [i]);
         state.index = state.queue[0];
       }
@@ -380,15 +442,30 @@
         active.append(panel);
         if (moveFocus) focus(heading);
       } else if (state.phase === "model") {
-        const content = model(active, family, state, persist, () => practiseNow(true), false, () => {
+        const allReviewed = options.paper && family.tasks.every((_, i) => state.reviews[i]?.finished);
+        const content = model(active, family, state, persist, () => practiseNow(true), allReviewed ? "Return to your responses" : undefined, () => {
           state.phase = "idea";
           persist();
           show(true);
         });
-        const skip = button("Go straight to questions", () => practiseNow(true, true));
-        skip.classList.add("al-secondary");
-        secondary.append(skip);
         if (moveFocus) focus(content.querySelector("h2"));
+      } else if (options.paper) {
+        const content = practise(active, family, state, {
+          paper: options.paper,
+          openModel,
+          independent: () => practiseNow(true, true),
+          skipLabel,
+          support: () => {
+            const i = state.index;
+            state.modelAssists[i] = true;
+            if (state.drafts[i]?.trim()) {
+              state.reviews[i] ||= { choices: {} };
+              state.reviews[i].original ??= state.drafts[i];
+            }
+            openModel();
+          },
+        });
+        if (moveFocus) focus(content.querySelector(".al-stimulus-heading, .al-task-prompt") || content.querySelector("h2"));
       } else {
         const review = node("details", null, "al-review-example");
         const content = practise(active, family, state, {
@@ -405,7 +482,7 @@
             model(review, family, state, persist, () => {
               review.open = false;
               focus(content.querySelector(".al-task-prompt") || content.querySelector("h2"));
-            }, true);
+            }, "Back to the question");
           }
           if (!state.completed && !state.outcomes[state.index] && !family.tasks[state.index].guided) {
             state.modelAssists[state.index] = true;
@@ -414,8 +491,8 @@
         };
         if (moveFocus) focus(content.querySelector(".al-stimulus-heading, .al-task-prompt") || content.querySelector("h2"));
       }
-      if (state.phase === "idea") {
-        const skip = button("Go straight to questions", () => practiseNow(true, true));
+      if (state.phase !== "practice" && (!options.paper || pendingIndependent().length)) {
+        const skip = button(options.paper ? skipLabel() : "Go straight to questions", () => practiseNow(true, true));
         skip.classList.add("al-secondary");
         secondary.append(skip);
       }
@@ -498,28 +575,40 @@
     function renderReview(moveFocus) {
       const heading = node("h2", "Review your progress", "al-task-heading");
       const outcomes = family.tasks.map((_, i) => state.outcomes[i]);
-      block.append(heading, outcomeOverview(outcomes));
+      block.append(heading);
+      if (!flow.paper) block.append(outcomeOverview(outcomes));
       const revisit = state.queue.filter(i => outcomes[i] !== "independent" &&
         (outcomes[i] !== "self-reviewed" || Object.values(state.reviews[i]?.choices || {}).includes("revise")));
       const actions = node("div", null, "al-controls");
-      const recommendation = revisit.length
+      const recommendation = flow.paper ? link("Back to " + flow.paper.back[0], flow.paper.back[1]) : revisit.length
         ? button("Retry questions I needed help with", () => begin(revisit))
         : flow.back ? button("Back to your question", flow.back) : link("Choose another skill", "#exam");
       recommendation.classList.add("primary");
       actions.append(recommendation);
-      if (revisit.length && !flow.back) actions.append(quietLink("Exam Skills catalogue", "#exam"));
+      if (flow.paper) {
+        actions.append(button("Review the worked example", flow.openModel));
+        for (const related of flow.paper.related) actions.append(quietLink(...related));
+      } else if (revisit.length && !flow.back) actions.append(quietLink("Exam Skills catalogue", "#exam"));
       const details = node("details");
-      details.append(node("summary", "Review the completed questions"));
+      details.append(node("summary", flow.paper ? "Read or revise your responses" : "Review the completed questions"));
       const completed = node("ol");
       family.tasks.forEach((q, i) => {
-        if (!outcomes[i] && !state.results[i] && !state.reviews[i]?.open) return;
+        if (!outcomes[i] && !state.results[i] && !state.reviews[i]?.open && !(flow.paper && state.drafts[i])) return;
         const item = node("li");
-        if (q.stimulus) {
+        if (q.essayTitle) {
+          item.append(node("p", q.essayTitle, "al-essay-title"), node("p", q.prompt));
+        } else if (q.stimulus) {
           item.append(node("p", q.stimulus));
           for (const instruction of [q.instruction].flat()) item.append(node("p", instruction));
         } else item.append(node("p", q.prompt));
         if (q.kind === "writing") {
-          item.append(node("p", state.drafts[i]));
+          const original = state.reviews[i]?.original;
+          if (flow.paper && original && original !== state.drafts[i]) {
+            const first = node("details");
+            first.append(node("summary", "Read your first draft"), node("p", original, "al-saved-draft"));
+            item.append(first);
+          }
+          item.append(node("p", state.drafts[i], flow.paper ? "al-saved-draft" : null));
           const criteria = node("ul");
           q.points.forEach((point, j) => {
             const answer = state.reviews[i]?.choices?.[j];
@@ -532,7 +621,17 @@
             q.kind === "group" ? q.items[j][0] + " → " + q.groups[value] : q.options[value]).join(" · ") : answer;
           if (text) item.append(node("p", "Your response · " + text));
         }
-        item.append(node("strong", outcomeNames[outcomes[i]] || "Review still open"));
+        if (flow.paper) {
+          item.append(button("Edit this response", () => {
+            if (state.reviews[i]) state.reviews[i].finished = false;
+            delete state.outcomes[i];
+            state.index = i;
+            state.queue = [i];
+            state.completed = false;
+            persist();
+            render(true);
+          }));
+        } else item.append(node("strong", outcomeNames[outcomes[i]] || "Review still open"));
         completed.append(item);
       });
       details.append(completed);
@@ -553,28 +652,51 @@
       const accepted = isAccepted(i);
       const revealed = state.results[i]?.kind === "revealed";
       const review = state.reviews[i] || { choices: {} };
-      const heading = node("h2", q.guided ? "With support" : "Your turn", "al-task-heading");
-      block.append(heading, node("p", "Task " + (at + 1) + " of " + state.queue.length, "al-task-count"));
-      const hasStimulus = q.stimulus || q.passage?.length || q.visual || q.evidence;
+      const paperReview = flow.paper && writing && review.open;
+      if (paperReview) review.original ??= state.drafts[i] || "";
+      const revised = paperReview && state.drafts[i] !== review.original;
+      let phaseLabel = q.guided ? "With support" : "Your turn";
+      if (flow.paper) {
+        if (review.open) phaseLabel = "Response review";
+        else if (!q.guided && !state.modelAssists[i]) phaseLabel = "Independent question";
+      }
+      const heading = node("h2", phaseLabel, "al-task-heading");
+      const count = "Task " + (at + 1) + " of " + state.queue.length;
+      block.append(heading);
+      if (flow.paper) heading.append(node("span", count, "al-task-count"));
+      else block.append(node("p", count, "al-task-count"));
+      const hasStimulus = q.stimulus || q.essayTitle || q.passage?.length || q.visual || q.evidence;
+      let question = block;
+      if (flow.paper && review.open) {
+        question = node("details", null, "al-question-review");
+        question.append(node("summary", "Reread the question"));
+        block.append(question);
+      }
       let stimulusHeading;
       let prompt;
       if (hasStimulus) {
         const stimulus = node("div", null, "al-task-stimulus");
-        const label = q.examQuestion ? "Exam-style question to analyse" : q.passage?.length ? "Passage to analyse" : "Evidence to analyse";
+        const label = flow.paper ? flow.paper.stimulus : q.examQuestion ? "Exam-style question to analyse" : q.passage?.length ? "Passage to analyse" : "Evidence to analyse";
         stimulusHeading = node("h3", label, "al-stimulus-heading");
         stimulus.append(stimulusHeading);
+        if (q.essayTitle) stimulus.append(node("p", q.essayTitle, "al-essay-title"));
         if (q.stimulus) stimulus.append(node("p", q.stimulus));
         for (const paragraph of q.passage || []) stimulus.append(node("p", paragraph));
         if (q.visual) stimulus.append(visual(q.visual));
-        if (q.evidence) stimulus.append(table(...q.evidence));
-        block.append(stimulus, node("h3", "Your task", "al-instruction-heading"));
-        prompt = node("div", null, "al-task-prompt");
-        for (const instruction of [q.instruction ?? q.prompt].flat()) prompt.append(node("p", instruction));
+        if (q.evidence) stimulus.append(table(...q.evidence, [], flow.paper));
+        question.append(stimulus);
+        if (flow.paper) {
+          prompt = node("h3", q.prompt, "al-task-prompt");
+        } else {
+          question.append(node("h3", "Your task", "al-instruction-heading"));
+          prompt = node("div", null, "al-task-prompt");
+          for (const instruction of [q.instruction ?? q.prompt].flat()) prompt.append(node("p", instruction));
+        }
       } else {
         prompt = node("h3", q.prompt, "al-task-prompt");
       }
       prompt.id = "al-current-question";
-      block.append(prompt);
+      question.append(prompt);
 
       const form = node("form");
       form.setAttribute("aria-labelledby", prompt.id);
@@ -623,9 +745,12 @@
           form.append(label);
         });
       } else {
-        const label = node("label", "Your explanation");
+        let labelText = flow.paper ? "Your response" : "Your explanation";
+        if (paperReview && (!accepted || revised)) labelText = "Your revised response";
+        const label = node("label", null, flow.paper ? "al-response-label" : null);
+        label.append(node("span", labelText, paperReview && !accepted ? "sr-only" : null));
         const text = node("textarea");
-        text.maxLength = 4000;
+        if (!flow.paper) text.maxLength = 4000;
         text.name = "draft";
         text.value = state.drafts[i] || "";
         text.readOnly = accepted;
@@ -660,14 +785,12 @@
       else if (state.hints[i]) announce("Clue · " + hintsFor(q)[state.hints[i] - 1], "hint");
       else announce("", "");
 
+      let previousDraft;
       form.oninput = () => {
         if (hasCompletedTask(i)) return;
         if (writing) {
           state.drafts[i] = form.elements.draft.value;
-          if (review.open && review.original) {
-            const firstDraft = form.querySelector(".al-criteria details");
-            firstDraft.hidden = review.original === state.drafts[i];
-          }
+          if (previousDraft) previousDraft.hidden = review.original === state.drafts[i];
         }
         else if (q.kind === "number") state.responses[i] = form.elements.number.value;
         else if (q.kind === "group") state.responses[i] = [...form.querySelectorAll("select")].map(select => select.value);
@@ -678,19 +801,54 @@
       form.append(status);
       if (review.open && writing) {
         const criteria = node("section", null, "al-criteria");
-        criteria.append(node("h3", "Check and improve"), node("p", "Compare each point with your draft. Add any missing scientific link before finishing your review."));
+        if (flow.paper) {
+          const first = node("div", null, "al-first-draft");
+          const title = node("h3", "Your first draft");
+          const excerpt = node("al-paper-scroll", null, "al-draft-text");
+          excerpt.dataset.label = title.textContent;
+          const cue = node("span", "Scroll to read", "al-draft-cue");
+          cue.setAttribute("aria-hidden", "true");
+          title.append(cue);
+          excerpt.append(node("p", review.original, "al-saved-draft"));
+          first.append(title, excerpt);
+          criteria.append(first, node("h3", "Check your reasoning"));
+          // With enlarged fonts the heading can wrap past the CSS scroll clearance.
+          const clearFirstDraft = event => {
+            const control = event.target;
+            if (first.contains(control)) return;
+            requestAnimationFrame(() => {
+              if (document.activeElement !== control) return;
+              const target = control.closest("label") || control;
+              const gap = target.getBoundingClientRect().top - first.getBoundingClientRect().bottom;
+              if (gap < 4) window.scrollBy({ top: gap - 4, behavior: "instant" });
+            });
+          };
+          criteria.addEventListener("focusin", clearFirstDraft);
+          criteria.addEventListener("change", clearFirstDraft);
+        } else criteria.append(node("h3", "Check and improve"),
+          node("p", "Compare each point with your draft. Add any missing scientific link before finishing your review."));
         const model = node("details");
-        model.append(node("summary", "Compare with a model explanation"), node("p", q.points.join(" ")));
-        if (review.original) {
-          const original = node("details");
-          original.hidden = review.original === state.drafts[i];
-          original.append(node("summary", "Read your first draft"), node("p", review.original));
-          criteria.append(original);
+        const summary = node("summary", "Compare with a model explanation");
+        model.append(summary);
+        for (const paragraph of q.modelAnswer || [q.points.join(" ")]) model.append(node("p", paragraph));
+        if (flow.paper) summary.onclick = () => {
+          if (!model.open && !review.modelRead) { review.modelRead = true; persist(); }
+        };
+        if (!flow.paper && review.original) {
+          previousDraft = node("details");
+          previousDraft.hidden = review.original === state.drafts[i];
+          previousDraft.append(node("summary", "Read your first draft"), node("p", review.original));
+          criteria.append(previousDraft);
         }
-        criteria.append(model);
+        if (!flow.paper) criteria.append(model);
         q.points.forEach((point, j) => {
           const field = node("fieldset");
           field.append(node("legend", point));
+          const repair = q.repairs && node("p", q.repairs[j], "al-repair");
+          if (repair) {
+            repair.id = "al-repair-" + j;
+            repair.hidden = review.choices[j] !== "revise";
+          }
           for (const [value, text] of [["included", "Included"], ["revise", "Needs work"]]) {
             const label = node("label", null, "al-choice");
             const input = node("input");
@@ -699,23 +857,47 @@
             input.value = value;
             input.checked = review.choices[j] === value;
             input.disabled = accepted;
+            if (repair && value === "revise") input.setAttribute("aria-controls", repair.id);
             input.onchange = () => {
               review.choices[j] = value;
+              if (repair) {
+                repair.hidden = value !== "revise";
+                if (!repair.hidden) {
+                  review.repairsSeen ||= {};
+                  review.repairsSeen[j] = (review.repairsSeen[j] || 0) + 1;
+                }
+              }
               persist();
             };
             label.append(input, node("span", text));
             field.append(label);
           }
+          if (repair) field.append(repair);
           criteria.append(field);
         });
-        form.append(criteria);
+        if (q.reviewNote) criteria.append(node("p", q.reviewNote));
+        if (flow.paper) criteria.append(model);
+        if (flow.paper && !accepted) {
+          const revision = node("details", null, "al-revision");
+          revision.open = revised;
+          revision.append(node("summary", "Revise your response"), form.querySelector(".al-response-label"));
+          criteria.append(revision);
+        }
+        if (flow.paper && accepted) {
+          const checklist = node("details", null, "al-completed-review");
+          checklist.append(node("summary", "Review your checklist"), criteria);
+          form.append(form.querySelector(".al-response-label"), checklist);
+        } else form.append(criteria);
       }
 
       const submit = node("button", accepted || revealed ? "" : review.open ? "Finish review" :
         writing ? "Compare with the checklist" : result?.kind === "incorrect" ? "Try again" : "Check", "btn primary");
       submit.type = "submit";
       if (accepted || revealed) {
-        const next = button(at === state.queue.length - 1 ? "Review progress" : "Next task", () => {
+        const last = at === state.queue.length - 1;
+        const nextQuestion = family.tasks[state.queue[at + 1]];
+        const nextLabel = flow.paper && !last && !nextQuestion.guided ? "Try a different question" : "Next task";
+        const next = button(last ? "Review progress" : nextLabel, () => {
           if (at === state.queue.length - 1) state.completed = true;
           else state.index = state.queue[at + 1];
           persist();
@@ -759,33 +941,54 @@
       }
       form.append(controls);
       block.append(form);
+      if (flow.paper) {
+        const hasIndependent = family.tasks.some((task, index) => !task.guided && !state.reviews[index]?.finished);
+        if (q.guided && hasIndependent && (!accepted || family.tasks[state.queue[at + 1]]?.guided)) {
+          const skip = button(flow.skipLabel(), flow.independent);
+          skip.classList.add("al-secondary");
+          block.append(skip);
+        } else if (!q.guided && !review.open && !accepted) {
+          const model = button("Work through an example", flow.support);
+          model.classList.add("al-secondary");
+          block.append(model);
+        }
+      }
       const catchup = flow.context ? flow.context(q) : (family.catchup ? ["Revisit catch-up teaching", "#catchup-" + family.catchup] : null);
       if (catchup) help.append(quietLink(...catchup));
       if (flow.review) help.append(flow.review);
       if (flow.extra) help.append(flow.extra);
       if (help.children.length > 1) block.append(help);
-      if (moveFocus) focus(stimulusHeading || prompt);
+      if (moveFocus) focus(question.tagName === "DETAILS" ? question.querySelector("summary") : stimulusHeading || prompt);
 
       form.onsubmit = event => {
         event.preventDefault();
         if (hasCompletedTask(i)) return;
         if (writing) {
           if (form.elements.draft.value.trim().length < 12) {
-            announce("Write an explanation before comparing it.", "improve");
+            const revision = form.querySelector(".al-revision");
+            if (revision) revision.open = true;
+            announce(revision ? "Write your revised explanation before finishing." : "Write an explanation before comparing it.", "improve");
+            if (flow.paper) form.elements.draft.focus();
             return;
           }
           state.drafts[i] = form.elements.draft.value;
           if (!review.open) {
             review.open = true;
-            review.original = state.drafts[i];
+            review.original ??= state.drafts[i];
+            if (flow.paper) state.attempts[i] = (state.attempts[i] || 0) + 1;
             state.reviews[i] = review;
             persist();
             render();
             focus(block.querySelector(".al-criteria h3"));
           } else if (q.points.some((_, j) => !review.choices[j])) {
             announce("Choose Included or Needs work for each criterion.", "improve");
-            focus(status);
+            if (flow.paper) form.querySelector("fieldset:not(:has(:checked)) input").focus();
+            else focus(status);
           } else {
+            if (flow.paper && state.drafts[i] !== (review.lastSubmission || review.original)) {
+              state.attempts[i] = (state.attempts[i] || 0) + 1;
+              review.lastSubmission = state.drafts[i];
+            }
             review.finished = true;
             state.outcomes[i] = "self-reviewed";
             persist();
@@ -1641,6 +1844,14 @@
     },
     route(host, id) {
       host.classList.add("al-exam");
+      if (Object.hasOwn(paperRoutes, id)) {
+        const paper = paperRoutes[id];
+        const family = window.ALevelPaperPractice[id];
+        host.classList.add("al-paper-practice");
+        host.append(breadcrumb(...paper.back), node("h1", family.title));
+        journey(host, family, { paper });
+        return;
+      }
       if (!id || (!Object.hasOwn(families, id) && id !== "drawings")) {
         host.append(breadcrumb("A-level Biology", "#"));
         index(host);
@@ -1655,6 +1866,8 @@
       const family = families[id];
       host.append(node("h1", family.title));
       journey(host, family, { context: contextualLink(family, "exam-" + id) });
+      const followOn = { interpret: "passages", practical: "investigations", evidence: "investigations", extended: "essaywriting" }[id];
+      if (followOn) host.append(quietLink(window.ALevelPaperPractice[followOn].title, "#exam-" + followOn));
     },
     links(topic) {
       const ids = Object.values(families)
