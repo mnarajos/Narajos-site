@@ -106,21 +106,119 @@ async function checkUncued(page, task) {
   }
 }
 
-async function review(page, task, { revise = false } = {}) {
+async function compareLowerCriterion(form, fields, original) {
+  const excerpt = form.getByRole("region", { name: "Your first draft", exact: true });
+  await excerpt.waitFor();
+  assert.equal(await excerpt.textContent(), original);
+  assert(await excerpt.evaluate(el => el.scrollHeight > el.clientHeight && el.tabIndex === 0));
+  await excerpt.press("ArrowDown");
+  await form.page().waitForFunction(() => document.querySelector(".al-draft-text").scrollTop > 0);
+  await fields.last().locator("legend").evaluate(el => el.scrollIntoView({ block: "center" }));
+  const positions = await form.evaluate(el => {
+    const heading = el.querySelector(".al-first-draft h3");
+    const legend = [...el.querySelectorAll(".al-criteria legend")].at(-1);
+    const uncovered = node => {
+      const rect = node.getBoundingClientRect();
+      return node.contains(document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2));
+    };
+    const reference = el.querySelector(".al-first-draft").getBoundingClientRect();
+    const lastCriterion = legend.getBoundingClientRect();
+    return { top: reference.top, bottom: reference.bottom, criterionTop: lastCriterion.top,
+      criterionBottom: lastCriterion.bottom, viewport: innerHeight, uncovered: uncovered(heading) && uncovered(legend) };
+  });
+  assert(positions.uncovered && positions.top >= 0 && positions.bottom <= positions.criterionTop &&
+    positions.criterionBottom <= positions.viewport, "Draft and lower criterion must both be readable: " + JSON.stringify(positions));
+}
+
+async function checkLargeTextSelection(form, fields, revision, revisionSummary) {
+  const page = form.page();
+  const count = await fields.count();
+  // Selecting the final criterion is the first interaction. Preparatory scrolling
+  // would mask scroll anchoring when the newly selected repair expands.
+  const last = fields.last();
+  await last.getByRole("radio", { name: "Needs work", exact: true }).check();
+  await last.locator(".al-repair").waitFor();
+  const positions = await last.evaluate(async field => {
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    const reference = document.querySelector(".al-first-draft").getBoundingClientRect();
+    const radio = field.querySelector("input:checked").getBoundingClientRect();
+    const repair = field.querySelector(".al-repair").getBoundingClientRect();
+    return { referenceBottom: reference.bottom, radioTop: radio.top, radioBottom: radio.bottom,
+      repairTop: repair.top, viewport: innerHeight };
+  });
+  assert(positions.radioTop >= positions.referenceBottom && positions.radioBottom <= positions.viewport &&
+    positions.repairTop >= positions.referenceBottom && positions.repairTop < positions.viewport,
+    "First selection of the final criterion at 200% text: " + JSON.stringify(positions));
+  await revisionSummary.press("Enter");
+  await page.keyboard.press("Tab");
+  assert(await revision.evaluate(el => el === document.activeElement));
+  const visited = new Set();
+  for (let i = 0; i < count + 6; i++) {
+    await page.keyboard.press("Shift+Tab");
+    const focused = await form.evaluate(async el => {
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      const control = document.activeElement;
+      if (control.matches(".al-draft-text")) return { original: true };
+      const bounds = control.getBoundingClientRect();
+      const front = document.elementFromPoint(bounds.left + bounds.width / 2, bounds.top + bounds.height / 2);
+      return { name: control.name || control.textContent, visible: control.contains(front),
+        top: bounds.top, stickyBottom: el.querySelector(".al-first-draft").getBoundingClientRect().bottom };
+    });
+    if (focused.original) break;
+    assert(focused.visible && focused.top >= focused.stickyBottom, "Reverse tab at 200%: " + JSON.stringify(focused));
+    visited.add(focused.name);
+  }
+  assert(visited.has("Compare with a model explanation"));
+  for (let j = 0; j < count; j++) assert(visited.has("criterion-" + j), "Keyboard skipped criterion " + j);
+  await revisionSummary.press("Enter");
+}
+
+async function review(page, task, { revise = false, zoomRepair = false } = {}) {
   const form = page.locator(".al-practice form");
-  const draft = form.getByRole("textbox");
-  const original = "I would like to check the biological explanation in this draft.";
-  const revised = original + " I have now reconsidered my reasoning.";
-  await draft.fill(original);
+  const original = revise ? [
+    "The observations suggest an explanation. I need to check whether both parts of the question follow from the biological process I have described.",
+    "There is still a step in my reasoning that I cannot explain. I want to read that part of my first response while deciding which criterion needs work.",
+    "Before changing my conclusion I would like to compare it with what was actually measured. A different explanation might also account for the result.",
+  ].join("\n\n") : "I would like to check the biological explanation in this draft.";
+  const revised = original + "\n\nI have now reconsidered how the observations support my explanation.";
+  const viewport = page.viewportSize();
+  let enlarged;
+  if (zoomRepair) {
+    await page.setViewportSize({ width: 320, height: 700 });
+    enlarged = await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
+  }
+  await form.getByRole("textbox", { name: "Your response", exact: true }).fill(original);
   await form.getByRole("button", { name: "Compare with the checklist", exact: true }).press("Enter");
+  const firstHeading = form.getByRole("heading", { name: "Your first draft", exact: true });
+  await firstHeading.waitFor();
+  const reference = form.locator(".al-draft-text");
+  assert.equal(await reference.textContent(), original);
+  const revisionSummary = form.getByText("Revise your response", { exact: true });
+  const revision = form.getByRole("textbox", { name: "Your revised response", exact: true });
+  assert.equal(await revision.count(), 0, "Revision starts collapsed");
   const fields = form.locator(".al-criteria fieldset");
   assert.equal(await fields.count(), task.points.length);
+  assert(await form.evaluate(el => {
+    const draftText = el.querySelector(".al-draft-text p");
+    const criteria = [...el.querySelectorAll(".al-criteria fieldset")];
+    const revision = el.querySelector(".al-revision");
+    return getComputedStyle(draftText).whiteSpace === "pre-wrap" &&
+      Boolean(draftText.compareDocumentPosition(criteria[0]) & Node.DOCUMENT_POSITION_FOLLOWING) &&
+      Boolean(criteria.at(-1).compareDocumentPosition(revision) & Node.DOCUMENT_POSITION_FOLLOWING);
+  }), "Read the unaltered first draft, review the criteria, then optionally revise");
+  if (zoomRepair) {
+    await checkLargeTextSelection(form, fields, revision, revisionSummary);
+    await enlarged.evaluate(el => el.remove());
+    await page.setViewportSize(viewport);
+  }
   for (let j = 0; j < task.points.length; j++) {
     const criterion = fields.nth(j);
     await criterion.getByText(task.points[j], { exact: true }).waitFor();
     await criterion.getByRole("radio", { name: revise && j === 0 ? "Needs work" : "Included", exact: true }).check();
   }
   if (revise) {
+    await compareLowerCriterion(form, fields, original);
+    await audit(page, "mobile first draft and criteria");
     const pending = await page.evaluate(key => {
       const record = JSON.parse(localStorage.getItem(key))[location.hash.slice("#exam-".length)];
       return { original: record.reviews[record.index].original, outcome: record.outcomes[record.index],
@@ -140,15 +238,17 @@ async function review(page, task, { revise = false } = {}) {
     for (const paragraph of [].concat(task.modelAnswer)) {
       await form.getByText(paragraph, { exact: true }).waitFor();
     }
-    await form.getByRole("button", { name: "Edit your response", exact: true }).press("Enter");
-    assert(await draft.evaluate(element => element === document.activeElement));
-    await draft.fill(revised);
+    await revisionSummary.press("Enter");
+    await page.keyboard.press("Tab");
+    assert(await revision.evaluate(element => element === document.activeElement));
+    assert.equal(await revision.inputValue(), original);
+    await revision.fill(revised);
+    assert.equal(await reference.textContent(), original);
     await page.keyboard.press("Tab");
     assert(await form.getByRole("button", { name: "Finish review" }).evaluate(element => element === document.activeElement));
     await page.reload();
-    assert.equal(await draft.inputValue(), revised);
-    await form.getByText("Read your first draft", { exact: true }).press("Enter");
-    await form.getByText(original, { exact: true }).waitFor();
+    assert.equal(await revision.inputValue(), revised);
+    assert.equal(await reference.textContent(), original);
     await form.getByText(task.repairs[0], { exact: true }).waitFor();
     await fields.first().getByRole("radio", { name: "Included" }).check();
     assert.equal(await form.getByText(task.repairs[0], { exact: true }).isVisible(), false);
@@ -157,7 +257,14 @@ async function review(page, task, { revise = false } = {}) {
   const checklist = form.getByText("Review your checklist", { exact: true });
   await checklist.waitFor();
   assert.equal(await fields.first().isVisible(), false);
-  assert(await draft.evaluate(element => element.readOnly));
+  const saved = form.getByRole("textbox", { name: revise ? "Your revised response" : "Your response", exact: true });
+  assert(await saved.evaluate(el => el.readOnly));
+  assert.equal(await saved.inputValue(), revise ? revised : original);
+  await checklist.press("Enter");
+  assert(await reference.isVisible());
+  assert.equal(await reference.textContent(), original);
+  assert.equal(await fields.locator("input:checked").count(), task.points.length);
+  await checklist.press("Enter");
   return { original, revised };
 }
 
@@ -203,14 +310,17 @@ export async function checkALevelPaperPractice(browser, base) {
       await button("Compare with the checklist").press("Enter");
       assert.equal(await practice.locator(".al-criteria").count(), 0);
       assert.equal((await state()).outcomes[2], undefined);
-      const { original, revised } = await review(page, first, { revise: true });
+      const zoomRepair = family === "investigations";
+      const { original, revised } = await review(page, first, { revise: true, zoomRepair });
       const saved = await state();
       assert.equal(saved.outcomes[2], "self-reviewed");
       assert.equal(saved.reviews[2].original, original);
       assert.equal(saved.drafts[2], revised);
       assert.equal(saved.attempts[2], 2);
       assert.equal(saved.reviews[2].modelRead, true);
-      assert.deepEqual(saved.reviews[2].repairsSeen, { 0: 1 });
+      const repairsSeen = { 0: 1 };
+      if (zoomRepair) repairsSeen[first.points.length - 1] = 1;
+      assert.deepEqual(saved.reviews[2].repairsSeen, repairsSeen);
       await audit(page, family + " written feedback");
 
       await button("Try a different question").press("Enter");

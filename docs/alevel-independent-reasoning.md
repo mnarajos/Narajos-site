@@ -37,7 +37,9 @@ A pupil can start with the independent question. In guided practice, removing a 
 
 ## Review after the exam-year layout changes
 
-The three pathways use the shared Exam Skills renderer from PR #82. The passage, investigation or essay title comes first. A bold question follows the stimulus and any data table, directly above the writing field. Worked examples use the same reading order before showing the current reasoning step. During self-review, pupils can reopen the question, select a specific repair and edit their original response. The completed checklist folds away before the next question. [Mobile and desktop screenshots of all five stages](alevel-paper-review/README.md)
+The three pathways use the shared Exam Skills renderer from PR #82. The passage, investigation or essay title comes first. A bold question follows the stimulus and any data table, directly above the writing field. Worked examples use the same reading order before showing the current reasoning step.
+
+During self-review, the pupil’s first draft sits immediately above the criteria and stays in view as they read each point. Choosing “Needs work” shows the question-specific prompt beside that criterion. “Revise your response” opens a copy of the pupil’s answer for editing. Finishing saves the pupil’s judgements and keeps both versions available. Written work carries the outcome “self-reviewed” and earns no automatic marks. [Rendered activities and mobile revision journeys](alevel-paper-review/README.md)
 
 At a 390-pixel viewport, the gap from the bottom of the independent question to the top of its writing field fell from 633 to 34 pixels in the pea-pod task and from 657 to 34 in the leaf-film investigation. Both measurements include the response label. The table and all of its values remain visible before the question.
 

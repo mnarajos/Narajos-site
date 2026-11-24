@@ -47,14 +47,13 @@
     element.tabIndex = -1;
     element.focus();
   }
-  customElements.define("al-paper-table", class extends HTMLElement {
+  customElements.define("al-paper-scroll", class extends HTMLElement {
     connectedCallback() {
-      const grid = this.querySelector("table");
       const update = () => {
-        if (this.scrollWidth > this.clientWidth) {
+        if (this.scrollWidth > this.clientWidth || this.scrollHeight > this.clientHeight) {
           this.tabIndex = 0;
           this.setAttribute("role", "region");
-          this.setAttribute("aria-label", grid.caption.textContent);
+          this.setAttribute("aria-label", this.dataset.label);
         } else {
           this.removeAttribute("tabindex");
           this.removeAttribute("role");
@@ -63,7 +62,7 @@
       };
       this.sizeObserver = new ResizeObserver(update);
       this.sizeObserver.observe(this);
-      this.sizeObserver.observe(grid);
+      this.sizeObserver.observe(this.firstElementChild);
       update();
     }
     disconnectedCallback() {
@@ -72,8 +71,9 @@
   });
 
   function table(caption, headers, rows, highlights = [], paper = false) {
-    const wrap = node(paper ? "al-paper-table" : "div", null, "al-table"),
+    const wrap = node(paper ? "al-paper-scroll" : "div", null, "al-table"),
       t = node("table");
+    if (paper) wrap.dataset.label = caption;
     t.createCaption().textContent = caption;
     const hr = t.createTHead().insertRow();
     headers.forEach((h, i) => {
@@ -605,10 +605,10 @@
           const original = state.reviews[i]?.original;
           if (flow.paper && original && original !== state.drafts[i]) {
             const first = node("details");
-            first.append(node("summary", "Read your first draft"), node("p", original));
+            first.append(node("summary", "Read your first draft"), node("p", original, "al-saved-draft"));
             item.append(first);
           }
-          item.append(node("p", state.drafts[i]));
+          item.append(node("p", state.drafts[i], flow.paper ? "al-saved-draft" : null));
           const criteria = node("ul");
           q.points.forEach((point, j) => {
             const answer = state.reviews[i]?.choices?.[j];
@@ -652,6 +652,9 @@
       const accepted = isAccepted(i);
       const revealed = state.results[i]?.kind === "revealed";
       const review = state.reviews[i] || { choices: {} };
+      const paperReview = flow.paper && writing && review.open;
+      if (paperReview) review.original ??= state.drafts[i] || "";
+      const revised = paperReview && state.drafts[i] !== review.original;
       let phaseLabel = q.guided ? "With support" : "Your turn";
       if (flow.paper) {
         if (review.open) phaseLabel = "Response review";
@@ -742,7 +745,10 @@
           form.append(label);
         });
       } else {
-        const label = node("label", flow.paper ? "Your response" : "Your explanation", flow.paper ? "al-response-label" : null);
+        let labelText = flow.paper ? "Your response" : "Your explanation";
+        if (paperReview && (!accepted || revised)) labelText = "Your revised response";
+        const label = node("label", null, flow.paper ? "al-response-label" : null);
+        label.append(node("span", labelText, paperReview && !accepted ? "sr-only" : null));
         const text = node("textarea");
         if (!flow.paper) text.maxLength = 4000;
         text.name = "draft";
@@ -779,14 +785,12 @@
       else if (state.hints[i]) announce("Clue · " + hintsFor(q)[state.hints[i] - 1], "hint");
       else announce("", "");
 
+      let previousDraft;
       form.oninput = () => {
         if (hasCompletedTask(i)) return;
         if (writing) {
           state.drafts[i] = form.elements.draft.value;
-          if (review.open && review.original) {
-            const firstDraft = form.querySelector(".al-criteria details");
-            firstDraft.hidden = review.original === state.drafts[i];
-          }
+          if (previousDraft) previousDraft.hidden = review.original === state.drafts[i];
         }
         else if (q.kind === "number") state.responses[i] = form.elements.number.value;
         else if (q.kind === "group") state.responses[i] = [...form.querySelectorAll("select")].map(select => select.value);
@@ -797,12 +801,19 @@
       form.append(status);
       if (review.open && writing) {
         const criteria = node("section", null, "al-criteria");
-        criteria.append(node("h3", "Check and improve"));
         if (flow.paper) {
-          const toResponse = button("Edit your response", () => form.elements.draft.focus());
-          toResponse.classList.add("al-secondary");
-          if (!accepted) criteria.append(toResponse);
-        } else criteria.append(node("p", "Compare each point with your draft. Add any missing scientific link before finishing your review."));
+          const first = node("div", null, "al-first-draft");
+          const title = node("h3", "Your first draft");
+          const excerpt = node("al-paper-scroll", null, "al-draft-text");
+          excerpt.dataset.label = title.textContent;
+          const cue = node("span", "Scroll to read", "al-draft-cue");
+          cue.setAttribute("aria-hidden", "true");
+          title.append(cue);
+          excerpt.append(node("p", review.original, "al-saved-draft"));
+          first.append(title, excerpt);
+          criteria.append(first, node("h3", "Check your reasoning"));
+        } else criteria.append(node("h3", "Check and improve"),
+          node("p", "Compare each point with your draft. Add any missing scientific link before finishing your review."));
         const model = node("details");
         const summary = node("summary", "Compare with a model explanation");
         model.append(summary);
@@ -810,13 +821,13 @@
         if (flow.paper) summary.onclick = () => {
           if (!model.open && !review.modelRead) { review.modelRead = true; persist(); }
         };
-        if (review.original) {
-          const original = node("details");
-          original.hidden = review.original === state.drafts[i];
-          original.append(node("summary", "Read your first draft"), node("p", review.original));
-          criteria.append(original);
+        if (!flow.paper && review.original) {
+          previousDraft = node("details");
+          previousDraft.hidden = review.original === state.drafts[i];
+          previousDraft.append(node("summary", "Read your first draft"), node("p", review.original));
+          criteria.append(previousDraft);
         }
-        criteria.append(model);
+        if (!flow.paper) criteria.append(model);
         q.points.forEach((point, j) => {
           const field = node("fieldset");
           field.append(node("legend", point));
@@ -852,15 +863,18 @@
           criteria.append(field);
         });
         if (q.reviewNote) criteria.append(node("p", q.reviewNote));
+        if (flow.paper) criteria.append(model);
+        if (flow.paper && !accepted) {
+          const revision = node("details", null, "al-revision");
+          revision.open = revised;
+          revision.append(node("summary", "Revise your response"), form.querySelector(".al-response-label"));
+          criteria.append(revision);
+        }
         if (flow.paper && accepted) {
           const checklist = node("details", null, "al-completed-review");
           checklist.append(node("summary", "Review your checklist"), criteria);
-          form.append(checklist);
+          form.append(form.querySelector(".al-response-label"), checklist);
         } else form.append(criteria);
-        if (flow.paper) {
-          // Keep the editable answer and Finish review adjacent on small screens.
-          form.append(form.querySelector(".al-response-label"));
-        }
       }
 
       const submit = node("button", accepted || revealed ? "" : review.open ? "Finish review" :
@@ -938,7 +952,10 @@
         if (hasCompletedTask(i)) return;
         if (writing) {
           if (form.elements.draft.value.trim().length < 12) {
-            announce("Write an explanation before comparing it.", "improve");
+            const revision = form.querySelector(".al-revision");
+            if (revision) revision.open = true;
+            announce(revision ? "Write your revised explanation before finishing." : "Write an explanation before comparing it.", "improve");
+            if (flow.paper) form.elements.draft.focus();
             return;
           }
           state.drafts[i] = form.elements.draft.value;
@@ -952,7 +969,8 @@
             focus(block.querySelector(".al-criteria h3"));
           } else if (q.points.some((_, j) => !review.choices[j])) {
             announce("Choose Included or Needs work for each criterion.", "improve");
-            focus(status);
+            if (flow.paper) form.querySelector("fieldset:not(:has(:checked)) input").focus();
+            else focus(status);
           } else {
             if (flow.paper && state.drafts[i] !== (review.lastSubmission || review.original)) {
               state.attempts[i] = (state.attempts[i] || 0) + 1;

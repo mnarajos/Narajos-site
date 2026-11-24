@@ -71,7 +71,7 @@
 .al-table {
   overflow: auto;
 }
-al-paper-table {
+al-paper-scroll {
   display: block;
 }
 .al-figures {
@@ -604,8 +604,59 @@ main:has(.al-catchup-journey) > h1 {
   padding: 0;
   background: transparent;
 }
+.al-paper-practice:has(.al-revision) {
+  /* Opening a repair should keep its selected radio in view. */
+  overflow-anchor: none;
+}
 .al-paper-practice .al-criteria h3 {
   margin: .55rem 0 0;
+}
+.al-paper-practice .al-first-draft {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+  background: var(--card);
+  border-block-end: 1px solid var(--line);
+  padding-block: .4rem .5rem;
+}
+.al-paper-practice .al-first-draft h3 {
+  font-size: 1rem;
+  margin: 0 0 .2rem;
+}
+.al-draft-cue {
+  display: none;
+  margin-inline-start: .65em;
+  font-size: .85em;
+  font-weight: 400;
+  color: var(--muted);
+}
+.al-first-draft:has(.al-draft-text[tabindex]) .al-draft-cue {
+  display: inline-block;
+}
+.al-draft-text {
+  max-block-size: min(22vh, 10rem);
+  max-block-size: min(22svh, 10rem);
+  overflow-y: auto;
+  padding-inline-start: .65rem;
+  border-inline-start: 2px solid var(--acc);
+}
+.al-saved-draft {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.al-draft-text p {
+  margin: 0;
+}
+/* Give the draft the top edge while a pupil compares or revises a response. */
+body:has(.al-revision, .al-completed-review[open]) header.top {
+  position: static;
+}
+html:has(.al-revision, .al-completed-review[open]) {
+  --al-draft-clearance: calc(min(22vh, 10rem) + 3rem);
+  scroll-padding-block-start: var(--al-draft-clearance);
+}
+.al-paper-practice .al-criteria :is(input, label, summary, textarea) {
+  scroll-margin-block-start: var(--al-draft-clearance);
 }
 .al-paper-practice .al-criteria fieldset {
   border: 0;
