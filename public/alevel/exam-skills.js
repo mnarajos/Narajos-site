@@ -812,6 +812,19 @@
           excerpt.append(node("p", review.original, "al-saved-draft"));
           first.append(title, excerpt);
           criteria.append(first, node("h3", "Check your reasoning"));
+          // With enlarged fonts the heading can wrap past the CSS scroll clearance.
+          const clearFirstDraft = event => {
+            const control = event.target;
+            if (first.contains(control)) return;
+            requestAnimationFrame(() => {
+              if (document.activeElement !== control) return;
+              const target = control.closest("label") || control;
+              const gap = target.getBoundingClientRect().top - first.getBoundingClientRect().bottom;
+              if (gap < 4) window.scrollBy({ top: gap - 4, behavior: "instant" });
+            });
+          };
+          criteria.addEventListener("focusin", clearFirstDraft);
+          criteria.addEventListener("change", clearFirstDraft);
         } else criteria.append(node("h3", "Check and improve"),
           node("p", "Compare each point with your draft. Add any missing scientific link before finishing your review."));
         const model = node("details");
