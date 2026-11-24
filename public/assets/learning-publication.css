@@ -365,6 +365,19 @@ main .kc-visual-art {
   border-radius: 0;
 }
 
+@media (max-width: 30rem) {
+  .course-gcse #qf .opt:has(> .mark:not(:empty)) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    row-gap: .25rem;
+  }
+
+  .course-gcse #qf .opt > .mark:not(:empty) {
+    grid-column: 2;
+    white-space: normal;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   .course-alevel {
     --course-model: #9bbad5;
