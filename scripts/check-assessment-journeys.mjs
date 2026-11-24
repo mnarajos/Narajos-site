@@ -14,6 +14,90 @@ export async function checkAssessmentJourneys(browser,base) {
     await page.locator("#idk").click();
   };
   try {
+    // Exercise the normal mobile entry and the authored application questions.
+    // Test-hook jumps only locate the later questions; all responses are synthetic.
+    const food=await context.newPage();
+    await food.addInitScript(()=>{window.name="kstest";});
+    await food.goto(base+"/gcse/#lesson-b2-foodtests",{waitUntil:"domcontentloaded"});
+    const teaching=food.getByRole("heading",{name:"Learn the method",exact:true});
+    const practice=food.getByRole("heading",{name:"Practise the method",exact:true});
+    assert(await teaching.isVisible());
+    assert(await practice.isVisible());
+    const table=food.locator("table");
+    assert.equal(await table.count(),1);
+    assert.equal(await table.locator("tbody tr").count(),4);
+    const teachingText=await table.innerText();
+    assert.match(teachingText,/Benedict/i);
+    assert.match(teachingText,/reducing sugar/i);
+    assert.match(teachingText,/iodine/i);
+    assert.match(teachingText,/biuret/i);
+    assert.match(teachingText,/lipid/i);
+    assert.match(teachingText,/water bath/i);
+    assert.match(teachingText,/blue-black/i);
+    assert.match(teachingText,/purple/i);
+    assert.match(teachingText,/ethanol[\s\S]*water[\s\S]*cloudy white/i);
+    assert.match(await food.locator("main").innerText(),/non-reducing sugar/i);
+    assert.match(await food.locator("main").innerText(),/control/i);
+    assert.equal(await food.getByRole("heading",{name:"Worked example",exact:true}).count(),0);
+    for(const width of [390,320]){
+      await food.setViewportSize({width,height:844});
+      const layout=await food.evaluate(()=>({
+        overflow:document.documentElement.scrollWidth-innerWidth,
+        practiceTop:document.querySelector('#qf').getBoundingClientRect().top,
+        questionTop:document.querySelector('#qf legend').getBoundingClientRect().top,
+        headingBottom:[...document.querySelectorAll('h2')].find(el=>el.textContent.trim()==='Practise the method').getBoundingClientRect().bottom,
+        actionsPosition:getComputedStyle(document.querySelector('#qf .actions')).position,
+        height:document.documentElement.scrollHeight,
+        viewport:innerHeight
+      }));
+      assert(layout.overflow<=3,`food lesson overflows at ${width}px`);
+      assert(layout.practiceTop>=layout.headingBottom && layout.practiceTop-layout.headingBottom<=120,`practice heading is detached from the first question at ${width}px`);
+      assert(layout.questionTop<layout.viewport+(width===320?250:0),`the first question starts ${Math.round(layout.questionTop)}px below the top at ${width}px`);
+      assert.equal(layout.actionsPosition,"static",`the initial action bar may cover the question at ${width}px`);
+      assert(layout.height>layout.viewport,"mobile lesson should scroll to reach the question");
+      const scrolled=await food.evaluate(()=>{window.scrollTo(0,document.documentElement.scrollHeight);return window.scrollY;});
+      assert(scrolled>0,`food lesson cannot scroll at ${width}px`);
+      await food.evaluate(()=>window.scrollTo(0,0));
+    }
+    const screenshot=await food.screenshot({fullPage:true});
+    assert(screenshot.length>1000,"mobile food lesson screenshot is empty");
+    await food.getByText("To compare colours with a test that has no reducing sugar in it",{exact:true}).click();
+    await food.locator("#act").click();
+    assert.match(await food.locator("#fb").innerText(),/Correct!/);
+    await food.locator("#act").click();
+    assert.equal(await food.getByRole("heading",{name:"Worked example",exact:true}).count(),0);
+
+    await food.evaluate(()=>window.__k.ev('L.i=L.queue.findIndex(q=>q.q.includes("A sample stays blue after a Benedict"));L.phase="q";showQ()'));
+    const worked=food.getByRole("heading",{name:"Worked example",exact:true});
+    assert(await worked.isVisible());
+    assert.match(await food.locator(".food-worked").innerText(),/drink heated with Benedict’s turns green[\s\S]*reducing sugar was detected/i);
+    assert.match(await food.locator("#qf legend").innerText(),/A sample stays blue after a Benedict/);
+    assert(await worked.evaluate(el=>Boolean(el.compareDocumentPosition(document.querySelector("#qf")) & Node.DOCUMENT_POSITION_FOLLOWING)));
+    await food.getByText("No reducing sugar was detected in the sample",{exact:true}).click();
+    await food.locator("#act").click();
+    await food.getByText("The controls behaved as expected, but Benedict’s does not detect every sugar",{exact:true}).click();
+    await food.locator("#act").click();
+    assert.match(await food.locator("#fb").innerText(),/Correct!/);
+
+    await food.evaluate(()=>window.__k.ev('L.i=L.queue.findIndex(q=>q.q.includes("A food sample turns iodine"));L.phase="q";showQ()'));
+    assert.equal(await worked.count(),0);
+    await food.getByText("Both starch and reducing sugar detected",{exact:true}).click();
+    await food.locator("#act").click();
+    assert.match(await food.locator("#fb").innerText(),/does not rule out non-reducing sugars/);
+    await food.evaluate(()=>window.__k.ev('L.i=L.queue.findIndex(q=>q.q.includes("known glucose solution, tested"));L.phase="q";showQ()'));
+    assert.equal(await worked.count(),0);
+    const foodDraft="The result is inconclusive because the glucose control failed.";
+    await food.locator("#sa").fill(foodDraft);
+    await food.locator("#act").click();
+    assert.match(await food.locator("#ms").innerText(),/positive colour change/);
+    await food.locator('input[name="mk"]').first().check();
+    await food.getByLabel("Improve your answer (optional)").fill("Repeat with fresh reagent and positive and negative controls.");
+    await food.locator("#act").click();
+    assert.match(await food.locator("#fb").innerText(),/Written response self-reviewed/);
+    assert.doesNotMatch(await food.locator("#fb").innerText(),/Correct!/);
+    assert.equal(await food.locator("#sa").inputValue(),foodDraft);
+    await food.close();
+
     await open("/gcse/#lesson-b1-micro2");
     const number=page.locator("#numin"), check=page.locator("#act");
     await number.fill("0.1 kg");

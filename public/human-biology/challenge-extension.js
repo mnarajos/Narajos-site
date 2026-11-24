@@ -1398,6 +1398,22 @@ additions.push({
  explain:"Use the readout of solute recovery or protein release. The abundance of a structure cannot establish the rate of a process that needs several steps.",
  misconception:"Seeing the expected structures cannot establish that their whole pathway works.",hintCue:"After identifying each structure, ask which other step is needed for the measured output."
 });
+additions.push({
+ id:"f170-fractionation-guided",unit:"f170",area:1,section:"1.1.2",catchup:"1.1.2",type:"single",level:"core",
+ stem:"A filtered cell homogenate is spun at a low speed. Most nuclei form pellet P. The supernatant is transferred into a clean tube and spun faster; many mitochondria form pellet Q. Which material was spun a second time?",
+ options:["Pellet P, containing most of the nuclei.","The liquid above pellet P, containing particles that had not sedimented in the first spin.","The original homogenate, including pellet P.","Only mitochondria that had already formed pellet Q."],
+ correct:1,model:"The first supernatant is transferred and spun again. It contains the particles that remained suspended after the first spin.",
+ explain:"Follow the actual material moved between tubes. Pellet P stays behind, so it is not spun in the second tube. The second pellet forms from particles in the transferred liquid.",
+ optionFeedback:["The first pellet is left in its tube. Follow the liquid transferred into the clean tube.","","The first pellet is not transferred with the supernatant in this procedure.","Pellet Q forms during the second spin; it cannot already be the starting material for that spin."],
+ misconception:"Each new pellet forms from the supernatant transferred from the preceding spin, not from the pellet left behind.",hintCue:"Which part of the first tube moves to the clean tube?"
+},{
+ id:"f170-fractionation-transfer",unit:"f170",area:1,section:"1.1.2",catchup:"1.1.2",type:"written",level:"apply",
+ stem:"A laboratory spins a filtered homogenate. Pellet A is removed. The remaining liquid is spun more strongly, producing pellet B and liquid C. A microscopic count identifies many intact target organelles in B and some in both A and C. Explain how the organelles reached B and evaluate the claim that B is a pure preparation of those organelles.",
+ markPoints:["Some of the organelles remained suspended in the supernatant after the first spin; that liquid was carried forward.","During the stronger second spin, some sedimented and collected in pellet B.","The identified organelles in A and C show that they are not all in B. Finding many in B does not show that other components are absent; further evidence is needed to establish purity."],
+ model:"Some of the organelles remained in the first supernatant and were transferred to the second tube. They sedimented into B in the stronger spin. Intact target organelles were also identified in A and C. Finding many in B does not show that B contains no other material, so its purity needs further evidence.",
+ explain:"Separate recovery from purity. The count identifies where the target organelles are found; identifying possible contaminants requires evidence about other components.",
+ misconception:"A fraction can contain many target organelles alongside other components, and some target organelles can occur in other fractions.",hintCue:"Trace what was transferred between the two spins. What does a count of target organelles tell you about other components?"
+});
 var ids=new Set(bank.questions.map(function(q){return q.id;}));
 additions.forEach(function(q){if(!ids.has(q.id)){bank.questions.push(q);ids.add(q.id);}});
 })();
