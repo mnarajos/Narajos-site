@@ -1416,7 +1416,7 @@ try{
  await slot(oneParagraph,0).getByRole("button").press("Enter");
  await slot(oneParagraph,1).getByRole("button").press("Enter");
  await checkOrder(oneParagraph).click();
- await oneParagraph.getByRole("status").filter({hasText:"Correct."}).waitFor();
+ await oneParagraph.getByRole("status").filter({hasText:"Correct!"}).waitFor();
  await oneParagraph.getByText("Read the completed paragraph",{exact:true}).click();
  assert(await oneParagraph.locator(".model").isVisible());
  const spoRamp=navPage.locator("[data-ramp-practice]");
@@ -1871,7 +1871,7 @@ try{
   await placeCard(desktopSequence,start,i+1);
  }
  await checkOrder(desktopSequence).click();
- await desktopSequence.locator(".writing-order-feedback").filter({hasText:"Correct."}).waitFor();
+ await desktopSequence.locator(".writing-order-feedback").filter({hasText:"Correct!"}).waitFor();
  const visualLab=navPage.locator('diagram-practice[topic="filtration"]');
  const labels=visualLab.locator(".dp-question").first();
  await labels.locator("summary").click();
@@ -1883,12 +1883,12 @@ try{
  await labels.getByRole("button",{name:"Filtrate",exact:true}).click();
  await labels.getByRole("button",{name:/^C\./}).click();
  await labels.getByRole("button",{name:"Check answer",exact:true}).click();
- await labels.getByRole("status").filter({hasText:"All labels correct"}).waitFor();
+ await labels.getByRole("status").filter({hasText:"Correct!"}).waitFor();
  const point=visualLab.locator(".dp-question").nth(1);
  await point.locator("summary").click();
  await point.getByRole("button",{name:/^C\./}).click();
  await point.getByRole("button",{name:"Check answer",exact:true}).click();
- await point.getByRole("status").filter({hasText:"Correct."}).waitFor();
+ await point.getByRole("status").filter({hasText:"Correct!"}).waitFor();
  assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Diagram practice overflows on mobile");
  await screen(navPage,"diagram-practice-mobile");
 
@@ -1946,7 +1946,7 @@ try{
  await gridQuestion.getByRole("button",{name:"Homozygous recessive",exact:true}).press("Enter");
  await gridQuestion.getByRole("button",{name:/^D\./}).press("Enter");
  await gridQuestion.getByRole("button",{name:"Check answer",exact:true}).click();
- await gridQuestion.getByRole("status").filter({hasText:"All labels correct"}).waitFor();
+ await gridQuestion.getByRole("status").filter({hasText:"Correct!"}).waitFor();
  await navPage.goto(base+"/teaching/focused-writing/gcse/compare-insulation/");
  const cooling=navPage.locator('[data-writing-exercise="insulation"]');
  await cooling.getByRole("textbox").fill("The bare can cooled by 7 °C while the felt-wrapped can cooled by 13 °C.");
