@@ -152,11 +152,17 @@ export async function checkDrawingObservations(browser,base,axeSource) {
             const box=heading.getBBox(), frame=svg.viewBox.baseVal;
             check(box.width>0&&box.x>=-1&&box.x+box.width<=frame.width+1&&box.y+box.height<=frame.height+1,item.id+" title visible within drawing");
           }
-          for (const word of svg.querySelectorAll("text")) {
-            const box=word.getBBox(), frame=svg.viewBox.baseVal;
-            check(box.width>0 && box.x>=-1 && box.x+box.width<=frame.width+1 && box.y>=-1 && box.y+box.height<=frame.height+1,
-              item.id+" visible text: "+word.textContent);
+          // The available system font differs between pupil devices and CI.
+          // Check both the site's inherited font and a wider common fallback.
+          for (const family of ["", "'DejaVu Sans', sans-serif"]) {
+            mount.style.fontFamily=family;
+            for (const word of svg.querySelectorAll("text")) {
+              const box=word.getBBox(), frame=svg.viewBox.baseVal;
+              check(box.width>0 && box.x>=-1 && box.x+box.width<=frame.width+1 && box.y>=-1 && box.y+box.height<=frame.height+1,
+                item.id+" visible text"+(family ? " in fallback font" : "")+": "+word.textContent);
+            }
           }
+          mount.style.fontFamily="";
           const itemLeader=svg.querySelector("[data-label-line]"), itemLabel=itemLeader.nextElementSibling;
           const labelBox=itemLabel?.getBBox();
           const outside=s.id==="leaf" ? labelBox && labelBox.y+labelBox.height<50 :
