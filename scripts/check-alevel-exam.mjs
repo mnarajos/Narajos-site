@@ -128,7 +128,8 @@ export async function checkALevelExam(browser, base) {
       assert.equal(await page.locator(".al-journey-stage > .al-practice > h2").innerText(), "With support");
       assert.equal(await page.locator(".al-practice .al-controls .primary:visible").count(), 1);
       assert.equal(await page.locator(".al-practice-help").getAttribute("open"), null);
-      assert(await page.locator(".al-task-prompt").evaluate(el => el === document.activeElement));
+      const openingFocus = page.locator(".al-stimulus-heading, .al-task-prompt").first();
+      assert(await openingFocus.evaluate(el => el === document.activeElement), "Focus the evidence first, or the task when there is no evidence");
       assert.equal(await page.locator(".al-model:visible").count(), 0);
     };
     for (const family of families) {
