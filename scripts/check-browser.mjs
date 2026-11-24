@@ -303,7 +303,11 @@ try{
  const helpPage=await browser.newPage({viewport:{width:320,height:780},isMobile:true,hasTouch:true});
  const helpJourney=helpPage.locator(".school-journey");
  const helpDialog=helpJourney.locator(".school-check");
- const askForHelp=()=>helpDialog.getByRole("button",{name:"I don’t know — explain it",exact:true}).tap();
+ const openHelp=async()=>{
+  const support=helpDialog.locator("details.school-check-support");
+  if(await support.count() && !(await support.evaluate(el=>el.open))) await support.locator("summary").tap();
+ };
+ const askForHelp=async()=>{await openHelp();await helpDialog.getByRole("button",{name:"I don’t know — explain it",exact:true}).tap();};
  for(const [year,id,path,steps,hasFollowUp] of [
   [7,"fair-tests","/ks3/lesson/?topic=fair-tests&guided=1",4,false],
   [8,"separating-techniques","/ks3/lesson/?topic=separating-techniques&guided=1",3,false],
@@ -315,6 +319,7 @@ try{
   for(let index=0;index<steps;index++){
    if(year < 10) await helpJourney.getByRole("button",{name:"Check",exact:true}).tap();
    if(index===0){
+    await openHelp();
     await helpDialog.getByRole("button",{name:"Need a clue?",exact:true}).press("Enter");
     assert(await helpDialog.locator(".school-clue").isVisible());
     assert.equal(await helpDialog.getByRole("radio",{checked:true}).count(),0);
@@ -329,7 +334,8 @@ try{
     if(await helpDialog.getByRole("button",{name:"See lesson visual",exact:true}).count()){
      await helpDialog.getByRole("button",{name:"See lesson visual",exact:true}).tap();
      await helpJourney.getByRole("button",{name:"Resume check",exact:true}).tap();
-    } else await helpDialog.getByRole("button",{name:"Save and pause",exact:true}).tap();
+    } else if(year >= 10) await helpPage.getByRole("button",{name:"Pause check",exact:true}).tap();
+    else await helpDialog.getByRole("button",{name:"Save and pause",exact:true}).tap();
     await helpPage.reload();
     if(year < 10) await helpJourney.getByRole("button",{name:"Resume check",exact:true}).tap();
     assert(await helpDialog.getByRole("heading",{name:"Explanation",exact:true}).isVisible());
@@ -432,7 +438,7 @@ try{
  assert(await homeMenu.locator('a[href="/human-biology/"]').isVisible(),"Human Biology missing from homepage dropdown");
  assert.equal(await homeMenu.getByRole("link",{name:/^Year (7|8|9|10|11)$/}).count(),5);
  for(const [label, route, heading] of [
-  ["A-level Biology — AQA", "/alevel/", "Ready to revise?"],
+  ["A-level Biology — AQA", "/alevel/", "Choose a paper"],
   ["Human Biology — Cambridge OCR AAQ", "/human-biology/", "Human Biology"]
  ]){
   await homeMenu.getByRole("link",{name:label,exact:true}).press("Enter");
@@ -615,7 +621,7 @@ try{
  assert((await desktop.locator("main").innerText()).includes("Key idea 2"),"Catch-up step did not advance");
  await screen(desktop,"human-vaccines");
  await desktop.goto(base+"/human-biology/#catchup/f170/3.2.1",{waitUntil:"load"});
- await desktop.locator("[data-hb-model-step][open]").waitFor();
+ await desktop.locator("[data-hb-model-step]").waitFor({state:"visible"});
  await desktop.getByText("Trace a withdrawal reflex",{exact:true}).click();
  const reflex=desktop.locator('science-sequence[kind="reflex"]');
  await reflex.locator("svg").waitFor({state:"visible"});
@@ -626,7 +632,7 @@ try{
  await reflex.getByRole("button",{name:"Previous step"}).press("Enter");
  await reflex.getByRole("status").filter({hasText:"Motor neuron"}).waitFor();
  await desktop.goto(base+"/human-biology/#catchup/f170/1.1.2",{waitUntil:"load"});
- await desktop.locator("[data-hb-model-step][open]").waitFor();
+ await desktop.locator("[data-hb-model-step]").waitFor({state:"visible"});
  const microscope=desktop.locator("[data-hb-model-step]");
  assert(await microscope.locator(".micrograph-single img").evaluate(async img=>{await img.decode();return img.naturalWidth===386;}));
  assert(await microscope.locator(".hb-bar-length").isVisible());
