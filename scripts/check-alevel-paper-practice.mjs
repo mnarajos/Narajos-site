@@ -39,6 +39,34 @@ async function audit(page, stage) {
   assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 2), stage + " overflows");
 }
 
+async function checkScrollableTable(page, task) {
+  const practice = page.locator(".al-practice");
+  const wrap = practice.locator(".al-table");
+  const heading = practice.locator(".al-stimulus-heading");
+  await page.setViewportSize({ width: 960, height: 780 });
+  await practice.locator(".al-table:not([tabindex])").waitFor();
+  assert(await wrap.evaluate(el => el.scrollWidth <= el.clientWidth));
+  await heading.focus();
+  await page.keyboard.press("Tab");
+  assert(await practice.getByRole("textbox").evaluate(el => el === document.activeElement));
+
+  await page.setViewportSize({ width: 320, height: 780 });
+  const enlarged = await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
+  const region = practice.getByRole("region", { name: task.evidence[0], exact: true });
+  await region.waitFor();
+  assert(await region.evaluate(el => el.scrollWidth > el.clientWidth));
+  await heading.focus();
+  await page.keyboard.press("Tab");
+  assert(await region.evaluate(el => el === document.activeElement &&
+    getComputedStyle(el).outlineStyle !== "none" && parseFloat(getComputedStyle(el).outlineWidth) > 0));
+  await page.keyboard.press("ArrowRight");
+  await page.waitForFunction(() => document.querySelector(".al-practice .al-table").scrollLeft > 0);
+  await page.keyboard.press("Tab");
+  assert(await practice.getByRole("textbox").evaluate(el => el === document.activeElement));
+  await audit(page, "investigation table at 320px with enlarged text");
+  await enlarged.evaluate(el => el.remove());
+}
+
 async function checkTask(page, task) {
   const practice = page.locator(".al-practice");
   const stimulus = practice.locator(".al-task-stimulus");
@@ -164,10 +192,14 @@ export async function checkALevelPaperPractice(browser, base) {
       await checkUncued(page, first);
       assert(await practice.locator(".al-stimulus-heading").evaluate(element => element === document.activeElement));
       await page.keyboard.press("Tab");
-      // Chromium may include a horizontally scrollable data table in the tab order.
       if (await practice.locator(".al-table:focus").count()) await page.keyboard.press("Tab");
       assert(await practice.getByRole("textbox").evaluate(element => element === document.activeElement));
       await audit(page, family + " independent");
+      if (family === "investigations") {
+        const before = await state();
+        await checkScrollableTable(page, first);
+        assert.deepEqual(await state(), before);
+      }
       await button("Compare with the checklist").press("Enter");
       assert.equal(await practice.locator(".al-criteria").count(), 0);
       assert.equal((await state()).outcomes[2], undefined);

@@ -47,8 +47,32 @@
     element.tabIndex = -1;
     element.focus();
   }
-  function table(caption, headers, rows, highlights = []) {
-    const wrap = node("div", null, "al-table"),
+  customElements.define("al-paper-table", class extends HTMLElement {
+    connectedCallback() {
+      const grid = this.querySelector("table");
+      const update = () => {
+        if (this.scrollWidth > this.clientWidth) {
+          this.tabIndex = 0;
+          this.setAttribute("role", "region");
+          this.setAttribute("aria-label", grid.caption.textContent);
+        } else {
+          this.removeAttribute("tabindex");
+          this.removeAttribute("role");
+          this.removeAttribute("aria-label");
+        }
+      };
+      this.sizeObserver = new ResizeObserver(update);
+      this.sizeObserver.observe(this);
+      this.sizeObserver.observe(grid);
+      update();
+    }
+    disconnectedCallback() {
+      this.sizeObserver.disconnect();
+    }
+  });
+
+  function table(caption, headers, rows, highlights = [], paper = false) {
+    const wrap = node(paper ? "al-paper-table" : "div", null, "al-table"),
       t = node("table");
     t.createCaption().textContent = caption;
     const hr = t.createTHead().insertRow();
@@ -344,7 +368,7 @@
         panel.replaceChildren(steps, node("p", (index + 1) + " of " + (last + 1), "al-task-count"));
       }
       announcement.textContent = "Step " + (index + 1) + " of " + (last + 1) + ". " + family.model[index];
-      art.replaceChildren(family.evidence ? table(...family.evidence, family.evidenceHighlights?.[index]) : visual(family.visual, index));
+      art.replaceChildren(family.evidence ? table(...family.evidence, family.evidenceHighlights?.[index], paper) : visual(family.visual, index));
       previous.disabled = index === 0 && !backToIdea;
       previous.textContent = index === 0 && backToIdea ? "Key idea" : "Previous step";
       next.textContent = index < last ? "Next step" : finishLabel;
@@ -656,7 +680,7 @@
         if (q.stimulus) stimulus.append(node("p", q.stimulus));
         for (const paragraph of q.passage || []) stimulus.append(node("p", paragraph));
         if (q.visual) stimulus.append(visual(q.visual));
-        if (q.evidence) stimulus.append(table(...q.evidence));
+        if (q.evidence) stimulus.append(table(...q.evidence, [], flow.paper));
         question.append(stimulus);
         if (flow.paper) {
           prompt = node("h3", q.prompt, "al-task-prompt");
