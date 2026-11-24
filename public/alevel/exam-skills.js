@@ -320,9 +320,7 @@
     if (paper) {
       const context = node("div", null, "al-task-stimulus");
       context.append(node("h3", paper.stimulus, "al-stimulus-heading"));
-      for (const paragraph of [family.modelStimulus].flat()) {
-        context.append(node("p", paragraph, family.id === "essaywriting" ? "al-essay-title" : null));
-      }
+      context.append(node("p", family.modelStimulus, family.id === "essaywriting" ? "al-essay-title" : null));
       if (family.evidence) context.append(art);
       heading.append(count);
       block.replaceChildren(heading, context, node("h3", family.modelQuestion, "al-task-prompt"), panel, announcement, controls);
@@ -723,7 +721,6 @@
         const label = node("label", flow.paper ? "Your response" : "Your explanation", flow.paper ? "al-response-label" : null);
         const text = node("textarea");
         if (!flow.paper) text.maxLength = 4000;
-        if (flow.paper) text.id = "al-paper-response";
         text.name = "draft";
         text.value = state.drafts[i] || "";
         text.readOnly = accepted;

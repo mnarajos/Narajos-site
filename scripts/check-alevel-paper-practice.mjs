@@ -39,18 +39,35 @@ async function audit(page, stage) {
   assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 2), stage + " overflows");
 }
 
+async function checkTask(page, task) {
+  const practice = page.locator(".al-practice");
+  const stimulus = practice.locator(".al-task-stimulus");
+  await practice.getByRole("heading", { name: task.prompt, exact: true }).waitFor();
+  if (task.essayTitle) await stimulus.getByText(task.essayTitle, { exact: true }).waitFor();
+  for (const paragraph of task.passage || []) {
+    await stimulus.getByText(paragraph, { exact: true }).waitFor();
+  }
+  assert(await practice.evaluate(section => {
+    const context = section.querySelector(".al-task-stimulus");
+    const question = section.querySelector(".al-task-prompt");
+    const response = section.querySelector("textarea");
+    return Boolean(context.compareDocumentPosition(question) & Node.DOCUMENT_POSITION_FOLLOWING) &&
+      Boolean(question.compareDocumentPosition(response) & Node.DOCUMENT_POSITION_FOLLOWING);
+  }), "Read the stimulus, the question and then the response field");
+}
+
 async function checkUncued(page, task) {
   const main = page.locator("main");
-  await main.getByRole("heading", { name: task.prompt, exact: true }).waitFor();
-  assert.equal(await main.getByRole("textbox").inputValue(), "");
+  await checkTask(page, task);
+  await main.getByRole("heading", { name: /Independent question/ }).waitFor();
+  assert.equal(await main.getByRole("textbox", { name: "Your response" }).inputValue(), "");
   assert.equal(await main.locator("select, input[type=radio], input[type=checkbox], .al-criteria, .al-highlight-cell, .al-model").count(), 0);
   assert.equal(await main.getByText("Review the worked example", { exact: true }).count(), 0);
   assert.equal(await main.getByRole("button", { name: /clue/i }).count(), 0);
   const visible = await main.innerText();
-  for (const paragraph of task.passage || []) assert(visible.includes(paragraph), "Missing passage evidence");
   if (task.evidence) {
     const [caption, headers, rows] = task.evidence;
-    const table = main.getByRole("table", { name: caption, exact: true });
+    const table = main.locator(".al-task-stimulus").getByRole("table", { name: caption, exact: true });
     assert.deepEqual(await table.getByRole("columnheader").allTextContents(), headers);
     for (let i = 0; i < rows.length; i++) {
       assert.deepEqual(await table.getByRole("row").nth(i + 1).locator("th,td").allTextContents(), rows[i]);
@@ -76,22 +93,43 @@ async function review(page, task, { revise = false } = {}) {
     await criterion.getByRole("radio", { name: revise && j === 0 ? "Needs work" : "Included", exact: true }).check();
   }
   if (revise) {
+    const pending = await page.evaluate(key => {
+      const record = JSON.parse(localStorage.getItem(key))[location.hash.slice("#exam-".length)];
+      return { original: record.reviews[record.index].original, outcome: record.outcomes[record.index],
+        attempts: record.attempts[record.index], modelRead: record.reviews[record.index].modelRead };
+    }, storageKey);
+    assert.deepEqual(pending, { original, outcome: undefined, attempts: 1, modelRead: undefined });
+    const question = page.getByText("Reread the question", { exact: true });
+    assert.equal(await page.locator(".al-task-prompt").isVisible(), false);
+    await question.press("Enter");
+    await checkTask(page, task);
+    await question.press("Enter");
     await form.getByText(task.repairs[0], { exact: true }).waitFor();
     for (const repair of task.repairs.slice(1)) {
       assert.equal(await form.getByText(repair, { exact: true }).isVisible(), false, "Unrequested criterion support visible");
     }
-    await form.getByText("Compare with a model explanation", { exact: true }).click();
+    await form.getByText("Compare with a model explanation", { exact: true }).press("Enter");
     for (const paragraph of [].concat(task.modelAnswer)) {
       await form.getByText(paragraph, { exact: true }).waitFor();
     }
+    await form.getByRole("button", { name: "Edit your response", exact: true }).press("Enter");
+    assert(await draft.evaluate(element => element === document.activeElement));
     await draft.fill(revised);
+    await page.keyboard.press("Tab");
+    assert(await form.getByRole("button", { name: "Finish review" }).evaluate(element => element === document.activeElement));
     await page.reload();
     assert.equal(await draft.inputValue(), revised);
-    await form.getByText("Read your first draft", { exact: true }).click();
+    await form.getByText("Read your first draft", { exact: true }).press("Enter");
     await form.getByText(original, { exact: true }).waitFor();
     await form.getByText(task.repairs[0], { exact: true }).waitFor();
+    await fields.first().getByRole("radio", { name: "Included" }).check();
+    assert.equal(await form.getByText(task.repairs[0], { exact: true }).isVisible(), false);
   }
   await form.getByRole("button", { name: "Finish review", exact: true }).press("Enter");
+  const checklist = form.getByText("Review your checklist", { exact: true });
+  await checklist.waitFor();
+  assert.equal(await fields.first().isVisible(), false);
+  assert(await draft.evaluate(element => element.readOnly));
   return { original, revised };
 }
 
@@ -109,7 +147,10 @@ export async function checkALevelPaperPractice(browser, base) {
       await button("Try an independent question").waitFor();
       const data = await page.evaluate(id => window.ALevelPaperPractice[id], family);
       assert.deepEqual(data.tasks.map(task => Boolean(task.guided)), [true, true, false, false]);
-      assert.equal(new Set(data.tasks.map(task => task.prompt)).size, 4);
+      assert.equal(new Set(data.tasks.map(task => JSON.stringify([task.essayTitle, task.prompt]))).size, 4);
+      if (family === "essaywriting") {
+        assert(data.tasks.every(task => task.essayTitle && !task.prompt.includes(task.essayTitle)));
+      }
       if (family === "investigations") checkInvestigationData(data);
       const legacy = { index: 1, outcomes: { 0: "guided" }, responses: { 0: [1] } };
       await page.evaluate(([key, legacy]) => {
@@ -121,10 +162,15 @@ export async function checkALevelPaperPractice(browser, base) {
       await button("Try an independent question").press("Enter");
       const [first, second] = data.tasks.slice(2);
       await checkUncued(page, first);
-      assert(await practice.locator(".al-task-prompt").evaluate(element => element === document.activeElement));
+      assert(await practice.locator(".al-stimulus-heading").evaluate(element => element === document.activeElement));
+      await page.keyboard.press("Tab");
+      // Chromium may include a horizontally scrollable data table in the tab order.
+      if (await practice.locator(".al-table:focus").count()) await page.keyboard.press("Tab");
+      assert(await practice.getByRole("textbox").evaluate(element => element === document.activeElement));
       await audit(page, family + " independent");
       await button("Compare with the checklist").press("Enter");
       assert.equal(await practice.locator(".al-criteria").count(), 0);
+      assert.equal((await state()).outcomes[2], undefined);
       const { original, revised } = await review(page, first, { revise: true });
       const saved = await state();
       assert.equal(saved.outcomes[2], "self-reviewed");
@@ -140,7 +186,13 @@ export async function checkALevelPaperPractice(browser, base) {
       await page.reload();
       await checkUncued(page, second);
       await review(page, second);
-      assert.equal((await state()).outcomes[3], "self-reviewed");
+      const finished = await state();
+      assert.deepEqual(finished.outcomes, { 2: "self-reviewed", 3: "self-reviewed" });
+      assert.equal(finished.attempts[3], 1);
+      assert.equal(finished.reviews[3].modelRead, undefined);
+      assert.deepEqual(finished.reviews[3].repairsSeen || {}, {});
+      assert.equal(finished.modelAssists[3], undefined);
+      assert.equal(await practice.getByText("Correct!", { exact: true }).count(), 0);
       assert.deepEqual(await page.evaluate(key => JSON.parse(localStorage.getItem(key)).osmosis, storageKey), legacy);
       if (family === "essaywriting") {
         await button("Review progress").press("Enter");
@@ -157,12 +209,24 @@ export async function checkALevelPaperPractice(browser, base) {
       try {
         await guided.goto(base + "/alevel/#exam-" + family);
         await guided.getByRole("button", { name: "See worked example", exact: true }).press("Enter");
-        for (let i = 1; i < data.model.length; i++) {
-          await guided.getByRole("button", { name: "Next step", exact: true }).press("Enter");
+        const example = guided.locator(".al-model");
+        for (let i = 0; i < data.model.length; i++) {
+          if (i) await guided.getByRole("button", { name: "Next step", exact: true }).press("Enter");
+          const presented = await example.innerText();
+          const passage = [].concat(data.modelStimulus);
+          const sequence = [...passage, data.modelQuestion, data.model[i]];
+          let last = -1;
+          for (const text of sequence) {
+            const here = presented.indexOf(text);
+            assert(here > last, family + " model must show the stimulus, question and current reasoning in order");
+            last = here;
+          }
+          await example.getByRole("heading", { name: data.modelQuestion, exact: true }).waitFor();
+          await example.locator(".al-step").getByText(data.model[i], { exact: true }).waitFor();
         }
         await guided.getByRole("button", { name: "Try with support", exact: true }).press("Enter");
         for (const [i, task] of data.tasks.slice(0, 2).entries()) {
-          await guided.getByRole("heading", { name: task.prompt, exact: true }).waitFor();
+          await checkTask(guided, task);
           await review(guided, task);
           const next = i === 0 ? "Next task" : "Try a different question";
           await guided.getByRole("button", { name: next, exact: true }).press("Enter");
@@ -183,6 +247,7 @@ export async function checkALevelPaperPractice(browser, base) {
           assert.equal(await guided.getByRole("button", { name: "Try an independent question" }).count(), 0);
           await guided.getByRole("button", { name: "Return to your response" }).press("Enter");
           assert.equal(await guided.getByRole("textbox").inputValue(), partial);
+          assert.equal(await guided.getByRole("heading", { name: /Independent question/ }).count(), 0);
         }
       } finally {
         await guided.close();
