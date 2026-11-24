@@ -912,27 +912,30 @@
     const prompt = node("section", null, "al-paper-prompt");
     const picture = node("div"), inspector = drawingInspector();
     picture.innerHTML = drawing.svg(item,true);
-    prompt.append(node("h3", s.name), node("p", s.task + " Use a sharp pencil. Add a short annotation explaining which internal detail you could resolve."), picture, inspector.add("Paper observation", picture, "Observation"),
+    prompt.append(node("h3", s.name), node("p", s.task + " Use a sharp pencil. Add a short annotation explaining how you identified the nucleus."), picture, inspector.add("Paper observation", picture, "Observation"),
       node("p", "Use the reference bar to set the length on your page. If you enlarge the cell, enlarge the bar in the same proportion."), drawingCredit(item));
     const print = button("Print observation and instructions", () => window.print());
     print.classList.add("al-secondary");
     panel.append(prompt, print);
     const review = node("section", null, "al-paper-review");
-    // The first three indices are also used by earlier saved paper reviews.
     const points = [
       "I followed the changes in direction around this cell.",
-      "My label line reaches the wall.",
+      "My label lines reach the cell wall and nucleus.",
       "My bar has the same length relative to the cell as the reference bar.",
       "My title names the specimen and the cell I drew.",
       "I used clear, single pencil lines and left out shading and unresolved detail.",
-      "I ruled the label line and kept the rest of the wall outline clear.",
+      "I ruled both label lines and kept the outlines clear.",
       "I labelled my scale bar in µm.",
-      "I compared the cell’s height and width, and my annotation explains the limits of the visible detail."
+      "I checked the relative sizes of the cell and nucleus. My annotation explains how I identified the nucleus."
     ];
-    const getPaper = () => read().drawingPaper || {};
+    function getPaper(saved = read()) {
+      const paper = saved.drawingPaper || {};
+      // Keep the student's note, but require a fresh check of this photograph.
+      return paper.image === s.image ? paper : {improvement:paper.improvement};
+    }
     function update(patch) {
       const saved = read();
-      saved.drawingPaper = {...saved.drawingPaper, ...patch};
+      saved.drawingPaper = {...getPaper(saved), ...patch, image:s.image};
       save(saved);
     }
     const reveal = button("I’ve drawn it · compare with the model", () => {
@@ -995,6 +998,11 @@
       const image = node("div");
       image.innerHTML = drawing.svg(item, isReference, Boolean(session.outcome));
       figure.append(node("figcaption", label), image, inspector.add(label, image, isReference ? "Reference" : "Candidate"));
+      if (item.specimen.id === "buttercup") {
+        const detail = node("div", null, "al-vascular-detail");
+        detail.innerHTML = drawing.vascularDetail(item, isReference);
+        figure.append(node("p", "Vascular region · enlarged"), detail);
+      }
       figures.append(figure);
     }
     const descriptions = node("details", null, "al-drawing-evidence");
@@ -1018,7 +1026,7 @@
     comparison.append(node("summary", "Cell drawing or tissue plan?"));
     const figures = node("div", null, "al-figures");
     const worked = window.ALevelDrawingWorked;
-    const section = drawing.bank.find(item => item.specimen.id === "privet");
+    const section = drawing.bank.find(item => item.specimen.id === "leaf");
     const examples = [
       ["Cell drawing · " + worked.name, worked.observationSvg(), "Trace the cell boundaries and the internal structures you can resolve. Preserve their positions and proportions.", workedCredit(worked)],
       ["Tissue plan · " + section.specimen.name, drawing.svg(section, true), "Follow the boundaries between the tissue regions. Compare their relative thickness and position. A plan shows the distribution of tissues and leaves out individual cells.", drawingCredit(section)]
@@ -1114,7 +1122,12 @@
       const hasObservationSet = stored.drawingVersion === 2 ||
         stored.drawingSession?.ids?.some(oldObservation) || stored.drawingReview?.entries?.some(entry => oldObservation(entry.id));
       const prior = {session:stored.drawingSession, review:stored.drawingReview, round:stored.drawingRound};
-      if (hasObservationSet || observations.length) {
+      if (stored.drawingVersion === 3 && (hasObservationSet || observations.length)) {
+        // The images and criteria changed. Keep the previous attempts as
+        // history rather than applying their scores to the revised bank.
+        stored.batch27DrawingSet = {...(hasObservationSet ? prior : {}), outcomes:Object.fromEntries(observations)};
+        stored.drawingOutcomes = Object.fromEntries(outcomes.filter(([id]) => !oldObservation(id)));
+      } else if (hasObservationSet || observations.length) {
         stored.earlierObservationSet = {...(hasObservationSet ? prior : {}), outcomes:Object.fromEntries(observations)};
         stored.drawingOutcomes = Object.fromEntries(outcomes.filter(([id]) => !oldObservation(id)));
       }
@@ -1131,6 +1144,16 @@
         node("p", "These attempts used the earlier drawings and criteria. Your current set starts with the revised questions."));
       if (prior.session) history.append(node("p", "Your earlier set reached drawing " + (prior.session.index + 1) + " of 6."));
       if (prior.review) history.append(node("p", "Your completed earlier set contains " + prior.review.entries.length + " judgements."));
+      const records = node("ul");
+      for (const [id, result] of Object.entries(prior.outcomes || {}))
+        records.append(node("li", id + " · " + (outcomeNames[result] || result)));
+      history.append(records);
+      host.append(history);
+    }
+    if (stored.batch27DrawingSet) {
+      const prior = stored.batch27DrawingSet, history = node("details");
+      history.append(node("summary", "Previous drawing judgements"),
+        node("p", "These attempts used the previous photographs and drawings. They are kept separately from the revised practice."));
       const records = node("ul");
       for (const [id, result] of Object.entries(prior.outcomes || {}))
         records.append(node("li", id + " · " + (outcomeNames[result] || result)));
@@ -1161,6 +1184,17 @@
     const introduction = drawingWorked(bar);
     introduction.open = !stored.drawingSession && !stored.drawingReview;
     block.append(introduction, drawingTypes());
+    const conventions = node("section", null, "al-drawing-conventions");
+    conventions.append(node("h3", "Before you judge a drawing"));
+    const reminders = node("ul");
+    [
+      "Use single continuous lines and leave out shading or hatching. Show the observed relative sizes.",
+      "Put labels beside the drawing. Follow each line to the structure it names. The nucleus label line may enter the cell, but it must end on the nucleus.",
+      "Draw only structures the observation supports. In a tissue map, show tissue boundaries rather than individual cells.",
+      "Give the drawing an explanatory title and an indication of size. A calibrated scale bar must change length in proportion when the drawing is resized."
+    ].forEach(text => reminders.append(node("li", text)));
+    conventions.append(reminders, node("p", "Start with a guided onion-cell comparison, then practise cell drawings before the tissue maps."));
+    block.append(conventions);
     const start = button(
       read().drawingSession ? "Resume drawing set" : "Start a six-drawing set",
       () => round(true),
@@ -1238,7 +1272,7 @@
         const criteria = node("ul", null, "al-drawing-criteria");
         criteria.append(node("li", item.criterion));
         if (complete) {
-          criteria.append(node("li", "Compare visible detail and proportions. Check for continuous, unshaded outlines, precise label lines and any annotation the task requests."),
+          criteria.append(node("li", "Check which structures are shown and compare their relative sizes. Look for single continuous lines, no shading or hatching, and labels that clearly identify the structures."),
             node("li", "Read the title on the drawing. Check that it explains what is shown and that the scale bar agrees with the calibrated observation."));
         } else {
           criteria.append(node("li", "Judge only the named features. The source lacks verified size information, so this exercise cannot establish whether the drawing is complete."));
@@ -1271,7 +1305,7 @@
           persistDrawing();
         };
         categories.append(node("legend", "Which features need correcting?"),
-          node("p","Use biological detail for structures added or left out. Use proportions for the size or shape of a structure that is present. Count each issue once."));
+          node("p","Choose “Structures shown” when a structure is added or left out. Choose “Relative size” when a structure is drawn too large or too small compared with the rest."));
         drawing.categories.forEach((name, j) => {
           if (item.allowedCategories && !item.allowedCategories.includes(j)) return;
           const label = node("label"),
@@ -1290,8 +1324,10 @@
         const feedback = node("p", null, "al-feedback");
         feedback.setAttribute("role", "status");
         feedback.setAttribute("aria-atomic", "true");
-        if (session.outcome) feedback.textContent = "Correct!";
-        else if (session.attempts) {
+        if (session.outcome) {
+          const reason = item.defects.map(index => drawing.categories[index]).join(", ");
+          feedback.textContent = reason ? "Correct! " + reason + ". " + item.why : "Correct!";
+        } else if (session.attempts) {
           const previous = session.lastAttempt || session.firstAttempt;
           const extra = (previous?.categories || []).find(category => !item.defects.includes(category));
           const lead = extra === undefined ? "Compare again. " : "Recheck your choice of " + drawing.categories[extra].toLowerCase() + ". ";

@@ -3,19 +3,19 @@ import assert from "node:assert/strict";
 // Native photo coordinates read from the source fields independently of the SVG paths.
 // Boundary tolerances allow the line width and indistinct edges in a micrograph.
 const landmarks = {
-  epidermis: [["wall",320,107,5],["wall",416,276,5],["wall",279,171,5]],
-  privet: [["upper",510,136,5],["epidermis",508,157,6],["lower",505,491,6],["bundle",626,277,7]],
+  epidermis: [["wall",263,21,2],["wall",267,121,2],["wall",239,93,2],["nucleus",262,56,1.5],["nucleus",267,62,1.5]],
+  leaf: [["upper",100,24,5],["upper",250,72,5],["epidermis",250,92,5],["lower",205,316,5],["lower",530,381,5]],
   buttercup: [["surface",413,28,6],["cylinder",419,328,6],["xylem",392,346,6]],
   arterial: [["band",412,394,5],["band",721,394,5],["lumen",444,394,5],["lumen",702,394,5],
     ["band",560,223,5],["band",560,580,5],["lumen",560,254,5],["lumen",560,550,5]],
   buccal: [["outline",240,118,7],["outline",20,191,6],["outline",594,354,7],["nucleus",244,286,5],["nucleus",296,330,5]],
-  redcell: [["edge",309,215,4],["edge",332,224,4],["edge",316,258,4]]
+  redcell: [["edge",166,60,4],["edge",204,19,4],["edge",255,53,4],["edge",223,100,4]]
 };
 const alterations = {
   "epidermis.leader":["label"],"epidermis.bar":["bar"],
-  "privet.band":["epidermis"],"privet.cells":["partitions"],
+  "leaf.band":["epidermis"],"leaf.cells":["partitions"],
   "buttercup.core":["cylinder"],"buttercup.xylem":["xylem"],
-  "arterial.rim":["lumen"],"arterial.hatch-tip":["hatch","label"],
+  "arterial.rim":["lumen"],"arterial.hatch":["hatch"],
   "buccal.nucleus-size":["label","nucleus"],"buccal.sketch":["retrace"],
   "redcell.interior":["inner"],"redcell.bar":["bar"]
 };
@@ -23,9 +23,9 @@ const alterations = {
 // Independent answer register. Keys are the defects visible in the source comparisons.
 const defects = {
   "epidermis.outline":[], "epidermis.leader":[4], "epidermis.bar":[5],
-  "privet.outline":[], "privet.band":[3], "privet.cells":[2],
+  "leaf.outline":[], "leaf.band":[3], "leaf.cells":[2],
   "buttercup.outline":[], "buttercup.core":[3], "buttercup.xylem":[2],
-  "arterial.outline":[], "arterial.rim":[3], "arterial.hatch-tip":[1,4],
+  "arterial.outline":[], "arterial.rim":[3], "arterial.hatch":[1],
   "buccal.outline":[], "buccal.nucleus-size":[3], "buccal.sketch":[0],
   "redcell.outline":[], "redcell.interior":[2], "redcell.bar":[5]
 };
@@ -36,11 +36,12 @@ export async function checkDrawingObservations(browser,base,axeSource) {
   const key = "keystone.alevel.exam-skills.v1";
   try {
     await page.goto(url);
-    await page.waitForFunction(() => window.ALevelDrawingBank?.version === 3 && window.ALevelDrawingWorked);
+    await page.waitForFunction(() => window.ALevelDrawingBank?.version === 4 && window.ALevelDrawingWorked);
     const failures = await page.evaluate(async ({landmarks,alterations,defects}) => {
       const bank = window.ALevelDrawingBank, problems = [];
       function check(ok,why) { if (!ok) problems.push(why); }
       const mount = document.createElement("div");
+      mount.className = "al-teaching"; // Exercise the site's actual SVG typography.
       document.body.append(mount);
       function render(item,reference=false) {
         const holder=document.createElement("div");
@@ -58,8 +59,8 @@ export async function checkDrawingObservations(browser,base,axeSource) {
         return distance;
       }
       // Trace the full straight leader in the same native coordinate system as the contours.
-      function crossings(svg,specimen) {
-        const [x,y,width]=specimen.crop, line=svg.querySelector("[data-label-line]");
+      function crossings(svg,specimen, label) {
+        const [x,y,width]=specimen.crop, line=svg.querySelector(label ? `[data-label-line="${label}"]` : "[data-label-line]");
         const point=n=>({x:x+Number(line.getAttribute("x"+n))*width/300,y:y+Number(line.getAttribute("y"+n))*width/300});
         const paths=[...svg.querySelectorAll("[data-feature]")].filter(path=>Object.hasOwn(specimen.paths,path.dataset.feature));
         return lineCrossings(point(1),point(2),paths);
@@ -99,14 +100,27 @@ export async function checkDrawingObservations(browser,base,axeSource) {
         ctx.drawImage(image,0,0);
         return ctx.getImageData(0,0,canvas.width,canvas.height).data;
       }
+      function checkOnionNucleus(svg, specimen, label) {
+        const nucleus = svg.querySelector('[data-feature="nucleus"]');
+        const leader = svg.querySelector('[data-label-line="Nucleus"]');
+        const [x,y,width] = specimen.crop;
+        const tip = [x + Number(leader?.getAttribute("x2"))*width/300, y + Number(leader?.getAttribute("y2"))*width/300];
+        check(Boolean(nucleus && leader) && boundaryDistance(nucleus,...tip)<1.5, label+" nucleus label reaches the observed outline");
+        check(crossings(svg,specimen,"Nucleus").join()==="wall",label+" nucleus leader only crosses the enclosing wall");
+      }
       const calibrated = {
-        epidermis: {span:357, value:200, draw:50, from:[610,613], to:[966,613], light:false},
+        epidermis: {span:47, value:50, draw:25, from:[177,261], to:[223,261], light:false},
+        leaf: {span:94, value:50, draw:50, from:[966,588], to:[1059,588], light:false},
         buttercup: {span:123, value:310, draw:310, from:[682,719], to:[804,719], light:false},
         arterial: {span:164, value:100, draw:100, from:[3398,685], to:[3561,685], light:false},
         buccal: {span:198, value:20, draw:10, from:[412,597], to:[609,597], light:false},
-        redcell: {span:122, value:20, draw:5, from:[244,366], to:[365,366], light:true}
+        redcell: {span:128, value:10, draw:5, from:[841,622], to:[968,622], light:false}
       };
       check(bank.bank.map(item=>item.id).sort().join()===Object.keys(defects).sort().join(),"verified judgement register");
+      for (let round=0; round<3; round++) {
+        check(bank.setFor(round).map(item=>item.specimen.id).join() === "epidermis,buccal,redcell,leaf,buttercup,arterial", "cell conventions precede tissue maps");
+      }
+      check(bank.bank.every(item=>item.defects.length<=1),"each comparison isolates at most one assessed fault");
       for (const s of bank.specimens) {
         const items=bank.bank.filter(it=>it.specimen===s), model=render(items[0]);
         const reference=render(items[0],true), photo=new Image();
@@ -119,8 +133,9 @@ export async function checkDrawingObservations(browser,base,axeSource) {
         const tip=new DOMPoint(tx,ty);
         if(s.id==="buttercup") check(path(model,"surface").isPointInFill(tip)&&!path(model,"cylinder").isPointInFill(tip),"label inside cortex");
         else if(s.id==="arterial") check(path(model,"lumen").isPointInFill(tip),"label inside lumen");
+        else if(s.id==="leaf") check(boundaryDistance(path(model,"upper"),tx,ty)<20 && boundaryDistance(path(model,"epidermis"),tx,ty)<20,"label within upper epidermal band");
         else {
-          const target={epidermis:"wall",privet:"upper",buccal:"nucleus",redcell:"edge"}[s.id];
+          const target={epidermis:"wall",buccal:"nucleus",redcell:"edge"}[s.id];
           check(boundaryDistance(path(model,target),tx,ty)<2.5,s.id+" label at observed feature");
         }
         for(const [name,lx,ly,tolerance] of landmarks[s.id])
@@ -145,19 +160,55 @@ export async function checkDrawingObservations(browser,base,axeSource) {
             const box=heading.getBBox(), frame=svg.viewBox.baseVal;
             check(box.width>0&&box.x>=-1&&box.x+box.width<=frame.width+1&&box.y+box.height<=frame.height+1,item.id+" title visible within drawing");
           }
+          // The available system font differs between pupil devices and CI.
+          // Check both the site's inherited font and a wider common fallback.
+          for (const family of ["", "'DejaVu Sans', sans-serif"]) {
+            mount.style.fontFamily=family;
+            for (const word of svg.querySelectorAll("text")) {
+              const box=word.getBBox(), frame=svg.viewBox.baseVal;
+              check(box.width>0 && box.x>=-1 && box.x+box.width<=frame.width+1 && box.y>=-1 && box.y+box.height<=frame.height+1,
+                item.id+" visible text"+(family ? " in fallback font" : "")+": "+word.textContent);
+            }
+          }
+          mount.style.fontFamily="";
+          const itemLeader=svg.querySelector("[data-label-line]"), itemLabel=itemLeader.nextElementSibling;
+          const labelBox=itemLabel?.getBBox();
+          const outside=s.id==="leaf" ? labelBox && labelBox.y+labelBox.height<50 :
+            Number(itemLeader.getAttribute("x1"))>=300 && labelBox && labelBox.x>=300;
+          check(outside && itemLabel?.textContent===s.label,item.id+" label outside the specimen");
+          // Check the browser's rendered transforms, not only the authored
+          // coordinates: global CSS must not stretch the nested SVG apart
+          // from its label line or the scale bar.
+          const nativeX=x+Number(itemLeader.getAttribute("x2"))*w/300;
+          const nativeY=y+Number(itemLeader.getAttribute("y2"))*w/300;
+          // Firefox reports the parent transform on the nested <svg> itself;
+          // its child path/image reports the rendered viewBox transform.
+          const actualTip=new DOMPoint(nativeX,nativeY).matrixTransform(svg.querySelector("[data-feature]").getScreenCTM());
+          const drawnTip=new DOMPoint(Number(itemLeader.getAttribute("x2")),Number(itemLeader.getAttribute("y2"))).matrixTransform(svg.getScreenCTM());
+          check(Math.hypot(actualTip.x-drawnTip.x,actualTip.y-drawnTip.y)<1,item.id+" rendered label and specimen share coordinates");
+          const photoTip=new DOMPoint(nativeX,nativeY).matrixTransform(reference.querySelector("image").getScreenCTM());
+          const photoExpected=new DOMPoint(Number(itemLeader.getAttribute("x2")),Number(itemLeader.getAttribute("y2"))).matrixTransform(reference.getScreenCTM());
+          check(Math.hypot(photoTip.x-photoExpected.x,photoTip.y-photoExpected.y)<1,item.id+" rendered observation and scale share coordinates");
           check(item.scope===(cal?"complete":"focused"),item.id+" scope backed by source calibration");
           check(item.defects.slice().sort().join()===defects[item.id]?.join(),item.id+" evidenced answer key");
           const actual=svg.querySelector("[data-scale-bar]");
           check(Boolean(actual)===Boolean(cal),item.id+" bar presence");
           if(cal && actual){
-            const expectedLabel={"epidermis.bar":100,"redcell.bar":10}[item.id] ?? cal.draw;
+            const expectedLabel={"epidermis.bar":50,"redcell.bar":10}[item.id] ?? cal.draw;
             check(actual.parentNode.textContent.trim()===expectedLabel+" µm",item.id+" physical scale value");
             check(Math.abs(+actual.getAttribute("width")-300/w*cal.span*cal.draw/cal.value)<0.01,item.id+" displayed length");
           }
-          const expected={epidermis:item.key==="leader"?["wall"]:[],privet:[],buttercup:[],
-            arterial:item.key==="hatch-tip"?["lumen"]:[],buccal:[],redcell:[]};
+          if (s.id==="epidermis") checkOnionNucleus(svg,s,item.id);
+          const expected={epidermis:item.key==="leader"?["wall"]:[],leaf:["upper"],buttercup:["surface"],
+            arterial:["band","lumen"],buccal:["outline"],redcell:[]};
           const hits=crossings(svg,s);
           check(hits.join()===expected[s.id].join(),item.id+" full leader crossed "+hits.join("/"));
+          if (s.id==="buttercup") {
+            const detail=document.createElement("div"), observed=document.createElement("div");
+            detail.innerHTML=bank.vascularDetail(item);observed.innerHTML=bank.vascularDetail(item,true);
+            check(detail.firstElementChild.getAttribute("viewBox")===observed.firstElementChild.getAttribute("viewBox"),item.id+" matched vascular detail crop");
+            check(Boolean(detail.querySelector('[data-feature="xylem"]'))===(item.key!=="xylem"),item.id+" vascular detail shows candidate");
+          }
           if(s.id==="arterial"){
             const lumen=path(svg,"lumen"),band=path(svg,"band");
             for(let pos=0;pos<lumen.getTotalLength();pos+=1){
@@ -181,16 +232,23 @@ export async function checkDrawingObservations(browser,base,axeSource) {
       const paper=render(bank.paper);
       check(paper.querySelector("[data-drawing-title]")?.textContent.trim().length>10,"paper model includes its title");
       const paperBar=paper.querySelector("[data-scale-bar]");
-      check(paperBar?.parentNode.textContent.trim()==="50 µm" &&
-        Math.abs(Number(paperBar.getAttribute("width"))-300/bank.paper.specimen.crop[2]*357/4)<0.01,"paper model calibrated 50 µm bar");
+      check(paperBar?.parentNode.textContent.trim()==="25 µm" &&
+        Math.abs(Number(paperBar.getAttribute("width"))-300/bank.paper.specimen.crop[2]*47/2)<0.01,"paper model calibrated 25 µm bar");
       check(crossings(paper,bank.paper.specimen).length===0,"paper model crosses an unrelated boundary");
       check(boundaryDistance(paper.querySelector('[data-feature="wall"]'),...bank.paper.specimen.target)<2.5,"paper label tip at wall");
+      checkOnionNucleus(paper,bank.paper.specimen,"paper model");
       const worked=window.ALevelDrawingWorked;
       const reference=document.createElement("div"), drawing=document.createElement("div");
       reference.innerHTML=worked.observationSvg();drawing.innerHTML=worked.modelSvg();mount.append(reference,drawing);
       const frogField=reference.querySelector("svg svg");
       check(reference.firstElementChild.getAttribute("viewBox")===drawing.firstElementChild.getAttribute("viewBox"),"worked images share an inspection frame");
       check(frogField.getAttribute("viewBox")==="256 208 392 300","frog crop in source coordinates");
+      const frogCorner=new DOMPoint(256,208).matrixTransform(frogField.querySelector("image").getScreenCTM());
+      const expectedCorner=new DOMPoint(6,35).matrixTransform(reference.firstElementChild.getScreenCTM());
+      const frogOpposite=new DOMPoint(648,508).matrixTransform(frogField.querySelector("image").getScreenCTM());
+      const expectedOpposite=new DOMPoint(398,335).matrixTransform(reference.firstElementChild.getScreenCTM());
+      check(Math.hypot(frogCorner.x-expectedCorner.x,frogCorner.y-expectedCorner.y)<1 &&
+        Math.hypot(frogOpposite.x-expectedOpposite.x,frogOpposite.y-expectedOpposite.y)<1,"worked photograph and drawing use the same rendered scale");
       const photo=new Image();photo.src=frogField.querySelector("image").getAttribute("href");await photo.decode();
       check(photo.naturalWidth===780&&photo.naturalHeight===590,"published frog panel dimensions");
       const canvas=document.createElement("canvas");canvas.width=photo.width;canvas.height=photo.height;
@@ -209,7 +267,7 @@ export async function checkDrawingObservations(browser,base,axeSource) {
         check(boundaryDistance(path,x-256,y-208)<7,"frog observed landmark "+x+","+y);
       const workedLabels=[...drawing.querySelectorAll("[data-worked-label]")];
       const labelNames=workedLabels.map(group=>group.dataset.workedLabel).sort();
-      check(labelNames.join()==="Cell boundary,Cytoplasm,Nucleus","worked labelled structures");
+      check(labelNames.join()==="Cell boundary,Nucleus","worked labelled structures");
       // The worked drawing has straight horizontal leaders and an external label column.
       // Include text extents and the complete leaders, not just their endpoints.
       function overlaps(a,b) {
@@ -226,8 +284,7 @@ export async function checkDrawingObservations(browser,base,axeSource) {
         const point=n=>new DOMPoint(Number(line.getAttribute("x"+n)),Number(line.getAttribute("y"+n)));
         const tip=point(1),start=point(2);
         const meets=label==="Cell boundary"?boundaryDistance(cell,tip.x,tip.y)<2:
-          label==="Nucleus"?boundaryDistance(nucleus,tip.x,tip.y)<2:
-          label==="Cytoplasm"&&cell.isPointInFill(tip)&&!nucleus.isPointInFill(tip);
+          label==="Nucleus"&&boundaryDistance(nucleus,tip.x,tip.y)<2;
         check(meets,"frog "+label+" endpoint");
         const word=group.querySelector("text");
         check(word.textContent.trim()===label && !overlaps(word.getBoundingClientRect(),cell.getBoundingClientRect()),
@@ -289,7 +346,7 @@ export async function checkDrawingObservations(browser,base,axeSource) {
     await page.reload();
     await page.getByRole("button",{name:"Start a six-drawing set"}).waitFor();
     const migrated=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),key);
-    assert.equal(migrated.drawingVersion,3);
+    assert.equal(migrated.drawingVersion,4);
     assert.deepEqual(migrated.earlierObservationSet.session,oldSet);
     assert.deepEqual(migrated.earlierObservationSet.review,oldReview);
     assert.deepEqual(migrated.earlierObservationSet.outcomes,oldOutcomes);
@@ -303,6 +360,26 @@ export async function checkDrawingObservations(browser,base,axeSource) {
     assert.equal(migrated.drawingCalibration.outcome,"independent");
     await page.reload();
     assert.deepEqual(await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).earlierObservationSet,key),migrated.earlierObservationSet);
+
+    const oldV3={round:0,index:1,ids:["epidermis.leader","privet.band","buttercup.outline","arterial.hatch-tip","buccal.outline","redcell.bar"],attempts:1};
+    await page.evaluate(({key,oldV3,earlier})=>localStorage.setItem(key,JSON.stringify({
+      drawingVersion:3,drawingRound:1,drawingSession:oldV3,
+      drawingOutcomes:{"privet.band":"independent"},earlierObservationSet:earlier,
+      drawingPaper:{improvement:"Keep my paper note.",compared:true,checks:{1:true}},drawingCalibration:{draft:"5.8"}
+    })),{key,oldV3,earlier:migrated.earlierObservationSet});
+    await page.reload();
+    const movedV3=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),key);
+    assert.deepEqual(movedV3.batch27DrawingSet.session,oldV3);
+    assert.deepEqual(movedV3.batch27DrawingSet.outcomes,{"privet.band":"independent"});
+    assert.deepEqual(movedV3.earlierObservationSet,migrated.earlierObservationSet);
+    assert.equal(movedV3.drawingPaper.improvement,"Keep my paper note.");
+    assert.equal(movedV3.drawingCalibration.draft,"5.8");
+    assert(!movedV3.drawingSession && !movedV3.drawingOutcomes["privet.band"]);
+    await page.getByText("Draw a specimen on paper",{exact:true}).click();
+    assert.equal(await page.locator(".al-paper-review svg").count(),0);
+    await page.getByRole("button",{name:/I’ve drawn it/}).click();
+    assert.equal(await page.getByLabel("One change I would make").inputValue(),"Keep my paper note.");
+    assert(!await page.getByLabel("My label lines reach the cell wall and nucleus.").isChecked());
 
     await page.evaluate(key=>localStorage.setItem(key,JSON.stringify({
       drawingRound:3,drawingSession:{round:2,index:1,verdict:1,categories:[4]},drawingOutcomes:{"yeast-3":"corrected"},causal:{phase:"review"}
@@ -365,8 +442,9 @@ export async function checkDrawingObservations(browser,base,axeSource) {
     await page.getByRole("button",{name:"Check judgement"}).click();
     assert.match(await page.locator(".al-drawing-judgement .al-feedback").innerText(),/where the line ends/);
     await page.getByRole("radio",{name:"Reject",exact:true}).check();
-    await page.getByLabel("Label endpoint",{exact:true}).check();
+    await page.getByLabel("Labels and label lines",{exact:true}).check();
     await page.getByRole("button",{name:"Try judgement again"}).click();
+    assert.match(await page.locator(".al-drawing-judgement .al-feedback").innerText(),/Labels and label lines.*continues past the structure/);
     await page.getByRole("button",{name:"Next drawing"}).click();
     const state=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).drawingSession,key);
     assert.equal(state.entries[0].firstAttempt.correct,false);
@@ -376,8 +454,8 @@ export async function checkDrawingObservations(browser,base,axeSource) {
     await page.waitForFunction(key=>JSON.parse(localStorage.getItem(key)).drawingSession.helped,key);
     await page.reload();
     const current=defects[state.ids[1]];
-    assert(!await page.getByRole("radio",{name:"Accept",exact:true}).count());
-    await page.getByRole("radio",{name:current.length?"Features need correction":"Features match",exact:true}).check();
+    assert(await page.getByRole("radio",{name:"Accept",exact:true}).count());
+    await page.getByRole("radio",{name:current.length?"Reject":"Accept",exact:true}).check();
     for(const d of current)await page.getByLabel(await page.evaluate(d=>window.ALevelDrawingBank.categories[d],d),{exact:true}).check();
     await page.getByRole("button",{name:"Check judgement"}).click();
     assert.match(await page.locator(".al-drawing-judgement .al-feedback").innerText(),/Correct!/);
@@ -403,6 +481,23 @@ export async function checkDrawingObservations(browser,base,axeSource) {
       assert(await enlarge.evaluate(el=>el===document.activeElement));
     }
     await page.getByText("Read the visual evidence",{exact:true}).click();
+    await audit(".al-drawing");
+
+    await page.setViewportSize({width:1280,height:800});
+    await page.evaluate(key=>{
+      document.documentElement.style.fontSize="";
+      localStorage.setItem(key,JSON.stringify({drawingVersion:4,drawingRound:1,
+        drawingSession:{round:0,index:1,attempts:0,helped:false,ids:Array(6).fill("buttercup.xylem")}}));
+    },key);
+    await page.reload();
+    const detail=page.locator(".al-drawing-comparison");
+    assert.equal(await detail.locator(".al-vascular-detail:visible").count(),2,"reference and candidate details appear together on desktop");
+    assert.equal(await detail.locator('figure[data-view="candidate"] .al-vascular-detail [data-feature="xylem"]').count(),0);
+    await page.setViewportSize({width:390,height:844});
+    assert.equal(await detail.locator(".al-vascular-detail:visible").count(),1,"phone shows the detail for the selected view");
+    await detail.getByRole("button",{name:"Candidate drawing",exact:true}).click();
+    assert(await detail.locator('figure[data-view="candidate"] .al-vascular-detail').isVisible());
+    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
     await audit(".al-drawing");
   }finally{await page.close();}
 }
