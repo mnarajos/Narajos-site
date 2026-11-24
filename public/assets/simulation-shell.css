@@ -10,6 +10,8 @@
 .sim-utility-nav a:focus-visible{outline:3px solid #dc772c;outline-offset:0;border-radius:4px}
 .sim-utility-nav img{display:block;width:18px;height:18px}
 .sim-utility-nav .sim-site-link{white-space:nowrap}
+.sim-footer { padding-block: .25rem; }
+.sim-fullscreen > .sim-footer { flex: none; padding-inline: .875rem; }
 .brand h1.t{margin:0;line-height:1.15}
 @supports(height:100dvh){body.sim-fullscreen:not(.enzyme-simulation){height:100dvh}}
 @media(min-width:901px) and (min-height:481px){body.enzyme-simulation{height:100dvh}}
