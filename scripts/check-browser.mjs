@@ -605,7 +605,9 @@ try{
  await desktop.locator(".k-skill-graph svg").waitFor();
  await screen(desktop,"human-skill-graph");
  await desktop.goto(base+"/human-biology/#catchup/f171",{waitUntil:"load"});
- await desktop.locator('a[href="#catchup/f171/3.2.2"]').first().click();
+ const immuneArea=desktop.locator(".hb-unit-area-f171").filter({has:desktop.locator('a[href="#catchup/f171/3.2.2"]')});
+ await immuneArea.getByText("Focused lessons",{exact:true}).press("Enter");
+ await immuneArea.locator('a[href="#catchup/f171/3.2.2"]').click();
  await desktop.locator(".k-catchup-concept").waitFor({state:"visible",timeout:10000});
  assert((await desktop.locator("main").innerText()).includes("Vaccine types"),"F171 vaccine catch-up not visible");
  await desktop.goto(base+"/human-biology/#catchup/f171/3.2.2/1");
@@ -613,7 +615,7 @@ try{
  assert((await desktop.locator("main").innerText()).includes("Key idea 2"),"Catch-up step did not advance");
  await screen(desktop,"human-vaccines");
  await desktop.goto(base+"/human-biology/#catchup/f170/3.2.1",{waitUntil:"load"});
- await desktop.locator("[data-hb-model-step] > summary").click();
+ await desktop.locator("[data-hb-model-step][open]").waitFor();
  await desktop.getByText("Trace a withdrawal reflex",{exact:true}).click();
  const reflex=desktop.locator('science-sequence[kind="reflex"]');
  await reflex.locator("svg").waitFor({state:"visible"});
@@ -624,7 +626,7 @@ try{
  await reflex.getByRole("button",{name:"Previous step"}).press("Enter");
  await reflex.getByRole("status").filter({hasText:"Motor neuron"}).waitFor();
  await desktop.goto(base+"/human-biology/#catchup/f170/1.1.2",{waitUntil:"load"});
- await desktop.locator("[data-hb-model-step] > summary").click();
+ await desktop.locator("[data-hb-model-step][open]").waitFor();
  const microscope=desktop.locator("[data-hb-model-step]");
  assert(await microscope.locator(".micrograph-single img").evaluate(async img=>{await img.decode();return img.naturalWidth===386;}));
  assert(await microscope.locator(".hb-bar-length").isVisible());
