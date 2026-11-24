@@ -296,12 +296,13 @@ try{
   assert.equal(await catalogueWithoutGroupBy.locator(".site-nav [aria-current=page]").textContent(),"Year "+year);
   const topic=catalogueWithoutGroupBy.locator(".school-topic-list").getByRole("link").first();
   await topic.click();
-  await catalogueWithoutGroupBy.locator(".school-journey").getByRole("button",{name:"Check",exact:true}).waitFor();
+  if(year < 10) await catalogueWithoutGroupBy.locator(".school-journey").getByRole("button",{name:"Check",exact:true}).waitFor();
+  else await catalogueWithoutGroupBy.locator(".school-check-inline input").first().waitFor();
  }
  await catalogueWithoutGroupBy.close();
  const helpPage=await browser.newPage({viewport:{width:320,height:780},isMobile:true,hasTouch:true});
  const helpJourney=helpPage.locator(".school-journey");
- const helpDialog=helpJourney.getByRole("dialog");
+ const helpDialog=helpJourney.locator(".school-check");
  const askForHelp=()=>helpDialog.getByRole("button",{name:"I don’t know — explain it",exact:true}).tap();
  for(const [year,id,path,steps,hasFollowUp] of [
   [7,"fair-tests","/ks3/lesson/?topic=fair-tests&guided=1",4,false],
@@ -312,7 +313,7 @@ try{
  ]){
   await helpPage.goto(base+path);
   for(let index=0;index<steps;index++){
-   await helpJourney.getByRole("button",{name:"Check",exact:true}).tap();
+   if(year < 10) await helpJourney.getByRole("button",{name:"Check",exact:true}).tap();
    if(index===0){
     await helpDialog.getByRole("button",{name:"Need a clue?",exact:true}).press("Enter");
     assert(await helpDialog.locator(".school-clue").isVisible());
@@ -330,7 +331,7 @@ try{
      await helpJourney.getByRole("button",{name:"Resume check",exact:true}).tap();
     } else await helpDialog.getByRole("button",{name:"Save and pause",exact:true}).tap();
     await helpPage.reload();
-    await helpJourney.getByRole("button",{name:"Resume check",exact:true}).tap();
+    if(year < 10) await helpJourney.getByRole("button",{name:"Resume check",exact:true}).tap();
     assert(await helpDialog.getByRole("heading",{name:"Explanation",exact:true}).isVisible());
    }
    await helpDialog.getByRole("button",{name:index===steps-1&&!hasFollowUp?"Finish guided checks":"Continue",exact:true}).tap();
@@ -374,16 +375,16 @@ try{
  }
  assert.equal(seniorLessonIds.size,48);
  await pilotPage.goto(base+"/science-catch-up/lesson/?topic=vaccine-memory&year=10");
+ const seniorCheck=guide.locator(".school-check-inline");
  for(const [index,answer] of ["Specific antigens","Their immune system has already responded to its antigens.","The virus lacks the bacterial targets of antibiotics.","Those antibodies may not bind to the new pathogen’s antigens."].entries()){
-  await guide.getByRole("button",{name:"Check",exact:true}).click();
   if(index===0){
-   await check.getByRole("radio",{name:"Any body cell",exact:true}).check();
-   await check.getByRole("button",{name:"Check answer",exact:true}).click();
-   assert(await check.getByRole("status").filter({hasText:"Recognition depends on the antigen"}).isVisible());
+   await seniorCheck.getByRole("radio",{name:"Any body cell",exact:true}).check();
+   await seniorCheck.getByRole("button",{name:"Check answer",exact:true}).click();
+   assert(await seniorCheck.getByRole("status").filter({hasText:"Recognition depends on the antigen"}).isVisible());
   }
-  await check.getByRole("radio",{name:answer,exact:true}).check();
-  await check.getByRole("button",{name:"Check answer",exact:true}).click();
-  await check.getByRole("button",{name:index===3?"Finish guided checks":"Continue",exact:true}).click();
+  await seniorCheck.getByRole("radio",{name:answer,exact:true}).check();
+  await seniorCheck.getByRole("button",{name:"Check answer",exact:true}).click();
+  await seniorCheck.getByRole("button",{name:index===3?"Finish guided checks":"Continue",exact:true}).click();
  }
  await guide.getByRole("link",{name:"Revise B3",exact:true}).click();
  await pilotPage.getByRole("link",{name:"Catch up on this topic",exact:true}).click();

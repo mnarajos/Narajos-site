@@ -85,7 +85,7 @@
       (detail ? '<small>' + escape(detail) + '</small>' : '') + '</summary>';
   }
 
-  function task(stage, title, question, sequence) {
+  function task(stage, title, question, sequence, booklet) {
     if (!question) return "";
     const id = "hb-" + stage;
     const choice = Array.isArray(question.options);
@@ -93,7 +93,7 @@
       '<label class="hb-teach-option"><input name="' + id + '" type="radio" value="' + i +
       '" required> <span>' + escape(option[0]) + '</span></label>').join("") :
       '<textarea id="' + id + '" rows="4" maxlength="3000" aria-labelledby="' + id + '-prompt" required></textarea>';
-    return '<details class="paper panel hb-teach-stage" data-hb-stage="' + stage + '">' +
+    return '<details class="paper panel hb-teach-stage" data-hb-stage="' + stage + '"' + (booklet ? ' open' : '') + '>' +
       stageSummary(stage === "guided" ? "steps" : choice ? "target" : "pen", title) + '<form novalidate><fieldset><legend id="' + id + '-prompt">' + escape(question.prompt) +
       '</legend>' + illustration(question.illustration) + figure(question.photo) + (question.photos || []).map((photo, index) => figure(photo, index + 1)).join("") + table(question.table) + paragraphs(question.starter ? [question.starter] : []) +
       inputs + '</fieldset><ol class="hb-hints" hidden></ol><div class="actions hb-controls">' +
@@ -118,12 +118,12 @@
         escape(lesson.activate[1]) + '</p>' + prior + '</details>' : prior;
     const explanation = '<details class="paper panel hb-teach-explain" open><summary><h2>Understand the idea</h2></summary>' +
       paragraphs(lesson.explain) + table(lesson.compare) + context.inline +
-      (lesson.revision ? '<div class="actions hb-start">' + openStageButton("model", "See worked example", "primary") + '</div>' : '') +
+      (lesson.revision && !context.booklet ? '<div class="actions hb-start">' + openStageButton("model", "See worked example", "primary") + '</div>' : '') +
       '</details>';
     const evidenceModel = lesson.revision && (lesson.focusCells || lesson.graph || lesson.visual === "model");
     const model = lesson.model?.length ?
       '<details class="paper panel hb-teach-stage' + (evidenceModel ? ' hb-model-with-evidence' : '') +
-      '" data-hb-model-step="1">' + stageSummary("eye", "Worked example", lesson.modelTitle) + context.modelVisual + illustration(lesson.illustration) + figure(lesson.photo) +
+      '" data-hb-model-step="1"' + (context.booklet ? ' open' : '') + '>' + stageSummary("eye", "Worked example", lesson.modelTitle) + context.modelVisual + illustration(lesson.illustration) + figure(lesson.photo) +
       (lesson.graph ? window.KeystoneHumanSkills.graphHTML(lesson.graph) : "") + table(lesson.table, lesson.focusCells) +
       '<ol class="hb-model-steps' + (lesson.nodes ? ' hb-model-path' : '') + '">' + lesson.model.map((step, i) =>
         '<li value="' + (i + 1) + '"' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
@@ -133,11 +133,11 @@
       (evidenceModel ? '<button type="button" class="button quiet hb-model-back" hidden>Previous step</button>' : '') +
       (lesson.revision ? '<div class="actions" data-hb-after-model hidden>' +
         openStageButton("guided", "Try with support", "primary") + '</div>' : '') + '</details>' : "";
-    return '<div class="hb-teaching' + (lesson.revision ? ' hb-teaching-sequence' : '') + '"><p class="lead hb-objective">' + escape(lesson.goal) + '</p>' + activate +
-      explanation + model + context.method + task("guided", "With support", lesson.guided) +
+    return '<div class="hb-teaching' + (lesson.revision ? ' hb-teaching-sequence' : '') + (context.booklet ? ' hb-teaching-booklet' : '') + '"><p class="lead hb-objective">' + escape(lesson.goal) + '</p>' + activate +
+      explanation + model + context.method + task("guided", "With support", lesson.guided, false, context.booklet) +
       writingExample(lesson.writing) +
-      task("independent", "Your turn", lesson.apply, lesson.revision) +
-      '<div data-hb-followup hidden>' + task("followup", "Try a fresh check", lesson.followup) + '</div>' +
+      task("independent", "Your turn", lesson.apply, lesson.revision, context.booklet) +
+      '<div data-hb-followup hidden>' + task("followup", "Try a fresh check", lesson.followup, false, context.booklet) + '</div>' +
       context.related + '</div>';
   }
 
@@ -360,6 +360,7 @@
     }
     const explanation = root.querySelector(".hb-teach-explain");
     function prepareStage(next) {
+      if (root.classList.contains("hb-teaching-booklet")) return;
       root.querySelectorAll("details.hb-teach-stage[open]").forEach(stage => {
         if (stage !== next) stage.open = false;
       });

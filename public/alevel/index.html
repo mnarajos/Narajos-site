@@ -393,6 +393,12 @@ body.onhome{background:radial-gradient(circle at 100% 0,rgba(92,207,196,.18),tra
 .companion-entry>div{flex:1;min-width:210px}.companion-entry strong{display:block}.companion-entry p{margin:.15rem 0 0;font-size:.88rem;color:var(--muted)}
 .companion-symbol{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--acc-soft);font-size:1.3rem}
 .companion-lesson-actions{display:flex;align-items:center;flex-wrap:wrap;gap:.45rem}
+.catchup-concepts{gap:0}
+.catchup-concepts .concept{display:flex;align-items:center;justify-content:space-between;gap:.5rem 1rem;padding:.65rem 0;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;box-shadow:none}
+.catchup-concepts h3{font-size:1.06rem;margin:0}
+.catchup-concepts h3 a{display:inline-block;padding:.35rem 0;color:inherit;text-underline-offset:.18em}
+.catchup-concepts .al-quiet-link{flex-shrink:0}
+@media(max-width:630px){.catchup-concepts .concept{align-items:flex-start;flex-direction:column;gap:0}}
 .companion-key{margin:.9rem 0}.companion-key li{line-height:1.65}.companion-note{color:var(--muted);max-width:640px}
 @media(max-width:520px){.companion-entry>a.btn{width:100%}}
 
@@ -6280,16 +6286,16 @@ function showCatchupIndex(focus){
 function showCatchupTopic(t,focus){
  L=null;
  var T=DATA[t];if(!T)return showCatchupIndex(focus);
- var h='<p class="crumb"><a href="#catchup">← Catch-up topics</a></p><h1>'+esc(T.code)+': '+esc(T.title)+'</h1><p class="lead">Select one concept to revisit, or start practising straight away.</p><ul class="concepts">';
+ var h='<p class="crumb"><a href="#catchup">← Catch-up topics</a></p><h1>'+esc(T.code)+': '+esc(T.title)+'</h1><p class="lead">Choose a concept to learn, or go straight to questions.</p><ul class="concepts catchup-concepts">';
  T.concepts.filter(avail).forEach(function(c){
-  h+='<li class="concept ready"><div class="chead"><h3>'+esc(c.title)+'</h3></div><div class="companion-lesson-actions"><a class="btn" href="#catchup-'+t+'-'+c.id+'">Catch up</a>'+(isUnlocked(t,c)?'<a class="btn" href="#lesson-'+t+'-'+c.id+'">Questions</a>':'<a class="btn" href="#topic-'+t+'">Prerequisites</a>')+'</div></li>';
+  h+='<li class="concept ready"><h3><a href="#catchup-'+t+'-'+c.id+'">'+esc(c.title)+'</a></h3>'+(isUnlocked(t,c)?'<a class="al-quiet-link" href="#lesson-'+t+'-'+c.id+'">Questions<span class="sr-only">: '+esc(c.title)+'</span></a>':'<a class="al-quiet-link" href="#topic-'+t+'">Prerequisites<span class="sr-only">: '+esc(c.title)+'</span></a>')+'</li>';
  });
  render(h+'</ul>',focus);
 }
 function showCatchup(t,c,step,focus,returnRoute){
  L=null;
- var notes=Array.isArray(c.key)?c.key:[],total=Math.max(1,Math.ceil(notes.length/2));
- step=Math.max(0,Math.min(total-1,Number(step)||0));
+ // Numbered links from earlier sessions still resolve to this complete recap.
+ var notes=Array.isArray(c.key)?c.key:[];
  var ready=isUnlocked(t,c),exam=window.ALevelExamSkills;
  var h='<p class="crumb"><a href="#catchup-'+t+'">← Catch-up topics</a></p><h1>'+esc(c.title)+'</h1>';
  if(returnRoute){
@@ -6311,14 +6317,11 @@ function showCatchup(t,c,step,focus,returnRoute){
   exam.catchup(main.querySelector('.al-catchup-journey'),t,c.id,{notes:recap,extra:extra});
   return;
  }
- h+='<p class="spec">'+esc(DATA[t].code)+' · Key ideas · '+(step+1)+' of '+total+'</p>';
- h+='<section class="key companion-key" aria-label="Key knowledge"><h2>Key idea</h2><ul>'+notes.slice(step*2,step*2+2).map(function(k){return '<li>'+rich(k)+'</li>';}).join('')+'</ul>'+(c.gate&&step===total-1?'<p class="gate"><strong>Why it matters</strong> '+fmt(c.gate)+'</p>':'')+'</section>';
+ h+='<p class="spec">'+esc(DATA[t].code)+' · Key ideas</p>';
+ h+='<section class="key companion-key" aria-label="Key knowledge"><h2>Key idea</h2><ul>'+notes.map(function(k){return '<li>'+rich(k)+'</li>';}).join('')+'</ul>'+(c.gate?'<p class="gate"><strong>Why it matters</strong> '+fmt(c.gate)+'</p>':'')+'</section>';
  if(window.KeystoneCatchupVisuals)h+=window.KeystoneCatchupVisuals.render(t,c.id);
  h+='<div class="actions companion-lesson-actions">'+
- (step<total-1?'<a class="btn primary" href="#catchup-'+t+'-'+c.id+'-'+(step+1)+'">Next key idea</a>':
-   (ready?'<a class="btn primary" href="#lesson-'+t+'-'+c.id+'">Start questions</a>':'<a class="btn primary" href="#topic-'+t+'">Review prerequisites</a>'))+
- (step>0?'<a class="al-quiet-link" href="#catchup-'+t+'-'+c.id+'-'+(step-1)+'">Previous</a>':'')+
- (ready&&step<total-1?'<a class="al-quiet-link" href="#lesson-'+t+'-'+c.id+'">Go straight to questions</a>':'')+'</div>';
+ (ready?'<a class="btn primary" href="#lesson-'+t+'-'+c.id+'">Start questions</a>':'<a class="btn primary" href="#topic-'+t+'">Review prerequisites</a>')+'</div>';
  render(h,focus);
 }
 

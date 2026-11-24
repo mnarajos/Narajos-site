@@ -252,3 +252,15 @@
   height: auto;
   margin-block: .65rem;
 }
+
+/* Keep the teaching sequence together like pages in a booklet. */
+.hb-teaching-booklet .hb-teach-stage,
+.hb-teaching-booklet .hb-teach-explain {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  box-shadow: none;
+  padding: 1rem 0;
+}
+.hb-teaching-booklet .hb-teach-stage[open] > summary { border: 0; padding-block-end: .2rem; }

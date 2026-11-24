@@ -291,8 +291,9 @@
     const block = node("section", null, "al-teaching al-model");
     const heading = node("h2", "Worked example");
     const panel = node("div", null, "al-step");
-    panel.setAttribute("aria-live", "polite");
-    panel.setAttribute("aria-atomic", "true");
+    const announcement = node("div", null, "sr-only");
+    announcement.setAttribute("aria-live", "polite");
+    announcement.setAttribute("aria-atomic", "true");
     const art = node("div", null, "al-model-visual");
     const controls = node("div", null, "al-controls");
     const last = family.model.length - 1;
@@ -313,11 +314,23 @@
     previous.classList.add("al-secondary");
     replay.classList.add("al-secondary");
     controls.append(next, previous, replay);
-    block.append(heading, panel, art, controls);
+    block.append(heading, panel, announcement, art, controls);
     host.append(block);
     function update() {
-      panel.replaceChildren(node("p", family.model[index]),
-        node("p", (index + 1) + " of " + (last + 1), "al-task-count"));
+      // Keep the opening context beside each new step. Earlier steps remain
+      // available with Previous without making the controls recede down a phone.
+      const steps = node("ol", null, "al-model-steps");
+      family.model.forEach((text, i) => {
+        if (i !== 0 && i !== index) return;
+        const step = node("li", text);
+        step.value = i + 1;
+        if (i === index) {
+          step.setAttribute("aria-current", "step");
+        }
+        steps.append(step);
+      });
+      panel.replaceChildren(steps, node("p", (index + 1) + " of " + (last + 1), "al-task-count"));
+      announcement.textContent = "Step " + (index + 1) + " of " + (last + 1) + ". " + family.model[index];
       art.replaceChildren(family.evidence ? table(...family.evidence, family.evidenceHighlights?.[index]) : visual(family.visual, index));
       previous.disabled = index === 0;
       next.textContent = index < last ? "Next step" : revisiting ? "Back to the question" : "Try with support";

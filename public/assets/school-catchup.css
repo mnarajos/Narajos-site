@@ -238,3 +238,11 @@
 .school-completion form button { justify-self: start; }
 
 .school-completion [hidden] { display:none; }
+
+/* Keep GCSE checks beside the explanation and worked example. */
+html[data-catchup-year="10"] .school-check-inline,
+html[data-catchup-year="11"] .school-check-inline {
+  position: static; display: block; width: 100%; max-height: none; overflow: visible;
+  margin: .8rem 0 0; padding: .8rem 0 0; border: 0; border-top: 1px solid #adc8c9;
+  border-radius: 0; background: transparent;
+}

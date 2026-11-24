@@ -350,3 +350,19 @@ header.top .nav a[aria-current]{background:var(--k-teal-soft);color:var(--brand)
  header.top .nav{width:100%}
  header.top .nav a{padding-inline:.5rem}
 }
+
+/* The whole row names and opens an F170 lesson, including on a phone. */
+.hb-lesson-link { color: inherit; text-decoration: none; flex-direction: row; align-items: center; }
+.hb-lesson-link:hover { background: #f2f8f6; }
+.hb-lesson-link h3 { line-height: 1.4; }
+.hb-lesson-link small { flex: none; color: var(--brand); font-size: .78rem; font-weight: 650; }
+.hb-unit-area-f171 .hb-area-lesson-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1rem; padding: .15rem .8rem .55rem 1rem; }
+.hb-unit-area-f171 .companion-lesson-actions { display: contents; }
+.hb-unit-area-f171 .companion-lesson-actions .button { justify-content: flex-start; border: 0; border-radius: 0; background: transparent; padding: .45rem .25rem; text-align: left; text-decoration: underline; text-underline-offset: .15em; }
+@media (max-width: 560px) {
+  .hb-unit-area-f171 .hb-area-lesson-links { grid-template-columns: 1fr; }
+}
+.hb-lesson-link { border-bottom: 1px solid var(--line); }
+.hb-lesson-link small::after { content: ' ›'; font-size: 1.1rem; }
+
+.hb-unit-area-f171 .hb-area-lessons > summary { color: var(--brand); cursor: pointer; font-weight: 650; min-height: 44px; padding: .5rem 1rem; }

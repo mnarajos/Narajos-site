@@ -83,10 +83,10 @@
     a6: [["synapse", "Synaptic transmission"], ["sarcomere", "Sliding filaments"], ["nephron", "The nephron"]]
   };
 
-  function topicPractice(topicId) {
+  function topicPractice(topicId, includeCatchup = true) {
     const activities = practiceTopics[topicId];
     const gcseCode = location.pathname === "/gcse/" && /^[bcp][1-9]0?$/.test(topicId);
-    const catchup = gcseCode ? '<p><a href="/science-catch-up/?topic=' + topicId +
+    const catchup = gcseCode && includeCatchup ? '<p><a href="/science-catch-up/?topic=' + topicId +
       '">Catch up on this topic</a> · Guided explanation and practice</p>' : "";
     if (!activities || !document.head) return catchup;
     if (!document.querySelector('script[src="/assets/diagram-practice.js"]')) {

@@ -107,6 +107,13 @@
 .al-teaching .al-step p {
   margin-block: 0.4rem;
 }
+.al-model-steps {
+  margin: 0;
+  padding-left: 1.4rem;
+}
+.al-model-steps li + li {
+  margin-top: .65rem;
+}
 .al-teaching .al-note {
   font-size: 1rem;
 }

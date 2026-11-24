@@ -62,13 +62,13 @@ export async function checkHumanAssessment(browser, base) {
     await page.reload();
     assert.equal(await page.locator("#k-number").inputValue(), "90");
     await action("check").press("Enter");
-    await page.getByRole("heading", { name: "Correct", exact: true }).waitFor();
+    await page.getByRole("heading", { name: "Correct!", exact: true }).waitFor();
     assert.equal((await read(method)).outcomes[2], "independent");
     for (const answer of ["75", "132"]) {
       await action("next").press("Enter");
       await page.locator("#k-number").fill(answer);
       await action("check").press("Enter");
-      await page.getByRole("heading", { name: "Correct", exact: true }).waitFor();
+      await page.getByRole("heading", { name: "Correct!", exact: true }).waitFor();
     }
     assert.equal((await read(session)).queue[0], diagnostic);
     assert(await fits(), "Mixed-method practice overflows");

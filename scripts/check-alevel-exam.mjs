@@ -94,6 +94,14 @@ export async function checkALevelExam(browser, base) {
       }
       for (let i = 1; i < family.model.length; i++) {
         await page.getByRole("button", { name: "Next step", exact: true }).click();
+        if (family.id === "interpret" && i === 1) {
+          // The question must remain available while the student follows the
+          // reasoning, including after resuming a saved worked example.
+          assert.equal(await page.locator(".al-model-steps li").first().innerText(), family.model[0]);
+          await page.reload();
+          assert.equal(await page.locator(".al-model-steps li").first().innerText(), family.model[0]);
+          assert.equal(await page.locator(".al-model-steps [aria-current=step]").innerText(), family.model[1]);
+        }
         if (family.id === "dihybrid" && i === 2)
           assert.equal(await art.getByText("AABB", { exact: true }).count(), 0);
         if (family.id === "dihybrid" && i === 3)

@@ -442,10 +442,11 @@ function showUnit(unit,render){
  u.areas.forEach(function(a){
   if(unit==="f170"){
    h+='<section class="paper panel"><h2>'+esc(a.title)+'</h2><div class="lesson-list">';
-   a.sections.forEach(function(s){h+='<div class="lesson"><div><span class="num">'+esc(s.id)+'</span><h3>'+esc(s.title)+'</h3></div><div class="right"><a class="button secondary" href="#catchup/'+unit+'/'+esc(s.id)+'">'+(lessonFor(unit,s.id)?'Guided lesson':'Recap')+'</a></div></div>';});
+   a.sections.forEach(function(s){h+='<a class="lesson hb-lesson-link" href="#catchup/'+unit+'/'+esc(s.id)+'"><div><span class="num">'+esc(s.id)+'</span><h3>'+esc(s.title)+'</h3></div><small>'+(lessonFor(unit,s.id)?'Guided lesson':'Recap')+'</small></a>';});
    h+=focusedLessonLinks(unit,a.code)+'</div></section>';
   }else{
-   h+='<a class="k-area k-catchup-area" href="#catchup/'+unit+'/'+a.code+'"><span class="k-area-num">'+a.code.slice(1)+'</span><span class="k-area-label"><strong>'+esc(a.title)+'</strong><small>'+(lessonFor(unit,a.code)?'Guided lesson':'Short recap')+'</small></span><span aria-hidden="true">›</span></a>';
+   const hasFocusedLessons=unit==="f171"&&["a1","a2","a3","a4"].includes(a.code);
+   h+=(unit==="f171"?'<section class="hb-unit-area hb-unit-area-f171">':'')+'<a class="k-area k-catchup-area" href="#catchup/'+unit+'/'+a.code+'"><span class="k-area-num">'+a.code.slice(1)+'</span><span class="k-area-label"><strong>'+esc(a.title)+'</strong><small>'+(lessonFor(unit,a.code)?'Guided lesson':'Short recap')+'</small></span><span aria-hidden="true">›</span></a>'+(hasFocusedLessons?'<details class="hb-area-lessons"><summary>Focused lessons</summary><div class="hb-area-lesson-links">':'');
    if(unit==="f171"&&a.code==="a1"){
     h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f171/1.2.1">Airway and alveolar damage</a></div>'+focusedLessonLinks(unit,a.code);
    }
@@ -461,6 +462,8 @@ function showUnit(unit,render){
    if(unit==="f175"&&a.code==="a2"){
     h+='<div class="companion-lesson-actions"><a class="button secondary" href="#catchup/f175/2.1">First antenatal appointment</a></div>';
    }
+   if(hasFocusedLessons)h+='</div></details>';
+   if(unit==="f171")h+='</section>';
   }
  });
  h+='</div></div>';render(h);
@@ -496,7 +499,7 @@ function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
   var interactive=sim?'<details class="hb-inline-model"'+(simulationStage?' open':'')+'><summary>Open the reproductive pathway model</summary>'+sim.render()+'</details>':"";
   render('<div class="k-wrap k-catchup-concept" data-unit="'+unit+'">'+crumb("catchup/"+unit,u.title)+
    '<div class="k-eyebrow">'+unitKind(unit)+'</div><h1>'+esc(topic)+'</h1>'+
-   teaching.render(lesson,{inline:lesson.visual==="model"?"":visual,method:skillLinks(unit,id,lesson),modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:recap+related})+'</div>');
+   teaching.render(lesson,{booklet:unit==="f170"||unit==="f171",inline:lesson.visual==="model"?"":visual,method:skillLinks(unit,id,lesson),modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:recap+related})+'</div>');
   teaching.mount(unit+"/"+lessonId,lesson,simulationStage?1:review,resumeStage);
   if(sim)sim.mount(document,simulationStage,simulationStage&&document.querySelector("[data-hb-resume]"));
   return;

@@ -60,14 +60,15 @@ export async function checkLearningNavigation(browser, base) {
 
     await search.fill("screening");
     await results.locator('a[href="#catchup/f171/4.2.1"]').press("Enter");
-    await main.getByRole("button", { name: "See worked example" }).press("Enter");
     const model = main.locator("[data-hb-model-step]");
+    const independent = main.locator('[data-hb-stage="independent"]');
+    assert(await model.isVisible());
+    assert(await independent.isVisible());
+    assert.equal(await model.getAttribute("open"), "");
+    assert.equal(await independent.getAttribute("open"), "");
     await model.getByRole("button", { name: "Show next step" }).press("Enter");
     assert.equal(await model.locator(".hb-cell-focus").textContent(), "12");
-    const independent = main.locator('[data-hb-stage="independent"]');
-    await independent.locator("summary").press("Enter");
-    assert.equal(await model.getAttribute("open"), null);
-    assert.equal(await main.locator(".hb-teach-explain").getAttribute("open"), null);
+    assert.equal(await main.locator(".hb-teach-explain").getAttribute("open"), "");
     await independent.getByRole("radio", { name: /7 of 24/ }).check();
     await independent.getByRole("button", { name: "Check answer" }).press("Enter");
     await independent.getByRole("status").filter({ hasText: /Correct!/ }).waitFor();
@@ -100,7 +101,7 @@ export async function checkLearningNavigation(browser, base) {
     await leave.press("Enter");
     await go("catchup/f171/2.1");
     const written = main.locator('[data-hb-stage="independent"]');
-    await written.locator("summary").press("Enter");
+    assert.equal(await written.getAttribute("open"), "");
     const draft = "A systemic medicine can reach disease at several sites.";
     await written.getByRole("textbox").fill(draft);
     await overview.press("Enter");

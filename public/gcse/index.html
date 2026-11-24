@@ -316,6 +316,7 @@ body[data-view="lesson"] fieldset.tier{display:none}
 .btn:active{transform:translateY(3px);border-bottom-width:2px}
 .btn.primary{background:var(--acc);border-color:var(--acc-dk);color:var(--acc-ink)}
 .papers .btn{color:#fff;font-weight:800;min-height:56px;justify-content:center;text-align:center;font-size:.98rem}
+.topic-more-practice > summary{cursor:pointer;min-height:44px;padding:.6rem 0;font-weight:700}
 .papers .btn[href^="#paper-b"]{background:var(--bio-s);border-color:var(--bio-sd)}
 .papers .btn[href^="#paper-c"]{background:var(--chem-s);border-color:var(--chem-sd)}
 .papers .btn[href^="#paper-p"]{background:var(--phys-s);border-color:var(--phys-sd)}
@@ -6084,10 +6085,12 @@ function showTopic(t,focus){
  var pp=PAPERS.filter(function(p){return p.topics.indexOf(t)>-1;})[0];
  var h='<p class="crumb"><a href="#">← Home</a>'+(pp?' · <a href="#paper-'+pp.id+'">'+esc(pp.name)+'</a>':'')+'</p><h1>'+T.code+' '+esc(T.title)+'</h1><p class="spec">'+esc(T.paper)+' · '+n+' concepts</p>';
  h+='<p class="lead">Start anywhere. The stages go from the basics to exam technique.</p>';
- h+='<div class="kr-actions" style="margin:12px 0 17px"><a class="btn" href="#cards-'+t+'">Flashcards for this topic</a></div>';
+ h+='<p>Need an explanation? <a href="/science-catch-up/?topic='+t+'">Catch up on this topic</a> with guided practice.</p>';
+ h+='<details class="topic-more-practice"><summary>More ways to revise</summary><div class="kr-actions" style="margin:12px 0 17px"><a class="btn" href="#cards-'+t+'">Flashcards for this topic</a></div>';
  if(pp)h+='<div class="modebar"><p><strong>Mixed practice:</strong> questions from across this topic, all mixed up. They start easy and get harder.</p><p class="sklinks"><a class="btn" href="#mix-'+pp.id+'-'+t+'">Mixed practice: this topic</a></p></div>';
  var sks=SKILLS.filter(function(x){return x.t===t&&!(x.ht&&S.tier==="F");});
  if(sks.length)h+='<div class="modebar"><p><strong>Skills practice:</strong> unlimited questions with new values each time.</p><p class="sklinks">'+sks.map(function(x){return '<a class="btn" href="#practice-'+x.id+'">'+esc(x.name)+'</a>';}).join("")+'</p></div>';
+ h+='</details>';
  var STN=["The Basics","Core Knowledge","Deeper Understanding","Application","Exam Technique"],stages=[];
  T.concepts.forEach(function(c){if(!avail(c))return;var k=(c.st||1)-1;(stages[k]=stages[k]||[]).push(c);});
  stages.forEach(function(list,d){if(!list)return;
@@ -6101,7 +6104,7 @@ function showTopic(t,focus){
   });
   h+='</ul></section>';
  });
-  if(window.NarajosTopicFinder)h+=window.NarajosTopicFinder.topicPractice(t);
+  if(window.NarajosTopicFinder)h+=window.NarajosTopicFinder.topicPractice(t, false);
  render(h,focus);
 }
 
