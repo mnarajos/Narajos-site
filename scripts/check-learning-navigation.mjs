@@ -62,8 +62,8 @@ export async function checkLearningNavigation(browser, base) {
     await results.locator('a[href="#catchup/f171/4.2.1"]').press("Enter");
     const model = main.locator("[data-hb-model-step]");
     const independent = main.locator('[data-hb-stage="independent"]');
-    assert(await model.isVisible());
-    assert(await independent.isVisible());
+    await model.waitFor({ state: "visible" });
+    await independent.waitFor({ state: "visible" });
     assert.equal(await model.getAttribute("open"), "");
     assert.equal(await independent.getAttribute("open"), "");
     await model.getByRole("button", { name: "Show next step" }).press("Enter");
