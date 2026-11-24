@@ -521,6 +521,19 @@ main:has(.al-catchup-journey) > h1 {
   line-height: 1.5;
   font-weight: 650;
 }
+.al-task-stimulus {
+  border-inline-start: 2px solid var(--line);
+  padding-inline-start: .75rem;
+  margin-block: .65rem .9rem;
+}
+.al-practice :is(.al-stimulus-heading, .al-instruction-heading) {
+  font-size: 1rem;
+  margin-block: 0 .3rem;
+}
+.al-task-stimulus > p,
+.al-task-prompt > p {
+  margin-block: 0 .45rem;
+}
 @media (max-width: 480px) {
   header .brand {
     min-inline-size: 0;

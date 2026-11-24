@@ -412,7 +412,7 @@
             persist();
           }
         };
-        if (moveFocus) focus(content.querySelector(".al-task-prompt") || content.querySelector("h2"));
+        if (moveFocus) focus(content.querySelector(".al-stimulus-heading, .al-task-prompt") || content.querySelector("h2"));
       }
       if (state.phase === "idea") {
         const skip = button("Go straight to questions", () => practiseNow(true, true));
@@ -514,7 +514,10 @@
       family.tasks.forEach((q, i) => {
         if (!outcomes[i] && !state.results[i] && !state.reviews[i]?.open) return;
         const item = node("li");
-        item.append(node("p", q.prompt));
+        if (q.stimulus) {
+          item.append(node("p", q.stimulus));
+          for (const instruction of [q.instruction].flat()) item.append(node("p", instruction));
+        } else item.append(node("p", q.prompt));
         if (q.kind === "writing") {
           item.append(node("p", state.drafts[i]));
           const criteria = node("ul");
@@ -551,11 +554,27 @@
       const revealed = state.results[i]?.kind === "revealed";
       const review = state.reviews[i] || { choices: {} };
       const heading = node("h2", q.guided ? "With support" : "Your turn", "al-task-heading");
-      const prompt = node("h3", q.prompt, "al-task-prompt");
+      block.append(heading, node("p", "Task " + (at + 1) + " of " + state.queue.length, "al-task-count"));
+      const hasStimulus = q.stimulus || q.passage?.length || q.visual || q.evidence;
+      let stimulusHeading;
+      let prompt;
+      if (hasStimulus) {
+        const stimulus = node("div", null, "al-task-stimulus");
+        const label = q.examQuestion ? "Exam-style question to analyse" : q.passage?.length ? "Passage to analyse" : "Evidence to analyse";
+        stimulusHeading = node("h3", label, "al-stimulus-heading");
+        stimulus.append(stimulusHeading);
+        if (q.stimulus) stimulus.append(node("p", q.stimulus));
+        for (const paragraph of q.passage || []) stimulus.append(node("p", paragraph));
+        if (q.visual) stimulus.append(visual(q.visual));
+        if (q.evidence) stimulus.append(table(...q.evidence));
+        block.append(stimulus, node("h3", "Your task", "al-instruction-heading"));
+        prompt = node("div", null, "al-task-prompt");
+        for (const instruction of [q.instruction ?? q.prompt].flat()) prompt.append(node("p", instruction));
+      } else {
+        prompt = node("h3", q.prompt, "al-task-prompt");
+      }
       prompt.id = "al-current-question";
-      block.append(heading, node("p", "Task " + (at + 1) + " of " + state.queue.length, "al-task-count"), prompt);
-      if (q.visual) block.append(visual(q.visual));
-      if (q.evidence) block.append(table(...q.evidence));
+      block.append(prompt);
 
       const form = node("form");
       form.setAttribute("aria-labelledby", prompt.id);
@@ -693,7 +712,7 @@
       }
 
       const submit = node("button", accepted || revealed ? "" : review.open ? "Finish review" :
-        writing ? "Compare with the checklist" : result?.kind === "incorrect" ? "Try again" : "Check answer", "btn primary");
+        writing ? "Compare with the checklist" : result?.kind === "incorrect" ? "Try again" : "Check", "btn primary");
       submit.type = "submit";
       if (accepted || revealed) {
         const next = button(at === state.queue.length - 1 ? "Review progress" : "Next task", () => {
@@ -745,7 +764,7 @@
       if (flow.review) help.append(flow.review);
       if (flow.extra) help.append(flow.extra);
       if (help.children.length > 1) block.append(help);
-      if (moveFocus) focus(prompt);
+      if (moveFocus) focus(stimulusHeading || prompt);
 
       form.onsubmit = event => {
         event.preventDefault();
@@ -834,7 +853,7 @@
   function drawingInspector() {
     const dialog = node("dialog", null, "al-figure-dialog");
     const title = node("h2");
-    const close = button("Close", () => dialog.close());
+    const close = button("Close", dismiss);
     close.setAttribute("aria-label", "Close enlarged image");
     const views = node("div", null, "al-inspector-views");
     views.setAttribute("role", "group");
@@ -848,7 +867,14 @@
     const controls = node("div", null, "al-inspector-tools");
     controls.append(views, close);
     dialog.append(title, controls, preview);
-    dialog.addEventListener("close", () => opener?.focus());
+    function dismiss() {
+      dialog.close();
+      opener?.focus();
+    }
+    dialog.addEventListener("cancel", event => {
+      event.preventDefault();
+      dismiss();
+    });
     function add(label, picture, shortLabel = label) {
       function display() {
         title.textContent = label;

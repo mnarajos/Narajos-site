@@ -89,7 +89,7 @@ try {
   await page.getByRole("button", { name: "Go straight to questions", exact: true }).press("Enter");
   const numeric = page.locator(".al-practice input[name=number]");
   await numeric.fill("−500");
-  await page.getByRole("button", { name: "Check answer", exact: true }).press("Enter");
+  await page.getByRole("button", { name: "Check", exact: true }).press("Enter");
   await page.reload();
   assert.equal(await numeric.inputValue(), "−500");
   assert.match(await page.locator(".al-practice [role=status]").innerText(), /Correct!/);
@@ -132,9 +132,9 @@ try {
   await screening.getByRole("button", { name: "Skip to independent practice" }).press("Enter");
   await response.waitFor({ state: "visible" });
   await response.getByRole("radio", { name: /7 of 24/ }).check();
-  await response.getByRole("button", { name: "Check answer", exact: true }).press("Enter");
+  await response.getByRole("button", { name: "Check", exact: true }).press("Enter");
   assert.match(await response.getByRole("status").innerText(), /Correct!/);
-  assert(await response.getByRole("button", { name: "Check answer", exact: true }).isHidden());
+  assert(await response.getByRole("button", { name: "Check", exact: true }).isHidden());
   await fits();
 
   await page.emulateMedia({ reducedMotion: "reduce" });

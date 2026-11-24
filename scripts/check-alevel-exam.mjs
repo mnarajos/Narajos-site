@@ -140,6 +140,15 @@ export async function checkALevelExam(browser, base) {
       for (let i = 0; i < family.tasks.length; i++) {
         const q = family.tasks[i],
           form = page.locator(".al-teaching form");
+        if (q.stimulus) {
+          const stimulus = page.locator(".al-task-stimulus");
+          assert.equal(await stimulus.locator(":scope > p").first().innerText(), q.stimulus);
+          const label = q.examQuestion ? "Exam-style question to analyse" : "Evidence to analyse";
+          assert(await stimulus.getByRole("heading", { name: label, exact: true }).isVisible());
+          assert(await page.getByRole("heading", { name: "Your task", exact: true }).isVisible());
+          assert.deepEqual(await page.locator(".al-task-prompt > p").allTextContents(), [q.instruction].flat());
+          assert.equal(await form.getAttribute("aria-labelledby"), "al-current-question");
+        }
         if (q.kind === "number")
           await form.locator("input[name=number]").fill(String(q.answer));
         if (q.kind === "choice")
@@ -159,7 +168,7 @@ export async function checkALevelExam(browser, base) {
             await selects.nth(j).selectOption(String(pick));
           }
           if (correction) {
-            await form.getByRole("button", { name: "Check answer", exact: true }).click();
+            await form.getByRole("button", { name: "Check", exact: true }).click();
             await page.reload();
             assert.equal(await form.locator('select[aria-invalid="true"]').count(), 1);
             assert.equal(await form.locator("select:disabled").count(), q.items.length - 1);
@@ -177,7 +186,7 @@ export async function checkALevelExam(browser, base) {
             name:
               q.kind === "writing"
                 ? "Compare with the checklist"
-                : q.kind === "group" && family.id === "points" ? "Try again" : "Check answer",
+                : q.kind === "group" && family.id === "points" ? "Try again" : "Check",
             exact: true,
           })
           .click();
@@ -219,12 +228,12 @@ export async function checkALevelExam(browser, base) {
     await page.reload();
     assert.equal(await page.getByRole("textbox").inputValue(), "0.4");
     await page
-      .getByRole("button", { name: "Check answer", exact: true })
+      .getByRole("button", { name: "Check", exact: true })
       .click();
     await page.getByRole("button", { name: "Next task", exact: true }).click();
     await page.getByRole("textbox").fill("0.2");
     await page
-      .getByRole("button", { name: "Check answer", exact: true })
+      .getByRole("button", { name: "Check", exact: true })
       .click();
     await page.getByRole("textbox").fill("0.32");
     await page
@@ -251,7 +260,7 @@ export async function checkALevelExam(browser, base) {
       const options = page.locator(".al-practice input[type=radio]");
       shuffledPositions.add((await options.evaluateAll(inputs => inputs.map(input => +input.value))).indexOf(q.answer));
       await page.getByRole("radio", { name: q.options[q.answer], exact: true }).check();
-      await page.getByRole("button", { name: "Check answer", exact: true }).click();
+      await page.getByRole("button", { name: "Check", exact: true }).click();
       assert.match(await page.locator(".al-practice [role=status]").innerText(), /Correct!/);
       if (i === 0) {
         await page.locator(".al-practice-help > summary").click();
@@ -265,7 +274,7 @@ export async function checkALevelExam(browser, base) {
         const before = await saved("mechanisms");
         await page.reload();
         assert(await page.getByRole("radio", { name: q.options[q.answer], exact: true }).isChecked());
-        assert.equal(await page.getByRole("button", { name: "Check answer", exact: true }).count(), 0);
+        assert.equal(await page.getByRole("button", { name: "Check", exact: true }).count(), 0);
         await page.locator(".al-practice form").evaluate(form => form.requestSubmit());
         assert.deepEqual(await saved("mechanisms"), before);
         assert.equal(before.outcomes[i], "independent");
@@ -521,7 +530,7 @@ export async function checkALevelExam(browser, base) {
     const displayed = page.locator(".al-practice input[type=radio]");
     assert.notEqual(await displayed.first().getAttribute("value"), String(interpretation.answer));
     await page.getByRole("radio", { name: interpretation.options[2], exact: true }).check();
-    await page.getByRole("button", { name: "Check answer" }).press("Enter");
+    await page.getByRole("button", { name: "Check" }).press("Enter");
     await page.reload();
     const feedback = page.locator(".al-practice [role=status]");
     assert((await feedback.innerText()).includes(interpretation.feedback[2]));
@@ -532,7 +541,7 @@ export async function checkALevelExam(browser, base) {
     await page.goto(base + "/alevel/#exam-evidence");
     await page.getByRole("button", { name: "Go straight to questions" }).click();
     await page.getByRole("textbox", { name: "Your answer (%)" }).fill("33.3");
-    await page.getByRole("button", { name: "Check answer" }).click();
+    await page.getByRole("button", { name: "Check" }).click();
     assert.match(await feedback.innerText(), /wrong denominator/);
     await page.getByRole("textbox", { name: "Your answer (%)" }).fill("25");
     await page.getByRole("button", { name: "Try again" }).press("Enter");

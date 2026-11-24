@@ -16,7 +16,7 @@ export async function checkGCSECatchup(browser, base) {
     await dialog.getByRole("radio").first().waitFor();
   };
   const choose = label => dialog.getByRole("radio", {name: label, exact: true}).click();
-  const submit = () => dialog.getByRole("button", {name: "Check answer", exact: true}).press("Enter");
+  const submit = () => dialog.getByRole("button", {name: "Check", exact: true}).press("Enter");
   const lessonURL = (id, year) => base + "/science-catch-up/lesson/?topic=" + id + "&year=" + year;
 
   try {

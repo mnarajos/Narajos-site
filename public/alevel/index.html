@@ -369,7 +369,15 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 @media(max-width:630px){.catchup-concepts .concept{align-items:flex-start;flex-direction:column;gap:0}}
 .lesson-help summary{cursor:pointer;min-height:44px;padding:.6rem 0}
 .lesson-help .actions{margin-top:0}
-.companion-key{margin:.9rem 0}.companion-key li{line-height:1.65}.companion-note{color:var(--muted);max-width:640px}
+.companion-key{margin:.9rem 0;padding:0;border:0;background:transparent}
+.companion-chunk{max-width:42rem}
+.companion-chunk + .companion-chunk{margin-top:1.1rem}
+.companion-chunk p{line-height:1.55;margin:.55rem 0}
+.companion-why{margin-top:1rem}
+.companion-why summary{cursor:pointer;min-height:44px;padding:.6rem 0;font-weight:700}
+.companion-why p{margin:.25rem 0;max-width:42rem}
+.actions.companion-lesson-actions{position:static;background:none;padding:0}
+.companion-note{color:var(--muted);max-width:640px}
 
 /* Settings is an independent header control, not a third bottom-navigation tab. */
 .top-inner{position:relative;padding-right:4.8rem}
@@ -6244,6 +6252,13 @@ function showCatchupTopic(t,focus){
  });
  render(h+'</ul>',focus);
 }
+function catchupChunks(notes){
+ var h='';
+ for(var i=0;i<notes.length;i+=2){
+  h+='<div class="companion-chunk">'+notes.slice(i,i+2).map(function(k){return '<p>'+rich(k)+'</p>';}).join('')+'</div>';
+ }
+ return h;
+}
 function showCatchup(t,c,step,focus,returnRoute){
  L=null;
  // Numbered links from earlier sessions still resolve to this complete recap.
@@ -6251,8 +6266,8 @@ function showCatchup(t,c,step,focus,returnRoute){
  var ready=isUnlocked(t,c),exam=window.ALevelExamSkills;
  var h='<p class="crumb"><a href="#catchup-'+t+'">← Catch-up topics</a></p><h1>'+esc(c.title)+'</h1>';
  if(returnRoute){
-  h+='<p><a class="al-quiet-link" href="#'+esc(returnRoute)+'">← Return to your question</a></p><section class="key companion-key" aria-label="Key knowledge"><h2>Key idea</h2><ul>'+
-   notes.map(function(k){return '<li>'+rich(k)+'</li>';}).join('')+'</ul></section>';
+  h+='<p><a class="al-quiet-link" href="#'+esc(returnRoute)+'">← Return to your question</a></p><section class="key companion-key" aria-label="Key knowledge"><h2>Key ideas</h2>'+
+   catchupChunks(notes)+'</section>';
   if(window.KeystoneCatchupVisuals)h+=window.KeystoneCatchupVisuals.render(t,c.id);
   render(h,focus);
   return;
@@ -6261,7 +6276,7 @@ function showCatchup(t,c,step,focus,returnRoute){
   render(h+'<div class="al-catchup-journey"></div>',focus);
   var recap=document.createElement('details');
   recap.className='al-key-notes';
-  recap.innerHTML='<summary>More key knowledge</summary><ul>'+notes.map(function(k){return '<li>'+rich(k)+'</li>';}).join('')+'</ul>'+(c.gate?'<p class="gate"><strong>Why it matters</strong> '+fmt(c.gate)+'</p>':'');
+  recap.innerHTML='<summary>Review key knowledge</summary>'+catchupChunks(notes)+(c.gate?'<p class="gate"><strong>Why it matters</strong> '+fmt(c.gate)+'</p>':'');
   var extra=document.createElement('div');
   var visuals=window.KeystoneCatchupVisuals&&window.KeystoneCatchupVisuals.render(t,c.id);
   if(visuals)extra.innerHTML='<details class="al-key-notes"><summary>Related diagrams and simulations</summary>'+visuals+'</details>';
@@ -6269,8 +6284,8 @@ function showCatchup(t,c,step,focus,returnRoute){
   exam.catchup(main.querySelector('.al-catchup-journey'),t,c.id,{notes:recap,extra:extra});
   return;
  }
- h+='<p class="spec">'+esc(DATA[t].code)+' · Key ideas</p>';
- h+='<section class="key companion-key" aria-label="Key knowledge"><h2>Key idea</h2><ul>'+notes.map(function(k){return '<li>'+rich(k)+'</li>';}).join('')+'</ul>'+(c.gate?'<p class="gate"><strong>Why it matters</strong> '+fmt(c.gate)+'</p>':'')+'</section>';
+ h+='<p class="spec">'+esc(DATA[t].code)+'</p>';
+ h+='<section class="key companion-key" aria-label="Key knowledge"><h2>Key ideas</h2>'+catchupChunks(notes)+(c.gate?'<details class="companion-why"><summary>Why it matters</summary><p>'+fmt(c.gate)+'</p></details>':'')+'</section>';
  if(window.KeystoneCatchupVisuals)h+=window.KeystoneCatchupVisuals.render(t,c.id);
  h+='<div class="actions companion-lesson-actions">'+
  (ready?'<a class="btn primary" href="#lesson-'+t+'-'+c.id+'">Start questions</a>':'<a class="btn primary" href="#topic-'+t+'">Review prerequisites</a>')+'</div>';

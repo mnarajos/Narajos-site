@@ -1,12 +1,12 @@
 # Exam-year interface simplification
 
-The comparisons use the same learning stage before and after the change. The baseline is PR #82 at `f76807d`. The journeys were exercised in Chromium at 320 and 390 CSS pixels.
+The comparisons use the same learning stage before and after the change. The baseline is PR #82 at `f76807d`. The journeys were exercised in Chromium at 320 and 390 CSS pixels. Some captures show the earlier “Check answer” label. The current button reads **Check**.
 
 ## AQA A-level Biology
 
 Open A-level Biology, choose Paper 2 and open **Topics**, then choose **Energy transfers in and between organisms** and **The light-dependent reaction**. Choose an answer and check it. Open **Need help?** if you want a hint or explanation. After feedback, continue through the existing question sequence.
 
-From the course home, open **Exam Skills** and select **Understand the question**. Read the key idea, then follow the worked example. The opening question remains visible as the reasoning advances. You can also go straight to the questions. During practice, use **Check answer** and continue after feedback. Clues, explanations and the worked example are available through a single help control. Returning to the activity restores the saved position.
+From the course home, open **Exam Skills** and select **Understand the question**. Read the key idea, then follow the worked example. The opening question remains visible as the reasoning advances. You can also go straight to the questions. During practice, use **Check** and continue after feedback. Clues, explanations and the worked example are available through a single help control. Returning to the activity restores the saved position.
 
 The course home removes the introductory panels and duplicate bottom navigation. Each topic concept title opens its questions, eliminating the repeated Start buttons and the default Not started labels. The first paper link starts around 165 px down the 320 px screen, compared with more than 1,200 px before. Exam Skills removes its five-stage strip, repeated “Start” labels and the replay control. The sampled guided question is about 330 px shorter at 320 px.
 
@@ -34,7 +34,7 @@ On the GCSE home page, select **Foundation** and open the relevant paper and top
 
 For Year 11 Catch-up, use **Catch up on this topic** from the revision topic or choose **Year 11** in Science Catch-up. Work through the reaction rates lesson for Foundation or the motor effect lesson for Higher. Read the explanation or worked example and answer the check beside it. **Need help?** contains the clue and explanation. After feedback, continue to the next step. **Pause check** is in the lesson navigation. Reopening restores the step and feedback, and completing the lesson offers the route back to revision.
 
-During catch-up the question area goes from four controls to **Check answer** and **Need help?**. The question evidence opens with the task. At 320 px, the Foundation reaction rates page drops from 2,221 px to 1,893 px and the Higher motor effect page from 2,523 px to 2,117 px. The GCSE revision question also replaces its separate hint and reveal controls with one help disclosure.
+During catch-up the question area goes from four controls to **Check** and **Need help?**. The question evidence opens with the task. At 320 px, the Foundation reaction rates page drops from 2,221 px to 1,893 px and the Higher motor effect page from 2,523 px to 2,117 px. The GCSE revision question also replaces its separate hint and reveal controls with one help disclosure.
 
 | Stage | Before | After |
 | --- | --- | --- |

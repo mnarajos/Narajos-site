@@ -103,7 +103,7 @@
       '</legend>' + illustration(question.illustration) + figure(question.photo) + (question.photos || []).map((photo, index) => figure(photo, index + 1)).join("") + table(question.table) + paragraphs(question.starter ? [question.starter] : []) +
       inputs + '</fieldset><ol class="hb-hints" hidden></ol><div class="actions hb-controls">' +
       '<button type="submit" class="button primary">' + (!choice && sequence ? icon("pen") : "") +
-      (choice ? "Check answer" : "Compare my explanation") + '</button>' +
+      (choice ? "Check" : "Compare my explanation") + '</button>' +
       (booklet ? '</div><details class="hb-help"><summary>Need help?</summary><div class="actions">' + help +
         (stage === "independent" ? openStageButton("guided", "Try with support", "quiet") : '') +
         openStageButton("model", "Revisit worked example", "quiet") + '</div></details>' : help) +

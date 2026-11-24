@@ -385,11 +385,11 @@ try{
  for(const [index,answer] of ["Specific antigens","Their immune system has already responded to its antigens.","The virus lacks the bacterial targets of antibiotics.","Those antibodies may not bind to the new pathogen’s antigens."].entries()){
   if(index===0){
    await seniorCheck.getByRole("radio",{name:"Any body cell",exact:true}).check();
-   await seniorCheck.getByRole("button",{name:"Check answer",exact:true}).click();
+   await seniorCheck.getByRole("button",{name:"Check",exact:true}).click();
    assert(await seniorCheck.getByRole("status").filter({hasText:"Recognition depends on the antigen"}).isVisible());
   }
   await seniorCheck.getByRole("radio",{name:answer,exact:true}).check();
-  await seniorCheck.getByRole("button",{name:"Check answer",exact:true}).click();
+  await seniorCheck.getByRole("button",{name:"Check",exact:true}).click();
   await seniorCheck.getByRole("button",{name:index===3?"Finish guided checks":"Continue",exact:true}).click();
  }
  await guide.getByRole("link",{name:"Revise B3",exact:true}).click();
@@ -514,9 +514,21 @@ try{
  for(const width of [1024,1280]){
   await desktop.setViewportSize({width,height:900});
   const gear=await settingsLink.boundingBox();
-  const flash=await desktop.locator('.top-inner a[href="#flashcards"]').boundingBox();
-  if(flash)assert(gear.x>=flash.x+flash.width+8||gear.y>=flash.y+flash.height||flash.y>=gear.y+gear.height,"Settings overlaps or crowds Flashcards on a laptop");
+  const brand=await desktop.locator(".top-inner .brand").boundingBox();
+  assert(gear.x>=brand.x+brand.width+8||gear.y>=brand.y+brand.height||brand.y>=gear.y+gear.height,"Settings overlaps or crowds the course name on a laptop");
  }
+ const flashHome=await browser.newPage({viewport:{width:320,height:844},hasTouch:true});
+ for(const subject of ["alevel","gcse"]) for(const width of [320,390]){
+  await flashHome.setViewportSize({width,height:844});
+  await flashHome.goto(base+"/"+subject+"/");
+  const link=flashHome.locator('main a[href="#flashcards"]');
+  await link.waitFor({state:"visible"});
+  assert.equal(await link.count(),1,subject+" Flashcards home entry");
+  assert((await flashHome.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,subject+" home overflows at "+width);
+  await link.click();
+  await flashHome.getByRole("heading",{name:"Flashcards",exact:true}).waitFor();
+ }
+ await flashHome.close();
  await desktop.locator('a[href="#catchup-a1"]').first().click();
  await desktop.waitForURL("**/alevel/#catchup-a1");
  const firstConcept=desktop.locator('a[href^="#catchup-a1-"]').first();

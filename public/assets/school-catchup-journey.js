@@ -368,7 +368,7 @@ export function mountJourney(host, model, lesson) {
     }
     showVerdict();
 
-    const submit = element("button", "Check answer", "school-primary");
+    const submit = element("button", inlineCheck ? "Check" : "Check answer", "school-primary");
     submit.type = "submit";
     submit.hidden = Boolean(state.correct);
     const next = checkButton(nextLabel(), advance);
