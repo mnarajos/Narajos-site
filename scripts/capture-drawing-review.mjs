@@ -24,10 +24,11 @@ try {
     await page.locator('.al-drawing-judgement .al-figures').waitFor();
     instructions[id]=await page.locator('.al-drawing-criteria li').allTextContents();
   }
+  const paperInstructions=await page.locator('.al-paper-prompt > p').allTextContents();
   const sheet=await browser.newPage({viewport:{width:1880,height:700},deviceScaleFactor:1});
   await sheet.goto(base+'/alevel/#exam-drawings');
   await sheet.waitForFunction(()=>window.ALevelDrawingBank?.version===4);
-  await sheet.evaluate(async ({groups,instructions})=>{
+  await sheet.evaluate(async ({groups,instructions,paperInstructions})=>{
     const bank=window.ALevelDrawingBank,w=window.ALevelDrawingWorked;
     const sources=[...new Set(bank.specimens.map(s=>'/assets/micrographs/'+s.image).concat('/assets/micrographs/drawing-tiger-frog.webp'))];
     await Promise.all(sources.map(src=>new Promise((resolve,reject)=>{const img=new Image();img.onload=resolve;img.onerror=reject;img.src=src;})));
@@ -57,7 +58,9 @@ try {
       const row=el('div','',section,'panels');
       panel(row,'Reference observation',bank.svg(list[0],true),bank.vascularDetail(list[0],true));
       for(const item of list){const verdict=item.defects.length?'Rejected · '+item.defects.map(i=>bank.categories[i]).join(', '):'Accepted';
-        panel(row,item.id+' — '+verdict,bank.svg(item),bank.vascularDetail(item));}
+        const candidate=panel(row,item.id+' — '+verdict,bank.svg(item),bank.vascularDetail(item));
+        if(item.defects.length)el('p',item.why,candidate);
+      }
     }
     const worked=el('section','',document.body,'section');worked.dataset.review='worked';
     el('h2','Worked example · '+w.name,worked);el('p',w.observe,worked);el('p',w.decide,worked);
@@ -65,11 +68,10 @@ try {
     const steps=el('ol','',worked);w.steps.forEach(line=>el('li',line,steps));el('p','Reference: '+w.author+' · '+w.licence,worked,'small');
     const paper=el('section','',document.body,'section');paper.dataset.review='paper';const item=bank.paper;
     el('h2','Paper task · '+item.specimen.name,paper);
-    el('p',item.specimen.task+' Use a sharp pencil. Add a short annotation explaining which internal detail you could resolve.',paper);
-    el('p','Use the reference bar to set the length on your page. If you enlarge the cell, enlarge the bar in the same proportion.',paper);
+    paperInstructions.forEach(line=>el('p',line,paper));
     const pr=el('div','',paper,'panels pair');panel(pr,'Reference observation',bank.svg(item,true));panel(pr,'Revealed paper model',bank.svg(item));
     el('p','Reference: '+item.specimen.author+' · '+item.specimen.licence,paper,'small');
-  },{groups,instructions});
+  },{groups,instructions,paperInstructions});
   await sheet.screenshot({path:resolve(destination,'contact-sheet.png'),fullPage:true});
   for(const id of [...groups,'worked','paper'])
     await sheet.locator('[data-review="'+id+'"]').screenshot({path:resolve(destination,id+'.png')});

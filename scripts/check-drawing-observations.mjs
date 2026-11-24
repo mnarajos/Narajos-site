@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 // Native photo coordinates read from the source fields independently of the SVG paths.
 // Boundary tolerances allow the line width and indistinct edges in a micrograph.
 const landmarks = {
-  epidermis: [["wall",320,107,5],["wall",416,276,5],["wall",279,171,5]],
+  epidermis: [["wall",263,21,2],["wall",267,121,2],["wall",239,93,2],["nucleus",262,56,1.5],["nucleus",267,62,1.5]],
   leaf: [["upper",100,24,5],["upper",250,72,5],["epidermis",250,92,5],["lower",205,316,5],["lower",530,381,5]],
   buttercup: [["surface",413,28,6],["cylinder",419,328,6],["xylem",392,346,6]],
   arterial: [["band",412,394,5],["band",721,394,5],["lumen",444,394,5],["lumen",702,394,5],
@@ -59,8 +59,8 @@ export async function checkDrawingObservations(browser,base,axeSource) {
         return distance;
       }
       // Trace the full straight leader in the same native coordinate system as the contours.
-      function crossings(svg,specimen) {
-        const [x,y,width]=specimen.crop, line=svg.querySelector("[data-label-line]");
+      function crossings(svg,specimen, label) {
+        const [x,y,width]=specimen.crop, line=svg.querySelector(label ? `[data-label-line="${label}"]` : "[data-label-line]");
         const point=n=>({x:x+Number(line.getAttribute("x"+n))*width/300,y:y+Number(line.getAttribute("y"+n))*width/300});
         const paths=[...svg.querySelectorAll("[data-feature]")].filter(path=>Object.hasOwn(specimen.paths,path.dataset.feature));
         return lineCrossings(point(1),point(2),paths);
@@ -100,8 +100,16 @@ export async function checkDrawingObservations(browser,base,axeSource) {
         ctx.drawImage(image,0,0);
         return ctx.getImageData(0,0,canvas.width,canvas.height).data;
       }
+      function checkOnionNucleus(svg, specimen, label) {
+        const nucleus = svg.querySelector('[data-feature="nucleus"]');
+        const leader = svg.querySelector('[data-label-line="Nucleus"]');
+        const [x,y,width] = specimen.crop;
+        const tip = [x + Number(leader?.getAttribute("x2"))*width/300, y + Number(leader?.getAttribute("y2"))*width/300];
+        check(Boolean(nucleus && leader) && boundaryDistance(nucleus,...tip)<1.5, label+" nucleus label reaches the observed outline");
+        check(crossings(svg,specimen,"Nucleus").join()==="wall",label+" nucleus leader only crosses the enclosing wall");
+      }
       const calibrated = {
-        epidermis: {span:357, value:200, draw:50, from:[610,613], to:[966,613], light:false},
+        epidermis: {span:47, value:50, draw:25, from:[177,261], to:[223,261], light:false},
         leaf: {span:94, value:50, draw:50, from:[966,588], to:[1059,588], light:false},
         buttercup: {span:123, value:310, draw:310, from:[682,719], to:[804,719], light:false},
         arterial: {span:164, value:100, draw:100, from:[3398,685], to:[3561,685], light:false},
@@ -186,10 +194,11 @@ export async function checkDrawingObservations(browser,base,axeSource) {
           const actual=svg.querySelector("[data-scale-bar]");
           check(Boolean(actual)===Boolean(cal),item.id+" bar presence");
           if(cal && actual){
-            const expectedLabel={"epidermis.bar":100,"redcell.bar":10}[item.id] ?? cal.draw;
+            const expectedLabel={"epidermis.bar":50,"redcell.bar":10}[item.id] ?? cal.draw;
             check(actual.parentNode.textContent.trim()===expectedLabel+" µm",item.id+" physical scale value");
             check(Math.abs(+actual.getAttribute("width")-300/w*cal.span*cal.draw/cal.value)<0.01,item.id+" displayed length");
           }
+          if (s.id==="epidermis") checkOnionNucleus(svg,s,item.id);
           const expected={epidermis:item.key==="leader"?["wall"]:[],leaf:["upper"],buttercup:["surface"],
             arterial:["band","lumen"],buccal:["outline"],redcell:[]};
           const hits=crossings(svg,s);
@@ -223,10 +232,11 @@ export async function checkDrawingObservations(browser,base,axeSource) {
       const paper=render(bank.paper);
       check(paper.querySelector("[data-drawing-title]")?.textContent.trim().length>10,"paper model includes its title");
       const paperBar=paper.querySelector("[data-scale-bar]");
-      check(paperBar?.parentNode.textContent.trim()==="50 µm" &&
-        Math.abs(Number(paperBar.getAttribute("width"))-300/bank.paper.specimen.crop[2]*357/4)<0.01,"paper model calibrated 50 µm bar");
+      check(paperBar?.parentNode.textContent.trim()==="25 µm" &&
+        Math.abs(Number(paperBar.getAttribute("width"))-300/bank.paper.specimen.crop[2]*47/2)<0.01,"paper model calibrated 25 µm bar");
       check(crossings(paper,bank.paper.specimen).length===0,"paper model crosses an unrelated boundary");
       check(boundaryDistance(paper.querySelector('[data-feature="wall"]'),...bank.paper.specimen.target)<2.5,"paper label tip at wall");
+      checkOnionNucleus(paper,bank.paper.specimen,"paper model");
       const worked=window.ALevelDrawingWorked;
       const reference=document.createElement("div"), drawing=document.createElement("div");
       reference.innerHTML=worked.observationSvg();drawing.innerHTML=worked.modelSvg();mount.append(reference,drawing);
@@ -355,7 +365,7 @@ export async function checkDrawingObservations(browser,base,axeSource) {
     await page.evaluate(({key,oldV3,earlier})=>localStorage.setItem(key,JSON.stringify({
       drawingVersion:3,drawingRound:1,drawingSession:oldV3,
       drawingOutcomes:{"privet.band":"independent"},earlierObservationSet:earlier,
-      drawingPaper:{improvement:"Keep my paper note."},drawingCalibration:{draft:"5.8"}
+      drawingPaper:{improvement:"Keep my paper note.",compared:true,checks:{1:true}},drawingCalibration:{draft:"5.8"}
     })),{key,oldV3,earlier:migrated.earlierObservationSet});
     await page.reload();
     const movedV3=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),key);
@@ -365,6 +375,11 @@ export async function checkDrawingObservations(browser,base,axeSource) {
     assert.equal(movedV3.drawingPaper.improvement,"Keep my paper note.");
     assert.equal(movedV3.drawingCalibration.draft,"5.8");
     assert(!movedV3.drawingSession && !movedV3.drawingOutcomes["privet.band"]);
+    await page.getByText("Draw a specimen on paper",{exact:true}).click();
+    assert.equal(await page.locator(".al-paper-review svg").count(),0);
+    await page.getByRole("button",{name:/I’ve drawn it/}).click();
+    assert.equal(await page.getByLabel("One change I would make").inputValue(),"Keep my paper note.");
+    assert(!await page.getByLabel("My label lines reach the cell wall and nucleus.").isChecked());
 
     await page.evaluate(key=>localStorage.setItem(key,JSON.stringify({
       drawingRound:3,drawingSession:{round:2,index:1,verdict:1,categories:[4]},drawingOutcomes:{"yeast-3":"corrected"},causal:{phase:"review"}
@@ -424,8 +439,9 @@ export async function checkDrawingObservations(browser,base,axeSource) {
     await page.getByRole("button",{name:"Check judgement"}).click();
     assert.match(await page.locator(".al-drawing-judgement .al-feedback").innerText(),/where the line ends/);
     await page.getByRole("radio",{name:"Reject",exact:true}).check();
-    await page.getByLabel("Label line",{exact:true}).check();
+    await page.getByLabel("Labels and label lines",{exact:true}).check();
     await page.getByRole("button",{name:"Try judgement again"}).click();
+    assert.match(await page.locator(".al-drawing-judgement .al-feedback").innerText(),/Labels and label lines.*continues past the structure/);
     await page.getByRole("button",{name:"Next drawing"}).click();
     const state=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).drawingSession,key);
     assert.equal(state.entries[0].firstAttempt.correct,false);

@@ -1,28 +1,33 @@
 /* Contours are in the pixel coordinates of the credited local micrographs. */
 (function () {
   "use strict";
-  const categories = ["Line quality", "Shading", "Biological detail", "Proportions", "Label line", "Scale"];
+  const categories = ["Single continuous lines", "Shading or hatching", "Structures shown", "Relative size", "Labels and label lines", "Scale bar"];
   const commons = "https://commons.wikimedia.org/wiki/File:";
   const bysa = version => "https://creativecommons.org/licenses/by-sa/" + version + "/";
   const field = "/assets/micrographs/";
   // Each alternative edits only the named structure, leader or bar in its own specimen.
   const specimens = [
     {
-      id: "epidermis", name: "Red onion epidermis", type: "cell", image: "onion-epidermis.webp",
-      source: "Cells_from_a_red_onion_epidermal_peel.tif", author: "Adrian J. Hunter", licence: "CC BY-SA 3.0", licenceUrl: bysa("3.0"),
-      size: [998,698], crop: [242,70,270,237], label: "Cell wall", target: [461,167],
-      drawingTitle: "Red onion epidermal cell wall",
-      annotation: "The line records the position of the wall.",
-      task: "Draw the wall outline of the central pink cell and label the wall. Leave neighbouring cells out. Include a title and a calibrated scale bar.",
-      scale: {pixels:357, microns:200, draw:50}, scaleNote: "The entire five-segment bar in the full field spans 357 image units and represents 200 µm.",
-      observation: "The central cell is a single oblique polygon. Its left and right edges span about 190 image units. The upper-left corner is higher than the upper-right. No separate round body is resolved inside.",
-      paths: {wall:"M319 107 C342 108 374 129 399 140 Q437 157 460 152 Q459 165 461 167 Q477 222 468 231 Q461 243 416 277 Q398 280 362 255 Q322 226 289 195 Q278 183 278 169 Q292 140 319 107Z"},
-      model: "A single oblique polygon has a rounded lower corner and an unfilled interior. The leader meets the right wall.",
-      why: "The wall follows the uneven outline and the interior is left clear. One quarter of the photographed 200 µm bar gives a 50 µm bar.",
-      clue: "Follow the leader all the way to its tip. Compare the cell width and the length beside the scale value.",
+      id: "epidermis", name: "Stained onion epidermis", type: "cell", image: "drawing-onion-stained.webp",
+      sourceUrl: "https://doi.org/10.1038/s41467-023-39628-6", author: "Yue Zhao and colleagues (2023), Figure 5h",
+      licence: "CC BY 4.0", licenceUrl: "https://creativecommons.org/licenses/by/4.0/",
+      size: [325,278], crop: [210,6,110,126], frameWidth: 390,
+      label: "Cell wall", target: [277,88], nucleusTarget: [267,62],
+      drawingTitle: "Stained onion epidermal cell",
+      task: "Draw the complete cell in the centre of the field. Outline and label its cell wall and stained nucleus. Add an explanatory title and a calibrated scale bar.",
+      scale: {pixels:47, microns:50, draw:25},
+      scaleNote: "The published 50 µm bar spans 47 image units. Half its length represents 25 µm.",
+      observation: "The complete central cell is taller than it is wide and tapers towards the top. A small red-stained nucleus lies just above the middle. Faint lines inside the cell do not form a clear boundary around another structure.",
+      paths: {
+        wall: "M263 21 Q273 22 278 50 Q281 64 280 77 Q278 80 276 90 C274 102 274 115 267 121 Q256 123 244 118 C239 116 239 103 238 90 Q234 62 240 46 Q245 37 253 31Z",
+        nucleus: "M258 61 Q258 57 262 56 Q265 56 266 59 Q266 61 267 62 Q267 65 264 66 Q259 66 258 63Z"
+      },
+      model: "One continuous outline shows the tall cell wall. A small nucleus lies above the midpoint. The two label lines end on the wall and the nucleus.",
+      why: "The drawing shows the observed relative sizes of the cell wall and nucleus. Each has a single continuous outline, and each label line ends at the named structure.",
+      clue: "Follow each label line to the named structure, then compare the length and value of the scale bar.",
       alternatives: [
-        {key:"leader", defects:[4], target:[423,173], evidence:"A single oblique polygon has a rounded lower corner and an unfilled interior. The leader ends inside the cell, about 38 image units from its right wall.", why:"The cell-wall leader passes the wall and stops inside the cell. Shorten it so its tip touches the wall it names."},
-        {key:"bar", defects:[5], barLabel:100, evidence:"A single oblique polygon has a rounded lower corner and an unfilled interior. The leader meets the right wall.", why:"The bar spans 89.25 image units. That is one quarter of the source bar, so it represents 50 µm. A 100 µm bar would need twice this length."}
+        {key:"leader", defects:[4], target:[254,88], evidence:"The drawing shows the wall and the small nucleus. The cell-wall label line extends into the cell, while the nucleus label reaches the nucleus.", why:"The cell-wall label line continues past the structure it names. End it on the cell wall so the line does not obscure the drawing."},
+        {key:"bar", defects:[5], barLabel:50, evidence:"The drawing shows the wall and the small nucleus. Both label lines reach the named structures.", why:"The scale bar is half the length of the published 50 µm bar at the same enlargement. Label it 25 µm."}
       ]
     },
     {
@@ -39,7 +44,7 @@
       why:"The upper epidermis is a narrow band above the rest of the leaf. The two surfaces follow the field, and individual cells and hairs are omitted as requested. The 50 µm bar uses the source calibration.",
       clue:"Compare the thickness of the upper band and the level of detail with the observation.",
       alternatives:[
-        {key:"band",defects:[3],replace:{epidermis:"M100 105 C160 115 205 127 250 142 C300 155 350 171 400 184 C450 199 490 209 530 220"}, evidence:"Three long outlines slope down to the right. The upper two form a deep band; the lower outline marks the lower surface. The label line ends within the upper band.",why:"The upper epidermis is a narrow band. This deep band includes much of the elongated tissue below it. Move its inner boundary closer to the upper surface."},
+        {key:"band",defects:[3],replace:{epidermis:"M100 105 C160 115 205 127 250 142 C300 155 350 171 400 184 C450 199 490 209 530 220"}, evidence:"Three long outlines slope down to the right. The upper two form a deep band; the lower outline marks the lower surface. The label line ends within the upper band.",why:"Show the correct relative thickness of the upper epidermis. This band is too thick and includes some of the tissue below it. Move its inner boundary closer to the upper surface."},
         {key:"cells",defects:[2],add:{partitions:"M163 49L160 69 M192 50L190 71 M220.8 62.3L218.2 81.4 M250.2 70.8L247.4 90.7 M280 77L277 99"},evidence:"Three long outlines slope down to the right. Five short lines divide the narrow upper band into compartments. The label line enters the upper band from above.",why:"The micrograph resolves cells, but this task asks for tissue boundaries. Keep the continuous epidermal band and leave out the partitions between individual cells."}
       ]
     },
@@ -97,7 +102,7 @@
           key:"hatch", defects:[1],
           add:{hatch:"M527 551l-9 11 M538 554l-10 13 M549 556l-10 13 M560 557l-10 13 M571 555l-10 13"},
           evidence:"Five slanting strokes lie within the lower band. A line from the right passes through the wall and ends just inside the lumen.",
-          why:"The hatching adds shading to a band whose two boundaries are already shown. Leave its interior unshaded. The lumen label ends within the lumen."
+          why:"Do not use shading or hatching. Show the medial band using its two outlines."
         }
       ]
     },
@@ -118,8 +123,8 @@
       why:"The cell edge and nucleus each have a single outline. Differences in stain intensity do not establish further boundaries. The nucleus is about 96 image units wide against approximately 570 for the cell. The 10 µm bar is half the source bar’s length.",
       clue:"Compare the dark body’s width with the whole cell. Follow the cell’s left edge and the line identifying the nucleus.",
       alternatives:[
-        {key:"nucleus-size",defects:[3],replace:{nucleus:"M163 280 C161 209 218 156 289 157 C361 155 424 212 424 286 C424 359 365 414 292 414 C221 414 162 359 163 280Z"},target:[424,286],evidence:"A broad cell encloses an oval almost half the cell’s width. A line from outside the cell touches the oval on its right.",why:"The nucleus has been enlarged to nearly half the cell width. The observed nucleus spans only about one sixth of that width."},
-        {key:"sketch",defects:[0],add:{retrace:"M61 90 Q23 133 27 197 Q28 224 42 249 M51 95 Q15 150 15 190 Q13 215 30 249"},evidence:"Three partly overlapping strokes follow the cell’s upper-left edge. A nearly round nucleus spans about one sixth of the cell width. A line from outside the cell touches the nucleus on its right.",why:"Several strokes compete to mark the same left edge. Use a single continuous outline to show where the cell ends."}
+        {key:"nucleus-size",defects:[3],replace:{nucleus:"M163 280 C161 209 218 156 289 157 C361 155 424 212 424 286 C424 359 365 414 292 414 C221 414 162 359 163 280Z"},target:[424,286],evidence:"A broad cell encloses an oval almost half the cell’s width. A line from outside the cell touches the oval on its right.",why:"Draw the nucleus at the correct relative size. It is about one sixth of the cell width in the photograph and nearly half the width in this drawing."},
+        {key:"sketch",defects:[0],add:{retrace:"M61 90 Q23 133 27 197 Q28 224 42 249 M51 95 Q15 150 15 190 Q13 215 30 249"},evidence:"Three partly overlapping strokes follow the cell’s upper-left edge. A nearly round nucleus spans about one sixth of the cell width. A line from outside the cell touches the nucleus on its right.",why:"Use a single continuous line. The overlapping sketch lines on the left make the cell edge ambiguous."}
       ]
     },
     {
@@ -147,8 +152,8 @@
   // Coordinates enclose the specific comparison area in native photo units.
   // Scale-bar feedback uses the measured bar rectangle below the field.
   const cues = {
-    "epidermis.leader":[[410,143,68,48],"Compare where the line ends with the visible right wall."],
-    "epidermis.bar":[null,"Compare the printed value with one quarter of the original bar."],
+    "epidermis.leader":[[248,77,36,22],"Compare where the line ends with the visible right wall."],
+    "epidermis.bar":[null,"Compare the printed value with half the original bar."],
     "leaf.band":[[125,30,350,190],"Compare the upper epidermal band with the narrow band in the photograph."],
     "leaf.cells":[[150,45,145,65],"Decide which boundaries belong in a tissue map."],
     "buttercup.core":[[280,243,280,269],"Compare the diameter of the central cylinder with the root diameter."],
@@ -210,9 +215,14 @@
     const shapes = {...s.paths, ...item.replace, ...item.add};
     const paths = Object.entries(shapes).filter(([name]) => !(item.omit || []).includes(name)).map(([name,d]) =>
       '<path data-feature="' + name + '" d="' + d + '" vector-effect="non-scaling-stroke"/>').join("");
-    const [tx,ty] = item.target || s.target;
-    const endX = (tx-x)*ratio, endY = (ty-y)*ratio;
-    const [startX,startY] = item.labelStart || s.labelStart || [304,endY];
+    function leader(label, target, start) {
+      const [tx,ty] = target;
+      const endX = (tx-x)*ratio, endY = (ty-y)*ratio;
+      const [startX,startY] = start || [304,endY];
+      return '<line data-label-line="' + escape(label) + '" x1="' + startX + '" y1="' + startY + '" x2="' + endX + '" y2="' + endY + '" stroke="#18232a" stroke-width="1"/><text x="' + (startX+5) + '" y="' + (startY+4) + '" font-family="sans-serif" font-size="13">' + escape(label) + '</text>';
+    }
+    const labels = leader(s.label, item.target || s.target, item.labelStart || s.labelStart) +
+      (s.nucleusTarget ? leader("Nucleus", s.nucleusTarget) : "");
     let guide = "";
     if (highlight && cues[item.id]) {
       const box = cues[item.id][0];
@@ -222,8 +232,7 @@
       guide = '<rect data-defect-overlay="" aria-hidden="true" x="'+left+'" y="'+top+'" width="'+wide+'" height="'+tall+'" fill="none" stroke="#364c60" stroke-dasharray="4 3" stroke-width="1.5"/>';
     }
     return outer + inner + '<g fill="none" stroke="#18232a" stroke-width="1.25" stroke-linejoin="round" stroke-linecap="round">' + paths +
-      '</g></svg><line data-label-line="" x1="' + startX + '" y1="' + startY + '" x2="' + endX + '" y2="' + endY + '" stroke="#18232a" stroke-width="1"/><text x="' + (startX+5) + '" y="' + (startY+4) + '" font-family="sans-serif" font-size="13">' +
-      escape(s.label) + '</text>' + scaleBar(s,ratio,height,item.barLabel || s.scale?.draw) + caption + guide + '</svg>';
+      '</g></svg>' + labels + scaleBar(s,ratio,height,item.barLabel || s.scale?.draw) + caption + guide + '</svg>';
   }
   function scaleBar(s,ratio,height,label) {
     if (!s.scale) return "";
@@ -245,14 +254,18 @@
     const description = title + ". " + (reference ? s.observation : item.evidence);
     return '<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + escape(description) + '" viewBox="' + crop + '" style="display:block;width:100%;height:auto;background:white">' + content + '</svg>';
   }
-  // A neighbouring cell from the full onion field is reserved for paper work.
-  const paperSpecimen = {...specimens[0], name:"A neighbouring onion cell", crop:[437,72,214,224],
-    label:"Cell wall", target:[616,201],
-    drawingTitle:"Wall outline of a red onion epidermal cell", annotation:"No internal structure has a distinct visible boundary.",
-    task:"On paper, draw the one complete central cell. Preserve its wall shape, label the wall, add an explanatory title and construct a 50 µm scale bar.",
-    observation:"The central cell is taller than it is wide. Its left edge bends inwards near the upper third. Three wall junctions are visible towards the base. Its widest span is about 160 source-image units.",
-    paths:{wall:"M492 96 Q528 98 580 116 Q588 115 590 125 Q600 158 616 201 L622 224 Q597 235 571 263 Q559 270 542 263 Q500 250 470 232 Q475 215 467 186 Q458 159 461 151 Q479 126 492 96Z"}};
-  const paper = {specimen:paperSpecimen,credit:commons+paperSpecimen.source,
-    evidence:"An irregular, upright polygon with a narrow lower-right corner. Its leader meets the right wall."};
+  // The complete cell immediately below the comparison cell is used for paper work.
+  const paperSpecimen = {...specimens[0], name:"A neighbouring stained onion cell", crop:[210,108,110,134],
+    target:[285,190], nucleusTarget:[272,172],
+    drawingTitle:"Stained onion epidermal cell",
+    annotation:"Acetocarmine stain reveals the nucleus.",
+    task:"On paper, draw the complete central cell. Outline and label its cell wall and stained nucleus. Add an explanatory title and a 25 µm scale bar.",
+    observation:"A long cell slants to the right as it descends. The right wall changes direction near the lower third. A small reddish nucleus sits near the middle.",
+    paths:{
+      wall:"M244 118 Q255 124 269 122 Q274 145 279 165 Q281 179 285 190 Q289 200 293 204 Q292 220 293 237 Q288 241 268 242 Q263 241 260 234 Q251 210 246 185 Q241 164 240 149 Q239 134 244 118Z",
+      nucleus:"M266 171 Q268 168 269 167 Q271 168 272 172 Q272 175 269 175 Q265 175 266 171Z"
+    }};
+  const paper = {specimen:paperSpecimen,credit:paperSpecimen.sourceUrl,
+    evidence:"A long tapered outline encloses a small nucleus. The label lines meet the right wall and the edge of the nucleus."};
   window.ALevelDrawingBank = {version:4, bank, categories, specimens, cues, paper, svg, vascularDetail, evidence, scaleText, setFor};
 })();
