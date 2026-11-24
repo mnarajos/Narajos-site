@@ -44,6 +44,7 @@ export async function checkAssessmentJourneys(browser,base) {
       const layout=await food.evaluate(()=>({
         overflow:document.documentElement.scrollWidth-innerWidth,
         practiceTop:document.querySelector('#qf').getBoundingClientRect().top,
+        questionTop:document.querySelector('#qf legend').getBoundingClientRect().top,
         headingBottom:[...document.querySelectorAll('h2')].find(el=>el.textContent.trim()==='Practise the method').getBoundingClientRect().bottom,
         actionsPosition:getComputedStyle(document.querySelector('#qf .actions')).position,
         height:document.documentElement.scrollHeight,
@@ -51,7 +52,7 @@ export async function checkAssessmentJourneys(browser,base) {
       }));
       assert(layout.overflow<=3,`food lesson overflows at ${width}px`);
       assert(layout.practiceTop>=layout.headingBottom && layout.practiceTop-layout.headingBottom<=120,`practice heading is detached from the first question at ${width}px`);
-      assert(layout.practiceTop<(width===320?900:730),`the first question is too far below the teaching at ${width}px`);
+      assert(layout.questionTop<layout.viewport+(width===320?250:0),`the first question starts ${Math.round(layout.questionTop)}px below the top at ${width}px`);
       assert.equal(layout.actionsPosition,"static",`the initial action bar may cover the question at ${width}px`);
       assert(layout.height>layout.viewport,"mobile lesson should scroll to reach the question");
       const scrolled=await food.evaluate(()=>{window.scrollTo(0,document.documentElement.scrollHeight);return window.scrollY;});
