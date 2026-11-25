@@ -338,7 +338,8 @@ function makeSession(unit,scope,route,origin){
 function showClinicalCases(){
  visible=false;
  const cases=all.filter(q=>q.unit==="f171"&&q.caseTitle);
- const links=cases.map(q=>'<a class="k-action blue" href="#challenge/f171/'+esc(q.id)+'"><span class="k-icon">'+icon("book")+'</span><span><strong>'+esc(q.caseTitle)+'</strong><small>'+q.marks+' marks · '+(q.marks===6?"Analyse":"Discuss")+'</small></span></a>');
+ // Only this voluntary case-list entry has been reviewed as optional Stretch.
+ const links=cases.map(q=>'<a class="k-action blue" href="#challenge/f171/'+esc(q.id)+'"><span class="k-icon">'+icon("book")+'</span><span><strong>'+(q.id==="case-visual-cast-comparison"?'<span class="stretch-label"><span class="stretch-icon" aria-hidden="true"></span>Stretch</span> — ':'')+esc(q.caseTitle)+'</strong><small>'+q.marks+' marks · '+(q.marks===6?"Analyse":"Discuss")+'</small></span></a>');
  show('<div class="k-wrap"><p class="crumb"><a href="#challenge/f171">← F171</a></p><div class="k-unit-hero"><h1>Clinical case questions</h1><p>Write an answer, then compare your reasoning with an example and the key points.</p></div><details class="k-coverage"><summary>What the command words ask for</summary><dl>'+
   '<dt><strong>Describe</strong></dt><dd>State relevant observations, features or events.</dd>'+
   '<dt><strong>Explain</strong></dt><dd>Use a biological mechanism to show why something happens.</dd>'+
