@@ -177,7 +177,7 @@
 
   practicals.register(3, function (host, ui) {
     const setup = section(host, "Soak and reweigh potato cylinders");
-    setup.append(node("p", "Use different volumes of 0.50 mol dm⁻³ sucrose stock and make each standard up to 10.0 cm³ with water. Cut peeled cylinders of the same length and diameter. Weigh each before soaking and after gently blotting it dry. Keep solution volume, soak time and temperature the same."));
+    setup.append(node("p", "Use different volumes of the 0.50 mol dm⁻³ sucrose stock solution. Add water to bring each mixture to 10.0 cm³. Cut peeled cylinders of the same length and diameter. Weigh each before soaking and after gently blotting it dry. Keep solution volume, soak time and temperature the same."));
     apparatus(setup, 3, "A pipette transfers sucrose stock. Three labelled tubes hold equal potato cylinders in different sucrose concentrations. The balance shows 2.60 grams after blotting. The initial mass was 2.50 grams.",
       "Use 0, 2, 4, 6, 8 or 10 cm³ of stock and enough water to reach 10 cm³. This gives 0.00 to 0.50 mol dm⁻³ in steps of 0.10 mol dm⁻³.");
     const masses = section(host, "Compare changes in mass");
@@ -206,6 +206,7 @@
     });
     ui.number(application, {
       prompt: "Estimate the sucrose concentration matching the potato tissue’s water potential, in mol dm⁻³.",
+      wordHelp: { incidental: ["estimate", "sucrose"], targets: ["water-potential"] },
       answer: 0.28, tolerance: 0.015, unit: "mol dm⁻³", independent: true,
       feedback: "Zero is four-fifths of the way from +4% to −1%. Read four-fifths of the way from 0.20 to 0.30 mol dm⁻³, giving about 0.28 mol dm⁻³. That solution has an estimated water potential equal to the tissue’s.",
       retry: "Follow the zero mass-change line, then read down to the concentration axis.",
@@ -259,8 +260,8 @@
   });
 
   practicals.register(11, function (host, ui) {
-    const setup = section(host, "Prepare standards and measure the residual blue colour");
-    setup.append(node("p", "Prepare 0, 2, 4, 6, 8 and 10 mmol dm⁻³ glucose standards from a 10 mmol dm⁻³ stock. For 6 mmol dm⁻³, mix 6.0 cm³ stock with 4.0 cm³ water. Use equal volumes of each standard or simulated urine sample and treat them with the same volume of quantitative Benedict’s reagent. Heat them together for the same time."));
+    const setup = section(host, "Prepare standards and measure the remaining blue colour");
+    setup.append(node("p", "Prepare 0, 2, 4, 6, 8 and 10 mmol dm⁻³ glucose standards from a 10 mmol dm⁻³ stock solution. For 6 mmol dm⁻³, mix 6.0 cm³ stock with 4.0 cm³ water. Use equal volumes of each standard or simulated urine sample and treat them with the same volume of quantitative Benedict’s reagent. Heat them together for the same time."));
     apparatus(setup, 11, "Clear glucose standards and an unknown go into a water bath with reagent. A paler blue tube has white precipitate; the pale blue liquid is transferred to a colorimeter reading at 680 nanometres.",
       "Once the white solid has settled, pipette the clear liquid above it (the supernatant) into a cuvette. Use a 680 nm red filter and a distilled-water optical blank. Measure the treated zero-glucose standard like the others.");
     const evidence = section(host, "Read the glucose calibration curve");
@@ -287,10 +288,10 @@
       prompt: "Sample B was mixed with an equal volume of water before the assay. The diluted sample reads 0.43. Estimate the glucose concentration of the original sample in mmol dm⁻³.",
       answer: 14, tolerance: 0.5, unit: "mmol dm⁻³", independent: true,
       hint: "Read the concentration of the diluted sample first. Adding an equal volume of water halves the concentration.",
-      feedback: "The assayed sample is about 7 mmol dm⁻³, halfway between 6 and 8. Before the twofold dilution its concentration was approximately 14 mmol dm⁻³. The measured sample was inside the calibrated range.",
+      feedback: "The diluted sample is about 7 mmol dm⁻³, halfway between 6 and 8. Before the twofold dilution its concentration was about 14 mmol dm⁻³. The diluted sample was inside the calibrated range.",
       retry: "Find 0.43 between the two neighbouring standards and then account for the water added before the assay."
     });
     ui.stretch(application, "Decide when dilution is needed",
-      "For this assay, an absorbance of 0.18 is below the range of the standards and may represent a sample above the concentration range. Dilute a fresh aliquot before adding reagent, repeat the assay, check that its reading is within the calibration range and multiply the resulting estimate by the dilution factor. Benedict’s responds to reducing sugars. The concentration estimate assumes glucose is the only reducing sugar in this simulated sample.");
+      "For this assay, an absorbance of 0.18 is below the range of the standards and may represent a sample above the concentration range. Take a fresh portion of the sample and dilute it before adding reagent. Repeat the assay, check that the reading is within the calibration range and multiply the estimated concentration by the dilution factor. Benedict’s responds to reducing sugars. The concentration estimate assumes glucose is the only reducing sugar in this simulated sample.");
   });
 })();

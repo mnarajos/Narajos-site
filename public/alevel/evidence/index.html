@@ -28,33 +28,40 @@
  <link rel="stylesheet" href="/assets/home-link.css">
  <link rel="stylesheet" href="/assets/science-practice.css">
 
+ <link rel="stylesheet" href="/assets/context-vocabulary.css">
+ <link rel="stylesheet" href="/assets/vocabulary-panel.css">
  <script defer src="/assets/site-nav.js"></script>
+ <script defer src="/assets/vocabulary-panel.js"></script>
+ <script defer src="/alevel/vocabulary-topics-1-4.js"></script>
+ <script defer src="/alevel/vocabulary-topics-5-8.js"></script>
+ <script defer src="/alevel/vocabulary-skills.js"></script>
+ <script defer src="/alevel/vocabulary.js"></script>
 </head>
 <body>
  <a class="skip" href="#main">Skip to main content</a>
  <header class="topbar"><div class="wrap topbar-inner">
   <a href="/" id="site-home" class="narajos-home" aria-label="Narajos homepage" title="Narajos homepage"><img src="/favicon.svg" alt=""><span>Narajos</span></a>
  </div></header>
- <main id="main" class="wrap practice-page">
+ <main id="main" class="wrap practice-page" data-word-help-page="exam">
   <div class="page-hero">
    <p class="breadcrumb"><a href="/alevel/#paper-p3">← Paper 3</a></p>
    <h1>A-level evidence practice</h1>
    <p class="lead">Practise explaining what unfamiliar results support.</p>
    <p><a class="btn" href="/alevel/#exam-investigations">Write an investigation response</a></p>
   </div>
-<div class="practice-stack"><article class="practice-card">
+<div class="practice-stack"><article class="practice-card" data-word-help-incidental="germination">
    <h2>Does stirring increase the initial rate of oxygen uptake?</h2>
    <p>Students used equal masses of germinating seeds, kept at the same temperature. They measured oxygen uptake per gram in stirred and unstirred chambers. Each result below comes from a different batch of seeds. All unstirred batches came from one seed packet, and all stirred batches came from a different packet.</p>
    <table><caption>Initial oxygen uptake / µL g⁻¹ min⁻¹</caption><thead><tr><th scope="col">Batch</th><th scope="col">Unstirred</th><th scope="col">Stirred</th></tr></thead><tbody><tr><td>1</td><td>3.2</td><td>4.2</td></tr><tr><td>2</td><td>3.8</td><td>4.9</td></tr><tr><td>3</td><td>4.4</td><td>3.8</td></tr></tbody></table>
    <ol><li>Compare the group means and comment on the individual measurements.</li><li>Explain why these results are insufficient to attribute the difference to stirring.</li><li>Propose a better allocation of seeds and a control for changes due to the apparatus.</li></ol>
-   <details><summary>Compare with a reasoned answer</summary><p>The mean is 3.80 without stirring and 4.30 with stirring. The ranges overlap and there are only three independent batches per treatment. Packet and treatment are confounded, so different germination or respiration between packets could explain some of the difference. Divide seeds from each packet between both conditions, randomly allocating comparable batches. Repeat with several independent packets, and run seed-free chambers in both conditions to detect changes in oxygen readings due to the apparatus or stirring alone.</p></details>
+   <details data-word-help-review><summary>Compare with a reasoned answer</summary><p>The mean is 3.80 without stirring and 4.30 with stirring. The ranges overlap and there are only three independent batches per treatment. Packet and treatment are confounded, so different germination or respiration between packets could explain some of the difference. Divide seeds from each packet between both conditions, randomly allocating comparable batches. Repeat with several independent packets, and run seed-free chambers in both conditions to detect changes in oxygen readings due to the apparatus or stirring alone.</p></details>
    <a href="/alevel/#topic-p3e">Continue Paper 3 evidence practice</a>
   </article>
-  <article class="practice-card" id="alevel-evidence-temperature">
+  <article class="practice-card" id="alevel-evidence-temperature" data-word-help-incidental="enzyme">
    <h2>Do the measurements establish the optimum?</h2>
    <p>Students measured the initial rate of an enzyme-catalysed reaction at 20, 30, 40 and 50 °C. The mean rates were 1.2, 2.0, 2.3 and 1.1 µmol min⁻¹ respectively. They started timing immediately after adding enzyme solution taken from a refrigerator.</p>
    <ol><li>State the strongest conclusion permitted by these results.</li><li>Explain how the starting procedure might affect the comparison.</li><li>Suggest changes that would help locate the optimum and quantify uncertainty.</li></ol>
-   <details><summary>Compare with a reasoned answer</summary><p>40 °C gave the largest measured mean among the tested temperatures. The true optimum could lie between tested points. Adding cold enzyme can lower the temperature of the mixture, and the reaction may begin before the mixture reaches the intended temperature. Equilibrate the separate solutions before mixing, check the temperature at the start and maintain it with a water bath. Use smaller temperature intervals around the peak and independent repeats at each temperature to estimate variation.</p></details>
+   <details data-word-help-review><summary>Compare with a reasoned answer</summary><p>40 °C gave the largest measured mean among the tested temperatures. The true optimum could lie between tested points. Adding cold enzyme can lower the temperature of the mixture, and the reaction may begin before the mixture reaches the intended temperature. Equilibrate the separate solutions before mixing, check the temperature at the start and maintain it with a water bath. Use smaller temperature intervals around the peak and independent repeats at each temperature to estimate variation.</p></details>
   </article></div>
  </main>
  <footer class="footer"><div class="wrap footer-inner"><p class="site-copyright">© 2026 <strong>Narajos</strong> <em>/nerr-RA-hoss/</em></p><a href="/privacy/">Privacy</a></div></footer>

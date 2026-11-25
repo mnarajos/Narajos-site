@@ -62,9 +62,18 @@
     }
     form.append(actions, result);
     host.append(form);
+    window.ALevelVocabulary?.setAssessment(form, {
+      ...config.wordHelp,
+      reveal() {
+        if (!form.isConnected || finished) return false;
+        supported = true;
+        return true;
+      },
+    });
 
     function finish(message, status, marker = "") {
       finished = true;
+      window.ALevelVocabulary?.setAssessment(form, { completed: true });
       result.dataset.outcome = status;
       result.innerHTML = marker;
       result.append(marker ? " " + message : message);
@@ -155,8 +164,18 @@
     const marker = element("span", "", "stretch-icon");
     marker.setAttribute("aria-hidden", "true");
     summary.append(marker, document.createTextNode("Stretch"));
-    details.append(summary, element("p", prompt), disclosure("Compare with a model", model));
+    const example = disclosure("Compare with a model", model);
+    details.append(summary, element("p", prompt), example);
     host.append(details);
+    let compared = false;
+    function refreshVocabulary() {
+      window.ALevelVocabulary?.setAssessment(details, { completed: !details.open || compared });
+    }
+    details.addEventListener("toggle", refreshVocabulary);
+    example.addEventListener("toggle", () => {
+      compared ||= example.open;
+      refreshVocabulary();
+    });
   }
 
   window.ALevelPracticals = {

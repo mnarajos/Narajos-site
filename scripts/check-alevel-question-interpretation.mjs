@@ -87,21 +87,27 @@ async function beginIndependent(main, lesson) {
 
 async function checkVocabulary(page, main, { touch = false, capture } = {}) {
   const term = main.locator('button.context-vocabulary-term[data-vocabulary-term="interstitial-fluid"]');
-  const panel = main.getByRole("dialog", { name: /interstitial fluid/i });
+  await term.waitFor();
+  const panelId = await term.getAttribute("aria-controls");
+  assert(panelId, "The vocabulary term identifies the panel it opens");
+  const panel = page.locator(`[id="${panelId}"]`);
   const workedButton = main.getByRole("button", { name: "Show the reasoning", exact: true });
-  const position = await workedButton.evaluate(element => element.offsetTop);
   if (touch) await term.tap();
   else await term.press("Enter");
   await panel.waitFor();
   assert.match(await panel.innerText(), /tissue fluid/i);
   assert.equal(await term.getAttribute("aria-expanded"), "true");
-  assert.equal(await workedButton.evaluate(element => element.offsetTop), position);
-  const close = panel.getByRole("button", { name: "Close definition", exact: true });
+  assert(await workedButton.isVisible());
+  if (!touch) {
+    const [passageBounds, panelBounds] = await Promise.all([main.boundingBox(), panel.boundingBox()]);
+    assert(passageBounds.x + passageBounds.width <= panelBounds.x + 2, "The desktop definition sits beside the passage");
+  }
+  const close = panel.getByRole("button", { name: /close (?:word help|definition)/i });
   if (touch) {
     await capture?.();
     await close.tap();
   } else {
-    assert(await close.evaluate(element => element === document.activeElement), "Opening the definition focuses its close button");
+    assert(await panel.evaluate(element => element.contains(document.activeElement)), "Opening the definition moves focus inside it");
     await page.keyboard.press("Escape");
   }
   await panel.waitFor({ state: "hidden" });
@@ -110,16 +116,9 @@ async function checkVocabulary(page, main, { touch = false, capture } = {}) {
     assert(await term.evaluate(element => element === document.activeElement));
     await term.press("Space");
     await panel.waitFor();
-    assert(await close.evaluate(element => element === document.activeElement));
-    await page.keyboard.press("Space");
+    await close.press("Space");
     await panel.waitFor({ state: "hidden" });
     assert(await term.evaluate(element => element === document.activeElement));
-  }
-  if (touch) {
-    await term.tap();
-    await panel.waitFor();
-    await page.touchscreen.tap(5, 5);
-    await panel.waitFor({ state: "hidden" });
   }
 }
 

@@ -243,7 +243,7 @@
     const related = card(host, "Oxygen uptake in related exam questions");
     diagram(related, "rp9-respirometer", "A water bath surrounds an airtight chamber with seeds above separated soda lime. A capillary connects the chamber to a liquid marker. The marker moves towards the chamber. A matching setup uses glass beads.",
       "Original respirometer schematic. The capillary’s uniform cross-section converts movement into a volume estimate.", 286);
-    add(related, "p", "Soda lime absorbs the CO₂ released, so oxygen uptake lowers the chamber pressure and moves the marker inwards. At stable temperature and pressure the volume change is estimated by πr² × distance, where r is the capillary radius. Divide by time for a rate. A matching control with glass beads keeps the gas space comparable and shows background movement from temperature or pressure. Correct the test reading by subtracting the control’s signed movement.");
+    add(related, "p", "Soda lime absorbs the CO₂ released, so oxygen uptake lowers the chamber pressure and moves the marker inwards. At stable temperature and pressure the volume change is estimated by πr² × distance, where r is the inner radius of the capillary tube. Divide by time for a rate. A matching control with glass beads keeps the gas space comparable and shows background movement from temperature or pressure. Correct the test reading by subtracting the control’s signed movement.");
   }
 
   window.ALevelPracticals.register(8, mountHill);

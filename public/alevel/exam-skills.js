@@ -684,11 +684,12 @@
             feedback: guided.options?.map(option => option.feedback),
             groups: guided.groups, items: guided.items, retry: guided.retry,
             evidence: guided.table && [guided.table.caption, guided.table.headers, guided.table.rows],
-            hints: guided.hints, why: guidedFeedback,
+            hints: guided.hints, why: guidedFeedback, wordHelp: guided.wordHelp,
           }, {
             kind: "writing", stimulus: independent.stimulus, prompt: independent.question,
             evidence: independent.table && [independent.table.caption, independent.table.headers, independent.table.rows],
             modelAnswer: [independent.model], points: independent.points, reviewNote: independent.reflection,
+            wordHelp: independent.wordHelp,
           }],
         };
         unit.practice = preparePractice(practice, unit.practice || {});
@@ -768,6 +769,7 @@
       for (const i of queue) {
         for (const field of ["outcomes", "attempts", "hints", "responses", "results", "reviews", "modelAssists"])
           delete state[field][i];
+        delete state.vocabularyHints?.[i];
       }
       state.queue = queue;
       state.index = queue[0];
@@ -819,7 +821,9 @@
             first.append(node("summary", "Read your first draft"), node("p", original, "al-saved-draft"));
             item.append(first);
           }
-          item.append(node("p", state.drafts[i], flow.paper ? "al-saved-draft" : null));
+          const draft = node("p", state.drafts[i], flow.paper ? "al-saved-draft" : null);
+          draft.dataset.wordHelpIgnore = "";
+          item.append(draft);
           const criteria = node("ul");
           q.points.forEach((point, j) => {
             const answer = state.reviews[i]?.choices?.[j];
@@ -853,6 +857,7 @@
     function render(moveFocus = false, animate = false) {
       block.replaceChildren();
       if (state.completed) {
+        window.ALevelVocabulary?.setAssessment(block, { completed: true });
         renderReview(moveFocus, animate);
         return;
       }
@@ -1058,6 +1063,7 @@
         };
         if (!flow.paper && review.original) {
           previousDraft = node("details");
+          previousDraft.dataset.wordHelpIgnore = "";
           previousDraft.hidden = review.original === state.drafts[i];
           previousDraft.append(node("summary", "Read your first draft"), node("p", review.original));
           criteria.append(previousDraft);
@@ -1184,6 +1190,19 @@
       if (flow.review) help.append(flow.review);
       if (flow.extra && (!flow.interpretation || q.guided)) help.append(flow.extra);
       if (help.children.length > 1) block.append(help);
+      window.ALevelVocabulary?.setAssessment(block, {
+        completed: accepted || revealed || Boolean(review.open),
+        ...q.wordHelp,
+        reveal() {
+          if (!block.isConnected || state.index !== i || hasCompletedTask(i) || state.reviews[i]?.open) return false;
+          if (!q.guided && !writing && !state.attempts[i] && !state.vocabularyHints?.[i]) {
+            state.vocabularyHints ||= {};
+            state.vocabularyHints[i] = true;
+            persist();
+          }
+          return true;
+        },
+      });
       if (moveFocus) focus(question.tagName === "DETAILS" ? question.querySelector("summary") : stimulusHeading || prompt);
 
       form.onsubmit = event => {
@@ -1265,7 +1284,7 @@
         state.attempts[i] = attempts;
         state.results[i] = { kind: correct ? "accepted" : "incorrect", ...(matched ? { matched } : {}), ...(feedback ? { feedback } : {}) };
         state.outcomes[i] = !correct ? "needs-practice" : q.guided ? "guided" :
-          attempts > 1 ? "corrected" : state.hints[i] ? "hint-supported" :
+          attempts > 1 ? "corrected" : (state.hints[i] || state.vocabularyHints?.[i]) ? "hint-supported" :
             state.modelAssists[i] ? "model-supported" : "independent";
         persist();
         render(false, correct);
@@ -1532,10 +1551,24 @@
       data.drawingCalibration = {...state};
       save(data);
     }
+    function refreshVocabulary() {
+      window.ALevelVocabulary?.setAssessment(panel, {
+        completed: !panel.open || Boolean(state.outcome),
+        incidental: ["micrograph"],
+        targets: ["magnification", "scale-bar"],
+        reveal() {
+          if (!panel.open || !panel.isConnected || state.outcome) return false;
+          state.helped = true;
+          persist();
+          return true;
+        },
+      });
+    }
     function render(animate = false) {
       input.value = state.draft || "";
       input.readOnly = Boolean(state.outcome);
       check.hidden = Boolean(state.outcome);
+      refreshVocabulary();
       if (state.outcome) {
         feedback.dataset.kind = "correct";
         feedback.innerHTML = KeystoneFeedback.markup(state.outcome === "corrected" ? "corrected" : "correct", { animate });
@@ -1552,6 +1585,7 @@
     hint.ontoggle = () => {
       if (hint.open && !state.outcome) { state.helped = true; persist(); }
     };
+    panel.ontoggle = refreshVocabulary;
     form.onsubmit = event => {
       event.preventDefault();
       if (state.outcome) return;
@@ -1675,6 +1709,7 @@
     block.append(exercise, scalePractice(), paperDrawing(bar));
     function drawReview(review, moveFocus) {
       currentStage(bar, "review");
+      window.ALevelVocabulary?.setAssessment(exercise, { completed: true });
       const heading = node("h3", "Review your drawings");
       const completion = node("p");
       completion.innerHTML = KeystoneFeedback.markup("complete", { label: "Drawing set complete", animate: moveFocus });
@@ -1728,6 +1763,7 @@
       function show(animate = false) {
         exercise.replaceChildren();
         const item = pool[at];
+        window.ALevelVocabulary?.setAssessment(exercise, { completed: Boolean(session.outcome) });
         const complete = item.scope === "complete";
         currentStage(bar, "guided");
         exercise.append(

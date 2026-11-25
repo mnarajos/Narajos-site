@@ -36,6 +36,7 @@ window.ALevelTeachingFamilies = {
       },
       {
         kind: "number",
+        wordHelp: { incidental: ["estimate"] },
         ...withStimulus(
           "A calibration line crosses 0% change at −500 kPa.",
           "Estimate the tissue water potential in kPa.",
@@ -574,6 +575,7 @@ window.ALevelTeachingFamilies = {
       {
         catchup: "a1-enzfactors",
         kind: "choice",
+        wordHelp: { incidental: ["infer"] },
         ...withStimulus(
           "An enzyme was irreversibly inactivated. Free inhibitor is washed away, and no new enzyme is supplied.",
           "What can be inferred?",
@@ -1039,6 +1041,7 @@ window.ALevelTeachingFamilies.practical = {
     },
     {
       kind: "choice", catchup: "a5-chromat",
+      wordHelp: { incidental: ["solvent-front"] },
       ...withStimulus(
           "An unknown pigment and a reference pigment travel the same fraction of the distance to the solvent front on one chromatogram.",
           "Suggest the best next comparison to investigate whether they are the same compound.",
@@ -1170,6 +1173,7 @@ window.ALevelTeachingFamilies.evidence = {
   tasks: [
     {
       kind: "choice", guided: true, catchup: "a6-glucal",
+      wordHelp: { incidental: ["absorbance", "estimate"] },
       ...withStimulus(
           "The glucose calibration is linear from 0 to 8 mmol dm⁻³. A sample measured under the same conditions as the standards has an absorbance of 0.46. The nearest standards read 0.38 at 4 mmol dm⁻³ and 0.54 at 6 mmol dm⁻³.",
           "Which method gives the appropriate estimate?",
@@ -1186,6 +1190,7 @@ window.ALevelTeachingFamilies.evidence = {
     },
     {
       kind: "number", unit: "%", answer: 25, catchup: "a2-osmosis",
+      wordHelp: { incidental: ["immerse"] },
       ...withStimulus(
           "A tissue sample has a mass of 1.60 g before immersion and 1.20 g afterwards.",
           "What percentage of its starting mass was lost?",
@@ -1196,6 +1201,7 @@ window.ALevelTeachingFamilies.evidence = {
     },
     {
       kind: "choice",
+      wordHelp: { targets: ["null-hypothesis", "significance-level", "p-value"] },
       ...withStimulus(
           "A randomised experiment compares mean leaf growth between two treatments. The null hypothesis is that the treatments produce the same mean leaf growth. The investigators set a 5% significance level before collecting data. An appropriate test gives P = 0.18.",
           "Which statement is supported?",
@@ -1212,6 +1218,7 @@ window.ALevelTeachingFamilies.evidence = {
     },
     {
       kind: "writing", catchup: "p3s-methods",
+      wordHelp: { incidental: ["evaluate"] },
       ...withStimulus(
           "Researchers used the same method to sample mayfly larvae at river sites upstream and downstream of towns. At each site they also measured water temperature and dissolved oxygen.",
           "Use the data to evaluate the claim that higher temperature alone accounts for the lower mean number of larvae per sample at downstream sites.",
