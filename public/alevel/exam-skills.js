@@ -70,11 +70,13 @@
     }
   });
 
-  function table(caption, headers, rows, highlights = [], paper = false) {
+  function table(caption, headers, rows, highlights = [], paper = false, gene = false) {
     const wrap = node(paper ? "al-paper-scroll" : "div", null, "al-table"),
       t = node("table");
     if (paper) wrap.dataset.label = caption;
-    t.createCaption().textContent = caption;
+    const tableCaption = t.createCaption();
+    tableCaption.textContent = caption;
+    if (gene) tableCaption.classList.add("sr-only");
     const hr = t.createTHead().insertRow();
     headers.forEach((h, i) => {
       const th = node("th", h);
@@ -93,7 +95,12 @@
       });
     });
     wrap.append(t);
-    return wrap;
+    if (!gene) return wrap;
+    const container = node("div", null, "al-gene-table");
+    const visibleCaption = node("p", caption, "al-gene-caption");
+    visibleCaption.setAttribute("aria-hidden", "true");
+    container.append(visibleCaption, node("p", "Scroll the table horizontally to see all columns.", "al-gene-scroll-hint"), wrap);
+    return container;
   }
   function enlargePlot(figure, name) {
     const dialog = node("dialog", null, "al-figure-dialog");
@@ -317,7 +324,7 @@
   }
 
   function model(host, family, state, persist, finish, finishLabel = "Try with support", backToIdea = null) {
-    const paper = paperRoutes[family.id];
+    const paper = paperRoutes[family.id] || (family.id === "geneExpression" ? { stimulus: "Investigation" } : null);
     const block = node("section", null, "al-teaching al-model");
     const heading = node("h2", "Worked example");
     const panel = node("div", null, "al-step");
@@ -368,7 +375,7 @@
         panel.replaceChildren(steps, node("p", (index + 1) + " of " + (last + 1), "al-task-count"));
       }
       announcement.textContent = "Step " + (index + 1) + " of " + (last + 1) + ". " + family.model[index];
-      art.replaceChildren(family.evidence ? table(...family.evidence, family.evidenceHighlights?.[index], paper) : visual(family.visual, index));
+      art.replaceChildren(family.evidence ? table(...family.evidence, family.evidenceHighlights?.[index], paper, family.id === "geneExpression") : visual(family.visual, index));
       previous.disabled = index === 0 && !backToIdea;
       previous.textContent = index === 0 && backToIdea ? "Key idea" : "Previous step";
       next.textContent = index < last ? "Next step" : finishLabel;
@@ -684,7 +691,7 @@
         if (q.stimulus) stimulus.append(node("p", q.stimulus));
         for (const paragraph of q.passage || []) stimulus.append(node("p", paragraph));
         if (q.visual) stimulus.append(visual(q.visual));
-        if (q.evidence) stimulus.append(table(...q.evidence, [], flow.paper));
+        if (q.evidence) stimulus.append(table(...q.evidence, [], flow.paper, family.id === "geneExpression"));
         question.append(stimulus);
         if (flow.paper) {
           prompt = node("h3", q.prompt, "al-task-prompt");
@@ -696,7 +703,7 @@
       } else {
         prompt = node("h3", q.prompt, "al-task-prompt");
       }
-      prompt.id = "al-current-question";
+      prompt.id = family.id === "geneExpression" ? "al-gene-expression-question" : "al-current-question";
       question.append(prompt);
 
       const form = node("form");
@@ -847,7 +854,7 @@
           field.append(node("legend", point));
           const repair = q.repairs && node("p", q.repairs[j], "al-repair");
           if (repair) {
-            repair.id = "al-repair-" + j;
+            repair.id = "al-repair-" + (family.id === "geneExpression" ? "gene-expression-" : "") + j;
             repair.hidden = review.choices[j] !== "revise";
           }
           for (const [value, text] of [["included", "Included"], ["revise", "Needs work"]]) {
@@ -1867,6 +1874,12 @@
       const family = families[id];
       host.append(node("h1", family.title));
       journey(host, family, { context: contextualLink(family, "exam-" + id) });
+      if (id === "regulation") {
+        const investigation = node("section", null, "al-paper-practice al-gene-expression");
+        investigation.append(node("h2", "Gene expression investigations"));
+        host.append(investigation);
+        journey(investigation, window.ALevelPaperPractice.geneExpression, { paper: { stimulus: "Investigation" } });
+      }
       const followOn = { interpret: "passages", practical: "investigations", evidence: "investigations", extended: "essaywriting" }[id];
       if (followOn) host.append(quietLink(window.ALevelPaperPractice[followOn].title, "#exam-" + followOn));
     },
