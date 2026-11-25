@@ -8,6 +8,82 @@ const root=path.resolve("public");
 const failures=[];
 const requireTrue=(condition,message)=>{if(!condition)failures.push(message);};
 const read=relative=>readFileSync(path.join(root,relative),"utf8");
+const siteOrigin = "https://narajos.com";
+const requiredSharingFields = ["og:title", "og:description", "og:image", "og:image:width", "og:image:height",
+ "og:image:type", "og:image:alt", "og:url", "og:type", "og:site_name",
+ "twitter:card", "twitter:title", "twitter:description", "twitter:image", "twitter:image:alt"];
+const pngSignature = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
+
+function pngSize(relative) {
+ const file = path.join(root, relative);
+ if (!existsSync(file) || !statSync(file).isFile()) return;
+ const png = readFileSync(file);
+ if (png.length >= 33 && png.subarray(0, 8).equals(pngSignature) && png.toString("ascii", 12, 16) === "IHDR") {
+  return `${png.readUInt32BE(16)}x${png.readUInt32BE(20)}`;
+ }
+}
+
+function htmlTags(html, tag) {
+ const tags = new RegExp(`<${tag}(?=[\\s/>])((?:[^"'<>]|"[^"]*"|'[^']*')*)>`, "gi");
+ return [...html.matchAll(tags)].map(([, attributes]) => Object.fromEntries(
+  [...attributes.matchAll(/([^\s"'<>/=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+)))?/g)]
+   .map(([, name, doubleQuoted, singleQuoted, bare]) => [name.toLowerCase(), doubleQuoted ?? singleQuoted ?? bare ?? ""])
+ ));
+}
+
+function checkSharing(relative, html) {
+ // Strip non-markup content before looking for metadata that a crawler can read without scripts.
+ const markup = html.replace(/<!--[\s\S]*?-->|<(style|template)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, "");
+ const head = /<head\b[^>]*>([\s\S]*?)<\/head\s*>/i.exec(markup)?.[1] ?? "";
+ const links = htmlTags(head, "link");
+ const icons = links.filter(link => link.rel?.toLowerCase() === "icon");
+ const touchIcons = links.filter(link => link.rel?.toLowerCase() === "apple-touch-icon");
+ requireTrue(icons.length === 1 && icons[0].href === "/favicon.svg" && icons[0].type === "image/svg+xml",
+  "Expected one Narajos SVG favicon in " + relative);
+ requireTrue(touchIcons.length === 1 && touchIcons[0].href === "/apple-touch-icon.png" && touchIcons[0].sizes === "180x180",
+  "Expected one 180×180 Apple touch icon in " + relative);
+
+ const socialTags = source => htmlTags(source, "meta").flatMap(tag => ["name", "property"]
+  .filter(attribute => /^(og|twitter):/i.test(tag[attribute] ?? ""))
+  .map(attribute => ({ key: tag[attribute].toLowerCase(), attribute, content: tag.content })));
+ const tags = socialTags(head);
+ requireTrue(socialTags(markup).length === tags.length, "Social sharing metadata outside initial head in " + relative);
+ if (relative === "404.html") {
+  requireTrue(tags.length === 0, "Social sharing metadata on error page: " + relative);
+  return;
+ }
+
+ const canonical = `${siteOrigin}/${relative.replace(/index\.html$/, "")}`;
+ const canonicals = links.filter(link => link.rel?.toLowerCase() === "canonical");
+ requireTrue(canonicals.length === 1 && canonicals[0].href === canonical, "Incorrect canonical URL in " + relative);
+ const values = new Map();
+ for (const { key, attribute, content } of tags) {
+  const expectedAttribute = key.startsWith("og:") ? "property" : "name";
+  requireTrue(attribute === expectedAttribute, `Expected ${expectedAttribute} for ${key} in ${relative}`);
+  requireTrue(!values.has(key), `Duplicate ${key} in ${relative}`);
+  values.set(key, content);
+ }
+ for (const key of requiredSharingFields) {
+  requireTrue(values.get(key)?.trim(), `Missing ${key} in ${relative}`);
+ }
+ requireTrue(values.get("og:url") === canonical, "Open Graph URL disagrees with the canonical URL in " + relative);
+ requireTrue(values.get("twitter:card") === "summary_large_image", "Incorrect Twitter card type in " + relative);
+ for (const field of ["title", "description", "image", "image:alt"]) {
+  requireTrue(values.get(`twitter:${field}`) === values.get(`og:${field}`), `Twitter and Open Graph ${field} disagree in ${relative}`);
+ }
+
+ const image = values.get("og:image");
+ let imageUrl;
+ try { imageUrl = new URL(image); } catch {}
+ requireTrue(imageUrl?.origin === siteOrigin && !imageUrl.username && !imageUrl.password && imageUrl.pathname.endsWith(".png"),
+  "Expected an absolute HTTPS URL for a Narajos PNG preview in " + relative);
+ requireTrue(values.get("og:image:width") === "1200" && values.get("og:image:height") === "630" && values.get("og:image:type") === "image/png",
+  "Incorrect Open Graph PNG type or dimensions in " + relative);
+ if (imageUrl?.origin === siteOrigin) {
+  requireTrue(pngSize(imageUrl.pathname.slice(1)) === "1200x630", `Expected a 1200×630 PNG at ${image} in ${relative}`);
+ }
+}
+
 const fileList=[];
 function walk(directory){
  for(const name of readdirSync(directory)){
@@ -25,6 +101,8 @@ const required=[
 for(const p of required)requireTrue(existsSync(path.join(root,p)),"Missing public page: "+p);
 const simSlugs=["enzyme-kinetics","enzyme-inhibition","molecular-biology","bioenergetics","cardiac-cycle"];
 for(const slug of simSlugs)requireTrue(existsSync(path.join(root,"teaching/simulations",slug,"index.html")),"Missing simulation: "+slug);
+requireTrue(existsSync(path.join(root, "favicon.svg")) && /<svg\b/.test(read("favicon.svg")), "Missing Narajos SVG favicon");
+requireTrue(pngSize("apple-touch-icon.png") === "180x180", "Expected a 180×180 PNG Apple touch icon");
 let scriptCount=0,linkCount=0;
 for(const full of htmlFiles){
  const relative=path.relative(root,full).replaceAll(path.sep,"/");
@@ -44,6 +122,7 @@ for(const full of htmlFiles){
   }
   return "";
  });
+ checkSharing(relative, withoutScripts);
  const footers=(withoutScripts.match(/<footer\b[^>]*>[\s\S]*?<\/footer>/gi)||[]).join("\n");
  const copyright=footers.match(/<p\b[^>]*\bclass="[^"]*\bsite-copyright\b[^"]*"[^>]*>([\s\S]*?)<\/p>/i)?.[1];
  requireTrue(copyright?.replace(/\s+/g," ").trim()==="© 2026 <strong>Narajos</strong> <em>/nerr-RA-hoss/</em>","Missing or incorrect footer copyright: "+relative);
