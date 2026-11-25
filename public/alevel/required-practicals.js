@@ -63,10 +63,11 @@
     form.append(actions, result);
     host.append(form);
 
-    function finish(message, status) {
+    function finish(message, status, marker = "") {
       finished = true;
       result.dataset.outcome = status;
-      result.textContent = message;
+      result.innerHTML = marker;
+      result.append(marker ? " " + message : message);
       for (const input of field.querySelectorAll("input")) {
         if (input.type === "radio") input.disabled = true;
         else input.readOnly = true;
@@ -87,8 +88,13 @@
       const { correct, feedback } = evaluate(value);
       if (correct) {
         const assisted = !config.independent || supported || hint?.open;
-        const label = assisted ? "Correct with support." : revised ? "Correct after revision." : "Correct independently.";
-        finish(label + " " + feedback, assisted ? "supported" : revised ? "revised" : "independent");
+        const outcome = assisted ? "supported" : revised ? "revised" : "independent";
+        const marker = KeystoneFeedback.markup(outcome === "revised" ? "corrected" : "correct", {
+          key: config.prompt,
+          animate: true,
+          label: assisted ? "Correct with support." : undefined
+        });
+        finish(feedback, outcome, marker);
       } else {
         revised = true;
         result.dataset.outcome = "retry";
