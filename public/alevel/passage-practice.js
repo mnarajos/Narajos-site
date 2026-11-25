@@ -98,7 +98,7 @@
       ],
       modelAnswer: [
         "Stretch could open mechanically gated ion channels. An inward flow of positive ions would depolarise the sensory ending, and a large enough generator potential would bring the neurone to threshold. The recording establishes when impulses occur. Identifying the ions would require a separate measurement. As the socket shifts, the membrane is stretched less even though the hair stays bent. Fewer channels may remain open, so the generator potential can fall below threshold.",
-        "Holding the socket fixed preserves the stretch and the neurone fires repeatedly. There can still be a short refractory period after each action potential, but the repeated firing shows that recovery need not take the rest of the recording. The change in the stimulus at the membrane accounts for the silence.",
+        "Holding the socket fixed preserves the stretch and the neurone fires repeatedly. There can still be a short refractory period after each action potential, but the repeated firing shows that recovery need not take the rest of the recording. The comparison supports weaker membrane stretch as an explanation for the silence.",
       ],
       repairs: [
         "Which way would positive charge have to move across the sensory membrane to depolarise it? How could stretching the membrane cause that movement?",

@@ -63,6 +63,8 @@ jobs:
           npx playwright install --with-deps ${{ matrix.engine }}
       - name: Test A-level independent paper practice
         run: node scripts/check-alevel-paper-practice.mjs ${{ matrix.engine }}
+      - name: Test A-level question interpretation
+        run: node scripts/check-alevel-question-interpretation.mjs ${{ matrix.engine }}
       - name: Check representative Narajos flows
         run: node scripts/check-browser-engines.mjs ${{ matrix.engine }}
 
