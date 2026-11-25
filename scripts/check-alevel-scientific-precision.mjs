@@ -36,5 +36,34 @@ export function checkALevelScientificPrecision() {
   assert.match(collectingDuct.stimulus, /difference is the same/i);
   assert.match(collectingDuct.options[collectingDuct.answer], /faster net osmosis out of the duct/i);
 
+  const topicPage = new URL("../public/alevel/index.html", import.meta.url);
+  const lines = readFileSync(topicPage, "utf8").split("\n");
+  function topicQuestion(phrase) {
+    const line = lines.find(text => text.trimStart().startsWith('{"t":') && text.includes(phrase));
+    assert.ok(line, `Missing topic question containing ${phrase}`);
+    return JSON.parse(line.trim().replace(/,$/, ""));
+  }
+
+  const logGrowth = topicQuestion("A graph of bacterial numbers uses a log scale");
+  assert.match(logGrowth.q, /straight and rises/i);
+  assert.match(logGrowth.opts[logGrowth.a], /increasing exponentially/i);
+  const optimum = topicQuestion("the optimum temperature is exactly 40");
+  assert.match(optimum.opts2[optimum.a2], /highest measured mean/i);
+  assert.match(optimum.opts2[optimum.a2], /between tested temperatures/i);
+  assert.match(optimum.why, /SD bars describe variation/i);
+  const repeatability = topicQuestion("Which term describes this agreement");
+  assert.match(repeatability.q, /same method and equipment/i);
+  assert.equal(repeatability.opts[repeatability.a], "Repeatable");
+  assert.match(repeatability.opts2[repeatability.a2], /same person/i);
+  const boiledEnzyme = topicQuestion("Why include the mixture with boiled enzyme");
+  assert.match(boiledEnzyme.q, /otherwise identical/i);
+  assert.match(boiledEnzyme.q, /boiled and cooled/i);
+  assert.match(boiledEnzyme.opts[boiledEnzyme.a], /test whether active enzyme is needed/i);
+  assert.match(boiledEnzyme.why, /supports a role for active enzyme/i);
+  const heterozygotes = topicQuestion("What is the frequency of heterozygotes?");
+  assert.match(heterozygotes.q, /Hardy–Weinberg equilibrium/i);
+  assert.match(heterozygotes.q, /homozygous recessive/i);
+  assert.equal(heterozygotes.opts[heterozygotes.a], "0.48");
+
   console.log("A-level scientific precision: measurement, inference and gradient safeguards verified.");
 }

@@ -67,7 +67,6 @@
     panel.setAttribute("aria-labelledby", id + "-term");
     panel.setAttribute("aria-describedby", id + "-definition");
     panel.tabIndex = -1;
-    panel.setAttribute("autofocus", "");
 
     heading.id = id + "-term";
     heading.textContent = label;
@@ -79,19 +78,26 @@
       panel.hidePopover();
       trigger.focus({ preventScroll: true });
     });
+    trigger.addEventListener("click", event => {
+      event.preventDefault();
+      if (panel.matches(":popover-open")) {
+        panel.hidePopover();
+        return;
+      }
+      trigger.focus({ preventScroll: true });
+      panel.showPopover({ source: trigger });
+      position();
+      panel.focus({ preventScroll: true });
+    });
 
     panel.addEventListener("beforetoggle", event => {
       const open = event.newState === "open";
       trigger.setAttribute("aria-expanded", String(open));
       if (open) {
         active = { trigger, panel };
-        position();
       } else if (active?.panel === panel) {
         active = undefined;
       }
-    });
-    panel.addEventListener("toggle", event => {
-      if (event.newState === "open") position();
     });
 
     panel.append(heading, text, close);

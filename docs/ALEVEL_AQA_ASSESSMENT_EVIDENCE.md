@@ -35,6 +35,8 @@ At the start of the batch, the main topic lessons and vocabulary bank practised 
 
 An additional wording decision concerns insulin-stimulated glucose uptake. The current specification refers to **channel proteins** in its insulin wording. June 2019 Paper 2 Q05.3 explicitly accepts **carrier proteins** or **GLUT4** for that point. GLUT4 is a glucose carrier that mediates facilitated diffusion. Specify insulin-responsive tissues when teaching its recruitment to the membrane. [Specification §3.6][respond] · [2019 mark scheme][19p2ms] · [2019 examiner report][19p2er] · [Human GLUT4 structure and transport][glut4]
 
+The site teaches **murein** and **peptidoglycan** as two names for the same component of typical bacterial cell walls. The specification uses murein. June 2022 Paper 1 Q03.1 credits either name for the cell-wall feature. The lesson describes the material as sugar chains cross-linked by short peptides and limits the claim to typical bacterial cells. [Specification §3.2][cells] · [2022 mark scheme][22p1ms]
+
 An exact-term search across the sample can show what was found in those documents. It cannot determine what an examiner will accept for a different future question. The individual mark schemes themselves make the same distinction. [2024 Paper 1 mark scheme, introductory guidance][24p1ms]
 
 [spec]: https://www.aqa.org.uk/subjects/biology/a-level/biology-7402/specification
@@ -45,9 +47,11 @@ An exact-term search across the sample can show what was found in those document
 [exchange]: https://www.aqa.org.uk/subjects/biology/a-level/biology-7402/specification/subject-content/organisms-exchange-substances-with-their-environment
 [respond]: https://www.aqa.org.uk/subjects/biology/a-level/biology-7402/specification/subject-content/organisms-respond-to-changes-in-their-internal-and-external-environments-a-level-only
 [molecules]: https://www.aqa.org.uk/subjects/biology/a-level/biology-7402/specification/subject-content/biological-molecules
+[cells]: https://www.aqa.org.uk/subjects/biology/a-level/biology-7402/specification/subject-content/cells
 [starling]: https://pubmed.ncbi.nlm.nih.gov/20200043/
 [allostery]: https://goldbook.iupac.org/terms/view/A00240
 [glut4]: https://www.nature.com/articles/s41467-022-30235-5
+[22p1ms]: https://cdn.sanity.io/files/p28bar15/green/f987acd70736cc1cd34e5d07baf0786e28a0908e.pdf#page=10
 [23p1qp]: https://cdn.sanity.io/files/p28bar15/green/1cafdb1910459514697cb4be836a8880aa33af64.pdf
 [23p1ms]: https://cdn.sanity.io/files/p28bar15/green/21bd8032de54852a99cd6e118c09f0849f7a196b.pdf
 [23p1er]: https://cdn.sanity.io/files/p28bar15/green/7cd6ea4e1a7a7a1eeb0bce076bfd25c1c8a76cb4.pdf
