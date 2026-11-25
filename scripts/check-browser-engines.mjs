@@ -136,6 +136,7 @@ try {
   await response.getByRole("button", { name: "Check", exact: true }).press("Enter");
   const screeningResult = response.getByRole("status");
   assert(await screeningResult.locator('[data-learning-feedback="correct"]').isVisible());
+  await screeningResult.locator("summary").click();
   assert.match(await screeningResult.innerText(), /7 \+ 17 = 24/);
   assert(await response.getByRole("button", { name: "Check", exact: true }).isHidden());
   await fits();
