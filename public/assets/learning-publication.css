@@ -9,6 +9,12 @@ body {
   --course-guided: #7550a8;
 }
 
+.course-alevel :is(.companion-key, .al-key) h2,
+.course-human-biology [data-unit] :is(.k-eyebrow, .hb-teach-explain h2),
+.course-gcse :is(.key h2, .reteach .rt-h) {
+  color: var(--course-accent);
+}
+
 #main.wrap {
   padding-block: clamp(1rem, 2.5vw, 1.75rem) 2rem;
 }
@@ -107,46 +113,53 @@ main .kc-visual-art {
 }
 
 .course-alevel .paper-selection {
-  background: var(--acc-soft);
+  --paper-tint: color-mix(in srgb, var(--acc-soft) 94%, var(--course-accent));
+  background: var(--paper-tint);
   border: 0;
   border-block-start: 4px solid var(--course-accent);
   border-radius: var(--narajos-panel-radius);
 }
 
 .course-alevel .paper-selection a {
-  padding: .78rem clamp(.85rem, 3vw, 1.15rem);
-  border-block-end-color: color-mix(in srgb, var(--course-accent) 22%, var(--acc-soft));
+  padding: .8rem clamp(.85rem, 3vw, 1.2rem);
+  border-block-end-color: color-mix(in srgb, var(--course-accent) 26%, var(--paper-tint));
 }
 
 .course-alevel .paper-selection a:is(:hover, :focus-visible) {
-  background: color-mix(in srgb, var(--course-accent) 8%, var(--acc-soft));
+  background: color-mix(in srgb, var(--course-accent) 8%, var(--paper-tint));
 }
 
 .course-alevel .paper-selection .rt {
   color: var(--course-accent);
-  font-size: 1.1rem;
+  font-size: 1.17rem;
   font-weight: 750;
   line-height: 1.28;
 }
 
 .course-alevel .paper-selection .rs {
-  margin-block-start: .2rem;
+  margin-block-start: .28rem;
   font-size: .9rem;
   line-height: 1.4;
 }
 
 .course-alevel .topics .topic {
-  border-inline-start-width: 4px;
+  background: color-mix(in srgb, var(--course-surface) 90%, var(--tc));
+  border-inline-start-width: 3px;
   border-radius: var(--narajos-control-radius);
   box-shadow: none;
 }
 
-.course-alevel .topics a.topic:hover {
-  background: color-mix(in srgb, var(--course-surface) 94%, var(--tc));
+.course-alevel .topics a.topic:is(:hover, :focus-visible) {
+  background: color-mix(in srgb, var(--course-surface) 83%, var(--tc));
 }
 
-.course-alevel .companion-key h2 {
-  color: var(--course-accent);
+.course-alevel .kc-visual-art {
+  border-color: var(--course-rule);
+}
+
+.course-alevel .al-model .al-science-plot > svg {
+  background: color-mix(in srgb, var(--course-surface) 75%, var(--course-model-tint));
+  border-radius: var(--narajos-control-radius);
 }
 
 .course-alevel .companion-chunk {
@@ -185,6 +198,10 @@ main .kc-visual-art {
 .course-alevel .al-stages [data-stage="model"] { --stage-accent: var(--course-model); }
 .course-alevel .al-stages [data-stage="guided"] { --stage-accent: var(--course-guided); }
 .course-alevel .al-stages [data-stage="independent"] { --stage-accent: var(--course-accent); }
+
+.course-alevel .al-practice[data-guided] .al-task-heading {
+  color: var(--course-guided);
+}
 
 .course-alevel .al-exam .al-task-stimulus {
   border-inline-start-color: var(--course-rule);
@@ -239,6 +256,28 @@ main .kc-visual-art {
 
 .course-human-biology .hb-overview .k-home-unit :is(small, .k-unit-chev) {
   color: inherit;
+}
+
+.course-human-biology [data-unit="f170"] {
+  --course-accent: var(--k-teal);
+  --unit-tint: var(--k-teal-soft);
+}
+
+.course-human-biology [data-unit="f171"] {
+  --course-accent: var(--k-blue);
+  --unit-tint: var(--k-blue-soft);
+}
+
+.course-human-biology :is([data-unit="f170"], [data-unit="f171"]) .hb-prerequisite > summary {
+  width: fit-content;
+  padding-inline: .55rem;
+  border-radius: var(--narajos-control-radius);
+  background: var(--unit-tint);
+  color: var(--course-accent);
+}
+
+.course-human-biology :is([data-unit="f170"], [data-unit="f171"]) :is(.hb-unit-topics h2, .hb-more-practice summary) {
+  color: var(--course-accent);
 }
 
 .course-human-biology .hb-teaching-booklet {
@@ -375,6 +414,24 @@ main .kc-visual-art {
   background: var(--acc-soft);
 }
 
+.course-gcse[data-sci]:not([data-sci=""]) #main > h1 {
+  color: var(--course-accent);
+}
+
+.course-gcse[data-sci]:not([data-sci=""]) .topics a.topic {
+  background: color-mix(in srgb, var(--course-surface) 35%, var(--acc-soft));
+  border-radius: var(--narajos-control-radius);
+  padding-inline: .6rem;
+}
+
+.course-gcse[data-sci]:not([data-sci=""]) .topics a.topic:is(:hover, :focus-visible) {
+  background: color-mix(in srgb, var(--acc-soft) 90%, var(--course-accent));
+}
+
+.course-gcse[data-sci]:not([data-sci=""]) main .fig {
+  border-color: var(--course-rule);
+}
+
 .course-gcse .stage .concepts {
   grid-template-columns: minmax(0, 1fr);
   overflow-wrap: anywhere;
@@ -389,6 +446,13 @@ main .kc-visual-art {
 }
 
 .course-gcse .food-method thead th {
+  background: var(--acc-soft);
+}
+
+.course-gcse .food-method h2 {
+  width: fit-content;
+  padding: .2rem .55rem;
+  border-radius: var(--narajos-control-radius);
   background: var(--acc-soft);
 }
 

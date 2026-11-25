@@ -1,5 +1,7 @@
 # Narajos visual review for PR #86
 
+[Latest colour comparisons](final-colour.md) cover the final refinement at 390 px and 1280 px.
+
 These are matched Chromium captures at 390 × 844 and 1280 × 850 CSS pixels. Each comparison shows the published website without PR #86, the previous PR at commit `1f7a077`, and the revised PR. Mobile captures are arranged left to right. Desktop captures are stacked in the same order so each page can be read at its original width. All three use the same route and activity state. Figure and practice captures scroll to the named section.
 
 ## What changed in the rendered pages

@@ -17,6 +17,10 @@ export async function checkAssessmentJourneys(browser,base) {
     // Exercise the normal mobile entry and the authored application questions.
     // Test-hook jumps only locate the later questions; all responses are synthetic.
     const food=await context.newPage();
+    const checkFoodAnswer=async name=>{
+      await food.getByRole("radio",{name,exact:true}).press("Space");
+      await food.locator("#act").press("Enter");
+    };
     await food.addInitScript(()=>{window.name="kstest";});
     await food.goto(base+"/gcse/#lesson-b2-foodtests",{waitUntil:"domcontentloaded"});
     const teaching=food.getByRole("heading",{name:"Learn the method",exact:true});
@@ -61,8 +65,9 @@ export async function checkAssessmentJourneys(browser,base) {
     }
     const screenshot=await food.screenshot({fullPage:true});
     assert(screenshot.length>1000,"mobile food lesson screenshot is empty");
+    // A correct first pointer selection auto-checks. Wait for feedback before continuing.
     await food.getByText("To compare colours with a test that has no reducing sugar in it",{exact:true}).click();
-    await food.locator("#act").click();
+    await food.locator("#fb").waitFor();
     assert.match(await food.locator("#fb").innerText(),/Correct!/);
     await food.locator("#act").click();
     assert.equal(await food.getByRole("heading",{name:"Worked example",exact:true}).count(),0);
@@ -73,16 +78,13 @@ export async function checkAssessmentJourneys(browser,base) {
     assert.match(await food.locator(".food-worked").innerText(),/drink heated with Benedict’s turns green[\s\S]*reducing sugar was detected/i);
     assert.match(await food.locator("#qf legend").innerText(),/A sample stays blue after a Benedict/);
     assert(await worked.evaluate(el=>Boolean(el.compareDocumentPosition(document.querySelector("#qf")) & Node.DOCUMENT_POSITION_FOLLOWING)));
-    await food.getByText("No reducing sugar was detected in the sample",{exact:true}).click();
-    await food.locator("#act").click();
-    await food.getByText("The controls behaved as expected, but Benedict’s does not detect every sugar",{exact:true}).click();
-    await food.locator("#act").click();
+    await checkFoodAnswer("No reducing sugar was detected in the sample");
+    await checkFoodAnswer("The controls behaved as expected, but Benedict’s does not detect every sugar");
     assert.match(await food.locator("#fb").innerText(),/Correct!/);
 
     await food.evaluate(()=>window.__k.ev('L.i=L.queue.findIndex(q=>q.q.includes("A food sample turns iodine"));L.phase="q";showQ()'));
     assert.equal(await worked.count(),0);
-    await food.getByText("Both starch and reducing sugar detected",{exact:true}).click();
-    await food.locator("#act").click();
+    await checkFoodAnswer("Both starch and reducing sugar detected");
     assert.match(await food.locator("#fb").innerText(),/does not rule out non-reducing sugars/);
     await food.evaluate(()=>window.__k.ev('L.i=L.queue.findIndex(q=>q.q.includes("known glucose solution, tested"));L.phase="q";showQ()'));
     assert.equal(await worked.count(),0);
