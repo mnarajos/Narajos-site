@@ -62,8 +62,12 @@ try {
   await page.reload({ waitUntil: "domcontentloaded" });
   assert.equal(await feedback.textContent(), firstPraise);
   assert.equal(await feedback.getAttribute("data-feedback-animate"), null);
-  await page.getByRole("button", { name: "Record typed match" }).click();
+  const firstGrade = await page.getByRole("button", { name: "Record typed match" }).elementHandle();
+  await firstGrade.click();
   await enterExpectedAnswer();
+  await firstGrade.evaluate(button => button.click());
+  assert(await feedback.isVisible(), "A previous card’s grading control must not advance the new card");
+  await firstGrade.dispose();
   assert.notEqual(await feedback.textContent(), firstPraise);
   assert(await feedback.evaluate(marker => {
     document.querySelector("#kr-good").click();

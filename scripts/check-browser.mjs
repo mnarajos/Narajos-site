@@ -1675,7 +1675,9 @@ try{
  await microscopeCheck.getByRole("button",{name:/edges are straight/}).press("Enter");
  await microscopeCheck.getByRole("status").filter({hasText:/Some animal cells/}).waitFor();
  await microscopeCheck.getByRole("button",{name:"There is too little evidence to decide."}).press("Enter");
- await microscopeCheck.getByRole("status").filter({hasText:/Correct/}).waitFor();
+ const microscopeResult=microscopeCheck.getByRole("status");
+ await microscopeResult.locator('[data-learning-feedback="corrected"]').waitFor();
+ assert.match(await microscopeResult.innerText(), /Both types can have nuclei/);
  await checkReadingSpacing(navPage,"Year 7 cell diagrams");
  await navPage.goto(base+"/ks3/adaptation/");
  await navPage.getByText("Compare rock pocket mouse populations",{exact:true}).click();

@@ -6528,9 +6528,9 @@ function finishSlop(){
  if(!L||L.over)return;
  L.over=true;
  var sk=L.slop,lv=lvList(sk.id)||[{}],n=L.n,r=L.right,top=Math.min(L.lvMax||0,lv.length-1),done=!!L.mastered,qn=L.qcN||0;
- var stretch=done&&Object.values(CHALLENGE).includes(sk.id),completed=done||(sk.mix&&n>=L.mixN);
- var completion=completed?KeystoneFeedback.markup(stretch?"stretch":"complete",{
-  label:stretch?"Challenge practice complete":"Practice complete",animate:true
+ var challenge=done&&Object.values(CHALLENGE).includes(sk.id),completed=done||(sk.mix&&n>=L.mixN);
+ var completion=completed?KeystoneFeedback.markup("complete",{
+  label:challenge?"Challenge practice complete":"Practice complete",animate:true
  }):"Practice summary";
  var h='<p class="crumb"><a href="'+backTo(skBack()).href+'">← '+esc(backTo(skBack()).label.replace(/^← /,""))+'</a></p><h1>'+completion+'</h1><p class="lead">'+esc(sk.name)+'</p>'+
   '<ul class="rstats">'+stat("tick",String(n),'question'+(n===1?'':'s')+' practised · '+r+' right',n+' questions practised, '+r+' right')+

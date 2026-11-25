@@ -11,7 +11,7 @@ export async function checkHumanAssessment(browser, base) {
   const scheduler = "narajos-keystone-review-v1-ocr-human-biology-f170";
   const read = name => page.evaluate(key => JSON.parse(localStorage.getItem(key) || "null"), name);
   const action = name => page.locator('[data-k-action="' + name + '"]');
-  const checked = page.locator('[data-feedback-heading] :is([data-learning-feedback="correct"], [data-learning-feedback="stretch"])');
+  const checked = page.locator('[data-feedback-heading] [data-learning-feedback="correct"]');
   const errors = [];
   page.on("pageerror", error => errors.push(error.message));
   const fits = () => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 3);
@@ -97,6 +97,20 @@ export async function checkHumanAssessment(browser, base) {
       runOnly: ["wcag2a", "wcag2aa", "wcag21aa"]
     })).violations.map(rule => rule.id));
     assert.deepEqual(findings, []);
+
+    await page.goto(root + "?stretch#challenge/f171/clinical");
+    await page.getByRole("link", { name: /Comparing fracture support outcomes.*optional Stretch/ }).press("Enter");
+    await page.locator("#k-written").fill("The groups differ in fracture stability. That can affect alignment without a difference between treatments.");
+    await action("reveal").press("Enter");
+    await action("finish-review").press("Enter");
+    assert.equal(await page.locator("[data-learning-feedback]").count(), 0, "Self-review must remain ungraded");
+    await action("next").press("Enter");
+    const stretchComplete = page.getByRole("heading", { name: "Stretch activity complete" }).locator('[data-learning-feedback="complete"]');
+    assert(await stretchComplete.isVisible());
+    assert.equal(await stretchComplete.getAttribute("data-feedback-animate"), "");
+    await page.reload();
+    assert(await stretchComplete.isVisible());
+    assert.equal(await stretchComplete.getAttribute("data-feedback-animate"), null);
 
     await page.goto(root + "?flash#cards/f171-2.1");
     await page.getByRole("heading", { name: "Recall the biology" }).waitFor();

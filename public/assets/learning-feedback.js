@@ -4,7 +4,6 @@
   const praise = ["Correct!", "Well done!", "Nicely done!", "That’s right!"];
   const labels = {
     corrected: "You corrected your mistake!",
-    stretch: "Stretch activity completed!",
     complete: "Activity complete"
   };
   const tick = '<path class="learning-feedback__tick" d="m5 11 4 4 8-8" pathLength="1"/>';

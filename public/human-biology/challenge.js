@@ -12,6 +12,7 @@ var render=null,visible=false,lastRoute="",skillExampleStem="";
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(a){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[a];});}
 function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=b[i];b[i]=b[j];b[j]=t;}return b;}
 const methodKey=SK+"-mixed-method";
+const reviewedStretchCase="case-visual-cast-comparison";
 function contextualKey(skillId){return SK+"-catchup-"+skillId;}
 function topicKey(unit,scope){return SK+"-topic-"+unit+"/"+scope;}
 function sessionKey(item){
@@ -339,7 +340,7 @@ function showClinicalCases(){
  visible=false;
  const cases=all.filter(q=>q.unit==="f171"&&q.caseTitle);
  // Only this voluntary case-list entry has been reviewed as optional Stretch.
- const links=cases.map(q=>'<a class="k-action blue" href="#challenge/f171/'+esc(q.id)+'"><span class="k-icon">'+icon("book")+'</span><span><strong>'+esc(q.caseTitle)+(q.id==="case-visual-cast-comparison"?' <span class="stretch-icon" aria-hidden="true"></span><span class="sr-only"> (optional Stretch)</span>':'')+'</strong><small>'+q.marks+' marks · '+(q.marks===6?"Analyse":"Discuss")+'</small></span></a>');
+ const links=cases.map(q=>'<a class="k-action blue" href="#challenge/f171/'+esc(q.id)+'"><span class="k-icon">'+icon("book")+'</span><span><strong>'+esc(q.caseTitle)+(q.id===reviewedStretchCase?' <span class="stretch-icon" aria-hidden="true"></span><span class="sr-only"> (optional Stretch)</span>':'')+'</strong><small>'+q.marks+' marks · '+(q.marks===6?"Analyse":"Discuss")+'</small></span></a>');
  show('<div class="k-wrap"><p class="crumb"><a href="#challenge/f171">← F171</a></p><div class="k-unit-hero"><h1>Clinical case questions</h1><p>Write an answer, then compare your reasoning with an example and the key points.</p></div><details class="k-coverage"><summary>What the command words ask for</summary><dl>'+
   '<dt><strong>Describe</strong></dt><dd>State relevant observations, features or events.</dd>'+
   '<dt><strong>Explain</strong></dt><dd>Use a biological mechanism to show why something happens.</dd>'+
@@ -733,9 +734,8 @@ function drawQuestion(animateFeedback=false){
    // Requeued questions may follow a reveal or self-review. Match only a verified earlier error in the same question version.
    const earlierError=!q.assessmentRevision&&session.outcomes[earlierIndex]==="incorrect";
    const corrected=outcome==="corrected"&&!a.priorResponse&&(Boolean(a.correction)||earlierError);
-   const stretch=outcome==="independent"&&q.level==="stretch"&&!a.priorResponse;
-   const kind=corrected?"corrected":stretch?"stretch":"correct";
-   const label=stretch?"Challenge answered independently!":outcome==="supported"?"Correct with support.":outcome==="corrected"&&!corrected?"Correct on this attempt.":undefined;
+   const kind=corrected?"corrected":"correct";
+   const label=outcome==="supported"?"Correct with support.":outcome==="corrected"&&!corrected?"Correct on this attempt.":undefined;
    const fresh=animateFeedback&&!a.priorResponse&&(outcome==="independent"||outcome==="supported"||corrected);
    header=window.KeystoneFeedback.markup(kind,{key:session.index,animate:fresh,label});
   }
@@ -918,6 +918,9 @@ function outcomeSummary(old){
  if(old.needsReview)stats.push([old.needsReview,"to revisit from this set"]);
  return '<p class="lead">'+review+'</p><dl class="k-mini-stats k-outcome-stats">'+stats.map(function(stat){return '<div><dt>'+stat[1]+'</dt><dd>'+stat[0]+'</dd></div>';}).join("")+'</dl>';
 }
+function completedReviewedStretch(result){
+ return result.route==="challenge/f171/"+reviewedStretchCase&&["reviewed","review-needs-work"].includes(result.outcomes?.[0]);
+}
 function finish(){
  stopHintTimer();if(!session)return;
  var old=session;clearSession(old);session=null;visible=false;
@@ -926,11 +929,11 @@ function finish(){
  ["correctFirst","objectiveFirst","outcomes","earlierPractice","guidedFirst","selfReviewed","quickChecksPassed","quickChecksSeen","unit","skillId","point","returnTo","route","maxSkillLevel","needsReview"].forEach(function(key){result[key]=old[key];});
  try{localStorage.setItem(CK,JSON.stringify(result));}catch(_){}
  if(window.KeystoneHumanApp)window.KeystoneHumanApp.replaceRoute("challenge/review");
- showCompletion(result,new Set(old.queue).size>=4);
+ showCompletion(result,new Set(old.queue).size>=4||completedReviewedStretch(result));
 }
 function showCompletion(old,animate=false){
  var summary=outcomeSummary(old);
- const label=old.skillId?"Skills set complete":old.point?"Sequence complete":"Practice complete";
+ const label=completedReviewedStretch(old)?"Stretch activity complete":old.skillId?"Skills set complete":old.point?"Sequence complete":"Practice complete";
  const heading='<h1>'+window.KeystoneFeedback.markup("complete",{label,animate})+'</h1>';
  if(old.skillId){
   var sk=skills.get(old.skillId);

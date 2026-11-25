@@ -255,7 +255,7 @@ const best=forcedQuestion("best-f170-magnification");
 assert(main.innerHTML.includes("Choose the scientifically accurate explanation")&&main.innerHTML.includes("Which scientific reason supports"),"Two-step reasoning must present both choices");
 main.querySelector=selector=>selector==='input[name="kbest"]:checked'?{value:String(best.correct)}:selector==='input[name="kreason"]:checked'?{value:String(best.reasonCorrect)}:null;
 clickAction("check");
-assert.match(main.innerHTML,/data-learning-feedback="(?:correct|stretch)" data-feedback-animate/,"Two-step answer should require both correct components");
+assert.match(main.innerHTML,/data-learning-feedback="correct" data-feedback-animate/,"Two-step answer should require both correct components");
 assert(main.innerHTML.includes("Expected answer"));
 assert(JSON.parse(data.get("narajos-human-challenge-v2-progress"))[best.id].independent===1,"Correct independent reasoning should be counted");
 const written=forcedQuestion("health-parkinsons-therapy");
@@ -281,6 +281,14 @@ assert.match(main.innerHTML,/<dt>self-reviewed<\/dt><dd>1<\/dd>/);
 app.route("challenge/review",h=>main.innerHTML=h);
 assert.match(main.innerHTML,/<dt>self-reviewed<\/dt><dd>1<\/dd>/);
 assert(!data.get("narajos-human-challenge-v2-completed").includes("Revision after comparing."));
+
+forcedQuestion("case-visual-cast-comparison");
+main.querySelector=selector=>selector==="#k-number, #k-text, #k-written"?{value:"The initial differences could account for the difference seen at follow-up."}:null;
+clickAction("reveal");
+clickAction("finish-review");
+clickAction("next");
+assert.match(main.innerHTML,/Practice complete/,"The same case within topic practice has ordinary completion feedback");
+assert.doesNotMatch(main.innerHTML,/Stretch activity complete/);
 
 clickAction("self-good");
 assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-progress"))[written.id].seen,1,"Repeated review must not create another attempt");

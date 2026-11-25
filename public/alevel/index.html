@@ -6617,8 +6617,7 @@ function check(){
  if(ok&&!written&&!L.cur.idk){
   var successes=L.feedbackSuccesses||(L.feedbackSuccesses=new Set()),animate=!successes.has(q0),key=successes.size;
   successes.add(q0);
-  var stretch=!L.slop&&q.tier==="H"&&independent&&!isQC&&q.t!=="cloze";
-  head=KeystoneFeedback.markup(corrected?"corrected":stretch?"stretch":"correct",{key:key,animate:animate,label:stretch?"Stretch question complete!":undefined});
+  head=KeystoneFeedback.markup(corrected?"corrected":"correct",{key:key,animate:animate});
  }
  if(isQC){L.qcN=(L.qcN||0)+1;if(independent)L.qcOK=(L.qcOK||0)+1;}
  if(isQC&&!ok)note="Not yet. Read the explanation, and you will see this idea again before the end of the lesson."+(note?" "+note:"");
