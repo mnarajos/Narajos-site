@@ -70,6 +70,7 @@ window.ALevelQuestionInterpretation = {
         model: "Most stomata close after the leaf is shaded. There are fewer open pores for water vapour to diffuse through, so less water leaves the leaf per minute.",
       },
       guided: {
+        wordHelp: { incidental: ["enzyme", "initial-rate"], targets: ["describe"] },
         stimulus: "A student measures the initial rate of an enzyme-catalysed reaction at four temperatures.",
         table: {
           caption: "Initial rate at each tested temperature",
@@ -174,6 +175,7 @@ window.ALevelQuestionInterpretation = {
         model: "Group R has a lower initial water potential. Since the external water potential is the same for both groups, there is a larger water-potential difference into group R, so water enters more rapidly by osmosis.",
       },
       guided: {
+        wordHelp: { targets: ["transcription", "translation"] },
         stimulus: "Biologists compare treated and untreated plant cells. The amount of transporter mRNA per cell and the rate of transcription of the transporter gene are the same in both groups. A separate measurement shows that each treated cell synthesises fewer new transporter molecules per minute. This measurement distinguishes new protein synthesis from subsequent protein breakdown.",
         question: "Suggest an explanation for the lower rate of new transporter synthesis in the treated cells.",
         prompt: "Choose the suggestion that can explain the result and fits the other observations.",
@@ -259,6 +261,7 @@ window.ALevelQuestionInterpretation = {
       },
       guided: {
         kind: "group",
+        wordHelp: { incidental: ["respirometer"], targets: ["suggest", "explain"] },
         stimulus: "A student measures total oxygen uptake by germinating peas in two respirometers at different temperatures.",
         question: "Suggest one way to make the temperature comparison valid and explain why the change helps.",
         prompt: "Assign each part of a student’s response to the demand it fulfils.",
