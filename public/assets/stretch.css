@@ -1,3 +1,7 @@
-/* Shared marker; the asset remains provisional pending design approval. */
+/* Shared Stretch marker. */
 .stretch-label { display: inline-flex; align-items: center; gap: .2em; white-space: nowrap; }
-.stretch-icon { display: inline-block; flex: none; width: 20px; height: 20px; vertical-align: middle; background: currentColor; -webkit-mask: url('/assets/stretch.svg') center / contain no-repeat; mask: url('/assets/stretch.svg') center / contain no-repeat; }
+.stretch-icon { display: inline-block; flex: none; width: 24px; height: 24px; vertical-align: middle; background: currentColor; -webkit-mask: url('/assets/stretch.svg') center / contain no-repeat; mask: url('/assets/stretch.svg') center / contain no-repeat; }
+
+.stretch-activity-link { text-decoration: none; }
+.stretch-activity-link .stretch-activity-title { text-decoration: underline; }
+.stretch-activity-link .stretch-icon { margin-left: .2em; }
