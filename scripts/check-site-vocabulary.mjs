@@ -23,6 +23,8 @@ for (const unit of ["f170","f171","f172","f173","f174","f175","f176","f177"]) {
 }
 assert.match(entries.find(entry => entry.id === "gcse-mitosis").catchup, /topic=mitosis$/);
 assert.equal(entries.find(entry => entry.id === "gcse-microscope-resolution").catchup, null);
+assert.deepEqual(Array.from(entries.find(entry => entry.id === "gcse-mole").tiers), ["FH"]);
+assert.deepEqual(Array.from(entries.find(entry => entry.id === "gcse-refraction-foundation").tiers), ["F"]);
 
 const preferenceKey = "keystone.alevel.vocabulary.preference.v1";
 const screenshotDirectory = process.env.NARAJOS_SITE_VOCAB_SCREENSHOTS || "/tmp";
@@ -139,6 +141,17 @@ async function checkCourseContexts(page) {
   const cellNucleus = await lookup(page, "nucleus", "Nucleus (cell)");
   assert.match(cellNucleus, /cell.*genetic material/i);
   assert.notEqual(atomicNucleus, cellNucleus);
+  await close(page).click();
+
+  await page.goto(base + "/science-catch-up/lesson/?topic=salts-and-reactivity&year=10");
+  await page.getByRole("button", {name:"Pause check"}).click();
+  const foundationOxidation = await lookup(page, "oxidation", "Oxidation");
+  assert.match(foundationOxidation, /gaining oxygen/i);
+  assert.doesNotMatch(foundationOxidation, /electron/i);
+  await close(page).click();
+  await page.locator("details > summary").filter({hasText:"Higher Tier"}).click();
+  const higherOxidation = await lookup(page, "oxidation", "Oxidation");
+  assert.match(higherOxidation, /loss of electrons/i);
   await close(page).click();
 
   await page.goto(base + "/teaching/enzyme-investigations/ks3/");

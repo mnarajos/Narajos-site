@@ -1822,7 +1822,7 @@ window.SiteVocabularyData.push({
   group("chemistry", ["c3"], "/science-catch-up/lesson/?topic=reacting-masses", [
     {id:"gcse-conservation-of-mass", term:"Conservation of mass",
       meaning:"The total mass stays the same when no substances enter or leave the system."},
-    {id:"gcse-mole", term:"Mole", variants:["moles"], match:{cue:"mol|particle|atom|mass|chemical|substance|formula"},
+    {id:"gcse-mole", term:"Mole", variants:["moles"], tiers:["FH"], match:{cue:"mol|particle|atom|mass|chemical|substance|formula"},
       meaning:"A unit for an amount of substance.", here:"One mole contains 6.02 × 10²³ particles."},
     {id:"gcse-concentration-chemistry", term:"Concentration", variants:["concentrations"], match:{cue:"solution|solute|mass|volume|dilut|dissolv|chemical"},
       meaning:"The amount of a substance dissolved in a given volume of solution."}
@@ -1833,9 +1833,15 @@ window.SiteVocabularyData.push({
       meaning:"Using electricity to break down an ionic compound that is molten or dissolved."},
     {id:"gcse-electrolyte", term:"Electrolyte", variants:["electrolytes"], support:"selective",
       meaning:"A liquid or solution containing mobile ions that can carry charge."},
-    {id:"gcse-oxidation", term:"Oxidation", variants:["oxidised","oxidized"], support:"selective",
+    {id:"gcse-oxidation-foundation", term:"Oxidation", variants:["oxidised","oxidized"], tiers:["F"], support:"selective",
+      match:{cue:"oxygen|oxide"},
+      meaning:"In reactions involving oxygen, oxidation means gaining oxygen."},
+    {id:"gcse-oxidation", term:"Oxidation", variants:["oxidised","oxidized"], tiers:["FH"], support:"selective",
       meaning:"Gain of oxygen or loss of electrons.", here:"At the positive electrode during electrolysis, negative ions can lose electrons."},
-    {id:"gcse-reduction", term:"Reduction (chemistry)", variants:["reduction","reduced"], match:{cue:"electron|oxygen|oxide|redox|electrolysis|metal"},
+    {id:"gcse-reduction-foundation", term:"Reduction (chemistry)", variants:["reduction","reduced"], tiers:["F"],
+      match:{cue:"oxygen|oxide"},
+      meaning:"In reactions involving metal oxides, reduction means losing oxygen."},
+    {id:"gcse-reduction", term:"Reduction (chemistry)", variants:["reduction","reduced"], tiers:["FH"], match:{cue:"electron|oxygen|oxide|redox|electrolysis|metal"},
       meaning:"Loss of oxygen or gain of electrons."},
     {id:"gcse-neutralisation", term:"Neutralisation", variants:["neutralization","neutralise","neutralised"],
       meaning:"A reaction between an acid and a base that produces a salt and water."},
@@ -1984,7 +1990,9 @@ window.SiteVocabularyData.push({
       meaning:"The maximum displacement of a point on a wave from its undisturbed position."},
     {id:"gcse-infrared-radiation", term:"Infrared radiation", variants:["infrared"], support:"selective",
       meaning:"A type of electromagnetic radiation that can transfer energy by heating."},
-    {id:"gcse-refraction", term:"Refraction", support:"selective",
+    {id:"gcse-refraction-foundation", term:"Refraction", tiers:["F"], support:"selective",
+      meaning:"A change in direction that can happen when a wave passes from one material into another."},
+    {id:"gcse-refraction", term:"Refraction", tiers:["FH"], support:"selective",
       meaning:"A change in the direction of a wave as its speed changes at a boundary.", here:"A wave travelling straight across the boundary may change speed without changing direction."}
   ]);
 
@@ -2044,6 +2052,7 @@ window.SiteVocabularyData.push({
     "molecular-melting": ["gcse-covalent-bond", "gcse-intermolecular-forces"],
     "mass-conservation": ["gcse-conservation-of-mass"],
     "solution-concentration": ["gcse-concentration-chemistry"],
+    "salts-and-reactivity": ["gcse-oxidation-foundation", "gcse-reduction-foundation"],
     "salt-electrolysis": ["gcse-electrolysis", "gcse-electrolyte", "gcse-oxidation", "gcse-reduction"],
     "dynamic-equilibrium": ["gcse-dynamic-equilibrium"],
     "energy-stores": ["gcse-energy-store", "gcse-conservation-energy"],
@@ -2058,7 +2067,7 @@ window.SiteVocabularyData.push({
   }
   for (const id of ["gcse-tissue", "gcse-organ", "gcse-organ-system", "gcse-magnification",
     "gcse-microscope-resolution", "gcse-stem-cell", "gcse-digestion", "gcse-bile", "gcse-relative-mass",
-    "gcse-polymer", "gcse-formulation", "gcse-work-done", "gcse-momentum", "gcse-refraction"]) {
+    "gcse-polymer", "gcse-formulation", "gcse-work-done", "gcse-momentum", "gcse-refraction", "gcse-refraction-foundation"]) {
     entries.find(entry => entry.id === id).catchup = null;
   }
 })();
