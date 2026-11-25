@@ -212,7 +212,7 @@
       hint: "Use the two neighbouring readings where the mass change switches sign."
     });
     ui.stretch(application, "Convert the concentration into a water potential",
-      "At atmospheric pressure the solution’s water potential is approximately its solute potential. For an ideal dilute solution, Ψ ≈ −CRT, where C is sucrose concentration, R is 8.314 kPa dm³ mol⁻¹ K⁻¹ and T is absolute temperature. At 20 °C, 0.28 mol dm⁻³ gives about −680 kPa. This conversion is approximate. A reference table or an independent calibration can supply water potentials for the actual solutions.");
+      "At atmospheric pressure the solution’s water potential is approximately its solute potential. For an ideal dilute solution, Ψ ≈ −CRT, where C is sucrose concentration, R is 8.314 kPa dm³ mol⁻¹ K⁻¹ and T is absolute temperature. For a different tissue matching 0.25 mol dm⁻³ at 20 °C, this gives about −610 kPa. This conversion is approximate. A reference table or an independent calibration can supply water potentials for the actual solutions.");
   });
 
   practicals.register(4, function (host, ui) {

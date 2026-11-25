@@ -1,6 +1,6 @@
 # RP7 leaf-pigment chromatography
 
-The [activity](/alevel/#practical-7) shows the TLC apparatus, a worked calculation and a measurable photograph. The existing [paper chromatography catch-up](/alevel/#catchup-a5-chromat) and its question bank remain available. Students use the left lane for two different Rf estimates, then compare the observed separations in the outer lanes.
+The [activity](https://narajos.com/alevel/#practical-7) shows the TLC apparatus, a worked calculation and a measurable photograph. The existing [paper chromatography catch-up](https://narajos.com/alevel/#catchup-a5-chromat) and its question bank remain available. Students use the left lane for two different Rf estimates, then compare the observed separations in the outer lanes.
 
 ## Sources
 

@@ -4605,7 +4605,7 @@ function topicCard(id){
 }
 function rpItem(r){
  var c=DATA[r[2]]&&DATA[r[2]].byId[r[3]];if(!c)return '<li class="concept locked"><div class="chead"><h3>'+r[0]+'. '+esc(r[1])+'</h3><span class="status">Coming soon</span></div></li>';
- return '<li class="concept '+(isMastered(r[2],c)?'mastered':'ready')+'"><div class="chead"><h3>'+r[0]+'. '+esc(r[1])+'</h3>'+(isMastered(r[2],c)?'<span class="status">✓ Independent pass</span>':'')+'</div><p class="spec">'+esc(DATA[r[2]].code+': '+DATA[r[2]].title)+'</p><div class="rp-links">'+practicalLink(r[0],r[1])+'<a class="btn" href="#lesson-'+r[2]+'-'+r[3]+'">Open lesson<span class="sr-only">: '+esc(r[1])+'</span></a></div></li>';
+ return '<li class="concept '+(isMastered(r[2],c)?'mastered':'ready')+'"><div class="chead"><h3>'+r[0]+'. '+esc(r[1])+'</h3>'+(isMastered(r[2],c)?'<span class="status">✓ Topic questions passed</span>':'')+'</div><p class="spec">'+esc(DATA[r[2]].code+': '+DATA[r[2]].title)+'</p><div class="rp-links">'+practicalLink(r[0],r[1])+'<a class="btn" href="#lesson-'+r[2]+'-'+r[3]+'">Open lesson<span class="sr-only">: '+esc(r[1])+'</span></a></div></li>';
 }
 function paperDone(p){return p.topics.filter(function(t){return DATA[t];}).every(function(t){return availList(t).every(function(c){return isMastered(t,c);});});}
 function showPaperOld(p,focus){
