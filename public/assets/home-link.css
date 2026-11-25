@@ -44,8 +44,30 @@ main .opt:focus-within, main .k-option:focus-within {
 .site-copyright strong { font-weight: 700; }
 .site-copyright em { font-style: italic; }
 
-/* Small footer link in the independently styled revision and teaching tools. */
-footer .resource-terms{display:inline-block;margin:.3rem .5rem .25rem 0;color:inherit;font-size:.85rem;text-underline-offset:.15em}
+/* Keep the copyright and legal navigation together below app-specific content. */
+.resource-footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  column-gap: 1rem;
+}
+.resource-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+}
+.resource-footer-links a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  color: inherit;
+  font-size: .85rem;
+  text-underline-offset: .15em;
+}
+@media (max-width: 600px) {
+  .resource-footer-row { flex-direction: column; align-items: flex-start; }
+}
 
 /* Lowercase the visual wordmarks while retaining their full names in the markup. */
 .keystone-lockup .keystone-type,

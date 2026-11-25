@@ -48,6 +48,7 @@ for(const full of htmlFiles){
  const copyright=footers.match(/<p\b[^>]*\bclass="[^"]*\bsite-copyright\b[^"]*"[^>]*>([\s\S]*?)<\/p>/i)?.[1];
  requireTrue(copyright?.replace(/\s+/g," ").trim()==="© 2026 <strong>Narajos</strong> <em>/nerr-RA-hoss/</em>","Missing or incorrect footer copyright: "+relative);
  requireTrue((footers.match(/\/nerr-RA-hoss\//g)||[]).length===1,"Expected one footer pronunciation: "+relative);
+ requireTrue(!/(?:designed|made) by Dr\.?\s+Narajos\b|\bVersion\s+1\.1\b/i.test(footers),"Obsolete project credit or version in footer: "+relative);
  // Local absolute hrefs must point to files or folders with an index.
  const links=[...withoutScripts.matchAll(/<a\b[^>]*\bhref=["'](\/[^"']*)["']/gi)].map(m=>m[1]);
  for(const href of links){
