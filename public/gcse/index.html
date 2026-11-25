@@ -450,6 +450,8 @@ table.eqs-t{width:auto;border-collapse:collapse}table.eqs-t th{text-align:left;f
 <link rel="stylesheet" href="/assets/topic-finder.css">
 <script src="/assets/topic-finder.js"></script>
 <link rel="stylesheet" href="/assets/learning-publication.css">
+<link rel="stylesheet" href="/assets/context-vocabulary.css">
+<link rel="stylesheet" href="/assets/vocabulary-panel.css">
 </head>
 <body class="course-gcse">
 <a class="skip" href="#main">Skip to content</a>
@@ -485,6 +487,10 @@ table.eqs-t{width:auto;border-collapse:collapse}table.eqs-t th{text-align:left;f
 </footer>
 <div id="live" class="sr-only" role="status" aria-live="polite"></div>
 
+<script src="/assets/vocabulary-panel.js"></script>
+<script src="/assets/vocabulary-engine.js"></script>
+<script src="/assets/vocabulary-school-data.js"></script>
+<script src="/assets/vocabulary-courses.js"></script>
 <script src="/assets/science-answer.js"></script>
 <script src="/assets/learning-feedback.js"></script>
 <script src="/assets/spaced-review.js"></script>
@@ -637,7 +643,7 @@ DATA.b1={
 
  {id:"diffusion",st:2,title:"Diffusion",spec:"4.1.3.1",needs:["cells"],key:["<b>Diffusion</b> is the spreading out of particles of a gas, or of a substance in solution, resulting in a <b>net movement from an area of higher concentration to an area of lower concentration</b>.","It is <b>passive</b>: it does not need energy from respiration.","Examples: oxygen and carbon dioxide in gas exchange, and urea moving from cells into the blood plasma to be excreted by the kidneys.","The rate increases with a <b>steeper concentration gradient</b>, a <b>higher temperature</b> and a <b>larger membrane surface area</b>."],gate:"Osmosis is a special case of diffusion, and active transport is defined as the opposite of it. Get this right and both follow.",
   qs:[
-   {"t":"mcq","tier":"F","q":"In simple words, what is diffusion?","opts":["Net movement of particles from high to low concentration","Net movement of particles from low to high concentration","Movement of water across a partially permeable membrane","Movement of particles using energy from respiration"],"a":0,"fb":[null,"Moving from a lower to a higher concentration is active transport.","That describes osmosis, which is one type of diffusion.","Diffusion is passive – it needs no energy from respiration."],"why":"In simple words: net movement of particles from high to low concentration. The next question asks for the exam wording."},
+   {"t":"mcq","tier":"F","q":"In simple words, what is diffusion?","wordHelp":{"targets":["gcse-diffusion"]},"opts":["Net movement of particles from high to low concentration","Net movement of particles from low to high concentration","Movement of water across a partially permeable membrane","Movement of particles using energy from respiration"],"a":0,"fb":[null,"Moving from a lower to a higher concentration is active transport.","That describes osmosis, which is one type of diffusion.","Diffusion is passive – it needs no energy from respiration."],"why":"In simple words: net movement of particles from high to low concentration. The next question asks for the exam wording."},
    {"t":"mcq","tier":"F","q":"Now in exam wording. Which is the best definition of diffusion?","opts":["Net movement of particles from a higher to a lower concentration","Net movement of particles from a lower to a higher concentration","Movement of water across a partially permeable membrane","Movement of particles using energy released by respiration"],"a":0,"fb":[null,"Moving from a lower to a higher concentration is active transport.","That describes osmosis, which is one type of diffusion.","Diffusion is passive – it needs no energy from respiration."],"why":"Simple wording: ‘Net movement of particles from high to low concentration’. Exam wording: ‘Net movement of particles from a higher to a lower concentration’. Diffusion is the net movement of particles from an area of higher concentration to an area of lower concentration. It happens in gases and solutions and needs no energy."},
    {"t":"cloze","tier":"F","q":"Complete the sentences about diffusion.","text":"Diffusion is the {net} movement of particles from an area of {higher} concentration to an area of {lower} concentration. Diffusion is {passive}: it does not need energy from respiration.","extra":["active","total"],"why":"High → low, no energy needed."},
    {"t":"mcq","tier":"F","fig":"particles","q":"The diagram shows particles of a gas in a box. There is no barrier in the middle. In which direction will there be a net movement of particles?","opts":["From left to right","From right to left","Equally in every direction","No net movement"],"a":0,"fb":[null,"That would be from a lower to a higher concentration.","Particles move in every direction, but more move out of the crowded left side.","The particles are not evenly spread, so there will be net movement until they are."],"why":"The left side has a higher concentration, so there is a net movement from left to right."},
@@ -2438,7 +2444,7 @@ DATA.b7={
   qs:[
    {"t":"mcq","tier":"F","q":"How should a student place quadrats randomly in a field?","opts":["Use random numbers as coordinates on a grid","Throw the quadrat over a shoulder without looking","Put the quadrats where there are the most plants","Place the quadrats in a straight line across the field"],"a":0,"fb":[null,"Throwing is not truly random and is unsafe.","Choosing places adds bias.","A line of quadrats is a transect, used for a different purpose."],"mt":[null,"Method flaw","Method flaw","Mixed up"],"why":"Random coordinates avoid bias, so the sample is representative of the whole area."},
    {"t":"two","tier":"F","q":"A student wants to find how the number of daisies changes from the edge of a wood out into a field. Which method should she use?","opts":["A transect with quadrats at regular intervals","Quadrats placed at random in the field","Counting every daisy in the field"],"a":0,"q2":"Which is the best reason?","opts2":["It shows how distribution changes across the habitat","Random quadrats show how numbers change with distance","A transect gives a more accurate total population","Counting every plant is the only valid method"],"a2":0,"mt2":[null,"Mixed up","Wrong idea","Method flaw"],"why":"A transect samples along a line, so it shows how a species’ distribution changes with distance."},
-   {"t":"num","tier":"F","q":"A field has an area of 1000 m². In 10 quadrats, each 1 m², a student counts 30 daisies in total. Estimate the number of daisies in the whole field.","a":3000,"unit":"daisies","why":"Mean per quadrat = 30 ÷ 10 = 3 daisies per m². Population ≈ 3 × 1000 = 3000.","mt":"Missed a step"},
+   {"t":"num","tier":"F","q":"A field has an area of 1000 m². In 10 quadrats, each 1 m², a student counts 30 daisies in total. Estimate the number of daisies in the whole field.","wordHelp":{"incidental":["gcse-quadrat"]},"a":3000,"unit":"daisies","why":"Mean per quadrat = 30 ÷ 10 = 3 daisies per m². Population ≈ 3 × 1000 = 3000.","mt":"Missed a step"},
    {"t":"sort","tier":"F","q":"Precision check. An exam question asks: ‘Explain why the number of foxes falls after the number of rabbits falls.’ Sort each answer.","cats":["Correct","Too vague","Incorrect"],"items":[["Foxes have less food, so fewer foxes survive and breed",0],["There are fewer rabbits",1],["The foxes are hungry",1],["The rabbits eat the foxes",2],["With less prey, fewer foxes survive and breed",0],["Foxes compete with rabbits for grass",2]],"why":"Link the change to food supply, then to survival and breeding. ‘Fewer rabbits’ only repeats the data."},
    {"t":"two","tier":"F","q":"A forest is cleared and the dead trees are left to rot. What happens to the amount of carbon dioxide in the air?","opts":["It increases","It decreases","It stays the same"],"a":0,"q2":"Which is the best reason?","opts2":["Decomposers release carbon dioxide by respiration as they feed","The rotting wood takes in carbon dioxide from the air by photosynthesis","Carbon in the wood evaporates into the air as it rots","Decomposers turn the carbon in the wood into oxygen as they feed"],"a2":0,"mt2":[null,"Wrong process","Wrong idea","Wrong idea"],"why":"Microorganisms decompose the dead wood. Their respiration returns carbon to the atmosphere as carbon dioxide."},
    {"t":"two","tier":"F","fixed":true,"q":"A question asks: “Explain why quadrats should be placed randomly.” (1 mark) Which answer would score more marks?","cards":["To avoid bias, so the sample is representative of the whole area.","So that the results are fair and accurate."],"opts":["Answer A","Answer B","They would score the same"],"a":0,"q2":"What is the best reason?","opts2":["B is too vague: ‘fair’ does not say what is avoided","B earns the mark because ‘fair’ and ‘accurate’ are key words","A is longer and has more detail, so it must score more","Both answers say the method is good, which earns the mark"],"a2":0,"mt2":[null,"Keyword trap","Length trap","Same-score trap"],"why":"The mark is for avoiding bias, so the sample represents the whole area.","hint":"Mark each answer against what the question asks for. Look for correct key words used in the right way, and for points that are linked together."},
@@ -2484,7 +2490,7 @@ DATA.c5={
   qs:[
     {"t":"two","tier":"H","q":"Required practical: the thermometer reads 0.5 °C too high every time it is used. How does this affect the temperature change she calculates?","opts":["It is not affected","It is 0.5 °C too high","It is 1.0 °C too high"],"a":0,"q2":"Which is the best reason?","opts2":["Both readings are 0.5 °C too high, so the difference is the same","Every reading is too high, so the change must be too high as well","The error is added to the start and to the final readings","A systematic error is always doubled when two readings are used"],"a2":0,"why":"Temperature change = final − start. Both are 0.5 °C too high, so the systematic error cancels out.","mt":[null,"Wrong idea","Wrong idea"],"mt2":[null,"Wrong idea","Wrong idea","Wrong idea"]},
     {"t":"mcq","tier":"F","q":"Required practical: the student swaps a thermometer that reads to 1 °C for one that reads to 0.1 °C. This improves the…","opts":["Resolution","Repeatability","Reproducibility","Validity"],"a":0,"fb":[null,"Repeatability is about the same person getting similar results.","Reproducibility is about other people getting similar results.","Validity is about whether the method answers the question."],"why":"Resolution is the smallest change an instrument can show: 0.1 °C instead of 1 °C.","mt":[null,"Mixed up","Mixed up","Mixed up"]},
-   {"t":"mcq","tier":"F","q":"What happens in an exothermic reaction?","opts":["Energy is transferred to the surroundings","Energy is taken in from the surroundings","Energy is destroyed by the reaction","Energy is created by the reaction itself"],"a":0,"fb":[null,"That is an endothermic reaction.","Energy cannot be destroyed.","Energy cannot be created."],"why":"The surroundings get hotter."},
+   {"t":"mcq","tier":"F","q":"What happens in an exothermic reaction?","wordHelp":{"targets":["gcse-exothermic"]},"opts":["Energy is transferred to the surroundings","Energy is taken in from the surroundings","Energy is destroyed by the reaction","Energy is created by the reaction itself"],"a":0,"fb":[null,"That is an endothermic reaction.","Energy cannot be destroyed.","Energy cannot be created."],"why":"The surroundings get hotter."},
    {"t":"match","tier":"F","q":"Match each reaction to its type.","pairs":[["Combustion","Exothermic"],["Neutralisation","Exothermic"],["Thermal decomposition","Endothermic"],["Citric acid + sodium hydrogencarbonate","Endothermic"]],"why":"Burning and neutralising give out energy; breaking down by heat takes it in."},
    {"t":"match","tier":"F","q":"Match each everyday use to the type of reaction.","pairs":[["Hand warmer","Exothermic"],["Self-heating can","Exothermic"],["Cooling sports injury pack","Endothermic"]],"why":"Warming uses exothermic reactions; cooling uses endothermic ones."},
    {"t":"mcq","tier":"F","fig":"cupCal","q":"In the practical, why is the reaction carried out in a polystyrene cup with a lid?","opts":["To reduce energy transfer to the surroundings","To make the reaction happen faster and more safely","To stop the solutions reacting","To increase the mass of solution in the cup"],"a":0,"fb":[null,"Insulation does not change the rate.","The solutions still react.","The cup does not change the mass."],"why":"Polystyrene is a good insulator, so the temperature change measured is more accurate."},
@@ -3044,7 +3050,7 @@ DATA.p2={
   qs:[
     {"t":"mcq","tier":"F","fig":"wireRes","q":"Required practical: the ammeter shows 0.01 A before the circuit is switched on. What should the student do?","opts":["Reset the ammeter, or take 0.01 A off each reading","Ignore it, because 0.01 A is too small to matter","Take more readings and calculate a mean","Use an ammeter with a lower resolution"],"a":0,"fb":[null,"It shifts every current reading, so every resistance is wrong.","Repeats cannot remove a zero error.","A lower resolution would not remove the shift."],"why":"This is a zero error: every reading is 0.01 A too high. Correct it before calculating resistance.","mt":[null,"Wrong idea","Wrong idea","Wrong idea"]},
    {"t":"gen","tier":"F","g":"ohm"},
-   {"t":"mcq","tier":"F","q":"How is a voltmeter connected to measure the potential difference across a lamp?","opts":["In parallel with the lamp","In series with the lamp","In place of the lamp","In series with the battery"],"a":0,"fb":[null,"Ammeters are connected in series.","The lamp must stay in the circuit.","Ammeters are connected in series."],"why":"A voltmeter measures the difference between two points, so it goes across the component."},
+   {"t":"mcq","tier":"F","q":"How is a voltmeter connected to measure the potential difference across a lamp?","wordHelp":{"incidental":["gcse-potential-difference"]},"opts":["In parallel with the lamp","In series with the lamp","In place of the lamp","In series with the battery"],"a":0,"fb":[null,"Ammeters are connected in series.","The lamp must stay in the circuit.","Ammeters are connected in series."],"why":"A voltmeter measures the difference between two points, so it goes across the component."},
    {"t":"two","tier":"F","q":"The resistance of a circuit is increased. The potential difference stays the same. What happens to the current?","opts":["It decreases","It increases","It stays the same"],"a":0,"opts2":["A greater resistance opposes the flow of charge more","A greater resistance pushes more charge round the circuit","Current depends on the potential difference alone","Resistance and current are the same thing"],"a2":0,"why":"I = V ÷ R, so a larger R gives a smaller I.","alt":"resup"},
    {"t":"two","tier":"F","q":"The length of a wire is doubled. What happens to its resistance?","opts":["It doubles","It halves","It stays the same"],"a":0,"opts2":["Resistance is directly proportional to length","Resistance is inversely proportional to length","Resistance depends on the current alone","Longer wires have fewer electrons to carry charge"],"a2":0,"why":"Twice the length gives twice the resistance."},
    {"t":"mcq","tier":"F","fig":"wireRes","q":"In the practical on the resistance of a wire, why is the circuit switched off between readings?","opts":["To stop the wire heating up","To save the battery for later","To let the ammeter reset to zero","To make the wire shorter"],"a":0,"fb":[null,"Saving the battery is not the main reason.","Ammeters do not need resetting.","Switching off does not change the length."],"why":"Temperature affects resistance, so it must be kept constant."},
@@ -6045,6 +6051,7 @@ function sndTxt(on){return '<svg viewBox="0 0 24 24" width="20" height="20" aria
 var main=$("#main");
 var L=null;
 function render(h,focus){
+ window.SiteVocabulary?.setPage({topic:L&&L.t, tier:L&&L.tier||S.tier});
  document.body.classList.toggle("inl",!!L);main.innerHTML=h;pfade();window.scrollTo(0,0);
  if(focus!==false){var f=$("h1",main);if(f){f.setAttribute("tabindex","-1");f.focus({preventScroll:true});}}
 }
@@ -6279,6 +6286,15 @@ function showQ(){
   '<p id="msg" class="msg" aria-live="assertive"></p><div id="fb" class="fb" hidden></div>'+
   '<div class="actions'+(q.graphs||q.dc?' flow':'')+'"><button class="btn primary big" id="act" type="submit">Check</button><details class="question-help" id="question-help"><summary>Need help?</summary><button type="button" class="help-hint" id="hint" aria-label="Hint" title="Hint">Show a hint</button><button type="button" class="dkbtn" id="dk">I don’t know – show me</button></details></div></form>';
  render(h);wireTop();
+ var wordHelp=q.wordHelp||{},activity=L,current=L.cur,questionForm=$("#qf");
+ window.SiteVocabulary?.setAssessment(questionForm,{
+  incidental:wordHelp.incidental,targets:wordHelp.targets,
+  reveal:function(){
+   if(L!==activity||L.cur!==current||L.phase!=="q"||!questionForm.isConnected)return false;
+   current.hinted=true;
+   return true;
+  }
+ });
  if(q.t==="short")L.cur.compareDraft=NarajosAssessment.bindWrittenDraft(q.q,$("#sa"));
  if(q.t==="order")drawOrder(false);
  var dkb=$("#dk");if(dkb)dkb.onclick=dontKnow;var rsb=$("#resbtn");if(rsb)rsb.onclick=function(){openRes(rsb.dataset.k);};if(q.t==="tap")wireTap(q);if(q.t==="build")wireBuild(q);if(q.t==="match"&&q.tp)wirePairs(q);if(q.t==="dotx")wireDx(q);
@@ -6400,6 +6416,7 @@ function check(){
  if((!ok||helped)&&!isQC){if(L.slop)L.qcNext=true;else if(!L.qc)scheduleQC(q0);}
  if(L.slop){L.n++;if(independent)L.right++;var tl=$("#tally");if(tl&&!L.rvMode)tl.textContent="Score: "+L.right+" of "+L.n;L.lvMsg=L.rvMode?"":lvStep(independent,q0);}
  L.phase="fb";
+ window.SiteVocabulary?.setAssessment(f,{completed:true});
  if(!L.rvMode)(L.past=L.past||[]).push({q:q,q0:q0});
  var fb=$("#fb");fb.className="fb "+(written||L.dk?"dk":ok?"good":"bad");
  var explanation=q.why&&(!ok||!q.answerInWhy)?'<p>'+fmt(q.why)+'</p>':'';
@@ -6492,7 +6509,7 @@ window.addEventListener("popstate",function(e){var st=e.state;if(!(st&&(st.kl||s
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".qback");if(b){e.preventDefault();goBack();return;}
  var a=e.target.closest&&e.target.closest("a.exit");if(a&&!a.classList.contains("finpr")&&answered()){e.preventDefault();askLeave();}});
 document.addEventListener("keydown",function(e){if(e.altKey||e.ctrlKey||e.metaKey||e.shiftKey||e.isComposing)return;if(e.key!=="ArrowLeft"&&e.key!=="ArrowRight")return;
- if(!L||document.getElementById("leavebox"))return;var t=e.target,tag=t&&t.tagName;if(tag==="INPUT"||tag==="SELECT"||tag==="TEXTAREA"||(t&&t.isContentEditable))return;
+ if(!L||document.getElementById("leavebox"))return;var t=e.target,tag=t&&t.tagName;if(tag==="INPUT"||tag==="SELECT"||tag==="TEXTAREA"||(t&&(t.isContentEditable||t.closest(".context-vocabulary-term,.vocabulary-toolbar,.vocabulary-panel"))))return;
  var g=document.getElementById("gear");if(g&&g.open)return;if(document.querySelector(".respanel:not([hidden]),.resp:not([hidden])"))return;
  if(e.key==="ArrowLeft"){if(goBack())e.preventDefault();}
  else if(L.rvMode||L.phase==="fb"){e.preventDefault();next();}});

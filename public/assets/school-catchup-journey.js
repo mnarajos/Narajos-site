@@ -311,6 +311,28 @@ export function mountJourney(host, model, lesson) {
 
   function renderCheck() {
     const q = currentQuestion();
+    // These definitions have been reviewed against the complete question,
+    // its choices and the feedback. Other terms remain unavailable while the
+    // check is active.
+    const reviewed = {
+      "vaccine-memory": {
+        "What do antibodies recognise?": { incidental: ["gcse-pathogen"] }
+      },
+      "photosynthesis-limits": {
+        "Which gas does photosynthesis produce?": { targets: ["gcse-photosynthesis"] }
+      }
+    };
+    const wordHelp = reviewed[id]?.[q.prompt] || {};
+    window.SiteVocabulary?.setAssessment(dialog, viewOnly || state.explained || state.correct ? { completed: true } : {
+      incidental: wordHelp.incidental,
+      targets: wordHelp.targets,
+      reveal() {
+        if (!dialog.isConnected || state.correct || state.explained || currentQuestion() !== q) return false;
+        state.helped = true;
+        write();
+        return true;
+      }
+    });
     const heading = element("h2", q.prompt, "school-check-question");
     heading.id = "school-check-heading";
     heading.tabIndex = -1;
@@ -449,6 +471,7 @@ export function mountJourney(host, model, lesson) {
       write();
       showVerdict(state.correct);
       if (state.correct) {
+        window.SiteVocabulary?.setAssessment(dialog, { completed: true });
         support.hidden = true;
         choices.disabled = true;
         submit.hidden = true;

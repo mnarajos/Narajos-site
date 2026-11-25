@@ -16,6 +16,7 @@ window.KeystoneHumanLessons = {
     ],
     guided: {
       prompt: "A region of small-intestine epithelium loses many of its microvilli. Which step links that damage to the organ's job?",
+      wordHelp: { incidental: ["aaq-epithelium"], targets: ["aaq-microvilli"] },
       options: [
         ["Less epithelial membrane is available for absorption.", ""],
         ["The muscles of the stomach can no longer contract.", "Follow the affected tissue first. Microvilli are projections of the absorptive epithelial surface."],
