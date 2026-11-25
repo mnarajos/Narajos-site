@@ -63,16 +63,31 @@ try {
     await rate.getByRole("textbox").fill("1/45 s⁻¹");
     await rate.getByRole("textbox").press("Enter");
     assert.equal(await rate.getByRole("status").getAttribute("data-outcome"), "supported");
+    assert.equal(await rate.locator('[data-learning-feedback="correct"]').textContent(), "Correct with support.");
 
     const method = page.locator(".rp-question").last();
     await method.getByRole("button", { name: "Reveal answer" }).click();
     assert.equal(await method.getByRole("status").getAttribute("data-outcome"), "revealed");
+    assert.equal(await method.locator("[data-learning-feedback]").count(), 0);
     assert.equal(await method.getByRole("button", { name: "Check answer" }).getAttribute("aria-disabled"), "true");
     assert.equal(await page.evaluate(() => localStorage.getItem("keystone-aqa-alevel-biology-v1")), lessonProgress);
     await page.reload();
     await method.getByRole("radio", { name: /warm the milk and buffered trypsin separately/i }).check();
     await method.getByRole("button", { name: "Check answer" }).click();
-    assert.equal(await method.getByRole("status").getAttribute("data-outcome"), "independent");
+    const correct = method.getByRole("status");
+    assert.equal(await correct.getAttribute("data-outcome"), "independent");
+    assert.match(await correct.locator('[data-learning-feedback="correct"]').textContent(), /^(Correct!|Well done!|Nicely done!|That’s right!)$/);
+    assert.match(await correct.textContent(), /Mixing starts the reaction/);
+
+    await page.reload();
+    await method.getByRole("radio", { name: /start the timer immediately/i }).check();
+    await method.getByRole("button", { name: "Check answer" }).click();
+    assert.equal(await correct.getAttribute("data-outcome"), "retry");
+    assert.equal(await correct.locator("[data-learning-feedback]").count(), 0);
+    await method.getByRole("radio", { name: /warm the milk and buffered trypsin separately/i }).check();
+    await method.getByRole("button", { name: "Check answer" }).click();
+    assert.equal(await correct.getAttribute("data-outcome"), "revised");
+    assert.equal(await correct.locator('[data-learning-feedback="corrected"]').textContent(), "You corrected your mistake!");
 
     await page.goto(course + "#practical-2");
     const zoom = page.getByRole("button", { name: /enlarge/i }).first();
