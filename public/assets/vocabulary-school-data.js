@@ -2029,6 +2029,38 @@ window.SiteVocabularyData.push({
     {id:"gcse-anomaly", term:"Anomalous result", variants:["anomalous results","anomaly","anomalies"],
       meaning:"A result that does not fit the pattern of the other results."}
   ]);
+
+  // Group defaults are useful only when the linked lesson teaches the
+  // concept. Override unrelated defaults or choose the more specific lesson.
+  const catchupOverrides = {
+    "active-transport": ["gcse-active-transport"],
+    "mitosis": ["gcse-mitosis"],
+    "gas-exchange": ["gcse-surface-area"],
+    "respiration-exercise": ["gcse-respiration"],
+    "reflex-response": ["gcse-reflex", "gcse-receptor", "gcse-stimulus"],
+    "ruler-drop": ["gcse-reaction-time"],
+    "selection-and-variation": ["gcse-natural-selection"],
+    "quadrat-evidence": ["gcse-quadrat", "gcse-transect"],
+    "molecular-melting": ["gcse-covalent-bond", "gcse-intermolecular-forces"],
+    "mass-conservation": ["gcse-conservation-of-mass"],
+    "solution-concentration": ["gcse-concentration-chemistry"],
+    "salt-electrolysis": ["gcse-electrolysis", "gcse-electrolyte", "gcse-oxidation", "gcse-reduction"],
+    "dynamic-equilibrium": ["gcse-dynamic-equilibrium"],
+    "energy-stores": ["gcse-energy-store", "gcse-conservation-energy"],
+    "domestic-electricity": ["gcse-alternating-current"],
+    "circuit-resistance": ["gcse-resistance"],
+    "spring-evidence": ["gcse-extension-spring"],
+    "infrared-evidence": ["gcse-infrared-radiation"],
+    "motor-effect": ["gcse-motor-effect"]
+  };
+  for (const [lesson, ids] of Object.entries(catchupOverrides)) {
+    for (const id of ids) entries.find(entry => entry.id === id).catchup = "/science-catch-up/lesson/?topic=" + lesson;
+  }
+  for (const id of ["gcse-tissue", "gcse-organ", "gcse-organ-system", "gcse-magnification",
+    "gcse-microscope-resolution", "gcse-stem-cell", "gcse-digestion", "gcse-bile", "gcse-relative-mass",
+    "gcse-polymer", "gcse-formulation", "gcse-work-done", "gcse-momentum", "gcse-refraction"]) {
+    entries.find(entry => entry.id === id).catchup = null;
+  }
 })();
 
 /* OCR H049/H149 Human Biology, version 8. Examples describe general

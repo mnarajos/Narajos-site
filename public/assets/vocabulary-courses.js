@@ -115,7 +115,14 @@
       return human && /^(?:challenge|skills|practice|cards)\//.test(route) ||
         gcse && Boolean(main.querySelector("#fcf,#revact,#tstop,#kr-input,.kr-review-card"));
     },
-    catchupHref(href) { return href; }
+    catchupHref(href) {
+      const destination = new URL(href, location.href);
+      // Avoid reloading the lesson the student is already reading.
+      if (destination.pathname === location.pathname &&
+          destination.searchParams.get("topic") &&
+          destination.searchParams.get("topic") === params.get("topic")) return undefined;
+      return href;
+    }
   });
 
   window.SiteVocabulary = vocabulary;

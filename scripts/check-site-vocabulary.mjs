@@ -21,6 +21,8 @@ for (const topic of ["b1","b2","b3","b4","b5","b6","b7","c1","c2","c3","c4","c5"
 for (const unit of ["f170","f171","f172","f173","f174","f175","f176","f177"]) {
   assert(entries.some(entry => entry.courses.includes("aaq") && entry.topics.includes(unit)), unit);
 }
+assert.match(entries.find(entry => entry.id === "gcse-mitosis").catchup, /topic=mitosis$/);
+assert.equal(entries.find(entry => entry.id === "gcse-microscope-resolution").catchup, null);
 
 const preferenceKey = "keystone.alevel.vocabulary.preference.v1";
 const screenshotDirectory = process.env.NARAJOS_SITE_VOCAB_SCREENSHOTS || "/tmp";
@@ -122,6 +124,8 @@ async function checkCourseContexts(page) {
   await page.goto(base + "/science-catch-up/lesson/?topic=atomic-number");
   const chemistry = await lookup(page, "ion", "Ion");
   assert.match(chemistry, /charged particle/i);
+  assert.equal(await panel(page).getByRole("link", {name:"Open catch-up lesson"}).count(), 0,
+    "The current catch-up lesson is not offered as a link to itself");
   await close(page).click();
   await page.goto(base + "/science-catch-up/lesson/?topic=energy-stores");
   const physics = await lookup(page, "work done", "Work done");
