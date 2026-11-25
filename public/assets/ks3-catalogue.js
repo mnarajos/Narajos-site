@@ -288,13 +288,14 @@ function renderQuestion(question, number, offset) {
   heading.id = "catchup-q" + number;
   article.setAttribute("aria-labelledby", heading.id);
   const options = [...question.distractors];
-  options.splice(offset % 3, 0, [question.answer, "Correct. " + question.correctFeedback]);
+  options.splice(offset % 3, 0, [question.answer, question.correctFeedback, true]);
   const choices = element("ul", "", "ks3-choices");
-  for (const [answer, feedback] of options) {
+  for (const [answer, feedback, correct] of options) {
     const item = element("li");
     const button = element("button", answer);
     button.type = "button";
     button.dataset.feedback = feedback;
+    if (correct) button.dataset.correct = "";
     button.setAttribute("aria-pressed", "false");
     item.append(button);
     choices.append(item);

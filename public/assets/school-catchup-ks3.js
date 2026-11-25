@@ -260,10 +260,10 @@ export function addKS3Journey(model, lesson, year, renderVisual) {
 function fromCard(card) {
   const prompt = card.querySelector("h3").textContent;
   const options = [...card.querySelectorAll("button[data-feedback]")];
-  const answer = options.find(option => /^Correct\./.test(option.dataset.feedback));
+  const answer = options.find(option => option.hasAttribute("data-correct"));
   if (!answer) return null;
   return {
-    prompt, answer: answer.textContent, reasoning: answer.dataset.feedback.replace(/^Correct\.\s*/, ""),
+    prompt, answer: answer.textContent, reasoning: answer.dataset.feedback,
     options: options.filter(option => option !== answer).map(option => ({
       label: option.textContent, feedback: option.dataset.feedback
     }))

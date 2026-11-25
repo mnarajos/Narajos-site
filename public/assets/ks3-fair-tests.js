@@ -45,6 +45,8 @@ function surfaceCheck() {
     </details>`;
   const form = card.querySelector("form");
   const result = form.querySelector('[role="status"]');
+  let missed = false;
+  let solved = false;
   form.addEventListener("change", () => { result.textContent = ""; });
   form.addEventListener("submit", event => {
     event.preventDefault();
@@ -54,8 +56,15 @@ function surfaceCheck() {
     if (selected.length === 0) {
       result.textContent = "Choose four factors that could affect the distance and should be kept the same.";
     } else if (count === 4 && reminders.length === 0) {
-      result.textContent = "Correct. Keep the angle, toy, added load and release point the same. Angle was the independent variable in the first test. It is a control variable in this one.";
+      if (solved && result.textContent) return;
+      result.innerHTML = window.KeystoneFeedback?.markup(missed ? "corrected" : "correct", {
+        key: card.id,
+        animate: !solved
+      }) ?? "Correct.";
+      result.append(" Keep the angle, toy, added load and release point the same. Angle was the independent variable in the first test. It is a control variable in this one.");
+      solved = true;
     } else {
+      if (!solved) missed = true;
       result.textContent = [
         count + " of the 4 controls selected.",
         ...reminders,

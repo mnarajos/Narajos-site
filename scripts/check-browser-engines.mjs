@@ -92,7 +92,8 @@ try {
   await page.getByRole("button", { name: "Check", exact: true }).press("Enter");
   await page.reload();
   assert.equal(await numeric.inputValue(), "−500");
-  assert.match(await page.locator(".al-practice [role=status]").innerText(), /Correct!/);
+  const restoredResult = page.locator(".al-practice [role=status]");
+  assert(await restoredResult.locator('[data-learning-feedback="correct"]').isVisible());
   assert(await page.getByRole("button", { name: "Next task", exact: true }).isVisible());
   await fits();
 
@@ -133,7 +134,10 @@ try {
   await response.waitFor({ state: "visible" });
   await response.getByRole("radio", { name: /7 of 24/ }).check();
   await response.getByRole("button", { name: "Check", exact: true }).press("Enter");
-  assert.match(await response.getByRole("status").innerText(), /Correct!/);
+  const screeningResult = response.getByRole("status");
+  assert(await screeningResult.locator('[data-learning-feedback="correct"]').isVisible());
+  await screeningResult.locator("summary").click();
+  assert.match(await screeningResult.innerText(), /7 \+ 17 = 24/);
   assert(await response.getByRole("button", { name: "Check", exact: true }).isHidden());
   await fits();
 

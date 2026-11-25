@@ -152,11 +152,7 @@
   }
 
   const outcomeLabels = {
-    guided: "Correct!",
-    independent: "Correct!",
     explained: "Explanation shown.",
-    corrected: "Correct!",
-    followup: "Correct!",
     selfReview: "Compare your reasoning with each point."
   };
 
@@ -225,7 +221,7 @@
       actions.hidden = !actions.hasChildNodes();
     }
 
-    function showState(section, state, question) {
+    function showState(section, state, question, animate = false) {
       const hintList = section.querySelector(".hb-hints");
       const feedback = section.querySelector(".hb-feedback");
       const review = section.querySelector("[data-hb-review]");
@@ -249,7 +245,16 @@
       if (state.note) html = '<p>' + escape(state.note) + '</p>';
       if (state.outcome === "selfReview" && comparing) html = '<p>Self-review saved.</p>';
       if (state.outcome && !comparing) {
-        html = '<p><strong>' + (state.outcome === "explained" && state.accepted ? "Correct!" : outcomeLabels[state.outcome]) + '</strong></p>' + html;
+        let heading = outcomeLabels[state.outcome];
+        if (state.accepted && state.outcome === "explained") {
+          heading = "Answer checked after seeing the explanation.";
+        } else if (["guided", "independent", "corrected", "followup"].includes(state.outcome)) {
+          const kind = state.outcome === "corrected" ? "corrected" : "correct";
+          const label = state.outcome === "guided" ? "Correct with support." : undefined;
+          const feedbackKey = key + "/" + section.dataset.hbStage;
+          heading = window.KeystoneFeedback.markup(kind, { key: feedbackKey, animate, label });
+        }
+        html = '<p><strong>' + heading + '</strong></p>' + html;
         if (question.points) html += list(question.points);
         if (!booklet || !state.accepted || state.wrong || state.revealed) {
           html += '<p>' + escape(question.explanation) + '</p>';
@@ -315,6 +320,7 @@
 
       form.addEventListener("submit", event => {
         event.preventDefault();
+        const wasAccepted = state.accepted;
         state.note = "";
         if (textarea) {
           if (detailedReview && textarea.value.trim()) state.original = textarea.value.trim();
@@ -333,7 +339,7 @@
           }
         }
         save(key, record);
-        showState(section, state, question);
+        showState(section, state, question, !wasAccepted && Boolean(state.accepted));
         if (state.original !== undefined) section.querySelector("[data-hb-review] h3").focus();
         else if (lesson.revision && state.accepted) section.querySelector(".hb-feedback").focus();
       });

@@ -150,14 +150,7 @@ select:disabled,input:disabled{opacity:1;color:var(--ink)}
 .fb h2{margin:.6rem 0 .3rem;font-size:1.2rem}
 @keyframes pop{0%{transform:scale(.94);opacity:0}60%{transform:scale(1.03);opacity:1}100%{transform:scale(1)}}
 @keyframes nudge{0%,100%{transform:translateX(0)}30%{transform:translateX(-6px)}70%{transform:translateX(6px)}}
-@keyframes fall{0%{transform:translate(0,-10vh) rotate(0);opacity:1}100%{transform:translate(var(--dx,0),105vh) rotate(720deg);opacity:.9}}
-@keyframes flash{0%{opacity:0}25%{opacity:.28}100%{opacity:0}}.flash{position:fixed;inset:0;pointer-events:none;z-index:40;opacity:0;animation:flash .8s ease-out forwards}
-.fb.good{animation:pop .4s ease-out}.fb.bad{animation:nudge .3s ease-in-out}
-.opt.right,.mrow.right,.oitem.right{animation:pop .35s ease-out}
-.runline{font-weight:700;color:var(--good)}
-.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
-.confetti i{position:absolute;top:0;width:.6rem;height:.9rem;border-radius:2px;animation:fall linear forwards}
-.cele{font-size:3rem;line-height:1;margin:.2rem 0;animation:pop .6s ease-out}
+.fb.bad{animation:nudge .3s ease-in-out}
 .endmsg{font-size:1.1rem;font-weight:600}
 .otext mark,.kwused mark{background:#fde68a;color:#1f2937;border-radius:3px;padding:0 .15em}.kwnote{display:block;font-size:.85rem;color:var(--muted);margin-top:.2rem}.kwused{margin:.4rem 0}
 body.inl footer{display:none}
@@ -367,8 +360,6 @@ a.topic[href^="#topic-b"] .code{color:var(--bio-s)}a.topic[href^="#topic-c"] .co
 .btn.primary.big{min-height:56px;font-size:1.1rem;letter-spacing:.02em}
 .fb{border-radius:18px}
 .ptile,.tok,.tile,.chip{border-bottom-width:4px}
-.resbadge{display:block;width:84px;height:84px;margin:.2rem auto .4rem}
-.resbadge+.cele{display:none}
 @media (prefers-reduced-motion:reduce){.btn,.btn:active{transition:none;transform:none}}
 
 /* Resources panel */
@@ -447,6 +438,7 @@ table.eqs-t{width:auto;border-collapse:collapse}table.eqs-t th{text-align:left;f
 
 </style>
 <link rel="stylesheet" href="/assets/spaced-review.css">
+<link rel="stylesheet" href="/assets/learning-feedback.css">
 <link rel="stylesheet" href="/assets/home-link.css">
 <style>
 @media(max-width:480px){
@@ -494,6 +486,7 @@ table.eqs-t{width:auto;border-collapse:collapse}table.eqs-t th{text-align:left;f
 <div id="live" class="sr-only" role="status" aria-live="polite"></div>
 
 <script src="/assets/science-answer.js"></script>
+<script src="/assets/learning-feedback.js"></script>
 <script src="/assets/spaced-review.js"></script>
 <script src="/gcse/cards-biology.js"></script>
 <script src="/gcse/cards-chemistry.js"></script>
@@ -6046,26 +6039,6 @@ function chime(notes){
   });
  }catch(e){}
 }
-var PRAISE=["Correct!"],NOPE=["Not quite."];
-function confetti(){
- if(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches)return;
- var d=document.createElement("div"),cols=["#0a6b66","#e2a100","#d9534f","#4a7bd0","#6aa84f","#8e5bc4","#f472b6","#22d3ee"],h="",n=arguments[0]||60;d.className="confetti";d.setAttribute("aria-hidden","true");
- for(var i=0;i<n;i++){var w=6+Math.random()*6,sh=Math.random()<0.3?'50%':'2px';h+='<i style="left:'+(Math.random()*100).toFixed(1)+'%;width:'+w.toFixed(0)+'px;height:'+(w*1.5).toFixed(0)+'px;border-radius:'+sh+';background:'+cols[i%cols.length]+';--dx:'+((Math.random()-0.5)*160).toFixed(0)+'px;animation-duration:'+(2+Math.random()*1.8).toFixed(2)+'s;animation-delay:'+(Math.random()*0.9).toFixed(2)+'s"></i>';}
- d.innerHTML=h;document.body.appendChild(d);setTimeout(function(){if(d.parentNode)d.parentNode.removeChild(d);},4800);
-}
-var TIER_CHIME=[[[880,0,0.09],[1318.5,0.11,0.07]],[[880,0,0.08],[1108.7,0.08,0.07],[1318.5,0.16,0.07]],[[880,0,0.08],[1108.7,0.07,0.07],[1318.5,0.14,0.07],[1760,0.21,0.06]],
- [[880,0,0.08],[1318.5,0.07,0.07],[1760,0.14,0.07],[2217.5,0.21,0.05]],[[880,0,0.08],[1108.7,0.06,0.07],[1318.5,0.12,0.07],[1760,0.18,0.06],[2637,0.26,0.04]]];
-var TIER_COL=["#0a6b66","#0ea5a4","#e2a100","#8e5bc4","#d9467a"],TIER_INK=["#0a6b66","#0b7f7d","#a16207","#6d28d9","#be185d"];
-function comboUp(tier){chime([[659.3,0,0.07],[880,0.09,0.08],[1108.7,0.18,0.08],[1318.5,0.27,0.08],[1760,0.38,0.07+0.005*tier]]);}
-function flash(tier){if(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches)return;var d=document.createElement("div");d.className="flash";d.setAttribute("aria-hidden","true");d.style.background=TIER_COL[tier];document.body.appendChild(d);setTimeout(function(){if(d.parentNode)d.parentNode.removeChild(d);},900);}
-function noiseBuf(){if(noiseBuf.b)return noiseBuf.b;var b=AC.createBuffer(1,AC.sampleRate*0.2,AC.sampleRate),d=b.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1;return noiseBuf.b=b;}
-function burst(st,dur,freq,q,vol){var src=AC.createBufferSource(),bp=AC.createBiquadFilter(),g=AC.createGain();src.buffer=noiseBuf();bp.type="bandpass";bp.frequency.value=freq;bp.Q.value=q;
- g.gain.setValueAtTime(0.0001,st);g.gain.exponentialRampToValueAtTime(vol,st+0.004);g.gain.exponentialRampToValueAtTime(0.0001,st+dur);src.connect(bp);bp.connect(g);g.connect(AC.destination);src.start(st,Math.random()*0.1);src.stop(st+dur+0.02);}
-function sfx(fn){if(!S.sound)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume();fn(AC.currentTime+0.03);}catch(e){}}
-function pops(n){sfx(function(t){for(var i=0;i<n;i++){var st=t+i*0.16+Math.random()*0.05,o=AC.createOscillator(),g=AC.createGain();o.type="sine";o.frequency.setValueAtTime(700+Math.random()*300,st);o.frequency.exponentialRampToValueAtTime(180,st+0.07);
- g.gain.setValueAtTime(0.0001,st);g.gain.exponentialRampToValueAtTime(0.06,st+0.005);g.gain.exponentialRampToValueAtTime(0.0001,st+0.09);o.connect(g);g.connect(AC.destination);o.start(st);o.stop(st+0.1);burst(st,0.03,2500,1.2,0.02);}});}
-function applause(){sfx(function(t){var dur=2.6;for(var i=0;i<170;i++){var x=Math.random(),st=t+0.35+x*dur,env=Math.sin(Math.PI*Math.min(1,x*1.15));burst(st,0.05+Math.random()*0.04,1400+Math.random()*1600,0.9,0.006+0.03*env*Math.random());}});}
-function fanfare(){chime([[659.3,0,0.08],[784,0.13,0.08],[1046.5,0.26,0.08],[1318.5,0.42,0.09]]);}
 function setSound(on){S.sound=on;save();var sb=$("#opt-sound");if(sb)sb.checked=on;var b=$(".snd");if(b){b.innerHTML=sndTxt(on);b.setAttribute("aria-label",on?"Sound on":"Sound off");}}
 function sndTxt(on){return '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 20a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>'+(on?'':'<path d="M4 4l16 16" stroke="currentColor" stroke-width="2"/>')+'</svg><span class="sndt"> Sound '+(on?'on':'off')+'</span>';}
 
@@ -6240,7 +6213,12 @@ document.addEventListener("keydown",function(e){if(e.key!=="Enter"||e.repeat||e.
  if(tag==="BUTTON"||tag==="A"||tag==="SELECT"||tag==="SUMMARY")return;
  if(tag==="TEXTAREA"&&!(e.ctrlKey||e.metaKey))return;
  e.preventDefault();var now=Date.now();if(now-enterAt<400)return;enterAt=now;act.click();});
-function oneTapGo(){var a=$("#act");if(!a||a.textContent!=="Check"||L.phase!=="q"||L.slop&&!L.cur)return;setTimeout(function(){var b=$("#act");if(b&&b.textContent==="Check")b.click();},140);}
+function oneTapGo(){
+ var a=$("#act"),current=L&&L.cur;
+ if(!a||a.textContent!=="Check"||!current||L.phase!=="q")return;
+ var step=current.step;
+ setTimeout(function(){if(L&&L.cur===current&&L.phase==="q"&&current.step===step&&a===$("#act")&&a.textContent==="Check")a.click();},140);
+}
 function wireOneTap(f){if(!f)return;var q=L.cur&&L.cur.q;if(!q)return;
  var tapT=q.t==="mcq"||q.t==="two"||q.t==="pick"||(q.t==="tap"&&q.mode==="spot");if(!tapT)return;
  /* One tap answers only if the FIRST tap for this part is right. A wrong first tap is not marked:
@@ -6351,6 +6329,7 @@ function answerHTML(q){
 }
 
 function check(){
+ if(!L||L.phase!=="q")return;
  var q=L.cur.q,q0=L.cur.q0,f=$("#qf"),ok=false,given=true,whyNot="",head="",note="";
  if(L.dk){given=true;ok=false;head="Explanation";}
  else if(q.t==="mcq"){
@@ -6400,8 +6379,13 @@ function check(){
  var outcome=L.dk?"revealed":written?"self-reviewed":!ok?"incorrect":
    L.cur.quantityFeedback||(q.t==="match"&&q.tp&&L.cur.miss>0)||(!firstTime&&L.first.get(q0)!=="independent")?"corrected":helped?"supported":"independent";
  var independent=outcome==="independent";
+ // A generated retry can use different numbers. A reveal or validation prompt is not a checked wrong answer.
+ var wrongBefore=(q0.t!=="gen"&&L.first.get(q0)==="incorrect")||(q.t==="match"&&q.tp&&L.cur.miss>0);
+ var animate=!L.rvMode&&(firstTime||(!L.corrections?.has(q0)&&L.first.get(q0)!=="independent"));
+ if(ok&&!written&&!L.dk){
+  head=KeystoneFeedback.markup(wrongBefore&&!L.rvMode?"corrected":"correct",{key:L.i,animate:animate});
+ }
  NarajosAssessment.recordLessonAnswer(L,q0,outcome);
- if(ok&&!written&&!L.dk)head="Correct!";
  L.run=independent?(L.run||0)+1:0;
  L.mtype=null;if(!ok&&!L.dk){var mtv=null;if(q.t==="mcq"&&q.mt){var rr=$("input[name=a]:checked",f);if(rr)mtv=q.mt[+rr.value];}
   else if(q.t==="two"&&(q.mt2||q.mt)){var r2=$("input[name=b]:checked",f),r1=$("input[name=a]:checked",f);if(q.mt2&&r2&&+r2.value!==q.a2)mtv=q.mt2[+r2.value];if(!mtv&&q.mt&&r1&&+r1.value!==q.a)mtv=typeof q.mt==="string"?q.mt:q.mt[+r1.value];}
@@ -6419,7 +6403,7 @@ function check(){
  if(!L.rvMode)(L.past=L.past||[]).push({q:q,q0:q0});
  var fb=$("#fb");fb.className="fb "+(written||L.dk?"dk":ok?"good":"bad");
  var explanation=q.why&&(!ok||!q.answerInWhy)?'<p>'+fmt(q.why)+'</p>':'';
- fb.innerHTML='<h2 tabindex="-1">'+(head||(ok?pick(PRAISE):pick(NOPE)))+'</h2>'+
+ fb.innerHTML='<h2 tabindex="-1">'+(head||"Not quite.")+'</h2>'+
   (whyNot?'<p class="why-not"><strong>About your answer:</strong> '+fmt(whyNot)+'</p>':'')+
   (ok||q.answerInWhy?'':L.dk?dkAnswer(q):answerHTML(q))+explanation+
   (!ok&&L.mtype?'<p><span class="mtype">'+esc(L.mtype)+'</span></p>':'')+
@@ -6474,7 +6458,11 @@ function backTarget(){var P=LIVE||L;if(!P||!P.past||!P.past.length)return -1;if(
 function canBack(){return !!L&&backTarget()>=0;}
 function rvAtEnd(){if(!RV)return true;var P=LIVE,last=P.past.length-1;return RV.k>=(RV.saved.phase==="fb"?last-1:last);}
 function goBack(){if(!L||L.over)return false;var k=backTarget();if(k<0)return false;
- if(!RV){var nodes=document.createDocumentFragment();while(main.firstChild)nodes.appendChild(main.firstChild);RV={saved:{nodes:nodes,cur:L.cur,phase:L.phase,y:window.scrollY}};LIVE=L;}
+ if(!RV){
+  $("#fb [data-feedback-animate]")?.removeAttribute("data-feedback-animate");
+  var nodes=document.createDocumentFragment();while(main.firstChild)nodes.appendChild(main.firstChild);
+  RV={saved:{nodes:nodes,cur:L.cur,phase:L.phase,y:window.scrollY}};LIVE=L;
+ }
  RV.k=k;showReview();return true;}
 function showReview(){var p=LIVE.past[RV.k];L=lclone(LIVE);L.rvMode=true;var rq=Object.assign({},p.q);delete rq.qc;L.queue=[rq];L.i=0;L.qc=null;L.qcNext=false;L.phase="q";showQ();}
 function goForward(){if(!RV)return false;if(rvAtEnd())restoreLive();else{RV.k++;showReview();}return true;}
@@ -6527,12 +6515,14 @@ function nextConcept(t,c){var T=DATA[t],list=T.concepts,i=list.indexOf(c);
  var cand=(c.unlocks||[]).map(function(id){return T.byId[id];}).concat(list.slice(i+1));
  for(var k=0;k<cand.length;k++){var x=cand[k];if(x&&x!==c&&avail(x))return x;}return null;}
 function finish(){
+ if(!L||L.over)return;
  NarajosAssessment.finishWrittenDrafts();
  L.over=true;
  var t=L.t,c=L.c,result=NarajosAssessment.lessonEvidence(L),pct=result.percent,ms=result.checked>0&&pct>=80;
  var leads=c.unlocks.map(function(id){return DATA[t].byId[id];}).filter(avail);
- var h='<svg class="resbadge" viewBox="0 0 72 72" aria-hidden="true">'+(pct===100?'<circle cx="36" cy="36" r="35" fill="#f2b705"/>':'')+'<circle cx="36" cy="36" r="'+(pct===100?30:34)+'" fill="var(--acc)"/><g transform="rotate(-35 36 36)" fill="none" stroke="var(--acc-ink)" stroke-width="5" stroke-linecap="round"><circle cx="25" cy="36" r="8.5"/><path d="M33.5 36h21M48 36v6.5M54 36v5"/></g>'+(ms?'<path d="M58 9l2 5 5 2-5 2-2 5-2-5-5-2 5-2z M14 52l1.4 3.4 3.4 1.4-3.4 1.4L14 61.6l-1.4-3.4L9.2 56.8l3.4-1.4z" fill="#f2b705"/>':'')+'</svg><p class="cele" aria-hidden="true">'+(pct===100?'🌟':ms?'🎉':'💪')+'</p><h1>'+(ms?'Lesson passed':'Lesson complete')+'</h1>'+
-  '<p class="endmsg">'+(!result.checked?'This lesson contained written self-review only.':pct===100?'Practice complete.':ms?'You smashed it – that’s a pass!':pct>=50?'Good effort – you’re over half way there. Keep going!':'Good effort – every go helps it stick.')+'</p>'+
+ var completion=KeystoneFeedback.markup("complete",{label:ms?"Lesson passed":"Lesson complete",animate:result.checked>0});
+ var h='<h1>'+completion+'</h1>'+
+  (!result.checked?'<p class="endmsg">This lesson contained written self-review only.</p>':'')+
   resStats(result)+(NarajosAssessment.evidenceNote(result)?'<p class="small">'+NarajosAssessment.evidenceNote(result)+'</p>':'')+
   (ms||!result.checked?'':'<p class="small">A pass requires 80% of the objective answers correct without help on first submission.</p>');
  var nextC=null;
@@ -6549,10 +6539,16 @@ function finish(){
 
  var ag=$("#again");if(ag)ag.onclick=function(){startLesson(t,c);};
 }
-/* End of a skills practice session: praise, what they did, and where to go next. Nothing is saved. */
-function finishSlop(){if(L)L.over=true;var sk=L.slop,lv=lvList(sk.id)||[{}],n=L.n,r=L.right,top=Math.min(L.lvMax||0,lv.length-1),done=!!L.mastered,qn=L.qcN||0;
- var line=done?"Skill complete. You absolutely smashed it!":n>=12?"That’s proper hard work. Big respect.":r===n&&n>=3?"Every single one right. Sharp!":r>=n*0.8?"Sharp work – nearly everything right.":n>=5?"Nice one. Every question you do helps it stick.":"Good start. Even a few questions make a difference.";
- var h='<p class="crumb"><a href="'+backTo(skBack()).href+'">← '+esc(backTo(skBack()).label.replace(/^← /,""))+'</a></p><h1>Well done for practising!</h1><p class="lead">'+esc(sk.name)+'</p><p class="endmsg">'+line+'</p>'+
+/* End of a skills practice session: show work completed and where to go next. Nothing is saved. */
+function finishSlop(){
+ if(!L||L.over)return;
+ L.over=true;
+ var sk=L.slop,lv=lvList(sk.id)||[{}],n=L.n,r=L.right,top=Math.min(L.lvMax||0,lv.length-1),done=!!L.mastered,qn=L.qcN||0;
+ var challenge=done&&Object.values(CHALLENGE).includes(sk.id),completed=done||(sk.mix&&n>=L.mixN);
+ var completion=completed?KeystoneFeedback.markup("complete",{
+  label:challenge?"Challenge practice complete":"Practice complete",animate:true
+ }):"Practice summary";
+ var h='<p class="crumb"><a href="'+backTo(skBack()).href+'">← '+esc(backTo(skBack()).label.replace(/^← /,""))+'</a></p><h1>'+completion+'</h1><p class="lead">'+esc(sk.name)+'</p>'+
   '<ul class="rstats">'+stat("tick",String(n),'question'+(n===1?'':'s')+' practised · '+r+' right',n+' questions practised, '+r+' right')+
   (done?stat("star","Done",'skill complete','Skill complete'):sk.mix?stat("steps",lv[top].name,'highest level reached','Highest level reached: '+lv[top].name):stat("steps",'Level '+(top+1),'of '+lv.length+' reached','Reached level '+(top+1)+' of '+lv.length))+
   (qn?stat("loop",(L.qcOk||0)+'/'+qn,'quick checks',(L.qcOk||0)+' of '+qn+' quick checks right'):'')+
@@ -6562,7 +6558,6 @@ function finishSlop(){if(L)L.over=true;var sk=L.slop,lv=lvList(sk.id)||[{}],n=L.
   (done?'':'<button type="button" class="btn primary big" id="carry">'+(sk.mix?'Go again, starting at '+esc(lv[Math.min(L.lv||0,lv.length-1)].name):'Carry on from Level '+(top+1))+'</button>')+
   '<a class="btn big" href="'+backTo(skBack()).href+'">'+backTo(skBack()).label+'</a></div>';
  var level=sk.mix?Math.min(L.lv||0,lv.length-1):top;L=null;render(h);
- confetti(done?100:40);pops(done?4:2);if(done)setTimeout(fanfare,500);
  var c=$("#carry");if(c)c.onclick=function(){if(sk.mix)startMix(sk.cfg,level);else startSlop(sk,level);};}
 /* ---------- Mixed practice (v1.1, 17 November) ----------
    Questions from the chosen topics of one paper. It runs through the Skills practice flow with three levels:
@@ -6628,7 +6623,7 @@ function backTo(dflt){var h=BACK||dflt,lab="Back";
 function route(focus){
  siteLeaveAllowed=false;
  LIVE=null;RV=null;closeLeave();
- var cf=document.querySelector(".confetti");if(cf&&cf.parentNode)cf.parentNode.removeChild(cf);var gr=document.getElementById("gear");if(gr)gr.open=false;
+ var gr=document.getElementById("gear");if(gr)gr.open=false;
  var h=location.hash.slice(1),m;
  if(h==="flashcards"||/^flash(?:review|weak|mixed|resume)$/.test(h)||/^cards-[bcp]\d+$/.test(h)||/^paperflash-[bcp]\d$/.test(h)){
   L=null;LIVE=null;RV=null;

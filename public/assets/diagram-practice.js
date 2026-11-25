@@ -149,10 +149,22 @@ function buildModel(topic) {
   return section;
 }
 
-function checkButton(section, report, check) {
+function showCorrect(report, corrected, animate) {
+  report.innerHTML = window.KeystoneFeedback?.markup(corrected ? "corrected" : "correct", { animate }) ?? "Correct!";
+}
+
+function checkButton(section, report, check, solved = false) {
   const control = button("Check answer", () => {
     const result = check();
-    report.textContent = result;
+    if (typeof result === "string") {
+      report.textContent = result;
+      return;
+    }
+    if (!report.firstElementChild) {
+      showCorrect(report, result.corrected && !solved, !solved);
+      if (result.explanation) report.append(" " + result.explanation);
+    }
+    solved = true;
   }, "dp-primary");
   section.append(control, report);
   return control;
@@ -272,23 +284,25 @@ function makeDiagramTask(section, topic, task, report) {
     renderPlacements();
   }
 
+  // A restored correct placement may already have been checked.
+  const restoredCorrect = task.type === "point" ? selected === task.answer : keys.every(key => placed.get(key) === key);
   tools.check = checkButton(section, report, () => {
     if (task.type === "point") {
       if (!selected) return "Select a letter first.";
-      if (selected === task.answer) return "Correct!";
+      if (selected === task.answer) return { corrected: receivedFeedback };
       receivedFeedback = true;
       save();
       return "You chose " + selected + ". Its line points to " + topic.parts[selected].cue.toLowerCase() + ". Compare that feature with the question.";
     }
     if (placed.size < keys.length) return "Place the remaining labels first.";
     const correct = keys.filter(key => placed.get(key) === key);
-    if (correct.length === keys.length) return "Correct!";
+    if (correct.length === keys.length) return { corrected: receivedFeedback };
     const retry = keys.filter(key => !correct.includes(key));
     receivedFeedback = true;
     save();
     return correct.length + " of " + keys.length + " correct. Recheck " + retry.join(", ") + ". At " + retry[0] +
       " you placed " + labelFor(placed.get(retry[0])) + ". Follow its line to " + topic.parts[retry[0]].cue.toLowerCase() + ".";
-  });
+  }, restoredCorrect);
 }
 
 function addDrag(chip, drop, section) {
@@ -394,15 +408,14 @@ function makeOrder(section, task, report) {
     bank.append(choice);
   }
   section.append(el("p","Choose the steps in order. Use Earlier or Later to move one."), bank, answer);
-  const success = () => "Correct!";
   checkButton(section, report, () => {
     if (chosen.length < task.items.length) return "Choose all the steps first.";
     const wrong = chosen.findIndex((id,index) => id !== index);
     checked = wrong === -1;
     if (!checked) compared = true;
     save();
-    return checked ? success() : "Recheck step " + (wrong + 1) + ". Compare it with the steps immediately before and after it.";
-  });
+    return checked ? { corrected: compared } : "Recheck step " + (wrong + 1) + ". Compare it with the steps immediately before and after it.";
+  }, checked);
   const options = el("details");
   options.append(el("summary","Order options"),button("Start order again", () => {
     chosen = [];
@@ -415,13 +428,12 @@ function makeOrder(section, task, report) {
   }));
   section.append(options);
   draw();
-  if (checked) report.textContent = success();
+  if (checked) showCorrect(report, false, false);
 }
 
 function makeCheck(section, task, report) {
   if (task.type === "order") return makeOrder(section, task, report);
   let receivedFeedback = false;
-  const correctMessage = () => "Correct!";
   if (task.type === "choice") {
     const options = el("div", "", "dp-bank");
     options.setAttribute("role", "group");
@@ -439,7 +451,7 @@ function makeCheck(section, task, report) {
     section.append(options);
     checkButton(section, report, () => {
       if (selected === null) return "Choose an answer first.";
-      if (selected === task.answer) return task.optionFeedback ? correctMessage() + " " + task.feedback : correctMessage();
+      if (selected === task.answer) return { corrected: receivedFeedback, explanation: task.optionFeedback ? task.feedback : undefined };
       receivedFeedback = true;
       return "Recheck “" + task.options[selected] + "”. " + (task.optionFeedback?.[selected] || task.feedback);
     });
@@ -456,7 +468,7 @@ function makeCheck(section, task, report) {
     checkButton(section, report, () => {
       const value = input.value.trim().replace("−", "-");
       if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(value)) return "Enter a number in " + task.unit + ".";
-      if (Number(value) === task.answer) return correctMessage();
+      if (Number(value) === task.answer) return { corrected: receivedFeedback };
       receivedFeedback = true;
       return "Recheck " + value + " " + task.unit + ". " + task.feedback;
     });

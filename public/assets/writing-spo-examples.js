@@ -12,11 +12,11 @@ export const rampExample = {
   openingChoices: [
     ["The pupil is doing an experiment.", "Name the scientific point. The reader still needs to know which feature matters and why."],
     ["To test ramp height fairly, use the same car each time.", "This tells the pupil what to do. Explain how using the same car helps them interpret the distances."],
-    ["Using the same car helps show whether ramp height caused the difference in distance travelled.", "Correct. It explains the purpose of keeping the car the same."]
+    ["Using the same car helps show whether ramp height caused the difference in distance travelled.", "It explains the purpose of keeping the car the same.", true]
   ],
   closingChoices: [
     ["The pupil should therefore use the same car each time.", "This repeats the action. Use the reasoning about wheels and friction to say what the test can show."],
-    ["This makes the comparison between different ramp heights a more valid test.", "Correct. It draws together the explanation by saying why the comparison is stronger."]
+    ["This makes the comparison between different ramp heights a more valid test.", "It draws together the explanation by saying why the comparison is stronger.", true]
   ]
 };
 

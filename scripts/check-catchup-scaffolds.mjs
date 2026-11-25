@@ -10,7 +10,7 @@ export async function checkCatchupScaffolds(browser, base) {
   const choose = async (answer, next = "Continue") => {
     await dialog.getByRole("radio", {name: answer, exact: true}).check();
     await dialog.getByRole("button", {name: "Check answer", exact: true}).press("Enter");
-    await dialog.getByRole("status").filter({hasText: /^Correct[.!]/}).waitFor();
+    await dialog.getByRole("status").locator('[data-learning-feedback="correct"]').waitFor();
     await dialog.getByRole("button", {name: next, exact: true}).press("Enter");
   };
   const narrow = async (scope, id) => assert(await scope.evaluate(node => node.scrollWidth <= node.clientWidth + 3), `${id} overflows`);

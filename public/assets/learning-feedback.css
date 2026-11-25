@@ -1,0 +1,123 @@
+.learning-feedback {
+  --feedback-green: var(--good, #17672f);
+  --feedback-gold: #ad630f;
+}
+
+.learning-feedback:not([data-learning-feedback="complete"]) {
+  color: var(--feedback-green);
+}
+
+.learning-feedback__icon {
+  display: inline-block;
+  width: 1.9rem;
+  height: 1.55rem;
+  margin-inline-end: .22rem;
+  vertical-align: -.38rem;
+  pointer-events: none;
+}
+
+.learning-feedback__mark {
+  color: var(--feedback-green);
+}
+
+[data-learning-feedback="complete"] .learning-feedback__mark {
+  color: var(--feedback-gold);
+}
+
+.learning-feedback__disc {
+  fill: currentColor;
+  fill-opacity: .10;
+  stroke: currentColor;
+  stroke-opacity: .3;
+}
+
+.learning-feedback__tick {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.learning-feedback__star {
+  fill: currentColor;
+}
+
+.learning-feedback__accent {
+  fill: var(--feedback-gold);
+}
+
+.learning-feedback__glints {
+  fill: none;
+  stroke: var(--feedback-gold);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.learning-feedback__accent,
+.learning-feedback__glints {
+  opacity: 0;
+}
+
+.learning-feedback__mark,
+.learning-feedback__accent,
+.learning-feedback__glints {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@supports (color: light-dark(black, white)) {
+  .learning-feedback {
+    --feedback-gold: light-dark(#ad630f, #f5b965);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-feedback-animate] .learning-feedback__mark {
+    animation: learning-feedback-pop 480ms ease-out both;
+  }
+
+  [data-feedback-animate] .learning-feedback__tick {
+    animation: learning-feedback-tick 420ms ease-out both;
+  }
+
+  [data-feedback-animate] .learning-feedback__accent,
+  [data-feedback-animate] .learning-feedback__glints {
+    animation: learning-feedback-sparkle 620ms ease-out both;
+  }
+
+  [data-feedback-animate]:not([data-learning-feedback="correct"]) .learning-feedback__accent,
+  [data-feedback-animate] .learning-feedback__glints {
+    animation-duration: 740ms;
+  }
+
+  [data-feedback-animate] .learning-feedback__accent--small {
+    animation-delay: 45ms;
+  }
+}
+
+@keyframes learning-feedback-pop {
+  from { transform: scale(.78); }
+  45% { transform: scale(1.11); }
+  to { transform: scale(1); }
+}
+
+@keyframes learning-feedback-tick {
+  from { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  to { stroke-dasharray: 1; stroke-dashoffset: 0; }
+}
+
+@keyframes learning-feedback-sparkle {
+  from { opacity: 0; transform: scale(.45); }
+  36% { opacity: 1; transform: scale(1.14); }
+  to { opacity: 0; transform: scale(.72); }
+}
+
+@media (forced-colors: active) {
+  .learning-feedback__mark,
+  [data-learning-feedback="complete"] .learning-feedback__mark { color: CanvasText; }
+
+  .learning-feedback__glints { stroke: CanvasText; }
+
+  .learning-feedback__accent { fill: CanvasText; }
+}

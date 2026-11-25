@@ -63,8 +63,17 @@ export function appendTransfer(host, id, state, save, evidence) {
   input.oninput = () => { record.draft = input.value; saveApplication(); };
   const submit = add("button", numeric ? "Check calculation" : "Compare with model");
   submit.className = "school-primary";
-  const feedback = add("p", numeric && ["independent", "supported"].includes(record.outcome) ? "Correct!" : record.feedback || "");
+  const feedback = add("p", record.feedback || "");
   feedback.setAttribute("role","status");
+  if (numeric) {
+    feedback.className = "school-check-feedback";
+    if (["independent", "supported"].includes(record.outcome)) showNumericFeedback();
+    else if (record.helped) feedback.dataset.verdict = "incorrect";
+  }
+  function showNumericFeedback(animate = false) {
+    feedback.dataset.verdict = "correct";
+    feedback.innerHTML = window.KeystoneFeedback.markup(record.helped ? "corrected" : "correct", {animate});
+  }
   function finish(focus) {
     input.readOnly = true;
     submit.hidden = true;
@@ -98,12 +107,15 @@ export function appendTransfer(host, id, state, save, evidence) {
     record.firstAttempt ??= input.value;
     if (numeric && input.valueAsNumber !== task[2]) {
       record.helped = true;
+      feedback.dataset.verdict = "incorrect";
       feedback.textContent = record.feedback = task[3];
       input.focus();
     } else {
       record.first = input.value;
       record.outcome = numeric ? (record.helped ? "supported" : "independent") : "attempted";
-      feedback.textContent = record.feedback = numeric ? "Correct!" : "Review the first answer you wrote. Compare it with the model, then finish your self-review.";
+      record.feedback = numeric ? "Correct!" : "Review the first answer you wrote. Compare it with the model, then finish your self-review.";
+      if (numeric) showNumericFeedback(true);
+      else feedback.textContent = record.feedback;
       finish(true);
     }
     saveApplication();

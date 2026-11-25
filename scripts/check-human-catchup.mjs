@@ -8,6 +8,7 @@ export async function checkHumanCatchup(browser, base) {
   let visits = 0;
   const open = route => page.goto(base + "/human-biology/?check=" + (++visits) + "#" + route);
   const stage = name => page.locator('[data-hb-stage="' + name + '"]');
+  const feedback = (loc, kind) => loc.locator('[data-learning-feedback="' + kind + '"]');
   async function help(loc) {
     const details = loc.locator(".hb-help");
     if (await details.count() && !(await details.evaluate(el => el.open))) await details.locator("summary").click();
@@ -106,7 +107,7 @@ export async function checkHumanCatchup(browser, base) {
       }
       await stage("guided").getByRole("radio").nth(lesson.guided.answer).check();
       await stage("guided").getByRole("button", { name: "Check", exact: true }).click();
-      assert.match(await stage("guided").getByRole("status").innerText(), /Correct!/);
+      assert(await feedback(stage("guided"), key === "f171/1.2.1.aorta" ? "corrected" : "correct").isVisible(), key);
       await expand(stage("independent"));
       if (key === "f171/1.2.1.aorta") {
         const image = stage("independent").getByRole("img", {name:/abdominal aorta/});
@@ -116,7 +117,7 @@ export async function checkHumanCatchup(browser, base) {
       if (lesson.apply.options) {
         await stage("independent").getByRole("radio").nth(lesson.apply.answer).check();
         await stage("independent").getByRole("button", { name: "Check", exact: true }).click();
-        assert.match(await stage("independent").getByRole("status").innerText(), /Correct!/);
+        assert(await feedback(stage("independent"), "correct").isVisible(), key);
       } else {
         await stage("independent").getByRole("textbox").fill("An explanation to compare with the key points.");
         await stage("independent").getByRole("button", { name: "Compare my explanation" }).press("Enter");
@@ -125,7 +126,7 @@ export async function checkHumanCatchup(browser, base) {
           assert.equal(await review.getByRole("listitem").count(), lesson.apply.points.length);
           await review.getByRole("button", { name: "Finish review" }).click();
           assert(await review.getByText("Your self-review is saved.").isVisible());
-          assert.equal(await review.getByText("Correct!", {exact:true}).count(), 0, "Self-review is not a checked answer");
+          assert.equal(await stage("independent").locator("[data-learning-feedback]").count(), 0, "Self-review is not a checked answer");
         } else {
           assert.equal(await stage("independent").getByRole("status").getByRole("listitem").count(), lesson.apply.points.length);
         }
@@ -163,7 +164,7 @@ export async function checkHumanCatchup(browser, base) {
     await page.getByText(/Finding many in B does not show that other components are absent/).waitFor();
     await page.reload();
     assert.equal(await page.locator(".k-review-draft").innerText(), fractionAnswer, "Original explanation is retained for self-review");
-    assert.equal(await page.getByRole("heading", {name:"Correct!", exact:true}).count(), 0, "Extended answers must not be automatically marked correct");
+    assert.equal(await page.locator(".k-question-view [data-learning-feedback]").count(), 0, "Extended answers must not be automatically marked correct");
     assert(await widthFits(), "Fractionation practice overflows at 320px");
 
     // The original answer and its source field remain available during self-review and on reload.
@@ -203,7 +204,7 @@ export async function checkHumanCatchup(browser, base) {
     assert.match(await em.getByRole("status").innerText(), /measure product leaving/);
     await em.getByRole("radio", {name:/capacity to make proteins/}).check();
     await em.getByRole("button", {name: "Check", exact: true}).press("Enter");
-    assert.match(await em.getByRole("status").innerText(), /Correct!/);
+    assert(await feedback(em, "corrected").isVisible());
     assert.equal((await saved(localPractice))["f170/1.1.3.evidence/1"].independent.outcome, "selfReview");
 
     // The exact linked item, its edited answers and corrected outcome survive reopening.
@@ -303,7 +304,7 @@ export async function checkHumanCatchup(browser, base) {
       if (correctChoice) {
         await independent.getByRole("radio", { name: correctChoice }).check();
         await independent.getByRole("button", { name: "Check", exact: true }).press("Enter");
-        assert.match(await independent.getByRole("status").innerText(), /Correct!/, key);
+        assert(await feedback(independent, "correct").isVisible(), key);
       } else {
         await independent.getByRole("textbox").fill(response);
         await independent.getByRole("button", { name: "Compare my explanation" }).press("Enter");
@@ -334,7 +335,7 @@ export async function checkHumanCatchup(browser, base) {
       } else {
         await independent.getByRole("button", { name: "Show explanation" }).press("Enter");
         assert.match(await independent.getByRole("status").innerText(), /Explanation shown/, key);
-        assert.equal(await independent.getByText("Correct!", {exact:true}).count(), 0, "Revealing an explanation is not a checked answer");
+        assert.equal(await independent.locator("[data-learning-feedback]").count(), 0, "Revealing an explanation is not a checked answer");
       }
       await independent.getByRole("button", { name: "Revisit worked example" }).press("Enter");
       assert(await model.isVisible(), key);
@@ -342,7 +343,7 @@ export async function checkHumanCatchup(browser, base) {
       if (correctChoice) {
         await independent.getByRole("radio", { name: correctChoice }).check();
         await independent.getByRole("button", { name: "Check", exact: true }).press("Enter");
-        assert.match(await independent.getByRole("status").innerText(), /Correct!/, key);
+        assert(await feedback(independent, "corrected").isVisible(), key);
       }
       assert(!(await page.locator("[data-hb-followup]").evaluate(el => el.hidden)), key);
     }
@@ -360,15 +361,17 @@ export async function checkHumanCatchup(browser, base) {
     assert.match(await stage("independent").getByRole("status").innerText(), /Explanation shown/);
     await stage("independent").getByRole("radio").first().check();
     await stage("independent").getByRole("button", { name: "Check", exact: true }).press("Enter");
-    assert.match(await stage("independent").getByRole("status").innerText(), /Correct!/);
+    assert.match(await stage("independent").getByRole("status").innerText(), /Answer checked after seeing the explanation/);
+    assert.equal(await stage("independent").locator("[data-learning-feedback]").count(), 0);
     assert.equal((await saved(localPractice))["f171/4.2.1/1"].independent.outcome, "explained");
     await expand(stage("followup"));
     await stage("followup").getByRole("radio").last().check();
     await stage("followup").getByRole("button", { name: "Check", exact: true }).press("Enter");
-    assert.match(await stage("followup").getByRole("status").innerText(), /Correct!/);
+    assert.equal(await feedback(stage("followup"), "correct").getAttribute("data-feedback-animate"), "");
     await page.reload();
     await expand(stage("followup"));
-    assert.match(await stage("followup").getByRole("status").innerText(), /Correct!/);
+    assert(await feedback(stage("followup"), "correct").isVisible());
+    assert.equal(await feedback(stage("followup"), "correct").getAttribute("data-feedback-animate"), null);
 
     await open("catchup/f171/2.1");
     await expand(stage("independent"));
@@ -491,8 +494,10 @@ export async function checkHumanCatchup(browser, base) {
     }
     await predict("The lining of the uterus.");
     assert.match(await guide.locator(".krp-prediction").innerText(), /Look inside the ovary/);
+    assert.equal(await guide.locator("[data-learning-feedback]").count(), 0);
     assert.equal(await observation.innerText(), "");
     await predict("The ovarian follicle.");
+    assert.equal(await feedback(guide, "correct").getAttribute("data-feedback-animate"), "");
     assert.equal(await nextCheckpoint.isVisible(), false);
     await reproduction.getByRole("button", { name: /FSH Develop/ }).press("Enter");
     assert.match(await observation.innerText(), /follicle enlarges/);
@@ -522,6 +527,8 @@ export async function checkHumanCatchup(browser, base) {
     assert.equal(await checkpoint.inputValue(), "follicle");
     await checkpoint.selectOption("fertilisation");
     await predict("The gametes may fail to meet while viable or may fail to fuse.");
+    assert(await feedback(guide, "correct").isVisible());
+    assert.equal(await feedback(guide, "correct").getAttribute("data-feedback-animate"), null);
     await reproduction.getByRole("button", { name: /Introduce sperm/ }).press("Enter");
     await reproduction.getByRole("button", { name: /Select right ovary/ }).press("Enter");
     await reproduction.getByRole("button", { name: /LH surge Trigger/ }).press("Enter");
@@ -582,7 +589,9 @@ export async function checkHumanCatchup(browser, base) {
       await touch.goto(base + "/human-biology/#" + transportRoute);
       await touch.getByRole("radio", { name: /Entry of the released oocyte into the oviduct/ }).locator("..").tap();
       await touch.getByRole("button", { name: /^Check$/ }).tap();
-      assert.equal(await touch.locator("[data-feedback-heading]").innerText(), "Correct!");
+      const positive = feedback(touch.locator("[data-feedback-heading]"), "correct");
+      assert(await positive.isVisible());
+      assert.equal(await positive.locator(".learning-feedback__tick").evaluate(tick => getComputedStyle(tick).animationName), "none");
       assert.equal(await touch.evaluate(key => JSON.parse(localStorage.getItem(key)).outcomes[0],
         practiceKey + "-topic-f175/f175-transport"), "independent");
     } finally {

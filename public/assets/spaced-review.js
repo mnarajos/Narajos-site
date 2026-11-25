@@ -58,27 +58,37 @@
   var input=document.getElementById("kr-input"),reveal=document.getElementById("kr-reveal");
   var result=document.getElementById("kr-result"),again=document.getElementById("kr-again");
   var good=document.getElementById("kr-good"),reviewed=document.getElementById("kr-reviewed");
+  var graded=false;
   if(input){
    input.value=session.draftId===id?session.draft||"":"";
    input.oninput=function(){session.draftId=id;session.draft=input.value;save();};
    input.onkeydown=function(event){if(event.key==="Enter"&&session.phase!=="back"){event.preventDefault();reveal.click();}};
   }
-  function showAnswer(){
+  function grade(outcome){
+   if(graded||session.phase!=="back")return;
+   graded=true;
+   advance(outcome);
+  }
+  function showAnswer(fresh){
    var typed=input?input.value.trim():"",matched=Boolean(typed&&matches(typed));
    reveal.hidden=true;result.hidden=false;
    if(input)input.readOnly=true;
-   document.getElementById("kr-comparison").textContent=typed?(matched?"Your entry matches an accepted answer.":"Compare your wording with the expected answer."):"The answer has been revealed.";
+   var comparison=document.getElementById("kr-comparison");
+   var message=typed?(matched?"Your entry matches an accepted answer.":"Compare your wording with the expected answer."):"The answer has been revealed.";
+   if(matched&&root.KeystoneFeedback){
+    comparison.innerHTML=root.KeystoneFeedback.markup("correct",{key:session.complete,animate:fresh})+" "+message;
+   }else comparison.textContent=message;
    good.textContent=matched?"Record typed match":"I recalled it before revealing";
-   good.onclick=function(){advance(matched?"matched":"self-rated");};
+   good.onclick=function(){grade(matched?"matched":"self-rated");};
    (matched?good:again).focus();
   }
   reveal.onclick=function(){
-   if(session.phase==="back")return;
-   session.draftId=id;session.draft=input?input.value:"";session.phase="back";save();showAnswer();
+   if(graded||session.phase==="back")return;
+   session.draftId=id;session.draft=input?input.value:"";session.phase="back";save();showAnswer(true);
   };
-  again.onclick=function(){advance("again");};
-  reviewed.onclick=function(){advance("revealed");};
-  if(session.phase==="back")showAnswer();else (input||reveal).focus();
+  again.onclick=function(){grade("again");};
+  reviewed.onclick=function(){grade("revealed");};
+  if(session.phase==="back")showAnswer(false);else (input||reveal).focus();
  }
  function recordReview(session, engine, outcome){
   if(session.phase!=="back"||!session.queue.length)return;

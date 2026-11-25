@@ -10,6 +10,8 @@ export async function checkGCSECatchup(browser, base) {
   page.on("pageerror", error => errors.push(error.message));
   const journey = page.locator(".school-journey");
   const dialog = journey.locator(".school-check-inline");
+  const result = dialog.locator(".school-check-feedback");
+  const completion = journey.locator('.school-completion [data-learning-feedback="complete"]');
   const openCheck = async () => {
     const resume = journey.getByRole("button", {name: /^(Check|Resume check)$/});
     if (await resume.isVisible()) await resume.press("Enter");
@@ -61,6 +63,7 @@ export async function checkGCSECatchup(browser, base) {
           await choose(question.options[0].label);
           await submit();
           assert.match(await dialog.locator('[data-verdict="incorrect"]').innerText(), /fixed power/);
+          assert.equal(await result.locator("[data-learning-feedback]").count(), 0);
           await dialog.getByText("Need help?", {exact: true}).press("Enter");
           await dialog.getByRole("button", {name: "Revisit the worked example"}).press("Enter");
           assert(await page.locator("details.school-worked-example").evaluate(el => el.open && el === document.activeElement));
@@ -70,6 +73,10 @@ export async function checkGCSECatchup(browser, base) {
         }
         await choose(question.answer);
         await submit();
+        const kind = id === "national-grid" && index === 2 ? "corrected" : "correct";
+        const feedback = result.locator(`[data-learning-feedback="${kind}"][data-feedback-animate]`);
+        assert(await feedback.isVisible());
+        assert.equal(await feedback.locator("svg path").first().evaluate(el => getComputedStyle(el).animationName), "none");
         await dialog.getByRole("button", {name: /^(Continue|Finish guided checks)$/}).press("Enter");
         // The step, focus, and outcome must survive continuing and reloading.
         if (id === "motor-effect" && index < lesson.steps.length - 1) {
@@ -85,8 +92,10 @@ export async function checkGCSECatchup(browser, base) {
         await dialog.getByRole("button", {name: "Finish guided checks"}).press("Enter");
       }
       await journey.getByRole("link", {name: "Revise " + lesson.code}).waitFor();
+      assert.equal(await completion.getAttribute("data-feedback-animate"), "");
       await page.reload();
       await journey.getByRole("heading", {name: /Guided checks complete/}).waitFor();
+      assert.equal(await completion.getAttribute("data-feedback-animate"), null);
       if (id === "motor-effect") {
         await journey.getByText("Review answers", {exact: true}).press("Enter");
         await journey.getByRole("button", {name: "Check 1", exact: true}).press("Enter");
@@ -113,6 +122,9 @@ export async function checkGCSECatchup(browser, base) {
         await page.getByRole("button", {name: "Check calculation"}).press("Enter");
       }
       assert(await answer.evaluate(el => el.readOnly));
+      const correction = page.locator('.school-completion form [data-learning-feedback="corrected"]');
+      assert(await correction.isVisible());
+      assert.equal(await correction.getAttribute("data-feedback-animate"), width === 320 ? "" : null);
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 2));
     }
     await page.goto(lessonURL("spring-evidence", 11));
@@ -126,6 +138,7 @@ export async function checkGCSECatchup(browser, base) {
     assert(await first.evaluate(el => el.readOnly));
     assert.match(await page.getByLabel("Your revised explanation (optional)").inputValue(), /Unload/);
     await page.getByRole("button",{name:"Finish self-review"}).press("Enter");
+    assert.equal(await page.locator(".school-completion form [data-learning-feedback]").count(), 0);
     const transferOutcome = id => page.evaluate(key => JSON.parse(localStorage.getItem("narajos.catchup.v1." + key)).transfer20.outcome, id);
     assert.equal(await transferOutcome("11.spring-evidence"), "self-reviewed");
     assert.equal(await transferOutcome("10.amylase-endpoint"), "supported");
@@ -137,6 +150,8 @@ export async function checkGCSECatchup(browser, base) {
     await openCheck();
     assert(await dialog.getByRole("radio", {name: existing.steps[1].answer, exact: true}).isChecked());
     assert(await dialog.getByRole("button", {name: "Continue", exact: true}).isVisible());
+    assert(await result.locator('[data-learning-feedback="correct"]').isVisible());
+    assert.equal(await result.locator("[data-feedback-animate]").count(), 0);
 
     for (const width of [320, 768, 1280]) {
       await page.setViewportSize({width, height: 860});

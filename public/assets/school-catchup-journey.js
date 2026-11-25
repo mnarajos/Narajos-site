@@ -161,14 +161,16 @@ export function mountJourney(host, model, lesson) {
   const missingChoice = state.selected && state.selected !== savedQuestion.answer
     && !savedQuestion.options.some(option => option.label === state.selected);
   if (changedPrompt || missingChoice || state.correct && state.selected !== savedQuestion.answer) {
-    Object.assign(state, {selected: "", correct: false, feedback: "", clues: 0, helped: false, explained: false});
+    Object.assign(state, {selected: "", correct: false, feedback: "", clues: 0, helped: false, explained: false, incorrectAttempt: false});
+  } else if (!state.correct && state.selected && state.feedback) {
+    state.incorrectAttempt = state.selected !== savedQuestion.answer;
   }
   function write() {
     state.prompt = (state.repeating && retry ? retry : steps[state.step]).prompt;
     storageNote.textContent = saveCatchup(progressKey, state) ? "" : "Progress can only be kept while this page is open.";
   }
 
-  function renderStages() {
+  function renderStages({animateCompletion = false} = {}) {
     if (pauseControl) pauseControl.hidden = Boolean(state.done || paused);
     if (workedReview) workedReview.hidden = state.step === 0 && !state.done;
     checkHeading.hidden = Boolean(state.done);
@@ -222,11 +224,11 @@ export function mountJourney(host, model, lesson) {
     }
     if (state.done) {
       const next = element("div", "", "school-completion");
-      const heading = element("h3", "Guided checks complete");
+      const heading = element("h3");
       heading.tabIndex = -1;
-      const tick = element("span", "✓", "school-completion-tick");
-      tick.setAttribute("aria-hidden", "true");
-      heading.prepend(tick);
+      heading.innerHTML = window.KeystoneFeedback.markup("complete", {
+        label: "Guided checks complete", animate: animateCompletion
+      });
       next.append(heading);
       const transfer = appendTransfer(next, id, state, write, () => id === "quadrat-evidence"
         ? steps.at(-1).reference?.render() : model.querySelector("figure")?.cloneNode(true));
@@ -292,7 +294,7 @@ export function mountJourney(host, model, lesson) {
     dialog.querySelector("h2").focus();
   }
 
-  function pause() {
+  function pause({animateCompletion = false} = {}) {
     if (!viewOnly) write();
     if (inlineCheck) {
       paused = !viewOnly;
@@ -303,7 +305,7 @@ export function mountJourney(host, model, lesson) {
     }
     dialog.close();
     if (viewOnly) return;
-    renderStages();
+    renderStages({animateCompletion});
     checkList.querySelector(".school-current-stage button")?.focus({preventScroll: true});
   }
 
@@ -359,12 +361,18 @@ export function mountJourney(host, model, lesson) {
     const result = element("p", "", "school-check-feedback");
     result.setAttribute("role", "status");
 
-    function showVerdict() {
+    function showVerdict(animate = false) {
       result.replaceChildren();
       if (!state.feedback || !state.selected) return;
       const [verdict, detail] = feedbackFor(q, state.selected);
       result.dataset.verdict = state.correct ? "correct" : "incorrect";
-      result.append(element("strong", verdict), " " + detail);
+      const label = element("strong", verdict);
+      if (state.correct) {
+        label.innerHTML = window.KeystoneFeedback.markup(state.incorrectAttempt ? "corrected" : "correct", {
+          key: shownIndex, animate
+        });
+      }
+      result.append(label, " " + detail);
     }
     showVerdict();
 
@@ -431,12 +439,15 @@ export function mountJourney(host, model, lesson) {
     });
     form.addEventListener("submit", event => {
       event.preventDefault();
-      if (state.correct || !state.selected) return;
+      if (state.correct || !state.selected || !form.isConnected) return;
       state.correct = state.selected === q.answer;
-      if (!state.correct) state.helped = true;
+      if (!state.correct) {
+        state.helped = true;
+        state.incorrectAttempt = true;
+      }
       state.feedback = feedbackFor(q, state.selected).join(" ");
       write();
-      showVerdict();
+      showVerdict(state.correct);
       if (state.correct) {
         support.hidden = true;
         choices.disabled = true;
@@ -497,7 +508,7 @@ export function mountJourney(host, model, lesson) {
       state.notes[state.step].push(state.draft.trim());
     }
     Object.assign(state, {selected: "", feedback: "", draft: "",
-      clues: 0, hintOpen: false, correct: false, helped: false, explained: false, repeating: Boolean(repeat)});
+      clues: 0, hintOpen: false, correct: false, helped: false, explained: false, incorrectAttempt: false, repeating: Boolean(repeat)});
     if (repeat) {
       write();
       renderCheck();
@@ -508,8 +519,8 @@ export function mountJourney(host, model, lesson) {
       if (inlineCheck) paused = false;
       if (atEnd) state.done = true;
       else state.step++;
-      if (inlineCheck) { write(); renderStages(); }
-      else pause();
+      if (inlineCheck) { write(); renderStages({animateCompletion: atEnd}); }
+      else pause({animateCompletion: atEnd});
       checkList.querySelector(state.done ? ".school-completion h3" : ".school-current-stage h3")?.focus();
     }
   }

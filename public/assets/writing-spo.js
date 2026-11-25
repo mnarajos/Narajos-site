@@ -88,9 +88,23 @@ function choicePractice(legend, choices) {
   const group = element("fieldset", "", "spo-choice");
   const status = element("p", "", "spo-status");
   status.setAttribute("role", "status");
-  const buttons = choices.map(([sentence, feedback]) => button(sentence, event => {
+  let missed = false;
+  let solved = false;
+  const buttons = choices.map(([sentence, feedback, correct]) => button(sentence, event => {
+    const alreadySelected = event.currentTarget.getAttribute("aria-pressed") === "true";
     for (const candidate of buttons) candidate.setAttribute("aria-pressed", String(candidate === event.currentTarget));
-    status.textContent = feedback;
+    if (!correct) {
+      if (!solved) missed = true;
+      status.textContent = feedback;
+      return;
+    }
+    if (alreadySelected && solved) return;
+    status.innerHTML = window.KeystoneFeedback?.markup(missed ? "corrected" : "correct", {
+      key: legend,
+      animate: !solved
+    }) ?? "Correct.";
+    status.append(" ", feedback);
+    solved = true;
   }));
   for (const control of buttons) control.setAttribute("aria-pressed", "false");
   group.append(element("legend", legend), ...buttons, status);
@@ -139,11 +153,11 @@ export function mountIntroduction(card, id) {
   const guided = element("section", "", "spo-guided");
   const openingChoices = example.openingChoices ?? [
     ["There are several ideas to explain here.", "This is too vague. Name the scientific claim that your paragraph will explain."],
-    [example.topic, "Correct. The reader knows what the explanation will develop."]
+    [example.topic, "The reader knows what the explanation will develop.", true]
   ];
   const endingChoices = example.closingChoices ?? [
     [example.topic, "This repeats the opening. Bring the reasoning together to show its significance."],
-    [example.conclusion, "Correct. This draws together the reasoning and says what it shows."]
+    [example.conclusion, "This draws together the reasoning and says what it shows.", true]
   ];
   const rewrite = savedField(id + "-intro-rewrite-" + year, "Write a stronger topic sentence");
   const ending = savedField(id + "-intro-ending-" + year, "Write a concluding sentence");
@@ -151,7 +165,7 @@ export function mountIntroduction(card, id) {
     element("p", example.prompt), choicePractice("Which opening answers the question?", openingChoices),
     ...(id === "ramp" || year === 7 ? [choicePractice("Which note comes next after ‘different wheels and friction’?", [
       ["Different paint colours", "Paint colour does not explain the rolling distance in this experiment."],
-      ["Different friction → different rolling distances", "Correct. This note links the difference between cars to the result."],
+      ["Different friction → different rolling distances", "This note links the difference between cars to the result.", true],
       ["Same car → car characteristics kept constant", "This belongs later. First explain how the differences between cars can affect the result."]
     ])] : []),
     choicePractice("Which ending draws the reasoning together?", endingChoices),
@@ -180,7 +194,7 @@ export function mountIntroduction(card, id) {
     "So: The car stays the same, so differences in its wheels cannot explain the change in distance."
   ]) list.append(element("li", sample));
   connectors.append(choicePractice("Which word introduces the reason in ‘The comparison is fairer … the same car is used’?", [
-    ["Because", "Correct. The words after ‘because’ explain why the comparison is fairer."],
+    ["Because", "The words after ‘because’ explain why the comparison is fairer.", true],
     ["But", "Use ‘but’ for a contrast. The next words give the reason."],
     ["So", "Use ‘so’ to give a result. The next words tell us why."]
   ]));
