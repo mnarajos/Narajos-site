@@ -724,7 +724,7 @@ try{
  await desktop.goto(base+"/human-biology/#challenge/f171/a3",{waitUntil:"load"});
  await desktop.locator(".k-question-view").waitFor({state:"visible"});
  const count=await desktop.evaluate(()=>window.KeystoneHumanChallenge?.questionCount);
- assert.equal(count,590,"Live engine did not load all questions");
+ assert.equal(count,597,"Live engine did not load all questions");
  assert((await desktop.locator("main").innerText()).length>90,"Question activity is blank");
  await desktop.locator("#site-home").click();
  const dialog=desktop.locator("#leave-dialog");
