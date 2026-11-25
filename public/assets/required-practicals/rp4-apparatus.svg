@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 200">
+  <title>Beetroot membrane permeability investigation</title>
+  <desc>Equal, rinsed discs are immersed in water at different temperatures. Pigment escapes from the vacuole across the tonoplast and then the cell-surface membrane. Measure the liquid alone at 530 nanometres.</desc>
+  <rect x="1" y="1" width="458" height="198" rx="14" fill="#f1f6f8" stroke="#bdcdd5"/>
+  <g stroke="#233c4d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path fill="#d8eaf4" d="M29 81h52l-5 58H34zm58 0h52l-5 58H92z"/>
+    <path fill="#f5dfe8" d="M42 81h26v40a13 13 0 0 1-26 0z"/>
+    <path fill="#cd729a" d="M100 81h26v40a13 13 0 0 1-26 0z"/>
+    <path d="M42 81V49h26v32m32 0V49h26v32"/>
+    <path fill="#8e315e" d="M45 113h20v6H45zm58 0h20v6h-20z"/>
+    <rect x="169" y="49" width="121" height="90" rx="17" fill="#f5f7ed" stroke="#1e5664"/>
+    <ellipse cx="220" cy="94" rx="28" ry="26" fill="#de91b1" stroke="#763753"/>
+    <path d="M217 94h89m-8-8 8 8-8 8"/>
+    <circle cx="213" cy="81" r="2" fill="#763753"/>
+    <circle cx="213" cy="107" r="2" fill="#763753"/>
+    <rect x="326" y="78" width="116" height="57" rx="7" fill="#dce6eb"/>
+    <rect x="376" y="91" width="55" height="25" rx="3" fill="#fff"/>
+    <path fill="#cd729a" d="M338 78h19v20h-19z"/>
+    <path fill="#fff" d="M338 60h19v18h-19z"/>
+  </g>
+  <g fill="#203c4c" font-family="system-ui,sans-serif" text-anchor="middle" font-size="18">
+    <text x="84" y="28" font-weight="700">Rinsed discs</text>
+    <text x="229" y="28" font-weight="700">Pigment escapes</text>
+    <text x="384" y="28" font-weight="700">Colorimeter</text>
+    <text x="55" y="163">20 °C</text>
+    <text x="112" y="163">60 °C</text>
+    <text x="223" y="162">Vacuole → outside</text>
+    <text x="223" y="182">Across two membranes</text>
+    <text x="403" y="110">530</text>
+    <text x="384" y="163">Liquid only</text>
+  </g>
+</svg>

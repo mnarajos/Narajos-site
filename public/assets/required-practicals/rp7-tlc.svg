@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="540" height="300" viewBox="0 0 540 300" role="img" aria-labelledby="title desc">
+  <title id="title">Thin-layer chromatography apparatus</title>
+  <desc id="desc">A lid covers a chamber with a small amount of solvent. An upright silica-coated plate has two spots on a pencil baseline above the solvent. The solvent moves up the plate while the pigments separate.</desc>
+  <rect x="1" y="1" width="538" height="298" rx="15" fill="#f7fbfe" stroke="#bbcad5" stroke-width="2"/>
+  <path d="M64 66V249Q64 261 76 261H235Q247 261 247 249V66" fill="#eef5f8" stroke="#365266" stroke-width="4"/>
+  <path d="M66 226H245V249Q245 259 235 259H76Q66 259 66 249Z" fill="#9ad7e8"/>
+  <path d="M66 226H245" stroke="#327286" stroke-width="2"/>
+  <rect x="99" y="79" width="107" height="164" rx="2" fill="#fffaf0" fill-opacity=".92" stroke="#826a51" stroke-width="2"/>
+  <path d="M100 197H205" stroke="#354a5b" stroke-width="2" stroke-dasharray="5 4"/>
+  <circle cx="125" cy="197" r="7" fill="#418160" stroke="#173b35" stroke-width="2"/>
+  <circle cx="179" cy="197" r="7" fill="#b54972" stroke="#712045" stroke-width="2"/>
+  <path d="M151 173v-59m-10 12 10-12 10 12" fill="none" stroke="#1a647b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="52" y="53" width="207" height="13" rx="5" fill="#aabfcc" stroke="#365266" stroke-width="3"/>
+  <g fill="none" stroke="#365266" stroke-width="2">
+    <path d="M258 59H285M205 95H285M160 141H285M205 197H285M245 226H285"/>
+  </g>
+  <g fill="#173148" font-family="system-ui,sans-serif" font-size="22">
+    <text x="298" y="67">Lid</text>
+    <text x="298" y="103">Silica-coated plate</text>
+    <text x="298" y="149">Solvent rises</text>
+    <text x="298" y="205">Pencil baseline</text>
+    <text x="298" y="234">Solvent level</text>
+  </g>
+</svg>

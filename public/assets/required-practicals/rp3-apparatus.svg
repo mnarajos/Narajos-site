@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 184">
+  <title>Potato water potential investigation</title>
+  <desc>Pipette different volumes of one sucrose stock into labelled tubes and top up to the same volume using water. Soak equally sized peeled potato cylinders. Weigh before soaking and reweigh after blotting.</desc>
+  <rect x="1" y="1" width="458" height="182" rx="14" fill="#f1f6f8" stroke="#bdcdd5"/>
+  <g fill="none" stroke="#233c4d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path fill="#e3eff7" d="M39 55h72m-67 0v26a8 8 0 0 0 8 8h45a8 8 0 0 0 8-8V55"/>
+    <path d="M63 44h30m-17 0v44l-4 14m15-58v43l-4 14m-39-31h12m-12 10h7"/>
+    <path fill="#b9deed" d="M82 112q-8 9 0 12 8-3 0-12z"/>
+    <path d="M132 88h28m-7-7 7 7-7 7"/>
+    <path d="M269 88h28m-7-7 7 7-7 7"/>
+    <path fill="#d6eaf3" d="M170 82h22v43a11 11 0 0 1-22 0zm32 0h22v43a11 11 0 0 1-22 0zm32 0h22v43a11 11 0 0 1-22 0z"/>
+    <path fill="#efcf97" d="M177 90h8v30h-8zm32 0h8v30h-8zm32 0h8v30h-8z"/>
+    <path d="M170 82V65h22v17m10 0V65h22v17m10 0V65h22v17"/>
+    <path fill="#dde6eb" d="M312 91h105l17 35H297z"/>
+    <rect x="320" y="73" width="88" height="16" rx="4" fill="#fff"/>
+    <path fill="#efcf97" d="M335 55h58v16h-58z"/>
+    <ellipse cx="335" cy="63" rx="5" ry="8" fill="#efcf97"/>
+    <rect x="342" y="101" width="47" height="19" rx="3" fill="#fff"/>
+  </g>
+  <g fill="#203c4c" font-family="system-ui,sans-serif" text-anchor="middle" font-size="18">
+    <text x="75" y="28" font-weight="700">Dilute</text>
+    <text x="213" y="28" font-weight="700">Soak cylinders</text>
+    <text x="365" y="28" font-weight="700">Reweigh</text>
+    <text x="366" y="116" font-size="16">2.60 g</text>
+    <text x="74" y="160">Stock + water</text>
+    <text x="181" y="68" font-size="12">A</text><text x="213" y="68" font-size="12">B</text><text x="245" y="68" font-size="12">C</text>
+    <text x="213" y="160">Equal time</text>
+    <text x="365" y="151">Before: 2.50 g</text>
+    <text x="365" y="171">After blotting</text>
+  </g>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 184">
+  <title>Trypsin and casein temperature investigation</title>
+  <desc>Equilibrate separate tubes of milk and buffered trypsin in a temperature-controlled water bath. Mix and start the stopwatch. Look through the reaction tube until the marked cross becomes visible.</desc>
+  <rect x="1" y="1" width="458" height="182" rx="14" fill="#f1f6f8" stroke="#bdcdd5"/>
+  <g fill="none" stroke="#233c4d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path fill="#cbe6f3" d="M22 79h170l-10 53H32z"/>
+    <path d="M19 66h176M23 66l9 66h150l9-66"/>
+    <path fill="#fffdf5" d="M53 48h35m-31 0v62a13.5 13.5 0 0 0 27 0V48"/>
+    <path fill="#e6f1f0" d="M117 48h35m-31 0v62a13.5 13.5 0 0 0 27 0V48"/>
+    <path d="M60 81h21m43 0h21"/>
+    <path d="M169 57v52m0-14h8"/>
+    <circle cx="169" cy="113" r="4" fill="#8f3b2f"/>
+    <path d="M207 88h40m-8-8 8 8-8 8"/>
+    <path fill="#dcecf0" d="M265 79h73l-5 54h-63z"/>
+    <path fill="#fafcfa" d="M285 48h32m-28 0v60a12 12 0 0 0 24 0V48"/>
+    <path d="M292 76h18m-15 14 12 12m0-12-12 12"/>
+    <circle cx="387" cy="86" r="24" fill="#fff"/>
+    <path d="M380 55h14m-7 0v7m0 12v12l9 5"/>
+  </g>
+  <g fill="#203c4c" font-family="system-ui,sans-serif" text-anchor="middle" font-size="18">
+    <text x="104" y="28" font-weight="700">Set temperature</text>
+    <text x="71" y="102">Milk</text>
+    <text x="135" y="143">Trypsin</text>
+    <text x="93" y="165">Water bath · pH fixed</text>
+    <text x="345" y="28" font-weight="700">Mix and start timing</text>
+    <text x="345" y="161">Watch for the cross</text>
+  </g>
+</svg>

@@ -32,6 +32,8 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Check learning feedback and reduced motion
         run: node scripts/check-learning-feedback.mjs
+      - name: Test A-level practical activities
+        run: node scripts/check-alevel-practicals.mjs
       - name: Test actual browser interactions and mobile layout
         run: node scripts/check-browser.mjs
       - name: Retain viewport screenshots for visual review

@@ -1,0 +1,14 @@
+# Choice chamber and fieldwork sources
+
+Both diagrams and the two datasets are original to Narajos. The diagrams are SVG rendered by the application. The activities use simulated evidence for preparation and practice.
+
+## RP10. Animal movement in a choice chamber
+
+- The diagram shows a central release hole, dry gauze that supports the animals, and separate base compartments. The humidity comparison keeps light and temperature equal. The light comparison keeps humidity and temperature equal. [AQA RP10 apparatus set-up guide](https://filestore.aqa.org.uk/resources/biology/AQA-7401-7402-P10.PDF)
+- Tracking animals allows students to compare speed and direction in addition to the distribution. The resource separates an illustrative humidity response from a directional light response and offers an equal-conditions comparison. [Practical Biology choice-chamber guidance](https://practicalbiology.org/animal-behaviour/animal-movement/using-a-choice-chamber-to-investigate-animal-responses-to-stimuli.html) [Practical Biology investigation of Calliphora larvae and light](https://practicalbiology.org/animal-behaviour/animal-reactions/investigating-the-response-of-calliphora-larvae-to-light.html)
+- The model uses 12 points released near the middle of a rectangular chamber with reflecting walls. Directions are sampled afresh every tick. Humidity changes travel distance from 12 model units per interval on the drier side to 3 on the more humid side, with uniform headings on both sides. The light comparison uses a fixed distance of 7 units per interval and samples from headings within 60 degrees of the direction away from the light on 65% of intervals. The other headings are uniform. Equal conditions use the same distance of 7 units and uniform headings on both sides. Side assignments for movement statistics use the start of each interval. Time and distance are model units.
+
+## RP12. Quadrat sampling and a soil moisture gradient
+
+- The original model shows a 48 m² meadow divided into 1 m² non-overlapping squares. The counts are authored and fixed so the same population can be sampled by different methods. Soil moisture rises across the field with variation between rows. The uneven counts have an association with soil moisture for students to investigate.
+- The random method draws uniform coordinate pairs without replacement. Systematic sampling follows a selected row at one-metre intervals from the path. User-selected squares allow students to explore the effect of location choice. Counts refer to rooted common daisy plants, and the frame boundary rule prevents double-counting when adjacent quadrats are used. [AQA RP12 apparatus set-up guide](https://filestore.aqa.org.uk/resources/biology/AQA-7401-7402-P12.PDF) [AQA practical assessment requirements](https://www.aqa.org.uk/subjects/biology/a-level/biology-7402/specification/practical-assessment)

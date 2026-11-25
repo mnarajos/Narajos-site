@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 310">
+  <title>Light intensity and DCPIP apparatus schematic</title>
+  <rect width="500" height="310" rx="12" fill="#f3f8fa"/>
+  <g font-family="system-ui, sans-serif" font-size="19" fill="#233e4c" text-anchor="middle">
+    <text x="113" y="38">Lamp</text>
+    <text x="174" y="109">A</text>
+    <text x="222" y="86">B</text>
+    <text x="322" y="109">C</text>
+    <text x="259" y="216">Temperature-controlled water bath</text>
+    <text x="425" y="163">Colorimeter</text>
+    <text x="425" y="186">red filter</text>
+    <text x="250" y="255">Light-driven electron transfer → DCPIP reduced</text>
+    <text x="250" y="283">Blue dye fades → red absorbance falls</text>
+  </g>
+  <path d="M240 13h16v22l13 9v10h-42V44l13-9zM141 32h88" stroke="#475569" stroke-width="3" stroke-linejoin="round" fill="#fff4ce"/>
+  <path d="M234 60l-36 38m50-35v35m14-38 36 38" stroke="#9e6409" stroke-width="3" stroke-dasharray="6 4" fill="none"/>
+  <path d="M156 116v66q0 12 12 12h162q12 0 12-12v-66" fill="#d7edf7" stroke="#49768e" stroke-width="3"/>
+  <g stroke="#355267" stroke-width="3">
+    <path d="M181 104v70a12 12 0 0 0 24 0v-70" fill="#cbdde8"/>
+    <path d="M184 135h18v38q0 9-9 9t-9-9z" fill="#397074" stroke="none"/>
+    <path d="M236 104v70a12 12 0 0 0 24 0v-70" fill="#64748b"/>
+    <path d="M236 129l24 12m-24 1 24 12m-24 1 24 12" stroke="#dae5f1" fill="none"/>
+    <path d="M291 104v70a12 12 0 0 0 24 0v-70" fill="#d1e4f6"/>
+    <path d="M294 135h18v38q0 9-9 9t-9-9z" fill="#276698" stroke="none"/>
+    <path d="M326 98v60" stroke="#9a3f37"/>
+    <circle cx="326" cy="161" r="4" fill="#9a3f37" stroke="none"/>
+  </g>
+  <path d="M346 128h27m-9-7 9 7-9 7" stroke="#355267" stroke-width="3" fill="none"/>
+  <rect x="383" y="106" width="83" height="38" rx="5" fill="#deebf2" stroke="#355267" stroke-width="3"/>
+  <path d="M394 126h19m9-10v21m9-11h22" stroke="#a5413c" stroke-width="3"/>
+  <path d="M29 231h442" stroke="#b3c9d2" stroke-width="2"/>
+</svg>
