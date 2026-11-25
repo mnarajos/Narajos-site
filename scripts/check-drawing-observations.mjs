@@ -487,7 +487,8 @@ export async function checkDrawingObservations(browser,base,axeSource) {
       if(width===320)await reference.getByRole("button",{name:"Close enlarged image",exact:true}).tap();
       else await page.keyboard.press("Escape");
       if(width===320||width===390) assert(await page.evaluate(()=>window.drawingFocusRestoredAtDismiss),"Focus returns to the opener when the inspector closes at "+width+"px");
-      assert(await enlarge.evaluate(el=>el===document.activeElement));
+      await reference.waitFor({state:"hidden"});
+      await page.waitForFunction(el=>el===document.activeElement,await enlarge.elementHandle(),{timeout:3000});
     }
     await page.getByText("Read the visual evidence",{exact:true}).click();
     await audit(".al-drawing");

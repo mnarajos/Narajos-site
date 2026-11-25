@@ -65,9 +65,8 @@ export async function checkAssessmentJourneys(browser,base) {
     }
     const screenshot=await food.screenshot({fullPage:true});
     assert(screenshot.length>1000,"mobile food lesson screenshot is empty");
-    // A correct first pointer selection auto-checks. Wait for feedback before continuing.
-    await food.getByText("To compare colours with a test that has no reducing sugar in it",{exact:true}).click();
-    await food.locator("#fb").waitFor();
+    // Use the manual keyboard flow so the pointer auto-check timer cannot advance this test.
+    await checkFoodAnswer("To compare colours with a test that has no reducing sugar in it");
     assert.match(await food.locator("#fb").innerText(),/Correct!/);
     await food.locator("#act").click();
     assert.equal(await food.getByRole("heading",{name:"Worked example",exact:true}).count(),0);
