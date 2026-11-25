@@ -30,6 +30,8 @@ jobs:
         run: |
           npm install --no-save playwright@1.56.1
           npx playwright install --with-deps chromium
+      - name: Check learning feedback and reduced motion
+        run: node scripts/check-learning-feedback.mjs
       - name: Test actual browser interactions and mobile layout
         run: node scripts/check-browser.mjs
       - name: Retain viewport screenshots for visual review

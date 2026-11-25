@@ -51,8 +51,11 @@ export async function checkHumanReliability(browser, base, { touch = false, audi
     assert.equal(Object.keys((await read(slot)).first).length, 0);
     if (touch) await byAction("check").tap(); else await byAction("check").press("Enter");
     await page.getByRole("heading", { name: "Correct!", exact: true }).waitFor();
+    const correctFeedback = page.locator('[data-feedback-heading] [data-learning-feedback="correct"]');
+    assert.equal(await correctFeedback.getAttribute("data-feedback-animate"), "");
     assert.equal(await page.locator("[data-feedback-heading]").evaluate(el => document.activeElement === el), true);
     await page.reload();
+    assert.equal(await correctFeedback.getAttribute("data-feedback-animate"), null);
     assert.equal((await read(slot)).outcomes[0], "independent");
     assert.equal((await read("progress"))[id].checked, 1);
     await byAction("next").press("Enter");

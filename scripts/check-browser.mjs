@@ -1452,7 +1452,7 @@ try{
  await slot(oneParagraph,0).getByRole("button").press("Enter");
  await slot(oneParagraph,1).getByRole("button").press("Enter");
  await checkOrder(oneParagraph).click();
- await oneParagraph.getByRole("status").filter({hasText:"Correct!"}).waitFor();
+ await oneParagraph.getByRole("status").filter({hasText:"You corrected your mistake!"}).waitFor();
  await oneParagraph.getByText("Read the completed paragraph",{exact:true}).click();
  assert(await oneParagraph.locator(".model").isVisible());
  const spoRamp=navPage.locator("[data-ramp-practice]");
@@ -1675,7 +1675,9 @@ try{
  await microscopeCheck.getByRole("button",{name:/edges are straight/}).press("Enter");
  await microscopeCheck.getByRole("status").filter({hasText:/Some animal cells/}).waitFor();
  await microscopeCheck.getByRole("button",{name:"There is too little evidence to decide."}).press("Enter");
- await microscopeCheck.getByRole("status").filter({hasText:/Correct/}).waitFor();
+ const microscopeResult=microscopeCheck.getByRole("status");
+ await microscopeResult.locator('[data-learning-feedback="corrected"]').waitFor();
+ assert.match(await microscopeResult.innerText(), /Both types can have nuclei/);
  await checkReadingSpacing(navPage,"Year 7 cell diagrams");
  await navPage.goto(base+"/ks3/adaptation/");
  await navPage.getByText("Compare rock pocket mouse populations",{exact:true}).click();
@@ -1783,7 +1785,8 @@ try{
  await navPage.getByRole("button",{name:"Cell membrane",exact:true}).click();
  await navPage.getByRole("status").filter({hasText:"firm layer outside it is the cell wall"}).waitFor();
  await navPage.getByRole("button",{name:"Cell wall",exact:true}).click();
- await navPage.getByRole("status").filter({hasText:"Correct. The cell wall gives the cell support"}).waitFor();
+ const cellFeedback=navPage.getByRole("status").filter({hasText:"The cell wall gives the cell support"});
+ await cellFeedback.locator('[data-learning-feedback="corrected"]').waitFor();
  await navPage.getByText("Compare your explanation",{exact:true}).click();
  assert(await navPage.getByText(/The cell wall supports the plant cell/).isVisible());
 

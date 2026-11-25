@@ -56,6 +56,8 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
   const model = element("details", "", "paragraph-model");
   model.append(element("summary", "Read the completed paragraph"), element("p", cards.join(" "), "model"));
   const controls = element("div", "", "writing-order-controls");
+  let solved = checked;
+  let missed = false;
   let destination = slots.indexOf(null);
   let moving = null;
   const nextPosition = element("p", "", "paragraph-next");
@@ -83,11 +85,15 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
     if (slots.includes(null)) return;
     const firstError = slots.findIndex((id, index) => id !== index);
     if (firstError === -1) {
-      checked = true;
-      showResult();
+      if (!checked) {
+        checked = true;
+        showResult(!solved);
+        solved = true;
+      }
       save();
       return;
     }
+    if (!solved) missed = true;
     usedFeedback = true;
     save();
     clearReview();
@@ -209,12 +215,14 @@ export function mountParagraph(root, { cards, order, hints, success, guidance },
     }
   }
 
-  function showResult() {
+  function showResult(animate = false) {
     result.hidden = !checked;
     model.hidden = !checked;
     if (checked) {
       result.dataset.result = "correct";
-      result.replaceChildren(element("strong", "Correct!"), " " + success);
+      const lead = element("strong");
+      lead.innerHTML = window.KeystoneFeedback?.markup(missed ? "corrected" : "correct", { animate }) ?? "Correct!";
+      result.replaceChildren(lead, " " + success);
     } else {
       delete result.dataset.result;
       result.textContent = "";

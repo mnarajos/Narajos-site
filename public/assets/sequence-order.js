@@ -56,6 +56,14 @@ export function mountSequence(root, {
   const controls = element("div", "", "writing-order-controls");
   const model = element("details");
   if (answer) model.append(element("summary", answerTitle), ...answer.map(text => element("p", text, "model")));
+  let solved = completed;
+  let missed = false;
+
+  function showCorrect(animate = false) {
+    const lead = element("strong");
+    lead.innerHTML = window.KeystoneFeedback?.markup(missed ? "corrected" : "correct", { animate }) ?? "Correct!";
+    feedback.replaceChildren(lead, " " + success);
+  }
 
   function refreshAssessment() {
     usedFeedback ||= completed;
@@ -72,11 +80,13 @@ export function mountSequence(root, {
     const firstError = slots.findIndex((id, index) => id !== index);
     feedback.dataset.result = firstError === -1 ? "correct" : "retry";
     if (firstError === -1) {
+      if (!completed) showCorrect(!solved);
+      solved = true;
       completed = true;
       save();
-      feedback.replaceChildren(element("strong", "Correct!"), " " + success);
       model.hidden = !answer;
     } else {
+      if (!solved) missed = true;
       usedFeedback = true;
       save();
       draw(firstError);
@@ -271,6 +281,6 @@ export function mountSequence(root, {
   model.hidden = !completed || !answer;
   if (completed) {
     feedback.dataset.result = "correct";
-    feedback.replaceChildren(element("strong", "Correct!"), " " + success);
+    showCorrect();
   }
 }

@@ -12,6 +12,7 @@ const localStorage={getItem(k){return memory.has(k)?memory.get(k):null;},setItem
 const ctx=vm.createContext({window,document,location,localStorage,console,Date,Math});
 function load(p){vm.runInContext(read(p),ctx,{filename:p});}
 load("assets/spaced-review.js");
+load("assets/learning-feedback.js");
 load("human-biology/content-f170.js");
 const D=window.KeystoneHumanData;
 assert.match(D.specification,/version 8.*October 2026/);

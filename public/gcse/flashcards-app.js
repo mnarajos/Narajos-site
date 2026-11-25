@@ -131,8 +131,9 @@ function create(env){
  function finished(){
   if(!active)return menu();
   var total=active.original.length;
+  var completion=root.KeystoneFeedback.markup("complete",{animate:!active.over,label:"Review complete"});
   active.over=true;saveActive();
-  var h='<p class="crumb"><a href="#flashcards">← Flashcards</a></p><h1>Review complete</h1>'+
+  var h='<p class="crumb"><a href="#flashcards">← Flashcards</a></p><h1>'+completion+'</h1>'+
    '<div class="kr-entry"><h2>'+total+' cards completed</h2><p>'+root.KeystoneReview.firstReviewText(active)+'</p>'+
    '<p>Successful cards will reappear after a delay, rather than counting as permanently mastered today.</p>'+
    '<div class="kr-actions"><a class="btn primary" href="#flashcards">Choose another set</a><a class="btn" href="#flashreview">Review due cards</a></div></div>';

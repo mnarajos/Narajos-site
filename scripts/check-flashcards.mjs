@@ -14,6 +14,7 @@ const box={
 };
 const context=vm.createContext(box);
 function load(path){vm.runInContext(read(path),context,{filename:path});}
+load("assets/learning-feedback.js");
 load("assets/spaced-review.js");
 load("gcse/cards-biology.js");
 load("gcse/cards-chemistry.js");
@@ -92,4 +93,5 @@ assert.equal(A.progress().weak,1);
 A.route("spaced");assert(last.includes("Spaced flashcard review"));
 A.route("spaced-new");assert(A.isActive()&&last.includes("Reveal answer"));
 el("kr-reveal").click();el("kr-good").click();
+assert.match(last,/data-learning-feedback="complete"[^>]*>.*Review complete/);
 console.log("Flashcard checks passed:",count,"GCSE cards across",topics.length,"topics; scheduler, aliases and review controls verified.");

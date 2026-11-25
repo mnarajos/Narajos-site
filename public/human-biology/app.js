@@ -212,7 +212,7 @@ function showPractice(){
  if(active.phase==="answer")reveal(true);
 }
 function reveal(restored,silentRecall){
- if(!active)return;
+ if(!active||(!restored&&active.phase!=="question"))return;
  var box=document.getElementById("answer-box"),button=main.querySelector('[data-action="reveal"]'),field=document.getElementById("typed");
  if(!box||!button||!field)return;
  var answer=active.type==="cards"?byCard[active.queue[0]].a:"";
@@ -226,7 +226,15 @@ function reveal(restored,silentRecall){
    box.querySelector('[data-action="got-it"]').hidden=!active.retrievalAttempt;
   }
   var comp=document.getElementById("comparison");
-  if(comp)comp.textContent=f171&&!active.retrievalAttempt?"Read the model, then try retrieving it again.":!field.value.trim()?"Compare what you recalled with the model answer.":exact?"Your response matches an approved wording. Check your understanding before selecting Got it.":"This is not an exact listed wording. A scientifically equivalent answer may still be correct: compare the meaning before grading.";
+  if(comp){
+   if(exact){
+    const animate=!restored&&!Object.hasOwn(active.first,active.queue[0]);
+    comp.innerHTML=window.KeystoneFeedback.markup("correct",{label:"Your response matches an approved wording.",animate});
+    comp.append(" Check your understanding before selecting Got it.");
+   }else{
+    comp.textContent=f171&&!active.retrievalAttempt?"Read the model, then try retrieving it again.":!field.value.trim()?"Compare what you recalled with the model answer.":"This is not an exact listed wording. A scientifically equivalent answer may still be correct: compare the meaning before grading.";
+   }
+  }
  }
  field.readOnly=true;box.hidden=false;button.hidden=true;active.draft=field.value;active.phase="answer";saveSession();
  if(!restored){var first=box.querySelector("button");if(first)first.focus();}
@@ -243,8 +251,10 @@ function rate(success){
 function drawSession(){if(!active)return showHome();if(!active.queue.length)return finish();if(active.type==="cards")showCard();else showPractice();}
 function finish(){
  var old=active;if(!old)return showHome();active=null;saveSession();
- var h='<div class="flash-panel">'+crumb(old.type==="cards"?"flashcards":"practice","Back to revision")+'<div class="eyebrow">Session complete</div><h1>Good work</h1><div class="paper panel"><h2>'+old.initial+' '+(old.type==="cards"?"flashcards":"questions")+' completed</h2><p>'+old.correctFirst+' answered confidently on the first attempt. Items marked “Not yet” were revisited in this set.</p>';
- if(old.type==="cards")h+='<p>Cards recalled successfully are scheduled to return after an interval. Your review progress stays in this browser.</p>';
+ const cards=old.type==="cards";
+ const heading=window.KeystoneFeedback.markup("complete",{label:"Session complete",animate:old.initial>=4});
+ var h='<div class="flash-panel">'+crumb(cards?"flashcards":"practice","Back to revision")+'<h1>'+heading+'</h1><div class="paper panel"><h2>'+old.initial+' '+(cards?"flashcards":"questions")+' completed</h2><p>'+old.correctFirst+' marked “'+(cards?"Got it":"Understood")+'” on the first attempt. Items marked “'+(cards?"Not yet":"Need more practice")+'” were revisited in this set.</p>';
+ if(cards)h+='<p>Cards you marked “Got it” are scheduled to return after an interval. Your review progress stays in this browser.</p>';
  h+='<div class="actions">'+link(old.type==="cards"?"flashcards":"practice","Choose another set","primary")+link("home","Back to overview")+'</div></div></div>';
  render(h);
 }

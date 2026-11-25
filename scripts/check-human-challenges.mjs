@@ -14,6 +14,7 @@ const c=vm.createContext({window,document,location,localStorage:store,Date,Math,
 function load(p){vm.runInContext(read(p),c,{filename:p});}
 load("assets/science-answer.js");
 load("assets/spaced-review.js");
+load("assets/learning-feedback.js");
 load("human-biology/content-f170.js");
 load("human-biology/challenge-bank.js");
 load("human-biology/content-knowledge.js");
@@ -254,7 +255,8 @@ const best=forcedQuestion("best-f170-magnification");
 assert(main.innerHTML.includes("Choose the scientifically accurate explanation")&&main.innerHTML.includes("Which scientific reason supports"),"Two-step reasoning must present both choices");
 main.querySelector=selector=>selector==='input[name="kbest"]:checked'?{value:String(best.correct)}:selector==='input[name="kreason"]:checked'?{value:String(best.reasonCorrect)}:null;
 clickAction("check");
-assert(main.innerHTML.includes("Correct")&&main.innerHTML.includes("Expected answer"),"Two-step answer should require both correct components");
+assert.match(main.innerHTML,/data-learning-feedback="correct" data-feedback-animate/,"Two-step answer should require both correct components");
+assert(main.innerHTML.includes("Expected answer"));
 assert(JSON.parse(data.get("narajos-human-challenge-v2-progress"))[best.id].independent===1,"Correct independent reasoning should be counted");
 const written=forcedQuestion("health-parkinsons-therapy");
 main.querySelector=selector=>selector==="#k-number, #k-text, #k-written"?{value:"Treatment can reduce tremor."}:null;
@@ -267,6 +269,7 @@ app.pause();app.route("challenge/f171/a2",html=>{main.innerHTML=html;});
 assert(main.innerHTML.includes("Revision after comparing.")&&main.innerHTML.includes('value="work" selected'));
 clickAction("finish-review");
 assert(main.innerHTML.includes("Self-review complete"));
+assert.doesNotMatch(main.innerHTML,/data-learning-feedback/,"Written self-review must not show correctness feedback");
 clickAction("finish-review");
 clickAction("next");
 const reviewProgress=JSON.parse(data.get("narajos-human-challenge-v2-progress"))[written.id];
@@ -278,6 +281,14 @@ assert.match(main.innerHTML,/<dt>self-reviewed<\/dt><dd>1<\/dd>/);
 app.route("challenge/review",h=>main.innerHTML=h);
 assert.match(main.innerHTML,/<dt>self-reviewed<\/dt><dd>1<\/dd>/);
 assert(!data.get("narajos-human-challenge-v2-completed").includes("Revision after comparing."));
+
+forcedQuestion("case-visual-cast-comparison");
+main.querySelector=selector=>selector==="#k-number, #k-text, #k-written"?{value:"The initial differences could account for the difference seen at follow-up."}:null;
+clickAction("reveal");
+clickAction("finish-review");
+clickAction("next");
+assert.match(main.innerHTML,/Practice complete/,"The same case within topic practice has ordinary completion feedback");
+assert.doesNotMatch(main.innerHTML,/Stretch activity complete/);
 
 clickAction("self-good");
 assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-progress"))[written.id].seen,1,"Repeated review must not create another attempt");
@@ -394,6 +405,7 @@ main.querySelector=selector=>{
 };
 clickAction("check");
 assert(main.innerHTML.includes("1 row needs another look")&&!main.innerHTML.includes("Expected answer"));
+assert.doesNotMatch(main.innerHTML,/data-learning-feedback/,"Partial answers must not trigger positive feedback");
 clickAction("correct");
 let sorting=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert.deepEqual(sorting.answers[sort.id].correction,Array.from(sort.rows,(_,i)=>i!==0));
@@ -402,12 +414,34 @@ app.pause();app.route(sorting.route,h=>main.innerHTML=h);
 assert(main.innerHTML.includes("Review this row"),"Correction should restore the submitted work");
 wrongRow=false;
 clickAction("check");
-assert(main.innerHTML.includes("Correct!"));
+assert.match(main.innerHTML,/data-learning-feedback="corrected" data-feedback-animate/);
+const afterCorrection=main.innerHTML;
+clickAction("check");
+assert.equal(main.innerHTML,afterCorrection,"Repeated submission must not redraw correction feedback");
+app.pause();app.route(sorting.route,h=>main.innerHTML=h);
+assert.match(main.innerHTML,/data-learning-feedback="corrected"/);
+assert.doesNotMatch(main.innerHTML,/data-feedback-animate/,"Restoring feedback must not replay the celebration");
 sorting=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert.equal(sorting.outcomes[0],"corrected");
 assert.equal(sorting.objectiveFirst[sort.id],"incorrect");
 clickAction("next");
 assert.equal(JSON.parse(data.get("narajos-human-challenge-v2-completed")).outcomes[0],"corrected","Retry evidence must remain saved on completion");
+for(const [firstAction,firstOutcome] of [["check","incorrect"],["skip","revealed"]]){
+ const q=forcedQuestion("warm-f170-physiology");
+ const currentState=()=>JSON.parse(data.get("narajos-human-challenge-v2-session"));
+ main.querySelectorAll=()=>[{value:String((q.correct+1)%q.options.length)}];
+ clickAction(firstAction);
+ assert.equal(currentState().outcomes[0],firstOutcome);
+ clickAction("next");
+ while(currentState().queue[currentState().index]!==q.id){clickAction("skip");clickAction("next");}
+ main.querySelectorAll=()=>[{value:String(q.correct)}];
+ clickAction("check");
+ if(firstOutcome==="incorrect")assert.match(main.innerHTML,/data-learning-feedback="corrected" data-feedback-animate/);
+ else{
+  assert.match(main.innerHTML,/Correct on this attempt/);
+  assert.doesNotMatch(main.innerHTML,/data-feedback-animate/);
+ }
+}
 // Each new schematic must support feedback, without disclosing an answer in alt text.
 for(const id of ["f172-diagram-alleles","f173-diagram-blood","f174-diagram-glucose","f175-diagram-oviduct","f176-diagram-brain","f177-diagram-randomise"]){
  const question=forcedQuestion(id);

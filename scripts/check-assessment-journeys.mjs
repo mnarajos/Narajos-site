@@ -67,7 +67,7 @@ export async function checkAssessmentJourneys(browser,base) {
     assert(screenshot.length>1000,"mobile food lesson screenshot is empty");
     // Use the manual keyboard flow so the pointer auto-check timer cannot advance this test.
     await checkFoodAnswer("To compare colours with a test that has no reducing sugar in it");
-    assert.match(await food.locator("#fb").innerText(),/Correct!/);
+    assert(await food.locator('#fb [data-learning-feedback="correct"][data-feedback-animate]').isVisible());
     await food.locator("#act").click();
     assert.equal(await food.getByRole("heading",{name:"Worked example",exact:true}).count(),0);
 
@@ -79,7 +79,14 @@ export async function checkAssessmentJourneys(browser,base) {
     assert(await worked.evaluate(el=>Boolean(el.compareDocumentPosition(document.querySelector("#qf")) & Node.DOCUMENT_POSITION_FOLLOWING)));
     await checkFoodAnswer("No reducing sugar was detected in the sample");
     await checkFoodAnswer("The controls behaved as expected, but Benedict’s does not detect every sugar");
-    assert.match(await food.locator("#fb").innerText(),/Correct!/);
+    assert(await food.locator('#fb [data-learning-feedback="correct"][data-feedback-animate]').isVisible());
+
+    await food.evaluate(()=>window.__k.ev('L.i=L.queue.findIndex(q=>q.q.includes("A sample stays blue after a Benedict"));L.phase="q";showQ()'));
+    await checkFoodAnswer("No reducing sugar was detected in the sample");
+    await food.locator('#p2 .opt[data-i]').filter({hasNotText:"The controls behaved as expected, but Benedict’s does not detect every sugar"}).first().locator('input').press("Space");
+    await food.locator("#act").press("Enter");
+    assert.match(await food.locator("#fb").innerText(),/First part right, second part wrong/);
+    assert.equal(await food.locator("#fb [data-learning-feedback]").count(),0);
 
     await food.evaluate(()=>window.__k.ev('L.i=L.queue.findIndex(q=>q.q.includes("A food sample turns iodine"));L.phase="q";showQ()'));
     assert.equal(await worked.count(),0);
@@ -95,7 +102,7 @@ export async function checkAssessmentJourneys(browser,base) {
     await food.getByLabel("Improve your answer (optional)").fill("Repeat with fresh reagent and positive and negative controls.");
     await food.locator("#act").click();
     assert.match(await food.locator("#fb").innerText(),/Written response self-reviewed/);
-    assert.doesNotMatch(await food.locator("#fb").innerText(),/Correct!/);
+    assert.equal(await food.locator("#fb [data-learning-feedback]").count(),0);
     assert.equal(await food.locator("#sa").inputValue(),foodDraft);
     await food.close();
 
@@ -111,14 +118,18 @@ export async function checkAssessmentJourneys(browser,base) {
       await submit.press("Enter");
     };
     const evidence=()=>gcse.evaluate(()=>NarajosAssessment.lessonEvidence(window.__k.L()));
-    const expectCorrect=async()=>{
-      assert.equal(await title.innerText(),"Correct!");
+    const expectCorrect=async(kind="correct")=>{
+      const marker=title.locator(`[data-learning-feedback="${kind}"][data-feedback-animate]`);
+      assert(await marker.isVisible());
+      assert.equal(await marker.locator("svg").getAttribute("aria-hidden"),"true");
       assert.doesNotMatch(await feedback.innerText(),/after a hint|without help|independent|after a retry/i);
     };
     await openElement("first");
     await answer(element);
     await expectCorrect();
     assert.equal((await evidence()).independent,1);
+    await submit.press("Enter");
+    assert.equal(await feedback.locator("[data-feedback-animate]").count(),0);
 
     await openElement("hint");
     await gcse.locator("#question-help summary").press("Enter");
@@ -132,6 +143,7 @@ export async function checkAssessmentJourneys(browser,base) {
     await openElement("retry");
     await answer("A substance made of two or more elements chemically combined");
     assert.match(await feedback.innerText(),/describes a compound/i);
+    assert.equal(await feedback.locator("[data-learning-feedback]").count(),0);
     assert.equal((await evidence()).independent,0);
     const retry=await gcse.evaluate(()=>{
       const lesson=window.__k.L();
@@ -140,9 +152,25 @@ export async function checkAssessmentJourneys(browser,base) {
     assert(retry>0,"The missed question must be scheduled again");
     await gcse.evaluate(index=>window.__k.jump(index),retry);
     await answer(element);
-    await expectCorrect();
+    await expectCorrect("corrected");
+    assert.equal(await title.innerText(),"You corrected your mistake!");
     assert.equal((await evidence()).corrected,1);
     assert.equal((await evidence()).independent,0);
+
+    await openElement("rapid");
+    await gcse.clock.install();
+    await gcse.getByRole("radio",{name:element,exact:true}).evaluate(radio=>{
+      radio.dispatchEvent(new PointerEvent("pointerdown",{bubbles:true}));
+      radio.click();
+      const form=radio.form;
+      form.requestSubmit();
+      form.requestSubmit();
+    });
+    await gcse.clock.fastForward(200);
+    assert(!(await feedback.isVisible()));
+    assert.equal(await gcse.locator("#msg").innerText(),"");
+    assert.equal((await evidence()).independent,1);
+    await gcse.clock.resume();
 
     for(const [route,checkReason] of [
       ["/gcse/?flow=reveal#lesson-c1-atoms",async()=>{
