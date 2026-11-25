@@ -1567,12 +1567,13 @@ try{
   assert((await navPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"KS3 catch-up lesson overflows at phone width");
  }
  await navPage.goto(base+"/ks3/lesson/?topic=fair-tests");
- const independent=navPage.getByRole("button",{name:"independent variable",exact:true});
+ const independent=navPage.locator("#catchup-evidence").getByRole("button",{name:"independent variable",exact:true}).first();
  await independent.press("Enter");
  assert.equal(await independent.getAttribute("aria-expanded"),"true");
- await navPage.getByRole("status").filter({hasText:"The factor you deliberately change"}).waitFor();
- await independent.press("Escape");
+ await navPage.locator("dialog.vocabulary-panel[open] .vocabulary-meaning").filter({hasText:"The factor you deliberately change"}).waitFor();
+ await navPage.keyboard.press("Escape");
  assert.equal(await independent.getAttribute("aria-expanded"),"false");
+ assert(await independent.evaluate(button=>button===document.activeElement));
  assert.match(await navPage.locator(".ks3-fair-aim").innerText(),/How does ramp angle affect the distance/);
  assert(await navPage.getByRole("table",{name:"Example results from the ramp model"}).isVisible());
  const surfaceTest=navPage.locator("#fair-test-surface");
