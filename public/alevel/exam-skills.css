@@ -762,3 +762,29 @@ html:has(.al-revision, .al-completed-review[open]) {
 .al-scale-practice form { max-width: 38rem; }
 .al-scale-practice label, .al-scale-practice input { display: block; }
 .al-scale-practice input { max-width: 100%; width: 10rem; box-sizing: border-box; margin-block: .5rem; font: inherit; }
+
+/* Keep the investigation headings legible; the existing scroll region is keyboard accessible. */
+.al-gene-expression .al-table table {
+  min-width: 38rem;
+}
+
+.al-gene-caption {
+  margin: .5rem 0 .25rem;
+  font-weight: 700;
+}
+.al-gene-scroll-hint {
+  display: none;
+}
+@media (max-width: 680px) {
+  .al-gene-scroll-hint {
+    display: block;
+    margin: 0 0 .25rem;
+    font-size: .875rem;
+  }
+}
+
+.al-gene-expression .al-gene-table-compact table { min-width: 0; width: 100%; table-layout: fixed; }
+.al-gene-table-compact .al-gene-scroll-hint { display: none; }
+@media (max-width: 360px) {
+  .al-gene-table-compact th { font-size: .8rem; padding-inline: .15rem; }
+}
