@@ -579,11 +579,18 @@
       render(true);
     }
 
-    function renderReview(moveFocus) {
+    function renderReview(moveFocus, animate) {
       const heading = node("h2", "Review your progress", "al-task-heading");
       const outcomes = family.tasks.map((_, i) => state.outcomes[i]);
       block.append(heading);
-      if (!flow.paper) block.append(outcomeOverview(outcomes));
+      if (!flow.paper) {
+        if (state.queue.length > 1) {
+          const completion = node("p");
+          completion.innerHTML = KeystoneFeedback.markup("complete", { label: "Practice set complete", animate });
+          block.append(completion);
+        }
+        block.append(outcomeOverview(outcomes));
+      }
       const revisit = state.queue.filter(i => outcomes[i] !== "independent" &&
         (outcomes[i] !== "self-reviewed" || Object.values(state.reviews[i]?.choices || {}).includes("revise")));
       const actions = node("div", null, "al-controls");
@@ -646,10 +653,10 @@
       if (moveFocus) focus(heading);
     }
 
-    function render(moveFocus = false) {
+    function render(moveFocus = false, animate = false) {
       block.replaceChildren();
       if (state.completed) {
-        renderReview(moveFocus);
+        renderReview(moveFocus, animate);
         return;
       }
       const i = state.index;
@@ -776,16 +783,19 @@
       const help = node("details", null, "al-practice-help");
       help.append(node("summary", "Help with this question"));
       function announce(text, kind) {
-        const symbol = { correct: "check", improve: "retry", hint: "bulb", explained: "model", review: "review" }[kind];
+        const symbol = { improve: "retry", hint: "bulb", explained: "model", review: "review" }[kind];
         status.replaceChildren();
         if (symbol) status.append(icon(symbol));
         if (text) status.append(node("span", text));
         status.dataset.kind = kind;
       }
       const result = state.results[i];
-      if (accepted) announce(writing ? "Review finished. Your draft and judgements are saved." :
-        "Correct!", writing ? "review" : "correct");
-      else if (revealed) announce("Explanation revealed. " + q.why, "explained");
+      if (accepted && writing) announce("Review finished. Your draft and judgements are saved.", "review");
+      else if (accepted) {
+        const kind = state.outcomes[i] === "corrected" ? "corrected" : "correct";
+        status.dataset.kind = "correct";
+        status.innerHTML = KeystoneFeedback.markup(kind, { key: i, animate });
+      } else if (revealed) announce("Explanation revealed. " + q.why, "explained");
       else if (result?.clue && state.hints[i]) announce("Clue · " + hintsFor(q)[state.hints[i] - 1], "hint");
       else if (result?.kind === "incorrect")
         announce(q.kind === "group" ? "Review and improve the flagged rows. Your correct groups are kept." :
@@ -910,7 +920,7 @@
           else state.index = state.queue[at + 1];
           persist();
           flow.moved?.();
-          render(true);
+          render(true, last);
         });
         next.classList.add("primary");
         controls.append(next);
@@ -1045,7 +1055,7 @@
           attempts > 1 ? "corrected" : state.hints[i] ? "hint-supported" :
             state.modelAssists[i] ? "model-supported" : "independent";
         persist();
-        render();
+        render(false, correct);
         focus(block.querySelector('[role="status"]'));
       };
     }
@@ -1309,11 +1319,14 @@
       data.drawingCalibration = {...state};
       save(data);
     }
-    function render() {
+    function render(animate = false) {
       input.value = state.draft || "";
       input.readOnly = Boolean(state.outcome);
       check.hidden = Boolean(state.outcome);
-      feedback.textContent = state.outcome ? "Correct!" : state.feedback || "";
+      if (state.outcome) {
+        feedback.dataset.kind = "correct";
+        feedback.innerHTML = KeystoneFeedback.markup(state.outcome === "corrected" ? "corrected" : "correct", { animate });
+      } else feedback.textContent = state.feedback || "";
     }
     input.oninput = () => {
       state.draft = input.value;
@@ -1349,7 +1362,7 @@
           "Recheck the scale. The 246-unit segment spans two reference bars. Use its real length and the 36 mm drawn length, then round.";
         state.helped = true;
       }
-      persist(); render(); focus(feedback);
+      persist(); render(correct); focus(feedback);
     };
     form.append(label, check, feedback);
     panel.append(hint, form, node("p", "Drawing magnification is the length on the page divided by the actual length, in the same units. When you resize a drawing, resize its bar in the same proportion. The bar still represents the same actual length."));
@@ -1450,7 +1463,9 @@
     function drawReview(review, moveFocus) {
       currentStage(bar, "review");
       const heading = node("h3", "Review your drawings");
-      exercise.replaceChildren(heading, outcomeOverview(review.entries.map(entry => entry.outcome)),
+      const completion = node("p");
+      completion.innerHTML = KeystoneFeedback.markup("complete", { label: "Drawing set complete", animate: moveFocus });
+      exercise.replaceChildren(heading, completion, outcomeOverview(review.entries.map(entry => entry.outcome)),
         node("p","These results record your judgements of supplied drawings. Use the paper task to practise producing your own."));
       const detail = node("details");
       detail.append(node("summary", "Review the completed drawings"));
@@ -1497,7 +1512,7 @@
       start.hidden = true;
       introduction.open = false;
       const pool = session.ids.map(id => drawing.bank.find(item => item.id === id));
-      function show() {
+      function show(animate = false) {
         exercise.replaceChildren();
         const item = pool[at];
         const complete = item.scope === "complete";
@@ -1570,7 +1585,11 @@
         feedback.setAttribute("aria-atomic", "true");
         if (session.outcome) {
           const reason = item.defects.map(index => drawing.categories[index]).join(", ");
-          feedback.textContent = reason ? "Correct! " + reason + ". " + item.why : "Correct!";
+          const message = node("span");
+          message.innerHTML = KeystoneFeedback.markup(session.outcome === "corrected" ? "corrected" : "correct", { key: at, animate });
+          if (reason) message.append(" " + reason + ". " + item.why);
+          feedback.dataset.kind = "correct";
+          feedback.append(message);
         } else if (session.attempts) {
           const previous = session.lastAttempt || session.firstAttempt;
           const extra = (previous?.categories || []).find(category => !item.defects.includes(category));
@@ -1624,7 +1643,7 @@
             stored.drawingOutcomes[item.id] = session.outcome;
             save(stored);
           }
-          show();
+          show(ok);
           focus(exercise.querySelector('[role="status"]'));
         });
         check.classList.add("primary");

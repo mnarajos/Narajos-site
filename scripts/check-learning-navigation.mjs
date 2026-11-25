@@ -72,7 +72,7 @@ export async function checkLearningNavigation(browser, base) {
     assert(await main.locator(".hb-teach-explain").isVisible());
     await independent.getByRole("radio", { name: /7 of 24/ }).check();
     await independent.getByRole("button", { name: "Check", exact: true }).press("Enter");
-    await independent.getByRole("status").filter({ hasText: /Correct!/ }).waitFor();
+    await independent.getByRole("status").locator('[data-learning-feedback="correct"]').waitFor();
     assert(await independent.getByRole("button", { name: "Check", exact: true }).isHidden());
     await independent.getByRole("link", { name: "Continue to practice" }).press("Enter");
     await main.locator(".k-question-paper").waitFor();

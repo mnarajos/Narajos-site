@@ -84,8 +84,9 @@ function create(E){
  function finish(){
   if(!active)return menu();
   var total=active.original.length;
+  var completion=root.KeystoneFeedback.markup("complete",{animate:!active.over,label:"Review complete"});
   active.over=true;saveActive();
-  E.render('<p class="crumb"><a href="#spaced">← Spaced review</a></p><h1>Review complete</h1><div class="kr-entry"><h2>'+total+' cards reviewed</h2><p>'+root.KeystoneReview.firstReviewText(active)+'</p><p>Successful cards will return after a delay.</p><div class="kr-actions"><a href="#spaced" class="btn primary">Review dashboard</a><a href="#flashcards" class="btn">Other flashcard modes</a></div></div>');
+  E.render('<p class="crumb"><a href="#spaced">← Spaced review</a></p><h1>'+completion+'</h1><div class="kr-entry"><h2>'+total+' cards reviewed</h2><p>'+root.KeystoneReview.firstReviewText(active)+'</p><p>Successful cards will return after a delay.</p><div class="kr-actions"><a href="#spaced" class="btn primary">Review dashboard</a><a href="#flashcards" class="btn">Other flashcard modes</a></div></div>');
   active=null;
  }
  function route(hash){if(hash==="spaced")return menu();if(/^spaced-(?:due|new|weak|reverse|resume)$/.test(hash))return start(hash);menu();}

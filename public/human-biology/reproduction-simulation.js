@@ -67,6 +67,7 @@ function mountGuide(root, observed, withoutFertilisation, onChange, initialStep,
  const observation = guide.querySelector(".krp-observation");
  const next = guide.querySelector("[data-next-checkpoint]");
  const apply = guide.querySelector("[data-f175-apply]");
+ const acceptedSteps = new Set();
  let index = 0;
  let answered = false;
  let accepted = false;
@@ -112,12 +113,16 @@ function mountGuide(root, observed, withoutFertilisation, onChange, initialStep,
   const correction = step.options[Number(selected.value)][1];
   answered = true;
   accepted = !correction;
-  feedback.textContent = correction ? correction+" "+step.cue : "That prediction fits. "+step.cue;
   if(accepted){
+   feedback.innerHTML = window.KeystoneFeedback.markup("correct", {key:index,animate:!acceptedSteps.has(step.id)});
+   feedback.append(" "+step.cue);
+   acceptedSteps.add(step.id);
    feedback.setAttribute("tabindex","-1");
    feedback.focus({preventScroll:true});
    form.querySelector("fieldset").disabled = true;
    form.querySelector("button").hidden = true;
+  }else{
+   feedback.textContent = correction+" "+step.cue;
   }
   update();
  });

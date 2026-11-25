@@ -254,8 +254,12 @@ export async function checkALevelExam(browser, base) {
     assert.deepEqual(outcomes, { 0: "guided", 1: "corrected" });
     const key = "keystone.alevel.exam-skills.v1";
     const saved = id => page.evaluate(([key, id]) => JSON.parse(localStorage.getItem(key))[id], [key, id]);
+    const positive = page.locator(".al-practice [role=status] [data-learning-feedback]");
+    assert.equal(await positive.getAttribute("data-learning-feedback"), "corrected");
+    assert.equal(await positive.getAttribute("data-feedback-animate"), "");
     await page.reload();
-    assert.match(await page.locator(".al-practice [role=status]").innerText(), /Correct!/);
+    assert.equal(await positive.getAttribute("data-learning-feedback"), "corrected");
+    assert.equal(await positive.getAttribute("data-feedback-animate"), null);
     assert(await page.getByRole("button", { name: "Next task", exact: true }).isVisible());
 
     await page.goto(base + "/alevel/#exam-mechanisms");
@@ -268,13 +272,15 @@ export async function checkALevelExam(browser, base) {
       shuffledPositions.add((await options.evaluateAll(inputs => inputs.map(input => +input.value))).indexOf(q.answer));
       await page.getByRole("radio", { name: q.options[q.answer], exact: true }).check();
       await page.getByRole("button", { name: "Check", exact: true }).click();
-      assert.match(await page.locator(".al-practice [role=status]").innerText(), /Correct!/);
+      assert.equal(await positive.getAttribute("data-learning-feedback"), "correct");
+      assert.equal(await positive.getAttribute("data-feedback-animate"), "");
       if (i === 0) {
         await page.locator(".al-practice-help > summary").click();
         await page.getByRole("link", { name: "Review diffusion distance", exact: true }).click();
         await page.getByRole("heading", { name: "Simple and facilitated diffusion", exact: true }).waitFor();
         await page.getByRole("link", { name: /Return to your question/ }).press("Enter");
-        assert.match(await page.locator(".al-practice [role=status]").innerText(), /Correct!/);
+        assert.equal(await positive.getAttribute("data-learning-feedback"), "correct");
+        assert.equal(await positive.getAttribute("data-feedback-animate"), null);
         assert(await page.getByRole("button", { name: "Next task", exact: true }).isVisible());
       }
       if (i === 1) {
@@ -284,6 +290,7 @@ export async function checkALevelExam(browser, base) {
         assert.equal(await page.getByRole("button", { name: "Check", exact: true }).count(), 0);
         await page.locator(".al-practice form").evaluate(form => form.requestSubmit());
         assert.deepEqual(await saved("mechanisms"), before);
+        assert.equal(await positive.getAttribute("data-feedback-animate"), null);
         assert.equal(before.outcomes[i], "independent");
       }
       await page.getByRole("button", { name: "Next task", exact: true }).click();
@@ -308,10 +315,15 @@ export async function checkALevelExam(browser, base) {
       await form.locator('input[name="criterion-' + j + '"][value="included"]').check();
     await form.getByRole("button", { name: "Finish review" }).click();
     assert.equal((await saved("mechanisms")).outcomes[writingIndex], "self-reviewed");
+    assert.equal(await positive.count(), 0);
     await page.reload();
     assert(await form.getByRole("button", { name: "Review progress" }).isVisible());
     await form.getByRole("button", { name: "Review progress" }).click();
+    const completion = page.locator('.al-practice [data-learning-feedback="complete"]');
+    assert.equal(await completion.innerText(), "Practice set complete");
+    assert.equal(await completion.getAttribute("data-feedback-animate"), "");
     await page.reload();
+    assert.equal(await completion.getAttribute("data-feedback-animate"), null);
     assert.match(await page.locator(".al-outcomes").innerText(), /4 · Correct/);
     assert.match(await page.locator(".al-outcomes").innerText(), /1 · Written response self-reviewed/);
     assert(await page.getByRole("button", { name: "Retry questions I needed help with" }).isVisible());
@@ -399,7 +411,7 @@ export async function checkALevelExam(browser, base) {
       await page
         .getByRole("button", { name: offset === 5 ? "Review progress" : "Next drawing", exact: true })
         .waitFor();
-      assert.match(await judgement.getByRole("status").innerText(),/Correct!/);
+      assert.equal(await judgement.getByRole("status").locator("[data-learning-feedback]").getAttribute("data-learning-feedback"), "correct");
       if (item.defects.length) assert(await comparison.locator("[data-defect-overlay]").first().isVisible());
       if (round === 1) {
         await page.reload();
@@ -504,7 +516,7 @@ export async function checkALevelExam(browser, base) {
     await page.goto(base + "/alevel/#exam-osmosis");
     const old = await saved("osmosis");
     assert.equal(await page.locator(".al-practice input[name=number]").inputValue(), "−500");
-    assert.match(await page.locator(".al-practice [role=status]").innerText(), /Correct!/);
+    assert.equal(await positive.getAttribute("data-learning-feedback"), "correct");
     await page.reload();
     assert(await page.getByRole("button", { name: "Next task", exact: true }).isVisible());
     await page.locator(".al-practice form").evaluate(form => form.requestSubmit());
@@ -552,7 +564,7 @@ export async function checkALevelExam(browser, base) {
     assert.match(await feedback.innerText(), /wrong denominator/);
     await page.getByRole("textbox", { name: "Your answer (%)" }).fill("25");
     await page.getByRole("button", { name: "Try again" }).press("Enter");
-    assert.match(await feedback.innerText(), /Correct!/);
+    assert.equal(await positive.getAttribute("data-learning-feedback"), "corrected");
     assert.equal((await saved("evidence")).outcomes[1], "corrected");
 
     await page.clock.install();

@@ -135,20 +135,16 @@ select:disabled,input:disabled{opacity:1;color:var(--ink)}
 .fb h2{margin:.6rem 0 .3rem;font-size:1.2rem}
 @keyframes pop{0%{transform:scale(.94);opacity:0}60%{transform:scale(1.03);opacity:1}100%{transform:scale(1)}}
 @keyframes nudge{0%,100%{transform:translateX(0)}30%{transform:translateX(-6px)}70%{transform:translateX(6px)}}
-@keyframes fall{0%{transform:translate(0,-10vh) rotate(0);opacity:1}100%{transform:translate(var(--dx,0),105vh) rotate(720deg);opacity:.9}}
-@keyframes flash{0%{opacity:0}25%{opacity:.28}100%{opacity:0}}.flash{position:fixed;inset:0;pointer-events:none;z-index:40;opacity:0;animation:flash .8s ease-out forwards}
-.fb.good{animation:pop .4s ease-out}.fb.bad{animation:nudge .3s ease-in-out}
-.opt.right,.mrow.right,.oitem.right{animation:pop .35s ease-out}
+.fb.bad{animation:nudge .3s ease-in-out}
 .runline{font-weight:700;color:var(--good)}
 .fast{margin:.9rem 0 .2rem;padding:.8rem .9rem;border-radius:14px;background:var(--card);border:2px solid var(--good);animation:pop .5s ease-out}
 .fast p{margin:0 0 .55rem;font-weight:600}.fast .btn{width:100%}
-.tlv{display:flex;flex-direction:column;gap:.5rem}.tlv .btn{text-align:left}.linkbtn{background:none;border:0;padding:0;min-height:44px;color:var(--acc);font:inherit;font-weight:600;text-decoration:underline;cursor:pointer}.tlog{padding-left:1.3rem}.tlog li{margin:.5rem 0;border-bottom:1px solid var(--line);padding-bottom:.4rem}.tlog .tq{margin:0 0 .2rem;color:var(--muted)}.tlog p{margin:0}.tok{color:var(--good);font-weight:700}.tno{color:var(--bad);font-weight:700}.tnote{color:var(--muted);font-size:.9em}.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
-.confetti i{position:absolute;top:0;width:.6rem;height:.9rem;border-radius:2px;animation:fall linear forwards}
-.cele{font-size:3rem;line-height:1;margin:.2rem 0;animation:pop .6s ease-out}
+.tlv{display:flex;flex-direction:column;gap:.5rem}.tlv .btn{text-align:left}.linkbtn{background:none;border:0;padding:0;min-height:44px;color:var(--acc);font:inherit;font-weight:600;text-decoration:underline;cursor:pointer}.tlog{padding-left:1.3rem}.tlog li{margin:.5rem 0;border-bottom:1px solid var(--line);padding-bottom:.4rem}.tlog .tq{margin:0 0 .2rem;color:var(--muted)}.tlog p{margin:0}.tok{color:var(--good);font-weight:700}.tno{color:var(--bad);font-weight:700}.tnote{color:var(--muted);font-size:.9em}
+#gf .msg:has([data-learning-feedback]){color:var(--good)}
 .endmsg{font-size:1.1rem;font-weight:600}
 .otext mark,.kwused mark{background:#fde68a;color:#1f2937;border-radius:3px;padding:0 .15em}.kwnote{display:block;font-size:.85rem;color:var(--muted);margin-top:.2rem}.kwused{margin:.4rem 0}
 body.inl footer{display:none}
-/* ---- Bolder look (15 Nov): chunky pressable buttons, thicker progress bar, key badge, line icons ---- */
+/* ---- Bolder look (15 Nov): chunky pressable buttons, thicker progress bar, line icons ---- */
 .btn{box-shadow:0 3px 0 rgba(28,28,30,.18);transition:transform .08s,box-shadow .08s}
 .btn.primary{box-shadow:0 4px 0 rgba(0,0,0,.28)}
 .btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(28,28,30,.18)}
@@ -156,12 +152,6 @@ body.inl footer{display:none}
 .ptile:active,.schip:active span{transform:translateY(2px)}
 .bar{height:14px}.ltop .bar{height:14px}
 .snd svg,.ico{width:1.15em;height:1.15em;vertical-align:-.2em}
-.kbadge{display:block;width:5.5rem;height:5.5rem;margin:.4rem auto .2rem;position:relative}
-.kbadge .disc{position:absolute;inset:0;border-radius:50%;background:var(--tc,var(--acc));display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.18)}
-.kbadge .disc svg{width:58%;height:58%}
-.kbadge.gold .disc{box-shadow:0 0 0 5px #e7b416,0 5px 0 5px rgba(0,0,0,.18)}
-.kbadge .spark{position:absolute;color:#e7b416;font-size:1.1rem;animation:pop .6s ease-out}
-.kbadge .s1{top:-6px;left:-10px}.kbadge .s2{top:6px;right:-14px}.kbadge .s3{bottom:-4px;left:-14px}
 
 /* ---- Visual polish (15 Nov): topic colours, softer cards, focused lessons ---- */
 :root{--shadow:0 1px 2px rgba(28,28,30,.05),0 4px 14px rgba(28,28,30,.05);--tc:var(--acc)}
@@ -410,6 +400,7 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <link rel="stylesheet" href="/assets/topic-finder.css">
 <script src="/assets/topic-finder.js"></script>
 <link rel="stylesheet" href="/alevel/exam-skills.css">
+<link rel="stylesheet" href="/assets/learning-feedback.css">
 <link rel="stylesheet" href="/assets/learning-publication.css">
 </head>
 <body class="course-alevel">
@@ -464,6 +455,7 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <div id="live" class="sr-only" role="status" aria-live="polite"></div>
 
 <script src="/assets/science-answer.js"></script>
+<script src="/assets/learning-feedback.js"></script>
 <script src="/assets/spaced-review.js"></script>
 <script src="/alevel/spaced-review-app.js"></script>
 <script src="/alevel/teaching-data.js"></script>
@@ -5628,11 +5620,12 @@ function slopEx(q,open){var ex=L.ex,sh=qShape(q);
 function nextSkill(sk){var i=SKILLS.indexOf(sk),list=SKILLS.filter(function(x){return !(x.ht&&S.tier==="F");});
  var same=list.filter(function(x){return x!==sk&&x.t===sk.t&&SKILLS.indexOf(x)>i;})[0];if(same)return same;
  return list.filter(function(x){return SKILLS.indexOf(x)>i;})[0]||list.filter(function(x){return x!==sk;})[0]||null;}
-function slopFinish(){var sk=L.slop,n=L.n,r=L.right,mx=slopMax(sk),lv=L.maxLv,nx=nextSkill(sk),bk=ORIGIN?ORIGIN:{h:"practice",label:"Back to Skills practice"};
+function slopFinish(){
+ if(!L||!L.slop)return;
+ var sk=L.slop,n=L.n,r=L.right,mx=slopMax(sk),lv=L.maxLv,nx=nextSkill(sk),bk=ORIGIN?ORIGIN:{h:"practice",label:"Back to Skills practice"};
  if(!n){location.hash="#"+bk.h;return;}
  var pct=Math.round(r/n*100),line=r===n?"Practice complete.":pct>=80?"Good practice.":pct>=50?"Keep practising.":"Keep practising the tricky questions.";
- var h='<div class="kbadge'+(L.top>=3?' gold':'')+'" aria-hidden="true"><span class="disc"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="9" cy="16" r="6.5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M15.5 16H29M24 16v5M28 16v4" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span></div>'+
-  '<h1>Well done for practising</h1><p class="endmsg">'+line+'</p><p class="score">You practised <strong>'+n+'</strong> question'+(n===1?'':'s')+' · first-attempt score without help: <strong>'+r+' of '+n+'</strong> ('+pct+'%).</p><p>Highest level reached: Level '+lv+' of '+mx+' – '+LADDER[lv].n+'.</p>'+
+ var h='<h1>'+KeystoneFeedback.markup("complete",{label:"Well done for practising",animate:L.top>=3})+'</h1><p class="endmsg">'+line+'</p><p class="score">You practised <strong>'+n+'</strong> question'+(n===1?'':'s')+' · first-attempt score without help: <strong>'+r+' of '+n+'</strong> ('+pct+'%).</p><p>Highest level reached: Level '+lv+' of '+mx+' – '+LADDER[lv].n+'.</p>'+
   (L.top>=3?'<p>You answered three questions correctly without help at the top level.</p>':lv<mx?'<p>Next time, aim for Level '+Math.min(mx,lv+1)+'.</p>':'')+
   '<div class="endbtns">'+(nx?'<a class="btn primary big" href="#practice-'+nx.id+'">Next skill: '+esc(nx.name)+'</a>':'')+'<a class="btn big" href="#practice-'+sk.id+'">Practise this skill again</a><a class="btn big" href="#'+bk.h+'">'+esc(bk.label)+'</a></div>';
  L=null;render(h);}
@@ -5924,26 +5917,8 @@ function chime(notes){
   });
  }catch(e){}
 }
-var PRAISE=["Correct!"],NOPE=["Not quite."];
-function confetti(){
- if(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches)return;
- var d=document.createElement("div"),cols=["#0a6b66","#e2a100","#d9534f","#4a7bd0","#6aa84f","#8e5bc4","#f472b6","#22d3ee"],h="",n=arguments[0]||60;d.className="confetti";d.setAttribute("aria-hidden","true");
- for(var i=0;i<n;i++){var w=6+Math.random()*6,sh=Math.random()<0.3?'50%':'2px';h+='<i style="left:'+(Math.random()*100).toFixed(1)+'%;width:'+w.toFixed(0)+'px;height:'+(w*1.5).toFixed(0)+'px;border-radius:'+sh+';background:'+cols[i%cols.length]+';--dx:'+((Math.random()-0.5)*160).toFixed(0)+'px;animation-duration:'+(2+Math.random()*1.8).toFixed(2)+'s;animation-delay:'+(Math.random()*0.9).toFixed(2)+'s"></i>';}
- d.innerHTML=h;document.body.appendChild(d);setTimeout(function(){if(d.parentNode)d.parentNode.removeChild(d);},4800);
-}
 var TIER_CHIME=[[[880,0,0.09],[1318.5,0.11,0.07]],[[880,0,0.08],[1108.7,0.08,0.07],[1318.5,0.16,0.07]],[[880,0,0.08],[1108.7,0.07,0.07],[1318.5,0.14,0.07],[1760,0.21,0.06]],
  [[880,0,0.08],[1318.5,0.07,0.07],[1760,0.14,0.07],[2217.5,0.21,0.05]],[[880,0,0.08],[1108.7,0.06,0.07],[1318.5,0.12,0.07],[1760,0.18,0.06],[2637,0.26,0.04]]];
-var TIER_COL=["#0a6b66","#0ea5a4","#e2a100","#8e5bc4","#d9467a"],TIER_INK=["#0a6b66","#0b7f7d","#a16207","#6d28d9","#be185d"];
-function comboUp(tier){chime([[659.3,0,0.07],[880,0.09,0.08],[1108.7,0.18,0.08],[1318.5,0.27,0.08],[1760,0.38,0.07+0.005*tier]]);}
-function flash(tier){if(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches)return;var d=document.createElement("div");d.className="flash";d.setAttribute("aria-hidden","true");d.style.background=TIER_COL[tier];document.body.appendChild(d);setTimeout(function(){if(d.parentNode)d.parentNode.removeChild(d);},900);}
-function noiseBuf(){if(noiseBuf.b)return noiseBuf.b;var b=AC.createBuffer(1,AC.sampleRate*0.2,AC.sampleRate),d=b.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1;return noiseBuf.b=b;}
-function burst(st,dur,freq,q,vol){var src=AC.createBufferSource(),bp=AC.createBiquadFilter(),g=AC.createGain();src.buffer=noiseBuf();bp.type="bandpass";bp.frequency.value=freq;bp.Q.value=q;
- g.gain.setValueAtTime(0.0001,st);g.gain.exponentialRampToValueAtTime(vol,st+0.004);g.gain.exponentialRampToValueAtTime(0.0001,st+dur);src.connect(bp);bp.connect(g);g.connect(AC.destination);src.start(st,Math.random()*0.1);src.stop(st+dur+0.02);}
-function sfx(fn){if(!S.sound)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume();fn(AC.currentTime+0.03);}catch(e){}}
-function pops(n){sfx(function(t){for(var i=0;i<n;i++){var st=t+i*0.16+Math.random()*0.05,o=AC.createOscillator(),g=AC.createGain();o.type="sine";o.frequency.setValueAtTime(700+Math.random()*300,st);o.frequency.exponentialRampToValueAtTime(180,st+0.07);
- g.gain.setValueAtTime(0.0001,st);g.gain.exponentialRampToValueAtTime(0.06,st+0.005);g.gain.exponentialRampToValueAtTime(0.0001,st+0.09);o.connect(g);g.connect(AC.destination);o.start(st);o.stop(st+0.1);burst(st,0.03,2500,1.2,0.02);}});}
-function applause(){sfx(function(t){var dur=2.6;for(var i=0;i<170;i++){var x=Math.random(),st=t+0.35+x*dur,env=Math.sin(Math.PI*Math.min(1,x*1.15));burst(st,0.05+Math.random()*0.04,1400+Math.random()*1600,0.9,0.006+0.03*env*Math.random());}});}
-function fanfare(){chime([[659.3,0,0.08],[784,0.13,0.08],[1046.5,0.26,0.08],[1318.5,0.42,0.09]]);}
 function setSound(on){S.sound=on;save();var sb=$("#opt-sound");if(sb)sb.checked=on;var b=$(".snd");if(b){b.innerHTML=(on?BELL:BELLOFF)+'<span class="sndt">'+(on?' Sound on':' Sound off')+'</span>';b.setAttribute("aria-label",on?"Sound on":"Sound off");}}
 
 var BELL='<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>',BELLOFF='<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/><path d="M4 4l16 16"/></svg>';
@@ -6631,12 +6606,20 @@ function check(){
  $("#msg").textContent="";$("#hint").hidden=true;var idb=$("#idk");if(idb)idb.hidden=true;$("#qhelp").hidden=true;
  $$("input,select,textarea",f).forEach(function(x){x.disabled=true;});
  var firstTime=!L.first.has(q0), written=q.t==="short", helped=Boolean(L.cur.rung);
+ // A unit nudge or a revealed answer alone is insufficient evidence of a corrected mistake.
+ if(L.cur.idk)(L.feedbackReveals||(L.feedbackReveals=new Set())).add(q0);
+ var corrected=!L.feedbackReveals?.has(q0)&&(L.first.get(q0)==="incorrect"||(q.t==="pairs"&&L.cur.wt>0));
  var outcome=L.cur.idk?"revealed":written?"self-reviewed":!ok?"incorrect":
    L.cur.quantityFeedback||L.cur.signNudge||(q.t==="pairs"&&L.cur.wt>0)||(!firstTime&&L.first.get(q0)!=="independent")?"corrected":helped?"supported":"independent";
  var independent=outcome==="independent";
  NarajosAssessment.recordLessonAnswer(L,q0,outcome);
- if(ok&&!written&&!L.cur.idk)head="Correct!";
  var second=false,isQC=!L.slop&&L.qc===q0&&firstTime;
+ if(ok&&!written&&!L.cur.idk){
+  var successes=L.feedbackSuccesses||(L.feedbackSuccesses=new Set()),animate=!successes.has(q0),key=successes.size;
+  successes.add(q0);
+  var stretch=!L.slop&&q.tier==="H"&&independent&&!isQC&&q.t!=="cloze";
+  head=KeystoneFeedback.markup(corrected?"corrected":stretch?"stretch":"correct",{key:key,animate:animate,label:stretch?"Stretch question complete!":undefined});
+ }
  if(isQC){L.qcN=(L.qcN||0)+1;if(independent)L.qcOK=(L.qcOK||0)+1;}
  if(isQC&&!ok)note="Not yet. Read the explanation, and you will see this idea again before the end of the lesson."+(note?" "+note:"");
  if(second){head="Correct!";note="Your first tap was a different answer, so this one does not count towards your score."+(note?" "+note:"");}
@@ -6657,7 +6640,7 @@ function check(){
   if(L.top===3&&!L.done3){L.done3=true;L.lvMsg="Three questions correct without help at the top level. Finish here, or try the next skill.";L.showNext=true;}var tl=$("#tally");if(tl)tl.textContent="Score: "+L.right+" of "+L.n;}
  L.phase="fb";
  var fb=$("#fb");fb.className="fb "+(written||L.cur.idk?"idk":ok?"good":"bad");
- fb.innerHTML='<h2 tabindex="-1">'+(head||(ok?pick(PRAISE):pick(NOPE)))+'</h2>'+(fastOK(ok)?fastHTML():'')+(backOK(ok)?backHTML():'')+(ok?'':answerHTML(q,L.cur.idk))+(whyNot?'<p class="why-not"><strong>About your answer:</strong> '+fmt(whyNot)+'</p>':'')+(note?'<p>'+fmt(note)+'</p>':'')+(q.why?'<p>'+fmt(q.why)+'</p>':'')+(!ok&&q.aqa?aqaHTML(q.aqa):'')+((ok||L.slop||q.warm||!(L.reteachQ===q&&reteachLines(q).length))?mnemHTML(mnemQ(q)):'')+(requeue?'<p class="small">This question will come back at the end of the lesson.</p>':'');
+ fb.innerHTML='<h2 tabindex="-1">'+(head||"Not quite.")+'</h2>'+(fastOK(ok)?fastHTML():'')+(backOK(ok)?backHTML():'')+(ok?'':answerHTML(q,L.cur.idk))+(whyNot?'<p class="why-not"><strong>About your answer:</strong> '+fmt(whyNot)+'</p>':'')+(note?'<p>'+fmt(note)+'</p>':'')+(q.why?'<p>'+fmt(q.why)+'</p>':'')+(!ok&&q.aqa?aqaHTML(q.aqa):'')+((ok||L.slop||q.warm||!(L.reteachQ===q&&reteachLines(q).length))?mnemHTML(mnemQ(q)):'')+(requeue?'<p class="small">This question will come back at the end of the lesson.</p>':'');
  if(!L.slop&&L.t&&L.c&&(!ok||hinted)){fb.insertAdjacentHTML("beforeend",'<p><a class="al-quiet-link" href="#catchup-'+L.t+'-'+L.c.id+'">Revisit the catch-up explanation</a></p>');}
  fb.hidden=false;
  if(L.slop&&L.lvMsg){fb.insertAdjacentHTML("beforeend",'<p class="lvmsg"><strong>'+esc(L.lvMsg)+'</strong></p>');L.lvMsg="";}
@@ -6758,6 +6741,7 @@ function showReteach(w,hinted){
 }
 function finish(){
  NarajosAssessment.finishWrittenDrafts();
+ var animate=!L.fin;
  L.fin=true;var t=L.t,c=L.c,result=NarajosAssessment.lessonEvidence(L),correct=result.independent;
  var pct=result.percent,k=bkey(t,c);
  var b=S.best[k]||(S.best[k]={}),lv0=levelOf(t,c);if(result.checked){b[L.tier]=Math.max(b[L.tier]||0,pct);b.checkedIndependent=b.checkedIndependent||{};b.checkedIndependent[L.tier]=Math.max(b.checkedIndependent[L.tier]||0,pct);}
@@ -6765,8 +6749,8 @@ function finish(){
  var ms=result.checked>0&&pct>=80,lv1=levelOf(t,c);
  var newly=S.guided?DATA[t].concepts.filter(function(x){return !L.before[x.id]&&isUnlocked(t,x);}):[];
  var leads=c.unlocks.map(function(id){return DATA[t].byId[id];}).filter(function(x){return !isMastered(t,x);});
- var h='<div class="kbadge'+(pct===100?' gold':'')+'" aria-hidden="true"><span class="disc"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="9" cy="16" r="6.5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M15.5 16H29M24 16v5M28 16v4" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span>'+(ms?'<span class="spark s1">✦</span><span class="spark s2">✦</span><span class="spark s3">✦</span>':'')+'</div><h1>'+(ms?'Independent practice passed':'Lesson complete')+'</h1>'+
-  '<p class="endmsg">'+(!result.checked?'This lesson contained written self-review only.':pct===100?'Practice complete.':ms?'That’s a pass – you bossed it!':pct>=50?'Solid effort – you’re over halfway there.':'No stress – every go helps it stick.')+'</p>'+
+ var h='<h1>'+KeystoneFeedback.markup("complete",{label:ms?"Independent practice passed":"Lesson complete",animate:animate})+'</h1>'+
+  '<p class="endmsg">'+(!result.checked?'This lesson contained written self-review only.':ms?'Well done.':pct>=50?'Good work getting through the lesson.':'Use the feedback to decide what to practise next.')+'</p>'+
   (result.checked?'<p class="score"><strong>'+correct+' of '+result.checked+'</strong> objective first-attempt score without help ('+pct+'%).</p>':'')+(L.qcN?'<p class="small">Quick checks after a reteach: '+(L.qcOK||0)+' of '+L.qcN+' correct without help.</p>':'')+(NarajosAssessment.evidenceNote(result)?'<p class="small">'+NarajosAssessment.evidenceNote(result)+'</p>':'')+
   (L.fast?'<p class="small">⚡ Fast-tracked: you skipped '+L.fast.skip+' practice question'+(L.fast.skip===1?'':'s')+' and did the later questions.</p>':'')+
   (!result.checked?'':ms?'<p>✓ Independent practice passed for <strong>'+esc(c.title)+'</strong>.</p>':'<p>An independent pass requires 80% correct without hints. Supported answers help you learn and lead to further checks. Have another go – the quick reteach after each wrong answer will help.</p>');
@@ -6859,7 +6843,7 @@ function countdown(back,go,noKb,ex){cdStop();var n=3,h0=location.hash;ex=ex||{};
    input, so the keyboard is already open when the first card's answer box takes the focus. */
 function kbProxyOn(){if(!window.matchMedia||!matchMedia("(pointer:coarse)").matches)return;var k=$("#kbproxy");if(!k){k=document.createElement("input");k.id="kbproxy";k.type="text";k.setAttribute("aria-hidden","true");k.tabIndex=-1;k.autocomplete="off";k.style.cssText="position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px;border:0;padding:0";document.body.appendChild(k);}k.focus();}
 function kbProxyOff(){var k=$("#kbproxy");if(k&&k.parentNode)k.parentNode.removeChild(k);}
-function startCards(k){stopTimer();L=null;var d=CARDS[k].map(function(c){return c;});F={k:k,q:shuffle(d),n:d.length,done:0,cur:null,phase:"q",hist:[]};guardOn();countdown(backHref(k),showCard);}
+function startCards(k){stopTimer();L=null;var d=CARDS[k].map(function(c){return c;});F={k:k,q:shuffle(d),n:d.length,done:0,cur:null,phase:"q",hist:[],missed:new Set(),accepted:new Set()};guardOn();countdown(backHref(k),showCard);}
 function cardBack(){if(!F.hist.length||F.phase!=="q")return;var p=F.hist.pop();if(p.ok)F.done--;else{var k=F.q.lastIndexOf(p.card);if(k>=0)F.q.splice(k,1);}F.q.unshift(F.cur);F.q.unshift(p.card);showCard();}
 var F=null;
 
@@ -6869,7 +6853,7 @@ function revDef(c){var d=String(c[0]);return d.indexOf("…")>=0?d.replace("…"
 function startRev(k){stopTimer();L=null;RV={k:k,q:shuffle(CARDS[k].slice()),n:CARDS[k].length,done:0,cur:null,tries:0};guardOn();countdown(backHref(k),showRev,true);}
 function showRev(){
  var back=backHref(RV.k);
- if(!RV.q.length){render('<p class="crumb"><a href="'+back+'">← Back</a></p><div class="fb good"><h1>✓ Set complete</h1><p>You gave all '+RV.n+' definitions. Cards you had not got yet came back until you had them.</p></div><p><button type="button" class="btn primary big" id="again">Do the set again</button></p><p><a class="btn big" href="'+back+'">Back</a></p>');$("#again").onclick=function(){startRev(RV.k);};confetti();return;}
+ if(!RV.q.length){render('<p class="crumb"><a href="'+back+'">← Back</a></p><div class="fb"><h1>'+KeystoneFeedback.markup("complete",{label:"Set complete",animate:true})+'</h1><p>You reviewed all '+RV.n+' definitions. Cards you marked “Not yet” came back for another look.</p></div><p><button type="button" class="btn primary big" id="again">Do the set again</button></p><p><a class="btn big" href="'+back+'">Back</a></p>');$("#again").onclick=function(){startRev(RV.k);};return;}
  RV.cur=RV.q.shift();
  var h='<p class="crumb"><a href="'+back+'">✕ Leave flashcards</a></p><p class="spec">Reverse cards · '+esc(DATA[RV.k]?DATA[RV.k].code:deckName(RV.k))+' · '+RV.done+' of '+RV.n+' done · '+(RV.q.length+1)+' left in the queue</p>'+
   '<p class="lead">Give the definition of:</p><h1 class="fcq">'+esc(RV.cur[1])+'</h1><p class="small">Say it out loud or write it down first.</p><div id="revans" class="fb" hidden></div>'+
@@ -6883,7 +6867,7 @@ function showRev(){
  $("#revshow").focus();
 }
 function showCard(){
- if(!F.q.length){render('<p class="crumb"><a href="'+backHref(F.k)+'">← Back</a></p><div class="fb good"><h1>✓ Set complete</h1><p>You got all '+F.n+' cards right. Cards you passed or missed came back until you knew them.</p></div><p><button type="button" class="btn primary big" id="again">Do the set again</button></p><p><a class="btn big" href="'+backHref(F.k)+'">Back</a></p>');$("#again").onclick=function(){startCards(F.k);};return;}
+ if(!F.q.length){render('<p class="crumb"><a href="'+backHref(F.k)+'">← Back</a></p><div class="fb good"><h1>'+KeystoneFeedback.markup("complete",{label:"Set complete",animate:true})+'</h1><p>You got all '+F.n+' cards right. Cards you passed or missed came back until you knew them.</p></div><p><button type="button" class="btn primary big" id="again">Do the set again</button></p><p><a class="btn big" href="'+backHref(F.k)+'">Back</a></p>');$("#again").onclick=function(){startCards(F.k);};return;}
  F.cur=F.q.shift();F.phase="q";
  var h='<p class="crumb">'+(F.hist.length?'<button type="button" class="qback" id="cback" aria-label="Back to the previous card">←</button> ':'')+'<a href="'+backHref(F.k)+'">✕ Leave flashcards</a></p><p class="spec">'+esc(deckName(F.k))+' · '+F.done+' of '+F.n+' done · '+(F.q.length+1)+' left in the queue</p>'+
   '<form id="fcf" novalidate><h1 class="fcq">'+fmt(F.cur[0])+'</h1>'+fcInput(F.cur)+'<p id="msg" class="msg" aria-live="assertive"></p><div id="fb" class="fb" hidden></div>'+
@@ -6893,8 +6877,10 @@ function showCard(){
  $("#fcf").onsubmit=function(e){e.preventDefault();if(F.phase!=="q"){showCard();return;}var v=inp.value.trim();if(!v){$("#msg").textContent="Type an answer, or press Pass.";return;}cardResult(fmatch(v,cardAns(F.cur))||"wrong");};
 }
 function cardResult(r){KSReview.trackExisting(F.k,F.cur,r==="exact"||r==="near",false);F.phase="a";F.hist.push({card:F.cur,ok:r==="exact"||r==="near"});var cb=$("#cback");if(cb)cb.hidden=true;var fb=$("#fb"),w=F.cur[1];$("#msg").textContent="";$("#fcin").readOnly=true;$("#pass").hidden=true;
- if(r==="exact"||r==="near"){F.done++;fb.className="fb good";fb.innerHTML='<h2>'+pick(PRAISE)+'</h2>'+(r==="near"?'<p>Check the spelling: <strong>'+esc(w)+'</strong></p>':'')+(FNOTE?'<p>'+esc(FNOTE)+'</p>':'')+(typeof F.cur[3]==="string"?'<p>'+esc(F.cur[3])+'</p>':'');chime(TIER_CHIME[0]);}
- else{F.q.push(F.cur);fb.className="fb bad";fb.innerHTML='<h2>'+(r==="pass"?'The answer':'✗ Not quite')+'</h2>'+(FNOTE&&r!=="pass"?'<p>'+esc(FNOTE)+'</p>':'')+'<p>The key word is <strong>'+esc(w)+'</strong>. This card will come back at the end.</p>'+(typeof F.cur[3]==="string"?'<p>'+esc(F.cur[3])+'</p>':'')+mnemHTML(mnemFind(String(F.cur[0])+" "+F.cur[1],F.k));}
+ if(r==="exact"||r==="near"){
+  var praise=KeystoneFeedback.markup(F.missed.has(F.cur)?"corrected":"correct",{key:F.accepted.size,animate:!F.accepted.has(F.cur)});
+  F.accepted.add(F.cur);F.done++;fb.className="fb good";fb.innerHTML='<h2>'+praise+'</h2>'+(r==="near"?'<p>Check the spelling: <strong>'+esc(w)+'</strong></p>':'')+(FNOTE?'<p>'+esc(FNOTE)+'</p>':'')+(typeof F.cur[3]==="string"?'<p>'+esc(F.cur[3])+'</p>':'');chime(TIER_CHIME[0]);}
+ else{if(r==="wrong")F.missed.add(F.cur);F.q.push(F.cur);fb.className="fb bad";fb.innerHTML='<h2>'+(r==="pass"?'The answer':'✗ Not quite')+'</h2>'+(FNOTE&&r!=="pass"?'<p>'+esc(FNOTE)+'</p>':'')+'<p>The key word is <strong>'+esc(w)+'</strong>. This card will come back at the end.</p>'+(typeof F.cur[3]==="string"?'<p>'+esc(F.cur[3])+'</p>':'')+mnemHTML(mnemFind(String(F.cur[0])+" "+F.cur[1],F.k));}
  fb.hidden=false;$("#act").textContent="Next card";$("#act").focus();}
 
 /* Brainstorm: name as many as you can in a chosen time */
@@ -6910,14 +6896,14 @@ function startBrain(id,secs){stopTimer();var cat=BRAIN.filter(function(x){return
 function startBrain0(id,secs){stopTimer();var cat=BRAIN.filter(function(x){return x.id===id;})[0];B={cat:cat,found:[],left:secs,secs:secs,over:false};guardOn();
  var h='<p class="crumb"><a href="#brain">✕ Stop</a></p><h1>'+esc(cat.name)+'</h1><p class="lead">'+esc(cat.prompt)+'</p><p class="timer" id="tm" aria-live="off">'+secs+' s</p>'+
   '<form id="bf" novalidate><label class="numlab" for="bin">Type one, then press Enter</label><div class="numrow"><input id="bin" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></div><p id="msg" class="msg" aria-live="polite"></p>'+
-  '<div class="actions"><button class="btn primary big" type="submit">Add</button><button class="btn big" type="button" id="bstop">I’ve finished</button></div></form><p class="spec" id="bcount">Found: 0</p><ul class="bfound" id="bfound"></ul>';
+  '<div class="actions"><button class="btn primary big" type="submit">Add</button><button class="btn big" type="button" id="bstop">I’ve finished</button></div></form><p class="spec" id="bcount" role="status" aria-atomic="true">Found: 0</p><ul class="bfound" id="bfound"></ul>';
  render(h,false);var inp=$("#bin");inp.focus();
  $("#bstop").onclick=endBrain;
  $("#bf").onsubmit=function(e){e.preventDefault();if(B.over)return;var v=inp.value.trim();if(!v)return;var hit=-1,near=false;
   var note="";B.cat.a.forEach(function(x,i){if(hit>=0)return;var r=fmatch(v,[x[0]].concat(x[1]));if(FNOTE)note=FNOTE;if(r){hit=i;near=r==="near";}});
   var m=$("#msg");if(hit<0){m.textContent=note||"“"+v+"” is not on the list.";}
   else if(B.found.indexOf(hit)>=0){m.textContent="You already have "+B.cat.a[hit][0]+".";}
-  else{B.found.push(hit);m.textContent=note?"✓ "+note:near?"✓ "+B.cat.a[hit][0]+" (check the spelling)":"";var li=document.createElement("li");li.textContent="✓ "+B.cat.a[hit][0];$("#bfound").appendChild(li);$("#bcount").textContent="Found: "+B.found.length;chime(TIER_CHIME[0]);}
+  else{B.found.push(hit);m.textContent=note||(near?B.cat.a[hit][0]+" (check the spelling)":"");var li=document.createElement("li");li.innerHTML=KeystoneFeedback.markup("correct",{label:B.cat.a[hit][0],animate:true});$("#bfound").appendChild(li);$("#bcount").textContent="Found: "+B.found.length;chime(TIER_CHIME[0]);}
   inp.value="";inp.focus();};
  FT=setInterval(function(){B.left--;var t=$("#tm");if(t){t.textContent=B.left+" s";t.classList.toggle("low",B.left<=10);}if(B.left<=0)endBrain();},1000);}
 function endBrain(){stopTimer();if(!B||B.over)return;B.over=true;var c=B.cat,tot=c.a.length;
@@ -6989,7 +6975,9 @@ function startTimed0(topics,lv){stopTimer();var tf=tfState();tf.lv=lv;save();
  $("#tstop").onclick=function(){goTimedMenu();};
  $("#gpass").onclick=function(){if(me!==G||G.busy||G.over)return;KSReview.trackExisting(null,G.cur,false,false);G.log.push({c:G.cur,a:"",r:"pass"});showAns(false);};
  $("#gf").onsubmit=function(e){e.preventDefault();if(me!==G||G.busy||G.over)return;var v=$("#fcin").value.trim();if(!v)return;var c=G.cur,r=fmatch(v,cardAns(c));
-  if(r){KSReview.trackExisting(null,c,true,false);G.got++;G.log.push({c:c,a:v,r:"ok",note:FNOTE||(r==="near"?"Spelling: "+c[1]:"")});chime(TIER_CHIME[Math.min(Math.floor(G.got/3),4)]);$("#msg").textContent=FNOTE?"✓ "+FNOTE:r==="near"?"✓ "+c[1]:"";G.i++;if(G.i>=G.cards.length)return endTimed();showTimedCard();}
+  if(r){KSReview.trackExisting(null,c,true,false);G.got++;G.log.push({c:c,a:v,r:"ok",note:FNOTE||(r==="near"?"Spelling: "+c[1]:"")});chime(TIER_CHIME[Math.min(Math.floor(G.got/3),4)]);
+   G.i++;if(G.i>=G.cards.length)return endTimed();
+   $("#msg").innerHTML=KeystoneFeedback.markup("correct",{key:G.got-1,animate:true})+(FNOTE?" "+esc(FNOTE):r==="near"?" "+esc(c[1]):"");showTimedCard();}
   else{KSReview.trackExisting(null,c,false,false);var fn=FNOTE;G.log.push({c:c,a:v,r:"wrong"});showAns(true);if(fn)$("#msg").textContent="✗ "+fn+" Answer: "+c[1];}};
  FT=setInterval(function(){if(me!==G||G.over)return;G.left--;var t=$("#tm");if(t){t.textContent=secs(Math.max(G.left,0));t.classList.toggle("low",G.left<=10);$("#tfill").style.width=(100*G.left/LEVELS[G.lv].s)+"%";}if(G.left<=0)endTimed();},1000);}
 function showTimedCard(){G.cur=G.cards[G.i];$("#gq").innerHTML=fmt(G.cur[0]);fcFrame(G.cur);$("#tgot").textContent="Card "+(G.i+1)+" of "+G.cards.length+" · "+G.got+" right";var i=$("#fcin");i.value="";i.readOnly=false;i.focus();}
@@ -7001,7 +6989,7 @@ function endTimed(){if(G.over)return;stopTimer();G.over=true;var lv=G.lv,t=G.top
  if(pct>=80)tf.skill=Math.min(5,tf.skill+0.5);else if(pct>=50)tf.skill=Math.max(1,tf.skill-0.25);else tf.skill=Math.max(1,tf.skill-0.75);
  if(tf.best[lv]===undefined||pct>tf.best[lv])tf.best[lv]=pct;save();
  var good=pct>=80,next=lv+1<LEVELS.length?lv+1:-1,easier=lv>0?lv-1:-1;
- var h='<p class="crumb"><button type="button" class="linkbtn" id="tback">← '+(FCP?esc(FCP.name)+' flashcards':'Timed flashcards')+'</button></p><div class="fb '+(good?'good':'bad')+'"><h1>'+pct+'% correct</h1><p>'+G.got+' of '+n+' words right'+(G.left>0?', with '+secs(G.left)+' to spare':'')+'. Level: '+LEVELS[lv].n+' ('+secs(LEVELS[lv].s)+').</p><p>'+
+ var h='<p class="crumb"><button type="button" class="linkbtn" id="tback">← '+(FCP?esc(FCP.name)+' flashcards':'Timed flashcards')+'</button></p><div class="fb '+(good?'good':'bad')+'"><h1>'+KeystoneFeedback.markup("complete",{label:"Timed round complete",animate:G.i>=n})+'</h1><p>'+pct+'% correct · '+G.got+' of '+n+' words right'+(G.left>0?', with '+secs(G.left)+' to spare':'')+'. Level: '+LEVELS[lv].n+' ('+secs(LEVELS[lv].s)+').</p><p>'+
   (good?(tf.skill>old?'Great – the next round will use harder words.':'Great – you are on the hardest words.'):(tf.skill<old?'The next round will use easier words, so you can build up.':'Keep going – aim for 80%.'))+'</p></div>';
  h+='<div class="actions">';
  if(good&&next>=0)h+='<button type="button" class="btn primary big" id="nextl">Next: '+LEVELS[next].n+' ('+secs(LEVELS[next].s)+')</button>';
@@ -7010,7 +6998,7 @@ function endTimed(){if(G.over)return;stopTimer();G.over=true;var lv=G.lv,t=G.top
  h+='<button type="button" class="btn big" id="chg">Change topics or level</button></div>';
  h+='<h2>Your answers</h2><ol class="tlog">'+G.log.map(function(e){var m=e.r==="ok"?'<span class="tok">✓</span>':e.r==="wrong"?'<span class="tno">✗</span>':e.r==="pass"?'<span class="tno">Passed</span>':'<span class="tno">Not reached</span>';
   return '<li><p class="tq">'+fmt(e.c[0])+'</p><p>'+m+' <strong>'+esc(e.c[1])+'</strong>'+(e.r==="wrong"?' – you wrote “'+esc(e.a)+'”':'')+(e.note?' <span class="tnote">('+esc(e.note)+')</span>':'')+'</p></li>';}).join("")+'</ol>';
- render(h);if(good)confetti();
+ render(h);
  $("#tback").onclick=goTimedMenu;$("#chg").onclick=goTimedMenu;
  var nl=$("#nextl");if(nl)nl.onclick=function(){startTimed(t,next);};
  var ea=$("#easier");if(ea)ea.onclick=function(){startTimed(t,easier);};
@@ -7031,7 +7019,6 @@ function backTo(t){if(ORIGIN&&!(ORIGIN.t&&t&&ORIGIN.t!==t))return ORIGIN;return 
 function route(focus){
  siteLeaveAllowed=false;
  stopTimer();cdStop();NAVG.on=false;var dl=$(".lvdlg");if(dl&&dl.parentNode)dl.parentNode.removeChild(dl);
- var cf=document.querySelector(".confetti");if(cf&&cf.parentNode)cf.parentNode.removeChild(cf);
  var h=location.hash.slice(1),m;
  setOrigin(h);
  if(h==="exam"||/^exam-[a-z0-9]+$/.test(h)){L=null;render('<div id="exam-host"></div>',false);window.ALevelExamSkills.route($("#exam-host"),h.slice(5));var eh=$("#exam-host h1");if(eh){eh.tabIndex=-1;eh.focus();}return;}

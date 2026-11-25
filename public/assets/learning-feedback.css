@@ -1,0 +1,84 @@
+.learning-feedback {
+  --feedback-green: var(--good, #17672f);
+  --feedback-gold: #a96614;
+}
+
+.learning-feedback:not([data-learning-feedback="complete"]) {
+  color: var(--feedback-green);
+}
+
+.learning-feedback__icon {
+  display: inline-block;
+  width: 1.45rem;
+  height: 1.2rem;
+  margin-inline-end: .24rem;
+  vertical-align: -.25rem;
+  pointer-events: none;
+}
+
+.learning-feedback__tick {
+  fill: none;
+  stroke: var(--feedback-green);
+  stroke-width: 2.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.learning-feedback__star,
+.learning-feedback__accent {
+  fill: var(--feedback-gold);
+}
+
+.learning-feedback__glints {
+  fill: none;
+  stroke: var(--feedback-gold);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.learning-feedback__accent,
+.learning-feedback__glints {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@supports (color: light-dark(black, white)) {
+  .learning-feedback {
+    --feedback-gold: light-dark(#a96614, #e5ad60);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-feedback-animate] .learning-feedback__tick {
+    animation: learning-feedback-tick 420ms ease-out both;
+  }
+
+  [data-feedback-animate] .learning-feedback__accent {
+    animation: learning-feedback-sparkle 560ms ease-out both;
+  }
+
+  [data-feedback-animate]:not([data-learning-feedback="correct"]) .learning-feedback__accent,
+  [data-feedback-animate] .learning-feedback__glints {
+    animation: learning-feedback-sparkle 720ms ease-out both;
+  }
+}
+
+@keyframes learning-feedback-tick {
+  from { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  to { stroke-dasharray: 1; stroke-dashoffset: 0; }
+}
+
+@keyframes learning-feedback-sparkle {
+  from { opacity: 0; transform: scale(.5); }
+  35% { opacity: .9; transform: scale(1); }
+  to { opacity: 0; transform: scale(.85); }
+}
+
+@media (forced-colors: active) {
+  .learning-feedback__tick,
+  .learning-feedback__glints { stroke: CanvasText; }
+
+  .learning-feedback__star,
+  .learning-feedback__accent { fill: CanvasText; }
+}

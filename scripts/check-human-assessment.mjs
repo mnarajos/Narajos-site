@@ -11,6 +11,7 @@ export async function checkHumanAssessment(browser, base) {
   const scheduler = "narajos-keystone-review-v1-ocr-human-biology-f170";
   const read = name => page.evaluate(key => JSON.parse(localStorage.getItem(key) || "null"), name);
   const action = name => page.locator('[data-k-action="' + name + '"]');
+  const checked = page.locator('[data-feedback-heading] :is([data-learning-feedback="correct"], [data-learning-feedback="stretch"])');
   const errors = [];
   page.on("pageerror", error => errors.push(error.message));
   const fits = () => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 3);
@@ -62,13 +63,13 @@ export async function checkHumanAssessment(browser, base) {
     await page.reload();
     assert.equal(await page.locator("#k-number").inputValue(), "90");
     await action("check").press("Enter");
-    await page.getByRole("heading", { name: "Correct!", exact: true }).waitFor();
+    await checked.waitFor();
     assert.equal((await read(method)).outcomes[2], "independent");
     for (const answer of ["75", "132"]) {
       await action("next").press("Enter");
       await page.locator("#k-number").fill(answer);
       await action("check").press("Enter");
-      await page.getByRole("heading", { name: "Correct!", exact: true }).waitFor();
+      await checked.waitFor();
     }
     assert.equal((await read(session)).queue[0], diagnostic);
     assert(await fits(), "Mixed-method practice overflows");
@@ -107,14 +108,29 @@ export async function checkHumanAssessment(browser, base) {
     const gotIt = page.getByRole("button", { name: "Got it", exact: true });
     await page.getByRole("button", { name: "Reveal answer", exact: true }).press("Enter");
     assert(await gotIt.isHidden(), "A blank reveal must not count as recall");
+    assert.equal(await page.locator("#comparison [data-learning-feedback]").count(), 0);
     await page.reload();
     assert(await gotIt.isHidden(), "A refreshed blank reveal must not count as recall");
     assert.equal((await read(scheduler)).cards[first].good, 7);
     await page.getByRole("button", { name: "Not yet · show again", exact: true }).press("Enter");
     const second = (await read(flash)).queue[0];
     await page.getByRole("button", { name: "I recalled it without typing", exact: true }).press("Enter");
+    assert.equal(await page.locator("#comparison [data-learning-feedback]").count(), 0);
     await gotIt.press("Enter");
     assert.equal((await read(scheduler)).cards[second].good, 1);
+    const third = (await read(flash)).queue[0];
+    const answer = await page.evaluate(id => {
+      const [, section, position] = id.split("-");
+      return window.KeystoneF171Recall.find(([name]) => section === name)[2][Number(position) - 1][1];
+    }, third);
+    await page.locator("#typed").fill(answer);
+    await page.getByRole("button", { name: "Reveal answer", exact: true }).press("Enter");
+    const match = page.locator('#comparison [data-learning-feedback="correct"]');
+    assert(await match.isVisible());
+    assert.equal(await match.getAttribute("data-feedback-animate"), "");
+    await page.reload();
+    assert(await match.isVisible());
+    assert.equal(await match.getAttribute("data-feedback-animate"), null);
     assert.deepEqual(errors, []);
     console.log("Batch 12: shuffled misconception feedback, mixed methods, case review and saved F171 retrieval passed.");
   } finally {

@@ -67,7 +67,6 @@
 .school-journey-actions, .school-completion { display: flex; flex-wrap: wrap; gap: .45rem; align-items: center; padding-block: .55rem; }
 .school-completion { padding: .85rem; background: #e7f4eb; border: 1px solid #91bca2; border-radius: .6rem; margin: .55rem 0; }
 .school-completion h3 { flex-basis: 100%; margin: 0 0 .2rem; color: #1c5137; }
-.school-completion-tick { margin-inline-end: .5rem; }
 .school-journey-actions [hidden], [data-catchup-end][hidden] { display: none; }
 .school-check {
   color: #203948; background: #f9f8f4; width: min(calc(100% - 1.2rem), 42rem); max-height: calc(100vh - 1.5rem);

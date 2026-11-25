@@ -686,7 +686,7 @@ function correctionCue(q,rows){
  if(q.type==="match")return "Use the term in each marked row to reconsider the relationship.";
  return "Use the category definition to check each marked row.";
 }
-function drawQuestion(){
+function drawQuestion(animateFeedback=false){
  if(!session||!isActive())return;
  initialiseOutcomes(session);
  stopHintTimer();
@@ -725,8 +725,20 @@ function drawQuestion(){
   var correct=session.lastResult===true,subjective=!session.wasSkipped&&(session.lastResult===null||q.type==="written");
   var unknown=!!session.wasSkipped;
   var neutral=unknown||subjective;
-  var header=unknown?"Explanation":subjective?"Check your explanation":correct?"Correct!":"Not yet";
-  h+='<div class="k-feedback '+(neutral?"pending":correct?"correct":"incorrect")+'"><h2 class="k-feedback-head" data-feedback-heading tabindex="-1">'+icon(neutral?"book":correct?"check":"alert")+header+'</h2>';
+  var header=unknown?icon("book")+"Explanation":subjective?icon("book")+"Check your explanation":icon("alert")+"Not yet";
+  if(correct){
+   const outcome=session.outcomes[session.index];
+   const earlierIndex=session.queue.slice(0,session.index).lastIndexOf(q.id);
+   // Requeued questions may follow a reveal or self-review. Match only a verified earlier error in the same question version.
+   const earlierError=!q.assessmentRevision&&session.outcomes[earlierIndex]==="incorrect";
+   const corrected=outcome==="corrected"&&!a.priorResponse&&(Boolean(a.correction)||earlierError);
+   const stretch=outcome==="independent"&&q.level==="stretch"&&!a.priorResponse;
+   const kind=corrected?"corrected":stretch?"stretch":"correct";
+   const label=stretch?"Challenge answered independently!":outcome==="supported"?"Correct with support.":outcome==="corrected"&&!corrected?"Correct on this attempt.":undefined;
+   const fresh=animateFeedback&&!a.priorResponse&&(outcome==="independent"||outcome==="supported"||corrected);
+   header=window.KeystoneFeedback.markup(kind,{key:session.index,animate:fresh,label});
+  }
+  h+='<div class="k-feedback '+(neutral?"pending":correct?"correct":"incorrect")+'"><h2 class="k-feedback-head" data-feedback-heading tabindex="-1">'+header+'</h2>';
   if(q.figure)h+=figure(q.figure,true);
   h+='<div'+(q.unit==="f170"?' class="reading-copy"':'')+'>'+
    '<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p>'+
@@ -867,7 +879,7 @@ function check(skip){
  session.phase="feedback";
  if(skip)record(q,"revealed");
  else if(session.lastResult!==null)record(q,session.lastResult?"correct":"incorrect");
- save();drawQuestion();focusFeedback();
+ save();drawQuestion(session.lastResult===true);focusFeedback();
 }
 function gradeSelf(got){
  var q=current();if(!q||q.type!=="short"||session.phase!=="feedback"||session.wasSkipped||session.lastResult!==null)return;
@@ -913,16 +925,18 @@ function finish(){
  ["correctFirst","objectiveFirst","outcomes","earlierPractice","guidedFirst","selfReviewed","quickChecksPassed","quickChecksSeen","unit","skillId","point","returnTo","route","maxSkillLevel","needsReview"].forEach(function(key){result[key]=old[key];});
  try{localStorage.setItem(CK,JSON.stringify(result));}catch(_){}
  if(window.KeystoneHumanApp)window.KeystoneHumanApp.replaceRoute("challenge/review");
- showCompletion(result);
+ showCompletion(result,new Set(old.queue).size>=4);
 }
-function showCompletion(old){
+function showCompletion(old,animate=false){
  var summary=outcomeSummary(old);
+ const label=old.skillId?"Skills set complete":old.point?"Sequence complete":"Practice complete";
+ const heading='<h1>'+window.KeystoneFeedback.markup("complete",{label,animate})+'</h1>';
  if(old.skillId){
   var sk=skills.get(old.skillId);
-  show('<div class="k-wrap k-done"><h1>Skills set complete</h1>'+summary+'<p>Highest practice step: '+old.maxSkillLevel+' of 4.</p><div class="actions"><button class="button primary" type="button" data-start-skill="'+sk.id+'">Practise this skill again</button><a class="button secondary" href="#skills/'+sk.unit+'">Choose another skill</a><a class="button secondary" href="#challenge/'+sk.unit+'">Apply to topic questions</a>'+skillReturnLink(old.returnTo)+'</div></div>');return;
+  show('<div class="k-wrap k-done">'+heading+summary+'<p>Highest practice step: '+old.maxSkillLevel+' of 4.</p><div class="actions"><button class="button primary" type="button" data-start-skill="'+sk.id+'">Practise this skill again</button><a class="button secondary" href="#skills/'+sk.unit+'">Choose another skill</a><a class="button secondary" href="#challenge/'+sk.unit+'">Apply to topic questions</a>'+skillReturnLink(old.returnTo)+'</div></div>');return;
  }
- if(old.point){var p=ladders.get(old.point);show('<div class="k-wrap k-done"><h1>Sequence complete</h1><p>'+esc(p.statement)+'</p>'+summary+'<div class="actions"><a class="button primary" href="#challenge/'+old.unit+'/build">Choose another idea</a><button class="button secondary" type="button" data-repeat-point="'+p.id+'">Repeat this idea</button><a class="button secondary" href="#catchup/'+old.unit+'/'+p.section+'">Revisit the explanation</a></div></div>');return;}
- var h='<div class="k-wrap k-done"><p class="crumb"><a href="#challenge/'+old.unit+'">← Unit overview</a></p><div class="k-done-icon">'+icon("check")+'</div><h1>Practice complete</h1>'+summary+'<div class="actions">'+
+ if(old.point){var p=ladders.get(old.point);show('<div class="k-wrap k-done">'+heading+'<p>'+esc(p.statement)+'</p>'+summary+'<div class="actions"><a class="button primary" href="#challenge/'+old.unit+'/build">Choose another idea</a><button class="button secondary" type="button" data-repeat-point="'+p.id+'">Repeat this idea</button><a class="button secondary" href="#catchup/'+old.unit+'/'+p.section+'">Revisit the explanation</a></div></div>');return;}
+ var h='<div class="k-wrap k-done"><p class="crumb"><a href="#challenge/'+old.unit+'">← Unit overview</a></p>'+heading+summary+'<div class="actions">'+
  (old.needsReview?'<a class="button primary" href="#challenge/'+old.unit+'/weak">Practise questions to revisit</a>':'')+
  '<a class="button '+(old.needsReview?'secondary':'primary')+'" href="#challenge/'+old.unit+'">Choose another set</a>'+skillReturnLink(old.returnTo)+'</div></div>';show(h);
 }
