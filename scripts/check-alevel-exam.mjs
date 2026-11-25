@@ -83,26 +83,27 @@ export async function checkALevelExam(browser, base) {
     assert.equal(bank.length, 18);
     assert.equal(new Set(bank.map((x) => x.id)).size, 18);
     const beginGuided = async family => {
-      assert.equal(await page.locator(".al-journey-stage > .al-key > h2").innerText(), "Key idea");
-      assert.equal(await page.locator(".al-journey-stage .al-stages").count(), 0);
-      await page.getByRole("button", { name: "See worked example", exact: true }).press("Enter");
-      assert.equal(await page.locator(".al-journey-stage > .al-model > h2").innerText(), "Worked example");
-      assert(await page.getByRole("button", { name: "Key idea", exact: true }).isVisible());
-      assert(await page.getByRole("button", { name: "Go straight to questions", exact: true }).isVisible());
-      const art = page.locator(".al-model-visual");
+      const scope = family.id === "regulation" ? page.locator(".al-regulation-original") : page;
+      assert.equal(await scope.locator(".al-journey-stage > .al-key > h2").innerText(), "Key idea");
+      assert.equal(await scope.locator(".al-journey-stage .al-stages").count(), 0);
+      await scope.getByRole("button", { name: "See worked example", exact: true }).press("Enter");
+      assert.equal(await scope.locator(".al-journey-stage > .al-model > h2").innerText(), "Worked example");
+      assert(await scope.getByRole("button", { name: "Key idea", exact: true }).isVisible());
+      assert(await scope.getByRole("button", { name: "Go straight to questions", exact: true }).isVisible());
+      const art = scope.locator(".al-model-visual");
       if (family.id === "dihybrid") {
         assert.equal(await art.getByRole("table").count(), 0);
         assert(await art.getByText("AaBb × AaBb", { exact: true }).isVisible());
       }
       for (let i = 1; i < family.model.length; i++) {
-        await page.getByRole("button", { name: "Next step", exact: true }).click();
+        await scope.getByRole("button", { name: "Next step", exact: true }).click();
         if (family.id === "interpret" && i === 1) {
           // The question must remain available while the student follows the
           // reasoning, including after resuming a saved worked example.
-          assert.equal(await page.locator(".al-model-steps li").first().innerText(), family.model[0]);
+          assert.equal(await scope.locator(".al-model-steps li").first().innerText(), family.model[0]);
           await page.reload();
-          assert.equal(await page.locator(".al-model-steps li").first().innerText(), family.model[0]);
-          assert.equal(await page.locator(".al-model-steps [aria-current=step]").innerText(), family.model[1]);
+          assert.equal(await scope.locator(".al-model-steps li").first().innerText(), family.model[0]);
+          assert.equal(await scope.locator(".al-model-steps [aria-current=step]").innerText(), family.model[1]);
         }
         if (family.id === "dihybrid" && i === 2)
           assert.equal(await art.getByText("AABB", { exact: true }).count(), 0);
@@ -124,30 +125,35 @@ export async function checkALevelExam(browser, base) {
         if (family.id === "causal" && i === 5)
           assert(await art.getByText("Postsynaptic neurone", {exact:true}).first().isVisible());
       }
-      await page.getByRole("button", { name: "Try with support", exact: true }).press("Enter");
-      assert.equal(await page.locator(".al-journey-stage > .al-practice > h2").innerText(), "With support");
-      assert.equal(await page.locator(".al-practice .al-controls .primary:visible").count(), 1);
-      assert.equal(await page.locator(".al-practice-help").getAttribute("open"), null);
-      const openingFocus = page.locator(".al-stimulus-heading, .al-task-prompt").first();
+      await scope.getByRole("button", { name: "Try with support", exact: true }).press("Enter");
+      assert.equal(await scope.locator(".al-journey-stage > .al-practice > h2").innerText(), "With support");
+      assert.equal(await scope.locator(".al-practice .al-controls .primary:visible").count(), 1);
+      assert.equal(await scope.locator(".al-practice-help").getAttribute("open"), null);
+      const openingFocus = scope.locator(".al-stimulus-heading, .al-task-prompt").first();
       assert(await openingFocus.evaluate(el => el === document.activeElement), "Focus the evidence first, or the task when there is no evidence");
-      assert.equal(await page.locator(".al-model:visible").count(), 0);
+      assert.equal(await scope.locator(".al-model:visible").count(), 0);
     };
     for (const family of families) {
       await page.goto(base + "/alevel/#exam-" + family.id);
       await page
         .getByRole("heading", { name: family.title, exact: true })
         .waitFor();
+      if (family.id === "regulation") {
+        assert.equal(await page.locator(".al-gene-expression").count(), 1);
+        assert.equal(await page.locator(".al-regulation-original").count(), 1);
+      }
+      const scope = family.id === "regulation" ? page.locator(".al-regulation-original") : page;
       await beginGuided(family);
       for (let i = 0; i < family.tasks.length; i++) {
         const q = family.tasks[i],
-          form = page.locator(".al-teaching form");
+          form = scope.locator(".al-teaching form");
         if (q.stimulus) {
-          const stimulus = page.locator(".al-task-stimulus");
+          const stimulus = scope.locator(".al-task-stimulus");
           assert.equal(await stimulus.locator(":scope > p").first().innerText(), q.stimulus);
           const label = q.examQuestion ? "Exam-style question to analyse" : "Evidence to analyse";
           assert(await stimulus.getByRole("heading", { name: label, exact: true }).isVisible());
-          assert(await page.getByRole("heading", { name: "Your task", exact: true }).isVisible());
-          assert.deepEqual(await page.locator(".al-task-prompt > p").allTextContents(), [q.instruction].flat());
+          assert(await scope.getByRole("heading", { name: "Your task", exact: true }).isVisible());
+          assert.deepEqual(await scope.locator(".al-task-prompt > p").allTextContents(), [q.instruction].flat());
           assert.equal(await form.getAttribute("aria-labelledby"), "al-current-question");
         }
         if (q.kind === "number")
