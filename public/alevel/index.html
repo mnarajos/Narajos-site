@@ -409,8 +409,10 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <link rel="stylesheet" href="/assets/home-link.css">
 <link rel="stylesheet" href="/assets/topic-finder.css">
 <script src="/assets/topic-finder.js"></script>
+<link rel="stylesheet" href="/alevel/exam-skills.css">
+<link rel="stylesheet" href="/assets/learning-publication.css">
 </head>
-<body>
+<body class="course-alevel">
 <a class="skip" href="#main">Skip to content</a>
 <header class="top">
   <div class="wrap top-inner">
@@ -459,7 +461,6 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <script src="/assets/science-answer.js"></script>
 <script src="/assets/spaced-review.js"></script>
 <script src="/alevel/spaced-review-app.js"></script>
-<link rel="stylesheet" href="/alevel/exam-skills.css">
 <script src="/alevel/teaching-data.js"></script>
 <script src="/alevel/passage-practice.js"></script>
 <script src="/alevel/investigation-practice.js"></script>
@@ -6080,7 +6081,7 @@ function keepRanges(root){if(!root||!document.createTreeWalker)return;var w=docu
 var paperSummaries={p1:"Topics 1–4",p2:"Topics 5–8",p3:"Topics 1–8, data analysis and the essay"};
 function showHome(focus){
  L=null;
- var h='<h1>Choose a paper</h1><ul class="rows">'+PAPERS.map(function(p){
+ var h='<h1>Choose a paper</h1><ul class="rows paper-selection">'+PAPERS.map(function(p){
   return rowA("#paper-"+p.id,p.name,paperSummaries[p.id]);
  }).join("")+'</ul>';
  h+='<p class="course-home-links"><a href="#catchup">Catch up</a><a href="#exam">Exam Skills</a></p>';

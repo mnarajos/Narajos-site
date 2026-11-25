@@ -647,6 +647,7 @@
       }
       const i = state.index;
       const q = family.tasks[i];
+      block.toggleAttribute("data-guided", Boolean(q.guided));
       const at = state.queue.indexOf(i);
       const writing = q.kind === "writing";
       const accepted = isAccepted(i);

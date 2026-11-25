@@ -181,7 +181,7 @@ function intro(unit){
   ...(f170?[["practice","Explanation practice"]]:[[prefix+"clinical","Clinical case questions"]]),
   [prefix+"sam","Exam-style focus"]
  ];
- let h='<div class="k-wrap hb-unit-overview"><p class="crumb"><a href="#home">← Human Biology overview</a></p>'+
+ let h='<div class="k-wrap hb-unit-overview" data-unit="'+esc(unit)+'"><p class="crumb"><a href="#home">← Human Biology overview</a></p>'+
   '<div class="k-unit-hero"><p class="k-eyebrow">'+unit.toUpperCase()+(knowledge?" · NEA knowledge support":" · Externally assessed")+
   '</p><h1>'+esc(titleText)+'</h1>'+(knowledge?'<p>General biology for independent study. Follow your school or college’s guidance for assessed coursework.</p>':"")+'</div>'+
   '<section class="k-action-grid hb-unit-actions" aria-label="Learning activities">'+primary.map(t=>actionTile(...t)).join("")+'</section>';
