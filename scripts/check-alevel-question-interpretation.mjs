@@ -101,13 +101,20 @@ async function checkVocabulary(page, main, { touch = false, capture } = {}) {
     await capture?.();
     await close.tap();
   } else {
-    await page.keyboard.press("Tab");
-    assert(await close.evaluate(element => element === document.activeElement));
+    assert(await close.evaluate(element => element === document.activeElement), "Opening the definition focuses its close button");
     await page.keyboard.press("Escape");
   }
   await panel.waitFor({ state: "hidden" });
   assert.equal(await term.getAttribute("aria-expanded"), "false");
-  if (!touch) assert(await term.evaluate(element => element === document.activeElement));
+  if (!touch) {
+    assert(await term.evaluate(element => element === document.activeElement));
+    await term.press("Space");
+    await panel.waitFor();
+    assert(await close.evaluate(element => element === document.activeElement));
+    await page.keyboard.press("Space");
+    await panel.waitFor({ state: "hidden" });
+    assert(await term.evaluate(element => element === document.activeElement));
+  }
   if (touch) {
     await term.tap();
     await panel.waitFor();

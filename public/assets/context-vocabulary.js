@@ -66,7 +66,6 @@
     panel.setAttribute("role", "dialog");
     panel.setAttribute("aria-labelledby", id + "-term");
     panel.setAttribute("aria-describedby", id + "-definition");
-    panel.tabIndex = -1;
 
     heading.id = id + "-term";
     heading.textContent = label;
@@ -74,20 +73,27 @@
     text.textContent = definition;
     close.className = "context-vocabulary-dismiss";
     close.textContent = "Close definition";
-    close.addEventListener("click", () => {
+    function dismiss() {
       panel.hidePopover();
       trigger.focus({ preventScroll: true });
+    }
+    close.addEventListener("click", dismiss);
+    panel.addEventListener("keydown", event => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      event.stopPropagation();
+      dismiss();
     });
     trigger.addEventListener("click", event => {
       event.preventDefault();
       if (panel.matches(":popover-open")) {
-        panel.hidePopover();
+        dismiss();
         return;
       }
       trigger.focus({ preventScroll: true });
       panel.showPopover({ source: trigger });
       position();
-      panel.focus({ preventScroll: true });
+      close.focus({ preventScroll: true });
     });
 
     panel.addEventListener("beforetoggle", event => {
