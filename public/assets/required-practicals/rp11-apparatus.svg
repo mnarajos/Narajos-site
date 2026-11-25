@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 190">
+  <title>Glucose calibration with quantitative Benedict’s reagent</title>
+  <desc>Prepare glucose standards and the unknown. Heat them with quantitative Benedict’s reagent under equal conditions. A pale blue tube with more glucose has more white precipitate. Measure the clear liquid above the solid at 680 nanometres.</desc>
+  <rect x="1" y="1" width="458" height="188" rx="14" fill="#f1f6f8" stroke="#bdcdd5"/>
+  <g stroke="#233c4d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M23 54h26m-22 0v66a9 9 0 0 0 18 0V54m9 0h26m-22 0v66a9 9 0 0 0 18 0V54m9 0h26m-22 0v66a9 9 0 0 0 18 0V54"/>
+    <path fill="#e6f1f4" stroke="none" d="M29 83h14v36a7 7 0 0 1-14 0zm31 0h14v36a7 7 0 0 1-14 0zm31 0h14v36a7 7 0 0 1-14 0z"/>
+    <path d="M118 87h33m-7-7 7 7-7 7"/>
+    <path fill="#cde6f3" d="M166 80h127l-7 61H173z"/>
+    <path fill="#33899f" d="M188 80h23v42a11.5 11.5 0 0 1-23 0z"/>
+    <path fill="#98c7d0" d="M240 80h23v42a11.5 11.5 0 0 1-23 0z"/>
+    <path d="M188 80V55h23v25m29 0V55h23v25"/>
+    <path fill="#fff" d="M240 121h23v1a11.5 11.5 0 0 1-23 0z"/>
+    <path d="M298 87h27m-7-7 7 7-7 7"/>
+    <rect x="337" y="84" width="106" height="56" rx="7" fill="#dce6eb"/>
+    <rect x="378" y="95" width="54" height="26" rx="3" fill="#fff"/>
+    <path fill="#98c7d0" d="M350 84h16v17h-16z"/>
+    <path fill="#fff" d="M350 64h16v20h-16z"/>
+  </g>
+  <g fill="#203c4c" font-family="system-ui,sans-serif" text-anchor="middle" font-size="18">
+    <text x="66" y="28" font-weight="700">Dilute stock</text>
+    <text x="228" y="28" font-weight="700">Heat with reagent</text>
+    <text x="383" y="28" font-weight="700">Read at 680 nm</text>
+    <text x="37" y="110">0</text>
+    <text x="67" y="110">6</text>
+    <text x="98" y="110">?</text>
+    <text x="67" y="156">Standards +</text>
+    <text x="67" y="176">unknown</text>
+    <text x="228" y="156">Allow solid</text>
+    <text x="228" y="176">to settle</text>
+    <text x="405" y="114">680</text>
+    <text x="386" y="160">Blue liquid only</text>
+  </g>
+</svg>

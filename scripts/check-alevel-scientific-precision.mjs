@@ -44,6 +44,16 @@ export function checkALevelScientificPrecision() {
     return JSON.parse(line.trim().replace(/,$/, ""));
   }
 
+  // RP3 once reused one figure name for two independently scaled graphs.
+  const concentration = topicQuestion("concentration of sucrose that has the same water potential as the potato tissue");
+  const waterPotential = topicQuestion("Which plotted point shows a loss of 10%");
+  assert.notEqual(concentration.fig, waterPotential.fig);
+  assert.equal(concentration.unit, "mol dm⁻³");
+  assert.equal(waterPotential.unit, "kPa");
+  for (const question of [concentration, waterPotential]) {
+    assert.equal(lines.filter(line => line.startsWith("FIGS." + question.fig + "=")).length, 1);
+  }
+
   const logGrowth = topicQuestion("A graph of bacterial numbers uses a log scale");
   assert.match(logGrowth.q, /straight and rises/i);
   assert.match(logGrowth.opts[logGrowth.a], /increasing exponentially/i);

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 286">
+  <title>Capillary respirometer apparatus schematic</title>
+  <rect width="500" height="286" rx="12" fill="#f3f8fa"/>
+  <g fill="#deeff8" stroke="#49768e" stroke-width="3">
+    <path d="M25 70v106q0 10 10 10h180q10 0 10-10V70"/>
+    <path d="M62 72h147v87H62a43 43 0 0 1 0-87z" fill="#fff"/>
+    <path d="M209 111h263m-263 10h263" fill="none"/>
+  </g>
+  <path d="M63 133h43v19H59z" fill="#ead8ac" stroke="#966528" stroke-width="2"/>
+  <path d="M52 126h62" stroke="#475569" stroke-width="2" stroke-dasharray="5 3"/>
+  <g fill="#879d55" stroke="#526a3a" stroke-width="2">
+    <ellipse cx="63" cy="118" rx="9" ry="5"/>
+    <ellipse cx="82" cy="115" rx="11" ry="6"/>
+    <ellipse cx="100" cy="119" rx="9" ry="5"/>
+  </g>
+  <path d="M204 74h14v35h-14zm0 49h14v34h-14z" fill="#b2afb7" stroke="#474250" stroke-width="2"/>
+  <path d="M376 111h17v10h-17z" fill="#855ba9" stroke="#684586" stroke-width="2"/>
+  <path d="M378 143h-62m7-7-7 7 7 7M385 106V87M117 115h20m-22 27h22" stroke="#355267" stroke-width="2" fill="none"/>
+  <g fill="#233e4c" font-family="system-ui, sans-serif" font-size="18">
+    <text x="291" y="36">Capillary tube</text>
+    <text x="319" y="77">Liquid marker</text>
+    <text x="298" y="170">Moves towards chamber</text>
+    <text x="139" y="119">Seeds</text>
+    <text x="139" y="147">Soda lime</text>
+    <text x="34" y="212">Water bath</text>
+    <text x="250" y="246" text-anchor="middle">Seeds take up O₂ · soda lime absorbs CO₂</text>
+    <text x="250" y="270" text-anchor="middle">Compare with the same setup containing glass beads</text>
+  </g>
+</svg>

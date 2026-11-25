@@ -1,0 +1,14 @@
+# RP7 leaf-pigment chromatography
+
+The [activity](/alevel/#practical-7) shows the TLC apparatus, a worked calculation and a measurable photograph. The existing [paper chromatography catch-up](/alevel/#catchup-a5-chromat) and its question bank remain available. Students use the left lane for two different Rf estimates, then compare the observed separations in the outer lanes.
+
+## Sources
+
+- The specification asks students to use chromatography to investigate leaf pigments from different plants. The AQA exemplar uses paper chromatography, with the sample origin above the solvent and the solvent front marked. [AQA practical assessment](https://www.aqa.org.uk/subjects/biology/a-level/biology-7402/specification/practical-assessment) · [AQA RP7 apparatus set-up guide](https://filestore.aqa.org.uk/resources/biology/AQA-7401-7402-P7.PDF)
+- SAPS provides a school TLC method and teaching notes on separation of photosynthetic pigments. [SAPS TLC of plant photosynthetic pigments](https://www.saps.org.uk/teaching-resources/resources/1347/a-level-set-practicals-tlc-of-plant-photosynthetic-pigments/)
+
+## Media and measurement
+
+- `public/assets/required-practicals/rp7-leaf-chromatogram.webp` is Figure 2, panel C, by Vishwajit Adiga, Samanyu Chandra P, Varnika Venkatesh Kikkeri, Chinmaya Praveen and Subhadip Senapati. Their version 2 article is published under CC BY 4.0 and the figure has no separate restriction. The original embedded 1898 × 1006 image was cropped to `(867, 10, 1290, 875)` and losslessly encoded as a 423 × 865 WebP without resizing, geometric distortion, recolouring or retouching. The labels, reference guides and moving line are rendered separately in the shared SVG coordinate space. [Article and source figure](https://doi.org/10.32388/I14RGE.2) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+- `public/assets/required-practicals/rp7-tlc.svg` is an original apparatus schematic based on the TLC setup in the method references above.
+- The paper identifies the outer lanes as green and red leaf samples and the materials as American basswood and copperleaf, respectively. The left-lane pencil origin and solvent front lie near y = 820 and 60 in the crop. The centre of the highest distinct spot is near y = 260 and the lowest distinct spot near y = 385. These support estimates of 0.74 and 0.57 with a tolerance of 0.02. The slight slope in the reference lines makes the left lane the reference for both calculations. The large right-lane red spot centred near the origin supports the comparison question. The pixel-based ruler is for ratios only. The task assesses the visible migration and comparison, with pigment identity discussed as a separate inference requiring matched reference conditions and further evidence. [Source figure and method](https://www.qeios.com/read/I14RGE.2/pdf)

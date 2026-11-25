@@ -1,0 +1,51 @@
+.rp-activity { display: grid; gap: 1.1rem; }
+.rp-activity > *, .rp-card > * { min-width: 0; }
+.rp-activity h2, .rp-card h3 { margin-block: 0 .5rem; }
+.rp-activity figure { margin: 0; }
+.rp-activity img, .rp-activity svg { max-width: 100%; height: auto; }
+.rp-activity figcaption { margin-top: .4rem; }
+.rp-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  padding: clamp(.75rem, 2.5vw, 1.25rem);
+}
+.rp-card > :first-child { margin-top: 0; }
+.rp-card > :last-child { margin-bottom: 0; }
+.rp-activity details > summary { cursor: pointer; padding-block: .35rem; }
+.rp-activity :focus-visible { outline: 3px solid var(--acc, #17608e); outline-offset: 3px; }
+.rp-activity .btn { white-space: normal; min-height: 44px; }
+.rp-links, .rp-footer, .rp-activity .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+}
+.rp-footer, .rp-activity .actions { position: static; background: none; padding-block: 0; }
+.rp-activity .rp-table { width: 100%; border-collapse: collapse; }
+.rp-table th, .rp-table td {
+  padding: .35rem;
+  border-bottom: 1px solid var(--line);
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+.rp-question .actions { margin-block: .75rem .25rem; }
+.rp-options { padding: 0; margin: 0; min-width: 0; border: 0; }
+.rp-options legend, .rp-number > span { display: block; font-weight: 700; margin-bottom: .35rem; }
+.rp-options label { display: flex; align-items: flex-start; min-height: 44px; gap: .5rem; padding: .5rem .25rem; cursor: pointer; }
+.rp-options input { flex: none; margin-top: .3rem; }
+.rp-number { display: block; }
+.rp-number input {
+  width: min(12rem, 100%);
+  min-height: 44px;
+  font: inherit;
+  color: inherit;
+  background: var(--card);
+  border: 1px solid currentColor;
+  border-radius: .4rem;
+  padding-inline: .55rem;
+}
+.rp-feedback:empty { margin: 0; padding: 0; border: 0; }
+.rp-feedback { padding: .55rem .75rem; border-inline-start: .2rem solid currentColor; }
+.rp-question [aria-disabled="true"] { opacity: .72; cursor: default; }
+.rp-stretch summary .stretch-icon { margin-inline-end: .35rem; }
+.rp-footer { border-top: 1px solid var(--line); margin-top: 1.5rem; padding-top: .75rem; }

@@ -1,0 +1,47 @@
+.rp-sim-options, .rp-sim-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: .65rem;
+  margin-block: .75rem;
+}
+.rp-sim-options label {
+  display: grid;
+  gap: .25rem;
+}
+.rp-sim-options label[hidden] {
+  display: none;
+}
+.rp-sim-options select {
+  min-height: 44px;
+  padding: .4rem .55rem;
+  border: 1px solid var(--line, #667870);
+  border-radius: 7px;
+  background: var(--bg, #fff);
+  color: var(--ink, #173a2f);
+  font: inherit;
+}
+.rp-sim-actions .btn:disabled {
+  opacity: .57;
+  box-shadow: none;
+  cursor: default;
+}
+.rp-activity [data-observations] { table-layout: fixed; }
+.rp-activity [data-observations] th:nth-child(2) { width: 27%; }
+.rp-activity [data-observations] th:nth-child(3) { width: 32%; }
+.rp-chamber svg, .rp-chamber-setup svg, .rp-field svg {
+  display: block;
+  width: min(100%, 460px);
+  margin-inline: auto;
+}
+.rp-chamber-left { fill: #d6deef; }
+.rp-chamber-right { fill: #e0efe5; }
+.rp-chamber svg, .rp-field svg { color: #173a2f; }
+.rp-animal-dot { fill: #28695f; stroke: white; stroke-width: .75px; }
+.rp-field-row { paint-order: stroke; stroke: white; stroke-width: 3px; }
+@media (max-width: 480px) {
+  .rp-activity [data-observations] { font-size: .875rem; }
+  .rp-activity [data-observations] th, .rp-activity [data-observations] td {
+    padding-inline: .22rem;
+  }
+}
