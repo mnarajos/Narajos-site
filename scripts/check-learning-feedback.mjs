@@ -49,7 +49,7 @@ try {
       overflow: document.documentElement.scrollWidth - innerWidth
     };
   });
-  assert.deepEqual(layout.durations.sort((a, b) => a - b), [420, 560]);
+  assert.deepEqual(layout.durations.sort((a, b) => a - b), [420, 480, 620, 620]);
   assert.deepEqual(layout.bounds[0], layout.bounds[1]);
   assert.deepEqual(layout.bounds[1], layout.bounds[2]);
   assert.equal(layout.faded, "0");
