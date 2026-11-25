@@ -439,9 +439,9 @@ function makeCheck(section, task, report) {
     section.append(options);
     checkButton(section, report, () => {
       if (selected === null) return "Choose an answer first.";
-      if (selected === task.answer) return correctMessage();
+      if (selected === task.answer) return task.optionFeedback ? correctMessage() + " " + task.feedback : correctMessage();
       receivedFeedback = true;
-      return "Recheck “" + task.options[selected] + "”. " + task.feedback;
+      return "Recheck “" + task.options[selected] + "”. " + (task.optionFeedback?.[selected] || task.feedback);
     });
     return;
   }
@@ -507,6 +507,12 @@ class DiagramPractice extends HTMLElement {
         }
       });
       this.append(question);
+      if (task.showDiagram) {
+        const visual = el("details", "", "dp-study");
+        visual.open = true;
+        visual.append(el("summary", "View the diagram"), draw(topic.states[0]));
+        content.append(visual);
+      }
       if (["label", "point"].includes(task.type)) makeDiagramTask(content, topic, task, report);
       else makeCheck(content, task, report);
     }

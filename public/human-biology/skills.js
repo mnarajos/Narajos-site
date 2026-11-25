@@ -116,8 +116,13 @@ function graphHTML(g){
  var h='<figure class="k-skill-graph"><svg viewBox="0 0 480 320" role="img" aria-label="'+esc(g.yLabel+' against '+g.xLabel+'. The following table gives the plotted values.')+'">';
  for(var i=0;i<=4;i++){var v=step*i;h+='<path d="M'+left+' '+y(v)+'H'+right+'" stroke="#ddd"/><text x="68" y="'+(y(v)+5)+'" text-anchor="end">'+fmt(v)+'</text>';}
  h+='<path d="M'+left+' '+top+'V'+bottom+'H'+right+'" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="'+g.values.map(function(v,i){return x(i)+','+y(v);}).join(' ')+'" fill="none" stroke="#14796f" stroke-width="3"/>';
- g.values.forEach(function(v,i){h+='<circle cx="'+x(i)+'" cy="'+y(v)+'" r="5" fill="#14796f"/><text x="'+x(i)+'" y="275" text-anchor="middle">'+g.times[i]+'</text>';});
- h+='<text x="254" y="305" text-anchor="middle">'+esc(g.xLabel)+'</text><text transform="translate(22 145) rotate(-90)" text-anchor="middle">'+esc(g.yLabel)+'</text></svg><details><summary>Graph values in a table</summary><table><caption>'+esc(g.caption||"Antibody-response data")+'</caption><thead><tr><th scope="col">'+esc(g.xLabel)+'</th><th scope="col">'+esc(g.yLabel)+'</th></tr></thead><tbody>'+g.values.map(function(v,i){return '<tr><th scope="row">'+g.times[i]+'</th><td>'+v+'</td></tr>';}).join('')+'</tbody></table></details></figure>';
+ g.values.forEach(function(v,i){
+  h+='<circle cx="'+x(i)+'" cy="'+y(v)+'" r="5" fill="#14796f"/><text x="'+x(i)+'" y="275" text-anchor="middle">'+g.times[i]+'</text>';
+  if(g.pointLabels)h+='<text x="'+x(i)+'" y="'+(y(v)-12)+'" text-anchor="middle">'+fmt(v)+'</text>';
+ });
+ h+='<text x="254" y="305" text-anchor="middle">'+esc(g.xLabel)+'</text>'+(g.yLines||[g.yLabel]).map(function(label,i){
+  return '<text transform="translate('+(22+(i*18))+' 145) rotate(-90)" text-anchor="middle">'+esc(label)+'</text>';
+ }).join('')+'</svg><details><summary>Graph values in a table</summary><table><caption>'+esc(g.caption||"Antibody-response data")+'</caption><thead><tr><th scope="col">'+esc(g.xLabel)+'</th><th scope="col">'+esc(g.yLabel)+'</th></tr></thead><tbody>'+g.values.map(function(v,i){return '<tr><th scope="row">'+g.times[i]+'</th><td>'+v+'</td></tr>';}).join('')+'</tbody></table></details></figure>';
  return h;
 }
 window.KeystoneHumanSkills={definitions:definitions,get:get,generate:generate,graphHTML:graphHTML,version:1};

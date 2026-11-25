@@ -255,6 +255,11 @@ window.KeystoneHumanLessons = {
         "Normal gas exchange can supply oxygen to each volume of blood. If less blood reaches the working muscles each minute, oxygen delivery may fail to meet their greater demand.", ["Separate the oxygen carried in a volume of blood from the volume arriving each minute."])
     },
     "f170/2.1.3": {
+      further: [
+        ["catchup/f170/2.1.3.cirrhosis", "Complete the missing links in cirrhosis"],
+        ["challenge/f170/f170-lung-diffusion-compare", "Compare emphysema with pulmonary fibrosis"],
+        ["challenge/f170/f170-septal-openings", "Identify heart defects from diagrams"]
+      ],
       goal: "Explain how oxygen travels from air to respiring tissues and predict what a damaged exchange surface changes.",
       activate: ["What determines the direction of net oxygen movement?", "For simple diffusion, oxygen moves down its gradient. In gas-exchange explanations, compare oxygen partial pressures."],
       prior: ["f170/1.1.4", "Review diffusion and net movement"],
@@ -271,7 +276,40 @@ window.KeystoneHumanLessons = {
         "A thicker barrier increases diffusion distance, reducing diffusion rate when other variables are similar.", ["Trace how far oxygen must travel before it reaches blood."]),
       apply: written("Some alveolar walls break down, reducing total exchange surface. Explain how this could limit oxygen delivery during exercise.",
         ["Less surface is available for diffusion.", "At a similar gradient, less oxygen can enter blood per unit time.", "Working muscles require more oxygen for aerobic respiration."],
-        "Loss of alveolar surface can reduce the rate of oxygen entry into the blood. Circulation may deliver less oxygen relative to the increased demand of working muscles.", ["Start at the alveolar surface and end at the muscle."])
+        "Loss of alveolar surface can reduce the rate of oxygen entry into the blood. Circulation may deliver less oxygen relative to the increased demand of working muscles.", ["Start at the alveolar surface and end at the muscle."]),
+      followup: choice("In emphysema, walls between alveoli break down. In pulmonary fibrosis, scarring thickens the barrier between alveolar air and blood. Which comparison explains how oxygen uptake can fall?", 2,
+        [["Emphysema increases diffusion distance. Pulmonary fibrosis removes exchange surface.", "Those mechanisms are swapped. Think about what happens to the surfaces when the walls break down and how far oxygen travels through a thicker barrier."],
+         ["Each change makes oxygen diffuse faster.", "Both changes can slow the transfer of oxygen into blood."],
+         ["Emphysema leaves less exchange surface. Pulmonary fibrosis increases the distance oxygen must diffuse.", ""]],
+        "Less surface area or a longer diffusion distance can reduce the amount of oxygen entering the blood per unit time, when the oxygen gradient and other conditions are similar.")
+    },
+    "f170/2.1.3.cirrhosis": {
+      revision: 1,
+      title: "Cirrhosis: link liver damage to symptoms",
+      goal: "Complete the physiological steps between a change in the liver and an observable symptom.",
+      prior: ["f170/2.1.3", "Return to When organs fail"],
+      explain: [
+        "Cirrhosis involves long-term scarring and changes to the structure and function of the liver. Hepatocytes are liver cells.",
+        "Hepatocytes normally process bilirubin, a pigment formed during the breakdown of red blood cells, so it can be excreted in bile. They also produce albumin, a plasma protein that helps draw water into blood vessels."
+      ],
+      modelTitle: "Link altered liver function to easy bruising",
+      nodes: ["Tissue damage", "Change in function", "Symptom"],
+      model: [
+        "Cirrhosis can damage functioning liver tissue.",
+        "The liver can produce fewer of the proteins needed for blood to clot. The blood may clot less readily.",
+        "Bleeding from small vessels after a bump can continue for longer, making a bruise more likely."
+      ],
+      guided: choice("Damaged hepatocytes → ? → jaundice (yellowing of the skin and eyes). Which steps complete the chain?", 1,
+        [["The liver makes less albumin, so fluid accumulates in the abdomen.", "This explains a possible cause of fluid build-up. Look for a pigment that could cause yellowing."],
+         ["The liver processes bilirubin less effectively, so bilirubin accumulates.", ""],
+         ["The liver processes bilirubin faster, so bilirubin levels fall.", "If bilirubin were removed faster, less of it would accumulate. Think about what liver damage does to processing."]],
+        "Damaged hepatocytes can process less bilirubin. Bilirubin can then accumulate, causing the yellow colour of jaundice.",
+        ["What does the healthy liver normally help remove?"]),
+      apply: written("A person with cirrhosis produces less albumin and develops ascites, a build-up of fluid in the abdomen. Explain the missing link between reduced albumin production and the fluid build-up.",
+        ["Less albumin reduces plasma oncotic pressure, the draw that plasma proteins exert on water.", "Less water is drawn back into blood vessels, which can contribute to fluid accumulating in the abdomen."],
+        "Less albumin lowers plasma oncotic pressure, so less water is drawn back into blood vessels. This can contribute to ascites. Saying only that the liver is damaged and the abdomen swells leaves out the change in albumin and how it affects fluid movement.",
+        ["What does albumin normally help keep in the circulation?", "Trace what happens to fluid when plasma has less albumin."]),
+      practice: "f170-cirrhosis-missing-links"
     },
     "f170/2.2.2": {
       revision: 1,

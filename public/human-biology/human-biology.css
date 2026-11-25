@@ -230,6 +230,17 @@ main[tabindex="-1"]:focus{outline:none}
 .k-skill-graph summary{cursor:pointer;font-size:1rem;padding:.55rem 0}
 .k-skill-graph table{border-collapse:collapse;width:100%;font-size:1rem}
 .k-skill-graph th,.k-skill-graph td{border:1px solid #ccd5d3;padding:.55rem;text-align:left}
+.hb-transplant-skill-links{margin-block-start:1rem}
+.hb-transplant-case [data-transplant-step]{margin-block-start:1.5rem}
+.hb-transplant-case .k-question-meta{margin-block-end:.45rem}
+.hb-transplant-form{display:grid;gap:1rem}
+.hb-transplant-form fieldset{border:0;margin:0;padding:0;min-width:0}
+.hb-transplant-form legend{padding:0;margin-block-end:.45rem;font-weight:700}
+.hb-transplant-form .k-field{display:block;margin-block-end:.3rem}
+.hb-transplant-form input[type=number]{max-width:10rem}
+.hb-transplant-form .k-feedback-head{margin-block-start:0}
+.hb-transplant-form .actions{margin-block-start:0}
+.hb-transplant-form [hidden]{display:none}
 @media(max-width:620px){.k-skills-grid{grid-template-columns:minmax(0,1fr)}}
 
 /* Accessible labels stay available without repeating visible button text. */

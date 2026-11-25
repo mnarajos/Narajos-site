@@ -67,8 +67,8 @@ for(const unit of ["f170","f171","f172","f173","f174","f175","f176","f177"]){
   app.discard();
  }
 }
-assert.equal(db.questions.length,590);
-assert.equal(db.questions.filter(q=>q.unit==="f170").length,269);
+assert.equal(db.questions.length,597);
+assert.equal(db.questions.filter(q=>q.unit==="f170").length,276);
 assert.equal(db.questions.filter(q=>q.unit==="f171").length,237);
 for(const u of ["f172","f173","f174","f175","f176","f177"])assert.equal(db.questions.filter(q=>q.unit===u).length,u==="f175"?15:["f172","f173","f176","f177"].includes(u)?14:13,u+" knowledge bank missing");
 assert.deepEqual([...new Set(db.questions.map(q=>q.type))].sort(),["best","diagram","match","multi","number","order","short","single","sort","written"].sort());
@@ -100,7 +100,10 @@ for(const q of db.questions){
  if(q.unit==="f170")assert(map.includes(q.section),"Question not mapped to current F170 section: "+q.id);
  assert(q.model&&q.explain&&q.misconception,"Missing explanatory feedback: "+q.id);
  if(q.type==="number")assert(Number.isFinite(q.correct)&&q.answerUnit!==undefined,"Missing numeric answer and units: "+q.id);
- if(q.type==="best")assert(q.options.length===4&&q.reasons.length===4&&q.correct>=0&&q.correct<q.options.length&&q.reasonCorrect>=0&&q.reasonCorrect<q.reasons.length,"Two-stage reasoning needs four options in both steps: "+q.id);
+ if(q.type==="best"){
+  const choices=q.classification?3:4;
+  assert(q.options.length===choices&&q.reasons.length===choices&&q.correct>=0&&q.correct<q.options.length&&q.reasonCorrect>=0&&q.reasonCorrect<q.reasons.length,"Two-stage reasoning needs a valid answer in both steps: "+q.id);
+ }
  if(q.warmup)assert(q.level==="warmup"&&q.type==="single","Warm-up should be a low-load single-answer question");
  if(q.optionFeedback){
   assert.equal(q.optionFeedback.length,q.options.length,q.id);
@@ -124,7 +127,7 @@ for(const q of db.questions){
  if(q.marks)assert(q.type==="written"&&(q.marks===6||q.marks===9),"Unexpected extended-answer mark count: "+q.id);
 }
 assert.equal(db.questions.filter(q=>q.warmup).length,86,"Warm-up coverage");
-assert.equal(db.questions.filter(q=>q.type==="best").length,7,"Two-step reasoning coverage");
+assert.equal(db.questions.filter(q=>q.type==="best").length,12,"Two-step reasoning coverage");
 assert.equal(db.questions.filter(q=>q.subtype==="error").length,4,"Misconception correction coverage");
 assert.equal(db.questions.find(q=>q.id==="health-parkinsons-therapy").marks,6);
 assert.equal(db.questions.find(q=>q.id==="health-care-records").marks,9);
@@ -134,7 +137,7 @@ assert(knowledgeQuestions.every(q=>!q.marks&&!q.levelsNote&&!q.caseTitle),
  "NEA knowledge practice must use general questions and unmarked self-review");
 assert(!knowledgeQuestions.some(q=>/draft|complete the coursework|report for your assignment|submit your assignment|meet the assessment criteria/i.test(q.stem)),"Assessment-writing task leaked into knowledge bank");
 assert(knowledgeQuestions.filter(q=>q.figure).length>=6,"Each NEA-unit knowledge bank needs visual understanding checks");
-assert(db.questions.filter(q=>["single","diagram","best"].includes(q.type)).every(q=>q.options.length===4),"Four-option rule not met");
+assert(db.questions.filter(q=>["single","diagram","best"].includes(q.type)&&!q.classification).every(q=>q.options.length===4),"Four-option rule not met");
 load("human-biology/app.js");
 assert(main.innerHTML.includes("<h1>Human Biology</h1>"));
 for(const unit of db.units)assert(main.innerHTML.includes('href="#challenge/'+unit.id+'"'),"Missing overview link for "+unit.id);
@@ -241,7 +244,7 @@ assert(window.KeystoneHumanChallenge.stats("f170").weak>=1,"Not sure should reco
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"next"}}:null;}}});
 record=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 assert(record.index>=1,"Question did not advance");
-assert.equal(window.KeystoneHumanChallenge.questionCount,590);
+assert.equal(window.KeystoneHumanChallenge.questionCount,597);
 // Verify the entire deterministic answer flow, not merely presence of new item types.
 function forcedQuestion(id){
  const q=db.questions.find(x=>x.id===id);assert(q,"Unknown forced test item: "+id);
@@ -425,7 +428,7 @@ assert(read("human-biology/index.html").includes("content-knowledge.js"),"Knowle
 assert(read("human-biology/index.html").includes("challenge-extension.js"),"Exam extension not loaded");
 // A normal new set contains one variant per family. Repeated visits avoid the
 // immediately previous version, while a resumed set keeps its exact queue.
-assert.equal(db.families.length,91);
+assert.equal(db.families.length,92);
 for(const family of db.families){
  assert.equal(family.members.length,3);
  const members=family.members.map(id=>db.questions.find(q=>q.id===id));
@@ -482,15 +485,15 @@ for(const id of ["p-cell-membrane-transport-challenge","p-health-screening-found
  assert(main.innerHTML.includes("Hint 2")&&!main.innerHTML.includes("Expected answer"),id);
  assert(question.hintCue&&!question.explain.includes(question.hintCue)&&!question.model.includes(question.hintCue),id);
 }
-console.log("Human Biology checks passed: 590 questions, 91 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
+console.log("Human Biology checks passed: 597 questions, 92 rotating families, same-idea follow-ups, exact resume and quiet inactivity-based conceptual hints.");
 
 
 // Point practice must preserve one biological idea while support is withdrawn.
 const ladders=window.KeystoneHumanProgressions;
-assert.equal(ladders.points.length,49);
+assert.equal(ladders.points.length,50);
 assert.equal(new Set(ladders.points.map(p=>p.unit+":"+p.section)).size,46);
 for(const point of ladders.points){
- assert.equal(point.core.length,3,"Each selected idea needs rotating core tasks");
+ assert.equal(point.core.length,point.fixed?1:3,"Each idea needs its authored core tasks");
  for(const unit of [point.unit]){
   app.discard();app.route("challenge/"+unit+"/build",h=>main.innerHTML=h);
   assert(main.innerHTML.includes("#challenge/"+point.unit+"/"+point.id)&&main.innerHTML.includes("not yet complete"));
@@ -506,12 +509,16 @@ for(const point of ladders.points){
  assert.deepEqual(JSON.parse(data.get("narajos-human-challenge-v2-session")).queue,first.queue,"Resume must preserve this sequence's selected variant");
  app.discard();app.route(r,h=>main.innerHTML=h);
  const second=JSON.parse(data.get("narajos-human-challenge-v2-session"));
- assert.notEqual(second.queue[2],first.queue[2],"Repeat must rotate the same-idea core question");
+ if(point.fixed){
+  assert.deepEqual(second.queue,first.queue,"Fixed sequences must keep all scenarios in order");
+ }else{
+  assert.notEqual(second.queue[2],first.queue[2],"Repeat must rotate the same-idea core question");
+  assert.equal(db.questions.find(q=>q.id===second.queue[3]).level,"stretch");
+ }
  assert.equal(db.questions.find(q=>q.id===second.queue[0]).stage,"foundation");
- assert.equal(db.questions.find(q=>q.id===second.queue[3]).level,"stretch");
 }
 app.discard();
-console.log("49 teaching-idea sequences passed: prior knowledge, misconception, same-idea rotating core, transfer challenge and exact resume.");
+console.log("50 teaching-idea sequences passed: prior knowledge, misconception, rotating or fixed core, transfer challenge and exact resume.");
 
 // Validate the register against the same resources the site uses.
 load("human-biology/skills.js");

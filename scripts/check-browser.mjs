@@ -10,6 +10,7 @@ import {servePublic} from "./browser-test-site.mjs";
 import {chromium} from "playwright";
 import "./check-writing-marking.mjs";
 import {checkCatchupScaffolds} from "./check-catchup-scaffolds.mjs";
+import {checkHumanTransplantActivities} from "./check-human-transplant-activities.mjs";
 
 const {server,base}=await servePublic();
 const browser=await chromium.launch({headless:true,args:["--no-sandbox"]});
@@ -39,6 +40,7 @@ try{
   await checkSharedInteractions(browser,base,true);
  await checkBrowserZoom(base);
  await checkCatchupScaffolds(browser,base);
+ await checkHumanTransplantActivities(browser,base);
  {
  const writingTouch=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
  writingTouch.on("pageerror",err=>errors.push("Sentence picker: "+err.message));
@@ -1120,7 +1122,7 @@ try{
  await navPage.setViewportSize({width:1280,height:900});
  await navPage.goto(base+"/human-biology/#challenge/f170/build");
  await navPage.getByRole("heading",{name:"Build understanding",exact:true}).waitFor();
- assert.equal(await navPage.locator("[href^='#challenge/f170/p-']").count(),28);
+ assert.equal(await navPage.locator("[href^='#challenge/f170/p-']").count(),29);
  assert.equal(await navPage.locator(".k-progression-area").count(),4);
  const labelledLink=navPage.locator("[href^='#challenge/f170/p-']").first();
  assert((await labelledLink.locator(".sr-only").boundingBox()).width<=1,"Accessible label must not repeat visibly in the button");
@@ -1995,7 +1997,7 @@ try{
  await mobile.close();
  await desktop.close();
  assert.deepEqual(errors,[],"Uncaught page errors: "+errors.join("; "));
- console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, 590 questions and mobile layout.");
+ console.log("Browser smoke checks passed: dropdown dismissal and keyboard focus, AQA label, simulation card links, accessible diagrams, curated simulation cross-links, A-level/Human Biology catch-up, F170 transplant activities and mobile layout.");
 }finally{
  await browser.close();await new Promise(done=>server.close(done));
 }
