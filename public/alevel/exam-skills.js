@@ -218,15 +218,15 @@
     if (type === "countercurrent") {
       const box = node("div");
       const columns = ["Fluid", "Left", "2", "3", "Right"];
-      const counter = ["Countercurrent model · oxygen concentration", columns,
+      const counter = ["Countercurrent model · dissolved oxygen concentration", columns,
         [["Water →", 100, 80, 60, 40], ["Blood ←", 90, 70, 50, 30]]];
-      const parallel = ["Parallel-flow model · oxygen concentration", columns,
+      const parallel = ["Parallel-flow model · dissolved oxygen concentration", columns,
         [["Water →", 100, 75, 60, 55], ["Blood →", 10, 35, 50, 55]]];
       if (step < 3) {
         box.append(table(...counter, step < 2 ? [3] : [1, 2, 3, 4]));
-        if (step >= 2) box.append(node("p", "At each paired position, water has 10 more units of oxygen than blood."));
+        if (step >= 2) box.append(node("p", "At each paired position, the model gives water a dissolved oxygen concentration 10 units higher than blood."));
       } else {
-        box.append(table(...parallel, [4]), node("p", "At the right, both fluids are at 55 units. The model shows no concentration gradient there."));
+        box.append(table(...parallel, [4]), node("p", "At the right, both fluids are at 55 units. The model shows no dissolved oxygen concentration gradient there."));
         const comparison = node("details", null, "al-key-notes");
         comparison.append(node("summary", "Compare the countercurrent values"), table(...counter));
         box.append(comparison);
@@ -385,6 +385,10 @@
   }
 
   function journey(host, family, options = {}) {
+    if (family.id === "interpret") {
+      interpretationJourney(host, options.back);
+      return;
+    }
     const state = loadFamily(family);
     const savedPractice = ["outcomes", "drafts", "hints", "responses", "reviews"].some(field => Object.keys(state[field]).length);
     state.phase ||= savedPractice || state.completed ? "practice" : "idea";
@@ -518,7 +522,10 @@
   };
 
   function loadFamily(family) {
-    const state = read()[family.id] || {};
+    return preparePractice(family, read()[family.id] || {});
+  }
+
+  function preparePractice(family, state) {
     for (const field of ["outcomes", "drafts", "attempts", "hints", "responses", "results", "reviews", "modelAssists"]) {
       if (!state[field] || typeof state[field] !== "object" || Array.isArray(state[field])) state[field] = {};
     }
@@ -544,6 +551,196 @@
     return save(data);
   }
 
+  function vocabularyParagraph(content) {
+    const paragraph = node("p");
+    window.NarajosVocabulary.append(paragraph, content);
+    return paragraph;
+  }
+
+  function interpretationJourney(host, back) {
+    const { principle, lessons } = window.ALevelQuestionInterpretation;
+    const legacy = read().interpret || {};
+    const course = legacy.sequences || { units: {} };
+    const shell = node("section", null, "al-interpretation");
+    const menu = node("details", null, "al-key-notes");
+    const summary = node("summary", "Choose a sequence");
+    const list = node("ol", null, "al-catalogue");
+    const active = node("div", null, "al-journey-stage");
+    const overview = node("p", principle);
+    menu.append(summary, list);
+    shell.append(overview, menu, active);
+    if (legacy.completed || ["outcomes", "drafts", "responses"].some(field => Object.keys(legacy[field] || {}).length)) {
+      const history = node("details", null, "al-key-notes");
+      history.append(node("summary", "Earlier activity progress"),
+        node("p", legacy.completed ? "Your earlier set was completed. The new sequences have their own progress." : "Your earlier attempts are saved. The new sequences have their own progress."));
+      if (legacy.drafts?.[3]?.trim()) history.append(node("h3", "Your earlier written response"), node("p", legacy.drafts[3], "al-saved-draft"));
+      shell.append(history);
+    }
+    host.append(shell);
+
+    function saveUnit(lesson, unit) {
+      const data = read();
+      const previous = data.interpret || {};
+      const units = previous.sequences?.units || {};
+      data.interpret = { ...previous, sequences: { active: lesson.id, units: { ...units, [lesson.id]: unit } } };
+      save(data);
+    }
+
+    function show(lesson, moveFocus = false) {
+      const unit = course.units[lesson.id] ||= {};
+      const persist = () => saveUnit(lesson, unit);
+      course.active = lesson.id;
+      overview.hidden = lesson !== lessons[0] || Boolean(unit.stage);
+      list.replaceChildren();
+      lessons.forEach(candidate => {
+        const row = node("li");
+        const control = button(candidate.title, () => {
+          menu.open = false;
+          saveUnit(candidate, course.units[candidate.id] ||= {});
+          show(candidate, true);
+        });
+        control.className = "al-catalogue-row";
+        if (candidate === lesson) control.setAttribute("aria-current", "step");
+        if (course.units[candidate.id]?.practice?.completed) control.append(node("small", "Complete"));
+        row.append(control);
+        list.append(row);
+      });
+      const title = node("h2", lesson.title);
+      active.replaceChildren(title);
+
+      function setStage(stage) {
+        unit.stage = stage;
+        persist();
+        show(lesson, true);
+      }
+
+      function primary(label, action) {
+        const control = button(label, action);
+        control.classList.add("primary");
+        return control;
+      }
+
+      if (unit.stage === "worked") {
+        const worked = lesson.worked;
+        const panel = node("section", null, "al-teaching al-model");
+        const heading = node("h3", "Worked example");
+        const step = Math.min(unit.step || 0, worked.reasoning.length);
+        const fullyRevealed = step === worked.reasoning.length;
+        const context = node("div", null, "al-task-stimulus");
+        if (worked.stimulus) context.append(vocabularyParagraph(worked.stimulus));
+        if (worked.table) context.append(table(worked.table.caption, worked.table.headers, worked.table.rows));
+        const question = node("p", worked.question, "al-interpretation-exam-question");
+        if (step && worked.highlight) {
+          const { before, target, after } = worked.highlight;
+          question.replaceChildren(before, node("mark", target), after);
+        }
+        context.append(question);
+        panel.append(heading, context);
+        let focusTarget = heading;
+        if (!step && worked.think) panel.append(node("p", worked.think));
+        if (step) {
+          const reasoning = node("ol", null, "al-model-steps al-step");
+          worked.reasoning.slice(0, step).forEach(({ label, text }) => {
+            const item = node("li");
+            const reason = node("strong", label);
+            item.append(reason, node("p", text));
+            reasoning.append(item);
+            focusTarget = reason;
+          });
+          panel.append(reasoning);
+        }
+        if (fullyRevealed) {
+          if (worked.chain?.length) {
+            const chain = node("ol", null, "al-interpretation-chain");
+            worked.chain.forEach(text => chain.append(node("li", text)));
+            panel.append(chain);
+          }
+          panel.append(node("h4", "Model response"), node("p", worked.model));
+        }
+        panel.append(primary(fullyRevealed ? (unit.practice ? "Return to practice" : "Try with support") : step ? "Next reasoning step" : "Show the reasoning", () => {
+          if (fullyRevealed) {
+            setStage(unit.practice?.completed ? "complete" : "practice");
+          } else {
+            unit.step = step + 1;
+            persist();
+            show(lesson, true);
+          }
+        }));
+        active.append(panel);
+        if (moveFocus) focus(focusTarget);
+        return;
+      }
+
+      if (unit.stage === "practice") {
+        const { guided, independent } = lesson;
+        const guidedFeedback = guided.kind === "multi" || guided.kind === "group" ? guided.takeaway :
+          [guided.options[guided.answer].feedback, guided.takeaway].filter(Boolean).join(" ");
+        const practice = {
+          id: "interpret",
+          tasks: [{
+            kind: guided.kind || "choice", guided: true, vocabulary: true,
+            stimulus: guided.stimulus, examPrompt: guided.question, prompt: guided.prompt,
+            options: guided.options?.map(option => option.text), answer: guided.answer,
+            feedback: guided.options?.map(option => option.feedback),
+            groups: guided.groups, items: guided.items, retry: guided.retry,
+            evidence: guided.table && [guided.table.caption, guided.table.headers, guided.table.rows],
+            hints: guided.hints, why: guidedFeedback,
+          }, {
+            kind: "writing", stimulus: independent.stimulus, prompt: independent.question,
+            evidence: independent.table && [independent.table.caption, independent.table.headers, independent.table.rows],
+            modelAnswer: [independent.model], points: independent.points, reviewNote: independent.reflection,
+          }],
+        };
+        unit.practice = preparePractice(practice, unit.practice || {});
+        const revisit = button("Revisit the worked example", () => setStage("worked"));
+        revisit.classList.add("al-secondary");
+        const panel = practise(active, practice, unit.practice, {
+          interpretation: true, persist, finish: () => setStage("complete"), extra: revisit,
+        });
+        if (moveFocus) focus(panel.querySelector("h2"));
+        return;
+      }
+
+      if (unit.stage === "complete") {
+        const heading = node("h3", "Sequence complete");
+        const next = lessons.slice(lessons.indexOf(lesson) + 1).find(candidate => !course.units[candidate.id]?.practice?.completed)
+          || lessons.find(candidate => !course.units[candidate.id]?.practice?.completed);
+        const responses = node("details", null, "al-key-notes");
+        const firstDraft = unit.practice.reviews[1]?.original;
+        const latestDraft = unit.practice.drafts[1];
+        responses.append(node("summary", "Review your saved response"));
+        if (firstDraft && firstDraft !== latestDraft) responses.append(node("h4", "First draft"), node("p", firstDraft, "al-saved-draft"));
+        responses.append(node("p", latestDraft, "al-saved-draft"), node("h4", "Model response"), node("p", lesson.independent.model));
+        const controls = node("div", null, "al-controls");
+        if (next) controls.append(primary("Next sequence", () => {
+          saveUnit(next, course.units[next.id] ||= {});
+          show(next, true);
+        }));
+        else if (back) controls.append(primary("Back to your question", back));
+        else controls.append(link("Choose another exam skill", "#exam"));
+        const revisit = button("Revisit the worked example", () => setStage("worked"));
+        revisit.classList.add("al-secondary");
+        controls.append(revisit);
+        active.append(heading, node("p", lesson.independent.reflection), responses, controls);
+        if (moveFocus) focus(heading);
+        return;
+      }
+
+      active.append(node("p", lesson.objective, "al-interpretation-objective"), node("p", lesson.instruction));
+      if (lesson.commandGuide) {
+        const guide = node("details", null, "al-key-notes");
+        const entries = node("dl");
+        for (const [term, meaning] of lesson.commandGuide) entries.append(node("dt", term), node("dd", meaning));
+        guide.append(node("summary", "Common command words"), entries);
+        active.append(guide);
+      }
+      active.append(primary("See worked example", () => setStage("worked")));
+      if (moveFocus) focus(title);
+    }
+
+    show(lessons.find(lesson => lesson.id === course.active) || lessons[0]);
+  }
+
   function quietLink(text, href) {
     const a = node("a", text, "al-quiet-link");
     a.href = href;
@@ -562,7 +759,7 @@
   function practise(host, family, state = loadFamily(family), flow = {}) {
     const block = node("section", null, "al-teaching al-practice");
     host.append(block);
-    const persist = () => saveFamily(family, state);
+    const persist = flow.persist || (() => saveFamily(family, state));
     const hintsFor = q => q.hints || ["Identify what changes, then connect it to the effect named in the question."];
     const isAccepted = i => Boolean(state.outcomes[i] && state.outcomes[i] !== "needs-practice");
     const hasCompletedTask = i => isAccepted(i) || state.results[i]?.kind === "revealed";
@@ -664,6 +861,7 @@
       if (paperReview) review.original ??= state.drafts[i] || "";
       const revised = paperReview && state.drafts[i] !== review.original;
       let phaseLabel = q.guided ? "With support" : "Your turn";
+      if (flow.interpretation && !q.guided) phaseLabel = review.open ? "Review your response" : "Independent question";
       if (flow.paper) {
         if (review.open) phaseLabel = "Response review";
         else if (!q.guided && !state.modelAssists[i]) phaseLabel = "Independent question";
@@ -672,7 +870,7 @@
       const count = "Task " + (at + 1) + " of " + state.queue.length;
       block.append(heading);
       if (flow.paper) heading.append(node("span", count, "al-task-count"));
-      else block.append(node("p", count, "al-task-count"));
+      else if (!flow.interpretation) block.append(node("p", count, "al-task-count"));
       const hasStimulus = q.stimulus || q.essayTitle || q.passage?.length || q.visual || q.evidence;
       let question = block;
       if (flow.paper && review.open) {
@@ -684,19 +882,20 @@
       let prompt;
       if (hasStimulus) {
         const stimulus = node("div", null, "al-task-stimulus");
-        const label = flow.paper ? flow.paper.stimulus : q.examQuestion ? "Exam-style question to analyse" : q.passage?.length ? "Passage to analyse" : "Evidence to analyse";
+        const label = flow.interpretation ? "Question context" : flow.paper ? flow.paper.stimulus : q.examQuestion ? "Exam-style question to analyse" : q.passage?.length ? "Passage to analyse" : "Evidence to analyse";
         stimulusHeading = node("h3", label, "al-stimulus-heading");
         stimulus.append(stimulusHeading);
         if (q.essayTitle) stimulus.append(node("p", q.essayTitle, "al-essay-title"));
-        if (q.stimulus) stimulus.append(node("p", q.stimulus));
+        if (q.stimulus) stimulus.append(q.vocabulary ? vocabularyParagraph(q.stimulus) : node("p", q.stimulus));
         for (const paragraph of q.passage || []) stimulus.append(node("p", paragraph));
         if (q.visual) stimulus.append(visual(q.visual));
         if (q.evidence) stimulus.append(table(...q.evidence, [], flow.paper, family.id === "geneExpression", q.compactEvidence));
+        if (q.examPrompt) stimulus.append(node("p", q.examPrompt, "al-interpretation-exam-question"));
         question.append(stimulus);
         if (flow.paper) {
           prompt = node("h3", q.prompt, "al-task-prompt");
         } else {
-          question.append(node("h3", "Your task", "al-instruction-heading"));
+          if (!flow.interpretation) question.append(node("h3", "Your task", "al-instruction-heading"));
           prompt = node("div", null, "al-task-prompt");
           for (const instruction of [q.instruction ?? q.prompt].flat()) prompt.append(node("p", instruction));
         }
@@ -753,7 +952,7 @@
           form.append(label);
         });
       } else {
-        let labelText = flow.paper ? "Your response" : "Your explanation";
+        let labelText = flow.paper || flow.interpretation ? "Your response" : "Your explanation";
         if (paperReview && (!accepted || revised)) labelText = "Your revised response";
         const label = node("label", null, flow.paper ? "al-response-label" : null);
         label.append(node("span", labelText, paperReview && !accepted ? "sr-only" : null));
@@ -784,12 +983,12 @@
       }
       const result = state.results[i];
       if (accepted) announce(writing ? "Review finished. Your draft and judgements are saved." :
-        "Correct!", writing ? "review" : "correct");
+        flow.interpretation ? "Correct. " + q.why : "Correct!", writing ? "review" : "correct");
       else if (revealed) announce("Explanation revealed. " + q.why, "explained");
       else if (result?.clue && state.hints[i]) announce("Clue · " + hintsFor(q)[state.hints[i] - 1], "hint");
       else if (result?.kind === "incorrect")
         announce(q.kind === "group" ? "Review and improve the flagged rows. Your correct groups are kept." :
-          "Review and improve. " + (result.feedback ?? q.why), "improve");
+          "Review and improve. " + (result.feedback ?? q.retry ?? q.why), "improve");
       else if (state.hints[i]) announce("Clue · " + hintsFor(q)[state.hints[i] - 1], "hint");
       else announce("", "");
 
@@ -833,8 +1032,9 @@
           };
           criteria.addEventListener("focusin", clearFirstDraft);
           criteria.addEventListener("change", clearFirstDraft);
-        } else criteria.append(node("h3", "Check and improve"),
-          node("p", "Compare each point with your draft. Add any missing scientific link before finishing your review."));
+        } else criteria.append(node("h3", "Check and improve"), node("p", flow.interpretation
+          ? "Check your response against each criterion. Revise any part of your answer before finishing the review."
+          : "Compare each point with your draft. Add any missing scientific link before finishing your review."));
         const model = node("details");
         const summary = node("summary", "Compare with a model explanation");
         model.append(summary);
@@ -904,11 +1104,15 @@
       if (accepted || revealed) {
         const last = at === state.queue.length - 1;
         const nextQuestion = family.tasks[state.queue[at + 1]];
-        const nextLabel = flow.paper && !last && !nextQuestion.guided ? "Try a different question" : "Next task";
-        const next = button(last ? "Review progress" : nextLabel, () => {
+        const nextLabel = flow.interpretation ? "Try the independent question" : flow.paper && !last && !nextQuestion.guided ? "Try a different question" : "Next task";
+        const next = button(last ? (flow.interpretation ? "Finish sequence" : "Review progress") : nextLabel, () => {
           if (at === state.queue.length - 1) state.completed = true;
           else state.index = state.queue[at + 1];
           persist();
+          if (last && flow.interpretation) {
+            flow.finish();
+            return;
+          }
           flow.moved?.();
           render(true);
         });
@@ -934,7 +1138,7 @@
         });
         labelHint(state.hints[i] ? "Another clue" : "Need a clue?");
         hint.classList.add("al-secondary");
-        if ((!writing || (q.hints && !review.open)) && (state.hints[i] || 0) < hints.length) help.append(hint);
+        if ((!flow.interpretation || q.hints) && (!writing || (q.hints && !review.open)) && (state.hints[i] || 0) < hints.length) help.append(hint);
         if (!writing) {
           const reveal = button("Show explanation", () => {
             state.results[i] = { kind: "revealed" };
@@ -944,7 +1148,7 @@
             focus(block.querySelector('[role="status"]'));
           });
           reveal.classList.add("al-secondary");
-          help.append(reveal);
+          if (!flow.interpretation || state.attempts[i]) help.append(reveal);
         }
       }
       form.append(controls);
@@ -964,7 +1168,7 @@
       const catchup = flow.context ? flow.context(q) : (family.catchup ? ["Revisit catch-up teaching", "#catchup-" + family.catchup] : null);
       if (catchup) help.append(quietLink(...catchup));
       if (flow.review) help.append(flow.review);
-      if (flow.extra) help.append(flow.extra);
+      if (flow.extra && (!flow.interpretation || q.guided)) help.append(flow.extra);
       if (help.children.length > 1) block.append(help);
       if (moveFocus) focus(question.tagName === "DETAILS" ? question.querySelector("summary") : stimulusHeading || prompt);
 
@@ -975,8 +1179,9 @@
           if (form.elements.draft.value.trim().length < 12) {
             const revision = form.querySelector(".al-revision");
             if (revision) revision.open = true;
-            announce(revision ? "Write your revised explanation before finishing." : "Write an explanation before comparing it.", "improve");
-            if (flow.paper) form.elements.draft.focus();
+            announce(flow.interpretation ? "Write a response before opening the checklist." :
+              revision ? "Write your revised explanation before finishing." : "Write an explanation before comparing it.", "improve");
+            if (flow.paper || flow.interpretation) form.elements.draft.focus();
             return;
           }
           state.drafts[i] = form.elements.draft.value;
@@ -1037,6 +1242,10 @@
             ? values.length === q.answer.length && q.answer.every(value => values.includes(value))
             : values[0] === q.answer;
           if (!correct && q.kind === "choice") feedback = q.feedback?.[values[0]];
+          if (!correct && q.kind === "multi" && flow.interpretation) {
+            const extra = values.find(value => !q.answer.includes(value));
+            feedback = q.feedback?.[extra] || "Check whether your selections answer all parts of the question.";
+          }
         }
         const attempts = (state.attempts[i] || 0) + 1;
         state.attempts[i] = attempts;
@@ -1685,6 +1894,13 @@
     }
     const state = saved[id];
     if (!state) return ["Start", ""];
+    if (id === "interpret") {
+      const lessons = window.ALevelQuestionInterpretation.lessons;
+      const units = state.sequences?.units;
+      if (!units) return ["Start", ""];
+      const complete = lessons.filter(lesson => units[lesson.id]?.practice?.completed).length;
+      return [complete === lessons.length ? "Review" : "Resume", complete + " of " + lessons.length + " sequences complete"];
+    }
     if (state.completed) return ["Review", "Completed set"];
     if (state.phase === "model") return ["Resume", "Worked example"];
     if (state.phase === "practice" || ["responses", "outcomes", "drafts", "hints", "reviews"].some(field => Object.keys(state[field] || {}).length)) {

@@ -1,0 +1,66 @@
+button.context-vocabulary-term {
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+  max-width: 100%;
+  border: 0;
+  border-radius: 0.125em;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  text-decoration: underline dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+.context-vocabulary-term[aria-expanded="true"] {
+  background: var(--acc-soft, Canvas);
+}
+
+.context-vocabulary-term:focus-visible,
+.context-vocabulary-dismiss:focus-visible {
+  outline: 2px solid var(--focus, Highlight);
+  outline-offset: 2px;
+}
+
+.context-vocabulary-panel {
+  box-sizing: border-box;
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  width: 21rem;
+  max-width: calc(100vw - 24px);
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  padding: 0.75rem;
+  border: 1px solid var(--line, #a0a6ab);
+  border-radius: 0.7rem;
+  background: var(--card, Canvas);
+  color: var(--ink, CanvasText);
+  font: inherit;
+  text-align: start;
+  box-shadow: 0 0.25rem 1.25rem #0003;
+}
+
+.context-vocabulary-panel > strong,
+.context-vocabulary-panel > span {
+  display: block;
+}
+
+button.context-vocabulary-dismiss {
+  min-height: 44px;
+  padding: 0.2rem 0.4rem;
+  margin: 0.25rem 0 0;
+  border: 0;
+  border-radius: 0.25em;
+  background: transparent;
+  color: var(--acc, LinkText);
+  font: inherit;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  cursor: pointer;
+}

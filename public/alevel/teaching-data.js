@@ -86,28 +86,28 @@ window.ALevelTeachingFamilies = {
     principle:
       "Compare the two fluids at the same physical position, following each flow direction.",
     model: [
-      "Recall that oxygen diffuses from higher to lower concentration. Compare neighbouring water and blood at the same point, not their two entry values.",
+      "Compare dissolved oxygen in water and blood at the same point. The model readings represent oxygen available for diffusion. In real gills, oxygen diffuses from higher to lower oxygen partial pressure.",
       "Follow the arrows. At the highlighted position, compare the water with the blood immediately next to it.",
       "Now compare every pair. Blood enters on the right at 30 units and leaves on the left at 90. The gradient stays in the same direction along the exchange surface.",
-      "In parallel flow the fluids move in the same direction. Compare the last pair. These figures are idealised oxygen concentrations.",
+      "In parallel flow the fluids move in the same direction. At the last position the model readings are equal, so there is no net oxygen diffusion there. The model readings do not count oxygen bound to haemoglobin.",
     ],
     tasks: [
       {
         kind: "choice",
         ...withStimulus(
-          "Guided practice. At one position, water is 60 units and blood is 50 units.",
-          "Which way does oxygen diffuse?",
+          "Guided practice. In the model, one position shows a dissolved oxygen reading of 60 units in water and 50 units in blood.",
+          "In which direction is there net oxygen diffusion?",
         ),
         options: ["Water to blood", "Blood to water", "Neither"],
         answer: 0,
-        why: "Compare the adjacent values. Water has the higher oxygen concentration.",
-        hints: ["Compare water and blood at the same position.", "Compare the adjacent values. Water has the higher oxygen concentration."],
+        why: "At that position the water has more dissolved oxygen in the model. The resulting gradient gives net diffusion into the blood.",
+        hints: ["Compare water and blood at the same position.", "The model shows a higher dissolved oxygen reading in the water."],
         guided: true,
       },
       {
         kind: "choice",
         ...withStimulus(
-          "An unfamiliar membrane exchanger carries a dissolved nutrient. Both fluids flow oppositely and the donor concentration exceeds the receiver concentration at every position.",
+          "Two aqueous solutions flow in opposite directions on either side of a membrane that the dissolved nutrient can cross. At every position the donor solution has a higher nutrient concentration than the receiver solution.",
           "What follows?",
         ),
         options: [
@@ -121,12 +121,13 @@ window.ALevelTeachingFamilies = {
       },
       {
         kind: "writing",
-        prompt: "Explain why reversing blood flow can improve oxygen uptake.",
+        prompt: "Use the model to explain why changing from parallel to countercurrent blood flow can improve oxygen uptake.",
         points: [
-          "Opposite flow brings blood alongside water with a higher oxygen concentration at each position.",
-          "This maintains a diffusion gradient along the lamella.",
-          "Oxygen can diffuse into blood over the full exchange length.",
+          "With countercurrent flow, water has a higher dissolved oxygen reading than the adjacent blood at each position in the model.",
+          "Countercurrent flow maintains a gradient from water to blood along the lamella. In the parallel-flow model the gradient reaches zero at the end.",
+          "Net oxygen diffusion into the blood can continue along more of the exchange surface, increasing uptake.",
         ],
+        reviewNote: "Across a real gill, oxygen partial pressure is the driving gradient. In this model, dissolved oxygen readings represent that gradient.",
       },
     ],
     visual: "countercurrent",
@@ -154,7 +155,7 @@ window.ALevelTeachingFamilies = {
       {
         kind: "choice",
         ...withStimulus(
-          "Guided practice. Reduced NADP becomes scarce while ATP remains available.",
+          "Guided practice. The supply of reduced NADP becomes limiting while ATP remains available.",
           "Which stage is directly restricted?",
         ),
         options: [
@@ -170,7 +171,7 @@ window.ALevelTeachingFamilies = {
       {
         kind: "choice",
         ...withStimulus(
-          "ATP production stops.",
+          "In a chloroplast, ATP production stops. As existing ATP is used up, the supply becomes limiting.",
           "Which conclusion is justified?",
         ),
         options: [
@@ -263,7 +264,7 @@ window.ALevelTeachingFamilies = {
     topics: ["a7"],
     papers: ["p2", "p3"],
     principle:
-      "Recessive phenotype frequency is q², while q is an allele frequency.",
+      "For two alleles with complete dominance in a population at Hardy–Weinberg equilibrium, q is the recessive allele frequency and q² is the recessive phenotype frequency.",
     model: [
       "Assume a two-allele locus with complete dominance and a population in Hardy–Weinberg equilibrium. If 9% show the recessive phenotype, q² = 0.09.",
       "Take the square root: q = 0.3. This is the frequency of the recessive allele, not the recessive genotype.",
@@ -334,12 +335,12 @@ window.ALevelTeachingFamilies = {
           "Predict transcription.",
         ),
         options: [
-          "It decreases",
+          "The transcription rate can decrease",
           "It must increase",
           "The gene changes base sequence",
         ],
         answer: 0,
-        why: "The supplied mechanism reduces access to the promoter.",
+        why: "Reduced access can make it harder for the transcription machinery to initiate transcription at this promoter.",
         hints: ["Check what the question says about access to this promoter.", "The supplied mechanism reduces access to the promoter."],
         guided: true,
       },
@@ -558,8 +559,8 @@ window.ALevelTeachingFamilies = {
         catchup: "a1-enzfactors",
         kind: "choice",
         ...withStimulus(
-          "Level 2. A protease is reversibly inhibited. Inhibitor falls, with equal starting protein and fixed time before depletion.",
-          "What remains?",
+          "Level 2. Two reactions contain the same starting amounts of a protease and its intact protein substrate. A lower concentration of reversible inhibitor increases protease activity. All other conditions are the same. Stop both reactions after the same time, while substrate remains.",
+          "What remains in the reaction with less inhibitor compared with the other reaction?",
         ),
         options: [
           "Less intact protein",
@@ -704,17 +705,18 @@ window.ALevelTeachingFamilies = {
         catchup: "a1-enzfactors",
         kind: "choice",
         ...withStimulus(
-          "Experimental data. At 0, 2 and 4 µmol dm⁻³ reversible inhibitor, product after 30 s is 12, 8 and 4 units.",
+          "Investigators vary only the initial inhibitor concentration. All reactions start without product, and the product is stable. At 0, 2 and 4 µmol dm⁻³ inhibitor, the amounts of product after 30 s are 12, 8 and 4 nmol, respectively.",
           "What does this support?",
         ),
         options: [
-          "Higher inhibitor reduced product formation under these conditions",
-          "Inhibitor permanently destroyed every enzyme",
-          "Product must always decline linearly at all doses",
+          "Higher inhibitor concentrations led to less product being formed by 30 s under these conditions",
+          "The rate of product formation was constant throughout the 30 s in each reaction",
+          "Each further increase of 2 µmol dm⁻³ inhibitor would lower the amount formed by another 4 nmol",
         ],
         answer: 0,
-        why: "The data support reduced formation within the tested range. They establish neither irreversibility nor behaviour at untested doses.",
-        hints: ["Compare the measured product amounts within the stated concentration range.", "The data support reduced formation within the tested range. They establish neither irreversibility nor behaviour at untested doses."],
+        why: "The inhibitor concentration was the only variable changed. Each reaction started without product and the product was stable, so the endpoint measures how much formed by 30 s. One endpoint per reaction cannot show how its rate changed over time or what would happen at other concentrations.",
+        feedback: [null, "One endpoint gives an amount formed over the whole interval. To assess how the rate changed, compare readings taken at several times.", "The three measurements establish a pattern within the tested range. Measurements at higher concentrations would be needed to establish whether it continues."],
+        hints: ["What quantity was measured and at what time?", "Compare the product amounts at the tested concentrations only."],
       },
       {
         catchup: "a1-enzfactors",
@@ -861,7 +863,7 @@ window.ALevelTeachingFamilies = {
           "Improve “use many repeats, repeat again, do more repeats”.", { instructionFirst: true },
         ),
         points: [
-          "Use repeats to reduce random error in the mean.",
+          "Use independent repeats to reduce the effect of random measurement error on the mean.",
           "Control temperature so it does not confound the comparison.",
           "Calibrate the instrument against a suitable known standard.",
         ],
@@ -935,17 +937,17 @@ window.ALevelTeachingFamilies = {
         catchup: "a6-adh",
         kind: "choice",
         ...withStimulus(
-          "A collecting duct has more aquaporins after ADH binding.",
-          "Which explanation links mechanism to water movement?",
+          "A collecting duct has more aquaporins after ADH binding. The surrounding tissue fluid has a lower water potential than the fluid in the duct. This difference is the same at the start of a comparison with and without ADH.",
+          "What explains a faster initial net movement of water out of the duct after ADH treatment?",
         ),
         options: [
-          "Water permeability increases, allowing more osmosis down the water-potential gradient",
+          "Water permeability increases, allowing faster net osmosis out of the duct at the same water-potential difference",
           "ADH pumps water against its gradient",
           "Aquaporins make water hydrolyse ATP",
         ],
         answer: 0,
-        why: "ADH changes permeability through aquaporin insertion. Water moves by osmosis down an existing water-potential gradient.",
-        hints: ["Relate the number of water channels to membrane permeability.", "ADH changes permeability through aquaporin insertion. Water moves by osmosis down an existing water-potential gradient."],
+        why: "ADH increases the number of aquaporins and therefore water permeability. The same water-potential gradient can then drive faster net water movement by osmosis towards the surrounding tissue fluid.",
+        hints: ["Relate the number of water channels to membrane permeability.", "The water-potential difference is already present. What changes is the ease with which water crosses the membrane."],
       },
       {
         catchup: "a6-synapse",
@@ -973,87 +975,8 @@ window.ALevelTeachingFamilies.interpret = {
   title: "Understand the question",
   topics: ["a1", "a2", "a3", "a6", "a8"],
   papers: ["p1", "p2", "p3"],
-  principle: "Read the whole question. Identify the task and its target, select the evidence that matters, plan the reasoning, answer, then check that every part is addressed.",
-  commandGuide: [
-    ["State / name", "Give the requested fact or term. Check exactly what is being named."],
-    ["Describe / compare", "Report the relevant feature or pattern. For a comparison, refer to both sides on the same basis."],
-    ["Explain / suggest", "Connect the evidence to a biological mechanism or a methodological purpose. A suggestion must fit the stated conditions. If asked to suggest and explain, do both."],
-    ["Calculate", "Identify the quantity required, choose the operation and check the units and precision."],
-    ["Analyse / evaluate", "Work out what the evidence shows. If asked to evaluate, judge the claim using the relevant strengths and limitations."],
-  ],
-  model: [
-    "Read: A small uncharged lipid-soluble molecule is already dissolved in the fluid of the small intestine. It crosses the epithelial membrane intact. Its concentration is higher outside the cell. Explain how it enters without ATP. An enzyme that digests triglycerides is also present.",
-    "Identify the target: explain entry of the intact molecule through the membrane. There is no need to explain how triglycerides are broken down. That would answer a different question.",
-    "Select evidence: the molecule is small and lipid-soluble, and the concentration is higher outside. Those details tell you both the route through the bilayer and the direction of net movement.",
-    "Plan and answer: the molecule dissolves in the hydrophobic interior of the phospholipid bilayer and diffuses down its concentration gradient into the epithelial cell. ATP is not required for simple diffusion.",
-    "Review: ‘Lipase hydrolyses triglycerides’ can be true and still earn no credit for this task. ‘It enters by diffusion’ gives the process but omits how the molecule crosses and why net movement is inwards.",
-  ],
-  tasks: [
-    {
-      kind: "choice", guided: true, catchup: "a2-mitosis",
-      ...withStimulus(
-          "A chemical prevents spindle microtubules shortening. A cell has aligned its duplicated chromosomes but has not separated them. Explain why the nucleus cannot divide normally.",
-          "What must your answer explain?", { examQuestion: true },
-        ),
-      options: [
-        "Why the duplicated DNA cannot be distributed to opposite poles",
-        "How the cell increased its DNA content before mitosis",
-        "Why more cells are observed in interphase than in mitosis",
-      ],
-      answer: 0,
-      why: "Link spindle action to sister chromatid separation. The DNA has already been copied, and the question asks about this cell's nuclear division.",
-      feedback: [null, "Replication explains how sister chromatids formed earlier. Use the blocked spindle to explain what cannot happen to them now.", "The relative time spent in each phase can explain cell counts in a tissue. The target here is chromosome movement within one cell."],
-      hints: ["Find the event that has already happened and the event that is blocked."],
-    },
-    {
-      kind: "choice", catchup: "a6-adh",
-      ...withStimulus(
-          "Two collecting ducts receive the same concentration of ADH. Only one can insert additional aquaporins.",
-          "What is the most direct explanation for why less water enters the interstitial fluid from the other duct, given the same water-potential difference?",
-        ),
-      options: [
-        "The other duct has fewer water channels in its membrane, so less water moves by osmosis in the same time.",
-        "The other duct receives less ADH because the blood water potential is higher.",
-        "The other duct has a smaller water-potential difference because water has already left it.",
-      ],
-      answer: 0,
-      why: "The stem holds ADH and the gradient constant. Different membrane water permeability explains the different movement.",
-      feedback: [null, "ADH release can vary in vivo, but the stem supplies equal ADH. Follow the affected pathway after the hormone reaches the duct.", "The question supplies the same water-potential difference. Compare the route available for water movement instead."],
-      hints: ["Which condition differs after both ducts receive the same ADH?"],
-    },
-    {
-      kind: "choice", catchup: "a8-transfac",
-      ...withStimulus(
-          "A plant cell produces less of a transporter after a regulatory DNA sequence is changed. Its mRNA is unchanged in quantity and sequence.",
-          "Which response contains relevant biology but explains the wrong stage?",
-        ),
-      options: [
-        "Less RNA polymerase binding reduces synthesis of the transporter mRNA.",
-        "Fewer ribosomes initiate translation on each transporter mRNA.",
-        "The transporter is degraded faster after it is made.",
-      ],
-      answer: 0,
-      why: "A transcription explanation predicts a change in mRNA quantity here. The given data direct attention to translation or protein turnover, without settling which.",
-      feedback: [null, "Translation can alter protein output without changing the mRNA. Look for the explanation that contradicts the unchanged RNA.", "Faster breakdown can reduce protein abundance while the mRNA is unchanged. Look for a route that would change RNA production."],
-      hints: ["Which proposed explanation requires an outcome the stem rules out?"],
-    },
-    {
-      kind: "writing", catchup: "p3s-methods",
-      ...withStimulus(
-          "Pigment leaking from plant tissue is measured by absorbance. The solvent itself also absorbs light.",
-          "Suggest one comparison and explain what it would let you infer about the absorbance of a tube containing treated tissue.",
-        ),
-      hints: ["Name what you would put in a tube, then explain why comparing its reading is useful."],
-      points: [
-        "Compare with an otherwise matched tube containing the same concentration of solvent but no tissue.",
-        "That reading estimates the background absorbance from the solvent under those conditions.",
-        "Accounting for the background helps isolate absorbance associated with released pigment, provided other light-absorbing contributions are controlled.",
-      ],
-    },
-  ],
-  misconception: "Answering a familiar related question instead of the target specified in the stem.",
   specification: "AO2 and AO3 across Papers 1–3",
-  schemaVersion: 1,
+  schemaVersion: 2,
 };
 
 window.ALevelTeachingFamilies.practical = {
@@ -1066,7 +989,7 @@ window.ALevelTeachingFamilies.practical = {
     ["Validity", "Does the method and design address the intended question? A confound can prevent attributing the outcome to the tested variable."],
     ["Accuracy and precision", "Accuracy is closeness to the true value. Precision concerns how close repeated measured values are to one another. Tight agreement can coexist with a systematic error."],
     ["Repeatability and reproducibility", "Repeatability concerns agreement when the same person uses the same method and equipment. Reproducibility concerns agreement under changed conditions, such as different operators or equipment."],
-    ["Error and uncertainty", "Random error contributes to scatter. Systematic error shifts results consistently. Uncertainty describes the range of plausible measurement values. Repetition can reduce the effect of random variation on a mean, while calibration against a reference can identify systematic offset."],
+    ["Error and uncertainty", "Random error contributes to scatter. Systematic error biases measurements. Uncertainty quantifies the doubt about a measured value, often given as a ± value. Repetition can reduce the effect of random variation on a mean. Calibration against a reference can help detect measurement bias."],
   ],
   guideLabel: "Measurement and investigation terms",
   evidence: [
@@ -1076,17 +999,17 @@ window.ALevelTeachingFamilies.practical = {
   ],
   evidenceHighlights: [[], [1], [1], [2]],
   model: [
-    "The method compares how much pigment has leaked by a fixed time. Absorbance is a proxy for dissolved pigment if the same wavelength and optical path are used and the reading is within the useful range.",
-    "Find the weakness in the comparison. Both the solvent and temperature change. A warmer treatment can itself affect membrane permeability and pigment release.",
-    "Hold temperature constant across solvent treatments. Use the same tissue dimensions, rinse off pigment from cut surfaces and keep the time constant. Use matched solvent blanks to account for background readings.",
-    "A larger absorbance under these controlled conditions supports greater pigment release by 10 minutes. It does not directly give the initial rate of release. To estimate an initial rate, collect early time readings and use the initial gradient.",
+    "The colorimeter measures absorbance after 10 minutes. Use the same wavelength and optical path length. A calibration for each solvent converts absorbance within its calibrated range into pigment concentration.",
+    "Both the solvent and temperature change. A warmer treatment can itself affect pigment release, so the difference in the readings cannot be attributed to ethanol alone.",
+    "Hold temperature, tissue dimensions, solution volume and exposure time constant. Rinse pigment from the cut surfaces before treatment and use matched solvent blanks to account for background absorbance.",
+    "At equal solution volumes, a higher calibrated pigment concentration means more pigment is present in the solution at 10 minutes. To estimate an initial rate of pigment release, take several early readings and use the initial gradient of pigment amount against time.",
   ],
   tasks: [
     {
       kind: "choice", guided: true, catchup: "p3s-methods",
       ...withStimulus(
-          "A colour assay darkens as an enzyme forms a product. The investigation compares the time taken to reach a fixed amount of product.",
-          "Which change makes the endpoint more objectively comparable?",
+          "An enzyme forms a coloured product in reactions of equal volume. After blanking, absorbance increases with product concentration on the same calibration curve for every treatment.",
+          "The investigation compares time taken to reach a fixed amount of product. Which method applies a consistent endpoint?",
         ),
       options: [
         "Use the same colorimeter setting and record when each reaction reaches the same absorbance within the calibrated range.",
@@ -1094,7 +1017,7 @@ window.ALevelTeachingFamilies.practical = {
         "Repeat the colour judgement three times with the same observer and average the times.",
       ],
       answer: 0,
-      why: "A common calibrated absorbance is a consistent endpoint. The measured quantity remains the elapsed time.",
+      why: "On the shared calibration curve, the same absorbance corresponds to the same product concentration. Equal volumes mean this is the same amount of product. Record each treatment’s time to reach that endpoint.",
       feedback: [null, "This compares the amount present after a fixed interval. It does not return the time each treatment took to reach the specified amount.", "A mean can reduce the effect of random variation. It does not set an objective colour threshold or address consistent observer bias."],
       hints: ["Separate the quantity you hold fixed from the quantity you record."],
     },
@@ -1105,7 +1028,7 @@ window.ALevelTeachingFamilies.practical = {
           "What change best addresses the bias?",
         ),
       options: [
-        "Sample fields chosen without reference to visible mitoses from the same defined region on both slides.",
+        "Choose non-overlapping fields at random from the same defined region on both slides before checking for mitoses.",
         "Count every cell twice in the selected fields and take the mean of the two estimates.",
         "Choose the same number of fields on each slide, keeping the visible-cluster rule.",
       ],
@@ -1121,30 +1044,30 @@ window.ALevelTeachingFamilies.practical = {
           "Suggest the best next comparison to investigate whether they are the same compound.",
         ),
       options: [
-        "Run both under the same second set of conditions and compare whether they still co-migrate.",
+        "Run both pigments on the same chromatogram with a different solvent and compare their Rf values again.",
         "Measure both distances from the top edge of the paper and compare the absolute distances.",
         "Repeat the readings on this chromatogram and conclude identity if the repeat measurements agree.",
       ],
       answer: 0,
-      why: "Different pigments can have the same retention factor under one set of conditions. A second separation can distinguish some coincident spots. Continued agreement supports, but does not prove, identity.",
-      feedback: [null, "Measure from the baseline relative to the solvent front. Changing the reference point does not add independent evidence about the compounds.", "More consistent readings improve precision on this chromatogram. They cannot tell whether two substances co-migrated."],
-      hints: ["Would a closer measurement of the same result resolve co-migration?"],
+      why: "Different pigments can have the same Rf value in one solvent. Using a different solvent can separate pigments whose spots travelled together in the first one. If the Rf values still match, there is more evidence for identity, but the pigments could still be different.",
+      feedback: [null, "Measure from the baseline relative to the solvent front. Changing the reference point does not add independent evidence about the compounds.", "Taking more readings of this chromatogram can improve precision. It cannot reveal whether two substances travelled the same relative distance."],
+      hints: ["Could different pigments have the same Rf value in one solvent?"],
     },
     {
       kind: "writing", catchup: "p3s-methods",
       ...withStimulus(
-          "Two respirometers contain equal masses of the same seeds and the same amount of carbon dioxide absorbent. The germinating seeds are held at 25 °C and the dormant seeds at 15 °C. The marker moves faster in the first instrument.",
+          "Two identical respirometers contain equal masses of the same species of seed and enough absorbent to remove all the carbon dioxide produced. The germinating seeds are at 25 °C and the dormant seeds at 15 °C. After each apparatus equilibrates at its own temperature, the indicator moves faster with the germinating seeds.",
           "Explain the key limitation of the comparison and justify one change.",
         ),
       points: [
         "Germination state and temperature differ. Temperature can affect enzyme-controlled respiration and hence oxygen uptake.",
-        "With carbon dioxide absorbed, the marker movement is used to infer oxygen uptake under stable measurement conditions. The difference cannot be assigned to germination alone.",
+        "With carbon dioxide absorbed and measurement conditions stable, the indicator movement is used to estimate oxygen uptake. The difference cannot be assigned to germination alone.",
         "Hold both groups at the same controlled temperature and allow them and the apparatus to equilibrate before recording. This removes temperature as a competing explanation.",
       ],
     },
   ],
   misconception: "Naming a technique, repeating trials or equalising sample sizes without addressing the actual source of bias.",
-  specification: "7.2–7.4, PS 1.1–2.4, RP1, RP2, RP4, RP7 and RP9",
+  specification: "7.2–7.4, PS 1.1–2.4, RP1, RP2, RP4, RP7, RP9 and RP11",
   schemaVersion: 1,
 };
 
@@ -1155,7 +1078,7 @@ window.ALevelTeachingFamilies.precision = {
   papers: ["p1", "p2", "p3"],
   principle: "Decide what the biology means, name the relevant entity or process, then connect it to the context. Different wording can convey the same scientific relationship.",
   model: [
-    "A synthetic change makes sodium ion channels stay open longer in a sensory neurone. The extracellular sodium ion concentration is higher than inside. Explain why the membrane potential initially becomes less negative.",
+    "Sodium ion channels open in a sensory neurone. Initially the inside is negative relative to the outside, and the sodium ion concentration is higher outside. Explain why opening the channels makes the membrane potential less negative.",
     "‘Sodium enters and stimulates the cell’ leaves the particle and the change imprecise. The particles moving are sodium ions, Na⁺. Their inward movement makes the inside less negative relative to the outside.",
     "‘Sodium ions diffuse into the neurone through the open channels’ and ‘Na⁺ moves passively into the neurone through the channels, down its electrochemical gradient’ express the same transport mechanism here.",
     "Carry the explanation to the target: inward movement of positive charge depolarises the membrane. Depolarisation alone does not establish that the threshold for an action potential is reached.",
@@ -1168,8 +1091,8 @@ window.ALevelTeachingFamilies.precision = {
           "Which answer accurately explains why the cell gains water?",
         ),
       options: [
-        "Water moves by osmosis across the partially permeable membrane, from −200 kPa outside to −600 kPa inside.",
-        "Water moves by osmosis across the partially permeable membrane, from −600 kPa inside to −200 kPa outside.",
+        "The net movement of water by osmosis across the partially permeable membrane is from −200 kPa outside to −600 kPa inside.",
+        "The net movement of water by osmosis across the partially permeable membrane is from −600 kPa inside to −200 kPa outside.",
         "Solute diffuses out down its water-potential gradient, and that movement of solute is osmosis.",
       ],
       answer: 0,
@@ -1216,9 +1139,9 @@ window.ALevelTeachingFamilies.precision = {
           "Using the left side of the heart, rewrite this to explain why the aortic valve stays shut briefly after ventricular contraction begins and then opens.",
         ),
       points: [
-        "The ventricular pressure initially remains below aortic pressure, so the aortic valve stays shut.",
-        "Contraction raises ventricular pressure. The valve opens when left ventricular pressure exceeds aortic pressure.",
-        "The valve opens because of the pressure difference. Blood then flows from the ventricle into the aorta.",
+        "The pressure in the left ventricle is initially below the pressure in the aorta, so the aortic valve stays shut.",
+        "Contraction raises the pressure in the left ventricle.",
+        "The aortic valve opens when the pressure in the left ventricle rises above the pressure in the aorta.",
       ],
     },
   ],
@@ -1235,31 +1158,31 @@ window.ALevelTeachingFamilies.evidence = {
   principle: "Identify the quantity required, select a method, calculate with the appropriate units, and state what the result means in this investigation.",
   evidence: [
     "Illustrative respirometer readings",
-    ["Time (min)", "Estimated O₂ uptake (µL)"],
+    ["Time (min)", "Estimated cumulative O₂ uptake (µL)"],
     [["0", "0"], ["2", "8"], ["4", "14"], ["6", "14"]],
   ],
   model: [
-    "Question: How quickly was oxygen taken up between minutes 2 and 4, and how does this compare with minutes 4 to 6? The readings are cumulative volumes.",
-    "Use change in volume divided by elapsed time. Between 2 and 4 minutes, oxygen uptake is (14 − 8) ÷ (4 − 2) = 3 µL min⁻¹. Dividing 14 by 4 would give a different interval.",
-    "Between 4 and 6 minutes the readings show no further measurable uptake. The plateau supports that observation for the measured interval. It cannot show why uptake levelled off or predict later readings.",
+    "Compare the mean rates of oxygen uptake between minutes 2 and 4 and between minutes 4 and 6. The readings are cumulative volumes.",
+    "Divide the change in volume by the elapsed time. From 2 to 4 minutes the mean rate is (14 − 8) ÷ (4 − 2) = 3 µL min⁻¹. Dividing 14 by 4 would give the mean rate from the start to minute 4.",
+    "From 4 to 6 minutes the mean rate estimated from the readings is (14 − 14) ÷ (6 − 4) = 0 µL min⁻¹. This is lower than the earlier estimate. The readings show no measurable increase in that interval. Any uptake below the measurement resolution could be missed, and the readings do not identify a cause for the plateau.",
     "A numerical change may be biologically small or large. To make a statistical claim, consider sampling variation and the test used. A significant association does not itself establish a cause.",
   ],
   tasks: [
     {
       kind: "choice", guided: true, catchup: "a6-glucal",
       ...withStimulus(
-          "A calibration for glucose is linear from 0 to 8 mmol dm⁻³. An unknown reads 0.42 absorbance. The nearest standards read 0.30 at 4 mmol dm⁻³ and 0.54 at 6 mmol dm⁻³.",
+          "The glucose calibration is linear from 0 to 8 mmol dm⁻³. A sample measured under the same conditions as the standards has an absorbance of 0.46. The nearest standards read 0.38 at 4 mmol dm⁻³ and 0.54 at 6 mmol dm⁻³.",
           "Which method gives the appropriate estimate?",
         ),
       options: [
-        "Interpolate between the two standards. The sample is halfway between them, so estimate 5 mmol dm⁻³.",
+        "Interpolate between the two standards. The sample absorbance is halfway between their readings, so estimate 5 mmol dm⁻³.",
         "Use the midpoint of the full concentration range and estimate 4 mmol dm⁻³.",
-        "Choose the lower standard and report 4 mmol dm⁻³ because the unknown has no exact match.",
+        "Scale the concentration of the 6 mmol dm⁻³ standard by 0.46 ÷ 0.54 and estimate 5.1 mmol dm⁻³.",
       ],
       answer: 0,
       why: "For a linear calibration, the fractional change in absorbance corresponds to the same fractional change in concentration within that interval.",
-      feedback: [null, "The full range tells you where the method is calibrated. Locate the sample between the standards that bracket its absorbance.", "The calibration permits interpolation. An unknown does not have to match a standard exactly."],
-      hints: ["How far is 0.42 from each neighbouring absorbance?"],
+      feedback: [null, "The full range tells you where the method is calibrated. Locate the sample between the standards that bracket its absorbance.", "Scaling from a single standard assumes the line passes through the origin. The two standards give different absorbance-to-concentration ratios, so use both to interpolate."],
+      hints: ["How far is 0.46 from each neighbouring absorbance?"],
     },
     {
       kind: "number", unit: "%", answer: 25, catchup: "a2-osmosis",
@@ -1274,24 +1197,24 @@ window.ALevelTeachingFamilies.evidence = {
     {
       kind: "choice",
       ...withStimulus(
-          "A randomised experiment compares mean leaf growth between two treatments. Before collecting data the investigators set a 5% threshold. An appropriate test gives P = 0.18.",
+          "A randomised experiment compares mean leaf growth between two treatments. The null hypothesis is that the treatments produce the same mean leaf growth. The investigators set a 5% significance level before collecting data. An appropriate test gives P = 0.18.",
           "Which statement is supported?",
         ),
       options: [
-        "The observed difference does not meet the stated threshold. The results do not establish that the treatments have identical effects.",
+        "The difference is not statistically significant at the 5% level. The results are insufficient to conclude that mean leaf growth differs between treatments.",
         "There is an 18% probability that the null hypothesis is true, so an effect is more likely than no effect.",
         "The treatments have identical effects because the test does not reach the threshold.",
       ],
       answer: 0,
-      why: "At the stated threshold this test does not reject the null hypothesis. It supplies neither the probability that the null is true nor proof that there is no effect.",
-      feedback: [null, "A P value is conditional on the null model. It does not give the probability that the null hypothesis is true.", "Failure to detect a difference at the threshold does not establish identical effects. The size of the plausible difference depends on the evidence and its uncertainty."],
-      hints: ["Compare P with the threshold, then consider what that comparison can establish."],
+      why: "P = 0.18 is greater than 0.05, so the test does not reject the null hypothesis. A real difference may still be consistent with the data. The estimated difference and a confidence interval would help show which effect sizes are plausible.",
+      feedback: [null, "If the null hypothesis and test assumptions hold, P is the probability of a test result at least as extreme as the one observed. The calculation assumes the null hypothesis and gives no probability that it is true.", "Failure to detect a difference at the chosen significance level does not establish that the treatment means are equal. The size of the plausible difference depends on the evidence and its uncertainty."],
+      hints: ["Compare P with the chosen significance level, then consider what that comparison can establish."],
     },
     {
       kind: "writing", catchup: "p3s-methods",
       ...withStimulus(
-          "River sites downstream of towns were warmer and had fewer mayfly larvae per sample. The researchers also recorded dissolved oxygen.",
-          "Use the evidence to evaluate the claim that temperature alone reduced larval abundance.",
+          "Researchers used the same method to sample mayfly larvae at river sites upstream and downstream of towns. At each site they also measured water temperature and dissolved oxygen.",
+          "Use the data to evaluate the claim that higher temperature alone accounts for the lower mean number of larvae per sample at downstream sites.",
         ),
       evidence: [
         "Illustrative means from six sites in each group",
@@ -1299,9 +1222,9 @@ window.ALevelTeachingFamilies.evidence = {
         [["Upstream", "14", "9.8", "21"], ["Downstream", "19", "7.2", "8"]],
       ],
       points: [
-        "The downstream sites were 5 °C warmer and averaged 8 larvae per sample compared with 21 upstream. This is an observed association.",
-        "Dissolved oxygen also differed, 7.2 rather than 9.8 mg L⁻¹. Oxygen could affect survival and may depend on temperature or other site conditions.",
-        "These observational comparisons cannot isolate temperature's effect. Compare sites or experimental groups where temperature varies and oxygen and other relevant conditions are controlled.",
+        "The downstream group was 5 °C warmer on average and had a mean of 8 larvae per sample compared with 21 upstream. These group means describe an association.",
+        "Mean dissolved oxygen was also lower downstream (7.2 compared with 9.8 mg L⁻¹). Lower oxygen could affect larval survival, and the oxygen difference could result from temperature or from other site conditions.",
+        "The survey cannot isolate a direct effect of temperature. An experiment that varies temperature while keeping dissolved oxygen and other conditions constant could test whether temperature affects larvae independently of oxygen.",
       ],
     },
   ],

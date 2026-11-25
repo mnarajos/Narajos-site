@@ -538,6 +538,45 @@ main:has(.al-catchup-journey) > h1 {
   margin-block: 0 .45rem;
 }
 
+.al-interpretation .al-catalogue-row {
+  width: 100%;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+}
+.al-interpretation .al-catalogue-row[aria-current] {
+  border-inline-start: 3px solid var(--acc);
+  font-weight: 650;
+}
+.al-interpretation .al-journey-stage > h2 {
+  margin-block: .8rem .45rem;
+}
+.al-interpretation-objective,
+.al-interpretation-exam-question {
+  font-weight: 650;
+}
+.al-interpretation .al-task-stimulus > .al-interpretation-exam-question {
+  margin-block-start: .65rem;
+}
+.al-interpretation .al-model-steps {
+  padding-inline-start: 2rem;
+}
+.al-interpretation .al-model-steps p {
+  margin: .15rem 0;
+}
+.al-interpretation mark {
+  color: inherit;
+  background: var(--acc-soft);
+  box-shadow: 0 .1em var(--acc);
+}
+.al-interpretation-chain {
+  border-inline-start: 2px solid var(--acc);
+  padding-inline-start: 1.8rem;
+}
+.al-interpretation .al-model > .btn {
+  margin-block-start: .6rem;
+}
+
 .al-paper-practice .al-teaching {
   margin-block: .75rem;
 }

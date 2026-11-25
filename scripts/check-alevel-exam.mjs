@@ -2,6 +2,9 @@ import assert from "node:assert/strict";
 import axe from "axe-core";
 import { checkDrawingObservations } from "./check-drawing-observations.mjs";
 import { checkALevelStatistics } from "./check-alevel-statistics.mjs";
+import { checkALevelInterpretData } from "./check-alevel-interpret-data.mjs";
+import { checkALevelScientificPrecision } from "./check-alevel-scientific-precision.mjs";
+import { checkQuestionInterpretation } from "./check-alevel-question-interpretation.mjs";
 
 export async function checkExistingRoutes(browser, base) {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 }, hasTouch: true });
@@ -53,6 +56,9 @@ export async function checkExistingRoutes(browser, base) {
 
 export async function checkALevelExam(browser, base) {
   checkALevelStatistics();
+  checkALevelInterpretData();
+  checkALevelScientificPrecision();
+  await checkQuestionInterpretation(browser, base, axe.source);
   await checkDrawingObservations(browser, base, axe.source);
   const page = await browser.newPage({ viewport: { width: 320, height: 780 } });
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -67,11 +73,12 @@ export async function checkALevelExam(browser, base) {
       Object.values(window.ALevelTeachingFamilies),
     );
     assert.equal(families.length, 15);
-    const newFamilies = ["interpret", "practical", "precision", "evidence", "extended"];
-    assert.equal(families.filter(family => !newFamilies.includes(family.id))
+    const practiceFamilies = families.filter(family => family.id !== "interpret");
+    const relatedFamilies = ["practical", "precision", "evidence", "extended"];
+    assert.equal(practiceFamilies.filter(family => !relatedFamilies.includes(family.id))
       .reduce((total, family) => total + family.tasks.length, 0), 52);
-    assert.equal(families.filter(family => newFamilies.includes(family.id))
-      .reduce((total, family) => total + family.tasks.length, 0), 18);
+    assert.equal(practiceFamilies.filter(family => relatedFamilies.includes(family.id))
+      .reduce((total, family) => total + family.tasks.length, 0), 14);
     const bank = await page.evaluate(() =>
       window.ALevelDrawingBank.bank.map((x) => ({
         id: x.id,
@@ -97,14 +104,6 @@ export async function checkALevelExam(browser, base) {
       }
       for (let i = 1; i < family.model.length; i++) {
         await scope.getByRole("button", { name: "Next step", exact: true }).click();
-        if (family.id === "interpret" && i === 1) {
-          // The question must remain available while the student follows the
-          // reasoning, including after resuming a saved worked example.
-          assert.equal(await scope.locator(".al-model-steps li").first().innerText(), family.model[0]);
-          await page.reload();
-          assert.equal(await scope.locator(".al-model-steps li").first().innerText(), family.model[0]);
-          assert.equal(await scope.locator(".al-model-steps [aria-current=step]").innerText(), family.model[1]);
-        }
         if (family.id === "dihybrid" && i === 2)
           assert.equal(await art.getByText("AABB", { exact: true }).count(), 0);
         if (family.id === "dihybrid" && i === 3)
@@ -133,7 +132,7 @@ export async function checkALevelExam(browser, base) {
       assert(await openingFocus.evaluate(el => el === document.activeElement), "Focus the evidence first, or the task when there is no evidence");
       assert.equal(await scope.locator(".al-model:visible").count(), 0);
     };
-    for (const family of families) {
+    for (const family of practiceFamilies) {
       await page.goto(base + "/alevel/#exam-" + family.id);
       await page
         .getByRole("heading", { name: family.title, exact: true })
@@ -527,23 +526,10 @@ export async function checkALevelExam(browser, base) {
     assert.equal((await saved("osmosis")).outcomes[2], undefined);
     await page.evaluate(key => {
       const state = JSON.parse(localStorage.getItem(key));
-      delete state.interpret;
       delete state.evidence;
       localStorage.setItem(key, JSON.stringify(state));
     }, key);
-    await page.goto(base + "/alevel/#exam-interpret");
-    await page.getByRole("button", { name: "Go straight to questions" }).click();
-    const interpretation = families.find(family => family.id === "interpret").tasks[1];
-    const displayed = page.locator(".al-practice input[type=radio]");
-    assert.notEqual(await displayed.first().getAttribute("value"), String(interpretation.answer));
-    await page.getByRole("radio", { name: interpretation.options[2], exact: true }).check();
-    await page.getByRole("button", { name: "Check" }).press("Enter");
-    await page.reload();
     const feedback = page.locator(".al-practice [role=status]");
-    assert((await feedback.innerText()).includes(interpretation.feedback[2]));
-    await page.getByRole("radio", { name: interpretation.options[1], exact: true }).check();
-    await page.getByRole("button", { name: "Try again" }).click();
-    assert((await feedback.innerText()).includes(interpretation.feedback[1]));
 
     await page.goto(base + "/alevel/#exam-evidence");
     await page.getByRole("button", { name: "Go straight to questions" }).click();
@@ -582,7 +568,7 @@ export async function checkALevelExam(browser, base) {
     await checkExistingRoutes(browser, base);
     assert.deepEqual(errors, []);
     console.log(
-      "A-level exam skills: 70 authored tasks, 18 observation-based drawing judgements, saved support state, and responsive accessibility passed.",
+      "A-level exam skills: seven question-interpretation sequences, 66 other authored tasks, 18 drawing judgements, saved support state and responsive accessibility passed.",
     );
   } finally {
     await page.close();
