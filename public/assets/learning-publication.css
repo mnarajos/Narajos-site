@@ -11,7 +11,7 @@ body {
 
 .course-alevel :is(.companion-key, .al-key) h2,
 .course-human-biology [data-unit] :is(.k-eyebrow, .hb-teach-explain h2),
-.course-gcse :is(.key h2, .reteach .rt-h) {
+.course-gcse .key h2 {
   color: var(--course-accent);
 }
 
@@ -70,6 +70,23 @@ body {
 #main .course-home-links a,
 #main .crumb a {
   text-underline-offset: .18em;
+}
+
+:is(.course-alevel, .course-gcse) footer.wrap {
+  border-block-start: 1px solid var(--line);
+  padding-block: .75rem;
+}
+
+:is(.course-alevel, .course-gcse) footer.wrap > .small {
+  margin-block: .5rem;
+  max-inline-size: 68ch;
+}
+
+:is(.course-alevel, .course-gcse) footer.wrap .resource-terms {
+  display: inline-flex;
+  min-block-size: 44px;
+  align-items: center;
+  margin-block: 0;
 }
 
 main :is(.kc-visual, .kc-simulation-links) {
@@ -168,6 +185,11 @@ main .kc-visual-art {
 
 .course-alevel .companion-chunk p {
   line-height: 1.62;
+}
+
+.course-alevel .companion-chunk h3 {
+  font-size: 1rem;
+  margin-block: 0 .3rem;
 }
 
 .course-alevel :is(.al-journey-stage, .al-journey-links) .al-model,
@@ -435,6 +457,14 @@ main .kc-visual-art {
 .course-gcse .stage .concepts {
   grid-template-columns: minmax(0, 1fr);
   overflow-wrap: anywhere;
+}
+
+.course-gcse .study-skill-link {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 44px;
+  padding-inline-end: .4rem;
+  text-underline-offset: .18em;
 }
 
 .course-gcse .food-method {

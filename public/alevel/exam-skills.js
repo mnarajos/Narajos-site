@@ -429,7 +429,6 @@
         });
         start.classList.add("primary");
         panel.append(heading, node("p", family.principle));
-        if (options.notes) panel.append(options.notes);
         if (family.commandGuide) {
           const guide = node("details", null, "al-key-notes");
           const entries = node("dl");
@@ -439,6 +438,7 @@
           panel.append(guide);
         }
         panel.append(start);
+        if (options.notes) panel.append(options.notes);
         active.append(panel);
         if (moveFocus) focus(heading);
       } else if (state.phase === "model") {

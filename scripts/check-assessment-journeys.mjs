@@ -99,6 +99,82 @@ export async function checkAssessmentJourneys(browser,base) {
     assert.equal(await food.locator("#sa").inputValue(),foodDraft);
     await food.close();
 
+    const gcse=await context.newPage();
+    await gcse.addInitScript(()=>{window.name="kstest";});
+    const element="A substance made of only one type of atom";
+    const feedback=gcse.locator("#fb");
+    const submit=gcse.locator("#act");
+    const title=feedback.getByRole("heading",{level:2});
+    const openElement=flow=>gcse.goto(base+"/gcse/?flow="+flow+"#lesson-c1-atoms",{waitUntil:"domcontentloaded"});
+    const answer=async name=>{
+      await gcse.getByRole("radio",{name,exact:true}).press("Space");
+      await submit.press("Enter");
+    };
+    const evidence=()=>gcse.evaluate(()=>NarajosAssessment.lessonEvidence(window.__k.L()));
+    const expectCorrect=async()=>{
+      assert.equal(await title.innerText(),"Correct!");
+      assert.doesNotMatch(await feedback.innerText(),/after a hint|without help|independent|after a retry/i);
+    };
+    await openElement("first");
+    await answer(element);
+    await expectCorrect();
+    assert.equal((await evidence()).independent,1);
+
+    await openElement("hint");
+    await gcse.locator("#question-help summary").press("Enter");
+    await gcse.locator("#hint").click();
+    assert(await gcse.locator("#hintbox").isVisible());
+    await answer(element);
+    await expectCorrect();
+    assert.equal((await evidence()).supported,1);
+    assert.equal((await evidence()).independent,0);
+
+    await openElement("retry");
+    await answer("A substance made of two or more elements chemically combined");
+    assert.match(await feedback.innerText(),/describes a compound/i);
+    assert.equal((await evidence()).independent,0);
+    const retry=await gcse.evaluate(()=>{
+      const lesson=window.__k.L();
+      return lesson.queue.lastIndexOf(lesson.cur.q0);
+    });
+    assert(retry>0,"The missed question must be scheduled again");
+    await gcse.evaluate(index=>window.__k.jump(index),retry);
+    await answer(element);
+    await expectCorrect();
+    assert.equal((await evidence()).corrected,1);
+    assert.equal((await evidence()).independent,0);
+
+    for(const [route,checkReason] of [
+      ["/gcse/?flow=reveal#lesson-c1-atoms",async()=>{
+        assert.equal((await feedback.innerText()).match(/one type of atom/gi)?.length,1);
+        assert(await gcse.locator(".opt.right").filter({hasText:element}).isVisible());
+      }],
+      ["/gcse/#lesson-p1-stores",async()=>{
+        const matches=await feedback.locator(":scope > ul li").allTextContents();
+        assert.deepEqual(matches,["A moving car – Kinetic","A stretched spring – Elastic potential","A battery – Chemical","A hot cup of tea – Thermal","A book on a high shelf – Gravitational potential"]);
+        assert.match(await feedback.innerText(),/what the object is doing or how it is arranged/);
+      }]
+    ]){
+      await gcse.goto(base+route,{waitUntil:"domcontentloaded"});
+      await gcse.locator("#question-help summary").press("Enter");
+      await gcse.locator("#dk").press("Enter");
+      assert.equal(await title.innerText(),"Explanation");
+      assert(await title.evaluate(el=>document.activeElement===el));
+      assert.doesNotMatch(await feedback.innerText(),/No worries|No problem|Reteach:/i);
+      await checkReason();
+      assert.equal(await feedback.locator("details").getAttribute("open"),null);
+      assert.equal((await evidence()).revealed,1);
+      assert.equal((await evidence()).independent,0);
+      assert.equal(await submit.innerText(),"Try a quick check");
+      await submit.press("Enter");
+      assert(await gcse.evaluate(()=>{
+        const lesson=window.__k.L();
+        return lesson.cur.q0===lesson.qc && lesson.phase==="q";
+      }));
+      assert(await gcse.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
+    }
+    await gcse.close();
+
     await open("/gcse/#lesson-b1-micro2");
     const number=page.locator("#numin"), check=page.locator("#act");
     await number.fill("0.1 kg");
@@ -145,6 +221,7 @@ export async function checkAssessmentJourneys(browser,base) {
         selfReviews++;
       }else{
         await reveal();
+        assert.equal(await page.locator("#fb h2").innerText(),"Explanation");
         reveals++;
       }
     }
@@ -196,6 +273,6 @@ export async function checkAssessmentJourneys(browser,base) {
       assert.equal(history[matchedId].evidence.matched,1);
       assert.equal(history[recalledId].evidence["self-rated"],1);
     }
-    console.log("Lesson scoring and flashcard draft, reveal, retry and recall evidence verified.");
+    console.log("Lesson feedback, quick checks, scoring and flashcard draft, reveal, retry and recall evidence verified.");
   }finally{await context.close();}
 }

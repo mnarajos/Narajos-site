@@ -139,6 +139,11 @@ export async function checkHumanCatchup(browser, base) {
 
     // The existing microscopy lesson leads to supported fractionation and a distinct written transfer.
     await open("catchup/f170/1.1.2");
+    const microscopy = page.locator(".hb-teach-explain");
+    const fractionation = microscopy.getByRole("heading", { name: "Cell fractionation", exact: true });
+    assert(await microscopy.getByRole("table").evaluate((table, heading) =>
+      Boolean(table.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING),
+    await fractionation.elementHandle()));
     assert(await page.getByText(/particles that collect at the bottom|material that collects at the bottom/).isVisible());
     await page.getByText("Related learning and practice", {exact:true}).press("Enter");
     await page.getByRole("link", {name:"Practise separating cell fractions"}).press("Enter");
@@ -422,7 +427,8 @@ export async function checkHumanCatchup(browser, base) {
     await page.getByRole("heading", { name: "Microscopy and cell measurements", exact: true }).waitFor();
     assert(await page.locator("[data-hb-model-step]:not([hidden])").isVisible());
     await page.getByRole("link", { name: "Return to your unfinished question set" }).click();
-    await page.getByText("Explanation revealed", { exact: true }).waitFor();
+    await page.getByRole("heading", { name: "Explanation", exact: true }).waitFor();
+    assert(await page.locator(".k-feedback.pending .k-model").isVisible());
 
     await open("catchup/f171/4.2.1");
     await page.getByRole("link", { name: "Build understanding", exact: true }).click();
@@ -438,7 +444,8 @@ export async function checkHumanCatchup(browser, base) {
     await page.locator("#leave-confirm").click();
     assert.equal(await page.locator("[data-hb-model-step]").getAttribute("data-hb-model-step"), "2");
     await page.getByRole("link", { name: "Build understanding", exact: true }).click();
-    await page.getByText("Explanation revealed", { exact: true }).waitFor();
+    await page.getByRole("heading", { name: "Explanation", exact: true }).waitFor();
+    assert(await page.locator(".k-feedback.pending .k-model").isVisible());
     assert.deepEqual((await saved(buildKey)).queue, queueWithRetry);
     console.log("Batch 11 pilot success, help and reteaching journeys passed.");
 
