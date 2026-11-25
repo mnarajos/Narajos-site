@@ -241,6 +241,15 @@ main[tabindex="-1"]:focus{outline:none}
 .hb-transplant-form .k-feedback-head{margin-block-start:0}
 .hb-transplant-form .actions{margin-block-start:0}
 .hb-transplant-form [hidden]{display:none}
+.hb-treatment-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem;margin:.5rem 0 0}
+.hb-treatment-comparison div{padding:.75rem;border:1px solid var(--line);border-radius:.65rem;background:var(--brandlight)}
+.hb-treatment-comparison dt{font-weight:700;margin-block-end:.25rem}
+.hb-treatment-comparison dd{margin:0}
+@media(max-width:540px){
+ .hb-transplant-case{padding:1rem}
+ .hb-transplant-case .k-skill-graph svg{font-size:23px}
+ .hb-treatment-comparison{grid-template-columns:1fr}
+}
 @media(max-width:620px){.k-skills-grid{grid-template-columns:minmax(0,1fr)}}
 
 /* Accessible labels stay available without repeating visible button text. */

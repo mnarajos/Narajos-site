@@ -2,14 +2,17 @@
 (function () {
   "use strict";
 
-  const comparison = `<table class="hb-teach-table">
-    <caption>Comparing the treatments</caption>
-    <thead><tr><th scope="col">Haemodialysis</th><th scope="col">Successful kidney transplant</th></tr></thead>
-    <tbody><tr>
-      <td>The machine removes waste from the blood during each session. Regular sessions take time and may involve travel.</td>
-      <td>A functioning donor kidney removes waste continuously and can free the patient from regular dialysis. The patient still needs follow-up and takes immunosuppressants, which increase infection risk.</td>
-    </tr></tbody>
-  </table>`;
+  const comparison = `<h3>Comparing the treatments</h3>
+    <dl class="hb-treatment-comparison">
+      <div>
+        <dt>Haemodialysis</dt>
+        <dd>The machine removes waste from the blood during each session. Regular sessions take time and may involve travel.</dd>
+      </div>
+      <div>
+        <dt>Successful kidney transplant</dt>
+        <dd>A functioning donor kidney removes waste continuously and can free the patient from regular dialysis. The patient still needs follow-up and takes immunosuppressants, which increase infection risk.</dd>
+      </div>
+    </dl>`;
 
   function choices(id, label, options) {
     return { id, label, type: "radio", options: options.map(([value, label]) => ({ value, label })) };
