@@ -158,8 +158,7 @@ h1{font-size:clamp(1.65rem,3.5vw,2.2rem);letter-spacing:-.028em}
 .k-hint-box p{margin:3px 0 0;font-size:.88rem;line-height:1.52}
 .k-level.warmup{background:#e8f4ec;color:#1b6b42}
 .k-quick-label{font-size:.88rem;padding:10px 12px;border-left:4px solid #147b76;background:#edf7f5;border-radius:4px;margin:0 0 16px}
-.k-quick-note,.k-diagnostic-note{font-size:.88rem;border-left:3px solid #9c6ec9;background:#fbf7ff;padding:8px 11px;border-radius:4px}
-.k-quick-note{border-color:#1b7a72;background:#f0f8f5}
+.k-diagnostic-note{font-size:.88rem;border-left:3px solid #9c6ec9;background:#fbf7ff;padding:8px 11px;border-radius:4px}
 .k-level-guidance{font-size:.89rem;line-height:1.55;border-top:1px solid #c5cdd5;padding-top:11px}
 .k-feedback.pending{color:#233f5a}
 .k-options .k-option:has(input:checked){border-color:var(--brand);background:#eff8f5}
@@ -266,7 +265,7 @@ main[tabindex="-1"]:focus{outline:none}
 /* Explanations and help should remain easy to read in the learner flow. */
 .k-home-unit em,.k-unit-tile em,.lesson .button,.k-action small,
 .k-hint-box strong,.k-field,.k-shortcut small,.k-privacy-small{font-size:.875rem}
-.k-hint,.k-hint-box p,.k-quick-label,.k-quick-note,.k-diagnostic-note,
+.k-hint,.k-hint-box p,.k-quick-label,.k-diagnostic-note,
 .k-diagram-answer,.k-level-guidance,.k-misconception,.k-error,.k-continue p{font-size:1rem;line-height:1.55}
 
 .lesson .button,.k-skill-graph summary,.k-coverage summary{min-height:44px}

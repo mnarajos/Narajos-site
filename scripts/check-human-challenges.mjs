@@ -232,7 +232,7 @@ assert(main.innerHTML.includes("Hint 1"),"A learner-controlled hint should appea
 assert(JSON.parse(data.get("narajos-human-challenge-v2-session")).hintsUsed[record.queue[0]]===1,"Hint use should be recorded on the local session");
 mainEvents.click({target:{closest(selector){return selector==="[data-k-action]"?{dataset:{kAction:"skip"}}:null;}}});
 assert(main.innerHTML.includes("Expected answer"),"Answer reveal failed");
-assert(main.innerHTML.includes("Explanation revealed"),"Unknown answers should not be treated as punitive errors");
+assert(/class="k-feedback pending">[\s\S]*?Explanation<\/h2>/.test(main.innerHTML),"Unknown answers should show a neutral explanation");
 const afterSkip=JSON.parse(data.get("narajos-human-challenge-v2-session"));
 for(const id of Object.keys(afterSkip.quickCheckIds)){const next=db.questions.find(q=>q.id===id),missed=db.questions.find(q=>q.id===record.queue[0]);assert.equal(next.family,missed.family,"A warm-up follow-up must test the same idea");assert.equal(next.level,"warmup","A missed warm-up must not trigger a harder follow-up");}
 assert(afterSkip.queue.includes(record.queue[0]),"Missed warm-up should be returned to later");

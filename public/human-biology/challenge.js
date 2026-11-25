@@ -723,17 +723,17 @@ function drawQuestion(){
  }
  else{
   var correct=session.lastResult===true,subjective=!session.wasSkipped&&(session.lastResult===null||q.type==="written");
-  var helped=!!used,unknown=!!session.wasSkipped;
+  var unknown=!!session.wasSkipped;
   var neutral=unknown||subjective;
-  var header=unknown?"Explanation revealed":subjective?"Check your explanation":correct?"Correct!":"Not yet";
+  var header=unknown?"Explanation":subjective?"Check your explanation":correct?"Correct!":"Not yet";
   h+='<div class="k-feedback '+(neutral?"pending":correct?"correct":"incorrect")+'"><h2 class="k-feedback-head" data-feedback-heading tabindex="-1">'+icon(neutral?"book":correct?"check":"alert")+header+'</h2>';
   if(q.figure)h+=figure(q.figure,true);
   h+='<div'+(q.unit==="f170"?' class="reading-copy"':'')+'>'+
-   '<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p><strong>'+(correct?'Why it works':unknown?'Explanation':'Quick reteach')+':</strong> '+esc(q.explain)+'</p></div>';
+   '<p class="k-model-title">Expected answer</p><div class="k-model">'+answerKey(q)+'</div><p>'+
+   (unknown?'':'<strong>'+(correct?'Why it works':'Quick reteach')+':</strong> ')+esc(q.explain)+'</p></div>';
   if(a.priorResponse)h+='<p>Your saved result is from an earlier version of this question.</p>';
   if(!correct&&!unknown&&a.selected&&q.options)h+='<p><strong>Your selection</strong> '+a.selected.map(function(i){return esc(q.options[i]);}).join('; ')+'</p>';
   if(q.type==='best'&&!correct&&!unknown){var partial=session.answers[q.id]||{};if(partial.choice===q.correct&&partial.reason!==q.reasonCorrect)h+='<p class="k-diagnostic-note">You chose the correct explanation; now focus on why it is correct.</p>';}
-  if((!correct||helped)&&session.lastPlannedCheck)h+='<p class="k-quick-note">A related quick check is next, so you can try the idea again independently.</p>';
   if(q.levelsNote)h+='<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>';
   if(!correct&&!unknown){
    var diagnosis=misconceptionFeedback(q,a);

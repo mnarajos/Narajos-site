@@ -278,10 +278,8 @@ table.ticks tr.right th,table.ticks tr.right td{border-color:var(--good)}table.t
 @media (min-width:700px){.gopts:not(.wide){grid-template-columns:repeat(4,1fr)}.gopts.dcopts.wide{grid-template-columns:1fr 1fr}}.gopts .opt{flex-direction:column;align-items:stretch;padding:.4rem}
 .gopts .otext{display:block}.gsk{display:block;width:100%;height:auto}.gsk .ax{stroke:var(--ink);stroke-width:1.4;fill:none}.gsk .ln{stroke:var(--acc);stroke-width:2.4;fill:none;stroke-linejoin:round;stroke-linecap:round}
 .gsk text{font-size:8px;fill:var(--muted);font-family:inherit}
-.reteach{border-left:4px solid var(--acc);background:var(--card);border-radius:0 10px 10px 0;padding:.5rem .8rem;margin:.6rem 0;color:var(--ink)}
-.reteach .rt-h{font-weight:700;margin:.1rem 0 .3rem}.reteach details{margin:.3rem 0}.reteach summary{cursor:pointer;font-weight:600}
+.feedback-key summary{width:fit-content;min-height:44px;padding:.55rem 0;cursor:pointer;color:var(--acc);font-weight:600}
 .qcb{display:inline-block;font-size:.8rem;font-weight:700;color:var(--acc-ink);background:var(--acc);border-radius:99px;padding:.15rem .6rem;vertical-align:middle}
-.qcres{font-weight:700;margin:.2rem 0 .5rem}.qcres.good{color:var(--good)}
 .dkbtn{display:block;margin:.6rem auto 0;background:none;border:0;color:var(--muted);font:inherit;font-size:.95rem;text-decoration:underline;cursor:pointer;min-height:44px}
 .fb.dk{border-color:var(--acc);background:var(--card)}.fb.dk h2{color:var(--ink)}
 .tipbox{background:var(--card);border:2px dashed var(--line);border-radius:12px;padding:.6rem .8rem;margin:.2rem 0 .8rem;font-size:.95rem}
@@ -468,9 +466,9 @@ table.eqs-t{width:auto;border-collapse:collapse}table.eqs-t th{text-align:left;f
 </header>
 <main id="main" class="wrap" tabindex="-1"></main>
 <footer class="wrap"><p class="site-copyright">© 2026 <strong>Narajos</strong> <em>/nerr-RA-hoss/</em></p>
-  <div class="keystone-lockup keystone-lockup-mini" role="img" aria-label="Narajos Keystone"><svg class="keystone-mark" viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(0 20)"><path d="M36 10.5 L32.5 4.5" stroke="#F97316" stroke-linecap="round" stroke-width="3.4"></path><path d="M50 7.5 L50 0" stroke="#F97316" stroke-linecap="round" stroke-width="3.4"></path><path d="M64 10.5 L67.5 4.5" stroke="#F97316" stroke-linecap="round" stroke-width="3.4"></path><path class="lg-arch" d="M6 70 A44 44 0 0 1 7.7 57.9 L28 65.1 A22.5 22.5 0 0 0 27.5 70 ZM92.3 57.9 A44 44 0 0 1 94 70 L72.5 70 A22.5 22.5 0 0 0 72 65.1 ZM9.5 52.8 A44 44 0 0 1 14.4 44.1 L31.1 57.9 A22.5 22.5 0 0 0 29.9 60 ZM85.6 44.1 A44 44 0 0 1 90.5 52.8 L70.2 60 A22.5 22.5 0 0 0 69 57.9 ZM17.8 40 A44 44 0 0 1 25.1 33.8 L36.2 52.2 A22.5 22.5 0 0 0 34.5 53.7 ZM74.9 33.8 A44 44 0 0 1 82.2 40 L65.5 53.7 A22.5 22.5 0 0 0 63.8 52.2 Z" stroke-linejoin="round" stroke-width="2.6"></path><path d="M26.6 21 Q50 13 73.4 21 L61.6 48 L38.4 48 Z" fill="#F97316" stroke="#F97316" stroke-linejoin="round" stroke-width="2.6"></path><circle cx="42.4" cy="38.6" fill="none" r="5.2" stroke="#fff" stroke-width="3.9"></circle><path d="M46.3 35.1 L58 24.6" stroke="#fff" stroke-linecap="round" stroke-width="3.9"></path><path d="M53.2 28.8 l2.9 3.3" stroke="#fff" stroke-linecap="round" stroke-width="3.5"></path><path d="M56.7 25.8 l2.9 3.3" stroke="#fff" stroke-linecap="round" stroke-width="3.5"></path></g></svg><span class="keystone-type"><span class="keystone-first">Narajos</span><span class="keystone-second">Keystone</span></span></div>
   <p class="small">A free project designed by Dr Narajos. <span class="appver">Version 1.1</span></p>
   <p class="small">Unofficial revision tool written for the AQA GCSE Combined Science: Trilogy (8464) specification. Not produced or endorsed by AQA.</p>
+<a class="resource-terms" href="/privacy/">Privacy</a>
 <a class="resource-terms" href="/terms/">Terms of Use</a></footer>
 <div id="live" class="sr-only" role="status" aria-live="polite"></div>
 
@@ -728,7 +726,7 @@ DATA.c1={
  concepts:[
  {id:"atoms",st:1,title:"Atoms, elements, and compounds",spec:"5.1.1.1",needs:[],key:["All substances are made of atoms. An <b>atom</b> is the smallest part of an element that can exist.","An <b>element</b> contains only one type of atom. There are about 100 elements, each with a symbol, such as O for oxygen and Na for sodium.","A <b>compound</b> contains two or more elements <b>chemically combined in fixed proportions</b>. It can only be separated into its elements by chemical reactions.","Chemical reactions make new substances. A <b>balanced equation</b> has the same number of atoms of each element on both sides."],gate:"Everything else in this topic explains what is inside atoms and how they combine.",
   qs:[
-   {"t":"mcq","tier":"F","q":"What is an element?","opts":["A substance made of only one type of atom","A substance made of two or more elements chemically combined","Two or more substances that are not chemically combined","A substance made in a chemical reaction"],"a":0,"fb":[null,"That describes a compound.","That describes a mixture.","Elements and compounds can both be made in reactions – an element is defined by having one type of atom."],"why":"An element contains only one type of atom."},
+   {"t":"mcq","tier":"F","q":"What is an element?","opts":["A substance made of only one type of atom","A substance made of two or more elements chemically combined","Two or more substances that are not chemically combined","A substance made in a chemical reaction"],"a":0,"fb":[null,"That describes a compound.","That describes a mixture.","Elements and compounds can both be made in reactions – an element is defined by having one type of atom."],"why":"An element contains only one type of atom.","answerInWhy":true},
    {"t":"mcq","tier":"F","q":"Which of these is a compound?","opts":["Water, H_2O","Oxygen, O_2","Iron, Fe","Air"],"a":0,"fb":[null,"O_2 has two atoms, but both are oxygen – so it is an element.","Iron contains only one type of atom, so it is an element.","Air is a mixture of gases that are not chemically combined."],"why":"Water contains two elements, hydrogen, and oxygen, chemically combined."},
    {"t":"cloze","tier":"F","q":"Complete the sentences about atoms and compounds.","text":"A/An {atom} is the smallest part of an element that can exist. A/An {compound} contains two or more elements chemically combined in {fixed} proportions. A compound can only be separated into its elements by a/an {chemical} reaction.","extra":["mixture","variable","physical"],"why":"Compounds have fixed proportions and need chemical reactions to separate them."},
    {"t":"num","tier":"F","q":"How many atoms in total are shown in the formula H_2SO_4?","a":7,"why":"2 hydrogen + 1 sulfur + 4 oxygen = 7 atoms."},
@@ -4499,12 +4497,18 @@ function memFor(q){if(!q)return null;var tp=(isSk()?L.slop.t:L.t)||"",tx=memText
  for(var i=0;i<MEMS.length;i++){var m=MEMS[i];if(m.h&&S.tier==="F")continue;if(m.top.test(tp)&&m.re.test(tx)&&!(m.not&&m.not.test(tx)))return m;}return null;}
 function memAid(m){return m.aid+(m.ht&&S.tier!=="F"?m.ht:"");}
 function memHTML(q){var m=memFor(q);return m?'<div class="memaid"><p class="rt-h">🧠 Memory aid</p><p>'+memAid(m)+'</p></div>':'';}
-function reteachHTML(q){return reteachCore(q)+memHTML(q);}
-function reteachCore(q){
- if(isSk()){var tip=SKH[L.slop.id];return tip?'<div class="reteach"><p class="rt-h">Reteach</p><p>'+fmt(tip)+'</p><p class="small">Read this, then try the quick check.</p></div>':'';}
+function reteachHTML(q,hasExplanation){return reteachCore(q,hasExplanation)+memHTML(q);}
+function reteachCore(q,hasExplanation){
+ if(isSk()){
+  var tip=SKH[L.slop.id];
+  if(!tip)return "";
+  return hasExplanation?'<details class="feedback-key"><summary>Review the method</summary><p>'+fmt(tip)+'</p></details>':'<p>'+fmt(tip)+'</p>';
+ }
  var bi=bestKey(q);if(bi<0)return "";var ks=L.c.key;
- return '<div class="reteach"><p class="rt-h">Reteach: the key idea</p><p>'+rich(ks[bi])+'</p>'+(ks.length>1?'<details><summary>All the key ideas for this lesson</summary><ul>'+ks.map(function(k){return '<li>'+rich(k)+'</li>';}).join("")+'</ul></details>':'')+
-  ((L.qc||L.slop&&L.qcNext)&&!L.dk?'<p class="small">Read this, then try the quick check next.</p>':'')+'</div>';}
+ var otherKeys=hasExplanation?ks:ks.filter(function(_,i){return i!==bi;});
+ return (hasExplanation?'':'<p>'+rich(ks[bi])+'</p>')+
+  (otherKeys.length?'<details class="feedback-key"><summary>Review lesson key ideas</summary><ul>'+otherKeys.map(function(k){return '<li>'+rich(k)+'</li>';}).join("")+'</ul></details>':'');
+}
 var QC_T={mcq:1,two:1,multi:1,sort:1,tick:1,match:1,pick:1,order:1,cloze:1};
 function scheduleQC(q0){
  var bi=bestKey(q0),ref=stemSet((bi>=0?L.c.key[bi]:"")+" "+qText(q0)),best=-1,bs=-1;
@@ -4513,8 +4517,7 @@ function scheduleQC(q0){
   if(L.queue.indexOf(x)!==j)continue;
   var sc=overlap(stemSet(qText(x)),ref)*10-qRank(x);if(sc>bs){bs=sc;best=j;}}
  if(best<0)return;var x=L.queue.splice(best,1)[0];L.queue.splice(L.i+1,0,x);L.qc=x;}
-function qcResult(ok,independent){L.qcN=(L.qcN||0)+1;if(independent)L.qcOk=(L.qcOk||0)+1;
- return ok?"":'<p class="qcres">Not yet. Read the key idea again – you will see this idea again before the end.</p>';}
+function recordQuickCheck(independent){L.qcN=(L.qcN||0)+1;if(independent)L.qcOk=(L.qcOk||0)+1;}
 /* Hint timing (v1.1, 18 November, teacher): the ladder waits 15 s after a question (or a new step) appears, and 30 s after
    a hint before the next one. While waiting it shows greyed out with a ring filling up, so pupils know help is coming.
    "I don't know – show me" is never delayed. */
@@ -4601,7 +4604,7 @@ function showPaper(p,focus){
  h+='<section aria-labelledby="pp-t"><h2 id="pp-t">Topics</h2><ul class="topics">'+p.topics.map(topicCard).join("")+'</ul></section>';
  h+='<p class="course-home-links"><a href="#paperflash-'+p.id+'">Flashcards for this paper</a></p>';
  var sk=SKILLS.filter(function(x){return (x.all||p.topics.indexOf(x.t)>-1)&&!(x.ht&&S.tier==="F");});
- if(sk.length)h+='<section aria-labelledby="pp-s"><h2 id="pp-s">Skills practice</h2><p class="sklinks">'+sk.map(function(x){return '<a class="btn" href="#practice-'+x.id+'">'+esc(x.name)+'</a>';}).join("")+'</p></section>';
+ if(sk.length)h+='<section aria-labelledby="pp-s"><h2 id="pp-s">Skills practice</h2><p class="sklinks">'+sk.map(function(x){return '<a class="study-skill-link" href="#practice-'+x.id+'">'+esc(x.name)+'</a>';}).join("")+'</p></section>';
  h+='<section aria-labelledby="pp-m"><h2 id="pp-m">Mixed practice</h2><p class="lead">Questions from the topics you choose on this paper, all mixed up. They start easy and get harder as you get them right.</p><p><a class="btn primary" href="#mix-'+p.id+'">Mixed practice</a></p></section>';
  var rp=RPS.filter(function(r){return p.topics.indexOf(r[2])>-1;});
  h+='<section class="stage" aria-labelledby="pp-r"><h2 id="pp-r">Required practicals</h2><ul class="concepts">'+rp.map(rpItem).join("")+'</ul></section>';
@@ -6112,7 +6115,7 @@ function showTopic(t,focus){
  h+='<details class="topic-more-practice"><summary>More ways to revise</summary><div class="kr-actions" style="margin:12px 0 17px"><a class="btn" href="#cards-'+t+'">Flashcards for this topic</a></div>';
  if(pp)h+='<div class="modebar"><p><strong>Mixed practice:</strong> questions from across this topic, all mixed up. They start easy and get harder.</p><p class="sklinks"><a class="btn" href="#mix-'+pp.id+'-'+t+'">Mixed practice: this topic</a></p></div>';
  var sks=SKILLS.filter(function(x){return x.t===t&&!(x.ht&&S.tier==="F");});
- if(sks.length)h+='<div class="modebar"><p><strong>Skills practice:</strong> unlimited questions with new values each time.</p><p class="sklinks">'+sks.map(function(x){return '<a class="btn" href="#practice-'+x.id+'">'+esc(x.name)+'</a>';}).join("")+'</p></div>';
+ if(sks.length)h+='<div class="modebar"><p><strong>Skills practice:</strong> unlimited questions with new values each time.</p><p class="sklinks">'+sks.map(function(x){return '<a class="study-skill-link" href="#practice-'+x.id+'">'+esc(x.name)+'</a>';}).join("")+'</p></div>';
  h+='</details>';
  var STN=["The Basics","Core Knowledge","Deeper Understanding","Application","Exam Technique"],stages=[];
  T.concepts.forEach(function(c){if(!avail(c))return;var k=(c.st||1)-1;(stages[k]=stages[k]||[]).push(c);});
@@ -6328,7 +6331,7 @@ function answerHTML(q){
 
 function check(){
  var q=L.cur.q,q0=L.cur.q0,f=$("#qf"),ok=false,given=true,whyNot="",head="",note="";
- if(L.dk){given=true;ok=false;head="No worries – here’s how it works";}
+ if(L.dk){given=true;ok=false;head="Explanation";}
  else if(q.t==="mcq"){
   var r=$("input[name=a]:checked",f);
   if(!r)given=false;else{var v=+r.value;ok=v===q.a;
@@ -6385,22 +6388,30 @@ function check(){
 
  var requeue=!L.slop&&!ok&&!L.retried.has(q0);
  if(requeue){L.retried.add(q0);L.queue.push(q0);}
- var isQC=L.slop?!!q.qc:(L.qc===q0),qcMsg="";
- if(isQC){qcMsg=qcResult(ok,independent);if(!L.slop)L.qc=null;}
+ var isQC=L.slop?!!q.qc:(L.qc===q0);
+ if(isQC){recordQuickCheck(independent);if(!L.slop)L.qc=null;}
  helped=ok&&helped&&!written;
  if(helped&&firstTime&&!L.slop)(L.helped=L.helped||new Set()).add(q0);
  if((!ok||helped)&&!isQC){if(L.slop)L.qcNext=true;else if(!L.qc)scheduleQC(q0);}
- var helpMsg=helped&&!isQC&&(L.slop||L.qc)?'<p class="small">A quick check is next to try the idea again.</p>':'';
  if(L.slop){L.n++;if(independent)L.right++;var tl=$("#tally");if(tl&&!L.rvMode)tl.textContent="Score: "+L.right+" of "+L.n;L.lvMsg=L.rvMode?"":lvStep(independent,q0);}
  L.phase="fb";
  if(!L.rvMode)(L.past=L.past||[]).push({q:q,q0:q0});
  var fb=$("#fb");fb.className="fb "+(written||L.dk?"dk":ok?"good":"bad");
- fb.innerHTML='<h2 tabindex="-1">'+(head||(ok?pick(PRAISE):pick(NOPE)))+'</h2>'+qcMsg+helpMsg+(L.dk?'<p>No problem. Read the answer and the key idea'+(L.rvMode?'.':', then try the quick check.')+'</p>':'')+(L.slop&&L.lvMsg?L.lvMsg:'')+(fastOK(ok)?fastHTML():'')+(backOK(ok)?backHTML():'')+(ok?'':L.dk?dkAnswer(q):answerHTML(q))+(!ok&&L.mtype?'<p><span class="mtype">'+esc(L.mtype)+'</span></p>':'')+(whyNot?'<p class="why-not"><strong>About your answer:</strong> '+fmt(whyNot)+'</p>':'')+(note?'<p>'+fmt(note)+'</p>':'')+(q.why?'<p>'+fmt(q.why)+'</p>':'')+(ok||(isQC&&!L.dk)?'':reteachHTML(q0.t==="gen"?q:q0))+(requeue?'<p class="small">This question will come back at the end of the lesson.</p>':'');
+ var explanation=q.why&&(!ok||!q.answerInWhy)?'<p>'+fmt(q.why)+'</p>':'';
+ fb.innerHTML='<h2 tabindex="-1">'+(head||(ok?pick(PRAISE):pick(NOPE)))+'</h2>'+
+  (whyNot?'<p class="why-not"><strong>About your answer:</strong> '+fmt(whyNot)+'</p>':'')+
+  (ok||q.answerInWhy?'':L.dk?dkAnswer(q):answerHTML(q))+explanation+
+  (!ok&&L.mtype?'<p><span class="mtype">'+esc(L.mtype)+'</span></p>':'')+
+  (note?'<p>'+fmt(note)+'</p>':'')+
+  (ok||(isQC&&!L.dk)?'':reteachHTML(q0.t==="gen"?q:q0,Boolean(explanation)))+
+  (L.slop&&L.lvMsg?L.lvMsg:'')+(fastOK(ok)?fastHTML():'')+(backOK(ok)?backHTML():'')+
+  (requeue&&!L.dk?'<p class="small">This question will come back at the end of the lesson.</p>':'');
  fb.hidden=false;
  var old=$(".ltop .bar");if(old)old.outerHTML=bar(L.first.size,L.total,"Lesson progress");
  if(L.slop&&!L.rvMode&&!$("#act").nextElementSibling.classList.contains("finpr"))$("#act").insertAdjacentHTML("afterend",'<button type="button" class="btn big finpr fin2">Finish practice</button>'),$(".fin2").onclick=finishSlop;
  if(L.slop&&L.slop.mix){var ob=$(".ltop .bar");if(ob)ob.outerHTML=bar(L.n,L.mixN,"Practice progress");}
- $("#act").textContent=L.slop?(L.slop.mix&&L.n>=L.mixN?"See results":L.mastered?"Keep going":"Next question"):L.i+1<L.queue.length?"Continue":"See results";
+ $("#act").textContent=L.slop?(L.slop.mix&&L.n>=L.mixN?"See results":L.mastered?"Keep going":"Next question"):
+  L.qc&&L.queue[L.i+1]===L.qc?"Try a quick check":L.i+1<L.queue.length?"Continue":"See results";
  if(L.rvMode)$("#act").textContent=rvAtEnd()?"Back to where I was":"Next";
  var fbt=$("#fast");if(fbt)fbt.onclick=fastFinish;var bbt=$("#back");if(bbt)bbt.onclick=backFinish;
  $("h2",fb).focus({preventScroll:true});
