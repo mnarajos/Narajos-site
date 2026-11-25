@@ -72,7 +72,18 @@ body {
   text-underline-offset: .18em;
 }
 
+@media screen {
+  :is(.course-alevel, .course-gcse):not(.inl) {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+  :is(.course-alevel, .course-gcse) > .wrap { width: 100%; }
+}
+
 :is(.course-alevel, .course-gcse) footer.wrap {
+  margin-block-start: auto;
   border-block-start: 1px solid var(--line);
   padding-block: .75rem;
 }
@@ -80,13 +91,6 @@ body {
 :is(.course-alevel, .course-gcse) footer.wrap > .small {
   margin-block: .5rem;
   max-inline-size: 68ch;
-}
-
-:is(.course-alevel, .course-gcse) footer.wrap .resource-terms {
-  display: inline-flex;
-  min-block-size: 44px;
-  align-items: center;
-  margin-block: 0;
 }
 
 main :is(.kc-visual, .kc-simulation-links) {
