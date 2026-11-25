@@ -160,7 +160,10 @@ function checkButton(section, report, check, solved = false) {
       report.textContent = result;
       return;
     }
-    if (!report.firstElementChild) showCorrect(report, result.corrected && !solved, !solved);
+    if (!report.firstElementChild) {
+      showCorrect(report, result.corrected && !solved, !solved);
+      if (result.explanation) report.append(" " + result.explanation);
+    }
     solved = true;
   }, "dp-primary");
   section.append(control, report);
@@ -448,9 +451,9 @@ function makeCheck(section, task, report) {
     section.append(options);
     checkButton(section, report, () => {
       if (selected === null) return "Choose an answer first.";
-      if (selected === task.answer) return { corrected: receivedFeedback };
+      if (selected === task.answer) return { corrected: receivedFeedback, explanation: task.optionFeedback ? task.feedback : undefined };
       receivedFeedback = true;
-      return "Recheck “" + task.options[selected] + "”. " + task.feedback;
+      return "Recheck “" + task.options[selected] + "”. " + (task.optionFeedback?.[selected] || task.feedback);
     });
     return;
   }
@@ -516,6 +519,12 @@ class DiagramPractice extends HTMLElement {
         }
       });
       this.append(question);
+      if (task.showDiagram) {
+        const visual = el("details", "", "dp-study");
+        visual.open = true;
+        visual.append(el("summary", "View the diagram"), draw(topic.states[0]));
+        content.append(visual);
+      }
       if (["label", "point"].includes(task.type)) makeDiagramTask(content, topic, task, report);
       else makeCheck(content, task, report);
     }

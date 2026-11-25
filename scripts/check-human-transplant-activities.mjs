@@ -1,0 +1,130 @@
+import assert from "node:assert/strict";
+
+export async function checkHumanTransplantActivities(browser, base) {
+  const page = await browser.newPage({viewport: {width: 320, height: 780}, isMobile: true, hasTouch: true});
+  const errors = [];
+  page.on("pageerror", error => errors.push(error.message));
+  const main = page.getByRole("main");
+  const feedback = main.locator("[data-transplant-feedback]");
+  const check = () => main.getByRole("button", {name: /^Check (?:revised )?answer$/}).click();
+  const advance = () => main.locator("[data-transplant-next]").click();
+  const choose = (name, value) => main.locator(`input[name="${name}"][value="${value}"]`).check();
+  const fill = (name, value) => main.locator(`input[name="${name}"]`).fill(value);
+  const f170 = () => main.getByRole("link", {name: /F170.*Fundamentals of human biology/}).click();
+  const activity = title => main.getByRole("link", {name: title, exact: true});
+  const kidneyTitle = "Interpreting kidney transplant data";
+  const judgementTitle = "Weigh dialysis against transplantation";
+  const widthFits = () => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 3);
+
+  try {
+    await page.emulateMedia({reducedMotion: "reduce"});
+    await page.goto(`${base}/human-biology/`);
+    await f170();
+    await main.getByText("More practice options", {exact: true}).click();
+    await main.getByRole("link", {name: "Build Understanding", exact: true}).click();
+    await activity(kidneyTitle).waitFor();
+    assert(await activity(judgementTitle).isVisible());
+    await main.getByRole("link", {name: /Unit overview/}).click();
+    await main.getByText("More practice options", {exact: true}).click();
+    await main.getByRole("link", {name: "Skills Practice", exact: true}).click();
+    await activity(kidneyTitle).click();
+    await main.getByRole("heading", {name: kidneyTitle}).waitFor();
+    await main.getByRole("link", {name: /F170 skills practice/}).click();
+    await activity("Trace a transplanted kidney’s connections").waitFor();
+
+    await page.getByRole("link", {name: "Overview", exact: true}).click();
+    await f170();
+    await main.getByRole("link", {name: /^Catch up/}).click();
+    await main.getByRole("link", {name: /2\.1\.4.*Transplants and artificial organs/}).click();
+    await activity(kidneyTitle).click();
+    await main.getByRole("img", {name: /Blood creatinine concentration \(µmol\/L\).*days after transplant/i}).waitFor();
+    await main.getByText("Graph values in a table", {exact: true}).press("Enter");
+    assert.match(await main.getByRole("table").innerText(), /2\s+280[\s\S]+8\s+115/);
+    assert(await widthFits(), "The graph alternative overflows at 320px");
+    await fill("day2", "280");
+    await fill("day8", "115");
+    await check();
+    await advance();
+    await choose("trend", "fell");
+    await check();
+    await advance();
+    await choose("interpretation", "normal");
+    await check();
+    assert.match(await feedback.innerText(), /no normal reference range/);
+    await choose("interpretation", "more");
+    await check();
+    await advance();
+
+    const data = main.getByRole("table", {name: /Patient B/});
+    assert.match(await data.innerText(), /3\s+260[\s\S]+7\s+150[\s\S]+14\s+110[\s\S]+21\s+190/);
+    await choose("pattern", "fall");
+    await check();
+    assert.match(await feedback.innerText(), /Compare days 14 and 21/);
+    assert(await data.isVisible());
+    await choose("pattern", "fall-rise");
+    await fill("day3", "260");
+    await fill("day14", "110");
+    await fill("day21", "190");
+    await check();
+    await advance();
+    assert(await data.isVisible());
+    await choose("readings", "110");
+    await choose("readings", "190");
+    await check();
+    assert.match(await feedback.innerText(), /Evidence selection correct/);
+    await advance();
+    assert(await data.isVisible());
+    await choose("claim", "proved");
+    await check();
+    assert.match(await feedback.innerText(), /You identified the rise correctly.*Which result directly shows an immune attack/);
+    assert(!(await main.locator("[data-transplant-next]").isVisible()));
+    await choose("claim", "possible");
+    await check();
+    assert.match(await feedback.innerText(), /cannot establish the cause/);
+    await advance();
+    assert(await data.isVisible());
+    assert(await widthFits(), "The mechanism question overflows at 320px");
+    await choose("recognition", "antigens");
+    await choose("effect", "damage");
+    await choose("clearance", "less");
+    await check();
+    await advance();
+    await main.getByText("Patient B evidence selection: correct. Conclusion: correct.").waitFor();
+
+    await page.getByRole("link", {name: "Overview", exact: true}).click();
+    await f170();
+    await activity(judgementTitle).click();
+    await main.getByRole("heading", {name: judgementTitle}).waitFor();
+    for (const [conclusion, mechanism] of [["benefit", "waste"], ["risk", "water"]]) {
+      assert(!(await feedback.isVisible()), "The worked example must wait for Jo’s case detail");
+      await choose("detail", "journey");
+      await check();
+      assert.match(await feedback.innerText(), /fewer trips could outweigh.*check-ups/);
+      await advance();
+      await choose("explanation", mechanism);
+      await check();
+      await advance();
+      await choose("change", "continuous");
+      await check();
+      await advance();
+      await choose("conclusion", conclusion);
+      await choose("evidence", "afternoons");
+      await choose("risk", "infection");
+      await choose("reasoning", "mention");
+      await check();
+      assert.match(await feedback.innerText(), /identified the case detail.*explained the infection risk.*use it to weigh both sides/);
+      assert(!(await main.locator("[data-transplant-next]").isVisible()));
+      await choose("reasoning", conclusion);
+      await check();
+      assert.match(await feedback.innerText(), /Correct[\s\S]+The benefit could outweigh[\s\S]+The risk could outweigh/);
+      assert(await widthFits(), "The judgement or feedback overflows at 320px");
+      await advance();
+      await main.getByRole("heading", {name: "Activity complete"}).waitFor();
+      if (conclusion === "benefit") await main.getByRole("button", {name: "Try again"}).click();
+    }
+    assert.deepEqual(errors, []);
+    console.log("F170 transplant activities passed mobile navigation, reversal, revised rejection claim and both Sam judgements.");
+  } finally {
+    await page.close();
+  }
+}

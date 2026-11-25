@@ -333,6 +333,7 @@ const microscopePractice = `<details class="kc-visual-check">
 
 const humanPractice = {
  "f170/1.2.2":"airway", "f170/2.1.3":"breathing", "f170/2.2.2":"breathing",
+ "f170/2.1.4.graft":"kidney-graft",
  "f171/a2":"cast", "f171/2.1":"cast", "f171/a3":"antibody",
  "f171/a4":["cuff","screening"], "f171/4.2.2":"cuff", "f171/4.2.1":"screening",
  "f170/3.1.1":"thermoregulation", "f170/3.3.2":"cycle"

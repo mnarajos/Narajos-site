@@ -68,7 +68,7 @@ export async function checkHumanCatchup(browser, base) {
     await areas.first().getByRole("link", {name:"Hiatus hernia and reflux"}).press("Enter");
     assert.match(page.url(), /#catchup\/f171\/1\.2\.1\.hiatus$/);
     const chapters = await page.evaluate(() => Object.entries(window.KeystoneHumanLessons));
-    assert.equal(chapters.length, 74, "Retain 66 routes and add eight F170 teaching sequences");
+    assert.equal(chapters.length, 75, "Retain the existing lessons and add the F170 cirrhosis lesson");
     assert.equal(new Set(chapters.map(([key]) => key.split("/")[0])).size, 8);
     for (const [key, lesson] of chapters) {
       await page.evaluate(key => localStorage.removeItem(key), localPractice);

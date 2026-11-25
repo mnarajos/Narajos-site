@@ -1414,6 +1414,42 @@ additions.push({
  explain:"Separate recovery from purity. The count identifies where the target organelles are found; identifying possible contaminants requires evidence about other components.",
  misconception:"A fraction can contain many target organelles alongside other components, and some target organelles can occur in other fractions.",hintCue:"Trace what was transferred between the two spins. What does a count of target organelles tell you about other components?"
 });
+additions.push({
+ id:"f170-cirrhosis-missing-links",unit:"f170",area:2,section:"2.1.3",catchup:"2.1.3.cirrhosis",type:"best",level:"apply",
+ stem:"A student says that a build-up of bilirubin explains both jaundice and ascites in a person with cirrhosis. Choose the best correction and the reason for it.",
+ options:["Bilirubin accumulation can explain jaundice. Reduced albumin production can help explain ascites.","Reduced albumin directly causes yellowing. Bilirubin accumulation makes fluid collect in the abdomen.","Liver damage explains both symptoms on its own. The changes in the blood are irrelevant.","Bilirubin accumulation can explain jaundice. Increased albumin production can help explain ascites."],
+ correct:0,
+ reasons:["When plasma contains less albumin, its lower oncotic pressure can reduce the return of fluid to blood vessels.","Bilirubin is the main plasma protein that draws water into blood vessels.","A fall in albumin increases plasma oncotic pressure, forcing fluid out of blood vessels.","Changes in plasma protein concentration have no effect on fluid exchange."],
+ reasonCorrect:0,
+ model:"Impaired bilirubin processing can allow this yellow pigment to accumulate and cause jaundice. Lower albumin production can lower plasma oncotic pressure and contribute to fluid accumulation in the abdomen.",
+ explain:"Identify the two different jobs of hepatocytes. Poor bilirubin processing can cause jaundice. Reduced albumin production can contribute to ascites through a change in fluid movement.",
+ misconception:"Naming cirrhosis or liver damage leaves out the change in function between the damage and each symptom.",
+ correctionHint:"Which substance causes the yellow colour? Which protein helps draw water into blood vessels?",
+ hintCue:"Link each symptom to a specific function that damaged hepatocytes carry out less effectively."
+},{
+ id:"f170-lung-diffusion-compare",unit:"f170",area:2,section:"2.1.3",catchup:"2.1.3",type:"written",level:"apply",
+ stem:"One lung sample, from a patient with emphysema, has many broken walls between alveoli. Another, from a patient with pulmonary fibrosis, has scarring that thickens the barrier between air and blood. Which condition reduces the surface area for gas exchange? Which increases diffusion distance? Explain how either change can reduce oxygen uptake.",
+ markPoints:[
+  "Destruction of alveolar walls in emphysema reduces the surface area available for gas exchange.",
+  "Thickening and scarring in pulmonary fibrosis increase the diffusion distance between alveolar air and blood.",
+  "Explain either mechanism: less area is available for oxygen to cross at the same time, or oxygen has to travel further. Either can reduce oxygen transfer per unit time when other factors are similar."
+ ],
+ model:"Loss of alveolar walls in emphysema reduces the surface area. Scarring in pulmonary fibrosis makes the barrier thicker and increases diffusion distance. In pulmonary fibrosis, for example, oxygen has further to diffuse, so less can enter the blood per unit time if other factors are similar.",
+ explain:"Separate the size of the exchange surface from the thickness of the barrier. Both changes can reduce diffusion rate.",
+ misconception:"Breaking down the walls removes some exchange surface. Thickening the walls lengthens the route through the barrier.",
+ hintCue:"Which change affects how much wall is available? Which affects how far oxygen must travel to reach blood?"
+},{
+ id:"f170-septal-openings",unit:"f170",area:2,section:"2.1.3",catchup:"2.1.3",type:"diagram",level:"apply",figure:"practice-septal-openings",
+ stem:"Each heart diagram shows one gap in the wall separating the two sides. Which gap connects the atria, and which connects the ventricles?",
+ options:["P connects the ventricles (VSD). Q connects the atria (ASD).","P connects the atria (ASD). Q connects the ventricles (VSD).","Both gaps connect the atria (ASD).","Both gaps connect the ventricles (VSD)."],
+ correct:1,
+ model:"P connects the atria (atrial septal defect). Q connects the ventricles (ventricular septal defect).",
+ explain:"Trace the gap from one chamber to the other. P is between the two upper chambers, the atria. Q is between the two lower chambers, the ventricles.",
+ optionFeedback:["The labels are swapped. Find the two chambers that share each gap before naming it.","","Check Q. Its gap is below the dividing line between the upper and lower chambers.","Check P. Its gap is above the dividing line between the upper and lower chambers."],
+ misconception:"Atrial and ventricular septal defects are named for the chambers the hole connects.",
+ correctionHint:"Start with the gap in P. Is it level with the upper or lower chambers?",
+ hintCue:"Look at which pair of chambers shares each gap."
+});
 var ids=new Set(bank.questions.map(function(q){return q.id;}));
 additions.forEach(function(q){if(!ids.has(q.id)){bank.questions.push(q);ids.add(q.id);}});
 })();

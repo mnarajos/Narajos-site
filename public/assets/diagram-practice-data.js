@@ -4,11 +4,48 @@ const label = (parts, feedback) => ({
 });
 const point = (prompt, answer, feedback) => ({ type: "point", prompt, answer, feedback });
 const choose = (prompt, options, answer, feedback) => ({ type: "choice", prompt, options, answer, feedback });
+const trace = (prompt, options, answer, feedback, optionFeedback) => ({
+  ...choose(prompt, options, answer, feedback), optionFeedback, showDiagram: true
+});
 const order = (prompt, items, feedback) => ({ type: "order", prompt, items, feedback });
 const number = (prompt, answer, unit, feedback) => ({ type: "number", prompt, answer, unit, feedback });
 const written = (prompt, points) => ({ type: "written", prompt, points });
 
 export const topics = {
+  "kidney-graft": {
+    group: "Human Biology F170", title: "Trace the connections to a transplanted kidney",
+    cue: "Follow the arrows to distinguish blood entering, blood leaving and urine leaving. Each question can also be answered using the written routes.",
+    states: [["kidney-graft", "A donor kidney in the lower abdomen",
+      "Blood enters the donor kidney through its renal artery and returns to the recipient’s circulation through its renal vein. The donor ureter carries urine to the bladder.",
+      "Simplified lower abdomen with a donor kidney, bladder and three labelled tubes: donor renal artery, donor renal vein and donor ureter."]],
+    parts: {},
+    questions: [
+      trace("Which route brings blood into the donor kidney?", [
+        "Recipient’s circulation → donor renal vein → donor kidney",
+        "Recipient’s circulation → donor renal artery → donor kidney",
+        "Bladder → donor ureter → donor kidney"
+      ], 1, "Blood enters the donor kidney from the recipient’s circulation through the donor renal artery.", [
+        "The renal vein carries blood away from the kidney. Which blood vessel supplies it?", null,
+        "The ureter connects to the bladder. Which fluid does it carry?"
+      ]),
+      trace("Which route takes blood away from the donor kidney?", [
+        "Donor kidney → donor renal artery → recipient’s circulation",
+        "Donor kidney → donor ureter → bladder",
+        "Donor kidney → donor renal vein → recipient’s circulation"
+      ], 2, "Blood leaves the donor kidney through the donor renal vein and returns to the recipient’s circulation.", [
+        "The renal artery is the blood supply into the kidney. Follow the other blood vessel away from the kidney.",
+        "The ureter leads to the bladder. Which fluid travels along that tube?", null
+      ]),
+      trace("Which route carries urine from the donor kidney to the bladder?", [
+        "Donor kidney → donor ureter → bladder",
+        "Donor kidney → donor renal vein → bladder",
+        "Donor kidney → donor renal artery → bladder"
+      ], 0, "Urine leaves the donor kidney through the donor ureter and enters the bladder.", [
+        null, "Which fluid does the renal vein carry? Follow the separate tube that ends at the bladder.",
+        "The renal artery brings blood into the kidney. Which connection leads away from the kidney to the bladder?"
+      ])
+    ]
+  },
   breathing: {
     group: "Human Biology F170", title: "Breathing in and out",
     cue: "Compare the ribs and diaphragm in the two positions. Follow the change in chest volume.",

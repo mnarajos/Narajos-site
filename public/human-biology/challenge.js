@@ -8,6 +8,7 @@ var K="narajos-human-challenge-v2-",SK=K+"session",PK=K+"progress",RK=K+"rotatio
 try{var r=JSON.parse(localStorage.getItem(PK)||"{}");if(r&&typeof r==="object"&&!Array.isArray(r))progress=r;}catch(_){}
 try{var rr=JSON.parse(localStorage.getItem(RK)||"{}");if(rr&&typeof rr==="object"&&!Array.isArray(rr))rotation=rr;}catch(_){}
 var all=db.questions,byId={},skills=window.KeystoneHumanSkills,ladders=window.KeystoneHumanProgressions;all.forEach(function(q){byId[q.id]=q;});
+const transplantActivities=window.KeystoneTransplantActivities;
 var render=null,visible=false,lastRoute="",skillExampleStem="";
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(a){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[a];});}
 function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=b[i];b[i]=b[j];b[j]=t;}return b;}
@@ -151,6 +152,10 @@ function unitRow(route,label,number){
  return '<li><a href="#'+esc(route)+'">'+(number?'<span class="hb-unit-code">'+esc(number)+'</span>':"")+
   '<strong>'+esc(label)+'</strong>'+icon("chevron")+'</a></li>';
 }
+function transplantRows(origin,ids){
+ return ids.map(id=>transplantActivities?.get(id)).filter(Boolean).map(activity=>
+  unitRow("challenge/f170/"+activity.id+"?from="+origin,activity.title)).join("");
+}
 function knowledgeLanding(){
  const modules=db.units.filter(u=>isKnowledge(u.id));
  show('<div class="k-wrap hb-unit-overview"><p class="crumb"><a href="#home">← Human Biology overview</a></p>'+
@@ -191,6 +196,9 @@ function intro(unit){
   '</summary><ul class="hb-link-list">'+extra.map(t=>unitRow(...t)).join("")+'</ul></details>'+
   '<section class="hb-unit-topics" aria-labelledby="hb-topics-heading"><h2 id="hb-topics-heading">Choose a topic</h2>'+
   '<ul class="hb-link-list">'+areas.map(a=>unitRow(prefix+"a"+a,areaName(unit,a),String(a))).join("")+'</ul></section>'+
+  (f170&&transplantActivities?'<section class="hb-unit-topics" aria-labelledby="hb-transplant-heading"><h2 id="hb-transplant-heading">Transplants and artificial organs</h2><ul class="hb-link-list">'+
+   transplantRows("challenge/f170",["kidney-evidence","dialysis-judgement"])+
+   unitRow("challenge/f170/p-phys-treatment-types","Classify surgery, transplantation and artificial support")+'</ul></section>':'')+
   (knowledge?"":source())+'</div>';
  show(h);
 }
@@ -350,9 +358,10 @@ function showClinicalCases(){
 }
 function progressionMenu(unit){
  visible=false;var points=ladders.points.filter(function(p){return p.unit===unit;});
- var h='<div class="k-wrap"><p class="crumb"><a href="#challenge/'+unit+'">← Unit overview</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+unit.toUpperCase()+' · Step by step</div><h1>Build understanding</h1><p>Choose one idea. Start with prior knowledge, check a misconception, try a rotating exam-focused question, then tackle a challenge. Read the explanation after each step.</p></div><p class="k-source">'+points.length+' selected teaching ideas across the unit. Each section contains further required content: this is not yet complete statement-by-statement coverage. Repeats rotate the third question; the supporting steps currently stay the same.</p>';
+ var h='<div class="k-wrap"><p class="crumb"><a href="#challenge/'+unit+'">← Unit overview</a></p><div class="k-unit-hero"><div class="k-eyebrow">'+unit.toUpperCase()+' · Step by step</div><h1>Build understanding</h1><p>Choose one idea. Work through the examples in order and read the explanation after each step.</p></div><p class="k-source">'+points.length+' selected teaching ideas across the unit. Each section contains further required content: this is not yet complete statement-by-statement coverage. Rotating sequences offer a different third question on repeat.</p>';
+ if(unit==="f170"&&transplantActivities)h+='<section class="hb-unit-topics" aria-labelledby="hb-transplant-heading"><h2 id="hb-transplant-heading">Transplants and artificial organs</h2><ul class="hb-link-list">'+transplantRows("challenge/f170/build",["kidney-evidence","dialysis-judgement"])+'</ul></section>';
  var area=0;points.forEach(function(p){if(area!==p.area){if(area)h+='</div></details>';area=p.area;h+='<details class="k-progression-area"'+(area===1?' open':'')+'><summary>'+esc(areaName(unit,area))+'</summary><div class="k-progression-list">';}
-  h+='<article class="paper k-skill-card"><small>'+unit.toUpperCase()+' · '+esc(p.section)+'</small><h3>'+esc(p.statement)+'</h3><p>Foundation → misconception → exam focus → challenge</p><a class="button primary" href="#challenge/'+unit+'/'+p.id+'">Start sequence<span class="sr-only">: '+esc(p.statement)+'</span></a></article>';
+  h+='<article class="paper k-skill-card"><small>'+unit.toUpperCase()+' · '+esc(p.section)+'</small><h3>'+esc(p.statement)+'</h3><p>'+(p.fixed?'Choose a category and reason for each of four treatments.':'Foundation → misconception → exam focus → challenge')+'</p><a class="button primary" href="#challenge/'+unit+'/'+p.id+'">Start sequence<span class="sr-only">: '+esc(p.statement)+'</span></a></article>';
  });if(area)h+='</div></details>';show(h+source()+'</div>');
 }
 function current(){return session&&byId[session.queue[session.index]];}
@@ -371,6 +380,8 @@ function skillsMenu(unit){
    var saved=old&&old.skillId===s.id?old:restore(contextualKey(s.id));
    h+='<article class="paper k-skill-card"><h3>'+esc(s.name)+'</h3><p>'+esc(s.description)+'</p>'+(p.checked?'<p class="k-source">'+p.independent+' of '+p.checked+' checked responses answered independently</p>':'')+'<a class="button primary" href="#'+(saved?esc(saved.route):'skills/'+u+'/'+s.id)+'">'+(saved?'Resume':'Practise')+'<span class="sr-only"> '+esc(s.name)+'</span></a></article>';
   });h+='</div>';
+  if(u==="f170"&&transplantActivities)h+='<ul class="hb-link-list hb-transplant-skill-links">'+
+   transplantRows("skills/f170",["kidney-evidence"])+unitRow("catchup/f170/2.1.4.graft","Trace a transplanted kidney’s connections")+'</ul>';
  });
  h+='<p class="k-source">Calculations vary numbers and, where appropriate, the unknown quantity. Reasoning questions rotate through authored contexts. Repeats are possible. These skills support F170/F171; they are not complete knowledge coverage.</p>'+source()+'</div>';show(h);
 }
@@ -414,9 +425,9 @@ function bestForm(q,answer){
  answer=answer||{};
  if(!answer.optionOrder){answer.optionOrder=shuffle(q.options.map(function(_,i){return i;}));session.answers[q.id]=answer;save();}
  if(!answer.reasonOrder){answer.reasonOrder=shuffle(q.reasons.map(function(_,i){return i;}));session.answers[q.id]=answer;save();}
- var h='<div class="k-justify"><fieldset><legend><span class="k-step-num">1</span> Choose the scientifically accurate explanation</legend><div class="k-options">';
+ var h='<div class="k-justify"><fieldset><legend><span class="k-step-num">1</span> '+(q.classification?'Choose the treatment category':'Choose the scientifically accurate explanation')+'</legend><div class="k-options">';
  h+=answer.optionOrder.map(function(i,pos){return '<label class="k-option"><input type="radio" name="kbest" value="'+i+'"'+(answer.choice===i?' checked':'')+'><span class="k-option-letter">'+String.fromCharCode(65+pos)+'</span><span>'+esc(q.options[i])+'</span></label>';}).join("");
- h+='</div></fieldset><fieldset><legend><span class="k-step-num">2</span> Which scientific reason supports your choice?</legend><div class="k-options">';
+ h+='</div></fieldset><fieldset'+(q.classification?' data-k-classification-reasons'+(!Number.isInteger(answer.choice)?' hidden':''):'')+'><legend><span class="k-step-num">2</span> Which scientific reason supports your choice?</legend><div class="k-options">';
  h+=answer.reasonOrder.map(function(i,pos){return '<label class="k-option"><input type="radio" name="kreason" value="'+i+'"'+(answer.reason===i?' checked':'')+'><span class="k-option-letter">'+String.fromCharCode(65+pos)+'</span><span>'+esc(q.reasons[i])+'</span></label>';}).join("");
  return h+'</div></fieldset></div>';
 }
@@ -465,6 +476,7 @@ const practiceFigures={
  "practice-breath-in":["breath-in","Chest cavity in inspiration with a flattened diaphragm, expanded lungs, and outward rib movement."],
  "practice-cuff":["cuff","A cuff is wrapped around the upper arm, connected to a display reading 124 over 78."],
  "practice-cast":["cast","Forearm cutaway showing the cast shell and a break in the bone."],
+ "practice-septal-openings":["septal-openings","Two heart cross-sections with four chambers each. In diagram P a gap between the left and right sides is level with the two upper chambers. In diagram Q that gap is level with the two lower chambers."],
  "practice-antibody":["antibody","A Y-shaped antibody with matching antigen fragments near its two tips."],
  "practice-chromatogram":["chromatogram","Three lanes share a baseline at 2 cm and a solvent front at 10 cm. Standard J has a spot at 4 cm, K at 8 cm. The unknown has spots at 6 cm and 8 cm."]
 };
@@ -673,6 +685,7 @@ function misconceptionFeedback(q,a){
  if(a.priorResponse)return "";
  var messages=[];
  if(q.optionFeedback&&a.selected)messages=a.selected.map(function(i){return q.optionFeedback[i];}).filter(Boolean);
+ if(q.optionFeedback&&Number.isInteger(a.choice)&&q.optionFeedback[a.choice])messages.push(q.optionFeedback[a.choice]);
  if(q.numberFeedback&&a.text){
   var value=NarajosAssessment.parse(a.text,q.answerUnit,q.stem).value;
   var error=q.numberFeedback.find(function(entry){return Math.abs(value-entry[0])<=(entry[2]??1e-6);});
@@ -746,7 +759,7 @@ function drawQuestion(animateFeedback=false){
    (unknown?'':'<strong>'+(correct?'Why it works':'Quick reteach')+':</strong> ')+esc(q.explain)+'</p></div>';
   if(a.priorResponse)h+='<p>Your saved result is from an earlier version of this question.</p>';
   if(!correct&&!unknown&&a.selected&&q.options)h+='<p><strong>Your selection</strong> '+a.selected.map(function(i){return esc(q.options[i]);}).join('; ')+'</p>';
-  if(q.type==='best'&&!correct&&!unknown){var partial=session.answers[q.id]||{};if(partial.choice===q.correct&&partial.reason!==q.reasonCorrect)h+='<p class="k-diagnostic-note">You chose the correct explanation; now focus on why it is correct.</p>';}
+  if(q.type==='best'&&!correct&&!unknown){var partial=session.answers[q.id]||{};if(partial.choice===q.correct&&partial.reason!==q.reasonCorrect)h+='<p class="k-diagnostic-note">'+(q.classification?'You chose the correct category. Use the job the treatment does to justify it.':'You chose the correct explanation; now focus on why it is correct.')+'</p>';}
   if(q.levelsNote)h+='<p class="k-level-guidance">'+esc(q.levelsNote)+'</p>';
   if(!correct&&!unknown){
    var diagnosis=misconceptionFeedback(q,a);
@@ -760,6 +773,8 @@ function drawQuestion(animateFeedback=false){
   var catchup=window.KeystoneHumanCatchup?.reteachFor(q,a);
   if(catchup)h+='<p class="k-catchup-after"><a href="#'+esc(catchup.href)+'" data-reteach-to="'+esc(catchup.route)+'">'+esc(catchup.label)+'</a></p>';
  }
+ const followUp=showing&&session.outcomes[session.index]&&transplantActivities?.get(q.followUpActivity);
+ if(followUp)h+='<p class="k-catchup-after"><a href="#challenge/f170/'+followUp.id+'">'+esc(followUp.title)+'</a></p>';
  if(!showing)h+='<div class="k-foot-actions"><button class="button primary k-cta" type="button" data-k-action="'+(q.type==="written"?"reveal":"check")+'">'+(q.type==="written"?"Compare with key points →":"Check")+'</button>'+(used<availableHints.length?'<button class="button secondary k-hint-button" type="button" data-k-action="hint"'+(hintRemaining()>0?' hidden':'')+'>'+(used?'More help':'Hint')+'</button>':'')+'<button class="button quiet" type="button" data-k-action="skip">I don’t know · show me</button></div>';
  else if(canCorrect(q,a))h+='<div class="k-foot-actions"><button class="button primary" data-k-action="correct" type="button">Try again</button><button class="button quiet" data-k-action="show-correction" type="button">Show answer</button></div>';
  else if(!session.wasSkipped&&q.type==="written"&&!session.outcomes[session.index])h+='<div class="k-foot-actions"><button class="button primary" data-k-action="finish-review" type="button">Finish review</button></div>';
@@ -771,7 +786,7 @@ function drawQuestion(animateFeedback=false){
 }
 function norm(s){return String(s||"").normalize("NFKC").trim().toLowerCase().replace(/[’‘]/g,"'").replace(/[.!?]+$/,"").replace(/\s+/g," ");}
 function validateAnswer(q,a){
- if(q.type==="best"){if(!Number.isInteger(a.choice)||!Number.isInteger(a.reason))return {ready:false,msg:"Choose an explanation and the reason for it."};return {ready:true,correct:a.choice===q.correct&&a.reason===q.reasonCorrect};}
+ if(q.type==="best"){if(!Number.isInteger(a.choice)||!Number.isInteger(a.reason))return {ready:false,msg:q.classification?"Choose a treatment category and the reason for it.":"Choose an explanation and the reason for it."};return {ready:true,correct:a.choice===q.correct&&a.reason===q.reasonCorrect};}
  if(q.type==="single"||q.type==="diagram"||q.type==="multi"){
   if(!a.selected||!a.selected.length)return {ready:false};
   if(q.type==="multi"&&a.selected.length!==q.correct.length)return {ready:false,msg:"Select exactly "+q.correct.length+" answers."};
@@ -946,6 +961,13 @@ function showCompletion(old,animate=false){
 }
 function route(r,renderer){
  render=renderer;lastRoute=r;
+ const matchActivity=/^challenge\/f170\/([a-z-]+)(?:\?from=(.+))?$/.exec(r);
+ const activity=matchActivity&&transplantActivities?.get(matchActivity[1]);
+ if(activity){
+  visible=false;
+  show(transplantActivities.render(activity,matchActivity[2]));
+  return transplantActivities.mount(main,activity);
+ }
  if(r==="skills"||r.startsWith("skills/"))return skillRoute(r);
  if(r==="challenge")return landing();
  if(r==="knowledge")return knowledgeLanding();
@@ -984,7 +1006,10 @@ main.addEventListener("change",function(e){
  if(session&&visible&&e.target.matches("[data-review-criterion]")){saveReviewField(e.target);return;}
  noteAnswerActivity();
  if(!session||session.phase!=="ask"||!visible)return;
- if(e.target.matches('input[name="kbest"],input[name="kreason"]')){readForm();}
+ if(e.target.matches('input[name="kbest"],input[name="kreason"]')){
+  var answer=readForm(),reasons=main.querySelector("[data-k-classification-reasons]");
+  if(reasons)reasons.hidden=!Number.isInteger(answer?.choice);
+ }
  else if(e.target.matches('input[name="kchoice"]')){
   var q=current();if(!q)return;
   var a=session.answers[q.id]||{};

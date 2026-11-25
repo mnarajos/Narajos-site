@@ -321,6 +321,9 @@ const focusedLessons={
   "A haemocytometer uses a ruled grid and known depth. Visible cells are counted in a defined volume, with any dilution allowed for.",
   "A Coulter counter registers electrical pulses when particles pass through an aperture, allowing rapid counting and size estimation. Clumps and similarly sized debris can distort the result."
  ]},
+ "f170/2.1.4.graft":{area:"a2",title:"Trace a transplanted kidney’s connections",practice:"2.1.4",lines:[
+  "The donor kidney is usually placed low in the recipient’s abdomen. Follow the blood supply and the route from the kidney to the bladder."
+ ]},
  "f171/1.2.1.hiatus":{area:"a1",title:"Hiatus hernia and reflux",practice:"f171-hiatus-mechanism-transfer",lines:[
   "In a sliding hiatus hernia, the junction between the oesophagus and stomach and part of the upper stomach move above the diaphragm.",
   "This can weaken the barrier to reflux. Reflux can irritate the oesophagus and cause heartburn, but a hernia may cause no symptoms."
@@ -336,8 +339,9 @@ const focusedLessons={
 };
 function indexComparisons(){
  for(const [key,lesson] of Object.entries(window.KeystoneHumanLessons || {})){
- if((/^f171\/1\.[23]\.1\./.test(key) || /^f170\/1\.1\.[1345]\./.test(key)) && lesson.title && !focusedLessons[key]){
-  focusedLessons[key]={area:"a1",title:lesson.title,practice:lesson.practice || key.split("/")[1].split(".").slice(0,3).join("."),lines:lesson.explain};
+ const area=/^f170\/2\.1\.3\./.test(key)?"a2":(/^f171\/1\.[23]\.1\./.test(key)||/^f170\/1\.1\.[1345]\./.test(key))?"a1":null;
+ if(area && lesson.title && !focusedLessons[key]){
+  focusedLessons[key]={area,title:lesson.title,practice:lesson.practice || key.split("/")[1].split(".").slice(0,3).join("."),lines:lesson.explain};
  }
 }
 }
@@ -350,6 +354,7 @@ var buildPractice={
  "f170/1.1.5":"p-cell-stage-metaphase",
  "f170/2.1.2":"p-phys-heart-septum",
  "f170/2.1.3":"p-phys-homeostasis-cross",
+ "f170/2.1.4":"p-phys-transplant",
  "f170/2.2.2":"p-phys-homeostasis-cross",
  "f170/2.2.3":"p-phys-peakflow-technique",
  "f170/3.1.1":"p-endo-insulin-loop",
@@ -408,8 +413,13 @@ function relatedLinks(unit,id,origin,practice,label){
  const resume=back?'<a data-hb-resume href="#'+esc(back)+'">Return to your unfinished question set</a>':"";
  const practiceLink=back===practice?"":'<a data-hb-practice href="#'+esc(practice)+'">'+esc(label)+'</a>';
  const exactLessonPractice=unit==="f170"&&lessonFor(unit,id)?.practice;
- const primary=exactLessonPractice?(resume||practiceLink):resume+build+(!resume&&!build?practiceLink:"");
+ const transplantTopic=unit==="f170"&&id==="2.1.4";
+ const activities=transplantTopic?["kidney-evidence","dialysis-judgement"].map(key=>window.KeystoneTransplantActivities?.get(key)).filter(Boolean).map(activity=>
+  '<a href="#challenge/f170/'+activity.id+'?from=catchup/f170/2.1.4">'+esc(activity.title)+'</a>').join(""):"";
+ const primary=activities+(exactLessonPractice?(resume||practiceLink):resume+build+(!resume&&!build?practiceLink:""));
  let further=exactLessonPractice?build+(resume?practiceLink:""):(build||resume?practiceLink:"");
+ if(transplantTopic)further+='<a href="#challenge/f170/p-phys-treatment-types">Classify surgery, transplantation and artificial support</a>'+
+  '<a href="#catchup/f170/2.1.4.graft">Trace a transplanted kidney’s connections</a>';
  const other=lessonFor(unit,id)?.further || [];
  for(const [route,title] of other){
   const href=route.startsWith("challenge/")?route+"?from="+origin:route;
@@ -644,6 +654,7 @@ window.KeystoneHumanCatchup={route:function(hash,render){
   "f171/1.2.1.hiatus":"sliding hiatal hernia heartburn gastro oesophageal reflux",
   "f171/1.2.1.hodgkin":"lymphatic lymph node cancer",
   "f170/1.1.2":"microscope micrograph magnification resolution scale bar TEM SEM",
+  "f170/2.1.4":"kidney transplant creatinine dialysis haemodialysis artificial organs surgery evidence",
   "f170/3.1.1":"glucose insulin hormones blood sugar negative feedback",
   "f171/4.2.1":"screen false positive false negative sensitivity specificity screening test",
   "f171/a3":"immunity antibody antibodies antigen adaptive innate vaccination lymphocytes",

@@ -84,6 +84,35 @@ F("phys-bone-dexa","Choose DEXA for bone mineral density",["Identify what the in
 F("phys-transplant","Recognise limitations of transplantation",["Distinguish a treatment's potential benefit from barriers to obtaining and maintaining a functioning graft.","Donor compatibility affects immune recognition, and reducing immune responses can affect defence against pathogens."],[
  M("Select TWO genuine challenges associated with organ transplantation.",["A suitable donor may not be available","Immunosuppression can increase infection risk","All donor organs are automatically compatible","Rejection cannot occur after surgery"],"Donor availability and immune rejection are major challenges; immunosuppression brings additional risks."),
  W("Give TWO limitations of replacing a damaged organ with a donor organ.",["A suitable, compatible donor organ may be difficult to obtain.","Immune rejection can occur, and immunosuppression may be required."],"A successful operation does not remove compatibility problems or the need for long-term monitoring.")]);
+db.questions.filter(q=>q.family==="phys-transplant").forEach(q=>{q.followUpActivity="dialysis-judgement";});
+
+var treatmentCategories=["Corrective surgery","Transplantation","Artificial organ support"];
+var treatmentHints=["Identify the job that needs to be restored in this example.","Ask what now does that job: the patient's own tissue, a donor organ or a device."];
+function treatmentExample(id,stem,category,reasons,explain,optionFeedback){
+ return {id:id,unit:"f170",area:2,section:"2.1.4",level:"apply",type:"best",classification:true,
+  stem:stem,options:treatmentCategories,correct:category,reasons:reasons,reasonCorrect:0,
+  model:treatmentCategories[category]+". "+reasons[0],explain:explain,hints:treatmentHints,optionFeedback:optionFeedback,
+  misconception:"Classify the treatment by what restores the function or helps the tissue heal."};
+}
+var septumPatch=treatmentExample("phys-treatment-types","A surgeon patches a hole in the septum between the ventricles. Classify the treatment.",0,[
+ "The patch repairs a defect in the patient's own heart.","Living donor tissue takes over the pumping action.","The patch itself pumps blood out of the ventricles."
+],"The patient's own ventricles still pump blood. The patch closes the opening between them.");
+db.questions.push(septumPatch);
+anchors[septumPatch.id]=septumPatch;
+F(septumPatch.id,"Classify surgery, transplantation and artificial support",treatmentHints,[
+ treatmentExample("phys-treatment-donor-kidney","A patient receives a working kidney from another person. Classify the treatment.",1,[
+  "The living donor kidney takes over kidney functions.","A device removes waste from the blood in sessions.","The operation repairs damage in the patient's own kidney."
+ ],"The organ doing the work comes from a donor. It can remove waste from the recipient's blood."),
+ treatmentExample("phys-treatment-artificial-heart","A total artificial heart pumps blood while a patient waits for a donor heart. Classify the current treatment.",2,[
+  "A device takes over the pumping action of the ventricles.","The patient's own ventricles pump after a repair.","A donor heart already pumps blood."
+ ],"The implanted device is doing the pumping. Transplantation would begin when a living donor heart is implanted.")
+]);
+db.questions.push(treatmentExample("phys-treatment-bone-plate","A metal plate holds a broken bone together. Has the patient received an artificial organ? Choose the treatment category, then justify it.",0,[
+ "The plate holds the fragments in position while the patient's own bone heals.","The plate takes over the biological work of repairing bone tissue.","The plate supplies living tissue from another person."
+],"The plate stabilises the fragments. Living bone tissue carries out the repair.",[
+ null,"The plate supplies mechanical support. Where does the living tissue that repairs the fracture come from?",
+ "What is doing the healing, and what job is the plate doing?"
+]));
 F("phys-homeostasis-cross","Link respiratory and circulatory responses during exercise",["Follow oxygen from the outside air to an active muscle and carbon dioxide in the reverse direction.","Gas exchange and blood transport are linked stages. Increased demand needs increased delivery and waste removal."],[
  W("Explain how increased breathing and blood flow together support aerobic respiration in exercising muscles.",["Increased ventilation helps maintain gas exchange in the lungs.","Increased cardiac output delivers more oxygenated blood to active muscle.","Blood carries carbon dioxide from muscles back to the lungs for removal."],"Link delivery to cellular demand and link carbon-dioxide production to transport and exhalation."),
  O("Order the route of an oxygen molecule from inhaled air to an active muscle cell.",["Oxygen reaches an alveolus","Oxygen diffuses into pulmonary capillary blood","Oxygenated blood passes through the left side of the heart","Systemic blood carries oxygen to muscle capillaries","Oxygen diffuses into the muscle cell"],"The respiratory system exchanges gases and the circulation transports them to tissues.")]);

@@ -68,6 +68,17 @@ T("phys-transplant","Explain immune rejection as a limitation of transplantation
  C("What does an organ transplant replace?",["A damaged or failing organ with a donor organ","All the recipient's chromosomes","Every immune cell with an antibody","Every tissue with stem cells at once"],"Transplantation replaces an organ; it does not remove all other biological differences between donor and recipient."),
  C("A transplanted organ is healthy. Why might it still be rejected?",["The recipient's immune system may recognise donor antigens as foreign","Healthy organs cannot contain cell-surface molecules","The donor organ must contain an infection","The recipient's blood immediately changes the organ's DNA"],"Rejection concerns immune recognition, not whether the donor organ originally functioned well."),
  W("Explain why a medicine that reduces transplant rejection can create a different health risk.",["Suppressing immune responses reduces attacks against donor tissue.","The same suppression can weaken responses against pathogens, increasing infection risk."],"Derive both the benefit and risk from the medicine's effect on immunity."));
+
+// The examples are fixed here so learners compare all three categories and both repairs.
+var classificationPoint={id:"p-phys-treatment-types",unit:"f170",area:2,section:"2.1.4",
+ statement:byId["phys-treatment-types"].objective,anchor:"phys-treatment-types",fixed:true,
+ foundation:"phys-treatment-types",diagnostic:"phys-treatment-bone-plate",
+ core:["phys-treatment-donor-kidney"],challenge:"phys-treatment-artificial-heart"};
+points.push(classificationPoint);
+[classificationPoint.foundation,classificationPoint.diagnostic,...classificationPoint.core,classificationPoint.challenge].forEach(function(id,i){
+ Object.assign(byId[id],{point:classificationPoint.id,stage:["foundation","diagnostic","core","challenge"][i]});
+});
+
 T("phys-tissue-order","Explain an organ system as organs contributing to a shared function","Start with one specialised cell. What larger structure does it work in?",
  C("What makes a group of organs an organ system?",["Their activities contribute to a shared function","Every organ contains only the same single tissue","Every organ is the same size and shape","The organs must all lie in one small cavity"],"A system is defined by organs working together towards a common function, rather than identical structure or size."),
  C("Which sequence keeps the levels of organisation consistent?",["Cardiac muscle cell → cardiac muscle tissue → heart → circulatory system","Heart → cardiac muscle cell → circulatory system → tissue","Tissue → organ system → cell → organ","Circulatory system → heart → organelle → tissue"],"Build the hierarchy by containment and contribution, rather than confusing a cell with the whole system."),
