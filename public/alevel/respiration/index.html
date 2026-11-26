@@ -340,8 +340,25 @@ function sf(v,n=2){if(!isFinite(v))return"—";if(v===0)return"0";let e=Math.flo
 function parseNum(str){let s=String(str||"").trim().replace(/,/g,".").replace(/[−–]/g,"-").replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]/g,c=>({"⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9","⁻":"-"}[c])).replace(/\s+/g,"");
  const m=s.match(/^([+-]?\d*\.?\d+)(?:[x×*X]10\^?([+-]?\d+))?$/);if(m)return parseFloat(m[1])*(m[2]!=null?10**(+m[2]):1);
  const v=Number(s);return s!==""&&isFinite(v)?v:NaN;}
-function installZoom(){for(const svg of document.querySelectorAll('svg[role="img"]')){if(svg.closest("dialog")||svg.nextElementSibling?.classList.contains("diagram-zoom"))continue;const b=document.createElement("button");b.type="button";b.className="btn small diagram-zoom";b.textContent="Enlarge diagram";b.addEventListener("click",()=>{const dialog=$("#zoom-dialog");$("#zoom-content").replaceChildren(svg.cloneNode(true));dialog.showModal();$("#zoom-close").focus();});svg.after(b);}}
+let zoomSource=null,zoomResults=false;
+function syncZoom(){
+ const dialog=$("#zoom-dialog");if(!dialog.open||!zoomSource)return;
+ // Results graphs are replaced as new readings arrive; follow the current graph.
+ if(zoomResults&&!zoomSource.isConnected)zoomSource=$("#results svg[role='img']");
+ if(!zoomSource||!zoomSource.isConnected)return;
+ const copy=zoomSource.cloneNode(true),ids=new Map();
+ for(const el of [copy,...copy.querySelectorAll("[id]")])if(el.id){ids.set(el.id,el.id+"-zoom");el.id+="-zoom";}
+ // Keep SVG definitions local to the enlarged copy without duplicate document IDs.
+ for(const el of [copy,...copy.querySelectorAll("*")])for(const attr of [...el.attributes]){
+  let value=attr.value.replace(/url\(#([^)]*)\)/g,(all,id)=>ids.has(id)?`url(#${ids.get(id)})`:all);
+  if((attr.name==="href"||attr.name==="xlink:href")&&value.startsWith("#")&&ids.has(value.slice(1)))value="#"+ids.get(value.slice(1));
+  if(value!==attr.value)el.setAttribute(attr.name,value);
+ }
+ $("#zoom-content").replaceChildren(copy);
+}
+function installZoom(){for(const svg of document.querySelectorAll('svg[role="img"]')){if(svg.closest("dialog")||svg.nextElementSibling?.classList.contains("diagram-zoom"))continue;const b=document.createElement("button");b.type="button";b.className="btn small diagram-zoom";b.textContent="Enlarge diagram";b.addEventListener("click",()=>{zoomSource=svg;zoomResults=!!svg.closest("#results");const dialog=$("#zoom-dialog");dialog.showModal();syncZoom();$("#zoom-close").focus();});svg.after(b);}}
 $("#zoom-close").addEventListener("click",()=>$("#zoom-dialog").close());
+$("#zoom-dialog").addEventListener("close",()=>{zoomSource=null;zoomResults=false;});
 const r2=v=>Math.round(v*100)/100;
 function mix(a,b,f){return`rgb(${a.map((v,i)=>Math.round(v+(b[i]-v)*f)).join(",")})`;}
 function say(h){const d=document.createElement("div");d.innerHTML=h;$("#announce").textContent=d.textContent;}
@@ -649,24 +666,25 @@ const DIAG={
   g+=`<line class="f-thin" x1="94" y1="153" x2="140" y2="140"/><text class="f-sm" x="144" y="140">woodlice on gauze</text>`;
   g+=`<line class="f-thin" x1="92" y1="192" x2="140" y2="196"/><text class="f-sm" x="144" y="196">chemical X</text><text class="f-sm" x="130" y="16">capillary tube with scale</text>`;
   return`<svg viewBox="0 0 350 240" role="img" aria-label="A boiling tube with woodlice on gauze above chemical X, closed with a bung. A capillary tube with a scale and a drop of coloured liquid leads from the bung, with a syringe on a side arm.">${g}</svg>`;},
- syringe:()=>{let g=`<rect class="a-water" x="10" y="120" width="150" height="104" rx="8"/><path class="a-glass" d="M62 54 V96 L26 196 Q24 206 34 206 H136 Q146 206 144 196 L108 96 V54"/>`;
-  g+=`<path class="a-susp" d="M36 168 H134 L142 194 Q144 204 134 204 H36 Q26 204 28 194 Z"/><path class="a-oil" d="M40 160 H130 L134 168 H36 Z"/>`;
+ syringe:(air=false)=>{let g=`<rect class="a-water" x="10" y="120" width="150" height="104" rx="8"/><path class="a-glass" d="M62 54 V96 L26 196 Q24 206 34 206 H136 Q146 206 144 196 L108 96 V54"/>`;
+  g+=`<path class="a-susp" d="M36 168 H134 L142 194 Q144 204 134 204 H36 Q26 204 28 194 Z"/>`+(air?"":`<path class="a-oil" d="M40 160 H130 L134 168 H36 Z"/>`);
   g+=`<rect class="a-bung" x="56" y="44" width="58" height="14" rx="3"/><path class="a-cap" d="M85 44 V24 H190"/><path class="a-bore" d="M85 44 V24 H190"/>`;
   g+=`<rect class="a-glass" x="190" y="14" width="120" height="20" rx="3"/><rect class="a-plunger" x="232" y="16" width="78" height="16"/><line class="f-ink" x1="310" y1="24" x2="340" y2="24"/><rect class="a-bung" x="338" y="14" width="6" height="20"/>`;
   for(let i=0;i<=10;i++)g+=`<line class="f-thin" x1="${194+i*11}" y1="34" x2="${194+i*11}" y2="${i%5?39:43}"/>`;
-  g+=`<text class="f-sm" x="196" y="56">gas syringe (cm³)</text><line class="f-thin" x1="140" y1="186" x2="178" y2="176"/><text class="f-sm" x="182" y="172">living yeast added after</text><text class="f-sm" x="182" y="186">glucose boiled and cooled</text>`;
-  g+=`<line class="f-thin" x1="132" y1="163" x2="178" y2="140"/><text class="f-sm" x="182" y="140">oil layer</text><text class="f-sm" x="182" y="100">air above replaced</text><text class="f-sm" x="182" y="114">with nitrogen</text><line class="f-thin" x1="108" y1="110" x2="178" y2="106"/>`;
-  return`<svg viewBox="0 0 350 230" role="img" aria-label="A conical flask in a water bath containing living yeast added after the glucose solution was boiled and cooled, under a layer of oil, with nitrogen above. A delivery tube leads to a gas syringe with a scale in cubic centimetres.">${g}</svg>`;},
+  g+=`<text class="f-sm" x="196" y="56">gas syringe (cm³)</text><line class="f-thin" x1="140" y1="186" x2="178" y2="176"/>`+(air?`<text class="f-sm" x="182" y="172">living yeast in</text><text class="f-sm" x="182" y="186">glucose solution</text>`:`<text class="f-sm" x="182" y="172">living yeast added after</text><text class="f-sm" x="182" y="186">glucose boiled and cooled</text>`);
+  g+=air?`<text class="f-sm" x="182" y="100">air above mixture</text><text class="f-sm" x="182" y="140">no oil layer</text><line class="f-thin" x1="108" y1="110" x2="178" y2="106"/>`:`<line class="f-thin" x1="132" y1="163" x2="178" y2="140"/><text class="f-sm" x="182" y="140">oil layer</text><text class="f-sm" x="182" y="100">air above replaced</text><text class="f-sm" x="182" y="114">with nitrogen</text><line class="f-thin" x1="108" y1="110" x2="178" y2="106"/>`;
+  return`<svg viewBox="0 0 350 230" role="img" aria-label="${air?"A conical flask containing living yeast in glucose solution, with air above and no oil layer.":"A conical flask containing living yeast added after the glucose solution was boiled and cooled, under a layer of oil, with nitrogen above."} The flask is in a water bath and a delivery tube leads to a gas syringe with a scale in cubic centimetres.">${g}</svg>`;},
  btb:()=>{let g=`<path d="M48 70 V170 A14 14 0 0 0 76 170 V70 Z" fill="rgb(58,120,190)"/><path class="a-tube" d="${tubePath(62,30,186,16)}"/>`;
   const C=[[42,92,190],[60,140,130],[150,175,60],[214,196,40]];C.forEach((c,i)=>g+=`<rect x="${130+i*48}" y="80" width="46" height="30" fill="rgb(${c})" stroke="currentColor" stroke-opacity=".3"/>`);
   g+=`<text class="f-sm" x="130" y="128">pH 7.6+</text><text class="f-sm" x="274" y="128" text-anchor="middle">pH 6.0 and below</text><text class="f-sm" x="130" y="70">bromothymol blue colour chart</text>`;
   g+=`<line class="f-thin" x1="78" y1="150" x2="120" y2="160"/><text class="f-sm" x="124" y="164">yeast in glucose solution</text><text class="f-sm" x="124" y="178">+ bromothymol blue</text>`;
   return`<svg viewBox="0 0 340 210" role="img" aria-label="A test tube of yeast in glucose solution with bromothymol blue, beside a colour chart going from blue at pH 7.6 and above, through green, to yellow at pH 6.0 and below.">${g}</svg>`;}};
 const DIAGINFO={utube:"Potassium hydroxide (KOH) solution absorbs carbon dioxide. The glass-bead tube has the same volume of gas but nothing living. Germinating seeds are an exam application context.",
- woodlice:"Chemical X absorbs carbon dioxide. The capillary radius is 0.5 mm. Woodlice are an exam application context; the core RP9 investigation uses single-celled organisms.",
+ woodlice:"Chemical X absorbs carbon dioxide. Woodlice are an exam application context; the core RP9 investigation uses single-celled organisms. Use the radius given in each question.",
  syringe:"Before timing, the glucose solution was boiled and cooled before living yeast was added. The mixture was covered with oil and the air above was replaced with nitrogen. There is no carbon dioxide absorber.",
+ syringeAir:"In this fresh question there is air above the yeast and no oil layer. There is no carbon dioxide absorber.",
  btb:"Bromothymol blue is a pH indicator: blue at pH 7.6 and above, green in between, yellow at pH 6.0 and below. Carbon dioxide dissolves in water to form an acid."};
-function diagHTML(id){return`${DIAG[id]()}<p class="info"><b>Information:</b> ${DIAGINFO[id]}</p>`;}
+function diagHTML(id,variant=0){const air=id==="syringe"&&variant>0;return`${DIAG[id](air)}<p class="info"><b>Information:</b> ${air?DIAGINFO.syringeAir:DIAGINFO[id]}</p>`;}
 
 /* ================= Panel switching ================= */
 let panel="mb",lastModel="mb",curPair=null,curTaskPanel=null,taskShown=null;
@@ -675,8 +693,8 @@ function setPanel(p){panel=p;if(p==="mb"||p==="gas")lastModel=p;
 function renderTabs(){const tabs=[["mb","Methylene blue"],["gas","Respirometer"]];if(curTaskPanel)tabs.push(["task",curTaskPanel.pair?"Paired examples":"Task diagram"]);
  $("#ptabs").innerHTML=tabs.map(([k,l])=>`<button type="button" class="chip${panel===k?" sel":""}" aria-pressed="${panel===k}" data-p="${k}">${l}</button>`).join("");}
 $("#ptabs").addEventListener("click",e=>{const b=e.target.closest("button[data-p]");if(b)setPanel(b.dataset.p);});
-function showTaskPanel(tp){curTaskPanel=tp||null;curPair=tp&&tp.pair||null;
- if(tp){$("#p-task").innerHTML=tp.pair?pairHTML(tp.pair):diagHTML(tp.diag);}}
+function showTaskPanel(tp,variant=0){curTaskPanel=tp||null;curPair=tp&&tp.pair||null;
+ if(tp){$("#p-task").innerHTML=tp.pair?pairHTML(tp.pair):diagHTML(tp.diag,variant);}}
 function renderResults(){if(!run||!mb)return;$("#resh").textContent=lastModel==="mb"?"Results: methylene blue":"Results: respirometer";if(lastModel==="mb")renderMbResults();else renderGasResults();installZoom();}
 
 /* ================= Task engine =================
@@ -781,7 +799,8 @@ function renderTasks(scroll){if(!run||!mb)return;const sec=SECTIONS[ST.sec],act=
  fresh=null;const ae=document.activeElement,aid=ae&&ae.id,pos=ae&&ae.selectionStart;
  $("#tasks").innerHTML=h;if(aid&&(aid.startsWith("in-")||aid.startsWith("wr-"))){const el=$("#"+aid);if(el&&!el.disabled){el.focus();try{el.setSelectionRange(pos,pos);}catch(e){}}}
  const tp=act&&act.panel?act.panel:null,want=act?(tp?"task":(act.m||sec.model)):sec.model;
- if((act&&act.id)!==taskShown){taskShown=act&&act.id;showTaskPanel(tp);setPanel(want==="task"&&!tp?sec.model:want);}else renderTabs();
+ const shownKey=act?act.id+":"+(ST.vr[act.id]||0):null;
+ if(shownKey!==taskShown){taskShown=shownKey;showTaskPanel(tp,act?(ST.vr[act.id]||0):0);setPanel(want==="task"&&!tp?sec.model:want);}else renderTabs();
  renderNav();installZoom();save();if(scroll)$("#tasks").scrollIntoView({behavior:"smooth",block:"start"});}
 
 function resolveCheck(t,correct,usedSupport){if(correct){ST.res[t.id]=usedSupport||ST.hint[t.id]?"sup":"ind";}}
@@ -909,15 +928,15 @@ const SECTIONS=[
  {id:"g1",type:"info",m:"gas",need:G({}),title:"Worked example: how a respirometer gives a reading",steps:[
   "<b>Set-up.</b> Living yeast in glucose solution in a sealed boiling tube, in a water bath, joined to a capillary tube with a drop of coloured liquid.",
   "<b>The CO₂ absorber.</b> Soda lime absorbs carbon dioxide. It does not absorb oxygen, and it does not make the tube anaerobic: the air above the yeast still contains oxygen.",
-  "<b>The gas change.</b> The yeast takes in oxygen and releases carbon dioxide. The carbon dioxide is absorbed, so the volume of gas falls by the volume of oxygen taken up.",
-  "<b>The reading.</b> A lower volume means a lower pressure, so the liquid moves towards the tube. The tube is left to reach the bath temperature first, so warming gas does not move the liquid.",
+  "<b>The gas change.</b> Yeast takes up oxygen and releases carbon dioxide. Soda lime absorbs the carbon dioxide, removing gas molecules from the enclosed space.",
+  "<b>The reading.</b> The internal pressure initially falls. Atmospheric pressure pushes the liquid towards the tube, decreasing the enclosed gas volume. With carbon dioxide absorbed, that volume decrease estimates oxygen uptake. The tube is left to reach the bath temperature first, so warming gas does not move the liquid.",
   "<b>The calculation.</b> Volume of oxygen taken up = πr²l, where r is the capillary radius and l the distance moved. Rate = volume ÷ time, in mm³ min⁻¹."]},
  {id:"g2",type:"predict",m:"gas",need:G({}),title:"Predict, then observe",skill:"Predict and explain the reading of a respirometer containing a CO₂ absorber",
   q:"Standard set-up at 25 °C. Predict: which way will the coloured liquid move?",
   out:[K("Towards the yeast"),O("Away from the yeast","That would need the gas volume to rise. What happens to the carbon dioxide?"),O("It will not move","The yeast is respiring at 25 °C. Is any gas taken out of the air in the tube?")],
   why:[K("Oxygen is taken up and the carbon dioxide released is absorbed, so the gas volume falls"),O("Carbon dioxide is released, which pushes the liquid","Carbon dioxide is released, but the soda lime absorbs it. Which gas change is left?"),O("Oxygen is taken up, so the gas volume falls","That is part of it. The yeast also releases carbon dioxide. Why does that not cancel out the oxygen taken up?"),O("The yeast pulls the liquid towards it","The yeast cannot pull the liquid. A change in gas volume moves it. Which gas, and why?")],
   res:r=>"The liquid moved towards the yeast. "+moveText(r.readings),
-  because:"Oxygen is taken up. The carbon dioxide released is absorbed by the soda lime. So the gas volume falls, the pressure falls, and the liquid moves towards the yeast. The reading shows oxygen uptake."},
+  because:"Oxygen uptake and carbon dioxide absorption remove gas molecules, so the internal pressure initially falls. Atmospheric pressure pushes the liquid towards the yeast, decreasing the enclosed gas volume. The reading estimates oxygen uptake."},
  {id:"g3",type:"num",m:"gas",need:G({}),title:"Calculation, step 1: distance",skill:"Read the distance moved from a table of readings",
   missing:"Complete a run of the standard set-up at 25 °C first.",
   worked:"<p>At 35 °C the readings were 60 mm at 0 min and 36 mm at 5 min.</p><p>Distance = 60 − 36 = 24 mm. Volume = 3.14 × 0.5² × 24 = 18.84 mm³. Rate = 18.84 ÷ 5 = 3.77 mm³ min⁻¹.</p>",
@@ -999,7 +1018,7 @@ const SECTIONS=[
  {id:"a1",type:"mcq",panel:{diag:"woodlice"},title:"A new respirometer",skill:"Identify what an unfamiliar respirometer measures from the function of its absorber",
   help:"Find the absorber's function in the information. Which gas does it remove, and which gas change is left?",
   v:[{q:"What does the movement of the coloured liquid show?",opts:[K("The volume of oxygen taken up by the woodlice, because chemical X absorbs the carbon dioxide they release"),O("The volume of carbon dioxide released by the woodlice","Chemical X absorbs carbon dioxide, so carbon dioxide cannot move the liquid."),O("The net change: oxygen taken up minus carbon dioxide released","That would be true with no absorber. What does chemical X do?"),O("The rate of anaerobic respiration","Nothing removes oxygen from this tube, so the woodlice can respire aerobically.")]},
-   {q:"The student opens the syringe, resets the liquid, then times again. Why is resetting needed and not a problem for the results?",opts:[K("It establishes a new starting reading; seal the apparatus and allow any necessary equilibration before timing again"),O("It adds oxygen for the woodlice, which is the variable being measured","Resetting is for the scale. The measurement starts again only after the tube is closed."),O("It removes carbon dioxide","Chemical X does that."),O("It changes the temperature","Moving a syringe does not change the bath temperature.")]}],
+   {q:"The student opens the syringe, resets the liquid, then times again. Why is resetting needed and not a problem for the results?",opts:[K("It establishes a new starting reading; seal the apparatus and allow any necessary equilibration before timing again"),O("It adds oxygen for the woodlice, which is the variable being measured","Resetting is for the scale. The measurement starts again only after the tube is closed."),O("It removes carbon dioxide","Chemical X does that."),O("It changes the temperature","Moving a syringe does not change the bath temperature.")],why:"Resetting establishes a new starting reading. Seal the apparatus and allow any necessary equilibration before timing the next interval."}],
   why:"An absorber decides which gas change is left. Here only oxygen uptake changes the volume."},
  {id:"a2",type:"num",panel:{diag:"woodlice"},title:"Calculate, with no prompts",skill:"Calculate a rate of oxygen uptake from an unfamiliar respirometer",unit:"mm³ min⁻¹",rel:.03,
   v:[{q:"In 10 minutes the liquid moved 15 mm. The capillary radius is 0.5 mm. Calculate the rate of oxygen uptake to 2 significant figures. Use π = 3.14.",ans:()=>1.2,errs:()=>[[11.775,"That is the volume. Divide by the time for a rate."],[1.5,"That is distance ÷ time. Convert the distance to a volume first."],[2.355,"You used r rather than r²."]],why:()=>"3.14 × 0.5² × 15 = 11.78 mm³; ÷ 10 = 1.2 mm³ min⁻¹ (2 s.f.)."},
@@ -1008,7 +1027,7 @@ const SECTIONS=[
  {id:"a3",type:"mcq",panel:{diag:"syringe"},title:"A gas syringe",skill:"Decide what is measured and whether the conditions are established as anaerobic",
   help:"Read the procedure for how oxygen was dealt with, and check whether any absorber is present.",
   v:[{q:"What does the gas syringe measure, and under what conditions?",opts:[K("The volume of carbon dioxide released in anaerobic respiration: oxygen was removed before timing, nothing absorbs CO₂, and the only gas change is CO₂ released"),O("The volume of oxygen taken up","There is no oxygen in the flask to take up. Which gas is released?"),O("The net change in aerobic respiration","The procedure removed the oxygen, so the yeast is not respiring aerobically."),O("Nothing, because there is no capillary tube","A gas syringe measures a gas volume directly, in cm³.")]},
-   {q:"Another student uses the same apparatus with air in the flask and no oil layer. Why can her syringe reading not be called the rate of anaerobic respiration?",opts:[K("Oxygen is present, so the yeast can respire aerobically. With no absorber the syringe shows the net gas change, and nothing in the procedure established anaerobic conditions"),O("It can: yeast always respires anaerobically in glucose","The procedure, not an assumption, must establish the conditions. Was oxygen removed?"),O("Because the gas syringe only measures oxygen","A gas syringe measures the total volume change of the gas."),O("Because the carbon dioxide is absorbed by the glucose solution","A little dissolves, but nothing here was removed on purpose. What about oxygen?")]}],
+   {q:"Another student uses the same apparatus with air in the flask and no oil layer. Why can her syringe reading not be called the rate of anaerobic respiration?",opts:[K("Oxygen is present, so the yeast can respire aerobically. With no absorber the syringe shows the net gas change, and nothing in the procedure established anaerobic conditions"),O("It can: yeast always respires anaerobically in glucose","The procedure, not an assumption, must establish the conditions. Was oxygen removed?"),O("Because the gas syringe only measures oxygen","A gas syringe measures the total volume change of the gas."),O("Because the carbon dioxide is absorbed by the glucose solution","A little dissolves, but nothing here was removed on purpose. What about oxygen?")],why:"Air supplies oxygen, so anaerobic conditions have not been established. With no carbon dioxide absorber, the syringe shows the net gas-volume change, including oxygen uptake and carbon dioxide production."}],
   why:"Anaerobic conditions must be set up by the procedure. Here they were, so the syringe shows carbon dioxide released."},
  {id:"a4",type:"mcq",panel:{diag:"btb"},title:"Bromothymol blue",skill:"Explain a CO₂/pH indicator separately from methylene blue reduction",
   help:"Methylene blue responds to reduction (gaining hydrogen). Bromothymol blue responds to pH. Use the information about carbon dioxide.",
@@ -1081,7 +1100,7 @@ function frame(now){const dt=Math.min(.05,(now-lastT)/1000);lastT=now;
  if(mb.status==="running"){const sps=(speed==="fast"?60:mbMech?6:12);mbStep(dt*sps);mbText();}
  if(mb.status!=="paused")mbMechStep(dt*(speed==="fast"?2:1)*(RM.matches?.6:1),mb.status==="running"?dt*(speed==="fast"?60:mbMech?6:12):0);
  mbColour();if(mbMech&&panel==="mb")mbMechDraw();
- gasStep(dt);requestAnimationFrame(frame);}
+ gasStep(dt);syncZoom();requestAnimationFrame(frame);}
 mbSync();gSync();syncSpeed();mbNew();newRun();
 if(saved&&saved.version===3){
  if(saved.MS)MS=saved.MS;if(saved.S)S=saved.S;if(saved.speed)speed=saved.speed;
