@@ -40,9 +40,20 @@ function quadrat() {
     '<rect x="175" y="34" width="135" height="110" fill="#edf6ed" stroke="'+teal+'" stroke-width="2"/>'+
     '<path d="M178 34 V144" stroke="'+teal+'" stroke-width="7"/>'+line(184,88,300,88,rust,2)+
     [196,230,264].map(x=>'<rect x="'+x+'" y="76" width="22" height="24" fill="none" stroke="'+blue+'" stroke-width="2"/>').join('')+
-    text(94,24,'Random quadrats',ink,14)+text(242,24,'Transect',ink,14)+text(77,164,'Whole area',ink,14)+text(242,154,'Distance from',ink,14)+text(242,186,'hedge',ink,14),
-    'Compare random locations for a whole-area estimate with regular positions along a gradient. The sketches show only a few samples.',205);
+    text(94,24,'Random quadrats',ink,14)+text(242,24,'Transect',ink,14)+text(77,172,'Whole area',ink,14)+text(242,175,'Distance from',ink,14)+text(242,207,'hedge',ink,14),
+    'Compare random locations for a whole-area estimate with regular positions along a gradient. The sketches show only a few samples.',225);
 }
+function quadratMeanWorked() {
+  const positions=[[10,15],[25,11],[40,15],[15,32],[35,32]];
+  const sample=(x,count)=>'<rect x="'+x+'" y="41" width="50" height="47" fill="#edf6ed" stroke="'+teal+'" stroke-width="2"/>'+
+    positions.slice(0,count).map(([dx,dy])=>circle(x+dx,41+dy,3,teal,teal)).join('')+text(x+25,115,String(count),ink,16);
+  return fig('Estimate a whole-field population',
+    'Four randomly placed one-square-metre quadrats contain 2, 4, 5 and 5 plants. Their mean is 16 divided by 4, or 4 plants per square metre. For a 200-square-metre field, the estimate is 4 times 200, or 800 plants.',
+    text(160,24,'Four 1 m² quadrats',ink,15)+sample(20,2)+sample(95,4)+sample(170,5)+sample(245,5)+
+    text(160,155,'Mean = 16 ÷ 4 = 4 / m²',blue,15)+text(160,190,'200 m² × 4 / m² = 800',teal,15),
+    'Count each quadrat, find the mean per square metre, then multiply by the field area. The dots represent plants in the worked example.',210);
+}
+function quadratWorked(){return grouped(quadrat,quadratMeanWorked);}
 function circuitMeters() {
   return fig('Measuring a component',
     'An ammeter is in series in the main loop with a cell and lamp. A voltmeter forms a parallel branch connected across the lamp terminals.',
@@ -247,6 +258,16 @@ function glucoseFates() {
     '<ellipse cx="75" cy="130" rx="47" ry="27" fill="#f4ddd4" stroke="'+rust+'" stroke-width="2"/><path d="M40 130 q9 -17 18 0 t18 0 t18 0 t18 0" fill="none" stroke="'+rust+'" stroke-width="2"/>'+text(75,186,'Respiration',rust,15)+
     glucose(207,130)+line(218,130,226,130,teal,2)+glucose(237,130)+line(248,130,256,130,teal,2)+glucose(267,130)+text(237,186,'Starch',teal,15)+text(237,218,'for storage',teal,15),
     'Follow glucose into respiration or into a chain used for storage. Each hexagon stands for one glucose unit.',240);
+}
+export function atomsRearranged() {
+  return fig('Atoms are rearranged in a reaction',
+    'One hydrogen molecule and one chlorine molecule react to form two hydrogen chloride molecules. There are two hydrogen atoms and two chlorine atoms both before and after. Colours distinguish the two elements; the model is not to scale.',
+    text(160,25,'Before',ink,15)+circle(55,70,10,'#d9e8f5',blue)+circle(79,70,10,'#d9e8f5',blue)+line(65,70,69,70,ink,2)+
+    text(110,75,'+',ink,18)+circle(140,70,10,'#d9eee2',teal)+circle(164,70,10,'#d9eee2',teal)+line(150,70,154,70,ink,2)+
+    text(67,107,'H₂',blue,15)+text(152,107,'Cl₂',teal,15)+arrow(160,119,160,144,rust,2)+text(160,170,'After',ink,15)+
+    circle(75,211,10,'#d9e8f5',blue)+circle(99,211,10,'#d9eee2',teal)+line(85,211,89,211,ink,2)+circle(206,211,10,'#d9e8f5',blue)+circle(230,211,10,'#d9eee2',teal)+line(216,211,220,211,ink,2)+
+    text(87,246,'HCl',ink,15)+text(218,246,'HCl',ink,15),
+    'Count each kind of atom before and after. The atoms are joined differently but none are lost or created in this model.',265);
 }
 function photosynthesisAndGlucose(){return grouped(gcseStepVisuals['photosynthesis-limits'][0],glucoseFates);}
 export function heatingCurve() {
@@ -682,11 +703,12 @@ function plantPaths() {
 }
 export const gcseWorkedVisuals = {
   'photosynthesis-limits': pondweedLight,
+  'chromatography': chromatographyWorked,
   'respiration-exercise': circulationWithMicrograph,
   'domestic-electricity': faultPath,
   'reacting-masses': magnesiumParticles,
   'plant-transport': plantPaths,
-  'quadrat-evidence': quadrat
+  'quadrat-evidence': quadratWorked
 };
 
 function inverseSquare() {
@@ -1001,9 +1023,21 @@ function paperPhases() {
     'The paper is the stationary phase. Solvent moves up the paper as the mobile phase. Different substances distribute differently between the paper and the solvent, so their spots can travel different distances.',
     '<rect x="53" y="20" width="205" height="142" fill="#fffdf3" stroke="'+ink+'" stroke-width="2"/>'+line(66,132,245,132,ink,2)+
     circle(110,84,8,'#c0d6ef',blue)+circle(190,52,8,'#f0cfba',rust)+arrow(72,116,72,43,teal,2)+
-    text(112,157,'Slow spot',blue,15)+text(190,157,'Faster spot',rust,15)+text(160,187,'Solvent moves up paper',teal,15),
-    'Follow the solvent up the stationary paper. The two spots have moved different distances from the same starting line.',205);
+    text(100,190,'Slower',blue,15)+text(207,190,'Faster',rust,15)+text(160,222,'Solvent moves up paper',teal,15),
+    'Follow the solvent up the stationary paper. The two spots have moved different distances from the same starting line.',245);
 }
+function phaseDistribution() {
+  const particle=(x,y,kind)=>kind==='A'?circle(x,y,7,'#c8dcf3',blue):'<path d="M'+x+' '+(y-8)+' l8 8 -8 8 -8 -8 z" fill="#f0cdbb" stroke="'+rust+'" stroke-width="2"/>';
+  return fig('Distribution between the phases',
+    'In a simplified snapshot, four particles of substance A are distributed with three on the stationary paper and one in the moving solvent. Four of substance B are distributed with one on the paper and three in the solvent. Their different distributions can make them travel different distances. The numbers are a model, not measurements.',
+    text(80,25,'On paper',ink,15)+text(240,25,'In solvent',ink,15)+
+    '<rect x="15" y="40" width="130" height="130" fill="#fffdf3" stroke="'+ink+'" stroke-width="2"/><rect x="175" y="40" width="130" height="130" fill="#e6f1f6" stroke="'+blue+'" stroke-width="2"/>'+
+    text(28,83,'A',blue,16)+particle(55,77,'A')+particle(85,77,'A')+particle(115,77,'A')+particle(240,77,'A')+
+    text(28,143,'B',rust,16)+particle(85,137,'B')+particle(200,137,'B')+particle(235,137,'B')+particle(270,137,'B')+
+    arrow(295,159,295,52,teal,2)+text(160,202,'Solvent moves up',ink,15),
+    'Compare the circles and diamonds between paper and solvent. This snapshot is a simplified model: both substances can move between phases.',220);
+}
+function chromatographyPhases(){return grouped(paperPhases,phaseDistribution);}
 function muscleOxygenDemand() {
   return fig('Oxygen supply during intense exercise',
     'When a muscle’s oxygen demand exceeds the supply, aerobic respiration continues and the muscle also respires anaerobically. In the GCSE model this produces lactic acid.',
@@ -1070,6 +1104,16 @@ function rfDistance() {
     text(160,205,'Rf = 2 ÷ 8 = 0.25',ink,16),
     'Both distances start at the baseline. Divide the spot distance by the solvent-front distance. The values are illustrative.',225);
 }
+function rfWorked() {
+  return fig('Worked Rf measurement',
+    'The sample spot centre is 4 centimetres above the baseline and the solvent front is 8 centimetres above it. Rf is the spot distance divided by the front distance: 4 divided by 8 equals 0.50, with no units.',
+    '<rect x="51" y="20" width="216" height="158" fill="#fffdf3" stroke="'+ink+'" stroke-width="2"/>'+line(61,40,257,40,teal,2,'5 4')+line(61,160,257,160,ink,2)+circle(102,100,8,'#e5bf9c',rust)+
+    line(147,100,147,160,blue,2)+line(140,100,154,100,blue,2)+line(140,160,154,160,blue,2)+text(158,137,'4 cm',blue,15,'start')+
+    line(218,40,218,160,rust,2)+line(211,40,225,40,rust,2)+line(211,160,225,160,rust,2)+text(230,104,'8 cm',rust,15,'start')+
+    text(160,205,'Rf = 4 ÷ 8 = 0.50',ink,16),
+    'Measure both distances from the baseline. Divide the distance to the spot centre by the solvent-front distance.',225);
+}
+function chromatographyWorked(){return grouped(()=>gcseVisual(['chromatogram']),rfWorked);}
 function activationBarrier() {
   return fig('Read activation energy',
     'A reaction energy profile starts at a reactant energy level, rises to a peak, then falls to a lower product energy level. Activation energy is the vertical energy difference between the reactants and the peak.',
@@ -1091,6 +1135,7 @@ function coilWithCurrent(){return gcseVisual(['coil', true]);}
 function wireAndCoil(){return grouped(wireField,coilWithCurrent);}
 export const gcseOpeningVisuals = {
   'salt-electrolysis': () => grouped(gcseStepVisuals['salt-electrolysis'][1], brine),
+  'latent-heat': () => grouped(heatingCurve, gcseStepVisuals['latent-heat'][1]),
   'glucose-control': gcseStepVisuals['glucose-control'][1],
   'greenhouse': greenhouse,
   'potable-water': waterRoutes,
@@ -1139,7 +1184,7 @@ export const moreGcseStepVisuals = {
   'vaccine-memory': {0:barriersAndAntibodies,1:vaccineMemory,2:vaccineAndAntibiotics},
   'selection-and-variation': {0:selectionAndInheritance,1:selectionAndInheritance,2:selectiveBreeding},
   'inheritance-cross': {2:selectionAndInheritance},
-  'chromatography': {1:rfDistance,2:gasTests},
+  'chromatography': {0:chromatographyPhases,1:rfDistance,2:gasTests},
   'latent-heat': {0:storedEnergy,1:() => grouped(heatingCurve, gcseStepVisuals['latent-heat'][1]),2:latentCalculation},
   'parallel-circuits': {2:parallelAndSeries},
   'reaction-profiles': {0:activationBarrier,2:temperaturePractical},

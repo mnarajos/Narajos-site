@@ -2,7 +2,7 @@ import { investigations } from "./gcse-investigations.js";
 import { question } from "./school-catchup-journey.js";
 import { priorityCatchup } from "./gcse-catchup-priority.js";
 import { gcseStepVisuals } from "./gcse-step-visuals.js";
-import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, heatingCurve, readableGcseFigure } from "./gcse-more-step-visuals.js";
+import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, heatingCurve, readableGcseFigure, atomsRearranged } from "./gcse-more-step-visuals.js";
 import { gcseVisual } from "./gcse-catchup-visuals.js";
 
 function lesson(year, code, title, hook, notice, idea, visual, stages, independent, retry, higher) {
@@ -587,6 +587,12 @@ gcseCatchup["photosynthesis-limits"].visual = ["custom", () => {
     readableGcseFigure(() => gcseVisual(photosynthesisRateEvidence)));
   return group;
 }];
+const massBalanceEvidence = gcseCatchup["mass-conservation"].visual;
+gcseCatchup["mass-conservation"].visual = ["custom", () => {
+  const group = document.createElement("div");
+  group.append(readableGcseFigure(atomsRearranged), readableGcseFigure(() => gcseVisual(massBalanceEvidence)));
+  return group;
+}];
 
 for (const mapping of [gcseStepVisuals, moreGcseStepVisuals]) {
   for (const [id, visuals] of Object.entries(mapping)) {
@@ -601,12 +607,10 @@ for (const mapping of [gcseStepVisuals, moreGcseStepVisuals]) {
 const openingFigureAtStep = {
   "decay-half-life": [0, 1],
   "parallel-circuits": [0],
-  "mass-conservation": [0],
   "reaction-profiles": [1],
   "food-web-change": [0, 1],
   "reaction-rate": [0],
   "crude-oil": [1],
-  "chromatography": [0],
   "wave-motion": [0],
   "inheritance-cross": [0, 1],
   "circuit-resistance": [1]
@@ -615,6 +619,7 @@ for (const [id, indices] of Object.entries(openingFigureAtStep)) {
   for (const index of indices) gcseCatchup[id].steps[index].visual = () => readableGcseFigure(() => gcseVisual(gcseCatchup[id].visual));
 }
 gcseCatchup["photosynthesis-limits"].steps[1].visual = () => readableGcseFigure(() => gcseVisual(photosynthesisRateEvidence));
+gcseCatchup["mass-conservation"].steps[0].visual = () => readableGcseFigure(() => gcseVisual(massBalanceEvidence));
 
 for (const [id, render] of Object.entries(gcseHigherVisuals)) gcseCatchup[id].higherVisual = render;
 

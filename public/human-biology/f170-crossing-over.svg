@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 440" role="img" aria-labelledby="title desc">
+<title id="title">Crossing over between homologous chromosomes</title><desc id="desc">Two homologous chromosomes each contain two sister chromatids. They carry the same gene positions but may carry different alleles. Two non-sister chromatids exchange corresponding segments. The illustrated chromatids carry A B and a b before exchange, and A B, A b, a B and a b afterwards.</desc>
+<rect width="280" height="440" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Paired homologues</text><text x="70" y="51">One</text><text x="210" y="51">The other</text>
+<text x="58" y="76">A</text><text x="82" y="76">A</text><text x="198" y="76">a</text><text x="222" y="76">a</text>
+<path d="M58 86v85M82 86v85M58 117h24" stroke="#23656c" stroke-width="4"/><path d="M198 86v85M222 86v85M198 117h24" stroke="#98451e" stroke-width="4"/>
+<text x="58" y="193">B</text><text x="82" y="193">B</text><text x="198" y="193">b</text><text x="222" y="193">b</text>
+<text x="140" y="224">Non-sisters exchange</text><text x="140" y="246">matching segments</text>
+<path d="M95 253l31 26m-9-1 9 1-3-9M185 253l-31 26m3-9-3 9 9-1" fill="none" stroke="#263e4a" stroke-width="2"/>
+<text x="58" y="301">A</text><text x="82" y="301">A</text><text x="198" y="301">a</text><text x="222" y="301">a</text>
+<path d="M58 311v70M82 311v43M58 337h24M198 311v43M222 311v70M198 337h24" stroke="#23656c" stroke-width="4"/>
+<path d="M82 354v27M198 354v27M222 311v70M198 311v43M198 337h24" stroke="#98451e" stroke-width="4"/>
+<path d="M198 354v27" stroke="#23656c" stroke-width="4"/>
+<text x="58" y="406">B</text><text x="82" y="406">b</text><text x="198" y="406">B</text><text x="222" y="406">b</text>
+<text x="140" y="432">New allele combinations</text>
+</g></svg>

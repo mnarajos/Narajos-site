@@ -59,45 +59,45 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f170/1.1.4.surface · Model 1 | At 1, polar heads face the fluid. Between the two head layers is the oily core. Cholesterol (2) sits among … | explainDiagrams, modelDiagrams, illustration | Unreviewed; see reviewed exceptions |
 | f170/1.1.4.surface · Model 2 | At body temperature cholesterol restrains some movement of nearby tails and can reduce leakage of small pol… | explainDiagrams, modelDiagrams, illustration | Unreviewed; see reviewed exceptions |
 | f170/1.1.4.surface · Model 3 | At 3, a chain on a glycoprotein faces the outside, where other cells can encounter it. At 4, a peripheral p… | explainDiagrams, modelDiagrams, illustration | Unreviewed; see reviewed exceptions |
-| f170/1.1.5 · Explain 1 | One unreplicated chromosome contains one double-stranded DNA molecule. After S phase it has two sister chro… | photo | Unreviewed; see reviewed exceptions |
-| f170/1.1.5 · Explain 2 | In prophase, chromosomes condense and the spindle begins to form. Once the nuclear envelope breaks down, sp… | photo | Unreviewed; see reviewed exceptions |
-| f170/1.1.5 · Explain 3 | Mitosis divides the nucleus. Cytokinesis divides the cytoplasm and can overlap the end of mitosis. An anima… | photo | Unreviewed; see reviewed exceptions |
-| f170/1.1.5 · Model 1 | Follow one sister chromatid from one tip through the narrow region to its other tip. The short and long arm… | photo | Unreviewed; see reviewed exceptions |
-| f170/1.1.5 · Model 2 | Trace the other length. The two sisters are closely joined near the constriction, the centromere region. Th… | photo | Unreviewed; see reviewed exceptions |
-| f170/1.1.5 · Model 3 | In a model body cell with four chromosomes before S phase, the replicated cell has four chromosomes and eig… | photo | Unreviewed; see reviewed exceptions |
-| f170/1.1.5.meiosis · Explain 1 | Homologous chromosomes carry the same genes at corresponding positions. They can carry different alleles. I… | table | Unreviewed; see reviewed exceptions |
-| f170/1.1.5.meiosis · Explain 2 | In metaphase I homologous pairs line up. Each pair can face either way independently of the other pairs. In… | table | Unreviewed; see reviewed exceptions |
-| f170/1.1.5.meiosis · Explain 3 | There is no new S phase between divisions. In prophase II new spindles form. In metaphase II individual dup… | table | Unreviewed; see reviewed exceptions |
-| f170/1.1.5.meiosis · Model 1 | Call the two homologues of each pair maternal and paternal. Copying them makes sisters. The cell still has … | table | Unreviewed; see reviewed exceptions |
-| f170/1.1.5.meiosis · Model 2 | In division I, each pole receives one long and one short chromosome, each still duplicated. Independent ori… | table | Unreviewed; see reviewed exceptions |
-| f170/1.1.5.meiosis · Model 3 | In division II the sisters separate. Each product has one long and one short chromosome, each containing on… | table | Unreviewed; see reviewed exceptions |
-| f170/1.2.1 · Explain 1 | Specialised cells contribute to a tissue. Several tissues work together in an organ. Organs cooperate in an… | None declared | Unreviewed; see reviewed exceptions |
-| f170/1.2.1 · Explain 2 | To explain the effect of damage, start with the job the affected tissue normally does. Then trace what chan… | None declared | Unreviewed; see reviewed exceptions |
-| f170/1.2.1 · Model 1 | Ventricular cardiac muscle cells normally contract together to generate pressure. | None declared | Unreviewed; see reviewed exceptions |
-| f170/1.2.1 · Model 2 | A large damaged area contracts less effectively. The ventricle may eject less blood per beat. | None declared | Unreviewed; see reviewed exceptions |
-| f170/1.2.1 · Model 3 | If the heart rate and other factors stay the same, the circulatory system delivers less blood per minute. | None declared | Unreviewed; see reviewed exceptions |
+| f170/1.1.5 · Explain 1 | One unreplicated chromosome contains one double-stranded DNA molecule. After S phase it has two sister chro… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/1.1.5 · Explain 2 | In prophase, chromosomes condense and the spindle begins to form. Once the nuclear envelope breaks down, sp… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/1.1.5 · Explain 3 | Mitosis divides the nucleus. Cytokinesis divides the cytoplasm and can overlap the end of mitosis. An anima… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/1.1.5 · Model 1 | Follow one sister chromatid from one tip through the narrow region to its other tip. The short and long arm… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/1.1.5 · Model 2 | Trace the other length. The two sisters are closely joined near the constriction, the centromere region. Th… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/1.1.5 · Model 3 | In a model body cell with four chromosomes before S phase, the replicated cell has four chromosomes and eig… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/1.1.5.meiosis · Explain 1 | Homologous chromosomes carry the same genes at corresponding positions. They can carry different alleles. I… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/1.1.5.meiosis · Explain 2 | In metaphase I homologous pairs line up. Each pair can face either way independently of the other pairs. In… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/1.1.5.meiosis · Explain 3 | There is no new S phase between divisions. In prophase II new spindles form. In metaphase II individual dup… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/1.1.5.meiosis · Model 1 | Call the two homologues of each pair maternal and paternal. Copying them makes sisters. The cell still has … | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/1.1.5.meiosis · Model 2 | In division I, each pole receives one long and one short chromosome, each still duplicated. Independent ori… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/1.1.5.meiosis · Model 3 | In division II the sisters separate. Each product has one long and one short chromosome, each containing on… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/1.2.1 · Explain 1 | Specialised cells contribute to a tissue. Several tissues work together in an organ. Organs cooperate in an… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/1.2.1 · Explain 2 | To explain the effect of damage, start with the job the affected tissue normally does. Then trace what chan… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/1.2.1 · Model 1 | Ventricular cardiac muscle cells normally contract together to generate pressure. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/1.2.1 · Model 2 | A large damaged area contracts less effectively. The ventricle may eject less blood per beat. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/1.2.1 · Model 3 | If the heart rate and other factors stay the same, the circulatory system delivers less blood per minute. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/2.1.2 · Explain 1 | The right heart pumps to the lungs. The left heart pumps to the body. Ventilation moves air, diffusion move… | None declared | Unreviewed; see reviewed exceptions |
 | f170/2.1.2 · Model 1 | The right ventricle contracts. Compare its pressure with the pulmonary artery. When ventricular pressure is… | None declared | Unreviewed; see reviewed exceptions |
 | f170/2.1.2 · Model 2 | Follow the blood into capillaries beside alveoli. Air does not enter the blood. Oxygen diffuses across the … | None declared | Unreviewed; see reviewed exceptions |
 | f170/2.1.2 · Model 3 | Pulmonary veins return this blood to the left atrium. The left ventricle pumps it into the body, where oxyg… | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.1.3 · Explain 1 | Ventilation renews air in the alveoli. Gas exchange moves oxygen across the alveolar and capillary walls. C… | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.1.3 · Model 1 | Fresh air helps keep alveolar oxygen partial pressure above that in incoming blood. | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.1.3 · Model 2 | A large surface area and thin walls support exchange. Oxygen diffuses into blood, where it binds to haemogl… | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.1.3 · Model 3 | Blood carries oxygen to capillaries near tissues. Oxygen dissociates from haemoglobin and diffuses towards … | None declared | Unreviewed; see reviewed exceptions |
+| f170/2.1.3 · Explain 1 | Ventilation renews air in the alveoli. Gas exchange moves oxygen across the alveolar and capillary walls. C… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.1.3 · Model 1 | Fresh air helps keep alveolar oxygen partial pressure above that in incoming blood. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.1.3 · Model 2 | A large surface area and thin walls support exchange. Oxygen diffuses into blood, where it binds to haemogl… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.1.3 · Model 3 | Blood carries oxygen to capillaries near tissues. Oxygen dissociates from haemoglobin and diffuses towards … | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/2.1.3.cirrhosis · Explain 1 | Cirrhosis involves long-term scarring and changes to the structure and function of the liver. Hepatocytes a… | None declared | Unreviewed; see reviewed exceptions |
 | f170/2.1.3.cirrhosis · Explain 2 | Hepatocytes normally process bilirubin, a pigment formed during the breakdown of red blood cells, so it can… | None declared | Unreviewed; see reviewed exceptions |
 | f170/2.1.3.cirrhosis · Model 1 | Cirrhosis can damage functioning liver tissue. | None declared | Unreviewed; see reviewed exceptions |
 | f170/2.1.3.cirrhosis · Model 2 | The liver can produce fewer of the proteins needed for blood to clot. The blood may clot less readily. | None declared | Unreviewed; see reviewed exceptions |
 | f170/2.1.3.cirrhosis · Model 3 | Bleeding from small vessels after a bump can continue for longer, making a bruise more likely. | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.2.2 · Explain 1 | Follow three transfers: air moves into alveoli, oxygen diffuses into blood, and circulation delivers oxygen… | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.2.2 · Model 1 | When a cyclist's leg muscles work harder, their demand for oxygen rises as aerobic respiration increases. | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.2.2 · Model 2 | Deeper or more frequent breaths renew alveolar air. Oxygen diffuses into the blood and binds to haemoglobin. | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.2.2 · Model 3 | If more blood reaches the working muscles per minute, delivery can rise. Oxygen leaves haemoglobin and diff… | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.2.3 · Explain 1 | Pulmonary ventilation is tidal volume multiplied by breathing rate. This measures air moved per minute. Oxy… | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.2.3 · Explain 2 | Peak expiratory flow is the greatest rate during a forceful blow out after a full breath in. A weak effort,… | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.2.3 · Model 1 | At rest the tidal volume is 500 mL and the rate is 12 breaths per minute. Convert to 0.50 L per breath befo… | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.2.3 · Model 2 | 0.50 L per breath × 12 breaths per minute gives 6.0 L per minute. The unit tells us this is air volume, not… | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.2.3 · Model 3 | When a muscle works harder its oxygen demand can rise. More ventilation can renew alveolar air, but oxygen … | None declared | Unreviewed; see reviewed exceptions |
+| f170/2.2.2 · Explain 1 | Follow three transfers: air moves into alveoli, oxygen diffuses into blood, and circulation delivers oxygen… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.2.2 · Model 1 | When a cyclist's leg muscles work harder, their demand for oxygen rises as aerobic respiration increases. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.2.2 · Model 2 | Deeper or more frequent breaths renew alveolar air. Oxygen diffuses into the blood and binds to haemoglobin. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.2.2 · Model 3 | If more blood reaches the working muscles per minute, delivery can rise. Oxygen leaves haemoglobin and diff… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.2.3 · Explain 1 | Pulmonary ventilation is tidal volume multiplied by breathing rate. This measures air moved per minute. Oxy… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.2.3 · Explain 2 | Peak expiratory flow is the greatest rate during a forceful blow out after a full breath in. A weak effort,… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.2.3 · Model 1 | At rest the tidal volume is 500 mL and the rate is 12 breaths per minute. Convert to 0.50 L per breath befo… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.2.3 · Model 2 | 0.50 L per breath × 12 breaths per minute gives 6.0 L per minute. The unit tells us this is air volume, not… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.2.3 · Model 3 | When a muscle works harder its oxygen demand can rise. More ventilation can renew alveolar air, but oxygen … | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/3.1.1 · Explain 1 | In negative feedback, a response opposes a change in the regulated variable. Identify the variable first. A… | None declared | Unreviewed; see reviewed exceptions |
 | f170/3.1.1 · Model 1 | After a meal, glucose absorbed from the gut raises its concentration in the blood. Blood glucose concentrat… | None declared | Unreviewed; see reviewed exceptions |
 | f170/3.1.1 · Model 2 | Pancreatic beta cells respond by releasing more insulin into blood. Insulin is a signal to target cells, no… | None declared | Unreviewed; see reviewed exceptions |

@@ -488,6 +488,8 @@ const nutritionRecap = function(file, alt, caption, height) { return {
  src:"/human-biology/"+file+".svg",width:280,height:height,compact:true,alt:alt,caption:caption
 }; };
 const recapFigureMap = {
+ "f170/1.1.5.meiosis/1": [["f170/1.1.5.meiosis", "explainDiagrams", 1]],
+ "f170/1.1.5.meiosis/2": [["f170/1.1.5.meiosis", "explainDiagrams", 2]],
  "f170/1.1.5/2": [["f172/a2", "teachingDiagram"]],
  "f170/2.1.4/0": [["f170/1.1.4.surface", "explainDiagrams", 2]],
  "f170/2.1.4/1": [nutritionRecap("ventricular-assist", "A simplified ventricular assist device carries blood from the left ventricle through a pump to the aorta, supporting circulation.", "Follow blood from the ventricle through the assist pump to the aorta. Such support may bridge to recovery or transplant; infection and clotting remain possible.", 300)],

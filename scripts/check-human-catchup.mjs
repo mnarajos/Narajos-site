@@ -772,6 +772,8 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.1.4/1", ["f170-oxygen-diffusion.svg", "f170-channel-diffusion.svg", "f170-water-active.svg"]],
       ["f170/1.1.4/2", ["f170-water-active.svg", "f170-antigen-recognition.svg"]],
       ["f170/1.1.5/2", ["punnett-cross.svg"]],
+      ["f170/1.1.5.meiosis/1", ["f170-meiosis-first-division.svg", "f170-meiosis-orientation.svg"]],
+      ["f170/1.1.5.meiosis/2", ["f170-meiosis-second-division.svg"]],
       ["f170/1.1.4.surface/1", ["f170-receptor-signalling.svg", "f170-extrinsic-receptor.svg"]],
       ["f170/1.1.4.surface/2", ["f170-antigen-recognition.svg"]],
       ["f170/1.1.4.surface/3", ["f170-vesicle-traffic.svg"]],
@@ -837,6 +839,11 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.1.3.evidence", ["f170-ribosome-assembly.svg", "f170-ribosome-types.svg", "cell-er-comparison.svg"], ["cell-protein-routing.svg", "f170-enzyme-misrouting.svg"]],
       ["f170/1.1.1.signals", ["f170-rod-cone-structure.svg", "reflex-pathway.svg"], ["reflex-pathway.svg", "reflex-pathway.svg", "f170-retinal-convergence.svg"]],
       ["f170/1.1.5", ["f170-sister-chromatids.svg", "f170-mitosis-stages.svg", "f170-cytokinesis.svg"], ["f170-sister-chromatids.svg", "f170-sister-chromatids.svg", "f170-mitosis-count.svg"]],
+      ["f170/1.1.5.meiosis", ["f170-crossing-over.svg", "f170-meiosis-first-division.svg", "f170-meiosis-second-division.svg"], ["f170-meiosis-copying.svg", "f170-meiosis-first-division.svg", "f170-meiosis-second-division.svg"]],
+      ["f170/1.2.1", ["f170-levels-organisation.svg", "f170-ventricle-damage.svg"], ["f170-ventricle-damage.svg", "f170-ventricle-damage.svg", "f170-ventricle-damage.svg"]],
+      ["f170/2.1.3", ["f170-oxygen-delivery.svg"], [null, "f170-alveolar-barrier.svg", "f170-oxygen-delivery.svg"]],
+      ["f170/2.2.2", ["f170-oxygen-delivery.svg"], [null, "f170-alveolar-barrier.svg", "f170-oxygen-delivery.svg"]],
+      ["f170/2.2.3", ["f170-ventilation-example.svg"], ["f170-ventilation-example.svg", "f170-ventilation-example.svg", "f170-oxygen-delivery.svg"]],
       ["f170/1.1.4", ["f170-oxygen-diffusion.svg", "f170-water-active.svg"], ["f170-oxygen-diffusion.svg", "f170-oxygen-diffusion.svg", "f170-oxygen-diffusion.svg"]],
       ["f170/1.1.4.surface", ["f170-membrane-labelled.svg", "f170-receptor-signalling.svg", "f170-antigen-recognition.svg", "f170-vesicle-traffic.svg"], ["f170-membrane-labelled.svg", "f170-cholesterol-membrane.svg", "f170-membrane-labelled.svg"]]
     ]) {
@@ -846,19 +853,43 @@ export async function checkHumanCatchup(browser, base) {
       const paragraphs = explanation.locator(":scope > p");
       for (let i = 0; i < explain.length; i++) {
         const file = explain[i];
-        assert(await paragraphs.nth(i).evaluate((el, name) => Boolean(el.nextElementSibling?.querySelector(`img[src$="/${name}"]`)), file), file + " must follow its paragraph");
+        assert(await paragraphs.nth(i).evaluate((el, name) => {
+          for (let sibling = el.nextElementSibling; sibling && sibling.tagName !== "P"; sibling = sibling.nextElementSibling) {
+            if (sibling.querySelector(`img[src$="/${name}"]`)) return true;
+            if (!sibling.matches("figure, .hb-teaching-diagram, .hb-teaching-photo")) break;
+          }
+          return false;
+        }, file), file + " must follow its paragraph within its figure group");
       }
       const model = page.locator("[data-hb-model-step]");
       await expand(model);
       for (let i = 0; i < worked.length; i++) {
-        const image = model.locator(`li:nth-child(${i + 1}) img[src$="/${worked[i]}"]`);
-        assert(await image.isVisible(), worked[i] + " must follow its worked step");
-        assert(await image.evaluate(async element => { await element.decode(); return element.naturalWidth > 0 && element.alt.length > 20; }));
+        if (worked[i]) {
+          const image = model.locator(`li:nth-child(${i + 1}) img[src$="/${worked[i]}"]`);
+          assert(await image.isVisible(), worked[i] + " must follow its worked step");
+          assert(await image.evaluate(async element => { await element.decode(); return element.naturalWidth > 0 && element.alt.length > 20; }));
+        }
         if (i + 1 < worked.length) await model.getByRole("button", {name: "Show next step"}).click();
       }
       assert(await widthFits(), route + " must fit at phone size");
       assert.equal(await stage("independent").locator(".hb-teaching-diagram").count(), 0);
     }
+
+    // Both linked meiosis views remain on their matching paragraph and worked step.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f170/1.1.5.meiosis");
+    const divisionParagraph = page.locator(".hb-teach-explain > p").nth(1);
+    assert(await divisionParagraph.evaluate(el => {
+      const first = el.nextElementSibling;
+      const second = first?.nextElementSibling;
+      return Boolean(first?.querySelector('img[src$="/f170-meiosis-first-division.svg"]') && second?.querySelector('img[src$="/f170-meiosis-orientation.svg"]'));
+    }));
+    const meiosisModel = page.locator("[data-hb-model-step]");
+    await expand(meiosisModel);
+    await meiosisModel.getByRole("button", {name: "Show next step"}).click();
+    assert(await meiosisModel.locator('li:nth-child(2) img[src$="/f170-meiosis-first-division.svg"]').isVisible());
+    assert(await meiosisModel.locator('li:nth-child(2) img[src$="/f170-meiosis-orientation.svg"]').isVisible());
+    assert.equal(await stage("independent").locator(".hb-teaching-diagram").count(), 0);
 
     // Surface comparison keeps each figure directly with its complete matching fact.
     await open("catchup/f170/1.1.1.surfaces");

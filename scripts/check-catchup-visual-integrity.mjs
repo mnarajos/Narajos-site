@@ -87,7 +87,7 @@ for (const [, topic, id, group] of keys) {
 }
 
 const humanWindow = {KeystoneHumanTeaching: {choice: (...args) => ({args}), written: (...args) => ({args})}};
-for (const file of ["teaching-f170.js", "f170-cell-teaching-figures.js", "f170-membrane-teaching-figures.js", "f170-organelle-evidence-figures.js", "f170-muscle-teaching-figures.js", "f170-surfaces-teaching-figures.js", "f170-signals-teaching-figures.js", "f170-microscopy-teaching-figures.js", "f170-mitosis-teaching-figures.js", "teaching-f171.js", "teaching-knowledge.js"]) {
+for (const file of ["teaching-f170.js", "f170-cell-teaching-figures.js", "f170-membrane-teaching-figures.js", "f170-organelle-evidence-figures.js", "f170-muscle-teaching-figures.js", "f170-surfaces-teaching-figures.js", "f170-signals-teaching-figures.js", "f170-microscopy-teaching-figures.js", "f170-mitosis-teaching-figures.js", "f170-meiosis-teaching-figures.js", "f170-oxygen-delivery-figures.js", "f170-organisation-teaching-figures.js", "teaching-f171.js", "teaching-knowledge.js"]) {
   const source = await readFile(new URL("../public/human-biology/" + file, import.meta.url), "utf8");
   vm.runInNewContext(source, {window: humanWindow});
 }
@@ -101,7 +101,7 @@ for (const [id, lesson] of Object.entries(humanWindow.KeystoneHumanLessons)) {
     await access(new URL("../public" + photo.src, import.meta.url));
     photos++;
   }
-  for (const visual of [lesson.teachingDiagram, lesson.explanationDiagram, lesson.comparisonDiagram, ...(lesson.comparisonDiagrams || []), ...Object.values(lesson.comparisonFigures || {}).flat(), ...(lesson.explanationDiagrams || []), ...Object.values(lesson.explainDiagrams || {}).flat(), ...Object.values(lesson.afterComparisonDiagrams || {}).flat(), ...Object.values(lesson.modelDiagrams || {})].filter(Boolean)) {
+  for (const visual of [lesson.teachingDiagram, lesson.explanationDiagram, lesson.comparisonDiagram, ...(lesson.comparisonDiagrams || []), ...Object.values(lesson.comparisonFigures || {}).flat(), ...(lesson.explanationDiagrams || []), ...Object.values(lesson.explainDiagrams || {}).flat(), ...Object.values(lesson.afterComparisonDiagrams || {}).flat(), ...Object.values(lesson.modelDiagrams || {}).flat()].filter(Boolean)) {
   assert.match(visual.src, /^\/human-biology\/[a-z0-9-]+\.svg$/, id);
   assert.ok(visual.alt?.length >= 20 && visual.caption?.length >= 20, `${id}: meaningful alternative and caption required`);
   assert.ok(visual.width > 0 && visual.height > 0, `${id}: dimensions required`);

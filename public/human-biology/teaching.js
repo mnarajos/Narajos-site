@@ -70,6 +70,10 @@
       '" width="' + item.width + '" height="' + item.height + '"></div>' + (item.compact ? '' : '<span class="hb-diagram-scroll-hint">Scroll sideways to see the whole diagram.</span>') + '<figcaption>' + escape(item.caption) + '</figcaption></figure>';
   }
 
+  function teachingDiagrams(items) {
+    return (Array.isArray(items) ? items : [items]).filter(Boolean).map(teachingDiagram).join("");
+  }
+
   function figure(photo, field) {
     if (!photo) return "";
     return '<figure class="hb-teach-photo"><img src="' + escape(photo.src) + '" alt="' +
@@ -166,7 +170,7 @@
       (lesson.graph ? window.KeystoneHumanSkills.graphHTML(lesson.graph) : "") + table(lesson.table, lesson.focusCells) +
       '<ol class="hb-model-steps' + (lesson.nodes ? ' hb-model-path' : '') + '">' + lesson.model.map((step, i) =>
         '<li value="' + (i + 1) + '"' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
-        escape(step) + teachingDiagram(lesson.modelDiagrams?.[i]) + '</li>').join("") +
+        escape(step) + teachingDiagrams(lesson.modelDiagrams?.[i]) + '</li>').join("") +
       '</ol>' + (lesson.model.length > 1 ?
         '<button type="button" class="button secondary" data-hb-action="model">Show next step</button>' : '') +
       (evidenceModel ? '<button type="button" class="button quiet hb-model-back" hidden>Previous step</button>' : '') +

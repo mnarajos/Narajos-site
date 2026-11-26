@@ -433,6 +433,8 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <script src="/alevel/catchup-gene-techniques.js"></script>
 <script src="/alevel/catchup-exchange-extra-figures.js"></script>
 <script src="/alevel/catchup-muscle-figures.js"></script>
+<script src="/alevel/catchup-cardiac-figures.js"></script>
+<script src="/alevel/catchup-exchange-disease-figures.js"></script>
 <script src="/alevel/catchup-immunity-figures.js"></script>
 <script src="/alevel/catchup-transport-figures.js"></script>
 <script src="/alevel/catchup-transport-details.js"></script>
@@ -6360,7 +6362,9 @@ function catchupChunks(notes,synapse,topic,concept){
    (window.ALevelCellReuseFigures?window.ALevelCellReuseFigures.render(topic,concept,i/2):'')+
    (window.ALevelGeneTechniques?window.ALevelGeneTechniques.render(topic,concept,i/2):'')+
    (window.ALevelExchangeExtraFigures?window.ALevelExchangeExtraFigures.render(topic,concept,i/2):'')+
-   (window.ALevelMuscleFigures?window.ALevelMuscleFigures.render(topic,concept,i/2):'')+'</div>';
+   (window.ALevelMuscleFigures?window.ALevelMuscleFigures.render(topic,concept,i/2):'')+
+   (window.ALevelCardiacFigures?window.ALevelCardiacFigures.render(topic,concept,i/2):'')+
+   (window.ALevelExchangeDiseaseFigures?window.ALevelExchangeDiseaseFigures.render(topic,concept,i/2):'')+'</div>';
  }
  return h;
 }
