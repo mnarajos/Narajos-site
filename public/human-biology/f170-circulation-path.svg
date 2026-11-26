@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 630" role="img" aria-labelledby="title desc">
+<title id="title">Path of blood through heart, lungs and body</title><desc id="desc">Blood from body tissues enters the right atrium and right ventricle. It travels in the pulmonary artery to lung capillaries, where oxygen enters blood. Pulmonary veins return it to the left atrium, then left ventricle. Blood is pumped to body tissues, completing the circuit.</desc>
+<defs><marker id="a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0v7l6-3.5z" fill="#23656c"/></marker></defs><rect width="280" height="630" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">From body tissues</text><path d="M140 32v17" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/>
+<ellipse cx="140" cy="73" rx="72" ry="23" fill="#e5d9ec" stroke="#69447f" stroke-width="2"/><text x="140" y="79">Right atrium</text>
+<path d="M140 97v17" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/><ellipse cx="140" cy="138" rx="72" ry="23" fill="#e5d9ec" stroke="#69447f" stroke-width="2"/><text x="140" y="144">Right ventricle</text>
+<path d="M140 162v18" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/><text x="140" y="202">Pulmonary artery</text><path d="M140 210v17" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/>
+<path d="M139 245c-12-18-34-11-40 9l-8 32q-4 23 19 23 21 0 29-19zM141 245c12-18 34-11 40 9l8 32q4 23-19 23-21 0-29-19z" fill="#f9dfc8" stroke="#98451e" stroke-width="2"/>
+<text x="140" y="334">Lung capillaries: O₂ enters</text><path d="M140 342v17" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/>
+<text x="140" y="381">Pulmonary veins</text><path d="M140 389v17" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/>
+<ellipse cx="140" cy="430" rx="72" ry="23" fill="#f9dfc8" stroke="#98451e" stroke-width="2"/><text x="140" y="436">Left atrium</text>
+<path d="M140 454v17" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/><ellipse cx="140" cy="495" rx="72" ry="23" fill="#f9dfc8" stroke="#98451e" stroke-width="2"/><text x="140" y="501">Left ventricle</text>
+<path d="M140 519v17" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/><text x="140" y="558" font-weight="700">To body tissues</text><text x="140" y="588">O₂ can diffuse into cells.</text><text x="140" y="615">Blood returns to the right heart.</text>
+</g></svg>

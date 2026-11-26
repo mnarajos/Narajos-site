@@ -214,12 +214,18 @@ export function mountJourney(host, model, lesson) {
         stage.append(teaching);
       }
       if (guided && step.worked) {
-        const { title, lines, visual } = step.worked;
+        const { title, lines, visual, lineVisuals } = step.worked;
         const example = element("div", "", "school-worked-example");
         example.append(element("h4", title));
-        if (visual) example.append(visual());
-        const reasoning = element("ol");
-        reasoning.append(...lines.map(line => element("li", line)));
+        if (visual && !lineVisuals) example.append(visual());
+        const reasoning = element("ol", "", lineVisuals ? "school-worked-line-visuals" : "");
+        reasoning.append(...lines.map((line, index) => {
+          if (!lineVisuals) return element("li", line);
+          const item = element("li");
+          if (lineVisuals[index]) item.append(lineVisuals[index]());
+          item.append(element("p", line));
+          return item;
+        }));
         example.append(reasoning);
         stage.append(example);
       }

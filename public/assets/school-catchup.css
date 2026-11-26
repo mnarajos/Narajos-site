@@ -182,6 +182,10 @@
 .school-worked-example h4 { margin: 0 0 .35rem; }
 .school-worked-example ol { margin: .25rem 0 0; padding-inline-start: 1.35rem; }
 .school-worked-example li + li { margin-block-start: .25rem; }
+.school-worked-example ol.school-worked-line-visuals { list-style: none; padding-inline-start: 0; counter-reset: worked-line; }
+.school-worked-line-visuals > li { counter-increment: worked-line; }
+.school-worked-line-visuals > li > p::before { content: counter(worked-line) ". "; font-weight: 700; }
+.school-worked-line-visuals > li + li { margin-block-start: .8rem; }
 .school-guided-prompt { padding: .55rem .7rem; background: #eaf4f0; border-radius: .45rem; }
 .school-check { max-height: calc(100dvh - 1.5rem); overscroll-behavior: contain; }
 .school-question-evidence { margin-block: .25rem .65rem; padding: 0 .65rem .5rem; background: #eef5f3; border: 1px solid #b2c7c2; border-radius: .5rem; }

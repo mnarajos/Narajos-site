@@ -73,7 +73,7 @@ function column() {
     "Vapours rise and cool. Each fraction condenses over a range of temperatures.");
 }
 
-function chromatogram() {
+function chromatogramParts() {
   const results = picture("Paper chromatography of two inks",diagram("Paper with two lanes. Ink A has two separate spots and ink B has one. Both started from the same baseline. The solvent front is above the spots.",`
     <rect x="55" y="12" width="214" height="173" rx="4" fill="#fffdf3" stroke="${ink}" stroke-width="2"/>
     ${line(69,42,253,42,teal,2,"5 4")}${line(69,152,253,152,ink)}
@@ -90,8 +90,11 @@ function chromatogram() {
     line(57,119,259,119,blue,2,"4 3")+text(164,90,"Pencil baseline",ink,15,"start")+
     text(175,142,"Solvent",blue,15,"start"),320,175),
     "Set the solvent level below both sample spots.");
-  return compare(setup, results);
+  return [setup, results];
 }
+export function gcseChromatogramSetup() { return chromatogramParts()[0]; }
+export function gcseChromatogramResult() { return chromatogramParts()[1]; }
+function chromatogram() { return compare(...chromatogramParts()); }
 
 function wave() {
   function state(stage) {

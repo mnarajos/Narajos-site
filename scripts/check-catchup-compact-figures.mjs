@@ -8,7 +8,12 @@ export async function checkCompactCatchupFigures(browser, base) {
     try {
       await page.emulateMedia({reducedMotion: 'reduce'});
       await page.goto(base + '/alevel/#catchup-a2-membrane');
-      const membrane = page.locator('.kc-visual-art-compact');
+      const membraneFigure = page.locator('figure.kc-visual').filter({
+        has: page.getByText('The fluid-mosaic membrane', {exact: true})
+      });
+      await membraneFigure.waitFor();
+      assert.equal(await membraneFigure.count(), 1, 'the specific membrane figure should appear once');
+      const membrane = membraneFigure.locator('.kc-visual-art-compact');
       await membrane.waitFor();
       assert.equal(await membrane.count(), 1);
       assert(await membrane.evaluate(el => el.scrollWidth <= el.clientWidth + 1), 'membrane diagram should fit its container');

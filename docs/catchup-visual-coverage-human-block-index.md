@@ -76,10 +76,10 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f170/1.2.1 · Model 1 | Ventricular cardiac muscle cells normally contract together to generate pressure. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/1.2.1 · Model 2 | A large damaged area contracts less effectively. The ventricle may eject less blood per beat. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/1.2.1 · Model 3 | If the heart rate and other factors stay the same, the circulatory system delivers less blood per minute. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
-| f170/2.1.2 · Explain 1 | The right heart pumps to the lungs. The left heart pumps to the body. Ventilation moves air, diffusion move… | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.1.2 · Model 1 | The right ventricle contracts. Compare its pressure with the pulmonary artery. When ventricular pressure is… | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.1.2 · Model 2 | Follow the blood into capillaries beside alveoli. Air does not enter the blood. Oxygen diffuses across the … | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.1.2 · Model 3 | Pulmonary veins return this blood to the left atrium. The left ventricle pumps it into the body, where oxyg… | None declared | Unreviewed; see reviewed exceptions |
+| f170/2.1.2 · Explain 1 | The right heart pumps to the lungs. The left heart pumps to the body. Ventilation moves air, diffusion move… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.1.2 · Model 1 | The right ventricle contracts. Compare its pressure with the pulmonary artery. When ventricular pressure is… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.1.2 · Model 2 | Follow the blood into capillaries beside alveoli. Air does not enter the blood. Oxygen diffuses across the … | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.1.2 · Model 3 | Pulmonary veins return this blood to the left atrium. The left ventricle pumps it into the body, where oxyg… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/2.1.3 · Explain 1 | Ventilation renews air in the alveoli. Gas exchange moves oxygen across the alveolar and capillary walls. C… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/2.1.3 · Model 1 | Fresh air helps keep alveolar oxygen partial pressure above that in incoming blood. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/2.1.3 · Model 2 | A large surface area and thin walls support exchange. Oxygen diffuses into blood, where it binds to haemogl… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |

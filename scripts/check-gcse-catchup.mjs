@@ -150,10 +150,32 @@ export async function checkGCSECatchup(browser, base) {
         const example = page.locator(".school-current-stage .school-worked-example");
         assert(await example.locator("figure, table").count(), `${id}: missing worked-example figure`);
         await checkSvgLabels(example, `${id} worked example`);
+        if (lesson.steps[0].worked.lineVisuals) {
+          const items = example.locator("ol.school-worked-line-visuals > li");
+          assert.equal(await items.count(), lesson.steps[0].worked.lines.length, `${id}: worked line count`);
+          for (let index = 0; index < lesson.steps[0].worked.lines.length; index++) {
+            const item = items.nth(index);
+            assert(await item.locator("figure, table").count(), `${id} worked line ${index + 1}: missing adjacent visual`);
+            assert.equal(await item.locator(":scope > p").textContent(), lesson.steps[0].worked.lines[index]);
+            assert(await item.evaluate(node => {
+              const visual = node.querySelector("figure, table");
+              const explanation = node.querySelector(":scope > p");
+              return Boolean(visual && explanation && (visual.compareDocumentPosition(explanation) & Node.DOCUMENT_POSITION_FOLLOWING));
+            }), `${id} worked line ${index + 1}: figure should precede its explanation`);
+          }
+        }
         for (const img of await example.locator("img").all()) {
           await img.scrollIntoViewIfNeeded();
           assert((await img.getAttribute("alt"))?.trim(), `${id}: worked photograph has no alternative`);
           await page.waitForFunction(image => image.complete && image.naturalWidth > 0, await img.elementHandle());
+        }
+        if (lesson.steps[0].worked.lineVisuals) {
+          const key = `narajos.catchup.v1.${lesson.year}.${id}`;
+          await page.evaluate(({key, step}) => localStorage.setItem(key, JSON.stringify({step})), {key, step: lesson.steps.length - 1});
+          await page.reload();
+          assert.equal(await page.locator(".school-current-stage .school-worked-line-visuals").count(), 0,
+            `${id}: worked figures leaked into independent practice`);
+          await page.evaluate(key => localStorage.removeItem(key), key);
         }
       }
     }

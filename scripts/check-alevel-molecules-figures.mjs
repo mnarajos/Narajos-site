@@ -70,7 +70,13 @@ for (const [file,global,rows] of [
  ['catchup-population-processes.js','ALevelPopulationProcesses', [['a7','hardy',1],['a7','hardy',2],['a7','linkage',0],['a7','linkage',1],['a7','speciation',0],['a7','speciation',1],['a7','ecosys',0],['a7','interact',0],['a7','mrrc',1],['a7','varsel',1]]],
  ['catchup-metabolism-practicals.js','ALevelMetabolismPracticals', [['a5','dcpip',0],['a5','respiro',0],['a5','substrates',0],['a5','substrates',1],['a5','biomass',0],['a5','productivity',1],['a5','fertil',0],['a6','glucal',0],['a6','glucal',1]]],
  ['catchup-gene-techniques.js','ALevelGeneTechniques', [['a8','mut8',0],['a8','mut8',1],['a8','mut8',2],['a8','stemcells',0],['a8','stemcells',1],['a8','stemcells',2],['a8','cancer',0],['a8','cancer',1],['a8','fragments',0],['a8','fragments',2],['a8','invivo',1],['a8','fingerprint',0]]],
- ['catchup-exchange-extra-figures.js','ALevelExchangeExtraFigures', [['a3','lungs',0],['a3','sav',1]]]
+ ['catchup-exchange-extra-figures.js','ALevelExchangeExtraFigures', [['a3','lungs',0],['a3','sav',1],['a3','fish',0],['a3','fish',1],['a3','vessels',0],['a3','heart',0],['a3','heart',1],['a3','insects',1]]],
+ ['catchup-muscle-figures.js','ALevelMuscleFigures', [['a6','summation',0],['a6','muscle',0],['a6','muscle',1],['a6','sliding',0],['a6','sliding',1],['a6','sliding',2],['a6','sliding',3],['a6','sliding2',0],['a6','sliding2',1],['a6','sliding2',2],['a6','sliding2',3],['a6','fibres',0],['a6','fibres',1]]],
+ ['catchup-cardiac-figures.js','ALevelCardiacFigures', [['a6','heartrate',0],['a6','heartrate',1],['a6','hrcontrol',1]]],
+ ['catchup-exchange-disease-figures.js','ALevelExchangeDiseaseFigures', [['a2','membrane',1],['a3','lungdata',1]]],
+ ['catchup-farming-figures.js','ALevelFarmingFigures', [['a5','farming',0],['a5','farming',1]]],
+ ['catchup-energy-recap-figures.js','ALevelEnergyRecapFigures', [['a5','traps5',0],['a5','traps5',1],['a5','traps5',2],['a5','traps5',3],['a5','ctx5',1],['a5','ctx5',2],['a5','limiting',1],['a5','anaerobic',1]]],
+ ['catchup-risk-surface-figures.js','ALevelRiskSurfaceFigures', [['a3','sav',2],['a3','cvd',0],['a3','cvd',1]]]
 ]) {
  vm.runInNewContext(readFileSync(new URL('../public/alevel/'+file, import.meta.url), 'utf8'), context);
  for (const [topic,id,group] of rows) { const figure=context.window[global].render(topic,id,group); assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/); assert.match(figure, /<figcaption>.{20,}<\/figcaption>/); }

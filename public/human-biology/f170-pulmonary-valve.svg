@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 365" role="img" aria-labelledby="title desc">
+<title id="title">Pressure opens the pulmonary valve</title><desc id="desc">A simplified cross-section shows the right ventricle below a pulmonary valve and the pulmonary artery above. When right ventricular pressure exceeds pulmonary artery pressure, the valve opens and blood flows into the artery. Two valve cusps are shown in cross-section; the valve has three cusps.</desc>
+<defs><marker id="a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0v7l6-3.5z" fill="#23656c"/></marker></defs><rect width="280" height="365" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="26" font-weight="700">Pulmonary artery</text><text x="140" y="50">Lower pressure</text>
+<path d="M102 65v90M178 65v90" stroke="#98451e" stroke-width="3" fill="none"/>
+<path d="M102 149q14 0 17-22M178 149q-14 0-17-22" fill="none" stroke="#69447f" stroke-width="4"/>
+<path d="M140 218V76" fill="none" stroke="#23656c" stroke-width="3" marker-end="url(#a)"/>
+<path d="M102 155q-37 31-17 74 20 34 55 34t55-34q20-43-17-74" fill="none" stroke="#98451e" stroke-width="3"/>
+<text x="140" y="292">Right ventricle</text><text x="140" y="316">Higher pressure</text><path d="M177 141h50v185h-30" fill="none" stroke="#69447f" stroke-width="1.5"/><text x="140" y="348">Pulmonary valve opens</text>
+</g></svg>

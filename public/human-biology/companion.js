@@ -488,6 +488,14 @@ const nutritionRecap = function(file, alt, caption, height) { return {
  src:"/human-biology/"+file+".svg",width:280,height:height,compact:true,alt:alt,caption:caption
 }; };
 const recapFigureMap = {
+ "f170/1.2.1/2": [nutritionRecap("gut-wall-tissues", "A simplified cutaway of gut wall shows the epithelium at the lumen, underlying connective tissue and a nerve plexus between layers of smooth muscle.", "Locate each tissue in this simplified wall. The epithelium lines the lumen, connective tissue supports it, and nerves help coordinate smooth muscle.", 350)],
+ "f170/2.1.2/1": [["f170/1.1.1.surfaces", "comparisonFigures", 3], ["f174/a3", "teachingDiagram"]],
+ "f170/2.1.3/1": [nutritionRecap("artery-plaque-comparison", "Two schematic cross-sections have the same outer diameter; one has an artery-wall plaque projecting into and narrowing the lumen.", "Compare the open lumens. A plaque can narrow an artery and restrict blood supply; these sections are simplified models.", 290), ["f171/1.2.1", "explainDiagrams", 0]],
+ "f170/1.2.1/1": [["f170/1.2.1", "explainDiagrams", 0]],
+ "f170/1.1.5/1": [["f170/1.1.5.meiosis", "explainDiagrams", 0], ["f170/1.1.5.meiosis", "explainDiagrams", 1], ["f170/1.1.5.meiosis", "explainDiagrams", 2]],
+ "f170/2.2.1/0": [["f170/2.1.3", "explainDiagrams", 0]],
+ "f170/2.2.1/2": [["f170/2.1.3", "explainDiagrams", 0]],
+ "f170/2.2.3/2": [["f170/2.2.3", "explainDiagrams", 0]],
  "f170/1.1.5.meiosis/1": [["f170/1.1.5.meiosis", "explainDiagrams", 1]],
  "f170/1.1.5.meiosis/2": [["f170/1.1.5.meiosis", "explainDiagrams", 2]],
  "f170/1.1.5/2": [["f172/a2", "teachingDiagram"]],

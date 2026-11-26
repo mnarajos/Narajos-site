@@ -1,7 +1,7 @@
 // Original teaching schematics. Positions, sizes and colours are illustrative.
 import { arrow, blue, circle, diagram, ink, line, node, picture, rust, teal, text } from './catchup-models.js';
 import { gcseStepVisuals } from './gcse-step-visuals.js';
-import { gcseVisual } from './gcse-catchup-visuals.js';
+import { gcseVisual, gcseChromatogramSetup, gcseChromatogramResult } from './gcse-catchup-visuals.js';
 import { photo } from './catchup-photos.js';
 // At phone widths a 320-unit SVG is scaled down inside its card. Use an
 // 18-unit label floor, then reflow individual figures where labels would overlap.
@@ -53,7 +53,32 @@ function quadratMeanWorked() {
     text(160,155,'Mean = 16 ÷ 4 = 4 / m²',blue,15)+text(160,190,'200 m² × 4 / m² = 800',teal,15),
     'Count each quadrat, find the mean per square metre, then multiply by the field area. The dots represent plants in the worked example.',210);
 }
-function quadratWorked(){return grouped(quadrat,quadratMeanWorked);}
+function randomCoordinates() {
+  const lines=[1,2].map(i=>line(180+i*38,43,180+i*38,157,ink,1)+line(180,43+i*38,294,43+i*38,ink,1)).join('');
+  return fig('Choose a random quadrat position',
+    'A grid over a field has lettered columns and numbered rows. The randomly selected pair B and 2 identifies the shaded square where the quadrat is placed. Select coordinates before looking at where plants are growing.',
+    text(72,48,'Random pair',ink,15)+text(72,82,'B, 2',blue,17)+
+    '<rect x="180" y="43" width="114" height="114" fill="#edf6ed" stroke="'+teal+'" stroke-width="2"/><rect x="218" y="81" width="38" height="38" fill="#c9e5ed"/>'+lines+
+    text(199,28,'A',ink,15)+text(237,28,'B',ink,15)+text(275,28,'C',ink,15)+text(163,69,'1',ink,15)+text(163,107,'2',ink,15)+text(163,145,'3',ink,15),
+    'Choose the coordinate pair before looking for plants, then locate its column and row on the field grid. This is one illustrative position.',175);
+}
+function quadratBoundary() {
+  const cross=(x,y)=>line(x-5,y-5,x+5,y+5,rust,2)+line(x-5,y+5,x+5,y-5,rust,2);
+  return fig('Use one boundary rule',
+    'A quadrat has plant symbols touching each of its four edges. In this example rule, the two circles touching the top or left edge are included, while the two crosses touching the bottom or right edge are excluded. The same rule is used for every quadrat.',
+    '<rect x="80" y="40" width="160" height="112" fill="#edf6ed" stroke="'+ink+'" stroke-width="2"/>'+circle(125,40,6,teal,teal)+circle(80,96,6,teal,teal)+cross(195,152)+cross(240,96)+
+    text(160,190,'● Include top / left',teal,15)+text(160,222,'× Exclude bottom / right',rust,15),
+    'Apply the same agreed rule every time. Here circles mark included plants and crosses mark excluded plants; other consistent rules can be used.',240);
+}
+function parallelTransects() {
+  const row=y=>line(53,y,281,y,rust,2)+[89,145,201,257].map(x=>'<rect x="'+(x-10)+'" y="'+(y-10)+'" width="20" height="20" fill="none" stroke="'+blue+'" stroke-width="2"/>').join('');
+  return fig('Repeat transects along a gradient',
+    'Three parallel transects start at a hedge. Quadrats are placed at the same regular distances along each transect. Replication can show how abundance varies between locations at a given distance.',
+    text(35,25,'Hedge',teal,15)+text(190,25,'Parallel transects',ink,15)+'<rect x="40" y="40" width="250" height="145" fill="#edf6ed" stroke="'+ink+'" stroke-width="2"/>'+line(42,41,42,184,teal,7)+
+    row(65)+row(112)+row(159)+text(160,215,'Same distance spacing',ink,15),
+    'Compare the repeated lines: each uses the same distances from the hedge. Real surveys may use more samples.',235);
+}
+function quadratWorked(){return grouped(randomCoordinates,quadratBoundary,quadratMeanWorked,parallelTransects);}
 function circuitMeters() {
   return fig('Measuring a component',
     'An ammeter is in series in the main loop with a cell and lamp. A voltmeter forms a parallel branch connected across the lamp terminals.',
@@ -709,6 +734,12 @@ export const gcseWorkedVisuals = {
   'reacting-masses': magnesiumParticles,
   'plant-transport': plantPaths,
   'quadrat-evidence': quadratWorked
+};
+// These worked groups contain several distinct ideas. The renderer places
+// each selected visual directly with its matching line in the teaching stage.
+export const gcseWorkedLineVisuals = {
+  'chromatography': [gcseChromatogramSetup, gcseChromatogramResult, rfWorked],
+  'quadrat-evidence': [() => grouped(randomCoordinates,quadratBoundary), quadratMeanWorked, parallelTransects]
 };
 
 function inverseSquare() {

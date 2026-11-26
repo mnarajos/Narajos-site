@@ -435,6 +435,9 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <script src="/alevel/catchup-muscle-figures.js"></script>
 <script src="/alevel/catchup-cardiac-figures.js"></script>
 <script src="/alevel/catchup-exchange-disease-figures.js"></script>
+<script src="/alevel/catchup-farming-figures.js"></script>
+<script src="/alevel/catchup-energy-recap-figures.js"></script>
+<script src="/alevel/catchup-risk-surface-figures.js"></script>
 <script src="/alevel/catchup-immunity-figures.js"></script>
 <script src="/alevel/catchup-transport-figures.js"></script>
 <script src="/alevel/catchup-transport-details.js"></script>
@@ -6364,7 +6367,10 @@ function catchupChunks(notes,synapse,topic,concept){
    (window.ALevelExchangeExtraFigures?window.ALevelExchangeExtraFigures.render(topic,concept,i/2):'')+
    (window.ALevelMuscleFigures?window.ALevelMuscleFigures.render(topic,concept,i/2):'')+
    (window.ALevelCardiacFigures?window.ALevelCardiacFigures.render(topic,concept,i/2):'')+
-   (window.ALevelExchangeDiseaseFigures?window.ALevelExchangeDiseaseFigures.render(topic,concept,i/2):'')+'</div>';
+   (window.ALevelExchangeDiseaseFigures?window.ALevelExchangeDiseaseFigures.render(topic,concept,i/2):'')+
+   (window.ALevelFarmingFigures?window.ALevelFarmingFigures.render(topic,concept,i/2):'')+
+   (window.ALevelEnergyRecapFigures?window.ALevelEnergyRecapFigures.render(topic,concept,i/2):'')+
+   (window.ALevelRiskSurfaceFigures?window.ALevelRiskSurfaceFigures.render(topic,concept,i/2):'')+'</div>';
  }
  return h;
 }

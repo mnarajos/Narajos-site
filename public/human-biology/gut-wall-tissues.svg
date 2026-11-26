@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 350" role="img" aria-labelledby="title desc">
+<title id="title">Selected tissues in the gut wall</title>
+<desc id="desc">In a simplified piece of gut wall, the lumen touches epithelium, connective tissue supports the lining, and a nerve plexus lies between layers of smooth muscle.</desc>
+<rect width="280" height="350" fill="#f5f9f8"/>
+<g font-family="sans-serif" fill="#183848"><text x="140" y="23" text-anchor="middle" font-size="16" font-weight="bold">Part of the gut wall</text><text x="25" y="50" font-size="14">Lumen</text><text x="25" y="69" font-size="13">(inside gut)</text></g>
+<path d="M17 81 Q40 93 62 81 T107 81 T152 81" fill="none" stroke="#994c59" stroke-width="5"/>
+<path d="M17 85 Q40 97 62 85 T107 85 T152 85 L152 140 H17Z" fill="#f5d6d9" stroke="#a05c65" stroke-width="1.5"/>
+<g fill="#95536a"><circle cx="31" cy="105" r="2"/><circle cx="62" cy="118" r="2"/><circle cx="90" cy="99" r="2"/><circle cx="128" cy="125" r="2"/></g>
+<path d="M17 142 H152 V200 H17Z" fill="#e1b681" stroke="#996f40" stroke-width="2"/>
+<g stroke="#9f7141" stroke-width="2"><path d="M20 154h129M20 166h129M20 178h129M20 190h129"/></g>
+<path d="M17 207 C38 195 52 219 72 207 S107 219 130 207 S145 212 152 207" fill="none" stroke="#6f528b" stroke-width="4"/>
+<g fill="#6f528b"><circle cx="35" cy="207" r="4"/><circle cx="76" cy="207" r="4"/><circle cx="120" cy="208" r="4"/></g>
+<path d="M17 216 H152 V264 H17Z" fill="#e1b681" stroke="#996f40" stroke-width="2"/>
+<g stroke="#9f7141" stroke-width="2"><path d="M20 227h129M20 239h129M20 251h129"/></g>
+<g font-family="sans-serif" font-size="14" fill="#183848"><text x="167" y="83">Epithelium</text><text x="167" y="119">Connective</text><text x="167" y="136">tissue</text><text x="167" y="174">Smooth</text><text x="167" y="191">muscle</text><text x="167" y="219">Nerve plexus</text></g>
+<g stroke="#294551" stroke-width="1.5" fill="none"><path d="M164 78 L143 82"/><path d="M164 119 L145 113"/><path d="M164 170 L148 170"/><path d="M164 212 L145 208"/></g>
+<g font-family="sans-serif" font-size="14" fill="#183848" text-anchor="middle"><text x="140" y="300">These tissues work together.</text><text x="140" y="320">Wall layers are simplified</text><text x="140" y="339">and not to scale.</text></g>
+</svg>
