@@ -213,9 +213,53 @@ try {
   await seed(data); await page.locator('input[name="e4:0"][value="1"]').check(); await page.locator('[data-act="check"]').click();
   await page.locator('[data-act="freshq"]').click(); await page.locator('input[name="e4:1"][value="0"]').check(); await page.locator('[data-act="check"]').click();
   assert.match(await page.locator("#tasks .fb.good").innerText(), /spreading can also make spots paler/i);
-  data = await stored(); data.state.sec = 3;
-  data = await stored(); data.state.adv = { a1: true, a2: true, a3: true, a4: true, a5: true, a6: true, a7: true };
+
+  // l3 always uses its reference mixture and pigment pair, without losing exploration settings.
+  data = await stored(); data.state.sec = 1; data.state.adv = { l1: true, l2: true };
+  data.state.res = {}; data.state.vr = {}; data.state.wr = {}; data.state.pick = {}; data.state.seen = {}; data.state.lock = {}; data.panel = "chr";
+  await seed(data); await page.locator("#cnew").click();
+  await page.locator('input[name="solv"][value="water"]').check({ force: true });
+  await page.locator('[data-p="close"]').click();
+  await page.locator("#lane0").selectOption("xan"); await page.locator("#lane1").selectOption("cha");
+  assert.match(await page.locator("#z-context").innerText(), /exploration.*water/i);
+  await page.locator('[data-sec="0"]').click();
+  async function checkL3Reference() {
+    assert.match(await page.locator("#tasks").innerText(), /chlorophyll b.*carotene/i);
+    assert.equal(await page.locator("#lane0").inputValue(), "car");
+    assert.equal(await page.locator("#lane1").inputValue(), "chb");
+    assert.equal(await page.locator("#lane0").isDisabled(), true);
+    assert.equal(await page.locator("#lane1").isDisabled(), true);
+    assert.match(await page.locator("#z-context").innerText(), /reference example.*1 propanone : 9 petroleum ether/i);
+    await page.waitForFunction(() => document.querySelector("#ztally").textContent.includes("0.95") && document.querySelector("#ztally").textContent.includes("0.45"));
+    assert.match(await page.locator("#zsvg").getAttribute("aria-label"), /carotene.*0\.95.*chlorophyll b.*0\.45/i);
+    assert.doesNotMatch(await page.locator("#ztally").innerText(), /stays put|water/i);
+  }
+  await checkL3Reference();
+  const particlesBefore = await page.locator("#zsvg circle").evaluateAll(nodes => nodes.map(n => n.getAttribute("cy")));
+  await page.waitForTimeout(600);
+  const particlesAfter = await page.locator("#zsvg circle").evaluateAll(nodes => nodes.map(n => n.getAttribute("cy")));
+  assert.notDeepEqual(particlesAfter, particlesBefore, "Reference particles should animate");
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.waitForFunction(() => (document.querySelector("#ztally").textContent.match(/moved \d+% as far/g) || []).length === 2, null, { timeout: 20000 });
+  const modelDistances = [...(await page.locator("#ztally").innerText()).matchAll(/moved (\d+)% as far/g)].map(match => +match[1]);
+  assert(modelDistances[0] > modelDistances[1], "The reference model should show carotene moving further than chlorophyll b");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.reload(); await checkL3Reference();
+  await page.locator('[data-sec="1"]').click(); await page.locator('[data-p="close"]').click();
+  assert.equal(await page.locator("#lane0").inputValue(), "xan");
+  assert.equal(await page.locator("#lane1").inputValue(), "cha");
+  assert.equal(await page.locator("#lane0").isEnabled(), true);
+  assert.match(await page.locator("#z-context").innerText(), /exploration.*water/i);
+  await page.locator('[data-sec="0"]').click(); await checkL3Reference();
+
+  // Completing Apply alone does not claim completion of earlier sections.
+  data = await stored(); data.state.sec = 3; data.state.adv = { a1: true, a2: true, a3: true, a4: true, a5: true, a6: true, a7: true };
+  data.state.res = {}; data.state.vr = {}; data.state.wr = {}; data.state.pick = {};
   await seed(data);
+  assert.equal(await page.locator('[data-sec="3"]').getAttribute("aria-current"), "step");
+  assert.equal(await page.locator('[data-sec="3"] .tick').count(), 1);
+  assert.equal(await page.locator('[data-sec="0"] .tick').count(), 0);
+  assert.match(await page.locator("#tasks").innerText(), /Apply: Unfamiliar chromatograms complete/);
   assert.doesNotMatch(await page.locator("#tasks").innerText(), /All sections complete/);
 
   for (const width of [1200, 320]) {

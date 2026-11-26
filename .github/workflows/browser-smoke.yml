@@ -37,6 +37,7 @@ jobs:
       - name: Test RP7 chromatography simulation
         run: |
           node scripts/check-rp7-chromatography.mjs
+          node scripts/check-rp7-mcq-feedback.mjs
           node scripts/check-rp7-accessibility.mjs
       - name: Test A-level investigation planning
         run: node scripts/check-alevel-plan-investigation.mjs chromium
