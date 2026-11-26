@@ -67,8 +67,8 @@ function web() {
 function column() {
   return picture("Fractional distillation column",diagram("A fractionating column is cooler at the top and hotter at the bottom. Short hydrocarbons leave near the top and long hydrocarbons leave lower down.",`
     <path d="M85 37Q85 17 105 17H143Q163 17 163 37V177H85Z" fill="#e1eeec" stroke="${teal}" stroke-width="3"/>
-    ${arrow(161,54,216,54,blue)}${arrow(162,112,216,112,rust)}${arrow(27,155,84,155,rust)}
-    ${text(65,138,"Heated oil",rust,14)}${text(123,45,"Cooler",blue,14)}${text(123,170,"Hotter",rust,14)}
+    ${arrow(161,54,185,54,blue)}${arrow(162,112,185,112,rust)}${arrow(27,155,84,155,rust)}
+    ${text(45,112,"Heated",rust,14)}${text(45,142,"oil",rust,14)}${text(123,45,"Cooler",blue,14)}${text(123,170,"Hotter",rust,14)}
     ${text(250,58,"Short chains",ink,15)}${text(250,116,"Long chains",ink,15)}`,320,190),
     "Vapours rise and cool. Each fraction condenses over a range of temperatures.");
 }

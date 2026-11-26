@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="310" viewBox="0 0 280 310" role="img">
+ <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs><rect width="280" height="310" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">Candida at a body surface</text><text x="140" y="52" font-size="15">Can be present without illness</text>
+ <path d="M30 105q28-10 56 0t56 0t56 0t52 0" stroke="#a65f5b" stroke-width="4" fill="none"/>
+ <g fill="#d5c4e2" stroke="#80588f" stroke-width="2"><ellipse cx="85" cy="84" rx="8" ry="11"/><ellipse cx="166" cy="87" rx="8" ry="11"/></g>
+ <path d="M140 122v24" stroke="#344958" stroke-width="2" marker-end="url(#a)"/><text x="140" y="171" font-size="15">Overgrowth can cause symptoms</text>
+ <path d="M30 227q28-10 56 0t56 0t56 0t52 0" stroke="#a65f5b" stroke-width="4" fill="none"/>
+ <g fill="#d5c4e2" stroke="#80588f" stroke-width="2"><ellipse cx="58" cy="205" rx="8" ry="11"/><ellipse cx="85" cy="209" rx="8" ry="11"/><ellipse cx="112" cy="206" rx="8" ry="11"/><ellipse cx="139" cy="209" rx="8" ry="11"/><ellipse cx="166" cy="207" rx="8" ry="11"/><ellipse cx="193" cy="208" rx="8" ry="11"/><ellipse cx="220" cy="205" rx="8" ry="11"/></g>
+ <text x="140" y="268" font-size="14">Yeast symbols are illustrative.</text><text x="140" y="291" font-size="13">Presence alone is not a diagnosis.</text></g>
+</svg>

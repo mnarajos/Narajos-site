@@ -80,6 +80,20 @@ function parallelTransects() {
     'Compare the repeated lines: each uses the same distances from the hedge. Real surveys may use more samples.',235);
 }
 function quadratWorked(){return grouped(randomCoordinates,quadratBoundary,quadratMeanWorked,parallelTransects);}
+export function massGasEscape() {
+  const flask=x=>'<path d="M'+(x+45)+' 96 V121 L'+(x+17)+' 165 Q'+(x+11)+' 179 '+(x+25)+' 181 H'+(x+105)+' Q'+(x+119)+' 179 '+(x+113)+' 165 L'+(x+85)+' 121 V96" fill="#eef6f6" stroke="'+ink+'" stroke-width="2"/>'+
+    '<path d="M'+(x+26)+' 163 H'+(x+104)+' L'+(x+111)+' 174 Q'+(x+113)+' 179 '+(x+104)+' 179 H'+(x+26)+' Q'+(x+17)+' 179 '+(x+19)+' 174 Z" fill="#d7eaf0"/>'+
+    line(x+8,183,x+122,183,ink,3)+'<rect x="'+(x+19)+'" y="185" width="92" height="31" rx="3" fill="#e7f0ed" stroke="'+ink+'" stroke-width="2"/>';
+  return fig('Where does the gas go?',
+    'Two matching reactions are shown after a gas has formed. In the sealed flask the gas stays on the balance and the reading is 132 grams. In the open flask some gas has escaped beyond the balance, which reads 130 grams. The removed stopper remains on the open balance. The small circles are schematic gas particles, not a count of the actual quantity.',
+    text(85,25,'Sealed',ink,15)+text(245,25,'Open',ink,15)+flask(20)+flask(180)+
+    '<rect x="62" y="90" width="46" height="9" fill="#d8ba96" stroke="'+ink+'"/><rect x="188" y="137" width="9" height="46" fill="#d8ba96" stroke="'+ink+'"/>'+
+    circle(74,136,4,'#fff',blue,2)+circle(94,148,4,'#fff',blue,2)+circle(87,126,4,'#fff',blue,2)+
+    circle(235,144,4,'#fff',blue,2)+circle(254,130,4,'#fff',blue,2)+circle(255,70,4,'#fff',blue,2)+circle(268,53,4,'#fff',blue,2)+
+    arrow(245,95,245,62,blue,2)+text(85,208,'132 g',ink,15)+text(245,208,'130 g',ink,15)+
+    text(160,250,'Balance weighs what remains',ink,15),
+    'After reaction, the removed stopper stays on the balance. Escaped gas still has mass but is no longer weighed; the circles are schematic.',269);
+}
 function glucoseUptakeAndStorage() {
   const glycogen=[105,133,161,189,217];
   return fig('Insulin, uptake and storage',
@@ -110,6 +124,14 @@ export function activityUnit() {
     event(166,72)+event(230,72)+event(166,125)+event(230,125)+text(160,182,'80 decays per second',blue,15)+text(160,215,'= 80 Bq',teal,16),
     'A becquerel is one decay per second. The small symbols indicate decay events; they are not a count of all 80 events.',234);
 }
+function resultantAcceleration() {
+  return fig('Acceleration follows the resultant force',
+    'A resultant force points right, and the acceleration also points right. The arrows show direction only; their lengths do not compare the magnitudes of different quantities.',
+    text(160,25,'Resultant force',rust,15)+arrow(60,59,260,59,rust,3)+
+    text(160,108,'Acceleration',blue,15)+arrow(60,142,200,142,blue,3)+text(160,190,'Same direction',ink,15),
+    'Compare the arrow directions. Acceleration points with the resultant force; the arrows do not compare magnitudes.',209);
+}
+function forcesWithAcceleration(){return grouped(gcseStepVisuals['forces-motion'][1],resultantAcceleration);}
 function trolleySensors() {
   const gate=x=>'<path d="M'+x+' 139 V70 H'+(x+32)+' V139" fill="none" stroke="'+blue+'" stroke-width="3"/>'+line(x+2,92,x+30,92,blue,1,'3 3');
   return fig('Measure motion with light gates',
@@ -587,7 +609,7 @@ export function atomsRearranged() {
     text(67,107,'H₂',blue,15)+text(152,107,'Cl₂',teal,15)+arrow(160,119,160,144,rust,2)+text(160,170,'After',ink,15)+
     circle(75,211,10,'#d9e8f5',blue)+circle(99,211,10,'#d9eee2',teal)+line(85,211,89,211,ink,2)+circle(206,211,10,'#d9e8f5',blue)+circle(230,211,10,'#d9eee2',teal)+line(216,211,220,211,ink,2)+
     text(87,246,'HCl',ink,15)+text(218,246,'HCl',ink,15),
-    'Count each kind of atom before and after. The atoms are joined differently but none are lost or created in this model.',265);
+    'Count each kind of atom before and after. This model shows a different reaction from the gas-producing flask example.',265);
 }
 function photosynthesisAndGlucose(){return grouped(gcseStepVisuals['photosynthesis-limits'][0],glucoseFates);}
 export function heatingCurve() {
@@ -1736,7 +1758,7 @@ export const gcseHigherVisuals = {
 export const moreGcseStepVisuals = {
   'food-web-change': {2:quadrat},
   'wave-motion': {1:waveMeasures,2:waveCompare},
-  'forces-motion': {2:stopping},
+  'forces-motion': {1:forcesWithAcceleration,2:stopping},
   'decay-half-life': {2:irradiation},
   'density-and-gas-pressure': {0:density},
   'photosynthesis-limits': {0:photosynthesisAndGlucose,2:() => grouped(testCarbonDioxide, carbonDioxideComparison)},

@@ -787,7 +787,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/2.1.3/2", ["dexa-scan.svg"]],
       ["f170/2.1.3/1", ["artery-plaque-comparison.svg", "airway-narrowing.svg", "alveolar-wall-loss.svg"]],
       ["f170/2.2.2/1", ["bone-functions.svg"]],
-      ["f170/2.2.1/0", ["f170-oxygen-delivery.svg"]], ["f170/2.2.1/2", ["f170-oxygen-delivery.svg"]], ["f170/2.2.3/1", ["peak-flow-method.svg"]], ["f170/2.2.3/2", ["f170-ventilation-example.svg"]],
+      ["f170/2.2.1/0", ["f170-oxygen-delivery.svg"]], ["f170/2.2.1/1", ["digestion.svg", "f170-nephron-overview.svg"]], ["f170/2.2.1/2", ["f170-oxygen-delivery.svg"]], ["f170/2.2.3/1", ["peak-flow-method.svg"]], ["f170/2.2.3/2", ["f170-ventilation-example.svg"]],
       ["f170/2.1.1/0", ["f170-alveolar-barrier.svg"]], ["f170/2.1.1/1", ["pulse-measurement-context.svg"]], ["f170/2.1.1/2", ["pulse-measurement-context.svg"]],
       ["f170/2.1.4/0", ["f170-antigen-recognition.svg"]], ["f170/2.1.4/1", ["ventricular-assist.svg"]], ["f170/2.1.4/2", ["valve-repair.svg"]],
       ["f170/1.1.2/1", ["hb-blood-cells-sem.webp", "hb-lung-mitochondrion-tem.webp"]],
@@ -805,7 +805,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/4.1.4/1", ["f170-growth-graph.svg", "f170-binary-fission.svg", "f170-population-balance.svg"]],
       ["f170/4.1.1/1", ["f170-gram-envelope.svg", "hb-gram-comparison.webp"]], ["f170/4.1.1/2", ["f170-mesosome-artefact.svg"]],
       ["f170/4.1.5/0", ["virus-particle.svg"]], ["f170/4.1.5/1", ["virus-host.svg"]], ["f170/4.1.5/2", ["bacteriophage.svg"]],
-      ["f170/1.1.4/1", ["f170-oxygen-diffusion.svg", "f170-channel-diffusion.svg", "f170-water-active.svg"]],
+      ["f170/1.1.4/1", ["f170-oxygen-diffusion.svg", "f170-channel-diffusion.svg", "f170-carrier-diffusion.svg", "f170-water-active.svg"]],
       ["f170/1.1.4/2", ["f170-water-active.svg", "f170-antigen-recognition.svg"]],
       ["f170/1.2.1/1", ["f170-levels-organisation.svg"]], ["f170/1.2.1/2", ["gut-wall-tissues.svg"]],
       ["f170/1.1.5/1", ["f170-crossing-over.svg", "f170-meiosis-first-division.svg", "f170-meiosis-orientation.svg", "f170-meiosis-second-division.svg"]],
@@ -815,7 +815,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.1.4.surface/1", ["f170-receptor-signalling.svg", "f170-extrinsic-receptor.svg"]],
       ["f170/1.1.4.surface/2", ["f170-antigen-recognition.svg"]],
       ["f170/1.1.4.surface/3", ["f170-vesicle-traffic.svg"]],
-      ["f170/3.2.1/1", ["action-potential-ions.svg", "myelinated-axon.svg"]],
+      ["f170/3.2.1/1", ["action-potential-ions.svg", "myelinated-axon.svg"]], ["f170/3.2.1/2", ["f170-autonomic-cns-pns.svg"]],
       ["f172/a1/1", ["meiosis.svg"]], ["f172/a2/1", ["punnett-cross.svg"]],
       ["f172/a2/2", ["punnett-cross.svg"]], ["f172/a3/1", ["genetic-test.svg"]],
       ["f172/a4/2", ["gene-delivery.svg"]],
@@ -896,6 +896,8 @@ export async function checkHumanCatchup(browser, base) {
       ["f176/a5", ["f176-eeg-trace.svg"], ["f176-eeg-trace.svg", "f176-mri-ct.svg"]],
       ["f176/a4", ["f176-coordination-injury.svg"], ["f176-coordination-injury.svg", "f176-coordination-injury.svg"]],
       ["f175/2.1", ["f175-history-ultrasound.svg", "f175-history-ultrasound.svg"], ["f175-history-ultrasound.svg", "f175-baseline-pressure.svg", "f175-history-ultrasound.svg"]],
+      ["f171/1.3.1.protozoa", ["f171-malaria-vector.svg"], ["f171-malaria-blood-cells.svg", "f171-malaria-vector.svg"]],
+      ["f171/1.3.1.fungi", ["f171-candida-overgrowth.svg"], ["f171-histoplasma-exposure.svg", "f171-candida-overgrowth.svg"]],
       ["f171/1.3.1.bacteria", ["f171-tick-bacterium.svg"], ["f171-tick-bacterium.svg", "f171-tick-bacterium.svg"]],
       ["f171/1.3.1.viruses", ["f171-hiv-stage.svg", "f171-sign-symptom.svg"], ["f171-sign-symptom.svg", "f171-sign-symptom.svg", "f171-air-blood-prevention.svg"]],
       ["f171/1.2.1.tissues", [null, "f171-myelin-change.svg", "f171-melanocytes.svg"], ["f171-inflamed-joint.svg", "f171-inflamed-joint.svg"]],
@@ -1130,6 +1132,32 @@ export async function checkHumanCatchup(browser, base) {
     assert(await hivTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
     await expand(page.locator("[data-hb-model-step]"));
     assert(await hivTeachingFigures.evaluateAll(figures => figures.every(figure => !figure.hidden)));
+
+    // Fungal source diagrams answer the independent comparison directly.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f171/1.3.1.fungi");
+    const fungalTeachingFigures = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]');
+    assert.equal(await fungalTeachingFigures.count(), 4);
+    await expand(stage("independent"));
+    assert(await fungalTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await page.reload();
+    assert(await fungalTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await fungalTeachingFigures.evaluateAll(figures => figures.every(figure => !figure.hidden)));
+
+    // Protozoan examples and the credited blood film directly support independent practice.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f171/1.3.1.protozoa");
+    const protozoaTeachingFigures = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]');
+    assert.equal(await protozoaTeachingFigures.count(), 5);
+    const bloodFilm = protozoaTeachingFigures.filter({has: page.locator('img[src="/assets/micrographs/hb-plasmodium-rings.webp"]')});
+    assert.equal(await bloodFilm.locator("figcaption a").count(), 2, "blood-film source and licence are accessible");
+    await expand(stage("independent"));
+    assert(await protozoaTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await page.reload();
+    assert(await protozoaTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await protozoaTeachingFigures.evaluateAll(figures => figures.every(figure => !figure.hidden)));
 
     // Both linked meiosis views remain on their matching paragraph and worked step.
     await page.evaluate(key => localStorage.removeItem(key), localPractice);

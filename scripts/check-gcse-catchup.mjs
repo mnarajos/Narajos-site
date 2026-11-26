@@ -136,6 +136,19 @@ export async function checkGCSECatchup(browser, base) {
         `glucose uptake figure appears at the wrong stage: ${index}`);
     }
     await page.evaluate(key => localStorage.removeItem(key), glucoseKey);
+    const massId = "mass-conservation";
+    const massKey = `narajos.catchup.v1.10.${massId}`;
+    await page.goto(lessonURL(massId, 10));
+    assert.equal(await page.locator('#catchup-evidence svg[aria-label*="Two matching reactions"]').count(), 1, "mass opening lacks the gas-escape comparison");
+    for (const index of [0, gcseCatchup[massId].steps.length - 1]) {
+      await page.evaluate(({key, index}) => localStorage.setItem(key, JSON.stringify({step: index})), {key: massKey, index});
+      await page.reload();
+      const stage = page.locator(".school-current-stage");
+      assert.equal(await stage.locator('svg[aria-label*="Two matching reactions"]').count(), index === 0 ? 1 : 0,
+        `mass gas-escape comparison appears at the wrong stage: ${index}`);
+      if (index === 0) assert((await stage.locator(".school-step-notes").textContent()).includes("Sealed before"), "mass stage lacks the original measurements");
+    }
+    await page.evaluate(key => localStorage.removeItem(key), massKey);
     // Check every custom opening in its own panel, including custom openings
     // installed outside the registry. A few investigations use a table there;
     // the original illustrated registry still requires an SVG.

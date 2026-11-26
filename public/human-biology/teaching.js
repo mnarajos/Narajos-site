@@ -76,7 +76,7 @@
 
   function figure(photo, field) {
     if (!photo) return "";
-    return '<figure class="hb-teach-photo"><img src="' + escape(photo.src) + '" alt="' +
+    return '<figure class="hb-teach-photo"' + (photo.assessmentSensitive ? ' data-hb-assessment-sensitive' : '') + '><img src="' + escape(photo.src) + '" alt="' +
       escape(photo.alt) + '" width="' + photo.width + '" height="' + photo.height + '" loading="lazy" decoding="async">' +
       '<figcaption>' + (photo.caption ? escape(photo.caption) + ' ' : '') + (field ? '<strong>Field ' + field + '</strong> · ' : '') + '<a href="' + escape(photo.source) + '">' + escape(photo.credit) + '</a> · ' +
       '<a href="' + escape(photo.licenceUrl) + '">' + escape(photo.licence) + '</a> · ' + escape(photo.changes || 'Resized and converted to WebP') + '</figcaption></figure>';

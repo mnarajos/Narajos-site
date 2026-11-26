@@ -2,7 +2,7 @@ import { investigations } from "./gcse-investigations.js";
 import { question } from "./school-catchup-journey.js";
 import { priorityCatchup, distanceWorkedGraph, velocityWorkedGraph } from "./gcse-catchup-priority.js";
 import { gcseStepVisuals } from "./gcse-step-visuals.js";
-import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, gcseWorkedLineVisuals, heatingCurve, readableGcseFigure, atomsRearranged, ohmicCurrentGraph, filamentCurrentGraph, gridCurrentComparison, gridHeatingComparison, leftHandDirections, motorReversalWorked, randomDecay, activityUnit } from "./gcse-more-step-visuals.js";
+import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, gcseWorkedLineVisuals, heatingCurve, readableGcseFigure, atomsRearranged, ohmicCurrentGraph, filamentCurrentGraph, gridCurrentComparison, gridHeatingComparison, leftHandDirections, motorReversalWorked, randomDecay, activityUnit, massGasEscape } from "./gcse-more-step-visuals.js";
 import { gcseVisual } from "./gcse-catchup-visuals.js";
 
 function lesson(year, code, title, hook, notice, idea, visual, stages, independent, retry, higher) {
@@ -590,7 +590,7 @@ gcseCatchup["photosynthesis-limits"].visual = ["custom", () => {
 const massBalanceEvidence = gcseCatchup["mass-conservation"].visual;
 gcseCatchup["mass-conservation"].visual = ["custom", () => {
   const group = document.createElement("div");
-  group.append(readableGcseFigure(atomsRearranged), readableGcseFigure(() => gcseVisual(massBalanceEvidence)));
+  group.append(readableGcseFigure(atomsRearranged), readableGcseFigure(massGasEscape), readableGcseFigure(() => gcseVisual(massBalanceEvidence)));
   return group;
 }];
 // The original activity bars explain repeated halving. Pair them with a model
@@ -634,7 +634,11 @@ for (const [id, indices] of Object.entries(openingFigureAtStep)) {
   for (const index of indices) gcseCatchup[id].steps[index].visual = () => readableGcseFigure(() => gcseVisual(gcseCatchup[id].visual));
 }
 gcseCatchup["photosynthesis-limits"].steps[1].visual = () => readableGcseFigure(() => gcseVisual(photosynthesisRateEvidence));
-gcseCatchup["mass-conservation"].steps[0].visual = () => readableGcseFigure(() => gcseVisual(massBalanceEvidence));
+gcseCatchup["mass-conservation"].steps[0].visual = () => {
+  const group = document.createElement("div");
+  group.append(readableGcseFigure(massGasEscape), readableGcseFigure(() => gcseVisual(massBalanceEvidence)));
+  return group;
+};
 gcseCatchup["decay-half-life"].steps[0].visual = () => readableGcseFigure(activityUnit);
 gcseCatchup["decay-half-life"].steps[1].visual = () => readableGcseFigure(() => gcseVisual(decayEvidence));
 gcseCatchup["parallel-circuits"].steps[0].visual = () => readableGcseFigure(() => gcseVisual(parallelCircuitEvidence));

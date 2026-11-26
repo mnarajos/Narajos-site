@@ -185,7 +185,12 @@ for (const [file,global,topic,id,group] of [
  ['catchup-abo-dominance.js','ALevelABODominance','a7','codom',1],
  ['catchup-promoter-terminator.js','ALevelPromoterTerminator','a8','fragments',1],
  ['catchup-running-mean.js','ALevelRunningMean','a7','fieldwork',0],
- ['catchup-colorimeter-preparation.js','ALevelColorimeterPreparation','a6','glucal',1]
+ ['catchup-colorimeter-preparation.js','ALevelColorimeterPreparation','a6','glucal',1],
+ ['catchup-phosphorus-decomposition.js','ALevelPhosphorusDecomposition','a5','phosphorus',1],
+ ['catchup-predator-prey-cause.js','ALevelPredatorPreyCause','a7','interact',1],
+ ['catchup-niche-example.js','ALevelNicheExample','a7','ecosys',0],
+ ['catchup-plasmid-amplification.js','ALevelPlasmidAmplification','a8','invivo',0],
+ ['catchup-fertiliser-release.js','ALevelFertiliserRelease','a5','fertil',0]
 ]) {
  vm.runInNewContext(readFileSync(new URL('../public/alevel/'+file, import.meta.url), 'utf8'), context);
  const figure=context.window[global].render(topic,id,group);
