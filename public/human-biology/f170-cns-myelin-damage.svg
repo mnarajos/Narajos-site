@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="345" viewBox="0 0 280 345" role="img" aria-labelledby="title desc">
+<title id="title">Myelin and CNS conduction</title><desc id="desc">Two schematic central nervous system axons are compared. One has intact myelin sections and nodes. In the other, a myelin section is damaged; conduction along affected axons can be slowed or interrupted. Arrow styles indicate qualitative possibilities, not measured speeds.</desc>
+<rect width="280" height="345" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="24" font-weight="700">Myelin in the CNS</text>
+<text x="140" y="52">Intact myelin</text>
+<path d="M25 96h230" stroke="#985e62" stroke-width="5"/>
+<g fill="#cbb7db" stroke="#806195" stroke-width="2"><rect x="30" y="78" width="62" height="36" rx="12"/><rect x="108" y="78" width="62" height="36" rx="12"/><rect x="186" y="78" width="62" height="36" rx="12"/></g>
+<path d="M85 130h109m-8-6 8 6-8 6" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<text x="140" y="160" font-size="15">Node-to-node propagation</text>
+<text x="140" y="194">Damaged myelin in MS</text>
+<path d="M25 238h230" stroke="#985e62" stroke-width="5"/>
+<g fill="#cbb7db" stroke="#806195" stroke-width="2"><rect x="30" y="220" width="62" height="36" rx="12"/><rect x="186" y="220" width="62" height="36" rx="12"/></g>
+<path d="M108 226l13 5-6 7 14 5-7 8M154 226l-12 5 7 7-13 5 6 8" fill="none" stroke="#ae6544" stroke-width="3"/>
+<path d="M85 273h109m-8-6 8 6-8 6" fill="none" stroke="#286b73" stroke-width="2.5" stroke-dasharray="5 5"/>
+<text x="140" y="307" font-size="15">Affected conduction may</text><text x="140" y="328" font-size="15">slow or be interrupted.</text>
+</g></svg>

@@ -149,6 +149,52 @@ export async function checkGCSECatchup(browser, base) {
       if (index === 0) assert((await stage.locator(".school-step-notes").textContent()).includes("Sealed before"), "mass stage lacks the original measurements");
     }
     await page.evaluate(key => localStorage.removeItem(key), massKey);
+    await page.goto(lessonURL("wave-motion", 11));
+    const waveNotes = page.locator(".school-current-stage .school-step-notes");
+    const markerPositions = [];
+    for (const name of ["Start position", "Wave moves right", "A little later"]) {
+      await waveNotes.getByRole("button", {name}).click();
+      const marker = waveNotes.locator("svg[role=img] circle").last();
+      markerPositions.push([Number(await marker.getAttribute("cx")), Number(await marker.getAttribute("cy"))]);
+    }
+    assert(markerPositions.every(([x]) => x === markerPositions[0][0]), "wave marker must stay at one horizontal position");
+    assert(markerPositions[1][1] < markerPositions[0][1] && markerPositions[2][1] > markerPositions[1][1], "wave marker must rise then fall");
+    for (const [id, fragment, inOpening] of [
+      ["density-and-gas-pressure", "Two schematic sets of impacts", true],
+      ["carbon-cycling", "An organic fuel burns", false],
+      ["reaction-profiles", "Two schematic energy-level comparisons", true],
+      ["circuit-resistance", "A schematic lamp contains a filament", true]
+    ]) {
+      const key = `narajos.catchup.v1.10.${id}`;
+      const diagram = `svg[aria-label*="${fragment}"]`;
+      await page.goto(lessonURL(id, 10));
+      assert.equal(await page.locator(`#catchup-evidence ${diagram}`).count(), inOpening ? 1 : 0, `${id}: incorrect opening figure`);
+      for (const index of [1, gcseCatchup[id].steps.length - 1]) {
+        await page.evaluate(({key, index}) => localStorage.setItem(key, JSON.stringify({step: index})), {key, index});
+        await page.reload();
+        assert.equal(await page.locator(`.school-current-stage ${diagram}`).count(), index === 1 ? 1 : 0,
+          `${id}: explanatory figure appears at the wrong stage: ${index}`);
+      }
+      await page.evaluate(key => localStorage.removeItem(key), key);
+    }
+    for (const [id, fragment] of [
+      ["vaccine-memory", "A vaccine safely introduces antigens"],
+      ["food-web-change", "On a field grid"],
+      ["reaction-rate", "a reaction produces eight cubic centimetres"],
+      ["crude-oil", "One butane molecule"],
+      ["chromatography", "A sample spot and a solvent front"],
+      ["electromagnet-switch", "Two coils have the same current"],
+      ["selection-and-variation", "Two of five symbols are dark"]
+    ]) {
+      const lesson = gcseCatchup[id], key = `narajos.catchup.v1.${lesson.year}.${id}`;
+      const figure = `svg[aria-label*="${fragment}"]`;
+      await page.goto(lessonURL(id, lesson.year));
+      assert.equal(await page.locator(`#catchup-evidence ${figure}`).count(), 1, `${id}: additional opening figure missing`);
+      await page.evaluate(({key, index}) => localStorage.setItem(key, JSON.stringify({step: index})), {key, index: lesson.steps.length - 1});
+      await page.reload();
+      assert.equal(await page.locator(`.school-current-stage ${figure}`).count(), 0, `${id}: opening figure leaked into independent assessment`);
+      await page.evaluate(key => localStorage.removeItem(key), key);
+    }
     // Check every custom opening in its own panel, including custom openings
     // installed outside the registry. A few investigations use a table there;
     // the original illustrated registry still requires an SVG.

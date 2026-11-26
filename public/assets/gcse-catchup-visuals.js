@@ -100,12 +100,12 @@ function wave() {
   function state(stage) {
     const y = x => 91 + 33 * Math.sin((x - 126 - stage * 25)/23);
     const coords = Array.from({length:61},(_,i)=>[16+i*4.8,y(16+i*4.8)].join(",")).join(" ");
-    return picture("Transverse wave on a rope",diagram("The wave pattern moves to the right. The marked rope point moves only up and down at the same horizontal position.",`
+    return picture("Transverse wave on a rope",diagram("The wave pattern transfers energy to the right. The marked rope point moves only up and down at the same horizontal position.",`
       ${line(18,91,306,91,"#8b9d9c",1,"5 3")}
       <polyline points="${coords}" fill="none" stroke="${teal}" stroke-width="4"/>
       ${line(126,49,126,132,rust,1.6,"4 4")}${circle(126,y(126),7,"#efa468",rust,2)}
       ${arrow(205,26,295,26,blue)}${text(193,30,"Wave travels",blue,15,"end")}`,320,148),
-      "The coloured marker moves up and down along the dashed line.");
+      "The wave transfers energy to the right. The coloured marker moves up and down along the dashed line.");
   }
   return steps("Follow a point on the rope", [["Start position",()=>state(0)],["Wave moves right",()=>state(1)],["A little later",()=>state(3)]]);
 }

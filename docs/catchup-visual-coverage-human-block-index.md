@@ -211,9 +211,9 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f171/1.3.1.viruses · Model 1 | A school records three pupils who feel tired and have measured fevers. Fatigue is a symptom; the thermomete… | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
 | f171/1.3.1.viruses · Model 2 | These findings justify attention but cannot distinguish COVID-19 from other causes. Appropriate testing pro… | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
 | f171/1.3.1.viruses · Model 3 | Suppose the review now concerns safety of donated blood. Screening donations can reduce blood-borne infecti… | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
-| f171/1.3.1.worms · Explain 1 | Flukes, tapeworms and roundworms are helminths: multicellular parasitic worms. Fasciolosis and hydatid dise… | compare | Unreviewed; see reviewed exceptions |
-| f171/1.3.1.worms · Model 1 | A fictional liver scan shows a cyst. It provides structural evidence but cannot, from that description alon… | compare | Unreviewed; see reviewed exceptions |
-| f171/1.3.1.worms · Model 2 | The person's work with dogs may make an exposure plausible. Ask whether ingestion was possible before drawi… | compare | Unreviewed; see reviewed exceptions |
+| f171/1.3.1.worms · Explain 1 | Flukes, tapeworms and roundworms are helminths: multicellular parasitic worms. Fasciolosis and hydatid dise… | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f171/1.3.1.worms · Model 1 | A fictional liver scan shows a cyst. It provides structural evidence but cannot, from that description alon… | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f171/1.3.1.worms · Model 2 | The person's work with dogs may make an exposure plausible. Ask whether ingestion was possible before drawi… | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
 | f171/2.1 · Explain 1 | Identify the problem and the goal before comparing treatments. In this fictional case, a cast limits moveme… | None declared | Unreviewed; see reviewed exceptions |
 | f171/2.1 · Explain 2 | A choice depends on how a mechanism fits the circumstances and whether the expected benefit justifies the r… | None declared | Unreviewed; see reviewed exceptions |
 | f171/2.1 · Model 1 | A fictional wrist fracture remains aligned on repeat images. That is the evidence that matters for the imme… | None declared | Unreviewed; see reviewed exceptions |
@@ -228,10 +228,10 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f171/2.3 · Model 2 | The programme invites apparently well people to a test. The key facts are who is invited and why. A positiv… | None declared | Unreviewed; see reviewed exceptions |
 | f171/2.3 · Model 3 | A different assessment investigates whether the condition is present. That is diagnostic follow-up, even if… | None declared | Unreviewed; see reviewed exceptions |
 | f171/2.3 · Model 4 | Once the condition is established, the team repeats a measurement to check change over time. Its purpose is… | None declared | Unreviewed; see reviewed exceptions |
-| f171/3.2.1 · Explain 1 | Immunodeficiency weakens defence. Autoimmunity damages self tissue. Allergy is an inappropriate response to… | None declared | Unreviewed; see reviewed exceptions |
-| f171/3.2.1 · Model 1 | An immune response damages a fictional donor graft. The target is the donor tissue. Immune damage to the gr… | None declared | Unreviewed; see reviewed exceptions |
-| f171/3.2.1 · Model 2 | Suppressing part of the recipient's immune response may reduce rejection. The same reduction in immune acti… | None declared | Unreviewed; see reviewed exceptions |
-| f171/3.2.1 · Model 3 | Explain each outcome by naming the target and mechanism. Rejection and infection are distinct processes, an… | None declared | Unreviewed; see reviewed exceptions |
+| f171/3.2.1 · Explain 1 | Immunodeficiency weakens defence. Autoimmunity damages self tissue. Allergy is an inappropriate response to… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/3.2.1 · Model 1 | An immune response damages a fictional donor graft. The target is the donor tissue. Immune damage to the gr… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/3.2.1 · Model 2 | Suppressing part of the recipient's immune response may reduce rejection. The same reduction in immune acti… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/3.2.1 · Model 3 | Explain each outcome by naming the target and mechanism. Rejection and infection are distinct processes, an… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f171/3.2.2 · Explain 1 | A vaccine can deliver antigen directly, deliver instructions for cells to make an antigen, or expose the im… | None declared | Unreviewed; see reviewed exceptions |
 | f171/3.2.2 · Model 1 | An inactivated vaccine provides antigens in killed organisms. The organisms cannot replicate. | None declared | Unreviewed; see reviewed exceptions |
 | f171/3.2.2 · Model 2 | An mRNA vaccine delivers instructions. Recipient cells temporarily produce an antigen, which the adaptive i… | None declared | Unreviewed; see reviewed exceptions |

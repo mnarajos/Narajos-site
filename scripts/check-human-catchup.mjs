@@ -775,6 +775,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f171/1.2.1.airways/1", ["f171-asthma-airway.svg"]], ["f171/1.2.1.airways/2", ["alveolar-wall-loss.svg"]],
       ["f171/1.2.1.renal/1", ["f171-glomerular-barrier.svg"]], ["f171/1.2.1.renal/2", ["f171-kidney-cysts.svg"]],
       ["f171/1.2.1.hodgkin/1", ["f171-lymph-node-airway.svg"]], ["f171/1.2.1.pkd/1", ["f171-kidney-volume-filtration.svg"]], ["f171/4.2.2/1", ["f171-pressure-readings.svg"]],
+      ["f171/3.2.1/2", ["f171-immune-targets.svg"]], ["f171/3.2.1/3", ["f171-graft-immune-tradeoff.svg"]],
       ["f171/2.2/1", ["f171-functional-outcome.svg"]],
       ["f175/2.1/1", ["f175-history-ultrasound.svg"]], ["f170/3.3.1/2", ["hb-endometrium.webp", "hb-follicle-teaching.webp", "hb-tubule-teaching.webp"]],
       ["f170/3.3.1/1", ["f170-sperm-route.svg"]], ["f170/3.3.2/2", ["f170-gamete-patterns.svg"]],
@@ -815,6 +816,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.1.4.surface/1", ["f170-receptor-signalling.svg", "f170-extrinsic-receptor.svg"]],
       ["f170/1.1.4.surface/2", ["f170-antigen-recognition.svg"]],
       ["f170/1.1.4.surface/3", ["f170-vesicle-traffic.svg"]],
+      ["f170/3.2.2/1", ["f170-medulla-control.svg", "hypothalamus-pituitary.svg"]],
       ["f170/3.2.1/1", ["action-potential-ions.svg", "myelinated-axon.svg"]], ["f170/3.2.1/2", ["f170-autonomic-cns-pns.svg"]],
       ["f172/a1/1", ["meiosis.svg"]], ["f172/a2/1", ["punnett-cross.svg"]],
       ["f172/a2/2", ["punnett-cross.svg"]], ["f172/a3/1", ["genetic-test.svg"]],
@@ -896,6 +898,8 @@ export async function checkHumanCatchup(browser, base) {
       ["f176/a5", ["f176-eeg-trace.svg"], ["f176-eeg-trace.svg", "f176-mri-ct.svg"]],
       ["f176/a4", ["f176-coordination-injury.svg"], ["f176-coordination-injury.svg", "f176-coordination-injury.svg"]],
       ["f175/2.1", ["f175-history-ultrasound.svg", "f175-history-ultrasound.svg"], ["f175-history-ultrasound.svg", "f175-baseline-pressure.svg", "f175-history-ultrasound.svg"]],
+      ["f171/3.2.1", ["f171-immune-targets.svg"], ["f171-immune-targets.svg", "f171-graft-immune-tradeoff.svg", "f171-graft-immune-tradeoff.svg"]],
+      ["f171/1.3.1.worms", ["f171-fluke-ingestion.svg"], ["f171-cyst-evidence.svg", "f171-hydatid-ingestion.svg"]],
       ["f171/1.3.1.protozoa", ["f171-malaria-vector.svg"], ["f171-malaria-blood-cells.svg", "f171-malaria-vector.svg"]],
       ["f171/1.3.1.fungi", ["f171-candida-overgrowth.svg"], ["f171-histoplasma-exposure.svg", "f171-candida-overgrowth.svg"]],
       ["f171/1.3.1.bacteria", ["f171-tick-bacterium.svg"], ["f171-tick-bacterium.svg", "f171-tick-bacterium.svg"]],
@@ -1158,6 +1162,45 @@ export async function checkHumanCatchup(browser, base) {
     assert(await protozoaTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
     await expand(page.locator("[data-hb-model-step]"));
     assert(await protozoaTeachingFigures.evaluateAll(figures => figures.every(figure => !figure.hidden)));
+
+    // The hydatid ingestion route is withheld during its independent question.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f171/1.3.1.worms");
+    const wormTeachingFigures = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]');
+    assert.equal(await wormTeachingFigures.count(), 2);
+    await expand(stage("independent"));
+    assert(await wormTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await page.reload();
+    assert(await wormTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await wormTeachingFigures.evaluateAll(figures => figures.every(figure => !figure.hidden)));
+
+    // The myelin-damage example stays hidden during the independent reflex question.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f170/3.2.1");
+    const myelinDamageFigure = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]');
+    assert.equal(await myelinDamageFigure.count(), 1);
+    await expand(stage("independent"));
+    await expand(page.locator(".hb-teach-explain"));
+    assert(await myelinDamageFigure.evaluate(figure => figure.hidden));
+    await page.reload();
+    await expand(stage("independent"));
+    await expand(page.locator(".hb-teach-explain"));
+    assert(await myelinDamageFigure.evaluate(figure => figure.hidden));
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await myelinDamageFigure.evaluate(figure => !figure.hidden));
+
+    // Immune-suppression diagrams are withheld during their independent question.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f171/3.2.1");
+    const immuneTeachingFigures = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]');
+    assert.equal(await immuneTeachingFigures.count(), 2);
+    await expand(stage("independent"));
+    assert(await immuneTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await page.reload();
+    assert(await immuneTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await immuneTeachingFigures.evaluateAll(figures => figures.every(figure => !figure.hidden)));
 
     // Both linked meiosis views remain on their matching paragraph and worked step.
     await page.evaluate(key => localStorage.removeItem(key), localPractice);

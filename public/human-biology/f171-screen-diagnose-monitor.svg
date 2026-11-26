@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="390" viewBox="0 0 280 390" role="img">
+ <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs><rect width="280" height="390" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">Purpose changes by stage</text>
+ <path d="M36 47h65v57H36Z" fill="#fff" stroke="#537a94" stroke-width="2"/><path d="M48 64h41M48 78h41M48 92h26" stroke="#789c94" stroke-width="2"/><text x="150" y="64" font-size="15">Screening</text><text x="171" y="88" font-size="14">Flags a possibility</text>
+ <path d="M140 112v23" stroke="#344958" stroke-width="2" marker-end="url(#a)"/>
+ <circle cx="67" cy="177" r="22" fill="#e3edf5" stroke="#537a94" stroke-width="3"/><path d="M82 191l9 9" stroke="#537a94" stroke-width="5"/>
+ <text x="174" y="167" font-size="15">Further assessment</text><text x="174" y="191" font-size="14">Investigates whether</text><text x="174" y="211" font-size="14">the condition is present</text>
+ <path d="M140 219v23" stroke="#344958" stroke-width="2" marker-end="url(#a)"/>
+ <text x="201" y="239" font-size="13">If confirmed</text>
+ <path d="M37 266v56h66" stroke="#344958" stroke-width="2" fill="none"/><circle cx="49" cy="304" r="4" fill="#32776d"/><circle cx="69" cy="289" r="4" fill="#32776d"/><circle cx="91" cy="295" r="4" fill="#32776d"/>
+ <text x="173" y="277" font-size="15">Monitoring</text><text x="173" y="301" font-size="14">Repeat observations</text><text x="173" y="321" font-size="14">track change</text>
+ <text x="70" y="343" font-size="12">Symbolic</text>
+ <text x="140" y="363" font-size="14">A positive screen is not a diagnosis.</text></g>
+</svg>

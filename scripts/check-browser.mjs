@@ -660,7 +660,9 @@ try{
  await desktop.goto(base+"/human-biology/#catchup/f170/1.1.2",{waitUntil:"load"});
  await desktop.locator("[data-hb-model-step]").waitFor({state:"visible"});
  const microscope=desktop.locator("[data-hb-model-step]");
- assert(await microscope.locator(".micrograph-single img").evaluate(async img=>{await img.decode();return img.naturalWidth===386;}));
+ const workedMicrograph=microscope.locator(".micrograph-single img");
+ await workedMicrograph.scrollIntoViewIfNeeded();
+ assert(await workedMicrograph.evaluate(async img=>{await img.decode();return img.naturalWidth===386;}));
  assert(await microscope.locator(".hb-bar-length").isVisible());
  await microscope.getByRole("button",{name:"Show next step"}).press("Enter");
  await microscope.getByRole("button",{name:"Show next step"}).press("Enter");

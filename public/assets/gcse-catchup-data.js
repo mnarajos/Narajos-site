@@ -2,7 +2,7 @@ import { investigations } from "./gcse-investigations.js";
 import { question } from "./school-catchup-journey.js";
 import { priorityCatchup, distanceWorkedGraph, velocityWorkedGraph } from "./gcse-catchup-priority.js";
 import { gcseStepVisuals } from "./gcse-step-visuals.js";
-import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, gcseWorkedLineVisuals, heatingCurve, readableGcseFigure, atomsRearranged, ohmicCurrentGraph, filamentCurrentGraph, gridCurrentComparison, gridHeatingComparison, leftHandDirections, motorReversalWorked, randomDecay, activityUnit, massGasEscape } from "./gcse-more-step-visuals.js";
+import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, gcseWorkedLineVisuals, heatingCurve, readableGcseFigure, atomsRearranged, ohmicCurrentGraph, filamentCurrentGraph, gridCurrentComparison, gridHeatingComparison, leftHandDirections, motorReversalWorked, randomDecay, activityUnit, massGasEscape, activationBarrier, reactionNetTransfer, resistanceFromGraph, hotFilament, meanGasRate } from "./gcse-more-step-visuals.js";
 import { gcseVisual } from "./gcse-catchup-visuals.js";
 
 function lesson(year, code, title, hook, notice, idea, visual, stages, independent, retry, higher) {
@@ -610,6 +610,39 @@ gcseCatchup["parallel-circuits"].visual = ["custom", () => {
     readableGcseFigure(gcseStepVisuals["parallel-circuits"][1]));
   return group;
 }];
+const reactionProfileEvidence = gcseCatchup["reaction-profiles"].visual;
+gcseCatchup["reaction-profiles"].visual = ["custom", () => {
+  const group = document.createElement("div");
+  group.append(readableGcseFigure(() => gcseVisual(reactionProfileEvidence)), readableGcseFigure(activationBarrier), readableGcseFigure(reactionNetTransfer));
+  return group;
+}];
+const resistanceEvidence = gcseCatchup["circuit-resistance"].visual;
+gcseCatchup["circuit-resistance"].visual = ["custom", () => {
+  const group = document.createElement("div");
+  group.append(readableGcseFigure(() => gcseVisual(resistanceEvidence)), readableGcseFigure(resistanceFromGraph), readableGcseFigure(hotFilament));
+  return group;
+}];
+// Preserve each original opening while placing a second, relevant explanation
+// next to concepts whose key idea includes another substantial process.
+const additionalOpeningFigures = {
+  "vaccine-memory": [gcseStepVisuals["vaccine-memory"][0], moreGcseStepVisuals["vaccine-memory"][1]],
+  "food-web-change": [moreGcseStepVisuals["food-web-change"][2]],
+  "reaction-rate": [meanGasRate],
+  "crude-oil": [moreGcseStepVisuals["crude-oil"][2]],
+  "chromatography": [moreGcseStepVisuals["chromatography"][1]],
+  "electromagnet-switch": [moreGcseStepVisuals["electromagnet-switch"][2]],
+  "selection-and-variation": [moreGcseStepVisuals["selection-and-variation"][0]]
+};
+const originalOpeningFigures = {};
+for (const [id, figures] of Object.entries(additionalOpeningFigures)) {
+  const original = gcseCatchup[id].visual;
+  originalOpeningFigures[id] = original;
+  gcseCatchup[id].visual = ["custom", () => {
+    const group = document.createElement("div");
+    group.append(readableGcseFigure(() => gcseVisual(original)), ...figures.map(readableGcseFigure));
+    return group;
+  }];
+}
 
 for (const mapping of [gcseStepVisuals, moreGcseStepVisuals]) {
   for (const [id, visuals] of Object.entries(mapping)) {
@@ -622,13 +655,8 @@ for (const mapping of [gcseStepVisuals, moreGcseStepVisuals]) {
 // Only repeat an opening figure when it explains this particular teaching step.
 // Other steps need their own representations rather than a generic topic image.
 const openingFigureAtStep = {
-  "reaction-profiles": [1],
-  "food-web-change": [0, 1],
-  "reaction-rate": [0],
-  "crude-oil": [1],
   "wave-motion": [0],
   "inheritance-cross": [1],
-  "circuit-resistance": [1]
 };
 for (const [id, indices] of Object.entries(openingFigureAtStep)) {
   for (const index of indices) gcseCatchup[id].steps[index].visual = () => readableGcseFigure(() => gcseVisual(gcseCatchup[id].visual));
@@ -642,6 +670,19 @@ gcseCatchup["mass-conservation"].steps[0].visual = () => {
 gcseCatchup["decay-half-life"].steps[0].visual = () => readableGcseFigure(activityUnit);
 gcseCatchup["decay-half-life"].steps[1].visual = () => readableGcseFigure(() => gcseVisual(decayEvidence));
 gcseCatchup["parallel-circuits"].steps[0].visual = () => readableGcseFigure(() => gcseVisual(parallelCircuitEvidence));
+gcseCatchup["reaction-profiles"].steps[1].visual = () => {
+  const group = document.createElement("div");
+  group.append(readableGcseFigure(() => gcseVisual(reactionProfileEvidence)), readableGcseFigure(reactionNetTransfer));
+  return group;
+};
+gcseCatchup["circuit-resistance"].steps[1].visual = () => {
+  const group = document.createElement("div");
+  group.append(readableGcseFigure(() => gcseVisual(resistanceEvidence)), readableGcseFigure(hotFilament));
+  return group;
+};
+for (const [id, indices] of Object.entries({"food-web-change": [0, 1], "reaction-rate": [0], "crude-oil": [1]})) {
+  for (const index of indices) gcseCatchup[id].steps[index].visual = () => readableGcseFigure(() => gcseVisual(originalOpeningFigures[id]));
+}
 
 for (const [id, render] of Object.entries(gcseHigherVisuals)) gcseCatchup[id].higherVisual = render;
 

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="330" viewBox="0 0 280 330" role="img" aria-labelledby="title desc">
+<title id="title">Overlapping cone sensitivities</title><desc id="desc">Three unnumbered illustrative curves show that the short-, medium- and long-wavelength cone types respond to overlapping ranges. The shapes are conceptual rather than measured sensitivities, and individual cone signals contribute to colour vision together.</desc>
+<rect width="280" height="330" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" font-size="16">
+<text x="140" y="24" text-anchor="middle" font-weight="700">Cone sensitivity overlaps</text>
+<path d="M25 54h29" stroke="#705183" stroke-width="3"/><text x="62" y="59" font-size="15">S: shorter wavelengths</text>
+<path d="M25 79h29" stroke="#286b73" stroke-width="3" stroke-dasharray="7 4"/><text x="62" y="84" font-size="15">M: middle wavelengths</text>
+<path d="M25 104h29" stroke="#a85d37" stroke-width="3" stroke-dasharray="2 4"/><text x="62" y="109" font-size="15">L: longer wavelengths</text>
+<path d="M30 240V131M30 240h220" fill="none" stroke="#405968" stroke-width="2"/>
+<path d="M31 237C43 236 49 153 76 149S113 235 165 239" fill="none" stroke="#705183" stroke-width="3"/>
+<path d="M40 239C73 238 96 148 145 145S188 235 235 239" fill="none" stroke="#286b73" stroke-width="3" stroke-dasharray="7 4"/>
+<path d="M85 239C118 237 130 168 170 150S214 230 249 239" fill="none" stroke="#a85d37" stroke-width="3" stroke-dasharray="2 4"/>
+<text x="34" y="128" font-size="15">Relative sensitivity</text>
+<path d="M56 265h166m-8-6 8 6-8 6" fill="none" stroke="#405968" stroke-width="2"/>
+<text x="44" y="286" font-size="15">Shorter</text><text x="234" y="286" font-size="15" text-anchor="end">Longer</text><text x="140" y="305" font-size="15" text-anchor="middle">Wavelength</text>
+<text x="140" y="323" font-size="15" text-anchor="middle">Conceptual curves; not measurements</text>
+</g></svg>

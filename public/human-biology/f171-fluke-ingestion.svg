@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="305" viewBox="0 0 280 305" role="img">
+ <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs><rect width="280" height="305" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">Fasciola: a possible route</text><text x="140" y="51" font-size="14">Freshwater plant · schematic</text>
+ <path d="M22 170q20-8 40 0t40 0v28H22Z" fill="#d9eef4" stroke="#537a94" stroke-width="2"/>
+ <path d="M62 169v-62m0 27q-28-1-29-27q27 0 29 27m0-13q27-1 29-27q-27 0-29 27" fill="#a6d3ab" stroke="#4b8361" stroke-width="3"/>
+ <g fill="#a76125"><circle cx="43" cy="118" r="4"/><circle cx="80" cy="108" r="4"/></g><text x="62" y="226" font-size="14">Contaminated</text><text x="62" y="246" font-size="14">raw plant</text>
+ <circle cx="218" cy="128" r="27" fill="#efc8b7" stroke="#a65f5b" stroke-width="2"/><path d="M203 141h14" stroke="#a65f5b" stroke-width="2"/>
+ <path d="M105 127h77" stroke="#344958" stroke-width="2" marker-end="url(#a)"/><text x="218" y="190" font-size="14">Swallowed</text>
+ <text x="140" y="278" font-size="14">Not every plant is contaminated.</text></g>
+</svg>

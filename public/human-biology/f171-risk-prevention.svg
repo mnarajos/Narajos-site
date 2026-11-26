@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="275" viewBox="0 0 280 275" role="img">
+ <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs><rect width="280" height="275" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">Prevention: reduce risk</text><text x="140" y="50" font-size="14">One example</text>
+ <circle cx="74" cy="83" r="12" fill="#efc8b7" stroke="#a65f5b" stroke-width="2"/><path d="M74 96l-8 39m5-24-19 12m19-12 20 10m-25 14-17 21m17-21 18 20" stroke="#537a94" stroke-width="5" fill="none" stroke-linecap="round"/>
+ <path d="M26 162h101" stroke="#789c94" stroke-width="2"/><path d="M127 116h38" stroke="#344958" stroke-width="2" marker-end="url(#a)"/>
+ <path d="M210 79l27 10v24q-2 24-27 35q-25-11-27-35V89Z" fill="#d7e9d4" stroke="#4b8361" stroke-width="2"/><path d="M199 112l8 8 15-18" stroke="#4b8361" stroke-width="3" fill="none"/>
+ <text x="74" y="192" font-size="14">Activity</text><text x="210" y="192" font-size="14">Lower risk</text><text x="140" y="235" font-size="14">Risk is reduced, not eliminated.</text><text x="140" y="259" font-size="13">Example is schematic.</text></g>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="300" viewBox="0 0 280 300" role="img">
+ <rect width="280" height="300" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">What does a scan show?</text><text x="140" y="51" font-size="14">Fictional schematic</text>
+ <rect x="37" y="68" width="206" height="137" rx="8" fill="#273d48" stroke="#537a94" stroke-width="3"/>
+ <path d="M62 122q27-45 93-25q33 8 42 42q-21 39-66 35q-48-2-69-27Z" fill="#c9d5d5" stroke="#fff" stroke-width="2"/>
+ <circle cx="143" cy="133" r="18" fill="#273d48" stroke="#fff" stroke-width="2"/>
+ <path d="M160 127l36-26" stroke="#fff" stroke-width="2"/><text x="200" y="97" fill="#fff" font-size="14">Cyst</text>
+ <text x="140" y="237" font-size="15">A structure is visible.</text><text x="140" y="262" font-size="15">Its cause is not identified.</text>
+ <text x="140" y="286" font-size="13">This is not a patient scan.</text></g>
+</svg>

@@ -9,7 +9,7 @@ function antibody() {
     '<path d="M72 43 L79 50 L86 43 M146 43 L153 50 L160 43" fill="none" stroke="'+blue+'" stroke-width="4"/>' +
     '<path d="M57 35 L79 35 L79 44 L86 37 L93 44 L93 35 L113 35" fill="none" stroke="'+rust+'" stroke-width="4"/>' +
     text(190,25,"Antigen on pathogen",rust,14) + line(168,29,104,35,rust,1.5) +
-    text(116,151,"Antibody",blue,16) + text(240,77,"Different shape",ink,14) +
+    text(116,151,"Antibody",blue,16) + text(220,77,"Different shape",ink,14) +
     '<path d="M216 49 Q226 31 236 49" fill="none" stroke="'+rust+'" stroke-width="4"/>' +
     text(240,109,"does not fit",ink,14), 320, 165),
     "Notice how a binding site fits a particular antigen. The shapes are simplified.");

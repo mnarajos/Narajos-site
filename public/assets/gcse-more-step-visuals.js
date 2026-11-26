@@ -124,6 +124,64 @@ export function activityUnit() {
     event(166,72)+event(230,72)+event(166,125)+event(230,125)+text(160,182,'80 decays per second',blue,15)+text(160,215,'= 80 Bq',teal,16),
     'A becquerel is one decay per second. The small symbols indicate decay events; they are not a count of all 80 events.',234);
 }
+export function meanGasRate() {
+  return fig('Rate from product and time',
+    'In an illustrative example, a reaction produces eight cubic centimetres of gas in four seconds. The mean rate is eight divided by four, or two cubic centimetres per second.',
+    text(160,25,'Gas volume (cm³)',ink,15)+line(49,45,49,145,ink,2)+line(49,145,270,145,ink,2)+
+    line(49,145,244,55,blue,3)+circle(244,55,4,rust,rust)+line(49,55,244,55,ink,1,'4 4')+line(244,55,244,145,ink,1,'4 4')+
+    text(28,60,'8',ink,15)+text(244,174,'4',ink,15)+text(160,207,'Time (s)',ink,15)+text(160,244,'8 ÷ 4 = 2 cm³/s',teal,15),
+    'Read the gas volume and time, then divide. These values are an illustrative mean rate.',263);
+}
+export function resistanceFromGraph() {
+  return fig('Read resistance from a point',
+    'On an illustrative straight-line current–potential difference graph, a point at six volts corresponds to two amperes. Resistance is potential difference divided by current: six divided by two is three ohms.',
+    text(160,25,'Current (A)',ink,15)+line(50,45,50,150,ink,2)+line(50,150,270,150,ink,2)+
+    line(50,150,260,45,blue,3)+line(190,80,190,150,ink,1,'4 4')+line(50,80,190,80,ink,1,'4 4')+circle(190,80,4,rust,rust)+
+    text(30,85,'2',ink,15)+text(190,178,'6',ink,15)+text(160,211,'Potential difference (V)',ink,15)+text(160,247,'R = 6 ÷ 2 = 3 Ω',teal,15),
+    'Read current and potential difference at the same point, then divide potential difference by current. Values are illustrative.',266);
+}
+export function hotFilament() {
+  return fig('Why the filament curve bends',
+    'A schematic lamp contains a filament. As current increases, the filament becomes hotter and its resistance increases. For the same increase in potential difference, the current then increases by a smaller amount.',
+    text(160,25,'Filament lamp',ink,15)+'<path d="M160 44 C105 44 94 101 126 127 L137 139 V157 H183 V139 L194 127 C226 101 215 44 160 44 Z" fill="#f1f6f6" stroke="'+ink+'" stroke-width="2"/>'+
+    '<path d="M126 125 L140 90 L150 120 L160 90 L170 120 L180 90 L194 125" fill="none" stroke="'+rust+'" stroke-width="3"/>'+line(137,165,183,165,ink,3)+
+    text(160,198,'Current increases',ink,15)+arrow(160,207,160,231,teal,2)+text(160,258,'Filament warms',rust,15)+
+    arrow(160,268,160,292,teal,2)+text(160,319,'Resistance increases',ink,15),
+    'Follow the change from current to temperature to resistance. The filament shape is a simplified model.',338);
+}
+export function reactionNetTransfer() {
+  return fig('Compare the overall energy change',
+    'Two schematic energy-level comparisons are shown without activation barriers. In an exothermic reaction the products are lower in energy than the reactants and energy transfers to the surroundings. In an endothermic reaction the products are higher in energy and energy is taken in from the surroundings.',
+    text(160,25,'Exothermic',ink,15)+text(73,60,'Reactants',ink,15)+line(30,70,116,70,blue,2)+
+    text(73,154,'Products',ink,15)+line(30,125,116,125,blue,2)+arrow(155,73,155,122,rust,2)+
+    text(238,84,'Energy out',rust,15)+text(238,115,'to the',ink,15)+text(238,146,'surroundings',ink,15)+
+    text(160,205,'Endothermic',ink,15)+text(73,236,'Products',ink,15)+line(30,246,116,246,blue,2)+
+    text(73,330,'Reactants',ink,15)+line(30,301,116,301,blue,2)+arrow(155,298,155,249,teal,2)+
+    text(238,260,'Energy in',teal,15)+text(238,290,'from the',ink,15)+text(238,321,'surroundings',ink,15),
+    'Compare reactant and product levels, then follow the energy transferred to or from the surroundings. Activation barriers are omitted here.',349);
+}
+function wallImpactComparison() {
+  const hit=(x,y)=>circle(x,y,6,'#d9e9f7',blue,2)+arrow(x+9,y,260,y,blue,2);
+  return fig('Particle impacts on a wall',
+    'Two schematic sets of impacts are compared over the same interval. The warmer gas has faster particles and more frequent wall collisions. Faster impacts transfer more momentum per collision. The arrows depict selected illustrative impacts, not counted particles or recorded results.',
+    text(160,25,'Same time interval',ink,15)+text(160,61,'Cooler',ink,15)+line(260,76,260,144,ink,3)+hit(145,93)+hit(145,125)+
+    text(160,181,'Warmer',ink,15)+line(260,195,260,293,ink,3)+hit(95,211)+hit(95,243)+hit(95,275)+
+    text(160,330,'More, faster impacts',teal,15),
+    'Longer arrows indicate faster particles. The selected wall hits are illustrative, not a count of all particles; each impact transfers momentum.',349);
+}
+function pressureAndImpacts(){return grouped(gcseStepVisuals['density-and-gas-pressure'][1],wallImpactComparison);}
+function densityPressureOpening(){return grouped(density,gcseStepVisuals['density-and-gas-pressure'][1],wallImpactComparison);}
+function combustionCarbon() {
+  return fig('Combustion returns carbon dioxide',
+    'An organic fuel burns and releases carbon dioxide into the air. The flame and cloud are schematic; oxygen required for combustion is omitted from the drawing.',
+    text(76,25,'Organic fuel',ink,15)+text(239,25,'Air',ink,15)+
+    '<path d="M44 150 Q77 136 109 150 L105 164 H48 Z" fill="#6d6866" stroke="'+ink+'" stroke-width="2"/>'+
+    '<path d="M76 145 Q49 126 70 98 Q70 112 79 112 Q84 93 92 90 Q105 122 90 143 Z" fill="#f5bf64" stroke="'+rust+'" stroke-width="2"/>'+
+    arrow(120,115,190,115,rust,2)+'<path d="M207 127 Q194 126 194 114 Q194 101 209 100 Q213 84 229 85 Q242 79 251 94 Q268 92 272 108 Q281 123 266 127 Z" fill="#e8f1f4" stroke="'+blue+'" stroke-width="2"/>'+text(235,117,'CO₂',blue,16)+
+    text(76,193,'Combustion',rust,15)+text(241,193,'Carbon dioxide',blue,15),
+    'Follow carbon from the burning fuel into carbon dioxide in the air. Oxygen is needed for combustion but is not drawn.',212);
+}
+function carbonReturnPaths(){return grouped(gcseStepVisuals['carbon-cycling'][1],combustionCarbon);}
 function resultantAcceleration() {
   return fig('Acceleration follows the resultant force',
     'A resultant force points right, and the acceleration also points right. The arrows show direction only; their lengths do not compare the magnitudes of different quantities.',
@@ -490,9 +548,10 @@ function temperaturePractical() {
     '<path d="M54 66 L67 155 H155 L168 66 Z" fill="#e2f0ee" stroke="'+teal+'" stroke-width="3"/>'+
     '<path d="M64 103 H158 L151 151 H71 Z" fill="#c7dfea"/>'+line(48,65,174,65,ink,5)+line(115,19,115,120,rust,5)+circle(115,121,7,rust,rust)+
     text(228,25,'Thermometer',ink,14)+line(125,24,166,24,ink,1.5)+text(242,93,'Insulated cup',ink,13)+line(170,89,189,89,ink,1.5)+
-    text(229,125,'Stir and record',ink,14)+text(229,157,'peak or minimum',ink,14),
-    'Compare the starting temperature with the peak or minimum. Insulation reduces energy transfer to the surroundings.');
+    text(160,190,'Stir and record',ink,14)+text(160,222,'peak or minimum',ink,14),
+    'Compare the starting temperature with the peak or minimum. Insulation reduces energy transfer to the surroundings.',240);
 }
+function temperatureAndDirection(){return grouped(temperaturePractical,energyTransferDirections);}
 
 
 function irradiation() {
@@ -786,12 +845,12 @@ function antibioticTargets() {
 function naturalSelection() {
   const moth=(x,y,dark)=>'<path d="M'+x+' '+y+' l-11 -7 v14 z M'+x+' '+y+' l11 -7 v14 z" fill="'+(dark?'#374b50':'#f0e4c9')+'" stroke="#283e43" stroke-width="1.5"/>';
   return fig('Variation and natural selection',
-    'On dark bark, some moths have dark wings and some have light wings. If predators find the light moths more often, more dark moths may survive and reproduce. Their offspring can inherit the dark variant, so its frequency can increase over generations.',
+    'On dark bark, some moths have dark wings and some have light wings. If predators find the light moths more often, more dark moths may survive and reproduce. Their offspring can inherit the dark variant, so its frequency can increase over generations. Two of five symbols are dark at first and three of four later; these are schematic samples, not real population counts.',
     '<rect x="14" y="32" width="130" height="98" rx="5" fill="#6d675e"/><rect x="176" y="32" width="130" height="98" rx="5" fill="#6d675e"/>'+
-    moth(43,59,true)+moth(77,59,false)+moth(112,59,true)+moth(43,100,false)+moth(77,100,true)+moth(112,100,false)+
-    moth(205,59,true)+moth(241,59,true)+moth(277,59,false)+moth(205,100,true)+moth(241,100,true)+moth(277,100,true)+
+    moth(43,59,true)+moth(77,59,false)+moth(112,59,true)+moth(43,100,false)+moth(77,100,false)+
+    moth(205,59,true)+moth(241,59,true)+moth(277,59,false)+moth(205,100,true)+
     arrow(146,81,174,81,rust,2)+text(79,23,'Variation',ink,15)+text(235,23,'Later',ink,15),
-    'Compare the inherited wing colours in the starting and later generations. The example is illustrative, not a record of real population counts.');
+    'Compare the proportions of dark symbols: two of five and three of four. These small groups are illustrative, not actual population counts.');
 }
 function genotypeAndPhenotype() {
   return fig('Genotype and visible phenotype',
@@ -903,6 +962,16 @@ function reverseCoil() {
     text(160,125,'Current reversed',ink,15)+coil(162,'S','N')+arrow(220,198,99,198,blue,2),
     'Compare the pole labels and external field arrows. In this schematic the winding remains fixed while the current reverses.',215);
 }
+function coreStrength() {
+  const coil=(y,iron)=> (iron?'<rect x="85" y="'+(y-11)+'" width="150" height="22" fill="#c6d2d2" stroke="'+ink+'"/>':'')+
+    [104,130,156,182,208].map(x=>'<ellipse cx="'+x+'" cy="'+y+'" rx="8" ry="18" fill="none" stroke="'+rust+'" stroke-width="2"/>').join('');
+  return fig('Compare cores in the same coil',
+    'Two coils have the same current and number of turns. The lower coil has a soft iron core and produces a stronger magnetic field than the air-core coil. The field curves are qualitative and do not show complete field loops.',
+    text(160,25,'Air core',ink,15)+coil(85,false)+'<path d="M90 85 Q160 25 230 85" fill="none" stroke="'+blue+'" stroke-width="2"/>'+text(160,132,'Weaker field',blue,15)+
+    text(160,169,'Soft iron core',ink,15)+coil(230,true)+'<path d="M90 230 Q160 170 230 230 M80 230 Q160 153 240 230" fill="none" stroke="'+blue+'" stroke-width="2"/>'+
+    text(160,286,'Stronger field',blue,15)+text(160,322,'Same current and turns',ink,15),
+    'Compare otherwise identical coils. The extra curve indicates a stronger field qualitatively; complete field loops are omitted.',341);
+}
 function ironCore() {
   const coil=y=>'<rect x="65" y="'+(y-12)+'" width="180" height="25" fill="#bccacd" stroke="'+ink+'"/>'+[91,116,141,166,191,216].map(x=>'<ellipse cx="'+x+'" cy="'+y+'" rx="8" ry="20" fill="none" stroke="'+rust+'" stroke-width="2"/>').join('');
   const objects=y=>[110,142,174,206].map(x=>line(x,y,x,y+28,blue,5)).join('');
@@ -912,6 +981,7 @@ function ironCore() {
     text(155,167,'Current off',ink,15)+coil(198)+objects(246)+text(155,299,'Objects can be released',blue,14),
     'Compare the same soft iron core with current on and off. Soft iron loses most induced magnetisation after switching off.',320);
 }
+function ironCoreEffects(){return grouped(coreStrength,ironCore);}
 function currentStrength() {
   const coil=y=>'<rect x="85" y="'+(y-11)+'" width="150" height="22" fill="#dce7e7" stroke="'+ink+'"/>'+[104,130,156,182,208].map(x=>'<ellipse cx="'+x+'" cy="'+y+'" rx="8" ry="18" fill="none" stroke="'+rust+'" stroke-width="2"/>').join('');
   return fig('Current and magnetic field strength',
@@ -1686,7 +1756,7 @@ function rfDistance() {
     'A sample spot and a solvent front started from the same baseline. The spot is 2 centimetres from the baseline and the solvent front is 8 centimetres from it, so Rf is 2 divided by 8, or 0.25.',
     '<rect x="51" y="20" width="216" height="158" fill="#fffdf3" stroke="'+ink+'" stroke-width="2"/>'+line(61,40,257,40,teal,2,'5 4')+line(61,160,257,160,ink,2)+circle(102,130,8,'#e5bf9c',rust)+
     line(147,130,147,160,blue,2)+line(140,130,154,130,blue,2)+line(140,160,154,160,blue,2)+text(158,151,'2 cm',blue,15,'start')+
-    line(218,40,218,160,rust,2)+line(211,40,225,40,rust,2)+line(211,160,225,160,rust,2)+text(230,104,'8 cm',rust,15,'start')+
+    line(218,40,218,160,rust,2)+line(211,40,225,40,rust,2)+line(211,160,225,160,rust,2)+text(208,104,'8 cm',rust,15,'end')+
     text(160,205,'Rf = 2 ÷ 8 = 0.25',ink,16),
     'Both distances start at the baseline. Divide the spot distance by the solvent-front distance. The values are illustrative.',225);
 }
@@ -1700,7 +1770,7 @@ function rfWorked() {
     'Measure both distances from the baseline. Divide the distance to the spot centre by the solvent-front distance.',225);
 }
 function chromatographyWorked(){return grouped(()=>gcseVisual(['chromatogram']),rfWorked);}
-function activationBarrier() {
+export function activationBarrier() {
   return fig('Read activation energy',
     'A reaction energy profile starts at a reactant energy level, rises to a peak, then falls to a lower product energy level. Activation energy is the vertical energy difference between the reactants and the peak.',
     line(45,148,286,148)+line(45,148,45,35)+text(45,25,'Energy (arbitrary units)',ink,15,'start')+text(160,198,'Progress of reaction',ink,15)+
@@ -1727,7 +1797,7 @@ export const gcseOpeningVisuals = {
   'potable-water': waterRoutes,
   'forces-motion': movingAndStationary,
   'respiration-exercise': respiratoryComparison,
-  'density-and-gas-pressure': () => grouped(density, gcseStepVisuals['density-and-gas-pressure'][1]),
+  'density-and-gas-pressure': densityPressureOpening,
   'salts-and-reactivity': () => grouped(saltsApparatus, () => photo('copper-deposit', 'Copper deposited on iron', 'In copper sulfate solution, iron displaces copper. Locate the reddish copper on the iron shavings.')),
   'reflex-response': neuron,
   'electromagnetic-spectrum': spectrumAndWaves,
@@ -1760,7 +1830,7 @@ export const moreGcseStepVisuals = {
   'wave-motion': {1:waveMeasures,2:waveCompare},
   'forces-motion': {1:forcesWithAcceleration,2:stopping},
   'decay-half-life': {2:irradiation},
-  'density-and-gas-pressure': {0:density},
+  'density-and-gas-pressure': {0:density,1:pressureAndImpacts},
   'photosynthesis-limits': {0:photosynthesisAndGlucose,2:() => grouped(testCarbonDioxide, carbonDioxideComparison)},
   'glucose-control': {0:homeostasis,1:glucoseResponseDetailed,2:diabetes},
   'reaction-rate': {1:collisionsAndEnergy,2:dynamicEquilibrium},
@@ -1773,17 +1843,17 @@ export const moreGcseStepVisuals = {
   'chromatography': {0:chromatographyPhases,1:rfDistance,2:gasTests},
   'latent-heat': {0:storedEnergy,1:() => grouped(heatingCurve, gcseStepVisuals['latent-heat'][1]),2:latentCalculation},
   'parallel-circuits': {2:parallelAndSeries},
-  'reaction-profiles': {0:activationBarrier,2:temperaturePractical},
+  'reaction-profiles': {0:activationBarrier,2:temperatureAndDirection},
   'mass-conservation': {2:concentrationExample},
   'crude-oil': {0:methaneStructure,2:alkene},
   'greenhouse': {0:greenhouse,1:emissionsSources,2:pollutants},
   'potable-water': {0:waterForDrinking,1:filtration,2:lifeCycle},
-  'electromagnet-switch': {0:wireAndCoil,1:currentMagnitudeAndDirection,2:ironCore},
+  'electromagnet-switch': {0:wireAndCoil,1:currentMagnitudeAndDirection,2:ironCoreEffects},
   'salts-and-reactivity': {0:sulfateSalt,1:saltsAndCrystals},
   'electromagnetic-spectrum': {0:spectrumAndWaves,1:emSpectrum,2:emApplications},
   'prevention-and-medicines': {0:transmissionAndPrevention,1:antibioticsAndSelection,2:testingAndTrials},
   'radiation-types': {0:emissions,1:shieldingAndIonisation,2:alphaDecay},
   'circuit-resistance': {0:circuitMeters,2:electricalPower},
   'reproductive-hormones': {0:menstrualHormones,1:hormonesAndEffects,2:contraception},
-  'carbon-cycling': {2:habitatAndProtection}
+  'carbon-cycling': {1:carbonReturnPaths,2:habitatAndProtection}
 };

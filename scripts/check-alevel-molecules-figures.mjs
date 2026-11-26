@@ -175,6 +175,8 @@ for (const [file,global,topic,id,group] of [
  ['catchup-microscope-comparison.js','ALevelMicroscopeComparison','a2','micro',1],
  ['catchup-neural-reuse.js','ALevelNeuralReuse','a6','traps6',3],
  ['catchup-antagonistic-muscles.js','ALevelAntagonisticMuscles','a6','muscle',0],
+ ['catchup-context-reuse.js','ALevelContextReuse','a3','absorption',2],
+ ['catchup-context-reuse.js','ALevelContextReuse','a7','varsel',1],
  ['catchup-context-reuse.js','ALevelContextReuse','a8','fragments',0],
  ['catchup-context-reuse.js','ALevelContextReuse','a8','cancer',1],
  ['catchup-context-reuse.js','ALevelContextReuse','a7','traps7',1],
@@ -190,7 +192,19 @@ for (const [file,global,topic,id,group] of [
  ['catchup-predator-prey-cause.js','ALevelPredatorPreyCause','a7','interact',1],
  ['catchup-niche-example.js','ALevelNicheExample','a7','ecosys',0],
  ['catchup-plasmid-amplification.js','ALevelPlasmidAmplification','a8','invivo',0],
- ['catchup-fertiliser-release.js','ALevelFertiliserRelease','a5','fertil',0]
+ ['catchup-fertiliser-release.js','ALevelFertiliserRelease','a5','fertil',0],
+ ['catchup-adh-receptor.js','ALevelADHReceptor','a6','adh',1],
+ ['catchup-chloroplast-preparation.js','ALevelChloroplastPreparation','a5','dcpip',0],
+ ['catchup-phloem-loading.js','ALevelPhloemLoading','a3','phloem',0],
+ ['catchup-vein-valves.js','ALevelVeinValves','a3','vessels',1],
+ ['catchup-respirometer-control.js','ALevelRespirometerControl','a5','respiro',1],
+ ['catchup-linked-crossover.js','ALevelLinkedCrossover','a7','linkage',1],
+ ['catchup-homeostasis-purpose.js','ALevelHomeostasisPurpose','a6','homeo',0],
+ ['catchup-light-electron-flow.js','ALevelLightElectronFlow','a5','lightdep',1],
+ ['catchup-proton-leak.js','ALevelProtonLeak','a5','ctx5',1],
+ ['catchup-forced-expiration.js','ALevelForcedExpiration','a3','ventilation',1],
+ ['catchup-succession-competition.js','ALevelSuccessionCompetition','a7','succession',1],
+ ['catchup-xylem-water-potential.js','ALevelXylemWaterPotential','a3','xylem',0]
 ]) {
  vm.runInNewContext(readFileSync(new URL('../public/alevel/'+file, import.meta.url), 'utf8'), context);
  const figure=context.window[global].render(topic,id,group);
