@@ -172,6 +172,11 @@
   }
 
   function mountYeast(host, ui) {
+    const explore = card(host, "Investigate respiration in yeast");
+    add(explore, "p", "Explore methylene blue, a respirometer, paired examples and unfamiliar apparatus in a guided simulation. Your progress in the simulation is saved separately in this browser.");
+    const link = add(explore, "a", "Open the RP9 simulation", "btn primary");
+    link.href = "/alevel/respiration/";
+
     const setup = card(host, "Time a colour endpoint in baker’s yeast");
     add(setup, "p", "Baker’s yeast is a single-celled fungus. Respiration involves electron transfers, and respiring yeast can reduce methylene blue. This redox indicator, a dye that changes colour when electrons are gained or lost, is blue when oxidised and colourless when reduced. Time how long the blue takes to disappear.");
     diagram(setup, "rp9-yeast", "Glass water baths with thermometers hold one live yeast tube at the cooler temperature and two tubes at the warmer temperature, including a control with no viable yeast. A timer is used to record the first observation without visible blue.",

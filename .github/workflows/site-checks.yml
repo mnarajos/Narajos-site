@@ -14,6 +14,8 @@ on:
       - 'scripts/check-alevel-catchup-figures.mjs'
       - 'scripts/check-alevel-molecules-figures.mjs'
       - 'scripts/check-ks3-explanation-visuals.mjs'
+      - 'scripts/check-co-transport-routes.mjs'
+      - 'scripts/browser-test-site.mjs'
       - '.github/workflows/site-checks.yml'
   pull_request:
     paths:
@@ -27,6 +29,8 @@ on:
       - 'scripts/check-alevel-catchup-figures.mjs'
       - 'scripts/check-alevel-molecules-figures.mjs'
       - 'scripts/check-ks3-explanation-visuals.mjs'
+      - 'scripts/check-co-transport-routes.mjs'
+      - 'scripts/browser-test-site.mjs'
       - '.github/workflows/site-checks.yml'
   workflow_dispatch:
 
@@ -49,4 +53,5 @@ jobs:
           node scripts/check-alevel-catchup-figures.mjs
           node scripts/check-alevel-molecules-figures.mjs
           node scripts/check-ks3-explanation-visuals.mjs
+          node scripts/check-co-transport-routes.mjs
 

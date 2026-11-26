@@ -89,6 +89,7 @@ a.topic:hover{border-color:var(--acc)}
 .spec{color:var(--muted);font-size:.86rem;margin:.15rem 0 .3rem}
 .rel{margin:.2rem 0;font-size:.93rem}
 .concept .btn{margin-top:.55rem}
+.concept-links{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1rem}
 .lockmsg{margin:.45rem 0 0;font-size:.93rem;color:var(--muted)}
 .note{background:var(--warn-soft);border-radius:10px;padding:.65rem .85rem;font-size:.93rem;margin:1rem 0}
 .ltop{display:flex;align-items:center;gap:1rem;margin-bottom:.75rem}
@@ -6269,10 +6270,11 @@ function showTopic(t,focus){
    var pr=c.needs.filter(function(nid){return avail(T.byId[nid]);});
    if(pr.length)h+='<p class="rel">Prior understanding of '+names(t,pr).map(function(x){return '<strong>'+esc(x)+'</strong>';}).join(" and ")+' recommended.</p>';
    if(/^\d/.test(c.spec))h+='<p class="specref"><em>AQA spec '+esc(c.spec)+'</em></p>';
-   h+='<a class="al-quiet-link" href="#catchup-'+t+'-'+c.id+'">Catch up<span class="sr-only">: '+esc(c.title)+'</span></a>';
+   h+='<div class="concept-links"><a class="al-quiet-link" href="#catchup-'+t+'-'+c.id+'">Catch up<span class="sr-only">: '+esc(c.title)+'</span></a>';
+   if(t==='a2'&&c.id==='active')h+='<a class="al-quiet-link" href="/alevel/independent-practice/co-transport/">Independent Practice<span class="sr-only">: co-transport, same direction, different gradients</span></a>';
+   h+='</div>';
    var practical=practicalFor(t,c.id);
    if(practical)h+='<p>'+practicalLink(practical[0],c.title)+'</p>';
-   if(t==='a2'&&c.id==='active')h+='<p><a class="btn" href="/alevel/co-transport-homework/">Co-transport homework: same direction, different gradients</a> <span class="spec">· 45 minutes · self-marked in your book</span></p>';
    h+='</li>';
   });
   if(t==="p3w"&&d===2)h+='<li class="concept ready"><div class="chead"><h3>Brainstorm: a warm-up for planning</h3></div><p class="spec">Name as many enzymes, proteins, hormones or ions as you can against the clock, then use them to plan an essay.</p><a class="btn primary" href="#brain">Start<span class="sr-only">: Brainstorm</span></a></li>';
@@ -6339,7 +6341,7 @@ function showCatchup(t,c,step,focus,returnRoute){
  var h='<p class="crumb"><a href="#catchup-'+t+'">← Catch-up topics</a></p><h1>'+esc(c.title)+'</h1>';
  var practical=practicalFor(t,c.id);
  var practicalAction=practical?'<p>'+practicalLink(practical[0])+'</p>':"";
- if(t==='a2'&&c.id==='active')practicalAction+='<p><a class="btn" href="/alevel/co-transport-homework/">Co-transport homework: same direction, different gradients</a> · 45 minutes</p>';
+ if(t==='a2'&&c.id==='active')practicalAction+='<p><a class="al-quiet-link" href="/alevel/independent-practice/co-transport/">Independent Practice: Co-transport</a> · approximately 20–25 minutes</p>';
  if(!returnRoute)h+=practicalAction;
  if(returnRoute){
   h+='<p><a class="al-quiet-link" href="#'+esc(returnRoute)+'">← Return to your question</a></p><section class="key companion-key" aria-label="Key knowledge"><h2>Key ideas</h2>'+
@@ -6450,7 +6452,7 @@ function showIntro(){
  var h=lessonTop()+'<h1>'+esc(c.title)+'</h1><p class="spec">'+(/^\d/.test(c.spec)?'AQA spec ref ':'')+esc(c.spec)+' · '+L.total+' questions</p>'+
  '<section class="key" aria-labelledby="kh"><h2 id="kh">Key idea</h2><ul>'+c.key.map(function(k){return '<li>'+rich(k)+'</li>';}).join("")+'</ul>'+
  (c.gate?'<p class="gate"><strong>Why it matters:</strong> '+fmt(c.gate)+'</p>':'')+introCues(c)+'</section>'+(c.passage?passageHTML(c.passage,true):'')+
- '<div class="actions"><button type="button" class="btn primary big" id="go">Start questions</button>'+(practical?practicalLink(practical[0]):"")+'</div>'+(L.t==='a2'&&c.id==='active'?'<p><a class="btn" href="/alevel/co-transport-homework/">Co-transport homework: same direction, different gradients</a> · 45 minutes</p>':'');
+ '<div class="actions"><button type="button" class="btn primary big" id="go">Start questions</button>'+(practical?practicalLink(practical[0]):"")+'</div>'+(L.t==='a2'&&c.id==='active'?'<p><a class="al-quiet-link" href="/alevel/independent-practice/co-transport/">Independent Practice: Co-transport</a> · approximately 20–25 minutes</p>':'');
  render(h);wireTop();
  $("#go").onclick=function(){L.phase="q";showQ();};
 }

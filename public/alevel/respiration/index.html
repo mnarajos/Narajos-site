@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Investigating respiration in yeast (RP9) – Narajos Keystone</title>
+<meta name="description" content="Investigate respiration in yeast with methylene blue, a respirometer, paired examples and unfamiliar apparatus.">
+<link rel="canonical" href="https://narajos.com/alevel/respiration/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Narajos">
+<meta property="og:title" content="Investigating respiration in yeast – Narajos Keystone">
+<meta property="og:description" content="Investigate respiration in yeast using guided interactive models and practical questions.">
+<meta property="og:url" content="https://narajos.com/alevel/respiration/">
+<meta property="og:image" content="https://narajos.com/assets/social/alevel-v1.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:type" content="image/png"><meta property="og:image:alt" content="Narajos Keystone logo with AQA A-level Biology">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Investigating respiration in yeast – Narajos Keystone"><meta name="twitter:description" content="Investigate respiration in yeast using guided interactive models and practical questions."><meta name="twitter:image" content="https://narajos.com/assets/social/alevel-v1.png"><meta name="twitter:image:alt" content="Narajos Keystone logo with AQA A-level Biology">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="stylesheet" href="/assets/home-link.css">
+<style>
+/* Keystone site tokens and components, copied from the AQA A-level Biology site so this page matches it. */
+:root{--bg:#F8F7F3;--card:#fff;--ink:#1F2937;--brand:#0a6b66;--muted:#4f5057;--line:#d3d1c8;--acc:#0a6b66;--acc-ink:#fff;--acc-soft:#e1f0ee;--good:#17672f;--good-soft:#e4f3e8;--bad:#a3221a;--bad-soft:#fbe9e7;--warn-soft:#fff4d6;--amb:#d98a2b;--amb-soft:#fff0dc;--grey-soft:#ecebe6;--focus:#1f4fd1;color-scheme:light dark;
+--shadow:0 1px 2px rgba(28,28,30,.05),0 4px 14px rgba(28,28,30,.05);--tc:#2e7a33;
+--o2:#2f6fb5;--co2:#b8691c;--cc:#4a5565;--water:#d6eaf8;--susp:#f7f1d6;--oil:#f0cf5e;--yeast:#c9a86a;--yeast-b:#a49d90;--yeast-s:#7d6536;--pellet:#f4f1ea;--dye:#c2513b;--bung:#5a6372;--glass:#fbfdff}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--brand:#5ccfc4;--bg:#131518;--card:#1c1f23;--ink:#eceef0;--muted:#b6b9c0;--line:#3b3f46;--acc:#5ccfc4;--acc-ink:#0b1a19;--acc-soft:#163331;--good:#80dc99;--good-soft:#15301e;--bad:#ff9d93;--bad-soft:#3a1d1a;--warn-soft:#3a3218;--amb:#d39a52;--amb-soft:#3a2a15;--grey-soft:#26292d;--focus:#9db9ff;--shadow:0 1px 2px rgba(0,0,0,.4);--tc:#8fd694;
+--o2:#8db6f2;--co2:#f0a271;--cc:#b4bdc9;--water:#1f3a4d;--susp:#3a3624;--oil:#8a7420;--yeast:#a8875a;--yeast-b:#6f6a62;--yeast-s:#d8c08e;--pellet:#cfcac0;--dye:#e2735c;--bung:#8a93a3;--glass:#20252b}}
+:root[data-theme=dark]{color-scheme:dark;--brand:#5ccfc4;--bg:#131518;--card:#1c1f23;--ink:#eceef0;--muted:#b6b9c0;--line:#3b3f46;--acc:#5ccfc4;--acc-ink:#0b1a19;--acc-soft:#163331;--good:#80dc99;--good-soft:#15301e;--bad:#ff9d93;--bad-soft:#3a1d1a;--warn-soft:#3a3218;--amb:#d39a52;--amb-soft:#3a2a15;--grey-soft:#26292d;--focus:#9db9ff;--shadow:0 1px 2px rgba(0,0,0,.4);--tc:#8fd694;
+--o2:#8db6f2;--co2:#f0a271;--cc:#b4bdc9;--water:#1f3a4d;--susp:#3a3624;--oil:#8a7420;--yeast:#a8875a;--yeast-b:#6f6a62;--yeast-s:#d8c08e;--pellet:#cfcac0;--dye:#e2735c;--bung:#8a93a3;--glass:#20252b}
+:root[data-theme=light]{color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:1rem/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-text-size-adjust:100%;overflow-x:clip}
+.wrap{max-width:46rem;margin:0 auto;padding:0 1rem}
+a{color:var(--acc)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+[tabindex="-1"]:focus{outline:none}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+[hidden]{display:none!important}.skip{position:absolute;left:-9999px;top:.5rem;background:var(--card);color:var(--ink);padding:.6rem;z-index:20}.skip:focus{left:1rem}
+header.top{background:var(--card);border-bottom:1px solid var(--line)}
+.top-inner{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem;align-items:center;padding-top:.55rem;padding-bottom:.55rem}
+.brand{font-weight:800;text-decoration:none;color:var(--ink);font-size:1.1rem;min-height:44px;display:inline-flex;align-items:center}
+.brand .btxt{display:flex;flex-direction:column;line-height:1.15}.brand .eyebrow{display:block;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.brand .logo{width:2.3em;height:1.45em;margin-right:.45rem;flex:none}
+.lg-arch{fill:var(--ink);stroke:var(--ink);stroke-width:2.6;stroke-linejoin:round}
+main{padding-top:1.25rem;padding-bottom:2rem}
+h1{font-size:1.6rem;line-height:1.2;margin:.25rem 0 .5rem;font-weight:800;letter-spacing:-.01em;border-bottom:4px solid var(--tc);padding-bottom:.35rem;display:inline-block}
+h2{font-size:1.25rem;margin:1.5rem 0 .6rem}
+h3{font-size:1.06rem;margin:0 0 .4rem}
+.lead{color:var(--muted)}
+.spec{color:var(--muted);font-size:.86rem;margin:.15rem 0 .3rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;text-align:center;min-height:44px;padding:.55rem 1.1rem;border-radius:12px;border:2px solid var(--acc);background:var(--card);color:var(--acc);font:inherit;font-weight:700;text-decoration:none;cursor:pointer;box-shadow:0 3px 0 rgba(28,28,30,.18);transition:transform .08s,box-shadow .08s}
+.btn.primary{background:var(--acc);color:var(--acc-ink);box-shadow:0 4px 0 rgba(0,0,0,.28)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(28,28,30,.18)}
+.btn:disabled{opacity:.45;cursor:default;transform:none}
+.btn[aria-pressed=true]{background:var(--acc);color:var(--acc-ink)}
+.seg{display:inline-flex;flex-wrap:wrap;border:2px solid var(--acc);border-radius:999px;overflow:hidden}
+.seg label{position:relative;cursor:pointer}
+.seg input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.seg span{display:flex;align-items:center;min-height:40px;padding:.3rem .9rem;font-weight:700;font-size:.92rem;color:var(--acc)}
+.seg input:checked+span{background:var(--acc);color:var(--acc-ink)}
+.seg input:focus-visible+span{outline:3px solid var(--focus);outline-offset:-5px}
+.seg input:disabled+span{opacity:.55;cursor:default}
+.note{background:var(--warn-soft);border-radius:10px;padding:.65rem .85rem;font-size:.93rem;margin:1rem 0}
+.gate{background:var(--acc-soft);padding:.6rem .8rem;border-radius:10px;margin:.8rem 0 0}
+.badge{font-size:.78rem;padding:.08rem .55rem;border-radius:99px;background:var(--warn-soft);color:var(--ink);border:1px solid var(--line);font-weight:700}
+.opt{display:flex;align-items:flex-start;gap:.75rem;padding:.75rem 1rem;margin:.5rem 0;background:var(--card);border:2px solid var(--line);border-radius:12px;cursor:pointer;box-shadow:0 3px 0 var(--line);transition:border-color .15s,background .15s}
+.opt:hover{border-color:var(--tc)}
+.opt input{width:1.3rem;height:1.3rem;margin:.15rem 0 0;flex:none;accent-color:var(--acc)}
+.opt:not(.right):not(.wrong):has(input:checked){border-color:var(--acc);background:var(--acc-soft)}
+.opt .otext{flex:1}
+.mark{font-weight:700;font-size:.9rem;white-space:nowrap}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.right .mark{color:var(--good)}.wrong .mark{color:var(--bad)}
+.opt.out{opacity:.6;cursor:default}
+fieldset.q{border:0;padding:0;margin:0;min-width:0}
+fieldset.q legend{font-size:1.1rem;font-weight:700;line-height:1.4;margin-bottom:.4rem;padding:0}
+.fb{border-radius:14px;padding:.2rem 1rem .7rem;margin:.6rem 0;border:2px solid}
+.fb.good{background:var(--good-soft);border-color:var(--good)}
+.fb.bad{background:var(--bad-soft);border-color:var(--bad)}
+.fb.good.new{animation:pop .4s ease-out}.fb.bad.new{animation:nudge .3s ease-in-out}
+.fb.idk{background:var(--acc-soft);border-color:var(--acc)}
+.fb h3{margin:.6rem 0 .3rem;font-size:1.1rem}
+@keyframes pop{0%{transform:scale(.94);opacity:0}60%{transform:scale(1.03);opacity:1}100%{transform:scale(1)}}
+@keyframes nudge{0%,100%{transform:translateX(0)}30%{transform:translateX(-6px)}70%{transform:translateX(6px)}}
+@media (prefers-reduced-motion:reduce){.fb.good,.fb.bad{animation:none}}
+input[type=text]{font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--muted);border-radius:10px;padding:.5rem .7rem;min-height:44px;width:100%}
+.numlab{font-weight:700;display:block;margin:.3rem 0}
+.numrow{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.numrow input{max-width:12rem}
+.unit{font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0}
+.chip{font:inherit;min-height:44px;padding:.45rem .85rem;border:2px solid var(--line);border-radius:12px;background:var(--card);color:inherit;cursor:pointer;box-shadow:0 2px 0 var(--line);font-weight:600}
+.chip.sel{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.chip .tick{color:var(--good);font-weight:800}.chip.sel .tick{color:inherit}
+.fig{margin:.25rem 0 1rem;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.6rem;box-shadow:var(--shadow)}
+.scroll{max-width:100%;overflow-x:auto}.fig{min-width:0}.fig table{border-collapse:collapse;margin:.4rem 0;font-size:.92rem;width:100%}
+.fig caption{caption-side:top;text-align:left;font-size:.88rem;color:var(--muted);padding-bottom:.35rem}
+.fig th,.fig td{border:1px solid var(--line);padding:.25rem .6rem;text-align:left}
+.fig td.n{text-align:right;font-variant-numeric:tabular-nums}
+.f-ink{stroke:var(--ink);fill:none;stroke-width:2}
+.f-thin{stroke:var(--ink);fill:none;stroke-width:1.3}
+.f-txt{fill:var(--ink);font:600 15px system-ui,sans-serif}
+.f-sm{fill:var(--muted);font:500 12px system-ui,sans-serif}
+.f-grid{stroke:var(--line);stroke-width:1}
+.f-axis{stroke:var(--ink);stroke-width:1.6}
+.f-line{fill:none;stroke:var(--acc);stroke-width:2.5}
+.f-line2{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-dasharray:7 4}
+.f-zero{stroke:var(--ink);stroke-width:1.2;stroke-dasharray:4 3}
+.f-dot{fill:var(--acc)}.f-dot2{fill:var(--ink)}
+/* Page-specific: task cards, apparatus, controls */
+.task{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--tc);border-radius:14px;padding:.85rem 1rem;margin:.75rem 0;box-shadow:var(--shadow)}
+.task.done{border-left-color:var(--good)}
+.task p{margin:.3rem 0}
+.task .need{font-size:.93rem;margin:.5rem 0}
+.task .row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.6rem}
+.msg{color:var(--bad);font-weight:700;margin:.4rem 0 0}.msg:empty{display:none}
+.ok{color:var(--good);font-weight:700}.notyet{color:var(--muted);font-weight:600}
+.readout{display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;align-items:baseline;padding:.1rem .2rem .4rem}
+.readout b{font-size:1.25rem;font-variant-numeric:tabular-nums}
+.readout .st{margin-left:auto;font-size:.9rem;font-weight:700;padding:.15rem .6rem;border-radius:99px;background:var(--acc-soft)}
+.app svg{display:block;width:100%;height:auto;max-width:34rem;margin:0 auto}
+.runbar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.5rem 0 .2rem}
+.runbar .btn{flex:1 1 7rem}
+.legend{display:flex;flex-wrap:wrap;gap:.3rem 1rem;font-size:.9rem;margin:.3rem .2rem}
+.legend svg{width:2.2rem;height:1rem;vertical-align:-.2em}
+.tally{font-size:.9rem;color:var(--muted);margin:.2rem .2rem 0}
+.ctrls{display:grid;gap:.7rem;margin:.3rem 0}
+.ctrls .cl{font-weight:700;font-size:.93rem;margin:0 0 .25rem}
+.ctrls fieldset{border:0;margin:0;padding:0;min-width:0}
+.ctrls .seg{border-radius:14px}
+.gsvg svg{display:block;width:100%;height:auto;max-width:28rem;margin:0 auto}
+.gsvg .legend svg{display:inline-block;width:2.2rem;height:1rem;margin:0;vertical-align:-.2em}
+.a-water{fill:var(--water)}.a-susp{fill:var(--susp)}.a-oil{fill:var(--oil);opacity:.9}
+.a-cell{fill:var(--yeast);stroke:var(--yeast-s);stroke-width:1}.boiled .a-cell{fill:var(--yeast-b)}
+.a-pel{fill:var(--pellet);stroke:var(--ink);stroke-width:1}
+.a-gauze{fill:none;stroke:var(--muted);stroke-width:1.2;stroke-dasharray:2 2}
+.a-glass{fill:var(--glass);stroke:var(--ink);stroke-width:2}
+.a-bung{fill:var(--bung)}
+.a-cap{fill:none;stroke:var(--ink);stroke-width:7;stroke-linecap:round}
+.a-bore{fill:none;stroke:var(--glass);stroke-width:4;stroke-linecap:round}
+.a-dye{stroke:var(--dye);stroke-width:4.5;stroke-linecap:butt}
+.m-o2{fill:var(--o2)}.m-co2{fill:var(--co2)}.m-c{fill:var(--cc)}
+.a-note{fill:var(--ink);font:700 12px system-ui,sans-serif}
+
+/* Wide screens: tasks beside the apparatus, results side by side */
+@media (min-width:68rem){.wrap{max-width:78rem}
+ .lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:1.5rem;align-items:start}
+ .col-app{position:sticky;top:.75rem;max-height:calc(100vh - 1.5rem);overflow-y:auto;padding:0 .3rem .3rem}
+ .col-app>h2:first-child,.col-tasks>.chips:first-child{margin-top:0}
+ .res{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem;align-items:start}
+ .lead{max-width:60rem}
+ .col-app .app svg{max-width:27rem}}
+/* RP9 v2: sections, panels, paired examples, worked examples, written answers */
+.phases{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 1rem}
+.phases .ph{font-size:.75rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;opacity:.75;margin-right:.25rem}
+.ptabs{display:flex;flex-wrap:wrap;gap:.4rem;margin:0 0 .5rem}
+.sechead{margin-bottom:.4rem}.sechead h2{margin:.1rem 0 .2rem}.sechead .phase{margin:0;font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--tc)}
+.prog{margin:.2rem 0;font-size:.88rem;color:var(--muted)}.pbar{height:6px;border-radius:9px;background:var(--grey-soft);overflow:hidden}.pbar span{display:block;height:100%;background:var(--tc)}
+.task h3{margin:.1rem 0 .5rem;font-size:1.08rem}
+.steps{margin:.3rem 0 .6rem;padding-left:1.3rem}.steps li{margin:.35rem 0}
+.worked{background:var(--acc-soft);border-radius:10px;padding:.55rem .85rem;margin:.6rem 0}.worked p{margin:.25rem 0}.wlab{font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--acc)}
+.fresh{font-weight:800;color:var(--acc);margin:.2rem 0}
+.help{margin:.4rem 0 0}.hint{background:var(--warn-soft);border-radius:10px;padding:.5rem .8rem}
+fieldset.q legend.sub{font-size:1rem;margin-top:.6rem}
+.donelist{margin:.8rem 0;font-size:.93rem}.donelist summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}.donelist li{margin:.25rem 0}
+.badge.b-ind{background:var(--good-soft);border-color:var(--good)}.badge.b-sup{background:var(--amb-soft);border-color:var(--amb)}.badge.b-self{background:var(--acc-soft);border-color:var(--acc)}
+.btn.small{min-height:40px;padding:.35rem .8rem;font-size:.92rem}
+textarea{font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--muted);border-radius:10px;padding:.55rem .7rem;width:100%;resize:vertical}
+textarea:disabled{opacity:.85}
+.crit{margin:.7rem 0}.copt{display:flex;gap:.6rem;align-items:flex-start;padding:.5rem .7rem;margin:.35rem 0;border:2px solid var(--line);border-radius:10px;cursor:pointer}
+.copt input{width:1.25rem;height:1.25rem;flex:none;margin-top:.15rem;accent-color:var(--acc)}.copt em{display:block;font-style:normal;font-size:.85rem;font-weight:700}
+.pair{display:grid;gap:.7rem;grid-template-columns:minmax(0,1fr)}
+@media (min-width:34rem){.pair{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.pcard{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:.6rem;display:flex;flex-direction:column;gap:.4rem}
+.pcard h4{margin:0;font-size:1rem;color:var(--tc)}.pcard svg{width:100%;height:auto;display:block}.pres{margin:0;font-size:.93rem}
+.info{background:var(--warn-soft);border-radius:10px;padding:.6rem .85rem;font-size:.95rem}
+#p-task svg{width:100%;height:auto;display:block;max-width:34rem;margin:0 auto}
+.figh{margin:.2rem .2rem .4rem;font-size:1rem}.sumh{font-weight:700;min-height:44px;display:flex;align-items:center;cursor:pointer}
+#assume ul{margin:.4rem 0 .2rem;padding-left:1.2rem}#assume li{margin:.3rem 0}
+.f-open{fill:var(--card);stroke:var(--ink);stroke-width:1.6}.m-cell.dead-cell{fill:var(--yeast-b);stroke-dasharray:3 2}
+.a-tube{fill:none;stroke:var(--ink);stroke-width:2}.a-therm{fill:var(--card);stroke:var(--ink);stroke-width:1.2}.a-thermb{fill:var(--dye);stroke:var(--ink);stroke-width:1.2}
+.a-bubble{fill:none;stroke:var(--ink);stroke-width:.9;opacity:.65}
+.m-sol{fill:var(--susp);opacity:.55}.m-cell{fill:var(--yeast);stroke:var(--yeast-s);stroke-width:1.2}
+.k-mbb{fill:#2858be;stroke:var(--ink);stroke-width:.8}.k-mbr{fill:var(--card);stroke:var(--muted);stroke-width:1.2;stroke-dasharray:2 2}
+.k-o2{fill:var(--o2)}.k-co2{fill:var(--co2)}.k-c{fill:var(--cc)}.k-fl{fill:none;stroke:var(--amb);stroke-width:1.5}
+.a-koh{fill:#cfe3ef;stroke:var(--ink);stroke-width:.8}.a-chemx{fill:#e7d9f2;stroke:var(--ink);stroke-width:.8}
+.a-seed{fill:#c9a86a;stroke:var(--ink);stroke-width:.8}.a-bead{fill:var(--card);stroke:var(--ink);stroke-width:1}.a-louse{fill:#7a7f87;stroke:var(--ink);stroke-width:.8}
+.a-plunger{fill:var(--grey-soft);stroke:var(--ink);stroke-width:1}.a-dyeline{fill:none;stroke:var(--dye);stroke-width:4}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .a-koh{fill:#2a4352}:root:not([data-theme=light]) .a-chemx{fill:#3f3150}}
+:root[data-theme=dark] .a-koh{fill:#2a4352}:root[data-theme=dark] .a-chemx{fill:#3f3150}
+.diagram-zoom{margin:.35rem 0}.zoom-dialog{max-width:min(96vw,60rem);max-height:92vh;border:2px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);padding:1rem}.zoom-dialog::backdrop{background:rgba(0,0,0,.65)}.zoom-scroll{overflow:auto;max-height:70vh}.zoom-scroll svg{display:block;width:max(100%,640px);height:auto}
+</style>
+</head>
+<body data-tc="a5"><a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="/alevel/" aria-label="AQA A-level Biology, Narajos Keystone"><svg class="logo" viewBox="4 12 92 60" aria-hidden="true" focusable="false"><path class="lg-arch" stroke-width="2.6" stroke-linejoin="round" d="M6 70 A44 44 0 0 1 7.7 57.9 L28 65.1 A22.5 22.5 0 0 0 27.5 70 ZM92.3 57.9 A44 44 0 0 1 94 70 L72.5 70 A22.5 22.5 0 0 0 72 65.1 ZM9.5 52.8 A44 44 0 0 1 14.4 44.1 L31.1 57.9 A22.5 22.5 0 0 0 29.9 60 ZM85.6 44.1 A44 44 0 0 1 90.5 52.8 L70.2 60 A22.5 22.5 0 0 0 69 57.9 ZM17.8 40 A44 44 0 0 1 25.1 33.8 L36.2 52.2 A22.5 22.5 0 0 0 34.5 53.7 ZM74.9 33.8 A44 44 0 0 1 82.2 40 L65.5 53.7 A22.5 22.5 0 0 0 63.8 52.2 Z"/><path fill="#F97316" stroke="#F97316" stroke-width="2.6" stroke-linejoin="round" d="M26.6 21 Q50 13 73.4 21 L61.6 48 L38.4 48 Z"/><circle cx="42.4" cy="38.6" r="5.2" fill="none" stroke="#fff" stroke-width="3.9"/><path d="M46.3 35.1 L58 24.6" stroke="#fff" stroke-width="3.9" stroke-linecap="round"/><path d="M53.2 28.8 l2.9 3.3" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><path d="M56.7 25.8 l2.9 3.3" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/></svg><span class="btxt"><span class="eyebrow">Narajos Keystone</span>AQA A-level&nbsp;Biology</span></a>
+    <a href="/" id="site-home" class="narajos-home" aria-label="Narajos homepage" title="Narajos homepage"><img src="/favicon.svg" alt=""><span>Narajos</span></a>
+  </div>
+</header>
+<main id="main" class="wrap" tabindex="-1">
+  <p class="crumb"><a href="/alevel/#practical-9">← Back to required practical 9</a></p>
+  <p class="spec">3.5.2 · Required practical 9</p>
+  <h1>Investigating respiration in yeast</h1>
+  <p class="lead">Two ways to measure respiration: a timed colour change with methylene blue, and a gas-volume change in a respirometer. For any set-up, work out what is directly measured, what changes produce the reading, and what the reading lets you conclude.</p>
+
+  <nav class="phases" id="nav" aria-label="Sections"></nav>
+
+  <div class="lab">
+  <div class="col-tasks">
+    <section id="tasks" aria-label="Current task"></section>
+  </div>
+  <div class="col-app">
+    <div class="ptabs" id="ptabs" aria-label="Model"></div>
+
+    <!-- Methylene blue model -->
+    <div id="p-mb" class="panel">
+      <div class="fig app">
+        <div class="readout"><span>Time <b id="mbtime">0 s</b></span><span>Bath <b id="mbtemp">35 °C</b></span><span class="st" id="mbstate">Ready</span></div>
+        <svg id="mbsvg" viewBox="0 0 360 270" role="img" aria-label="A test tube of yeast suspension in a glass beaker of water, beside a colour-standard tube with no dye."></svg>
+        <p class="tally" id="mbnote"></p>
+        <div class="runbar">
+          <button class="btn primary" id="mbrun" type="button">Add dye, shake 10 s</button>
+          <button class="btn" id="mbpause" type="button" disabled>Pause</button>
+          <button class="btn" id="mbshake" type="button" disabled>Shake again</button>
+          <button class="btn" id="mbreset" type="button">New tube</button>
+          <button class="btn" id="mbmech" type="button" aria-pressed="false">Show what is happening</button>
+        </div>
+      </div>
+      <div class="fig app" id="mbmechfig" hidden>
+        <h3 class="figh">Inside the liquid</h3>
+        <svg id="mbmsvg" viewBox="0 0 360 210" role="img" aria-label="Yeast cells, methylene blue molecules, dissolved oxygen and carbon dioxide drifting in the liquid."></svg>
+        <div class="legend">
+          <span><svg viewBox="-12 -7 24 14" aria-hidden="true"><circle r="5" class="k-mbb"/></svg>Methylene blue (oxidised, blue)</span>
+          <span><svg viewBox="-12 -7 24 14" aria-hidden="true"><circle r="5" class="k-mbr"/></svg>Methylene blue (reduced, colourless)</span>
+          <span><svg viewBox="-12 -7 24 14" aria-hidden="true"><circle cx="-2.6" r="2.8" class="k-o2"/><circle cx="2.6" r="2.8" class="k-o2"/></svg>Dissolved oxygen</span>
+          <span><svg viewBox="-12 -7 24 14" aria-hidden="true"><circle cx="-4.6" r="2.5" class="k-co2"/><circle r="2.7" class="k-c"/><circle cx="4.6" r="2.5" class="k-co2"/></svg>Carbon dioxide</span>
+        </div>
+        <p class="tally" id="mbmtally"></p>
+      </div>
+      <details class="fig" id="mbsetup" open>
+        <summary class="sumh">Set-up</summary>
+        <div class="ctrls" id="mbctrls"></div>
+        <p class="spec">Kept the same for every tube: 2 cm³ of the assigned preparation (glucose only for the no-yeast control), 2 cm³ dilute methylene blue, one 10-second shake, end point judged against the colour standard, 600 s observation period.</p>
+      </details>
+    </div>
+
+    <!-- Respirometer model -->
+    <div id="p-gas" class="panel" hidden>
+      <div class="fig app">
+        <div class="readout"><span>Time <b id="rtime">0.0 min</b></span><span>Reading <b id="rread">60 mm</b></span><span class="st" id="rstate">Ready</span></div>
+        <svg id="appsvg" viewBox="0 0 360 290" role="img" aria-label="A respirometer: a boiling tube of yeast in glucose solution in a water bath, closed with a bung. A capillary tube with a scale in millimetres leads from the bung. A drop of coloured liquid in the capillary shows the change in gas volume.">
+          <defs>
+            <clipPath id="tclip"><path d="M59 62 V232 A36 36 0 0 0 131 232 V62 Z"/></clipPath>
+            <g id="o2"><circle class="m-o2" cx="-2.7" cy="0" r="3"/><circle class="m-o2" cx="2.7" cy="0" r="3"/></g>
+            <g id="co2"><circle class="m-co2" cx="-5" cy="0" r="2.8"/><circle class="m-c" cx="0" cy="0" r="3"/><circle class="m-co2" cx="5" cy="0" r="2.8"/></g>
+          </defs>
+          <rect class="a-water" x="22" y="122" width="146" height="160" rx="8"/>
+          <line class="f-thin" x1="22" y1="122" x2="168" y2="122"/>
+          <path class="a-glass" d="M57 62 V232 A38 38 0 0 0 133 232 V62"/>
+          <g clip-path="url(#tclip)">
+            <rect class="a-susp" x="55" y="200" width="80" height="80"/>
+            <rect id="oil" class="a-oil" x="55" y="190" width="80" height="10"/>
+            <g id="cells"></g>
+          </g>
+          <g id="basket">
+            <line class="f-thin" x1="78" y1="82" x2="78" y2="94"/><line class="f-thin" x1="112" y1="82" x2="112" y2="94"/>
+            <g id="pellets"></g>
+            <rect class="a-gauze" x="72" y="94" width="46" height="16" rx="2"/>
+          </g>
+          <rect class="a-bung" x="52" y="56" width="86" height="26" rx="4"/>
+          <path id="cap" class="a-cap" d="M95 58 V34 H350"/>
+          <path id="bore" class="a-bore" d="M95 58 V34 H350"/>
+          <line id="dye" class="a-dye" x1="200" y1="34" x2="214" y2="34"/>
+          <g id="scale"></g>
+          <g id="mols"></g>
+          <g id="labels">
+            <text class="f-sm" x="48" y="74" text-anchor="end">Bung</text>
+            <g id="lab-soda"><line class="f-thin" x1="119" y1="102" x2="184" y2="102"/><text class="f-sm" x="188" y="106">CO₂ absorber (soda lime)</text></g>
+            <g id="lab-n2"><text class="f-sm" x="188" y="146">Air replaced by nitrogen</text><text class="f-sm" x="188" y="160">(no oxygen)</text></g>
+            <g id="lab-oil"><line class="f-thin" x1="132" y1="195" x2="184" y2="182"/><text class="f-sm" x="188" y="186">Oil layer</text></g>
+            <line class="f-thin" x1="132" y1="228" x2="184" y2="222"/><text class="f-sm" x="188" y="226" id="lab-yeast">Yeast in glucose solution</text>
+            <line class="f-thin" x1="168" y1="262" x2="184" y2="262"/><text class="f-sm" x="188" y="266" id="lab-bath">Water bath, 25 °C</text>
+            <text class="f-sm" x="350" y="72" text-anchor="end" id="lab-r">Capillary radius 0.5 mm</text>
+            <text id="lab-gas" class="a-note" x="188" y="130"></text>
+          </g>
+        </svg>
+        <div class="legend" id="glegend" hidden>
+          <span><svg viewBox="-10 -6 20 12" aria-hidden="true"><use href="#o2"/></svg>Oxygen</span>
+          <span><svg viewBox="-10 -6 20 12" aria-hidden="true"><use href="#co2"/></svg>Carbon dioxide</span>
+        </div>
+        <p class="tally" id="tally" hidden></p>
+        <div class="runbar">
+          <button class="btn primary" id="brun" type="button">Run</button>
+          <button class="btn" id="bpause" type="button" disabled>Pause</button>
+          <button class="btn" id="breset" type="button">Reset</button>
+          <button class="btn" id="bgas" type="button" aria-pressed="false">Show the gases</button>
+        </div>
+      </div>
+      <details class="fig" id="setup" open>
+        <summary class="sumh">Set-up</summary>
+        <div class="ctrls" id="ctrls"></div>
+        <p class="spec" id="lockmsg" hidden>Reset, or let the run finish, to change the set-up.</p>
+      </details>
+    </div>
+
+    <!-- Paired examples and fresh diagrams for Compare and Apply -->
+    <div id="p-task" class="panel" hidden></div>
+    <p class="sr-only" id="announce" aria-live="polite"></p>
+  </div>
+  </div>
+
+  <h2 id="resh">Results</h2>
+  <div id="results"></div>
+  <details class="note" id="assume">
+    <summary class="sumh">These readings are simulated: the model's assumptions</summary>
+    <ul>
+      <li><b>Methylene blue:</b> end-point times are set to match the trial results in the AQA practical handbook (means of 275 s at 20 °C, 128 s at 35 °C and 145 s at 45 °C). Temperatures between these values are interpolated; behaviour outside 20–45 °C is illustrative modelling. Each tube varies by up to about 7% to mimic real repeats.</li>
+      <li>The dye stays blue while dissolved oxygen from the single 10-second shake re-oxidises it; once the oxygen runs low, reduction wins and the blue fades. The end point is "no blue left: matches the colour standard". Tubes that have not reached it after 600 s are recorded as not reached.</li>
+      <li>Carbon dioxide made by the yeast does not change methylene blue. Boiled yeast and tubes with no yeast never reduce the dye.</li>
+      <li><b>Respirometer:</b> rates of oxygen uptake match the RP9 lesson (6, 14, 24 and 9 mm in 5 minutes at 15, 25, 35 and 45 °C with a 0.5 mm capillary). The aerobic case assumes aerobic glucose respiration and approximately balancing volumes of oxygen uptake and carbon dioxide production. Under nitrogen it respires anaerobically only.</li>
+      <li>Distance moved = volume change ÷ πr². Gas that has not reached the bath temperature expands or contracts. Each dot in the gas and molecule views stands for a large number of molecules; nitrogen is not shown.</li>
+    </ul>
+  </details>
+</main>
+<footer class="wrap"><p>Progress and experiment evidence are saved in this browser on this device. This is an unofficial revision tool and is not produced or endorsed by AQA.</p><div class="resource-footer-row"><p class="site-copyright">© 2026 <strong>Narajos</strong> <em>/nerr-RA-hoss/</em></p><nav class="resource-footer-links" aria-label="Footer navigation"><a href="/privacy/">Privacy</a> <a href="/terms/">Terms of Use</a></nav></div></footer>
+<dialog id="zoom-dialog" class="zoom-dialog" aria-labelledby="zoom-title"><h2 id="zoom-title">Enlarged diagram</h2><p>Scroll sideways if needed.</p><div class="zoom-scroll" id="zoom-content"></div><button type="button" class="btn" id="zoom-close">Close diagram</button></dialog>
+
+<script>
+{
+const NS="http://www.w3.org/2000/svg";
+const $=(q,r=document)=>r.querySelector(q),$$=(q,r=document)=>[...r.querySelectorAll(q)];
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const mr=Math.random,RM=matchMedia("(prefers-reduced-motion: reduce)");
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function hash(s){let h=2166136261;for(const c of String(s))h=Math.imul(h^c.charCodeAt(0),16777619);return h>>>0;}
+function shuffled(n,seed){const r=rng(seed),a=[...Array(n).keys()];for(let i=n-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const SUP={"-":"⁻","0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹"};
+const supn=n=>String(n).split("").map(c=>SUP[c]||c).join("");
+/* standard form to sf significant figures, e.g. 7.8 × 10⁻³ */
+function sf(v,n=2){if(!isFinite(v))return"—";if(v===0)return"0";let e=Math.floor(Math.log10(Math.abs(v))),m=+(v/10**e).toPrecision(n);if(Math.abs(m)>=10){m/=10;e++;}
+ const ms=m.toFixed(n-1);return e===0?ms:`${ms} × 10${supn(e)}`;}
+/* reads 0.0078, 7.8e-3, 7.8 x 10^-3, 7.8×10⁻³ */
+function parseNum(str){let s=String(str||"").trim().replace(/,/g,".").replace(/[−–]/g,"-").replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]/g,c=>({"⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9","⁻":"-"}[c])).replace(/\s+/g,"");
+ const m=s.match(/^([+-]?\d*\.?\d+)(?:[x×*X]10\^?([+-]?\d+))?$/);if(m)return parseFloat(m[1])*(m[2]!=null?10**(+m[2]):1);
+ const v=Number(s);return s!==""&&isFinite(v)?v:NaN;}
+let zoomSource=null,zoomResults=false;
+function syncZoom(){
+ const dialog=$("#zoom-dialog");if(!dialog.open||!zoomSource)return;
+ // Results graphs are replaced as new readings arrive; follow the current graph.
+ if(zoomResults&&!zoomSource.isConnected)zoomSource=$("#results svg[role='img']");
+ if(!zoomSource||!zoomSource.isConnected)return;
+ const copy=zoomSource.cloneNode(true),ids=new Map();
+ for(const el of [copy,...copy.querySelectorAll("[id]")])if(el.id){ids.set(el.id,el.id+"-zoom");el.id+="-zoom";}
+ // Keep SVG definitions local to the enlarged copy without duplicate document IDs.
+ for(const el of [copy,...copy.querySelectorAll("*")])for(const attr of [...el.attributes]){
+  let value=attr.value.replace(/url\(#([^)]*)\)/g,(all,id)=>ids.has(id)?`url(#${ids.get(id)})`:all);
+  if((attr.name==="href"||attr.name==="xlink:href")&&value.startsWith("#")&&ids.has(value.slice(1)))value="#"+ids.get(value.slice(1));
+  if(value!==attr.value)el.setAttribute(attr.name,value);
+ }
+ $("#zoom-content").replaceChildren(copy);
+}
+function installZoom(){for(const svg of document.querySelectorAll('svg[role="img"]')){if(svg.closest("dialog")||svg.nextElementSibling?.classList.contains("diagram-zoom"))continue;const b=document.createElement("button");b.type="button";b.className="btn small diagram-zoom";b.textContent="Enlarge diagram";b.addEventListener("click",()=>{zoomSource=svg;zoomResults=!!svg.closest("#results");const dialog=$("#zoom-dialog");dialog.showModal();syncZoom();$("#zoom-close").focus();});svg.after(b);}}
+$("#zoom-close").addEventListener("click",()=>$("#zoom-dialog").close());
+$("#zoom-dialog").addEventListener("close",()=>{zoomSource=null;zoomResults=false;});
+const r2=v=>Math.round(v*100)/100;
+function mix(a,b,f){return`rgb(${a.map((v,i)=>Math.round(v+(b[i]-v)*f)).join(",")})`;}
+function say(h){const d=document.createElement("div");d.innerHTML=h;$("#announce").textContent=d.textContent;}
+let speed="normal";
+
+/* ================= Methylene blue model =================
+ Redox indicator: blue when oxidised, colourless when reduced. Hydrogen removed from respiratory
+ substrates by dehydrogenases reduces the dye; dissolved oxygen (from the single 10 s shake)
+ re-oxidises it, so the blue persists until the oxygen runs low.
+ State: o = dissolved oxygen (1 after shaking), b = fraction of dye still blue.
+ a = activity relative to 35 °C. End point when b ≤ 0.05; with one shake this happens at 128/a s,
+ matching the AQA handbook trial means (275 s at 20 °C, 128 s at 35 °C, 145 s at 45 °C). */
+const MBA={10:.18,20:.465,25:.62,30:.80,35:1,45:.88,55:.12},MBT=[10,20,25,30,35,45,55];
+const MB_OBS=600,MB_TO=70,MB_TR=58,MB_END=.05;
+const MBSTD={temp:35,tube:"test"};
+const MBTUBE={test:"Yeast + glucose",boiled:"Boiled yeast + glucose",noyeast:"Glucose only (no yeast)"};
+const mbEndOf=(temp)=>128/MBA[temp];               // expected end-point time with no variation
+let MS={...MBSTD},mb,mbRuns=[],mbId=0,mbMech=false,mbRand=rng(Math.floor(mr()*1e9));
+function mbNew(){const eps=(mbRand()-.5)*.14,a=MS.tube==="test"?MBA[MS.temp]*(1+eps):0;
+ mb={s:{...MS},status:"ready",t:0,o:1,b:0,a,eps,extra:false,end:null,dye:false};mbBubbles=[];mbInitMech();mbDraw();mbUpdate();}
+function mbStart(){if(mb.status==="done")mbNew();if(mb.status==="ready"){mb.id=++mbId;mb.dye=true;mb.b=1;mb.o=1;mb.t=0;}mb.status="running";mbUpdate();say("Methylene blue added and the tube shaken for 10 seconds. Timing has started.");}
+function mbShake(){if(mb.status!=="running"&&mb.status!=="paused")return;mb.o=1;mb.b=mb.b+(1-mb.b)*.9;mb.extra=true;mbMechStep(0,0);
+ say("Shaking mixed oxygen back into the liquid. The reduced dye is re-oxidised and the blue returns. This tube is no longer comparable with the others.");mbUpdate();}
+function mbStep(dts){let left=dts;while(left>1e-9&&mb.status==="running"){const h=Math.min(.1,left,MB_OBS-mb.t);left-=h;const b0=mb.b;
+ if(mb.a>0){if(mb.o>0){mb.o=Math.max(0,mb.o-mb.a*h/MB_TO);mb.b=Math.max(0,mb.b-.15*mb.a*h/MB_TO);}else mb.b=Math.max(0,mb.b-.80*mb.a*h/MB_TR);}
+ const t0=mb.t;mb.t+=h;
+ if(mb.b<=MB_END&&b0>MB_END){mb.end=t0+h*(b0-MB_END)/Math.max(1e-9,b0-mb.b);mbFinish();return;}
+ if(mb.t>=MB_OBS){mb.t=MB_OBS;mbFinish();return;}}}
+function mbFinish(){mb.status="done";const r={id:mb.id,s:{...mb.s},time:mb.end==null?null:Math.round(mb.end),valid:!mb.extra};mbRuns.push(r);
+ say(r.time==null?"Observation period over: the end point was not reached within 600 seconds.":`End point reached: no blue left after ${r.time} seconds.`+(r.valid?"":" This tube was shaken again, so its time is not used."));
+ mbMechStep(0,0);mbUpdate();renderResults();onRun("mb",r);}
+$("#mbrun").onclick=mbStart;$("#mbpause").onclick=()=>{if(mb.status==="running"){mb.status="paused";mbUpdate();}};
+$("#mbshake").onclick=mbShake;$("#mbreset").onclick=()=>mbNew();
+$("#mbmech").onclick=()=>{mbMech=!mbMech;mbUpdate();};
+
+/* ---------- drawing ---------- */
+const YEASTC=[214,196,150],BOILC=[196,188,166],CLEARC=[226,236,242],BLUEC=[38,88,190];
+function mbBase(tube){return tube==="noyeast"?CLEARC:tube==="boiled"?BOILC:YEASTC;}
+function tubePath(cx,top,bot,w){return`M${cx-w} ${top} V${bot-w} A${w} ${w} 0 0 0 ${cx+w} ${bot-w} V${top}`;}
+function mbDraw(){const s=mb.s;let g="";
+ g+=`<path class="a-water" d="M28 104 H212 V246 Q212 252 206 252 H34 Q28 252 28 246 Z"/>`;
+ g+=`<path class="a-tube" d="M24 70 V248 Q24 256 32 256 H208 Q216 256 216 248 V70"/><line class="f-thin" x1="28" y1="104" x2="212" y2="104"/>`;
+ g+=`<rect x="196" y="40" width="6" height="186" rx="3" class="a-therm"/><circle cx="199" cy="230" r="7" class="a-thermb"/>`;
+ g+=`<path id="mbliq" d="M68 100 V200 A12 12 0 0 0 92 200 V100 Z"/><path class="a-tube" d="${tubePath(80,30,214,14)}"/>`;
+ g+=`<path d="M138 100 V200 A12 12 0 0 0 162 200 V100 Z" fill="${mix(mbBase(s.tube),BLUEC,0)}"/><path class="a-tube" d="${tubePath(150,30,214,14)}"/>`;
+ g+=`<g id="mbbub"></g><g id="mbdrop"><rect x="74" y="0" width="12" height="16" rx="3" class="a-bung"/><path d="M76 16 H84 L81 28 H79 Z" fill="rgb(38,88,190)"/></g>`;
+ g+=`<text class="f-sm" x="80" y="232" text-anchor="middle">Sample</text><text class="f-sm" x="150" y="232" text-anchor="middle">Standard</text>`;
+ g+=`<line class="f-thin" x1="216" y1="84" x2="230" y2="84"/><text class="f-sm" x="234" y="80">Glass beaker of</text><text class="f-sm" x="234" y="94">water, ${s.temp} °C</text>`;
+ g+=`<line class="f-thin" x1="202" y1="52" x2="230" y2="44"/><text class="f-sm" x="234" y="48">Thermometer</text>`;
+ g+=`<line class="f-thin" x1="94" y1="150" x2="230" y2="132"/><text class="f-sm" x="234" y="122">Sample:</text><text class="f-sm" x="234" y="136">${esc(s.tube==="noyeast"?"glucose, no yeast":s.tube==="boiled"?"boiled yeast, glucose":"yeast, glucose")}</text><text class="f-sm" x="234" y="150">+ methylene blue</text>`;
+ g+=`<line class="f-thin" x1="164" y1="186" x2="230" y2="188"/><text class="f-sm" x="234" y="186">Colour standard:</text><text class="f-sm" x="234" y="200">same, with water</text><text class="f-sm" x="234" y="214">instead of dye</text>`;
+ $("#mbsvg").innerHTML=g;mbColour();}
+let mbBubbles=[];
+function mbColour(){const el=$("#mbliq");if(el)el.setAttribute("fill",mix(mbBase(mb.s.tube),BLUEC,mb.dye&&mb.b>MB_END?.85*mb.b:0));
+ const d=$("#mbdrop");if(d)d.style.display=mb.status==="ready"?"":"none";
+ $("#mbbub").innerHTML=mbBubbles.map(q=>`<circle cx="${q.x.toFixed(1)}" cy="${q.y.toFixed(1)}" r="1.8" class="a-bubble"/>`).join("");}
+function mbUpdate(){const st=mb.status;
+ $("#mbrun").textContent=st==="paused"?"Resume":st==="done"?"New tube: add dye, shake 10 s":"Add dye, shake 10 s";$("#mbrun").disabled=st==="running";
+ $("#mbpause").disabled=st!=="running";$("#mbshake").disabled=!(st==="running"||st==="paused");
+ $("#mbstate").textContent={ready:"Ready",running:"Timing",paused:"Paused",done:mb.end==null?"Not reached":"End point"}[st];
+ $("#mbmech").setAttribute("aria-pressed",mbMech);$("#mbmechfig").hidden=!mbMech;
+ $$("#mbctrls input").forEach(i=>i.disabled=(st==="running"||st==="paused")&&i.name!=="mbspeed");
+ $("#mbtemp").textContent=mb.s.temp+" °C";mbText();renderNav();renderTasks();}
+function mbText(){const st=mb.status,t=Math.round(mb.t);$("#mbtime").textContent=(st==="ready"?0:t)+" s";
+ $("#mbnote").textContent=st==="ready"?"Press the button to add methylene blue and shake once. Timing starts when the shaking ends.":
+  st==="done"?(mb.end==null?"Observation period over (600 s): end point not reached. Record it as not reached, not as 600 s.":`End point at ${Math.round(mb.end)} s: no blue left, the sample matches the colour standard.`+(mb.extra?" Shaken again during timing, so this time is not used.":"")):
+  mb.extra?"Shaken again: the blue came back. This tube's time will not be used.":"Timing. Watch for the moment the sample matches the colour standard.";}
+
+/* ---------- molecule view: everything drifts; dye changes only on contact ---------- */
+const MBC=[[60,60],[150,110],[250,55],[300,150],[95,160],[205,170],[180,40]].map(([x,y])=>({x,y}));
+let MM={dye:[],o2:[],co2:[],cred:0,red:0,reox:0};
+function mbInitMech(){MM={dye:[],o2:[],co2:[],cred:0,red:0,reox:0,on:false};for(let i=0;i<10;i++)MM.o2.push(mP(.6));}
+function mP(sp){let x,y;do{x=20+mr()*320;y=22+mr()*166;}while(MBC.some(c=>((x-c.x)/22)**2+((y-c.y)/17)**2<1));const a=mr()*6.283,v=28*sp+10;return{x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,sp:v,a:1};}
+function mbMechShake(){const want=10-MM.o2.length;for(let i=0;i<want;i++){const p=mP(.6);p.y=16;p.vy=Math.abs(p.vy)+10;MM.o2.push(p);}}
+function hitCell(p,m){for(const c of MBC)if(((p.x-c.x)/(18+m))**2+((p.y-c.y)/(13+m))**2<1)return c;return null;}
+function mStep(p,dt){p.vx+=(mr()-.5)*120*dt;p.vy+=(mr()-.5)*120*dt;const v=Math.hypot(p.vx,p.vy)||1;p.vx*=p.sp/v;p.vy*=p.sp/v;p.x+=p.vx*dt;p.y+=p.vy*dt;
+ if(p.x<16){p.x=16;p.vx=Math.abs(p.vx);}if(p.x>344){p.x=344;p.vx=-Math.abs(p.vx);}if(p.y<18){p.y=18;p.vy=Math.abs(p.vy);}if(p.y>194){p.y=194;p.vy=-Math.abs(p.vy);}
+ const c=hitCell(p,4);if(c){const a=Math.atan2(p.y-c.y,p.x-c.x);p.vx=Math.cos(a)*p.sp;p.vy=Math.sin(a)*p.sp;p.x+=Math.cos(a)*2;p.y+=Math.sin(a)*2;}return c;}
+function mbMechStep(dt,dts){
+ if(mb.dye&&!MM.on){MM.on=true;MM.dye=Array.from({length:16},()=>Object.assign(mP(.9),{red:false}));}
+ if(!mb.dye){MM.on=false;MM.dye=[];}
+ const blue=mb.dye?(mb.b<=MB_END?0:Math.max(1,Math.round(mb.b*16))):0;
+ MM.dye.forEach((d,i)=>{d.red=i>=blue;if(dt)mStep(d,dt);});
+ const oxygen=Math.round(mb.o*10);
+ while(MM.o2.length<oxygen)MM.o2.push(mP(.6));
+ MM.o2.length=oxygen;
+ if(dt)MM.o2.forEach(p=>mStep(p,dt));
+ // Carbon dioxide symbols are schematic; the production rate comes from the same run.
+ if(mb.status==="running"&&mb.a>0){MM.cred+=mb.a*dts*.05;while(MM.cred>=1){MM.cred--;const c=MBC[Math.floor(mr()*MBC.length)];MM.co2.push({x:c.x,y:c.y-14,vx:0,vy:-26,a:1});}}
+ for(const q of MM.co2){q.y+=q.vy*dt;if(q.y<20)q.a-=dt*1.6;}MM.co2=MM.co2.filter(q=>q.a>0);
+ if(mb.status==="running"&&mb.a>0&&mr()<dts*mb.a*.25)mbBubbles.push({x:72+mr()*16,y:200});
+ for(const q of mbBubbles)q.y-=dt*30;mbBubbles=mbBubbles.filter(q=>q.y>102);
+}
+function mbMechDraw(){const f=n=>n.toFixed(1);let g=`<rect class="m-sol" x="8" y="10" width="344" height="192" rx="8"/>`;
+ if(mb.s.tube!=="noyeast"){g+=MBC.map(c=>`<ellipse class="m-cell${mb.s.tube==="boiled"?" dead-cell":""}" cx="${c.x}" cy="${c.y}" rx="18" ry="13"/>`).join("");
+ g+=`<text class="f-sm" x="150" y="136" text-anchor="middle">${mb.s.tube==="boiled"?"heat-killed yeast":"living yeast cell"}</text>`;}
+ for(const p of MM.co2)g+=`<g transform="translate(${f(p.x)} ${f(p.y)})" opacity="${Math.max(0,p.a).toFixed(2)}"><circle cx="-4.6" r="2.5" class="k-co2"/><circle r="2.7" class="k-c"/><circle cx="4.6" r="2.5" class="k-co2"/></g>`;
+ for(const p of MM.o2)g+=`<g transform="translate(${f(p.x)} ${f(p.y)})"><circle cx="-2.6" r="2.8" class="k-o2"/><circle cx="2.6" r="2.8" class="k-o2"/></g>`;
+ for(const d of MM.dye){g+=`<circle cx="${f(d.x)}" cy="${f(d.y)}" r="5" class="${d.red?"k-mbr":"k-mbb"}"/>`;if(d.fl>0)g+=`<circle cx="${f(d.x)}" cy="${f(d.y)}" r="${f(6+(1-d.fl)*6)}" class="k-fl" opacity="${d.fl.toFixed(2)}"/>`;}
+ if(!mb.dye)g+=`<text class="f-sm" x="180" y="200" text-anchor="middle">Methylene blue not added yet</text>`;
+ $("#mbmsvg").innerHTML=g;
+ const nb=MM.dye.filter(d=>!d.red).length;
+ $("#mbmtally").textContent=mb.dye?`Dye shown: ${nb} blue, ${MM.dye.length-nb} colourless. Dissolved oxygen shown: ${MM.o2.length}. Particle counts represent the current model state; movement is schematic. Carbon dioxide leaves as bubbles and does not change the dye.`:"";}
+
+/* ---------- set-up controls ---------- */
+const MBCTRL=[["mbtemp","Temperature of the water bath",MBT.map(t=>[t,t+" °C"])],["mbtube","Tube",[["test","Yeast + glucose"],["boiled","Boiled yeast + glucose"],["noyeast","Glucose only"]]],["mbspeed","Speed",[["normal","Normal"],["fast","Fast"]]]];
+$("#mbctrls").innerHTML=MBCTRL.map(([k,l,o])=>`<fieldset><legend class="cl">${l}</legend><div class="seg">${o.map(([v,t])=>`<label><input type="radio" name="${k}" value="${v}"><span>${t}</span></label>`).join("")}</div></fieldset>`).join("");
+function mbSync(){$$("#mbctrls input").forEach(i=>i.checked=i.name==="mbtemp"?+i.value===MS.temp:i.name==="mbtube"?i.value===MS.tube:i.value===speed);}
+$("#mbctrls").addEventListener("change",e=>{const i=e.target;if(i.name==="mbspeed"){speed=i.value;syncSpeed();return;}
+ if(i.name==="mbtemp")MS.temp=+i.value;else MS.tube=i.value;if(mb.status==="ready"||mb.status==="done")mbNew();});
+function mbApply(n){MS={...MBSTD,...n};mbSync();mbNew();}
+
+/* ---------- results ---------- */
+function mbGroups(){const G={};for(const r of mbRuns){const k=r.s.tube+"|"+r.s.temp;(G[k]=G[k]||{tube:r.s.tube,temp:r.s.temp,runs:[]}).runs.push(r);}
+ return Object.values(G).sort((a,b)=>{const o={test:0,boiled:1,noyeast:2};return a.tube===b.tube?a.temp-b.temp:o[a.tube]-o[b.tube];}).map(g=>{const v=g.runs.filter(r=>r.valid);
+  const nr=v.some(r=>r.time==null),times=v.filter(r=>r.time!=null).map(r=>r.time);
+  const mean=!nr&&times.length?times.reduce((a,b)=>a+b,0)/times.length:null;return{...g,valid:v,nr,mean,rate:mean?1/mean:null};});}
+function renderMbResults(){const G=mbGroups();
+ const rows=G.map(g=>`<tr><td class="n">${g.temp}</td><td>${esc(MBTUBE[g.tube])}</td><td>${g.runs.map(r=>"Run "+r.id+": "+(r.time==null?"not reached by 600":r.time)+(r.valid?"":" (shaken again, not used)")).join("; ")}</td><td class="n">${g.mean?Math.round(g.mean):g.nr?"not calculated":"—"}</td><td class="n">${g.rate?sf(g.rate,2):g.nr?"unknown (end point not reached)":"—"}</td></tr>`).join("");
+ const T=G.filter(g=>g.tube==="test");
+ const W=340,H=240,L=58,Rm=14,Tp=14,Bm=46,pw=W-L-Rm,ph=H-Tp-Bm,ymax=.01,X=t=>L+(t-5)/55*pw,Y=v=>Tp+ph-v/ymax*ph;let gr="";
+ for(let v=0;v<=ymax+1e-9;v+=.002)gr+=`<line class="f-grid" x1="${L}" x2="${W-Rm}" y1="${Y(v)}" y2="${Y(v)}"/><text class="f-sm" x="${L-6}" y="${Y(v)+4}" text-anchor="end">${(v*1000).toFixed(0)}</text>`;
+ for(let t=10;t<=60;t+=10)gr+=`<text class="f-sm" x="${X(t)}" y="${Tp+ph+16}" text-anchor="middle">${t}</text>`;
+ const pts=T.filter(g=>g.rate).map(g=>[X(g.temp),Y(g.rate)]);
+ pts.forEach(p=>gr+=`<circle class="f-dot" cx="${p[0]}" cy="${p[1]}" r="4"/>`);
+
+ gr+=`<line class="f-axis" x1="${L}" x2="${L}" y1="${Tp}" y2="${Tp+ph}"/><line class="f-axis" x1="${L}" x2="${W-Rm}" y1="${Tp+ph}" y2="${Tp+ph}"/>`;
+ gr+=`<text class="f-sm" x="${L+pw/2}" y="${H-8}" text-anchor="middle">Temperature (°C)</text><text class="f-sm" transform="translate(14 ${Tp+ph/2}) rotate(-90)" text-anchor="middle">1/time (× 10⁻³ s⁻¹)</text>`;
+ $("#results").innerHTML=`<div class="res"><div class="fig gsvg"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Simulated graph of 1/time against temperature for yeast and glucose tubes.">${gr}</svg><p class="spec">Simulated. Rate index = 1 ÷ mean time, for yeast + glucose tubes. No-endpoint results are listed separately below the graph; they are not zero rates.</p></div>
+ <p class="spec">${T.filter(g=>g.nr).map(g=>`${g.temp} °C: end point not reached in at least one valid repeat; rate index unknown.`).join(" ")}</p><div class="fig"><div class="scroll"><table><caption>Simulated methylene blue results. A mean uses valid repeats only and is calculated only when every valid repeat reached the end point.</caption><thead><tr><th scope="col">Temp (°C)</th><th scope="col">Tube</th><th scope="col">Time to end point (s)</th><th scope="col">Mean (s)</th><th scope="col">1/time (s⁻¹)</th></tr></thead><tbody>${rows||'<tr><td colspan="5">No tubes timed yet.</td></tr>'}</tbody></table></div></div></div>`;}
+
+/* ================= Respirometer model =================
+ Volumes in mm³. Aerobic oxygen uptake matches the RP9 lesson: 6, 14, 24 and 9 mm in 5 minutes
+ at 15, 25, 35 and 45 °C with a 0.5 mm radius capillary.
+ gas "air": aerobic; glucose substrate, so CO₂ released ≈ O₂ taken up (ratio 0.97).
+ gas "n2": anaerobic conditions established by boiling and cooling the glucose solution, an oil layer,
+ and replacing the air above with nitrogen; no O₂ uptake, CO₂ released only.
+ abs: CO₂ absorber (soda lime). It removes CO₂ only; it does not remove O₂.
+ Distance moved = volume change ÷ πr². */
+const PI=3.14,A05=PI*.25;
+const KV={15:1.2*A05,25:2.8*A05,35:4.8*A05,45:1.8*A05};       // O₂ uptake, mm³ per min
+const KAV={15:.9*A05,25:2.1*A05,35:3.6*A05,45:1.4*A05};        // anaerobic CO₂ release, mm³ per min
+const RQ=.97,START=60,PERMM=.4,ROOM=20;
+const STD={temp:25,yeast:"live",gas:"air",abs:true,eq:true,r:.5};
+function rates(s){const live=s.yeast==="live",k=s.amt??1,o2=live&&s.gas==="air"?KV[s.temp]*k:0;
+ const co2=live?(s.gas==="air"?o2*RQ:KAV[s.temp]*k):0;return{o2,co2,co2free:s.abs?0:co2};}
+const ampV=s=>s.eq?0:16*A05*(s.temp-ROOM)/15;                  // warming gas: + expands
+const thermalV=(s,t)=>ampV(s)*(1-Math.exp(-t/1.5));
+const netV=(s,t)=>{const r=rates(s);return(r.o2-r.co2free)*t-thermalV(s,t);};   // volume DEcrease (towards the yeast)
+const towards=(s,t)=>netV(s,t)/(PI*s.r*s.r);
+const clampP=p=>Math.max(0,Math.min(112,p));
+const gmatch=(s,n)=>Object.keys(n).every(k=>s[k]===n[k])&&(s.amt??1)===(n.amt??1);
+function gdesc(s){return (s.yeast==="live"?"living yeast":"boiled yeast")+", "+(s.gas==="air"?"air in the tube":"anaerobic: boiled and cooled glucose, oil layer, nitrogen above")+", "+(s.abs?"CO₂ absorber in":"no CO₂ absorber")+", "+s.temp+" °C, capillary radius "+s.r+" mm, "+(s.eq?"left to reach temperature":"timed straight away");}
+function gshort(s){return s.temp+" °C, "+(s.gas==="air"?"air":"nitrogen")+", "+(s.abs?"absorber":"no absorber")+(s.yeast==="boiled"?", boiled":"")+(s.r!==.5?", r "+s.r+" mm":"")+(s.amt&&s.amt<1?", one-tenth of the yeast":"")+(s.eq?"":", not equilibrated");}
+let S={...STD},run,runs=[],runId=0,gasOn=false,cred,tally,mols=[],cells=[];
+
+const X=mm=>150+mm*1.6;
+(function(){let g="";for(let mm=0;mm<=120;mm+=5){const x=X(mm),big=mm%20===0;g+=`<line class="f-thin" x1="${x}" y1="40" x2="${x}" y2="${big?49:45}"/>`;if(big)g+=`<text class="f-sm" x="${x}" y="61" text-anchor="middle">${mm}</text>`;}
+ g+=`<text class="f-sm" x="350" y="20" text-anchor="end">Capillary tube, scale in mm</text>`;$("#scale").innerHTML=g;
+ let p="";for(let i=0;i<6;i++)p+=`<circle class="a-pel" cx="${77+i*7.2}" cy="98.5" r="3.1"/>`+(i<5?`<circle class="a-pel" cx="${80.6+i*7.2}" cy="105.5" r="3.1"/>`:"");$("#pellets").innerHTML=p;
+ const r=rng(7);let c="";while(cells.length<24){const x=63+r()*64,y=206+r()*58;if(y>232&&(x-95)**2+(y-232)**2>30**2)continue;cells.push({x,y});c+=`<ellipse class="a-cell" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="3.4" ry="2.7"/>`;}$("#cells").innerHTML=c;})();
+function drawSetup(){const s=run.s,an=s.gas==="n2";
+ $("#basket").style.display=s.abs?"":"none";$("#lab-soda").style.display=s.abs?"":"none";
+ $("#oil").style.display=an?"":"none";$("#lab-oil").style.display=an?"":"none";$("#lab-n2").style.display=an?"":"none";
+ $("#cells").classList.toggle("boiled",s.yeast==="boiled");
+ $("#lab-yeast").textContent=(s.yeast==="live"?(s.amt&&s.amt<1?"Yeast (one-tenth)":"Yeast"):"Boiled yeast")+" in glucose solution";$("#lab-bath").textContent="Water bath, "+s.temp+" °C";
+ $("#lab-r").textContent="Capillary radius "+s.r+" mm";$("#cap").style.strokeWidth=s.r>.5?11:7;$("#bore").style.strokeWidth=s.r>.5?8:4;$("#dye").style.strokeWidth=s.r>.5?8:4.5;}
+
+/* molecules drift; contact comes before any uptake or absorption */
+const TX0=59,TX1=131,TOP=84,LIQ=200,OILT=190,B={x0:72,x1:118,y0:94,y1:110},R=4,SP=34;
+function addMol(kind,x,y,st){const el=document.createElementNS(NS,"use");el.setAttribute("href","#"+kind);$("#mols").appendChild(el);
+ const a=mr()*6.283,m={kind,x,y,vx:Math.cos(a)*SP,vy:Math.sin(a)*SP,st,a:1,el};if(st==="rise"){m.vx=(mr()-.5)*6;m.vy=-22;}mols.push(m);return m;}
+function inBasket(x,y){return run.s.abs&&x>B.x0-R&&x<B.x1+R&&y>B.y0-R&&y<B.y1+R;}
+function initMols(){mols.forEach(m=>m.el.remove());mols=[];if(run.s.gas==="n2")return;let n=0;
+ while(n<24){const x=TX0+R+mr()*(TX1-TX0-2*R),y=TOP+R+mr()*(OILT-TOP-2*R);if(inBasket(x,y))continue;addMol("o2",x,y,"free");n++;}}
+function drawMols(){for(const m of mols){m.el.setAttribute("transform",`translate(${m.x.toFixed(1)} ${m.y.toFixed(1)})`);m.el.setAttribute("opacity",Math.max(0,m.a).toFixed(2));}}
+
+function newRun(){run={s:{...S},t:0,status:"ready",readings:[],rand:rng(Math.floor(mr()*1e9))};cred={o2:0,co2:0};tally={o2:0,co2:0,abs:0};initMols();drawSetup();gUpdate();renderResults();}
+function record(m){let p=START;if(m>0)p=clampP(START-towards(run.s,m));run.readings.push(Math.round(p));renderResults();}
+function gStart(){if(run.status==="done")newRun();if(run.status==="ready"){run.id=++runId;record(0);}run.status="running";gUpdate();}
+function gFinish(){run.status="done";runs.push({id:run.id,s:{...run.s},readings:run.readings.slice()});if(runs.length>14)runs.shift();
+ say("Run finished. "+moveText(run.readings));gUpdate();renderResults();onRun("gas",runs[runs.length-1]);}
+function moveText(rd){const d=rd[0]-rd[10];if(Math.abs(d)<2)return"In 10 minutes the liquid hardly moved ("+Math.abs(d)+" mm).";return"In 10 minutes the liquid moved "+Math.abs(d)+" mm "+(d>0?"towards":"away from")+" the yeast.";}
+$("#brun").onclick=gStart;$("#bpause").onclick=()=>{if(run.status==="running"){run.status="paused";gUpdate();}};
+$("#breset").onclick=()=>newRun();$("#bgas").onclick=()=>{gasOn=!gasOn;gUpdate();};
+function gasStep(dt){
+ if(run.status==="running"){
+  const spm=speed==="fast"?.6:2;run.t=Math.min(10,run.t+dt/spm);
+  while(run.readings.length<=10&&run.t+1e-9>=run.readings.length)record(run.readings.length);
+  if(run.t>=10)gFinish();
+ }
+ syncGasParticles(run.status==="running"?dt:0);gDraw();
+}
+function syncGasParticles(dt){
+ const r=rates(run.s),f=PERMM/A05,uptake=Math.round(r.o2*run.t*f),released=Math.round(r.co2*run.t*f);
+ tally={o2:uptake,co2:released,abs:run.s.abs?released:0};
+ const wantO=run.s.gas==="air"?Math.max(0,24-uptake):0,wantC=run.s.abs?0:released;
+ for(const [kind,want] of [["o2",wantO],["co2",wantC]]){
+  let group=mols.filter(m=>m.kind===kind);
+  while(group.length>want){const m=group.pop();m.el.remove();mols.splice(mols.indexOf(m),1);}
+  while(group.length<want){const m=addMol(kind,TX0+R+mr()*(TX1-TX0-2*R),TOP+R+mr()*(OILT-TOP-2*R),"free");group.push(m);}
+ }
+ if(dt)for(const m of mols){m.x=Math.max(TX0+R,Math.min(TX1-R,m.x+m.vx*dt));m.y=Math.max(TOP+R,Math.min(OILT-R,m.y+m.vy*dt));if(m.x<=TX0+R||m.x>=TX1-R)m.vx*=-1;if(m.y<=TOP+R||m.y>=OILT-R)m.vy*=-1;}
+}
+function gDraw(){const p=run.status==="ready"?START:clampP(START-towards(run.s,run.t));
+ $("#dye").setAttribute("x1",X(p));$("#dye").setAttribute("x2",X(p+8));$("#rtime").textContent=run.t.toFixed(1)+" min";$("#rread").textContent=Math.round(p)+" mm";
+ const a=ampV(run.s);$("#lab-gas").textContent=(gasOn&&a!==0&&run.status!=="ready"&&run.t<4)?(a>0?"Gas warming and expanding":"Gas cooling and contracting"):"";
+ if(gasOn){drawMols();$("#tally").textContent=`Schematic particle units: oxygen taken up ${tally.o2} · carbon dioxide produced ${tally.co2}`+(run.s.abs?` · absorbed by the soda lime ${tally.abs}`:"")+(run.s.gas==="n2"?" · no oxygen in the tube":"");}}
+function gUpdate(){const st=run.status;
+ $("#brun").textContent=st==="paused"?"Resume":st==="done"?"Run again":"Run";$("#brun").disabled=st==="running";$("#bpause").disabled=st!=="running";
+ $("#rstate").textContent={ready:"Ready",running:"Running",paused:"Paused",done:"Finished"}[st];
+ $("#bgas").setAttribute("aria-pressed",gasOn);$("#mols").style.display=gasOn?"":"none";$("#glegend").hidden=!gasOn;$("#tally").hidden=!gasOn;
+ const lock=st==="running"||st==="paused";$$("#ctrls input").forEach(i=>i.disabled=lock&&i.name!=="speed");$("#lockmsg").hidden=!lock;renderNav();renderTasks();}
+
+const CTRL=[["temp","Temperature of the water bath",[[15,"15 °C"],[25,"25 °C"],[35,"35 °C"],[45,"45 °C"]]],
+ ["yeast","Organism",[["live","Living yeast"],["boiled","Boiled yeast"]]],
+ ["gas","Oxygen conditions",[["air","Air in the tube"],["n2","Anaerobic: boiled glucose, oil, nitrogen"]]],
+ ["abs","CO₂ absorber (soda lime)",[[true,"In the tube"],[false,"None"]]],
+ ["r","Capillary radius",[[.5,"0.5 mm"],[1,"1.0 mm"]]],
+ ["eq","Before timing starts",[[true,"Leave to reach temperature"],[false,"Start timing straight away"]]],
+ ["speed","Speed",[["normal","Normal"],["fast","Fast"]]]];
+$("#ctrls").innerHTML=CTRL.map(([k,l,o])=>`<fieldset><legend class="cl">${l}</legend><div class="seg">${o.map(([v,t])=>`<label><input type="radio" name="${k}" value="${v}"><span>${t}</span></label>`).join("")}</div></fieldset>`).join("");
+function gSync(){CTRL.forEach(([k])=>{const v=k==="speed"?speed:S[k];$$(`#ctrls input[name=${k}]`).forEach(i=>i.checked=String(v)===i.value);});}
+$("#ctrls").addEventListener("change",e=>{const i=e.target,k=i.name;if(k==="speed"){speed=i.value;syncSpeed();return;}
+ S[k]=(k==="temp"||k==="r")?+i.value:(k==="abs"||k==="eq")?i.value==="true":i.value;if(run.status==="ready"||run.status==="done")newRun();});
+function gApply(n){S={...STD,...n};gSync();newRun();}
+function syncSpeed(){$$("input[name=speed],input[name=mbspeed]").forEach(i=>i.checked=i.value===speed);}
+
+function gShown(){let cur=null,prev=null;if(run.status==="done"){cur=runs[runs.length-1];prev=runs[runs.length-2]||null;}
+ else{cur=run.readings.length?{id:run.id,s:run.s,readings:run.readings}:null;prev=runs[runs.length-1]||null;}return{cur,prev};}
+function renderGasResults(){const{cur,prev}=gShown();const W=340,H=250,L=52,Rm=14,T=14,Bm=46,pw=W-L-Rm,ph=H-T-Bm;
+ const ser=[];if(prev)ser.push({r:prev,cls:"f-line2",dot:"f-dot2"});if(cur)ser.push({r:cur,cls:"f-line",dot:"f-dot"});
+ const vals=[0];ser.forEach(o=>o.r.readings.forEach(v=>vals.push(START-v)));
+ const y0=Math.min(0,Math.floor(Math.min(...vals)/10)*10),y1=Math.max(10,Math.ceil(Math.max(...vals)/10)*10),ys=(y1-y0)>40?10:5;
+ const Xg=v=>L+v/10*pw,Yg=v=>T+ph-(v-y0)/(y1-y0)*ph;let g="";
+ for(let v=y0;v<=y1;v+=5)g+=`<line class="f-grid" x1="${L}" x2="${W-Rm}" y1="${Yg(v)}" y2="${Yg(v)}"/>`;
+ for(let v=0;v<=10;v++)g+=`<line class="f-grid" y1="${T}" y2="${T+ph}" x1="${Xg(v)}" x2="${Xg(v)}"/>`;
+ for(let v=y0;v<=y1;v+=ys)g+=`<text class="f-sm" x="${L-6}" y="${Yg(v)+4}" text-anchor="end">${v}</text>`;
+ for(let v=0;v<=10;v+=2)g+=`<text class="f-sm" x="${Xg(v)}" y="${T+ph+16}" text-anchor="middle">${v}</text>`;
+ if(y0<0)g+=`<line class="f-zero" x1="${L}" x2="${W-Rm}" y1="${Yg(0)}" y2="${Yg(0)}"/>`;
+ ser.forEach(o=>{const pts=o.r.readings.map((v,i)=>[Xg(i),Yg(START-v)]);if(pts.length>1)g+=`<polyline class="${o.cls}" points="${pts.map(p=>p.join(",")).join(" ")}"/>`;pts.forEach(p=>g+=`<circle class="${o.dot}" cx="${p[0]}" cy="${p[1]}" r="3.2"/>`);});
+ g+=`<line class="f-axis" x1="${L}" x2="${L}" y1="${T}" y2="${T+ph}"/><line class="f-axis" x1="${L}" x2="${W-Rm}" y1="${Yg(y0)}" y2="${Yg(y0)}"/>`;
+ g+=`<text class="f-sm" x="${L+pw/2}" y="${H-8}" text-anchor="middle">Time (minutes)</text><text class="f-sm" transform="translate(14 ${T+ph/2}) rotate(-90)" text-anchor="middle">Distance towards yeast (mm)</text>`;
+ const sw=c=>`<svg viewBox="0 0 36 10" aria-hidden="true"><line class="${c}" x1="2" y1="5" x2="34" y2="5"/></svg>`;
+ let rows="";for(let i=0;i<=10;i++){const a=cur&&cur.readings[i]!=null?cur.readings[i]:"",b=prev?prev.readings[i]:null;rows+=`<tr><td class="n">${i}</td><td class="n">${a}</td>${prev?`<td class="n">${b}</td>`:""}</tr>`;}
+ const vol=cur&&cur.readings.length>5?(cur.readings[0]-cur.readings[5]):null;
+ $("#results").innerHTML=`<div class="res"><div class="fig gsvg"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc("Simulated graph of distance moved by the coloured liquid towards the yeast against time."+(cur?" This run: "+gshort(cur.s)+".":"")+(prev?" Previous run, dashed: "+gshort(prev.s)+".":""))}">${g}</svg>
+ <div class="legend">${cur?`<span>${sw("f-line")}Run ${cur.id}: ${esc(gshort(cur.s))}</span>`:"<span>Press Run to start recording.</span>"}${prev?`<span>${sw("f-line2")}Run ${prev.id} (previous): ${esc(gshort(prev.s))}</span>`:""}</div>
+ ${vol!=null?`<p class="spec">This run, first 5 minutes: ${vol>=0?"towards":"away from"} the yeast by ${Math.abs(vol)} mm, a gas-volume change of ${(PI*cur.s.r*cur.s.r*Math.abs(vol)).toFixed(2)} mm³ (πr²l, r = ${cur.s.r} mm).</p>`:""}</div>
+ <div class="fig"><div class="scroll"><table><caption>Simulated readings: position of the coloured liquid on the scale (mm). Negative values on the graph mean the liquid moved away from the yeast.</caption><thead><tr><th scope="col">Time (min)</th><th scope="col">This run</th>${prev?'<th scope="col">Previous run</th>':""}</tr></thead><tbody>${rows}</tbody></table></div></div></div>`;}
+
+/* ================= Paired examples (Compare) and fresh diagrams (Apply) =================
+ Paired results are calculated from the same model functions as the live models. */
+function miniGas(s,lab){const d=towards(s,5),p=clampP(START-d),Xm=mm=>72+mm*1.15,wide=s.r>.5,an=s.gas==="n2";
+ let g=`<rect class="a-water" x="8" y="62" width="74" height="80" rx="6"/><path class="a-glass" d="M26 30 V112 A19 19 0 0 0 64 112 V30"/>`;
+ g+=`<rect class="a-susp" x="28" y="100" width="34" height="30"/><path class="a-susp" d="M28 110 V112 A17 17 0 0 0 62 112 V110 Z"/>`;
+ if(an)g+=`<rect class="a-oil" x="28" y="95" width="34" height="5"/>`;
+ if(s.abs)g+=`<rect class="a-gauze" x="32" y="44" width="26" height="9"/><circle class="a-pel" cx="38" cy="48.5" r="2.6"/><circle class="a-pel" cx="45" cy="48.5" r="2.6"/><circle class="a-pel" cx="52" cy="48.5" r="2.6"/>`;
+ g+=`<rect class="a-bung" x="22" y="24" width="46" height="12" rx="3"/><path class="a-cap" style="stroke-width:${wide?9:6}" d="M45 24 V12 H212"/><path class="a-bore" style="stroke-width:${wide?6:3}" d="M45 24 V12 H212"/>`;
+ g+=`<line class="a-dye" style="stroke-width:${wide?6:3.5}" x1="${Xm(p)}" y1="12" x2="${Xm(p+8)}" y2="12"/>`;
+ for(let mm=0;mm<=120;mm+=20)g+=`<line class="f-thin" x1="${Xm(mm)}" y1="16" x2="${Xm(mm)}" y2="22"/><text class="f-sm" style="font-size:9px" x="${Xm(mm)}" y="32" text-anchor="middle">${mm}</text>`;
+ g+=`<text class="f-sm" style="font-size:10px" x="92" y="52">${s.abs?"CO₂ absorber in":"No CO₂ absorber"}</text>`;
+ g+=`<text class="f-sm" style="font-size:10px" x="92" y="66">${an?"Nitrogen, oil layer":"Air in the tube"}</text>`;
+ g+=`<text class="f-sm" style="font-size:10px" x="92" y="80">${s.amt&&s.amt<1?"One-tenth of the yeast":"Yeast in glucose"}, ${s.temp} °C</text>`;
+ g+=`<text class="f-sm" style="font-size:10px" x="92" y="94">Capillary radius ${s.r} mm</text>`;
+ return`<svg viewBox="0 0 220 150" role="img" aria-label="${esc(lab+": "+gdesc(s))}">${g}</svg>`;}
+function miniMB(temp){const t=mbEndOf(temp);
+ let g=`<path class="a-water" d="M14 50 H118 V132 Q118 138 112 138 H20 Q14 138 14 132 Z"/><path class="a-tube" d="M10 34 V134 Q10 142 18 142 H114 Q122 142 122 134 V34"/>`;
+ g+=`<path d="M42 60 V112 A10 10 0 0 0 62 112 V60 Z" fill="${mix(YEASTC,BLUEC,.85)}"/><path class="a-tube" d="${tubePath(52,20,124,12)}"/>`;
+ g+=`<path d="M78 60 V112 A10 10 0 0 0 98 112 V60 Z" fill="${mix(YEASTC,BLUEC,0)}"/><path class="a-tube" d="${tubePath(88,20,124,12)}"/>`;
+ g+=`<text class="f-sm" style="font-size:10px" x="132" y="50">Methylene blue</text><text class="f-sm" style="font-size:10px" x="132" y="64">(left) and colour</text><text class="f-sm" style="font-size:10px" x="132" y="78">standard (right)</text><text class="f-sm" style="font-size:10px" x="132" y="96">Water at ${temp} °C</text>`;
+ return`<svg viewBox="0 0 220 150" role="img" aria-label="Methylene blue tube at ${temp} °C beside a colour standard, in a beaker of water.">${g}</svg>`;}
+const PAIRS={
+ absorber:{a:{type:"gas",s:{...STD,temp:35}},b:{type:"gas",s:{...STD,temp:35,abs:false}},same:"Living yeast in glucose, air in the tube, 35 °C, 0.5 mm capillary."},
+ arrange:{a:{type:"gas",s:{...STD,temp:25}},b:{type:"diag",d:"utube"},info:"Potassium hydroxide (KOH) solution absorbs carbon dioxide. Germinating seeds are an exam application context; the core RP9 investigation uses yeast."},
+ little:{a:{type:"gas",s:{...STD,temp:25,amt:.1}},b:{type:"gas",s:{...STD,temp:35,abs:false}}},
+ methods:{a:{type:"mb",temp:35},b:{type:"gas",s:{...STD,temp:35}},same:"Same yeast suspension, both at 35 °C.",info:"Example B as a rate: 3.14 × 0.5² × 24 ÷ 5 = 3.77 mm³ min⁻¹."},
+ radius:{a:{type:"gas",s:{...STD,temp:35}},b:{type:"gas",s:{...STD,temp:35,r:1}},same:"Same yeast, same conditions; only the capillary differs."}};
+function pairCard(x,L){if(x.type==="gas"){const d=towards(x.s,5),v=netV(x.s,5);
+  return`<article class="pcard"><h4>Example ${L}</h4>${miniGas(x.s,"Example "+L)}<p class="pres"><b>Simulated reading after 5 minutes:</b> ${Math.abs(d)<1?"moved less than 1 mm":`moved ${Math.round(Math.abs(d))} mm ${d>0?"towards":"away from"} the yeast`}.</p><button type="button" class="btn small" data-load="${L}">Run example ${L} in the respirometer</button></article>`;}
+ if(x.type==="mb"){const t=mbEndOf(x.temp);return`<article class="pcard"><h4>Example ${L}</h4>${miniMB(x.temp)}<p class="pres"><b>Simulated reading:</b> end point (no blue left) after about ${Math.round(t)} s. 1/time = ${sf(1/t,2)} s⁻¹.</p><button type="button" class="btn small" data-load="${L}">Try example ${L} in the methylene blue model</button></article>`;}
+ return`<article class="pcard"><h4>Example ${L}</h4>${DIAG[x.d]()}</article>`;}
+function pairHTML(id){const P=PAIRS[id];return`${P.same?`<p class="spec">${P.same}</p>`:""}<div class="pair">${pairCard(P.a,"A")}${pairCard(P.b,"B")}</div>${P.info?`<p class="info"><b>Information:</b> ${P.info}</p>`:""}`;}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-load]");if(!b)return;const P=PAIRS[curPair];if(!P)return;const x=b.dataset.load==="A"?P.a:P.b;
+ if(x.type==="gas"){gApply(x.s);setPanel("gas");}else if(x.type==="mb"){mbApply({temp:x.temp,tube:"test"});setPanel("mb");}});
+
+/* fresh diagrams: labels stay on even when hints are removed */
+const DIAG={
+ utube:()=>{let g=`<rect class="a-water" x="6" y="120" width="300" height="100" rx="8"/>`;
+  for(const[x,lab]of[[60,"germinating seeds"],[200,"glass beads"]]){g+=`<path class="a-glass" d="M${x-22} 70 V196 A22 22 0 0 0 ${x+22} 196 V70"/><path class="a-koh" d="M${x-20} 186 V196 A20 20 0 0 0 ${x+20} 196 V186 Z"/>`;
+   g+=`<line class="f-ink" x1="${x-20}" y1="160" x2="${x+20}" y2="160" stroke-dasharray="3 2"/>`+(lab.startsWith("germ")?[0,1,2,3].map(i=>`<ellipse class="a-seed" cx="${x-12+i*8}" cy="154" rx="4" ry="3"/>`).join(""):[0,1,2,3].map(i=>`<circle class="a-bead" cx="${x-12+i*8}" cy="154" r="3.4"/>`).join(""));
+   g+=`<rect class="a-bung" x="${x-26}" y="58" width="52" height="14" rx="3"/><text class="f-sm" x="${x}" y="236" text-anchor="middle">${lab}</text>`;}
+  g+=`<path class="a-cap" d="M60 58 V30 H112 V100 A18 18 0 0 0 148 100 V30 H200 V58"/><path class="a-bore" d="M60 58 V30 H112 V100 A18 18 0 0 0 148 100 V30 H200 V58"/>`;
+  g+=`<path class="a-dyeline" d="M112 78 V100 A18 18 0 0 0 148 100 V84"/>`;
+  for(let i=0;i<6;i++)g+=`<line class="f-thin" x1="152" y1="${44+i*8}" x2="158" y2="${44+i*8}"/>`;
+  g+=`<line class="f-thin" x1="86" y1="30" x2="86" y2="18"/><rect class="a-bung" x="80" y="8" width="12" height="10" rx="2"/><text class="f-sm" x="96" y="16">tap (closed during timing)</text>`;
+  g+=`<text class="f-sm" x="236" y="190">KOH solution</text><line class="f-thin" x1="222" y1="190" x2="234" y2="188"/>`;
+  g+=`<line class="f-thin" x1="152" y1="92" x2="234" y2="44"/><text class="f-sm" x="238" y="40">U-tube with</text><text class="f-sm" x="238" y="54">coloured fluid</text><text class="f-sm" x="236" y="132">water bath</text>`;
+  return`<svg viewBox="0 0 320 250" role="img" aria-label="Two boiling tubes in a water bath, one with germinating seeds and one with glass beads, each on gauze above potassium hydroxide solution. They are joined by a U-tube containing coloured fluid, with a tap.">${g}</svg>`;},
+ woodlice:()=>{let g=`<path class="a-glass" d="M40 60 V196 A26 26 0 0 0 92 196 V60"/><path class="a-chemx" d="M42 186 V196 A24 24 0 0 0 90 196 V186 Z"/>`;
+  g+=`<line class="f-ink" x1="42" y1="160" x2="90" y2="160" stroke-dasharray="3 2"/>`+[0,1,2].map(i=>`<ellipse class="a-louse" cx="${54+i*12}" cy="153" rx="5" ry="3.4"/>`).join("");
+  g+=`<rect class="a-bung" x="34" y="48" width="64" height="14" rx="3"/><path class="a-cap" d="M66 48 V28 H340"/><path class="a-bore" d="M66 48 V28 H340"/><line class="a-dye" x1="250" y1="28" x2="262" y2="28"/>`;
+  for(let mm=0;mm<=100;mm+=10)g+=`<line class="f-thin" x1="${130+mm*2}" y1="33" x2="${130+mm*2}" y2="${mm%50?38:42}"/>`;
+  g+=`<path class="a-cap" d="M86 48 V40 H104"/><rect class="a-bung" x="104" y="34" width="24" height="12" rx="2"/><text class="f-sm" x="132" y="60">syringe to reset the liquid</text>`;
+  g+=`<line class="f-thin" x1="94" y1="153" x2="140" y2="140"/><text class="f-sm" x="144" y="140">woodlice on gauze</text>`;
+  g+=`<line class="f-thin" x1="92" y1="192" x2="140" y2="196"/><text class="f-sm" x="144" y="196">chemical X</text><text class="f-sm" x="130" y="16">capillary tube with scale</text>`;
+  return`<svg viewBox="0 0 350 240" role="img" aria-label="A boiling tube with woodlice on gauze above chemical X, closed with a bung. A capillary tube with a scale and a drop of coloured liquid leads from the bung, with a syringe on a side arm.">${g}</svg>`;},
+ syringe:(air=false)=>{let g=`<rect class="a-water" x="10" y="120" width="150" height="104" rx="8"/><path class="a-glass" d="M62 54 V96 L26 196 Q24 206 34 206 H136 Q146 206 144 196 L108 96 V54"/>`;
+  g+=`<path class="a-susp" d="M36 168 H134 L142 194 Q144 204 134 204 H36 Q26 204 28 194 Z"/>`+(air?"":`<path class="a-oil" d="M40 160 H130 L134 168 H36 Z"/>`);
+  g+=`<rect class="a-bung" x="56" y="44" width="58" height="14" rx="3"/><path class="a-cap" d="M85 44 V24 H190"/><path class="a-bore" d="M85 44 V24 H190"/>`;
+  g+=`<rect class="a-glass" x="190" y="14" width="120" height="20" rx="3"/><rect class="a-plunger" x="232" y="16" width="78" height="16"/><line class="f-ink" x1="310" y1="24" x2="340" y2="24"/><rect class="a-bung" x="338" y="14" width="6" height="20"/>`;
+  for(let i=0;i<=10;i++)g+=`<line class="f-thin" x1="${194+i*11}" y1="34" x2="${194+i*11}" y2="${i%5?39:43}"/>`;
+  g+=`<text class="f-sm" x="196" y="56">gas syringe (cm³)</text><line class="f-thin" x1="140" y1="186" x2="178" y2="176"/>`+(air?`<text class="f-sm" x="182" y="172">living yeast in</text><text class="f-sm" x="182" y="186">glucose solution</text>`:`<text class="f-sm" x="182" y="172">living yeast added after</text><text class="f-sm" x="182" y="186">glucose boiled and cooled</text>`);
+  g+=air?`<text class="f-sm" x="182" y="100">air above mixture</text><text class="f-sm" x="182" y="140">no oil layer</text><line class="f-thin" x1="108" y1="110" x2="178" y2="106"/>`:`<line class="f-thin" x1="132" y1="163" x2="178" y2="140"/><text class="f-sm" x="182" y="140">oil layer</text><text class="f-sm" x="182" y="100">air above replaced</text><text class="f-sm" x="182" y="114">with nitrogen</text><line class="f-thin" x1="108" y1="110" x2="178" y2="106"/>`;
+  return`<svg viewBox="0 0 350 230" role="img" aria-label="${air?"A conical flask containing living yeast in glucose solution, with air above and no oil layer.":"A conical flask containing living yeast added after the glucose solution was boiled and cooled, under a layer of oil, with nitrogen above."} The flask is in a water bath and a delivery tube leads to a gas syringe with a scale in cubic centimetres.">${g}</svg>`;},
+ btb:()=>{let g=`<path d="M48 70 V170 A14 14 0 0 0 76 170 V70 Z" fill="rgb(58,120,190)"/><path class="a-tube" d="${tubePath(62,30,186,16)}"/>`;
+  const C=[[42,92,190],[60,140,130],[150,175,60],[214,196,40]];C.forEach((c,i)=>g+=`<rect x="${130+i*48}" y="80" width="46" height="30" fill="rgb(${c})" stroke="currentColor" stroke-opacity=".3"/>`);
+  g+=`<text class="f-sm" x="130" y="128">pH 7.6+</text><text class="f-sm" x="274" y="128" text-anchor="middle">pH 6.0 and below</text><text class="f-sm" x="130" y="70">bromothymol blue colour chart</text>`;
+  g+=`<line class="f-thin" x1="78" y1="150" x2="120" y2="160"/><text class="f-sm" x="124" y="164">yeast in glucose solution</text><text class="f-sm" x="124" y="178">+ bromothymol blue</text>`;
+  return`<svg viewBox="0 0 340 210" role="img" aria-label="A test tube of yeast in glucose solution with bromothymol blue, beside a colour chart going from blue at pH 7.6 and above, through green, to yellow at pH 6.0 and below.">${g}</svg>`;}};
+const DIAGINFO={utube:"Potassium hydroxide (KOH) solution absorbs carbon dioxide. The glass-bead tube has the same volume of gas but nothing living. Germinating seeds are an exam application context.",
+ woodlice:"Chemical X absorbs carbon dioxide. Woodlice are an exam application context; the core RP9 investigation uses single-celled organisms. Use the radius given in each question.",
+ syringe:"Before timing, the glucose solution was boiled and cooled before living yeast was added. The mixture was covered with oil and the air above was replaced with nitrogen. There is no carbon dioxide absorber.",
+ syringeAir:"In this fresh question there is air above the yeast and no oil layer. There is no carbon dioxide absorber.",
+ btb:"Bromothymol blue is a pH indicator: blue at pH 7.6 and above, green in between, yellow at pH 6.0 and below. Carbon dioxide dissolves in water to form an acid."};
+function diagHTML(id,variant=0){const air=id==="syringe"&&variant>0;return`${DIAG[id](air)}<p class="info"><b>Information:</b> ${air?DIAGINFO.syringeAir:DIAGINFO[id]}</p>`;}
+
+/* ================= Panel switching ================= */
+let panel="mb",lastModel="mb",curPair=null,curTaskPanel=null,taskShown=null;
+function setPanel(p){panel=p;if(p==="mb"||p==="gas")lastModel=p;
+ $("#p-mb").hidden=p!=="mb";$("#p-gas").hidden=p!=="gas";$("#p-task").hidden=p!=="task";renderTabs();renderResults();}
+function renderTabs(){const tabs=[["mb","Methylene blue"],["gas","Respirometer"]];if(curTaskPanel)tabs.push(["task",curTaskPanel.pair?"Paired examples":"Task diagram"]);
+ $("#ptabs").innerHTML=tabs.map(([k,l])=>`<button type="button" class="chip${panel===k?" sel":""}" aria-pressed="${panel===k}" data-p="${k}">${l}</button>`).join("");}
+$("#ptabs").addEventListener("click",e=>{const b=e.target.closest("button[data-p]");if(b)setPanel(b.dataset.p);});
+function showTaskPanel(tp,variant=0){curTaskPanel=tp||null;curPair=tp&&tp.pair||null;
+ if(tp){$("#p-task").innerHTML=tp.pair?pairHTML(tp.pair):diagHTML(tp.diag,variant);}}
+function renderResults(){if(!run||!mb)return;$("#resh").textContent=lastModel==="mb"?"Results: methylene blue":"Results: respirometer";if(lastModel==="mb")renderMbResults();else renderGasResults();installZoom();}
+
+/* ================= Task engine =================
+ Types: info (worked example), predict (outcome + reason, then observe), mcq (variants: a fresh
+ question after feedback), num (worked/faded calculations), multi (select all), write (short
+ written answer with criteria), run. Options are shuffled per task so the correct position varies.
+ Results: "ind" = right first time with no hint; "sup" = right after feedback, a hint or a fresh question. */
+const mmatch=(s,n)=>Object.keys(n).every(k=>s[k]===n[k]);
+function mbDesc(n){return MBTUBE[n.tube||"test"].toLowerCase()+", water bath at "+n.temp+" °C";}
+function curSet(m){return m==="mb"?mb.s:run.s;}
+function setOK(m,n){return m==="mb"?mmatch(mb.s,n):gmatch(run.s,n);}
+function latestRun(m,n,f){const L=m==="mb"?mbRuns:runs;for(let i=L.length-1;i>=0;i--){const r=L[i];if((m==="mb"?mmatch(r.s,n):gmatch(r.s,n))&&(!f||f(r)))return r;}return null;}
+let ST={sec:0,res:{},adv:{},pick:{},vr:{},wr:{},lock:{},hint:{},txt:{},self:{},seen:{},evidence:{},review:{},attempts:{}},fresh=null,justResolved=null;
+let saved=null,initialising=true;
+try{saved=JSON.parse(localStorage.getItem("kst-rp9-v3")||"null");if(saved&&saved.version===3){ST={...ST,...saved.state};mbRuns=saved.mbRuns||[];runs=saved.runs||[];mbId=saved.mbId||0;runId=saved.runId||0;}}catch(e){saved=null;}
+function save(){if(initialising)return;try{localStorage.setItem("kst-rp9-v3",JSON.stringify({version:3,state:ST,mbRuns,runs,mbId,runId,mb,run:run?{s:run.s,t:run.t,status:run.status,id:run.id,readings:run.readings}:null,MS,S,speed,panel}));}catch(e){}}
+function evidence(t){if(!t.m)return null;const key=["g3","g4","g5"].includes(t.id)?"gas-calculation":t.id;
+ if(!ST.evidence[key]){const r=latestRun(t.m,t.need,t.filt);if(r)ST.evidence[key]=JSON.parse(JSON.stringify(r));}
+ return ST.evidence[key]||null;}
+
+const ALL=()=>SECTIONS.flatMap(s=>s.tasks);
+const find=id=>ALL().find(t=>t.id===id);
+const secDone=i=>SECTIONS[i].tasks.every(t=>ST.adv[t.id]);
+function renderNav(){$("#nav").innerHTML=SECTIONS.map((s,i)=>`<button type="button" class="chip${i===ST.sec?" sel":""}" data-sec="${i}"${i===ST.sec?' aria-current="step"':""}><span class="ph">${s.phase}</span> ${s.name}${secDone(i)?' <span class="tick" aria-label="complete">✓</span>':""}</button>`).join("");}
+$("#nav").addEventListener("click",e=>{const b=e.target.closest("button[data-sec]");if(!b)return;ST.sec=+b.dataset.sec;save();renderTasks(true);});
+
+function needLine(t,help){const ok=setOK(t.m,t.need),d=t.m==="mb"?mbDesc(t.need):gdesc(t.need);
+ return`<p class="need">${help?`Set-up needed: ${esc(d)}. `:""}${ok?`<span class="ok">Your set-up matches. ${t.m==="mb"?"Add the methylene blue and start timing.":"Press Run."}</span>`:'<span class="notyet">Your set-up does not match yet.</span>'}</p>${help&&!ok?`<div class="row"><button type="button" class="btn" data-act="setup" data-id="${t.id}">Set it up for me</button></div>`:""}`;}
+function optList(t,name,opts,seed,dis,wrongs){const ord=shuffled(opts.length,hash(seed));
+ return ord.map(i=>{const o=opts[i],w=(wrongs||[]).includes(i),r=dis&&o.ok&&ST.res[t.id];
+  return`<label class="opt${w?" wrong":""}${r?" right":""}${dis?" out":""}"><input type="radio" name="${name}" value="${i}"${ST.pick[name]===i?" checked":""}${dis||w?" disabled":""}><span class="otext">${o.t}</span><span class="mark">${r?"✓":w?"✗":""}</span></label>`;}).join("");}
+const nw=id=>fresh===id?" new":"";
+const resultBadge=id=>{const r=ST.res[id];return r==="ind"?'<span class="badge b-ind">Answered correctly first time</span>':r==="sup"?'<span class="badge b-sup">Right after support</span>':String(r||"").startsWith("self")?`<span class="badge b-self">Self-checked: ${r.slice(5)} criteria</span>`:r==="seen"?'<span class="badge">Read</span>':"";};
+const nextBtn=t=>`<div class="row"><button type="button" class="btn primary" data-act="adv" data-id="${t.id}">Next task</button></div>`;
+const hintBtn=t=>t.hint&&!ST.res[t.id]?(ST.hint[t.id]?`<p class="hint"><b>Hint:</b> ${t.hint}</p>`:`<div class="row"><button type="button" class="btn small" data-act="hint" data-id="${t.id}">Show a hint</button></div>`):"";
+
+function renderTask(t,help){let h=`<div class="task${ST.res[t.id]?" done":""}" id="task-${t.id}">`;
+ if(t.title)h+=`<h3>${t.title}</h3>`;
+ if(t.req&&!latestRun(t.req.m,t.req.need,t.req.filt)){return h+`<p>${t.req.text}</p>${needLine({...t.req,id:t.id},true)}</div>`;}
+ if(t.type==="info"){h+=(t.steps?`<ol class="steps">${t.steps.map(s=>`<li>${s}</li>`).join("")}</ol>`:"")+(t.text?`<p>${t.text}</p>`:"");
+  if(t.need)h+=`<div class="row"><button type="button" class="btn" data-act="setup" data-id="${t.id}">${t.btn||"Use this set-up"}</button></div>`;
+  return h+nextBtn(t)+"</div>";}
+ if(t.type==="run"){const r=evidence(t);if(r&&!ST.res[t.id])ST.res[t.id]="seen";
+  return h+`<p>${t.text}</p>${r?'<p class="ok">Done. The readings are in the results.</p>'+nextBtn(t):needLine(t,help)}</div>`;}
+ if(t.type==="predict"){const L=t.id in ST.lock,res=ST.res[t.id];
+  h+=`<fieldset class="q"><legend>${t.q}</legend>${optList(t,t.id+"o",t.out,t.id+"o",L)}</fieldset>`;
+  h+=`<fieldset class="q"><legend class="sub">Why? Choose the best reason.</legend>${optList(t,t.id+"r",t.why,t.id+"r",L)}</fieldset>`;
+  if(!L&&ST.seen[t.id])return h+`<div class="row"><button type="button" class="btn primary" data-act="correct-prediction" data-id="${t.id}">Check revised response</button></div><p class="msg" id="m-${t.id}"></p></div>`;
+  if(!L)return h+hintBtn(t)+`<div class="row"><button type="button" class="btn primary" data-act="lock" data-id="${t.id}">Lock in my prediction and reason</button></div><p class="msg" id="m-${t.id}"></p></div>`;
+  if(!res&&!ST.seen[t.id])return h+`<p class="gate">Locked in. Now observe: build the set-up and run it.</p>${ST.review[t.id]?`<p class="msg">${esc(ST.review[t.id])}</p>`:""}${needLine(t,help)}</div>`;
+  if(!res&&ST.seen[t.id]){const observed=ST.seen[t.id];return h+`<div class="fb bad"><h3>Review the feedback</h3><p>${t.res(observed)}</p><p>${t.because}</p><p>Revise both choices and check them against this observation.</p></div><div class="row"><button type="button" class="btn primary" data-act="revise-prediction" data-id="${t.id}">Revise my response</button></div></div>`;}
+
+  const oo=t.out[ST.pick[t.id+"o"]],rr=t.why[ST.pick[t.id+"r"]],r=ST.seen[t.id];
+  h+=`<div class="fb ${oo.ok?"good":"bad"}${nw(t.id)}"><h3>${oo.ok?"Your prediction was right.":"Not what you predicted."}</h3><p>${t.res(r)}</p>${oo.ok?"":`<p>${oo.fb||""}</p>`}</div>`;
+  h+=`<div class="fb ${rr.ok?"good":"bad"}${nw(t.id)}"><h3>${rr.ok?"Your reason is right.":"Your reason has a missing link."}</h3><p>${rr.ok?t.because:rr.fb}</p>${rr.ok?"":`<p><b>The full explanation:</b> ${t.because}</p>`}</div>${t.extra||""}`;
+  return h+nextBtn(t)+"</div>";}
+ if(t.type==="mcq"){const vi=ST.vr[t.id]||0,V=t.v[vi],key=t.id+":"+vi,w=ST.wr[key]||[],res=ST.res[t.id],last=w[w.length-1];
+  if(vi>0)h+=`<p class="fresh">Fresh question on the same idea:</p>`;
+  h+=`<fieldset class="q"><legend>${V.q}</legend>${optList(t,key,V.opts,key,!!res,w)}</fieldset>`;
+  if(res)return h+`<div class="fb good${nw(t.id)}"><h3>Correct.</h3><p>${V.why||t.why}</p></div>${t.extra||""}${nextBtn(t)}</div>`;
+  const ack=(ST.rt&&ST.rt[key])||0;if(last!=null&&ack<w.length){h+=`<div class="fb bad${nw(t.id)}"><h3>Not quite.</h3><p>${V.opts[last].fb}</p>${t.help?`<p class="help"><b>Catch-up:</b> ${t.help}</p>`:""}</div>`;
+   if(vi+1<t.v.length)return h+`<div class="row"><button type="button" class="btn primary" data-act="freshq" data-id="${t.id}">Try a fresh question</button><button type="button" class="btn" data-act="retry" data-id="${t.id}">Try this one again</button></div></div>`;}
+  return h+hintBtn(t)+`<div class="row"><button type="button" class="btn primary" data-act="check" data-id="${t.id}">Check</button></div><p class="msg" id="m-${t.id}"></p></div>`;}
+ if(t.type==="multi"){const res=ST.res[t.id],sel=ST.pick[t.id]||[],fb=ST.wr[t.id];
+  h+=`<fieldset class="q"><legend>${t.q}</legend>${shuffled(t.opts.length,hash(t.id)).map(i=>`<label class="opt${res&&t.opts[i].ok?" right":""}${res?" out":""}"><input type="checkbox" data-multi="${t.id}" value="${i}"${sel.includes(i)?" checked":""}${res?" disabled":""}><span class="otext">${t.opts[i].t}</span></label>`).join("")}</fieldset>`;
+  if(res)return h+`<div class="fb good${nw(t.id)}"><h3>Correct.</h3><p>${t.why}</p></div>${nextBtn(t)}</div>`;
+  if(fb)h+=`<div class="fb bad${nw(t.id)}"><h3>Not quite.</h3><ul>${fb.map(f=>`<li>${f}</li>`).join("")}</ul></div>`;
+  return h+`<div class="row"><button type="button" class="btn primary" data-act="multi" data-id="${t.id}">Check</button></div><p class="msg" id="m-${t.id}"></p></div>`;}
+ if(t.type==="num"){const vi=ST.vr[t.id]||0,V=t.v?t.v[vi]:t,r=t.m?evidence(t):null,res=ST.res[t.id];
+  if(t.m&&!r)return h+`<p>${t.missing}</p>${needLine(t,help)}</div>`;
+  if(r)h+=`<p class="spec">Using saved run ${r.id}: ${esc(t.m==="mb"?mbDesc(r.s):gdesc(r.s))}${t.m==="mb"?`, end point ${tStr(r)}`:`; readings at 0 and 5 min: ${r.readings[0]} and ${r.readings[5]} mm`}.</p>`;
+  if(t.worked)h+=`<div class="worked"><p class="wlab">Worked example</p>${t.worked}</div>`;
+  if(vi>0)h+=`<p class="fresh">Fresh question on the same idea:</p>`;
+  h+=`<p><b>${typeof V.q==="function"?V.q(r):V.q}</b></p>`;
+  h+=`<label class="numlab" for="in-${t.id}">Your answer</label><div class="numrow"><input type="text" inputmode="decimal" autocomplete="off" id="in-${t.id}" value="${esc(ST.txt[t.id+":"+vi]||"")}"${res?" disabled":""}><span class="unit">${V.unit||t.unit}</span>${res?"":`<button type="button" class="btn primary" data-act="num" data-id="${t.id}">Check</button>`}</div>`;
+  if(t.fmt)h+=`<p class="spec">${t.fmt}</p>`;
+  if(res)return h+`<div class="fb good${nw(t.id)}"><h3>Correct.</h3><p>${V.why(r)}</p></div>${nextBtn(t)}</div>`;
+  const wm=ST.wr[t.id+":"+vi];if(wm){h+=`<div class="fb bad${nw(t.id)}"><h3>Not quite.</h3><p>${wm}</p>${t.help?`<p class="help"><b>Catch-up:</b> ${t.help}</p>`:""}</div>`;
+   if(t.v&&vi+1<t.v.length)h+=`<div class="row"><button type="button" class="btn" data-act="freshq" data-id="${t.id}">Try a fresh question</button></div>`;}
+  return h+hintBtn(t)+"</div>";}
+ if(t.type==="write"){const sub=ST.self[t.id],res=ST.res[t.id];
+  h+=`<p><b>${t.q}</b></p><label class="numlab" for="wr-${t.id}">Your answer</label><textarea id="wr-${t.id}" rows="5"${res?" disabled":""}>${esc(ST.txt[t.id]||"")}</textarea>`;
+  if(!sub)return h+`<p class="spec">Write 2 to 4 sentences. Then compare your answer with the criteria.</p><div class="row"><button type="button" class="btn primary" data-act="write" data-id="${t.id}">Check against the criteria</button></div><p class="msg" id="m-${t.id}"></p></div>`;
+  const txt=ST.txt[t.id]||"";
+  h+=`<div class="crit"><p><b>Criteria.</b> Tick each one your answer meets. "Related words found" is a keyword match. It can miss good wording and does not establish correctness; compare your answer with each criterion and decide for yourself.</p>${t.crit.map((c,i)=>{const hit=c.re.some(re=>re.test(txt));
+   return`<label class="copt"><input type="checkbox" data-self="${t.id}" value="${i}"${(sub.ticks||[]).includes(i)?" checked":""}${res?" disabled":""}><span>${c.t} <em class="${hit?"ok":"notyet"}">${hit?"Related words found":"Related words not found"}</em></span></label>`;}).join("")}</div><div class="worked"><p class="wlab">Example answer</p><p>${t.model}</p></div>`;
+  if(res)return h+nextBtn(t)+"</div>";
+  return h+`<div class="row"><button type="button" class="btn primary" data-act="selfdone" data-id="${t.id}">Save my self-check</button></div></div>`;}
+ return h+"</div>";}
+
+function sectionSummary(sec){const T=sec.tasks.filter(t=>t.skill),ind=T.filter(t=>ST.res[t.id]==="ind"),sup=T.filter(t=>ST.res[t.id]==="sup"),wr=sec.tasks.filter(t=>t.type==="write");
+ return`<div class="task done"><h3>${sec.phase}: ${sec.name} complete</h3>${ind.length?`<p><b>Answered correctly first time:</b></p><ul>${ind.map(t=>`<li>${(ST.vr[t.id]&&retrySkills[t.id])||t.skill}</li>`).join("")}</ul>`:""}
+ ${sup.length?`<p><b>Answered correctly after feedback, a hint or a fresh question:</b></p><ul>${sup.map(t=>`<li>${(ST.vr[t.id]&&retrySkills[t.id])||t.skill}</li>`).join("")}</ul>`:""}
+ ${wr.map(t=>{const r=ST.res[t.id]||"";return`<p><b>Written explanation:</b> you judged that your answer met ${r.slice(5)||"0/"+t.crit.length} criteria.</p>`;}).join("")}
+ ${ST.sec<SECTIONS.length-1?`<div class="row"><button type="button" class="btn primary" data-act="nextsec">Go to ${SECTIONS[ST.sec+1].phase}: ${SECTIONS[ST.sec+1].name}</button></div>`:SECTIONS.every((_,i)=>secDone(i))?"<p>All sections complete.</p>":"<p>This section is complete. Use the section navigation to finish the others.</p>"}</div>`;}
+function activeTask(){const sec=SECTIONS[ST.sec];return sec.tasks.find(t=>!ST.adv[t.id])||null;}
+function renderTasks(scroll){if(!run||!mb)return;const sec=SECTIONS[ST.sec],act=activeTask(),i=act?sec.tasks.indexOf(act):sec.tasks.length,help=sec.help;
+ let h=`<div class="sechead"><p class="phase">${sec.phase}</p><h2>${sec.name}</h2><p class="spec">${sec.intro}</p><p class="prog">Task ${Math.min(i+1,sec.tasks.length)} of ${sec.tasks.length}</p><div class="pbar"><span style="width:${(i/sec.tasks.length*100).toFixed(0)}%"></span></div></div>`;
+ h+=act?renderTask(act,help):sectionSummary(sec);
+ const doneT=sec.tasks.filter(t=>ST.adv[t.id]);
+ if(doneT.length)h+=`<details class="donelist"><summary>Completed in this section (${doneT.length})</summary><ul>${doneT.map(t=>`<li>${t.title||t.short||"Task"} ${resultBadge(t.id)}</li>`).join("")}</ul></details>`;
+ fresh=null;const ae=document.activeElement,aid=ae&&ae.id,pos=ae&&ae.selectionStart;
+ $("#tasks").innerHTML=h;if(aid&&(aid.startsWith("in-")||aid.startsWith("wr-"))){const el=$("#"+aid);if(el&&!el.disabled){el.focus();try{el.setSelectionRange(pos,pos);}catch(e){}}}
+ const tp=act&&act.panel?act.panel:null,want=act?(tp?"task":(act.m||sec.model)):sec.model;
+ const shownKey=act?act.id+":"+(ST.vr[act.id]||0):null;
+ if(shownKey!==taskShown){taskShown=shownKey;showTaskPanel(tp,act?(ST.vr[act.id]||0):0);setPanel(want==="task"&&!tp?sec.model:want);}else renderTabs();
+ renderNav();installZoom();save();if(scroll)$("#tasks").scrollIntoView({behavior:"smooth",block:"start"});}
+
+function resolveCheck(t,correct,usedSupport){if(correct){ST.res[t.id]=usedSupport||ST.hint[t.id]?"sup":"ind";}}
+$("#tasks").addEventListener("change",e=>{const i=e.target;
+ if(i.type==="radio")ST.pick[i.name]=+i.value;
+ if(i.dataset.multi){const a=ST.pick[i.dataset.multi]=(ST.pick[i.dataset.multi]||[]).filter(x=>x!==+i.value);if(i.checked)a.push(+i.value);}
+ if(i.dataset.self){const s=ST.self[i.dataset.self];s.ticks=(s.ticks||[]).filter(x=>x!==+i.value);if(i.checked)s.ticks.push(+i.value);}
+ save();});
+$("#tasks").addEventListener("input",e=>{const i=e.target;if(i.id&&i.id.startsWith("in-")){const t=find(i.id.slice(3));ST.txt[t.id+":"+(ST.vr[t.id]||0)]=i.value;}if(i.id&&i.id.startsWith("wr-")){const id=i.id.slice(3);ST.txt[id]=i.value;if(ST.self[id]&&!ST.res[id]){ST.self[id].ticks=[];$$(`[data-self="${id}"]`).forEach(box=>box.checked=false);}}save();});
+$("#tasks").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id&&e.target.id.startsWith("in-")){const b=e.target.parentNode.querySelector("button");if(b)b.click();}});
+$("#tasks").addEventListener("click",e=>{const b=e.target.closest("button[data-act]");if(!b)return;const act=b.dataset.act,t=b.dataset.id?find(b.dataset.id):null;
+ if(act==="nextsec"){ST.sec++;renderTasks(true);return;}
+ if(act==="adv"){ST.adv[t.id]=true;if(!ST.res[t.id])ST.res[t.id]="seen";renderTasks(true);return;}
+ if(act==="hint"){ST.hint[t.id]=true;renderTasks();return;}
+ if(act==="setup"){const n=t.req&&!latestRun(t.req.m,t.req.need,t.req.filt)?t.req:t;if(n.m==="mb"||(!n.m&&SECTIONS[ST.sec].model==="mb")){mbApply(n.need);setPanel("mb");}else{gApply(n.need);setPanel("gas");}
+  const col=$(".col-app");if(col&&getComputedStyle(col).position==="sticky")col.scrollTo({top:0,behavior:"smooth"});else $(".col-app").scrollIntoView({behavior:"smooth",block:"start"});renderTasks();return;}
+ if(act==="revise-prediction"){delete ST.lock[t.id];renderTasks();return;}
+ if(act==="correct-prediction"){const o=ST.pick[t.id+"o"],r=ST.pick[t.id+"r"];if(o==null||r==null){$("#m-"+t.id).textContent="Choose both answers.";return;}(ST.attempts[t.id]||(ST.attempts[t.id]=[])).push({outcome:o,reason:r,runId:ST.seen[t.id].id,correct:t.out[o].ok&&t.why[r].ok});if(t.out[o].ok&&t.why[r].ok){ST.lock[t.id]=-1;ST.res[t.id]="sup";}else{ST.lock[t.id]=-1;ST.review[t.id]="Feedback reviewed; revise your response again.";}renderTasks();return;}
+ if(act==="lock"){if(ST.pick[t.id+"o"]==null||ST.pick[t.id+"r"]==null){$("#m-"+t.id).textContent="Choose a prediction and a reason first.";return;}
+  ST.lock[t.id]=(t.m==="mb"?mbId:runId);renderTasks();return;}
+ if(act==="check"){const vi=ST.vr[t.id]||0,key=t.id+":"+vi,p=ST.pick[key],w=ST.wr[key]||[];if(p==null||w.includes(p)){$("#m-"+t.id).textContent="Choose an answer first.";return;}
+  fresh=t.id;const ok=t.v[vi].opts[p].ok,anyWrong=Object.keys(ST.wr).some(k=>k.startsWith(t.id+":")&&ST.wr[k].length);
+  if(ok)resolveCheck(t,true,anyWrong||vi>0);else(ST.wr[key]=w).push(p);
+  renderTasks();say(ok?"Correct.":"Not quite. "+t.v[vi].opts[p].fb);return;}
+ if(act==="freshq"){ST.vr[t.id]=(ST.vr[t.id]||0)+1;renderTasks();return;}
+ if(act==="retry"){const key=t.id+":"+(ST.vr[t.id]||0);ST.rt=ST.rt||{};ST.rt[key]=(ST.wr[key]||[]).length;renderTasks();return;}
+ if(act==="multi"){const sel=ST.pick[t.id]||[];if(!sel.length){$("#m-"+t.id).textContent="Select at least one.";return;}fresh=t.id;
+  const issues=[];t.opts.forEach((o,i)=>{const s=sel.includes(i);if(o.ok&&!s)issues.push(`Missing: ${o.t}. ${o.fb}`);if(!o.ok&&s)issues.push(`Not this one: ${o.t}. ${o.fb}`);});
+  if(issues.length){ST.wr[t.id]=issues;ST.tried=ST.tried||{};ST.tried[t.id]=1;}else{delete ST.wr[t.id];resolveCheck(t,true,!!(ST.tried&&ST.tried[t.id]));}
+  renderTasks();say(issues.length?"Not quite. "+issues.join(" "):"Correct.");return;}
+ if(act==="num"){const vi=ST.vr[t.id]||0,V=t.v?t.v[vi]:t,r=t.m?evidence(t):null,v=parseNum(ST.txt[t.id+":"+vi]),key=t.id+":"+vi;fresh=t.id;
+  if(isNaN(v)){ST.wr[key]="Type a number. Standard form such as 7.8 × 10^-3 or 7.8e-3 is fine.";renderTasks();return;}
+  const a=V.ans(r),tol=t.rel?Math.abs(a)*t.rel:t.tol;
+  if(Math.abs(v-a)<=tol+1e-12){const anyWrong=Object.keys(ST.wr).some(k=>k.startsWith(t.id+":"));resolveCheck(t,true,anyWrong||vi>0);}
+  else{const hit=(V.errs?V.errs(r):[]).find(([x])=>x!=null&&Math.abs(v-x)<=Math.max(tol,Math.abs(x)*.02)+1e-12);ST.wr[key]=hit?hit[1]:t.generic||"Check your working, one step at a time.";}
+  renderTasks();say(ST.res[t.id]?"Correct.":"Not quite. "+ST.wr[key]);return;}
+ if(act==="write"){const txt=(ST.txt[t.id]||"").trim();if(txt.length<20){$("#m-"+t.id).textContent="Write a little more first: at least one full sentence.";return;}
+  ST.self[t.id]={ticks:[]};renderTasks();return;}
+ if(act==="selfdone"){const n=(ST.self[t.id].ticks||[]).length;ST.res[t.id]=`self:${n}/${t.crit.length}`;fresh=t.id;renderTasks();return;}});
+
+function onRun(m,r){for(const t of ALL()){
+ if(t.type!=="predict"||t.m!==m||!(t.id in ST.lock)||ST.res[t.id]||r.id<=ST.lock[t.id]||!(m==="mb"?mmatch(r.s,t.need):gmatch(r.s,t.need)))continue;
+ const supported=m==="mb"?(r.valid&&(t.id==="mb7"?r.time===null:r.time!==null)):
+  (r.readings.length===11&&({g2:()=>r.readings[0]-r.readings[10]>=2,g6:()=>r.readings[0]-r.readings[10]<=-2,g8:()=>Math.abs(r.readings[0]-r.readings[10])<2,g9:()=>r.readings[0]-r.readings[5]<=-2}[t.id]||(()=>true))());
+ if(!supported){ST.lock[t.id]=r.id;ST.review[t.id]=m==="mb"&&!r.valid?"This tube was shaken again and is not comparable. Repeat with one initial shake.":"The observed outcome did not support the expected result (end point not reached where one was needed). Repeat the specified set-up.";continue;}
+ ST.seen[t.id]=r;const oo=t.out[ST.pick[t.id+"o"]],rr=t.why[ST.pick[t.id+"r"]];(ST.attempts[t.id]||(ST.attempts[t.id]=[])).push({outcome:ST.pick[t.id+"o"],reason:ST.pick[t.id+"r"],runId:r.id,correct:oo.ok&&rr.ok});
+ if(oo.ok&&rr.ok)ST.res[t.id]=ST.hint[t.id]?"sup":"ind";else ST.review[t.id]="Feedback reviewed";fresh=t.id;
+ }renderTasks();}
+
+/* ================= Content: Learn → Compare → Apply ================= */
+const O=(t,fb)=>({t,ok:false,fb}),K=(t)=>({t,ok:true});
+const MB35={temp:35,tube:"test"},G=o=>({...STD,...o});
+const tStr=r=>r&&r.time!=null?`${r.time} s`:"not reached in 600 s";
+const SECTIONS=[
+{phase:"Learn",name:"Methylene blue",model:"mb",help:true,intro:"Methylene-blue method. Find out how a colour change becomes a reading, then what that reading can and cannot tell you.",tasks:[
+ {id:"mb1",type:"info",m:"mb",need:MB35,title:"Worked example: how this method gives a reading",steps:[
+  "<b>Set-up.</b> 2 cm³ of yeast suspended in glucose solution goes into a test tube, in a glass beaker of water at 35 °C, and is left to reach 35 °C.",
+  "<b>Start.</b> Add 2 cm³ of dilute methylene blue, shake for 10 seconds, put the tube back and start timing. Do not shake it again: shaking mixes oxygen from the air into the liquid.",
+  "<b>What changes the colour.</b> In respiration, dehydrogenase enzymes remove hydrogen from respiratory substrates. Normally NAD accepts it, but methylene blue can accept it too. Methylene blue is a redox indicator: <b>blue when oxidised, colourless when reduced</b>.",
+  "<b>Why there is a delay.</b> While oxygen is dissolved in the liquid, reduced methylene blue can lose its hydrogen to oxygen and turn blue again, and the yeast also uses the oxygen. The blue only disappears once the oxygen runs low and reduction outpaces this re-oxidation.",
+  "<b>The reading.</b> The time from the end of shaking to the end point: no blue left, so the sample matches a colour standard (the same tube with water instead of dye). A shorter time means faster reduction, so greater respiratory activity. 1/time gives a relative rate in s⁻¹."],
+  text:"The carbon dioxide the yeast releases does not change methylene blue. Indicators that respond to carbon dioxide work differently: they respond to the pH falling. You will meet one in Apply."},
+ {id:"mb2",type:"predict",m:"mb",need:MB35,title:"Predict, then observe",skill:"Predict the colour change of methylene blue and explain it as reduction by hydrogen from respiration",
+  q:"After shaking, what will happen to the sample at 35 °C?",
+  out:[K("Blue at first, then the blue fades until it matches the colour standard"),O("It turns yellow","Yellow is the acid colour of a pH indicator such as bromothymol blue. Methylene blue goes from blue to colourless."),O("It stays blue for the whole 10 minutes","Living yeast respires quickly at 35 °C. Watch the tube again."),O("It turns colourless straight away","Shaking dissolves oxygen, which keeps the dye blue at first.")],
+  why:[K("Hydrogen removed from substrates in respiration reduces the methylene blue"),O("Carbon dioxide from respiration makes the liquid acidic, which changes the dye","That is how a pH indicator works. Methylene blue is a redox indicator: it loses its colour when it gains hydrogen, so it is reduced."),O("The yeast cells absorb the dye","The dye is still in the liquid: it has changed form. Which reaction makes methylene blue colourless?"),O("The warm water breaks the dye down","Then a tube with boiled yeast would lose its colour too. What do living yeast cells provide that reduces the dye?")],
+  res:r=>`The sample stayed blue at first, then faded. It reached the end point after ${tStr(r)}.`,
+  because:"Dehydrogenases in respiration remove hydrogen from substrates. Methylene blue accepts it and is reduced, so it becomes colourless. The blue stays at first because dissolved oxygen re-oxidises the dye."},
+ {id:"mb3",type:"mcq",m:"mb",title:"Why the delay?",skill:"Explain the delay before the colour change in terms of dissolved oxygen",
+  help:"Methylene blue is blue when oxidised and colourless when reduced. Oxygen can take hydrogen back from reduced methylene blue, so dissolved oxygen keeps the dye blue. You can test this: press Shake again during a run.",
+  v:[{q:"In your run the sample stayed blue for the first minute or so. Why does the blue not start to fade straight away?",opts:[K("Shaking dissolved oxygen in the liquid. While oxygen is present, reduced methylene blue is re-oxidised and turns blue again"),O("The yeast has not started respiring yet","The yeast was already at 35 °C and respiring: bubbles of carbon dioxide appear straight away. What does the oxygen from shaking do to reduced methylene blue?"),O("Methylene blue needs time to warm up before it can change colour","The dye changes colour whenever it is reduced. Think about what shaking adds to the liquid."),O("Carbon dioxide has to build up first","Carbon dioxide does not change methylene blue. What did shaking add?")],
+   why:"Reduced methylene blue passes its hydrogen to dissolved oxygen and turns blue again. The blue fades for good only once the oxygen has run low. So every tube must be shaken the same way, once."},
+   {q:"Halfway to the end point, a student shakes the tube again for 10 seconds. What happens, and why?",opts:[K("The blue comes back, because oxygen mixed in by shaking re-oxidises the reduced methylene blue"),O("Nothing changes, because shaking does not affect the dye","Shaking mixes air into the liquid. What does oxygen do to reduced methylene blue?"),O("The blue disappears faster, because shaking mixes the yeast","Mixing the yeast is not the main effect. What else enters the liquid when you shake it?"),O("The liquid turns yellow, because shaking releases carbon dioxide","Methylene blue does not respond to carbon dioxide. What does shaking add?")],
+   why:"Oxygen mixed in by shaking re-oxidises the dye, so the blue returns and the end point is delayed. That tube's time can no longer be compared with the others."}]},
+ {id:"mb4",type:"predict",m:"mb",need:{temp:20,tube:"test"},title:"Change the temperature",skill:"Explain how temperature affects the time taken to reach the end point",
+  q:"Predict: at 20 °C, how will the time to the end point compare with 35 °C?",
+  out:[K("Longer"),O("Shorter","Think about how fast enzymes work at a lower temperature."),O("The same","Temperature is the only thing changed. Does it affect the enzymes of respiration?")],
+  why:[K("Less kinetic energy, so fewer enzyme–substrate complexes form each second in the dehydrogenases, so methylene blue is reduced more slowly"),O("Methylene blue is more stable at low temperatures","The dye only responds to being reduced or oxidised. What supplies the hydrogen that reduces it, and how does temperature affect that?"),O("More oxygen dissolves at 20 °C, and that is the only effect","A little more oxygen does dissolve, but every tube is shaken the same way. What happens to the rate of the respiratory enzymes?"),O("The yeast cells die at 20 °C","Yeast survives at 20 °C: the tube does lose its colour, just later. What controls how fast hydrogen is removed?")],
+  res:r=>`At 20 °C the end point took ${tStr(r)}, longer than at 35 °C.`,
+  because:"At a lower temperature, enzymes and substrates have less kinetic energy, so fewer enzyme–substrate complexes form each second. Hydrogen is removed more slowly, so the dye is reduced more slowly and the end point takes longer."},
+ {id:"mb5",type:"num",m:"mb",need:{temp:20,tube:"test"},filt:r=>r.valid&&r.time!=null,title:"From time to a rate index",skill:"Calculate 1/time as a rate index, with units",
+  missing:"You need a timed tube at 20 °C that reached the end point and was not shaken again.",
+  worked:"<p>At 35 °C the handbook trial gave a mean time of 128 s.</p><p>Rate index = 1 ÷ time = 1 ÷ 128 = 0.0078 s⁻¹ = 7.8 × 10⁻³ s⁻¹ (2 significant figures).</p><p>The unit is s⁻¹ because you divided 1 by a time in seconds.</p>",
+  q:r=>`Your 20 °C tube reached the end point after ${r.time} s. Calculate 1/time. Give your answer to 2 significant figures.`,unit:"s⁻¹",rel:.03,fmt:"You can type 0.0036, 3.6e-3 or 3.6 × 10^-3.",
+  ans:r=>+(1/r.time).toPrecision(2),errs:r=>[[r.time,"That is the time. The rate index is 1 ÷ time."],[1000/r.time,"That is 1000 ÷ time. Divide 1 by the time instead, or write your answer in standard form."],[60/r.time,"That is per minute (60 ÷ time). The time is in seconds, so 1 ÷ time is in s⁻¹."]],
+  help:"Divide 1 by the time in seconds. Small numbers are easier to read in standard form: 0.0036 = 3.6 × 10⁻³.",
+  why:r=>`1 ÷ ${r.time} = ${sf(1/r.time,2)} s⁻¹. This is smaller than at 35 °C, which matches the slower reduction.`},
+ {id:"mb6",type:"mcq",title:"What 1/time can tell you",skill:"Interpret 1/time as a relative rate that compares tubes only under the same conditions",
+  help:"1/time is a rate index, not a rate in volume units. It compares tubes only when the yeast, glucose, amount of dye, shaking and end point are the same.",
+  v:[{q:"What does 1/time tell you in this investigation?",opts:[K("A relative rate of methylene blue reduction. It ranks respiratory activity between tubes set up in exactly the same way"),O("The volume of oxygen used per second","Nothing here measures a volume. 1/time comes from a colour change. What does a faster colour change show?"),O("The rate of carbon dioxide production in cm³ s⁻¹","Carbon dioxide is not measured and does not change the dye. Which reaction does the end point show?"),O("The true rate of respiration, which can be compared with any other method","1/time depends on how much yeast, glucose and dye you used and on your end point. It only compares tubes set up in the same way.")],
+   why:"1/time is a rate index for dye reduction. It is valid for comparing temperatures only because everything else is kept the same."},
+   {q:"Student P's tube reached the end point in 160 s. Student Q's took 120 s, but Q used half as much methylene blue. Can you conclude that Q's yeast respired faster?",opts:[K("No. Less dye is reduced sooner, so Q's shorter time could be caused by the amount of dye, not by faster respiration"),O("Yes, because 1/time is higher for Q","A higher 1/time means faster respiration only when everything else is the same. What was different?"),O("Yes, because Q's tube had more yeast","Nothing says Q used more yeast. What do you know was different?"),O("No, because 1/time can only be used at 35 °C","1/time works at any temperature. The problem is that one variable other than temperature changed.")],
+   why:"The amount of dye affects how much hydrogen is needed to decolourise it. With different amounts, the times do not compare respiration."}]},
+ {id:"mb7",type:"predict",m:"mb",need:{temp:35,tube:"boiled"},title:"A control tube",skill:"Use a control to show the colour change depends on living yeast",
+  q:"A control tube has boiled yeast with glucose, at 35 °C. Predict what happens after the methylene blue is added and shaken.",
+  out:[K("It stays blue: the end point is not reached within the 600 s observation period"),O("It loses its colour, but more slowly than living yeast","Boiling does more than slow the yeast. What happens to its enzymes?"),O("It loses its colour as fast as living yeast","If the dye were reduced without living yeast, the method would not measure respiration. What does boiling do?")],
+  why:[K("Boiling denatured the dehydrogenase enzymes, so no hydrogen is removed to reduce the dye"),O("Boiling removed the glucose","The glucose was added in the same way. What did boiling change in the yeast?"),O("Boiled yeast releases no carbon dioxide, so the pH does not fall","The pH is not what changes methylene blue. What must happen to the dye for it to lose its colour?"),O("Boiled yeast uses up the oxygen faster","Boiled yeast does not respire, so it uses no oxygen. What would reduce the dye?")],
+  res:r=>"The control tube stayed blue for the whole 600 s observation period.",
+  because:"Boiling denatures the enzymes, so no hydrogen is removed from substrates and the dye stays oxidised (blue). So in the test tubes, the colour change is caused by the living yeast."},
+ {id:"mb8",type:"mcq",title:"End point not reached",skill:"Record a tube that did not reach the end point without inventing a time",
+  req:{m:"mb",need:{temp:10,tube:"test"},filt:r=>r.valid&&r.time==null,text:"First time an unshaken-after-start yeast + glucose tube at 10 °C. The end point must remain unreached by 600 s."},
+  help:"'Not reached' means no endpoint was observed during the observation period. The time is unknown: it is not 600 s.",
+  v:[{q:"At 10 °C the blue had not gone after the 600 s observation period. How should you record this tube?",opts:[K("Record “end point not reached in 600 s”. Do not use it in a mean or calculate 1/time from it; the exact rate index is unknown"),O("Record 600 s and calculate 1/time = 1/600","600 s is when you stopped watching, not when the end point happened. The real time is longer, so 1/600 would overestimate the rate."),O("Record 0 s","0 s would suggest an instant end point, the opposite of what happened."),O("Leave the tube out of the results","Leaving it out hides real data. A tube that did not reach the end point still shows that the rate was low.")],
+   why:"The end-point time is unknown: it may be later than 600 s or never occur. Record it as not reached; do not calculate an exact rate index."},
+   {q:"Three repeats at 15 °C gave 540 s, “not reached by 600 s” and 580 s. What should be reported?",opts:[K("No mean: one repeat's time is unknown (over 600 s). Report all three results and state that one did not reach the end point"),O("A mean of 560 s, from the two that finished","Leaving out the slowest tube makes the mean too low. Its time is unknown, not missing."),O("A mean of 573 s, using 600 s for the unfinished tube","600 s underestimates that tube's time, so the mean is too low."),O("A mean of 0 s, because one tube failed","The tube did not fail: it was slower than the observation period allowed.")],
+   why:"A mean needs every value. With one time unknown, report the results and the limit instead."}]},
+ {id:"mb9",type:"multi",title:"Keep it a fair comparison",skill:"Identify the variables to keep the same when comparing temperatures",
+  q:"You compare end-point times at 20, 35 and 45 °C. Which of these must be kept the same in every tube? Select all that apply.",
+  opts:[{t:"Volume and concentration of the yeast suspension",ok:true,fb:"More yeast cells reduce the dye faster."},{t:"Glucose concentration",ok:true,fb:"Glucose supplies the substrates that hydrogen is removed from."},{t:"Volume and concentration of methylene blue",ok:true,fb:"More dye needs more hydrogen to reduce it, so it takes longer."},{t:"Shaking: once, for 10 seconds",ok:true,fb:"Shaking adds oxygen, which delays the end point."},{t:"The end point, judged against the same colour standard",ok:true,fb:"Judging 'no blue' differently changes the time recorded."},{t:"The temperature of the water bath",ok:false,fb:"Temperature is the independent variable: the one thing you change."},{t:"The time taken to reach the end point",ok:false,fb:"That is the dependent variable: what you measure."}],
+  why:"Change only temperature. Yeast, glucose, dye, shaking and the end point all affect the time, so all must be kept the same."},
+ {id:"mb10",type:"mcq",title:"What about oxygen?",skill:"Judge oxygen conditions from the procedure, not from the colour change",
+  help:"Judge oxygen conditions from what was done: shaking, sealing, oil layers or replacing the air. The dye shows reduction; it does not show which type of respiration happened.",
+  v:[{q:"A student writes: “The blue colour disappeared, so the yeast was respiring anaerobically for the whole investigation.” Which is the best evaluation?",opts:[K("Not supported. Shaking added oxygen at the start, so respiration began with oxygen present. Losing the colour shows the dye was reduced faster than oxygen could re-oxidise it; it does not show which type of respiration happened throughout"),O("Correct, because methylene blue only changes colour without oxygen","Methylene blue is reduced by hydrogen from respiration whether or not oxygen is present. Oxygen only re-oxidises it."),O("Correct, because the colour change proves there was never any oxygen","The tube was shaken in air at the start. Look at the procedure, not just the colour."),O("Wrong, because the colour change proves the yeast respired only aerobically","Hydrogen is removed from substrates in glycolysis too, with or without oxygen. The colour alone cannot show the type of respiration.")]},
+   {q:"What does the procedure tell you about oxygen in this investigation?",opts:[K("Oxygen was present at the start because the tube was shaken in air. It then ran low because the tube was not shaken again. The tube was not sealed or kept oxygen-free, so the conditions were not strictly aerobic or anaerobic"),O("There was no oxygen at any time, because methylene blue was added","Adding a dye does not remove oxygen. What did shaking do?"),O("The tube stayed fully aerobic because it was open to the air","Oxygen enters from the surface only slowly without shaking; the yeast uses it faster than that."),O("The tube was anaerobic because glucose was used","Glucose is used in both aerobic and anaerobic respiration.")]}],
+  why:"The procedure, not the colour, tells you about oxygen: present after shaking, then running low."},
+ {id:"mb11",type:"write",title:"Explain it in writing",skill:"Write an explanation linking temperature, enzyme activity and the end point",
+  q:"Explain why the blue colour disappears sooner at 35 °C than at 20 °C.",
+  crit:[{t:"More kinetic energy, so more enzyme–substrate complexes (respiratory or dehydrogenase enzymes)",re:[/kinetic/i,/collision/i,/enzyme.{0,3}substrate/i,/\bE-?S\b/,/complex/i]},
+   {t:"Hydrogen is removed from substrates faster, so methylene blue is reduced faster",re:[/reduc/i,/hydrogen/i,/electron/i]},
+   {t:"Dissolved oxygen is used up sooner, so re-oxidation of the dye stops sooner",re:[/oxygen/i,/O2|O₂/]},
+   {t:"Reduced methylene blue is colourless, so the end point is reached sooner",re:[/colou?rless/i,/decolou?r/i,/end.?point/i]}],
+  model:"At 35 °C enzymes and substrates have more kinetic energy, so more enzyme–substrate complexes form each second in the respiratory (dehydrogenase) enzymes. Hydrogen is removed from substrates faster, so the dissolved oxygen is used up sooner and methylene blue is reduced faster. Reduced methylene blue is colourless, so the end point is reached sooner."}]},
+
+{phase:"Learn",name:"Respirometer",model:"gas",help:true,intro:"A second method that measures a gas-volume change. Find out what each part of the apparatus does to the reading.",tasks:[
+ {id:"g1",type:"info",m:"gas",need:G({}),title:"Worked example: how a respirometer gives a reading",steps:[
+  "<b>Set-up.</b> Living yeast in glucose solution in a sealed boiling tube, in a water bath, joined to a capillary tube with a drop of coloured liquid.",
+  "<b>The CO₂ absorber.</b> Soda lime absorbs carbon dioxide. It does not absorb oxygen, and it does not make the tube anaerobic: the air above the yeast still contains oxygen.",
+  "<b>The gas change.</b> Yeast takes up oxygen and releases carbon dioxide. Soda lime absorbs the carbon dioxide, removing gas molecules from the enclosed space.",
+  "<b>The reading.</b> The internal pressure initially falls. Atmospheric pressure pushes the liquid towards the tube, decreasing the enclosed gas volume. With carbon dioxide absorbed, that volume decrease estimates oxygen uptake. The tube is left to reach the bath temperature first, so warming gas does not move the liquid.",
+  "<b>The calculation.</b> Volume of oxygen taken up = πr²l, where r is the capillary radius and l the distance moved. Rate = volume ÷ time, in mm³ min⁻¹."]},
+ {id:"g2",type:"predict",m:"gas",need:G({}),title:"Predict, then observe",skill:"Predict and explain the reading of a respirometer containing a CO₂ absorber",
+  q:"Standard set-up at 25 °C. Predict: which way will the coloured liquid move?",
+  out:[K("Towards the yeast"),O("Away from the yeast","That would need the gas volume to rise. What happens to the carbon dioxide?"),O("It will not move","The yeast is respiring at 25 °C. Is any gas taken out of the air in the tube?")],
+  why:[K("Oxygen is taken up and the carbon dioxide released is absorbed, so the gas volume falls"),O("Carbon dioxide is released, which pushes the liquid","Carbon dioxide is released, but the soda lime absorbs it. Which gas change is left?"),O("Oxygen is taken up, so the gas volume falls","That is part of it. The yeast also releases carbon dioxide. Why does that not cancel out the oxygen taken up?"),O("The yeast pulls the liquid towards it","The yeast cannot pull the liquid. A change in gas volume moves it. Which gas, and why?")],
+  res:r=>"The liquid moved towards the yeast. "+moveText(r.readings),
+  because:"Oxygen uptake and carbon dioxide absorption remove gas molecules, so the internal pressure initially falls. Atmospheric pressure pushes the liquid towards the yeast, decreasing the enclosed gas volume. The reading estimates oxygen uptake."},
+ {id:"g3",type:"num",m:"gas",need:G({}),title:"Calculation, step 1: distance",skill:"Read the distance moved from a table of readings",
+  missing:"Complete a run of the standard set-up at 25 °C first.",
+  worked:"<p>At 35 °C the readings were 60 mm at 0 min and 36 mm at 5 min.</p><p>Distance = 60 − 36 = 24 mm. Volume = 3.14 × 0.5² × 24 = 18.84 mm³. Rate = 18.84 ÷ 5 = 3.77 mm³ min⁻¹.</p>",
+  q:r=>`Your 25 °C readings were ${r.readings[0]} mm at 0 min and ${r.readings[5]} mm at 5 min. How far did the liquid move in the first 5 minutes?`,unit:"mm",tol:.5,
+  ans:r=>r.readings[0]-r.readings[5],errs:r=>[[r.readings[5],"That is the reading at 5 minutes. Subtract it from the reading at 0 minutes."]],help:"Distance = reading at the start − reading at 5 minutes.",
+  why:r=>`${r.readings[0]} − ${r.readings[5]} = ${r.readings[0]-r.readings[5]} mm.`},
+ {id:"g4",type:"num",m:"gas",need:G({}),title:"Step 2: volume",skill:"Convert a distance into a volume with πr²l",missing:"Complete a run of the standard set-up at 25 °C first.",
+  q:r=>`Use your distance and the capillary radius of 0.5 mm. Calculate the volume of oxygen taken up in 5 minutes, using volume = πr²l and π = 3.14. Give your answer to 2 decimal places.`,unit:"mm³",tol:.02,
+  ans:r=>r2(3.14*.25*(r.readings[0]-r.readings[5])),errs:r=>{const d=r.readings[0]-r.readings[5];return[[3.14*.5*d,"You multiplied by r, not r². Square the radius first: 0.5² = 0.25."],[3.14*d,"Use the radius (0.5 mm), not the diameter (1 mm), and square it."],[3.14*.25*d*d,"l is the distance moved, used once: π × r² × l."]];},
+  help:"Square the radius, then multiply by π and by the distance.",why:r=>{const d=r.readings[0]-r.readings[5];return`3.14 × 0.5² × ${d} = ${(3.14*.25*d).toFixed(2)} mm³.`;}},
+ {id:"g5",type:"num",m:"gas",need:G({}),title:"Step 3: rate, without prompts",skill:"Calculate a rate of oxygen uptake in mm³ min⁻¹",missing:"Complete a run of the standard set-up at 25 °C first.",
+  q:r=>"Calculate the mean rate of oxygen uptake over the first 5 minutes. Give your answer to 2 decimal places.",unit:"mm³ min⁻¹",tol:.02,
+  ans:r=>r2(r2(3.14*.25*(r.readings[0]-r.readings[5]))/5),errs:r=>{const v=r2(3.14*.25*(r.readings[0]-r.readings[5]));return[[v*5,"Divide the volume by the time; do not multiply."],[v,"That is the volume. A rate is volume ÷ time."],[(r.readings[0]-r.readings[5])/5,"That is distance ÷ time (mm min⁻¹). Convert the distance to a volume first."]];},
+  help:"Rate = volume ÷ time = (πr²l) ÷ 5.",why:r=>{const v=r2(3.14*.25*(r.readings[0]-r.readings[5]));return`${v.toFixed(2)} ÷ 5 = ${(v/5).toFixed(2)} mm³ min⁻¹.`;}},
+ {id:"g6",type:"predict",m:"gas",need:G({temp:35,gas:"n2",abs:false}),title:"Measuring anaerobic respiration",skill:"Explain how a respirometer can measure CO₂ production under established anaerobic conditions",
+  q:"Anaerobic conditions are set up: the glucose solution is boiled and cooled to remove dissolved oxygen before living yeast is added, then covered with oil, and the air above is replaced with nitrogen. There is no CO₂ absorber. 35 °C. Predict the liquid.",
+  out:[K("Moves away from the yeast"),O("Moves towards the yeast","Moving towards needs the gas volume to fall. Is any oxygen taken up?"),O("Does not move","The yeast can still respire without oxygen. What does anaerobic respiration in yeast release?")],
+  why:[K("Carbon dioxide is released and not absorbed, and no oxygen is taken up, so the gas volume rises"),O("Removing the soda lime is what made the tube anaerobic","Removing a CO₂ absorber does not remove any oxygen. Here oxygen was removed by boiling, the oil layer and the nitrogen."),O("Oxygen is taken up faster without soda lime","There is no oxygen in this tube to take up."),O("The yeast releases nitrogen","Yeast does not make nitrogen. The nitrogen was put in to replace the air. Which gas does the yeast release?")],
+  res:r=>"The liquid moved away from the yeast. "+moveText(r.readings),
+  because:"With oxygen removed, the yeast respires anaerobically and releases carbon dioxide. Nothing absorbs it, so the gas volume rises and the liquid moves away. The reading shows carbon dioxide production."},
+ {id:"g7",type:"mcq",title:"What does each absorber do?",skill:"Distinguish the functions of carbon dioxide absorbers and oxygen absorbers",
+  help:"Ask two questions about any absorber: which gas does it remove, and so which gas changes are left to move the liquid? Removing a CO₂ absorber never removes oxygen.",
+  v:[{q:"Which statement about absorbers is correct?",opts:[K("A CO₂ absorber removes carbon dioxide, so the reading reflects oxygen uptake. It does not remove oxygen, so it does not make the tube anaerobic"),O("Removing the CO₂ absorber makes the tube anaerobic, because carbon dioxide builds up","Carbon dioxide building up does not remove the oxygen. The air in the tube still contains oxygen."),O("Soda lime absorbs both oxygen and carbon dioxide","Soda lime absorbs carbon dioxide only. If it absorbed oxygen, the reading could not show oxygen uptake."),O("An oxygen absorber is needed to measure oxygen uptake","An oxygen absorber would remove the very gas you want the yeast to take up. Which absorber lets oxygen uptake show?")]},
+   {q:"Chemical Z absorbs oxygen. A student puts chemical Z, and no CO₂ absorber, in a sealed tube of yeast in glucose. Oxygen is independently confirmed to have been removed before she starts timing. What does the liquid do during timing, and why?",opts:[K("Moves away from the yeast: the oxygen has been removed, so the yeast respires anaerobically, and the carbon dioxide it releases is not absorbed"),O("Moves towards the yeast, because chemical Z keeps absorbing oxygen","Oxygen was independently confirmed absent before timing. Which gas is the yeast still releasing?"),O("Does not move, because there is no oxygen so there is no respiration","Yeast can respire anaerobically. What does that release?"),O("Moves towards the yeast, because chemical Z absorbs carbon dioxide","The information says chemical Z absorbs oxygen. Use the function you are given.")]}],
+  why:"Each absorber removes one gas, so the reading shows the gas changes that are left."},
+ {id:"g8",type:"predict",m:"gas",need:G({temp:35,abs:false}),title:"Remove the CO₂ absorber, keep the air",skill:"Recognise that without a CO₂ absorber the reading is a net change",
+  q:"Remove the soda lime. Keep air in the tube, living yeast, 35 °C, left to reach temperature. Predict the liquid.",
+  out:[K("Hardly moves"),O("Moves towards the yeast, as with soda lime","With nothing absorbing it, where does the carbon dioxide go?"),O("Moves away from the yeast","Carbon dioxide is released, but oxygen is also taken up. Compare the two volumes.")],
+  why:[K("The volume of oxygen taken up is about the same as the volume of carbon dioxide released, so the net change is close to zero"),O("Without soda lime the yeast stops respiring","The yeast respires at the same rate as before. What changed is what the reading measures."),O("Without soda lime the tube becomes anaerobic","Removing the soda lime does not remove the oxygen in the air above the yeast."),O("Carbon dioxide is released, so the liquid must move away","Oxygen is also taken up. Both gas changes affect the volume.")],
+  res:r=>"The liquid hardly moved, even though the yeast was respiring fastest at this temperature. "+moveText(r.readings),
+  because:"Without a CO₂ absorber the reading is the net change: oxygen taken up minus carbon dioxide released. For yeast respiring glucose these are nearly equal, so the liquid barely moves.",
+  extra:'<p class="note"><span class="badge">Beyond the spec</span> The volumes nearly balance because glucose is the respiratory substrate: about one molecule of carbon dioxide is released per molecule of oxygen used (the respiratory quotient). With fat as the substrate more oxygen is used, so the liquid would move towards the organism.</p>'},
+ {id:"g9",type:"predict",m:"gas",need:G({temp:35,yeast:"boiled",eq:false}),title:"A control for temperature and pressure",skill:"Explain what a control with no living organism shows",
+  q:"Boiled yeast, soda lime, air, 35 °C, and timing starts as soon as the tube goes into the bath. Predict the liquid.",
+  out:[K("Moves away from the yeast at first, then stops"),O("Does not move at all","The air in the tube starts cooler than the bath. What happens to it?"),O("Moves towards the yeast, slowly","Boiled yeast does not respire, so no oxygen is taken up.")],
+  why:[K("The gas in the tube expands as it warms; boiled yeast does not respire"),O("Boiled yeast respires slowly","Boiling denatures the enzymes, so there is no respiration at all."),O("Soda lime releases gas when it warms","Soda lime absorbs carbon dioxide; it does not release gas. What happens to any gas as it warms?")],
+  res:r=>"The liquid moved away from the yeast at first, then stopped. "+moveText(r.readings),
+  because:"Warming gas expands and pushes the liquid away. Boiled yeast cannot respire, so any movement in this tube shows changes not caused by respiration. Subtract it from the test reading, or let the tubes reach the bath temperature before timing."}]},
+
+{phase:"Compare",name:"Paired examples",model:"gas",help:true,intro:"Two examples side by side. Find the difference that matters, then explain its consequence for the reading.",tasks:[
+ {id:"c1",type:"mcq",panel:{pair:"absorber"},title:"With and without a CO₂ absorber",skill:"Compare respirometers with and without a CO₂ absorber",
+  help:"Name the difference between the set-ups first. Then ask which gas changes are left to move the liquid in each.",
+  v:[{q:"Identify the difference between A and B that matters, and its consequence for the reading.",opts:[K("B has no CO₂ absorber, so B shows the net change (oxygen taken up minus carbon dioxide released), while A shows oxygen uptake alone"),O("B's yeast respires more slowly, so the liquid moves less","Both have the same yeast at 35 °C. What is missing from B?"),O("B is anaerobic, so no oxygen is taken up","B still has air in the tube. Removing the absorber does not remove oxygen."),O("B's capillary is narrower","Check the labels: both radii are 0.5 mm.")]},
+   {q:"How can A and B be used together?",opts:[K("To find the carbon dioxide released: A's distance minus B's distance, converted to a volume with πr²l"),O("To find the oxygen taken up: add A's distance to B's","A already gives oxygen uptake on its own. What does the difference between A and B give?"),O("They cannot be used together, because the set-ups differ","Differing in one controlled way is what makes the pair useful."),O("To show that B is anaerobic","B has air in it. Nothing here removes oxygen.")]}],
+  why:"With CO₂ absorbed, the reading is oxygen uptake. Without, it is oxygen uptake minus CO₂ release. The difference between them gives the CO₂ released."},
+ {id:"c2",type:"mcq",panel:{pair:"arrange"},title:"Different drawing, same principle",skill:"Recognise the same measurement principle in a differently arranged apparatus",
+  help:"Ignore the shape. Find what absorbs which gas, which gas changes are left, and what moves in response to the volume change.",
+  v:[{q:"Example B looks different from A. What does B measure, and how?",opts:[K("Oxygen uptake, like A. KOH absorbs CO₂, so the volume above the seeds falls as they take up oxygen, and the fluid in the U-tube moves towards the seeds' tube. The glass-bead tube cancels out temperature and pressure changes"),O("Carbon dioxide production, because the KOH solution reacts with it","KOH removes carbon dioxide, so carbon dioxide cannot change the reading. Which gas change is left?"),O("Water uptake by the germinating seeds","The seeds sit on gauze above the solution. What moves the fluid in the U-tube?"),O("Nothing, because a U-tube measures pressure, not volume","The pressure difference comes from a change in gas volume, so the U-tube does track the volume change.")]},
+   {q:"In example B, why is the second tube filled with glass beads?",opts:[K("It has the same volume of gas but nothing respiring, so changes in temperature or atmospheric pressure affect both sides equally and cancel out"),O("To absorb carbon dioxide","The KOH solution does that. What do glass beads have in common with the seeds?"),O("To provide oxygen for the seeds","Glass beads release no gas. What is the tube for, if nothing in it respires?"),O("To make the two tubes weigh the same","Weight does not affect the reading. What could change the gas volume in both tubes?")]}],
+  why:"Same principle: one gas absorbed, the other's uptake changes the volume, and a pressure-linked marker shows it."},
+ {id:"c3",type:"mcq",panel:{pair:"little"},title:"Little movement: two different reasons",skill:"Tell little respiration apart from opposing gas changes that balance",
+  help:"A small movement only means a small net volume change. Check whether a CO₂ absorber is present before deciding how much oxygen was used.",
+  v:[{q:"In both examples the liquid barely moved. Which one shows little respiration, and how could you tell the two apart?",opts:[K("A. With CO₂ absorbed, a small movement means little oxygen uptake. B's yeast respires fast, but its oxygen uptake and CO₂ release nearly cancel. Adding a CO₂ absorber to B would show a large movement"),O("B, because the liquid moved least","B's small movement is a net change. Is anything absorbing B's carbon dioxide?"),O("Both show little respiration, because both liquids barely moved","Movement shows the net volume change. Check what each tube contains."),O("Neither: a respirometer cannot measure respiration","A respirometer can, as long as you know which gas changes are left. What is different between A and B?")]},
+   {q:"A respirometer shows almost no movement. Which check would help determine whether opposing gas changes could explain this?",opts:[K("Whether a CO₂ absorber was present: without one, oxygen uptake and CO₂ release can cancel out"),O("Whether the liquid was coloured","The colour of the liquid does not affect its movement."),O("Whether the scale is printed in millimetres","The scale unit does not establish whether gas changes balance."),O("Whether the apparatus is drawn vertically","Its orientation does not establish which gases are absorbed.")]}],
+  why:"Little movement can mean little respiration, or two gas changes that balance. The apparatus tells you which."},
+ {id:"c4",type:"write",panel:{pair:"little"},title:"Explain in writing",skill:"Explain why little movement does not always mean little respiration",
+  q:"Explain why little movement of the liquid in a respirometer does not always mean little respiration.",
+  crit:[{t:"Without a CO₂ absorber the reading shows the net change in gas volume",re:[/absorb/i,/soda lime/i,/net/i]},
+   {t:"Oxygen taken up and carbon dioxide released are about equal, so they cancel out",re:[/(cancel|balance|equal|same)/i]},
+   {t:"So the volume barely changes even though respiration is happening",re:[/volume/i,/pressure/i]},
+   {t:"A test: repeat with a CO₂ absorber, which shows oxygen uptake",re:[/(repeat|add|with).{0,40}(absorb|soda|KOH|potassium)/i]}],
+  model:"Without a CO₂ absorber, the liquid shows the net change in gas volume. Yeast respiring glucose releases about the same volume of carbon dioxide as the oxygen it takes up, so the two changes cancel and the volume barely changes, even though respiration is fast. Repeating with a CO₂ absorber would show the oxygen uptake as a clear movement."},
+ {id:"c5",type:"mcq",panel:{pair:"methods"},title:"A timed end point and a gas volume",skill:"Compare a timed colour end point with a gas-volume measurement",
+  help:"Write down what each method directly measures and its units. Numbers in different units cannot be compared directly.",
+  v:[{q:"Which statement compares the two readings correctly?",opts:[K("A times how long the dye takes to be reduced, giving a relative rate in s⁻¹. B measures a change in gas volume, giving a rate in mm³ min⁻¹. The numbers cannot be compared directly, but each method can rank temperatures"),O("B is faster, because 3.77 is bigger than 0.0078","The two numbers have different units and measure different things, so their sizes cannot be compared."),O("A measures carbon dioxide, because respiration releases it","Carbon dioxide does not change methylene blue. What does A's end point show?"),O("Both measure oxygen uptake","A does not measure a gas at all. What does it time?")]},
+   {q:"A student says: “Methylene blue gave 7.8 × 10⁻³ s⁻¹ and the respirometer gave 3.77 mm³ min⁻¹, so the methods disagree.” What is wrong with this?",opts:[K("The values measure different things in different units, so they cannot agree or disagree. Each can only be compared with results from the same method set up the same way"),O("Nothing: the respirometer is more accurate, so its value is right","Accuracy is not the issue. Are the two values even measuring the same quantity?"),O("The units should be converted, then the values would match","No conversion turns a dye-reduction rate index into a gas volume per minute."),O("The methylene blue value should be multiplied by 60","That converts s⁻¹ to min⁻¹, but it would still not be a gas volume.")]}],
+  why:"A gives a rate index for dye reduction. B gives a gas-volume rate. Each ranks conditions within its own method."},
+ {id:"c6",type:"num",panel:{pair:"radius"},title:"Different capillary radii",skill:"Use πr²l to show why the same volume gives different distances in different capillaries",
+  q:"Example B moved 6 mm in 5 minutes in a capillary of radius 1.0 mm. Calculate the volume of oxygen taken up, using π = 3.14. Give your answer to 2 decimal places.",unit:"mm³",tol:.02,
+  v:[{q:"Example B moved 6 mm in 5 minutes in a capillary of radius 1.0 mm. Calculate the volume of oxygen taken up, using π = 3.14. Give your answer to 2 decimal places.",ans:()=>18.84,errs:()=>[[37.68,"You used 2πr (the circumference) instead of πr²: 3.14 × 1.0² × 6."],[4.71,"You used r = 0.5 mm. In example B the radius is 1.0 mm."],[75.36,"Use the radius (1.0 mm), not the diameter (2.0 mm)."]],why:()=>"3.14 × 1.0² × 6 = 18.84 mm³: the same volume as A (3.14 × 0.5² × 24 = 18.84 mm³). Doubling the radius makes the cross-section 4 times bigger, so the same volume moves the liquid a quarter of the distance."},
+   {unit:"mm",q:"Fresh question: a capillary of radius 0.25 mm. The same yeast takes up 18.84 mm³ of oxygen. How far does the liquid move? Use π = 3.14.",ans:()=>96,errs:()=>[[48,"You squared the radius wrongly: 0.25² = 0.0625, not 0.125."],[24,"That is the distance in the 0.5 mm capillary. Use r = 0.25 mm."],[6,"That is the distance in the 1.0 mm capillary."]],why:()=>"l = V ÷ πr² = 18.84 ÷ (3.14 × 0.0625) = 96 mm. Halving the radius quarters the cross-section, so the liquid moves 4 times as far."}],
+  help:"Volume = πr²l. Square the radius before multiplying. To find a distance, divide the volume by πr²."},
+ {id:"c7",type:"mcq",panel:{pair:"radius"},title:"Choosing a capillary",skill:"Explain how capillary radius affects the precision of a reading",
+  help:"The same volume moves further along a narrower tube.",
+  v:[{q:"Which capillary would give more precise readings of a small volume change, and why?",opts:[K("The narrower one (0.5 mm): the same volume moves the liquid further, so a 1 mm scale division stands for a smaller volume"),O("The wider one (1.0 mm), because more gas fits in it","The volume of gas is set by the yeast, not the tube. How far does that volume move the liquid in each?"),O("Neither: radius does not affect the reading","Radius changes the distance moved for a given volume. Compare A and B."),O("The wider one, because the liquid moves faster in it","The liquid in the wider tube moved less far in the same time.")]}],
+  why:"A narrower tube spreads the same volume over a longer distance, so each scale division represents a smaller volume."}]},
+
+{phase:"Apply",name:"Unfamiliar set-ups",model:"gas",help:false,intro:"New diagrams and question styles, with less support. Work out the measurement principle yourself. The functions of unfamiliar chemicals are given where you need them.",tasks:[
+ {id:"a1",type:"mcq",panel:{diag:"woodlice"},title:"A new respirometer",skill:"Identify what an unfamiliar respirometer measures from the function of its absorber",
+  help:"Find the absorber's function in the information. Which gas does it remove, and which gas change is left?",
+  v:[{q:"What does the movement of the coloured liquid show?",opts:[K("The volume of oxygen taken up by the woodlice, because chemical X absorbs the carbon dioxide they release"),O("The volume of carbon dioxide released by the woodlice","Chemical X absorbs carbon dioxide, so carbon dioxide cannot move the liquid."),O("The net change: oxygen taken up minus carbon dioxide released","That would be true with no absorber. What does chemical X do?"),O("The rate of anaerobic respiration","Nothing removes oxygen from this tube, so the woodlice can respire aerobically.")]},
+   {q:"The student opens the syringe, resets the liquid, then times again. Why is resetting needed and not a problem for the results?",opts:[K("It establishes a new starting reading; seal the apparatus and allow any necessary equilibration before timing again"),O("It adds oxygen for the woodlice, which is the variable being measured","Resetting is for the scale. The measurement starts again only after the tube is closed."),O("It removes carbon dioxide","Chemical X does that."),O("It changes the temperature","Moving a syringe does not change the bath temperature.")],why:"Resetting establishes a new starting reading. Seal the apparatus and allow any necessary equilibration before timing the next interval."}],
+  why:"An absorber decides which gas change is left. Here only oxygen uptake changes the volume."},
+ {id:"a2",type:"num",panel:{diag:"woodlice"},title:"Calculate, with no prompts",skill:"Calculate a rate of oxygen uptake from an unfamiliar respirometer",unit:"mm³ min⁻¹",rel:.03,
+  v:[{q:"In 10 minutes the liquid moved 15 mm. The capillary radius is 0.5 mm. Calculate the rate of oxygen uptake to 2 significant figures. Use π = 3.14.",ans:()=>1.2,errs:()=>[[11.775,"That is the volume. Divide by the time for a rate."],[1.5,"That is distance ÷ time. Convert the distance to a volume first."],[2.355,"You used r rather than r²."]],why:()=>"3.14 × 0.5² × 15 = 11.78 mm³; ÷ 10 = 1.2 mm³ min⁻¹ (2 s.f.)."},
+   {q:"Fresh question: in 8 minutes the liquid moved 12 mm in a capillary of radius 0.6 mm. Calculate the rate of oxygen uptake to 2 significant figures. Use π = 3.14.",ans:()=>1.7,errs:()=>[[13.5648,"That is the volume. Divide by the time."],[1.5,"That is distance ÷ time. Convert to a volume first."],[2.826,"You used r rather than r²."]],why:()=>"3.14 × 0.6² × 12 = 13.56 mm³; ÷ 8 = 1.7 mm³ min⁻¹ (2 s.f.)."}],
+  help:"Volume = πr²l, then rate = volume ÷ time. Round only at the end."},
+ {id:"a3",type:"mcq",panel:{diag:"syringe"},title:"A gas syringe",skill:"Decide what is measured and whether the conditions are established as anaerobic",
+  help:"Read the procedure for how oxygen was dealt with, and check whether any absorber is present.",
+  v:[{q:"What does the gas syringe measure, and under what conditions?",opts:[K("The volume of carbon dioxide released in anaerobic respiration: oxygen was removed before timing, nothing absorbs CO₂, and the only gas change is CO₂ released"),O("The volume of oxygen taken up","There is no oxygen in the flask to take up. Which gas is released?"),O("The net change in aerobic respiration","The procedure removed the oxygen, so the yeast is not respiring aerobically."),O("Nothing, because there is no capillary tube","A gas syringe measures a gas volume directly, in cm³.")]},
+   {q:"Another student uses the same apparatus with air in the flask and no oil layer. Why can her syringe reading not be called the rate of anaerobic respiration?",opts:[K("Oxygen is present, so the yeast can respire aerobically. With no absorber the syringe shows the net gas change, and nothing in the procedure established anaerobic conditions"),O("It can: yeast always respires anaerobically in glucose","The procedure, not an assumption, must establish the conditions. Was oxygen removed?"),O("Because the gas syringe only measures oxygen","A gas syringe measures the total volume change of the gas."),O("Because the carbon dioxide is absorbed by the glucose solution","A little dissolves, but nothing here was removed on purpose. What about oxygen?")],why:"Air supplies oxygen, so anaerobic conditions have not been established. With no carbon dioxide absorber, the syringe shows the net gas-volume change, including oxygen uptake and carbon dioxide production."}],
+  why:"Anaerobic conditions must be set up by the procedure. Here they were, so the syringe shows carbon dioxide released."},
+ {id:"a4",type:"mcq",panel:{diag:"btb"},title:"Bromothymol blue",skill:"Explain a CO₂/pH indicator separately from methylene blue reduction",
+  help:"Methylene blue responds to reduction (gaining hydrogen). Bromothymol blue responds to pH. Use the information about carbon dioxide.",
+  v:[{q:"Why does the bromothymol blue in this tube change colour?",opts:[K("Carbon dioxide released by the yeast dissolves and forms an acid, so the pH falls and the indicator turns from blue to yellow"),O("It is reduced by hydrogen from respiration, like methylene blue","That is how methylene blue works. Bromothymol blue is a pH indicator. What does carbon dioxide do when it dissolves?"),O("Oxygen is used up, and that turns it yellow","Bromothymol blue does not respond to oxygen. Use the information given."),O("The yeast absorbs the blue dye","The dye stays in solution. What happens to the pH?")]},
+   {q:"Which statement compares methylene blue and bromothymol blue correctly?",opts:[K("Methylene blue loses its colour when reduced by hydrogen from respiration; bromothymol blue turns yellow when carbon dioxide lowers the pH. They respond to different products of respiration"),O("Both are reduced by respiration","Only methylene blue is reduced. What does bromothymol blue respond to?"),O("Both respond to carbon dioxide","Carbon dioxide does not change methylene blue."),O("Bromothymol blue shows oxygen; methylene blue shows carbon dioxide","Neither statement is right. Check the information.")]}],
+  why:"Two indicators, two mechanisms: reduction for methylene blue, pH for bromothymol blue."},
+ {id:"a5",type:"write",panel:{diag:"btb"},title:"Exam-style question",skill:"Evaluate the accuracy of a timed colour end point",
+  q:"Exam-style (based on AQA June 2023 Paper 3, question 02.4; 2 marks). A student timed how long yeast in glucose solution took to turn bromothymol blue from blue to yellow. Suggest why this method is less accurate than measuring the volume of gas, and how its accuracy could be improved.",
+  crit:[{t:"The colour change or end point is subjective (people judge it differently; the change is gradual)",re:[/subjective/i,/judg/i,/opinion/i,/different (people|students)/i,/gradual/i,/hard to (tell|see|decide)/i]},
+   {t:"Use a colour standard of the yellow, or a colorimeter reading, as a reference for the end point",re:[/colou?r (standard|chart)/i,/colorimeter/i,/absorbance/i,/transmission/i,/reference/i]}],
+  model:"The end point is subjective: different people judge when the colour has become yellow at different times, especially as the change is gradual. Accuracy could be improved by comparing with a colour standard of the yellow end point, or by using a colorimeter and timing how long the reading takes to reach a set absorbance."},
+ {id:"a6",type:"mcq",panel:{diag:"btb"},title:"Choose the method",skill:"Choose a method by what it directly measures",
+  help:"For each method, name what is directly measured. Then match it to the question.",
+  v:[{q:"A student wants to know whether yeast releases carbon dioxide faster at 30 °C than at 20 °C, with numbers that do not depend on judging a colour. Which method fits best?",opts:[K("A respirometer or gas syringe under established anaerobic conditions with no CO₂ absorber, measuring gas volume over time at each temperature"),O("Methylene blue, timing the end point","Methylene blue measures dye reduction, not carbon dioxide, and needs a colour judgement."),O("Bromothymol blue judged by eye","It responds to carbon dioxide, but judging by eye is subjective: the student wants numbers that do not depend on that."),O("A respirometer with soda lime in air","Soda lime absorbs the carbon dioxide you want to measure.")]}],
+  why:"Match the method to the quantity: carbon dioxide volume needs a gas measurement with nothing absorbing CO₂, under conditions the procedure establishes."}]}];
+
+const balanced={
+mb3:[
+["Dissolved oxygen re-oxidises the reduced dye.","The yeast begins respiring only after a delay.","The dye needs to warm before it can change.","Carbon dioxide must accumulate before it changes."],
+["Blue returns because oxygen re-oxidises the dye.","The dye stays the same because oxygen cannot enter.","Blue disappears faster because the yeast is mixed.","The dye turns yellow because carbon dioxide enters."]],
+mb6:[
+["A comparative index for matched dye-reduction tests.","The volume of oxygen used per second by the yeast.","The volume of carbon dioxide produced each second.","A universal respiration rate for comparison across methods."],
+["No: the different dye amounts affect the times.","Yes: the shorter time proves Q respired faster.","Yes: the shorter time proves Q had more yeast.","No: reciprocal time works only at 35 °C."]],
+mb8:[
+["Record ‘not reached by 600 s’; the time is unknown.","Record 600 s as the endpoint and calculate 1/600.","Record 0 s as the time because the endpoint is absent.","Omit the tube entirely when reporting the results."],
+["Report all three; no exact mean can be calculated.","Report 560 s: average the two completed repeats.","Report 573 s: use 600 s for the unfinished repeat.","Report 0 s: count the unfinished repeat as a failure."]],
+mb10:[
+["Not supported: oxygen was present after shaking.","Supported: the dye only changes without oxygen.","Supported: no oxygen was present at any time.","Not supported: the dye proves only aerobic respiration."],
+["Oxygen starts present and then runs low in the model.","Oxygen was absent from the moment dye was added.","Oxygen stayed plentiful throughout because the tube was open.","Oxygen was absent throughout because glucose was used."]],
+g7:[
+["A CO₂ absorber removes CO₂, leaving oxygen uptake visible.","A CO₂ absorber removes oxygen as well as carbon dioxide.","Removing the CO₂ absorber also removes oxygen from the tube.","An oxygen absorber is needed to measure yeast oxygen uptake."],
+["Away: CO₂ is released after oxygen has been removed.","Towards: chemical Z continues to remove oxygen during timing.","Still: yeast cannot respire once the oxygen is removed.","Towards: chemical Z absorbs the carbon dioxide released."]],
+c1:[
+["B has no absorber, so it shows the net gas change.","B has less active yeast, so it shows slower respiration.","B has no oxygen, so it shows anaerobic respiration.","B has a narrower capillary, so it shows greater movement."],
+["Subtract B from A, then convert the difference to volume.","Add A and B, then convert their sum to oxygen volume.","Use A alone, because different set-ups cannot be compared.","Use B alone, because its reading establishes anaerobic conditions."]],
+c2:[
+["Oxygen uptake: KOH removes CO₂ and the fluid moves.","CO₂ production: KOH reacts with CO₂ and releases gas.","Water uptake: the seeds draw liquid through the gauze.","No gas change: the U-tube cannot show pressure changes."],
+["To match the gas space without adding respiration.","To absorb carbon dioxide in place of the KOH solution.","To provide oxygen to the living seeds in the other tube.","To match the weight of seeds in the other tube."]],
+c3:[
+["A: CO₂ is absorbed; in B the gas changes nearly balance.","B: its smaller movement shows slower oxygen uptake.","Both: small movements always mean little respiration.","Neither: a respirometer cannot measure gas changes."],
+["Whether a CO₂ absorber removes one of the gas changes.","Whether the marker liquid is coloured for easy viewing.","Whether the scale is printed in millimetres or centimetres.","Whether the apparatus is drawn vertically or horizontally."]],
+c5:[
+["A gives a dye rate index; B gives a gas-volume rate.","B is faster because its numerical value is larger.","A gives CO₂ production; B gives a dye rate index.","A and B both give oxygen uptake in different units."],
+["They measure different quantities, so cannot be compared directly.","The respirometer is more accurate, so only its value is right.","The units can be converted until both values match exactly.","The dye value can be multiplied by 60 to give gas volume."]],
+c7:[["Narrower: each scale division represents a smaller volume.","Wider: each scale division represents a smaller volume.","Neither: the same volume always moves the same distance.","Wider: the liquid travels further for the same gas volume."]],
+a1:[
+["Oxygen uptake, because X absorbs the CO₂ released.","CO₂ production, because X absorbs the oxygen taken up.","Net gas change, because X leaves both gases in the tube.","Anaerobic respiration, because X removes all the oxygen."],
+["It gives a new start; seal and equilibrate before timing.","It adds oxygen; time immediately with the syringe open.","It absorbs carbon dioxide; then measure the initial position.","It changes bath temperature; then seal the apparatus."]],
+a3:[
+["CO₂ released, under the established anaerobic conditions.","Oxygen uptake, under the established anaerobic conditions.","Net aerobic gas change, with oxygen present throughout.","No gas change, because this apparatus has no capillary."],
+["Oxygen is present and the reading is a net gas change.","Oxygen is present, but glucose forces anaerobic respiration.","Oxygen is absent, and the syringe only measures oxygen.","Oxygen is absent because the glucose absorbs all the CO₂."]],
+a4:[
+["CO₂ dissolves, lowers pH and changes the indicator.","Hydrogen reduces the indicator as in methylene blue.","Oxygen uptake directly turns the indicator yellow.","Yeast absorbs the indicator and removes its blue colour."],
+["Methylene blue is reduced; bromothymol blue responds to pH.","Both indicators are reduced by hydrogen from respiration.","Both indicators turn yellow in response to dissolved CO₂.","Methylene blue detects CO₂; bromothymol blue detects oxygen."]],
+a6:[["Measure gas volume without a CO₂ absorber, anaerobically.","Time the methylene-blue colour endpoint at each temperature.","Compare bromothymol-blue colour by eye at each temperature.","Measure gas volume in air with soda lime at each temperature."]]
+};
+for(const task of ALL())if(balanced[task.id])task.v.forEach((variant,i)=>variant.opts.forEach((option,j)=>option.t=balanced[task.id][i][j]));
+// If the evidence needed by an answer is absent or damaged, clear the dependent result as well.
+for(const task of ALL().filter(t=>t.type==="num"&&t.m)){
+ const key=["g3","g4","g5"].includes(task.id)?"gas-calculation":task.id, ev=ST.evidence[key];
+ const valid=ev&&ev.s&&Number.isInteger(ev.id)&&(task.m==="mb"?Number.isFinite(ev.time):Array.isArray(ev.readings)&&ev.readings.length>=6&&ev.readings.slice(0,6).every(Number.isFinite));
+ if(!valid){delete ST.evidence[key];if(ST.res[task.id]||ST.adv[task.id]){delete ST.res[task.id];delete ST.adv[task.id];for(const k of Object.keys(ST.txt))if(k.startsWith(task.id+":"))delete ST.txt[k];}}
+}
+// Summaries describe the particular retry when its focus differs from the first question.
+const retrySkills={g7:"Predict the effect of an oxygen absorber after oxygen has been removed",c1:"Use paired readings to infer carbon dioxide production",c2:"Explain the role of the glass-bead control",a1:"Explain how to establish a new starting reading"};
+
+/* ================= Animation loop and start-up ================= */
+let lastT=performance.now();
+function frame(now){const dt=Math.min(.05,(now-lastT)/1000);lastT=now;
+ if(mb.status==="running"){const sps=(speed==="fast"?60:mbMech?6:12);mbStep(dt*sps);mbText();}
+ if(mb.status!=="paused")mbMechStep(dt*(speed==="fast"?2:1)*(RM.matches?.6:1),mb.status==="running"?dt*(speed==="fast"?60:mbMech?6:12):0);
+ mbColour();if(mbMech&&panel==="mb")mbMechDraw();
+ gasStep(dt);syncZoom();requestAnimationFrame(frame);}
+mbSync();gSync();syncSpeed();mbNew();newRun();
+if(saved&&saved.version===3){
+ if(saved.MS)MS=saved.MS;if(saved.S)S=saved.S;if(saved.speed)speed=saved.speed;
+ if(saved.mb&&["ready","running","paused","done"].includes(saved.mb.status)){mb=saved.mb;if(mb.status==="running")mb.status="paused";mbInitMech();mbDraw();mbMechStep(0,0);}
+ if(saved.run&&Array.isArray(saved.run.readings)){run={...saved.run,rand:Math.random};if(run.status==="running")run.status="paused";initMols();drawSetup();syncGasParticles(0);}
+}
+initialising=false;mbSync();gSync();syncSpeed();mbUpdate();gUpdate();renderResults();renderTasks();if(saved&&["mb","gas"].includes(saved.panel))setPanel(saved.panel);requestAnimationFrame(frame);
+setInterval(save,1000);window.addEventListener("pagehide",save);
+
+}
+</script>
+</body>
+</html>
