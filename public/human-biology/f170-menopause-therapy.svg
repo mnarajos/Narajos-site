@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 405" role="img" aria-labelledby="title desc">
+<title id="title">Two examples of menopause hormone therapy</title><desc id="desc">A schematic compares systemic hormone therapy, shown as a patch delivering hormone into the bloodstream and potentially relieving hot flushes, with vaginal oestrogen acting mainly in vaginal tissue and potentially relieving vaginal dryness. The suitable option depends on symptoms and individual benefits and risks. These are examples, not a complete list.</desc>
+<defs><marker id="a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0v7l6-3.5z" fill="#23656c"/></marker></defs><rect width="280" height="405" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Systemic therapy</text><rect x="89" y="42" width="102" height="28" rx="6" fill="#f9dfc8" stroke="#98451e" stroke-width="2"/><rect x="126" y="46" width="28" height="20" rx="3" fill="#fff" stroke="#69447f" stroke-width="2"/><text x="140" y="95">Example: skin patch</text>
+<path d="M140 103v24" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/><text x="140" y="151">Hormone enters blood;</text><text x="140" y="174">may relieve hot flushes.</text>
+<text x="140" y="215" font-weight="700">Vaginal oestrogen</text><path d="M93 238q47-21 94 0v28q-47 21-94 0z" fill="#e5d9ec" stroke="#69447f" stroke-width="2"/><text x="140" y="257">Local tissue</text>
+<path d="M140 273v22" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/><text x="140" y="319">Acts mainly locally;</text><text x="140" y="342">may relieve dryness.</text>
+<text x="140" y="379">Suitability is individual.</text>
+</g></svg>

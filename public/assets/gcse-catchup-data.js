@@ -2,7 +2,7 @@ import { investigations } from "./gcse-investigations.js";
 import { question } from "./school-catchup-journey.js";
 import { priorityCatchup, distanceWorkedGraph, velocityWorkedGraph } from "./gcse-catchup-priority.js";
 import { gcseStepVisuals } from "./gcse-step-visuals.js";
-import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, gcseWorkedLineVisuals, heatingCurve, readableGcseFigure, atomsRearranged, ohmicCurrentGraph, filamentCurrentGraph, gridCurrentComparison, gridHeatingComparison } from "./gcse-more-step-visuals.js";
+import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, gcseWorkedLineVisuals, heatingCurve, readableGcseFigure, atomsRearranged, ohmicCurrentGraph, filamentCurrentGraph, gridCurrentComparison, gridHeatingComparison, leftHandDirections, motorReversalWorked } from "./gcse-more-step-visuals.js";
 import { gcseVisual } from "./gcse-catchup-visuals.js";
 
 function lesson(year, code, title, hook, notice, idea, visual, stages, independent, retry, higher) {
@@ -612,7 +612,7 @@ const openingFigureAtStep = {
   "reaction-rate": [0],
   "crude-oil": [1],
   "wave-motion": [0],
-  "inheritance-cross": [0, 1],
+  "inheritance-cross": [1],
   "circuit-resistance": [1]
 };
 for (const [id, indices] of Object.entries(openingFigureAtStep)) {
@@ -661,6 +661,11 @@ gcseCatchup["motion-graphs"].steps[0].worked.lineVisuals = [
   () => readableGcseFigure(distanceWorkedGraph),
   () => readableGcseFigure(velocityWorkedGraph),
   null // The preceding velocity graph also supplies the final-section values.
+];
+gcseCatchup["motor-effect"].steps[0].worked.lineVisuals = [
+  () => readableGcseFigure(leftHandDirections),
+  () => readableGcseFigure(() => gcseVisual(gcseCatchup["motor-effect"].visual)),
+  () => readableGcseFigure(motorReversalWorked)
 ];
 
 // Apply the phone-size label floor to any reused worked-example graphics.

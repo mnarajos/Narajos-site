@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 420" role="img" aria-labelledby="title desc">
+<title id="title">Ovarian changes around menopause</title><desc id="desc">A schematic compares ovarian follicular activity before and after its decline. Changing ovarian hormone patterns can lead to irregular cycles and then the end of periods. Hot flushes and vaginal dryness can occur, but experiences vary. Follicle symbols do not represent counts.</desc>
+<defs><marker id="a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0v7l6-3.5z" fill="#23656c"/></marker></defs><rect width="280" height="420" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Ovarian follicular activity</text><ellipse cx="70" cy="76" rx="48" ry="29" fill="#f9dfc8" stroke="#98451e" stroke-width="2"/><ellipse cx="210" cy="76" rx="48" ry="29" fill="#f9dfc8" stroke="#98451e" stroke-width="2"/>
+<g fill="#69447f"><circle cx="52" cy="67" r="4"/><circle cx="71" cy="61" r="4"/><circle cx="87" cy="77" r="4"/><circle cx="57" cy="87" r="4"/><circle cx="77" cy="91" r="4"/><circle cx="202" cy="70" r="4"/><circle cx="218" cy="84" r="4"/></g>
+<path d="M125 76h30" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/><text x="140" y="133">Activity declines</text><text x="140" y="155">(symbols are not counts)</text>
+<path d="M140 164v24" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/><text x="140" y="215" font-weight="700">Ovarian hormones change</text>
+<path d="M140 224v24" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/>
+<text x="140" y="275">Cycles can become irregular</text><text x="140" y="298">and periods eventually stop.</text>
+<text x="140" y="345">Hot flushes and vaginal</text><text x="140" y="368">dryness can occur;</text><text x="140" y="395">experiences vary.</text>
+</g></svg>

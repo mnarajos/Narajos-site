@@ -447,6 +447,9 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <script src="/alevel/catchup-conservation-details.js"></script>
 <script src="/alevel/catchup-gene-recap-figures.js"></script>
 <script src="/alevel/catchup-chisq-figures.js"></script>
+<script src="/alevel/catchup-population-recap.js"></script>
+<script src="/alevel/catchup-paper2-links.js"></script>
+<script src="/alevel/catchup-genome-context.js"></script>
 <script src="/alevel/catchup-immunity-figures.js"></script>
 <script src="/alevel/catchup-transport-figures.js"></script>
 <script src="/alevel/catchup-transport-details.js"></script>
@@ -3326,7 +3329,7 @@ DATA.a8={
    {"t":"mcq","tier":"F","q":"Which graph shows the number of copies of a DNA fragment over the first few cycles of the polymerase chain reaction?","wordHelp":{"targets":["pcr"]},"ax":["Number of cycles","Number of DNA copies"],"opts":["Rises more and more steeply","Rises steadily in a straight line","Rises steeply from the start, then levels off","Stays the same throughout"],"graphs":["expo","lin","plat","flat"],"a":0,"fb":[null,"The number doubles each cycle, so it rises by a larger amount each time, not by the same amount.","In the early cycles nothing is limiting, so the number keeps doubling.","Each cycle copies every strand, so the number rises."],"why":"Each cycle doubles the number of copies (2ⁿ after n cycles), so the curve gets steeper and steeper."}
   ]},
 
- {id:"invivo",title:"Vectors and in vivo cloning",spec:"3.8.4.1",needs:["fragments"],key:["Fragments can be amplified <i>in vivo</i> by inserting them into a <b>vector</b> (often a plasmid) and transferring it into host cells.","The plasmid is cut with the <b>same restriction endonuclease</b>, so its sticky ends are complementary to those of the fragment. <b>DNA ligase</b> joins them.","Host cells take up the plasmid: <b>transformation</b>. Only a few do.","<b>Marker genes</b> identify the host cells that have taken up the gene: genes for antibiotic resistance, fluorescence or an enzyme that causes a colour change.","Recombinant DNA technology lets genes be transferred between organisms, because the genetic code is universal and transcription and translation work in the same way."],gate:"‘Ligase produces sticky ends’ is a common error. Restriction endonucleases cut; ligase joins.",st:2,
+ {id:"invivo",title:"Vectors and in vivo cloning",spec:"3.8.4.1",needs:["fragments"],key:["Fragments can be amplified <i>in vivo</i> by inserting them into a <b>vector</b> (often a plasmid) and transferring it into host cells.","The plasmid is cut with the <b>same restriction endonuclease</b>, so its sticky ends are complementary to those of the fragment. <b>DNA ligase</b> joins them.","Host cells take up the plasmid: <b>transformation</b>. Only a few do.","<b>Marker genes</b> identify the host cells that have taken up the gene: genes for antibiotic resistance, fluorescence or an enzyme that causes a colour change.","Recombinant DNA technology can transfer genes between organisms because the genetic code is nearly universal and transcription and translation use shared principles. Functional expression also needs suitable regulatory signals and processing."],gate:"‘Ligase produces sticky ends’ is a common error. Restriction endonucleases cut; ligase joins.",st:2,
   qs:[
    {"t":"mcq","tier":"F","warm":true,"q":"From GCSE: which useful human hormone is made by genetically modified bacteria?","opts":["Insulin","Adrenaline","Oestrogen","Thyroxine"],"a":0,"why":"Bacteria with the human insulin gene make insulin for people with diabetes."},
    {"t":"order","tier":"F","q":"Put these in order to make bacteria that produce human insulin.","items":["Cut the plasmid and the insulin gene with the same restriction endonuclease","Mix them so the sticky ends pair up","Use DNA ligase to join the gene into the plasmid","Mix the recombinant plasmids with bacteria (transformation)","Use marker genes to identify the bacteria that took up the gene"],"why":"Each step has one purpose. Examiners look for the role of each enzyme."},
@@ -6388,7 +6391,10 @@ function catchupChunks(notes,synapse,topic,concept){
    (window.ALevelResponseCoreFigures?window.ALevelResponseCoreFigures.render(topic,concept,i/2):'')+
    (window.ALevelConservationDetails?window.ALevelConservationDetails.render(topic,concept,i/2):'')+
    (window.ALevelGeneRecapFigures?window.ALevelGeneRecapFigures.render(topic,concept,i/2):'')+
-   (window.ALevelChiSquaredFigures?window.ALevelChiSquaredFigures.render(topic,concept,i/2):'')+'</div>';
+   (window.ALevelChiSquaredFigures?window.ALevelChiSquaredFigures.render(topic,concept,i/2):'')+
+   (window.ALevelPopulationRecap?window.ALevelPopulationRecap.render(topic,concept,i/2):'')+
+   (window.ALevelPaper2Links?window.ALevelPaper2Links.render(topic,concept,i/2):'')+
+   (window.ALevelGenomeContext?window.ALevelGenomeContext.render(topic,concept,i/2):'')+'</div>';
  }
  return h;
 }

@@ -465,12 +465,16 @@ export async function checkHumanCatchup(browser, base) {
     const originalUterine = page.locator('[data-hb-model-step] li:nth-child(1) img[src="/assets/micrographs/hb-endometrium.webp"]');
     const originalAssessment = stage("independent").locator('.hb-teach-photo img');
     assert(await originalUterine.isVisible());
+    await originalUterine.scrollIntoViewIfNeeded();
     assert.equal(await originalUterine.evaluate(async image => { await image.decode(); return image.naturalWidth; }), 760);
     await expand(stage("independent"));
-    assert.deepEqual(await originalAssessment.evaluateAll(async images => {
-      await Promise.all(images.map(image => image.decode()));
-      return images.map(image => [image.getAttribute("src"), image.naturalWidth]);
-    }), [["/assets/micrographs/hb-ovary.webp", 710], ["/assets/micrographs/hb-testis.webp", 479]]);
+    assert.equal(await originalAssessment.count(), 2);
+    for (const [index, src, width] of [[0, "/assets/micrographs/hb-ovary.webp", 710], [1, "/assets/micrographs/hb-testis.webp", 479]]) {
+      const field = originalAssessment.nth(index);
+      assert.equal(await field.getAttribute("src"), src);
+      await field.scrollIntoViewIfNeeded();
+      assert.equal(await field.evaluate(async image => { await image.decode(); return image.naturalWidth; }), width);
+    }
 
     await open("catchup/f175/a1");
     await expand(page.locator(".hb-teach-stage").first());
@@ -761,6 +765,8 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.2.2/0", ["epithelia-comparison.svg"]], ["f170/1.2.2/1", ["muscle-tissue-comparison.svg"]],
       ["f170/1.2.2/2", ["connective-tissue-comparison.svg", "blood-components.svg"]],
       ["f170/1.2.3/0", ["cell-culture-vessel.svg"]], ["f170/1.2.3/1", ["organoid-structure.svg"]], ["f170/1.2.3/2", ["organoid-context.svg"]],
+      ["f170/3.3.3/0", ["f170-menopause-change.svg"]], ["f170/3.3.3/1", ["f170-menopause-therapy.svg"]], ["f170/3.3.3/2", ["f170-prostate-enlargement.svg"]],
+      ["f170/3.3.2/1", ["f170-ovarian-hormones.svg", "f170-testicular-hormones.svg"]],
       ["f170/3.1.2/1", ["f170-diabetes-comparison.svg"]],
       ["f170/3.1.1/1", ["f170-glucose-response.svg", "f170-beta-insulin.svg", "f170-insulin-targets.svg"]], ["f170/3.1.1/2", ["f170-insulin-targets.svg", "adh-epo-kidney.svg"]],
       ["f170/2.1.3.cirrhosis/1", ["f170-bilirubin-albumin.svg"]],
@@ -856,6 +862,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.1.5", ["f170-sister-chromatids.svg", "f170-mitosis-stages.svg", "f170-cytokinesis.svg"], ["f170-sister-chromatids.svg", "f170-sister-chromatids.svg", "f170-mitosis-count.svg"]],
       ["f170/1.1.5.meiosis", ["f170-crossing-over.svg", "f170-meiosis-first-division.svg", "f170-meiosis-second-division.svg"], ["f170-meiosis-copying.svg", "f170-meiosis-first-division.svg", "f170-meiosis-second-division.svg"]],
       ["f170/1.2.1", ["f170-levels-organisation.svg", "f170-ventricle-damage.svg"], ["f170-ventricle-damage.svg", "f170-ventricle-damage.svg", "f170-ventricle-damage.svg"]],
+      ["f170/3.3.2", ["f170-ovarian-hormones.svg", "f170-testicular-hormones.svg"], ["f170-ovarian-hormones.svg", "f170-ovarian-hormones.svg", "f170-ovarian-hormones.svg"]],
       ["f170/3.1.2", ["f170-glucose-tolerance-graph.svg", "f170-diabetes-comparison.svg"], ["f170-glucose-tolerance-graph.svg", "f170-glucose-tolerance-graph.svg", "f170-glucose-tolerance-graph.svg"]],
       ["f170/3.1.1", ["f170-glucose-response.svg"], ["f170-glucose-response.svg", "f170-beta-insulin.svg", "f170-insulin-targets.svg", "f170-glucose-response.svg"]],
       ["f170/2.1.3.cirrhosis", ["f170-liver-cirrhosis.svg", "f170-bilirubin-albumin.svg"], ["f170-liver-bruising.svg", "f170-liver-bruising.svg", "f170-liver-bruising.svg"]],

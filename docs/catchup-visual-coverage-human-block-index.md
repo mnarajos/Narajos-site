@@ -118,11 +118,11 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f170/3.3.1 · Model 1 | Start at the upper free surface. The pale shapes below it are profiles of glands, set within darker support… | explainDiagrams, explainPhotos, modelDiagrams, modelPhotos, compare | Unreviewed; see reviewed exceptions |
 | f170/3.3.1 · Model 2 | The surface and the distribution of multiple small gland profiles support endometrium. This field does not … | explainDiagrams, explainPhotos, modelDiagrams, modelPhotos, compare | Unreviewed; see reviewed exceptions |
 | f170/3.3.1 · Model 3 | A round space alone is weak evidence. Ask whether the field shows multiple small gland profiles, one unusua… | explainDiagrams, explainPhotos, modelDiagrams, modelPhotos, compare | Unreviewed; see reviewed exceptions |
-| f170/3.3.2 · Explain 1 | FSH supports ovarian follicle development. A surge of LH triggers ovulation. After ovulation the corpus lut… | None declared | Unreviewed; see reviewed exceptions |
-| f170/3.3.2 · Explain 2 | In testes, FSH acts through Sertoli cells to support sperm production. LH stimulates Leydig cells to produc… | None declared | Unreviewed; see reviewed exceptions |
-| f170/3.3.2 · Model 1 | Begin with the follicle as a target. FSH supports its development. | None declared | Unreviewed; see reviewed exceptions |
-| f170/3.3.2 · Model 2 | Once a mature follicle is present, the LH surge triggers release of the secondary oocyte. | None declared | Unreviewed; see reviewed exceptions |
-| f170/3.3.2 · Model 3 | The remaining follicular tissue forms the corpus luteum. Progesterone helps maintain the endometrium. | None declared | Unreviewed; see reviewed exceptions |
+| f170/3.3.2 · Explain 1 | FSH supports ovarian follicle development. A surge of LH triggers ovulation. After ovulation the corpus lut… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/3.3.2 · Explain 2 | In testes, FSH acts through Sertoli cells to support sperm production. LH stimulates Leydig cells to produc… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/3.3.2 · Model 1 | Begin with the follicle as a target. FSH supports its development. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/3.3.2 · Model 2 | Once a mature follicle is present, the LH surge triggers release of the secondary oocyte. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/3.3.2 · Model 3 | The remaining follicular tissue forms the corpus luteum. Progesterone helps maintain the endometrium. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/4.1.1 · Explain 1 | Both groups have a cell membrane and a peptidoglycan wall. A typical Gram-positive wall has a thick peptido… | table | Unreviewed; see reviewed exceptions |
 | f170/4.1.1 · Explain 2 | Gram-positive cells typically retain the first purple stain. Gram-negative cells typically lose it and appe… | table | Unreviewed; see reviewed exceptions |
 | f170/4.1.1 · Model 1 | In an unfamiliar description, a thin wall lies between two membranes. That arrangement indicates a typical … | table | Unreviewed; see reviewed exceptions |
@@ -161,12 +161,12 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f171/1.2.1.hiatus · Model 1 | In the sliding example, the stomach joins the oesophagus above the diaphragm. Look for the junction marker … | visual | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.hiatus · Model 2 | The displaced junction can separate the two parts of the barrier to reflux. This makes it easier for existi… | visual | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.hiatus · Model 3 | In a fictional case, the raised junction on imaging is objective evidence. Waking with a burning feeling is… | visual | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.hodgkin · Explain 1 | Hodgkin lymphoma is a cancer of the lymphatic system. In classical Hodgkin lymphoma the cancer cells come f… | table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.hodgkin · Explain 2 | Effects depend partly on where the enlarged nodes are. Nodes in the chest can press on nearby structures an… | table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.hodgkin · Explain 3 | Fatigue and appointments can affect daily life and family routines. Swollen nodes can have other causes, in… | table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.hodgkin · Model 1 | A swollen node can develop where the cancer and the surrounding inflammatory response increase the volume o… | table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.hodgkin · Model 2 | In a fictional case, enlarged chest nodes press against a large airway. The pressure can contribute to coug… | table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.hodgkin · Model 3 | A cough or enlarged node alone is not specific to lymphoma. Use tissue findings to decide the cause and the… | table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.hodgkin · Explain 1 | Hodgkin lymphoma is a cancer of the lymphatic system. In classical Hodgkin lymphoma the cancer cells come f… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.hodgkin · Explain 2 | Effects depend partly on where the enlarged nodes are. Nodes in the chest can press on nearby structures an… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.hodgkin · Explain 3 | Fatigue and appointments can affect daily life and family routines. Swollen nodes can have other causes, in… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.hodgkin · Model 1 | A swollen node can develop where the cancer and the surrounding inflammatory response increase the volume o… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.hodgkin · Model 2 | In a fictional case, enlarged chest nodes press against a large airway. The pressure can contribute to coug… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.hodgkin · Model 3 | A cough or enlarged node alone is not specific to lymphoma. Use tissue findings to decide the cause and the… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.movement · Explain 1 | Brain circuits help initiate and scale movement. Motor neurones carry signals that activate voluntary muscles. | None declared | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.movement · Explain 2 | In motor neurone disease (MND), motor neurones progressively stop working. Fewer effective signals reach th… | None declared | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.movement · Explain 3 | In Parkinson’s disease, loss of dopamine-producing cells disrupts circuits that coordinate movement. Slowne… | None declared | Unreviewed; see reviewed exceptions |
@@ -180,11 +180,11 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f171/1.2.1.oxygen · Explain 5 | Fatigue may restrict exercise. Repeated respiratory treatment or unpredictable pain may disrupt education, … | None declared | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.oxygen · Model 1 | Trace the route backwards from a muscle. A blocked small vessel limits blood reaching it even if air reache… | None declared | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.oxygen · Model 2 | With low haemoglobin, each volume of blood can carry less oxygen even with open vessels. Airway obstruction… | None declared | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.pkd · Explain 1 | Autosomal dominant polycystic kidney disease is an inherited disorder. Fluid-filled cysts can enlarge the k… | table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.pkd · Explain 2 | Some people experience pain in the side or back. Blood in the urine and raised blood pressure can be signs.… | table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.pkd · Explain 3 | Symptoms vary. Pain or repeated hospital appointments can affect everyday activities. If kidney failure dev… | table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.pkd · Model 1 | Follow the effect of the structural change. Enlarging cysts can displace and damage functioning kidney tiss… | table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.pkd · Model 2 | In a fictional example, the urine volume stays similar but blood tests indicate reduced clearance. The volu… | table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.pkd · Explain 1 | Autosomal dominant polycystic kidney disease is an inherited disorder. Fluid-filled cysts can enlarge the k… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.pkd · Explain 2 | Some people experience pain in the side or back. Blood in the urine and raised blood pressure can be signs.… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.pkd · Explain 3 | Symptoms vary. Pain or repeated hospital appointments can affect everyday activities. If kidney failure dev… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.pkd · Model 1 | Follow the effect of the structural change. Enlarging cysts can displace and damage functioning kidney tiss… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.pkd · Model 2 | In a fictional example, the urine volume stays similar but blood tests indicate reduced clearance. The volu… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.renal · Explain 1 | Glomeruli filter water and small solutes from blood. Healthy filtration barriers retain blood cells and mos… | None declared | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.renal · Explain 2 | Nephritis means kidney inflammation. In glomerulonephritis the inflamed filters may leak blood cells or pro… | None declared | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.renal · Explain 3 | In polycystic kidney disease, enlarging fluid-filled cysts can damage functioning tissue. Blood pressure ma… | None declared | Unreviewed; see reviewed exceptions |

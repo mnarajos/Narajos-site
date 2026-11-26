@@ -371,6 +371,24 @@ function dynamicEquilibrium() {
     text(76,165,'Reactants',blue,14)+text(241,165,'Products',rust,14),
     'The two arrows show equal reaction rates, not stopped particles or necessarily equal concentrations.');
 }
+function equilibriumStart() {
+  return fig('At the start of the model',
+    'A closed vessel initially contains reactant but no product in this model. The forward reaction can form product; the reverse rate starts at zero because no product is present yet.',
+    '<rect x="20" y="35" width="280" height="112" rx="10" fill="#f4f8f8" stroke="'+ink+'" stroke-width="2"/>'+
+    circle(48,66,8,'#c6dff0',blue)+circle(79,66,8,'#c6dff0',blue)+circle(110,66,8,'#c6dff0',blue)+circle(48,111,8,'#c6dff0',blue)+circle(79,111,8,'#c6dff0',blue)+circle(110,111,8,'#c6dff0',blue)+
+    arrow(142,90,216,90,teal,3)+text(224,76,'Product',rust,15)+text(224,108,'forms',rust,15)+text(80,177,'Reactant',blue,15),
+    'Start with reactant in the closed vessel. As product forms, the reverse reaction can begin; the particle count is a model.',195);
+}
+function equilibriumRateGraph() {
+  return fig('Both reaction rates change',
+    'In the worked model, forward reaction rate falls from 8 to 5 to 4 arbitrary units at 0, 2 and 4 minutes. Reverse rate rises from 0 to 3 to 4 at the same times. Both remain at 4 at 6 minutes. The curves coincide from 4 to 6 minutes but both reactions continue.',
+    text(55,23,'Rate (arbitrary units)',ink,15,'start')+line(55,170,285,170)+line(55,170,55,40)+
+    '<polyline points="55,50 125,95 195,110 265,110" fill="none" stroke="'+blue+'" stroke-width="4"/><polyline points="55,170 125,125 195,110 265,110" fill="none" stroke="'+rust+'" stroke-width="2.5" stroke-dasharray="6 4"/>'+
+    text(43,175,'0',ink,14,'end')+text(43,115,'4',ink,14,'end')+text(43,55,'8',ink,14,'end')+
+    text(55,192,'0',ink,14)+text(125,192,'2',ink,14)+text(195,192,'4',ink,14)+text(265,192,'6',ink,14)+text(160,224,'Time (min)',ink,15)+
+    line(32,252,58,252,blue,4)+text(106,258,'Forward',ink,14)+line(177,252,203,252,rust,2,'6 4')+text(251,258,'Reverse',ink,14),
+    'Read both lines at 4 minutes. They coincide at a non-zero rate; the reactions continue in both directions. Values are illustrative.',275);
+}
 function saltsApparatus() {
   return fig('Making soluble salt crystals',
     'Copper oxide is added in excess to warm sulfuric acid. The mixture is filtered to remove excess solid. The copper sulfate solution is evaporated to concentrate it and cooled to crystallise.',
@@ -457,6 +475,15 @@ function naturalSelection() {
     moth(205,59,true)+moth(241,59,true)+moth(277,59,false)+moth(205,100,true)+moth(241,100,true)+moth(277,100,true)+
     arrow(146,81,174,81,rust,2)+text(79,23,'Variation',ink,15)+text(235,23,'Later',ink,15),
     'Compare the inherited wing colours in the starting and later generations. The example is illustrative, not a record of real population counts.');
+}
+function genotypeAndPhenotype() {
+  return fig('Genotype and visible phenotype',
+    'In a simplified single-gene model of pea seed shape, A and a are two alleles. Seeds with AA or Aa are round; seeds with aa are wrinkled. The letter pair is the genotype and the visible seed shape is the phenotype.',
+    text(55,25,'AA',ink,16)+text(160,25,'Aa',ink,16)+text(260,25,'aa',ink,16)+
+    circle(55,71,25,'#e7edcf',teal,2)+circle(160,71,25,'#e7edcf',teal,2)+
+    '<path d="M260 46 q9 -5 14 4 q11 0 10 11 q8 7 1 15 q3 11 -8 13 q-6 10 -16 5 q-10 6 -15 -4 q-11 0 -10 -11 q-8 -8 -1 -15 q-2 -11 9 -13 q6 -9 16 -5 Z" fill="#e7edcf" stroke="'+teal+'" stroke-width="2"/>'+
+    text(55,131,'Round',ink,15)+text(160,131,'Round',ink,15)+text(260,131,'Wrinkled',ink,15),
+    'Compare the allele pairs with the seed shapes. A and a are model allele labels; the seed shape is the observable phenotype.',150);
 }
 function predationAndInheritance() {
   const moth=(x,y,colour)=>'<path d="M'+x+' '+y+' l-12 -8 v16 z M'+x+' '+y+' l12 -8 v16 z" fill="'+colour+'" stroke="#283e43" stroke-width="1.5"/>';
@@ -844,6 +871,7 @@ export const gcseWorkedVisuals = {
 export const gcseWorkedLineVisuals = {
   'chromatography': [gcseChromatogramSetup, gcseChromatogramResult, rfWorked],
   'domestic-electricity': [alternatingAndDirect, mainsWorkingLoop, faultPath],
+  'dynamic-equilibrium': [equilibriumStart, equilibriumRateGraph, dynamicEquilibrium],
   'photosynthesis-limits': [pondweedRateWorked, pondweedLight, pondweedTemperature],
   'reacting-masses': [magnesiumParticles, oxygenRequirement, magnesiumYield],
   'solution-concentration': [concentrationVolumes, concentrationBars, null],
@@ -939,13 +967,21 @@ function coilReversal() {
       text(x,y+55,label,ink,15);
   }
   return fig('Current reverses after half a turn',
-    'At first, side A is left with conventional current out of the page and force upwards; side B is right with current into the page and force downwards. After half a turn, B is left with current out of the page and A is right with current into the page. The commutator swaps each side’s connection, so the direction in each named side reverses and the turning effect stays clockwise.',
-    text(160,24,'Before half-turn',ink,15)+side(78,60,'Side A',true)+side(242,60,'Side B',false)+arrow(78,44,78,25,rust,2)+arrow(242,76,242,95,rust,2)+
-    text(160,140,'Field: N → S',blue,13)+text(160,170,'After half-turn',ink,15)+side(78,210,'Side B',true)+side(242,210,'Side A',false)+arrow(78,194,78,175,rust,2)+arrow(242,226,242,245,rust,2)+
+    'At first, side A is left with conventional current into the page and force downwards; side B is right with current out of the page and force upwards. After half a turn, B is left with current into the page and A is right with current out of the page. The commutator swaps each side’s connection, so the direction in each named side reverses and the turning effect stays anticlockwise.',
+    text(160,24,'Before half-turn',ink,15)+side(78,60,'Side A',false)+side(242,60,'Side B',true)+arrow(78,76,78,95,rust,2)+arrow(242,44,242,25,rust,2)+
+    text(160,140,'Field: N → S',blue,13)+text(160,170,'After half-turn',ink,15)+side(78,210,'Side B',false)+side(242,210,'Side A',true)+arrow(78,226,78,245,rust,2)+arrow(242,194,242,175,rust,2)+
     text(160,295,'Dot: out of page   ×: into page',ink,14),
     'Follow a named side as the coil turns. The split-ring commutator reverses its current, keeping the turning effect in the same direction.',315);
 }
 function motorOverview(){return grouped(motorForce,coilReversal,splitRing);}
+export function leftHandDirections() {
+  return fig('Use Fleming’s left-hand rule',
+    'The first finger points right, from north to south in the magnetic field. The second finger points into the page, shown by a cross. The thumb points down, showing the force. These three directions are mutually perpendicular.',
+    text(160,25,'First finger: field',blue,15)+arrow(95,87,255,87,blue,3)+circle(95,87,15,'white',ink)+line(88,80,102,94,ink,2)+line(88,94,102,80,ink,2)+
+    arrow(95,104,95,166,rust,3)+text(210,163,'Thumb: force',rust,15)+text(160,215,'Second finger: into page',ink,15),
+    'Point the first finger with the field and the second finger into the page. The thumb then points down; the cross means into the page.',235);
+}
+export function motorReversalWorked(){return grouped(coilReversal,splitRing);}
 function oxygenDebt() {
   return fig('Lactate after exercise',
     'Blood transports lactic acid from muscle to the liver after exercise. The body needs additional oxygen after exercise to deal with the lactic acid produced.',
@@ -1322,7 +1358,7 @@ export const moreGcseStepVisuals = {
   'respiration-exercise': {0:respiratoryComparison,1:muscleRespiration},
   'vaccine-memory': {0:barriersAndAntibodies,1:vaccineMemory,2:vaccineAndAntibiotics},
   'selection-and-variation': {0:selectionAndInheritance,1:selectionAndInheritance,2:selectiveBreeding},
-  'inheritance-cross': {2:selectionAndInheritance},
+  'inheritance-cross': {0:genotypeAndPhenotype,2:selectionAndInheritance},
   'chromatography': {0:chromatographyPhases,1:rfDistance,2:gasTests},
   'latent-heat': {0:storedEnergy,1:() => grouped(heatingCurve, gcseStepVisuals['latent-heat'][1]),2:latentCalculation},
   'parallel-circuits': {2:parallelAndSeries},
