@@ -68,6 +68,37 @@ export async function checkPlanInvestigation(browser, base, axeSource) {
     }
   }
   try {
+    const vocabulary = await browser.newPage({viewport:{width:1280,height:900}});
+    try {
+      await vocabulary.goto(route);
+      for (const [id, term, definition] of [
+        ['potato', 'osmosis', /water|membrane/i],
+        ['beetroot', 'absorbance', /light|absorb/i],
+        ['cress', 'germination', /seed|germinat/i],
+      ]) {
+        await stage(vocabulary,id);
+        if (id === 'cress') {
+          assert.equal(await vocabulary.locator('[data-plan-field]').count(), 0, 'The first cress attempt has no planning decisions');
+          assert.equal(await vocabulary.locator('.plan-help').count(), 0, 'Planning hints stay hidden until the first cress attempt is saved');
+        }
+        const word = vocabulary.locator(`.plan-brief button.context-vocabulary-term[data-vocabulary-term="${term}"]`).first();
+        await word.waitFor();
+        await word.click();
+        const panel = vocabulary.locator('dialog.vocabulary-panel[open]');
+        await panel.waitFor();
+        assert.match(await panel.innerText(), definition, `${id}: the incidental definition opens`);
+        await vocabulary.keyboard.press('Escape');
+        await panel.waitFor({state:'hidden'});
+        assert(await word.evaluate(el => el === document.activeElement), `${id}: focus returns to the vocabulary term`);
+        const saved = await vocabulary.evaluate(k => JSON.parse(localStorage.getItem(k)), key);
+        assert.notEqual(saved.stages[id].helped, true, `${id}: vocabulary lookup does not count as planning help`);
+        if (id === 'cress') {
+          assert.equal(await vocabulary.locator('[data-plan-field]').count(), 0, 'Word help does not reveal planning scaffolds');
+          assert.equal(await vocabulary.locator('[data-plan-first]').count(), 1, 'The uncued first attempt remains available');
+        }
+        await action(vocabulary,'back').click();
+      }
+    } finally { await vocabulary.close(); }
     for (const [id, comparison, measurement, samples] of [
       ['potato', {n0:'3',n1:'3',n2:'3',n3:'3',unit:'individual'}, {measure:'beforeafter',time:'same',process:'percent'}, {volume:'10',conditions:'same',reason:'Comparable pieces make treatment comparisons useful.'}],
       ['beetroot', {n0:'4',n1:'4',n2:'4',unit:'individual'}, {measure:'absorbance',time:'same',process:'mean'}, {volume:'10',conditions:'same',procedure:'Rinse comparable discs and treat in separate tubes.',reason:'Time also affects pigment release.'}],
