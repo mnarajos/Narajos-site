@@ -2,7 +2,7 @@ import { investigations } from "./gcse-investigations.js";
 import { question } from "./school-catchup-journey.js";
 import { priorityCatchup } from "./gcse-catchup-priority.js";
 import { gcseStepVisuals } from "./gcse-step-visuals.js";
-import { moreGcseStepVisuals, gcseHigherVisuals, gcseWorkedVisuals, heatingCurve } from "./gcse-more-step-visuals.js";
+import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, heatingCurve } from "./gcse-more-step-visuals.js";
 import { gcseVisual } from "./gcse-catchup-visuals.js";
 
 function lesson(year, code, title, hook, notice, idea, visual, stages, independent, retry, higher) {
@@ -574,6 +574,9 @@ scaffold(year11Catchup["inheritance-cross"], "Build a genetic cross", [
 ], "Count how many of the four equally likely boxes show two recessive alleles.");
 
 export const gcseCatchup = {...year10Catchup, ...year11Catchup, ...complementary, ...furtherCatchup, ...priorityCatchup, ...investigations};
+
+// Replace the opening text-only comparisons with diagrams of their ideas.
+for (const [id, render] of Object.entries(gcseOpeningVisuals)) gcseCatchup[id].visual = ["custom", render];
 
 for (const mapping of [gcseStepVisuals, moreGcseStepVisuals]) {
   for (const [id, visuals] of Object.entries(mapping)) {

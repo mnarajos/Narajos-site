@@ -156,6 +156,15 @@ export async function checkCatchupScaffolds(browser, base) {
     await gas.getByRole("radio", {name: "Warmer gas"}).check();
     assert.equal(await gas.locator("[data-gas-pressure-value]").textContent(), "0.9×");
     assert.match(await gas.locator("#gas-result").textContent(), /0\.9 times the starting 14-particle box/);
+    await page.evaluate(() => localStorage.setItem("narajos.catchup.v1.7.forces", JSON.stringify({step: 1})));
+    await page.goto(base + "/ks3/lesson/?topic=forces&guided=1");
+    const forceWorked = page.locator(".school-current-stage .school-worked-example");
+    assert(await forceWorked.getByRole("img", {name: /35 newton force acts right and a 25 newton force acts left/}).isVisible());
+    await page.evaluate(() => localStorage.removeItem("narajos.catchup.v1.7.forces"));
+    await page.evaluate(() => localStorage.removeItem("narajos.catchup.v1.8.balanced-moments"));
+    await page.goto(base + "/ks3/lesson/?topic=balanced-moments&guided=1");
+    const seesawWorked = page.locator(".school-current-stage .school-worked-example");
+    assert(await seesawWorked.getByRole("img", {name: /10 N acts down on the left at 2 m.*10 N acts down on the right at 3 m/}).isVisible());
     assert.deepEqual(errors, [], "JavaScript errors in Year 7–9 catch-up");
   } finally {
     await page.close();

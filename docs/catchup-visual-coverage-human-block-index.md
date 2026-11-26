@@ -4,11 +4,11 @@ This index enumerates the authored explanation and sequential worked-example blo
 
 | Route and block | Content excerpt | Assets declared in lesson | Review |
 | --- | --- | --- | --- |
-| f170/1.1.1 · Explain 1 | A mature erythrocyte (red blood cell) is a flexible biconcave disc. Its thin centre shortens the diffusion … | teachingDiagram, compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.1 · Explain 2 | White blood cells have nuclei. A nuclear outline can help you recognise a cell. To explain its function, lo… | teachingDiagram, compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.1 · Model 1 | Oxygen crosses the cell membrane and diffuses a short distance to haemoglobin in the thin disc. | teachingDiagram, compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.1 · Model 2 | Without a nucleus there is more internal space for haemoglobin. Oxygen can bind there and later be released… | teachingDiagram, compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.1 · Model 3 | Shape and haemoglobin do different jobs. A flexible cell with very little haemoglobin could still enter a c… | teachingDiagram, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1 · Explain 1 | A mature erythrocyte (red blood cell) is a flexible biconcave disc. Its thin centre shortens the diffusion … | teachingDiagram, explanationPhoto, comparisonDiagram, comparisonDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1 · Explain 2 | White blood cells have nuclei. A nuclear outline can help you recognise a cell. To explain its function, lo… | teachingDiagram, explanationPhoto, comparisonDiagram, comparisonDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1 · Model 1 | Oxygen crosses the cell membrane and diffuses a short distance to haemoglobin in the thin disc. | teachingDiagram, explanationPhoto, comparisonDiagram, comparisonDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1 · Model 2 | Without a nucleus there is more internal space for haemoglobin. Oxygen can bind there and later be released… | teachingDiagram, explanationPhoto, comparisonDiagram, comparisonDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1 · Model 3 | Shape and haemoglobin do different jobs. A flexible cell with very little haemoglobin could still enter a c… | teachingDiagram, explanationPhoto, comparisonDiagram, comparisonDiagrams, compare | Unreviewed; see reviewed exceptions |
 | f170/1.1.1.muscle · Explain 1 | Actin and myosin filaments slide to generate force. In skeletal and cardiac muscle, repeating sarcomeres gi… | compare | Unreviewed; see reviewed exceptions |
 | f170/1.1.1.muscle · Model 1 | Imagine a ring of smooth muscle around a lumen. Shortening around the ring makes the lumen narrower. | compare | Unreviewed; see reviewed exceptions |
 | f170/1.1.1.muscle · Model 2 | The absence of stripes does not mean these cells lack contractile proteins. It reflects how the filaments a… | compare | Unreviewed; see reviewed exceptions |
@@ -108,11 +108,11 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f170/3.1.2 · Model 1 | The x-axis shows time from the glucose load. The y-axis is blood glucose concentration in mmol/L. At time 0… | graph | Unreviewed; see reviewed exceptions |
 | f170/3.1.2 · Model 2 | The highest measured point is 8.8 at 30 minutes. A peak shows the period when glucose is elevated. It does … | graph | Unreviewed; see reviewed exceptions |
 | f170/3.1.2 · Model 3 | By 120 minutes the reading is 5.3 mmol/L, close to its starting value. This is consistent with glucose disp… | graph | Unreviewed; see reviewed exceptions |
-| f170/3.2.1 · Explain 1 | Electrical signals travel along neurones. At a chemical synapse, a neurotransmitter carries information acr… | visual | Unreviewed; see reviewed exceptions |
-| f170/3.2.1 · Explain 2 | Myelin insulates sections of an axon. Current spreads quickly under myelin and action potentials are regene… | visual | Unreviewed; see reviewed exceptions |
-| f170/3.2.1 · Model 1 | A hot surface activates receptors in the skin. The sensory neurone carries impulses towards the CNS. | visual | Unreviewed; see reviewed exceptions |
-| f170/3.2.1 · Model 2 | Neurotransmitter passes the signal across synapses in the spinal pathway. | visual | Unreviewed; see reviewed exceptions |
-| f170/3.2.1 · Model 3 | A motor neurone carries impulses to a muscle. Contraction causes withdrawal of the limb. | visual | Unreviewed; see reviewed exceptions |
+| f170/3.2.1 · Explain 1 | Electrical signals travel along neurones. At a chemical synapse, a neurotransmitter carries information acr… | explainDiagrams, modelDiagrams, visual | Unreviewed; see reviewed exceptions |
+| f170/3.2.1 · Explain 2 | Myelin insulates sections of an axon. Current spreads quickly under myelin and action potentials are regene… | explainDiagrams, modelDiagrams, visual | Unreviewed; see reviewed exceptions |
+| f170/3.2.1 · Model 1 | A hot surface activates receptors in the skin. The sensory neurone carries impulses towards the CNS. | explainDiagrams, modelDiagrams, visual | Unreviewed; see reviewed exceptions |
+| f170/3.2.1 · Model 2 | Neurotransmitter passes the signal across synapses in the spinal pathway. | explainDiagrams, modelDiagrams, visual | Unreviewed; see reviewed exceptions |
+| f170/3.2.1 · Model 3 | A motor neurone carries impulses to a muscle. Contraction causes withdrawal of the limb. | explainDiagrams, modelDiagrams, visual | Unreviewed; see reviewed exceptions |
 | f170/3.3.1 · Explain 1 | The endometrium is the uterine lining, with glands. Ovarian follicles enclose developing oocytes. Seminifer… | photo, compare | Unreviewed; see reviewed exceptions |
 | f170/3.3.1 · Explain 2 | Use the positions and sizes of cells and spaces as evidence. The colour depends on the stain and is less us… | photo, compare | Unreviewed; see reviewed exceptions |
 | f170/3.3.1 · Model 1 | Start at the upper free surface. The pale shapes below it are profiles of glands, set within darker support… | photo, compare | Unreviewed; see reviewed exceptions |
@@ -131,12 +131,12 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f170/4.1.4 · Model 1 | This teaching graph uses a logarithmic vertical axis. A rise from 2 to 4 means a rise from 100 to 10,000, n… | graph | Unreviewed; see reviewed exceptions |
 | f170/4.1.4 · Model 2 | The first period shows little net increase (lag). The straight rising part represents exponential growth on… | graph | Unreviewed; see reviewed exceptions |
 | f170/4.1.4 · Model 3 | From intervals 3 to 5 the viable count remains about the same. Division could be continuing at roughly the … | graph | Unreviewed; see reviewed exceptions |
-| f171/1.2.1 · Explain 1 | COPD involves persistent difficulty moving air out of the lungs. Narrowed small airways and excess mucus ca… | table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1 · Explain 2 | Breathlessness during daily activity and a persistent cough with mucus are common symptoms. An examiner may… | table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1 · Explain 3 | Reduced airway clearance can contribute to chest infections, which can worsen symptoms. Persistent breathle… | table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1 · Model 1 | In a fictional model, mucus narrows the airway opening. Air meets greater resistance, so the same driving p… | table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1 · Model 2 | In a different part of the model, alveolar walls have been lost. This reduces the area across which gas can… | table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1 · Model 3 | Breathlessness can occur with either problem. To distinguish them, compare evidence about airflow with evid… | table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1 · Explain 1 | COPD involves persistent difficulty moving air out of the lungs. Narrowed small airways and excess mucus ca… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1 · Explain 2 | Breathlessness during daily activity and a persistent cough with mucus are common symptoms. An examiner may… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1 · Explain 3 | Reduced airway clearance can contribute to chest infections, which can worsen symptoms. Persistent breathle… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1 · Model 1 | In a fictional model, mucus narrows the airway opening. Air meets greater resistance, so the same driving p… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1 · Model 2 | In a different part of the model, alveolar walls have been lost. This reduces the area across which gas can… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1 · Model 3 | Breathlessness can occur with either problem. To distinguish them, compare evidence about airflow with evid… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.airways · Explain 1 | Air flows through bronchioles to alveoli. Thin alveolar walls provide a large surface for diffusion. | None declared | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.airways · Explain 2 | Asthma involves inflamed, sensitive airways. Muscle tightening and mucus can narrow their openings, causing… | None declared | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.airways · Explain 3 | COPD produces persistent airflow obstruction. In emphysema, loss of alveolar walls also reduces surface are… | None declared | Unreviewed; see reviewed exceptions |
@@ -287,10 +287,10 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f172/a4 · Model 1 | In a fictional disorder, target cells make too little of a functional protein. | teachingDiagram | Unreviewed; see reviewed exceptions |
 | f172/a4 · Model 2 | If treated target cells receive and express a functional copy, they may make more of that protein. | teachingDiagram | Unreviewed; see reviewed exceptions |
 | f172/a4 · Model 3 | Improvement depends on whether enough relevant cells make sufficient protein. Somatic treatment affects tre… | teachingDiagram | Unreviewed; see reviewed exceptions |
-| f173/a2 · Explain 1 | Light microscopy can show many whole cells or living material. Transmission electron microscopy (TEM) shows… | visual, visualFrom | Unreviewed; see reviewed exceptions |
-| f173/a2 · Model 1 | To compare projections on the outside of a prepared cell, choose a view of the surface. SEM provides that v… | visual, visualFrom | Unreviewed; see reviewed exceptions |
-| f173/a2 · Model 2 | Inspect the red-cell image. A light micrograph can show outlines of cells where they are distinct. Enlargin… | visual, visualFrom | Unreviewed; see reviewed exceptions |
-| f173/a2 · Model 3 | Compare a cell width with the white bar on the same image. The marked width is less than half of the bar la… | visual, visualFrom | Unreviewed; see reviewed exceptions |
+| f173/a2 · Explain 1 | Light microscopy can show many whole cells or living material. Transmission electron microscopy (TEM) shows… | explanationPhoto, explanationPhoto2, visual, visualFrom | Unreviewed; see reviewed exceptions |
+| f173/a2 · Model 1 | To compare projections on the outside of a prepared cell, choose a view of the surface. SEM provides that v… | explanationPhoto, explanationPhoto2, visual, visualFrom | Unreviewed; see reviewed exceptions |
+| f173/a2 · Model 2 | Inspect the red-cell image. A light micrograph can show outlines of cells where they are distinct. Enlargin… | explanationPhoto, explanationPhoto2, visual, visualFrom | Unreviewed; see reviewed exceptions |
+| f173/a2 · Model 3 | Compare a cell width with the white bar on the same image. The marked width is less than half of the bar la… | explanationPhoto, explanationPhoto2, visual, visualFrom | Unreviewed; see reviewed exceptions |
 | f173/a3 · Explain 1 | A positive control shows that a method can detect a known substance. A negative control shows the expected … | teachingDiagram, explanationDiagram, table | Unreviewed; see reviewed exceptions |
 | f173/a3 · Model 1 | Measure from the same baseline. Divide the spot distance by the solvent-front distance: 2 ÷ 10 = 0.20 for X. | teachingDiagram, explanationDiagram, table | Unreviewed; see reviewed exceptions |
 | f173/a3 · Model 2 | One unknown spot also gives 0.20, which is consistent with X under these conditions. Other substances may s… | teachingDiagram, explanationDiagram, table | Unreviewed; see reviewed exceptions |
@@ -331,13 +331,13 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f176/a1 · Explain 1 | The CNS consists of the brain and spinal cord. Peripheral nerves connect these with receptors and effectors… | teachingDiagram, explanationDiagram | Unreviewed; see reviewed exceptions |
 | f176/a1 · Model 1 | A receptor signals through sensory neurones towards the CNS. | teachingDiagram, explanationDiagram | Unreviewed; see reviewed exceptions |
 | f176/a1 · Model 2 | The CNS integrates the input. Motor neurones carry instructions back to muscles. | teachingDiagram, explanationDiagram | Unreviewed; see reviewed exceptions |
-| f176/a2 · Explain 1 | Voltage-gated sodium channels open during depolarisation and sodium enters. Potassium leaving contributes t… | explanationDiagram, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
-| f176/a2 · Model 1 | Depolarisation reaches the presynaptic terminal. | explanationDiagram, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
-| f176/a2 · Model 2 | Voltage-gated calcium channels open and calcium ions enter. | explanationDiagram, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
-| f176/a2 · Model 3 | Calcium promotes vesicle fusion. Neurotransmitter is released into the synaptic cleft. | explanationDiagram, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
-| f176/a2 · Model 4 | The transmitter diffuses across and binds specific postsynaptic receptors. | explanationDiagram, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
-| f176/a2 · Model 5 | Depending on the receptors, the effect makes firing more or less likely. The receiving cell integrates that… | explanationDiagram, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
-| f176/a2 · Model 6 | More excitation or less inhibition can each bring the trigger zone closer to threshold. With reduced inhibi… | explanationDiagram, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
+| f176/a2 · Explain 1 | Voltage-gated sodium channels open during depolarisation and sodium enters. Potassium leaving contributes t… | explanationDiagram, modelDiagrams, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
+| f176/a2 · Model 1 | Depolarisation reaches the presynaptic terminal. | explanationDiagram, modelDiagrams, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
+| f176/a2 · Model 2 | Voltage-gated calcium channels open and calcium ions enter. | explanationDiagram, modelDiagrams, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
+| f176/a2 · Model 3 | Calcium promotes vesicle fusion. Neurotransmitter is released into the synaptic cleft. | explanationDiagram, modelDiagrams, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
+| f176/a2 · Model 4 | The transmitter diffuses across and binds specific postsynaptic receptors. | explanationDiagram, modelDiagrams, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
+| f176/a2 · Model 5 | Depending on the receptors, the effect makes firing more or less likely. The receiving cell integrates that… | explanationDiagram, modelDiagrams, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
+| f176/a2 · Model 6 | More excitation or less inhibition can each bring the trigger zone closer to threshold. With reduced inhibi… | explanationDiagram, modelDiagrams, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
 | f176/a3 · Explain 1 | Nociceptors detect potentially damaging stimuli. Nociception is the neural encoding and processing of such … | teachingDiagram | Unreviewed; see reviewed exceptions |
 | f176/a3 · Model 1 | A hot object activates nociceptors and signals travel into the CNS. | teachingDiagram | Unreviewed; see reviewed exceptions |
 | f176/a3 · Model 2 | A withdrawal reflex can occur while signals also travel to brain regions involved in the experience of pain. | teachingDiagram | Unreviewed; see reviewed exceptions |

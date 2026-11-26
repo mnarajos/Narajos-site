@@ -1,6 +1,6 @@
 import { question as q } from "./school-catchup-journey.js";
-import { arrow, diagram, ink, rust, teal, text, blue, picture, line, circle } from "./catchup-models.js";
-import { cyclist } from "./ks3-catchup-models.js";
+import { arrow, diagram, ink, rust, teal, text, blue, picture, line, circle, node } from "./catchup-models.js";
+import { cyclist, ks3CatchupModel } from "./ks3-catchup-models.js";
 
 const worked = (title, ...lines) => ({title, lines});
 const bars = (caption, ...values) => ({type: "bars", caption, max: 10, bars: values});
@@ -172,12 +172,40 @@ function filterDiagram(workedExample = false) {
 }
 
 function seesaw(leftForce, leftDistance, rightForce, rightDistance) {
+  const leftNumber = Number.parseFloat(leftDistance), rightNumber = Number.parseFloat(rightDistance);
+  const known = Number.isFinite(leftNumber) && Number.isFinite(rightNumber);
+  const scale = known ? 85 / Math.max(leftNumber, rightNumber) : 40;
+  const left = 160 - (Number.isFinite(leftNumber) ? leftNumber * scale : 70);
+  const right = 160 + (Number.isFinite(rightNumber) ? rightNumber * scale : 70);
   return picture("Downward forces on a seesaw", diagram(`${leftForce} acts down on the left at ${leftDistance}. ${rightForce} acts down on the right at ${rightDistance} from the pivot.`, `
     ${line(28,83,292,83,ink,4)}<path d="M160 84L146 110H174Z" fill="#c8e0d9" stroke="${teal}" stroke-width="2"/>
-    ${arrow(57,41,57,78,blue,3)}${arrow(263,41,263,78,rust,3)}
-    ${text(57,31,leftForce,blue)}${text(263,31,rightForce,rust)}
-    ${line(57,98,133,98)}${line(186,98,263,98)}
-    ${text(95,120,leftDistance)}${text(225,120,rightDistance)}${text(160,143,"Pivot",teal)}`,320,153));
+    ${arrow(left,41,left,78,blue,3)}${arrow(right,41,right,78,rust,3)}
+    ${text(left,31,leftForce,blue)}${text(right,31,rightForce,rust)}
+    ${line(left,98,145,98)}${line(175,98,right,98)}
+    ${text((left+145)/2,120,leftDistance)}${text((175+right)/2,120,rightDistance)}${text(160,143,"Pivot",teal)}`,320,153),
+    known ? "Compare each force and its distance from the pivot. The beam is shown level before any turning." : "The unknown distance is not drawn to scale; calculate it from the moments.");
+}
+
+function unequalForces() {
+  return picture("Horizontal forces on a moving cyclist", diagram(
+    "A cyclist travels right. A 35 newton force acts right and a 25 newton force acts left, giving a resultant of 10 newtons right.", `
+    ${circle(125,104,17,"#f2f7f6",ink,2)}${circle(183,104,17,"#f2f7f6",ink,2)}
+    <path d="M125 104l25-32 16 32 17 0-12-38h-8M125 104h41l8-29h-23" fill="none" stroke="${teal}" stroke-width="3"/>
+    ${circle(168,44,7,"#db9963",ink,2)}<path d="M164 52l-14 17 19 15-6 18" fill="none" stroke="${ink}" stroke-width="5"/>
+    ${arrow(106,79,43,79,blue,3)}${arrow(202,79,290,79,blue,3)}
+    ${text(55,64,"25 N",blue,15)}${text(268,64,"35 N",blue,15)}${arrow(110,136,210,136,rust,2)}${text(160,159,"Travel right",rust,14)}`,320,175),
+    "Subtract opposite forces: 35 N − 25 N = 10 N to the right, in the direction of travel.");
+}
+
+function filtrationWorked() {
+  const host = node("div");
+  const figure = node("figure", "", "catchup-picture");
+  const image = filterDiagram(true);
+  image.width = 520;
+  image.height = 224;
+  figure.append(image, node("figcaption", "Sand stays on the paper while salt solution passes into the beaker."));
+  host.append(figure, ks3CatchupModel("separating-techniques", true));
+  return host;
 }
 
 function reactivityLadder() {
@@ -191,7 +219,19 @@ export function withKS3Scaffolds(id, steps, renderVisual) {
     const addition = ks3Scaffolds[id]?.[index];
     if (!addition) return step;
     const {diagram: figure, ...attributes} = addition;
-    return {...step, ...attributes, ...(figure ? {reference: {label: "Question diagram", render: () => renderVisual({...figure, reference: true})}} : {})};
+    const result = {...step, ...attributes, ...(figure ? {reference: {label: "Question diagram", render: () => renderVisual({...figure, reference: true})}} : {})};
+    if (result.worked) {
+      const map = {
+        "atoms-and-compounds": () => renderVisual({...figure, reference: true}),
+        "energy-transfers": () => renderVisual({...figure, reference: true}),
+        forces: index === 0 ? () => cyclist(false) : unequalForces,
+        "balanced-moments": () => seesaw("10 N", "2 m", "10 N", "3 m"),
+        "work-done": () => ks3CatchupModel("work-done", true),
+        "separating-techniques": filtrationWorked
+      };
+      if (map[id]) result.worked = {...result.worked, visual: map[id]};
+    }
+    return result;
   });
 }
 

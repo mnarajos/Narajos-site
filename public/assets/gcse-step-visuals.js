@@ -53,11 +53,11 @@ function carbonCycle() {
     text(160,23,"Carbon dioxide in air",blue,16)+text(58,92,"Plants",teal,16)+text(260,92,"Animals",rust,16)+text(160,162,"Decomposers",ink,16)+
     arrow(107,32,61,69,teal)+text(29,47,"Photo-",teal,12)+text(29,61,"synthesis",teal,12)+
     arrow(91,86,224,86,ink)+text(158,76,"Feeding",ink,14)+
-    arrow(92,70,135,32,blue)+arrow(223,68,182,32,blue)+text(160,51,"Respiration",blue,13)+
+    arrow(92,70,135,32,blue)+arrow(223,68,182,32,blue)+
     arrow(70,103,129,145,ink)+arrow(249,103,191,145,ink)+text(160,119,"Dead material",ink,13)+
     '<path d="M160 169 C311 220 320 61 245 31" fill="none" stroke="'+blue+'" stroke-width="2.5"/>'+
     arrow(255,35,245,31,blue)+text(265,184,"Respiration",blue,12),320,200),
-    "Follow the arrows as carbon moves through organisms and returns to the air. This is a simplified cycle.");
+    "Follow the arrows as carbon moves through organisms. Respiration by plants, animals and decomposers returns carbon dioxide to the air. This is a simplified cycle.");
 }
 
 function moltenSalt() {
@@ -93,8 +93,8 @@ function photosynthesis() {
     text(45,64,"Carbon",blue,14)+text(45,80,"dioxide",blue,14)+arrow(67,88,123,99,blue)+
     text(47,133,"Water",blue,14)+arrow(73,128,129,121,blue)+
     arrow(198,98,246,82,teal)+text(269,80,"Oxygen",teal,14)+
-    arrow(192,126,244,135,teal)+text(268,142,"Glucose",teal,14),320,158),
-    "Follow the inputs into the leaf and the products away from it. Glucose can be used or stored by the plant.");
+    '<rect x="126" y="105" width="68" height="20" rx="3" fill="#f7fcf7"/>'+text(160,120,"Glucose",teal,14),320,158),
+    "Follow the inputs into the leaf. Oxygen leaves; glucose made in the leaf can be used, stored or transported.");
 }
 
 function formulaMass() {
@@ -110,10 +110,10 @@ function formulaMass() {
 
 function glucoseControl() {
   return picture("Response to a rise in blood glucose", diagram(
-    "After a meal blood glucose rises. The pancreas releases insulin, which acts on body cells and the liver. Cells take up glucose and the liver stores glucose as glycogen; blood glucose falls towards its normal level.",
+    "After a meal blood glucose rises. The pancreas releases insulin, which acts on body cells and the liver. Cells take up glucose and the liver and muscles store glucose as glycogen; blood glucose falls towards its normal level.",
     text(160,22,"Blood glucose rises",rust,16)+arrow(160,28,160,53,ink)+
     text(160,72,"Pancreas releases insulin",ink,16)+arrow(160,79,160,103,ink)+
-    text(160,123,"Body cells take up glucose",teal,15)+text(160,143,"Liver stores glucose as glycogen",teal,15)+
+    text(160,123,"Body cells take up glucose",teal,15)+text(160,143,"Liver and muscles store glycogen",teal,15)+
     arrow(160,150,160,175,ink)+text(160,195,"Blood glucose falls",blue,16),320,213),
     "Follow the response from the rise in glucose to its return towards the normal range.");
 }

@@ -1,5 +1,7 @@
 // Original teaching schematics. Positions, sizes and colours are illustrative.
 import { arrow, blue, circle, diagram, ink, line, node, picture, rust, teal, text } from './catchup-models.js';
+import { gcseStepVisuals } from './gcse-step-visuals.js';
+import { photo } from './catchup-photos.js';
 const fig = (title,alt,art,caption,h=185) => picture(title,diagram(alt,art,320,h),caption);
 
 function greenhouse() {
@@ -83,7 +85,7 @@ function stopping() {
     '<path d="M232 108 h47 l12 12 v11 h-67 v-10 z" fill="#e3e9e9" stroke="'+ink+'" stroke-width="2"/>'+circle(238,133,6,ink)+circle(277,133,6,ink)+
     arrow(25,78,116,78,rust,2)+text(72,60,'Thinking',rust,14)+arrow(116,78,259,78,teal,2)+text(188,60,'Braking',teal,14)+
     text(30,165,'Hazard',ink,13)+text(140,165,'Brakes applied',ink,13)+text(262,165,'Stopped',ink,13),
-    'Add the distance travelled during the reaction to the distance travelled after the brakes are applied.');
+    'Reaction time affects thinking distance; tyre grip affects braking distance. Add the two distances to find the total.');
 }
 function neuron() {
   return fig('Withdrawal reflex pathway',
@@ -165,6 +167,17 @@ function emSpectrum() {
     arrow(303,205,303,33,rust,2)+text(271,154,'Wavelength',rust,15)+text(271,172,'increases',rust,15),
     'Read down the bands for increasing frequency. Their displayed sizes are illustrative, not to scale.',225);
 }
+
+function electromagneticWaves() {
+  const wave=(y,period)=>Array.from({length:81},(_,i)=>{const x=20+2.8*i;return x+','+(y-13*Math.sin((x-20)*Math.PI*2/period)).toFixed(1)}).join(' ');
+  return fig('Electromagnetic waves in a vacuum',
+    'Two schematic electromagnetic waves travel to the right at the same speed in a vacuum. The wave with the shorter wavelength has more oscillations over the same distance. The oscillation is transverse, perpendicular to the direction of travel.',
+    '<polyline points="'+wave(49,112)+'" fill="none" stroke="'+blue+'" stroke-width="3"/><polyline points="'+wave(121,56)+'" fill="none" stroke="'+rust+'" stroke-width="3"/>'+
+    arrow(231,21,292,21,blue,2)+arrow(231,93,292,93,rust,2)+arrow(25,67,25,32,ink,1.5)+
+    text(111,21,'Longer wavelength',ink,14)+text(111,93,'Shorter wavelength',ink,14)+text(160,170,'Same speed in a vacuum',ink,15),
+    'Compare the wavelength and the equal travel arrows. The oscillations are perpendicular to the direction of travel; spacing is illustrative.',185);
+}
+function spectrumAndWaves(){return grouped(emSpectrum,electromagneticWaves);}
 function highLightExperiment() {
   return fig('Testing a limiting factor',
     'A lamp illuminates pondweed in water. Gas collects in an inverted measuring cylinder. Compare oxygen collected per minute at two carbon dioxide supplies, keeping light, temperature and the pondweed the same.',
@@ -322,19 +335,30 @@ function respiratoryComparison() {
     text(18,27,'Aerobic',ink,15,'start')+text(18,51,'Glucose + oxygen',blue,15,'start')+arrow(157,46,190,46,teal,2)+text(198,51,'CO₂ + water',teal,15,'start')+
     line(16,67,304,67,'#aabebc',1)+text(18,90,'Anaerobic in muscle',ink,15,'start')+text(18,115,'Glucose',blue,15,'start')+arrow(94,110,147,110,rust,2)+text(157,115,'Lactic acid',rust,15,'start')+
     line(16,128,304,128,'#aabebc',1)+text(18,151,'Anaerobic in yeast',ink,15,'start')+text(18,176,'Glucose',blue,15,'start')+arrow(94,171,147,171,rust,2)+text(157,176,'Ethanol + CO₂',rust,15,'start'),
-    'Compare the inputs and products. Anaerobic respiration transfers less energy per glucose than aerobic respiration.',195);
+    'Compare the inputs and products. If oxygen supply cannot meet demand, muscle cells can also respire anaerobically, transferring less energy per glucose.',195);
 }
 function menstrualHormones() {
   return fig('Hormones act on target organs',
     'The pituitary gland releases FSH and LH into the blood. FSH supports follicle maturation; a surge of LH triggers ovulation. The ovary releases oestrogen and progesterone, which act on the uterus lining.',
     circle(130,33,22,'#e1e6f7',blue)+text(130,38,'P',ink,16)+text(177,38,'Pituitary',ink,15,'start')+
-    arrow(130,57,130,85,blue,2)+text(68,74,'FSH and LH',blue,15)+
+    arrow(130,57,130,85,blue,2)+text(7,68,'FSH: maturation',blue,13,'start')+text(7,86,'LH: ovulation',blue,13,'start')+
     '<ellipse cx="130" cy="111" rx="28" ry="20" fill="#f3d6ce" stroke="'+rust+'" stroke-width="2"/>'+circle(130,111,7,'#f6eee1',rust)+text(177,116,'Ovary',ink,15,'start')+
     arrow(130,133,130,160,teal,2)+text(5,147,'Oestrogen',teal,14,'start')+text(5,165,'and progesterone',teal,14,'start')+
-    '<path d="M109 166 Q110 193 130 201 Q150 193 151 166 L140 174 L130 183 L120 174 Z" fill="#f4d2cc" stroke="'+rust+'" stroke-width="2"/>'+text(177,188,'Uterus',ink,15,'start'),
-    'Follow each hormone from its source to a target. The organ sketches are simplified.',215);
+    '<path d="M109 166 Q110 193 130 201 Q150 193 151 166 L140 174 L130 183 L120 174 Z" fill="#f4d2cc" stroke="'+rust+'" stroke-width="2"/>'+text(177,188,'Uterus',ink,15,'start')+text(177,206,'lining',ink,14,'start'),
+    'Follow hormones carried in blood from their source to a target. Oestrogen helps rebuild the uterus lining; progesterone helps maintain it. The organ sketches are simplified.',225);
 }
 
+
+function physicalBarriers() {
+  return fig('Skin and mucus as barriers',
+    'Intact skin forms a physical barrier that prevents many pathogens entering the body. In the airways, mucus traps pathogens; cilia help move mucus out of the airways.',
+    text(76,25,'Intact skin',ink,15)+circle(48,48,6,'#b8cfed',blue)+circle(79,48,6,'#b8cfed',blue)+circle(111,48,6,'#b8cfed',blue)+
+    '<rect x="16" y="65" width="120" height="33" fill="#efd4bf" stroke="'+rust+'" stroke-width="2"/>'+text(76,128,'Barrier',rust,14)+
+    text(239,25,'Airway mucus',ink,15)+'<rect x="179" y="66" width="120" height="30" fill="#dcece5" stroke="'+teal+'" stroke-width="2"/>'+
+    circle(201,77,6,'#b8cfed',blue)+circle(236,84,6,'#b8cfed',blue)+circle(274,76,6,'#b8cfed',blue)+arrow(197,108,282,108,teal,2)+text(239,128,'Traps pathogens',teal,14),
+    'Compare intact skin blocking entry with mucus trapping pathogens. The sketches are simplified.',145);
+}
+function barriersAndAntibodies(){return grouped(physicalBarriers,gcseStepVisuals['vaccine-memory'][0]);}
 function antibioticTargets() {
   return fig('Why antibiotics do not treat viruses',
     'A bacterium has its own cell structures, including a cell wall and ribosomes. A virus has genetic material in a protein coat and uses a host cell to reproduce. Some antibiotics target bacterial cell structures; viruses do not have these bacterial targets.',
@@ -528,6 +552,25 @@ function circulation() {
     '<rect x="105" y="198" width="104" height="33" rx="12" fill="#e7ede1" stroke="'+teal+'" stroke-width="2"/>'+text(157,220,'Muscle cells',ink,14)+text(70,184,'Blood',blue,13)+text(248,181,'Oxygen',rust,13),
     'Follow blood from the right ventricle to the lungs and back to the left side of the heart, then to muscle. This is a simplified pathway.',245);
 }
+function bloodMicrograph() {
+  const figure = node('figure', '', 'catchup-picture');
+  const image = node('img', '', 'catchup-photo');
+  image.src = '/assets/micrographs/human-erythrocytes.jpg';
+  image.width = 386; image.height = 404; image.loading = 'lazy';
+  image.alt = 'Fluorescent micrograph of human red blood cells stained at their membranes; a white 20 micrometre scale bar is at the lower right.';
+  const caption = node('figcaption');
+  const credit = node('small');
+  const source = node('a', 'MDougM · source');
+  source.href = 'https://commons.wikimedia.org/wiki/File:Sedimented_red_blood_cells.jpg';
+  const licence = node('a', 'Public domain');
+  licence.href = 'https://commons.wikimedia.org/wiki/Template:PD-self';
+  credit.append(source, ' · ', licence, ' · original image, no annotation');
+  caption.append(node('strong', 'Human red blood cells'),
+    node('span', 'Locate several cells. Their membranes are stained; the white scale bar is 20 µm. Haemoglobin is not visible in this image.'), credit);
+  figure.append(image, caption);
+  return figure;
+}
+function circulationWithMicrograph(){return grouped(circulation,bloodMicrograph);}
 function faultPath() {
   return fig('A fault to an earthed metal case',
     'If a live wire touches an earthed metal case, current can flow through the low-resistance earth wire back towards the supply. The large fault current causes a correctly rated fuse or circuit breaker to disconnect the circuit.',
@@ -558,10 +601,11 @@ function plantPaths() {
 }
 export const gcseWorkedVisuals = {
   'photosynthesis-limits': pondweedLight,
-  'respiration-exercise': circulation,
+  'respiration-exercise': circulationWithMicrograph,
   'domestic-electricity': faultPath,
   'reacting-masses': magnesiumParticles,
-  'plant-transport': plantPaths
+  'plant-transport': plantPaths,
+  'quadrat-evidence': quadrat
 };
 
 function inverseSquare() {
@@ -691,6 +735,74 @@ function halfEquations() {
     text(160,132,'Cu²⁺ + 2e⁻ → Cu',blue,15)+text(160,161,'4OH⁻ → O₂ + 2H₂O + 4e⁻',rust,14),
     'Follow ions to opposite electrodes. The electrons show reduction at the cathode and oxidation at the anode.',180);
 }
+
+function waterRoutes() {
+  return fig('Treating fresh water and seawater',
+    'Fresh water can be filtered to remove suspended solids and then sterilised to kill microbes. Seawater requires desalination to remove dissolved salts as well as suitable treatment for microbes. One desalination method uses a membrane that lets water through while retaining salts.',
+    text(62,24,'Fresh water',ink,15)+text(240,24,'Seawater',ink,15)+
+    '<path d="M25 42 H100 L72 76 V103 H53 V76 Z" fill="#eef5ee" stroke="'+ink+'" stroke-width="2"/>'+line(37,57,88,57,teal,2)+circle(49,50,3,rust,rust)+circle(71,50,3,rust,rust)+text(62,127,'Filter solids',teal,14)+
+    '<rect x="181" y="44" width="120" height="58" fill="#dceef5" stroke="'+ink+'" stroke-width="2"/>'+line(239,44,239,102,teal,3)+circle(201,61,4,rust,rust)+circle(217,84,4,rust,rust)+arrow(224,73,254,73,blue,2)+text(241,127,'Remove salts',blue,14)+
+    text(160,162,'Sterilise to reduce harmful microbes',ink,14),
+    'Compare the treatments. Filtering removes suspended solids; desalination removes dissolved salts. Microbes need appropriate treatment too.',180);
+}
+function grouped(...renderers) {const group=node('div');group.append(...renderers.map(render=>render()));return group;}
+
+function storedEnergy(){return grouped(heatParticles,gcseStepVisuals['latent-heat'][1]);}
+function ionisation() {
+  return fig('Ionisation along a path',
+    'Alpha radiation is more strongly ionising per unit distance than gamma radiation. In this schematic, atoms are shown with electrons removed along each path; the number of events is illustrative, not experimental data.',
+    text(55,24,'Alpha',rust,15)+arrow(21,43,296,43,rust,2)+[66,129,192,255].map(x=>circle(x,69,12,'#edf1f1',ink)+text(x,74,'+',ink,14)+circle(x+16,56,3,blue,blue)).join('')+
+    text(57,113,'Gamma',blue,15)+arrow(21,132,296,132,blue,2)+[66,129,192,255].map((x,i)=>circle(x,157,12,'#edf1f1',ink)+(i===1?text(x,162,'+',ink,14)+circle(x+16,144,3,blue,blue):'')).join(''),
+    'Compare ionisations over equal illustrated path lengths. Actual events are random and depend on radiation and material.',190);
+}
+function shieldingAndIonisation(){return grouped(shield,ionisation);}
+function frequency() {
+  const pts=Array.from({length:93},(_,i)=>{const x=40+i*2.5;return x+','+(85-31*Math.sin((x-40)*Math.PI/57.5));}).join(' ');
+  return fig('Count oscillations in time',
+    'A graph of displacement against time shows two complete oscillations in one second. Its frequency is two hertz. The vertical displacement values are illustrative.',
+    line(40,130,289,130)+line(40,130,40,30)+'<polyline points="'+pts+'" fill="none" stroke="'+teal+'" stroke-width="3"/>'+line(40,85,270,85,ink,1,'5 4')+
+    text(40,20,'Displacement (illustrative)',ink,14,'start')+text(40,151,'0',ink,13)+text(155,151,'0.5',ink,13)+text(270,151,'1',ink,13)+text(160,176,'Time (s)',ink,15),
+    'Count two complete cycles in one second: the frequency is 2 Hz. This is an illustrative example.',190);
+}
+function waveMeasures(){return grouped(wavelength,frequency);}
+function energyDistribution() {
+  const curve=(t)=>Array.from({length:101},(_,e)=>{const x=40+2.45*e;const f=Math.sqrt(e)*Math.exp(-e/t)/Math.pow(t,1.5);return x.toFixed(1)+','+(145-3100*f).toFixed(1);}).join(' ');
+  return fig('Temperature and collision energy',
+    'Illustrative particle energy distributions for a cooler and a warmer sample. The warmer curve is broader with a lower peak; a larger fraction lies above the same activation energy threshold.',
+    line(40,145,292,145)+line(40,145,40,25)+'<polyline points="'+curve(16)+'" fill="none" stroke="'+blue+'" stroke-width="3"/>'+
+    '<polyline points="'+curve(28)+'" fill="none" stroke="'+rust+'" stroke-width="3" stroke-dasharray="7 4"/>'+line(187,33,187,145,ink,1.5,'5 3')+
+    text(40,17,'Relative number of particles',ink,15,'start')+text(163,173,'Particle energy (arbitrary units)',ink,15)+text(240,51,'Activation',ink,14)+text(240,67,'energy',ink,14),
+    'Solid: cooler. Dashed: warmer. Compare the proportion of each distribution beyond the same activation energy.',190);
+}
+function collisionsAndEnergy(){return grouped(collisionFrequency,energyDistribution);}
+function resistanceSelection() {
+  const dot=(x,y,resistant)=>circle(x,y,7,resistant?'#b9dfc8':'#c9def1',resistant?teal:blue)+(resistant?text(x,y+4,'R',teal,11):'');
+  return fig('Antibiotic resistance and selection',
+    'Before treatment, a bacterial population includes a resistant variant. An antibiotic kills susceptible bacteria, while the resistant bacterium survives and can reproduce. The antibiotic selects an existing variant; it does not direct bacteria to develop resistance.',
+    text(50,22,'Before',ink,15)+text(160,22,'After treatment',ink,14)+text(270,22,'Later',ink,15)+
+    dot(28,53,false)+dot(53,53,false)+dot(77,53,true)+dot(40,82,false)+dot(66,82,false)+
+    arrow(94,70,123,70,rust,2)+dot(160,68,true)+arrow(190,70,219,70,rust,2)+
+    dot(246,53,true)+dot(270,53,true)+dot(294,53,true)+dot(258,82,true)+dot(282,82,true)+
+    circle(74,121,6,'#c9def1',blue)+text(87,126,'susceptible',blue,13,'start')+circle(205,121,6,'#b9dfc8',teal)+text(218,126,'resistant',teal,13,'start'),
+    'Follow a resistant bacterium already present before treatment. It can survive and reproduce as susceptible bacteria are killed.',145);
+}
+function antibioticsAndSelection(){return grouped(antibioticTargets,resistanceSelection);}
+export const gcseOpeningVisuals = {
+  'salt-electrolysis': () => grouped(gcseStepVisuals['salt-electrolysis'][1], brine),
+  'glucose-control': gcseStepVisuals['glucose-control'][1],
+  'greenhouse': greenhouse,
+  'potable-water': waterRoutes,
+  'forces-motion': gcseStepVisuals['forces-motion'][0],
+  'respiration-exercise': respiratoryComparison,
+  'density-and-gas-pressure': () => grouped(density, gcseStepVisuals['density-and-gas-pressure'][1]),
+  'salts-and-reactivity': () => grouped(saltsApparatus, () => photo('copper-deposit', 'Copper deposited on iron', 'In copper sulfate solution, iron displaces copper. Locate the reddish copper on the iron shavings.')),
+  'reflex-response': neuron,
+  'electromagnetic-spectrum': spectrumAndWaves,
+  'prevention-and-medicines': () => grouped(transmission, treatmentTesting),
+  'radiation-types': () => grouped(shield, emissions, ionisation),
+  'reproductive-hormones': menstrualHormones,
+  'carbon-cycling': gcseStepVisuals['carbon-cycling'][0]
+};
 export const gcseHigherVisuals = {
   'decay-half-life': halfLifeRatio,
   'reaction-profiles': reactionBonds,
@@ -712,31 +824,31 @@ export const gcseHigherVisuals = {
 };
 export const moreGcseStepVisuals = {
   'food-web-change': {2:quadrat},
-  'wave-motion': {1:wavelength,2:waveCompare},
+  'wave-motion': {1:waveMeasures,2:waveCompare},
   'forces-motion': {2:stopping},
   'reaction-profiles': {2:temperaturePractical},
   'decay-half-life': {2:irradiation},
   'density-and-gas-pressure': {0:density},
   'photosynthesis-limits': {2:highLightExperiment},
   'glucose-control': {0:homeostasis,2:diabetes},
-  'reaction-rate': {1:collisionFrequency,2:dynamicEquilibrium},
+  'reaction-rate': {1:collisionsAndEnergy,2:dynamicEquilibrium},
   'salt-electrolysis': {2:brine},
   'reflex-response': {0:neuron,1:reflexWithSynapse,2:reflexMeasure},
   'respiration-exercise': {0:respiratoryComparison,1:respiratoryComparison},
-  'vaccine-memory': {2:antibioticTargets},
+  'vaccine-memory': {0:barriersAndAntibodies,2:antibioticTargets},
   'selection-and-variation': {0:naturalSelection,1:naturalSelection,2:selectiveBreeding},
   'inheritance-cross': {2:naturalSelection},
   'chromatography': {2:gasTests},
-  'latent-heat': {0:heatParticles,2:latentCalculation},
+  'latent-heat': {0:storedEnergy,2:latentCalculation},
   'mass-conservation': {2:concentrationExample},
   'crude-oil': {0:methaneStructure,2:alkene},
   'greenhouse': {0:greenhouse,1:emissionsSources,2:pollutants},
   'potable-water': {0:waterTreatment,1:filtration,2:lifeCycle},
   'electromagnet-switch': {1:reverseCoil,2:ironCore},
   'salts-and-reactivity': {0:sulfateSalt,1:saltsApparatus},
-  'electromagnetic-spectrum': {0:emSpectrum,1:emSpectrum,2:xray},
-  'prevention-and-medicines': {0:transmission,1:antibioticTargets,2:treatmentTesting},
-  'radiation-types': {0:emissions,1:shield,2:alphaDecay},
+  'electromagnetic-spectrum': {0:spectrumAndWaves,1:emSpectrum,2:xray},
+  'prevention-and-medicines': {0:transmission,1:antibioticsAndSelection,2:treatmentTesting},
+  'radiation-types': {0:emissions,1:shieldingAndIonisation,2:alphaDecay},
   'circuit-resistance': {0:circuitMeters,2:electricalPower},
   'reproductive-hormones': {0:menstrualHormones,1:menstrualHormones,2:contraception},
   'carbon-cycling': {2:habitatDiversity}

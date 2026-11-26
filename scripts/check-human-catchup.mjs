@@ -730,9 +730,49 @@ export async function checkHumanCatchup(browser, base) {
     await ratioFeedback.waitFor();
     assert.equal((await saved(chromatographyKey)).outcomes[0], "incorrect");
 
+    // A short recap keeps each mapped figure beside its own current idea.
+    await open("catchup/f173/a3/1");
+    const recapPanel = page.locator("section.paper.panel");
+    await recapPanel.getByText(/Chromatography separates substances/).waitFor();
+    const recapChromatogram = recapPanel.locator('img[src="/human-biology/chromatography.svg"]');
+    assert(await recapChromatogram.isVisible());
+    assert(await recapChromatogram.evaluate(async image => { await image.decode(); return image.naturalWidth > 0; }));
+    assert(await widthFits(), "Recap figure must fit at phone size");
+    await page.getByRole("link", {name: "Next key idea →"}).click();
+    await page.locator('section.paper.panel img[src="/human-biology/benedicts-controls.svg"]').waitFor();
+    assert.equal(await page.locator('section.paper.panel img[src="/human-biology/chromatography.svg"]').count(), 0);
+    for (const [route, files] of [
+      ["f170/1.1.2/1", ["hb-blood-cells-sem.webp", "hb-pancreas-tem.webp"]],
+      ["f170/3.2.1/1", ["action-potential-ions.svg", "myelinated-axon.svg"]],
+      ["f172/a1/1", ["meiosis.svg"]], ["f172/a2/1", ["punnett-cross.svg"]],
+      ["f172/a2/2", ["punnett-cross.svg"]], ["f172/a3/1", ["genetic-test.svg"]],
+      ["f172/a4/2", ["gene-delivery.svg"]],
+      ["f173/a2/1", ["hb-blood-cells-sem.webp", "hb-pancreas-tem.webp"]],
+      ["f175/a2/1", ["placental-exchange.svg"]], ["f175/a3/1", ["oviduct-obstruction.svg"]],
+      ["f176/a3/1", ["nociception-pathway.svg"]], ["f177/a1/2", ["receptor.svg"]],
+      ["f177/a2/2", ["trial-comparison.svg"]]
+    ]) {
+      await open("catchup/" + route);
+      for (const file of files) {
+        const image = page.locator(`section.paper.panel img[src$="/${file}"]`);
+        assert(await image.isVisible(), `Recap ${route} should show ${file}`);
+        assert(await image.evaluate(async element => { await element.decode(); return element.naturalWidth > 0 && element.alt.length > 20; }));
+      }
+      assert(await widthFits(), `Recap ${route} must fit the phone viewport`);
+    }
+    await open("catchup/f172/a1");
+    const recapDisclosure = page.locator("details.paper.panel").filter({hasText: "Review the key ideas"});
+    await recapDisclosure.locator(":scope > summary").click();
+    assert(await recapDisclosure.locator('li img[src="/human-biology/meiosis.svg"]').isVisible());
+
     // Airway and alveolar diagrams follow their respective worked steps.
     await page.evaluate(key => localStorage.removeItem(key), localPractice);
     await open("catchup/f171/1.2.1");
+    const airwayParagraph = page.locator(".hb-teach-explain p").filter({hasText: "COPD involves persistent difficulty"});
+    assert(await airwayParagraph.evaluate(element => {
+      const first = element.nextElementSibling, second = first?.nextElementSibling;
+      return Boolean(first?.querySelector('img[src$="/airway-narrowing.svg"]') && second?.querySelector('img[src$="/alveolar-wall-loss.svg"]'));
+    }), "The airflow and exchange figures follow the relevant explanation");
     const airwayModel = page.locator("[data-hb-model-step]");
     await expand(airwayModel);
     const airwayStep = airwayModel.locator('img[src="/human-biology/airway-narrowing.svg"]');
@@ -744,6 +784,33 @@ export async function checkHumanCatchup(browser, base) {
     assert(await alveoliStep.evaluate(async image => { await image.decode(); return image.naturalWidth > 0; }));
     assert(await widthFits(), "Worked alveolar diagram must fit the phone viewport");
     assert.equal(await stage("independent").locator('img[src="/human-biology/alveolar-wall-loss.svg"]').count(), 0);
+
+    // Cell photographs and diagrams remain beside the facts they explain.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f170/1.1.1");
+    const cellEvidence = await page.locator(".hb-teach-explain").evaluate(element => {
+      const p = Array.from(element.children).filter(child => child.tagName === "P");
+      const imageSource = child => child?.querySelector("img")?.getAttribute("src") || "";
+      return [imageSource(p[0]?.nextElementSibling), imageSource(p[0]?.nextElementSibling?.nextElementSibling),
+        imageSource(p[1]?.nextElementSibling), imageSource(p[1]?.nextElementSibling?.nextElementSibling)];
+    });
+    assert.deepEqual(cellEvidence, ["/assets/micrographs/hb-blood-cells-sem.webp", "/human-biology/red-cell-section.svg", "/human-biology/white-cell-nuclei.svg", "/human-biology/white-cell-defence.svg"]);
+    assert.equal(await stage("independent").locator('img[src$="/white-cell-defence.svg"]').count(), 0);
+
+    // Reflex and myelin figures follow the explanation paragraphs they support.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f170/3.2.1");
+    const reflexExplain = page.locator(".hb-teach-explain");
+    for (const [text, file] of [["Electrical signals travel along neurones", "reflex-pathway.svg"], ["Myelin insulates sections of an axon", "myelinated-axon.svg"]]) {
+      const paragraph = reflexExplain.getByText(text, {exact: false});
+      assert(await paragraph.evaluate((element, file) => element.nextElementSibling?.querySelector(`img[src$="/${file}"]`) != null, file), `Figure follows ${text}`);
+    }
+    const reflexModel = page.locator("[data-hb-model-step]");
+    await expand(reflexModel);
+    assert(await reflexModel.locator('li:nth-child(1) img[src$="/reflex-pathway.svg"]').isVisible());
+    await reflexModel.getByRole("button", {name: "Show next step"}).click();
+    assert(await reflexModel.locator('li:nth-child(2) img[src$="/reflex-pathway.svg"]').isVisible());
+    assert.equal(await stage("independent").locator('img[src$="/reflex-pathway.svg"]').count(), 0);
 
     // The threshold graph belongs to the sixth worked step, never an independent answer.
     await page.evaluate(key => localStorage.removeItem(key), localPractice);

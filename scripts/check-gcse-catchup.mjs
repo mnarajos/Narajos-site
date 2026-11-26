@@ -3,6 +3,7 @@ import axe from "axe-core";
 import { gcseCatchup } from "../public/assets/gcse-catchup-data.js";
 import { priorityCatchup } from "../public/assets/gcse-catchup-priority.js";
 import { investigations } from "../public/assets/gcse-investigations.js";
+import { gcseOpeningVisuals } from "../public/assets/gcse-more-step-visuals.js";
 
 export async function checkGCSECatchup(browser, base) {
   const page = await browser.newPage({viewport: {width: 320, height: 820}, hasTouch: true, reducedMotion: "reduce"});
@@ -40,6 +41,23 @@ export async function checkGCSECatchup(browser, base) {
         await page.evaluate(key => localStorage.removeItem(key), `narajos.catchup.v1.${lesson.year}.${id}`);
       }
     }
+    // Opening-note figures are checked in the opening panel, independently of
+    // any repeated diagrams later in the journey.
+    for (const id of Object.keys(gcseOpeningVisuals)) {
+      const lesson = gcseCatchup[id];
+      await page.goto(lessonURL(id, lesson.year));
+      const evidence = page.locator("#catchup-evidence");
+      const opening = evidence.locator(":scope > figure, :scope > div");
+      assert(await opening.locator("svg[role=img]").count(), `${id}: opening diagram missing`);
+      for (const svg of await opening.locator("svg[role=img]").all())
+        assert((await svg.getAttribute("aria-label"))?.trim(), `${id}: opening diagram has no alternative`);
+      for (const img of await opening.locator("img").all()) {
+        await img.scrollIntoViewIfNeeded();
+        assert((await img.getAttribute("alt"))?.trim(), `${id}: opening photograph has no alternative`);
+        await page.waitForFunction(image => image.complete && image.naturalWidth > 0, await img.elementHandle());
+      }
+    }
+
     // Higher Tier teaching figures belong inside the extension, not the
     // assessment-stage panel. Worked examples need their own adjacent copy.
     for (const [id, lesson] of Object.entries(gcseCatchup)) {
@@ -66,6 +84,11 @@ export async function checkGCSECatchup(browser, base) {
         await page.goto(lessonURL(id, lesson.year));
         const example = page.locator(".school-current-stage .school-worked-example");
         assert(await example.locator("figure, table").count(), `${id}: missing worked-example figure`);
+        for (const img of await example.locator("img").all()) {
+          await img.scrollIntoViewIfNeeded();
+          assert((await img.getAttribute("alt"))?.trim(), `${id}: worked photograph has no alternative`);
+          await page.waitForFunction(image => image.complete && image.naturalWidth > 0, await img.elementHandle());
+        }
       }
     }
     for (const year of [10,11]) {

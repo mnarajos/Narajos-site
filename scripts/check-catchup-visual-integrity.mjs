@@ -5,7 +5,7 @@ import { readFile, access } from "node:fs/promises";
 import vm from "node:vm";
 import { ks3StepVisuals } from "../public/assets/ks3-step-visuals.js";
 import { gcseStepVisuals } from "../public/assets/gcse-step-visuals.js";
-import { moreGcseStepVisuals, gcseHigherVisuals, gcseWorkedVisuals, heatingCurve } from "../public/assets/gcse-more-step-visuals.js";
+import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, heatingCurve } from "../public/assets/gcse-more-step-visuals.js";
 import { year9 } from "../public/assets/school-catchup-year9.js";
 import { gcseCatchup } from "../public/assets/gcse-catchup-data.js";
 import { curriculum, motionLessons } from "../public/assets/ks3-lessons.js";
@@ -44,6 +44,10 @@ for (const mapping of [gcseStepVisuals, moreGcseStepVisuals]) {
       inspectFigure(figure());
     }
   }
+}
+for (const [id, figure] of Object.entries(gcseOpeningVisuals)) {
+  assert.equal(gcseCatchup[id]?.visual?.[1], figure, `${id}: opening figure is not mapped`);
+  inspectFigure(figure());
 }
 for (const [id, figure] of Object.entries(gcseHigherVisuals)) {
   assert.ok(gcseCatchup[id]?.higher, `${id}: Higher Tier explanation is missing`);
@@ -90,14 +94,14 @@ for (const file of ["teaching-f170.js", "teaching-f171.js", "teaching-knowledge.
 let assets = 0;
 let photos = 0;
 for (const [id, lesson] of Object.entries(humanWindow.KeystoneHumanLessons)) {
-  for (const photo of [lesson.explanationPhoto, lesson.explanationPhoto2].filter(Boolean)) {
+  for (const photo of [lesson.explanationPhoto, lesson.explanationPhoto2, ...Object.values(lesson.explainPhotos || {}).flat()].filter(Boolean)) {
     assert.match(photo.src, /^\/assets\/micrographs\/[a-z0-9-]+\.webp$/, id);
     for (const key of ["alt", "caption", "source", "credit", "licence", "licenceUrl", "changes"]) assert.ok(photo[key], `${id}: ${key} required for the photo`);
     assert.ok(photo.width > 0 && photo.height > 0, `${id}: dimensions required`);
     await access(new URL("../public" + photo.src, import.meta.url));
     photos++;
   }
-  for (const visual of [lesson.teachingDiagram, lesson.explanationDiagram, lesson.comparisonDiagram, ...(lesson.comparisonDiagrams || []), ...(lesson.explanationDiagrams || []), ...Object.values(lesson.modelDiagrams || {})].filter(Boolean)) {
+  for (const visual of [lesson.teachingDiagram, lesson.explanationDiagram, lesson.comparisonDiagram, ...(lesson.comparisonDiagrams || []), ...(lesson.explanationDiagrams || []), ...Object.values(lesson.explainDiagrams || {}).flat(), ...Object.values(lesson.modelDiagrams || {})].filter(Boolean)) {
   assert.match(visual.src, /^\/human-biology\/[a-z0-9-]+\.svg$/, id);
   assert.ok(visual.alt?.length >= 20 && visual.caption?.length >= 20, `${id}: meaningful alternative and caption required`);
   assert.ok(visual.width > 0 && visual.height > 0, `${id}: dimensions required`);

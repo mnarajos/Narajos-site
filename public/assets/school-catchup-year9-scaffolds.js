@@ -78,7 +78,7 @@ function plantCellJobs() {
   image.alt = "Palisade cell with chloroplasts, nucleus, mitochondria and a cell wall labelled.";
   image.width = 360;
   image.height = 280;
-  leaf.append(image, node("figcaption", "Leaf cell: chloroplasts absorb light for photosynthesis."));
+  leaf.append(image, node("figcaption", "Palisade cell: chloroplasts absorb light for photosynthesis."));
   const root = picture("Root hair cell", diagram(
     "A root hair cell has a long, thin extension that contacts the soil. The extension increases surface area for absorption.", `
     <path d="M40 42H170Q195 42 202 71L277 74Q289 75 289 85Q289 95 277 96L202 99Q195 128 170 128H40Z" fill="#e2f3f0" stroke="${teal}" stroke-width="4"/>

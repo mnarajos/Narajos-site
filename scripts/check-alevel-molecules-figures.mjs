@@ -35,5 +35,17 @@ for (const [id, group] of [['sav',0],['insects',0],['leafgas',0],['haemo',1],['b
  assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
  assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
 }
+vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-genetics-figures.js', import.meta.url), 'utf8'), context);
+for (const [id, group] of [['dnachrom',0],['code',0],['rnas',1],['chromut',0],['meiosis',0],['meiosis',1],['meiosisvar',0],['taxonomy',2],['dnachrom',1],['chromut',1],['meiosisvar',1],['natsel',0],['natsel',1],['selection',0],['investdiv',0],['biodiv',0],['biodiv',1],['aseptic',0],['aseptic',1]]) {
+ const figure = context.window.ALevelCatchupFigures.render('a4',id,group);
+ assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
+ assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
+}
+vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-energy-neural-figures.js', import.meta.url), 'utf8'), context);
+for (const [topic,id,group] of [['a5','glycolysis',0],['a5','glycolysis',1],['a5','glycolysis',2],['a5','anaerobic',0],['a5','nitrogen',0],['a5','nitrogen',1],['a5','nitrogen',2],['a5','phosphorus',0],['a5','phosphorus',1],['a6','reflex',1],['a6','resting',1],['a6','actionpot',0],['a6','actionpot',1],['a6','kidney',0],['a7','succession',0],['a7','succession',1]]) {
+ const figure=context.window.ALevelEnergyNeuralFigures.render(topic,id,group);
+ assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
+ assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
+}
 assert.equal(context.window.ALevelCatchupFigures.render('a1','sugars',2), '');
 console.log('A-level molecular figure alternatives, captions, mapping and local image checked.');

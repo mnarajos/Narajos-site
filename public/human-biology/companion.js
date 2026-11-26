@@ -478,6 +478,37 @@ function showUnit(unit,render){
  });
  h+='</div></div>';render(h);
 }
+// A recap line gets a figure only where the particular idea matches it.
+// Unmapped lines intentionally remain unillustrated pending editorial review.
+const recapFigureMap = {
+ "f170/1.1.2/1": [["f173/a2", "explanationPhoto"], ["f173/a2", "explanationPhoto2"]],
+ "f170/3.2.1/1": [["f176/a2", "explanationDiagram"], ["f170/3.2.1", "myelinDiagram"]],
+ "f172/a1/1": [["f172/a1", "teachingDiagram"]],
+ "f172/a2/1": [["f172/a2", "teachingDiagram"]],
+ "f172/a2/2": [["f172/a2", "teachingDiagram"]],
+ "f172/a3/1": [["f172/a3", "teachingDiagram"]],
+ "f172/a4/2": [["f172/a4", "teachingDiagram"]],
+ "f173/a2/1": [["f173/a2", "explanationPhoto"], ["f173/a2", "explanationPhoto2"]],
+ "f173/a3/1": [["f173/a3", "teachingDiagram"]],
+ "f173/a3/2": [["f173/a3", "explanationDiagram"]],
+ "f174/a3/0": [["f174/a3", "teachingDiagram"]],
+ "f175/a2/1": [["f175/a2", "teachingDiagram"]],
+ "f175/a3/1": [["f175/a3", "teachingDiagram"]],
+ "f176/a1/0": [["f176/a1", "teachingDiagram"]],
+ "f176/a2/0": [["f176/a1", "teachingDiagram"]],
+ "f176/a3/1": [["f176/a3", "teachingDiagram"]],
+ "f177/a1/2": [["f177/a1", "teachingDiagram"]],
+ "f177/a2/2": [["f177/a2", "teachingDiagram"]]
+};
+function recapFigures(unit,id,step) {
+ const teaching=window.KeystoneHumanTeaching, lessons=window.KeystoneHumanLessons || {};
+ if (!teaching) return "";
+ return (recapFigureMap[unit+"/"+id+"/"+step] || []).map(function(entry) {
+  const item=lessons[entry[0]]?.[entry[1]];
+  if (!item) return "";
+  return entry[1].startsWith("explanationPhoto") ? teaching.renderPhoto(item) : teaching.renderDiagram(item);
+ }).join("");
+}
 function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
  var u=units.filter(function(x){return x.id===unit;})[0];
  if(!u)return showHome(render);
@@ -504,7 +535,7 @@ function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
  if(lesson&&teaching&&step===0){
   var visual=window.KeystoneCatchupVisuals?window.KeystoneCatchupVisuals.render(...(lesson.visualFrom||[unit,id]),Boolean(lesson.revision&&lesson.visual==="model")):"";
   var recap='<details class="paper panel"><summary>Review the key ideas</summary><ul class="keylines">'+
-   points.map(function(point){return "<li>"+esc(point)+"</li>";}).join("")+"</ul></details>";
+   points.map(function(point,i){return "<li>"+esc(point)+recapFigures(unit,id,i)+"</li>";}).join("")+"</ul></details>";
   var sim=lesson.simulation&&window.KeystoneReproductionSimulation;
   var interactive=sim?'<details class="hb-inline-model"'+(simulationStage?' open':'')+'><summary>Open the reproductive pathway model</summary>'+sim.render()+'</details>':"";
   render('<div class="k-wrap k-catchup-concept" data-unit="'+unit+'">'+crumb("catchup/"+unit,u.title)+
@@ -516,7 +547,7 @@ function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
  }
 
  var h='<div class="k-wrap k-catchup-concept">'+crumb("catchup/"+unit,u.title)+'<div class="k-eyebrow">Catch-up · '+(step+1)+' of '+points.length+'</div><h1>'+esc(topic)+'</h1><div class="progress-track" role="progressbar" aria-label="Key ideas reviewed" aria-valuemin="0" aria-valuemax="'+points.length+'" aria-valuenow="'+(step+1)+'"><div style="width:'+(100*(step+1)/points.length)+'%"></div></div>';
- h+='<section class="paper panel"><h2>Key idea '+(step+1)+'</h2><p class="k-catchup-text">'+esc(points[step])+'</p></section>';
+ h+='<section class="paper panel"><h2>Key idea '+(step+1)+'</h2><p class="k-catchup-text">'+esc(points[step])+'</p>'+recapFigures(unit,id,step)+'</section>';
  if(step===0&&window.KeystoneCatchupVisuals)h+=window.KeystoneCatchupVisuals.render(unit,id);
  h+='<div class="k-catchup-controls">'+(step>0?'<a class="button secondary" href="'+key+'/'+(step-1)+'">Previous</a>':'')+
  (step<points.length-1?'<a class="button primary" href="'+key+'/'+(step+1)+'">Next key idea →</a>':'<a class="button primary" href="#'+esc(practice)+'">'+esc(label)+' →</a>')+'</div>';

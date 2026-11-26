@@ -423,6 +423,9 @@ window.KeystoneHumanLessons = {
         "Electrical signals travel along neurones. At a chemical synapse, a neurotransmitter carries information across the gap. A relay neurone in the spinal cord can connect sensory input to a motor response.",
         "Myelin insulates sections of an axon. Current spreads quickly under myelin and action potentials are regenerated at nodes of Ranvier, the small gaps in the sheath. This faster node-to-node propagation is saltatory conduction. In multiple sclerosis, damage to myelin in the CNS can slow or interrupt conduction along affected axons."
       ],
+      explanationDiagram: {src:"/human-biology/myelinated-axon.svg",width:280,height:270,compact:true,
+        alt:"A schematic axon has three myelin-covered sections separated by nodes of Ranvier. An arrow shows current spreading along the axon, and the nodes are marked as places where action potentials regenerate.",
+        caption:"Follow current under the myelin to the gaps. Action potentials regenerate at the nodes; the drawings are simplified."},
       visual: "model",
       nodes: ["Receptor and sensory neurone", "Relay in the spinal cord", "Motor neurone and effector"],
       model: [
@@ -742,4 +745,28 @@ window.KeystoneHumanLessons = {
       practice:"f170-division-variation"
     }
   });
+})();
+
+// Keep cell examples alongside their relevant explanation paragraphs.
+(function () {
+  const lesson = window.KeystoneHumanLessons["f170/1.1.1"];
+  lesson.explainPhotos = {0:[lesson.explanationPhoto]};
+  lesson.explainDiagrams = {0:[lesson.teachingDiagram], 1:[lesson.comparisonDiagram, ...lesson.comparisonDiagrams]};
+  lesson.teachingDiagramModelOnly = true;
+  delete lesson.explanationPhoto;
+  delete lesson.comparisonDiagram;
+  delete lesson.comparisonDiagrams;
+})();
+
+// Keep the myelin and reflex explanations with their own visual evidence.
+(function () {
+  const lesson = window.KeystoneHumanLessons["f170/3.2.1"];
+  const myelin = lesson.explanationDiagram;
+  const reflex = {src:"/human-biology/reflex-pathway.svg",width:220,height:320,compact:true,
+    alt:"A simplified pathway runs from a receptor along a sensory neurone to synapses and a relay neurone in the spinal cord, then along a motor neurone to a muscle effector.",
+    caption:"Follow sensory input to the spinal cord and motor output to the muscle. At each indicated synapse, a neurotransmitter carries the signal across the gap."};
+  lesson.myelinDiagram = myelin;
+  lesson.explanationDiagram = null;
+  lesson.explainDiagrams = {0:[reflex], 1:[myelin]};
+  lesson.modelDiagrams = {0:reflex, 1:reflex, 2:reflex};
 })();

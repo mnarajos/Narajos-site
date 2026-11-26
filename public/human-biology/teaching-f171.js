@@ -28,10 +28,10 @@
         "Breathlessness during daily activity and a persistent cough with mucus are common symptoms. An examiner may hear wheeze, and spirometry can provide objective evidence of airflow obstruction. Similar symptoms can occur with different conditions.",
         "Reduced airway clearance can contribute to chest infections, which can worsen symptoms. Persistent breathlessness can limit activities such as climbing stairs. Repeated flare-ups can mean missed work, greater healthcare use and extra help from family."
       ],
-      explanationDiagrams: [
+      explainDiagrams: {0:[
         {src:"/human-biology/airway-narrowing.svg",width:220,height:280,compact:true,alt:"Two cross-sections of an airway have equal outer widths. The narrower opening has a thicker mucus layer and less open space for airflow.",caption:"Compare the white openings. More mucus narrows the airway and can increase resistance to airflow."},
         {src:"/human-biology/alveolar-wall-loss.svg",width:220,height:280,compact:true,alt:"A simplified group of four intact alveoli is compared with a larger air space where some partitions have been lost.",caption:"Compare the partitions. Loss of alveolar walls leaves less surface for gas exchange; this is a schematic, not to scale."}
-      ],
+      ]},
       modelDiagrams: {
         0:{src:"/human-biology/airway-narrowing.svg",width:220,height:280,compact:true,alt:"Two cross-sections of an airway have equal outer widths. The narrower opening has a thicker mucus layer and less open space for airflow.",caption:"Compare the openings: mucus narrows the passage and can increase resistance."},
         1:{src:"/human-biology/alveolar-wall-loss.svg",width:220,height:280,compact:true,alt:"A simplified group of four intact alveoli is compared with a larger air space where some partitions have been lost.",caption:"Compare intact and lost walls. The model leaves less surface for gas exchange."}

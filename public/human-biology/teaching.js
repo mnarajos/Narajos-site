@@ -78,6 +78,12 @@
       '<a href="' + escape(photo.licenceUrl) + '">' + escape(photo.licence) + '</a> · ' + escape(photo.changes || 'Resized and converted to WebP') + '</figcaption></figure>';
   }
 
+  function explanationParagraphs(lesson) {
+    return (lesson.explain || []).map((line, index) =>
+      paragraphs([line]) + (lesson.explainPhotos?.[index] || []).map(photo => figure(photo)).join("") + (lesson.explainDiagrams?.[index] || []).map(teachingDiagram).join("")
+    ).join("");
+  }
+
   function writingExample(example) {
     if (!example) return "";
     return '<details class="hb-prerequisite hb-writing-example"><summary>' + escape(example.title) +
@@ -130,7 +136,7 @@
       ? '<details class="hb-prerequisite"><summary>' + escape(lesson.activate[0]) + '</summary><p>' +
         escape(lesson.activate[1]) + '</p>' + prior + '</details>' : prior;
     const explanation = (context.booklet ? '<section class="paper panel hb-teach-explain"><h2>Understand the idea</h2>' : '<details class="paper panel hb-teach-explain" open><summary><h2>Understand the idea</h2></summary>') +
-      paragraphs(lesson.explain) + figure(lesson.explanationPhoto) + figure(lesson.explanationPhoto2) + teachingDiagram(lesson.explanationDiagram) + (lesson.explanationDiagrams || []).map(teachingDiagram).join("") + teachingDiagram(lesson.teachingDiagram) + teachingDiagram(lesson.comparisonDiagram) + (lesson.comparisonDiagrams || []).map(teachingDiagram).join("") + table(lesson.compare) +
+      explanationParagraphs(lesson) + figure(lesson.explanationPhoto) + figure(lesson.explanationPhoto2) + teachingDiagram(lesson.explanationDiagram) + (lesson.explanationDiagrams || []).map(teachingDiagram).join("") + (lesson.teachingDiagramModelOnly ? "" : teachingDiagram(lesson.teachingDiagram)) + teachingDiagram(lesson.comparisonDiagram) + (lesson.comparisonDiagrams || []).map(teachingDiagram).join("") + table(lesson.compare) +
       (lesson.afterComparison ? '<h3>' + escape(lesson.afterComparison.heading) + '</h3>' + paragraphs(lesson.afterComparison.lines) : '') +
       context.inline +
       (lesson.revision && !context.booklet ? '<div class="actions hb-start">' + openStageButton("model", "See worked example", "primary") + '</div>' : '') +
@@ -460,5 +466,5 @@
     ({ prompt, answer, options, explanation, hints, ...extra });
   const written = (prompt, points, explanation, hints) => ({ prompt, points, explanation, hints });
 
-  window.KeystoneHumanTeaching = { render, mount, savedStages, storageKey, choice, written };
+  window.KeystoneHumanTeaching = { render, mount, savedStages, storageKey, choice, written, renderDiagram: teachingDiagram, renderPhoto: figure };
 })();
