@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 360" role="img" aria-labelledby="title desc">
+<title id="title">Two hormones and the kidney</title>
+<desc id="desc">ADH signals a kidney collecting duct to reabsorb more water into the blood. In a separate pathway, the kidney releases erythropoietin, which stimulates production of red blood cells in bone marrow.</desc>
+<rect width="280" height="360" fill="#f5f9f8"/>
+<defs><marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8Z" fill="#236b70"/></marker></defs>
+<g font-family="sans-serif" fill="#183848" text-anchor="middle"><text x="140" y="23" font-size="16" font-weight="bold">Two hormone pathways</text><text x="140" y="51" font-size="16" font-weight="bold">ADH</text><text x="140" y="74" font-size="15">signals the kidney</text></g>
+<path d="M82 100 H122 V170 H82Z" fill="#e8e0f0" stroke="#795f89" stroke-width="2"/><path d="M171 100 H216 V170 H171Z" fill="#f8d4cf" stroke="#a4665d" stroke-width="2"/>
+<g font-family="sans-serif" font-size="14" fill="#183848" text-anchor="middle"><text x="102" y="123">Collecting</text><text x="102" y="142">duct</text><text x="193" y="140">Blood</text></g>
+<path d="M126 135 H167" stroke="#236b70" stroke-width="3" fill="none" marker-end="url(#arrow)"/><text x="146" y="94" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#183848">more water</text>
+<path d="M25 194 H255" stroke="#b5cbc7"/>
+<g font-family="sans-serif" fill="#183848" text-anchor="middle"><text x="140" y="219" font-size="16" font-weight="bold">Erythropoietin (EPO)</text><text x="65" y="260" font-size="15">Kidney</text><text x="211" y="260" font-size="15">Bone marrow</text><text x="140" y="322" font-size="15">More red cells produced</text><text x="140" y="347" font-size="14">Simplified signalling pathways</text></g>
+<path d="M99 255 H154" stroke="#236b70" stroke-width="3" fill="none" marker-end="url(#arrow)"/><path d="M211 270 V299 H141 V303" stroke="#236b70" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+</svg>

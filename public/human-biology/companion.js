@@ -488,6 +488,12 @@ const nutritionRecap = function(file, alt, caption, height) { return {
  src:"/human-biology/"+file+".svg",width:280,height:height,compact:true,alt:alt,caption:caption
 }; };
 const recapFigureMap = {
+ "f170/3.1.2/1": [["f170/3.1.2", "explainDiagrams", 1]],
+ "f170/2.2.2/1": [nutritionRecap("bone-functions", "A schematic long bone supports a muscle attached by a tendon. A cutaway marks red marrow inside the bone, and a double arrow indicates calcium exchange between bone and blood.", "Locate the muscle attachment and marrow. Bone supports movement, stores calcium and contains blood-forming marrow; the drawing is not to scale.", 350)],
+ "f170/3.1.1/1": [["f170/3.1.1", "modelDiagrams", 0], ["f170/3.1.1", "modelDiagrams", 1], ["f170/3.1.1", "modelDiagrams", 2]],
+ "f170/3.1.1/2": [["f170/3.1.1", "modelDiagrams", 2], nutritionRecap("adh-epo-kidney", "ADH signals kidney collecting ducts to reabsorb more water into blood. Separately, the kidney releases erythropoietin, which stimulates red-cell production in bone marrow.", "Compare the targets: ADH acts on kidney collecting ducts; erythropoietin travels from the kidney to bone marrow. These are simplified pathways.", 360)],
+ "f170/2.1.3/2": [nutritionRecap("dexa-scan", "A simplified side view shows a person on a DXA table, an X-ray source underneath and a detector above. An X-ray beam with two energy peaks passes through tissue and bone; absorption is used to estimate bone mineral density.", "Follow the X-rays from source to detector. The beam has two energy peaks; their different absorption helps estimate bone mineral density.", 330)],
+ "f170/2.1.3.cirrhosis/1": [["f170/2.1.3.cirrhosis", "explainDiagrams", 1]],
  "f170/1.2.1/2": [nutritionRecap("gut-wall-tissues", "A simplified cutaway of gut wall shows the epithelium at the lumen, underlying connective tissue and a nerve plexus between layers of smooth muscle.", "Locate each tissue in this simplified wall. The epithelium lines the lumen, connective tissue supports it, and nerves help coordinate smooth muscle.", 350)],
  "f170/2.1.2/1": [["f170/1.1.1.surfaces", "comparisonFigures", 3], ["f174/a3", "teachingDiagram"]],
  "f170/2.1.3/1": [nutritionRecap("artery-plaque-comparison", "Two schematic cross-sections have the same outer diameter; one has an artery-wall plaque projecting into and narrowing the lumen.", "Compare the open lumens. A plaque can narrow an artery and restrict blood supply; these sections are simplified models.", 290), ["f171/1.2.1", "explainDiagrams", 0]],

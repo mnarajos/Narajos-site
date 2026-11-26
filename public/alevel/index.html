@@ -438,6 +438,11 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <script src="/alevel/catchup-farming-figures.js"></script>
 <script src="/alevel/catchup-energy-recap-figures.js"></script>
 <script src="/alevel/catchup-risk-surface-figures.js"></script>
+<script src="/alevel/catchup-response-recap-figures.js"></script>
+<script src="/alevel/catchup-practical-extra-figures.js"></script>
+<script src="/alevel/catchup-inheritance-details.js"></script>
+<script src="/alevel/catchup-context-molecules.js"></script>
+<script src="/alevel/catchup-pedigree-figures.js"></script>
 <script src="/alevel/catchup-immunity-figures.js"></script>
 <script src="/alevel/catchup-transport-figures.js"></script>
 <script src="/alevel/catchup-transport-details.js"></script>
@@ -802,7 +807,7 @@ DATA.a1={
    {"t":"two","tier":"H","q":"Adding more substrate removes the effect of an inhibitor. Which explanation fits?","opts":["It is a competitive inhibitor: more substrate outcompetes it for the active site","It is a non-competitive inhibitor: more substrate pushes it off its binding site"],"a":0,"q2":"What makes it the right explanation?","opts2":["Only a competitive inhibitor competes with the substrate for the same site","A non-competitive inhibitor binds the active site, so substrate can displace it","Substrate can always displace an inhibitor if enough of it is added"],"a2":0,"why":"A non-competitive inhibitor binds away from the active site and changes its shape, so more substrate does not help.","fit":true,"nomnem":true}
   ]},
 
- {id:"ctx1",title:"Unfamiliar contexts: biological molecules",spec:"3.1",needs:["enzfactors"],key:["Exam questions often put Topic 1 ideas into a context you have not met. <b>Find the familiar idea underneath</b>: bonds, structure, and function, the fit between enzyme and substrate, or a food test.","Use the information you are given, and link it to A-level detail: name the <b>bond</b>, the <b>level of protein structure</b> or the <b>active site</b>.","Enzymes from hot environments have more bonds, such as <b>disulfide bridges</b>, holding their tertiary structure, so the active site keeps its shape at high temperature.","A <b>competitive inhibitor</b> has a similar shape to the substrate and competes for the active site.","Sucrose is a <b>non-reducing sugar</b>. Its hydrolysis gives glucose and fructose, which are reducing sugars.","Changing one amino acid changes where <b>hydrogen bonds, ionic bonds, and disulfide bridges</b> form between R groups, so the <b>tertiary structure</b> can change."],gate:"Unfamiliar contexts test whether you can apply the specification, not whether you have learned the context. Every answer still uses Topic 1 ideas.",st:5,tier:"H",
+ {id:"ctx1",title:"Unfamiliar contexts: biological molecules",spec:"3.1",needs:["enzfactors"],key:["Exam questions often put Topic 1 ideas into a context you have not met. <b>Find the familiar idea underneath</b>: bonds, structure, and function, the fit between enzyme and substrate, or a food test.","Use the information you are given, and link it to A-level detail: name the <b>bond</b>, the <b>level of protein structure</b> or the <b>active site</b>.","Enzymes from hot environments can have additional stabilising interactions, such as <b>disulfide bridges</b>, that help the active site keep its shape at high temperature.","A <b>competitive inhibitor</b> has a similar shape to the substrate and competes for the active site.","Sucrose is a <b>non-reducing sugar</b>. Its hydrolysis gives glucose and fructose, which are reducing sugars.","Changing one amino acid can change where <b>hydrogen bonds, ionic bonds, and disulfide bridges</b> form between R groups, so the <b>tertiary structure</b> can change."],gate:"Unfamiliar contexts test whether you can apply the specification, not whether you have learned the context. Every answer still uses Topic 1 ideas.",st:5,tier:"H",
   qs:[
    {"t":"mcq","tier":"F","warm":true,"q":"From GCSE: which type of molecule are enzymes?","opts":["Proteins","Carbohydrates","Lipids","Nucleic acids"],"a":0,"why":"Enzymes are proteins, so their shape depends on their structure."},
    {"t":"mcq","tier":"H","q":"A bacterium lives in hot springs at 80 °C. Its enzymes contain more disulfide bridges than the same enzymes in human cells. Suggest why this helps the bacterium.","opts":["More bonds hold the tertiary structure, so the active site keeps its shape at 80 °C","More bonds give the enzyme more kinetic energy, so it collides with substrates more","Disulfide bridges lower the activation energy further, so the enzyme works faster","Disulfide bridges stop the substrate leaving, so more products are made at 80 °C"],"a":0,"fb":[null,"Bonds in the enzyme do not give it kinetic energy; heat does.","Activation energy is lowered by the active site, not by extra bonds.","Products must leave the active site; the extra bonds hold the enzyme’s shape."],"why":"Disulfide bridges are strong covalent bonds between R groups. More of them help keep the tertiary structure, so the enzyme is not denatured at high temperature."},
@@ -6370,7 +6375,12 @@ function catchupChunks(notes,synapse,topic,concept){
    (window.ALevelExchangeDiseaseFigures?window.ALevelExchangeDiseaseFigures.render(topic,concept,i/2):'')+
    (window.ALevelFarmingFigures?window.ALevelFarmingFigures.render(topic,concept,i/2):'')+
    (window.ALevelEnergyRecapFigures?window.ALevelEnergyRecapFigures.render(topic,concept,i/2):'')+
-   (window.ALevelRiskSurfaceFigures?window.ALevelRiskSurfaceFigures.render(topic,concept,i/2):'')+'</div>';
+   (window.ALevelRiskSurfaceFigures?window.ALevelRiskSurfaceFigures.render(topic,concept,i/2):'')+
+   (window.ALevelResponseRecapFigures?window.ALevelResponseRecapFigures.render(topic,concept,i/2):'')+
+   (window.ALevelPracticalExtraFigures?window.ALevelPracticalExtraFigures.render(topic,concept,i/2):'')+
+   (window.ALevelInheritanceDetails?window.ALevelInheritanceDetails.render(topic,concept,i/2):'')+
+   (window.ALevelContextMolecules?window.ALevelContextMolecules.render(topic,concept,i/2):'')+
+   (window.ALevelPedigreeFigures?window.ALevelPedigreeFigures.render(topic,concept,i/2):'')+'</div>';
  }
  return h;
 }

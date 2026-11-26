@@ -235,7 +235,7 @@ function highLightExperiment() {
     '<path d="M160 82 H286 V153 H160 Z" fill="#dbeef4"/>'+
     '<path d="M158 47 V155 H288 V47 M208 98 V19 H257 V98" fill="none" stroke="'+ink+'" stroke-width="2"/>'+
     '<path d="M200 147 Q214 120 211 105 M212 123 Q190 114 192 105 M211 117 Q230 109 229 97" fill="none" stroke="'+teal+'" stroke-width="3"/>'+
-    circle(222,87,3,'white',blue)+circle(230,74,3,'white',blue)+text(270,24,'Gas',blue,14)+text(225,172,'Pondweed',teal,14)+text(225,198,'CO₂ in solution',blue,14),
+    circle(222,87,3,'white',blue)+circle(230,74,3,'white',blue)+text(280,56,'Gas',blue,14)+text(225,172,'Pondweed',teal,14)+text(225,198,'CO₂ in solution',blue,14),
     'Collect oxygen per minute. Change carbon dioxide supply in the solution while keeping other factors the same.',215);
 }
 function homeostasis() {
@@ -667,8 +667,40 @@ function pondweedLight() {
     '<path d="M160 82 H286 V153 H160 Z" fill="#dbeef4"/>'+
     '<path d="M158 47 V155 H288 V47 M208 98 V19 H257 V98" fill="none" stroke="'+ink+'" stroke-width="2"/>'+
     '<path d="M200 147 Q214 120 211 105 M212 123 Q190 114 192 105 M211 117 Q230 109 229 97" fill="none" stroke="'+teal+'" stroke-width="3"/>'+
-    circle(222,87,3,'white',blue)+circle(230,74,3,'white',blue)+text(270,24,'Gas',blue,14)+text(225,177,'Pondweed',teal,14),
+    circle(222,87,3,'white',blue)+circle(230,74,3,'white',blue)+text(280,56,'Gas',blue,14)+text(225,177,'Pondweed',teal,14),
     'Change lamp distance and compare oxygen volume per minute. Keep carbon dioxide supply and temperature the same.');
+}
+function pondweedRateWorked() {
+  return fig('Calculate oxygen production rate',
+    'An illustrative measuring cylinder contains 8 cubic centimetres of collected oxygen after 4 minutes. The mean rate is 8 divided by 4, giving 2 cubic centimetres per minute.',
+    '<path d="M48 130 V30 H130 V130" fill="#fffdf3" stroke="'+ink+'" stroke-width="2"/><path d="M50 94 H128 V130 H50 Z" fill="#dceef5"/>'+
+    line(48,30,130,30,ink,1)+line(48,94,130,94,blue,2)+text(145,37,'0 cm³',ink,15,'start')+text(145,100,'8 cm³',blue,15,'start')+
+    circle(245,68,25,'#edf4f2',teal)+line(245,68,245,52,teal,2)+line(245,68,256,75,teal,2)+text(245,132,'4 min',ink,15)+
+    text(160,184,'8 ÷ 4 = 2 cm³/min',ink,16),
+    'Read the collected gas volume and divide by the collection time. These values are the worked example, not measured results.',205);
+}
+function pondweedTemperature() {
+  return fig('Keep temperature steady',
+    'A thermometer measures water temperature around the pondweed while the lamp distance is changed. If the lamp also warms the water, temperature becomes another variable that may affect photosynthesis rate.',
+    text(53,25,'Lamp',ink,15)+text(225,25,'Thermometer',ink,15)+
+    '<path d="M24 78 H82 L70 45 H36 Z" fill="#ffe5ae" stroke="'+rust+'" stroke-width="2"/>'+line(53,78,53,139)+line(31,140,75,140)+arrow(86,80,121,92,rust,2)+
+    '<path d="M122 63 V153 H288 V63" fill="#dceef5" stroke="'+ink+'" stroke-width="2"/><path d="M177 144 Q179 118 177 92 M177 120 Q156 109 157 99 M178 113 Q196 104 197 93" fill="none" stroke="'+teal+'" stroke-width="3"/>'+
+    line(244,37,244,134,rust,4)+circle(244,135,6,rust,rust)+text(201,185,'Water around plant',blue,15),
+    'Monitor and keep the water temperature steady. A warmer lamp can otherwise change temperature as well as light intensity.',205);
+}
+export function ohmicCurrentGraph() {
+  return fig('Current through an ohmic resistor',
+    'At constant temperature, a graph of current against potential difference for an ohmic resistor is a straight line through the origin. As potential difference doubles, current doubles.',
+    line(50,150,285,150)+line(50,150,50,33)+text(50,24,'Current (A)',ink,15,'start')+text(165,184,'Potential difference (V)',ink,15)+
+    line(50,150,265,48,blue,3),
+    'Follow the straight line from the origin. This qualitative model assumes the resistor stays at constant temperature.',205);
+}
+export function filamentCurrentGraph() {
+  return fig('Current through a filament lamp',
+    'As potential difference rises, current increases but the current–potential difference graph becomes less steep because the filament heats up and its resistance rises. The graph is qualitative.',
+    line(50,150,285,150)+line(50,150,50,33)+text(50,24,'Current (A)',ink,15,'start')+text(165,184,'Potential difference (V)',ink,15)+
+    '<path d="M50 150 C82 96 145 65 265 57" fill="none" stroke="'+rust+'" stroke-width="3"/>',
+    'Follow the curve as potential difference rises. It becomes less steep as the filament heats and its resistance increases.',205);
 }
 function circulation() {
   return fig('Oxygen from lungs to working muscle',
@@ -706,17 +738,58 @@ function faultPath() {
     '<path d="M230 125 V151 H65" fill="none" stroke="'+teal+'" stroke-width="4"/>'+arrow(189,151,92,151,teal,2)+text(108,176,'Earth wire to supply',teal,14),
     'Follow the fault path through the earth connection. The diagram shows the fault path only; the fuse or breaker then disconnects the supply.',190);
 }
+function directPotential() {
+  return fig('Direct potential difference',
+    'An ideal direct supply is represented by a horizontal line above zero on a potential-difference–time graph. Its polarity remains the same. This is a qualitative model.',
+    text(48,24,'Potential difference (V)',ink,15,'start')+line(48,145,285,145)+line(48,145,48,36)+line(48,64,270,64,blue,3)+text(36,150,'0',ink,14,'end')+text(160,181,'Time',ink,15),
+    'A direct supply keeps the same polarity. This horizontal line models an ideal steady supply.',200);
+}
+function alternatingPotential() {
+  const points=Array.from({length:81},(_,i)=>{const x=50+i*2.875;return x+','+(125-44*Math.sin(i*Math.PI/20));}).join(' ');
+  return fig('Alternating potential difference',
+    'A qualitative alternating-potential-difference graph crosses zero and reverses polarity repeatedly. Two complete cycles take 40 milliseconds, so one cycle takes 20 milliseconds and the frequency is 50 hertz.',
+    text(50,24,'Potential difference (V)',ink,15,'start')+line(50,125,285,125)+line(50,174,50,37)+
+    '<polyline points="'+points+'" fill="none" stroke="'+rust+'" stroke-width="3"/>'+text(38,130,'0',ink,14,'end')+
+    text(50,200,'0',ink,14)+text(165,200,'20',ink,14)+text(280,200,'40',ink,14)+text(160,232,'Time (ms)',ink,15),
+    'Follow one complete cycle from 0 to 20 ms. That period corresponds to 50 cycles each second; the vertical scale is illustrative.',250);
+}
+function alternatingAndDirect(){return grouped(directPotential,alternatingPotential);}
+function mainsWorkingLoop() {
+  return fig('Live and neutral in the working circuit',
+    'A simplified alternating supply, lamp and connecting wires form a complete loop. The live conductor is at an alternating potential difference relative to earth; the neutral conductor, normally near earth potential, completes the circuit. The diagram does not show the protective earth connection to an appliance case.',
+    '<path d="M55 87 V40 H185 M215 40 H270 V160 H55 V123" fill="none" stroke="'+ink+'" stroke-width="2.5"/>'+circle(55,105,18,'white',ink)+text(55,111,'~',blue,18)+
+    circle(200,40,15,'white',ink)+line(190,30,210,50)+line(190,50,210,30)+text(120,27,'Live',rust,15)+text(200,190,'Neutral',blue,15)+
+    line(120,160,120,174,teal,2)+line(108,174,132,174,teal,2)+line(112,179,128,179,teal,2)+line(116,184,124,184,teal,2),
+    'Trace the complete working loop. The earth symbol marks the supply reference; a protective earth connection to a metal case is shown separately.',205);
+}
 function magnesiumParticles() {
   const mg=(x,y)=>circle(x,y,8,'#d7e8f4',blue); const o=(x,y)=>circle(x,y,8,'#f3d5c8',rust);
   let art=text(80,22,'Reactants',ink,15)+text(244,22,'Products',ink,15);
   for(let i=0;i<6;i++)art+=mg(26+(i%3)*25,50+Math.floor(i/3)*26);
-  for(let i=0;i<4;i++)art+=o(24+i*32,115)+o(39+i*32,115);
+  for(let i=0;i<4;i++)art+=circle(24+i*29,115,6,'#f3d5c8',rust)+circle(36+i*29,115,6,'#f3d5c8',rust);
   for(let i=0;i<6;i++)art+=mg(190+(i%3)*31,50+Math.floor(i/3)*26)+o(205+(i%3)*31,50+Math.floor(i/3)*26);
   art+=o(229,115)+o(244,115)+arrow(119,82,163,82,ink,2)+text(75,154,'6 Mg + 4 O₂',ink,14)+text(234,154,'6 MgO + O₂ left',ink,14)+mg(65,181)+text(81,186,'Mg',blue,14,'start')+o(200,181)+text(216,186,'O',rust,14,'start');
   return fig('A limiting reactant in particles',
     'Six magnesium atoms react with three of four oxygen molecules to form six magnesium oxide units. One oxygen molecule remains. Magnesium is the limiting reactant in this model.',art,
     'Count atoms on each side. Six magnesium atoms use three oxygen molecules, leaving one oxygen molecule.',200);
 }
+function oxygenRequirement() {
+  return fig('Compare oxygen needed and available',
+    'In the worked example, 0.20 moles of magnesium need 0.10 moles of oxygen according to the two-to-one equation ratio. The 4.8 gram oxygen sample supplies 0.15 moles. The required amount is less than available, so magnesium is limiting.',
+    text(160,24,'Oxygen amounts',ink,15)+text(55,70,'Needed',blue,15)+'<rect x="110" y="48" width="100" height="30" fill="#d7e8f4" stroke="'+blue+'" stroke-width="2"/>'+text(160,70,'0.10 mol',ink,15)+
+    text(55,125,'Available',teal,15)+'<rect x="110" y="103" width="150" height="30" fill="#d9eee2" stroke="'+teal+'" stroke-width="2"/>'+text(185,125,'0.15 mol',ink,15)+
+    text(160,174,'0.20 mol Mg needs',ink,15)+text(160,206,'0.10 mol O₂',ink,15),
+    'Compare oxygen required with oxygen available on the same scale. The oxygen is in excess, so magnesium limits the yield.',225);
+}
+function magnesiumOxideMass() {
+  return fig('Convert product amount to mass',
+    'The equation ratio gives 0.20 moles of magnesium oxide from 0.20 moles of magnesium. Multiplying 0.20 moles by the molar mass of magnesium oxide, 40 grams per mole, gives a maximum mass of 8.0 grams. Paired circles represent a formula unit; the ionic lattice is not shown.',
+    circle(62,70,14,'#d7e8f4',blue)+circle(92,70,14,'#f3d5c8',rust)+text(76,112,'MgO',ink,15)+arrow(112,70,188,70,teal,2)+
+    '<path d="M206 89 H279 L270 126 H215 Z M211 89 Q242 68 274 89" fill="#edf4ed" stroke="'+teal+'" stroke-width="2"/>'+text(242,151,'8.0 g',teal,16)+
+    text(160,190,'0.20 mol × 40 g/mol',ink,15)+text(160,222,'= 8.0 g',ink,16),
+    'Use the one-to-one Mg-to-MgO amount ratio, then multiply by molar mass. The paired circles represent a formula unit; the ionic lattice is omitted.',240);
+}
+function magnesiumYield(){return grouped(molarRatio,magnesiumOxideMass);}
 function plantPaths() {
   return fig('Water and sugar transport',
     'Water enters roots and moves upwards in xylem to the leaf. Water vapour leaves the leaf. Sugars made in a mature source leaf are transported in phloem to a sink such as a growing root; phloem movement depends on source and sink.',
@@ -739,6 +812,9 @@ export const gcseWorkedVisuals = {
 // each selected visual directly with its matching line in the teaching stage.
 export const gcseWorkedLineVisuals = {
   'chromatography': [gcseChromatogramSetup, gcseChromatogramResult, rfWorked],
+  'domestic-electricity': [alternatingAndDirect, mainsWorkingLoop, faultPath],
+  'photosynthesis-limits': [pondweedRateWorked, pondweedLight, pondweedTemperature],
+  'reacting-masses': [magnesiumParticles, oxygenRequirement, magnesiumYield],
   'quadrat-evidence': [() => grouped(randomCoordinates,quadratBoundary), quadratMeanWorked, parallelTransects]
 };
 

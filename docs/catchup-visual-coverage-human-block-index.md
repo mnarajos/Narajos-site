@@ -84,11 +84,11 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f170/2.1.3 · Model 1 | Fresh air helps keep alveolar oxygen partial pressure above that in incoming blood. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/2.1.3 · Model 2 | A large surface area and thin walls support exchange. Oxygen diffuses into blood, where it binds to haemogl… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/2.1.3 · Model 3 | Blood carries oxygen to capillaries near tissues. Oxygen dissociates from haemoglobin and diffuses towards … | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
-| f170/2.1.3.cirrhosis · Explain 1 | Cirrhosis involves long-term scarring and changes to the structure and function of the liver. Hepatocytes a… | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.1.3.cirrhosis · Explain 2 | Hepatocytes normally process bilirubin, a pigment formed during the breakdown of red blood cells, so it can… | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.1.3.cirrhosis · Model 1 | Cirrhosis can damage functioning liver tissue. | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.1.3.cirrhosis · Model 2 | The liver can produce fewer of the proteins needed for blood to clot. The blood may clot less readily. | None declared | Unreviewed; see reviewed exceptions |
-| f170/2.1.3.cirrhosis · Model 3 | Bleeding from small vessels after a bump can continue for longer, making a bruise more likely. | None declared | Unreviewed; see reviewed exceptions |
+| f170/2.1.3.cirrhosis · Explain 1 | Cirrhosis involves long-term scarring and changes to the structure and function of the liver. Hepatocytes a… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.1.3.cirrhosis · Explain 2 | Hepatocytes normally process bilirubin, a pigment formed during the breakdown of red blood cells, so it can… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.1.3.cirrhosis · Model 1 | Cirrhosis can damage functioning liver tissue. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.1.3.cirrhosis · Model 2 | The liver can produce fewer of the proteins needed for blood to clot. The blood may clot less readily. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/2.1.3.cirrhosis · Model 3 | Bleeding from small vessels after a bump can continue for longer, making a bruise more likely. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/2.2.2 · Explain 1 | Follow three transfers: air moves into alveoli, oxygen diffuses into blood, and circulation delivers oxygen… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/2.2.2 · Model 1 | When a cyclist's leg muscles work harder, their demand for oxygen rises as aerobic respiration increases. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/2.2.2 · Model 2 | Deeper or more frequent breaths renew alveolar air. Oxygen diffuses into the blood and binds to haemoglobin. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
@@ -98,16 +98,16 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f170/2.2.3 · Model 1 | At rest the tidal volume is 500 mL and the rate is 12 breaths per minute. Convert to 0.50 L per breath befo… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/2.2.3 · Model 2 | 0.50 L per breath × 12 breaths per minute gives 6.0 L per minute. The unit tells us this is air volume, not… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/2.2.3 · Model 3 | When a muscle works harder its oxygen demand can rise. More ventilation can renew alveolar air, but oxygen … | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
-| f170/3.1.1 · Explain 1 | In negative feedback, a response opposes a change in the regulated variable. Identify the variable first. A… | None declared | Unreviewed; see reviewed exceptions |
-| f170/3.1.1 · Model 1 | After a meal, glucose absorbed from the gut raises its concentration in the blood. Blood glucose concentrat… | None declared | Unreviewed; see reviewed exceptions |
-| f170/3.1.1 · Model 2 | Pancreatic beta cells respond by releasing more insulin into blood. Insulin is a signal to target cells, no… | None declared | Unreviewed; see reviewed exceptions |
-| f170/3.1.1 · Model 3 | Muscle and fat cells can take up more glucose. Insulin promotes glycogen synthesis in liver and muscle and … | None declared | Unreviewed; see reviewed exceptions |
-| f170/3.1.1 · Model 4 | Removing glucose from the blood and reducing its release into the blood oppose the initial rise. As the con… | None declared | Unreviewed; see reviewed exceptions |
-| f170/3.1.2 · Explain 1 | A glucose-tolerance test tracks blood glucose after a measured glucose load under a standard procedure. Com… | graph | Unreviewed; see reviewed exceptions |
-| f170/3.1.2 · Explain 2 | In type 1 diabetes, autoimmune damage to pancreatic beta cells can lead to very little insulin being produc… | graph | Unreviewed; see reviewed exceptions |
-| f170/3.1.2 · Model 1 | The x-axis shows time from the glucose load. The y-axis is blood glucose concentration in mmol/L. At time 0… | graph | Unreviewed; see reviewed exceptions |
-| f170/3.1.2 · Model 2 | The highest measured point is 8.8 at 30 minutes. A peak shows the period when glucose is elevated. It does … | graph | Unreviewed; see reviewed exceptions |
-| f170/3.1.2 · Model 3 | By 120 minutes the reading is 5.3 mmol/L, close to its starting value. This is consistent with glucose disp… | graph | Unreviewed; see reviewed exceptions |
+| f170/3.1.1 · Explain 1 | In negative feedback, a response opposes a change in the regulated variable. Identify the variable first. A… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/3.1.1 · Model 1 | After a meal, glucose absorbed from the gut raises its concentration in the blood. Blood glucose concentrat… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/3.1.1 · Model 2 | Pancreatic beta cells respond by releasing more insulin into blood. Insulin is a signal to target cells, no… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/3.1.1 · Model 3 | Muscle and fat cells can take up more glucose. Insulin promotes glycogen synthesis in liver and muscle and … | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/3.1.1 · Model 4 | Removing glucose from the blood and reducing its release into the blood oppose the initial rise. As the con… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f170/3.1.2 · Explain 1 | A glucose-tolerance test tracks blood glucose after a measured glucose load under a standard procedure. Com… | explainDiagrams, modelDiagrams, graph | Unreviewed; see reviewed exceptions |
+| f170/3.1.2 · Explain 2 | In type 1 diabetes, autoimmune damage to pancreatic beta cells can lead to very little insulin being produc… | explainDiagrams, modelDiagrams, graph | Unreviewed; see reviewed exceptions |
+| f170/3.1.2 · Model 1 | The x-axis shows time from the glucose load. The y-axis is blood glucose concentration in mmol/L. At time 0… | explainDiagrams, modelDiagrams, graph | Unreviewed; see reviewed exceptions |
+| f170/3.1.2 · Model 2 | The highest measured point is 8.8 at 30 minutes. A peak shows the period when glucose is elevated. It does … | explainDiagrams, modelDiagrams, graph | Unreviewed; see reviewed exceptions |
+| f170/3.1.2 · Model 3 | By 120 minutes the reading is 5.3 mmol/L, close to its starting value. This is consistent with glucose disp… | explainDiagrams, modelDiagrams, graph | Unreviewed; see reviewed exceptions |
 | f170/3.2.1 · Explain 1 | Electrical signals travel along neurones. At a chemical synapse, a neurotransmitter carries information acr… | explainDiagrams, modelDiagrams, visual | Unreviewed; see reviewed exceptions |
 | f170/3.2.1 · Explain 2 | Myelin insulates sections of an axon. Current spreads quickly under myelin and action potentials are regene… | explainDiagrams, modelDiagrams, visual | Unreviewed; see reviewed exceptions |
 | f170/3.2.1 · Model 1 | A hot surface activates receptors in the skin. The sensory neurone carries impulses towards the CNS. | explainDiagrams, modelDiagrams, visual | Unreviewed; see reviewed exceptions |

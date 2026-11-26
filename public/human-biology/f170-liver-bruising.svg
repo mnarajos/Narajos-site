@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 390" role="img" aria-labelledby="title desc">
+<title id="title">One possible link from liver damage to bruising</title><desc id="desc">Scarring can reduce functioning liver tissue and production of proteins needed for blood clotting. At a damaged small vessel, reduced clotting can allow bleeding to continue longer, making a bruise more likely. Other factors can also contribute to bruising.</desc>
+<defs><marker id="a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0v7l6-3.5z" fill="#23656c"/></marker></defs><rect width="280" height="390" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Damaged liver tissue</text><path d="M70 60q30-23 137-13l8 24q-33 17-67 8-42 13-78 3z" fill="#f9dfc8" stroke="#98451e" stroke-width="3"/><path d="M84 58l26 24m6-34 22 30m15-31 18 32m21-30 14 25" stroke="#69447f" stroke-width="3" stroke-dasharray="5 3"/>
+<path d="M140 92v20" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/><text x="140" y="136">Fewer clotting proteins</text><text x="140" y="158">may be produced.</text>
+<path d="M140 168v20" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/>
+<path d="M35 211h210M35 243h82m23 0h105" fill="none" stroke="#98451e" stroke-width="3"/><circle cx="78" cy="227" r="5" fill="#98451e"/><circle cx="172" cy="228" r="5" fill="#98451e"/>
+<circle cx="126" cy="251" r="4" fill="#98451e"/><circle cx="136" cy="265" r="4" fill="#98451e"/><circle cx="119" cy="278" r="4" fill="#98451e"/>
+<text x="140" y="309">Blood may escape longer</text><text x="140" y="332">from a damaged vessel.</text><text x="140" y="369">Bruising becomes more likely.</text>
+</g></svg>

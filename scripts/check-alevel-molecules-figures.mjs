@@ -76,7 +76,11 @@ for (const [file,global,rows] of [
  ['catchup-exchange-disease-figures.js','ALevelExchangeDiseaseFigures', [['a2','membrane',1],['a3','lungdata',1]]],
  ['catchup-farming-figures.js','ALevelFarmingFigures', [['a5','farming',0],['a5','farming',1]]],
  ['catchup-energy-recap-figures.js','ALevelEnergyRecapFigures', [['a5','traps5',0],['a5','traps5',1],['a5','traps5',2],['a5','traps5',3],['a5','ctx5',1],['a5','ctx5',2],['a5','limiting',1],['a5','anaerobic',1]]],
- ['catchup-risk-surface-figures.js','ALevelRiskSurfaceFigures', [['a3','sav',2],['a3','cvd',0],['a3','cvd',1]]]
+ ['catchup-risk-surface-figures.js','ALevelRiskSurfaceFigures', [['a3','sav',2],['a3','cvd',0],['a3','cvd',1]]],
+ ['catchup-response-recap-figures.js','ALevelResponseRecapFigures', [['a6','reflex',0],['a6','tropisms',0],['a6','homeo',0],['a6','hrcontrol',0],['a6','kidney',1],['a6','traps6',0],['a6','traps6',1],['a6','traps6',2],['a6','traps6',3],['a6','ctx6',0],['a6','ctx6',1],['a6','ctx6',2]]],
+ ['catchup-inheritance-details.js','ALevelInheritanceDetails', [['a7','genterms',0],['a7','codom',0],['a7','sexlink',0],['a7','sexlink',1],['a7','dihybrid',0],['a7','dihybrid',1],['a7','dihybrid',2]]],
+ ['catchup-context-molecules.js','ALevelContextMolecules', [['a1','ctx1',1],['a1','ctx1',2]]],
+ ['catchup-pedigree-figures.js','ALevelPedigreeFigures', [['a7','pedigree',0],['a7','pedigree',1],['a7','pedigree',2]]]
 ]) {
  vm.runInNewContext(readFileSync(new URL('../public/alevel/'+file, import.meta.url), 'utf8'), context);
  for (const [topic,id,group] of rows) { const figure=context.window[global].render(topic,id,group); assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/); assert.match(figure, /<figcaption>.{20,}<\/figcaption>/); }
@@ -89,8 +93,18 @@ for (const [id,group] of [['prok',2],['active',0],['ctx2',1],['ctx2',2],['osmcha
  assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
 }
 vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-transport-figures.js', import.meta.url), 'utf8'), context);
-for (const [id,group] of [['traps3',0],['traps3',1],['traps3',2],['ctx3',1],['ctx3',2]]) {
+for (const [id,group] of [['traps3',0],['traps3',1],['traps3',2],['ctx3',1],['ctx3',2],['bwater',0],['bwater',1],['bwater',2]]) {
  const figure=context.window.ALevelExchangeExtraFigures.render('a3',id,group);
+ assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
+ assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
+}
+vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-practical-extra-figures.js', import.meta.url), 'utf8'), context);
+const practicalPhoto=context.window.ALevelPracticalExtraFigures.render('a3','dissect',0);
+assert.match(practicalPhoto, /<img[^>]+alt="[^"]{20,}"/);
+assert.match(practicalPhoto, /https:\/\/creativecommons\.org\/licenses\/by-sa\/4\.0\//);
+assert(existsSync(new URL('../public/assets/required-practicals/rp5-lamb-heart.webp', import.meta.url)));
+for (const g of [0,1]) {
+ const figure=context.window.ALevelPracticalExtraFigures.render('a3','dissect',g);
  assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
  assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
 }

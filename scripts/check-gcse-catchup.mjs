@@ -155,9 +155,11 @@ export async function checkGCSECatchup(browser, base) {
           assert.equal(await items.count(), lesson.steps[0].worked.lines.length, `${id}: worked line count`);
           for (let index = 0; index < lesson.steps[0].worked.lines.length; index++) {
             const item = items.nth(index);
-            assert(await item.locator("figure, table").count(), `${id} worked line ${index + 1}: missing adjacent visual`);
+            const hasVisual = Boolean(lesson.steps[0].worked.lineVisuals[index]);
+            assert.equal(Boolean(await item.locator("figure, table").count()), hasVisual,
+              `${id} worked line ${index + 1}: incorrect adjacent visual`);
             assert.equal(await item.locator(":scope > p").textContent(), lesson.steps[0].worked.lines[index]);
-            assert(await item.evaluate(node => {
+            if (hasVisual) assert(await item.evaluate(node => {
               const visual = node.querySelector("figure, table");
               const explanation = node.querySelector(":scope > p");
               return Boolean(visual && explanation && (visual.compareDocumentPosition(explanation) & Node.DOCUMENT_POSITION_FOLLOWING));
@@ -179,6 +181,23 @@ export async function checkGCSECatchup(browser, base) {
         }
       }
     }
+    // The circuit wires must terminate at the meter and lamp outlines. A path
+    // through a symbol incorrectly suggests a bypass rather than a connection.
+    await page.goto(lessonURL("current-potential-difference", gcseCatchup["current-potential-difference"].year));
+    const ivCircuit = page.locator('#catchup-evidence > figure svg[role="img"]');
+    assert.equal(await ivCircuit.count(), 1, "current–potential difference opening circuit");
+    const wireCrossesSymbol = await ivCircuit.evaluate(svg => {
+      const wire = svg.querySelector("path");
+      const symbols = [...svg.querySelectorAll("circle")].filter(circle => Number(circle.getAttribute("r")) >= 13);
+      if (!wire || symbols.length !== 3) return true;
+      for (let distance = 0; distance <= wire.getTotalLength(); distance += .5) {
+        const point = wire.getPointAtLength(distance);
+        if (symbols.some(circle => Math.hypot(point.x - Number(circle.getAttribute("cx")),
+          point.y - Number(circle.getAttribute("cy"))) < Number(circle.getAttribute("r")) - 1)) return true;
+      }
+      return false;
+    });
+    assert.equal(wireCrossesSymbol, false, "wires must not pass through circuit symbols");
     for (const year of [10,11]) {
       await page.goto(base + "/science-catch-up/?year=" + year);
       const ids = Object.entries(gcseCatchup).filter(([,lesson]) => lesson.year === year).map(([id]) => id);

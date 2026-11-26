@@ -68,7 +68,7 @@ function grid() {
 function ivCircuit() {
   return picture("Circuit for a filament lamp", diagram(
     "The supply, ammeter and lamp are in the main loop. The voltmeter is on a branch connected across the two lamp terminals.",
-    '<path d="M145 24H43V99H278V24H163 M106 99V151H216V99" fill="none" stroke="currentColor" stroke-width="2.5"/>' +
+    '<path d="M145 24H43V99H55 M81 99H143 M177 99H278V24H163 M106 99V151H147 M173 151H216V99" fill="none" stroke="currentColor" stroke-width="2.5"/>' +
     line(145,13,145,35)+line(163,17,163,31)+text(157,52,"Variable dc supply",ink,15)+
     circle(68,99,13,"white")+text(68,104,"A")+circle(160,99,17,"white")+
     line(150,89,170,109)+line(150,109,170,89)+circle(106,99,3,ink)+circle(216,99,3,ink)+

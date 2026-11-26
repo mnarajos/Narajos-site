@@ -219,6 +219,9 @@ export function mountJourney(host, model, lesson) {
         example.append(element("h4", title));
         if (visual && !lineVisuals) example.append(visual());
         const reasoning = element("ol", "", lineVisuals ? "school-worked-line-visuals" : "");
+        // Explicit list semantics are retained in browsers that suppress them
+        // when CSS removes the native marker for full-width figures.
+        if (lineVisuals) reasoning.setAttribute("role", "list");
         reasoning.append(...lines.map((line, index) => {
           if (!lineVisuals) return element("li", line);
           const item = element("li");

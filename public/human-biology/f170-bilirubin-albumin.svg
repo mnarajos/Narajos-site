@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 440" role="img" aria-labelledby="title desc">
+<title id="title">Two normal liver functions</title><desc id="desc">Bilirubin forms as red blood cells break down, travels to the liver and is processed for excretion in bile. The liver also produces albumin, which contributes to the oncotic pressure that opposes fluid leaving blood vessels.</desc>
+<defs><marker id="a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0v7l6-3.5z" fill="#23656c"/></marker></defs><rect width="280" height="440" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Bilirubin pathway</text><ellipse cx="140" cy="54" rx="31" ry="15" fill="#f9dfc8" stroke="#98451e" stroke-width="3"/><ellipse cx="140" cy="54" rx="14" ry="5" fill="none" stroke="#98451e" stroke-width="2"/>
+<text x="140" y="94">Red-cell breakdown</text><path d="M140 101v18" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/><text x="140" y="141">Bilirubin → liver</text><path d="M140 149v18" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/><text x="140" y="190">Processed for bile</text>
+<text x="140" y="232" font-weight="700">Albumin in blood</text><rect x="33" y="255" width="214" height="54" rx="24" fill="#e5d9ec" stroke="#69447f" stroke-width="3"/><circle cx="92" cy="282" r="6" fill="#69447f"/><circle cx="140" cy="282" r="6" fill="#69447f"/><circle cx="188" cy="282" r="6" fill="#69447f"/>
+<path d="M140 344v-32" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/><text x="140" y="372">Albumin contributes to the</text><text x="140" y="395">oncotic pull into blood.</text><text x="140" y="426">Other forces also act.</text>
+</g></svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 330" role="img" aria-labelledby="title desc">
+<title id="title">An illustrative glucose response after a meal</title><desc id="desc">A conceptual graph plots blood glucose concentration vertically against time horizontally. After a meal, concentration rises above a band representing the usual range. The response then opposes the rise and concentration moves back towards the range. No measured values or time scale are implied.</desc>
+<defs><marker id="a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0v7l6-3.5z" fill="#23656c"/></marker></defs><rect width="280" height="330" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Illustrative response</text><text x="140" y="49">Relative blood glucose</text>
+<path d="M45 75v157h202" fill="none" stroke="#263e4a" stroke-width="2" marker-end="url(#a)"/>
+<path d="M46 183h199v38H46z" fill="#d8ece7"/><path d="M46 183h199M46 221h199" stroke="#23656c" stroke-width="1.5" stroke-dasharray="5 4"/><path d="M48 207c20 0 31-7 43-36s25-66 50-66c23 0 34 28 46 60s28 38 56 39" fill="none" stroke="#98451e" stroke-width="4"/>
+<path d="M78 190l25-58m-8 4 8-4-1 9M163 127l24 52m-8-4 8 4-1-9" fill="none" stroke="#23656c" stroke-width="2"/>
+<text x="80" y="94">Rise</text><text x="201" y="94">Return</text><text x="145" y="257">Time after a meal →</text>
+<text x="140" y="285">Band: usual range</text><text x="140" y="313">Concept only; no data shown</text>
+</g></svg>

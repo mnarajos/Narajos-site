@@ -87,7 +87,7 @@ for (const [, topic, id, group] of keys) {
 }
 
 const humanWindow = {KeystoneHumanTeaching: {choice: (...args) => ({args}), written: (...args) => ({args})}};
-for (const file of ["teaching-f170.js", "f170-cell-teaching-figures.js", "f170-membrane-teaching-figures.js", "f170-organelle-evidence-figures.js", "f170-muscle-teaching-figures.js", "f170-surfaces-teaching-figures.js", "f170-signals-teaching-figures.js", "f170-microscopy-teaching-figures.js", "f170-mitosis-teaching-figures.js", "f170-meiosis-teaching-figures.js", "f170-oxygen-delivery-figures.js", "f170-organisation-teaching-figures.js", "f170-circulation-teaching-figures.js", "teaching-f171.js", "teaching-knowledge.js"]) {
+for (const file of ["teaching-f170.js", "f170-cell-teaching-figures.js", "f170-membrane-teaching-figures.js", "f170-organelle-evidence-figures.js", "f170-muscle-teaching-figures.js", "f170-surfaces-teaching-figures.js", "f170-signals-teaching-figures.js", "f170-microscopy-teaching-figures.js", "f170-mitosis-teaching-figures.js", "f170-meiosis-teaching-figures.js", "f170-oxygen-delivery-figures.js", "f170-organisation-teaching-figures.js", "f170-circulation-teaching-figures.js", "f170-cirrhosis-teaching-figures.js", "f170-glucose-teaching-figures.js", "f170-diabetes-teaching-figures.js", "teaching-f171.js", "teaching-knowledge.js"]) {
   const source = await readFile(new URL("../public/human-biology/" + file, import.meta.url), "utf8");
   vm.runInNewContext(source, {window: humanWindow});
 }
@@ -110,6 +110,19 @@ for (const [id, lesson] of Object.entries(humanWindow.KeystoneHumanLessons)) {
   }
 }
 assert.ok(assets, "expected Human Biology teaching diagrams");
+// The compact worked graph duplicates the lesson's fictional graph for phone readability.
+// Check plotted coordinates against the source data so either cannot silently drift.
+const glucoseGraph = humanWindow.KeystoneHumanLessons["f170/3.1.2"].graph;
+const glucoseSvg = await readFile(new URL("../public/human-biology/f170-glucose-tolerance-graph.svg", import.meta.url), "utf8");
+const glucosePoints = Array.from(glucoseSvg.matchAll(/<circle cx="([\d.]+)" cy="([\d.]+)" r="4"\/>/g), match => [+match[1], +match[2]]);
+assert.equal(glucosePoints.length, glucoseGraph.values.length, "compact glucose graph point count");
+const expectedGlucosePath = glucosePoints.map(([x, y], i) => `${i ? "L" : "M"}${x} ${y}`).join("");
+assert.ok(glucoseSvg.includes(`d="${expectedGlucosePath}"`), "compact glucose graph line follows data points");
+for (let i = 0; i < glucosePoints.length; i++) {
+  assert.equal(glucosePoints[i][0], 61 + glucoseGraph.times[i] * 1.4, "compact glucose graph time");
+  assert.equal(glucosePoints[i][1], 185 - glucoseGraph.values[i] * 10, "compact glucose graph concentration");
+}
+
 // Inspect every explicitly mapped recap visual, including direct original assets.
 const companionSource = await readFile(new URL("../public/human-biology/companion.js", import.meta.url), "utf8");
 const recapStart = companionSource.indexOf("const labRecap =");
