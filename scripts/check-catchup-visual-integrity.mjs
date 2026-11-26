@@ -87,7 +87,7 @@ for (const [, topic, id, group] of keys) {
 }
 
 const humanWindow = {KeystoneHumanTeaching: {choice: (...args) => ({args}), written: (...args) => ({args})}};
-for (const file of ["teaching-f170.js", "f170-cell-teaching-figures.js", "f170-membrane-teaching-figures.js", "teaching-f171.js", "teaching-knowledge.js"]) {
+for (const file of ["teaching-f170.js", "f170-cell-teaching-figures.js", "f170-membrane-teaching-figures.js", "f170-organelle-evidence-figures.js", "teaching-f171.js", "teaching-knowledge.js"]) {
   const source = await readFile(new URL("../public/human-biology/" + file, import.meta.url), "utf8");
   vm.runInNewContext(source, {window: humanWindow});
 }

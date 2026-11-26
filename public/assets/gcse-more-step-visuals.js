@@ -23,10 +23,10 @@ function filtration() {
     '<path d="M35 28 H142 L100 83 V126 H78 V83 Z" fill="#eef5ee" stroke="'+ink+'" stroke-width="2"/>'+
     line(53,49,124,49,teal,2)+circle(75,43,4,rust)+circle(95,38,4,rust)+circle(110,43,4,rust)+
     '<path d="M65 128 H114 V166 H65 Z" fill="#d7edf4" stroke="'+ink+'" stroke-width="2"/>'+
-    text(89,18,'Filter',ink,15)+text(89,181,'Filtered water',blue,14)+arrow(121,143,174,143,blue)+
+    text(89,24,'Filter',ink,15)+text(89,181,'Filtered water',blue,14)+arrow(121,143,174,143,blue)+
     '<circle cx="231" cy="119" r="35" fill="#e6f2ed" stroke="'+teal+'" stroke-width="2"/>'+
     text(231,110,'Sterilise',teal,17)+text(231,135,'microbes',teal,16)+
-    text(229,168,'Dissolved salts',ink,17)+text(229,189,'remain',ink,17),
+    text(229,165,'Dissolved salts',ink,17)+text(229,192,'remain',ink,17),
     'The filter catches suspended particles; sterilisation acts on microbes. Removing dissolved salts requires desalination.',205);
 }
 function quadrat() {
@@ -39,7 +39,7 @@ function quadrat() {
     '<rect x="175" y="34" width="135" height="110" fill="#edf6ed" stroke="'+teal+'" stroke-width="2"/>'+
     '<path d="M178 34 V144" stroke="'+teal+'" stroke-width="7"/>'+line(184,88,300,88,rust,2)+
     [196,230,264].map(x=>'<rect x="'+x+'" y="76" width="22" height="24" fill="none" stroke="'+blue+'" stroke-width="2"/>').join('')+
-    text(77,20,'Random quadrats',ink,14)+text(242,20,'Transect',ink,14)+text(77,164,'Whole area',ink,14)+text(242,158,'Distance from',ink,14)+text(242,181,'hedge',ink,14),
+    text(86,24,'Random quadrats',ink,14)+text(242,24,'Transect',ink,14)+text(77,164,'Whole area',ink,14)+text(242,158,'Distance from',ink,14)+text(242,181,'hedge',ink,14),
     'Compare random locations for a whole-area estimate with regular positions along a gradient. The sketches show only a few samples.',195);
 }
 function circuitMeters() {
@@ -87,7 +87,7 @@ function stopping() {
     '<path d="M113 108 h47 l12 12 v11 h-67 v-10 z" fill="#d3e6f3" stroke="'+blue+'" stroke-width="2"/>'+circle(119,133,6,ink)+circle(158,133,6,ink)+
     '<path d="M232 108 h47 l12 12 v11 h-67 v-10 z" fill="#e3e9e9" stroke="'+ink+'" stroke-width="2"/>'+circle(238,133,6,ink)+circle(277,133,6,ink)+
     arrow(25,78,116,78,rust,2)+text(72,60,'Thinking',rust,14)+arrow(116,78,259,78,teal,2)+text(188,60,'Braking',teal,14)+
-    text(30,165,'Hazard',ink,13)+text(140,165,'Brakes applied',ink,13)+text(262,165,'Stopped',ink,13)+text(72,28,'Reaction time',rust,13)+text(200,28,'Tyre grip',teal,13),
+    text(45,165,'Hazard',ink,13)+text(140,165,'Brake',ink,13)+text(262,165,'Stopped',ink,13)+text(72,28,'Reaction time',rust,13)+text(200,28,'Tyre grip',teal,13),
     'Reaction time affects thinking distance; tyre grip affects braking distance. Add the two distances to find the total.');
 }
 function neuron() {
@@ -126,7 +126,7 @@ function temperaturePractical() {
     'A thermometer is held in a reaction mixture in an insulated cup with a lid. The initial temperature and the highest or lowest temperature after mixing are recorded.',
     '<path d="M54 66 L67 155 H155 L168 66 Z" fill="#e2f0ee" stroke="'+teal+'" stroke-width="3"/>'+
     '<path d="M64 103 H158 L151 151 H71 Z" fill="#c7dfea"/>'+line(48,65,174,65,ink,5)+line(115,19,115,120,rust,5)+circle(115,121,7,rust,rust)+
-    text(117,17,'Thermometer',ink,14)+text(242,93,'Insulated cup',ink,13)+line(170,89,189,89,ink,1.5)+
+    text(228,25,'Thermometer',ink,14)+line(125,24,166,24,ink,1.5)+text(242,93,'Insulated cup',ink,13)+line(170,89,189,89,ink,1.5)+
     text(229,130,'Stir and record',ink,14)+text(229,155,'peak or minimum',ink,14),
     'Compare the starting temperature with the peak or minimum. Insulation reduces energy transfer to the surroundings.');
 }
@@ -135,7 +135,7 @@ function temperaturePractical() {
 function irradiation() {
   return fig('Exposure and contamination',
     'During irradiation radiation from a source reaches a person but radioactive material is not transferred. During contamination particles of radioactive material are deposited on the person and can continue emitting radiation.',
-    circle(33,64,13,'#e8d3cb',rust)+text(33,40,'Source',ink,13)+arrow(48,64,95,64,rust)+
+    circle(33,64,13,'#e8d3cb',rust)+text(45,40,'Source',ink,13)+arrow(48,64,95,64,rust)+
     '<circle cx="119" cy="42" r="10" fill="none" stroke="'+ink+'" stroke-width="2"/><path d="M119 52 V91 M102 68 H136 M119 91 L105 116 M119 91 L133 116" stroke="'+ink+'" stroke-width="2" fill="none"/>'+text(79,146,'Irradiation',ink,14)+
     circle(195,64,13,'#e8d3cb',rust)+text(195,40,'Source',ink,13)+arrow(209,64,252,64,rust)+circle(250,75,4,rust,rust)+circle(264,84,4,rust,rust)+
     '<circle cx="267" cy="42" r="10" fill="none" stroke="'+ink+'" stroke-width="2"/><path d="M267 52 V91 M250 68 H284 M267 91 L253 116 M267 91 L281 116" stroke="'+ink+'" stroke-width="2" fill="none"/>'+text(253,146,'Contamination',ink,14),
@@ -152,12 +152,12 @@ function density() {
 function alkene() {
   return fig('A cracking example',
     'One butane molecule, C4H10, can crack into one ethane molecule, C2H6, and one ethene molecule, C2H4. Ethene has a carbon–carbon double bond. The atom count is the same on both sides.',
-    text(67,27,'Butane',ink,15)+text(67,50,'C₄H₁₀',blue,19)+
+    text(67,24,'Butane',ink,15)+text(67,54,'C₄H₁₀',blue,19)+
     [34,56,78,100].map(x=>circle(x,82,8,'#dbe7f0',blue)).join('')+
     line(42,82,48,82)+line(64,82,70,82)+line(86,82,92,82)+arrow(115,82,151,82,rust,2)+
-    text(195,27,'Ethane',ink,15)+text(195,50,'C₂H₆',blue,18)+circle(185,82,8,'#dbe7f0',blue)+circle(205,82,8,'#dbe7f0',blue)+line(193,82,197,82)+
-    text(268,27,'Ethene',ink,15)+text(268,50,'C₂H₄',blue,18)+circle(258,82,8,'#dbe7f0',blue)+circle(278,82,8,'#dbe7f0',blue)+line(266,79,270,79)+line(266,85,270,85)+
-    text(160,130,'C: 4 → 2 + 2',ink,15)+text(160,151,'H: 10 → 6 + 4',ink,15),
+    text(195,24,'Ethane',ink,15)+text(195,54,'C₂H₆',blue,18)+circle(185,82,8,'#dbe7f0',blue)+circle(205,82,8,'#dbe7f0',blue)+line(193,82,197,82)+
+    text(268,24,'Ethene',ink,15)+text(268,54,'C₂H₄',blue,18)+circle(258,82,8,'#dbe7f0',blue)+circle(278,82,8,'#dbe7f0',blue)+line(266,79,270,79)+line(266,85,270,85)+
+    text(160,128,'C: 4 → 2 + 2',ink,15)+text(160,155,'H: 10 → 6 + 4',ink,15),
     'Count the atoms on both sides. Ethene contains a carbon–carbon double bond; hydrogen atoms are omitted from the structural sketch.');
 }
 function emSpectrum() {
@@ -165,9 +165,9 @@ function emSpectrum() {
   const colours=['#d9e7f1','#cfdfef','#f1d0c0','#f4dd9a','#e5d5ed','#d8d8e8','#c3d0dc'];
   return fig('The electromagnetic spectrum',
     'From top to bottom, wavelength decreases and frequency increases: radio waves, microwaves, infrared, visible light, ultraviolet, X-rays and gamma rays. All travel at the same speed in a vacuum.',
-    names.map((n,i)=>'<rect x="30" y="'+(20+i*28)+'" width="165" height="25" rx="3" fill="'+colours[i]+'" stroke="#687e86"/>'+text(112,38+i*28,n,ink,19)).join('')+
-    arrow(227,33,227,205,blue,2)+text(268,78,'Frequency',blue,18)+text(268,103,'increases',blue,18)+
-    arrow(303,205,303,33,rust,2)+text(268,150,'Wavelength',rust,17)+text(268,175,'increases',rust,18),
+    names.map((n,i)=>'<rect x="10" y="'+(20+i*28)+'" width="150" height="25" rx="3" fill="'+colours[i]+'" stroke="#687e86"/>'+text(85,38+i*28,n,ink,19)).join('')+
+    arrow(180,33,180,205,blue,2)+text(245,78,'Frequency',blue,18)+text(245,103,'increases',blue,18)+
+    arrow(310,205,310,33,rust,2)+text(245,150,'Wavelength',rust,17)+text(245,175,'increases',rust,18),
     'Read down the bands for increasing frequency. Their displayed sizes are illustrative, not to scale.',225);
 }
 
@@ -189,7 +189,7 @@ function highLightExperiment() {
     '<path d="M160 82 H286 V153 H160 Z" fill="#dbeef4"/>'+
     '<path d="M158 47 V155 H288 V47 M208 98 V19 H257 V98" fill="none" stroke="'+ink+'" stroke-width="2"/>'+
     '<path d="M200 147 Q214 120 211 105 M212 123 Q190 114 192 105 M211 117 Q230 109 229 97" fill="none" stroke="'+teal+'" stroke-width="3"/>'+
-    circle(222,87,3,'white',blue)+circle(230,74,3,'white',blue)+text(270,24,'Gas',blue,14)+text(225,177,'Pondweed',teal,14)+text(225,198,'CO₂ in solution',blue,14),
+    circle(222,87,3,'white',blue)+circle(230,74,3,'white',blue)+text(270,24,'Gas',blue,14)+text(225,172,'Pondweed',teal,14)+text(225,198,'CO₂ in solution',blue,14),
     'Collect oxygen per minute. Change carbon dioxide supply in the solution while keeping other factors the same.',215);
 }
 function homeostasis() {
@@ -216,8 +216,8 @@ function waterTreatment() {
     [[57,56],[83,44],[115,67],[70,91],[106,120]].map(([x,y])=>circle(x,y,5,'#c9e4f3',blue)).join('')+circle(92,79,3,rust,rust)+circle(61,122,3,rust,rust)+
     '<rect x="179" y="26" width="105" height="118" rx="5" fill="#dceff5" stroke="'+blue+'" stroke-width="2"/>'+text(231,165,'Pure water',ink,14)+
     [[198,56],[224,44],[256,67],[211,91],[247,120]].map(([x,y])=>circle(x,y,5,'#c9e4f3',blue)).join('')+
-    text(160,20,'Key: ● dissolved substance',rust,13),
-    'Compare the dissolved particles. The diagram is a model and does not show actual concentrations.');
+    '',
+    'The filled dots represent dissolved substances. Compare the samples; the model does not show actual concentrations.');
 }
 export function heatingCurve() {
   return fig('Heating ice and water',
@@ -241,7 +241,7 @@ function halfLifeRatio() {
     'Activity halves from 48 becquerels to 24 becquerels, then halves again to 12 becquerels. The starting activity is four times the final activity, giving a ratio of 4 to 1.',
     '<rect x="38" y="32" width="54" height="120" fill="#bcd6e9" stroke="'+blue+'"/><rect x="133" y="92" width="54" height="60" fill="#bcd6e9" stroke="'+blue+'"/><rect x="228" y="122" width="54" height="30" fill="#bcd6e9" stroke="'+blue+'"/>'+
     text(65,25,'48 Bq',ink,15)+text(160,85,'24 Bq',ink,15)+text(255,115,'12 Bq',ink,15)+arrow(95,65,130,65,rust,2)+arrow(190,105,225,105,rust,2)+
-    text(160,178,'Start : finish = 4 : 1',ink,16),
+    text(160,168,'Start : finish = 4 : 1',ink,16),
     'Halve the remaining activity twice, then compare the first and final activity.');
 }
 function reactionBonds() {
@@ -359,7 +359,7 @@ function physicalBarriers() {
     text(76,25,'Intact skin',ink,15)+circle(48,48,6,'#b8cfed',blue)+circle(79,48,6,'#b8cfed',blue)+circle(111,48,6,'#b8cfed',blue)+
     '<rect x="16" y="65" width="120" height="33" fill="#efd4bf" stroke="'+rust+'" stroke-width="2"/>'+text(76,128,'Barrier',rust,14)+
     text(239,25,'Airway mucus',ink,15)+'<rect x="179" y="66" width="120" height="30" fill="#dcece5" stroke="'+teal+'" stroke-width="2"/>'+
-    circle(201,77,6,'#b8cfed',blue)+circle(236,84,6,'#b8cfed',blue)+circle(274,76,6,'#b8cfed',blue)+arrow(197,108,282,108,teal,2)+text(239,128,'Traps pathogens',teal,14),
+    circle(201,77,6,'#b8cfed',blue)+circle(236,84,6,'#b8cfed',blue)+circle(274,76,6,'#b8cfed',blue)+arrow(197,108,282,108,teal,2),
     'Compare intact skin blocking entry with mucus trapping pathogens. The sketches are simplified.',145);
 }
 function barriersAndAntibodies(){return grouped(physicalBarriers,gcseStepVisuals['vaccine-memory'][0]);}
@@ -369,7 +369,7 @@ function antibioticTargets() {
     '<rect x="34" y="43" width="95" height="54" rx="26" fill="#dceee6" stroke="'+teal+'" stroke-width="3"/>'+circle(62,65,4,blue,blue)+circle(81,76,4,blue,blue)+circle(105,63,4,blue,blue)+text(81,122,'Bacterium',ink,15)+
     '<path d="M229 36 L254 50 V82 L229 97 L204 82 V50 Z" fill="#e1e8f7" stroke="'+blue+'" stroke-width="3"/>'+
     '<path d="M217 64 q7-10 14 0 t14 0" fill="none" stroke="'+rust+'" stroke-width="2"/>'+text(229,122,'Virus',ink,15)+
-    arrow(80,25,80,40,rust,2)+text(80,20,'Some antibiotics',rust,13)+text(229,154,'Needs host cells',ink,14),
+    arrow(80,28,80,40,rust,2)+text(80,24,'Some antibiotics',rust,13)+text(229,154,'Needs host cells',ink,14),
     'Compare the bacterial cell with the virus. Antibiotics work against susceptible bacteria, not viral infections. The models are not to scale.');
 }
 function naturalSelection() {
@@ -379,7 +379,7 @@ function naturalSelection() {
     '<rect x="14" y="32" width="130" height="98" rx="5" fill="#6d675e"/><rect x="176" y="32" width="130" height="98" rx="5" fill="#6d675e"/>'+
     moth(43,59,true)+moth(77,59,false)+moth(112,59,true)+moth(43,100,false)+moth(77,100,true)+moth(112,100,false)+
     moth(205,59,true)+moth(241,59,true)+moth(277,59,false)+moth(205,100,true)+moth(241,100,true)+moth(277,100,true)+
-    arrow(146,81,174,81,rust,2)+text(79,23,'Variation',ink,15)+text(241,23,'Later generation',ink,15)+text(160,159,'Differential survival and reproduction',ink,14),
+    arrow(146,81,174,81,rust,2)+text(79,23,'Variation',ink,15)+text(241,23,'Later generation',ink,15),
     'Compare the inherited wing colours. The example is illustrative, not a record of real population counts.');
 }
 function selectiveBreeding() {
@@ -388,7 +388,7 @@ function selectiveBreeding() {
     'People select two parent plants with a desired inherited characteristic and breed them. Some offspring inherit the trait, and selected offspring can be bred again. Natural selection depends on differential survival and reproduction in the environment.',
     parent(55,60,true)+parent(110,60,true)+text(82,28,'Chosen parents',ink,15)+arrow(138,74,180,74,rust,2)+
     parent(210,60,true)+parent(262,60,false)+text(237,28,'Offspring vary',ink,15)+
-    '<path d="M197 95 h25" stroke="'+rust+'" stroke-width="3"/>'+arrow(210,106,210,135,rust,2)+text(210,164,'Choose desired offspring',ink,14),
+    '<path d="M197 95 h25" stroke="'+rust+'" stroke-width="3"/>'+arrow(210,106,210,135,rust,2)+text(210,164,'Select offspring',ink,14),
     'Follow the chosen parents to the offspring. Only inherited variation can be passed on through breeding.');
 }
 function gasTests() {
@@ -456,7 +456,7 @@ function pollutants() {
 function lifeCycle() {
   return fig('A product life cycle',
     'A life-cycle assessment compares impacts across obtaining materials, manufacturing, use and disposal or recycling. Reuse, transport and other assumptions can affect the result.',
-    '<path d="M18 83 l22-37 22 37 Z" fill="#dbe6df" stroke="'+teal+'" stroke-width="2"/>'+text(40,109,'Materials',ink,13)+arrow(66,74,91,74,rust,2)+
+    '<path d="M18 83 l22-37 22 37 Z" fill="#dbe6df" stroke="'+teal+'" stroke-width="2"/>'+text(48,109,'Extract',ink,13)+arrow(66,74,91,74,rust,2)+
     '<path d="M95 83 V51 l16 8 V48 l17 10 V83 Z" fill="#dce6ec" stroke="'+blue+'" stroke-width="2"/>'+text(111,109,'Make',ink,13)+arrow(134,74,160,74,rust,2)+
     '<path d="M177 43 H193 V54 H200 V89 H170 V54 H177 Z" fill="#def0ec" stroke="'+teal+'" stroke-width="2"/>'+text(185,109,'Use',ink,13)+arrow(207,74,231,74,rust,2)+
     '<path d="M253 45 C277 45 282 76 269 87 M269 87 l-2 -11 M269 87 l10 -4 M255 89 C231 89 226 58 239 47 M239 47 l2 10 M239 47 l-10 4" fill="none" stroke="'+teal+'" stroke-width="3"/>'+text(256,109,'End of life',ink,13)+
@@ -467,7 +467,7 @@ function reverseCoil() {
   const coil=(y,left,right)=>'<rect x="63" y="'+(y-12)+'" width="190" height="24" rx="5" fill="#e2e9e9" stroke="'+ink+'"/>'+[88,115,142,169,196,223].map(x=>'<ellipse cx="'+x+'" cy="'+y+'" rx="9" ry="19" fill="none" stroke="'+rust+'" stroke-width="2"/>').join('')+text(56,y+5,left,blue,17)+text(264,y+5,right,blue,17);
   return fig('Reversing an electromagnet',
     'With a fixed winding, reversing the current reverses the direction of the magnetic field: the north and south poles of the coil swap.',
-    text(160,20,'Current in one direction',ink,15)+coil(57,'N','S')+arrow(99,94,220,94,blue,2)+
+    text(160,24,'Current in one direction',ink,15)+coil(57,'N','S')+arrow(99,94,220,94,blue,2)+
     text(160,125,'Current reversed',ink,15)+coil(162,'S','N')+arrow(220,198,99,198,blue,2),
     'Compare the pole labels and external field arrows. In this schematic the winding remains fixed while the current reverses.',215);
 }
@@ -517,8 +517,8 @@ function alphaDecay() {
   return fig('An example of alpha decay',
     'A uranium-238 nucleus with atomic number 92 emits an alpha particle containing two protons and two neutrons. The remaining thorium nucleus has mass number 234 and atomic number 90.',
     circle(65,75,34,'#dfe7f4',blue)+text(65,60,'U',blue,21)+text(65,90,'238 / 92',ink,13)+arrow(104,75,144,75,rust,2)+
-    circle(190,75,30,'#e0efe5',teal)+text(190,60,'Th',teal,18)+text(190,90,'234 / 90',ink,13)+text(229,80,'+',ink,18)+
-    circle(265,75,18,'#f3d8c9',rust)+text(265,80,'α',rust,16)+
+    circle(190,75,30,'#e0efe5',teal)+text(190,60,'Th',teal,18)+text(190,90,'234 / 90',ink,13)+text(244,80,'+',ink,18)+
+    circle(285,75,18,'#f3d8c9',rust)+text(285,80,'α',rust,16)+
     text(160,145,'Mass: 238 = 234 + 4',ink,15)+text(160,168,'Protons: 92 = 90 + 2',ink,15),
     'Compare the mass numbers and proton numbers before and after emission. The nuclei are simplified models.',185);
 }
@@ -626,9 +626,9 @@ export const gcseWorkedVisuals = {
 function inverseSquare() {
   return fig('Doubling distance from a point source',
     'At 10 centimetres an illustrative light intensity is one unit. At 20 centimetres, twice the distance from the same point source, the intensity is one quarter of that at 10 centimetres.',
-    circle(44,58,18,'#ffe1a2',rust)+text(44,63,'Lamp',rust,13)+arrow(64,58,104,58,rust,2)+text(84,41,'10 cm',ink,14)+
+    circle(44,58,18,'#ffe1a2',rust)+text(44,63,'Lamp',rust,13)+arrow(64,58,104,58,rust,2)+text(84,30,'10 cm',ink,14)+
     '<rect x="110" y="33" width="80" height="50" fill="#ecd197" stroke="'+rust+'"/>'+text(257,63,'1',ink,16)+
-    circle(44,137,18,'#ffe1a2',rust)+text(44,142,'Lamp',rust,13)+arrow(64,137,144,137,rust,2)+text(104,120,'20 cm',ink,14)+
+    circle(44,137,18,'#ffe1a2',rust)+text(44,142,'Lamp',rust,13)+arrow(64,137,144,137,rust,2)+text(104,109,'20 cm',ink,14)+
     '<rect x="145" y="112" width="20" height="50" fill="#ecd197" stroke="'+rust+'"/>'+text(257,142,'¼',ink,16),
     'Compare intensities at twice the distance from the same point source. The bars use an illustrative starting intensity.',180);
 }
@@ -637,7 +637,7 @@ function glucagonResponse() {
     'When blood glucose falls the pancreas releases glucagon. Glucagon causes liver glycogen to be converted to glucose and released into the blood. As the glucose concentration recovers, the stimulus for glucagon secretion decreases.',
     text(160,22,'Blood glucose falls',blue,16)+arrow(160,29,160,52,ink,2)+
     '<path d="M96 65 Q160 37 224 65 Q214 91 116 84 Z" fill="#f2d1c4" stroke="'+rust+'" stroke-width="2"/>'+text(160,78,'Pancreas',ink,15)+arrow(160,89,160,112,ink,2)+
-    text(160,132,'Glucagon → liver',rust,15)+text(160,154,'Glycogen → glucose',teal,15)+arrow(160,161,160,184,ink,2)+text(160,204,'Blood glucose rises',blue,16),
+    text(160,130,'Glucagon → liver',rust,15)+text(160,157,'Glycogen → glucose',teal,15)+arrow(160,161,160,184,ink,2)+text(160,204,'Blood glucose rises',blue,16),
     'Follow the hormonal signal to the liver and the glucose released to the blood. As glucose recovers, the original stimulus decreases.',220);
 }
 function dilution() {
@@ -673,7 +673,7 @@ function velocityArea() {
   return fig('Distance from a velocity–time graph',
     'A trolley accelerates uniformly from 0 to 4 metres per second in 2 seconds, then continues at 4 metres per second until 5 seconds. The triangular area is 4 metres; the rectangular area is 12 metres. Total distance is 16 metres.',
     '<path d="M44 146 L132 52 H264 V146 Z" fill="#d9eee6" stroke="none"/><path d="M44 146 L132 52 H264" fill="none" stroke="'+teal+'" stroke-width="3"/>'+line(44,146,285,146)+line(44,146,44,32)+line(132,146,132,52,ink,1,'5 4')+
-    text(44,20,'Velocity (m/s)',ink,14,'start')+text(35,151,'0',ink,13,'end')+text(35,57,'4',ink,13,'end')+text(44,165,'0',ink,13)+text(132,165,'2',ink,13)+text(264,165,'5',ink,13)+text(164,189,'Time (s)',ink,14)+
+    text(44,24,'Velocity (m/s)',ink,14,'start')+text(35,151,'0',ink,13,'end')+text(35,57,'4',ink,13,'end')+text(44,165,'0',ink,13)+text(132,165,'2',ink,13)+text(264,165,'5',ink,13)+text(164,189,'Time (s)',ink,14)+
     text(100,129,'4 m',blue,14)+text(199,109,'12 m',blue,14),
     'Add the triangle and rectangle under the velocity–time graph to find the 16 m travelled.',205);
 }
@@ -682,7 +682,7 @@ function rateTangent() {
   return fig('Rate from a tangent',
     'On a product quantity against time graph, the gradient of a straight tangent touching the curve gives the rate at that instant. A steep tangent means a high rate; here the tangent rises from left to right.',
     line(45,146,288,146)+line(45,146,45,28)+'<path d="M45 140 C120 80 195 60 270 60" fill="none" stroke="'+teal+'" stroke-width="3"/>'+line(75,105,240,50,rust,2)+circle(158,78,4,rust,rust)+
-    text(45,18,'Product (relative)',ink,14,'start')+text(167,174,'Time (arbitrary units)',ink,14)+text(247,39,'Tangent',rust,14),
+    text(45,24,'Product (relative)',ink,14,'start')+text(167,174,'Time (arbitrary units)',ink,14)+text(247,39,'Tangent',rust,14),
     'Draw a straight tangent at the point, then calculate its gradient as change in product quantity divided by change in time.',190);
 }
 function pressureShift() {
@@ -711,7 +711,7 @@ function coilReversal() {
   }
   return fig('Current reverses after half a turn',
     'At first, side A is left with conventional current out of the page and force upwards; side B is right with current into the page and force downwards. After half a turn, B is left with current out of the page and A is right with current into the page. The commutator swaps each side’s connection, so the direction in each named side reverses and the turning effect stays clockwise.',
-    text(160,20,'Before half-turn',ink,15)+side(78,60,'Side A',true)+side(242,60,'Side B',false)+arrow(78,44,78,25,rust,2)+arrow(242,76,242,95,rust,2)+
+    text(160,24,'Before half-turn',ink,15)+side(78,60,'Side A',true)+side(242,60,'Side B',false)+arrow(78,44,78,25,rust,2)+arrow(242,76,242,95,rust,2)+
     text(160,140,'Field: N → S',blue,13)+text(160,170,'After half-turn',ink,15)+side(78,210,'Side B',true)+side(242,210,'Side A',false)+arrow(78,194,78,175,rust,2)+arrow(242,226,242,245,rust,2)+
     text(160,295,'Dot: out of page   ×: into page',ink,14),
     'Follow a named side as the coil turns. The split-ring commutator reverses its current, keeping the turning effect in the same direction.',315);
@@ -790,7 +790,7 @@ function frequency() {
   return fig('Count oscillations in time',
     'A graph of displacement against time shows two complete oscillations in one second. Its frequency is two hertz. The vertical displacement values are illustrative.',
     line(40,130,289,130)+line(40,130,40,30)+'<polyline points="'+pts+'" fill="none" stroke="'+teal+'" stroke-width="3"/>'+line(40,85,270,85,ink,1,'5 4')+
-    text(40,20,'Displacement (illustrative)',ink,14,'start')+text(40,151,'0',ink,13)+text(155,151,'0.5',ink,13)+text(270,151,'1',ink,13)+text(160,176,'Time (s)',ink,15),
+    text(40,24,'Displacement (illustrative)',ink,14,'start')+text(40,151,'0',ink,13)+text(155,151,'0.5',ink,13)+text(270,151,'1',ink,13)+text(160,176,'Time (s)',ink,15),
     'Count two complete cycles in one second: the frequency is 2 Hz. This is an illustrative example.',190);
 }
 function waveMeasures(){return grouped(wavelength,frequency);}
@@ -798,9 +798,9 @@ function energyDistribution() {
   const curve=(t)=>Array.from({length:101},(_,e)=>{const x=40+2.45*e;const f=Math.sqrt(e)*Math.exp(-e/t)/Math.pow(t,1.5);return x.toFixed(1)+','+(145-3100*f).toFixed(1);}).join(' ');
   return fig('Temperature and collision energy',
     'Illustrative particle energy distributions for a cooler and a warmer sample. The warmer curve is broader with a lower peak; a larger fraction lies above the same activation energy threshold.',
-    line(40,145,292,145)+line(40,145,40,25)+'<polyline points="'+curve(16)+'" fill="none" stroke="'+blue+'" stroke-width="3"/>'+
+    line(40,145,292,145)+line(40,145,40,35)+'<polyline points="'+curve(16)+'" fill="none" stroke="'+blue+'" stroke-width="3"/>'+
     '<polyline points="'+curve(28)+'" fill="none" stroke="'+rust+'" stroke-width="3" stroke-dasharray="7 4"/>'+line(187,33,187,145,ink,1.5,'5 3')+
-    text(40,17,'Relative number of particles',ink,15,'start')+text(163,173,'Particle energy (arbitrary units)',ink,15)+text(240,55,'Threshold',ink,14),
+    text(40,24,'Relative number of particles',ink,15,'start')+text(163,173,'Particle energy (arbitrary units)',ink,15)+text(240,55,'Threshold',ink,14),
     'Solid: cooler. Dashed: warmer. The dotted line shows activation energy. Compare the proportion beyond the threshold.',190);
 }
 function collisionsAndEnergy(){return grouped(collisionFrequency,energyDistribution);}
@@ -883,10 +883,76 @@ function distanceTangent() {
   return fig('Speed at an instant',
     'A curved distance–time graph has a straight tangent touching it at one point. The gradient of that tangent is the speed at that instant. The graph is qualitative and no numerical readings are implied.',
     line(45,146,288,146)+line(45,146,45,30)+'<path d="M45 142 C108 138 186 101 270 43" fill="none" stroke="'+teal+'" stroke-width="3"/>'+line(85,141.76,246,69.49,rust,2)+circle(149.625,112.75,4,rust,rust)+
-    text(45,18,'Distance (m)',ink,14,'start')+text(160,175,'Time (s)',ink,14)+text(233,57,'Tangent',rust,14),
+    text(45,24,'Distance (m)',ink,14,'start')+text(160,175,'Time (s)',ink,14)+text(233,57,'Tangent',rust,14),
     'At the chosen point, draw a tangent and find change in distance divided by change in time along that straight line.',190);
 }
 function distanceAndVelocity(){return grouped(velocityArea,distanceTangent);}
+
+function voltageCircuits() {
+  return fig('Potential difference in two circuits',
+    'In a 6 volt parallel circuit, each lamp is connected across the supply and has a potential difference of 6 volts. In a series circuit with two identical lamps, the 6 volts is shared equally, 3 volts across each. Current is the same at every point in the series loop.',
+    text(160,22,'Parallel branches',ink,16)+
+    '<path d="M48 45 H145 M175 45 H272 V122 H48 Z M48 84 H272" fill="none" stroke="'+ink+'" stroke-width="2"/>'+line(145,35,145,55)+line(175,40,175,50)+
+    circle(160,84,14,'white',ink)+line(151,75,169,93)+line(151,93,169,75)+circle(160,122,14,'white',ink)+line(151,113,169,131)+line(151,131,169,113)+
+    text(160,72,'6 V',blue,16)+text(160,155,'6 V',blue,16)+
+    text(160,194,'Series: identical lamps',ink,16)+
+    '<path d="M48 215 H145 M175 215 H272 V285 H48 Z" fill="none" stroke="'+ink+'" stroke-width="2"/>'+line(145,205,145,225)+line(175,210,175,220)+
+    circle(106,285,14,'white',ink)+line(97,276,115,294)+line(97,294,115,276)+circle(214,285,14,'white',ink)+line(205,276,223,294)+line(205,294,223,276)+
+    text(106,321,'3 V',blue,16)+text(214,321,'3 V',blue,16)+text(160,247,'6 V supply in each circuit',ink,15),
+    'Compare each lamp’s potential difference. The equal series shares shown require identical lamps; the parallel branches each span the supply.',340);
+}
+function paperPhases() {
+  return fig('Paper and solvent during chromatography',
+    'The paper is the stationary phase. Solvent moves up the paper as the mobile phase. Different substances distribute differently between the paper and the solvent, so their spots can travel different distances.',
+    '<rect x="53" y="20" width="205" height="142" fill="#fffdf3" stroke="'+ink+'" stroke-width="2"/>'+line(66,132,245,132,ink,2)+
+    circle(110,84,8,'#c0d6ef',blue)+circle(190,52,8,'#f0cfba',rust)+arrow(72,116,72,43,teal,2)+
+    text(112,157,'Slow spot',blue,15)+text(190,157,'Faster spot',rust,15)+text(160,187,'Solvent moves up paper',teal,15),
+    'Follow the solvent up the stationary paper. The two spots have moved different distances from the same starting line.',205);
+}
+function muscleOxygenDemand() {
+  return fig('Oxygen supply during intense exercise',
+    'When a muscle’s oxygen demand exceeds the supply, aerobic respiration continues and the muscle also respires anaerobically. In the GCSE model this produces lactic acid.',
+    '<rect x="46" y="30" width="80" height="108" fill="#d5e9f3" stroke="'+blue+'" stroke-width="2"/><rect x="194" y="72" width="80" height="66" fill="#e6eee2" stroke="'+teal+'" stroke-width="2"/>'+
+    text(86,162,'Demand',blue,15)+text(234,162,'Supply',teal,15)+text(160,195,'Supply is below demand',ink,15),
+    'Compare the illustrative bars. The model does not imply that aerobic respiration stops.',215);
+}
+function muscleRespiration(){return grouped(muscleOxygenDemand,respiratoryComparison);}
+function crystallisation() {
+  return fig('Crystals form on cooling',
+    'After filtration, some water is evaporated from the salt solution. Cooling the concentrated solution allows salt crystals to form. The crystals can then be separated and dried.',
+    '<path d="M67 35 V142 H253 V35" fill="none" stroke="'+ink+'" stroke-width="2"/><path d="M69 68 H251 V140 H69 Z" fill="#e0eff4"/>'+
+    '<path d="M101 132 l12 -18 l12 18 l-12 9 Z M148 130 l13 -21 l13 21 l-13 10 Z M196 132 l12 -18 l12 18 l-12 9 Z" fill="#aad0e8" stroke="'+blue+'" stroke-width="2"/>'+text(160,22,'Cool concentrated solution',ink,15)+text(160,174,'Salt crystals',blue,15),
+    'Locate crystals that form as the concentrated solution cools. The apparatus is schematic.',190);
+}
+function saltsAndCrystals(){return grouped(saltsApparatus,crystallisation);}
+function infraredCamera() {
+  return fig('Detecting infrared',
+    'A warm object emits infrared radiation. An infrared camera detects some of that radiation and produces an image. X-rays and gamma rays, unlike infrared, are ionising.',
+    '<rect x="31" y="58" width="78" height="80" rx="8" fill="#efd1b9" stroke="'+rust+'" stroke-width="2"/>'+text(70,104,'Warm',rust,15)+
+    arrow(114,72,190,72,rust,2)+arrow(114,103,190,103,rust,2)+text(150,52,'Infrared',rust,15)+
+    '<rect x="194" y="61" width="86" height="64" rx="6" fill="#dce8ef" stroke="'+blue+'" stroke-width="2"/>'+circle(218,93,15,'white',blue)+circle(218,93,6,blue,blue)+text(239,157,'Camera',ink,15),
+    'Follow infrared emitted by the warm object to the detector. The diagram is a model, not a thermal photograph.',180);
+}
+function ionisingRadiation() {
+  return fig('Ionising electromagnetic radiation',
+    'An X-ray or gamma photon can transfer energy to an atom and remove an electron. The atom becomes a positive ion. Such ionisation can damage living cells.',
+    '<path d="M16 70 q9 -20 18 0 t18 0 t18 0" fill="none" stroke="'+blue+'" stroke-width="3"/>'+arrow(72,70,102,70,blue,2)+
+    circle(134,70,25,'#e8efef',ink)+text(134,76,'Atom',ink,14)+arrow(162,70,195,70,rust,2)+
+    circle(225,70,25,'#e8efef',ink)+text(225,76,'+',ink,18)+arrow(251,57,271,48,blue,1.5)+circle(279,46,5,'#c9def1',blue)+text(279,29,'e⁻',blue,16)+
+    text(75,25,'X-ray / gamma',blue,14)+text(225,125,'Positive ion',rust,15),
+    'Follow the radiation to the atom and the electron removed. This ionisation model is not to scale.',145);
+}
+function emApplications(){return grouped(infraredCamera,xray,ionisingRadiation);}
+function clinicalTrials() {
+  const person=(x,y)=>circle(x,y,5,'#d7e9ef',blue)+'<path d="M'+x+' '+(y+5)+' v13 m-6 -6 h12 m-6 6 -5 7 m5 -7 5 7" stroke="'+blue+'" stroke-width="2" fill="none"/>';
+  return fig('Clinical trials progress in stages',
+    'Early clinical testing examines safety and dose in small groups. Larger controlled trials compare effectiveness and monitor side effects, using treatment and control groups.',
+    text(76,25,'Early stage',ink,15)+person(58,57)+person(93,57)+text(76,111,'Safety and dose',blue,14)+
+    arrow(118,75,160,75,rust,2)+text(240,25,'Larger trial',ink,15)+person(204,57)+person(226,57)+person(254,57)+person(276,57)+
+    line(240,52,240,97,ink,1,'4 3')+text(214,123,'Treatment',teal,13)+text(267,149,'Control',rust,13),
+    'Follow from small early groups to larger controlled comparisons. Trials continue to monitor safety.',170);
+}
+function testingAndTrials(){return grouped(treatmentTesting,clinicalTrials);}
 export const gcseOpeningVisuals = {
   'salt-electrolysis': () => grouped(gcseStepVisuals['salt-electrolysis'][1], brine),
   'glucose-control': gcseStepVisuals['glucose-control'][1],
@@ -929,12 +995,12 @@ export const moreGcseStepVisuals = {
   'reaction-profiles': {2:temperaturePractical},
   'decay-half-life': {2:irradiation},
   'density-and-gas-pressure': {0:density},
-  'photosynthesis-limits': {2:testCarbonDioxide},
+  'photosynthesis-limits': {2:() => grouped(testCarbonDioxide, carbonDioxideComparison)},
   'glucose-control': {0:homeostasis,2:diabetes},
   'reaction-rate': {1:collisionsAndEnergy,2:dynamicEquilibrium},
   'salt-electrolysis': {2:brine},
   'reflex-response': {0:neuron,1:reflexWithSynapse,2:reflexMeasure},
-  'respiration-exercise': {0:respiratoryComparison,1:respiratoryComparison},
+  'respiration-exercise': {0:respiratoryComparison,1:muscleRespiration},
   'vaccine-memory': {0:barriersAndAntibodies,2:vaccineAndAntibiotics},
   'selection-and-variation': {0:naturalSelection,1:naturalSelection,2:selectiveBreeding},
   'inheritance-cross': {2:naturalSelection},
@@ -945,9 +1011,9 @@ export const moreGcseStepVisuals = {
   'greenhouse': {0:greenhouse,1:emissionsSources,2:pollutants},
   'potable-water': {0:waterTreatment,1:filtration,2:lifeCycle},
   'electromagnet-switch': {1:currentMagnitudeAndDirection,2:ironCore},
-  'salts-and-reactivity': {0:sulfateSalt,1:saltsApparatus},
-  'electromagnetic-spectrum': {0:spectrumAndWaves,1:emSpectrum,2:xray},
-  'prevention-and-medicines': {0:transmission,1:antibioticsAndSelection,2:treatmentTesting},
+  'salts-and-reactivity': {0:sulfateSalt,1:saltsAndCrystals},
+  'electromagnetic-spectrum': {0:spectrumAndWaves,1:emSpectrum,2:emApplications},
+  'prevention-and-medicines': {0:transmission,1:antibioticsAndSelection,2:testingAndTrials},
   'radiation-types': {0:emissions,1:shieldingAndIonisation,2:alphaDecay},
   'circuit-resistance': {0:circuitMeters,2:electricalPower},
   'reproductive-hormones': {0:menstrualHormones,1:hormonesAndEffects,2:contraception},

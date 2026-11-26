@@ -93,23 +93,25 @@ export async function checkALevelExam(browser, base) {
       const scope = family.id === "regulation" ? page.locator(".al-regulation-original") : page;
       assert.equal(await scope.locator(".al-journey-stage > .al-key > h2").innerText(), "Key idea");
       assert.equal(await scope.locator(".al-journey-stage .al-stages").count(), 0);
-      if (["regulation", "calvin"].includes(family.id))
-        assert.equal(await scope.locator(".al-key .al-guided-visual figure.kc-visual").count(), family.id === "regulation" ? 2 : 1);
+      if (["regulation", "calvin", "osmosis", "hardy"].includes(family.id))
+        assert.equal(await scope.locator(".al-key .al-guided-visual figure.kc-visual").count(), ["regulation", "osmosis"].includes(family.id) ? 2 : 1);
       await scope.getByRole("button", { name: "See worked example", exact: true }).press("Enter");
       assert.equal(await scope.locator(".al-journey-stage > .al-model > h2").innerText(), "Worked example");
       assert(await scope.getByRole("button", { name: "Key idea", exact: true }).isVisible());
       assert(await scope.getByRole("button", { name: "Go straight to questions", exact: true }).isVisible());
       const art = scope.locator(".al-model-visual");
-      if (["regulation", "calvin"].includes(family.id))
+      if (["regulation", "calvin", "osmosis", "hardy"].includes(family.id))
         assert.equal(await art.locator("figure.kc-visual").count(), 1);
       if (family.id === "dihybrid") {
         assert.equal(await art.getByRole("table").count(), 0);
-        assert(await art.getByText("AaBb × AaBb", { exact: true }).isVisible());
+        assert(await art.getByRole("img", {name: /Both parents therefore have genotype AaBb/}).isVisible());
       }
       for (let i = 1; i < family.model.length; i++) {
         await scope.getByRole("button", { name: "Next step", exact: true }).click();
-        if (["regulation", "calvin"].includes(family.id))
+        if (["regulation", "calvin", "hardy"].includes(family.id) || (family.id === "osmosis" && i < 2))
           assert.equal(await art.locator("figure.kc-visual").count(), 1);
+        if (family.id === "osmosis" && i >= 2)
+          assert.equal(await art.locator("figure.al-science-plot").count(), 1);
         if (family.id === "dihybrid" && i === 2)
           assert.equal(await art.getByText("AABB", { exact: true }).count(), 0);
         if (family.id === "dihybrid" && i === 3)
@@ -137,7 +139,7 @@ export async function checkALevelExam(browser, base) {
       const openingFocus = scope.locator(".al-stimulus-heading, .al-task-prompt").first();
       assert(await openingFocus.evaluate(el => el === document.activeElement), "Focus the evidence first, or the task when there is no evidence");
       assert.equal(await scope.locator(".al-model:visible").count(), 0);
-      if (["regulation", "calvin"].includes(family.id))
+      if (["regulation", "calvin", "osmosis", "hardy"].includes(family.id))
         assert.equal(await scope.locator(".al-practice .al-guided-visual").count(), 0);
     };
     for (const family of practiceFamilies) {

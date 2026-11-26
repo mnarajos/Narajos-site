@@ -754,10 +754,14 @@ export async function checkHumanCatchup(browser, base) {
     await page.locator('section.paper.panel img[src="/human-biology/benedicts-controls.svg"]').waitFor();
     assert.equal(await page.locator('section.paper.panel img[src="/human-biology/chromatography.svg"]').count(), 0);
     for (const [route, files] of [
+      ["f170/1.2.2/0", ["epithelia-comparison.svg"]], ["f170/1.2.2/1", ["muscle-tissue-comparison.svg"]],
       ["f170/1.1.2/1", ["hb-blood-cells-sem.webp", "hb-pancreas-tem.webp"]],
       ["f170/1.1.2.counting/1", ["cell-counting-impedance.svg", "cell-counting-clumps.svg"]],
       ["f170/1.1.3/1", ["cell-protein-routing.svg"]],
       ["f170/1.1.3/2", ["cell-mito-protein-import.svg", "cell-er-comparison.svg"]],
+      ["f170/1.1.3.evidence/1", ["f170-ribosome-types.svg"]],
+      ["f170/1.1.3.evidence/2", ["cell-er-comparison.svg", "cell-protein-routing.svg"]],
+      ["f170/4.1.5/0", ["virus-particle.svg"]], ["f170/4.1.5/1", ["virus-host.svg"]], ["f170/4.1.5/2", ["bacteriophage.svg"]],
       ["f170/1.1.4/1", ["f170-oxygen-diffusion.svg", "f170-channel-diffusion.svg", "f170-water-active.svg"]],
       ["f170/1.1.4/2", ["f170-water-active.svg", "f170-antigen-recognition.svg"]],
       ["f170/1.1.4.surface/1", ["f170-receptor-signalling.svg", "f170-extrinsic-receptor.svg"]],
@@ -822,6 +826,7 @@ export async function checkHumanCatchup(browser, base) {
     for (const [route, explain, worked] of [
       ["f170/1.1.2.counting", ["cell-counting-chamber.svg", "cell-counting-impedance.svg"], ["cell-counting-chamber.svg", "cell-counting-clumps.svg"]],
       ["f170/1.1.3", ["cell-nucleus-traffic.svg", "cell-mito-protein-import.svg", "cell-er-comparison.svg", "cell-protein-routing.svg"], ["cell-nucleus-rer.svg", "cell-protein-routing.svg", "cell-secretion-failure.svg"]],
+      ["f170/1.1.3.evidence", ["f170-ribosome-assembly.svg", "f170-ribosome-types.svg", "cell-er-comparison.svg"], ["cell-protein-routing.svg", "f170-enzyme-misrouting.svg"]],
       ["f170/1.1.4", ["f170-oxygen-diffusion.svg", "f170-water-active.svg"], ["f170-oxygen-diffusion.svg", "f170-oxygen-diffusion.svg", "f170-oxygen-diffusion.svg"]],
       ["f170/1.1.4.surface", ["f170-membrane-labelled.svg", "f170-receptor-signalling.svg", "f170-antigen-recognition.svg", "f170-vesicle-traffic.svg"], ["f170-membrane-labelled.svg", "f170-cholesterol-membrane.svg", "f170-membrane-labelled.svg"]]
     ]) {

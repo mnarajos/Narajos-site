@@ -827,3 +827,11 @@ html:has(.al-revision, .al-completed-review[open]) {
 @media (max-width: 360px) {
   .al-gene-table-compact th { font-size: .8rem; padding-inline: .15rem; }
 }
+
+/* Keep each genotype intact in the worked dihybrid grid on phones. */
+.al-teaching .al-punnett table { table-layout: fixed; font-size: .875rem; }
+.al-teaching .al-punnett th, .al-teaching .al-punnett td {
+  padding: .35rem .1rem;
+  overflow-wrap: normal;
+  white-space: nowrap;
+}

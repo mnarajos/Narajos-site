@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 320" role="img" aria-labelledby="title description">
+<title id="title">Ribosome types and locations</title>
+<desc id="description">Human cytoplasmic ribosomes are 80S whether free or attached to rough ER. Typical bacterial ribosomes are 70S. Human mitochondrial ribosomes are distinct from both. The symbols are not a size comparison; S describes sedimentation.</desc>
+<rect width="280" height="320" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a" text-anchor="middle">
+<text x="140" y="24" font-weight="700">Human cytoplasm</text>
+<circle cx="70" cy="64" r="14" fill="#d8c7e4" stroke="#69447f" stroke-width="2"/><circle cx="210" cy="64" r="14" fill="#d8c7e4" stroke="#69447f" stroke-width="2"/>
+<path d="M166 85h88v15h-88Z" fill="#d8ece7" stroke="#23656c" stroke-width="2"/>
+<text x="70" y="111">Free: 80S</text><text x="210" y="126">On ER: 80S</text>
+<text x="140" y="164" font-weight="700">Other ribosomes</text>
+<circle cx="70" cy="199" r="14" fill="#e7b783" stroke="#98451e" stroke-width="2"/><circle cx="210" cy="199" r="14" fill="#c8d9ec" stroke="#23558c" stroke-width="2"/>
+<text x="70" y="238">Bacteria:</text><text x="70" y="260">typically 70S</text><text x="210" y="238">Mitochondria:</text><text x="210" y="260">distinct type</text>
+<text x="140" y="300">S describes sedimentation</text>
+</g></svg>

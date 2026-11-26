@@ -9,7 +9,7 @@ function curve([title, xLabel, yLabel, series, note]) {
      fill="none" stroke="${keys[index]}" stroke-width="3.8" stroke-linejoin="round"
      ${index ? 'stroke-dasharray="7 5"' : ""}/>`).join("");
   return picture(title, diagram(title + ". " + note + " Horizontal axis: " + xLabel + ". Vertical axis: " + yLabel + ".",
-    line(45,152,298,152)+line(45,27,45,152)+text(168,181,xLabel,ink,16)+text(46,18,yLabel,ink,16,"start")+plot,320,190),
+    line(45,152,298,152)+line(45,35,45,152)+text(168,181,xLabel,ink,16)+text(46,24,yLabel,ink,16,"start")+plot,320,190),
     series.length === 1 ? note : "Solid line · " + series[0][0] + ". Dashed line · " + series[1][0] + ". " + note);
 }
 
@@ -69,7 +69,7 @@ function column() {
     <path d="M85 37Q85 17 105 17H143Q163 17 163 37V177H85Z" fill="#e1eeec" stroke="${teal}" stroke-width="3"/>
     ${arrow(161,54,216,54,blue)}${arrow(162,112,216,112,rust)}${arrow(27,155,84,155,rust)}
     ${text(65,138,"Heated oil",rust,14)}${text(123,45,"Cooler",blue,14)}${text(123,162,"Hotter",rust,14)}
-    ${text(265,58,"Short chains",ink,15)}${text(265,116,"Long chains",ink,15)}`,320,190),
+    ${text(250,58,"Short chains",ink,15)}${text(250,116,"Long chains",ink,15)}`,320,190),
     "Vapours rise and cool. Each fraction condenses over a range of temperatures.");
 }
 

@@ -79,7 +79,7 @@ function ivCircuit() {
 function motor() {
   return picture("Two sides of a motor coil viewed end-on", diagram(
     "The field goes from N on the left to S on the right. On the left, current goes into the page and the force is down. On the right, current comes out of the page and the force is up.",
-    text(27,70,"N",ink,20)+text(293,70,"S",ink,20)+arrow(46,38,274,38,blue)+text(160,25,"Magnetic field",blue,15)+
+    text(27,60,"N",ink,20)+text(293,60,"S",ink,20)+arrow(46,38,274,38,blue)+text(160,25,"Magnetic field",blue,15)+
     circle(109,91,14,"white")+circle(210,91,14,"white")+text(109,96,"×",ink,17)+circle(210,91,4,ink)+
     arrow(109,109,109,150,rust)+arrow(210,73,210,50,rust)+text(153,134,"Force down",rust,14)+
     text(256,92,"Force up",rust,14)+line(217,62,243,79,rust,1)+
@@ -97,10 +97,10 @@ function motionGraph(title, unit, values, max) {
   const times = values.map(([t], i) => text(points[i][0],161,String(t),ink,13)).join("");
   const description = values.map(([t,y]) => t + " seconds: " + y + " " + unit).join(". ");
   return picture(title, diagram(title + ". " + description,
-    line(47,28,47,142)+line(47,142,286,142)+ticks+times+text(168,182,"Time (s)",ink,15)+
-    text(48,18,title,ink,15,"start")+
+    line(47,28,47,142)+line(47,142,286,142)+ticks+times+text(168,194,"Time (s)",ink,15)+
+    text(48,24,title,ink,15,"start")+
     '<polyline points="' + path + '" fill="none" stroke="' + blue + '" stroke-width="3"/>'+
-    points.map(([x,y]) => circle(x,y,3,rust)).join(""),320,193));
+    points.map(([x,y]) => circle(x,y,3,rust)).join(""),320,210));
 }
 
 function equilibriumRates() {

@@ -243,9 +243,11 @@
         const combine = (x, y) => [x[0], y[0]].sort().join("") + [x[1], y[1]].sort().join("");
         const title = step === 2 ? "Put one parent's gametes along each edge" :
           step === 3 ? "Combine the highlighted row and column" : "AaBb × AaBb · worked cross";
-        box.append(table(title, ["Gametes", ...gametes], gametes.map((x, i) =>
+        const cross = table(title, ["Gamete", ...gametes], gametes.map((x, i) =>
           [x, ...gametes.map((y, j) => step >= 4 || (step === 3 && i === 0 && j === 0) ? combine(x, y) : "—")]),
-        step === 3 ? [1] : []));
+        step === 3 ? [1] : []);
+        cross.classList.add("al-punnett");
+        box.append(cross);
         if (step >= 5) box.append(node("p", "Expected phenotypes · 9 A_B_ : 3 A_bb : 3 aaB_ : 1 aabb"));
       }
       return box;
@@ -328,6 +330,11 @@
   function workedStepVisual(family, index) {
     const control = window.ALevelGeneControlFigures;
     const energy = window.ALevelEnergyMechanismFigures;
+    if (family.id === "hardy" || (family.id === "pressures" && index === 0) || (["osmosis", "dihybrid"].includes(family.id) && index < 2)) {
+      const box = node("div", null, "al-guided-visual");
+      box.innerHTML = window.ALevelGuidedFigures?.render(family.id, index) || "";
+      return box.firstElementChild ? box : null;
+    }
     const maps = {
       regulation: [[control, "a8", "transfac", 0], [control, "a8", "epigen", 0],
         [control, "a8", "epigen", 1], [control, "a8", "transfac", 2]],
@@ -468,6 +475,17 @@
         } else if (family.id === "calvin") {
           const carbon = workedStepVisual(family, 2);
           if (carbon) panel.append(carbon);
+        } else if (family.id === "countercurrent") {
+          panel.append(visual("countercurrent", 2));
+        } else if (family.id === "causal") {
+          panel.append(visual("pathway", 0));
+        } else if (["osmosis", "hardy", "dihybrid", "pressures"].includes(family.id)) {
+          const example = workedStepVisual(family, family.id === "dihybrid" ? 1 : 0);
+          if (example) panel.append(example);
+          if (family.id === "osmosis") {
+            const membrane = workedStepVisual(family, 1);
+            if (membrane) panel.append(membrane);
+          }
         }
         if (family.commandGuide) {
           const guide = node("details", null, "al-key-notes");

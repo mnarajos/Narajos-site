@@ -488,6 +488,13 @@ const nutritionRecap = function(file, alt, caption, height) { return {
  src:"/human-biology/"+file+".svg",width:280,height:height,compact:true,alt:alt,caption:caption
 }; };
 const recapFigureMap = {
+ "f170/1.2.2/0": [nutritionRecap("epithelia-comparison", "Three schematic epithelial layers: a thin squamous layer, ciliated cells with surface cilia, and cuboidal cells. An arrow indicates movement over the cilia.", "Compare the cell shapes. The thin layer supports exchange; cilia move surface material, while many cuboidal cells absorb or secrete.", 350)],
+ "f170/1.2.2/1": [nutritionRecap("muscle-tissue-comparison", "Three simplified muscle shapes: a long striated skeletal fibre, a branched striated cardiac cell, and a spindle-shaped smooth muscle cell without striations.", "Compare the striations and branching. The drawings show selected features, not size or an identification test.", 320)],
+ "f170/1.1.3.evidence/1": [["f170/1.1.3.evidence", "explainDiagrams", 1]],
+ "f170/1.1.3.evidence/2": [["f170/1.1.3.evidence", "explainDiagrams", 2]],
+ "f170/4.1.5/0": [nutritionRecap("virus-particle", "A schematic enveloped virus has an outer envelope and spikes surrounding a protein capsid and genetic material. Some viruses do not have an envelope.", "Locate the genetic material and protein capsid. The outer envelope and spikes shown here occur in some viruses, not all.", 300)],
+ "f170/4.1.5/1": [nutritionRecap("virus-host", "A virus delivers genetic material to a living host cell. The viral genome is copied and host ribosomes make viral proteins; new virus particles assemble.", "Follow this generalised example. Viruses depend on a living host cell; details differ between viruses.", 300)],
+ "f170/4.1.5/2": [nutritionRecap("bacteriophage", "A tailed bacteriophage has a protein capsid, genetic material and tail. It attaches to a bacterial cell and its genome enters that cell.", "Follow the genome into the bacterial cell. This is one type of bacteriophage; their structures vary.", 300)],
  "f170/1.1.4/1": [["f170/1.1.4", "explainDiagrams", 0], ["f170/1.1.4", "explainDiagrams", 1]],
  "f170/1.1.4/2": [["f170/1.1.4", "explainDiagrams", 1], ["f170/1.1.4.surface", "explainDiagrams", 2]],
  "f170/1.1.4.surface/1": [["f170/1.1.4.surface", "explainDiagrams", 1]],

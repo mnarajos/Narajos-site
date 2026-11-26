@@ -62,7 +62,8 @@ for (const [file,global,rows] of [
  ['catchup-population-figures.js','ALevelPopulationFigures', [['a7','genterms',1],['a7','codom',1],['a7','sexlink',2],['a7','epistasis',0],['a7','interact',1],['a7','fieldwork',0],['a7','fieldwork',1],['a7','mrrc',0]]],
  ['catchup-gene-control-figures.js','ALevelGeneControlFigures', [['a8','transfac',0],['a8','transfac',1],['a8','transfac',2],['a8','epigen',0],['a8','epigen',1],['a8','invivo',0],['a8','probes',0]]],
  ['catchup-response-figures.js','ALevelResponseFigures', [['a6','pacinian',0],['a6','pacinian',1],['a6','eye',0],['a6','eye',1],['a6','resting',0],['a6','tropisms',1],['a6','glucose',0]]],
- ['catchup-synapse-figures.js','ALevelSynapseFigures', [['a6','synapse',0],['a6','synapse',1],['a6','synapse',2],['a6','synapse',3]]]
+ ['catchup-synapse-figures.js','ALevelSynapseFigures', [['a6','synapse',0],['a6','synapse',1],['a6','synapse',2],['a6','synapse',3]]],
+ ['catchup-practicals-figures.js','ALevelPracticalsFigures', [['a5','limiting',0],['a5','chromat',0],['a5','chromat',1],['a5','dcpip',1],['a5','oxphos',0],['a5','oxphos',1],['a5','respiro',1],['a5','biomass',1],['a5','productivity',0],['a5','fertil',1],['a6','loop',0],['a6','loop',1]]]
 ]) {
  vm.runInNewContext(readFileSync(new URL('../public/alevel/'+file, import.meta.url), 'utf8'), context);
  for (const [topic,id,group] of rows) { const figure=context.window[global].render(topic,id,group); assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/); assert.match(figure, /<figcaption>.{20,}<\/figcaption>/); }

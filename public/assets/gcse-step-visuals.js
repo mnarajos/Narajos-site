@@ -9,9 +9,9 @@ function antibody() {
     '<path d="M72 43 L79 50 L86 43 M146 43 L153 50 L160 43" fill="none" stroke="'+blue+'" stroke-width="4"/>' +
     '<path d="M57 35 L79 35 L79 44 L86 37 L93 44 L93 35 L113 35" fill="none" stroke="'+rust+'" stroke-width="4"/>' +
     text(190,25,"Antigen on pathogen",rust,14) + line(168,29,104,35,rust,1.5) +
-    text(116,151,"Antibody",blue,16) + text(240,82,"Different shape",ink,14) +
+    text(116,151,"Antibody",blue,16) + text(240,77,"Different shape",ink,14) +
     '<path d="M216 49 Q226 31 236 49" fill="none" stroke="'+rust+'" stroke-width="4"/>' +
-    text(240,104,"does not fit",ink,14), 320, 165),
+    text(240,109,"does not fit",ink,14), 320, 165),
     "Notice how a binding site fits a particular antigen. The shapes are simplified.");
 }
 
@@ -56,7 +56,7 @@ function carbonCycle() {
     arrow(92,70,135,32,blue)+arrow(223,68,182,32,blue)+
     arrow(70,103,129,145,ink)+arrow(249,103,191,145,ink)+text(160,119,"Dead material",ink,13)+
     '<path d="M160 169 C311 220 320 61 245 31" fill="none" stroke="'+blue+'" stroke-width="2.5"/>'+
-    arrow(255,35,245,31,blue)+text(265,184,"Respiration",blue,12),320,200),
+    arrow(255,35,245,31,blue)+text(260,196,"Respiration",blue,12),320,215),
     "Photosynthesis moves carbon dioxide into plants. Respiration by plants, animals and decomposers returns carbon dioxide to the air. This is a simplified cycle.");
 }
 
@@ -89,7 +89,7 @@ function photosynthesis() {
     "Carbon dioxide from the air and water enter a plant. Light is absorbed by chlorophyll. Photosynthesis makes glucose in the plant and releases oxygen.",
     '<path d="M150 135 C100 118 100 56 160 40 C220 56 220 118 170 135 Z" fill="#d6edda" stroke="'+teal+'" stroke-width="2.5"/>'+
     line(160,138,160,59,teal,2)+line(160,100,131,79,teal,1.5)+line(160,91,190,72,teal,1.5)+
-    text(160,20,"Light",rust,15)+arrow(160,25,160,48,rust)+
+    text(160,24,"Light",rust,15)+arrow(160,25,160,48,rust)+
     text(45,60,"Carbon",blue,14)+text(45,84,"dioxide",blue,14)+arrow(75,96,123,99,blue)+
     text(47,133,"Water",blue,14)+arrow(73,128,129,121,blue)+
     arrow(198,98,246,82,teal)+text(269,80,"Oxygen",teal,14)+
