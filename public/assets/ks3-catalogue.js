@@ -128,9 +128,17 @@ function renderIllustration(id) {
 function explanationVisual(lesson, index) {
   const at = {
     "atoms-and-compounds": {1: () => renderVisual({...lesson.visual, reference: true})},
-    "states-of-matter": {3: () => renderVisual({...lesson.visual, reference: true})},
+    "states-of-matter": {3: () => {
+      const figures = element("div");
+      figures.append(renderVisual({...lesson.visual, reference: true}), ks3ExplanationVisuals["states-of-matter"][3]());
+      return figures;
+    }},
     forces: {0: () => ks3CatchupModel("forces"), 1: () => ks3CatchupModel("forces", true)},
-    "the-body": {0: () => ks3CatchupModel("the-body", true), 1: () => labelledIllustration("the-body", "Follow oxygen from the lungs in the blood to the muscle.")},
+    "the-body": {0: () => ks3CatchupModel("the-body", true), 1: () => {
+      const figures = element("div");
+      figures.append(labelledIllustration("the-body", "Follow oxygen from the lungs in the blood to the muscle."), ks3CatchupModel("respiration"));
+      return figures;
+    }},
     "energy-transfers": {1: () => renderVisual({...lesson.visual, reference: true})},
     "acids-and-alkalis": {0: () => renderVisual({...lesson.visual, reference: true})},
     reproduction: {0: () => ks3CatchupModel("reproduction")},
@@ -146,7 +154,11 @@ function explanationVisual(lesson, index) {
     respiration: {1: () => ks3CatchupModel("respiration")},
     "earth-structure": {1: () => ks3CatchupModel("earth-structure", true)},
     electricity: {0: () => renderVisual({...lesson.visual, reference: true})},
-    photosynthesis: {0: () => ks3CatchupModel("photosynthesis"), 1: () => ks3CatchupModel("respiration", true)},
+    photosynthesis: {0: () => ks3CatchupModel("photosynthesis"), 1: () => {
+      const figures = element("div");
+      figures.append(ks3CatchupModel("respiration", true), ks3ExplanationVisuals.photosynthesis[1]());
+      return figures;
+    }},
     metals: {1: () => ks3CatchupModel("metals")}
   };
   return at[lesson.id]?.[index]?.() || ks3ExplanationVisuals[lesson.id]?.[index]?.() || null;

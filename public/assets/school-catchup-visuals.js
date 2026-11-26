@@ -15,6 +15,7 @@ function cells() {
     image.height = 280;
     image.alt = alt;
     figure.append(node("figcaption", title), image);
+    if (file === "palisade") figure.append(node("p", "In this specialised leaf cell, chloroplasts absorb light for photosynthesis."));
     return [title, figure];
   });
   const controls = node("div", "", "ks3-model-controls");
@@ -54,8 +55,8 @@ function osmosis(forQuestion = false) {
     ${text(77,23,"A · more dilute")}${text(237,23,"B · more concentrated",ink,14)}
     ${text(160,207,"Partially permeable membrane",blue)}
     ${circle(42,229,4,"white",blue)}${text(53,234,"Water",ink,15,"start")}
-    <rect x="169" y="224" width="10" height="10" fill="${violet}"/>
-    ${text(185,234,"Dissolved particles",ink,15,"start")}`;
+    <rect x="157" y="224" width="10" height="10" fill="${violet}"/>
+    ${text(173,234,"Dissolved particles",ink,14,"start")}`;
   const description = "Equal volumes divided by a partially permeable membrane. Side A is more dilute. Side B is more concentrated.";
   return forQuestion ? picture("Sides A and B", diagram(description, drawing, 320, 244))
     : picture("Net water movement A → B",
@@ -178,6 +179,41 @@ function power() {
     return figure;
   }
   return steps("Joules each second", [["Compare the seconds", () => timeline(false)], ["Reveal both totals", () => timeline(true)]]);
+}
+
+function efficiencyNote() {
+  return picture("Useful energy as a fraction of input", diagram(
+    "A device receives 10 joules. Four joules are transferred usefully, and six joules are transferred in other ways. Four of ten equal blocks are highlighted.", `
+    ${Array.from({length:10},(_,i)=>`<rect x="${20+i*28}" y="44" width="24" height="34" rx="2" fill="${i<4?'#a9d3c9':'#e9eeee'}" stroke="${i<4?teal:ink}"/>`).join("")}
+    ${text(76,101,"4 J useful",teal,14)}${text(216,101,"6 J other",ink,14)}
+    ${text(160,140,"10 J total input",ink,15)}`,320,160),
+    "Read the four shaded blocks as 4 J out of 10 J supplied: the useful fraction is 4 ÷ 10 = 0.4, or 40%.");
+}
+
+function maintainedGradient() {
+  const host = node("div");
+  host.append(picture("Keeping oxygen moving into blood", diagram(
+    "Air in an air sac has more oxygen than incoming blood. Ventilation refreshes the air and blood flow carries oxygen away. A net oxygen arrow points across the wall into the blood.", `
+    <rect x="24" y="34" width="272" height="61" rx="7" fill="#e6f3fa" stroke="${teal}" stroke-width="2"/>
+    <rect x="24" y="100" width="272" height="48" rx="7" fill="#f8e2de" stroke="${rust}" stroke-width="2"/>
+    ${[[68,51],[105,66],[145,51],[190,66],[226,51],[262,67]].map(([x,y])=>circle(x,y,4,"white",blue)).join("")}
+    ${[[67,123],[106,130]].map(([x,y])=>circle(x,y,4,"white",blue)).join("")}
+    ${arrow(160,74,160,118,blue,3)}${arrow(195,124,270,124,rust,2.5)}
+    ${text(160,22,"Air refreshed by breathing",blue,14)}${text(160,168,"Blood flows away",rust,14)}
+    ${text(66,88,"More oxygen",ink,13)}${text(96,143,"Less oxygen in",ink,13)}`,320,180),
+    "Follow oxygen into the blood. Ventilation and blood flow help maintain a concentration difference; dots represent oxygen, not all particles present."));
+  host.append(picture("Many small air spaces", diagram(
+    "A model compares one spherical air space with four smaller spherical air spaces of the same total volume. The four small spheres have a greater total surface area.", `
+    ${circle(70,90,39.685,"#e6f3fa",teal,2)}
+    ${[[190,62],[244,62],[190,116],[244,116]].map(([x,y])=>circle(x,y,25,"#e6f3fa",teal,2)).join("")}
+    ${text(70,29,"One space",ink,14)}${text(217,24,"Four smaller",ink,14)}
+    ${text(160,164,"Same total volume in this model",ink,14)}`,320,180),
+    "Compare the boundaries. Dividing the same total volume into smaller spheres increases the total surface area. Air sacs are shown as simplified spheres."));
+  return host;
+}
+
+export function year9OpeningSupplement(id) {
+  return id === "energy-transfer" ? efficiencyNote() : id === "gas-exchange" ? maintainedGradient() : null;
 }
 
 function gasExchange() {

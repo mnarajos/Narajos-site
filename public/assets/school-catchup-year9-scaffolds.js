@@ -121,6 +121,47 @@ function efficiencyExample() {
     "The useful part is one quarter of the whole: 30 ÷ 120 = 0.25, or 25%.");
 }
 
+function groupOneExamples() {
+  const host = node("div");
+  host.append(year9Visual("periodic-table"));
+  host.append(picture("Potassium electron arrangement", diagram(
+    "A potassium atom has four electron shells. Its electron arrangement is 2, 8, 8, 1. One electron is shown in the outer shell; inner-shell electrons are omitted.", `
+    ${circle(112,82,13,"#d8e8e5",teal,2)}${circle(112,82,29,"none",ink,1)}${circle(112,82,45,"none",ink,1)}
+    ${circle(112,82,61,"none",ink,1)}${circle(112,82,76,"none",ink,1)}${circle(112,6,5,rust,rust)}
+    ${text(230,48,"Potassium",ink,15)}${text(230,72,"2, 8, 8, 1",blue,15)}${text(230,100,"1 outer",rust,14)}${text(230,120,"electron",rust,14)}`,320,170),
+    "The last number counts the outer-shell electron. Inner-shell electrons are omitted from this schematic."));
+  return host;
+}
+
+function dissolvedIons() {
+  const host = node("div");
+  host.append(year9Visual("ionic-conduction"));
+  host.append(picture("Ions in a salt solution", diagram(
+    "A salt solution contains separated positive and negative ions. When a voltage is applied, the positive ions move toward the negative electrode and the negative ions move toward the positive electrode.", `
+    <path d="M25 32v102h270V32" fill="#e6f3f6" stroke="${teal}" stroke-width="2"/>
+    ${line(57,43,57,120,ink,5)}${line(263,43,263,120,ink,5)}${text(57,26,"−",blue,20)}${text(263,26,"+",rust,20)}
+    ${circle(110,71,11,"#e7b783",rust)}${text(110,76,"+",ink,16)}${arrow(96,71,70,71,rust,2)}
+    ${circle(208,98,11,"#cce4f1",blue)}${text(208,103,"−",ink,16)}${arrow(222,98,250,98,blue,2)}
+    ${text(160,157,"Salt dissolved in water",ink,14)}`,320,170),
+    "Follow the charged ions towards the electrodes of opposite charge. Water molecules are omitted to make the ion movement clear."));
+  return host;
+}
+
+function mitosisInTissues() {
+  const host = node("div");
+  host.append(year9Visual("mitosis"));
+  host.append(picture("New cells for repair and growth", diagram(
+    "Skin cells divide near a damaged area during repair, and cells divide near a growing plant root tip. Both depend on copying and separating DNA before cell division.", `
+    <path d="M20 55H105l9 15 9-15h32v59H20Z" fill="#f2d7c2" stroke="${rust}" stroke-width="2"/>
+    ${[40,60,80,100,120,140].map(x=>circle(x,96,7,"#e9bca5",rust)).join("")}
+    ${arrow(104,85,113,73,teal,2)}${arrow(124,85,116,73,teal,2)}
+    <path d="M211 43h47v43q0 35-23 51-24-16-24-51Z" fill="#e9edd7" stroke="${teal}" stroke-width="2"/>
+    ${[[224,91],[237,92],[250,92],[230,105],[244,105],[237,118]].map(([x,y])=>circle(x,y,4,"#c8dbb4",teal)).join("")}
+    ${text(87,145,"Skin repair",ink,15)}${text(235,160,"Growing root tip",ink,15)}`,320,175),
+    "Cell division contributes to repair in skin and growth at a root tip. The details are simplified."));
+  return host;
+}
+
 const scaffolds = {
   osmosis: [, {reference: reference("Membrane diagram", osmosisQuestionDiagram),
     clue: "Water can cross both ways. Compare the two concentrations.", hint: "Find the side with fewer dissolved particles in the same volume."}],
@@ -229,7 +270,7 @@ export function applyYear9Scaffolds(lessons) {
   lessons["active-transport"].steps[2].visual = gutTransport;
   lessons.mitosis.steps[0].visual = () => year9Visual("mitosis");
   lessons.mitosis.steps[1].visual = () => year9Visual("mitosis");
-  lessons.mitosis.steps[2].visual = () => year9Visual("mitosis");
+  lessons.mitosis.steps[2].visual = mitosisInTissues;
   lessons["atomic-number"].retry = q("A neutral oxygen atom gains two electrons. What happens?", "It becomes an oxygen ion with charge −2.",
     "The proton number is unchanged. Two extra electrons give a net negative charge of −2.",
     ["It becomes an oxygen ion with charge +2.", "Each added electron contributes a negative charge."],
@@ -247,6 +288,8 @@ export function applyYear9Scaffolds(lessons) {
     const example = lessons[id].steps[0].worked;
     if (example) example.visual = () => year9Visual(id);
   }
+  lessons["periodic-table"].steps[0].worked.visual = groupOneExamples;
+  lessons["ionic-conduction"].steps[0].worked.visual = dissolvedIons;
   lessons["gas-exchange"].steps[0].worked.visual = () => year9Visual("gas-exchange");
   lessons["energy-transfer"].steps[1].worked.visual = efficiencyExample;
 }

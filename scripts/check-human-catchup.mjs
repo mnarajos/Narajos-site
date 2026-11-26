@@ -730,6 +730,37 @@ export async function checkHumanCatchup(browser, base) {
     await ratioFeedback.waitFor();
     assert.equal((await saved(chromatographyKey)).outcomes[0], "incorrect");
 
+    // Airway and alveolar diagrams follow their respective worked steps.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f171/1.2.1");
+    const airwayModel = page.locator("[data-hb-model-step]");
+    await expand(airwayModel);
+    const airwayStep = airwayModel.locator('img[src="/human-biology/airway-narrowing.svg"]');
+    const alveoliStep = airwayModel.locator('img[src="/human-biology/alveolar-wall-loss.svg"]');
+    assert(await airwayStep.isVisible());
+    assert(!(await alveoliStep.isVisible()));
+    await airwayModel.getByRole("button", {name: "Show next step"}).click();
+    assert(await alveoliStep.isVisible());
+    assert(await alveoliStep.evaluate(async image => { await image.decode(); return image.naturalWidth > 0; }));
+    assert(await widthFits(), "Worked alveolar diagram must fit the phone viewport");
+    assert.equal(await stage("independent").locator('img[src="/human-biology/alveolar-wall-loss.svg"]').count(), 0);
+
+    // The threshold graph belongs to the sixth worked step, never an independent answer.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f176/a2");
+    const neuroneModel = page.locator("[data-hb-model-step]");
+    await expand(neuroneModel);
+    const threshold = neuroneModel.locator('img[src="/human-biology/threshold-comparison.svg"]');
+    assert.equal(await threshold.count(), 1);
+    assert(!(await threshold.isVisible()), "Later worked figure must start hidden");
+    for (let i = 0; i < 5; i++) await neuroneModel.getByRole("button", {name: "Show next step"}).click();
+    assert(await threshold.isVisible(), "Threshold graph must follow the worked comparison");
+    assert(await threshold.evaluate(async image => { await image.decode(); return image.naturalWidth > 0; }));
+    assert(await widthFits(), "Threshold figure must fit the phone viewport");
+    await neuroneModel.getByRole("button", {name: "Previous step"}).click();
+    assert(!(await threshold.isVisible()), "Returning to the preceding step hides the later figure");
+    assert.equal(await stage("independent").locator('img[src="/human-biology/threshold-comparison.svg"]').count(), 0);
+
     assert.deepEqual(errors, []);
     console.log("Human Biology Catch-up: " + chapters.length + " routes across eight units, feedback, saved drafts, session return, licensed images, reproduction controls, and responsive accessibility passed.");
   } finally {

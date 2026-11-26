@@ -46,13 +46,21 @@ export async function checkGCSECatchup(browser, base) {
       if (lesson.higherVisual) {
         await page.goto(lessonURL(id, lesson.year));
         const extension = page.locator("#catchup-evidence details").filter({has: page.locator("summary:text-is('Higher Tier')")});
-        await extension.locator("summary").click();
-        const diagram = extension.locator("svg[role=img]");
-        assert.equal(await diagram.count(), 1, `${id}: missing Higher Tier diagram`);
-        const alternative = (await diagram.getAttribute("aria-label"))?.trim();
-        assert(alternative, `${id}: missing Higher Tier text alternative`);
+        await extension.locator(":scope > summary").click();
+        const diagrams = extension.locator("svg[role=img]");
+        assert(await diagrams.count(), `${id}: missing Higher Tier diagram`);
+        if (Array.isArray(lesson.higher)) {
+          for (const diagram of await diagrams.all())
+            assert.equal(await diagram.isVisible(), false, `${id}: question answer figure visible before reasoning`);
+          await extension.getByText("Check your reasoning", {exact: true}).click();
+        }
         const stageLabels = await journey.locator(".school-current-stage svg[role=img]").evaluateAll(items => items.map(item => item.getAttribute("aria-label")));
-        assert(!stageLabels.includes(alternative), `${id}: Higher Tier figure leaked into assessment stage`);
+        for (const diagram of await diagrams.all()) {
+          assert(await diagram.isVisible(), `${id}: Higher Tier diagram not visible in teaching context`);
+          const alternative = (await diagram.getAttribute("aria-label"))?.trim();
+          assert(alternative, `${id}: missing Higher Tier text alternative`);
+          assert(!stageLabels.includes(alternative), `${id}: Higher Tier figure leaked into assessment stage`);
+        }
       }
       if (lesson.steps[0]?.worked?.visual) {
         await page.goto(lessonURL(id, lesson.year));

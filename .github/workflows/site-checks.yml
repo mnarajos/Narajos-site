@@ -13,6 +13,7 @@ on:
       - 'scripts/check-catchup-visual-integrity.mjs'
       - 'scripts/check-alevel-catchup-figures.mjs'
       - 'scripts/check-alevel-molecules-figures.mjs'
+      - 'scripts/check-ks3-explanation-visuals.mjs'
       - '.github/workflows/site-checks.yml'
   pull_request:
     paths:
@@ -25,6 +26,7 @@ on:
       - 'scripts/check-catchup-visual-integrity.mjs'
       - 'scripts/check-alevel-catchup-figures.mjs'
       - 'scripts/check-alevel-molecules-figures.mjs'
+      - 'scripts/check-ks3-explanation-visuals.mjs'
       - '.github/workflows/site-checks.yml'
   workflow_dispatch:
 
@@ -46,4 +48,5 @@ jobs:
           node scripts/check-catchup-visual-integrity.mjs
           node scripts/check-alevel-catchup-figures.mjs
           node scripts/check-alevel-molecules-figures.mjs
+          node scripts/check-ks3-explanation-visuals.mjs
 

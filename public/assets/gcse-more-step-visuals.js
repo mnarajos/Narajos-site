@@ -383,38 +383,361 @@ function electrolysisReduction() {
     text(160,155,'Na⁺ + e⁻ → Na',ink,18),
     'Follow a sodium ion to the negative electrode. It gains an electron, so the ion is reduced.',175);
 }
+
+function latentCalculation() {
+  return fig('Energy to melt an ice sample',
+    'An illustrative sample of 0.10 kilograms of ice melts at constant temperature. With a specific latent heat of fusion of 334,000 joules per kilogram, the energy transferred is 0.10 times 334,000, or 33,400 joules.',
+    '<path d="M28 57 l30 -18 30 18 -30 18 z M28 57 v39 l30 18 v-39 M88 57 v39 l-30 18" fill="#dceef5" stroke="'+blue+'" stroke-width="2"/>'+text(58,135,'0.10 kg',ink,15)+
+    arrow(103,78,145,78,rust,2)+text(225,48,'334,000 J/kg',ink,15)+text(225,76,'× 0.10 kg',blue,16)+text(225,106,'= 33,400 J',teal,16),
+    'Multiply the mass by the energy required per kilogram. The sample values are an example, not a measurement.');
+}
+function concentrationExample() {
+  return fig('Mass of solute per volume',
+    'A sample contains 3 grams of solute in 0.20 cubic decimetres of solution. Three divided by 0.20 equals 15 grams per cubic decimetre.',
+    '<path d="M35 30 V135 H137 V30" fill="none" stroke="'+ink+'" stroke-width="2"/><path d="M37 62 H135 V133 H37 Z" fill="#dceef5"/>'+
+    circle(59,86,4,rust,rust)+circle(85,105,4,rust,rust)+circle(111,81,4,rust,rust)+text(86,157,'0.20 dm³',ink,15)+
+    text(229,46,'3 g solute',ink,15)+text(229,77,'÷ 0.20 dm³',blue,15)+text(229,112,'= 15 g/dm³',teal,16),
+    'Divide the solute mass by the total solution volume in dm³. The dots represent dissolved solute, not actual concentration.');
+}
+function methaneStructure() {
+  return fig('A simple hydrocarbon',
+    'Methane has one carbon atom bonded to four hydrogen atoms. Its formula is CH4. It is a hydrocarbon because it contains only carbon and hydrogen.',
+    circle(160,85,19,'#c9dfec',blue)+text(160,91,'C',blue,17)+
+    circle(160,28,13,'#e8edee',ink)+text(160,33,'H',ink,15)+circle(160,142,13,'#e8edee',ink)+text(160,147,'H',ink,15)+
+    circle(99,85,13,'#e8edee',ink)+text(99,90,'H',ink,15)+circle(221,85,13,'#e8edee',ink)+text(221,90,'H',ink,15)+
+    line(160,41,160,66)+line(160,104,160,129)+line(112,85,141,85)+line(179,85,208,85)+text(280,92,'CH₄',ink,17),
+    'Count the carbon and hydrogen atoms. The drawing shows connections, not the three-dimensional shape.');
+}
+function emissionsSources() {
+  return fig('Sources of greenhouse gases',
+    'Burning fossil fuels releases carbon dioxide. Methane can be released by livestock, among other sources. Both gases can absorb infrared radiation.',
+    '<path d="M20 126 V73 H51 V56 H69 V126 Z M49 56 V29 H66 V56" fill="#dde4e7" stroke="'+ink+'" stroke-width="2"/>'+
+    '<path d="M57 26 Q47 16 59 10 Q72 8 73 22" fill="none" stroke="'+ink+'" stroke-width="2"/>'+arrow(80,59,130,59,rust,2)+text(103,43,'CO₂',rust,16)+text(47,152,'Fuel burning',ink,14)+
+    '<path d="M195 85 H264 V113 H195 Z M264 88 L281 80 V102 H264 M205 113 V132 M254 113 V132" fill="#e9e0d2" stroke="'+ink+'" stroke-width="2"/>'+arrow(263,66,300,46,blue,2)+text(268,34,'CH₄',blue,16)+text(232,152,'Livestock',ink,14),
+    'Trace each gas to an example source. These are not the only sources of carbon dioxide or methane.');
+}
+function pollutants() {
+  return fig('Pollutants from combustion',
+    'Incomplete combustion can produce carbon monoxide. Burning sulfur-containing fuels can produce sulfur dioxide; nitrogen oxides can form when nitrogen and oxygen react at high temperatures. Sulfur dioxide and nitrogen oxides contribute to acid rain.',
+    '<path d="M22 142 V74 H57 V50 H77 V142 Z M55 50 V27 H72 V50" fill="#dde4e7" stroke="'+ink+'" stroke-width="2"/>'+arrow(88,70,123,45,rust,2)+arrow(88,83,123,83,teal,2)+arrow(88,96,123,125,blue,2)+
+    text(140,48,'CO',rust,16)+text(140,88,'SO₂',teal,16)+text(140,130,'NOₓ',blue,16)+
+    arrow(161,84,209,93,teal,2)+arrow(163,125,209,110,blue,2)+
+    '<path d="M224 129 q-12 -12 0-21 q-4-14 12-14 q11 0 12 10 q17-4 17 10 q9 14-6 15 z" fill="#e3eef4" stroke="'+blue+'" stroke-width="2"/>'+line(235,133,230,145,blue,2)+line(252,133,247,145,blue,2)+text(246,169,'Acid rain',blue,14),
+    'Different pollutants have different effects. Sulfur dioxide (SO₂) and nitrogen oxides (NOₓ) can contribute to acid rain.');
+}
+function lifeCycle() {
+  return fig('A product life cycle',
+    'A life-cycle assessment compares impacts across obtaining materials, manufacturing, use and disposal or recycling. Reuse, transport and other assumptions can affect the result.',
+    '<path d="M18 83 l22-37 22 37 Z" fill="#dbe6df" stroke="'+teal+'" stroke-width="2"/>'+text(40,109,'Materials',ink,13)+arrow(66,74,91,74,rust,2)+
+    '<path d="M95 83 V51 l16 8 V48 l17 10 V83 Z" fill="#dce6ec" stroke="'+blue+'" stroke-width="2"/>'+text(111,109,'Make',ink,13)+arrow(134,74,160,74,rust,2)+
+    '<path d="M177 43 H193 V54 H200 V89 H170 V54 H177 Z" fill="#def0ec" stroke="'+teal+'" stroke-width="2"/>'+text(185,109,'Use',ink,13)+arrow(207,74,231,74,rust,2)+
+    '<path d="M253 45 C277 45 282 76 269 87 M269 87 l-2 -11 M269 87 l10 -4 M255 89 C231 89 226 58 239 47 M239 47 l2 10 M239 47 l-10 4" fill="none" stroke="'+teal+'" stroke-width="3"/>'+text(256,109,'End of life',ink,13)+
+    text(160,150,'Transport and reuse affect the comparison',ink,14),
+    'Follow the product from materials to its end of life. Compare the same stages and assumptions for both products.');
+}
+function reverseCoil() {
+  const coil=(y,left,right)=>'<rect x="63" y="'+(y-12)+'" width="190" height="24" rx="5" fill="#e2e9e9" stroke="'+ink+'"/>'+[88,115,142,169,196,223].map(x=>'<ellipse cx="'+x+'" cy="'+y+'" rx="9" ry="19" fill="none" stroke="'+rust+'" stroke-width="2"/>').join('')+text(56,y+5,left,blue,17)+text(264,y+5,right,blue,17);
+  return fig('Reversing an electromagnet',
+    'With a fixed winding, reversing the current reverses the direction of the magnetic field: the north and south poles of the coil swap.',
+    text(160,20,'Current in one direction',ink,15)+coil(57,'N','S')+arrow(99,94,220,94,blue,2)+
+    text(160,125,'Current reversed',ink,15)+coil(162,'S','N')+arrow(220,198,99,198,blue,2),
+    'Compare the pole labels and external field arrows. In this schematic the winding remains fixed while the current reverses.',215);
+}
+function ironCore() {
+  return fig('Soft iron in an electromagnet',
+    'A coil around soft iron produces a stronger electromagnet when current flows. When the current is switched off, the coil field disappears and soft iron loses most of its induced magnetisation, allowing a load to be released.',
+    '<rect x="65" y="47" width="180" height="25" fill="#bccacd" stroke="'+ink+'"/>'+[91,116,141,166,191,216].map(x=>'<ellipse cx="'+x+'" cy="59" rx="8" ry="20" fill="none" stroke="'+rust+'" stroke-width="2"/>').join('')+
+    text(155,25,'Current on',ink,15)+text(155,103,'Soft iron core',ink,14)+
+    '<path d="M110 133 V167 M142 133 V167 M174 133 V167 M206 133 V167" stroke="'+blue+'" stroke-width="5"/>'+text(155,194,'Attracts iron objects',blue,14),
+    'The core strengthens the field while current flows. Soft iron loses most induced magnetisation after switching off.',210);
+}
+function sulfateSalt() {
+  return fig('Naming copper sulfate',
+    'Sulfuric acid reacts with copper oxide to form copper sulfate and water. Sulfuric acid supplies the sulfate part of the salt, and copper oxide supplies copper.',
+    text(16,40,'Sulfuric acid',blue,15,'start')+text(16,65,'H₂SO₄',blue,17,'start')+text(151,65,'+',ink,18)+text(175,40,'Copper oxide',rust,15,'start')+text(175,65,'CuO',rust,17,'start')+
+    arrow(160,82,160,107,teal,2)+text(17,138,'Copper sulfate',teal,15,'start')+text(17,163,'CuSO₄',teal,17,'start')+text(175,138,'and water',ink,15,'start')+text(175,163,'H₂O',ink,17,'start'),
+    'Match copper from copper oxide and sulfate from sulfuric acid to the name of the soluble salt.',180);
+}
+function xray() {
+  return fig('X-rays and body tissue',
+    'X-rays passing through the body are absorbed by different amounts in different tissues. Bone absorbs more X-rays than soft tissue, so fewer X-rays reach the detector behind bone. X-rays are ionising radiation.',
+    text(46,22,'X-ray source',ink,14)+arrow(38,49,137,49,blue,2)+arrow(38,68,137,68,blue,2)+arrow(38,82,137,82,blue,2)+arrow(38,101,137,101,blue,2)+
+    '<rect x="140" y="33" width="55" height="90" rx="14" fill="#ecd8cf" stroke="'+rust+'" stroke-width="2"/><rect x="157" y="43" width="18" height="70" rx="8" fill="#f7f4e8" stroke="'+ink+'" stroke-width="2"/>'+
+    arrow(196,49,250,49,blue,2)+arrow(196,68,250,68,blue,2)+arrow(196,101,250,101,blue,2)+'<rect x="257" y="33" width="15" height="90" fill="#9aaeb6"/>'+text(168,147,'Bone within tissue',ink,14)+text(264,166,'Detector',ink,13),
+    'Compare the X-rays reaching the detector where bone and soft tissue lie. This is an illustrative model, not a radiograph.',180);
+}
+function transmission() {
+  return fig('Different infection routes',
+    'Measles can spread in droplets from an infected person. Malaria is caused by a protist transmitted by a mosquito. Salmonella bacteria can spread in contaminated food.',
+    circle(27,35,9,'#efd1bd',rust)+circle(67,35,9,'#efd1bd',rust)+circle(42,35,2,blue,blue)+circle(51,35,2,blue,blue)+text(90,40,'Measles: droplets',ink,15,'start')+
+    '<ellipse cx="35" cy="86" rx="13" ry="6" fill="#ccd9db" stroke="'+ink+'"/><path d="M25 86 l-10 -12 M45 86 l10 -12 M25 90 l-10 12 M45 90 l10 12" stroke="'+ink+'" stroke-width="1.5"/>'+text(90,92,'Malaria: mosquito',ink,15,'start')+
+    '<path d="M20 146 H55 L49 161 H26 Z" fill="#edc89f" stroke="'+rust+'" stroke-width="2"/><path d="M23 146 Q37 132 52 146" fill="#dce9cf" stroke="'+teal+'" stroke-width="2"/>'+text(90,153,'Salmonella: food',ink,15,'start'),
+    'Match each pathogen to a route so that prevention can interrupt transmission.',180);
+}
+function alphaDecay() {
+  return fig('An example of alpha decay',
+    'A uranium-238 nucleus with atomic number 92 emits an alpha particle containing two protons and two neutrons. The remaining thorium nucleus has mass number 234 and atomic number 90.',
+    circle(65,75,34,'#dfe7f4',blue)+text(65,68,'U',blue,21)+text(65,89,'238 / 92',ink,13)+arrow(104,75,144,75,rust,2)+
+    circle(190,75,30,'#e0efe5',teal)+text(190,69,'Th',teal,18)+text(190,88,'234 / 90',ink,13)+text(229,80,'+',ink,18)+
+    circle(265,75,18,'#f3d8c9',rust)+text(265,80,'α',rust,16)+
+    text(160,145,'Mass: 238 = 234 + 4',ink,15)+text(160,168,'Protons: 92 = 90 + 2',ink,15),
+    'Compare the mass numbers and proton numbers before and after emission. The nuclei are simplified models.',185);
+}
+function electricalPower() {
+  return fig('Power and energy',
+    'A device supplied at 5 volts drawing 2 amperes transfers energy at 10 watts, because power equals potential difference times current. Over 3 seconds it transfers 30 joules, because energy equals power times time.',
+    '<path d="M35 38 H138 V112 H35 Z" fill="#eef5f5" stroke="'+teal+'" stroke-width="2"/>'+circle(86,75,20,'white',ink)+text(86,81,'P',ink,18)+
+    text(212,42,'5 V × 2 A',blue,16)+text(212,70,'= 10 W',teal,17)+arrow(212,78,212,100,rust,2)+text(212,125,'10 W × 3 s',blue,16)+text(212,151,'= 30 J',teal,17),
+    'First calculate joules transferred each second, then multiply by time. These values are a worked example.',170);
+}
+function contraception() {
+  return fig('Two ways to prevent pregnancy',
+    'A condom is a barrier that can prevent sperm reaching an egg. Hormonal contraceptives can prevent ovulation. Condoms also reduce the risk of transmission of many sexually transmitted infections when used correctly.',
+    text(74,27,'Barrier',ink,15)+circle(34,75,6,'#d5e8f3',blue)+line(40,75,56,75,blue,2)+arrow(56,75,95,75,blue,2)+line(105,48,105,104,rust,5)+circle(130,75,12,'#f6e3d2',rust)+
+    text(78,137,'Sperm',blue,14)+text(125,137,'Egg',rust,14)+
+    '<rect x="194" y="48" width="43" height="65" rx="7" fill="#dce9f2" stroke="'+blue+'" stroke-width="2"/>'+circle(215,69,7,'#fff4e3',rust)+text(257,27,'Hormonal',ink,15)+
+    '<ellipse cx="275" cy="80" rx="20" ry="14" fill="#f3d6ce" stroke="'+rust+'" stroke-width="2"/>'+line(244,58,300,105,rust,3)+text(253,137,'No ovulation',rust,14),
+    'Compare a barrier stopping sperm with hormonal prevention of ovulation. The sketches are simplified.');
+}
+function habitatDiversity() {
+  const leaf=(x,y)=>'<path d="M'+x+' '+y+' q-13-14-20 0 q7 14 20 0 q13-14 20 0 q-7 14-20 0" fill="#c9e4d1" stroke="'+teal+'" stroke-width="2"/>';
+  return fig('A variety of habitats',
+    'Different habitats such as a pond and a meadow can support different organisms. Protecting several habitats can help maintain biodiversity, the variety of living organisms.',
+    '<path d="M10 84 Q75 50 145 84 V129 H10 Z" fill="#d8ece3" stroke="'+teal+'" stroke-width="2"/>'+leaf(73,76)+text(77,156,'Meadow',ink,15)+
+    '<ellipse cx="244" cy="94" rx="61" ry="36" fill="#cbe5ee" stroke="'+blue+'" stroke-width="2"/><path d="M227 94 q15-15 30 0 q-15 15-30 0 M257 94 l12-9 v18 z" fill="#f0d2a6" stroke="'+rust+'" stroke-width="2"/>'+text(244,156,'Pond',ink,15),
+    'Compare habitats and the organisms they can support. More kinds of organisms mean greater biodiversity.');
+}
+
+function pondweedLight() {
+  return fig('Testing light and pondweed',
+    'A lamp illuminates pondweed in water, and gas collects in an inverted measuring cylinder. Change the lamp distance and compare oxygen collected in equal times. Keep the plant, carbon dioxide supply and temperature the same.',
+    '<path d="M33 90 H92 L80 54 H45 Z" fill="#ffe5ae" stroke="'+rust+'" stroke-width="2"/>'+line(62,90,62,134)+line(37,135,87,135)+
+    arrow(100,82,153,95,rust,2)+text(63,30,'Lamp',ink,14)+
+    '<path d="M160 82 H286 V153 H160 Z" fill="#dbeef4"/>'+
+    '<path d="M158 47 V155 H288 V47 M208 98 V19 H257 V98" fill="none" stroke="'+ink+'" stroke-width="2"/>'+
+    '<path d="M200 147 Q214 120 211 105 M212 123 Q190 114 192 105 M211 117 Q230 109 229 97" fill="none" stroke="'+teal+'" stroke-width="3"/>'+
+    circle(222,87,3,'white',blue)+circle(230,74,3,'white',blue)+text(241,15,'Gas',blue,14)+text(225,177,'Pondweed',teal,14),
+    'Change lamp distance and compare oxygen volume per minute. Keep carbon dioxide supply and temperature the same.');
+}
+function circulation() {
+  return fig('Oxygen from lungs to working muscle',
+    'The right ventricle pumps blood to lung capillaries, where oxygen diffuses into blood and binds to haemoglobin. Blood returns to the left atrium, then left ventricle, and is pumped to muscle capillaries. Oxygen diffuses from blood into muscle cells.',
+    '<path d="M126 18 Q111 23 109 54 Q117 68 140 59 L140 30 Z M180 18 Q195 23 197 54 Q189 68 166 59 L166 30 Z" fill="#e2f2f3" stroke="'+teal+'" stroke-width="2"/>'+text(153,83,'Lungs: oxygen in',teal,14)+
+    '<rect x="90" y="101" width="126" height="57" rx="8" fill="#f5dfda" stroke="'+rust+'" stroke-width="2"/>'+line(153,101,153,158,rust,1)+text(122,124,'Right',ink,14)+text(122,143,'ventricle',ink,13)+text(185,124,'Left',ink,14)+text(185,143,'heart',ink,14)+
+    arrow(100,101,99,43,blue,2)+arrow(208,45,208,99,rust,2)+arrow(186,160,186,193,rust,2)+
+    '<rect x="105" y="198" width="104" height="33" rx="12" fill="#e7ede1" stroke="'+teal+'" stroke-width="2"/>'+text(157,220,'Muscle cells',ink,14)+text(70,184,'Blood',blue,13)+text(248,181,'Oxygen',rust,13),
+    'Follow blood from the right ventricle to the lungs and back to the left side of the heart, then to muscle. This is a simplified pathway.',245);
+}
+function faultPath() {
+  return fig('A fault to an earthed metal case',
+    'If a live wire touches an earthed metal case, current can flow through the low-resistance earth wire back towards the supply. The large fault current causes a correctly rated fuse or circuit breaker to disconnect the circuit.',
+    text(47,25,'Live',rust,16)+line(18,48,103,48,rust,4)+'<rect x="103" y="34" width="48" height="29" rx="4" fill="#f5e6dc" stroke="'+rust+'" stroke-width="2"/>'+text(127,54,'Fuse',rust,14)+
+    line(151,48,181,48,rust,4)+'<path d="M181 34 H283 V125 H181 Z" fill="#e6eeee" stroke="'+ink+'" stroke-width="3"/>'+text(232,72,'Metal case',ink,14)+circle(184,49,5,rust,rust)+text(237,96,'Fault contact',rust,13)+
+    '<path d="M230 125 V151 H65" fill="none" stroke="'+teal+'" stroke-width="4"/>'+arrow(189,151,92,151,teal,2)+text(108,176,'Earth wire to supply',teal,14),
+    'Follow the fault path through the earth connection. The diagram shows the fault path only; the fuse or breaker then disconnects the supply.',190);
+}
+function magnesiumParticles() {
+  const mg=(x,y)=>circle(x,y,8,'#d7e8f4',blue); const o=(x,y)=>circle(x,y,8,'#f3d5c8',rust);
+  let art=text(80,22,'Reactants',ink,15)+text(244,22,'Products',ink,15);
+  for(let i=0;i<6;i++)art+=mg(26+(i%3)*25,50+Math.floor(i/3)*26);
+  for(let i=0;i<4;i++)art+=o(24+i*32,115)+o(39+i*32,115);
+  for(let i=0;i<6;i++)art+=mg(190+(i%3)*31,50+Math.floor(i/3)*26)+o(205+(i%3)*31,50+Math.floor(i/3)*26);
+  art+=o(229,115)+o(244,115)+arrow(119,82,163,82,ink,2)+text(75,154,'6 Mg + 4 O₂',ink,14)+text(246,154,'6 MgO + O₂ left',ink,14)+mg(65,181)+text(81,186,'Mg',blue,14,'start')+o(200,181)+text(216,186,'O',rust,14,'start');
+  return fig('A limiting reactant in particles',
+    'Six magnesium atoms react with three of four oxygen molecules to form six magnesium oxide units. One oxygen molecule remains. Magnesium is the limiting reactant in this model.',art,
+    'Count atoms on each side. Six magnesium atoms use three oxygen molecules, leaving one oxygen molecule.',200);
+}
+function plantPaths() {
+  return fig('Water and sugar transport',
+    'Water enters roots and moves upwards in xylem to the leaf. Water vapour leaves the leaf. Sugars made in a mature source leaf are transported in phloem to a sink such as a growing root; phloem movement depends on source and sink.',
+    '<path d="M137 53 Q87 15 49 48 Q76 84 137 68 M183 53 Q233 15 271 48 Q244 84 183 68" fill="#d8eddb" stroke="'+teal+'" stroke-width="2"/>'+
+    '<rect x="137" y="47" width="46" height="131" fill="#e9efe0" stroke="'+teal+'" stroke-width="2"/><path d="M160 177 Q141 204 112 215 M160 177 Q179 204 208 215" fill="none" stroke="'+teal+'" stroke-width="3"/>'+
+    arrow(149,166,149,65,blue,2)+arrow(171,72,171,167,rust,2)+arrow(69,40,49,17,blue,2)+arrow(239,40,259,17,blue,2)+
+    text(84,112,'Xylem',blue,15)+text(84,132,'water up',blue,14)+text(239,112,'Phloem',rust,15)+text(239,132,'sugar to',rust,14)+text(239,150,'root sink',rust,14)+text(160,241,'Roots',ink,15),
+    'Trace water up the xylem and sugar from the source leaf to a root sink. Phloem direction varies with source and sink.',255);
+}
+export const gcseWorkedVisuals = {
+  'photosynthesis-limits': pondweedLight,
+  'respiration-exercise': circulation,
+  'domestic-electricity': faultPath,
+  'reacting-masses': magnesiumParticles,
+  'plant-transport': plantPaths
+};
+
+function inverseSquare() {
+  return fig('Doubling distance from a point source',
+    'At 10 centimetres an illustrative light intensity is one unit. At 20 centimetres, twice the distance from the same point source, the intensity is one quarter of that at 10 centimetres.',
+    circle(44,58,18,'#ffe1a2',rust)+text(44,63,'Lamp',rust,13)+arrow(64,58,104,58,rust,2)+text(84,41,'10 cm',ink,14)+
+    '<rect x="110" y="33" width="80" height="50" fill="#ecd197" stroke="'+rust+'"/>'+text(257,63,'1',ink,16)+
+    circle(44,137,18,'#ffe1a2',rust)+text(44,142,'Lamp',rust,13)+arrow(64,137,144,137,rust,2)+text(104,120,'20 cm',ink,14)+
+    '<rect x="145" y="112" width="20" height="50" fill="#ecd197" stroke="'+rust+'"/>'+text(257,142,'¼',ink,16),
+    'Compare intensities at twice the distance from the same point source. The bars use an illustrative starting intensity.',180);
+}
+function glucagonResponse() {
+  return fig('Response to low blood glucose',
+    'When blood glucose falls the pancreas releases glucagon. Glucagon causes liver glycogen to be converted to glucose and released into the blood. As the glucose concentration recovers, the stimulus for glucagon secretion decreases.',
+    text(160,22,'Blood glucose falls',blue,16)+arrow(160,29,160,52,ink,2)+
+    '<path d="M96 65 Q160 37 224 65 Q214 91 116 84 Z" fill="#f2d1c4" stroke="'+rust+'" stroke-width="2"/>'+text(160,78,'Pancreas',ink,15)+arrow(160,89,160,112,ink,2)+
+    text(160,132,'Glucagon → liver',rust,15)+text(160,154,'Glycogen → glucose',teal,15)+arrow(160,161,160,184,ink,2)+text(160,204,'Blood glucose rises',blue,16),
+    'Follow the hormonal signal to the liver and the glucose released to the blood. As glucose recovers, the original stimulus decreases.',220);
+}
+function dilution() {
+  const beaker=(x,top)=>'<path d="M'+x+' 40 V143 H'+(x+90)+' V40" fill="none" stroke="'+ink+'" stroke-width="2"/><path d="M'+(x+2)+' '+top+' H'+(x+88)+' V141 H'+(x+2)+' Z" fill="#dceef5"/>';
+  return fig('Dilution conserves solute',
+    'One hundred cubic centimetres of a 30 grams per cubic decimetre solution contains 3 grams of solute. Diluting to 250 cubic centimetres without loss leaves 3 grams of solute in 0.250 cubic decimetres, giving 12 grams per cubic decimetre.',
+    beaker(15,104)+circle(37,121,4,rust,rust)+circle(60,128,4,rust,rust)+circle(83,120,4,rust,rust)+
+    arrow(111,85,185,85,teal,2)+text(148,70,'Add water',teal,14)+
+    beaker(210,53)+circle(232,91,4,rust,rust)+circle(255,112,4,rust,rust)+circle(279,72,4,rust,rust)+
+    text(60,165,'100 cm³',ink,14)+text(255,165,'250 cm³',ink,14)+text(160,193,'3 g solute throughout',ink,15)+text(160,217,'3 ÷ 0.250 = 12 g/dm³',blue,15),
+    'Compare the same solute amount in a larger total volume. The dots are a model, not the real number of particles.',235);
+}
+function momentum() {
+  return fig('Momentum in a closed system',
+    'A 1 kilogram trolley moving right at 2 metres per second meets a stationary 1 kilogram trolley. If they stick, the 2 kilogram pair moves right at 1 metre per second. Total momentum is 2 kilogram metres per second before and after.',
+    text(160,23,'Before',ink,15)+
+    '<rect x="30" y="41" width="64" height="30" fill="#dcebf4" stroke="'+blue+'"/><rect x="184" y="41" width="64" height="30" fill="#f2dfd2" stroke="'+rust+'"/>'+text(62,61,'1 kg',ink,14)+text(216,61,'1 kg',ink,14)+arrow(97,55,170,55,blue,2)+text(133,42,'2 m/s',blue,13)+
+    text(160,103,'After sticking',ink,15)+'<rect x="77" y="117" width="128" height="30" fill="#dfebe5" stroke="'+teal+'"/>'+text(140,137,'2 kg',ink,14)+arrow(209,132,246,132,teal,2)+text(257,120,'1 m/s',teal,13)+
+    text(160,177,'2 kg m/s before = 2 kg m/s after',ink,14),
+    'Compare total momentum before and after the collision. The example assumes a closed system.',195);
+}
+function equilibriumHeating() {
+  return fig('Temperature and equilibrium',
+    'In this example the forward reaction is exothermic, transferring energy to the surroundings; the reverse reaction is endothermic. Increasing temperature favours the endothermic reverse reaction, decreasing the equilibrium yield of product.',
+    circle(45,70,10,'#c8e0f0',blue)+circle(71,70,10,'#c8e0f0',blue)+text(58,105,'Reactants',blue,14)+
+    arrow(98,56,207,56,rust,2)+text(154,41,'Forward: exothermic',rust,13)+
+    arrow(207,87,98,87,teal,4)+text(154,118,'Reverse: endothermic',teal,13)+
+    circle(240,70,10,'#efcfbf',rust)+circle(260,70,10,'#efcfbf',rust)+text(250,105,'Product',rust,14)+
+    text(160,156,'Heating favours the reverse reaction',ink,14),
+    'The thicker arrow shows the favoured direction as the system responds. At the new equilibrium, both reaction rates are equal again.',175);
+}
+function velocityArea() {
+  return fig('Distance from a velocity–time graph',
+    'A trolley accelerates uniformly from 0 to 4 metres per second in 2 seconds, then continues at 4 metres per second until 5 seconds. The triangular area is 4 metres; the rectangular area is 12 metres. Total distance is 16 metres.',
+    '<path d="M44 146 L132 52 H264 V146 Z" fill="#d9eee6" stroke="none"/><path d="M44 146 L132 52 H264" fill="none" stroke="'+teal+'" stroke-width="3"/>'+line(44,146,285,146)+line(44,146,44,32)+line(132,146,132,52,ink,1,'5 4')+
+    text(44,20,'Velocity (m/s)',ink,14,'start')+text(35,151,'0',ink,13,'end')+text(35,57,'4',ink,13,'end')+text(44,165,'0',ink,13)+text(132,165,'2',ink,13)+text(264,165,'5',ink,13)+text(164,189,'Time (s)',ink,14)+
+    text(100,129,'4 m',blue,14)+text(199,109,'12 m',blue,14),
+    'Add the triangle and rectangle under the velocity–time graph to find the 16 m travelled.',205);
+}
+
+function rateTangent() {
+  return fig('Rate from a tangent',
+    'On a product quantity against time graph, the gradient of a straight tangent touching the curve gives the rate at that instant. A steep tangent means a high rate; here the tangent rises from left to right.',
+    line(45,146,288,146)+line(45,146,45,28)+'<path d="M45 140 C120 80 195 60 270 60" fill="none" stroke="'+teal+'" stroke-width="3"/>'+line(75,105,240,50,rust,2)+circle(158,78,4,rust,rust)+
+    text(45,18,'Product quantity (arbitrary units)',ink,14,'start')+text(167,174,'Time (arbitrary units)',ink,14)+text(247,39,'Tangent',rust,14),
+    'Draw a straight tangent at the point, then calculate its gradient as change in product quantity divided by change in time.',190);
+}
+function pressureShift() {
+  return fig('Pressure and a gas equilibrium',
+    'In the illustrative equilibrium nitrogen plus three hydrogen molecules reversibly form two ammonia molecules. For gases at constant temperature, increasing pressure favours the side with fewer gas molecules: the ammonia side.',
+    circle(37,57,8,'#bed7ef',blue)+circle(52,57,8,'#bed7ef',blue)+text(45,31,'N₂',blue,15)+text(73,62,'+',ink,17)+
+    [100,130,160].map(x=>circle(x,57,6,'#e3e9e9',ink)+circle(x+11,57,6,'#e3e9e9',ink)).join('')+text(135,31,'3 H₂',ink,15)+
+    arrow(182,50,213,50,rust,2)+arrow(213,68,182,68,blue,2)+circle(239,57,10,'#c9e6d3',teal)+circle(270,57,10,'#c9e6d3',teal)+text(255,31,'2 NH₃',teal,15)+
+    text(84,116,'4 gas molecules',ink,14)+text(244,116,'2 gas molecules',ink,14)+text(160,150,'Higher pressure favours this side →',teal,14),
+    'Count gas molecules on each side. Each product circle represents one ammonia molecule; its atomic structure is omitted. Higher pressure favours the side with fewer gas molecules.',170);
+}
+function rateAndShift(){const group=node('div');group.append(rateTangent(),pressureShift());return group;}
+function motorForce() {
+  return fig('Force on a current-carrying wire',
+    'A wire carries conventional current out of the page, shown by a dot. The magnetic field points from north on the left to south on the right. The force on the wire is upwards. At right angles the force magnitude is magnetic flux density times current times length in the field.',
+    text(29,79,'N',blue,20)+text(291,79,'S',blue,20)+arrow(50,40,270,40,blue,2)+text(160,26,'Magnetic field',blue,14)+
+    circle(160,91,19,'white',ink)+circle(160,91,4,ink,ink)+arrow(160,69,160,46,rust,2)+text(239,94,'Current out',ink,14)+text(239,111,'of page',ink,14)+text(85,67,'Force',rust,14)+
+    text(160,152,'F = B × I × l  (at 90°)',ink,16),
+    'Use the conventional current and field directions to find the force. A dot means current out of the page.',170);
+}
+function coilReversal() {
+  function side(x,y,label,out) {
+    return circle(x,y,13,'white',ink)+
+      (out?circle(x,y,3,ink,ink):line(x-6,y-6,x+6,y+6)+line(x-6,y+6,x+6,y-6))+
+      text(x,y+55,label,ink,15);
+  }
+  return fig('Current reverses after half a turn',
+    'At first, side A is left with conventional current out of the page and force upwards; side B is right with current into the page and force downwards. After half a turn, B is left with current out of the page and A is right with current into the page. The commutator swaps each side’s connection, so the direction in each named side reverses and the turning effect stays clockwise.',
+    text(160,20,'Before half-turn',ink,15)+side(78,60,'Side A',true)+side(242,60,'Side B',false)+arrow(78,44,78,25,rust,2)+arrow(242,76,242,95,rust,2)+
+    text(160,105,'Field: N → S',blue,13)+text(160,125,'After half-turn',ink,15)+side(78,165,'Side B',true)+side(242,165,'Side A',false)+arrow(78,149,78,130,rust,2)+arrow(242,181,242,200,rust,2)+
+    text(160,250,'Dot: out of page   ×: into page',ink,14),
+    'Follow a named side as the coil turns. The split-ring commutator reverses its current, keeping the turning effect in the same direction.',265);
+}
+function motorOverview(){const group=node('div');group.append(motorForce(),coilReversal());return group;}
+function oxygenDebt() {
+  return fig('Lactate after exercise',
+    'Blood transports lactic acid from muscle to the liver after exercise. The body needs additional oxygen after exercise to deal with the lactic acid produced.',
+    '<path d="M23 57 Q65 35 93 57 Q83 97 23 97 Z" fill="#f1d5cc" stroke="'+rust+'" stroke-width="2"/>'+text(58,122,'Muscle',ink,15)+
+    arrow(95,78,205,78,blue,3)+text(150,59,'Blood transports',blue,14)+text(150,101,'lactic acid',blue,14)+
+    '<path d="M210 49 Q274 30 297 58 Q302 94 230 99 Q204 91 210 49 Z" fill="#dec5be" stroke="'+rust+'" stroke-width="2"/>'+text(252,123,'Liver',ink,15)+
+    text(160,157,'Extra oxygen needed after exercise',ink,14),
+    'Follow lactic acid in the blood from muscle to liver. Extra oxygen is required after exercise.',175);
+}
+function hormoneFeedback() {
+  return fig('Hormones and feedback',
+    'The pituitary releases FSH and LH, which act on the ovary. Oestrogen and progesterone from the ovary feed back on pituitary hormone release. In fertility treatment FSH and LH can be used to stimulate follicle maturation and ovulation.',
+    circle(66,70,32,'#e1e6f7',blue)+text(66,75,'Pituitary',ink,13)+
+    '<ellipse cx="247" cy="70" rx="33" ry="24" fill="#f3d6ce" stroke="'+rust+'" stroke-width="2"/>'+circle(247,70,8,'#fff5df',rust)+text(247,115,'Ovary',ink,15)+
+    arrow(101,58,211,58,blue,2)+text(156,44,'FSH and LH',blue,14)+arrow(211,88,101,88,teal,2)+text(156,132,'Oestrogen and progesterone',teal,13)+text(156,150,'feed back to pituitary',teal,13),
+    'Follow pituitary hormones to the ovary, then the feedback signal in the other direction. Feedback effects vary through the cycle.',170);
+}
+function transformerComparison() {
+  return fig('An ideal step-up transformer',
+    'The primary has 500 volts and 12 amperes, so its power is 6,000 watts. An ideal transformer has the same output power; at 3,000 volts the secondary current is 2 amperes. In cables of equal resistance, heating power is proportional to current squared, so 12 amperes gives 36 times the heating of 2 amperes.',
+    text(75,25,'Primary',ink,15)+text(245,25,'Secondary',ink,15)+text(75,54,'500 V',blue,16)+text(75,78,'12 A',blue,16)+
+    '<path d="M116 44 q10 0 10 10 q0 10 -10 10 M129 44 q10 0 10 10 q0 10 -10 10 M158 44 q-10 0 -10 10 q0 10 10 10 M171 44 q-10 0 -10 10 q0 10 10 10" fill="none" stroke="'+rust+'" stroke-width="3"/>'+text(245,54,'3,000 V',teal,16)+text(245,78,'2 A',teal,16)+
+    text(160,112,'6,000 W in = 6,000 W out',ink,15)+text(160,142,'Heating ratio: 12² : 2² = 36 : 1',ink,14),
+    'Compare power on both sides of the ideal transformer. At equal cable resistance, compare the squares of the currents.',160);
+}
+function halfEquations() {
+  return fig('Electrode half-equations',
+    'Copper ions gain electrons at the negative cathode to form copper. Hydroxide ions lose electrons at the positive anode, forming oxygen and water. The half-equations conserve atoms and charge.',
+    '<rect x="33" y="31" width="11" height="71" fill="#82969c"/><rect x="277" y="31" width="11" height="71" fill="#82969c"/>'+text(38,21,'− cathode',blue,14)+text(278,21,'+ anode',rust,14)+
+    circle(95,67,16,'#dce8f5',blue)+text(95,72,'Cu²⁺',blue,14)+arrow(77,67,50,67,blue,2)+text(260,109,'O₂ ↑',rust,16)+circle(222,67,16,'#e1f0e6',teal)+text(222,72,'OH⁻',teal,13)+arrow(240,67,271,67,teal,2)+
+    text(160,132,'Cu²⁺ + 2e⁻ → Cu',blue,15)+text(160,161,'4OH⁻ → O₂ + 2H₂O + 4e⁻',rust,14),
+    'Follow ions to opposite electrodes. The electrons show reduction at the cathode and oxidation at the anode.',180);
+}
 export const gcseHigherVisuals = {
   'decay-half-life': halfLifeRatio,
   'reaction-profiles': reactionBonds,
   'salts-and-reactivity': acidStrength,
   'mass-conservation': molarRatio,
-  'salt-electrolysis': electrolysisReduction
+  'salt-electrolysis': electrolysisReduction,
+  'photosynthesis-limits': inverseSquare,
+  'glucose-control': glucagonResponse,
+  'solution-concentration': dilution,
+  'forces-motion': momentum,
+  'dynamic-equilibrium': equilibriumHeating,
+  'motion-graphs': velocityArea,
+  'reaction-rate': rateAndShift,
+  'electromagnet-switch': motorOverview,
+  'respiration-exercise': oxygenDebt,
+  'reproductive-hormones': hormoneFeedback,
+  'national-grid': transformerComparison,
+  'electrode-evidence': halfEquations
 };
 export const moreGcseStepVisuals = {
-  'greenhouse': {0:greenhouse},
-  'potable-water': {0:waterTreatment,1:filtration},
   'food-web-change': {2:quadrat},
-  'circuit-resistance': {0:circuitMeters},
-  'radiation-types': {0:emissions,1:shield},
   'wave-motion': {1:wavelength,2:waveCompare},
   'forces-motion': {2:stopping},
   'reaction-profiles': {2:temperaturePractical},
   'decay-half-life': {2:irradiation},
   'density-and-gas-pressure': {0:density},
-  'crude-oil': {2:alkene},
-  'electromagnetic-spectrum': {0:emSpectrum,1:emSpectrum},
   'photosynthesis-limits': {2:highLightExperiment},
   'glucose-control': {0:homeostasis,2:diabetes},
   'reaction-rate': {1:collisionFrequency,2:dynamicEquilibrium},
-  'salts-and-reactivity': {1:saltsApparatus},
   'salt-electrolysis': {2:brine},
   'reflex-response': {0:neuron,1:reflexWithSynapse,2:reflexMeasure},
   'respiration-exercise': {0:respiratoryComparison,1:respiratoryComparison},
-  'reproductive-hormones': {0:menstrualHormones,1:menstrualHormones},
-  'latent-heat': {0:heatParticles},
   'vaccine-memory': {2:antibioticTargets},
-  'prevention-and-medicines': {1:antibioticTargets,2:treatmentTesting},
   'selection-and-variation': {0:naturalSelection,1:naturalSelection,2:selectiveBreeding},
   'inheritance-cross': {2:naturalSelection},
-  'chromatography': {2:gasTests}
+  'chromatography': {2:gasTests},
+  'latent-heat': {0:heatParticles,2:latentCalculation},
+  'mass-conservation': {2:concentrationExample},
+  'crude-oil': {0:methaneStructure,2:alkene},
+  'greenhouse': {0:greenhouse,1:emissionsSources,2:pollutants},
+  'potable-water': {0:waterTreatment,1:filtration,2:lifeCycle},
+  'electromagnet-switch': {1:reverseCoil,2:ironCore},
+  'salts-and-reactivity': {0:sulfateSalt,1:saltsApparatus},
+  'electromagnetic-spectrum': {0:emSpectrum,1:emSpectrum,2:xray},
+  'prevention-and-medicines': {0:transmission,1:antibioticTargets,2:treatmentTesting},
+  'radiation-types': {0:emissions,1:shield,2:alphaDecay},
+  'circuit-resistance': {0:circuitMeters,2:electricalPower},
+  'reproductive-hormones': {0:menstrualHormones,1:menstrualHormones,2:contraception},
+  'carbon-cycling': {2:habitatDiversity}
 };

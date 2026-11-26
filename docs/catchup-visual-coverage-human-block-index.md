@@ -4,11 +4,11 @@ This index enumerates the authored explanation and sequential worked-example blo
 
 | Route and block | Content excerpt | Assets declared in lesson | Review |
 | --- | --- | --- | --- |
-| f170/1.1.1 · Explain 1 | A mature erythrocyte (red blood cell) is a flexible biconcave disc. Its thin centre shortens the diffusion … | compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.1 · Explain 2 | White blood cells have nuclei. A nuclear outline can help you recognise a cell. To explain its function, lo… | compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.1 · Model 1 | Oxygen crosses the cell membrane and diffuses a short distance to haemoglobin in the thin disc. | compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.1 · Model 2 | Without a nucleus there is more internal space for haemoglobin. Oxygen can bind there and later be released… | compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.1 · Model 3 | Shape and haemoglobin do different jobs. A flexible cell with very little haemoglobin could still enter a c… | compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1 · Explain 1 | A mature erythrocyte (red blood cell) is a flexible biconcave disc. Its thin centre shortens the diffusion … | teachingDiagram, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1 · Explain 2 | White blood cells have nuclei. A nuclear outline can help you recognise a cell. To explain its function, lo… | teachingDiagram, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1 · Model 1 | Oxygen crosses the cell membrane and diffuses a short distance to haemoglobin in the thin disc. | teachingDiagram, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1 · Model 2 | Without a nucleus there is more internal space for haemoglobin. Oxygen can bind there and later be released… | teachingDiagram, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1 · Model 3 | Shape and haemoglobin do different jobs. A flexible cell with very little haemoglobin could still enter a c… | teachingDiagram, compare | Unreviewed; see reviewed exceptions |
 | f170/1.1.1.muscle · Explain 1 | Actin and myosin filaments slide to generate force. In skeletal and cardiac muscle, repeating sarcomeres gi… | compare | Unreviewed; see reviewed exceptions |
 | f170/1.1.1.muscle · Model 1 | Imagine a ring of smooth muscle around a lumen. Shortening around the ring makes the lumen narrower. | compare | Unreviewed; see reviewed exceptions |
 | f170/1.1.1.muscle · Model 2 | The absence of stripes does not mean these cells lack contractile proteins. It reflects how the filaments a… | compare | Unreviewed; see reviewed exceptions |
@@ -276,10 +276,10 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f172/a1 · Model 1 | Track one homologous pair. The two chromosomes carry the same gene, but one carries R and the other r. DNA … | teachingDiagram, table | Unreviewed; see reviewed exceptions |
 | f172/a1 · Model 2 | In meiosis I the homologues move apart, taking their joined sisters with them. In meiosis II the sisters se… | teachingDiagram, table | Unreviewed; see reviewed exceptions |
 | f172/a1 · Model 3 | In mitosis the two homologues do not pair up and separate as a pair. The sisters of each replicated chromos… | teachingDiagram, table | Unreviewed; see reviewed exceptions |
-| f172/a2 · Explain 1 | Genotype names the alleles. Phenotype is an observable characteristic. For this fictional single-gene trait… | table | Unreviewed; see reviewed exceptions |
-| f172/a2 · Model 1 | Put the possible gametes from each parent on the outside of the square. Each carries either R or r. | table | Unreviewed; see reviewed exceptions |
-| f172/a2 · Model 2 | Combine alleles. The four equally likely boxes give RR, Rr, Rr and rr. | table | Unreviewed; see reviewed exceptions |
-| f172/a2 · Model 3 | If you know an offspring shows the dominant phenotype, remove rr. Two of the three remaining outcomes are R… | table | Unreviewed; see reviewed exceptions |
+| f172/a2 · Explain 1 | Genotype names the alleles. Phenotype is an observable characteristic. For this fictional single-gene trait… | teachingDiagram, table | Unreviewed; see reviewed exceptions |
+| f172/a2 · Model 1 | Put the possible gametes from each parent on the outside of the square. Each carries either R or r. | teachingDiagram, table | Unreviewed; see reviewed exceptions |
+| f172/a2 · Model 2 | Combine alleles. The four equally likely boxes give RR, Rr, Rr and rr. | teachingDiagram, table | Unreviewed; see reviewed exceptions |
+| f172/a2 · Model 3 | If you know an offspring shows the dominant phenotype, remove rr. Two of the three remaining outcomes are R… | teachingDiagram, table | Unreviewed; see reviewed exceptions |
 | f172/a3 · Explain 1 | Some tests look for selected variants. Others survey larger regions. A result may identify a variant withou… | teachingDiagram | Unreviewed; see reviewed exceptions |
 | f172/a3 · Model 1 | A fictional test looks only for variant A. The test does not detect variant A in the sample. | teachingDiagram | Unreviewed; see reviewed exceptions |
 | f172/a3 · Model 2 | That result only addresses variant A within the limits of the assay. Variant B outside the test's scope cou… | teachingDiagram | Unreviewed; see reviewed exceptions |
@@ -328,16 +328,16 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f175/a4 · Explain 1 | In vitro fertilisation (IVF) involves fertilisation outside the body and later embryo transfer. Intracytopl… | teachingDiagram | Unreviewed; see reviewed exceptions |
 | f175/a4 · Model 1 | When fertilisation is attempted outside the body, the usual journey through the oviduct is bypassed. | teachingDiagram | Unreviewed; see reviewed exceptions |
 | f175/a4 · Model 2 | Transfer places an embryo in the uterus. Implantation is still a later process, and its occurrence is uncer… | teachingDiagram | Unreviewed; see reviewed exceptions |
-| f176/a1 · Explain 1 | The CNS consists of the brain and spinal cord. Peripheral nerves connect these with receptors and effectors… | teachingDiagram | Unreviewed; see reviewed exceptions |
-| f176/a1 · Model 1 | A receptor signals through sensory neurones towards the CNS. | teachingDiagram | Unreviewed; see reviewed exceptions |
-| f176/a1 · Model 2 | The CNS integrates the input. Motor neurones carry instructions back to muscles. | teachingDiagram | Unreviewed; see reviewed exceptions |
-| f176/a2 · Explain 1 | Voltage-gated sodium channels open during depolarisation and sodium enters. Potassium leaving contributes t… | visual, visualFrom, table | Unreviewed; see reviewed exceptions |
-| f176/a2 · Model 1 | Depolarisation reaches the presynaptic terminal. | visual, visualFrom, table | Unreviewed; see reviewed exceptions |
-| f176/a2 · Model 2 | Voltage-gated calcium channels open and calcium ions enter. | visual, visualFrom, table | Unreviewed; see reviewed exceptions |
-| f176/a2 · Model 3 | Calcium promotes vesicle fusion. Neurotransmitter is released into the synaptic cleft. | visual, visualFrom, table | Unreviewed; see reviewed exceptions |
-| f176/a2 · Model 4 | The transmitter diffuses across and binds specific postsynaptic receptors. | visual, visualFrom, table | Unreviewed; see reviewed exceptions |
-| f176/a2 · Model 5 | Depending on the receptors, the effect makes firing more or less likely. The receiving cell integrates that… | visual, visualFrom, table | Unreviewed; see reviewed exceptions |
-| f176/a2 · Model 6 | More excitation or less inhibition can each bring the trigger zone closer to threshold. With reduced inhibi… | visual, visualFrom, table | Unreviewed; see reviewed exceptions |
+| f176/a1 · Explain 1 | The CNS consists of the brain and spinal cord. Peripheral nerves connect these with receptors and effectors… | teachingDiagram, explanationDiagram | Unreviewed; see reviewed exceptions |
+| f176/a1 · Model 1 | A receptor signals through sensory neurones towards the CNS. | teachingDiagram, explanationDiagram | Unreviewed; see reviewed exceptions |
+| f176/a1 · Model 2 | The CNS integrates the input. Motor neurones carry instructions back to muscles. | teachingDiagram, explanationDiagram | Unreviewed; see reviewed exceptions |
+| f176/a2 · Explain 1 | Voltage-gated sodium channels open during depolarisation and sodium enters. Potassium leaving contributes t… | explanationDiagram, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
+| f176/a2 · Model 1 | Depolarisation reaches the presynaptic terminal. | explanationDiagram, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
+| f176/a2 · Model 2 | Voltage-gated calcium channels open and calcium ions enter. | explanationDiagram, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
+| f176/a2 · Model 3 | Calcium promotes vesicle fusion. Neurotransmitter is released into the synaptic cleft. | explanationDiagram, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
+| f176/a2 · Model 4 | The transmitter diffuses across and binds specific postsynaptic receptors. | explanationDiagram, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
+| f176/a2 · Model 5 | Depending on the receptors, the effect makes firing more or less likely. The receiving cell integrates that… | explanationDiagram, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
+| f176/a2 · Model 6 | More excitation or less inhibition can each bring the trigger zone closer to threshold. With reduced inhibi… | explanationDiagram, visual, visualFrom, table | Unreviewed; see reviewed exceptions |
 | f176/a3 · Explain 1 | Nociceptors detect potentially damaging stimuli. Nociception is the neural encoding and processing of such … | teachingDiagram | Unreviewed; see reviewed exceptions |
 | f176/a3 · Model 1 | A hot object activates nociceptors and signals travel into the CNS. | teachingDiagram | Unreviewed; see reviewed exceptions |
 | f176/a3 · Model 2 | A withdrawal reflex can occur while signals also travel to brain regions involved in the experience of pain. | teachingDiagram | Unreviewed; see reviewed exceptions |

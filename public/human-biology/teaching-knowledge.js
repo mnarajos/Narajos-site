@@ -432,6 +432,7 @@
 (function () {
   const figures = {
     "f172/a1": {src:"/human-biology/meiosis.svg", alt:"One pair of homologous chromosomes carries alleles R and r. After DNA replication each homologue consists of two joined sister chromatids carrying the same allele.", caption:"Compare homologues carrying R and r, then follow replication to joined sisters. The table in the worked example follows their separation in meiosis.", compact:true},
+    "f172/a2": {src:"/human-biology/punnett-cross.svg", alt:"Punnett square for Rr crossed with Rr. Both parents can produce R or r gametes. The four equally likely combinations are RR, Rr, Rr and rr.", caption:"Combine one gamete from each parent in each cell. In this fictional trait R is dominant; among the three dominant-phenotype cells, two are Rr.", compact:true},
     "f172/a3": {src:"/human-biology/genetic-test.svg", alt:"A schematic DNA region has variants A and B. A test checks variant A, while variant B is outside its scope. A not detected does not rule out B.", caption:"Notice the boundary of this fictional test: a result for A does not establish whether B is present.", compact:true},
     "f173/a3": {src:"/human-biology/chromatography.svg", alt:"Chromatography paper has a pencil baseline and solvent front. Standard X and one unknown spot travelled the same distance; standard Y and a second unknown spot travelled different distances.", caption:"Compare each spot with the standards from the same baseline. A matching position is consistent with, but does not prove, identity.", compact:true},
     "f174/a3": {src:"/human-biology/digestion.svg", alt:"Starch is digested to glucose in the gut lumen. Glucose crosses the intestinal lining into blood and can reach tissues, where it may be used in respiration or stored.", caption:"Follow the glucose: digestion makes it available, absorption moves it into blood, and tissues use or store it.", compact:true},
@@ -447,6 +448,24 @@
     source:"https://commons.wikimedia.org/wiki/File:Red_White_Blood_cells.jpg",
     credit:"Electron Microscopy Facility, NCI-Frederick", licence:"Public domain (US government work)",
     licenceUrl:"https://commons.wikimedia.org/wiki/Template:PD-USGov", changes:"Converted to WebP; no crop"
+  };
+  window.KeystoneHumanLessons["f173/a2"].explanationPhoto2 = {
+    src:"/assets/micrographs/hb-pancreas-tem.webp", width:640, height:480,
+    alt:"Transmission electron micrograph of a thin section of mammalian pancreatic tissue. A large cell nucleus and closely spaced profiles of rough endoplasmic reticulum are visible. A scale bar of 500 nanometres is at the bottom.",
+    caption:"Compare this thin section with the SEM surface above. Notice the internal membrane profiles. The original scale bar is 500 nm.",
+    source:"https://commons.wikimedia.org/wiki/File:Mammalian_pancreatic_tissue,_nuclear_pores_and_rough_endoplasmic_reticulum.jpg",
+    credit:"Louisa Howard, Dartmouth College", licence:"Public domain (author release)",
+    licenceUrl:"https://commons.wikimedia.org/wiki/Template:PD-author", changes:"Converted to WebP; no crop"
+  };
+  window.KeystoneHumanLessons["f176/a2"].modelDiagrams = {5: {
+    src:"/human-biology/threshold-comparison.svg", width:220, height:280, compact:true,
+    alt:"Vertical potential axis from minus 70 to minus 50 millivolts. A starting point at minus 65 rises to a changed point at minus 58; both lie below the dashed threshold at minus 55 millivolts.",
+    caption:"Read the fictional potentials against threshold. The changed value is closer to −55 mV but remains below threshold, so the example has not fired."
+  }};
+  window.KeystoneHumanLessons["f176/a2"].explanationDiagram = {
+    src:"/human-biology/action-potential-ions.svg", width:280, height:300, compact:true,
+    alt:"Two simplified stages of an action potential. Sodium ions enter through channels during depolarisation; potassium ions leave through channels during repolarisation.",
+    caption:"Compare the stages and the direction of ion movement. Sodium entry contributes to depolarisation; potassium leaving contributes to repolarisation."
   };
   window.KeystoneHumanLessons["f176/a1"].explanationDiagram = {
     src:"/human-biology/brain-regions.svg", width:280, height:300, compact:true,

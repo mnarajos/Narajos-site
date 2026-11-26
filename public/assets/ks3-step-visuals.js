@@ -1,4 +1,4 @@
-import { arrow, blue, circle, compare, diagram, ink, line, picture, rust, teal, text, violet } from "./catchup-models.js";
+import { arrow, blue, circle, compare, diagram, ink, line, node, picture, rust, teal, text, violet } from "./catchup-models.js";
 
 // Schematic models: the same car and particles are shown in each comparison.
 function ramp(angle, label, measurement = false) {
@@ -103,13 +103,22 @@ function breathing() {
 }
 
 function humanFertilisation() {
-  return picture("Human fertilisation", diagram(
+  const host = node("div");
+  host.append(picture("Fertilisation in a flower", diagram(
+    "A pollen tube grows to the ovule, carrying a male nucleus. It joins the female nucleus inside the ovule.", `
+    <ellipse cx="228" cy="93" rx="56" ry="47" fill="#f4e9da" stroke="${teal}" stroke-width="2"/>
+    ${circle(239,94,13,"#d8c7e4",ink,2)}<path d="M26 88H155Q172 88 186 94H215" fill="none" stroke="${rust}" stroke-width="5"/>
+    ${circle(202,94,5,"#e7b783",rust)}${arrow(209,94,223,94,rust,2)}
+    ${text(88,60,"Pollen tube",rust,15)}${text(229,156,"Ovule",teal,15)}${text(160,25,"Male nucleus joins female nucleus",ink,13)}`,320,175),
+    "Follow the male nucleus through the pollen tube to the female nucleus inside the ovule. The sizes are simplified."));
+  host.append(picture("Human fertilisation", diagram(
     "A sperm cell reaches an egg cell. The male and female sex-cell nuclei can join during fertilisation.", `
     ${circle(215,89,42,"#f4e3d2",rust,3)}${circle(215,89,13,"#d8c7e4",ink,2)}
     <ellipse cx="88" cy="87" rx="14" ry="8" fill="#b6d4e5" stroke="${blue}" stroke-width="2"/>
     <path d="M74 87q-20-17-33 2t-22 0" fill="none" stroke="${blue}" stroke-width="2"/>
     ${arrow(108,88,162,88,teal,2)}${text(76,52,"Sperm cell",blue,15)}${text(215,155,"Egg cell",rust,15)}`,320,174),
-    "Fertilisation is the joining of male and female sex-cell nuclei. This drawing is not to scale.");
+    "Fertilisation is the joining of male and female sex-cell nuclei. This drawing is not to scale."));
+  return host;
 }
 
 function rockFormation() {
@@ -128,14 +137,66 @@ function rockFormation() {
     "Cooling and solidifying produces igneous rock."));
 }
 
+function atomsRearranged() {
+  return picture("Atoms rearrange in a reaction", diagram(
+    "Two X atoms are joined to one another and two Y atoms are joined to one another. After reaction there are two X–Y pairs. There are still two X atoms and two Y atoms.", `
+    ${text(78,24,"Before",ink,15)}${text(244,24,"After",ink,15)}
+    ${line(55,63,95,63,ink,3)}${circle(55,63,15,"#cce4f1",blue,2)}${circle(95,63,15,"#cce4f1",blue,2)}${text(55,68,"X",ink,14)}${text(95,68,"X",ink,14)}
+    ${line(55,114,95,114,ink,3)}${circle(55,114,15,"#e7b783",rust,2)}${circle(95,114,15,"#e7b783",rust,2)}${text(55,119,"Y",ink,14)}${text(95,119,"Y",ink,14)}
+    ${arrow(128,88,175,88,teal,2.5)}
+    ${[63,114].map(y=>line(223,y,263,y,ink,3)+circle(223,y,15,"#cce4f1",blue,2)+circle(263,y,15,"#e7b783",rust,2)+text(223,y+5,"X",ink,14)+text(263,y+5,"Y",ink,14)).join("")}`,320,145),
+    "Count each type before and after. Bonds have changed; the same atoms remain. X and Y stand for different types of atom.");
+}
+
+function speedTimeline() {
+  return picture("Average speed for 10 m in 5 s", diagram(
+    "A line marks 10 metres over 5 seconds. Five equal intervals represent an average of 2 metres for each second.", `
+    ${line(35,90,285,90,blue,3)}${[0,1,2,3,4,5].map(i=>line(35+i*50,80,35+i*50,100,ink,2)+text(35+i*50,121,String(i*2),ink,14)).join("")}
+    ${text(160,27,"10 m ÷ 5 s = 2 m/s",ink,16)}${text(60,51,"1 s",teal,14)}
+    ${arrow(37,61,82,61,teal,2)}${text(160,151,"Distance (m)",blue,14)}`,320,170),
+    "Divide total distance by total time. Equal 2 m sections illustrate an average of 2 m per second; the real speed need not have been constant.");
+}
+
+function proteinForRepair() {
+  const host = node("div");
+  host.append(picture("Food supplies energy", diagram(
+    "Bread and oil represent sources of carbohydrate and lipid. After digestion and processing, their components can be used in respiration to transfer energy for activity.", `
+    <path d="M22 61q8-27 42-19q27 7 22 32H22Z" fill="#e9c39a" stroke="${rust}" stroke-width="2"/>
+    <path d="M104 42h17v8h6v27h-29V50h6Z" fill="#f1d889" stroke="${rust}" stroke-width="2"/>
+    ${arrow(134,67,183,67,teal,2.5)}${text(158,26,"Digest, then",ink,13)}${text(158,43,"respire",ink,13)}
+    <path d="M200 69q14-23 45-20 24 2 40 20-16 18-40 20-31 3-45-20Z" fill="#c4e0db" stroke="${teal}" stroke-width="2"/>
+    ${text(75,119,"Carbohydrate / lipid",ink,14)}${text(241,119,"Activity",ink,14)}`,320,145),
+    "After digestion and processing, substances from food can be used in respiration to transfer energy for activity."));
+  host.append(picture("Protein provides building blocks", diagram(
+    "Protein in food is digested into amino acids. Cells use these building blocks to make proteins needed for growth and repair.", `
+    <path d="M16 66q5 48 46 48t46-48Z" fill="#e9d1ad" stroke="${rust}" stroke-width="2"/>
+    ${[[37,70],[56,66],[76,71],[50,81],[71,84]].map(([x,y])=>circle(x,y,5,"#b18c60",rust,1)).join("")}
+    ${arrow(112,87,143,87,teal,2)}${text(128,64,"Digest",ink,13)}
+    ${[[161,72],[179,86],[160,101]].map(([x,y])=>circle(x,y,6,"#d9c7e8",violet,1)).join("")}
+    ${arrow(192,87,216,87,teal,2)}
+    ${[[236,68],[260,68],[236,92],[260,92]].map(([x,y])=>circle(x,y,10,"#c4e0db",teal,1)).join("")}
+    ${text(62,145,"Food protein",ink,14)}${text(172,145,"Amino acids",ink,14)}${text(252,145,"Tissue",ink,14)}`,320,165),
+    "Follow protein from food to amino acids. Cells use these to build proteins for growth and repair."));
+  return host;
+}
+
+function plantGlucose() {
+  return picture("Glucose can be made into starch", diagram(
+    "A simplified model shows glucose units joining into a chain representing starch, which a plant can store.", `
+    ${[29,59,89,119].map(x=>circle(x,77,10,"#e7b783",rust,2)).join("")}${arrow(145,77,177,77,teal,2)}
+    ${line(201,77,285,77,rust,3)}${[201,229,257,285].map(x=>circle(x,77,10,"#e7b783",rust,2)).join("")}
+    ${text(83,47,"Glucose",rust,15)}${text(243,47,"Starch",teal,15)}${text(160,130,"Building a storage substance",ink,14)}`,320,150),
+    "Follow glucose units into the simplified starch chain. Water released as bonds form is omitted. Plants can also use glucose in respiration, including in darkness.");
+}
+
 function meltingGraph() {
-  return picture("Heating a pure solid at a steady rate", diagram(
-    "A qualitative graph of temperature against time rises as a solid warms, is level while the substance melts, and rises again as the liquid warms.", `
-    ${arrow(55,140,290,140,ink,2)}${arrow(55,140,55,18,ink,2)}
-    <path d="M62 126L125 81H205L270 38" fill="none" stroke="${blue}" stroke-width="4"/>
-    ${text(174,161,"Time heating",ink,15)}${text(6,24,"Temperature",ink,13,"start")}
-    ${text(166,70,"Melting",blue,14)}${text(90,95,"Solid",ink,13)}${text(255,28,"Liquid",ink,13)}`,320,175),
-    "Read the flat section: energy is supplied during melting while temperature stays steady. This graph is qualitative; it is not measured data.");
+  return picture("Heating a pure substance at a steady rate", diagram(
+    "A qualitative graph of temperature against time rises as a solid warms, is level during melting, rises as the liquid warms, and is level again during boiling.", `
+    ${arrow(43,140,300,140,ink,2)}${arrow(43,140,43,26,ink,2)}
+    <path d="M50 128L90 105H143L191 62H251L290 39" fill="none" stroke="${blue}" stroke-width="4"/>
+    ${text(174,161,"Time heating",ink,15)}${text(3,15,"Temperature",ink,13,"start")}
+    ${text(116,95,"Melting",blue,13)}${text(221,51,"Boiling",blue,13)}`,320,175),
+    "Read the flat sections: energy is supplied during melting and boiling while temperature stays steady. The graph is qualitative, not measured data.");
 }
 
 function warmingParticles() {
@@ -161,7 +222,9 @@ function repeatedRuns() {
 
 export const ks3ExplanationVisuals = {
   "fair-tests": {0: () => fairTest(0), 1: () => fairTest(2), 2: repeatedRuns},
-  "states-of-matter": {0: () => compare(states(0), states(1)), 1: () => states(2), 2: () => compare(warmingParticles(), meltingGraph())},
+  "states-of-matter": {0: () => compare(states(0), states(1)), 1: () => states(2), 2: () => compare(warmingParticles(), meltingGraph()),
+    3: () => particles("Water vapour moving", gas, "The arrows suggest movement in different directions. The circles represent water particles and are the same size as in the other states.",
+      "Eight water particles are spread through the container. Arrows indicate particle movement in different directions.", `${arrow(58,42,83,42,rust,2)}${arrow(188,39,188,60,rust,2)}${arrow(214,109,190,109,rust,2)}`)},
   "acids-and-alkalis": {1: neutralisation}, respiration: {0: breathing}, reproduction: {1: humanFertilisation},
-  "earth-structure": {0: rockFormation}, space: {1: earthOrbit}, electricity: {1: electromagnet}
+  "earth-structure": {0: rockFormation}, "chemical-reactions": {0: atomsRearranged}, "health-and-lifestyle": {0: proteinForRepair}, photosynthesis: {1: plantGlucose}, "journey-speed": {0: speedTimeline}, space: {1: earthOrbit}, electricity: {1: electromagnet}
 };

@@ -2,7 +2,7 @@ import { investigations } from "./gcse-investigations.js";
 import { question } from "./school-catchup-journey.js";
 import { priorityCatchup } from "./gcse-catchup-priority.js";
 import { gcseStepVisuals } from "./gcse-step-visuals.js";
-import { moreGcseStepVisuals, gcseHigherVisuals, heatingCurve } from "./gcse-more-step-visuals.js";
+import { moreGcseStepVisuals, gcseHigherVisuals, gcseWorkedVisuals, heatingCurve } from "./gcse-more-step-visuals.js";
 import { gcseVisual } from "./gcse-catchup-visuals.js";
 
 function lesson(year, code, title, hook, notice, idea, visual, stages, independent, retry, higher) {
@@ -16,7 +16,7 @@ export const year10Catchup = {
     "How can a vaccine protect you before you meet a pathogen?",
     "Compare the first and later responses. Which needs less time to build up?",
     "Vaccination prepares a specific immune response. After later exposure to the same pathogen, antibodies can be made more quickly.",
-    ["curve","Antibody level after exposure","Time after exposure","Antibody level",[
+    ["curve","Antibody level after exposure","Time (arbitrary units)","Antibody level (arbitrary units)",[
       ["First response",[[0,0],[1,0],[2,1],[3,3],[4,2],[5,1]]],
       ["Response after vaccination",[[0,0],[1,3],[2,5],[3,4],[4,3],[5,2]]]],"Illustrative responses for the same antigen."],
     [
@@ -136,7 +136,7 @@ export const year10Catchup = {
     "How can a reaction release energy if it needs energy to start?",
     "Compare the start, peak, and finish. The starting level is the same on both profiles.",
     "The activation energy is the initial barrier. The difference between the reactant and product energy levels shows the overall transfer.",
-    ["curve","Energy profiles for two reactions","Progress of reaction","Energy",[
+    ["curve","Energy profiles for two reactions","Progress of reaction","Energy (arbitrary units)",[
       ["Exothermic",[[0,2],[1,2],[2,3],[3,5],[4,3],[5,1],[6,1]]],
       ["Endothermic",[[0,2],[1,2],[2,3],[3,6],[4,5],[5,4],[6,4]]]],"Both profiles require activation energy. Compare the finishing levels."],
     [
@@ -192,7 +192,7 @@ export const year11Catchup = {
     "How can two reactions make the same amount of gas and finish at different times?",
     "Find the curve that is steepest at the start. Then compare their final readings.",
     "Rate is the amount of reactant used or product made per unit time. Two reactions can reach the same final yield at different rates.",
-    ["curve","Gas production in two trials","Time","Volume of gas",[
+    ["curve","Gas production in two trials","Time (s)","Volume of gas (cm³)",[
       ["Faster trial",[[0,0],[1,5],[2,8],[3,9],[4,9],[5,9]]],["Slower trial",[[0,0],[1,2],[2,4],[3,6],[4,8],[5,9]]]],
       "Equal quantities of the same reactants were used."],
     [
@@ -491,7 +491,7 @@ const furtherCatchup = {
     "Why does a filament lamp not follow a straight-line graph?",
     "Compare the slopes of the current–potential difference curves as the potential difference rises.",
     "Resistance is potential difference divided by current. Heating a filament increases its resistance.",
-    ["curve","Current changes as potential difference increases","Potential difference","Current",[
+    ["curve","Current changes as potential difference increases","Potential difference (V)","Current (A)",[
       ["Fixed resistor",[[0,0],[1,2],[2,4],[3,6],[4,8]]],
       ["Filament lamp",[[0,0],[1,2],[2,3],[3,3.7],[4,4.2]]]],"The fixed resistor is at a constant temperature."],
     [
@@ -607,7 +607,7 @@ for (const [id, render] of Object.entries(gcseHigherVisuals)) gcseCatchup[id].hi
 
 // Re-render the matching evidence alongside these worked examples. These
 // placements support their illustrated portion; the ledger records any gaps.
-for (const id of ["national-grid", "solution-concentration", "current-potential-difference", "dynamic-equilibrium", "motion-graphs", "motor-effect"]) {
+for (const id of ["national-grid", "solution-concentration", "current-potential-difference", "dynamic-equilibrium", "motion-graphs", "motor-effect", "chromatography", "inheritance-cross"]) {
   gcseCatchup[id].steps[0].worked.visual = () => gcseVisual(gcseCatchup[id].visual);
 }
 
@@ -621,3 +621,6 @@ scaffold(complementary["respiration-exercise"], "Trace oxygen from the lungs to 
   "Blood returns to the left atrium and then the left ventricle. Its thicker muscular wall generates the pressure needed to send blood around the body.",
   "At muscle capillaries oxygen leaves the blood and diffuses into cells. During exercise an increased heart rate can increase oxygen delivery for aerobic respiration."
 ], "Compare oxygen delivery with the working muscle’s demand.");
+
+// The respiratory worked example is added after the core catalogue above.
+for (const [id, render] of Object.entries(gcseWorkedVisuals)) gcseCatchup[id].steps[0].worked.visual = render;

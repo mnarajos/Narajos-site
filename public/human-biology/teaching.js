@@ -130,7 +130,7 @@
       ? '<details class="hb-prerequisite"><summary>' + escape(lesson.activate[0]) + '</summary><p>' +
         escape(lesson.activate[1]) + '</p>' + prior + '</details>' : prior;
     const explanation = (context.booklet ? '<section class="paper panel hb-teach-explain"><h2>Understand the idea</h2>' : '<details class="paper panel hb-teach-explain" open><summary><h2>Understand the idea</h2></summary>') +
-      paragraphs(lesson.explain) + figure(lesson.explanationPhoto) + teachingDiagram(lesson.explanationDiagram) + teachingDiagram(lesson.teachingDiagram) + table(lesson.compare) +
+      paragraphs(lesson.explain) + figure(lesson.explanationPhoto) + figure(lesson.explanationPhoto2) + teachingDiagram(lesson.explanationDiagram) + (lesson.explanationDiagrams || []).map(teachingDiagram).join("") + teachingDiagram(lesson.teachingDiagram) + teachingDiagram(lesson.comparisonDiagram) + (lesson.comparisonDiagrams || []).map(teachingDiagram).join("") + table(lesson.compare) +
       (lesson.afterComparison ? '<h3>' + escape(lesson.afterComparison.heading) + '</h3>' + paragraphs(lesson.afterComparison.lines) : '') +
       context.inline +
       (lesson.revision && !context.booklet ? '<div class="actions hb-start">' + openStageButton("model", "See worked example", "primary") + '</div>' : '') +
@@ -142,7 +142,7 @@
       (lesson.graph ? window.KeystoneHumanSkills.graphHTML(lesson.graph) : "") + table(lesson.table, lesson.focusCells) +
       '<ol class="hb-model-steps' + (lesson.nodes ? ' hb-model-path' : '') + '">' + lesson.model.map((step, i) =>
         '<li value="' + (i + 1) + '"' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
-        escape(step) + '</li>').join("") +
+        escape(step) + teachingDiagram(lesson.modelDiagrams?.[i]) + '</li>').join("") +
       '</ol>' + (lesson.model.length > 1 ?
         '<button type="button" class="button secondary" data-hb-action="model">Show next step</button>' : '') +
       (evidenceModel ? '<button type="button" class="button quiet hb-model-back" hidden>Previous step</button>' : '') +

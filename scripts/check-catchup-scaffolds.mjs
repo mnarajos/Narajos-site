@@ -146,6 +146,16 @@ export async function checkCatchupScaffolds(browser, base) {
       assert(await explanation.getByRole("img", {name}).isVisible(), id + " is missing its explanation figure");
       await narrow(explanation, id + " explanation");
     }
+    await page.goto(base + "/ks3/particles/");
+    const gas = page.locator("[data-gas-pressure]");
+    await gas.getByRole("button", {name: "Explore freely"}).click();
+    await gas.getByLabel("Number of gas particles").selectOption("28");
+    assert.equal(await gas.locator("[data-gas-pressure-value]").textContent(), "2.0×");
+    assert.match(await gas.locator("#gas-result").textContent(), /2\.0 times the starting 14-particle box/);
+    await gas.getByLabel("Number of gas particles").selectOption("7");
+    await gas.getByRole("radio", {name: "Warmer gas"}).check();
+    assert.equal(await gas.locator("[data-gas-pressure-value]").textContent(), "0.9×");
+    assert.match(await gas.locator("#gas-result").textContent(), /0\.9 times the starting 14-particle box/);
     assert.deepEqual(errors, [], "JavaScript errors in Year 7–9 catch-up");
   } finally {
     await page.close();

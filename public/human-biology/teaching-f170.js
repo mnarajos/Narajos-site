@@ -505,6 +505,20 @@ window.KeystoneHumanLessons = {
         "A mature erythrocyte (red blood cell) is a flexible biconcave disc. Its thin centre shortens the diffusion distance for oxygen. Loss of the nucleus leaves room for haemoglobin, which binds oxygen. Its flexible membrane helps it pass through narrow capillaries.",
         "White blood cells have nuclei. A nuclear outline can help you recognise a cell. To explain its function, look for the equipment it uses to recognise, engulf or release material."
       ],
+      teachingDiagram: {src:"/human-biology/red-cell-section.svg",width:220,height:260,compact:true,
+        alt:"A schematic side section of a mature red blood cell shows a thin centre, no nucleus, and dots representing haemoglobin. An arrow shows oxygen entering the cell.",
+        caption:"Follow oxygen into the thin centre; the dots represent haemoglobin, which binds oxygen. A mature human red cell has no nucleus. The section is schematic and not to scale."},
+      explanationPhoto: {src:"/assets/micrographs/hb-blood-cells-sem.webp",width:500,height:326,
+        alt:"Colourised scanning electron micrograph: a red blood cell at left, a platelet in the centre and a white blood cell at right.",
+        caption:"Notice the red blood cell's indented shape at left. The colours have been added to this electron micrograph.",
+        source:"https://commons.wikimedia.org/wiki/File:Red_White_Blood_cells.jpg",credit:"Electron Microscopy Facility, NCI-Frederick",
+        licence:"Public domain (US government work)",licenceUrl:"https://commons.wikimedia.org/wiki/Template:PD-USGov",changes:"Converted to WebP; no crop"},
+      comparisonDiagram: {src:"/human-biology/white-cell-nuclei.svg",width:220,height:300,compact:true,
+        alt:"Four simplified white cells. The neutrophil has a multilobed nucleus, the lymphocyte a large rounded nucleus, the eosinophil a two-lobed nucleus and red granules, and the monocyte an indented nucleus.",
+        caption:"Compare the nucleus shapes and the eosinophil granules before reading the table. These are simplified diagrams, not size-matched photographs; a nucleus alone does not establish a cell's function."},
+      comparisonDiagrams: [{src:"/human-biology/white-cell-defence.svg",width:220,height:300,compact:true,
+        alt:"A phagocyte surrounds a small particle and encloses it in a compartment. In a separate example a cell releases granule contents towards an external target surface.",
+        caption:"Compare enclosing a small particle with releasing granule contents towards a target too large to engulf. The drawings are simplified."}],
       compare: {caption: "How four white cells defend the body", head: ["Cell", "Feature and consequence"], rows: [
         ["Neutrophil", "A flexible cell with a multi-lobed nucleus can move through tissue. It engulfs particles and delivers granule contents to the compartment holding them."],
         ["Lymphocyte", "Many small lymphocytes have a large rounded nucleus and little visible cytoplasm. Specific receptors on B and T cells recognise particular antigens. Activated B cells can give rise to antibody-secreting plasma cells."],
@@ -638,7 +652,7 @@ window.KeystoneHumanLessons = {
         [["The cell is releasing twice as much digestive enzyme as a resting cell.", "A single section shows structures. To compare release rates, measure product leaving comparable cells over time."], ["The dark particles show that the digestive enzymes are already active in the cytoplasm.", "Small particles along membrane surfaces are consistent with ribosomes. Their appearance cannot establish digestive enzyme activity."], ["Membranes with particles along their surfaces support a capacity to make proteins on rough ER.", ""]],
         "The membrane profiles and attached particles support an interpretation of rough ER in a secretory cell. The image gives structural evidence and cannot measure secretion rate.",
         ["Find the stacks outside the large pale region. What kind of evidence can a still section provide?"], {
-          photo:{src:"/assets/micrographs/hb-secretory-field.webp",width:640,height:454,alt:"Grayscale thin section. A large mottled region fills the centre. Closely spaced membrane profiles run beside its edges, with small dark particles along them.",source:"https://commons.wikimedia.org/wiki/File:Mammalian_pancreatic_tissue,_nuclear_pores_and_rough_endoplasmic_reticulum.jpg",credit:"Louisa Howard, Dartmouth College",licence:"Public domain",licenceUrl:"https://commons.wikimedia.org/wiki/File:Mammalian_pancreatic_tissue,_nuclear_pores_and_rough_endoplasmic_reticulum.jpg#Licensing",changes:"Footer cropped and image converted to WebP"}
+          photo:{src:"/assets/micrographs/hb-pancreas-tem.webp",width:640,height:480,alt:"Grayscale thin section. A large mottled region fills the centre. Closely spaced membrane profiles run beside its edges, with small dark particles along them. The original scale bar at the bottom is 500 nm.",source:"https://commons.wikimedia.org/wiki/File:Mammalian_pancreatic_tissue,_nuclear_pores_and_rough_endoplasmic_reticulum.jpg",credit:"Louisa Howard, Dartmouth College",licence:"Public domain",licenceUrl:"https://commons.wikimedia.org/wiki/File:Mammalian_pancreatic_tissue,_nuclear_pores_and_rough_endoplasmic_reticulum.jpg#Licensing",changes:"Converted to WebP; no crop"}
         }),
       practice: "f170-lysosome-evidence",
       further: [["challenge/f170/f170-nucleolus-export","Distinguish assembly from export"],["challenge/f170/f170-ribosome-fractions","Interpret ribosome measurements"]]
