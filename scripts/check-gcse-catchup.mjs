@@ -87,6 +87,18 @@ export async function checkGCSECatchup(browser, base) {
         await page.reload();
         const notes = page.locator(".school-current-stage .school-step-notes");
         assert(await notes.locator("figure, table").count(), `${id} step ${index + 1}: missing visual`);
+        if (id === "photosynthesis-limits" && index === 2) {
+          assert.equal(await notes.locator('svg[aria-label*="Two otherwise similar pondweed samples"]').count(), 1,
+            "photosynthesis comparison should appear once at its teaching step");
+        }
+        if (id === "crude-oil" && index === 2) {
+          assert.equal(await notes.locator('svg[aria-label*="Orange bromine water is mixed with an alkene"]').count(), 1,
+            "cracking stage must show the bromine-water observation");
+        }
+        if (id === "potable-water" && index === 1) {
+          assert.equal(await notes.locator('svg[aria-label*="Seawater requires desalination"]').count(), 1,
+            "water-treatment stage must show the desalination route");
+        }
         for (const svg of await notes.locator("svg[role=img]").all()) {
           assert((await svg.getAttribute("aria-label"))?.trim(), `${id} step ${index + 1}: missing diagram description`);
         }

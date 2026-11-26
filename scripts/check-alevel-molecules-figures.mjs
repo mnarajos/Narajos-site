@@ -213,7 +213,12 @@ for (const [file,global,topic,id,group] of [
  ['catchup-synaptic-delay.js','ALevelSynapticDelay','a6','reflex',1],
  ['catchup-antibiotic-targets.js','ALevelAntibioticTargets','a2','hiv',1],
  ['catchup-smooth-lysosome.js','ALevelSmoothLysosome','a2','euk',1],
- ['catchup-named-vessels.js','ALevelNamedVessels','a3','circulation',1]
+ ['catchup-named-vessels.js','ALevelNamedVessels','a3','circulation',1],
+ ['catchup-phloem-tracer.js','ALevelPhloemTracer','a3','phloem',1],
+ ['catchup-viral-assembly.js','ALevelViralAssembly','a2','mitosis',2],
+ ['catchup-osmosis-practical.js','ALevelOsmosisPractical','a2','osmosis',1],
+ ['catchup-membrane-fluidity.js','ALevelMembraneFluidity','a2','membrane',0],
+ ['catchup-meiosis-ii-nondisjunction.js','ALevelMeiosisIINondisjunction','a4','chromut',0]
 ]) {
  vm.runInNewContext(readFileSync(new URL('../public/alevel/'+file, import.meta.url), 'utf8'), context);
  const figure=context.window[global].render(topic,id,group);

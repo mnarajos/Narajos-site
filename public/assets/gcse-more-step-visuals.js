@@ -502,7 +502,7 @@ function waveCompare() {
   return fig('Two directions of oscillation',
     'A transverse wave travels right while its particles move up and down, perpendicular to the direction of travel. A longitudinal wave travels right while its particles move backwards and forwards parallel to that direction. Closely spaced lines represent compressions.',
     a+arrow(188,20,282,20,ink)+text(145,24,'Wave travels',ink,13,'end')+arrow(35,77,35,35,rust)+arrow(35,35,35,77,rust)+text(160,105,'Transverse: perpendicular',ink,14)+
-    b+arrow(188,117,282,117,ink)+arrow(58,166,110,166,rust)+arrow(110,166,58,166,rust)+text(195,173,'Longitudinal: parallel',ink,14),
+    b+arrow(188,117,282,117,ink)+arrow(28,166,78,166,rust)+arrow(78,166,28,166,rust)+text(195,173,'Longitudinal: parallel',ink,14),
     'Compare the particle motion arrows with the direction in which each wave travels.');
 }
 function wavelength() {
@@ -593,7 +593,7 @@ function density() {
     text(160,177,'Each block: volume 1 cm³',ink,14),
     'Compare the masses of equal volumes: density is mass divided by volume. Values are worked examples.');
 }
-function alkene() {
+export function alkene() {
   return fig('A cracking example',
     'One butane molecule, C4H10, can crack into one ethane molecule, C2H6, and one ethene molecule, C2H4. Ethene has a carbon–carbon double bond. The atom count is the same on both sides.',
     text(67,24,'Butane',ink,15)+text(67,54,'C₄H₁₀',blue,19)+
@@ -603,6 +603,16 @@ function alkene() {
     text(268,24,'Ethene',ink,15)+text(268,54,'C₂H₄',blue,18)+circle(258,82,8,'#dbe7f0',blue)+circle(278,82,8,'#dbe7f0',blue)+line(266,79,270,79)+line(266,85,270,85)+
     text(160,128,'C: 4 → 2 + 2',ink,15)+text(160,155,'H: 10 → 6 + 4',ink,15),
     'Count the atoms on both sides. Ethene contains a carbon–carbon double bond; hydrogen atoms are omitted from the structural sketch.');
+}
+function bromineTest() {
+  return fig('Testing for an alkene',
+    'Orange bromine water is mixed with an alkene. The orange colour disappears and the mixture becomes colourless. The two test tubes show the observation before and after mixing.',
+    '<path d="M45 45 V119 Q45 145 75 145 Q105 145 105 119 V45" fill="#f2b970" stroke="'+ink+'" stroke-width="2"/>' +
+    '<path d="M215 45 V119 Q215 145 245 145 Q275 145 275 119 V45" fill="#fff" stroke="'+ink+'" stroke-width="2"/>' +
+    text(75, 25, 'Before', ink, 18) + text(245, 25, 'After', ink, 18) +
+    arrow(116, 95, 204, 95, rust, 2) + text(160, 73, 'Add alkene', ink, 18) +
+    text(75, 176, 'Orange', rust, 18) + text(245, 176, 'Colourless', blue, 18),
+    'Compare the colours before and after mixing. An alkene decolourises bromine water.', 195);
 }
 function emSpectrum() {
   const names=['Radio','Microwaves','Infrared','Visible','Ultraviolet','X-rays','Gamma'];
@@ -1853,7 +1863,7 @@ export const moreGcseStepVisuals = {
   'forces-motion': {1:forcesWithAcceleration,2:stopping},
   'decay-half-life': {2:irradiation},
   'density-and-gas-pressure': {0:density,1:pressureAndImpacts},
-  'photosynthesis-limits': {0:photosynthesisAndGlucose,2:() => grouped(testCarbonDioxide, carbonDioxideComparison)},
+  'photosynthesis-limits': {0:photosynthesisAndGlucose,2:testCarbonDioxide},
   'glucose-control': {0:homeostasis,1:glucoseResponseDetailed,2:diabetes},
   'reaction-rate': {1:collisionsAndEnergy,2:dynamicEquilibrium},
   'salt-electrolysis': {2:brine},
@@ -1867,9 +1877,9 @@ export const moreGcseStepVisuals = {
   'parallel-circuits': {2:parallelAndSeries},
   'reaction-profiles': {0:activationBarrier,2:temperatureAndDirection},
   'mass-conservation': {2:concentrationExample},
-  'crude-oil': {0:methaneStructure,2:alkene},
+  'crude-oil': {0:methaneStructure,2:() => grouped(alkene,bromineTest)},
   'greenhouse': {0:greenhouse,1:emissionsSources,2:pollutants},
-  'potable-water': {0:waterForDrinking,1:filtration,2:lifeCycle},
+  'potable-water': {0:waterForDrinking,1:() => grouped(filtration,waterRoutes),2:lifeCycle},
   'electromagnet-switch': {0:wireAndCoil,1:currentMagnitudeAndDirection,2:ironCoreEffects},
   'salts-and-reactivity': {0:sulfateSalt,1:saltsAndCrystals},
   'electromagnetic-spectrum': {0:spectrumAndWaves,1:emSpectrum,2:emApplications},

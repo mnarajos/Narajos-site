@@ -55,6 +55,17 @@ export async function checkCompactCatchupFigures(browser, base) {
       assert.equal(await phloemBlocks.nth(0).locator('figure').filter({hasText: 'Mass flow from source to sink'}).count(), 1);
       assert.match(await phloemBlocks.nth(1).innerText(), /ringing experiments/i);
       assert.equal(await phloemBlocks.nth(1).locator('figure').filter({hasText: 'Ringing and translocation evidence'}).count(), 1);
+      assert.equal(await phloemBlocks.nth(1).locator('figure').filter({hasText: 'Tracing carbon from a source leaf'}).count(), 1);
+
+      // Practical recap has a non-numeric teaching graph; it must leave the
+      // page when the learner goes to independent questions.
+      await page.goto(base + '/alevel/#catchup-a2-osmosis');
+      await page.getByText('Review key knowledge', {exact: true}).click();
+      const osmosisGraph = page.locator('figure').filter({hasText: 'Read the zero-change point'});
+      await osmosisGraph.waitFor();
+      assert.match(await osmosisGraph.locator('svg').getAttribute('aria-label'), /no measured values or numerical answer/i);
+      await page.getByRole('button', {name: 'Go straight to questions', exact: true}).click();
+      assert.equal(await osmosisGraph.count(), 0, 'teaching recap should not remain in the independent question view');
 
       await page.goto(base + '/human-biology/#catchup/f175/a2');
       const placenta = page.locator('.hb-teach-explain .hb-teaching-diagram-compact');

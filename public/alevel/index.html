@@ -511,6 +511,11 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <script src="/alevel/catchup-antibiotic-targets.js"></script>
 <script src="/alevel/catchup-smooth-lysosome.js"></script>
 <script src="/alevel/catchup-named-vessels.js"></script>
+<script src="/alevel/catchup-phloem-tracer.js"></script>
+<script src="/alevel/catchup-viral-assembly.js"></script>
+<script src="/alevel/catchup-osmosis-practical.js"></script>
+<script src="/alevel/catchup-membrane-fluidity.js"></script>
+<script src="/alevel/catchup-meiosis-ii-nondisjunction.js"></script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/home-link.css">
@@ -6426,7 +6431,8 @@ function catchupChunks(notes,synapse,topic,concept){
   return phloemGroups.map(function(g,groupIndex){
    return '<div class="companion-chunk"><h3>'+g[0]+'</h3>'+notes.slice(g[1],g[2]).map(function(k){return '<p>'+rich(k)+'</p>';}).join('')+
     (window.ALevelTransportFigures?window.ALevelTransportFigures.render(topic,concept,groupIndex):'')+
-    (window.ALevelPhloemLoading?window.ALevelPhloemLoading.render(topic,concept,groupIndex):'')+'</div>';
+    (window.ALevelPhloemLoading?window.ALevelPhloemLoading.render(topic,concept,groupIndex):'')+
+    (window.ALevelPhloemTracer?window.ALevelPhloemTracer.render(topic,concept,groupIndex):'')+'</div>';
   }).join('');
  }
  if(topic==='a6'&&concept==='speed'){
@@ -6483,6 +6489,10 @@ function catchupChunks(notes,synapse,topic,concept){
    (window.ALevelSegmentChanges?window.ALevelSegmentChanges.render(topic,concept,i/2):'')+
    (window.ALevelSynapticDelay?window.ALevelSynapticDelay.render(topic,concept,i/2):'')+
    (window.ALevelAntibioticTargets?window.ALevelAntibioticTargets.render(topic,concept,i/2):'')+
+   (window.ALevelViralAssembly?window.ALevelViralAssembly.render(topic,concept,i/2):'')+
+   (window.ALevelOsmosisPractical?window.ALevelOsmosisPractical.render(topic,concept,i/2):'')+
+   (window.ALevelMembraneFluidity?window.ALevelMembraneFluidity.render(topic,concept,i/2):'')+
+   (window.ALevelMeiosisIINondisjunction?window.ALevelMeiosisIINondisjunction.render(topic,concept,i/2):'')+
    (window.ALevelSmoothLysosome?window.ALevelSmoothLysosome.render(topic,concept,i/2):'')+
    (window.ALevelNamedVessels?window.ALevelNamedVessels.render(topic,concept,i/2):'')+
    (window.ALevelUltrafiltration?window.ALevelUltrafiltration.render(topic,concept,i/2):'')+

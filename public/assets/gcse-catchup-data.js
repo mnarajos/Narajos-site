@@ -2,7 +2,7 @@ import { investigations } from "./gcse-investigations.js";
 import { question } from "./school-catchup-journey.js";
 import { priorityCatchup, distanceWorkedGraph, velocityWorkedGraph } from "./gcse-catchup-priority.js";
 import { gcseStepVisuals } from "./gcse-step-visuals.js";
-import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, gcseWorkedLineVisuals, heatingCurve, readableGcseFigure, atomsRearranged, ohmicCurrentGraph, filamentCurrentGraph, gridCurrentComparison, gridHeatingComparison, leftHandDirections, motorReversalWorked, randomDecay, activityUnit, massGasEscape, activationBarrier, reactionNetTransfer, resistanceFromGraph, hotFilament, meanGasRate, infraredAbsorbEmit, plantPaths, ionsInElectrolytes } from "./gcse-more-step-visuals.js";
+import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, gcseWorkedLineVisuals, heatingCurve, readableGcseFigure, atomsRearranged, ohmicCurrentGraph, filamentCurrentGraph, gridCurrentComparison, gridHeatingComparison, leftHandDirections, motorReversalWorked, randomDecay, activityUnit, massGasEscape, activationBarrier, reactionNetTransfer, resistanceFromGraph, hotFilament, meanGasRate, infraredAbsorbEmit, plantPaths, ionsInElectrolytes, alkene } from "./gcse-more-step-visuals.js";
 import { gcseVisual } from "./gcse-catchup-visuals.js";
 
 function lesson(year, code, title, hook, notice, idea, visual, stages, independent, retry, higher) {
@@ -628,7 +628,7 @@ const additionalOpeningFigures = {
   "vaccine-memory": [gcseStepVisuals["vaccine-memory"][0], moreGcseStepVisuals["vaccine-memory"][1]],
   "food-web-change": [moreGcseStepVisuals["food-web-change"][2]],
   "reaction-rate": [meanGasRate],
-  "crude-oil": [moreGcseStepVisuals["crude-oil"][2]],
+  "crude-oil": [alkene],
   "chromatography": [moreGcseStepVisuals["chromatography"][1]],
   "electromagnet-switch": [moreGcseStepVisuals["electromagnet-switch"][2]],
   "selection-and-variation": [moreGcseStepVisuals["selection-and-variation"][0]],

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="350" viewBox="0 0 280 350" role="img" aria-labelledby="title desc">
+<title id="title">A fictional receptor and secretion</title><desc id="desc">In this fictional example an agonist activates receptors that increase secretion. At the same agonist concentration, a competitive antagonist occupies some of the same receptor sites without activating them; fewer receptors are activated and secretion may fall. The number of symbols is illustrative and other receptors can have different effects.</desc>
+<rect width="280" height="350" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16" fill="#243e49" text-anchor="middle">
+ <text x="140" y="24" font-weight="700">Fictional receptor example</text>
+ <text x="140" y="52">Agonist activates receptors</text>
+ <g fill="#e6f3ef" stroke="#397b6f" stroke-width="2"><path d="M27 111V78h10l10 10 10-10h10v33z"/><path d="M120 111V78h10l10 10 10-10h10v33z"/><path d="M213 111V78h10l10 10 10-10h10v33z"/></g>
+ <g fill="#a55b32"><path d="M37 78h20L47 88z"/><path d="M130 78h20l-10 10z"/><path d="M223 78h20l-10 10z"/></g>
+ <path d="M140 120v18m-6-6 6 6 6-6" stroke="#276972" stroke-width="2" fill="none"/>
+ <text x="140" y="160">Activation increases secretion</text>
+ <path d="M20 178h240" stroke="#d6e1de" stroke-width="2"/>
+ <text x="140" y="201">Add competitive antagonist</text>
+ <g fill="#e6f3ef" stroke="#397b6f" stroke-width="2"><path d="M27 261v-33h10l10 10 10-10h10v33z"/><path d="M120 261v-33h10l10 10 10-10h10v33z"/><path d="M213 261v-33h10l10 10 10-10h10v33z"/></g>
+ <path d="M37 228h20l-10 10z" fill="#a55b32"/><g fill="#78569a"><path d="M130 228h20l-10 10z"/><path d="M223 228h20l-10 10z"/></g>
+ <path d="M135 230h10M228 230h10" stroke="#fff" stroke-width="2"/><text x="140" y="290">Fewer active; secretion may fall</text>
+ <path d="M24 307h12l-6 7z" fill="#a55b32"/><text x="44" y="317" text-anchor="start">Agonist</text><path d="M147 307h12l-6 7z" fill="#78569a"/><path d="M150 309h6" stroke="#fff" stroke-width="2"/><text x="167" y="317" text-anchor="start">Antagonist</text>
+ <text x="140" y="341" font-size="14">Symbols are illustrative</text>
+</g></svg>

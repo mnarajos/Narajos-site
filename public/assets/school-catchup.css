@@ -127,6 +127,7 @@
 .catchup-drawing { display: grid; align-items: center; justify-items: center; min-width: 0; }
 .catchup-drawing svg { display: block; width: min(100%, 25rem); height: auto; padding: .25rem; }
 .catchup-picture img.catchup-photo { display: block; width: 100%; max-width: none; height: auto; border-radius: 0; background: #fff; }
+.catchup-picture img.catchup-photo[src$="/copper-deposit.webp"] { max-width: 640px; margin-inline: auto; }
 .catchup-picture img.catchup-photo-tile { aspect-ratio: 4 / 3; object-fit: contain; }
 .catchup-periodic { display: grid; grid-template-columns: repeat(18,minmax(0,1fr)); gap: clamp(1px,.35vw,4px); margin: .4rem auto .6rem; max-width: 28rem; }
 .catchup-periodic span { background: #dbe6e5; border-radius: 1px; aspect-ratio: 1; }

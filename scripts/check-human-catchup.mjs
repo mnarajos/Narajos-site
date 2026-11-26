@@ -836,6 +836,24 @@ export async function checkHumanCatchup(browser, base) {
       }
       assert(await widthFits(), `Recap ${route} must fit the phone viewport`);
     }
+    await open("catchup/f170/2.1.2/1");
+    const absorptionGroups = page.locator(".k-recap-group");
+    assert.equal(await absorptionGroups.count(), 3);
+    assert.equal((await absorptionGroups.locator(".k-catchup-text").allTextContents()).join(" "), "Alveoli provide a large surface area for gas exchange. The small intestine absorbs digested molecules; the colon reabsorbs water.");
+    for (const [index, files] of [[0, ["f170-alveolar-barrier.svg", "f170-alveolar-area.svg"]], [1, ["digestion.svg"]], [2, ["f170-colon-water.svg"]]]) {
+      for (const file of files) assert(await absorptionGroups.nth(index).locator(`img[src$="/${file}"]`).isVisible(), `${file} stays with its matching fact`);
+    }
+    for (const [route, text, figures] of [
+      ["f170/2.2.3/1", "Spirometry measures volumes and flow; peak flow measures maximal expiratory flow; FeNO can indicate airway inflammation in an appropriate clinical context.", ["f171-expired-volume-time.svg", "peak-flow-method.svg", "f170-feno-measurement.svg"]],
+      ["f170/1.1.5/2", "Punnett squares model allele transmission. Most mitochondrial DNA is maternally inherited; mitochondrial replacement can reduce transmission of some mtDNA disorders.", ["punnett-cross.svg", "f170-mitochondrial-donation.svg"]],
+      ["f170/2.2.1/1", "The gastrointestinal system digests and absorbs; the renal/excretory system removes wastes and regulates water and ions.", ["digestion.svg", "f170-nephron-overview.svg"]]
+    ]) {
+      await open("catchup/" + route);
+      const groups = page.locator(".k-recap-group");
+      assert.equal(await groups.count(), figures.length);
+      assert.equal((await groups.locator(".k-catchup-text").allTextContents()).join(" "), text);
+      for (let i = 0; i < figures.length; i++) assert(await groups.nth(i).locator(`img[src$="/${figures[i]}"]`).isVisible());
+    }
     await open("catchup/f170/3.3.1/2");
     for (const file of ["hb-endometrium.webp", "hb-follicle-teaching.webp", "hb-tubule-teaching.webp"]) {
       const photo = page.locator('figure').filter({has: page.locator(`img[src$="/${file}"]`)});
@@ -895,7 +913,9 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/4.1.1", ["f170-gram-envelope.svg", "f170-gram-stain-sequence.svg"], ["f170-gram-envelope.svg", "f170-gram-envelope.svg"]],
       ["f172/a1", ["meiosis.svg"], ["meiosis.svg", "f172-meiosis-alleles.svg", "f172-mitosis-alleles.svg"]],
       ["f172/a4", [], ["f172-gene-expression-comparison.svg", "f172-gene-expression-comparison.svg", "f172-gene-expression-comparison.svg"]],
+      ["f173/a3", [], ["chromatography.svg", "chromatography.svg", "chromatography.svg"]],
       ["f177/a3", ["f177-preclinical-evidence.svg", "f177-study-duration.svg"], ["f177-preclinical-evidence.svg", "f177-study-duration.svg", "f177-safety-signal.svg"]],
+      ["f177/a1", [], ["f177-antagonist-response.svg", "f177-antagonist-response.svg"]],
       ["f176/a5", ["f176-eeg-trace.svg"], ["f176-eeg-trace.svg", "f176-mri-ct.svg"]],
       ["f176/a4", ["f176-coordination-injury.svg"], ["f176-coordination-injury.svg", "f176-coordination-injury.svg"]],
       ["f175/2.1", ["f175-history-ultrasound.svg", "f175-history-ultrasound.svg"], ["f175-history-ultrasound.svg", "f175-baseline-pressure.svg", "f175-history-ultrasound.svg"]],

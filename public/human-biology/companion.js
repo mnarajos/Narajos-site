@@ -604,16 +604,44 @@ const recapFigureMap = {
  "f177/a1/2": [["f177/a1", "teachingDiagram"]],
  "f177/a2/2": [["f177/a2", "teachingDiagram"]]
 };
-function recapFigures(unit,id,step) {
+function recapFigures(unit,id,step,indices) {
  const teaching=window.KeystoneHumanTeaching, lessons=window.KeystoneHumanLessons || {};
  if (!teaching) return "";
- return (recapFigureMap[unit+"/"+id+"/"+step] || []).map(function(entry) {
+ return (recapFigureMap[unit+"/"+id+"/"+step] || []).filter(function(_,index) {return !indices || indices.includes(index);}).map(function(entry) {
   if (!Array.isArray(entry)) return teaching.renderDiagram(entry);
   const field=lessons[entry[0]]?.[entry[1]];
   const item=entry.length>2 ? field?.[entry[2]] : field;
   return (Array.isArray(item) ? item : [item]).filter(Boolean).map(function(visual) {
    return (entry[1].startsWith("explanationPhoto") || entry[1] === "explainPhotos" || entry[1] === "modelPhotos" || entry[1] === "comparisonPhotos") ? teaching.renderPhoto(visual) : teaching.renderDiagram(visual);
   }).join("");
+ }).join("");
+}
+function recapBody(unit,id,step,point) {
+ const groupedRecaps = {
+  "f170/2.1.2/1": [
+  {heading:"Gas exchange", text:"Alveoli provide a large surface area for gas exchange.", figures:[0,1]},
+  {heading:"Small intestine", text:"The small intestine absorbs digested molecules;", figures:[2]},
+  {heading:"Colon", text:"the colon reabsorbs water.", figures:[3]}
+  ],
+  "f170/2.2.3/1": [
+   {heading:"Spirometry", text:"Spirometry measures volumes and flow;", figures:[1]},
+   {heading:"Peak flow", text:"peak flow measures maximal expiratory flow;", figures:[0]},
+   {heading:"FeNO", text:"FeNO can indicate airway inflammation in an appropriate clinical context.", figures:[2]}
+  ],
+  "f170/1.1.5/2": [
+   {heading:"Allele transmission", text:"Punnett squares model allele transmission.", figures:[0]},
+   {heading:"Mitochondrial DNA", text:"Most mitochondrial DNA is maternally inherited; mitochondrial replacement can reduce transmission of some mtDNA disorders.", figures:[1]}
+  ],
+  "f170/2.2.1/1": [
+   {heading:"Digestive system", text:"The gastrointestinal system digests and absorbs;", figures:[0]},
+   {heading:"Renal system", text:"the renal/excretory system removes wastes and regulates water and ions.", figures:[1]}
+  ]
+ };
+ const groups = groupedRecaps[unit+"/"+id+"/"+step];
+ // If the authored fact changes, retain it in full rather than displaying stale fragments.
+ if (!groups || groups.map(group => group.text).join(" ") !== point) return '<p class="k-catchup-text">'+esc(point)+'</p>'+recapFigures(unit,id,step);
+ return groups.map(function(group) {
+  return '<div class="k-recap-group"><h3>'+esc(group.heading)+'</h3><p class="k-catchup-text">'+esc(group.text)+'</p>'+recapFigures(unit,id,step,group.figures)+'</div>';
  }).join("");
 }
 function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
@@ -642,7 +670,7 @@ function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
  if(lesson&&teaching&&step===0){
   var visual=window.KeystoneCatchupVisuals?window.KeystoneCatchupVisuals.render(...(lesson.visualFrom||[unit,id]),Boolean(lesson.revision&&lesson.visual==="model")):"";
   var recap='<details class="paper panel"><summary>Review the key ideas</summary><ul class="keylines">'+
-   points.map(function(point,i){return "<li>"+esc(point)+recapFigures(unit,id,i)+"</li>";}).join("")+"</ul></details>";
+   points.map(function(point,i){return "<li>"+recapBody(unit,id,i,point)+"</li>";}).join("")+"</ul></details>";
   var sim=lesson.simulation&&window.KeystoneReproductionSimulation;
   var interactive=sim?'<details class="hb-inline-model"'+(simulationStage?' open':'')+'><summary>Open the reproductive pathway model</summary>'+sim.render()+'</details>':"";
   render('<div class="k-wrap k-catchup-concept" data-unit="'+unit+'">'+crumb("catchup/"+unit,u.title)+
@@ -654,7 +682,7 @@ function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
  }
 
  var h='<div class="k-wrap k-catchup-concept">'+crumb("catchup/"+unit,u.title)+'<div class="k-eyebrow">Catch-up · '+(step+1)+' of '+points.length+'</div><h1>'+esc(topic)+'</h1><div class="progress-track" role="progressbar" aria-label="Key ideas reviewed" aria-valuemin="0" aria-valuemax="'+points.length+'" aria-valuenow="'+(step+1)+'"><div style="width:'+(100*(step+1)/points.length)+'%"></div></div>';
- h+='<section class="paper panel"><h2>Key idea '+(step+1)+'</h2><p class="k-catchup-text">'+esc(points[step])+'</p>'+recapFigures(unit,id,step)+'</section>';
+ h+='<section class="paper panel"><h2>Key idea '+(step+1)+'</h2>'+recapBody(unit,id,step,points[step])+'</section>';
  if(step===0&&window.KeystoneCatchupVisuals)h+=window.KeystoneCatchupVisuals.render(unit,id);
  h+='<div class="k-catchup-controls">'+(step>0?'<a class="button secondary" href="'+key+'/'+(step-1)+'">Previous</a>':'')+
  (step<points.length-1?'<a class="button primary" href="'+key+'/'+(step+1)+'">Next key idea →</a>':'<a class="button primary" href="#'+esc(practice)+'">'+esc(label)+' →</a>')+'</div>';
