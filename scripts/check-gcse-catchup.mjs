@@ -22,6 +22,24 @@ export async function checkGCSECatchup(browser, base) {
   const lessonURL = (id, year) => base + "/science-catch-up/lesson/?topic=" + id + "&year=" + year;
 
   try {
+    // A mapped figure must appear with its own teaching step, including after
+    // progress is restored.
+    for (const [id, lesson] of Object.entries(gcseCatchup)) {
+      for (const [index, step] of lesson.steps.entries()) {
+        if (!step.teach || !step.visual) continue;
+        await page.goto(lessonURL(id, lesson.year));
+        await page.evaluate(({key, index}) => localStorage.setItem(key, JSON.stringify({step: index})),
+          {key: `narajos.catchup.v1.${lesson.year}.${id}`, index});
+        await page.reload();
+        const notes = page.locator(".school-current-stage .school-step-notes");
+        assert(await notes.locator("figure, table").count(), `${id} step ${index + 1}: missing visual`);
+        for (const svg of await notes.locator("svg[role=img]").all()) {
+          assert((await svg.getAttribute("aria-label"))?.trim(), `${id} step ${index + 1}: missing diagram description`);
+        }
+        assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, `${id}: horizontal overflow`);
+        await page.evaluate(key => localStorage.removeItem(key), `narajos.catchup.v1.${lesson.year}.${id}`);
+      }
+    }
     for (const year of [10,11]) {
       await page.goto(base + "/science-catch-up/?year=" + year);
       const ids = Object.entries(gcseCatchup).filter(([,lesson]) => lesson.year === year).map(([id]) => id);
@@ -146,7 +164,8 @@ export async function checkGCSECatchup(browser, base) {
     const existing = gcseCatchup["inheritance-cross"];
     await page.goto(lessonURL("inheritance-cross", 11));
     await page.evaluate(({prompt, answer}) => localStorage.setItem("narajos.catchup.v1.11.inheritance-cross",
-      JSON.stringify({step: 1, open: true, prompt, selected: answer, correct: true, feedback: "Saved feedback."})), existing.steps[1]);
+      JSON.stringify({step: 1, open: true, prompt, selected: answer, correct: true, feedback: "Saved feedback."})),
+      {prompt: existing.steps[1].prompt, answer: existing.steps[1].answer});
     await page.reload();
     await openCheck();
     assert(await dialog.getByRole("radio", {name: existing.steps[1].answer, exact: true}).isChecked());
@@ -157,7 +176,7 @@ export async function checkGCSECatchup(browser, base) {
     for (const width of [320, 768, 1280]) {
       await page.setViewportSize({width, height: 860});
       await page.goto(lessonURL("chromatography", 11));
-      await page.locator("main").getByRole("img", {name: /shallow layer of solvent/}).waitFor();
+      await page.locator("#catchup-evidence").getByRole("img", {name: /shallow layer of solvent/}).waitFor();
       await page.addStyleTag({content: "html {font-size: 125%} p, h1, h2, h3, label {line-height: 1.6; letter-spacing: .055em}"});
       await page.evaluate(() => document.fonts.ready);
       const overflow = await page.evaluate(() => {

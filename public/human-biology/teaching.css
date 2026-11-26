@@ -101,6 +101,17 @@
   block-size: auto;
   border-radius: .4rem;
 }
+.hb-teaching-diagram {
+  max-inline-size: 100%;
+  overflow-x: auto;
+}
+.hb-teaching-diagram img {
+  max-inline-size: none;
+}
+.hb-diagram-scroll-hint { display: none; }
+@media (max-width: 540px) {
+  .hb-diagram-scroll-hint { display: block; font-size: .85rem; margin-block-start: .35rem; }
+}
 .hb-teach-photo figcaption {
   margin-block-start: .4rem;
   font-size: .9rem;

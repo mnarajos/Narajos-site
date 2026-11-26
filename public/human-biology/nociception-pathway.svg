@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="300" viewBox="0 0 480 300" role="img" aria-labelledby="title description">
+  <title id="title">Nociceptive signalling and withdrawal</title>
+  <desc id="description">A potentially damaging stimulus activates a nociceptor. Sensory signalling reaches the spinal cord. A motor pathway can activate a muscle to withdraw, while signals travel to the brain where processing contributes to the experience of pain. Context and other influences also contribute.</desc>
+  <rect width="480" height="300" rx="12" fill="#f8f7f3"/>
+  <path d="M222 102q0-14 14-14h18q14 0 14 14v105q0 14-14 14h-18q-14 0-14-14z" fill="#e2eaf7" stroke="#5674a4" stroke-width="3"/>
+  <path d="M215 48q-4-22 17-24 12-17 25-2 25-4 27 19 8 16-7 24h-54q-14-4-8-17z" fill="#f4ded5" stroke="#a76454" stroke-width="3"/>
+  <circle cx="62" cy="148" r="17" fill="#f5e3bb" stroke="#b17227" stroke-width="3"/>
+  <path d="M28 226q24-23 53 0-29 23-53 0z" fill="#e8b8a5" stroke="#9b5d4b" stroke-width="3"/>
+  <g fill="none" stroke="#477184" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M81 148H220 M208 141l12 7-12 7"/>
+    <path d="M62 93V129 M55 118l7 11 7-11"/>
+    <path d="M245 88V68 M238 80l7-12 7 12"/>
+    <path d="M221 190H118v36H84 M95 219l-11 7 11 7"/>
+    <path d="M309 43h-20 M299 36l-10 7 10 7"/>
+  </g>
+  <g font-family="system-ui, sans-serif" fill="#253d4a" font-size="15" font-weight="600">
+    <text x="17" y="52">Potentially damaging</text><text x="17" y="72">stimulus</text>
+    <text x="17" y="180">Nociceptor</text><text x="93" y="137">Sensory signal</text>
+    <text x="226" y="49">Brain</text>
+    <text x="280" y="130">Spinal cord</text>
+    <text x="310" y="35">Context and</text><text x="310" y="54">other influences</text>
+    <text x="17" y="261">Muscle withdrawal</text>
+    <text x="281" y="200">Signals to brain</text><text x="281" y="220">contribute to the</text><text x="281" y="240">experience of pain</text>
+  </g>
+</svg>

@@ -64,6 +64,12 @@
       '" width="' + (item.width || 360) + '" height="' + (item.height || 212) + '">';
   }
 
+  function teachingDiagram(item) {
+    if (!item) return "";
+    return '<figure class="hb-teach-photo"><div class="hb-teaching-diagram" role="region" tabindex="0" aria-label="Scrollable teaching diagram"><img src="' + escape(item.src) + '" alt="' + escape(item.alt) +
+      '" width="' + item.width + '" height="' + item.height + '"></div><span class="hb-diagram-scroll-hint">Scroll sideways to see the whole diagram.</span><figcaption>' + escape(item.caption) + '</figcaption></figure>';
+  }
+
   function figure(photo, field) {
     if (!photo) return "";
     return '<figure class="hb-teach-photo"><img src="' + escape(photo.src) + '" alt="' +
@@ -124,7 +130,7 @@
       ? '<details class="hb-prerequisite"><summary>' + escape(lesson.activate[0]) + '</summary><p>' +
         escape(lesson.activate[1]) + '</p>' + prior + '</details>' : prior;
     const explanation = (context.booklet ? '<section class="paper panel hb-teach-explain"><h2>Understand the idea</h2>' : '<details class="paper panel hb-teach-explain" open><summary><h2>Understand the idea</h2></summary>') +
-      paragraphs(lesson.explain) + table(lesson.compare) +
+      paragraphs(lesson.explain) + teachingDiagram(lesson.teachingDiagram) + table(lesson.compare) +
       (lesson.afterComparison ? '<h3>' + escape(lesson.afterComparison.heading) + '</h3>' + paragraphs(lesson.afterComparison.lines) : '') +
       context.inline +
       (lesson.revision && !context.booklet ? '<div class="actions hb-start">' + openStageButton("model", "See worked example", "primary") + '</div>' : '') +
@@ -132,7 +138,7 @@
     const evidenceModel = lesson.revision && (lesson.focusCells || lesson.graph || lesson.visual === "model");
     const model = lesson.model?.length ?
       '<' + (context.booklet ? 'section' : 'details') + ' class="paper panel hb-teach-stage' + (evidenceModel ? ' hb-model-with-evidence' : '') +
-      '" data-hb-model-step="1">' + stageSummary("eye", "Worked example", lesson.modelTitle, context.booklet) + context.modelVisual + illustration(lesson.illustration) + figure(lesson.photo) +
+      '" data-hb-model-step="1">' + stageSummary("eye", "Worked example", lesson.modelTitle, context.booklet) + context.modelVisual + teachingDiagram(lesson.teachingDiagram) + illustration(lesson.illustration) + figure(lesson.photo) +
       (lesson.graph ? window.KeystoneHumanSkills.graphHTML(lesson.graph) : "") + table(lesson.table, lesson.focusCells) +
       '<ol class="hb-model-steps' + (lesson.nodes ? ' hb-model-path' : '') + '">' + lesson.model.map((step, i) =>
         '<li value="' + (i + 1) + '"' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +

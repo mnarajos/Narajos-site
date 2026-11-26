@@ -50,6 +50,25 @@ export async function checkCatchupScaffolds(browser, base) {
       }
     }
 
+    // These teaching-stage mappings must stay adjacent to their notes when a
+    // learner resumes a later step, not just on the opening evidence panel.
+    for (const [year, id] of [[7, "fair-tests"], [7, "states-of-matter"],
+      [9, "cell-structures"], [9, "osmosis"], [9, "active-transport"], [9, "mitosis"]]) {
+      for (let step = 0; step < 3; step++) {
+        await page.evaluate(({year, id, step}) => localStorage.setItem(`narajos.catchup.v1.${year}.${id}`, JSON.stringify({step})), {year, id, step});
+        const route = year === 7 ? `/ks3/lesson/?topic=${id}&guided=1` : `/science-catch-up/lesson/?topic=${id}`;
+        await page.goto(base + route);
+        const notes = journey.locator(".school-step-notes");
+        await notes.waitFor();
+        assert(await notes.locator("figure").count(), `${id} step ${step + 1} is missing a figure`);
+        for (const image of await notes.locator("img, svg[role=img]").all()) {
+          assert((await image.getAttribute("alt") || await image.getAttribute("aria-label"))?.trim(), `${id} step ${step + 1} lacks a text alternative`);
+        }
+        await narrow(notes, `${id} step ${step + 1}`);
+      }
+      await page.evaluate(({year, id}) => localStorage.removeItem(`narajos.catchup.v1.${year}.${id}`), {year, id});
+    }
+
     await page.goto(base + "/ks3/lesson/?topic=forces&guided=1");
     // The coverage pass opens and pauses each first check but leaves it unattempted.
     const reopen = journey.getByRole("button", {name: "Resume check", exact: true});

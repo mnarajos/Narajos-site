@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="300" viewBox="0 0 480 300" role="img" aria-labelledby="title description">
+  <title id="title">Conventional IVF and ICSI</title>
+  <desc id="description">Conventional IVF brings sperm and oocyte together outside the body. ICSI injects one sperm into an oocyte. After either method an embryo may develop and be transferred to the uterus; implantation may follow.</desc>
+  <rect width="480" height="300" rx="12" fill="#f8f7f3"/>
+  <path d="M240 10V194" stroke="#a9b8b8" stroke-width="2"/>
+  <g font-family="system-ui, sans-serif" fill="#253d4a" font-size="16" font-weight="600" text-anchor="middle">
+    <text x="120" y="28">Conventional IVF</text><text x="360" y="28">ICSI</text>
+    <text x="120" y="178">Sperm and oocyte</text><text x="120" y="197">brought together</text>
+    <text x="360" y="178">One sperm injected</text><text x="360" y="197">into oocyte</text>
+    <text x="240" y="244">If an embryo develops → possible transfer</text>
+    <text x="240" y="271">Implantation may follow</text>
+  </g>
+  <g fill="#f6dfc6" stroke="#995b45" stroke-width="3"><circle cx="126" cy="105" r="42"/><circle cx="353" cy="105" r="42"/></g>
+  <g fill="#5674a4" stroke="#5674a4" stroke-width="2" stroke-linecap="round">
+    <ellipse cx="66" cy="80" rx="5" ry="3"/><path d="M61 80q-12-8-20-3" fill="none"/>
+    <ellipse cx="67" cy="125" rx="5" ry="3"/><path d="M62 125q-12 8-20 3" fill="none"/>
+    <ellipse cx="98" cy="51" rx="5" ry="3"/><path d="M93 51q-12-8-20-3" fill="none"/>
+    <ellipse cx="353" cy="105" rx="5" ry="3"/>
+  </g>
+  <path d="M462 98H355 M462 112H369" fill="none" stroke="#456979" stroke-width="3"/>
+  <path d="M120 204V220H360V204 M240 220v8 M234 223l6 5 6-5" fill="none" stroke="#477184" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

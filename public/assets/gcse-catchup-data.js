@@ -1,6 +1,8 @@
 import { investigations } from "./gcse-investigations.js";
 import { question } from "./school-catchup-journey.js";
 import { priorityCatchup } from "./gcse-catchup-priority.js";
+import { gcseStepVisuals } from "./gcse-step-visuals.js";
+import { gcseVisual } from "./gcse-catchup-visuals.js";
 
 function lesson(year, code, title, hook, notice, idea, visual, stages, independent, retry, higher) {
   return {year, code, title, hook, notice, idea, visual, higher,
@@ -572,6 +574,32 @@ scaffold(year11Catchup["inheritance-cross"], "Build a genetic cross", [
 ], "Count how many of the four equally likely boxes show two recessive alleles.");
 
 export const gcseCatchup = {...year10Catchup, ...year11Catchup, ...complementary, ...furtherCatchup, ...priorityCatchup, ...investigations};
+
+for (const [id, visuals] of Object.entries(gcseStepVisuals)) {
+  for (const [index, render] of Object.entries(visuals)) gcseCatchup[id].steps[index].visual = render;
+}
+
+// Only repeat an opening figure when it explains this particular teaching step.
+// Other steps need their own representations rather than a generic topic image.
+const openingFigureAtStep = {
+  "vaccine-memory": [1],
+  "photosynthesis-limits": [1],
+  "decay-half-life": [0, 1],
+  "parallel-circuits": [0, 2],
+  "mass-conservation": [0],
+  "reaction-profiles": [0, 1],
+  "food-web-change": [0, 1],
+  "reaction-rate": [0],
+  "crude-oil": [1],
+  "chromatography": [0, 1],
+  "wave-motion": [0],
+  "electromagnet-switch": [0],
+  "inheritance-cross": [0, 1],
+  "circuit-resistance": [1]
+};
+for (const [id, indices] of Object.entries(openingFigureAtStep)) {
+  for (const index of indices) gcseCatchup[id].steps[index].visual = () => gcseVisual(gcseCatchup[id].visual);
+}
 
 gcseCatchup["glucose-control"].higher = [
   "Higher Tier", "After exercise, blood glucose falls. Trace the response from detection to recovery. What happens to the signal as the level recovers?",

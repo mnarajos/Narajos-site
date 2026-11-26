@@ -410,6 +410,9 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <link rel="stylesheet" href="/assets/spaced-review.css">
 <link rel="stylesheet" href="/assets/catchup-visuals.css">
 <script src="/assets/catchup-visuals.js"></script>
+<script src="/alevel/catchup-figures.js"></script>
+<script src="/alevel/catchup-immunity-figures.js"></script>
+<script src="/alevel/catchup-transport-figures.js"></script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/home-link.css">
@@ -6302,7 +6305,7 @@ function showCatchupTopic(t,focus){
  });
  render(h+'</ul>',focus);
 }
-function catchupChunks(notes,synapse){
+function catchupChunks(notes,synapse,topic,concept){
  if(synapse){
   var groups=[["Release acetylcholine",0,2],["Depolarise the postsynaptic membrane",2,3],
    ["End the signal",3,4],["Why transmission is one-way",4]];
@@ -6313,7 +6316,10 @@ function catchupChunks(notes,synapse){
  }
  var h='';
  for(var i=0;i<notes.length;i+=2){
-  h+='<div class="companion-chunk">'+notes.slice(i,i+2).map(function(k){return '<p>'+rich(k)+'</p>';}).join('')+'</div>';
+  h+='<div class="companion-chunk">'+notes.slice(i,i+2).map(function(k){return '<p>'+rich(k)+'</p>';}).join('')+
+   (window.ALevelCatchupFigures?window.ALevelCatchupFigures.render(topic,concept,i/2):'')+
+   (window.ALevelImmunityFigures?window.ALevelImmunityFigures.render(topic,concept,i/2):'')+
+   (window.ALevelTransportFigures?window.ALevelTransportFigures.render(topic,concept,i/2):'')+'</div>';
  }
  return h;
 }
@@ -6329,7 +6335,7 @@ function showCatchup(t,c,step,focus,returnRoute){
  if(!returnRoute)h+=practicalAction;
  if(returnRoute){
   h+='<p><a class="al-quiet-link" href="#'+esc(returnRoute)+'">← Return to your question</a></p><section class="key companion-key" aria-label="Key knowledge"><h2>Key ideas</h2>'+
-   catchupChunks(notes,synapse)+'</section>';
+   catchupChunks(notes,synapse,t,c.id)+'</section>';
   if(window.KeystoneCatchupVisuals)h+=window.KeystoneCatchupVisuals.render(t,c.id);
   h+=practicalAction;
   render(h,focus);
@@ -6339,7 +6345,7 @@ function showCatchup(t,c,step,focus,returnRoute){
   render(h+'<div class="al-catchup-journey"></div>',focus);
   var recap=document.createElement('details');
   recap.className='al-key-notes';
-  recap.innerHTML='<summary>Review key knowledge</summary>'+catchupChunks(notes)+(c.gate?'<p class="gate"><strong>Why it matters</strong> '+fmt(c.gate)+'</p>':'');
+  recap.innerHTML='<summary>Review key knowledge</summary>'+catchupChunks(notes,false,t,c.id)+(c.gate?'<p class="gate"><strong>Why it matters</strong> '+fmt(c.gate)+'</p>':'');
   var extra=document.createElement('div');
   var visuals=window.KeystoneCatchupVisuals&&window.KeystoneCatchupVisuals.render(t,c.id);
   if(visuals)extra.innerHTML='<details class="al-key-notes"><summary>Related diagrams and simulations</summary>'+visuals+'</details>';
@@ -6348,7 +6354,7 @@ function showCatchup(t,c,step,focus,returnRoute){
   return;
  }
  h+='<p class="spec">'+esc(DATA[t].code)+'</p>';
- h+='<section class="key companion-key" aria-label="Key knowledge"><h2>Key ideas</h2>'+catchupChunks(notes,synapse)+(c.gate?'<details class="companion-why"><summary>Why it matters</summary><p>'+fmt(c.gate)+'</p></details>':'')+'</section>';
+ h+='<section class="key companion-key" aria-label="Key knowledge"><h2>Key ideas</h2>'+catchupChunks(notes,synapse,t,c.id)+(c.gate?'<details class="companion-why"><summary>Why it matters</summary><p>'+fmt(c.gate)+'</p></details>':'')+'</section>';
  var visual=window.KeystoneCatchupVisuals?window.KeystoneCatchupVisuals.render(t,c.id):'';
  var action='<div class="actions companion-lesson-actions">'+
  (ready?'<a class="btn primary" href="#lesson-'+t+'-'+c.id+'">Start questions</a>':'<a class="btn primary" href="#topic-'+t+'">Review prerequisites</a>')+'</div>';

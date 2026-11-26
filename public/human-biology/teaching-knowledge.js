@@ -62,6 +62,9 @@
   window.KeystoneHumanLessons["f172/a4"] = {
     goal: "Trace how a change in gene expression could affect the function of a target tissue.",
     explain: ["Gene therapy aims to alter gene activity in target cells. Some approaches supply a functional copy. Others change expression or edit DNA. Delivery and the proportion of target cells reached affect the outcome."],
+    teachingDiagram: {src:"/human-biology/gene-delivery.svg", width:480, height:300,
+      alt:"A simplified target cell with a nucleus. A functional gene copy is delivered into the cell, followed by expression producing a functional protein. An untreated cell is also shown, indicating that delivery may not reach all cells.",
+      caption:"Follow this example from delivery to protein production. Other gene therapies use different approaches; delivery does not ensure expression in every target cell."},
     model: ["In a fictional disorder, target cells make too little of a functional protein.", "If treated target cells receive and express a functional copy, they may make more of that protein.", "Improvement depends on whether enough relevant cells make sufficient protein. Somatic treatment affects treated cells rather than routinely altering inheritance."],
     guided: choice("The new copy reaches a cell but is not expressed. What is missing?", 0,
       [["Production of the functional gene product.", ""], ["Delivery of the copy.", "The scenario already says delivery succeeded."], ["Inheritance by the next generation.", "The target in this example is a somatic cell."]],
@@ -114,6 +117,9 @@
   window.KeystoneHumanLessons["f174/a1"] = {
     goal: "Explain why energy intake alone gives limited information about nutritional adequacy.",
     explain: ["Carbohydrate and fats supply energy. Protein supplies amino acids for synthesis, and can also contribute energy. Vitamins and minerals are needed for particular physiological functions. Fibre and water also have roles."],
+    teachingDiagram: {src:"/human-biology/meals-energy-iron.svg", width:480, height:300,
+      alt:"Two fictional meals have equal-length bars for similar energy. Meal A contains a substantial iron source, whereas meal B does not. The comparison is qualitative and does not show measured values.",
+      caption:"Compare the equal energy bars with the iron-source labels. Similar energy alone does not establish that meals contribute equally to iron intake."},
     model: ["Two fictional meals supply similar energy.", "Only one provides a substantial iron source. Iron supports haemoglobin production. Their energy totals cannot establish that they contribute equally to iron intake."],
     guided: choice("Which comparison would help to evaluate protein intake across typical diets?", 1,
       [["Compare energy alone.", "Many different nutrient mixes can give the same energy."], ["Compare protein quantity and amino acid supply.", ""], ["Compare volume of food alone.", "Volume does not reveal nutrient composition."]],
@@ -237,6 +243,9 @@
     "f175/a2": {
       goal: "Explain how placental structure supports exchange between maternal and fetal circulations.",
       explain: ["Chorionic villi contain fetal vessels and are bathed by maternal blood. The circulations remain largely separate. A large area and short diffusion distances help exchange."],
+      teachingDiagram: {src:"/human-biology/placental-exchange.svg", width:480, height:300,
+        alt:"Schematic section of a chorionic villus. Maternal blood surrounds the villus, and a fetal capillary lies inside it. Oxygen moves from maternal blood across the placental barrier to fetal blood; carbon dioxide moves in the opposite direction. The circulations are separated by the barrier.",
+        caption:"Follow oxygen across the placental barrier into a fetal capillary; carbon dioxide moves the other way. This schematic shows one villus, not its true scale."},
       nodes: ["Maternal blood", "Placental barrier", "Fetal circulation"],
       model: ["Oxygen reaches the spaces around the villi in maternal blood.", "Oxygen moves down its gradient across the placental barrier.", "Fetal capillaries take up oxygen and fetal blood carries it away. Carbon dioxide moves in the opposite direction."],
       guided: choice("Which change would directly reduce exchange area?", 0,
@@ -260,6 +269,9 @@
     "f175/a4": {
       goal: "Distinguish IVF and ICSI by the biological step each method addresses.",
       explain: ["In vitro fertilisation (IVF) involves fertilisation outside the body and later embryo transfer. Intracytoplasmic sperm injection (ICSI) is a particular fertilisation method within an IVF cycle in which one sperm is injected into an oocyte."],
+      teachingDiagram: {src:"/human-biology/ivf-icsi.svg", width:480, height:300,
+        alt:"Comparison of fertilisation methods outside the body: conventional IVF brings sperm and an oocyte together, while ICSI injects one sperm into an oocyte. Both can be followed by embryo transfer, then implantation may occur later.",
+        caption:"Compare how sperm reaches the oocyte. Transfer follows embryo development; implantation is a later event and is not guaranteed."},
       model: ["When fertilisation is attempted outside the body, the usual journey through the oviduct is bypassed.", "Transfer places an embryo in the uterus. Implantation is still a later process, and its occurrence is uncertain."],
       guided: choice("Which action distinguishes ICSI from conventional insemination of oocytes in IVF?", 2,
         [["Transferring an embryo.", "Both may involve a later transfer."], ["Preserving an embryo for later use.", "Storage does not distinguish how fertilisation was attempted."], ["Injecting an individual sperm into an oocyte.", ""]],
@@ -314,6 +326,9 @@
     "f176/a3": {
       goal: "Distinguish nociceptive signalling from the experience of pain.",
       explain: ["Nociceptors detect potentially damaging stimuli. Nociception is the neural encoding and processing of such stimuli. Pain is an experience shaped by processing, context and other influences."],
+      teachingDiagram: {src:"/human-biology/nociception-pathway.svg", width:480, height:300,
+        alt:"A potentially damaging stimulus activates a nociceptor. Sensory signalling travels to the spinal cord; pathways lead to a muscle withdrawal response and to brain processing involved in the experience of pain. Context and other influences also affect the experience.",
+        caption:"Follow the sensory signal to the spinal cord, then compare the pathway to a withdrawal response with signalling to the brain. Pain is an experience influenced by more than the incoming signal."},
       model: ["A hot object activates nociceptors and signals travel into the CNS.", "A withdrawal reflex can occur while signals also travel to brain regions involved in the experience of pain."],
       guided: choice("A rapid withdrawal starts before someone can report pain. What is consistent with that observation?", 0,
         [["A spinal pathway can organise withdrawal before conscious report.", ""], ["The muscles detected pain without a neural pathway.", "The movement can be explained by sensory input and motor output."], ["The nociceptors cannot have acted.", "They can supply input to the reflex."]],

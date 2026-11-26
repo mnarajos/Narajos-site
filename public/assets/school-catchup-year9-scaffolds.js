@@ -1,5 +1,5 @@
 import { question as q } from "./school-catchup-journey.js";
-import { airSac, diagram, line, node, picture, blue, ink, teal, text } from "./catchup-models.js";
+import { airSac, arrow, circle, compare, diagram, line, node, picture, blue, ink, rust, teal, text } from "./catchup-models.js";
 import { osmosisQuestionDiagram, year9Visual } from "./school-catchup-visuals.js";
 
 const worked = (title, ...lines) => ({title, lines});
@@ -31,6 +31,70 @@ function exchangeSurface() {
     ${text(45,29,"A",ink,17)}${line(60,27,266,27,blue,3)}
     ${text(45,118,"B",ink,17)}${bottom}${line(60,121,265,121,teal,2)}
     ${text(160,145,"Same overall width",ink,14)}`,320,157));
+}
+
+function waterLeavingCell() {
+  return picture("A plant cell in concentrated brine", diagram(
+    "A plant cell is surrounded by concentrated brine. Water crosses the cell membrane in both directions, with more moving out of the cell.", `
+    <rect x="14" y="25" width="292" height="132" rx="10" fill="#f5f0e5" stroke="${rust}" stroke-width="2"/>
+    <rect x="70" y="47" width="130" height="90" rx="8" fill="#e2f3f0" stroke="${teal}" stroke-width="3"/>
+    ${text(135,75,"Cell contents",teal,15)}${text(135,96,"more dilute",teal,14)}
+    ${text(253,54,"Brine",rust,15)}${text(253,72,"more",rust,14)}${text(253,90,"concentrated",rust,14)}
+    ${arrow(168,110,243,110,blue,4)}${arrow(243,126,168,126,blue,1.5)}
+    ${text(241,148,"Water",blue,14)}`,320,174),
+    "Follow the thicker arrow: more water crosses out than back in. The boundary represents the partially permeable cell membrane.");
+}
+
+function muscleCell() {
+  const mitochondria = [70, 110, 150, 190, 230].map(x =>
+    `<ellipse cx="${x}" cy="80" rx="15" ry="9" fill="#f1c7ab" stroke="${rust}" stroke-width="2"/>
+    <path d="M${x-8} 80q4-6 8 0t8 0" fill="none" stroke="${rust}"/>`).join("");
+  return picture("A working muscle cell", diagram(
+    "A simplified elongated muscle cell contains many mitochondria, the sites of aerobic respiration.", `
+    <path d="M23 80Q40 45 160 48T297 80Q280 115 160 112T23 80Z" fill="#e2f3f0" stroke="${teal}" stroke-width="3"/>
+    ${mitochondria}${line(190,68,220,39,rust,2)}${text(238,31,"Mitochondria",rust,15)}
+    ${text(160,145,"Muscle cell · simplified",ink,15)}`),
+    "Locate the mitochondria: aerobic respiration here transfers energy for contraction. The cell and structures are not to scale.");
+}
+
+function plantCellJobs() {
+  const leaf = node("figure", "", "catchup-picture");
+  const image = node("img");
+  image.className = "catchup-photo";
+  image.src = "/assets/ks3-diagrams/palisade-cell.svg";
+  image.alt = "Palisade cell with chloroplasts, nucleus, mitochondria and a cell wall labelled.";
+  image.width = 360;
+  image.height = 280;
+  leaf.append(image, node("figcaption", "Leaf cell: chloroplasts absorb light for photosynthesis."));
+  const root = picture("Root hair cell", diagram(
+    "A root hair cell has a long, thin extension that contacts the soil. The extension increases surface area for absorption.", `
+    <path d="M40 42H170Q195 42 202 71L277 74Q289 75 289 85Q289 95 277 96L202 99Q195 128 170 128H40Z" fill="#e2f3f0" stroke="${teal}" stroke-width="4"/>
+    ${circle(87,84,16,"#d8c7e4",ink,2)}${line(235,74,235,44,teal,2)}${text(235,35,"Root hair",teal,15)}
+    ${text(115,151,"Cell body",ink,15)}`,320,170),
+    "The long extension increases the area in contact with soil, helping water and mineral ions enter.");
+  return compare(leaf, root);
+}
+
+function concentrationPanel(title, from, to, against, substance) {
+  const dots = [[65,55],[88,79],[60,105],[105,54],[112,110],[89,54],[236,79]];
+  const positions = against ? dots.map(([x,y]) => [320-x,y]) : dots;
+  return picture(title, diagram(
+    `${substance} particles are ${against ? "less concentrated on the left and more concentrated on the right; movement shown is from left to right, against the concentration gradient" : "more concentrated on the left and less concentrated on the right; net movement shown is from left to right, down the concentration gradient"}.`, `
+    <rect x="18" y="28" width="284" height="111" rx="8" fill="#f5fafb" stroke="${teal}" stroke-width="2"/>
+    ${line(160,29,160,138,teal,3)}
+    ${positions.map(([x,y]) => circle(x,y,5,"#eab776",rust)).join("")}
+    ${arrow(125,82,194,82,blue,3)}
+    ${text(87,20,from,ink,14)}${text(233,20,to,ink,14)}
+    ${text(160,161,substance,ink,14)}`), against ? "Movement against the gradient needs energy from respiration and membrane proteins, which are omitted here." : "For particles able to cross the membrane, net diffusion is down the concentration gradient.");
+}
+
+function transportComparison() {
+  return compare(concentrationPanel("Diffusion", "Higher", "Lower", false, "Particles"),
+    concentrationPanel("Active transport", "Lower", "Higher", true, "Particles"));
+}
+
+function gutTransport() {
+  return concentrationPanel("Absorption by a gut cell", "Gut lumen: lower", "Cell: higher", true, "Glucose molecules");
 }
 
 const scaffolds = {
@@ -128,6 +192,20 @@ const scaffolds = {
 };
 
 export function applyYear9Scaffolds(lessons) {
+  // The membrane model explains the first two stages; the cell view applies it
+  // to a different situation rather than assuming the opening view does so.
+  lessons.osmosis.steps[0].visual = () => year9Visual("osmosis");
+  lessons.osmosis.steps[1].visual = () => year9Visual("osmosis");
+  lessons.osmosis.steps[2].visual = waterLeavingCell;
+  lessons["cell-structures"].steps[0].visual = () => year9Visual("cell-structures");
+  lessons["cell-structures"].steps[1].visual = muscleCell;
+  lessons["cell-structures"].steps[2].visual = plantCellJobs;
+  lessons["active-transport"].steps[0].visual = transportComparison;
+  lessons["active-transport"].steps[1].visual = () => year9Visual("active-transport");
+  lessons["active-transport"].steps[2].visual = gutTransport;
+  lessons.mitosis.steps[0].visual = () => year9Visual("mitosis");
+  lessons.mitosis.steps[1].visual = () => year9Visual("mitosis");
+  lessons.mitosis.steps[2].visual = () => year9Visual("mitosis");
   lessons["atomic-number"].retry = q("A neutral oxygen atom gains two electrons. What happens?", "It becomes an oxygen ion with charge −2.",
     "The proton number is unchanged. Two extra electrons give a net negative charge of −2.",
     ["It becomes an oxygen ion with charge +2.", "Each added electron contributes a negative charge."],

@@ -208,7 +208,9 @@ export function mountJourney(host, model, lesson) {
       if (step.teach) {
         const [title, text] = step.teach;
         const teaching = element("div", "", "school-step-notes");
-        teaching.append(element("h4", title), element("p", text));
+        teaching.append(element("h4", title));
+        if (step.visual) teaching.append(step.visual());
+        teaching.append(element("p", text));
         stage.append(teaching);
       }
       if (guided && step.worked) {
@@ -317,13 +319,13 @@ export function mountJourney(host, model, lesson) {
       paused = !viewOnly;
       viewOnly = false;
       renderStages();
-      checkList.querySelector(paused ? ".school-current-stage button" : "summary")?.focus({preventScroll: true});
+      checkList.querySelector(paused ? ".school-current-stage > button.school-primary" : "summary")?.focus({preventScroll: true});
       return;
     }
     dialog.close();
     if (viewOnly) return;
     renderStages({animateCompletion});
-    checkList.querySelector(".school-current-stage button")?.focus({preventScroll: true});
+    checkList.querySelector(".school-current-stage > button.school-primary")?.focus({preventScroll: true});
   }
 
   function renderCheck() {

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="300" viewBox="0 0 480 300" role="img" aria-labelledby="title description">
+  <title id="title">Similar energy does not establish similar iron intake</title>
+  <desc id="description">Two fictional meals have bars of equal length for similar energy. Meal A contains a substantial iron source and meal B does not. No measured values are shown.</desc>
+  <rect width="480" height="300" rx="12" fill="#f8f7f3"/>
+  <g font-family="system-ui, sans-serif" fill="#253d4a" font-size="16" font-weight="600">
+    <text x="24" y="35">Fictional comparison</text><text x="24" y="62" font-size="14">Energy bars show a similar amount, not measured values.</text>
+    <text x="24" y="111">Meal A</text><text x="24" y="175">Meal B</text>
+    <text x="24" y="229">A: substantial iron source</text>
+    <text x="24" y="257">B: no substantial iron source</text>
+  </g>
+  <path d="M141 94h285v29H141z M141 158h285v29H141z" fill="#b9dbd2" stroke="#397767" stroke-width="2"/>
+  <g font-family="system-ui, sans-serif" fill="#173f38" font-size="15" font-weight="700"><text x="165" y="114">Similar energy</text><text x="165" y="178">Similar energy</text></g>
+</svg>
