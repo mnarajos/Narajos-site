@@ -8,3 +8,7 @@
 .homework .check-table th:first-child{width:36%}
 .homework .check-table th,.homework .check-table td{overflow-wrap:break-word}
 @media (max-width:480px){.homework .check-table th,.homework .check-table td{padding:.35rem;font-size:.9rem}}
+/* Original membrane schematics: keep each complete view readable without a horizontal scroller. */
+.homework .bio-diagram{margin:1.2rem auto;max-width:26rem}
+.homework .bio-diagram img{display:block;width:100%;height:auto;border:1px solid #bdced6;background:#fff}
+.homework .bio-diagram figcaption{font-size:.9rem;line-height:1.4;margin-top:.4rem}
