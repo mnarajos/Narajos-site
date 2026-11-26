@@ -80,7 +80,11 @@ for (const [file,global,rows] of [
  ['catchup-response-recap-figures.js','ALevelResponseRecapFigures', [['a6','reflex',0],['a6','tropisms',0],['a6','homeo',0],['a6','hrcontrol',0],['a6','kidney',1],['a6','traps6',0],['a6','traps6',1],['a6','traps6',2],['a6','traps6',3],['a6','ctx6',0],['a6','ctx6',1],['a6','ctx6',2]]],
  ['catchup-inheritance-details.js','ALevelInheritanceDetails', [['a7','genterms',0],['a7','codom',0],['a7','sexlink',0],['a7','sexlink',1],['a7','dihybrid',0],['a7','dihybrid',1],['a7','dihybrid',2]]],
  ['catchup-context-molecules.js','ALevelContextMolecules', [['a1','ctx1',1],['a1','ctx1',2]]],
- ['catchup-pedigree-figures.js','ALevelPedigreeFigures', [['a7','pedigree',0],['a7','pedigree',1],['a7','pedigree',2]]]
+ ['catchup-pedigree-figures.js','ALevelPedigreeFigures', [['a7','pedigree',0],['a7','pedigree',1],['a7','pedigree',2]]],
+ ['catchup-response-core-figures.js','ALevelResponseCoreFigures', [['a6','taxes',0],['a6','taxes',1],['a6','speed',1],['a6','summation',1]]],
+ ['catchup-conservation-details.js','ALevelConservationDetails', [['a7','speciation',2],['a7','ecosys',1],['a7','conserve',0],['a7','conserve',1]]],
+ ['catchup-gene-recap-figures.js','ALevelGeneRecapFigures', [['a8','ctx8',0],['a8','ctx8',1],['a8','ctx8',2],['a8','traps8',0],['a8','traps8',1],['a8','traps8',2]]],
+ ['catchup-chisq-figures.js','ALevelChiSquaredFigures', [['a7','chisq',0],['a7','chisq',1],['a7','chisq',2]]]
 ]) {
  vm.runInNewContext(readFileSync(new URL('../public/alevel/'+file, import.meta.url), 'utf8'), context);
  for (const [topic,id,group] of rows) { const figure=context.window[global].render(topic,id,group); assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/); assert.match(figure, /<figcaption>.{20,}<\/figcaption>/); }

@@ -1,8 +1,8 @@
 import { investigations } from "./gcse-investigations.js";
 import { question } from "./school-catchup-journey.js";
-import { priorityCatchup } from "./gcse-catchup-priority.js";
+import { priorityCatchup, distanceWorkedGraph, velocityWorkedGraph } from "./gcse-catchup-priority.js";
 import { gcseStepVisuals } from "./gcse-step-visuals.js";
-import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, gcseWorkedLineVisuals, heatingCurve, readableGcseFigure, atomsRearranged, ohmicCurrentGraph, filamentCurrentGraph } from "./gcse-more-step-visuals.js";
+import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, gcseWorkedLineVisuals, heatingCurve, readableGcseFigure, atomsRearranged, ohmicCurrentGraph, filamentCurrentGraph, gridCurrentComparison, gridHeatingComparison } from "./gcse-more-step-visuals.js";
 import { gcseVisual } from "./gcse-catchup-visuals.js";
 
 function lesson(year, code, title, hook, notice, idea, visual, stages, independent, retry, higher) {
@@ -643,13 +643,24 @@ scaffold(complementary["respiration-exercise"], "Trace oxygen from the lungs to 
 // The respiratory worked example is added after the core catalogue above.
 for (const [id, render] of Object.entries(gcseWorkedVisuals)) gcseCatchup[id].steps[0].worked.visual = render;
 for (const [id, renders] of Object.entries(gcseWorkedLineVisuals)) {
-  gcseCatchup[id].steps[0].worked.lineVisuals = renders.map(render => () => readableGcseFigure(render));
+  gcseCatchup[id].steps[0].worked.lineVisuals = renders.map(render => render ? () => readableGcseFigure(render) : null);
 }
 gcseCatchup["current-potential-difference"].steps[0].worked.lineVisuals = [
   () => readableGcseFigure(() => gcseVisual(gcseCatchup["current-potential-difference"].visual)),
   null, // The same variable-supply circuit supports the two adjacent setup lines.
   () => readableGcseFigure(ohmicCurrentGraph),
   () => readableGcseFigure(filamentCurrentGraph)
+];
+gcseCatchup["national-grid"].steps[0].worked.lineVisuals = [
+  () => readableGcseFigure(gridCurrentComparison),
+  null, // Both adjacent lines use the same equal-power comparison.
+  () => readableGcseFigure(gridHeatingComparison),
+  () => readableGcseFigure(() => gcseVisual(gcseCatchup["national-grid"].visual))
+];
+gcseCatchup["motion-graphs"].steps[0].worked.lineVisuals = [
+  () => readableGcseFigure(distanceWorkedGraph),
+  () => readableGcseFigure(velocityWorkedGraph),
+  null // The preceding velocity graph also supplies the final-section values.
 ];
 
 // Apply the phone-size label floor to any reused worked-example graphics.

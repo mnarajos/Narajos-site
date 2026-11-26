@@ -1,0 +1,44 @@
+/* Original conceptual models for ecology, conservation and genetic drift. */
+(function () {
+ "use strict";
+ const figures={
+  "a7/speciation/2": [{
+   title:"Chance changes allele frequency",
+   alt:"In an illustrative random-sampling model a source population has eight gene copies, four A and four a. The four copies in a small next population are three A and one a. The frequency of A changes by chance from one half to three quarters; the symbols are a hypothetical example, not real population data.",
+   caption:"Count A among all the gene copies. In this hypothetical sample its frequency changes from 4/8 to 3/4 by chance, without selecting for A. Chance effects are especially important in small populations.",
+   height:310,
+   art:`<text x="150" y="24" text-anchor="middle">Source population</text><g fill="#e3edf5" stroke="#537a94" stroke-width="2"><circle cx="45" cy="58" r="16"/><circle cx="115" cy="58" r="16"/><circle cx="185" cy="58" r="16"/><circle cx="255" cy="58" r="16"/><circle cx="45" cy="98" r="16"/><circle cx="115" cy="98" r="16"/><circle cx="185" cy="98" r="16"/><circle cx="255" cy="98" r="16"/></g><text x="45" y="64" text-anchor="middle">A</text><text x="115" y="64" text-anchor="middle">A</text><text x="185" y="64" text-anchor="middle">A</text><text x="255" y="64" text-anchor="middle">A</text><text x="45" y="104" text-anchor="middle">a</text><text x="115" y="104" text-anchor="middle">a</text><text x="185" y="104" text-anchor="middle">a</text><text x="255" y="104" text-anchor="middle">a</text><text x="150" y="139" text-anchor="middle">A frequency = 4/8</text><path d="M150 149v24m-6-7 6 7 6-7" stroke="#344958" stroke-width="2" fill="none"/><text x="150" y="199" text-anchor="middle">Random sample: next population</text><g fill="#f1dfc6" stroke="#a5792e" stroke-width="2"><circle cx="45" cy="230" r="16"/><circle cx="115" cy="230" r="16"/><circle cx="185" cy="230" r="16"/><circle cx="255" cy="230" r="16"/></g><text x="45" y="236" text-anchor="middle">A</text><text x="115" y="236" text-anchor="middle">A</text><text x="185" y="236" text-anchor="middle">A</text><text x="255" y="236" text-anchor="middle">a</text><text x="150" y="284" text-anchor="middle">A frequency = 3/4</text>`
+  }],
+  "a7/ecosys/1": [{
+   title:"Population size and carrying capacity",
+   alt:"A conceptual graph shows population size against time. Population increases and then varies around a dashed horizontal carrying-capacity line. Abiotic conditions such as water availability and biotic interactions such as competition and predation can affect population size and carrying capacity. The curve is illustrative, not measured data.",
+   caption:"Read population size against the dashed carrying capacity in this simplified model. Water, temperature, competition and predation can change population size; the capacity itself can change when conditions change.",
+   height:310,
+   art:`<text x="150" y="24" text-anchor="middle">Illustrative population pattern</text><path d="M58 49v177h218" fill="none" stroke="#344958" stroke-width="2"/><path d="M60 101h190" stroke="#a76125" stroke-width="2" stroke-dasharray="7 5"/><text x="255" y="106">K</text><path d="M60 217C84 216 99 205 113 171S141 96 162 96S184 119 199 106S218 88 230 100S245 111 258 101" stroke="#32776d" stroke-width="3" fill="none"/><text x="20" y="140" text-anchor="middle" transform="rotate(-90 20 140)">Population size</text><text x="160" y="255" text-anchor="middle">Time →</text><text x="150" y="287" text-anchor="middle">K = carrying capacity</text>`
+  }],
+  "a7/conserve/0": [{
+   title:"Managing a succession stage",
+   alt:"A schematic sequence shows open grassland followed by shrubs and then woodland if succession continues. Management such as grazing or cutting can limit shrub establishment and retain an open habitat. The sequence is context dependent and does not apply identically to all sites.",
+   caption:"Follow one possible succession. Grazing or cutting can limit woody growth and maintain an open habitat needed by some species; the outcome depends on local conditions and management.",
+   height:340,
+   art:`<text x="150" y="24" text-anchor="middle">One possible succession</text><path d="M25 98h70M40 98l-8-26m8 26 8-30m7 30-3-23m3 23 13-27m6 27 8-19" stroke="#4b8361" stroke-width="3" fill="none"/><text x="60" y="127" text-anchor="middle">Grassland</text><path d="M103 90h30m-7-6 7 6-7 6" stroke="#344958" stroke-width="2" fill="none"/><path d="M150 99V71m0 28-15-20m15 20 16-20" stroke="#805d45" stroke-width="3"/><g fill="#a6d3ab" stroke="#4b8361" stroke-width="2"><circle cx="136" cy="75" r="13"/><circle cx="151" cy="64" r="15"/><circle cx="166" cy="75" r="13"/></g><text x="150" y="127" text-anchor="middle">Shrubs</text><path d="M178 90h30m-7-6 7 6-7 6" stroke="#344958" stroke-width="2" fill="none"/><path d="M242 101V64m0 21-17-22m17 22 18-22" stroke="#805d45" stroke-width="5"/><g fill="#79b88a" stroke="#4b8361" stroke-width="2"><circle cx="224" cy="61" r="15"/><circle cx="242" cy="48" r="18"/><circle cx="260" cy="61" r="15"/></g><text x="242" y="127" text-anchor="middle">Woodland</text><path d="M60 157v34m-6-7 6 7 6-7" stroke="#344958" stroke-width="2" fill="none"/><text x="150" y="222" text-anchor="middle">Grazing or cutting can limit</text><text x="150" y="247" text-anchor="middle">woody plant establishment</text><text x="150" y="289" text-anchor="middle">Open habitat retained</text>`
+  }],
+  "a7/conserve/1": [{
+   title:"Ways to manage habitats",
+   alt:"Four schematic views show grazing animals eating vegetation, a mower cutting grass, a coppiced tree stump producing new shoots, and a managed controlled burn. Each method manages vegetation in a way suited to a particular site; coppicing manages regrowth in woodland.",
+   caption:"Compare ways to manage vegetation. Grazing and mowing can retain open habitats; coppicing manages woodland regrowth. Controlled burning is used only where suitable for the habitat and species.",
+   height:330,
+   art:`<path d="M16 151h268M150 34v250" stroke="#d6e1de" stroke-width="2"/><ellipse cx="73" cy="83" rx="38" ry="23" fill="#eee8dc" stroke="#805d45" stroke-width="2"/><circle cx="113" cy="77" r="13" fill="#eee8dc" stroke="#805d45" stroke-width="2"/><path d="M54 102v15M91 102v15M19 125h110m-94 0-5-13m5 13 5-13m8 13 5-13m8 13 5-13" stroke="#4b8361" stroke-width="2"/><text x="73" y="142" text-anchor="middle">Grazing</text><path d="M177 106h73l-9-28h-55zM212 77l20-34h29M190 112a7 7 0 1 0 0 14a7 7 0 1 0 0-14M239 112a7 7 0 1 0 0 14a7 7 0 1 0 0-14" fill="#e3edf5" stroke="#537a94" stroke-width="3"/><text x="221" y="142" text-anchor="middle">Mowing</text><path d="M48 251v-38h50v38z" fill="#c79b77" stroke="#805d45" stroke-width="2"/><path d="M62 213q-14-20-10-34M73 213v-38M84 213q16-20 12-34" fill="none" stroke="#4b8361" stroke-width="3"/><text x="73" y="282" text-anchor="middle">Coppicing</text><path d="M221 246c-28-13-15-35-9-43q0 15 9 14q12-12 9-28q24 25 9 45q-6 8-18 12Z" fill="#efbd84" stroke="#a76125" stroke-width="2"/><text x="221" y="282" text-anchor="middle">Controlled</text><text x="221" y="304" text-anchor="middle">burning</text>`
+  },{
+   title:"Conservation and human needs",
+   alt:"A shared area of land is connected to a habitat and species on one side and to farming, food and income on the other. Management decisions influence both; the effects depend on local evidence and the method chosen.",
+   caption:"Consider both paths from the same land: a management decision may affect habitat and species as well as food and income. Evaluate the local evidence and trade-offs rather than assuming the outcome.",
+   height:300,
+   art:`<text x="150" y="26" text-anchor="middle">Shared land</text><path d="M150 43v38M150 81L66 139m4-10-4 10 10-1M150 81l84 58m-10-1 10 1-4-10" stroke="#344958" stroke-width="2" fill="none"/><path d="M65 224v-60M65 197q-29 0-29-24q26 0 29 24M65 184q29 0 29-24q-26 0-29 24" fill="#a6d3ab" stroke="#4b8361" stroke-width="3"/><path d="M208 221h60M219 221v-40l18-13 18 13v40M228 221v-20h18v20" fill="#f1dfc6" stroke="#a5792e" stroke-width="2"/><text x="65" y="257" text-anchor="middle">Habitat and</text><text x="65" y="279" text-anchor="middle">species</text><text x="237" y="257" text-anchor="middle">Food and</text><text x="237" y="279" text-anchor="middle">income</text>`
+  }]
+ };
+ window.ALevelConservationDetails={render(topic,id,group){
+  const list=figures[topic+"/"+id+"/"+group];if(!list)return "";
+  return list.map(f=>`<figure class="kc-visual"><div class="kc-visual-heading"><strong>${f.title}</strong></div><div class="kc-visual-art kc-visual-art-compact"><svg viewBox="0 0 300 ${f.height}" role="img" aria-label="${f.alt}" xmlns="http://www.w3.org/2000/svg" style="font:16px system-ui,sans-serif;fill:#233e4c">${f.art}</svg></div><figcaption>${f.caption}</figcaption></figure>`).join("");
+ }};
+})();

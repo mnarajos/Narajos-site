@@ -82,6 +82,10 @@
       '<a href="' + escape(photo.licenceUrl) + '">' + escape(photo.licence) + '</a> · ' + escape(photo.changes || 'Resized and converted to WebP') + '</figcaption></figure>';
   }
 
+  function teachingPhotos(items) {
+    return (Array.isArray(items) ? items : [items]).filter(Boolean).map(photo => figure(photo)).join("");
+  }
+
   function explanationParagraphs(lesson) {
     return (lesson.explain || []).map((line, index) =>
       paragraphs([line]) + (lesson.explainPhotos?.[index] || []).map(photo => figure(photo)).join("") + (lesson.explainDiagrams?.[index] || []).map(teachingDiagram).join("")
@@ -170,7 +174,7 @@
       (lesson.graph ? window.KeystoneHumanSkills.graphHTML(lesson.graph) : "") + table(lesson.table, lesson.focusCells) +
       '<ol class="hb-model-steps' + (lesson.nodes ? ' hb-model-path' : '') + '">' + lesson.model.map((step, i) =>
         '<li value="' + (i + 1) + '"' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
-        escape(step) + teachingDiagrams(lesson.modelDiagrams?.[i]) + '</li>').join("") +
+        escape(step) + teachingPhotos(lesson.modelPhotos?.[i]) + teachingDiagrams(lesson.modelDiagrams?.[i]) + '</li>').join("") +
       '</ol>' + (lesson.model.length > 1 ?
         '<button type="button" class="button secondary" data-hb-action="model">Show next step</button>' : '') +
       (evidenceModel ? '<button type="button" class="button quiet hb-model-back" hidden>Previous step</button>' : '') +

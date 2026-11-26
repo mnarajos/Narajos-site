@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 330" role="img" aria-labelledby="title desc">
+<title id="title">Using a peak-flow meter</title>
+<desc id="desc">A schematic mouth seals around a mouthpiece. An arrow shows a forceful outward blow through a meter; the indicator moves along a scale. A repeated-blow symbol reminds the reader to use the highest acceptable reading.</desc>
+<rect width="280" height="330" fill="#f5f9f8"/>
+<g font-family="sans-serif" fill="#183848" text-anchor="middle"><text x="140" y="23" font-size="16" font-weight="bold">Peak expiratory flow</text><text x="140" y="48" font-size="15">After a full breath in</text></g>
+<path d="M20 113 Q30 96 51 104 L68 113 L51 122 Q30 130 20 113Z" fill="#e1b2a3" stroke="#985f53" stroke-width="2"/>
+<path d="M53 110 H94 V119 H53Z" fill="#d5e4ea" stroke="#547483" stroke-width="2"/>
+<rect x="93" y="94" width="145" height="43" rx="11" fill="#e4edf1" stroke="#547483" stroke-width="2"/>
+<path d="M106 108 H219 M110 101v7 M130 101v7 M150 101v7 M170 101v7 M190 101v7 M210 101v7" stroke="#547483" stroke-width="2"/>
+<path d="M161 90 l-6 -10 h12Z" fill="#bc6840"/><path d="M78 115 H220" fill="none" stroke="#236b70" stroke-width="3"/><path d="M213 109 l7 6 -7 6" fill="none" stroke="#236b70" stroke-width="3"/>
+<g font-family="sans-serif" font-size="15" fill="#183848" text-anchor="middle"><text x="55" y="154">Seal lips</text><text x="165" y="154">Blow out hard</text><text x="140" y="190">Read where the indicator stops.</text><text x="140" y="222">Repeat acceptable blows;</text><text x="140" y="243">record the highest reading.</text><text x="140" y="280">A weak blow or poor seal</text><text x="140" y="301">can distort the result.</text></g>
+</svg>

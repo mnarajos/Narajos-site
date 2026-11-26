@@ -14,6 +14,7 @@
  if(gas){gas.explainDiagrams={...gas.explainDiagrams,0:[delivery]};gas.modelDiagrams={...gas.modelDiagrams,1:alveolus,2:delivery};}
  const interaction=lessons['f170/2.2.2'];
  if(interaction){interaction.explainDiagrams={...interaction.explainDiagrams,0:[delivery]};interaction.modelDiagrams={...interaction.modelDiagrams,1:alveolus,2:delivery};}
+ const peak=fig('peak-flow-method',330,'A schematic mouth seals around a peak-flow meter mouthpiece. An arrow shows a forceful outward blow through the meter, and an indicator moves along a scale.','Follow the forced blow through the meter. Reset and repeat acceptable blows, then record the highest reading; the scale is illustrative.');
  const measure=lessons['f170/2.2.3'];
- if(measure){measure.explainDiagrams={...measure.explainDiagrams,0:[ventilation]};measure.modelDiagrams={...measure.modelDiagrams,0:ventilation,1:ventilation,2:delivery};}
+ if(measure){measure.explainDiagrams={...measure.explainDiagrams,0:[ventilation],1:[peak]};measure.modelDiagrams={...measure.modelDiagrams,0:ventilation,1:ventilation,2:delivery};}
 })();

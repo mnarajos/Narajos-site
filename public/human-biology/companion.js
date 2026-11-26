@@ -488,6 +488,7 @@ const nutritionRecap = function(file, alt, caption, height) { return {
  src:"/human-biology/"+file+".svg",width:280,height:height,compact:true,alt:alt,caption:caption
 }; };
 const recapFigureMap = {
+ "f170/2.2.3/1": [["f170/2.2.3", "explainDiagrams", 1]],
  "f170/3.1.2/1": [["f170/3.1.2", "explainDiagrams", 1]],
  "f170/2.2.2/1": [nutritionRecap("bone-functions", "A schematic long bone supports a muscle attached by a tendon. A cutaway marks red marrow inside the bone, and a double arrow indicates calcium exchange between bone and blood.", "Locate the muscle attachment and marrow. Bone supports movement, stores calcium and contains blood-forming marrow; the drawing is not to scale.", 350)],
  "f170/3.1.1/1": [["f170/3.1.1", "modelDiagrams", 0], ["f170/3.1.1", "modelDiagrams", 1], ["f170/3.1.1", "modelDiagrams", 2]],

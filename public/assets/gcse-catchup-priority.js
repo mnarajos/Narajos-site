@@ -87,7 +87,7 @@ function motor() {
     "The opposite forces act on different sides of the coil, so they can turn it.");
 }
 
-function motionGraph(title, unit, values, max) {
+function motionGraph(title, unit, values, max, explanation = "") {
   const points = values.map(([t,y]) => [47 + t * 36, 142 - y * 106 / max]);
   const path = points.map(point => point.join(",")).join(" ");
   const ticks = [0, max / 2, max].map(v => {
@@ -100,7 +100,7 @@ function motionGraph(title, unit, values, max) {
     line(47,28,47,142)+line(47,142,286,142)+ticks+times+text(168,194,"Time (s)",ink,15)+
     text(48,24,title,ink,15,"start")+
     '<polyline points="' + path + '" fill="none" stroke="' + blue + '" stroke-width="3"/>'+
-    points.map(([x,y]) => circle(x,y,3,rust)).join(""),320,210));
+    points.map(([x,y]) => circle(x,y,3,rust)).join(""),320,210), explanation);
 }
 
 function equilibriumRates() {
@@ -108,10 +108,17 @@ function equilibriumRates() {
     [["0","8","0"],["2","5","3"],["4","4","4"],["6","4","4"]]);
 }
 
+export function distanceWorkedGraph() {
+  return motionGraph("Distance (m)", "metres", [[0,0],[2,4],[4,4]], 4,
+    "Read the slope for speed. A horizontal section means the distance stays unchanged.");
+}
+export function velocityWorkedGraph() {
+  return motionGraph("Velocity (m/s)", "metres per second", [[0,2],[2,2],[4,0]], 4,
+    "Read the slope for acceleration. A horizontal section can represent a steady, non-zero velocity.");
+}
 function pairedMotion() {
   const panel = node("div");
-  panel.append(motionGraph("Distance (m)", "metres", [[0,0],[2,4],[4,4]], 4),
-    motionGraph("Velocity (m/s)", "metres per second", [[0,2],[2,2],[4,0]], 4));
+  panel.append(distanceWorkedGraph(), velocityWorkedGraph());
   return panel;
 }
 

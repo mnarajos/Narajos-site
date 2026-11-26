@@ -443,6 +443,10 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <script src="/alevel/catchup-inheritance-details.js"></script>
 <script src="/alevel/catchup-context-molecules.js"></script>
 <script src="/alevel/catchup-pedigree-figures.js"></script>
+<script src="/alevel/catchup-response-core-figures.js"></script>
+<script src="/alevel/catchup-conservation-details.js"></script>
+<script src="/alevel/catchup-gene-recap-figures.js"></script>
+<script src="/alevel/catchup-chisq-figures.js"></script>
 <script src="/alevel/catchup-immunity-figures.js"></script>
 <script src="/alevel/catchup-transport-figures.js"></script>
 <script src="/alevel/catchup-transport-details.js"></script>
@@ -6380,7 +6384,11 @@ function catchupChunks(notes,synapse,topic,concept){
    (window.ALevelPracticalExtraFigures?window.ALevelPracticalExtraFigures.render(topic,concept,i/2):'')+
    (window.ALevelInheritanceDetails?window.ALevelInheritanceDetails.render(topic,concept,i/2):'')+
    (window.ALevelContextMolecules?window.ALevelContextMolecules.render(topic,concept,i/2):'')+
-   (window.ALevelPedigreeFigures?window.ALevelPedigreeFigures.render(topic,concept,i/2):'')+'</div>';
+   (window.ALevelPedigreeFigures?window.ALevelPedigreeFigures.render(topic,concept,i/2):'')+
+   (window.ALevelResponseCoreFigures?window.ALevelResponseCoreFigures.render(topic,concept,i/2):'')+
+   (window.ALevelConservationDetails?window.ALevelConservationDetails.render(topic,concept,i/2):'')+
+   (window.ALevelGeneRecapFigures?window.ALevelGeneRecapFigures.render(topic,concept,i/2):'')+
+   (window.ALevelChiSquaredFigures?window.ALevelChiSquaredFigures.render(topic,concept,i/2):'')+'</div>';
  }
  return h;
 }

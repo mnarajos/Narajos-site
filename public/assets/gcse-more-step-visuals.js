@@ -688,6 +688,37 @@ function pondweedTemperature() {
     line(244,37,244,134,rust,4)+circle(244,135,6,rust,rust)+text(201,185,'Water around plant',blue,15),
     'Monitor and keep the water temperature steady. A warmer lamp can otherwise change temperature as well as light intensity.',205);
 }
+function concentrationVolumes() {
+  return fig('Convert solution volumes',
+    'Two equal one-cubic-decimetre containers show 250 cubic centimetres, or 0.250 cubic decimetres, and 500 cubic centimetres, or 0.500 cubic decimetres. The first is one quarter of a cubic decimetre and the second is one half.',
+    text(70,25,'Sample A',ink,15)+text(240,25,'Sample B',ink,15)+
+    '<path d="M25 43 V143 H115 V43 M195 43 V143 H285 V43" fill="none" stroke="'+ink+'" stroke-width="2"/>'+
+    '<rect x="27" y="118" width="86" height="23" fill="#d7ebf5"/><rect x="197" y="93" width="86" height="48" fill="#d7ebf5"/>'+
+    text(70,174,'250 cm³',blue,15)+text(240,174,'500 cm³',blue,15)+text(70,206,'0.250 dm³',teal,15)+text(240,206,'0.500 dm³',teal,15),
+    'Each container represents 1 dm³. Compare a quarter and a half of the same capacity; divide cm³ by 1,000 to obtain dm³.',225);
+}
+function concentrationBars() {
+  return fig('Compare equal solution volumes',
+    'The worked example gives sample A a concentration of 24 grams per cubic decimetre and sample B a concentration of 20 grams per cubic decimetre. Two bars on the same scale show that A contains more solute in each cubic decimetre of solution.',
+    text(160,25,'Mass per 1 dm³',ink,15)+'<rect x="55" y="50" width="70" height="120" fill="#d9eaf4" stroke="'+blue+'" stroke-width="2"/><rect x="195" y="70" width="70" height="100" fill="#d9eee4" stroke="'+teal+'" stroke-width="2"/>'+
+    text(90,117,'24 g',blue,16)+text(230,127,'20 g',teal,16)+text(90,201,'Sample A',ink,15)+text(230,201,'Sample B',ink,15),
+    'Compare equal volumes. A is 6 ÷ 0.250 = 24 g/dm³; B is 10 ÷ 0.500 = 20 g/dm³. Bar heights use the same scale.',220);
+}
+export function gridCurrentComparison() {
+  return fig('Current at the same transmitted power',
+    'The worked example transmits 24 kilowatts, or 24,000 watts. At 2,000 volts the current is 12 amperes; at 12,000 volts it is 2 amperes. The bars share a scale and compare current for equal power.',
+    text(160,22,'Same power: 24 kW',ink,15)+text(90,50,'12 A',blue,16)+'<rect x="58" y="60" width="64" height="120" fill="#d9eaf4" stroke="'+blue+'" stroke-width="2"/>'+
+    text(230,150,'2 A',teal,16)+'<rect x="198" y="160" width="64" height="20" fill="#d9eee4" stroke="'+teal+'" stroke-width="2"/>'+
+    text(90,211,'2,000 V',ink,15)+text(230,211,'12,000 V',ink,15),
+    'Use I = P ÷ V. For the same power, the higher potential difference gives a smaller current.',230);
+}
+export function gridHeatingComparison() {
+  return fig('Heating in cables of equal resistance',
+    'For two cables with equal resistance, heating power is proportional to current squared. The 12 ampere current gives 36 times the heating power of 2 amperes, because 12 squared divided by 2 squared is 36. The displayed units are relative, not measured watts.',
+    text(160,25,'Same cable resistance',ink,15)+text(52,78,'12 A',blue,15)+'<rect x="102" y="55" width="180" height="32" fill="#f1d8c7" stroke="'+rust+'" stroke-width="2"/>'+text(192,78,'36 units',ink,15)+
+    text(52,145,'2 A',teal,15)+'<rect x="102" y="122" width="5" height="32" fill="#d9eee4" stroke="'+teal+'" stroke-width="2"/>'+text(166,145,'1 unit',ink,15),
+    'Compare equal-resistance cables: 12² : 2² = 36 : 1. The bars show relative heating power, not measured values.',175);
+}
 export function ohmicCurrentGraph() {
   return fig('Current through an ohmic resistor',
     'At constant temperature, a graph of current against potential difference for an ohmic resistor is a straight line through the origin. As potential difference doubles, current doubles.',
@@ -815,6 +846,7 @@ export const gcseWorkedLineVisuals = {
   'domestic-electricity': [alternatingAndDirect, mainsWorkingLoop, faultPath],
   'photosynthesis-limits': [pondweedRateWorked, pondweedLight, pondweedTemperature],
   'reacting-masses': [magnesiumParticles, oxygenRequirement, magnesiumYield],
+  'solution-concentration': [concentrationVolumes, concentrationBars, null],
   'quadrat-evidence': [() => grouped(randomCoordinates,quadratBoundary), quadratMeanWorked, parallelTransects]
 };
 

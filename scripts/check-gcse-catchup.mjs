@@ -198,6 +198,13 @@ export async function checkGCSECatchup(browser, base) {
       return false;
     });
     assert.equal(wireCrossesSymbol, false, "wires must not pass through circuit symbols");
+    const independentMotionCaption = await page.evaluate(async () => {
+      const {gcseCatchup} = await import("/assets/gcse-catchup-data.js");
+      const question = gcseCatchup["motion-graphs"].steps.at(-1);
+      return question.reference.render().querySelector("figcaption").textContent;
+    });
+    assert.equal(independentMotionCaption, "Velocity (m/s)",
+      "the independent motion graph must not include the worked interpretation");
     for (const year of [10,11]) {
       await page.goto(base + "/science-catch-up/?year=" + year);
       const ids = Object.entries(gcseCatchup).filter(([,lesson]) => lesson.year === year).map(([id]) => id);

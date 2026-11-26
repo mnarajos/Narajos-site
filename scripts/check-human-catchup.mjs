@@ -459,14 +459,18 @@ export async function checkHumanCatchup(browser, base) {
     await page.getByRole("region", { name: "Continue learning" }).getByRole("link", { name: /Resume F171 Flashcards/ }).click();
     assert.equal(await page.getByRole("textbox").inputValue(), "A saved flashcard draft.");
 
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
     await open("catchup/f170/3.3.1");
-    await expand(page.locator(".hb-teach-stage").first());
-    await expand(stage("guided"));
+    await expand(page.locator("[data-hb-model-step]"));
+    const originalUterine = page.locator('[data-hb-model-step] li:nth-child(1) img[src="/assets/micrographs/hb-endometrium.webp"]');
+    const originalAssessment = stage("independent").locator('.hb-teach-photo img');
+    assert(await originalUterine.isVisible());
+    assert.equal(await originalUterine.evaluate(async image => { await image.decode(); return image.naturalWidth; }), 760);
     await expand(stage("independent"));
-    assert.deepEqual(await page.locator(".hb-teach-photo img").evaluateAll(async images => {
+    assert.deepEqual(await originalAssessment.evaluateAll(async images => {
       await Promise.all(images.map(image => image.decode()));
-      return images.map(image => image.naturalWidth);
-    }), [760, 710, 479]);
+      return images.map(image => [image.getAttribute("src"), image.naturalWidth]);
+    }), [["/assets/micrographs/hb-ovary.webp", 710], ["/assets/micrographs/hb-testis.webp", 479]]);
 
     await open("catchup/f175/a1");
     await expand(page.locator(".hb-teach-stage").first());
@@ -764,7 +768,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/2.1.3/2", ["dexa-scan.svg"]],
       ["f170/2.1.3/1", ["artery-plaque-comparison.svg", "airway-narrowing.svg", "alveolar-wall-loss.svg"]],
       ["f170/2.2.2/1", ["bone-functions.svg"]],
-      ["f170/2.2.1/0", ["f170-oxygen-delivery.svg"]], ["f170/2.2.1/2", ["f170-oxygen-delivery.svg"]], ["f170/2.2.3/2", ["f170-ventilation-example.svg"]],
+      ["f170/2.2.1/0", ["f170-oxygen-delivery.svg"]], ["f170/2.2.1/2", ["f170-oxygen-delivery.svg"]], ["f170/2.2.3/1", ["peak-flow-method.svg"]], ["f170/2.2.3/2", ["f170-ventilation-example.svg"]],
       ["f170/2.1.1/0", ["f170-alveolar-barrier.svg"]], ["f170/2.1.1/1", ["pulse-measurement-context.svg"]], ["f170/2.1.1/2", ["pulse-measurement-context.svg"]],
       ["f170/2.1.4/0", ["f170-antigen-recognition.svg"]], ["f170/2.1.4/1", ["ventricular-assist.svg"]], ["f170/2.1.4/2", ["valve-repair.svg"]],
       ["f170/1.1.2/1", ["hb-blood-cells-sem.webp", "hb-pancreas-tem.webp"]],
@@ -844,6 +848,7 @@ export async function checkHumanCatchup(browser, base) {
 
     // Count and organelle diagrams follow the authored paragraph and model step.
     for (const [route, explain, worked] of [
+      ["f170/1.1.1", ["red-cell-section.svg", "white-cell-nuclei.svg"], ["red-cell-section.svg", "red-cell-section.svg", "red-cell-capacity.svg"]],
       ["f170/1.1.2.counting", ["cell-counting-chamber.svg", "cell-counting-impedance.svg"], ["cell-counting-chamber.svg", "cell-counting-clumps.svg"]],
       ["f170/1.1.3", ["cell-nucleus-traffic.svg", "cell-mito-protein-import.svg", "cell-er-comparison.svg", "cell-protein-routing.svg"], ["cell-nucleus-rer.svg", "cell-protein-routing.svg", "cell-secretion-failure.svg"]],
       ["f170/1.1.3.evidence", ["f170-ribosome-assembly.svg", "f170-ribosome-types.svg", "cell-er-comparison.svg"], ["cell-protein-routing.svg", "f170-enzyme-misrouting.svg"]],
@@ -857,7 +862,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/2.1.2", ["f170-circulation-path.svg"], ["f170-pulmonary-valve.svg", "f170-alveolar-barrier.svg", "f170-circulation-path.svg"]],
       ["f170/2.1.3", ["f170-oxygen-delivery.svg"], [null, "f170-alveolar-barrier.svg", "f170-oxygen-delivery.svg"]],
       ["f170/2.2.2", ["f170-oxygen-delivery.svg"], [null, "f170-alveolar-barrier.svg", "f170-oxygen-delivery.svg"]],
-      ["f170/2.2.3", ["f170-ventilation-example.svg"], ["f170-ventilation-example.svg", "f170-ventilation-example.svg", "f170-oxygen-delivery.svg"]],
+      ["f170/2.2.3", ["f170-ventilation-example.svg", "peak-flow-method.svg"], ["f170-ventilation-example.svg", "f170-ventilation-example.svg", "f170-oxygen-delivery.svg"]],
       ["f170/1.1.4", ["f170-oxygen-diffusion.svg", "f170-water-active.svg"], ["f170-oxygen-diffusion.svg", "f170-oxygen-diffusion.svg", "f170-oxygen-diffusion.svg"]],
       ["f170/1.1.4.surface", ["f170-membrane-labelled.svg", "f170-receptor-signalling.svg", "f170-antigen-recognition.svg", "f170-vesicle-traffic.svg"], ["f170-membrane-labelled.svg", "f170-cholesterol-membrane.svg", "f170-membrane-labelled.svg"]]
     ]) {
@@ -904,6 +909,36 @@ export async function checkHumanCatchup(browser, base) {
     assert(await meiosisModel.locator('li:nth-child(2) img[src$="/f170-meiosis-first-division.svg"]').isVisible());
     assert(await meiosisModel.locator('li:nth-child(2) img[src$="/f170-meiosis-orientation.svg"]').isVisible());
     assert.equal(await stage("independent").locator(".hb-teaching-diagram").count(), 0);
+
+    // Reproductive teaching fields have credits and remain attached to their own step.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f170/3.3.1");
+    const reproductiveData = await page.evaluate(() => {
+      const lesson = window.KeystoneHumanLessons["f170/3.3.1"];
+      return {photos: lesson.explainPhotos[0].map(photo => photo.src), uterine: lesson.modelPhotos[0].src};
+    });
+    const reproductiveExplain = page.locator(".hb-teach-explain");
+    assert(await reproductiveExplain.locator(":scope > p").first().evaluate((paragraph, files) => {
+      let sibling = paragraph.nextElementSibling;
+      return files.every(file => {
+        const found = sibling?.matches("figure") && sibling.querySelector(`img[src="${file}"]`);
+        sibling = sibling?.nextElementSibling;
+        return Boolean(found);
+      });
+    }, reproductiveData.photos));
+    const reproductiveModel = page.locator("[data-hb-model-step]");
+    await expand(reproductiveModel);
+    for (let i = 0; i < 2; i++) {
+      const figure = reproductiveModel.locator(`li:nth-child(${i + 1}) figure`).filter({has: page.locator(`img[src="${reproductiveData.uterine}"]`)});
+      assert(await figure.isVisible());
+      assert.equal(await figure.locator("figcaption a").count(), 2, "photo source and licence must remain accessible");
+      await reproductiveModel.getByRole("button", {name: "Show next step"}).click();
+    }
+    assert(await reproductiveModel.locator('li:nth-child(3) img[src$="/f170-reproductive-tissue-patterns.svg"]').isVisible());
+    const assessmentImages = await stage("independent").locator("img").evaluateAll(images => images.map(image => image.getAttribute("src")));
+    assert.equal(assessmentImages.length, 2, "keep the original two recognition fields");
+    for (const src of reproductiveData.photos) assert(!assessmentImages.includes(src), "teaching fields must not be reused as assessment fields");
+    assert(await widthFits(), "reproductive teaching must fit at phone size");
 
     // Surface comparison keeps each figure directly with its complete matching fact.
     await open("catchup/f170/1.1.1.surfaces");
