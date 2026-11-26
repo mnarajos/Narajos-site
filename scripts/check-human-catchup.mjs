@@ -1085,6 +1085,8 @@ export async function checkHumanCatchup(browser, base) {
     assert(await granuleFigure.isVisible());
 
     // The screening sequence answers independent practice and must hide when it starts.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f171/2.3");
     const preventionSequence = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]').filter({has: page.locator('img[src="/human-biology/f171-screen-diagnose-monitor.svg"]')});
     assert(await preventionSequence.isVisible());
     await expand(stage("independent"));

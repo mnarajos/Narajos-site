@@ -71,7 +71,9 @@ export async function checkCompactCatchupFigures(browser, base) {
       assert.equal(await soluteFigure.count(), 0, 'solute teaching figure should not remain in the independent question view');
 
       await page.goto(base + '/human-biology/#catchup/f175/a2');
-      const placenta = page.locator('.hb-teach-explain .hb-teaching-diagram-compact');
+      const placenta = page.locator('.hb-teach-explain .hb-teaching-diagram-compact').filter({
+        has: page.locator('img[src="/human-biology/placental-exchange.svg"]')
+      });
       await placenta.waitFor();
       assert.equal(await placenta.count(), 1);
       assert(await placenta.evaluate(el => el.scrollWidth <= el.clientWidth + 1), 'placental diagram should fit its container');
