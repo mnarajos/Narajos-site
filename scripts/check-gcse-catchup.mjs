@@ -99,6 +99,43 @@ export async function checkGCSECatchup(browser, base) {
         await page.evaluate(key => localStorage.removeItem(key), `narajos.catchup.v1.${lesson.year}.${id}`);
       }
     }
+    // Decay uses the original halving evidence only where it is relevant. The
+    // opening also explains randomness, while the first stage explains Bq.
+    const decayId = "decay-half-life";
+    const decayKey = `narajos.catchup.v1.10.${decayId}`;
+    await page.goto(lessonURL(decayId, 10));
+    const decayOpening = page.locator("#catchup-evidence");
+    assert(await decayOpening.locator('svg[aria-label*="Six model nuclei"]').count(), "decay opening lacks its random-nucleus model");
+    assert((await decayOpening.textContent()).includes("80 Bq"), "decay opening lacks its halving evidence");
+    for (const index of [0, 1, gcseCatchup[decayId].steps.length - 1]) {
+      await page.evaluate(({key, index}) => localStorage.setItem(key, JSON.stringify({step: index})), {key: decayKey, index});
+      await page.reload();
+      const stage = page.locator(".school-current-stage");
+      const activity = stage.locator('svg[aria-label*="eighty becquerels"]');
+      assert.equal(await activity.count(), index === 0 ? 1 : 0, `decay activity figure appears at the wrong stage: ${index}`);
+      if (index === 1) assert((await stage.locator(".school-step-notes").textContent()).includes("40 Bq"), "decay halving stage lacks the original bars");
+    }
+    await page.evaluate(key => localStorage.removeItem(key), decayKey);
+    await page.goto(lessonURL("parallel-circuits", 10));
+    const parallelOpening = page.locator("#catchup-evidence");
+    assert((await parallelOpening.textContent()).includes("0.5 A in equals"), "parallel opening lacks its junction example");
+    await parallelOpening.getByRole("button", {name: "Open branch A"}).click();
+    assert((await parallelOpening.textContent()).includes("Lamp B still has a complete circuit"), "opening branch control did not update its circuit");
+    const parallelNotes = page.locator(".school-current-stage .school-step-notes");
+    assert(!(await parallelNotes.textContent()).includes("0.5 A in equals"), "junction example should remain with its own teaching step");
+    await parallelNotes.getByRole("button", {name: "Open branch A"}).click();
+    assert((await parallelNotes.textContent()).includes("Lamp B still has a complete circuit"), "teaching-stage branch control did not update its circuit");
+    const glucoseId = "glucose-control";
+    const glucoseKey = `narajos.catchup.v1.10.${glucoseId}`;
+    await page.goto(lessonURL(glucoseId, 10));
+    assert.equal(await page.locator('#catchup-evidence svg[aria-label*="simplified muscle cell"]').count(), 1, "glucose opening lacks the uptake model");
+    for (const index of [1, gcseCatchup[glucoseId].steps.length - 1]) {
+      await page.evaluate(({key, index}) => localStorage.setItem(key, JSON.stringify({step: index})), {key: glucoseKey, index});
+      await page.reload();
+      assert.equal(await page.locator('.school-current-stage svg[aria-label*="simplified muscle cell"]').count(), index === 1 ? 1 : 0,
+        `glucose uptake figure appears at the wrong stage: ${index}`);
+    }
+    await page.evaluate(key => localStorage.removeItem(key), glucoseKey);
     // Check every custom opening in its own panel, including custom openings
     // installed outside the registry. A few investigations use a table there;
     // the original illustrated registry still requires an SVG.

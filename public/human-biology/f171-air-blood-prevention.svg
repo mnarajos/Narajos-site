@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="335" viewBox="0 0 280 335" role="img">
+ <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs><rect width="280" height="335" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">Match prevention to route</text><text x="140" y="51" font-size="15">Shared indoor air</text>
+ <path d="M29 69h105v76H29ZM81 69v76M29 106h52" fill="#e3edf5" stroke="#537a94" stroke-width="3"/><path d="M81 69l35-14v76l-35 14Z" fill="#d0e5ef" stroke="#537a94" stroke-width="2"/><path d="M141 107h52" stroke="#344958" stroke-width="2" marker-end="url(#a)"/>
+ <text x="221" y="98" font-size="14">Ventilation</text><text x="221" y="119" font-size="14">replaces air</text>
+ <path d="M20 169h240" stroke="#cbdedb" stroke-width="2"/>
+ <text x="140" y="196" font-size="15">Donated blood</text>
+ <path d="M51 214h61v72H51Z" fill="#f4d8c8" stroke="#a65f5b" stroke-width="2"/><path d="M81 226v30m-15-15h30" stroke="#a65f5b" stroke-width="5"/><path d="M120 248h46" stroke="#344958" stroke-width="2" marker-end="url(#a)"/>
+ <circle cx="195" cy="248" r="23" fill="#d7e9d4" stroke="#4b8361" stroke-width="2"/><path d="M183 248l8 8 15-17" fill="none" stroke="#4b8361" stroke-width="3"/>
+ <text x="201" y="292" font-size="14">Screening</text><text x="140" y="320" font-size="13">Each addresses a different exposure.</text></g>
+</svg>

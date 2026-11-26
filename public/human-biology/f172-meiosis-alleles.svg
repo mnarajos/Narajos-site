@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 400" role="img" aria-labelledby="title desc">
+<title id="title">One homologous pair through meiosis</title>
+<desc id="desc">A model cell has a duplicated chromosome carrying R and a duplicated homologue carrying r. Meiosis I separates homologues into two nuclei. Meiosis II separates sister chromatids, producing two nuclei with R and two with r. Crossing over is omitted for this locus.</desc>
+<rect width="280" height="400" fill="#f5f9f8"/>
+<g font-family="sans-serif" fill="#183848" text-anchor="middle"><text x="140" y="23" font-size="16" font-weight="bold">One pair through meiosis</text><text x="140" y="49" font-size="15">After DNA replication</text></g>
+<ellipse cx="140" cy="90" rx="78" ry="34" fill="#fff" stroke="#547c83" stroke-width="2"/>
+<g stroke-width="4" stroke-linecap="round"><path d="M101 74l20 31 M121 74l-20 31" stroke="#a55b32"/><path d="M159 74l20 31 M179 74l-20 31" stroke="#536c9b"/></g>
+<g font-family="sans-serif" fill="#183848" text-anchor="middle" font-size="16"><text x="79" y="96">R</text><text x="201" y="96">r</text><text x="140" y="147">Meiosis I: homologues separate</text></g>
+<path d="M140 153v17 M135 165l5 5 5-5" stroke="#236b70" stroke-width="2" fill="none"/>
+<g fill="#fff" stroke="#547c83" stroke-width="2"><ellipse cx="72" cy="206" rx="49" ry="31"/><ellipse cx="208" cy="206" rx="49" ry="31"/></g>
+<g stroke-width="4" stroke-linecap="round"><path d="M62 192l20 28 M82 192l-20 28" stroke="#a55b32"/><path d="M198 192l20 28 M218 192l-20 28" stroke="#536c9b"/></g>
+<g font-family="sans-serif" fill="#183848" text-anchor="middle" font-size="16"><text x="72" y="252">R sisters joined</text><text x="208" y="252">r sisters joined</text><text x="140" y="280">Meiosis II: sisters separate</text></g>
+<path d="M140 286v14 M135 295l5 5 5-5" stroke="#236b70" stroke-width="2" fill="none"/>
+<g fill="#fff" stroke="#547c83" stroke-width="2"><ellipse cx="39" cy="333" rx="28" ry="24"/><ellipse cx="106" cy="333" rx="28" ry="24"/><ellipse cx="174" cy="333" rx="28" ry="24"/><ellipse cx="241" cy="333" rx="28" ry="24"/></g>
+<g font-family="sans-serif" font-size="17" text-anchor="middle" fill="#183848"><text x="39" y="339">R</text><text x="106" y="339">R</text><text x="174" y="339">r</text><text x="241" y="339">r</text></g>
+<text x="140" y="382" font-family="sans-serif" font-size="16" fill="#183848" text-anchor="middle">Crossing over omitted at this locus.</text>
+</svg>

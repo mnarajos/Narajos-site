@@ -197,20 +197,20 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f171/1.2.1.tissues · Explain 4 | Walking difficulties can have nervous, joint or bone causes. School access, transport, family support and t… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.tissues · Model 1 | A clinician observes swollen finger joints. The patient reports pain when gripping a handle. Swelling is a … | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.tissues · Model 2 | Inflammation can restrict joint movement. This differs from disrupted nerve signalling or reduced bone stre… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
-| f171/1.3.1.bacteria · Explain 1 | A bacterium can cause disease; a vector carries a pathogen between hosts. The tick in Lyme disease is the v… | compare | Unreviewed; see reviewed exceptions |
-| f171/1.3.1.bacteria · Model 1 | A tick is seen attached to skin. That establishes a possible exposure. It does not show that the tick carri… | compare | Unreviewed; see reviewed exceptions |
-| f171/1.3.1.bacteria · Model 2 | A characteristic expanding rash can support a clinical diagnosis of Lyme disease. A tired person after a wa… | compare | Unreviewed; see reviewed exceptions |
+| f171/1.3.1.bacteria · Explain 1 | A bacterium can cause disease; a vector carries a pathogen between hosts. The tick in Lyme disease is the v… | explainDiagrams, modelDiagrams, modelPhotos, comparisonPhotos, compare | Unreviewed; see reviewed exceptions |
+| f171/1.3.1.bacteria · Model 1 | A tick is seen attached to skin. That establishes a possible exposure. It does not show that the tick carri… | explainDiagrams, modelDiagrams, modelPhotos, comparisonPhotos, compare | Unreviewed; see reviewed exceptions |
+| f171/1.3.1.bacteria · Model 2 | A characteristic expanding rash can support a clinical diagnosis of Lyme disease. A tired person after a wa… | explainDiagrams, modelDiagrams, modelPhotos, comparisonPhotos, compare | Unreviewed; see reviewed exceptions |
 | f171/1.3.1.fungi · Explain 1 | Fungi include yeasts. An infection can follow overgrowth of organisms already present in the body. In other… | compare | Unreviewed; see reviewed exceptions |
 | f171/1.3.1.fungi · Model 1 | Several people report chest discomfort. That symptom does not identify a fungus. A shared environmental exp… | compare | Unreviewed; see reviewed exceptions |
 | f171/1.3.1.fungi · Model 2 | A separate person reports vaginal itching. A different site and possible Candida overgrowth require a diffe… | compare | Unreviewed; see reviewed exceptions |
 | f171/1.3.1.protozoa · Explain 1 | Protozoans are single-celled parasites. A mosquito transmits the malaria parasite; the mosquito itself is n… | compare | Unreviewed; see reviewed exceptions |
 | f171/1.3.1.protozoa · Model 1 | A measured fever and reported chills after travel are compatible with malaria but overlap with other illnes… | compare | Unreviewed; see reviewed exceptions |
 | f171/1.3.1.protozoa · Model 2 | A laboratory report identifying malaria parasites in blood is direct evidence of the organism. It does not … | compare | Unreviewed; see reviewed exceptions |
-| f171/1.3.1.viruses · Explain 1 | A virus is a type of pathogen. Different viruses can reach the body by different routes. COVID-19 is caused… | compare | Unreviewed; see reviewed exceptions |
-| f171/1.3.1.viruses · Explain 2 | A sign can be observed or measured, such as a raised temperature. A symptom is experienced and reported, su… | compare | Unreviewed; see reviewed exceptions |
-| f171/1.3.1.viruses · Model 1 | A school records three pupils who feel tired and have measured fevers. Fatigue is a symptom; the thermomete… | compare | Unreviewed; see reviewed exceptions |
-| f171/1.3.1.viruses · Model 2 | These findings justify attention but cannot distinguish COVID-19 from other causes. Appropriate testing pro… | compare | Unreviewed; see reviewed exceptions |
-| f171/1.3.1.viruses · Model 3 | Suppose the review now concerns safety of donated blood. Screening donations can reduce blood-borne infecti… | compare | Unreviewed; see reviewed exceptions |
+| f171/1.3.1.viruses · Explain 1 | A virus is a type of pathogen. Different viruses can reach the body by different routes. COVID-19 is caused… | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f171/1.3.1.viruses · Explain 2 | A sign can be observed or measured, such as a raised temperature. A symptom is experienced and reported, su… | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f171/1.3.1.viruses · Model 1 | A school records three pupils who feel tired and have measured fevers. Fatigue is a symptom; the thermomete… | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f171/1.3.1.viruses · Model 2 | These findings justify attention but cannot distinguish COVID-19 from other causes. Appropriate testing pro… | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f171/1.3.1.viruses · Model 3 | Suppose the review now concerns safety of donated blood. Screening donations can reduce blood-borne infecti… | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
 | f171/1.3.1.worms · Explain 1 | Flukes, tapeworms and roundworms are helminths: multicellular parasitic worms. Fasciolosis and hydatid dise… | compare | Unreviewed; see reviewed exceptions |
 | f171/1.3.1.worms · Model 1 | A fictional liver scan shows a cyst. It provides structural evidence but cannot, from that description alon… | compare | Unreviewed; see reviewed exceptions |
 | f171/1.3.1.worms · Model 2 | The person's work with dogs may make an exposure plausible. Ask whether ingestion was possible before drawi… | compare | Unreviewed; see reviewed exceptions |
@@ -272,10 +272,10 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f171/a5 · Model 1 | The outcome is change in reported nightly sleep after four weeks. Compare both groups: 35 minutes versus 15… | table | Unreviewed; see reviewed exceptions |
 | f171/a5 · Model 2 | People chose whether to attend. Motivation could influence both that choice and changes in sleep routine, p… | table | Unreviewed; see reviewed exceptions |
 | f171/a5 · Model 3 | The workshop group reported a larger gain. Self-selection prevents attributing that gain solely to the work… | table | Unreviewed; see reviewed exceptions |
-| f172/a1 · Explain 1 | A gene is a region of DNA with a functional product. Alleles are versions of a gene. Homologous chromosomes… | teachingDiagram, table | Unreviewed; see reviewed exceptions |
-| f172/a1 · Model 1 | Track one homologous pair. The two chromosomes carry the same gene, but one carries R and the other r. DNA … | teachingDiagram, table | Unreviewed; see reviewed exceptions |
-| f172/a1 · Model 2 | In meiosis I the homologues move apart, taking their joined sisters with them. In meiosis II the sisters se… | teachingDiagram, table | Unreviewed; see reviewed exceptions |
-| f172/a1 · Model 3 | In mitosis the two homologues do not pair up and separate as a pair. The sisters of each replicated chromos… | teachingDiagram, table | Unreviewed; see reviewed exceptions |
+| f172/a1 · Explain 1 | A gene is a region of DNA with a functional product. Alleles are versions of a gene. Homologous chromosomes… | teachingDiagram, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f172/a1 · Model 1 | Track one homologous pair. The two chromosomes carry the same gene, but one carries R and the other r. DNA … | teachingDiagram, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f172/a1 · Model 2 | In meiosis I the homologues move apart, taking their joined sisters with them. In meiosis II the sisters se… | teachingDiagram, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f172/a1 · Model 3 | In mitosis the two homologues do not pair up and separate as a pair. The sisters of each replicated chromos… | teachingDiagram, modelDiagrams, table | Unreviewed; see reviewed exceptions |
 | f172/a2 · Explain 1 | Genotype names the alleles. Phenotype is an observable characteristic. For this fictional single-gene trait… | teachingDiagram, table | Unreviewed; see reviewed exceptions |
 | f172/a2 · Model 1 | Put the possible gametes from each parent on the outside of the square. Each carries either R or r. | teachingDiagram, table | Unreviewed; see reviewed exceptions |
 | f172/a2 · Model 2 | Combine alleles. The four equally likely boxes give RR, Rr, Rr and rr. | teachingDiagram, table | Unreviewed; see reviewed exceptions |

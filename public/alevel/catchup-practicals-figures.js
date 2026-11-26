@@ -71,8 +71,8 @@
   "a6/loop/1": {
    title:"Water leaves in the medulla",
    alt:"Water moves by osmosis from the descending limb of the loop of Henle and from the collecting duct toward the surrounding medulla, whose water potential is more negative. Water reabsorbed from the collecting duct returns to the blood.",
-   caption:"Follow water arrows out of the descending limb and collecting duct toward the medulla. The collecting duct's permeability is regulated; water moves by osmosis, not by a water pump.",
-   art:`<text x="150" y="25" text-anchor="middle">Cortex</text><path d="M65 53v132q0 37 35 37t35-37V53M222 53v170" stroke="#537a94" stroke-width="10" fill="none"/><path d="M55 96H24m6-6-6 6 6 6M55 156H24m6-6-6 6 6 6M212 96h-52m7-6-7 6 7 6M212 156h-52m7-6-7 6 7 6" stroke="#32776d" stroke-width="3" fill="none"/><text x="41" y="83" text-anchor="middle">H₂O</text><text x="184" y="83" text-anchor="middle">H₂O</text><text x="98" y="251" text-anchor="middle">Loop</text><text x="222" y="251" text-anchor="middle">Collecting</text><text x="222" y="272" text-anchor="middle">duct</text>`
+   caption:"Follow water out of the descending limb and collecting duct into the medulla, then into the blood. Water crosses the tubule epithelium by osmosis; collecting-duct permeability is regulated.",
+   art:`<text x="150" y="25" text-anchor="middle">Cortex</text><path d="M65 53v132q0 37 35 37t35-37V53M222 53v170" stroke="#537a94" stroke-width="10" fill="none"/><path d="M55 96H24m6-6-6 6 6 6M55 156H24m6-6-6 6 6 6M232 96h36m-7-6 7 6-7 6M232 156h36m-7-6 7 6-7 6" stroke="#32776d" stroke-width="3" fill="none"/><text x="41" y="83" text-anchor="middle">H₂O</text><text x="250" y="83" text-anchor="middle">H₂O</text><path d="M278 53v170" stroke="#a65f5b" stroke-width="8"/><text x="274" y="272" text-anchor="middle">Blood</text><text x="98" y="251" text-anchor="middle">Loop</text><text x="222" y="251" text-anchor="middle">Collecting</text><text x="222" y="272" text-anchor="middle">duct</text>`
   }
  };
  window.ALevelPracticalsFigures={render(topic,id,group){

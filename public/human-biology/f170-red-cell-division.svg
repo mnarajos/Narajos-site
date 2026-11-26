@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="335" viewBox="0 0 280 335" role="img" aria-labelledby="title desc">
+<title id="title">Red-cell development and division</title><desc id="desc">An early erythroblast in bone marrow has a nucleus and can divide. A mature human erythrocyte has no nucleus and cannot undergo mitosis. Intermediate developmental stages are omitted.</desc>
+<rect width="280" height="335" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="25" font-weight="700">Red-cell development</text>
+<text x="140" y="53">Early erythroblast</text>
+<circle cx="54" cy="104" r="28" fill="#f4c7c1" stroke="#aa6866" stroke-width="2"/><circle cx="54" cy="104" r="13" fill="#816494"/>
+<path d="M91 104h42m-8-6 8 6-8 6" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<circle cx="165" cy="91" r="20" fill="#f4c7c1" stroke="#aa6866" stroke-width="2"/><circle cx="165" cy="91" r="9" fill="#816494"/><circle cx="211" cy="117" r="20" fill="#f4c7c1" stroke="#aa6866" stroke-width="2"/><circle cx="211" cy="117" r="9" fill="#816494"/>
+<text x="140" y="155">Has a nucleus; can divide</text>
+<path d="M27 172h226" stroke="#b4cbce"/>
+<text x="140" y="198">Mature human erythrocyte</text>
+<ellipse cx="140" cy="239" rx="36" ry="24" fill="#eaaa9e" stroke="#ae665e" stroke-width="2"/><ellipse cx="140" cy="239" rx="16" ry="10" fill="#f3d0c4"/>
+<text x="140" y="284">No nucleus; cannot divide</text>
+<text x="140" y="316" font-size="15">Intermediate stages are omitted.</text>
+</g></svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 320" role="img" aria-labelledby="title desc">
+<title id="title">One homologous pair through mitosis</title>
+<desc id="desc">A model cell contains duplicated homologous chromosomes carrying R and r. Sister chromatids separate in mitosis, so each daughter nucleus receives one chromosome carrying R and one carrying r.</desc>
+<rect width="280" height="320" fill="#f5f9f8"/>
+<g font-family="sans-serif" fill="#183848" text-anchor="middle"><text x="140" y="23" font-size="16" font-weight="bold">One pair through mitosis</text><text x="140" y="49" font-size="15">After DNA replication</text></g>
+<ellipse cx="140" cy="90" rx="78" ry="34" fill="#fff" stroke="#547c83" stroke-width="2"/>
+<g stroke-width="4" stroke-linecap="round"><path d="M101 74l20 31 M121 74l-20 31" stroke="#a55b32"/><path d="M159 74l20 31 M179 74l-20 31" stroke="#536c9b"/></g>
+<g font-family="sans-serif" fill="#183848" text-anchor="middle" font-size="16"><text x="79" y="96">R</text><text x="201" y="96">r</text><text x="140" y="150">Sister chromatids separate</text></g>
+<path d="M140 157v21 M135 173l5 5 5-5" stroke="#236b70" stroke-width="2" fill="none"/>
+<g fill="#fff" stroke="#547c83" stroke-width="2"><ellipse cx="73" cy="222" rx="55" ry="37"/><ellipse cx="207" cy="222" rx="55" ry="37"/></g>
+<g stroke-width="5" stroke-linecap="round"><path d="M52 202v29 M95 202v29 M185 202v29 M228 202v29" stroke="#6d6482"/></g>
+<g font-family="sans-serif" fill="#183848" text-anchor="middle" font-size="15"><text x="52" y="250">R</text><text x="95" y="250">r</text><text x="185" y="250">R</text><text x="228" y="250">r</text><text x="140" y="293">Each daughter nucleus has R and r.</text></g>
+</svg>

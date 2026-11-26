@@ -50,7 +50,7 @@ function circuit() {
       diagram(open?"Parallel circuit. The top branch is open. Lamp B remains on in its separate branch.":
         "Two lamps share a supply in two parallel branches.",wires+line(136,12,136,34)+line(151,17,151,29)+
         (open ? '<rect x="98" y="74" width="34" height="20" fill="#f4f9f8"/>'+line(98,84,126,69,teal,2.5):"")+
-        bulb(166,84,!open)+bulb(166,159,true)+text(206,72,"Lamp A")+text(205,148,"Lamp B")+
+        bulb(166,84,!open)+bulb(166,159,true)+text(220,72,"Lamp A")+text(220,148,"Lamp B")+
         circle(52,84,3,ink)+circle(269,84,3,ink),320,191),
       open?"Lamp B still has a complete circuit.":"The same potential difference is across both branches.");
   }

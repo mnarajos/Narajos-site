@@ -142,7 +142,9 @@ export async function checkHumanCatchup(browser, base) {
     await open("catchup/f170/1.1.2");
     const microscopy = page.locator(".hb-teach-explain");
     const fractionation = microscopy.getByRole("heading", { name: "Cell fractionation", exact: true });
-    const representationComparison = microscopy.locator(".hb-compare-groups").filter({has: microscopy.getByRole("heading", {name: "What kind of representation am I reading?", exact: true})});
+    const representationComparison = microscopy.locator(".hb-compare-groups");
+    assert.equal(await representationComparison.count(), 1, "microscopy has one representation comparison");
+    assert(await representationComparison.getByRole("heading", {name: "What kind of representation am I reading?", exact: true}).isVisible());
     assert(await representationComparison.evaluate((group, heading) =>
       Boolean(group.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING),
     await fractionation.elementHandle()));
@@ -809,7 +811,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.1.5/1", ["f170-crossing-over.svg", "f170-meiosis-first-division.svg", "f170-meiosis-orientation.svg", "f170-meiosis-second-division.svg"]],
       ["f170/1.1.5/2", ["punnett-cross.svg"]],
       ["f170/1.1.5.meiosis/1", ["f170-meiosis-first-division.svg", "f170-meiosis-orientation.svg"]],
-      ["f170/1.1.5.meiosis/2", ["f170-meiosis-second-division.svg"]],
+      ["f170/1.1.5.meiosis/2", ["f170-meiosis-second-division.svg", "f170-oocyte-unequal-division.svg"]],
       ["f170/1.1.4.surface/1", ["f170-receptor-signalling.svg", "f170-extrinsic-receptor.svg"]],
       ["f170/1.1.4.surface/2", ["f170-antigen-recognition.svg"]],
       ["f170/1.1.4.surface/3", ["f170-vesicle-traffic.svg"]],
@@ -889,10 +891,13 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.2.1", ["f170-levels-organisation.svg", "f170-ventricle-damage.svg"], ["f170-ventricle-damage.svg", "f170-ventricle-damage.svg", "f170-ventricle-damage.svg"]],
       ["f170/4.1.4", ["f170-binary-fission.svg"], ["f170-growth-graph.svg", "f170-growth-graph.svg", "f170-growth-graph.svg"]],
       ["f170/4.1.1", ["f170-gram-envelope.svg", "f170-gram-stain-sequence.svg"], ["f170-gram-envelope.svg", "f170-gram-envelope.svg"]],
+      ["f172/a1", ["meiosis.svg"], ["meiosis.svg", "f172-meiosis-alleles.svg", "f172-mitosis-alleles.svg"]],
       ["f177/a3", ["f177-preclinical-evidence.svg", "f177-study-duration.svg"], ["f177-preclinical-evidence.svg", "f177-study-duration.svg", "f177-safety-signal.svg"]],
       ["f176/a5", ["f176-eeg-trace.svg"], ["f176-eeg-trace.svg", "f176-mri-ct.svg"]],
       ["f176/a4", ["f176-coordination-injury.svg"], ["f176-coordination-injury.svg", "f176-coordination-injury.svg"]],
       ["f175/2.1", ["f175-history-ultrasound.svg", "f175-history-ultrasound.svg"], ["f175-history-ultrasound.svg", "f175-baseline-pressure.svg", "f175-history-ultrasound.svg"]],
+      ["f171/1.3.1.bacteria", ["f171-tick-bacterium.svg"], ["f171-tick-bacterium.svg", "f171-tick-bacterium.svg"]],
+      ["f171/1.3.1.viruses", ["f171-hiv-stage.svg", "f171-sign-symptom.svg"], ["f171-sign-symptom.svg", "f171-sign-symptom.svg", "f171-air-blood-prevention.svg"]],
       ["f171/1.2.1.tissues", [null, "f171-myelin-change.svg", "f171-melanocytes.svg"], ["f171-inflamed-joint.svg", "f171-inflamed-joint.svg"]],
       ["f171/1.2.1.oxygen", [null, "airway-narrowing.svg", "f171-sickle-vessel.svg", "iron-blood-oxygen.svg"], ["f171-sickle-vessel.svg", "iron-blood-oxygen.svg"]],
       ["f171/1.2.1.digestive", ["f171-intestinal-absorption.svg", "f171-intestinal-absorption.svg", "f171-hiatus-position.svg"], ["f171-hiatus-position.svg", "f171-hiatus-position.svg"]],
@@ -945,6 +950,17 @@ export async function checkHumanCatchup(browser, base) {
       assert(await widthFits(), route + " must fit at phone size");
       assert.equal(await stage("independent").locator(".hb-teaching-diagram").count(), 0);
     }
+
+    // Red-cell flexibility and haemoglobin capacity address the same worked step.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f170/1.1.1");
+    const redCellModel = page.locator("[data-hb-model-step]");
+    await expand(redCellModel);
+    await redCellModel.getByRole("button", {name: "Show next step"}).click();
+    await redCellModel.getByRole("button", {name: "Show next step"}).click();
+    assert(await redCellModel.locator('li:nth-child(3) img[src$="/red-cell-capacity.svg"]').isVisible());
+    assert(await redCellModel.locator('li:nth-child(3) img[src$="/f170-red-cell-flexibility.svg"]').isVisible());
+    assert.equal(await stage("independent").locator('img[src$="/f170-red-cell-flexibility.svg"]').count(), 0);
 
     // Oximetry directly answers the independent question: hide it until teaching resumes.
     await page.evaluate(key => localStorage.removeItem(key), localPractice);
@@ -1103,6 +1119,18 @@ export async function checkHumanCatchup(browser, base) {
     await expand(page.locator("[data-hb-model-step]"));
     assert(await signalTeachingFigure.evaluate(figure => !figure.hidden));
 
+    // HIV infection versus AIDS is part of independent assessment.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f171/1.3.1.viruses");
+    const hivTeachingFigures = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]');
+    assert.equal(await hivTeachingFigures.count(), 2);
+    await expand(stage("independent"));
+    assert(await hivTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await page.reload();
+    assert(await hivTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await hivTeachingFigures.evaluateAll(figures => figures.every(figure => !figure.hidden)));
+
     // Both linked meiosis views remain on their matching paragraph and worked step.
     await page.evaluate(key => localStorage.removeItem(key), localPractice);
     await open("catchup/f170/1.1.5.meiosis");
@@ -1163,7 +1191,29 @@ export async function checkHumanCatchup(browser, base) {
       assert.equal(await stage("independent").locator('img[src$="/f170-lysosome-digestion.svg"]').count(), 0);
     }
 
+    // Bacterial comparison retains every fact and the credited real rash example.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f171/1.3.1.bacteria");
+    const bacterialRows = page.locator(".hb-compare-group");
+    const bacterialData = await page.evaluate(() => window.KeystoneHumanLessons["f171/1.3.1.bacteria"].compare.rows);
+    assert.equal(await bacterialRows.count(), 3);
+    for (let i = 0; i < bacterialData.length; i++) {
+      assert.equal(await bacterialRows.nth(i).locator(":scope > h4").innerText(), bacterialData[i][0]);
+      assert.deepEqual(await bacterialRows.nth(i).locator(":scope > p").allInnerTexts(), bacterialData[i].slice(1));
+    }
+    const rashFigure = bacterialRows.nth(0).locator('figure').filter({has: page.locator('img[src="/assets/micrographs/hb-lyme-erythema.webp"]')});
+    assert(await rashFigure.isVisible());
+    assert.equal(await rashFigure.locator("figcaption a").count(), 2, "Lyme photo retains source and licence");
+    const mrsaFigure = bacterialRows.nth(1).locator('figure[data-hb-assessment-sensitive]');
+    await expand(stage("independent"));
+    assert(await mrsaFigure.evaluate(figure => figure.hidden));
+    await page.reload();
+    assert(await mrsaFigure.evaluate(figure => figure.hidden));
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await mrsaFigure.evaluate(figure => !figure.hidden));
+
     // Surface comparison keeps each figure directly with its complete matching fact.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
     await open("catchup/f170/1.1.1.surfaces");
     const surfaceRows = page.locator(".hb-compare-group");
     const surfaceData = await page.evaluate(() => window.KeystoneHumanLessons["f170/1.1.1.surfaces"].compare.rows);
@@ -1177,6 +1227,11 @@ export async function checkHumanCatchup(browser, base) {
       assert(await image.isVisible());
       assert(await image.evaluate(async el => { await el.decode(); return el.naturalWidth > 0 && el.alt.length > 20; }));
     }
+    assert(await surfaceRows.nth(0).locator('img[src$="/f170-tubule-atp.svg"]').isVisible());
+    const surfaceModel = page.locator("[data-hb-model-step]");
+    await expand(surfaceModel);
+    await surfaceModel.getByRole("button", {name: "Show next step"}).click();
+    assert(await surfaceModel.locator('li:nth-child(2) img[src$="/f170-tubule-atp.svg"]').isVisible());
     assert(await widthFits(), "Surface comparison must fit at phone size");
     assert.equal(await stage("independent").locator(".hb-teaching-diagram").count(), 0);
 

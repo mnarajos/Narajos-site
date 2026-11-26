@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="295" viewBox="0 0 280 295" role="img">
+ <rect width="280" height="295" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">Sign and symptom</text>
+ <path d="M53 67q0-11 10-11t10 11v60a19 19 0 1 1-20 0Z" fill="#fff" stroke="#537a94" stroke-width="3"/><path d="M63 83v53" stroke="#a65f5b" stroke-width="5"/><circle cx="63" cy="145" r="9" fill="#a65f5b"/>
+ <text x="164" y="92" font-size="15">Measured temperature</text><text x="164" y="115" font-size="15">= sign</text>
+ <path d="M20 181h240" stroke="#cbdedb" stroke-width="2"/>
+ <path d="M34 210q0-12 12-12h83q12 0 12 12v27q0 12-12 12H78l-17 13 2-13H46q-12 0-12-12Z" fill="#e3edf5" stroke="#537a94" stroke-width="2"/>
+ <text x="87" y="230" font-size="14">“I feel tired”</text><text x="207" y="218" font-size="15">Reported</text><text x="207" y="240" font-size="15">= symptom</text>
+ <text x="140" y="282" font-size="13">Either can have several causes.</text></g>
+</svg>

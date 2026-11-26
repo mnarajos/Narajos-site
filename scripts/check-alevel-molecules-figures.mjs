@@ -173,7 +173,19 @@ for (const [file,global,topic,id,group] of [
  ['catchup-ileum-adaptations.js','ALevelIleumAdaptations','a2','active',1],
  ['catchup-plant-fungus.js','ALevelPlantFungus','a2','euk',2],
  ['catchup-microscope-comparison.js','ALevelMicroscopeComparison','a2','micro',1],
- ['catchup-neural-reuse.js','ALevelNeuralReuse','a6','traps6',3]
+ ['catchup-neural-reuse.js','ALevelNeuralReuse','a6','traps6',3],
+ ['catchup-antagonistic-muscles.js','ALevelAntagonisticMuscles','a6','muscle',0],
+ ['catchup-context-reuse.js','ALevelContextReuse','a8','fragments',0],
+ ['catchup-context-reuse.js','ALevelContextReuse','a8','cancer',1],
+ ['catchup-context-reuse.js','ALevelContextReuse','a7','traps7',1],
+ ['catchup-ultrafiltration.js','ALevelUltrafiltration','a6','kidney',0],
+ ['catchup-sticky-ends.js','ALevelStickyEnds','a8','invivo',0],
+ ['catchup-diabetes-treatment.js','ALevelDiabetesTreatment','a6','diabetes',0],
+ ['catchup-quadrat-estimate.js','ALevelQuadratEstimate','a7','fieldwork',1],
+ ['catchup-abo-dominance.js','ALevelABODominance','a7','codom',1],
+ ['catchup-promoter-terminator.js','ALevelPromoterTerminator','a8','fragments',1],
+ ['catchup-running-mean.js','ALevelRunningMean','a7','fieldwork',0],
+ ['catchup-colorimeter-preparation.js','ALevelColorimeterPreparation','a6','glucal',1]
 ]) {
  vm.runInNewContext(readFileSync(new URL('../public/alevel/'+file, import.meta.url), 'utf8'), context);
  const figure=context.window[global].render(topic,id,group);

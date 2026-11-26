@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="335" viewBox="0 0 280 335" role="img">
+ <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs><rect width="280" height="335" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">Tick and bacterium</text><text x="140" y="50" font-size="14">Not at a common scale</text>
+ <path d="M28 177h224v43H28Z" fill="#efc8b7" stroke="#a65f5b" stroke-width="2"/><text x="216" y="203" font-size="14">Skin</text>
+ <ellipse cx="81" cy="126" rx="24" ry="31" fill="#916858" stroke="#68483c" stroke-width="2"/><path d="M57 110l-17-8m16 19-20-3m20 17-20 4m22 8-15 12M105 110l17-8m-16 19 20-3m-20 17 20 4m-22 8 15 12M77 157v19m8-19v19" stroke="#68483c" stroke-width="3" fill="none"/>
+ <text x="81" y="82" font-size="14">Tick: vector</text><path d="M81 178v30" stroke="#344958" stroke-width="2" marker-end="url(#a)"/>
+ <path d="M156 103q8-13 16 0t16 0t16 0t16 0" fill="none" stroke="#80588f" stroke-width="4"/><text x="188" y="143" font-size="14">Borrelia:</text><text x="188" y="163" font-size="14">bacterium</text>
+ <text x="140" y="257" font-size="14">An infected tick can transmit</text><text x="140" y="278" font-size="14">the bacterium through a bite.</text><text x="140" y="313" font-size="13">Not every tick carries it.</text></g>
+</svg>

@@ -80,6 +80,36 @@ function parallelTransects() {
     'Compare the repeated lines: each uses the same distances from the hedge. Real surveys may use more samples.',235);
 }
 function quadratWorked(){return grouped(randomCoordinates,quadratBoundary,quadratMeanWorked,parallelTransects);}
+function glucoseUptakeAndStorage() {
+  const glycogen=[105,133,161,189,217];
+  return fig('Insulin, uptake and storage',
+    'A simplified muscle cell is shown below the blood. Insulin signals at the cell surface. Glucose enters the cell, and some is converted to glycogen for storage. The circles and short links are schematic, not molecular structures or quantities.',
+    text(160,25,'Blood',ink,15)+circle(151,57,8,'#d9e9f7',blue,2)+circle(179,57,8,'#d9e9f7',blue,2)+
+    '<rect x="45" y="145" width="230" height="111" rx="32" fill="#eef7f0" stroke="'+teal+'" stroke-width="2"/>'+
+    text(240,96,'Glucose',blue,15)+text(49,96,'Insulin',teal,15)+arrow(151,76,151,151,blue,2)+arrow(49,107,85,145,teal,2)+
+    line(105,197,217,197,rust,2)+glycogen.map(x=>circle(x,197,8,'#f4dbc8',rust,2)).join('')+arrow(151,157,151,181,blue,2)+
+    text(160,238,'Glycogen',rust,15)+text(160,286,'Muscle cell',ink,15),
+    'Insulin signals at the cell surface. Follow glucose into the cell and its storage as glycogen; the linked circles are a simplified model.',305);
+}
+function glucoseResponseDetailed(){return grouped(gcseStepVisuals['glucose-control'][1],glucoseUptakeAndStorage);}
+export function randomDecay() {
+  const places=[[29,62],[59,62],[89,62],[29,102],[59,102],[89,102]];
+  const nuclei=(dx,changed)=>places.map(([x,y],i)=>circle(x+dx,y,10,changed.includes(i)?'#f8e9db':'#d6e9f7',changed.includes(i)?rust:blue,2)+
+    (changed.includes(i)?line(x+dx-5,y-5,x+dx+5,y+5,rust,2)+line(x+dx-5,y+5,x+dx+5,y-5,rust,2):'')).join('');
+  return fig('A possible pattern of decay',
+    'Six model nuclei are shown before and later. In this illustrative outcome, two have decayed and are marked with crosses. Which individual nucleus decays, and when, cannot be predicted; the picture is one possible outcome, not a prediction.',
+    text(59,25,'Before',ink,15)+text(261,25,'Later',ink,15)+nuclei(0,[])+arrow(112,82,208,82,teal,2)+nuclei(202,[0,4])+
+    text(85,154,'● Undecayed',blue,15)+text(239,154,'× Decayed',rust,15),
+    'Compare the nuclei before and later. Crosses mark two illustrative decays; neither their identities nor their timing can be predicted.',173);
+}
+export function activityUnit() {
+  const event=(x,y)=>circle(x,y,10,'#d6e9f7',blue,2)+line(x+14,y,x+21,y,teal,2)+line(x,y-14,x,y-21,teal,2);
+  return fig('Activity measures decays per second',
+    'An activity of eighty becquerels means a decay rate of eighty decays per second. Four small event symbols indicate the kind of event being counted; they do not represent the total of eighty. Actual counts in a short interval can fluctuate.',
+    text(203,25,'Decay events',ink,15)+circle(65,96,36,'#f4f5ee',ink,2)+line(65,52,65,60,ink,3)+text(65,102,'1 s',ink,16)+
+    event(166,72)+event(230,72)+event(166,125)+event(230,125)+text(160,182,'80 decays per second',blue,15)+text(160,215,'= 80 Bq',teal,16),
+    'A becquerel is one decay per second. The small symbols indicate decay events; they are not a count of all 80 events.',234);
+}
 function trolleySensors() {
   const gate=x=>'<path d="M'+x+' 139 V70 H'+(x+32)+' V139" fill="none" stroke="'+blue+'" stroke-width="3"/>'+line(x+2,92,x+30,92,blue,1,'3 3');
   return fig('Measure motion with light gates',
@@ -1617,7 +1647,7 @@ function clinicalTrials() {
 function testingAndTrials(){return grouped(treatmentTesting,clinicalTrials);}
 function parallelAndSeries() {
   return fig('Potential difference in two circuits',
-    'In a 9 volt parallel circuit, each lamp is connected across the supply and has a potential difference of 9 volts. In a series circuit with two identical lamps, the 9 volts is shared equally, 4.5 volts across each. Current is the same at every point in the series loop.',
+    'In a 9 volt parallel circuit, each lamp is connected across the supply and has a potential difference of 9 volts. In a series circuit with two identical lamps, the 9 volts is shared equally, 4.5 volts across each. Matching arrows show the same conventional current at two points in the series loop.',
     text(160,25,'Parallel branches',ink,16)+
     '<path d="M48 45 H145 M175 45 H272 V122 H174 M146 122 H48 V45 M48 84 H146 M174 84 H272" fill="none" stroke="'+ink+'" stroke-width="2"/>'+line(145,35,145,55)+line(175,40,175,50)+
     circle(160,84,14,'white',ink)+line(151,75,169,93)+line(151,93,169,75)+circle(160,122,14,'white',ink)+line(151,113,169,131)+line(151,131,169,113)+
@@ -1625,8 +1655,9 @@ function parallelAndSeries() {
     text(160,193,'Series: identical lamps',ink,16)+
     '<path d="M48 215 H145 M175 215 H272 V285 H228 M200 285 H120 M92 285 H48 V215" fill="none" stroke="'+ink+'" stroke-width="2"/>'+line(145,205,145,225)+line(175,210,175,220)+
     circle(106,285,14,'white',ink)+line(97,276,115,294)+line(97,294,115,276)+circle(214,285,14,'white',ink)+line(205,276,223,294)+line(205,294,223,276)+
-    text(106,321,'4.5 V',blue,16)+text(214,321,'4.5 V',blue,16)+text(160,247,'9 V supply in each circuit',ink,15),
-    'Compare each lamp’s potential difference. The equal series shares shown require identical lamps; parallel branches each span the supply.',340);
+    text(106,321,'4.5 V',blue,16)+text(214,321,'4.5 V',blue,16)+text(160,247,'Each supply: 9 V',ink,15)+
+    arrow(48,235,48,270,teal,2)+arrow(272,270,272,235,teal,2)+text(160,360,'Same current throughout',teal,15),
+    'Compare potential differences. Equal series shares require identical lamps; the arrows show the same current at both points in the series loop.',380);
 }
 function rfDistance() {
   return fig('Measure both chromatography distances',
@@ -1669,7 +1700,7 @@ function wireAndCoil(){return grouped(wireField,coilWithCurrent);}
 export const gcseOpeningVisuals = {
   'salt-electrolysis': () => grouped(gcseStepVisuals['salt-electrolysis'][1], brine),
   'latent-heat': () => grouped(heatingCurve, gcseStepVisuals['latent-heat'][1]),
-  'glucose-control': gcseStepVisuals['glucose-control'][1],
+  'glucose-control': glucoseResponseDetailed,
   'greenhouse': greenhouse,
   'potable-water': waterRoutes,
   'forces-motion': movingAndStationary,
@@ -1709,7 +1740,7 @@ export const moreGcseStepVisuals = {
   'decay-half-life': {2:irradiation},
   'density-and-gas-pressure': {0:density},
   'photosynthesis-limits': {0:photosynthesisAndGlucose,2:() => grouped(testCarbonDioxide, carbonDioxideComparison)},
-  'glucose-control': {0:homeostasis,2:diabetes},
+  'glucose-control': {0:homeostasis,1:glucoseResponseDetailed,2:diabetes},
   'reaction-rate': {1:collisionsAndEnergy,2:dynamicEquilibrium},
   'salt-electrolysis': {2:brine},
   'reflex-response': {0:neuron,1:reflexWithSynapse,2:reflexMeasure},
