@@ -355,6 +355,8 @@ async function checkAssessment(page) {
     assert.equal(await panel(page).getByRole("button", {name:"Photosynthesis",exact:true}).count(), 0,
       "An open or answered-in-progress legacy record retains assessment restrictions");
     await close(page).click();
+    await page.getByRole("button", {name:"Resume check",exact:true}).click();
+    if (legacy.selected) assert(await page.getByRole("radio", {name:legacy.selected,exact:true}).isChecked());
   }
   await page.evaluate(key => localStorage.setItem(key, JSON.stringify({
     step:0, open:true, selected:"Oxygen", correct:true,

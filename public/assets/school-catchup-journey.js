@@ -233,7 +233,7 @@ export function mountJourney(host, model, lesson) {
         if (inlineCheck && state.wordHelpAttempt && !state.correct && !state.explained) {
           window.SiteVocabulary?.setAssessment(stage, {});
         }
-        stage.append(checkButton(state.open ? "Resume check" : "Check", showCheck));
+        stage.append(checkButton(state.open || state.wordHelpAttempt ? "Resume check" : "Check", showCheck));
       }
       if (state.step > 0 && !inlineCheck) stage.append(button("Catch-up notes", () => showEvidence()));
       checkList.append(stage);
