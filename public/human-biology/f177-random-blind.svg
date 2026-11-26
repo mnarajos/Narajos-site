@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="390" viewBox="0 0 280 390" role="img" aria-labelledby="title desc">
+<title id="title">Random allocation and blinded rating</title><desc id="desc">A fictional trial assigns participants by chance to medicine and comparison groups. The assessor rates improvement without knowing each participant's group. Chance allocation helps reduce systematic starting differences, though groups can still differ by chance; blinding helps reduce rating bias. Icons represent roles, not participant counts.</desc>
+<rect width="280" height="390" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16" fill="#243e49" text-anchor="middle">
+ <text x="140" y="25" font-weight="700">Fictional trial</text><text x="140" y="52">Participants</text>
+ <g fill="#d9edf5" stroke="#537a94" stroke-width="2"><circle cx="100" cy="75" r="8"/><circle cx="140" cy="75" r="8"/><circle cx="180" cy="75" r="8"/></g>
+ <text x="140" y="111">Allocated by chance</text>
+ <path d="M140 120v14H70v23m-6-6 6 6 6-6M140 134h70v23m-6-6 6 6 6-6" stroke="#276972" stroke-width="2" fill="none"/>
+ <rect x="25" y="169" width="90" height="37" rx="6" fill="#e6f3ef" stroke="#32776d" stroke-width="2"/><rect x="157" y="169" width="106" height="37" rx="6" fill="#f1dfc6" stroke="#a5792e" stroke-width="2"/>
+ <text x="70" y="193">Medicine</text><text x="210" y="193">Comparison</text>
+ <path d="M70 214v14h140v-14M140 228v14m-6-6 6 6 6-6" stroke="#276972" stroke-width="2" fill="none"/>
+ <text x="140" y="260">Assessor rates improvement</text>
+ <path d="M69 280h60v45H69z" fill="#fff" stroke="#537a94" stroke-width="2"/><path d="M78 291h41M78 301h41M78 311h30" stroke="#537a94" stroke-width="2"/>
+ <path d="M165 280h46v45h-46z" fill="#e7d9ee" stroke="#80588f" stroke-width="2"/><text x="188" y="310" font-size="23">?</text>
+ <text x="140" y="353">Group hidden from assessor</text><text x="140" y="378" font-size="14">Icons show roles, not counts</text>
+</g></svg>

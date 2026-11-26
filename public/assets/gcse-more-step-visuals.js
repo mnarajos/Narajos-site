@@ -663,7 +663,7 @@ function diabetes() {
     '<circle cx="280" cy="83" r="27" fill="#dceee5" stroke="'+teal+'" stroke-width="2"/>'+text(280,88,'Cell',teal,14)+text(238,127,'Reduced cell',ink,14)+text(238,159,'response',ink,14),
     'Compare the source of insulin with the response of the body cells. Real patients have varied symptoms and treatments.',175);
 }
-function waterTreatment() {
+export function waterTreatment() {
   return fig('Drinking water and pure water',
     'Water suitable for drinking is not necessarily pure water. It can contain dissolved substances at acceptable concentrations; harmful substances and microbes must be at safe levels.',
     '<rect x="37" y="26" width="105" height="118" rx="5" fill="#dceff5" stroke="'+blue+'" stroke-width="2"/>'+text(89,165,'Potable water',ink,14)+

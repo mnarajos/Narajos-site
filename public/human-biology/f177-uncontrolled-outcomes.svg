@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="275" viewBox="0 0 280 275" role="img" aria-labelledby="title desc">
+<title id="title">A fictional uncontrolled observation</title><desc id="desc">Twelve circles represent the twelve people who tried a medicine. Eight filled circles represent those who improved and four outlines represent those who did not. There is no comparison group, so the diagram cannot show how many would have improved without the medicine.</desc>
+<rect width="280" height="275" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16" fill="#243e49" text-anchor="middle">
+ <text x="140" y="26" font-weight="700">Uncontrolled observation</text><text x="140" y="53">12 people tried a medicine</text>
+ <g stroke="#32776d" stroke-width="2" fill="#32776d"><circle cx="62" cy="88" r="10"/><circle cx="114" cy="88" r="10"/><circle cx="166" cy="88" r="10"/><circle cx="218" cy="88" r="10"/><circle cx="62" cy="121" r="10"/><circle cx="114" cy="121" r="10"/><circle cx="166" cy="121" r="10"/><circle cx="218" cy="121" r="10"/></g>
+ <g stroke="#32776d" stroke-width="2" fill="#fff"><circle cx="62" cy="154" r="10"/><circle cx="114" cy="154" r="10"/><circle cx="166" cy="154" r="10"/><circle cx="218" cy="154" r="10"/></g>
+ <text x="140" y="191">8 improved · 4 did not</text>
+ <text x="140" y="220">No comparison group</text>
+ <text x="140" y="248" font-size="14">Fictional observation, not proof of cause</text>
+</g></svg>

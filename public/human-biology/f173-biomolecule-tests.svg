@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 400" width="280" height="400" role="img" aria-labelledby="title desc">
+<title id="title">Examples of positive biomolecule tests</title><desc id="desc">Three labelled test tubes compare expected positive observations: violet Biuret for peptide bonds, blue-black iodine for starch, and orange Benedict's after heating for a reducing sugar. Colours are schematic and actual Benedict's colours vary.</desc>
+<style>text{font:18px system-ui,sans-serif;fill:#203c49}.head{font-weight:700}.small{font-size:16px}.tube{stroke:#355766;stroke-width:2}</style>
+<text x="140" y="23" text-anchor="middle" class="head">Examples of positive tests</text>
+<path class="tube" d="M35 42v64q0 20 19 20t19-20V42" fill="#b99ace"/><text x="95" y="64" class="head">Biuret</text><text x="95" y="88">Peptide bonds</text><text x="95" y="111" class="small">Violet</text>
+<path class="tube" d="M35 151v64q0 20 19 20t19-20v-64" fill="#273b69"/><text x="95" y="173" class="head">Iodine</text><text x="95" y="197">Starch</text><text x="95" y="220" class="small">Blue-black</text>
+<path class="tube" d="M35 260v64q0 20 19 20t19-20v-64" fill="#d48643"/><text x="95" y="282" class="head">Benedict's + heat</text><text x="95" y="306">Reducing sugar</text><text x="95" y="329" class="small">Orange example</text>
+<text x="140" y="374" text-anchor="middle" class="small">Colours and tubes are schematic.</text>
+</svg>

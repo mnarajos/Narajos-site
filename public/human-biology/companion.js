@@ -511,7 +511,7 @@ const recapFigureMap = {
  "f170/4.2/2": [nutritionRecap("f170-microbiota-interventions", "A schematic compares probiotics containing live microbes with faecal microbiota transplantation using screened donor material. FMT is an established option for selected recurrent C. difficile infections; use for obesity remains investigational.", "Compare the intervention and the evidence context. Probiotic effects vary by product and condition; FMT is not an established obesity treatment. The figure does not recommend treatment for an individual.", 480)],
  "f171/1.2.1.movement/1": [["f171/1.2.1.movement", "explainDiagrams", 1]],
  "f171/1.2.1.movement/2": [["f171/1.2.1.movement", "explainDiagrams", 2]],
- "f170/4.2/0": [nutritionRecap("f170-microbiota-sites", "A schematic body marks mouth, skin, gut and genital tract as examples of microbiota sites. Communities vary by site and include bacteria and fungi.", "Locate the example sites. Microbial communities vary by body site and person; the markers do not represent exact species or quantities.", 420)],
+ "f170/4.2/0": [nutritionRecap("f170-microbiota-sites", "A schematic body marks mouth, skin, gut and genital tract as examples of microbiota sites. Communities vary by site and include bacteria and fungi.", "Locate the example sites. Microbial communities vary by body site and person; the markers do not represent exact species or quantities.", 420), nutritionRecap('f170-microbial-metabolites', 'Some gut microbes ferment fibre to short-chain fatty acids such as butyrate, which colon cells can use for energy; microbial metabolites can influence immune responses. Not all microbes perform this pathway and effects depend on context.', 'Follow this example of microbial fermentation and its possible effects. The pathway is qualitative; immune responses vary with context.', 365), nutritionRecap("f170-microbiota-benefits", "Resident gut microbes and an incoming potential pathogen compete for space and nutrients near the lining. Some gut bacteria also synthesise vitamins.", "Compare the competing microbes, then follow the example of vitamin synthesis. Competition can make establishment harder, but does not prevent every infection.", 395)],
  "f170/4.2/1": [nutritionRecap("f170-microbiota-benefits", "Resident gut microbes and an incoming potential pathogen compete for space and nutrients near the lining. Some gut bacteria also synthesise vitamins.", "Compare the competing microbes, then follow the example of vitamin synthesis. Competition can make establishment harder, but does not prevent every infection.", 395)],
  "f171/1.2.1.airways/1": [["f171/1.2.1.airways", "explainDiagrams", 1]],
  "f171/1.2.1.airways/2": [["f171/1.2.1.airways", "explainDiagrams", 2]],
@@ -528,8 +528,8 @@ const recapFigureMap = {
  "f171/2.2/1": [["f171/2.2", "explainDiagrams", 0]],
  "f170/3.3.3/1": [nutritionRecap("f170-menopause-therapy", "A skin patch illustrates systemic therapy delivering hormone into blood, which may relieve hot flushes. Vaginal oestrogen acts mainly in vaginal tissue and can relieve dryness; the examples have different indications.", "Compare systemic and local routes: vaginal oestrogen can help dryness but does not treat hot flushes. Individual suitability and risks need separate assessment; the figure does not establish a treatment choice.", 405)],
  "f170/3.3.3/0": [nutritionRecap("f170-menopause-change", "A schematic compares ovarian follicular activity before and after decline, with changing hormone patterns followed by irregular cycles and eventual cessation of periods. Hot flushes and vaginal dryness can occur, but experiences vary.", "Follow declining follicular activity to changing ovarian hormones and menstrual cycles. The follicle symbols are not counts; symptoms vary.", 420)],
- "f170/3.3.3/2": [nutritionRecap("f170-prostate-enlargement", "Two simplified sections show the urethra running from the bladder through the prostate; an enlarged prostate can narrow the channel and affect urination.", "Compare the urethra through each prostate. Enlargement can restrict urine flow but does not always cause symptoms; these drawings are not to scale.", 470)],
- "f170/3.3.2/1": [nutritionRecap('f170-ovarian-lining', 'A developing follicle produces oestrogen, which supports regrowth of the uterine lining. After ovulation, the corpus luteum produces progesterone, helping maintain and prepare the lining. The simplified diagrams show selected roles; both hormones have other effects.', 'Compare two contributions to the uterine lining: oestrogen supports regrowth, and progesterone helps maintain and prepare it. The ovarian cycle is simplified.', 365), ["f170/3.3.2", "explainDiagrams", 1]],
+ "f170/3.3.3/2": [nutritionRecap("f170-prostate-enlargement", "Two simplified sections show the urethra running from the bladder through the prostate; an enlarged prostate can narrow the channel and affect urination.", "Compare the urethra through each prostate. Enlargement can restrict urine flow but does not always cause symptoms; these drawings are not to scale.", 470), nutritionRecap('f170-age-fertility', 'Two schematic ovaries show a general decline in remaining follicles with age. An upward arrow notes that some pregnancy risks, such as miscarriage, increase with maternal age on average. Symbols are not counts or predictions for an individual.', 'Compare these qualitative examples: follicle reserve generally falls with age, and some pregnancy risks can increase. Fertility and pregnancy outcomes vary between individuals; the dots are not measurements.', 370)],
+ "f170/3.3.2/1": [nutritionRecap('f170-ovarian-lining', 'A developing follicle produces oestrogen, which supports regrowth of the uterine lining. After ovulation, the corpus luteum produces progesterone, helping maintain and prepare the lining. The simplified diagrams show selected roles; both hormones have other effects.', 'Compare two contributions to the uterine lining: oestrogen supports regrowth, and progesterone helps maintain and prepare it. The ovarian cycle is simplified.', 365), ["f170/3.3.2", "explainDiagrams", 1], nutritionRecap('f170-testosterone-puberty', 'Testosterone contributes to selected puberty changes: development of facial and body hair, larynx and vocal-fold growth associated with a lower voice, and muscle development. The extent and timing vary between individuals; these features are not diagnostic.', 'Explore three examples of changes testosterone can support at puberty. Timing and extent vary, and these characteristics are not exclusive to one sex or diagnostic.', 365)],
  "f170/2.2.3/1": [["f170/2.2.3", "explainDiagrams", 1], ["f171/4.1", "modelDiagrams", 0], nutritionRecap('f170-feno-measurement', 'A simplified airway and lungs lead to an arrow representing exhaled breath entering a nitric oxide analyser. FeNO measures nitric oxide in breath and can provide an indicator of airway inflammation when interpreted with other clinical information. No reading is shown.', 'Follow exhaled air to the analyser. FeNO measures nitric oxide and can indicate airway inflammation in context; it does not establish a diagnosis alone. No patient reading is shown.', 335)],
  "f170/3.1.2/1": [["f170/3.1.2", "explainDiagrams", 1]],
  "f170/2.2.2/1": [nutritionRecap("bone-functions", "A schematic long bone supports a muscle attached by a tendon. A cutaway marks red marrow inside the bone, and a double arrow indicates calcium exchange between bone and blood.", "Locate the muscle attachment and marrow. Bone supports movement, stores calcium and contains blood-forming marrow; the drawing is not to scale.", 350)],
@@ -582,6 +582,7 @@ const recapFigureMap = {
  "f173/a1/0": [labRecap("Follow the sample from the laboratory test to the report that supports a clinical decision.")],
  "f173/a1/1": [labRecap("Locate the sample label and quality controls: they help make the reported result dependable.")],
  "f173/a1/2": [labRecap("Notice that a report is considered with clinical context. A result does not always establish a diagnosis on its own.")],
+ "f170/1.1.2.counting/0": [["f170/1.1.2.counting", "explainDiagrams", 0]],
  "f170/1.1.2.counting/1": [["f170/1.1.2.counting", "explainDiagrams", 1], ["f170/1.1.2.counting", "modelDiagrams", 1]],
  "f170/1.1.3/1": [["f170/1.1.3", "explainDiagrams", 3]],
  "f170/1.1.3/2": [["f170/1.1.3", "explainDiagrams", 1], ["f170/1.1.3.evidence", "explainDiagrams", 1]],
@@ -604,6 +605,10 @@ const recapFigureMap = {
  "f177/a1/2": [["f177/a1", "teachingDiagram"]],
  "f177/a2/2": [["f177/a2", "teachingDiagram"]]
 };
+Object.assign(recapFigureMap, window.HumanF176F177RecapFigures || {});
+Object.assign(recapFigureMap, window.KeystoneF174F175RecapFigures || {});
+Object.assign(recapFigureMap, window.KeystoneF172F173RecapFigures || {});
+Object.assign(recapFigureMap, window.HumanF170SystemsGrowthRecapFigures || {});
 function recapFigures(unit,id,step,indices) {
  const teaching=window.KeystoneHumanTeaching, lessons=window.KeystoneHumanLessons || {};
  if (!teaching) return "";
@@ -622,6 +627,10 @@ function recapBody(unit,id,step,point) {
   {heading:"Gas exchange", text:"Alveoli provide a large surface area for gas exchange.", figures:[0,1]},
   {heading:"Small intestine", text:"The small intestine absorbs digested molecules;", figures:[2]},
   {heading:"Colon", text:"the colon reabsorbs water.", figures:[3]}
+  ],
+  "f170/2.1.2/2": [
+   {heading:"Nephrons", text:"Nephrons form urine by filtration and selective reabsorption;", figures:[0]},
+   {heading:"Pancreas", text:"the pancreas has exocrine digestive and endocrine hormonal functions.", figures:[1]}
   ],
   "f170/2.2.3/1": [
    {heading:"Spirometry", text:"Spirometry measures volumes and flow;", figures:[1]},
@@ -663,7 +672,15 @@ function recapBody(unit,id,step,point) {
   ],
   "f170/3.3.2/1": [
    {heading:"Oestrogen and progesterone", text:"Oestrogen and progesterone are important in endometrial and reproductive regulation;", figures:[0]},
-   {heading:"Testosterone", text:"testosterone supports male-typical secondary sexual characteristics and sperm production.", figures:[1]}
+   {heading:"Testosterone", text:"testosterone supports male-typical secondary sexual characteristics and sperm production.", figures:[1,2]}
+  ],
+  "f170/3.3.3/2": [
+   {heading:"Prostate enlargement", text:"Benign prostatic enlargement can obstruct the urethra and affect urination;", figures:[0]},
+   {heading:"Age and fertility", text:"fertility and pregnancy risks change with age.", figures:[1]}
+  ],
+  "f170/4.2/0": [
+   {heading:"Microbiota sites", text:"The human microbiota includes bacteria and fungi in different body sites;", figures:[0]},
+   {heading:"Microbial activities", text:"its activities can support metabolism, colonisation resistance, and immune responses.", figures:[1,2]}
   ]
  };
  const groups = groupedRecaps[unit+"/"+id+"/"+step];

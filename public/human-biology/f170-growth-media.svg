@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 365" role="img" aria-labelledby="title desc">
+<title id="title">Ideal divisions and culture media</title><desc id="desc">One bacterial symbol becomes two, four and eight after three ideal divisions. Starting from one cell, the ideal count after n divisions is two to the power n. A plate is shown with solid agar and a tube with liquid broth; these are different physical media.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5 0 10Z" fill="#285f68"/></marker></defs><rect width="280" height="365" rx="12" fill="#f4f9f8"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="15"><text x="140" y="24" font-weight="700">Ideal cell divisions</text>
+<g fill="#aa6145"><circle cx="30" cy="68" r="5"/><circle cx="94" cy="62" r="5"/><circle cx="94" cy="76" r="5"/><circle cx="155" cy="57" r="5"/><circle cx="171" cy="57" r="5"/><circle cx="155" cy="77" r="5"/><circle cx="171" cy="77" r="5"/><circle cx="223" cy="53" r="4"/><circle cx="236" cy="53" r="4"/><circle cx="249" cy="53" r="4"/><circle cx="223" cy="66" r="4"/><circle cx="236" cy="66" r="4"/><circle cx="249" cy="66" r="4"/><circle cx="229" cy="79" r="4"/><circle cx="243" cy="79" r="4"/></g>
+<path d="M44 68h34M108 68h31M183 68h26" fill="none" stroke="#285f68" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="30" y="107">1</text><text x="94" y="107">2</text><text x="163" y="107">4</text><text x="236" y="107">8</text>
+<text x="140" y="133">After 3 divisions: 2³ = 8</text><text x="140" y="155" font-size="14">Starting with one cell: 2ⁿ after n divisions</text>
+<path d="M20 173h240" stroke="#c0d6d2"/><text x="140" y="200" font-weight="700">Two physical media</text>
+<ellipse cx="73" cy="256" rx="48" ry="16" fill="#f4dca8" stroke="#8e7c58" stroke-width="2"/><path d="M25 256v11c0 9 21 16 48 16s48-7 48-16v-11" fill="#f4dca8" stroke="#8e7c58" stroke-width="2"/><ellipse cx="73" cy="256" rx="48" ry="16" fill="#f4dca8" stroke="#8e7c58" stroke-width="2"/>
+<path d="M172 225v55q0 15 18 15h15q18 0 18-15v-55" fill="#e7f1ef" stroke="#527b7d" stroke-width="2"/><path d="M174 253h47v27q0 13-17 13h-13q-17 0-17-13Z" fill="#d7bc7a" opacity=".8"/>
+<text x="73" y="313">Solid agar</text><text x="198" y="313">Liquid broth</text>
+<text x="140" y="345" font-size="14">Symbols and cell counts are illustrative.</text></g></svg>

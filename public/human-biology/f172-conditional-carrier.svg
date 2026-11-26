@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="335" viewBox="0 0 280 335" role="img" aria-labelledby="title desc">
+<title id="title">Conditional carrier probability in Rr × Rr</title><desc id="desc">A Punnett square for Rr crossed with Rr has RR, Rr, Rr and rr. The rr square is crossed out because a dominant phenotype is known. Two of the three remaining equally likely outcomes are Rr carriers, giving a conditional probability of two thirds.</desc>
+<rect width="280" height="335" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16" fill="#243e49" text-anchor="middle">
+ <text x="140" y="25" font-weight="700">Known dominant phenotype</text><text x="140" y="50">Rr × Rr · equal chances</text>
+ <text x="112" y="77">R</text><text x="196" y="77">r</text><text x="37" y="126">R</text><text x="37" y="207">r</text>
+ <rect x="70" y="85" width="84" height="80" fill="#fff" stroke="#537a94" stroke-width="2"/><rect x="154" y="85" width="84" height="80" fill="#e6f3ef" stroke="#32776d" stroke-width="2"/>
+ <rect x="70" y="165" width="84" height="80" fill="#e6f3ef" stroke="#32776d" stroke-width="2"/><rect x="154" y="165" width="84" height="80" fill="#f0f1ed" stroke="#7b8b88" stroke-width="2"/>
+ <text x="112" y="130" font-size="19">RR</text><text x="196" y="119" font-size="19">Rr</text><text x="196" y="143" font-size="13">carrier</text>
+ <text x="112" y="199" font-size="19">Rr</text><text x="112" y="223" font-size="13">carrier</text><text x="196" y="228" font-size="19">rr</text>
+ <path d="M164 174l64 62M228 174l-64 62" stroke="#a34843" stroke-width="3"/>
+ <text x="140" y="277">Exclude rr; it is recessive.</text><text x="140" y="306">2 carriers among 3 → 2/3</text>
+</g></svg>

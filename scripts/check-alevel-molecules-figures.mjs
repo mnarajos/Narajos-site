@@ -221,7 +221,11 @@ for (const [file,global,topic,id,group] of [
  ['catchup-meiosis-ii-nondisjunction.js','ALevelMeiosisIINondisjunction','a4','chromut',0],
  ['catchup-aseptic-actions.js','ALevelAsepticActions','a4','aseptic',0],
  ['catchup-transpiration-air.js','ALevelTranspirationAir','a3','xylem',1],
- ['catchup-water-solvent.js','ALevelWaterSolvent','a1','water',0]
+ ['catchup-water-solvent.js','ALevelWaterSolvent','a1','water',0],
+ ['catchup-solute-water-potential.js','ALevelSoluteWaterPotential','a2','osmosis',0],
+ ['catchup-glucose-standards.js','ALevelGlucoseStandards','a1','tests',1],
+ ['catchup-sampling-choice.js','ALevelSamplingChoice','a4','sampling',0],
+ ['catchup-magnification-example.js','ALevelMagnificationExample','a2','micro',0]
 ]) {
  vm.runInNewContext(readFileSync(new URL('../public/alevel/'+file, import.meta.url), 'utf8'), context);
  const figure=context.window[global].render(topic,id,group);

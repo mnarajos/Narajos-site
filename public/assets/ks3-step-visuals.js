@@ -9,7 +9,7 @@ function ramp(angle, label, measurement = false) {
       <rect x="${carX}" y="${carY}" width="32" height="10" rx="3" fill="#eab776" stroke="${rust}"/>
       ${circle(carX+6,carY+11,3,"#fff",ink)}${circle(carX+26,carY+11,3,"#fff",ink)}
     </g>
-    ${line(20,135,300,135,ink,2)}${text(180,161,"Ramp foot",teal,14)}
+    ${line(20,135,300,135,ink,2)}${text(180,163,"Ramp foot",teal,18)}
     ${measurement ? `${line(180,147,292,147,blue,2)}${arrow(180,147,292,147,blue,2)}${arrow(292,147,180,147,blue,2)}${line(292,131,292,153,blue,2)}${text(240,125,"Stop",blue,14)}` : ""}`;
   return picture(label, diagram(`${label}: a toy starts near the top and rolls towards the ramp foot${measurement ? "; distance is measured from the foot to where the toy stops" : ""}.`, shape),
     measurement ? "Measure from the foot of the ramp to the stopping point." : "The same toy starts at the same release point on each ramp.");
@@ -24,8 +24,8 @@ function fairTest(index) {
     ${circle(51,70,5,"white",ink)}${circle(75,70,5,"white",ink)}
     ${line(132,67,188,67,teal,5)}${line(136,56,142,62,teal)}${line(155,56,161,62,teal)}${line(174,56,180,62,teal)}
     ${line(231,52,282,76,teal,3)}${circle(240,56,5,"#eab776",rust)}${arrow(240,39,240,50,rust,2)}
-    ${text(64,99,"Toy",ink,15)}${text(160,99,"Surface",ink,15)}${text(255,99,"Release point",ink,14)}
-    ${text(160,135,"Change only the angle",rust,16)}`), "Compare the controls before linking a change in distance to angle.");
+    ${text(64,99,"Toy",ink,18)}${text(160,99,"Surface",ink,18)}${text(255,99,"Release",ink,17)}${text(255,119,"point",ink,17)}
+    ${text(160,155,"Change only the angle",rust,16)}`), "Compare the controls before linking a change in distance to angle.");
 }
 
 function particles(title, positions, note, description, motion = "") {
@@ -74,13 +74,13 @@ function electromagnet() {
   return picture("An electromagnet in a complete circuit", diagram(
     "A cell, closed switch and wire coil around an iron core make a complete loop. An iron paper clip is attracted near the core while current flows.", `
     <path d="M55 47H100M116 47H170M205 47H245V119H55V47" fill="none" stroke="${ink}" stroke-width="3"/>
-    ${circle(171,47,2.5,"white",ink)}${circle(204,47,2.5,"white",ink)}${line(174,47,201,47,ink,2.5)}${text(188,27,"Closed switch",ink,14)}
+    ${circle(171,47,2.5,"white",ink)}${circle(204,47,2.5,"white",ink)}${line(174,47,201,47,ink,2.5)}${text(188,27,"Closed switch",ink,17)}
     ${line(100,34,100,60,ink,2)}${line(111,27,111,67,ink,4)}${line(116,47,132,47,ink,3)}
     <rect x="142" y="102" width="74" height="32" rx="4" fill="#d2dddd" stroke="${ink}"/>
     <path d="M150 99q-14 19 0 38m12-38q-14 19 0 38m12-38q-14 19 0 38m12-38q-14 19 0 38m12-38q-14 19 0 38m12-38q-14 19 0 38" fill="none" stroke="${rust}" stroke-width="3"/>
-    ${text(106,20,"Cell",ink,14)}${text(135,159,"Coil on iron",rust,13)}
+    ${text(106,20,"Cell",ink,17)}${text(115,178,"Coil on iron",rust,17)}
     <path d="M228 133q12-7 17 2t-3 17q-7 7-11 1l10-11" fill="none" stroke="${blue}" stroke-width="3"/>
-    ${text(264,159,"Iron clip",blue,13)}`,320,170),
+    ${text(260,178,"Iron clip",blue,17)}`,320,195),
     "Trace the complete loop through the coil. When the switch opens, current stops and the electromagnet releases the clip.");
 }
 
@@ -109,7 +109,7 @@ function humanFertilisation() {
     <ellipse cx="228" cy="93" rx="56" ry="47" fill="#f4e9da" stroke="${teal}" stroke-width="2"/>
     ${circle(239,94,13,"#d8c7e4",ink,2)}<path d="M26 88H155Q172 88 186 94H215" fill="none" stroke="${rust}" stroke-width="5"/>
     ${circle(202,94,5,"#e7b783",rust)}${arrow(209,94,223,94,rust,2)}
-    ${text(88,60,"Pollen tube",rust,15)}${text(229,156,"Ovule",teal,15)}${text(160,25,"Male nucleus joins female nucleus",ink,13)}`,320,175),
+    ${text(88,60,"Pollen tube",rust,15)}${text(229,156,"Ovule",teal,15)}${text(160,20,"Male nucleus joins",ink,17)}${text(160,39,"female nucleus",ink,17)}`,320,175),
     "Follow the male nucleus through the pollen tube to the female nucleus inside the ovule. The sizes are simplified."));
   host.append(picture("Human fertilisation", diagram(
     "A sperm cell reaches an egg cell. The male and female sex-cell nuclei can join during fertilisation.", `
@@ -163,7 +163,7 @@ function proteinForRepair() {
     "Bread and oil represent sources of carbohydrate and lipid. After digestion and processing, their components can be used in respiration to transfer energy for activity.", `
     <path d="M22 61q8-27 42-19q27 7 22 32H22Z" fill="#e9c39a" stroke="${rust}" stroke-width="2"/>
     <path d="M104 42h17v8h6v27h-29V50h6Z" fill="#f1d889" stroke="${rust}" stroke-width="2"/>
-    ${arrow(134,67,183,67,teal,2.5)}${text(158,26,"Digest, then",ink,13)}${text(158,43,"respire",ink,13)}
+    ${arrow(134,67,183,67,teal,2.5)}${text(158,26,"Digest, then",ink,17)}${text(158,46,"respire",ink,17)}
     <path d="M200 69q14-23 45-20 24 2 40 20-16 18-40 20-31 3-45-20Z" fill="#c4e0db" stroke="${teal}" stroke-width="2"/>
     ${text(75,119,"Carbohydrate / lipid",ink,14)}${text(241,119,"Activity",ink,14)}`,320,145),
     "After digestion and processing, substances from food can be used in respiration to transfer energy for activity."));
@@ -171,7 +171,7 @@ function proteinForRepair() {
     "Protein in food is digested into amino acids. Cells use these building blocks to make proteins needed for growth and repair.", `
     <path d="M16 66q5 48 46 48t46-48Z" fill="#e9d1ad" stroke="${rust}" stroke-width="2"/>
     ${[[37,70],[56,66],[76,71],[50,81],[71,84]].map(([x,y])=>circle(x,y,5,"#b18c60",rust,1)).join("")}
-    ${arrow(112,87,143,87,teal,2)}${text(128,64,"Digest",ink,13)}
+    ${arrow(112,87,143,87,teal,2)}${text(128,59,"Digest",ink,17)}
     ${[[161,72],[179,86],[160,101]].map(([x,y])=>circle(x,y,6,"#d9c7e8",violet,1)).join("")}
     ${arrow(192,87,216,87,teal,2)}
     ${[[236,68],[260,68],[236,92],[260,92]].map(([x,y])=>circle(x,y,10,"#c4e0db",teal,1)).join("")}
@@ -194,8 +194,8 @@ function meltingGraph() {
     "A qualitative graph of temperature against time rises as a solid warms, is level during melting, rises as the liquid warms, and is level again during boiling.", `
     ${arrow(43,140,300,140,ink,2)}${arrow(43,140,43,26,ink,2)}
     <path d="M50 128L90 105H143L191 62H251L290 39" fill="none" stroke="${blue}" stroke-width="4"/>
-    ${text(174,161,"Time heating",ink,15)}${text(3,15,"Temperature",ink,13,"start")}
-    ${text(116,95,"Melting",blue,13)}${text(221,51,"Boiling",blue,13)}`,320,175),
+    ${text(174,161,"Time heating",ink,15)}${text(3,17,"Temperature",ink,17,"start")}
+    ${text(116,95,"Melting",blue,17)}${text(221,51,"Boiling",blue,17)}`,320,175),
     "Read the flat sections: energy is supplied during melting and boiling while temperature stays steady. The graph is qualitative, not measured data.");
 }
 
@@ -214,9 +214,9 @@ function repeatedRuns() {
   const stops = [210, 214, 206];
   return picture("Repeat the same setup", diagram(
     "Three illustrative runs begin at the same ramp foot and end at similar stopping points. Double arrows show the measured distance each time.", `
-    ${line(95,22,95,141,teal,2)}${text(95,16,"Ramp foot: 0",teal,14)}
-    ${stops.map((x,i)=>{const y=44+i*45;return text(35,y+5,"Run "+(i+1),ink,14)+arrow(99,y,x,y,blue,2)+arrow(x,y,99,y,blue,2)+line(x,y-10,x,y+10,rust,2);}).join("")}
-    ${text(249,35,"Stop",rust,14)}`,320,165),
+    ${line(95,22,95,141,teal,2)}${text(95,18,"Ramp foot: 0",teal,17)}
+    ${stops.map((x,i)=>{const y=44+i*45;return text(35,y+5,"Run "+(i+1),ink,17)+arrow(99,y,x,y,blue,2)+arrow(x,y,99,y,blue,2)+line(x,y-10,x,y+10,rust,2);}).join("")}
+    ${text(249,35,"Stop",rust,17)}`,320,165),
     "Use the same zero for each run and compare the distances. The endpoints here are illustrative, not measured results.");
 }
 

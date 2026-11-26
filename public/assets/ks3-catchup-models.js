@@ -74,11 +74,11 @@ function lightningModel() {
       ${line(281,65,267,75,ink,3)}${line(281,65,296,74,ink,3)}
       ${line(281,81,270,101,ink,3)}${line(281,81,293,101,ink,3)}
       ${text(269,119,"Observer")}
-      ${line(42,120,282,120,"#a6bcbd",1.5,"4 4")}
-      ${line(42,151,282,151,"#a6bcbd",1.5,"4 4")}
-      ${arrow(42,120,light ? 281 : 67,120,blue,3)}
-      ${arrow(42,151,sound ? 281 : light ? 103 : 67,151,rust,3)}
-      ${text(16,125,"Light",blue,12,"start")}${text(5,156,"Sound",rust,12,"start")}`,320,169);
+      ${line(85,120,282,120,"#a6bcbd",1.5,"4 4")}
+      ${line(85,151,282,151,"#a6bcbd",1.5,"4 4")}
+      ${arrow(85,120,light ? 281 : 104,120,blue,3)}
+      ${arrow(85,151,sound ? 281 : light ? 126 : 104,151,rust,3)}
+      ${text(5,125,"Light",blue,17,"start")}${text(5,156,"Sound",rust,17,"start")}`,320,169);
     return picture(["Both signals start together","Light reaches you first","Thunder arrives later"][stage],drawing,
       ["Advance the model to follow the two signals.","Light is much faster in air.","The timing is illustrative. The same strike produced both signals."][stage]);
   };

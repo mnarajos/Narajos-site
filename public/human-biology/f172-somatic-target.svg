@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 315" width="280" height="315" role="img" aria-labelledby="title desc">
+<title id="title">Somatic treatment targets body cells</title><desc id="desc">A simplified person and an enlarged body cell illustrate a somatic treatment target. Separate egg and sperm symbols show that gametes are not the target in this example; inheritance is not routinely changed.</desc>
+<style>text{font:18px system-ui,sans-serif;fill:#203c49}.head{font-weight:700}.small{font-size:16px}.arrow{stroke:#286d70;stroke-width:3;fill:none;marker-end:url(#a)}</style>
+<defs><marker id="a" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3z" fill="#286d70"/></marker></defs>
+<text x="140" y="24" text-anchor="middle" class="head">Somatic target</text>
+<circle cx="57" cy="70" r="15" fill="#f1d5c8" stroke="#a55b32" stroke-width="2"/><path d="M57 85v57 M27 104h60 M57 142l-21 34 M57 142l21 34" fill="none" stroke="#39718b" stroke-width="7" stroke-linecap="round"/>
+<path class="arrow" d="M98 111h42"/><circle cx="204" cy="108" r="43" fill="#e7f1f6" stroke="#39718b" stroke-width="2"/><circle cx="204" cy="108" r="15" fill="#fff" stroke="#39718b" stroke-width="2"/><text x="204" y="173" text-anchor="middle" class="small">Treated body cell</text>
+<path d="M20 190h240" stroke="#bdcfce"/><circle cx="71" cy="238" r="20" fill="#fff3df" stroke="#a55b32" stroke-width="2"/><circle cx="71" cy="238" r="5" fill="#d6aaa0"/>
+<circle cx="207" cy="234" r="7" fill="#dceef4" stroke="#39718b" stroke-width="2"/><path d="M214 234q22 4 28 20" fill="none" stroke="#39718b" stroke-width="2"/>
+<text x="71" y="279" text-anchor="middle">Egg</text><text x="207" y="279" text-anchor="middle">Sperm</text>
+<text x="140" y="304" text-anchor="middle" class="small">Gametes are not the target here.</text>
+</svg>

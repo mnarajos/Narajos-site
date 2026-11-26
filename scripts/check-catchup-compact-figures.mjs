@@ -63,9 +63,12 @@ export async function checkCompactCatchupFigures(browser, base) {
       await page.getByText('Review key knowledge', {exact: true}).click();
       const osmosisGraph = page.locator('figure').filter({hasText: 'Read the zero-change point'});
       await osmosisGraph.waitFor();
+      const soluteFigure = page.locator('figure').filter({hasText: 'Solute lowers water potential'});
+      await soluteFigure.waitFor();
       assert.match(await osmosisGraph.locator('svg').getAttribute('aria-label'), /no measured values or numerical answer/i);
       await page.getByRole('button', {name: 'Go straight to questions', exact: true}).click();
       assert.equal(await osmosisGraph.count(), 0, 'teaching recap should not remain in the independent question view');
+      assert.equal(await soluteFigure.count(), 0, 'solute teaching figure should not remain in the independent question view');
 
       await page.goto(base + '/human-biology/#catchup/f175/a2');
       const placenta = page.locator('.hb-teach-explain .hb-teaching-diagram-compact');

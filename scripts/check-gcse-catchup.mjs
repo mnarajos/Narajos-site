@@ -215,6 +215,7 @@ export async function checkGCSECatchup(browser, base) {
       ["current-potential-difference", "As potential difference rises, current increases"],
       ["ruler-drop", "In the illustrative trials, person A catches"],
       ["electrode-evidence", "Compare molten sodium chloride with sodium chloride dissolved in water"],
+      ["potable-water", "Water suitable for drinking is not necessarily pure water"],
       ["dynamic-equilibrium", "At dynamic equilibrium in a closed system"],
       ["plant-transport", "Water evaporates from moist leaf cells"]
     ]) {

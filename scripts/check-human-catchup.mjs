@@ -759,6 +759,7 @@ export async function checkHumanCatchup(browser, base) {
     await recapPanel.getByText(/Chromatography separates substances/).waitFor();
     const recapChromatogram = recapPanel.locator('img[src="/human-biology/chromatography.svg"]');
     assert(await recapChromatogram.isVisible());
+    assert(await recapPanel.locator('img[src="/human-biology/f173-chromatography-partition.svg"]').isVisible());
     assert(await recapChromatogram.evaluate(async image => { await image.decode(); return image.naturalWidth > 0; }));
     assert(await widthFits(), "Recap figure must fit at phone size");
     await page.getByRole("link", {name: "Next key idea →"}).click();
@@ -779,8 +780,8 @@ export async function checkHumanCatchup(browser, base) {
       ["f171/2.2/1", ["f171-functional-outcome.svg"]],
       ["f175/2.1/1", ["f175-history-ultrasound.svg"]], ["f170/3.3.1/2", ["hb-endometrium.webp", "hb-follicle-teaching.webp", "hb-tubule-teaching.webp"]],
       ["f170/3.3.1/1", ["f170-sperm-route.svg"]], ["f170/3.3.2/2", ["f170-gamete-patterns.svg"]],
-      ["f170/3.3.3/0", ["f170-menopause-change.svg"]], ["f170/3.3.3/1", ["f170-menopause-therapy.svg"]], ["f170/3.3.3/2", ["f170-prostate-enlargement.svg"]],
-      ["f170/3.3.2/1", ["f170-ovarian-lining.svg", "f170-testicular-hormones.svg"]],
+      ["f170/3.3.3/0", ["f170-menopause-change.svg"]], ["f170/3.3.3/1", ["f170-menopause-therapy.svg"]], ["f170/3.3.3/2", ["f170-prostate-enlargement.svg", "f170-age-fertility.svg"]],
+      ["f170/3.3.2/1", ["f170-ovarian-lining.svg", "f170-testicular-hormones.svg", "f170-testosterone-puberty.svg"]],
       ["f170/3.1.2/1", ["f170-diabetes-comparison.svg"]], ["f170/3.1.2/2", ["f170-glucose-testing-context.svg"]],
       ["f170/3.1.1/1", ["f170-glucose-response.svg", "f170-beta-insulin.svg", "f170-insulin-targets.svg"]], ["f170/3.1.1/2", ["f170-insulin-targets.svg", "adh-epo-kidney.svg"]],
       ["f170/2.1.3.cirrhosis/1", ["f170-bilirubin-albumin.svg"]],
@@ -800,7 +801,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.1.1.signals/1", ["reflex-pathway.svg", "myelinated-axon.svg"]],
       ["f170/1.1.3.evidence/1", ["f170-ribosome-types.svg"]],
       ["f170/1.1.3.evidence/2", ["cell-er-comparison.svg", "cell-protein-routing.svg", "f170-lysosome-digestion.svg"]],
-      ["f170/4.2/0", ["f170-microbiota-sites.svg"]], ["f170/4.2/1", ["f170-microbiota-benefits.svg"]], ["f170/4.2/2", ["f170-microbiota-interventions.svg"]],
+      ["f170/4.2/0", ["f170-microbiota-sites.svg", "f170-microbial-metabolites.svg", "f170-microbiota-benefits.svg"]], ["f170/4.2/1", ["f170-microbiota-benefits.svg"]], ["f170/4.2/2", ["f170-microbiota-interventions.svg"]],
       ["f170/4.1.3/0", ["f170-microbiota-sites.svg", "f170-microbial-environments.svg"]], ["f170/4.1.3/1", ["f170-sampling-contamination.svg"]], ["f170/4.1.3/2", ["f170-asepsis-limit.svg"]],
       ["f170/4.1.2/0", ["f170-fungal-hyphae.svg"]], ["f170/4.1.2/1", ["f170-fungal-digestion.svg"]], ["f170/4.1.2/2", ["f170-fungal-disease-examples.svg"]],
       ["f170/4.1.4/1", ["f170-growth-graph.svg", "f170-binary-fission.svg", "f170-population-balance.svg"]],
@@ -819,8 +820,9 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/3.2.2/1", ["f170-medulla-control.svg", "hypothalamus-pituitary.svg"]],
       ["f170/3.2.1/1", ["action-potential-ions.svg", "myelinated-axon.svg"]], ["f170/3.2.1/2", ["f170-autonomic-cns-pns.svg"]],
       ["f172/a1/1", ["meiosis.svg"]], ["f172/a2/1", ["punnett-cross.svg"]],
-      ["f172/a2/2", ["punnett-cross.svg"]], ["f172/a3/1", ["genetic-test.svg"]],
-      ["f172/a4/2", ["gene-delivery.svg"]],
+      ["f172/a2/2", ["punnett-cross.svg"]], ["f172/a3/1", ["genetic-test.svg", "f172-variant-significance.svg"]],
+      ["f172/a3/2", ["f172-genetic-consent.svg"]], ["f172/a4/1", ["f172-gene-therapy-methods.svg"]],
+      ["f172/a4/2", ["gene-delivery.svg", "f172-editing-risk.svg"]],
       ["f173/a2/1", ["hb-blood-cells-sem.webp", "hb-pancreas-tem.webp"]],
       ["f174/a2/0", ["iron-blood-oxygen.svg"]], ["f174/a2/1", ["water-balance.svg"]], ["f174/a2/2", ["body-composition.svg"]],
       ["f175/a2/1", ["placental-exchange.svg"]], ["f175/a3/1", ["oviduct-obstruction.svg"]],
@@ -853,7 +855,9 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/2.1.3/1", "Atherosclerotic plaques narrow arteries and may restrict blood supply. COPD can reduce effective ventilation and gas exchange.", ["artery-plaque-comparison.svg", "airway-narrowing.svg"]],
       ["f170/3.1.1/2", "Insulin lowers plasma glucose; ADH increases water reabsorption in kidney collecting ducts; erythropoietin stimulates red cell production.", ["f170-insulin-targets.svg", "adh-epo-kidney.svg"]],
       ["f170/1.1.4/2", "Osmosis is net water movement across a partially permeable membrane down a water-potential gradient. Cell-surface glycoproteins contribute to recognition and transplant rejection.", ["f170-water-active.svg", "f170-antigen-recognition.svg"]],
-      ["f170/3.3.2/1", "Oestrogen and progesterone are important in endometrial and reproductive regulation; testosterone supports male-typical secondary sexual characteristics and sperm production.", ["f170-ovarian-lining.svg", "f170-testicular-hormones.svg"]]
+      ["f170/3.3.2/1", "Oestrogen and progesterone are important in endometrial and reproductive regulation; testosterone supports male-typical secondary sexual characteristics and sperm production.", ["f170-ovarian-lining.svg", "f170-testicular-hormones.svg"]],
+      ["f170/3.3.3/2", "Benign prostatic enlargement can obstruct the urethra and affect urination; fertility and pregnancy risks change with age.", ["f170-prostate-enlargement.svg", "f170-age-fertility.svg"]],
+      ["f170/4.2/0", "The human microbiota includes bacteria and fungi in different body sites; its activities can support metabolism, colonisation resistance, and immune responses.", ["f170-microbiota-sites.svg", "f170-microbial-metabolites.svg"]]
     ]) {
       await open("catchup/" + route);
       const groups = page.locator(".k-recap-group");
@@ -919,12 +923,15 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/4.1.4", ["f170-binary-fission.svg"], ["f170-growth-graph.svg", "f170-growth-graph.svg", "f170-growth-graph.svg"]],
       ["f170/4.1.1", ["f170-gram-envelope.svg", "f170-gram-stain-sequence.svg"], ["f170-gram-envelope.svg", "f170-gram-envelope.svg"]],
       ["f172/a1", ["meiosis.svg"], ["meiosis.svg", "f172-meiosis-alleles.svg", "f172-mitosis-alleles.svg"]],
-      ["f172/a4", [], ["f172-gene-expression-comparison.svg", "f172-gene-expression-comparison.svg", "f172-gene-expression-comparison.svg"]],
-      ["f173/a3", [], ["chromatography.svg", "chromatography.svg", "chromatography.svg"]],
+      ["f172/a2", ["f172-genotype-phenotype.svg"], ["punnett-cross.svg", "punnett-cross.svg", "f172-conditional-carrier.svg"]],
+      ["f172/a3", ["f172-variant-significance.svg", "f172-genetic-consent.svg"], []],
+      ["f172/a4", ["f172-gene-therapy-methods.svg"], ["f172-gene-expression-comparison.svg", "f172-gene-expression-comparison.svg", "f172-gene-expression-comparison.svg"]],
+      ["f173/a3", [null, "f173-chromatography-partition.svg"], ["chromatography.svg", "chromatography.svg", "chromatography.svg"]],
       ["f174/a1", [], ["meals-energy-iron.svg", "f174-iron-haemoglobin-oxygen.svg"]],
       ["f174/a4", ["f174-bmi-composition.svg", "f174-intake-biomarker.svg"], ["f174-bmi-composition.svg", "f174-intake-biomarker.svg", "f174-intake-biomarker.svg"]],
       ["f177/a3", ["f177-preclinical-evidence.svg", "f177-study-duration.svg"], ["f177-preclinical-evidence.svg", "f177-study-duration.svg", "f177-safety-signal.svg"]],
       ["f177/a1", [], ["f177-antagonist-response.svg", "f177-antagonist-response.svg"]],
+      ["f177/a2", ["f177-random-blind.svg"], ["f177-uncontrolled-outcomes.svg", "f177-random-blind.svg", "f177-random-blind.svg"]],
       ["f176/a5", ["f176-eeg-trace.svg"], ["f176-eeg-trace.svg", "f176-mri-ct.svg"]],
       ["f176/a4", ["f176-coordination-injury.svg"], ["f176-coordination-injury.svg", "f176-coordination-injury.svg"]],
       ["f175/2.1", ["f175-history-ultrasound.svg", "f175-history-ultrasound.svg"], ["f175-history-ultrasound.svg", "f175-baseline-pressure.svg", "f175-history-ultrasound.svg"]],
@@ -992,6 +999,39 @@ export async function checkHumanCatchup(browser, base) {
       assert.equal(await stage("independent").locator(".hb-teaching-diagram").count(), 0);
     }
 
+    // New F172/F173 explanation diagrams stay in teaching and are hidden
+    // during independent practice, including after a reload.
+    for (const [route, files] of [
+      ["f172/a3", ["f172-variant-significance.svg", "f172-genetic-consent.svg"]],
+      ["f172/a4", ["f172-gene-therapy-methods.svg"]],
+      ["f173/a3", ["f173-chromatography-partition.svg"]]
+    ]) {
+      await page.evaluate(key => localStorage.removeItem(key), localPractice);
+      await open("catchup/" + route);
+      const figures = files.map(file => page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]').filter({has: page.locator(`img[src$="/${file}"]`)}));
+      for (const figure of figures) assert(await figure.isVisible(), `${route}: figure should be visible during teaching`);
+      await expand(stage("independent"));
+      for (const figure of figures) assert(await figure.isHidden(), `${route}: figure leaked into independent practice`);
+      await page.reload();
+      await expand(stage("independent"));
+      await expand(page.locator(".hb-teach-explain"));
+      for (const figure of figures) assert(await figure.isHidden(), `${route}: figure leaked after reload`);
+      await expand(page.locator("[data-hb-model-step]"));
+      await expand(page.locator(".hb-teach-explain"));
+      for (const figure of figures) assert(await figure.isVisible(), `${route}: figure did not return for review`);
+    }
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f172/a4");
+    const therapyModel = page.locator("[data-hb-model-step]");
+    await expand(therapyModel);
+    await therapyModel.getByRole("button", {name: "Show next step"}).click();
+    await therapyModel.getByRole("button", {name: "Show next step"}).click();
+    assert(await therapyModel.locator('li:nth-child(3) img[src$="/f172-somatic-target.svg"]').isVisible());
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f173/a3");
+    await page.getByText("Review the key ideas", {exact:true}).click();
+    assert(await page.locator('img[src$="/f173-biomolecule-tests.svg"]').isVisible());
+
     // Additional figures remain in the first paragraph's own figure group.
     for (const [route, filename] of [["f170/1.1.1.signals", "f170-cone-sensitivity.svg"], ["f170/1.1.2.counting", "f170-chamber-sampling.svg"], ["f171/2.3", "f171-screen-diagnose-monitor.svg"]]) {
       await page.evaluate(key => localStorage.removeItem(key), localPractice);
@@ -1006,6 +1046,43 @@ export async function checkHumanCatchup(browser, base) {
       }, filename), filename + " must follow the matching explanation");
       assert.equal(await stage("independent").locator(`img[src$="/${filename}"]`).count(), 0);
     }
+
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f170/1.1.2.counting");
+    for (const [paragraph, filename] of [[0, "f170-count-dilution.svg"], [1, "f170-pulses-viability.svg"]]) {
+      assert(await page.locator(".hb-teach-explain > p").nth(paragraph).evaluate((el, name) => {
+        for (let sibling = el.nextElementSibling; sibling && sibling.tagName !== "P"; sibling = sibling.nextElementSibling) {
+          if (sibling.querySelector(`img[src$="/${name}"]`)) return true;
+          if (!sibling.matches("figure, .hb-teaching-diagram, .hb-teaching-photo")) break;
+        }
+        return false;
+      }, filename), `${filename} follows its matching explanation`);
+      assert.equal(await stage("independent").locator(`img[src$="/${filename}"]`).count(), 0);
+    }
+    const viabilityFigure = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]').filter({has: page.locator('img[src="/human-biology/f170-pulses-viability.svg"]')});
+    await expand(stage("independent"));
+    assert(await viabilityFigure.isHidden());
+    await page.reload();
+    assert(await viabilityFigure.isHidden());
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await viabilityFigure.isVisible());
+    await open("catchup/f170/1.1.2.counting/1");
+    assert(await page.locator('section.paper.panel img[src$="/f170-pulses-viability.svg"]').isVisible(), "viability recap retains its visual");
+
+    // Phagocyte granule delivery belongs with the white-cell comparison and is answer-sensitive.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f170/1.1.1");
+    const granuleFigure = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]').filter({has: page.locator('img[src="/human-biology/f170-phagocyte-granules.svg"]')});
+    const whiteCellTable = page.locator(".hb-teach-explain table").filter({has: page.getByText("How four white cells defend the body", {exact:true})});
+    assert(await granuleFigure.isVisible());
+    assert(await granuleFigure.evaluate((figure, table) => Boolean(figure.compareDocumentPosition(table) & Node.DOCUMENT_POSITION_FOLLOWING), await whiteCellTable.elementHandle()));
+    await expand(stage("independent"));
+    assert(await granuleFigure.isHidden());
+    await page.reload();
+    assert(await granuleFigure.isHidden());
+    assert(await page.locator("[data-hb-followup]").evaluate(element => element.hidden), "this lesson has no authored fresh check");
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await granuleFigure.isVisible());
 
     // The screening sequence answers independent practice and must hide when it starts.
     const preventionSequence = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]').filter({has: page.locator('img[src="/human-biology/f171-screen-diagnose-monitor.svg"]')});

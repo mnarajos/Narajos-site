@@ -197,10 +197,10 @@ function maintainedGradient() {
     <rect x="24" y="34" width="272" height="61" rx="7" fill="#e6f3fa" stroke="${teal}" stroke-width="2"/>
     <rect x="24" y="100" width="272" height="48" rx="7" fill="#f8e2de" stroke="${rust}" stroke-width="2"/>
     ${[[68,51],[105,66],[145,51],[190,66],[226,51],[262,67]].map(([x,y])=>circle(x,y,4,"white",blue)).join("")}
-    ${[[67,123],[106,130]].map(([x,y])=>circle(x,y,4,"white",blue)).join("")}
+    ${[[67,116],[106,116]].map(([x,y])=>circle(x,y,4,"white",blue)).join("")}
     ${arrow(160,74,160,118,blue,3)}${arrow(195,124,270,124,rust,2.5)}
-    ${text(160,22,"Air refreshed by breathing",blue,14)}${text(160,168,"Blood flows away",rust,14)}
-    ${text(66,88,"More oxygen",ink,13)}${text(96,143,"Less oxygen in",ink,13)}`,320,180),
+    ${text(160,22,"Air refreshed by breathing",blue,16)}${text(160,168,"Blood flows away",rust,16)}
+    ${text(80,88,"More oxygen",ink,16)}${text(80,141,"Less oxygen",ink,16)}`,320,180),
     "Follow oxygen into the blood. Ventilation and blood flow help maintain a concentration difference; dots represent oxygen, not all particles present."));
   host.append(picture("Many small air spaces", diagram(
     "A model compares one spherical air space with four smaller spherical air spaces of the same total volume. The four small spheres have a greater total surface area.", `

@@ -1,6 +1,8 @@
 # Human Biology guided teaching blocks
 
-This index enumerates the authored explanation and sequential worked-example blocks from the guided teaching data. A short excerpt identifies each block; consult the data for the full teaching. The existing-asset column is presence only: it does not establish that a visual explains that block or is visible at that stage. Scientific accuracy, relevance and rendered readability remain **unreviewed** except for the explicit entries in [the block review](catchup-visual-coverage-human-steps.md). Short companion recaps, including those without a guided lesson, are listed separately in [the recap index](catchup-visual-coverage-human-recaps.md).
+This index enumerates the authored explanation and sequential worked-example blocks from the guided teaching data. A short excerpt identifies each block; consult the data for the full teaching. The asset column records the initial inventory and can omit later additions; it is presence only and does not establish that a visual explains that block or is visible at that stage. The current block-by-block decisions, including separate accuracy, relevance and readability checks, are in [the block review](catchup-visual-coverage-human-steps.md); blocks without an explicit review remain **unreviewed**. Short companion recaps, including those without a guided lesson, are listed separately in [the recap index](catchup-visual-coverage-human-recaps.md).
+
+The [focused F172–F173 review](catchup-visual-coverage-human-f172-f173.md) records the additional genetics, testing and chromatography figures and their remaining limits.
 
 | Route and block | Content excerpt | Assets declared in lesson | Review |
 | --- | --- | --- | --- |

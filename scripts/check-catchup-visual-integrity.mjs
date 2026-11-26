@@ -49,7 +49,17 @@ for (const mapping of [gcseStepVisuals, moreGcseStepVisuals]) {
   }
 }
 for (const [id, figure] of Object.entries(gcseOpeningVisuals)) {
-  assert.equal(gcseCatchup[id]?.visual?.[1], figure, `${id}: opening figure is not mapped`);
+  if (id === "potable-water") {
+    const opening = gcseCatchup[id]?.visual;
+    assert.equal(opening?.[0], "custom", `${id}: opening must render both diagrams`);
+    const rendered = flatten(opening[1]());
+    for (const description of ["Fresh water can be filtered", "Water suitable for drinking is not necessarily pure water"]) {
+      assert.equal(rendered.filter(node => node.innerHTML?.includes(description)).length, 1,
+        `${id}: opening diagram is missing or duplicated`);
+    }
+  } else {
+    assert.equal(gcseCatchup[id]?.visual?.[1], figure, `${id}: opening figure is not mapped`);
+  }
   inspectFigure(figure());
 }
 for (const [id, figure] of Object.entries(gcseHigherVisuals)) {
@@ -90,7 +100,7 @@ for (const [, topic, id, group] of keys) {
 }
 
 const humanWindow = {KeystoneHumanTeaching: {choice: (...args) => ({args}), written: (...args) => ({args})}};
-for (const file of ["teaching-f170.js", "f170-cns-myelin-figures.js", "f170-cell-teaching-figures.js", "f170-chamber-sampling-figures.js", "f170-red-cell-model-figures.js", "f170-red-cell-flexibility-figures.js", "f170-membrane-teaching-figures.js", "f170-carrier-diffusion-figures.js", "f170-organelle-evidence-figures.js", "f170-lysosome-teaching-figures.js", "f170-muscle-teaching-figures.js", "f170-surfaces-teaching-figures.js", "f170-tubule-atp-figures.js", "f170-signals-teaching-figures.js", "f170-cone-sensitivity-figures.js", "f170-microscopy-teaching-figures.js", "f170-representation-figures.js", "f170-section-stain-figures.js", "f170-mitosis-teaching-figures.js", "f170-red-cell-division-figures.js", "f170-meiosis-teaching-figures.js", "f170-oocyte-division-figures.js", "f170-oxygen-delivery-figures.js", "f170-demand-teaching-figures.js", "f170-organisation-teaching-figures.js", "f170-circulation-teaching-figures.js", "f170-cirrhosis-teaching-figures.js", "f170-glucose-teaching-figures.js", "f170-diabetes-teaching-figures.js", "f170-reproductive-teaching-figures.js", "f170-hormone-teaching-figures.js", "f170-gram-teaching-figures.js", "f170-growth-teaching-figures.js", "teaching-f171.js", "f171-kidney-lymph-teaching-figures.js", "f171-management-teaching-figures.js", "f171-readings-teaching-figures.js", "f171-measurements-teaching-figures.js", "f171-renal-teaching-figures.js", "f171-aorta-teaching-figures.js", "f171-airways-teaching-figures.js", "f171-viral-evidence-teaching-figures.js", "f171-bacterial-evidence-teaching-figures.js", "f171-fungal-evidence-teaching-figures.js", "f171-protozoa-teaching-figures.js", "f171-helminth-teaching-figures.js", "f171-immune-tradeoff-teaching-figures.js", "f171-prevention-teaching-figures.js", "f171-fracture-teaching-figures.js", "f171-movement-teaching-figures.js", "f171-digestive-teaching-figures.js", "f171-oxygen-teaching-figures.js", "f171-tissues-teaching-figures.js", "teaching-knowledge.js", "f172-division-teaching-figures.js", "f172-gene-expression-figures.js", "f173-chromatogram-worked-figures.js", "f174-iron-worked-figures.js", "f174-bmi-intake-figures.js", "f175-antenatal-teaching-figures.js", "f175-gamete-route-figures.js", "f175-obstruction-route-figures.js", "f176-injury-teaching-figures.js", "f176-investigations-teaching-figures.js", "f177-evidence-teaching-figures.js", "f177-receptor-response-figures.js"]) {
+for (const file of ["teaching-f170.js", "f170-cns-myelin-figures.js", "f170-cell-teaching-figures.js", "f170-chamber-sampling-figures.js", "f170-count-limits-figures.js", "f170-red-cell-model-figures.js", "f170-red-cell-flexibility-figures.js", "f170-phagocyte-granules-figures.js", "f170-membrane-teaching-figures.js", "f170-carrier-diffusion-figures.js", "f170-organelle-evidence-figures.js", "f170-lysosome-teaching-figures.js", "f170-muscle-teaching-figures.js", "f170-surfaces-teaching-figures.js", "f170-tubule-atp-figures.js", "f170-signals-teaching-figures.js", "f170-cone-sensitivity-figures.js", "f170-microscopy-teaching-figures.js", "f170-representation-figures.js", "f170-section-stain-figures.js", "f170-mitosis-teaching-figures.js", "f170-red-cell-division-figures.js", "f170-meiosis-teaching-figures.js", "f170-oocyte-division-figures.js", "f170-oxygen-delivery-figures.js", "f170-demand-teaching-figures.js", "f170-organisation-teaching-figures.js", "f170-circulation-teaching-figures.js", "f170-cirrhosis-teaching-figures.js", "f170-glucose-teaching-figures.js", "f170-diabetes-teaching-figures.js", "f170-reproductive-teaching-figures.js", "f170-hormone-teaching-figures.js", "f170-gram-teaching-figures.js", "f170-growth-teaching-figures.js", "teaching-f171.js", "f171-kidney-lymph-teaching-figures.js", "f171-management-teaching-figures.js", "f171-readings-teaching-figures.js", "f171-measurements-teaching-figures.js", "f171-renal-teaching-figures.js", "f171-aorta-teaching-figures.js", "f171-airways-teaching-figures.js", "f171-viral-evidence-teaching-figures.js", "f171-bacterial-evidence-teaching-figures.js", "f171-fungal-evidence-teaching-figures.js", "f171-protozoa-teaching-figures.js", "f171-helminth-teaching-figures.js", "f171-immune-tradeoff-teaching-figures.js", "f171-prevention-teaching-figures.js", "f171-fracture-teaching-figures.js", "f171-treatment-aims-figures.js", "f171-movement-teaching-figures.js", "f171-digestive-teaching-figures.js", "f171-oxygen-teaching-figures.js", "f171-tissues-teaching-figures.js", "teaching-knowledge.js", "f172-division-teaching-figures.js", "f172-inheritance-worked-figures.js", "f172-gene-expression-figures.js", "f172-f173-evidence-figures.js", "f173-chromatogram-worked-figures.js", "f174-iron-worked-figures.js", "f174-bmi-intake-figures.js", "f175-antenatal-teaching-figures.js", "f175-gamete-route-figures.js", "f175-obstruction-route-figures.js", "f176-injury-teaching-figures.js", "f176-investigations-teaching-figures.js", "f176-synapse-teaching-figures.js", "f177-evidence-teaching-figures.js", "f177-receptor-response-figures.js", "f177-trial-methods-figures.js", "f176-f177-recap-figures.js", "f174-f175-recap-figures.js", "f170-systems-growth-recap-figures.js"]) {
   const source = await readFile(new URL("../public/human-biology/" + file, import.meta.url), "utf8");
   vm.runInNewContext(source, {window: humanWindow});
 }
@@ -131,7 +141,7 @@ const companionSource = await readFile(new URL("../public/human-biology/companio
 const recapStart = companionSource.indexOf("const labRecap =");
 const recapEnd = companionSource.indexOf("function showConcept(", recapStart);
 assert.ok(recapStart >= 0 && recapEnd > recapStart, "expected Human recap registry");
-const recapWindow = {};
+const recapWindow = humanWindow;
 vm.runInNewContext(companionSource.slice(recapStart, recapEnd) + "\nwindow.registry = recapFigureMap;", {window: recapWindow});
 const recapData = {KeystoneHumanChallenges: {}, KeystoneHumanKnowledge: {}};
 vm.runInNewContext(await readFile(new URL("../public/human-biology/content-f170.js", import.meta.url), "utf8"), {window: recapData});

@@ -2,7 +2,7 @@ import { investigations } from "./gcse-investigations.js";
 import { question } from "./school-catchup-journey.js";
 import { priorityCatchup, distanceWorkedGraph, velocityWorkedGraph } from "./gcse-catchup-priority.js";
 import { gcseStepVisuals } from "./gcse-step-visuals.js";
-import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, gcseWorkedLineVisuals, heatingCurve, readableGcseFigure, atomsRearranged, ohmicCurrentGraph, filamentCurrentGraph, gridCurrentComparison, gridHeatingComparison, leftHandDirections, motorReversalWorked, randomDecay, activityUnit, massGasEscape, activationBarrier, reactionNetTransfer, resistanceFromGraph, hotFilament, meanGasRate, infraredAbsorbEmit, plantPaths, ionsInElectrolytes, alkene } from "./gcse-more-step-visuals.js";
+import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, gcseWorkedLineVisuals, heatingCurve, readableGcseFigure, atomsRearranged, ohmicCurrentGraph, filamentCurrentGraph, gridCurrentComparison, gridHeatingComparison, leftHandDirections, motorReversalWorked, randomDecay, activityUnit, massGasEscape, activationBarrier, reactionNetTransfer, resistanceFromGraph, hotFilament, meanGasRate, infraredAbsorbEmit, plantPaths, ionsInElectrolytes, alkene, waterTreatment } from "./gcse-more-step-visuals.js";
 import { gcseVisual } from "./gcse-catchup-visuals.js";
 
 function lesson(year, code, title, hook, notice, idea, visual, stages, independent, retry, higher) {
@@ -646,6 +646,7 @@ const additionalOpeningFigures = {
   "current-potential-difference": [filamentCurrentGraph],
   "ruler-drop": [gcseWorkedLineVisuals["ruler-drop"][0], gcseWorkedLineVisuals["ruler-drop"][1], gcseWorkedLineVisuals["ruler-drop"][2]],
   "electrode-evidence": [ionsInElectrolytes],
+  "potable-water": [waterTreatment],
   "dynamic-equilibrium": [gcseWorkedLineVisuals["dynamic-equilibrium"][2]],
   "plant-transport": [plantPaths, gcseWorkedLineVisuals["plant-transport"][2], gcseWorkedLineVisuals["plant-transport"][3]]
 };

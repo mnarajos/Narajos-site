@@ -519,6 +519,10 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <script src="/alevel/catchup-aseptic-actions.js"></script>
 <script src="/alevel/catchup-transpiration-air.js"></script>
 <script src="/alevel/catchup-water-solvent.js"></script>
+<script src="/alevel/catchup-solute-water-potential.js"></script>
+<script src="/alevel/catchup-glucose-standards.js"></script>
+<script src="/alevel/catchup-magnification-example.js"></script>
+<script src="/alevel/catchup-sampling-choice.js"></script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/home-link.css">
@@ -6465,6 +6469,7 @@ function catchupChunks(notes,synapse,topic,concept){
    (window.ALevelEnergyMechanismFigures?window.ALevelEnergyMechanismFigures.render(topic,concept,i/2):'')+
    (window.ALevelPopulationFigures?window.ALevelPopulationFigures.render(topic,concept,i/2):'')+
    (window.ALevelGeneControlFigures?window.ALevelGeneControlFigures.render(topic,concept,i/2):'')+
+   (window.ALevelGeneControlFigures&&topic==='a8'&&concept==='transfac'&&i===0?window.ALevelGeneControlFigures.render(topic,concept,2):'')+
    (window.ALevelResponseFigures?window.ALevelResponseFigures.render(topic,concept,i/2):'')+
    (window.ALevelPracticalsFigures?window.ALevelPracticalsFigures.render(topic,concept,i/2):'')+
    (window.ALevelBiomoleculeExtraFigures?window.ALevelBiomoleculeExtraFigures.render(topic,concept,i/2):'')+
@@ -6499,6 +6504,10 @@ function catchupChunks(notes,synapse,topic,concept){
    (window.ALevelAsepticActions?window.ALevelAsepticActions.render(topic,concept,i/2):'')+
    (window.ALevelTranspirationAir?window.ALevelTranspirationAir.render(topic,concept,i/2):'')+
    (window.ALevelWaterSolvent?window.ALevelWaterSolvent.render(topic,concept,i/2):'')+
+   (window.ALevelSoluteWaterPotential?window.ALevelSoluteWaterPotential.render(topic,concept,i/2):'')+
+   (window.ALevelGlucoseStandards?window.ALevelGlucoseStandards.render(topic,concept,i/2):'')+
+   (window.ALevelMagnificationExample?window.ALevelMagnificationExample.render(topic,concept,i/2):'')+
+   (window.ALevelSamplingChoice?window.ALevelSamplingChoice.render(topic,concept,i/2):'')+
    (window.ALevelSmoothLysosome?window.ALevelSmoothLysosome.render(topic,concept,i/2):'')+
    (window.ALevelNamedVessels?window.ALevelNamedVessels.render(topic,concept,i/2):'')+
    (window.ALevelUltrafiltration?window.ALevelUltrafiltration.render(topic,concept,i/2):'')+

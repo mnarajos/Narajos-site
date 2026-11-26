@@ -1,0 +1,8 @@
+/* Original worked magnification example; line lengths are schematic. */
+(function () {
+ 'use strict';
+ window.ALevelMagnificationExample={render(topic,id,group){
+  if(topic!=='a2'||id!=='micro'||group!==0)return '';
+  return `<figure class="kc-visual"><div class="kc-visual-heading"><strong>Calculate magnification</strong></div><div class="kc-visual-art kc-visual-art-compact"><svg viewBox="0 0 300 255" role="img" aria-label="A hypothetical object is 0.05 millimetres long. Its image measures 10 millimetres. Magnification equals image size divided by actual size: 10 divided by 0.05 equals 200 times. The two lines are schematic and not drawn to these physical lengths." xmlns="http://www.w3.org/2000/svg" style="font:16px system-ui,sans-serif;fill:#233e4c"><text x="150" y="24" text-anchor="middle">Same units: millimetres</text><text x="15" y="57">Actual object</text><path d="M160 52h24 M160 45v14 M184 45v14" stroke="#496f82" stroke-width="2"/><text x="198" y="57">0.05 mm</text><text x="15" y="101">Image</text><path d="M95 96h90 M95 89v14 M185 89v14" stroke="#496f82" stroke-width="2"/><text x="198" y="101">10 mm</text><path d="M25 121h250" stroke="#bdcdd1"/><text x="150" y="149" text-anchor="middle">Magnification = image ÷ actual</text><text x="150" y="183" text-anchor="middle">= 10 ÷ 0.05 = ×200</text><text x="150" y="224" text-anchor="middle">Illustrative; lines not to scale</text></svg></div><figcaption>First express image and actual sizes in the same unit. Divide image size by actual size; magnification has no unit. The example and line lengths are illustrative.</figcaption></figure>`;
+ }};
+})();

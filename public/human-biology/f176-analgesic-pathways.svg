@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 415" role="img" aria-labelledby="title desc">
+<title id="title">Two ways analgesics can act</title><desc id="desc">One schematic pathway shows injury-related prostaglandins increasing nociceptor sensitivity, with an NSAID reducing prostaglandin production. A second shows an opioid acting at receptors in the brain or spinal cord to modify pain signalling. The examples are simplified and neither shows a repair of the original injury.</desc>
+<g font-family="system-ui,sans-serif" font-size="16" fill="#233e4c">
+<text x="150" y="25" text-anchor="middle">NSAID example</text>
+<path d="M45 62l7 7-7 7-7-7z" fill="#e3b899" stroke="#a76125" stroke-width="2"/><text x="68" y="75">Injured tissue</text>
+<path d="M53 84v26m-5-6 5 6 5-6" fill="none" stroke="#344958" stroke-width="2"/>
+<rect x="24" y="116" width="252" height="48" rx="10" fill="#f0e7d7" stroke="#a5792e" stroke-width="2"/><text x="150" y="136" text-anchor="middle">Prostaglandin</text><text x="150" y="155" text-anchor="middle">production</text>
+<text x="220" y="91" text-anchor="middle">NSAID</text><path d="M220 98v12m-14 0h28" fill="none" stroke="#a76125" stroke-width="3"/>
+<path d="M150 168v24m-5-6 5 6 5-6" fill="none" stroke="#344958" stroke-width="2"/><text x="150" y="215" text-anchor="middle">Nociceptor sensitivity</text><text x="150" y="235" text-anchor="middle">can increase</text>
+<path d="M20 254h260" stroke="#d6e1de" stroke-width="2"/>
+<text x="150" y="282" text-anchor="middle">Opioid example</text>
+<rect x="20" y="296" width="260" height="87" rx="12" fill="#f0eaf4" stroke="#80588f" stroke-width="2"/>
+<text x="150" y="317" text-anchor="middle">Brain or spinal cord</text>
+<circle cx="75" cy="351" r="9" fill="#dfb18f" stroke="#a76125" stroke-width="2"/><text x="75" y="378" text-anchor="middle">Opioid</text>
+<path d="M88 351h46m-7-6 7 6-7 6" fill="none" stroke="#344958" stroke-width="2"/>
+<path d="M143 343v19q12 12 24 0v-19" fill="#f0dfc4" stroke="#a5792e" stroke-width="2"/>
+<text x="211" y="355" text-anchor="middle">Receptor</text>
+<text x="150" y="405" text-anchor="middle">Pain signalling is modified</text>
+</g></svg>
