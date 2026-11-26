@@ -1967,7 +1967,7 @@
     }
   }
   const catalogue = [
-    ["Question interpretation and practical reasoning", ["interpret", "practical"]],
+    ["Question interpretation and practical reasoning", ["interpret", "practical", "plan-investigation"]],
     ["Extended answers", ["extended"]],
     ["Drawing and observation", ["drawings"]],
     ["Scientific precision and explanations", ["precision", "points", "mechanisms", "pressures", "regulation"]],
@@ -1976,6 +1976,7 @@
   ];
   const skillDetails = {
     interpret: ["Understand the question", "Identify the target, select evidence and build a relevant answer.", "idea", "interpret question command words task target use data relevant answering suggest explain"],
+    "plan-investigation": ["Plan an investigation", "Build and revise a practical investigation, from supported planning to a fresh attempt.", "guided", "plan investigation experiment comparison control variables measurement allocation repetition method practical"],
     precision: ["Explain precisely", "Compare scientific statements and improve your own explanation.", "pen", "precise terminology scientific language osmosis chromatids homologous transcription translation"],
     practical: ["Reason through practicals", "Explain how the method affects the result and the claim.", "guided", "practical reasoning method controls confounding accuracy repeatability colorimeter stain chromatography"],
     evidence: ["Interpret data", "Choose the method and decide what the evidence supports.", "calculator", "interpret data statistical significance p values graph rate percentage calibration uncertainty extrapolation"],
@@ -1993,6 +1994,7 @@
     hardy: ["Hardy–Weinberg calculations", "Distinguish allele and genotype frequencies.", "calculator", "hardy weinberg hardy-weinberg population genetics", "a7-hardy"],
   };
   function activityStatus(id, saved) {
+    if (id === "plan-investigation") return window.ALevelPlanInvestigation?.status?.() || ["Start", ""];
     if (id === "drawings") {
       if (saved.drawingVersion !== drawing.version) return ["Start", ""];
       if (saved.drawingSession) return ["Resume", "Drawing " + (saved.drawingSession.index + 1) + " of 6"];
@@ -2182,12 +2184,17 @@
         journey(host, family, { paper });
         return;
       }
-      if (!id || (!Object.hasOwn(families, id) && id !== "drawings")) {
+      if (!id || (!Object.hasOwn(families, id) && id !== "drawings" && id !== "plan-investigation")) {
         host.append(breadcrumb("A-level Biology", "#"));
         index(host);
         return;
       }
       host.append(breadcrumb("Exam Skills", "#exam"));
+      if (id === "plan-investigation") {
+        if (window.ALevelPlanInvestigation?.mount) window.ALevelPlanInvestigation.mount(host);
+        else host.append(node("h1", "Plan an investigation"), node("p", "This activity could not be loaded. Please reload the page and try again."));
+        return;
+      }
       if (id === "drawings") {
         host.append(node("h1", "Biological drawings"));
         drawings(host);
@@ -2206,6 +2213,7 @@
       }
       const followOn = { interpret: "passages", practical: "investigations", evidence: "investigations", extended: "essaywriting" }[id];
       if (followOn) host.append(quietLink(window.ALevelPaperPractice[followOn].title, "#exam-" + followOn));
+      if (id === "interpret" || id === "practical") host.append(quietLink("Plan an investigation", "#exam-plan-investigation"));
     },
     links(topic) {
       const ids = Object.values(families)

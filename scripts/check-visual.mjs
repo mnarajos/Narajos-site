@@ -13,7 +13,7 @@ import { servePublic } from "./browser-test-site.mjs";
 const browser = await chromium.launch();
 const { server, base } = await servePublic();
 const pages = [
-  "/", "/science-catch-up/?year=9", "/science-catch-up/lesson/?topic=osmosis",
+  "/", "/about/", "/science-catch-up/?year=9", "/science-catch-up/lesson/?topic=osmosis",
   "/gcse/", "/alevel/#catchup-a1-enzfactors", "/human-biology/",
   "/human-biology/#challenge/f171", "/human-biology/#challenge/f175",
   "/human-biology/#catchup/f171/4.2.1",
@@ -61,7 +61,7 @@ try {
 
   for (const [width, height] of [[320, 700], [375, 620], [390, 844], [640, 512], [768, 1024], [1280, 800]]) {
     await page.setViewportSize({ width, height });
-    for (const path of ["/", "/science-catch-up/lesson/?topic=osmosis", "/teacher/", "/teaching/focused-writing/ks3/"]) {
+    for (const path of ["/", "/about/", "/science-catch-up/lesson/?topic=osmosis", "/teacher/", "/teaching/focused-writing/ks3/"]) {
       await page.goto(base + path);
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
       assert(overflow <= 3, path + " overflows at " + width + "px by " + overflow + "px");

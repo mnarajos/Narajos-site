@@ -90,6 +90,10 @@
   }
 
   function mount(host, ui) {
+    const simulation = document.createElement("section");
+    simulation.className = "rp-card";
+    simulation.innerHTML = `<h2>Explore paper chromatography</h2><p>Practise the method, compare chromatograms and apply the ideas to unfamiliar examples. Progress is saved separately in this browser.</p><a class="btn primary" href="/alevel/chromatography/">Open the RP7 simulation</a>`;
+    host.append(simulation);
     const method = document.createElement("section");
     method.className = "rp-card";
     method.innerHTML = `

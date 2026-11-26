@@ -27,6 +27,48 @@
 <p>Compare each substance with itself on the two sides. “Down” and “against” describe concentration differences, not the physical direction of an arrow. The values in the figures are illustrative concentrations in arbitrary units. Ion movement also depends on electrical gradients; use the supplied concentrations as a simplified model here.</p>
 <nav aria-label="Independent Practice sections"><ol><li><a href="#ileum">Ileum</a></li><li><a href="#kidney">Kidney</a></li><li><a href="#plant">Leaf cell</a></li></ol></nav>
 </div>
+<section class="practice-card refresher" aria-labelledby="refresher-heading"><h2 id="refresher-heading">Refresher: a carrier changes shape</h2><p>Na⁺ and glucose bind to the same carrier. The carrier changes shape and releases them into the cell.</p><figure class="bio-diagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 390" class="carrier-anim" role="img" aria-labelledby="refresher-title refresher-desc">
+<title id="refresher-title">Sodium and glucose move through a carrier</title>
+<desc id="refresher-desc">A schematic of the ileum membrane. Sodium and glucose enter a shared carrier from the lumen. The carrier changes shape, opens towards the epithelial cell and releases both substances inside.</desc>
+<style>
+.carrier-anim {background:#fff}
+.carrier-anim text {font:14px system-ui,-apple-system,"Segoe UI",sans-serif;fill:#1f2937}
+.carrier-anim .heading {font-weight:700}
+.carrier-anim .small {font-size:12px}
+.carrier-anim .protein {fill:#d7e8f4;stroke:#205b7e;stroke-width:2.5;stroke-linejoin:round}
+.carrier-anim .membrane {fill:none;stroke:#547084;stroke-width:3}
+.carrier-anim .particle-label {fill:#fff;font-weight:700;font-size:10px;text-anchor:middle;dominant-baseline:central}
+.carrier-anim .ion {fill:#126746}.carrier-anim .sugar {fill:#87410b}
+.carrier-anim .outward,.carrier-anim .occluded,.carrier-anim .inward,.carrier-anim .particle {animation-duration:4.8s;animation-timing-function:linear;animation-fill-mode:both;animation-play-state:paused}
+.carrier-anim .outward {animation-name:refresher-outward}
+.carrier-anim .occluded {opacity:0;animation-name:refresher-occluded}
+.carrier-anim .inward {opacity:0;animation-name:refresher-inward}
+.carrier-anim .particle {animation-name:refresher-travel}
+.carrier-anim.is-playing .outward,.carrier-anim.is-playing .occluded,.carrier-anim.is-playing .inward,.carrier-anim.is-playing .particle {animation-play-state:running}
+.carrier-anim.is-reset .outward,.carrier-anim.is-reset .occluded,.carrier-anim.is-reset .inward,.carrier-anim.is-reset .particle {animation:none}
+@keyframes refresher-travel {0%,14%{transform:translateY(0)} 42%,58%{transform:translateY(118px)} 86%,100%{transform:translateY(228px)}}
+@keyframes refresher-outward {0%,37%{opacity:1} 45%,100%{opacity:0}}
+@keyframes refresher-occluded {0%,37%{opacity:0} 45%,58%{opacity:1} 68%,100%{opacity:0}}
+@keyframes refresher-inward {0%,58%{opacity:0} 68%,100%{opacity:1}}
+@media (prefers-reduced-motion:reduce) {.carrier-anim .outward,.carrier-anim .occluded,.carrier-anim .inward,.carrier-anim .particle {animation:none!important}}
+</style>
+<rect width="280" height="390" fill="#fff"/>
+<text x="10" y="22" class="heading">Ileum lumen</text>
+<text x="10" y="53" class="ion">Na⁺</text><text x="205" y="53" class="sugar">Glucose</text>
+<!-- The double lines represent one cell-surface membrane. -->
+<path class="membrane" d="M0 165 H72 M208 165 H280 M0 255 H72 M208 255 H280"/>
+<!-- Three schematic conformations of the same carrier. -->
+<path class="protein outward" d="M72 253 V168 Q72 151 89 151 H98 V190 Q98 212 140 212 Q182 212 182 190 V151 H191 Q208 151 208 168 V253 Q208 270 191 270 H89 Q72 270 72 253 Z"/>
+<path class="protein occluded" d="M72 253 V168 Q72 151 89 151 H191 Q208 151 208 168 V253 Q208 270 191 270 H89 Q72 270 72 253 Z"/>
+<path class="protein inward" d="M72 253 V168 Q72 151 89 151 H191 Q208 151 208 168 V253 Q208 270 191 270 H182 V231 Q182 209 140 209 Q98 209 98 231 V270 H89 Q72 270 72 253 Z"/>
+<!-- Circles and a hexagon distinguish the transported substances as well as colour. -->
+<g class="particle"><circle cx="118" cy="85" r="13" class="ion"/><text x="118" y="85" class="particle-label">Na⁺</text></g>
+<g class="particle"><path d="M153 72 H171 L180 85 L171 98 H153 L144 85 Z" class="sugar"/><text x="162" y="85" class="particle-label">Glu</text></g>
+<text x="10" y="299" class="small">Glu = glucose</text>
+<text x="10" y="365" class="heading">Inside epithelial cell</text>
+<text x="10" y="384" class="small">The same carrier changes shape.</text>
+</svg>
+<figcaption>A simplified model: Na⁺ is green and glucose is brown. The shapes and labels identify each substance too.</figcaption></figure><button class="refresher-control" type="button" id="refresher-control" hidden>Play animation</button><noscript><p>The diagram is still because JavaScript is unavailable. Na⁺ and glucose bind to the carrier, which changes shape and releases both into the cell.</p></noscript><p id="refresher-motion-note" class="refresher-motion-note" hidden>Your device requests reduced motion, so the diagram remains still. The description above explains the sequence.</p></section>
 <article class="practice-card" id="ileum">
 <h2>1 · Ileum: read a worked diagram</h2><p class="time">About 5–6 minutes, including checking</p>
 <p>Na⁺ and glucose enter an ileum epithelial cell through the same carrier.</p>
@@ -70,6 +112,7 @@
 <p><a href="#main">Back to the start</a> · <a href="/alevel/">Return to A-level Biology</a></p>
 </article>
 </main>
+<script src="/alevel/independent-practice/co-transport/refresher.js" defer></script>
 <footer class="footer"><div class="wrap footer-inner"><p class="site-copyright">© 2026 <strong>Narajos</strong> <em>/nerr-RA-hoss/</em></p><a href="/privacy/">Privacy</a></div></footer>
 </body>
 </html>

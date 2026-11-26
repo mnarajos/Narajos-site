@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chromatography of leaf pigments (RP7) – Narajos Keystone</title>
+<meta name="description" content="Learn chromatography of leaf pigments with a guided RP7 simulation and unfamiliar chromatograms.">
+<link rel="canonical" href="https://narajos.com/alevel/chromatography/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Narajos">
+<meta property="og:title" content="Chromatography of leaf pigments – Narajos Keystone"><meta property="og:description" content="Explore chromatography of leaf pigments with guided practical questions."><meta property="og:url" content="https://narajos.com/alevel/chromatography/">
+<meta property="og:image" content="https://narajos.com/assets/social/alevel-v1.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:type" content="image/png"><meta property="og:image:alt" content="Narajos Keystone logo with AQA A-level Biology">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Chromatography of leaf pigments – Narajos Keystone"><meta name="twitter:description" content="Explore chromatography of leaf pigments with guided practical questions."><meta name="twitter:image" content="https://narajos.com/assets/social/alevel-v1.png"><meta name="twitter:image:alt" content="Narajos Keystone logo with AQA A-level Biology">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="stylesheet" href="/assets/home-link.css">
+<style>
+/* Keystone site tokens and components, copied from the AQA A-level Biology site so this page matches it. */
+:root{--bg:#F8F7F3;--card:#fff;--ink:#1F2937;--brand:#0a6b66;--muted:#4f5057;--line:#d3d1c8;--acc:#0a6b66;--acc-ink:#fff;--acc-soft:#e1f0ee;--good:#17672f;--good-soft:#e4f3e8;--bad:#a3221a;--bad-soft:#fbe9e7;--warn-soft:#fff4d6;--amb:#d98a2b;--amb-soft:#fff0dc;--grey-soft:#ecebe6;--focus:#1f4fd1;color-scheme:light dark;
+--shadow:0 1px 2px rgba(28,28,30,.05),0 4px 14px rgba(28,28,30,.05);--tc:#2e7a33;
+--o2:#2f6fb5;--co2:#b8691c;--cc:#4a5565;--water:#d6eaf8;--susp:#f7f1d6;--oil:#f0cf5e;--yeast:#c9a86a;--yeast-b:#a49d90;--yeast-s:#7d6536;--pellet:#f4f1ea;--dye:#c2513b;--bung:#5a6372;--glass:#fbfdff}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--brand:#5ccfc4;--bg:#131518;--card:#1c1f23;--ink:#eceef0;--muted:#b6b9c0;--line:#3b3f46;--acc:#5ccfc4;--acc-ink:#0b1a19;--acc-soft:#163331;--good:#80dc99;--good-soft:#15301e;--bad:#ff9d93;--bad-soft:#3a1d1a;--warn-soft:#3a3218;--amb:#d39a52;--amb-soft:#3a2a15;--grey-soft:#26292d;--focus:#9db9ff;--shadow:0 1px 2px rgba(0,0,0,.4);--tc:#8fd694;
+--o2:#8db6f2;--co2:#f0a271;--cc:#b4bdc9;--water:#1f3a4d;--susp:#3a3624;--oil:#8a7420;--yeast:#a8875a;--yeast-b:#6f6a62;--yeast-s:#d8c08e;--pellet:#cfcac0;--dye:#e2735c;--bung:#8a93a3;--glass:#20252b}}
+:root[data-theme=dark]{color-scheme:dark;--brand:#5ccfc4;--bg:#131518;--card:#1c1f23;--ink:#eceef0;--muted:#b6b9c0;--line:#3b3f46;--acc:#5ccfc4;--acc-ink:#0b1a19;--acc-soft:#163331;--good:#80dc99;--good-soft:#15301e;--bad:#ff9d93;--bad-soft:#3a1d1a;--warn-soft:#3a3218;--amb:#d39a52;--amb-soft:#3a2a15;--grey-soft:#26292d;--focus:#9db9ff;--shadow:0 1px 2px rgba(0,0,0,.4);--tc:#8fd694;
+--o2:#8db6f2;--co2:#f0a271;--cc:#b4bdc9;--water:#1f3a4d;--susp:#3a3624;--oil:#8a7420;--yeast:#a8875a;--yeast-b:#6f6a62;--yeast-s:#d8c08e;--pellet:#cfcac0;--dye:#e2735c;--bung:#8a93a3;--glass:#20252b}
+:root[data-theme=light]{color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:1rem/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-text-size-adjust:100%;overflow-x:clip}
+.wrap{max-width:46rem;margin:0 auto;padding:0 1rem}
+a{color:var(--acc)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+[tabindex="-1"]:focus{outline:none}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+[hidden]{display:none!important}.skip{position:absolute;left:-9999px;top:.5rem;background:var(--card);color:var(--ink);padding:.6rem;z-index:20}.skip:focus{left:1rem}.scroll{max-width:100%;overflow-x:auto}.fig{min-width:0}
+.diagram-zoom{margin:.35rem 0}.zoom-dialog{max-width:min(96vw,60rem);max-height:92vh;border:2px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);padding:1rem}.zoom-dialog::backdrop{background:rgba(0,0,0,.65)}.zoom-scroll{overflow:auto;max-height:55vh}.zoom-scroll svg{display:block;width:max(100%,640px);height:auto}.zoom-actions{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+header.top{background:var(--card);border-bottom:1px solid var(--line)}
+.top-inner{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem;align-items:center;padding-top:.55rem;padding-bottom:.55rem}
+.brand{font-weight:800;text-decoration:none;color:var(--ink);font-size:1.1rem;min-height:44px;display:inline-flex;align-items:center}
+.brand .btxt{display:flex;flex-direction:column;line-height:1.15}.brand .eyebrow{display:block;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.brand .logo{width:2.3em;height:1.45em;margin-right:.45rem;flex:none}
+.lg-arch{fill:var(--ink);stroke:var(--ink);stroke-width:2.6;stroke-linejoin:round}
+main{padding-top:1.25rem;padding-bottom:2rem}
+h1{font-size:1.6rem;line-height:1.2;margin:.25rem 0 .5rem;font-weight:800;letter-spacing:-.01em;border-bottom:4px solid var(--tc);padding-bottom:.35rem;display:inline-block}
+h2{font-size:1.25rem;margin:1.5rem 0 .6rem}
+h3{font-size:1.06rem;margin:0 0 .4rem}
+.lead{color:var(--muted)}
+.spec{color:var(--muted);font-size:.86rem;margin:.15rem 0 .3rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;text-align:center;min-height:44px;padding:.55rem 1.1rem;border-radius:12px;border:2px solid var(--acc);background:var(--card);color:var(--acc);font:inherit;font-weight:700;text-decoration:none;cursor:pointer;box-shadow:0 3px 0 rgba(28,28,30,.18);transition:transform .08s,box-shadow .08s}
+.btn.primary{background:var(--acc);color:var(--acc-ink);box-shadow:0 4px 0 rgba(0,0,0,.28)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(28,28,30,.18)}
+.btn:disabled{opacity:.45;cursor:default;transform:none}
+.btn[aria-pressed=true]{background:var(--acc);color:var(--acc-ink)}
+.seg{display:inline-flex;flex-wrap:wrap;border:2px solid var(--acc);border-radius:999px;overflow:hidden}
+.seg label{position:relative;cursor:pointer}
+.seg input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.seg span{display:flex;align-items:center;min-height:40px;padding:.3rem .9rem;font-weight:700;font-size:.92rem;color:var(--acc)}
+.seg input:checked+span{background:var(--acc);color:var(--acc-ink)}
+.seg input:focus-visible+span{outline:3px solid var(--focus);outline-offset:-5px}
+.seg input:disabled+span{opacity:.55;cursor:default}
+.note{background:var(--warn-soft);border-radius:10px;padding:.65rem .85rem;font-size:.93rem;margin:1rem 0}
+.gate{background:var(--acc-soft);padding:.6rem .8rem;border-radius:10px;margin:.8rem 0 0}
+.badge{font-size:.78rem;padding:.08rem .55rem;border-radius:99px;background:var(--warn-soft);color:var(--ink);border:1px solid var(--line);font-weight:700}
+.opt{display:flex;align-items:flex-start;gap:.75rem;padding:.75rem 1rem;margin:.5rem 0;background:var(--card);border:2px solid var(--line);border-radius:12px;cursor:pointer;box-shadow:0 3px 0 var(--line);transition:border-color .15s,background .15s}
+.opt:hover{border-color:var(--tc)}
+.opt input{width:1.3rem;height:1.3rem;margin:.15rem 0 0;flex:none;accent-color:var(--acc)}
+.opt:not(.right):not(.wrong):has(input:checked){border-color:var(--acc);background:var(--acc-soft)}
+.opt .otext{flex:1}
+.mark{font-weight:700;font-size:.9rem;white-space:nowrap}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.right .mark{color:var(--good)}.wrong .mark{color:var(--bad)}
+.opt.out{opacity:.6;cursor:default}
+fieldset.q{border:0;padding:0;margin:0;min-width:0}
+fieldset.q legend{font-size:1.1rem;font-weight:700;line-height:1.4;margin-bottom:.4rem;padding:0}
+.fb{border-radius:14px;padding:.2rem 1rem .7rem;margin:.6rem 0;border:2px solid}
+.fb.good{background:var(--good-soft);border-color:var(--good)}
+.fb.bad{background:var(--bad-soft);border-color:var(--bad)}
+.fb.good.new{animation:pop .4s ease-out}.fb.bad.new{animation:nudge .3s ease-in-out}
+.fb.idk{background:var(--acc-soft);border-color:var(--acc)}
+.fb h3{margin:.6rem 0 .3rem;font-size:1.1rem}
+@keyframes pop{0%{transform:scale(.94);opacity:0}60%{transform:scale(1.03);opacity:1}100%{transform:scale(1)}}
+@keyframes nudge{0%,100%{transform:translateX(0)}30%{transform:translateX(-6px)}70%{transform:translateX(6px)}}
+@media (prefers-reduced-motion:reduce){.fb.good,.fb.bad{animation:none}}
+input[type=text]{font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--muted);border-radius:10px;padding:.5rem .7rem;min-height:44px;width:100%}
+.numlab{font-weight:700;display:block;margin:.3rem 0}
+.numrow{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.numrow input{max-width:12rem}
+.unit{font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0}
+.chip{font:inherit;min-height:44px;padding:.45rem .85rem;border:2px solid var(--line);border-radius:12px;background:var(--card);color:inherit;cursor:pointer;box-shadow:0 2px 0 var(--line);font-weight:600}
+.chip.sel{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.chip .tick{color:var(--good);font-weight:800}.chip.sel .tick{color:inherit}
+.fig{margin:.25rem 0 1rem;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.6rem;box-shadow:var(--shadow)}
+.fig table{border-collapse:collapse;margin:.4rem 0;font-size:.92rem;width:100%}
+.fig caption{caption-side:top;text-align:left;font-size:.88rem;color:var(--muted);padding-bottom:.35rem}
+.fig th,.fig td{border:1px solid var(--line);padding:.25rem .6rem;text-align:left}
+.fig td.n{text-align:right;font-variant-numeric:tabular-nums}
+.f-ink{stroke:var(--ink);fill:none;stroke-width:2}
+.f-thin{stroke:var(--ink);fill:none;stroke-width:1.3}
+.f-txt{fill:var(--ink);font:600 15px system-ui,sans-serif}
+.f-sm{fill:var(--muted);font:500 12px system-ui,sans-serif}
+.f-grid{stroke:var(--line);stroke-width:1}
+.f-axis{stroke:var(--ink);stroke-width:1.6}
+.f-line{fill:none;stroke:var(--acc);stroke-width:2.5}
+.f-line2{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-dasharray:7 4}
+.f-zero{stroke:var(--ink);stroke-width:1.2;stroke-dasharray:4 3}
+.f-dot{fill:var(--acc)}.f-dot2{fill:var(--ink)}
+/* Page-specific: task cards, apparatus, controls */
+.task{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--tc);border-radius:14px;padding:.85rem 1rem;margin:.75rem 0;box-shadow:var(--shadow)}
+.task.done{border-left-color:var(--good)}
+.task p{margin:.3rem 0}
+.task .need{font-size:.93rem;margin:.5rem 0}
+.task .row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.6rem}
+.msg{color:var(--bad);font-weight:700;margin:.4rem 0 0}.msg:empty{display:none}
+.ok{color:var(--good);font-weight:700}.notyet{color:var(--muted);font-weight:600}
+.readout{display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;align-items:baseline;padding:.1rem .2rem .4rem}
+.readout b{font-size:1.25rem;font-variant-numeric:tabular-nums}
+.readout .st{margin-left:auto;font-size:.9rem;font-weight:700;padding:.15rem .6rem;border-radius:99px;background:var(--acc-soft)}
+.app svg{display:block;width:100%;height:auto;max-width:34rem;margin:0 auto}
+.runbar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.5rem 0 .2rem}
+.runbar .btn{flex:1 1 7rem}
+.legend{display:flex;flex-wrap:wrap;gap:.3rem 1rem;font-size:.9rem;margin:.3rem .2rem}
+.legend svg{width:2.2rem;height:1rem;vertical-align:-.2em}
+.tally{font-size:.9rem;color:var(--muted);margin:.2rem .2rem 0}
+.ctrls{display:grid;gap:.7rem;margin:.3rem 0}
+.ctrls .cl{font-weight:700;font-size:.93rem;margin:0 0 .25rem}
+.ctrls fieldset{border:0;margin:0;padding:0;min-width:0}
+.ctrls .seg{border-radius:14px}
+.gsvg svg{display:block;width:100%;height:auto;max-width:28rem;margin:0 auto}
+.gsvg .legend svg{display:inline-block;width:2.2rem;height:1rem;margin:0;vertical-align:-.2em}
+.a-water{fill:var(--water)}.a-susp{fill:var(--susp)}.a-oil{fill:var(--oil);opacity:.9}
+.a-cell{fill:var(--yeast);stroke:var(--yeast-s);stroke-width:1}.boiled .a-cell{fill:var(--yeast-b)}
+.a-pel{fill:var(--pellet);stroke:var(--ink);stroke-width:1}
+.a-gauze{fill:none;stroke:var(--muted);stroke-width:1.2;stroke-dasharray:2 2}
+.a-glass{fill:var(--glass);stroke:var(--ink);stroke-width:2}
+.a-bung{fill:var(--bung)}
+.a-cap{fill:none;stroke:var(--ink);stroke-width:7;stroke-linecap:round}
+.a-bore{fill:none;stroke:var(--glass);stroke-width:4;stroke-linecap:round}
+.a-dye{stroke:var(--dye);stroke-width:4.5;stroke-linecap:butt}
+.m-o2{fill:var(--o2)}.m-co2{fill:var(--co2)}.m-c{fill:var(--cc)}
+.a-note{fill:var(--ink);font:700 12px system-ui,sans-serif}
+
+/* Wide screens: tasks beside the apparatus, results side by side */
+@media (min-width:68rem){.wrap{max-width:78rem}
+ .lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:1.5rem;align-items:start}
+ .col-app{position:sticky;top:.75rem;max-height:calc(100vh - 1.5rem);overflow-y:auto;padding:0 .3rem .3rem}
+ .col-app>h2:first-child,.col-tasks>.chips:first-child{margin-top:0}
+ .res{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem;align-items:start}
+ .lead{max-width:60rem}
+ .col-app .app svg{max-width:27rem}}
+/* RP9 v2: sections, panels, paired examples, worked examples, written answers */
+.phases{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 1rem}
+.phases .ph{font-size:.75rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;opacity:.75;margin-right:.25rem}
+.ptabs{display:flex;flex-wrap:wrap;gap:.4rem;margin:0 0 .5rem}
+.sechead{margin-bottom:.4rem}.sechead h2{margin:.1rem 0 .2rem}.sechead .phase{margin:0;font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--tc)}
+.prog{margin:.2rem 0;font-size:.88rem;color:var(--muted)}.pbar{height:6px;border-radius:9px;background:var(--grey-soft);overflow:hidden}.pbar span{display:block;height:100%;background:var(--tc)}
+.task h3{margin:.1rem 0 .5rem;font-size:1.08rem}
+.steps{margin:.3rem 0 .6rem;padding-left:1.3rem}.steps li{margin:.35rem 0}
+.worked{background:var(--acc-soft);border-radius:10px;padding:.55rem .85rem;margin:.6rem 0}.worked p{margin:.25rem 0}.wlab{font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--acc)}
+.fresh{font-weight:800;color:var(--acc);margin:.2rem 0}
+.help{margin:.4rem 0 0}.hint{background:var(--warn-soft);border-radius:10px;padding:.5rem .8rem}
+fieldset.q legend.sub{font-size:1rem;margin-top:.6rem}
+.donelist{margin:.8rem 0;font-size:.93rem}.donelist summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}.donelist li{margin:.25rem 0}
+.badge.b-ind{background:var(--good-soft);border-color:var(--good)}.badge.b-sup{background:var(--amb-soft);border-color:var(--amb)}.badge.b-self{background:var(--acc-soft);border-color:var(--acc)}
+.btn.small{min-height:40px;padding:.35rem .8rem;font-size:.92rem}
+textarea{font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--muted);border-radius:10px;padding:.55rem .7rem;width:100%;resize:vertical}
+textarea:disabled{opacity:.85}
+.crit{margin:.7rem 0}.copt{display:flex;gap:.6rem;align-items:flex-start;padding:.5rem .7rem;margin:.35rem 0;border:2px solid var(--line);border-radius:10px;cursor:pointer}
+.copt input{width:1.25rem;height:1.25rem;flex:none;margin-top:.15rem;accent-color:var(--acc)}.copt em{display:block;font-style:normal;font-size:.85rem;font-weight:700}
+.pair{display:grid;gap:.7rem;grid-template-columns:minmax(0,1fr)}
+@media (min-width:34rem){.pair{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.pcard{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:.6rem;display:flex;flex-direction:column;gap:.4rem}
+.pcard h4{margin:0;font-size:1rem;color:var(--tc)}.pcard svg{width:100%;height:auto;display:block}.pres{margin:0;font-size:.93rem}
+.info{background:var(--warn-soft);border-radius:10px;padding:.6rem .85rem;font-size:.95rem}
+#p-task svg{width:100%;height:auto;display:block;max-width:34rem;margin:0 auto}
+.figh{margin:.2rem .2rem .4rem;font-size:1rem}.sumh{font-weight:700;min-height:44px;display:flex;align-items:center;cursor:pointer}
+#assume ul{margin:.4rem 0 .2rem;padding-left:1.2rem}#assume li{margin:.3rem 0}
+.f-open{fill:var(--card);stroke:var(--ink);stroke-width:1.6}
+.a-tube{fill:none;stroke:var(--ink);stroke-width:2}.a-therm{fill:var(--card);stroke:var(--ink);stroke-width:1.2}.a-thermb{fill:var(--dye);stroke:var(--ink);stroke-width:1.2}
+.a-bubble{fill:none;stroke:var(--ink);stroke-width:.9;opacity:.65}
+.m-sol{fill:var(--susp);opacity:.55}.m-cell{fill:var(--yeast);stroke:var(--yeast-s);stroke-width:1.2}
+.k-mbb{fill:#2858be;stroke:var(--ink);stroke-width:.8}.k-mbr{fill:var(--card);stroke:var(--muted);stroke-width:1.2;stroke-dasharray:2 2}
+.k-o2{fill:var(--o2)}.k-co2{fill:var(--co2)}.k-c{fill:var(--cc)}.k-fl{fill:none;stroke:var(--amb);stroke-width:1.5}
+.a-koh{fill:#cfe3ef;stroke:var(--ink);stroke-width:.8}.a-chemx{fill:#e7d9f2;stroke:var(--ink);stroke-width:.8}
+.a-seed{fill:#c9a86a;stroke:var(--ink);stroke-width:.8}.a-bead{fill:var(--card);stroke:var(--ink);stroke-width:1}.a-louse{fill:#7a7f87;stroke:var(--ink);stroke-width:.8}
+.a-plunger{fill:var(--grey-soft);stroke:var(--ink);stroke-width:1}.a-dyeline{fill:none;stroke:var(--dye);stroke-width:4}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .a-koh{fill:#2a4352}:root:not([data-theme=light]) .a-chemx{fill:#3f3150}}
+:root[data-theme=dark] .a-koh{fill:#2a4352}:root[data-theme=dark] .a-chemx{fill:#3f3150}
+/* RP7 chromatography */
+.c-paper{fill:#fbfaf5;stroke:var(--ink);stroke-width:1}.c-wet{fill:#9cc7e4}.c-solv{fill:#cfe6f5;opacity:.9}.c-water{fill:#cfe6f5}.c-pool{fill:#9cc49a;opacity:.9}
+.c-pencil{stroke:#5a5f66;stroke-width:1.6;fill:none}.c-ink{stroke:#2f3fb0;stroke-width:2;fill:none}.c-inkrun{stroke:rgba(110,60,170,.55);stroke-width:4;fill:none}
+.c-front{stroke:#3a78b5;stroke-width:1.6;fill:none;stroke-dasharray:3 2}.c-outline{fill:none;stroke:#5a5f66;stroke-width:1.1}.c-guide{stroke:var(--acc);stroke-width:1.2;stroke-dasharray:4 3}
+.c-pin{fill:#c9ccd1;stroke:var(--ink);stroke-width:.8}.c-plate{fill:#f4f6f8;stroke:var(--ink);stroke-width:1}
+.z-fib{stroke:#9aa1a9;stroke-width:4;stroke-linecap:round}.z-flow{fill:none;stroke:#6aa8d8;stroke-width:1.6;opacity:.8}
+.z-mob{stroke:var(--ink);stroke-width:.8}.z-stuck{stroke:var(--ink);stroke-width:2.6}.z-stuck-k{fill:var(--card);stroke:var(--ink);stroke-width:2.6}.z-note{fill:var(--card);stroke:var(--line)}
+.strips{display:flex;flex-wrap:wrap;gap:.4rem}.mstrip{margin:0;flex:1 1 7rem;max-width:11rem}.mstrip svg{width:100%;height:auto;display:block}.mstrip figcaption{font-size:.8rem;color:var(--muted)}
+.pfig svg{width:100%;height:auto;display:block;max-width:21rem;margin:0 auto}
+#p-close .tsel{margin:.2rem 0 .5rem}#zsvg{display:block;width:100%;height:auto;max-width:30rem;margin:0 auto}
+#msvg{display:block;width:100%;height:auto;max-width:30rem;margin:0 auto}
+#p-chr .runbar{display:grid;grid-template-columns:repeat(auto-fill,minmax(8.5rem,1fr));gap:.5rem;align-items:stretch}
+#p-chr .runbar .btn{width:100%;margin:0;line-height:1.25;padding:.55rem .6rem}
+#cscene *{vector-effect:non-scaling-stroke}
+.tsel{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.4rem .6rem;align-items:center}.tsel label{font-weight:700}
+select{font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--muted);border-radius:10px;padding:.5rem .7rem;min-height:44px;width:100%}
+</style>
+</head>
+<body data-tc="a5"><a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="/alevel/" aria-label="AQA A-level Biology, Narajos Keystone"><svg class="logo" viewBox="4 12 92 60" aria-hidden="true" focusable="false"><path class="lg-arch" stroke-width="2.6" stroke-linejoin="round" d="M6 70 A44 44 0 0 1 7.7 57.9 L28 65.1 A22.5 22.5 0 0 0 27.5 70 ZM92.3 57.9 A44 44 0 0 1 94 70 L72.5 70 A22.5 22.5 0 0 0 72 65.1 ZM9.5 52.8 A44 44 0 0 1 14.4 44.1 L31.1 57.9 A22.5 22.5 0 0 0 29.9 60 ZM85.6 44.1 A44 44 0 0 1 90.5 52.8 L70.2 60 A22.5 22.5 0 0 0 69 57.9 ZM17.8 40 A44 44 0 0 1 25.1 33.8 L36.2 52.2 A22.5 22.5 0 0 0 34.5 53.7 ZM74.9 33.8 A44 44 0 0 1 82.2 40 L65.5 53.7 A22.5 22.5 0 0 0 63.8 52.2 Z"/><path fill="#F97316" stroke="#F97316" stroke-width="2.6" stroke-linejoin="round" d="M26.6 21 Q50 13 73.4 21 L61.6 48 L38.4 48 Z"/><circle cx="42.4" cy="38.6" r="5.2" fill="none" stroke="#fff" stroke-width="3.9"/><path d="M46.3 35.1 L58 24.6" stroke="#fff" stroke-width="3.9" stroke-linecap="round"/><path d="M53.2 28.8 l2.9 3.3" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><path d="M56.7 25.8 l2.9 3.3" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/></svg><span class="btxt"><span class="eyebrow">Narajos Keystone</span>AQA A-level&nbsp;Biology</span></a>
+    <a href="/" id="site-home" class="narajos-home" aria-label="Narajos homepage" title="Narajos homepage"><img src="/favicon.svg" alt=""><span>Narajos</span></a>
+  </div>
+</header>
+<main id="main" class="wrap" tabindex="-1">
+  <p class="crumb"><a href="/alevel/#practical-7">← Back to required practical 7</a> · <a href="/alevel/#catchup-a5-chromat">Chromatography catch up</a></p>
+  <p class="spec">3.5.1 · Required practical 7</p>
+  <h1>Chromatography of leaf pigments</h1>
+  <p class="lead">Separate the photosynthetic pigments from a leaf, measure Rf values and compare leaves. For any chromatogram, work out what was measured, why the pigments separated, and what the result can tell you.</p>
+
+  <p id="restore-notice" role="status" class="note" hidden></p>
+  <nav class="phases" id="nav" aria-label="Sections"></nav>
+
+  <div class="lab">
+  <div class="col-tasks">
+    <section id="tasks" aria-label="Current task" tabindex="-1"></section>
+  </div>
+  <div class="col-app">
+    <div class="ptabs" id="ptabs" aria-label="Model"></div>
+
+    <div id="p-chr" class="panel">
+      <div class="fig app">
+        <div class="readout"><span>Experiment <b id="current-run">New</b></span><span>Time <b id="ctime">0.0 min</b></span><span>Solvent front <b id="cfront">0 mm</b></span><span class="st" id="cstate">Ready</span></div>
+        <svg id="csvg" viewBox="0 0 390 300" role="img" aria-label="A boiling tube containing solvent, and a strip of chromatography paper pinned to a bung. The paper is lowered into the tube so its bottom dips into the solvent, and lifted out at the end."></svg>
+        <p class="tally" id="cnote"></p>
+        <div class="runbar">
+          <button class="btn primary" id="cstart" type="button">Lower paper into solvent</button>
+          <button class="btn" id="cpause" type="button" disabled>Pause</button>
+          <button class="btn" id="cremove" type="button" disabled>Remove the paper</button>
+          <button class="btn" id="cmark" type="button" disabled>Mark the solvent front</button>
+          <button class="btn" id="cdraw" type="button" disabled>Draw round the spots</button>
+          <button class="btn" id="cskipfront" type="button" disabled>Simulate an unmarked front</button>
+          <button class="btn" id="cskipspots" type="button" disabled>Simulate spots fading</button>
+          <button class="btn" id="cnew" type="button">New chromatogram</button>
+        </div>
+      </div>
+      <div class="fig app" id="measfig">
+        <h3 class="figh">Measure the dried chromatogram</h3><p id="measure-run" class="spec"></p>
+        <svg id="msvg" viewBox="0 0 360 300" role="img" aria-label="An enlarged chromatogram beside a millimetre ruler whose zero is at the pencil starting line."></svg>
+        <div class="row"><button class="btn small" id="cguide" type="button" aria-pressed="false">Show measuring guides</button></div>
+        <p class="spec" id="guidenote"></p>
+      </div>
+      <details class="fig" id="csetup" open>
+        <summary class="sumh">Set-up</summary>
+        <div class="ctrls" id="cctrls"></div>
+        <p class="spec" id="clock" hidden>Start a new chromatogram to change the set-up.</p>
+      </details>
+    </div>
+
+    <div id="p-close" class="panel" hidden>
+      <div class="fig app">
+        <h3 class="figh">Close-up: why pigments separate</h3>
+        <p class="spec" id="z-context"></p>
+        <div class="tsel" id="lanesel"></div>
+        <svg id="zsvg" viewBox="0 0 360 270" role="img" aria-label="Two lanes of paper fibres with solvent flowing upwards. Pigment molecules move up while dissolved in the solvent and stop while stuck to a fibre."></svg>
+        <div class="legend">
+          <span><svg viewBox="-12 -7 24 14" aria-hidden="true"><line x1="-10" y1="0" x2="10" y2="0" class="z-fib"/></svg>Cellulose fibre (stationary phase)</span>
+          <span><svg viewBox="-12 -7 24 14" aria-hidden="true"><path d="M-5 3 L0 -3 L5 3" class="z-flow"/></svg>Solvent flowing up (mobile phase)</span>
+          <span><svg viewBox="-12 -7 24 14" aria-hidden="true"><circle r="4.5" class="z-stuck-k"/></svg>Ring: stuck to a fibre</span>
+        </div>
+        <p class="tally" id="ztally"></p>
+        <div class="row"><button class="btn small" id="zreset" type="button">Restart the count</button></div>
+        <p class="spec">This is a simplified model of movement with solvent and retention by the paper. The particle timings are illustrative, not measurements of molecular behaviour.</p>
+      </div>
+    </div>
+
+    <div id="p-task" class="panel" hidden></div>
+    <p class="sr-only" id="announce" aria-live="polite"></p>
+  </div>
+  </div>
+
+  <h2 id="resh">Results</h2>
+  <div id="results"></div>
+  <details class="note" id="assume">
+    <summary class="sumh">These chromatograms are simulated: the model's assumptions</summary>
+    <ul>
+      <li>The method follows the AQA practical handbook: chromatography paper, a pencil starting line 2 cm from the bottom, a leaf disc crushed onto it, 3 cm³ of 1 propanone : 9 petroleum ether, the paper pinned to the bung, and the front marked immediately.</li>
+      <li>For paper and 1:9 propanone:petroleum spirit, <a href="https://qualifications.pearson.com/content/dam/pdf/A%20Level/biology-b/2015/teaching-and-learning-materials/AS-and-A-level-Biology-B-Core-Practical-11-Chloroplast-Pigments-%28Student%2C-Teacher%2C-Technician-Worksheets%29.pdf">Pearson Biology B Core Practical 11</a> gives reference values: carotene 0.95, phaeophytin 0.83, xanthophyll 0.71, chlorophyll a 0.65 and chlorophyll b 0.45. These are conditional reference values, not universal constants or an AQA table to memorise. Each model run varies slightly; values for propanone alone and water are illustrative.</li>
+      <li>The solvent front rises quickly at first and then more slowly; the paper is 10 cm long above the starting line. Spots spread as they travel, so close pigments overlap on short runs or with large spots.</li>
+      <li>Leaf pigment amounts are illustrative, not measured: the shade-tolerant leaf has relatively more chlorophyll b; the autumn leaf has little chlorophyll left.</li>
+      <li>The close-up is a simplified movement and retention model. Each dot stands for many molecules and its timings are illustrative. The guided route waits for you to mark and outline; any simulated loss represents accelerated evaporation or fading, not a measured deadline.</li>
+    </ul>
+  </details>
+</main>
+<footer class="wrap"><p>Progress and experiment evidence are saved in this browser on this device. This is an unofficial revision tool and is not produced or endorsed by AQA.</p><div class="resource-footer-row"><p class="site-copyright">© 2026 <strong>Narajos</strong> <em>/nerr-RA-hoss/</em></p><nav class="resource-footer-links" aria-label="Footer navigation"><a href="/privacy/">Privacy</a> <a href="/terms/">Terms of Use</a></nav></div></footer>
+<dialog id="zoom-dialog" class="zoom-dialog" aria-labelledby="zoom-title"><h2 id="zoom-title">Enlarged diagram</h2><p>Scroll sideways if needed. The diagram updates as the experiment runs.</p><div class="zoom-scroll" id="zoom-content"></div><div class="zoom-actions" id="zoom-actions" aria-label="Experiment controls"></div><button type="button" class="btn" id="zoom-close">Close diagram</button></dialog>
+
+<script>
+{
+const NS="http://www.w3.org/2000/svg";
+const $=(q,r=document)=>r.querySelector(q),$$=(q,r=document)=>[...r.querySelectorAll(q)];
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const mr=Math.random,RM=matchMedia("(prefers-reduced-motion: reduce)");
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function hash(s){let h=2166136261;for(const c of String(s))h=Math.imul(h^c.charCodeAt(0),16777619);return h>>>0;}
+function shuffled(n,seed){const r=rng(seed),a=[...Array(n).keys()];for(let i=n-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const SUP={"-":"⁻","0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹"};
+const supn=n=>String(n).split("").map(c=>SUP[c]||c).join("");
+/* standard form to sf significant figures, e.g. 7.8 × 10⁻³ */
+function sf(v,n=2){if(!isFinite(v))return"—";if(v===0)return"0";let e=Math.floor(Math.log10(Math.abs(v))),m=+(v/10**e).toPrecision(n);if(Math.abs(m)>=10){m/=10;e++;}
+ const ms=m.toFixed(n-1);return e===0?ms:`${ms} × 10${supn(e)}`;}
+/* reads 0.0078, 7.8e-3, 7.8 x 10^-3, 7.8×10⁻³ */
+function parseNum(str){let s=String(str||"").trim().replace(/,/g,".").replace(/[−–]/g,"-").replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]/g,c=>({"⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9","⁻":"-"}[c])).replace(/\s+/g,"");
+ const m=s.match(/^([+-]?\d*\.?\d+)(?:[x×*X]10\^?([+-]?\d+))?$/);if(m)return parseFloat(m[1])*(m[2]!=null?10**(+m[2]):1);
+ const v=Number(s);return s!==""&&isFinite(v)?v:NaN;}
+let zoomSource=null,zoomResults=false,zoomLive=false;
+const zoomControls=["cstart","cpause","cremove","cmark","cdraw","cskipfront","cskipspots","cnew"];
+function syncZoom(){const dialog=$("#zoom-dialog");if(!dialog.open||!zoomSource)return;
+ if(zoomResults&&!zoomSource.isConnected)zoomSource=$("#results svg[role='img']");if(!zoomSource||!zoomSource.isConnected)return;
+ const copy=zoomSource.cloneNode(true),ids=new Map();for(const el of [copy,...copy.querySelectorAll("[id]")])if(el.id){ids.set(el.id,el.id+"-zoom");el.id+="-zoom";}
+ for(const el of [copy,...copy.querySelectorAll("*")])for(const attr of [...el.attributes]){let value=attr.value.replace(/url\(#([^)]*)\)/g,(all,id)=>ids.has(id)?`url(#${ids.get(id)})`:all);if((attr.name==="href"||attr.name==="xlink:href")&&value.startsWith("#")&&ids.has(value.slice(1)))value="#"+ids.get(value.slice(1));if(value!==attr.value)el.setAttribute(attr.name,value);}
+ $("#zoom-content").replaceChildren(copy);for(const b of $$("#zoom-actions button")){const original=$("#"+b.dataset.control);b.disabled=original.disabled;b.textContent=original.textContent;}}
+function installZoom(){for(const svg of document.querySelectorAll('svg[role="img"]')){if(svg.closest("dialog")||svg.nextElementSibling?.classList.contains("diagram-zoom"))continue;const b=document.createElement("button");b.type="button";b.className="btn small diagram-zoom";b.textContent="Enlarge diagram";b.addEventListener("click",()=>{zoomSource=svg;zoomResults=!!svg.closest("#results");zoomLive=!!svg.closest("#p-chr");const actions=$("#zoom-actions");actions.replaceChildren();actions.hidden=!zoomLive;if(zoomLive)for(const id of zoomControls){const control=document.createElement("button");control.type="button";control.className="btn small";control.dataset.control=id;control.onclick=()=>$("#"+id).click();actions.append(control);}const dialog=$("#zoom-dialog");dialog.showModal();syncZoom();$("#zoom-close").focus();});svg.after(b);}}
+$("#zoom-close").addEventListener("click",()=>$("#zoom-dialog").close());$("#zoom-dialog").addEventListener("close",()=>{zoomSource=null;zoomResults=false;zoomLive=false;});
+const r2=v=>Math.round(v*100)/100;
+function mix(a,b,f){return`rgb(${a.map((v,i)=>Math.round(v+(b[i]-v)*f)).join(",")})`;}
+function say(h){const d=document.createElement("div");d.innerHTML=h;$("#announce").textContent=d.textContent;}
+let speed="normal";
+
+/* ================= Chromatography model =================
+ Distances in mm above the pencil starting line (origin). Paper: 120 mm long, origin 20 mm from
+ the bottom, so 100 mm above the origin. Solvent front F(t) = 95·√(t/18) mm (t in minutes).
+ Spot centre = Rf × F. Rf for 1 propanone : 9 petroleum ether on paper: typical published values. */
+const PIG={car:{n:"Carotene",c:[236,150,30],col:"orange-yellow"},pha:{n:"Phaeophytin",c:[128,124,98],col:"grey-olive",beyond:true},xan:{n:"Xanthophyll",c:[214,196,46],col:"yellow"},
+ cha:{n:"Chlorophyll a",c:[38,136,116],col:"blue-green"},chb:{n:"Chlorophyll b",c:[132,170,60],col:"yellow-green"},red:{n:"Red pigment (betacyanin)",c:[170,40,100],col:"red-purple",beyond:true}};
+const PORDER=["car","pha","xan","cha","chb","red"];
+const RFT={aqa:{car:.95,pha:.83,xan:.71,cha:.65,chb:.45,red:0},prop:{car:.97,pha:.95,xan:.93,cha:.92,chb:.89,red:.04},water:{car:0,pha:0,xan:0,cha:0,chb:0,red:.55}};
+const SOLV={aqa:"1 propanone : 9 petroleum ether",prop:"Propanone only",water:"Water"};
+const LEAF={sun:{n:"Spinach (shade-intolerant)",amt:{car:.7,xan:.6,cha:1,chb:.45}},shade:{n:"Shade-tolerant woodland plant",amt:{car:.45,xan:.45,cha:1,chb:.85}},
+ beet:{n:"Red-leaved beet",amt:{car:.6,xan:.5,cha:.85,chb:.4,red:.9}},autumn:{n:"Autumn (yellow) leaf",amt:{car:.8,xan:.95,cha:.15,chb:.1,pha:.4}}};
+const CSTD={leaf:"sun",solv:"aqa",origin:"pencil",level:"below",spot:"small",lid:true,touch:false};
+const TOP=100,FMAX=95,TF=18,END_T=TF*(TOP/FMAX)**2;            // front reaches the top edge at END_T min
+const Ff=(s,t)=>Math.min(TOP,FMAX*Math.sqrt(Math.max(0,t)/TF)*(s.lid?1:.88));
+const s0Of=s=>s.spot==="large"?4.5:s.spot==="faint"?1.4:1.7;
+const spotR=(s,d)=>s0Of(s)+.10*Math.sqrt(Math.max(0,d));
+function intens(s,p){const a=(LEAF[s.leaf].amt[p]||0)*(s.spot==="faint"?.3:1)*(s.level==="above"?.12:1);return a;}
+const cmatch=(s,n)=>Object.keys(n).every(k=>s[k]===n[k]);
+function cdesc(s){return LEAF[s.leaf].n.toLowerCase()+", solvent: "+SOLV[s.solv].toLowerCase()+", starting line in "+s.origin+", solvent "+(s.level==="below"?"below":"above")+" the starting line, "+(s.spot==="small"?"small concentrated spot":s.spot==="large"?"large spot":"faint spot")+", "+(s.lid?"bung on":"no bung")+(s.touch?", paper touching the side":"");}
+function cshort(s){return LEAF[s.leaf].n.split(" (")[0]+", "+(s.solv==="aqa"?"reference mixture":SOLV[s.solv].toLowerCase())+(s.origin==="ink"?", ink line":"")+(s.level==="above"?", solvent above line":"")+(s.spot!=="small"?", "+s.spot+" spot":"")+(s.lid?"":", no bung")+(s.touch?", touching side":"");}
+let CS={...CSTD},cr,cRuns=[],cId=0,guides=false,cRand=rng(Math.floor(mr()*1e9));
+/* per-run Rf: published value plus a small random variation; larger without a bung or touching the side */
+function runRf(s,rand){const amp=.006+(s.lid?0:.03)+(s.touch?.025:0),o={};for(const p of PORDER){const base=RFT[s.solv][p];o[p]=base<=0?0:Math.max(.01,Math.min(.99,base+(rand()-.5)*2*amp));if(s.level==="above")o[p]*=.25;}return o;}
+function cNew(){const rand=rng(Math.floor(cRand()*1e9));cr={s:{...CS},status:"ready",t:0,rf:runRf(CS,rand),tilt:CS.touch?9:CS.lid?0:3.5,wave:!CS.lid,
+ frontMarked:null,spotsDrawn:null,offTop:false,fTimer:0,sTimer:0,front:0,L:LOUT,mp:0};cDraw();cUpdate();renderResults();}
+/* paper movement: L = how far (px) the bung and paper are lifted above their seated position */
+const LOUT=252,MOVE_S={lowering:2,lifting:1.5},SOLVTOP=s=>s.level==="above"?222:256;
+const ease=p=>p*p*(3-2*p);
+function cStart(){if(cr.status==="done")cNew();
+ if(cr.status==="ready"){cr.id=++cId;cr.status="lowering";cr.mp=0;cUpdate();say("Lowering the paper into the tube. The bung closes the tube and the bottom of the paper dips into the solvent.");return;}
+ if(cr.status==="paused"){cr.status=cr.resumeStatus||"running";delete cr.resumeStatus;cUpdate();}}
+function cRemove(){if(cr.status!=="running"&&!(cr.status==="paused"&&(!cr.resumeStatus||cr.resumeStatus==="running")))return;cr.status="lifting";delete cr.resumeStatus;cr.mp=0;cr.front=Ff(cr.s,cr.t);cUpdate();say("Lifting the paper out of the solvent and out of the tube.");}
+function cLifted(){cr.status="removed";cr.L=LOUT;
+ if(cr.offTop){cr.frontMarked=false;cr.whyF="The solvent ran off the top of the paper, so the front cannot be marked.";}
+ cUpdate();say(cr.offTop?"The solvent front ran off the top of the paper, so its distance is unknown. Outline the spots next.":"Paper removed. In a real practical, mark the front promptly. This guided model waits for you.");}
+function cMark(){if(cr.status!=="removed"||cr.frontMarked!=null)return;cr.frontMarked=true;cUpdate();cCheckDone();say("Solvent front marked in pencil.");}
+function cDrawRound(){if(cr.status!=="removed"||cr.frontMarked==null||cr.spotsDrawn!=null)return;cr.spotsDrawn=true;cUpdate();cCheckDone();say("Spots outlined in pencil.");}
+function cCheckDone(){if(cr.status==="removed"&&cr.frontMarked!=null&&cr.spotsDrawn!=null)cFinish();}
+function cSpots(s,rf,F){return PORDER.filter(p=>intens(s,p)>0).map(p=>{const d=rf[p]*F;return{p,d,r:spotR(s,d),a:intens(s,p)};});}
+function cFinish(){cr.status="done";const F=cr.front,sp=cSpots(cr.s,cr.rf,F);
+ const spots=sp.map(o=>({p:o.p,d:Math.round(o.d),r:o.r,a:o.a,visible:cr.spotsDrawn&&o.a>=.08,outlined:!!cr.spotsDrawn}));
+ const vis=spots.filter(o=>o.visible);let overlap=false;for(let i=0;i<vis.length;i++)for(let j=i+1;j<vis.length;j++)if(Math.abs(vis[i].d-vis[j].d)<(vis[i].r+vis[j].r)*.8&&vis[i].d>2){overlap=true;vis[i].overlap=true;vis[j].overlap=true;}
+ const r={id:cr.id,s:{...cr.s},Ftrue:F,front:cr.frontMarked?Math.round(F):null,whyF:cr.whyF||(cr.frontMarked?"":"The front was not marked in time, so it evaporated and cannot be measured."),
+  spots,overlap,tMin:+cr.t.toFixed(1),ink:cr.s.origin==="ink"&&cr.s.solv!=="water",pool:cr.s.level==="above"};
+ cRuns.push(r);if(cRuns.length>16)cRuns.shift();cUpdate();renderResults();onRun("chr",r);}
+$("#cstart").onclick=cStart;$("#cpause").onclick=()=>{if(cr.status==="running"){cr.status="paused";cUpdate();}};
+$("#cremove").onclick=cRemove;$("#cmark").onclick=cMark;$("#cdraw").onclick=cDrawRound;$("#cnew").onclick=()=>cNew();
+$("#cskipfront").onclick=()=>{if(cr.status!=="removed"||cr.frontMarked!=null)return;cr.frontMarked=false;cr.whyF="The front was not marked before it evaporated; its position is unavailable.";cUpdate();cCheckDone();};
+$("#cskipspots").onclick=()=>{if(cr.status!=="removed"||cr.frontMarked==null||cr.spotsDrawn!=null)return;cr.spotsDrawn=false;cUpdate();cCheckDone();};
+$("#cguide").onclick=()=>{guides=!guides;cUpdate();};
+function cStep(dt){const mv=MOVE_S[cr.status];
+ if(mv){cr.mp=Math.min(1,cr.mp+dt*(RM.matches?2.5:1)/mv);cr.L=LOUT*(cr.status==="lowering"?1-ease(cr.mp):ease(cr.mp));
+  if(cr.mp>=1){if(cr.status==="lowering"){cr.L=0;cr.status="running";cUpdate();say(cr.s.level==="above"?"The paper is in, but the solvent covers the starting line.":"The paper is in the solvent with the tube closed. Watch the solvent rise.");}else cLifted();}}
+ if(cr.status==="running"){const spm=speed==="fast"?.25:1;cr.t+=dt/spm;if(Ff(cr.s,cr.t)>=TOP&&cr.t>END_T+1.5&&!cr.offTop){cr.offTop=true;say("The solvent front has reached the top of the paper and run off the edge.");}cText();}
+ cDrawDyn();}
+/* ---------- apparatus drawing (2 px per mm; origin at y 236) ---------- */
+const OY=236,PX=2;
+const camS=L=>Math.min(1,290/(278+L));
+const camXY=(x,y,L,rig)=>{const k=camS(L),yy=rig?y-L:y;return[100+(x-100)*k,292-(292-yy)*k];};
+function cDraw(){const s=cr.s,sh=s.touch?-8:0;let g=`<g id="cscene"><path class="a-glass" d="M66 26 V258 A34 34 0 0 0 134 258 V26"/>`;
+ g+=`<path class="${s.solv==="water"?"c-water":"c-solv"}" id="cpool" d="M68 ${SOLVTOP(s)} H132 V258 A32 32 0 0 1 68 258 Z"/><g id="crig">`;
+ if(s.lid)g+=`<rect class="a-bung" x="60" y="14" width="80" height="22" rx="4"/>`;else g+=`<line class="f-thin" x1="100" y1="-4" x2="100" y2="38"/>`;
+ g+=`<g transform="translate(${sh} 0)"><rect class="c-paper" x="80" y="36" width="40" height="240"/><rect id="cwet" class="c-wet" x="80" y="276" width="40" height="0"/>`;
+ g+=`<line class="${s.origin==="ink"?"c-ink":"c-pencil"}" x1="80" y1="${OY}" x2="120" y2="${OY}"/><g id="cspots"></g><path id="cfrontl" class="c-front" d=""/><path id="cinkr" d=""/></g><circle cx="100" cy="40" r="2.5" class="c-pin"/></g></g><g id="clabs"></g>`;
+ $("#csvg").innerHTML=g;cDrawDyn();}
+/* labels stay full size: anchors are mapped through the zoom, then spread so they never overlap */
+function cLabels(){const s=cr.s,L=cr.L,sh=s.touch?-8:0,P=(x,y,r)=>camXY(x,y,L,r),it=[];
+ it.push(s.lid?{a:P(140,25,1),t:["Bung, with the paper","pinned to it"]}:{a:P(134,30,0),t:["No bung: the tube","is open"]});
+ it.push({a:P(120+sh,110,1),t:["Chromatography paper"]});
+ if(s.touch)it.push({a:P(120+sh,170,1),t:["Paper touching the side"]});
+ it.push({a:P(106+sh,OY,1),t:["Leaf:",esc(LEAF[s.leaf].n.replace(/^S/,"s"))]});
+ it.push({a:P(120+sh,OY,1),t:[`Starting line (${s.origin==="ink"?"ink!":"pencil"}),`,"2 cm from the bottom"]});
+ it.push({a:P(132,SOLVTOP(s)+8,0),t:["Solvent:",SOLV[s.solv].replace("Propanone","propanone").replace("Water","water"),s.level==="above"?"above the starting line!":"below the starting line"]});
+ it.sort((p,q)=>p.a[1]-q.a[1]);const H=o=>14*o.t.length;
+ it.forEach((o,i)=>{o.ly=o.a[1]+4-7*(o.t.length-1);if(i&&o.ly<it[i-1].ly+H(it[i-1])+2)o.ly=it[i-1].ly+H(it[i-1])+2;});
+ const last=it[it.length-1],over=last.ly+H(last)-14-296;if(over>0){last.ly-=over;for(let i=it.length-2;i>=0;i--)if(it[i].ly>it[i+1].ly-H(it[i])-2)it[i].ly=it[i+1].ly-H(it[i])-2;}
+ if(it[0].ly<12){it[0].ly=12;for(let i=1;i<it.length;i++)if(it[i].ly<it[i-1].ly+H(it[i-1])+2)it[i].ly=it[i-1].ly+H(it[i-1])+2;}
+ $("#clabs").innerHTML=it.map(o=>{const c=o.ly+7*(o.t.length-1)-4;return`<polyline class="f-thin" fill="none" points="${o.a[0].toFixed(1)},${o.a[1].toFixed(1)} 176,${c.toFixed(1)} 180,${c.toFixed(1)}"/>`+o.t.map((t,j)=>`<text class="f-sm" x="184" y="${(o.ly+14*j).toFixed(1)}">${t}</text>`).join("");}).join("");}
+function rgbA(c,a){return`rgba(${c.join(",")},${Math.max(0,Math.min(1,a)).toFixed(2)})`;}
+function curF(){const st=cr.status;return st==="ready"||st==="lowering"?0:st==="running"||st==="paused"?Ff(cr.s,cr.t):cr.front;}
+function cDrawDyn(){if(!cr)return;const s=cr.s,st=cr.status,out=st==="ready"||st==="lowering",F=curF(),yF=OY-F*PX,k=camS(cr.L);
+ $("#cscene").setAttribute("transform",`translate(${(100*(1-k)).toFixed(2)} ${(292*(1-k)).toFixed(2)}) scale(${k.toFixed(4)})`);$("#crig").setAttribute("transform",`translate(0 ${(-cr.L).toFixed(1)})`);cLabels();
+ const wetVis=(st==="removed"&&cr.frontMarked==null)||(st==="running"||st==="paused"||st==="lifting")?1:0;
+ const wy=Math.max(36,yF),bottomWet=(cr.status==="ready")?276:276;const w=$("#cwet");if(w){w.setAttribute("y",wy);w.setAttribute("height",Math.max(0,276-wy));w.setAttribute("opacity",(.18+.55*wetVis).toFixed(2));if(out){const sub=Math.max(0,Math.min(240,276-cr.L-SOLVTOP(s)));w.setAttribute("y",276-sub);w.setAttribute("height",sub);w.setAttribute("opacity",.7);}}
+ // spots
+ const fade=1;
+ const lev=s.level!=="above"?1:out?1/.12:(.12+.88*Math.exp(-cr.t/1.5))/.12;
+ let sp="";const list=cSpots(s,cr.rf,F).map(o=>({...o,a:o.a*lev}));
+ for(const o of list){if((st==="done"||st==="removed")&&cr.spotsDrawn===false)continue;const y=OY-o.d*PX,tilt=(cr.tilt*o.d/Math.max(1,TOP))*PX*.5;sp+=`<ellipse cx="100" cy="${(y-tilt*.0).toFixed(1)}" rx="${Math.min(15,o.r*2.4).toFixed(1)}" ry="${(o.r*PX).toFixed(1)}" fill="${rgbA(PIG[o.p].c,Math.min(.9,o.a*.9)*fade)}"/>`;
+  if(cr.spotsDrawn&&o.a>=.08)sp+=`<ellipse cx="100" cy="${y.toFixed(1)}" rx="${(Math.min(15,o.r*2.4)+1.5).toFixed(1)}" ry="${(o.r*PX+1.5).toFixed(1)}" class="c-outline"/>`;}
+ {const pl=$("#cpool");if(pl&&s.level==="above"&&!out)pl.setAttribute("class","c-pool");}
+ $("#cspots").innerHTML=sp;
+ // ink line runs
+ if(s.origin==="ink"&&s.solv!=="water"&&!out){$("#cinkr").setAttribute("d",`M80 ${OY-.3*F*PX} H120 M80 ${OY-.55*F*PX} H120`);$("#cinkr").setAttribute("class","c-inkrun");}else $("#cinkr").setAttribute("d","");
+ // front
+ const fl=$("#cfrontl");const showF=!out;if(showF){const t=cr.tilt*PX*.5,wv=cr.wave;let d=`M80 ${(yF-t).toFixed(1)}`;for(let x=80;x<=120;x+=5)d+=` L${x} ${(yF-t+(x-80)/40*t*2+(wv?Math.sin(x*.5+cr.t)*2.2:0)).toFixed(1)}`;fl.setAttribute("d",d);
+  fl.setAttribute("class",cr.frontMarked?"c-pencil":"c-front");fl.setAttribute("opacity",cr.frontMarked?1:wetVis.toFixed(2));}else fl.setAttribute("d","");
+ drawMeas();}
+function cText(){const F=curF();$("#current-run").textContent=cr.id?"Run "+cr.id:"New";$("#ctime").textContent=cr.t.toFixed(1)+" min";$("#cfront").textContent=cr.offTop?"Unavailable":(["removed","done"].includes(cr.status)&&!cr.frontMarked?"Not recorded":Math.round(F)+" mm");
+ $("#cnote").textContent=cr.status==="ready"?"The leaf disc has been crushed onto the starting line and the paper is pinned to the bung. Lower it into the tube.":
+  cr.status==="lowering"?"Lowering the paper: the bung closes the tube and the bottom of the paper dips into the solvent.":
+  cr.status==="lifting"?"Lifting the paper out of the tube.":
+  cr.status==="running"?(cr.offTop?"The front has run off the top of the paper: its distance can no longer be measured.":F>88?"The front has almost reached the top. Remove the paper now.":"The solvent is rising up the paper, carrying the pigments at different rates."):
+  cr.status==="paused"?"Paused. Resume when ready.":
+  cr.status==="removed"?(cr.frontMarked==null?"Mark the solvent front promptly. This guided model waits for you.":cr.spotsDrawn==null?"Outline the visible spots. This guided model waits for you.":""):
+  cr.status==="done"?(!cr.frontMarked?cr.whyF:!cr.spotsDrawn?"No spots were recorded; no Rf can be calculated.":"Done. Measure the chromatogram below."):"";}
+function cUpdate(){const st=cr.status;
+ $("#cstart").disabled=!["ready","paused","done"].includes(st);$("#cstart").textContent=st==="paused"?"Resume":st==="done"?"New run: lower paper":"Lower paper into solvent";
+ $("#cpause").disabled=st!=="running";$("#cremove").disabled=!(st==="running"||(st==="paused"&&(!cr.resumeStatus||cr.resumeStatus==="running")));
+ $("#cmark").disabled=!(st==="removed"&&cr.frontMarked==null&&!cr.offTop);$("#cdraw").disabled=!(st==="removed"&&cr.frontMarked!=null&&cr.spotsDrawn==null);
+ $("#cskipfront").disabled=!(st==="removed"&&cr.frontMarked==null&&!cr.offTop);$("#cskipspots").disabled=!(st==="removed"&&cr.frontMarked!=null&&cr.spotsDrawn==null);
+ $("#cstate").textContent={ready:"Ready",lowering:"Lowering",running:"Running",paused:"Paused",lifting:"Removing",removed:"Removed",done:"Finished"}[st];
+ $$("#cctrls input").forEach(i=>i.disabled=st!=="ready"&&st!=="done"&&i.name!=="cspeed");$("#clock").hidden=st==="ready"||st==="done";
+ cText();cDrawDyn();renderNav();renderTasks();}
+/* ---------- measuring view: 2.5 px per mm, ruler zero at the origin ---------- */
+const MS=2.5,MY0=280;
+function drawMeas(){const r=measurementRun();let g="";$("#measure-run").textContent=r?"Showing run "+r.id+": "+cshort(r.s)+". "+(r.front==null?"Solvent front unavailable. ":"")+(r.spots.some(o=>o.visible)?"":"No spots recorded."):"";
+ if(!r){$("#msvg").setAttribute("aria-label","No recorded chromatogram is available to measure.");$("#msvg").innerHTML=`<text class="f-sm" x="180" y="150" text-anchor="middle">Remove, mark and dry a chromatogram to measure it here.</text>`;$("#guidenote").textContent="";return;}
+ const observed=r.spots.filter(o=>o.visible&&!o.overlap).map(o=>PIG[o.p].col+" spot at "+o.d+" mm").join(", ");$("#msvg").setAttribute("aria-label",`Run ${r.id}. Starting line at zero. ${r.front==null?"Solvent front unavailable.":"Solvent front at "+r.front+" millimetres."} ${observed||"No individually resolved spots recorded."}${r.overlap?" Some spots overlap.":""}`);
+ const Y=d=>MY0-d*MS;g+=`<rect class="c-paper" x="150" y="${Y(104)}" width="60" height="${MS*110}"/>`;
+ for(let mm=0;mm<=104;mm++){const big=mm%10===0,mid=mm%5===0;g+=`<line class="f-thin" x1="${140-(big?14:mid?9:5)}" y1="${Y(mm)}" x2="140" y2="${Y(mm)}"/>`;if(big)g+=`<text class="f-sm" x="${120}" y="${Y(mm)+4}" text-anchor="end">${mm}</text>`;}
+ g+=`<line class="f-axis" x1="140" y1="${Y(0)}" x2="140" y2="${Y(104)}"/><text class="f-sm" x="100" y="${Y(52)}" text-anchor="middle" transform="rotate(-90 100 ${Y(52)})">ruler (mm), zero at the starting line</text>`;
+ g+=`<line class="${r.s.origin==="ink"?"c-ink":"c-pencil"}" x1="150" y1="${Y(0)}" x2="210" y2="${Y(0)}"/>`;
+ if(r.ink)g+=`<path class="c-inkrun" d="M150 ${Y(.3*r.Ftrue)} H210 M150 ${Y(.55*r.Ftrue)} H210"/>`;
+ if(r.front!=null)g+=`<line class="c-pencil" x1="150" y1="${Y(r.front)}" x2="210" y2="${Y(r.front)}"/><text class="f-sm" x="214" y="${Y(r.front)+4}">solvent front</text>`;
+ for(const o of r.spots){if(!o.visible)continue;
+  g+=`<ellipse cx="180" cy="${Y(o.d)}" rx="${Math.min(22,o.r*3)}" ry="${o.r*MS}" fill="${rgbA(PIG[o.p].c,Math.min(.85,o.a*.85))}"/><ellipse cx="180" cy="${Y(o.d)}" rx="${Math.min(22,o.r*3)+1.5}" ry="${o.r*MS+1.5}" class="c-outline"/>`;}
+ if(guides&&!guidesLocked()){r.spots.filter(o=>o.visible&&!o.overlap).forEach((o,i)=>{g+=`<line class="c-guide" x1="140" y1="${Y(o.d)}" x2="226" y2="${Y(o.d)}"/><text class="f-sm" x="${228+(i%2)*62}" y="${Y(o.d)+4}">${o.d} mm</text>`;});
+  if(r.front!=null)g+=`<text class="f-sm" x="290" y="${Y(r.front)+4}">${r.front} mm</text>`;}
+ $("#msvg").innerHTML=g;$("#guidenote").textContent=guidesLocked()?"Measuring guides are switched off for this task: read the ruler yourself, to the centre of each spot.":guides?"Guides show the distance from the starting line to the centre of each spot.":"Read each distance from the zero (the starting line) to the centre of each spot.";}
+function guidesLocked(){const t=typeof activeTask==="function"?activeTask():null;return!!(t&&t.noGuides);}
+/* ---------- set-up controls ---------- */
+const CCTRL=[["leaf","Leaf",Object.entries(LEAF).map(([k,v])=>[k,v.n])],["solv","Solvent",Object.entries(SOLV).map(([k,v])=>[k,k==="aqa"?v+" (reference mixture)":v])],
+ ["origin","Starting line drawn in",[["pencil","Pencil"],["ink","Ink"]]],["level","Solvent level",[["below","Below the starting line"],["above","Above the starting line"]]],
+ ["spot","Leaf disc crushed",[["small","Firmly, small spot"],["large","Smeared, large spot"],["faint","Lightly, faint spot"]]],["lid","Bung",[[true,"On"],[false,"Off"]]],
+ ["touch","Paper position",[[false,"Hanging clear"],[true,"Touching the side"]]],["cspeed","Speed",[["normal","Normal"],["fast","Fast"]]]];
+$("#cctrls").innerHTML=CCTRL.map(([k,l,o])=>`<fieldset><legend class="cl">${l}</legend><div class="seg">${o.map(([v,t])=>`<label><input type="radio" name="${k}" value="${v}"><span>${t}</span></label>`).join("")}</div></fieldset>`).join("");
+function cSync(){CCTRL.forEach(([k])=>{const v=k==="cspeed"?speed:CS[k];$$(`#cctrls input[name=${k}]`).forEach(i=>i.checked=String(v)===i.value);});}
+$("#cctrls").addEventListener("change",e=>{const i=e.target,k=i.name;if(k==="cspeed"){speed=i.value;return;}CS[k]=(k==="lid"||k==="touch")?i.value==="true":i.value;if(cr.status==="ready"||cr.status==="done")cNew();zReset();});
+function cApply(n){CS={...CSTD,...n};cSync();cNew();zReset();}
+/* ---------- results ---------- */
+let rfShown=false;
+/* spread labels vertically so none overlap: items {y,t}; returns items with ly */
+function spreadLab(items,gap){const a=items.map(o=>({...o,ly:o.y})).sort((p,q)=>p.y-q.y);
+ for(let i=1;i<a.length;i++)if(a[i].ly-a[i-1].ly<gap)a[i].ly=a[i-1].ly+gap;
+ const c=a.reduce((m,o)=>m+o.ly-o.y,0)/a.length;if(c>0)a.forEach(o=>o.ly-=c/2);
+ for(let i=a.length-2;i>=0;i--)if(a[i+1].ly-a[i].ly<gap)a[i].ly=a[i+1].ly-gap;return a;}
+function labSVG(items,gap,x0,x1,fs){return spreadLab(items,gap).map(o=>(Math.abs(o.ly-o.y)>1.5?`<polyline class="f-thin" fill="none" points="${x0},${o.y} ${x1-4},${o.ly} ${x1-1},${o.ly}"/>`:"")+`<text class="f-sm"${fs?` style="font-size:${fs}px"`:""} x="${x1}" y="${o.ly+(fs?fs*.35:4)}">${o.t}</text>`).join("");}
+function miniStrip(s,rf,F,opt){opt=opt||{};const sc=opt.sc||1.6,H=Math.round(108*sc)+30,y0=H-14,Y=d=>y0-d*sc;let g=`<rect class="c-paper" x="22" y="${Y(104)}" width="34" height="${sc*110}"/>`;
+ g+=`<line class="${s.origin==="ink"?"c-ink":"c-pencil"}" x1="22" y1="${Y(0)}" x2="56" y2="${Y(0)}"/>`;
+ if(F!=null)g+=`<line class="c-pencil" x1="22" y1="${Y(F)}" x2="56" y2="${Y(F)}"/>`;
+ const Fd=F??opt.Fhidden;const shownSpots=opt.spots||cSpots(s,rf,Fd);for(const o of shownSpots){if((opt.spots&&!o.visible)||(o.a<.08&&!opt.all))continue;g+=`<ellipse cx="39" cy="${Y(o.d)}" rx="${Math.min(14,o.r*2)}" ry="${o.r*sc}" fill="${rgbA(PIG[o.p].c,Math.min(.85,o.a*.85))}"/>`;}
+ if(opt.ruler){for(let mm=0;mm<=100;mm+=10)g+=`<line class="f-thin" x1="12" y1="${Y(mm)}" x2="20" y2="${Y(mm)}"/><text class="f-sm" style="font-size:9px" x="10" y="${Y(mm)+3}" text-anchor="end">${mm}</text>`;}
+ if(opt.labels){const it=cSpots(s,rf,Fd).filter(o=>o.a>=.08).map(o=>({y:Y(o.d),t:opt.labels==="d"?Math.round(o.d)+" mm":PIG[o.p].n}));
+  if(F!=null)it.push({y:Y(F),t:"front"+(opt.labels==="d"?" "+Math.round(F)+" mm":"")});g+=labSVG(it,11.5,57,66,10);}
+ return`<svg viewBox="-10 0 ${opt.w||150} ${H}" role="img" aria-label="${esc(opt.aria||"A chromatogram")}">${g}</svg>`;}
+function renderResults(){if(!cr)return;const R=cRuns;
+ const strips=R.slice(-4).map(r=>`<figure class="mstrip">${miniStrip(r.s,Object.fromEntries(r.spots.map(o=>[o.p,o.d/Math.max(1,r.Ftrue)])),r.front,{Fhidden:r.Ftrue,spots:r.spots,aria:"Chromatogram for run "+r.id+(r.front==null?", solvent front not recorded":"")+(r.spots.some(o=>o.visible)?"":", no spots recorded")})}<figcaption>Run ${r.id}: ${esc(cshort(r.s))}</figcaption></figure>`).join("");
+ const rows=R.map(r=>{const vis=r.spots.filter(o=>o.visible&&!o.overlap);return`<tr><td class="n">${r.id}</td><td>${esc(cshort(r.s))}</td><td class="n">${r.front??"not marked"}</td><td>${vis.length?vis.map(o=>`${PIG[o.p].col} spot: ${o.d} mm${rfShown&&r.front?` (Rf ${(o.d/r.front).toFixed(2)})`:""}`).join("<br>"):r.spots.some(o=>o.visible)?"no individually resolved spots":"no spots recorded"}${r.overlap?"<br><em>Overlapping spots cannot be measured separately.</em>":""}</td></tr>`;}).join("");
+ $("#results").innerHTML=`<div class="res"><div class="fig"><div class="strips">${strips||'<p class="spec">Chromatograms you make appear here, side by side.</p>'}</div><p class="spec">Simulated. Up to four most recent runs.</p></div>
+ <div class="fig"><div class="scroll"><table><caption>Simulated results: distances from the starting line to the centre of each spot, and to the solvent front.${rfShown?"":" Rf values appear here after the Rf task."}</caption><thead><tr><th scope="col">Run</th><th scope="col">Set-up</th><th scope="col">Front (mm)</th><th scope="col">Spots</th></tr></thead><tbody>${rows||'<tr><td colspan="4">No chromatograms yet.</td></tr>'}</tbody></table></div></div></div>`;installZoom();}
+
+/* ================= Close-up: partition between moving solvent and paper fibres =================
+ A dissolved molecule moves up with the solvent. When it touches a fibre it may stick (chance p),
+ then comes loose after a random time (mean τ). p and τ are set so the fraction of time spent moving,
+ and so the distance moved compared with the solvent, matches the pigment's Rf in the chosen solvent. */
+const ZV=46,ZROW=20,ZTOP=30,ZBOT=262,ZH=ZBOT-ZTOP,ZLX=[10,186],ZLW=164;
+let zLane=["car","chb"],ZL=[],zFlow=0,zOn=false;
+const zrand=rng(11),ZFIB=[];for(let y=ZTOP+12;y<ZBOT;y+=ZROW){const segs=[];let x=4+zrand()*14;while(x<ZLW-10){const len=18+zrand()*16;segs.push([x,Math.min(ZLW-4,x+len)]);x+=len+8+zrand()*16;}ZFIB.push({y,segs});}
+const ZCOV=ZFIB.reduce((a,r)=>a+r.segs.reduce((b,s)=>b+s[1]-s[0],0)/ZLW,0)/ZFIB.length,ZN=ZV/ZROW*ZCOV;
+// The l3 question has a fixed reference example; keep exploratory settings separate.
+function zReference(){return activeTask()?.id==="l3";}
+function zSolvent(){return zReference()?"aqa":CS.solv;}
+function zLanes(){return zReference()?["car","chb"]:zLane;}
+function zParams(p){const f=RFT[zSolvent()][p];if(f<=0)return{ins:true,f:0};let tau=1.6,pr=(1/f-1)/(ZN*tau);if(pr>1){pr=1;tau=(1/f-1)/ZN;}return{ins:false,f,p:pr,tau};}
+function zReset(){zSync();ZL=zLanes().map((p,i)=>{const P=zParams(p),m=[];for(let k=0;k<8;k++)m.push({x:12+zrand()*(ZLW-24),y:P.ins?ZBOT-8:ZBOT-10-k*26,st:P.ins?"stuck":"mob",left:0,disp:0});return{p,P,m,S:0,tm:0,tt:0};});}
+function zStep(dt){zFlow=(zFlow+ZV*dt)%ZROW;
+ for(const L of ZL){const P=L.P;if(P.ins)continue;L.S+=ZV*dt;
+  for(const m of L.m){L.tt+=dt;if(m.st==="stuck"){m.left-=dt;if(m.left<=0)m.st="mob";continue;}
+   L.tm+=dt;const y0=m.y;m.x+=(zrand()-.5)*60*dt;m.x=Math.max(6,Math.min(ZLW-6,m.x));m.y-=ZV*dt;m.disp+=ZV*dt;
+   for(const row of ZFIB){if(y0>row.y&&m.y<=row.y&&row.segs.some(s=>m.x>=s[0]&&m.x<=s[1])){if(zrand()<P.p){m.st="stuck";m.disp-=(row.y-m.y);m.y=row.y;m.left=-Math.log(1-zrand())*P.tau;break;}}}
+   if(m.y<ZTOP)m.y+=ZH;}}}
+function zDraw(){let g="";
+ ZL.forEach((L,i)=>{const x0=ZLX[i];g+=`<rect class="c-paper" x="${x0}" y="${ZTOP}" width="${ZLW}" height="${ZH}" rx="4"/>`;
+  for(let k=0;k<4;k++)for(let y=ZBOT-zFlow-k*0;y>ZTOP+6;y-=ZROW*2){const cx=x0+20+k*40;g+=`<path class="z-flow" d="M${cx-5} ${(y+3).toFixed(1)} L${cx} ${(y-3).toFixed(1)} L${cx+5} ${(y+3).toFixed(1)}"/>`;}
+  for(const row of ZFIB)for(const s of row.segs)g+=`<line class="z-fib" x1="${x0+s[0]}" y1="${row.y}" x2="${x0+s[1]}" y2="${row.y}"/>`;
+  const c=PIG[L.p].c;for(const m of L.m)g+=`<circle cx="${(x0+m.x).toFixed(1)}" cy="${m.y.toFixed(1)}" r="4.6" fill="rgb(${c.join(",")})" class="${m.st==="stuck"?"z-stuck":"z-mob"}"/>`;
+  g+=`<text class="f-txt" style="font-size:12px" x="${x0+ZLW/2}" y="18" text-anchor="middle">${PIG[L.p].n.replace(" (betacyanin)","")}</text>`;
+  if(L.P.ins)g+=`<rect x="${x0+8}" y="${ZTOP+80}" width="${ZLW-16}" height="44" rx="6" class="z-note"/><text class="f-sm" x="${x0+ZLW/2}" y="${ZTOP+98}" text-anchor="middle">Does not dissolve in</text><text class="f-sm" x="${x0+ZLW/2}" y="${ZTOP+114}" text-anchor="middle">this solvent: stays put</text>`;});
+ $("#zsvg").innerHTML=g;$("#zsvg").setAttribute("aria-label",`Simplified model in ${SOLV[zSolvent()]}. ${ZL.map(L=>PIG[L.p].n+": model Rf "+L.P.f.toFixed(2)).join("; ")}. Pigments move with the solvent and pause when retained by paper fibres.`);
+ $("#ztally").innerHTML=ZL.map(L=>{const nm=PIG[L.p].n;if(L.P.ins)return`<b>${nm}:</b> in this model treated as not dissolved, so it stays put (Rf 0 in ${SOLV[zSolvent()].toLowerCase()}).`;
+  const avg=L.m.reduce((a,m)=>a+m.disp,0)/L.m.length,ratio=L.S>0?avg/L.S:0,frac=L.tt>0?L.tm/L.tt:0;
+  return`<b>${nm}:</b> ${L.S<400?"counting…":`moved ${(ratio*100).toFixed(0)}% as far as the solvent; moving ${(frac*100).toFixed(0)}% of the time`} (Rf in ${SOLV[zSolvent()].toLowerCase()}: ${L.P.f.toFixed(2)}).`;}).join("<br>");}
+const PSEL=PORDER.map(p=>[p,PIG[p].n]);
+$("#lanesel").innerHTML=[0,1].map(i=>`<label for="lane${i}">Lane ${i+1}</label><select id="lane${i}">${PSEL.map(([v,t])=>`<option value="${v}">${t}${PIG[v].beyond?" (beyond the spec)":""}</option>`).join("")}</select>`).join("");
+$("#lanesel").addEventListener("change",e=>{const i=+e.target.id.slice(4);zLane[i]=e.target.value;zReset();});
+$("#zreset").onclick=()=>zReset();
+function zSync(){const reference=zReference(),lanes=zLanes();for(let i=0;i<2;i++){const select=$("#lane"+i);select.value=lanes[i];select.disabled=reference;}
+ $("#z-context").textContent=reference?"Reference example for this question: carotene and chlorophyll b in 1 propanone : 9 petroleum ether. Move to another task or section to explore other pigments and solvents.":`Exploration: solvent from the set-up is ${SOLV[CS.solv]}. Choose either pigment lane below.`;}
+function zSet(a,b){zLane=[a,b];zSync();zReset();}
+
+/* ================= Paired examples (Compare) and fresh diagrams (Apply) =================
+ Paired chromatograms use the same functions as the live model, with published Rf values. */
+const RF0=s=>({...RFT[s.solv]});
+const S0=o=>({...CSTD,...o});
+const PAIRS={
+ length:{same:"Same spinach leaf, same reference mixture. A was removed early; B ran almost to the top.",a:{s:S0({}),F:45,lab:"d",txt:"Front 45 mm. The xanthophyll and chlorophyll a spots overlap."},b:{s:S0({}),F:90,lab:"d",txt:"Front 90 mm. All four spots are separate."}},
+ solvent:{same:"Same spinach leaf, run to the same front.",a:{s:S0({}),F:90,lab:"n",txt:"1 propanone : 9 petroleum ether. Chlorophyll b Rf = 0.45."},b:{s:S0({solv:"prop"}),F:90,lab:"d",txt:"Propanone only. All spots end up near the front; chlorophyll b Rf = 0.89."}},
+ shade:{same:"Same solvent, same front, same size of leaf disc. In these model specimens, spot colour strength is drawn to represent relative pigment amounts; real intensity is not a calibrated measurement.",a:{s:S0({}),F:90,lab:"n",txt:"Shade-intolerant (spinach): the chlorophyll b spot is much paler than chlorophyll a."},b:{s:S0({leaf:"shade"}),F:90,lab:"n",txt:"Shade-tolerant woodland plant: the chlorophyll b spot is nearly as strong as chlorophyll a."}},
+ beet:{same:"Same reference mixture and front; both are model specimens.",a:{s:S0({}),F:90,lab:"n",txt:"Spinach."},b:{s:S0({leaf:"beet"}),F:90,lab:"n",txt:"Red-leaved beet: the same four pigments, plus a red spot that stays on the starting line."},info:'<span class="badge">Beyond the spec</span> In this model the beet specimen includes a water-soluble red pigment (a betacyanin), which is not a photosynthetic pigment.'},
+ measure:{same:"One chromatogram, measured by two students. Solvent front: 90 mm.",a:{s:S0({}),F:90,mark:"edge",txt:"Student A measured to the top edge of the xanthophyll spot: 67 mm."},b:{s:S0({}),F:90,mark:"centre",txt:"Student B measured to the centre of the xanthophyll spot: 64 mm."}}};
+function pairCard(x,L){let svg;
+ if(x.mark){const sc=1.6,H=Math.round(108*sc)+30,y0=H-14,Y=d=>y0-d*sc,d=x.mark==="edge"?67:64;
+  svg=miniStrip(x.s,RF0(x.s),x.F,{ruler:true,w:190,aria:"Chromatogram with a measurement marked to the "+x.mark+" of the xanthophyll spot"}).replace("</svg>",`<line class="c-guide" x1="10" y1="${Y(d)}" x2="70" y2="${Y(d)}"/><text class="f-sm" style="font-size:10px" x="72" y="${Y(d)+3}">${d} mm (${x.mark==="edge"?"top edge":"centre"})</text></svg>`);}
+ else svg=miniStrip(x.s,RF0(x.s),x.F,{labels:x.lab,ruler:x.lab==="d",w:200,aria:"Example "+L+": "+cdesc(x.s)});
+ return`<article class="pcard"><h4>Example ${L}</h4><div class="pfig">${svg}</div><p class="pres">${x.txt}</p><button type="button" class="btn small" data-load="${L}">Make this chromatogram in the model</button></article>`;}
+function pairHTML(id){const P=PAIRS[id];return`${P.same?`<p class="spec">${P.same} Simulated.</p>`:""}<div class="pair">${pairCard(P.a,"A")}${pairCard(P.b,"B")}</div>${P.info?`<p class="info">${P.info}</p>`:""}`;}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-load]");if(!b)return;const P=PAIRS[curPair];if(!P)return;cApply((b.dataset.load==="A"?P.a:P.b).s);setPanel("chr");});
+/* fresh diagrams */
+function plate(spots,F,opt){const sc=2.2,y0=240,Y=d=>y0-d*sc;let g=`<rect class="c-plate" x="60" y="${Y(96)}" width="90" height="${sc*106}" rx="2"/>`;
+ g+=`<line class="c-pencil" x1="60" y1="${Y(0)}" x2="150" y2="${Y(0)}"/><line class="c-pencil" x1="60" y1="${Y(F)}" x2="150" y2="${Y(F)}"/>`;
+ for(const[d,c]of spots)g+=`<ellipse cx="105" cy="${Y(d)}" rx="13" ry="5" fill="rgb(${c})"/>`;
+ g+=labSVG([...spots.map(([d,c,l])=>({y:Y(d),t:l})),{y:Y(F),t:"solvent front"},{y:Y(0),t:"starting line"}],15,151,166,0);
+ for(let mm=0;mm<=90;mm+=10)g+=`<line class="f-thin" x1="42" y1="${Y(mm)}" x2="56" y2="${Y(mm)}"/><text class="f-sm" x="38" y="${Y(mm)+4}" text-anchor="end">${mm}</text>`;
+ for(let mm=0;mm<=90;mm+=2)g+=`<line class="f-thin" x1="${mm%10?50:42}" y1="${Y(mm)}" x2="56" y2="${Y(mm)}"/>`;
+  return`<svg viewBox="0 0 340 260" role="img" aria-label="${esc(opt.aria)}">${g}</svg>`;}
+const DIAG={
+ tlc:()=>plate([[75,PIG.car.c,"spot 1"],[44,PIG.cha.c,"spot 2"],[34,PIG.chb.c,"spot 3"],[22,PIG.xan.c,"spot 4"]],80,{aria:"A thin-layer chromatography plate with a ruler. Solvent front at 80 mm; spots at 75, 44, 34 and 22 mm."}),
+ unknown:()=>plate([[80,PIG.car.c,"spot P"],[55,PIG.cha.c,"spot Q"],[38,PIG.chb.c,"spot R"],[0,PIG.red.c,"spot S"]],84,{aria:"A paper chromatogram with a ruler. Solvent front at 84 mm; spots at 80, 55, 38 and 0 mm."}),
+ autumn:()=>miniStrip(S0({leaf:"autumn"}),RF0(S0({})),90,{labels:"n",w:220,all:true,aria:"Chromatogram of an autumn leaf: strong carotene and xanthophyll spots, faint chlorophyll spots and a grey-olive spot."}),
+ flawed:()=>{let g=`<path class="a-glass" d="M40 30 V210 A30 30 0 0 0 100 210 V30"/><path class="c-pool" d="M42 170 H98 V210 A28 28 0 0 1 42 210 Z"/>`;
+  g+=`<rect class="c-paper" x="54" y="34" width="32" height="200"/><line class="c-ink" x1="54" y1="190" x2="86" y2="190"/><ellipse cx="70" cy="190" rx="9" ry="6" fill="rgba(38,136,116,.5)"/>`;
+  g+=`<text class="f-sm" x="120" y="44">No bung: tube open</text><line class="f-thin" x1="88" y1="190" x2="140" y2="178"/><text class="f-sm" x="144" y="176">starting line drawn in ink</text>`;
+  g+=`<line class="f-thin" x1="100" y1="172" x2="140" y2="200"/><text class="f-sm" x="144" y="204">solvent above starting line</text><text class="f-sm" x="120" y="110">Student's note: "Removed the paper,</text><text class="f-sm" x="120" y="126">let it dry, then marked the front</text><text class="f-sm" x="120" y="142">where I think it reached."</text>`;
+  return`<svg viewBox="0 0 340 250" role="img" aria-label="A student's set-up: an open boiling tube with no bung, solvent above an ink starting line on the paper. A note says the front was marked after the paper dried.">${g}</svg>`;}};
+const DIAGINFO={tlc:"A thin-layer plate (silica gel, a different stationary phase) run in a different solvent. Rf values for this plate and solvent, given for this question: carotene 0.94, chlorophyll a 0.55, chlorophyll b 0.43, xanthophyll 0.28.",
+ unknown:"Paper with 1 propanone : 9 petroleum ether. Pearson reference Rf values for this paper and solvent: carotene 0.95, xanthophyll 0.71, chlorophyll a 0.65, chlorophyll b 0.45.",
+ autumn:'Paper with 1 propanone : 9 petroleum ether. <span class="badge">Beyond the spec</span> Phaeophytin is a grey breakdown product of chlorophyll.',
+ flawed:"The paper is 12 cm long. The student wanted to compare their Rf values with published values."};
+function diagHTML(id){return`<div class="pfig">${DIAG[id]()}</div><p class="info"><b>Information:</b> ${DIAGINFO[id]}</p>`;}
+
+/* ================= Panel switching ================= */
+let panel="chr",curPair=null,curTaskPanel=null,taskShown=null;
+function setPanel(p){panel=p;$("#p-chr").hidden=p!=="chr";$("#p-close").hidden=p!=="close";$("#p-task").hidden=p!=="task";if(p==="close")zReset();renderTabs();}
+function renderTabs(){const tabs=[["chr","Chromatogram"],["close","Close-up"]];if(curTaskPanel)tabs.push(["task",curTaskPanel.pair?"Paired examples":"Task diagram"]);
+ $("#ptabs").innerHTML=tabs.map(([k,l])=>`<button type="button" class="chip${panel===k?" sel":""}" aria-pressed="${panel===k}" data-p="${k}">${l}</button>`).join("");}
+$("#ptabs").addEventListener("click",e=>{const b=e.target.closest("button[data-p]");if(b)setPanel(b.dataset.p);});
+function showTaskPanel(tp){curTaskPanel=tp||null;curPair=tp&&tp.pair||null;if(tp)$("#p-task").innerHTML=tp.pair?pairHTML(tp.pair):diagHTML(tp.diag);}
+
+/* ================= Task engine =================
+ Types: info (worked example), predict (outcome + reason, then observe), mcq (variants: a fresh
+ question after feedback), num (worked/faded calculations), multi (select all), write (short
+ written answer with criteria), run. Options are shuffled per task so the correct position varies.
+ Results: "ind" = right first time with no hint; "sup" = right after feedback, a hint or a fresh question. */
+function setOK(m,n){return cmatch(cr.s,n);}
+function latestRun(m,n,f){for(let i=cRuns.length-1;i>=0;i--){const r=cRuns[i];if(cmatch(r.s,n)&&(!f||f(r)))return r;}return null;}
+let ST={sec:0,res:{},adv:{},pick:{},vr:{},wr:{},lock:{},hint:{},txt:{},self:{},seen:{},evidence:{},review:{},attempts:{}},fresh=null,justResolved=null;
+let saved=null,initialising=true,evidenceLost=false,legacyFound=false,storageFailed=false;
+try{saved=JSON.parse(localStorage.getItem("kst-rp7-v2")||"null");if(saved&&saved.version===2){ST={...ST,...saved.state};cRuns=Array.isArray(saved.cRuns)?saved.cRuns:[];cId=saved.cId||0;}}catch(e){saved=null;}
+try{legacyFound=!saved&&!!localStorage.getItem("kst-rp7");}catch(e){}
+function save(){if(initialising)return;try{localStorage.setItem("kst-rp7-v2",JSON.stringify({version:2,state:ST,cRuns,cId,cr,CS,speed,guides,rfShown,zLane,panel}));}catch(e){if(!storageFailed){storageFailed=true;const warning="Progress could not be saved in this browser. Your work may be lost when you leave or reload.";$("#restore-notice").textContent=warning;$("#restore-notice").hidden=false;say(warning);}}}
+function evidence(t){if(!t.m)return null;const key=["l5","l6","l7"].includes(t.id)?"standard-measurement":t.id;
+ if(!ST.evidence[key]){const r=latestRun(t.m,t.need,t.filt);if(r)ST.evidence[key]=JSON.parse(JSON.stringify(r));}
+ return ST.evidence[key]||null;}
+function measurementRun(){const t=activeTask();if(t&&["l5","l6","l7"].includes(t.id))return evidence(t);return cRuns[cRuns.length-1]||null;}
+
+const ALL=()=>SECTIONS.flatMap(s=>s.tasks);
+const find=id=>ALL().find(t=>t.id===id);
+const secDone=i=>SECTIONS[i].tasks.every(t=>ST.adv[t.id]);
+function renderNav(){$("#nav").innerHTML=SECTIONS.map((s,i)=>`<button type="button" class="chip${i===ST.sec?" sel":""}" data-sec="${i}"${i===ST.sec?' aria-current="step"':""}><span class="ph">${s.phase}</span> ${s.name}${secDone(i)?' <span class="tick" aria-label="complete">✓</span>':""}</button>`).join("");}
+$("#nav").addEventListener("click",e=>{const b=e.target.closest("button[data-sec]");if(!b)return;ST.sec=+b.dataset.sec;save();renderTasks(true);});
+
+function needLine(t,help){const ok=setOK(t.m,t.need),d=cdesc(t.need);
+ return`<p class="need">${help?`Set-up needed: ${esc(d)}. `:""}${ok?`<span class="ok">Your set-up matches. Lower the paper into the solvent.</span>`:'<span class="notyet">Your set-up does not match yet.</span>'}</p>${help&&!ok?`<div class="row"><button type="button" class="btn" data-act="setup" data-id="${t.id}">Set it up for me</button></div>`:""}`;}
+function optList(t,name,opts,seed,dis,wrongs){const ord=shuffled(opts.length,hash(seed));
+ return ord.map(i=>{const o=opts[i],w=(wrongs||[]).includes(i),r=dis&&o.ok&&ST.res[t.id];
+  return`<label class="opt${w?" wrong":""}${r?" right":""}${dis?" out":""}"><input type="radio" name="${name}" value="${i}"${ST.pick[name]===i?" checked":""}${dis||w?" disabled":""}><span class="otext">${o.t}</span><span class="mark">${r?"✓":w?"✗":""}</span></label>`;}).join("");}
+const nw=id=>fresh===id?" new":"";
+const resultBadge=id=>{const r=ST.res[id];return r==="ind"?'<span class="badge b-ind">Answered correctly first time</span>':r==="sup"?'<span class="badge b-sup">Right after support</span>':String(r||"").startsWith("self")?`<span class="badge b-self">Self-checked: ${r.slice(5)} criteria</span>`:r==="seen"?'<span class="badge">Read</span>':"";};
+const nextBtn=t=>`<div class="row"><button type="button" class="btn primary" data-act="adv" data-id="${t.id}">Next task</button></div>`;
+const hintBtn=t=>t.hint&&!ST.res[t.id]?(ST.hint[t.id]?`<p class="hint"><b>Hint:</b> ${t.hint}</p>`:`<div class="row"><button type="button" class="btn small" data-act="hint" data-id="${t.id}">Show a hint</button></div>`):"";
+
+function renderTask(t,help){let h=`<div class="task${ST.res[t.id]?" done":""}" id="task-${t.id}">`;
+ if(t.title)h+=`<h3>${t.title}</h3>`;
+ if(t.req&&!latestRun(t.req.m,t.req.need,t.req.filt)){return h+`<p>${t.req.text}</p>${needLine({...t.req,id:t.id},true)}</div>`;}
+ if(t.type==="info"){h+=(t.steps?`<ol class="steps">${t.steps.map(s=>`<li>${s}</li>`).join("")}</ol>`:"")+(t.text?`<p>${t.text}</p>`:"");
+  if(t.need)h+=`<div class="row"><button type="button" class="btn" data-act="setup" data-id="${t.id}">${t.btn||"Use this set-up"}</button></div>`;
+  return h+nextBtn(t)+"</div>";}
+ if(t.type==="run"){const r=evidence(t);if(r&&!ST.res[t.id])ST.res[t.id]="seen";
+  return h+`<p>${t.text}</p>${r?'<p class="ok">Done. The readings are in the results.</p>'+nextBtn(t):needLine(t,help)}</div>`;}
+ if(t.type==="predict"){const L=t.id in ST.lock,res=ST.res[t.id];
+  h+=`<fieldset class="q"><legend>${t.q}</legend>${optList(t,t.id+"o",t.out,t.id+"o",L)}</fieldset>`;
+  h+=`<fieldset class="q"><legend class="sub">Why? Choose the best reason.</legend>${optList(t,t.id+"r",t.why,t.id+"r",L)}</fieldset>`;
+  if(!L&&ST.seen[t.id])return h+`<div class="row"><button type="button" class="btn primary" data-act="correct-prediction" data-id="${t.id}">Check revised response</button></div><p class="msg" id="m-${t.id}"></p></div>`;
+  if(!L)return h+hintBtn(t)+`<div class="row"><button type="button" class="btn primary" data-act="lock" data-id="${t.id}">Lock in my prediction and reason</button></div><p class="msg" id="m-${t.id}"></p></div>`;
+  if(!res&&!ST.seen[t.id])return h+`<p class="gate">Locked in. Now observe: build the set-up and run it.</p>${ST.review[t.id]?`<p class="msg">${esc(ST.review[t.id])}</p>`:""}${needLine(t,help)}</div>`;
+  if(!res&&ST.seen[t.id])return h+`<div class="fb bad"><h3>Review the feedback</h3><p>${t.res(ST.seen[t.id])}</p><p>${t.because}</p><p>Revise both choices and check them against this observation.</p></div><div class="row"><button type="button" class="btn primary" data-act="revise-prediction" data-id="${t.id}">Revise my response</button></div></div>`;
+  const oo=t.out[ST.pick[t.id+"o"]],rr=t.why[ST.pick[t.id+"r"]],r=ST.seen[t.id];
+  h+=`<div class="fb ${oo.ok?"good":"bad"}${nw(t.id)}"><h3>${oo.ok?"Your prediction was right.":"Not what you predicted."}</h3><p>${t.res(r)}</p>${oo.ok?"":`<p>${oo.fb||""}</p>`}</div>`;
+  h+=`<div class="fb ${rr.ok?"good":"bad"}${nw(t.id)}"><h3>${rr.ok?"Your reason is right.":"Your reason has a missing link."}</h3><p>${rr.ok?t.because:rr.fb}</p>${rr.ok?"":`<p><b>The full explanation:</b> ${t.because}</p>`}</div>${t.extra||""}`;
+  return h+nextBtn(t)+"</div>";}
+ if(t.type==="mcq"){const vi=ST.vr[t.id]||0,V=t.v[vi],key=t.id+":"+vi,w=ST.wr[key]||[],res=ST.res[t.id],last=w[w.length-1];
+  if(vi>0)h+=`<p class="fresh">Fresh question on the same idea:</p>`;
+  h+=`<fieldset class="q"><legend>${V.q}</legend>${optList(t,key,V.opts,key,!!res,w)}</fieldset>`;
+  if(res)return h+`<div class="fb good${nw(t.id)}"><h3>Correct.</h3><p>${V.why||t.why}</p></div>${t.extra||""}${nextBtn(t)}</div>`;
+  const ack=(ST.rt&&ST.rt[key])||0;if(last!=null&&ack<w.length){h+=`<div class="fb bad${nw(t.id)}"><h3>Not quite.</h3><p>${V.opts[last].fb}</p>${t.help?`<p class="help"><b>Catch-up:</b> ${t.help}</p>`:""}</div>`;
+   if(vi+1<t.v.length)return h+`<div class="row"><button type="button" class="btn primary" data-act="freshq" data-id="${t.id}">Try a fresh question</button><button type="button" class="btn" data-act="retry" data-id="${t.id}">Try this one again</button></div></div>`;}
+  return h+hintBtn(t)+`<div class="row"><button type="button" class="btn primary" data-act="check" data-id="${t.id}">Check</button></div><p class="msg" id="m-${t.id}"></p></div>`;}
+ if(t.type==="multi"){const res=ST.res[t.id],sel=ST.pick[t.id]||[],fb=ST.wr[t.id];
+  h+=`<fieldset class="q"><legend>${t.q}</legend>${shuffled(t.opts.length,hash(t.id)).map(i=>`<label class="opt${res&&t.opts[i].ok?" right":""}${res?" out":""}"><input type="checkbox" data-multi="${t.id}" value="${i}"${sel.includes(i)?" checked":""}${res?" disabled":""}><span class="otext">${t.opts[i].t}</span></label>`).join("")}</fieldset>`;
+  if(res)return h+`<div class="fb good${nw(t.id)}"><h3>Correct.</h3><p>${t.why}</p></div>${nextBtn(t)}</div>`;
+  if(fb)h+=`<div class="fb bad${nw(t.id)}"><h3>Not quite.</h3><ul>${fb.map(f=>`<li>${f}</li>`).join("")}</ul></div>`;
+  return h+`<div class="row"><button type="button" class="btn primary" data-act="multi" data-id="${t.id}">Check</button></div><p class="msg" id="m-${t.id}"></p></div>`;}
+ if(t.type==="num"){const vi=ST.vr[t.id]||0,V=t.v?t.v[vi]:t,r=t.m?evidence(t):null,res=ST.res[t.id];
+  if(t.m&&!r)return h+`<p>${t.missing}</p>${needLine(t,help)}</div>`;
+  if(r)h+=`<p class="spec">Using saved run ${r.id}: ${esc(cshort(r.s))}. The same run is shown in the measurement view.</p>`;
+  if(["l5","l6","l7"].includes(t.id))h+=`<p class="spec">The results table has shown these distances. This attempt is recorded as supported.</p>`;
+  if(t.worked)h+=`<div class="worked"><p class="wlab">Worked example</p>${t.worked}</div>`;
+  if(vi>0)h+=`<p class="fresh">Fresh question on the same idea:</p>`;
+  h+=`<p><b>${typeof V.q==="function"?V.q(r):V.q}</b></p>`;
+  h+=`<label class="numlab" for="in-${t.id}">Your answer</label><div class="numrow"><input type="text" inputmode="decimal" autocomplete="off" id="in-${t.id}" value="${esc(ST.txt[t.id+":"+vi]||"")}"${res?" disabled":""}><span class="unit">${t.unit}</span>${res?"":`<button type="button" class="btn primary" data-act="num" data-id="${t.id}">Check</button>`}</div>`;
+  if(t.fmt)h+=`<p class="spec">${t.fmt}</p>`;
+  if(res)return h+`<div class="fb good${nw(t.id)}"><h3>Correct.</h3><p>${V.why(r)}</p></div>${nextBtn(t)}</div>`;
+  const wm=ST.wr[t.id+":"+vi];if(wm){h+=`<div class="fb bad${nw(t.id)}"><h3>Not quite.</h3><p>${wm}</p>${t.help?`<p class="help"><b>Catch-up:</b> ${t.help}</p>`:""}</div>`;
+   if(t.v&&vi+1<t.v.length)h+=`<div class="row"><button type="button" class="btn" data-act="freshq" data-id="${t.id}">Try a fresh question</button></div>`;}
+  return h+hintBtn(t)+"</div>";}
+ if(t.type==="write"){const sub=ST.self[t.id],res=ST.res[t.id];
+  h+=`<p><b>${t.q}</b></p><label class="numlab" for="wr-${t.id}">Your answer</label><textarea id="wr-${t.id}" rows="5"${res?" disabled":""}>${esc(ST.txt[t.id]||"")}</textarea>`;
+  if(!sub)return h+`<p class="spec">Write 2 to 4 sentences. Then compare your answer with the criteria.</p><div class="row"><button type="button" class="btn primary" data-act="write" data-id="${t.id}">Check against the criteria</button></div><p class="msg" id="m-${t.id}"></p></div>`;
+  const txt=ST.txt[t.id]||"";
+  h+=`<div class="crit"><p><b>Criteria.</b> Tick each one your answer meets. "Related words found" is a keyword match. It can miss good wording and does not establish correctness; compare your answer with each criterion and decide for yourself.</p>${t.crit.map((c,i)=>{const hit=c.re.some(re=>re.test(txt));
+   return`<label class="copt"><input type="checkbox" data-self="${t.id}" value="${i}"${(sub.ticks||[]).includes(i)?" checked":""}${res?" disabled":""}><span>${c.t} <em class="${hit?"ok":"notyet"}">${hit?"Related words found":"Related words not found"}</em></span></label>`;}).join("")}</div><div class="worked"><p class="wlab">Example answer</p><p>${t.model}</p></div>`;
+  if(res)return h+nextBtn(t)+"</div>";
+  return h+`<div class="row"><button type="button" class="btn primary" data-act="selfdone" data-id="${t.id}">Save my self-check</button></div></div>`;}
+ return h+"</div>";}
+
+function sectionSummary(sec){const T=sec.tasks.filter(t=>t.skill),ind=T.filter(t=>ST.res[t.id]==="ind"),sup=T.filter(t=>ST.res[t.id]==="sup"),wr=sec.tasks.filter(t=>t.type==="write");
+ return`<div class="task done"><h3>${sec.phase}: ${sec.name} complete</h3>${ind.length?`<p><b>Answered correctly first time:</b></p><ul>${ind.map(t=>`<li>${skillFor(t)}</li>`).join("")}</ul>`:""}
+ ${sup.length?`<p><b>Answered correctly after feedback, a hint or a fresh question:</b></p><ul>${sup.map(t=>`<li>${skillFor(t)}</li>`).join("")}</ul>`:""}
+ ${wr.map(t=>{const r=ST.res[t.id]||"";return`<p><b>Written explanation:</b> you judged that your answer met ${r.slice(5)||"0/"+t.crit.length} criteria.</p>`;}).join("")}
+ ${ST.sec<SECTIONS.length-1?`<div class="row"><button type="button" class="btn primary" data-act="nextsec">Go to ${SECTIONS[ST.sec+1].phase}: ${SECTIONS[ST.sec+1].name}</button></div>`:SECTIONS.every((_,i)=>secDone(i))?"<p>All sections complete.</p>":"<p>This section is complete. Use the section navigation to finish the others.</p>"}</div>`;}
+function activeTask(){const sec=SECTIONS[ST.sec];return sec.tasks.find(t=>!ST.adv[t.id])||null;}
+function renderTasks(scroll){if(!cr)return;{const gl=guidesLocked();$("#cguide").disabled=gl;$("#cguide").textContent=guides&&!gl?"Hide measuring guides":"Show measuring guides";$("#cguide").setAttribute("aria-pressed",guides&&!gl);}const sec=SECTIONS[ST.sec],act=activeTask(),i=act?sec.tasks.indexOf(act):sec.tasks.length,help=sec.help;
+ let h=`<div class="sechead"><p class="phase">${sec.phase}</p><h2>${sec.name}</h2><p class="spec">${sec.intro}</p><p class="prog">Task ${Math.min(i+1,sec.tasks.length)} of ${sec.tasks.length}</p><div class="pbar"><span style="width:${(i/sec.tasks.length*100).toFixed(0)}%"></span></div></div>`;
+ h+=act?renderTask(act,help):sectionSummary(sec);
+ const doneT=sec.tasks.filter(t=>ST.adv[t.id]);
+ if(doneT.length)h+=`<details class="donelist"><summary>Completed in this section (${doneT.length})</summary><ul>${doneT.map(t=>`<li>${t.title||t.short||"Task"} ${resultBadge(t.id)}</li>`).join("")}</ul></details>`;
+ fresh=null;const ae=document.activeElement,aid=ae&&ae.id,pos=ae&&ae.selectionStart;
+ $("#tasks").innerHTML=h;if(aid&&(aid.startsWith("in-")||aid.startsWith("wr-"))){const el=$("#"+aid);if(el&&!el.disabled){el.focus();try{el.setSelectionRange(pos,pos);}catch(e){}}}
+ const raw=act&&act.panel?act.panel:null,tp=raw&&raw!=="close"?raw:null,want=act?(raw==="close"?"close":tp?"task":sec.model):sec.model;
+ const shownKey=act?act.id+":"+(ST.vr[act.id]||0):null;
+ if(shownKey!==taskShown){taskShown=shownKey;showTaskPanel(tp);setPanel(want);}else renderTabs();
+ drawMeas();renderNav();installZoom();save();if(scroll){$("#tasks").scrollIntoView({behavior:"smooth",block:"start"});$("#tasks").focus({preventScroll:true});}}
+
+function resolveCheck(t,correct,usedSupport){if(correct){ST.res[t.id]=usedSupport||ST.hint[t.id]?"sup":"ind";}}
+$("#tasks").addEventListener("change",e=>{const i=e.target;
+ if(i.type==="radio")ST.pick[i.name]=+i.value;
+ if(i.dataset.multi){const a=ST.pick[i.dataset.multi]=(ST.pick[i.dataset.multi]||[]).filter(x=>x!==+i.value);if(i.checked)a.push(+i.value);}
+ if(i.dataset.self){const s=ST.self[i.dataset.self];s.ticks=(s.ticks||[]).filter(x=>x!==+i.value);if(i.checked)s.ticks.push(+i.value);}
+ save();});
+$("#tasks").addEventListener("input",e=>{const i=e.target;if(i.id&&i.id.startsWith("in-")){const t=find(i.id.slice(3));ST.txt[t.id+":"+(ST.vr[t.id]||0)]=i.value;}if(i.id&&i.id.startsWith("wr-")){const id=i.id.slice(3);ST.txt[id]=i.value;if(ST.self[id]&&!ST.res[id]){ST.self[id].ticks=[];const task=find(id);$$(`[data-self="${id}"]`).forEach(box=>{box.checked=false;const hit=task.crit[+box.value].re.some(re=>re.test(i.value)),label=box.closest("label").querySelector("em");label.textContent=hit?"Related words found":"Related words not found";label.className=hit?"ok":"notyet";});}}save();});
+$("#tasks").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id&&e.target.id.startsWith("in-")){const b=e.target.parentNode.querySelector("button");if(b)b.click();}});
+$("#tasks").addEventListener("click",e=>{const b=e.target.closest("button[data-act]");if(!b)return;const act=b.dataset.act,t=b.dataset.id?find(b.dataset.id):null;
+ if(act==="nextsec"){ST.sec++;renderTasks(true);return;}
+ if(act==="adv"){ST.adv[t.id]=true;if(t.id==="l6"){rfShown=true;renderResults();}if(!ST.res[t.id])ST.res[t.id]="seen";renderTasks(true);return;}
+ if(act==="hint"){ST.hint[t.id]=true;renderTasks();return;}
+ if(act==="setup"){const n=t.req&&!latestRun(t.req.m,t.req.need,t.req.filt)?t.req:t;cApply(n.need);setPanel("chr");
+  const col=$(".col-app");if(col&&getComputedStyle(col).position==="sticky")col.scrollTo({top:0,behavior:"smooth"});else $(".col-app").scrollIntoView({behavior:"smooth",block:"start"});renderTasks();return;}
+ if(act==="revise-prediction"){delete ST.lock[t.id];renderTasks();return;}
+ if(act==="correct-prediction"){const o=ST.pick[t.id+"o"],r=ST.pick[t.id+"r"];if(o==null||r==null){$("#m-"+t.id).textContent="Choose both answers.";return;}(ST.attempts[t.id]||(ST.attempts[t.id]=[])).push({outcome:o,reason:r,runId:ST.seen[t.id].id,correct:t.out[o].ok&&t.why[r].ok});if(t.out[o].ok&&t.why[r].ok){ST.lock[t.id]=-1;ST.res[t.id]="sup";}else{ST.lock[t.id]=-1;ST.review[t.id]="Feedback reviewed; revise your response again.";}renderTasks();return;}
+ if(act==="lock"){if(ST.pick[t.id+"o"]==null||ST.pick[t.id+"r"]==null){$("#m-"+t.id).textContent="Choose a prediction and a reason first.";return;}
+  ST.lock[t.id]=cId;renderTasks();return;}
+ if(act==="check"){const vi=ST.vr[t.id]||0,key=t.id+":"+vi,p=ST.pick[key],w=ST.wr[key]||[];if(p==null||w.includes(p)){$("#m-"+t.id).textContent="Choose an answer first.";return;}
+  fresh=t.id;const ok=t.v[vi].opts[p].ok,anyWrong=Object.keys(ST.wr).some(k=>k.startsWith(t.id+":")&&ST.wr[k].length);
+  if(ok)resolveCheck(t,true,anyWrong||vi>0);else(ST.wr[key]=w).push(p);
+  renderTasks();say(ok?"Correct.":"Not quite. "+t.v[vi].opts[p].fb);return;}
+ if(act==="freshq"){ST.vr[t.id]=(ST.vr[t.id]||0)+1;renderTasks();return;}
+ if(act==="retry"){const key=t.id+":"+(ST.vr[t.id]||0);ST.rt=ST.rt||{};ST.rt[key]=(ST.wr[key]||[]).length;renderTasks();return;}
+ if(act==="multi"){const sel=ST.pick[t.id]||[];if(!sel.length){$("#m-"+t.id).textContent="Select at least one.";return;}fresh=t.id;
+  const issues=[];t.opts.forEach((o,i)=>{const s=sel.includes(i);if(o.ok&&!s)issues.push(`Missing: ${o.t}. ${o.fb}`);if(!o.ok&&s)issues.push(`Not this one: ${o.t}. ${o.fb}`);});
+  if(issues.length){ST.wr[t.id]=issues;ST.tried=ST.tried||{};ST.tried[t.id]=1;}else{delete ST.wr[t.id];resolveCheck(t,true,!!(ST.tried&&ST.tried[t.id]));}
+  renderTasks();say(issues.length?"Not quite. "+issues.join(" "):"Correct.");return;}
+ if(act==="num"){const vi=ST.vr[t.id]||0,V=t.v?t.v[vi]:t,r=t.m?evidence(t):null,v=parseNum(ST.txt[t.id+":"+vi]),key=t.id+":"+vi;fresh=t.id;
+  if(isNaN(v)){ST.wr[key]="Type a number. Standard form such as 7.8 × 10^-3 or 7.8e-3 is fine.";renderTasks();return;}
+  const a=V.ans(r),tol=t.rel?Math.abs(a)*t.rel:t.tol;
+  if(Math.abs(v-a)<=tol+1e-12){const anyWrong=Object.keys(ST.wr).some(k=>k.startsWith(t.id+":"));resolveCheck(t,true,anyWrong||vi>0||["l5","l6","l7"].includes(t.id));}
+  else{const hit=(V.errs?V.errs(r):[]).find(([x])=>x!=null&&Math.abs(v-x)<=Math.max(tol,Math.abs(x)*.02)+1e-12);ST.wr[key]=hit?hit[1]:t.generic||"Check your working, one step at a time.";}
+  renderTasks();say(ST.res[t.id]?"Correct.":"Not quite. "+ST.wr[key]);return;}
+ if(act==="write"){const txt=(ST.txt[t.id]||"").trim();if(txt.length<20){$("#m-"+t.id).textContent="Write a little more first: at least one full sentence.";return;}
+  ST.self[t.id]={ticks:[]};renderTasks();return;}
+ if(act==="selfdone"){const n=(ST.self[t.id].ticks||[]).length;ST.res[t.id]=`self:${n}/${t.crit.length}`;fresh=t.id;renderTasks();return;}});
+
+function onRun(m,r){for(const t of ALL()){
+ if(t.type!=="predict"||t.m!==m||!(t.id in ST.lock)||ST.res[t.id]||r.id<=ST.lock[t.id]||!cmatch(r.s,t.need))continue;
+ const supported=(!t.filt||t.filt(r))&&(t.id!=="e1"||(r.pool&&r.tMin>=2&&r.spots.some(o=>o.visible)))&&(t.id!=="e2"||(r.ink&&r.front!=null&&r.front>=20))&&(t.id!=="e3"||r.front!=null);
+ if(!supported){ST.lock[t.id]=r.id;ST.review[t.id]="This result does not provide the required observation. Repeat the specified run, marking the front and outlining the spots when needed.";continue;}
+ ST.seen[t.id]=r;const oo=t.out[ST.pick[t.id+"o"]],rr=t.why[ST.pick[t.id+"r"]];(ST.attempts[t.id]||(ST.attempts[t.id]=[])).push({outcome:ST.pick[t.id+"o"],reason:ST.pick[t.id+"r"],runId:r.id,correct:oo.ok&&rr.ok});
+ if(oo.ok&&rr.ok)ST.res[t.id]=ST.hint[t.id]?"sup":"ind";else ST.review[t.id]="Feedback reviewed";fresh=t.id;
+ }renderTasks();}
+
+/* ================= Content: Learn → Compare → Apply ================= */
+const O=(t,fb)=>({t,ok:false,fb}),K=t=>({t,ok:true});
+const N=o=>({...CSTD,...o});
+const good=r=>Number.isFinite(r.front)&&r.front>0&&r.spots.some(o=>o.visible);
+const spotD=(r,p)=>{const o=r.spots.find(o=>o.p===p&&o.visible&&!o.overlap);return o?o.d:null;};
+const goodFull=r=>good(r)&&r.front>=70&&!r.overlap&&spotD(r,"cha")!=null&&spotD(r,"chb")!=null;
+const SECTIONS=[
+{phase:"Learn",name:"Separating the pigments",model:"chr",help:true,intro:"Run a chromatogram, find out why the pigments separate, and calculate Rf values.",tasks:[
+ {id:"l1",type:"info",m:"chr",need:N({}),title:"Worked example: the method and the reading",steps:[
+  "<b>Set-up.</b> 3 cm³ of solvent (1 propanone : 9 petroleum ether) in a boiling tube with a bung. A pencil starting line is ruled 2 cm from the bottom of the chromatography paper.",
+  "<b>Loading.</b> A leaf disc, cut with a cork borer away from the veins, is crushed onto the centre of the starting line with a glass rod, leaving a small, dark stain.",
+  "<b>Running.</b> The paper is pinned to the bung and lowered in, so the solvent is <b>below</b> the starting line. The tube is not moved. The solvent soaks up the paper and carries the pigments with it.",
+  "<b>Finishing.</b> When the solvent has almost reached the top, the paper is removed and the solvent front is marked in pencil straight away. When it is dry, each spot is outlined in pencil before it fades.",
+  "<b>The reading.</b> Rf = distance from the starting line to the centre of a spot ÷ distance from the starting line to the solvent front. For example, a spot 58 mm up with the front at 90 mm: Rf = 58 ÷ 90 = 0.64. Rf has no units."],
+  text:"Work in a well-ventilated room with eye protection: both solvents are highly flammable."},
+ {id:"l2",type:"predict",m:"chr",need:N({}),filt:r=>good(r)&&spotD(r,"car")!=null,title:"Predict, then observe",skill:"Predict which pigment travels furthest and explain it by solubility and attraction to the paper",
+  q:"Predict: which pigment will travel furthest up the paper?",
+  out:[K("Carotene (orange-yellow)"),O("Chlorophyll b (yellow-green)","Watch where the yellow-green spot ends up compared with the others."),O("Chlorophyll a (blue-green)","Chlorophyll a travels a long way, but one pigment travels further."),O("They all travel the same distance","If they did, they would not separate.")],
+  why:[K("Its preference for the mobile phase relative to the paper is greatest, so in the model it spends most time moving"),O("It is the smallest molecule, so it fits through the paper fibres more easily","Size is not what decides it here. Open the close-up: what are the molecules doing when they are not moving?"),O("It is the lightest molecule, so the solvent lifts it highest","The solvent does not lift molecules by weight. Each pigment switches between dissolving in the solvent and sticking to the paper."),O("There is more of it in the leaf","The amount affects how dark a spot is, not how far it travels.")],
+  res:r=>`Carotene travelled furthest${r.front?`: about ${spotD(r,"car")??"—"} mm, with the front at ${r.front} mm`:""}.`,
+  because:"Each pigment keeps switching between dissolving in the moving solvent and sticking to the cellulose of the paper. In this model carotene has the strongest preference for the moving phase relative to the paper, so it spends the largest fraction of its time moving."},
+ {id:"l3",type:"mcq",panel:"close",title:"The close-up",skill:"Use the simplified movement and retention model to explain Rf",
+  help:"Watch the rings: a ringed molecule is stuck to a fibre and not moving. While dissolved, every pigment moves at the speed of the solvent.",
+  v:[{q:"In the simplified close-up model, chlorophyll b ends up moving less far than carotene. Why?",opts:[K("In this model, chlorophyll b is retained for more of the time."),O("In this model, chlorophyll b moves more slowly in the solvent.","While dissolved, both move up with the solvent at the same speed. What else differs?"),O("In this model, chlorophyll b is trapped because of its size.","Nothing gets trapped in the gaps. Watch where the molecules stop."),O("In this model, chlorophyll b dissolves better in the solvent.","Dissolving better would make it travel further, not less far.")]},
+   {q:"In this simplified model a pigment spends 65% of its time moving with the solvent and 35% retained by the paper. What is its Rf likely to be?",opts:[K("About 0.65, the model fraction spent moving."),O("About 0.35, the model fraction spent retained.","0.35 is the fraction of time it is stuck. Rf compares how far it moves with how far the solvent moves."),O("About 1.00, because it eventually reaches the front.","It only moves while dissolved, so it falls behind the front."),O("It cannot be estimated without knowing its mass.","Mass is not needed: the fraction of time moving decides the distance.")]}],
+  why:"In this simplified model a pigment moves with the solvent while mobile and stays still while retained. Its model Rf is approximately the fraction of time moving."},
+ {id:"l4",type:"mcq",title:"Mark it straight away",skill:"Explain why the front and the spots must be marked immediately",
+  help:"Petroleum ether and propanone evaporate fast, and the pigments break down in light.",
+  v:[{q:"Why must the solvent front be marked as soon as the paper is removed?",opts:[K("The front can disappear as the solvent evaporates."),O("The spots keep travelling while the paper is dry.","Without solvent, the spots stop moving. What do you lose?"),O("The pencil line cannot be drawn on dry paper.","Pencil works on dry paper too. What disappears as the paper dries?"),O("Marking the front increases the measured Rf values.","Marking does not change any distance. It records one before it disappears.")]},
+   {q:"Why should you draw round each spot in pencil straight away?",opts:[K("Fading can make the spot centres hard to locate."),O("Outlining the spots makes them travel further.","The spots have stopped moving."),O("Outlining the spots reveals the solvent front.","The front is marked separately. What happens to the spots?"),O("Outlining the spots stops them spreading in solvent.","The spots stop spreading once the paper is dry.")]}],
+  why:"Prompt marking records the front before it disappears as solvent evaporates, and preserves spot positions if pigments fade."},
+ {id:"l5",type:"num",m:"chr",need:N({}),filt:goodFull,title:"Measure a distance",skill:"Read a spot distance with recorded values available",
+  missing:"You need a standard chromatogram run to near the top, with the front marked and the spots outlined.",
+  worked:"<p>Put the ruler's zero on the pencil starting line, not the bottom of the paper. Read to the <b>centre</b> of the spot. Turn on <b>Show measuring guides</b> to check.</p>",
+  q:r=>`On your chromatogram, how far is the centre of the chlorophyll a (blue-green) spot from the starting line? (The front is at ${r.front} mm.)`,unit:"mm",tol:1.2,
+  ans:r=>spotD(r,"cha"),errs:r=>{const d=spotD(r,"cha"),o=r.spots.find(o=>o.p==="cha");return[[d+20,"You measured from the bottom of the paper. Measure from the pencil starting line, 2 cm up."],[d+Math.round(o.r),"That is to the top edge of the spot. Measure to its centre."]];},
+  help:"Distance = from the starting line (zero on the ruler) to the middle of the spot.",why:r=>`The centre of the chlorophyll a spot is ${spotD(r,"cha")} mm from the starting line.`},
+ {id:"l6",type:"num",m:"chr",need:N({}),filt:goodFull,title:"Calculate Rf",skill:"Calculate an Rf from recorded distances",missing:"You need a standard chromatogram run to near the top, with the front marked and the spots outlined.",
+  q:r=>`Calculate the Rf of chlorophyll a on your chromatogram. Give your answer to 2 decimal places.`,unit:"(no units)",tol:.021,
+  ans:r=>r2(spotD(r,"cha")/r.front),errs:r=>{const d=spotD(r,"cha"),F=r.front;return[[F/d,"That is front ÷ spot. Rf = distance moved by the spot ÷ distance moved by the solvent, so the ideal range is 0 ≤ Rf ≤ 1."],[(d+20)/(F+20),"You measured both distances from the bottom of the paper. Measure from the starting line."],[d/(F+20),"You measured the front from the bottom of the paper. Measure from the starting line."]];},
+  help:"Rf = spot distance ÷ front distance, both measured from the starting line.",why:r=>`Rf = ${spotD(r,"cha")} ÷ ${r.front} = ${(spotD(r,"cha")/r.front).toFixed(2)}. The published value for this solvent is 0.65.`},
+ {id:"l7",type:"num",m:"chr",need:N({}),filt:goodFull,noGuides:true,title:"Rf without the guides",skill:"Calculate an Rf from a measured chromatogram",missing:"You need a standard chromatogram run to near the top, with the front marked and the spots outlined.",
+  q:r=>"Measuring guides are off. Use the ruler to find the Rf of chlorophyll b (yellow-green). Give your answer to 2 decimal places.",unit:"(no units)",tol:.03,
+  ans:r=>r2(spotD(r,"chb")/r.front),errs:r=>{const d=spotD(r,"chb"),F=r.front;return[[F/d,"Divide the spot distance by the front distance, not the other way round."],[d/(F+20),"Measure the front from the starting line, not from the bottom of the paper."],[(d+20)/(F+20),"Measure both distances from the starting line."]];},
+  help:"Zero the ruler on the starting line. Read the centre of the yellow-green spot and the front, then divide.",why:r=>`Rf = ${spotD(r,"chb")} ÷ ${r.front} = ${(spotD(r,"chb")/r.front).toFixed(2)} (published value 0.45).`},
+ {id:"l8",type:"predict",m:"chr",need:N({}),filt:r=>r.front!=null&&r.front>0&&r.front<56&&spotD(r,"car")!=null,title:"Stop it early",skill:"Explain why Rf is approximately constant in the ideal model",
+  q:"Run the standard set-up again, but remove the paper when the front is only about 40 to 50 mm up. Predict the Rf of carotene compared with your full run.",
+  out:[K("About the same"),O("Smaller","The spot has moved less far, but so has the solvent."),O("Larger","Neither distance has grown.")],
+  why:[K("Rf is a ratio: the spot and the front both travel a shorter distance, in the same proportion"),O("The spots have had less time to move, so Rf is smaller","Less time shortens the front too. What happens to the ratio?"),O("The solvent moves faster at the start, so Rf is bigger","The front does rise faster at first, but each spot keeps the same fraction of the front's distance.")],
+  res:r=>`The front reached ${r.front} mm; the separated carotene spot was at ${spotD(r,"car")} mm, an Rf of about ${(spotD(r,"car")/r.front).toFixed(2)}.`+(r.overlap?" Other spots overlap and cannot be measured separately.":""),
+  because:"In this simplified model each pigment spends the same fraction of its time moving, so it covers the same fraction of the front's distance. Real measurements can vary. That is why Rf, rather than distance alone, can support identification against matched references."},
+ {id:"l9",type:"mcq",title:"Overlapping spots",skill:"Explain how to separate pigments with close Rf values",
+  help:"Spots separate by a distance that grows with the run, but each spot also has a width. Separation wins when the spots move far apart compared with their size.",
+  v:[{q:"On a short run, the xanthophyll (Rf 0.71) and chlorophyll a (Rf 0.65) spots overlap. How can you separate them better?",opts:[K("Use a longer run and load a small, concentrated spot."),O("Use deeper solvent so it covers the entire starting line.","Deeper solvent would cover the starting line and dissolve the pigments."),O("Use a larger leaf disc to make the spots wider.","Bigger spots overlap more."),O("Stop the run earlier so spot centres stay closer.","Stopping earlier keeps the spots closer together.")]},
+   {q:"Two students' chromatograms both ran to 90 mm. Student X's spots are small; student Y smeared the disc over a wide area. Whose xanthophyll and chlorophyll a spots are more likely to overlap?",opts:[K("Y: its wider spots can overlap across the gap."),O("X: its smaller spots are always harder to see.","Small, concentrated spots are easy to see and better separated."),O("Neither: equal run length prevents any overlap.","The gap is the same, but the spot sizes differ."),O("Both: equal Rf always makes spot widths equal.","Same Rf means the same centres, but wider spots overlap.")]}],
+  why:"Longer runs and smaller spots both improve separation."},
+ {id:"l10",type:"mcq",title:"Identify a spot",skill:"Use Rf and colour to support a possible pigment identification",
+  help:"Rf values from different runs vary a little. When two published values are close, use the colour too.",
+  v:[{q:"A spot has Rf 0.69. Published values for this solvent: carotene 0.95, xanthophyll 0.71, chlorophyll a 0.65, chlorophyll b 0.45. What is the best conclusion?",opts:[K("Xanthophyll is plausible; colour can support identification."),O("Xanthophyll is certain because its listed reference is closest.","An Rf close to a reference supports a possible identification, but one value cannot prove it. Compare matched standards and other evidence."),O("It must be a new pigment because 0.69 is not listed.","Measured Rf values can differ from reference values."),O("No inference is possible from the Rf or spot colour.","Rf and colour support a possible identification; matched standards and further evidence can strengthen it.")]}],
+  why:"Rf and colour support an identification; neither alone proves it. Compare matched standards and use further evidence."},
+ {id:"l11",type:"write",title:"Explain it in writing",skill:"Write an explanation of why pigments separate",
+  q:"Explain why the pigments in a leaf separate as the solvent moves up the paper.",
+  crit:[{t:"Pigments differ in how soluble they are in the solvent (the mobile phase)",re:[/solub/i,/dissolv/i]},
+   {t:"Pigments differ in how strongly they are attracted to (stick to) the paper (the stationary phase)",re:[/attract/i,/stick/i,/adsor/i,/cellulose/i,/stationary/i]},
+   {t:"So they spend different proportions of time moving with the solvent",re:[/time/i,/proportion/i,/fraction/i]},
+   {t:"More soluble or less attracted pigments travel further (higher Rf)",re:[/further|farther|higher|faster/i]}],
+  model:"The pigments differ in how soluble they are in the solvent and in how strongly they are attracted to the cellulose of the paper. Each pigment keeps switching between dissolving in the moving solvent and sticking to the paper, so they spend different proportions of time moving. Pigments that are more soluble and less attracted to the paper, such as carotene, travel further and have higher Rf values."}]},
+
+{phase:"Learn",name:"Getting it right",model:"chr",help:true,intro:"Each mistake spoils a chromatogram in its own way. Predict what it does, then test it.",tasks:[
+ {id:"e1",type:"predict",m:"chr",need:N({level:"above"}),title:"Solvent above the starting line",skill:"Explain why the solvent must be below the starting line",
+  q:"Make the solvent deeper, so it is above the starting line. Predict the result.",
+  out:[K("The spots are faint and barely move, and the solvent in the tube turns green"),O("The spots travel further than usual","Look at where the pigment goes when the solvent covers the spot."),O("Nothing changes","The spot is now under the solvent. Is that the same as before?")],
+  why:[K("The pigments dissolve into the solvent in the tube instead of being carried up the paper"),O("Deeper solvent rises faster, so it carries the pigments further","The depth hardly changes how fast the solvent rises. Where does the pigment go?"),O("The pigments evaporate","They dissolve, not evaporate. Look at the colour of the solvent in the tube.")],
+  res:r=>"The pigments dissolved into the solvent in the tube: faint spots that hardly moved.",
+  because:"If the spot is under the solvent, the pigments dissolve into the solvent in the tube rather than being carried up the paper. Keep the solvent below the starting line."},
+ {id:"e2",type:"predict",m:"chr",need:N({origin:"ink"}),title:"An ink starting line",skill:"Explain why the starting line is drawn in pencil",
+  q:"Draw the starting line in ink instead of pencil. Predict the result.",
+  out:[K("The ink runs and separates into coloured bands that mix with the pigment spots"),O("The ink line stays where it is, like pencil","Ink is a mixture of dyes. Do dyes dissolve in this solvent?"),O("The ink stops the pigments moving","The pigments still move. What happens to the ink itself?")],
+  why:[K("Ink dyes dissolve in the solvent and are separated too; pencil (graphite) does not dissolve"),O("Ink is heavier than pencil, so it sinks into the paper","Weight is not the issue. Which one dissolves in the solvent?"),O("Ink reacts with the pigments","There is no reaction. The ink simply dissolves and runs.")],
+  res:r=>"The ink ran up the paper as coloured bands that could be confused with pigments.",
+  because:"Graphite does not dissolve in the solvent, so a pencil line stays put. Ink dyes dissolve and separate, contaminating the chromatogram."},
+ {id:"e3",type:"predict",m:"chr",need:N({lid:false}),filt:r=>r.front!=null,title:"No bung",skill:"Explain why the tube is kept closed",
+  q:"Run the chromatogram with no bung on the tube. Predict the result.",
+  out:[K("The front rises more slowly and unevenly, and the Rf values vary more"),O("The front rises faster","With an open tube, what happens to the solvent?"),O("No difference","The solvents evaporate very easily. Does that matter on the paper?")],
+  why:[K("Solvent evaporates from the paper and the tube, so the paper is not evenly soaked and less solvent reaches the front"),O("Air pushes the solvent down","Air pressure is the same with or without the bung. What does an open tube allow?"),O("The pigments escape from the tube","The pigments stay on the paper; the solvent is what evaporates.")],
+  res:r=>`The front reached ${r.front} mm after ${r.tMin} min, with an uneven edge. In this model, with the bung on, it reaches about the same height in ${Math.max(1,Math.round(r.tMin*.77))} min.`,
+  because:"An open tube lets the solvent evaporate from the paper, so the front rises slowly and unevenly and Rf values become less reliable. Keep the bung on so the air in the tube stays saturated with solvent vapour."},
+ {id:"e4",type:"mcq",title:"Loading the spot",skill:"Explain how to load the leaf disc to give clear, separate spots",
+  help:"You need enough pigment to see, in as small an area as possible.",
+  v:[{q:"Why is the leaf disc crushed firmly onto a small area of the starting line?",opts:[K("Load enough pigment in a small area for clear spots."),O("Load a large smear so the solvent rises more quickly.","Crushing affects the spot, not the solvent."),O("Break the pigment molecules into smaller fragments.","Crushing breaks cells to release pigment; it does not change the pigment molecules."),O("Push the pigment below the solvent in the tube.","The pigment should be on the line, above the solvent.")]},
+   {q:"A student's spot is faint from the start because the leaf was crushed too lightly. What should they change?",opts:[K("Crush more firmly on the same small starting area."),O("Switch to propanone only to make all spots separate.","Propanone alone would make the spots run together near the front."),O("Shorten the run even though the initial spot was faint.","Spreading during a longer run can reduce local colour intensity. Here the spot was already faint because too little pigment was loaded."),O("Mark the solvent front later to increase spot colour.","Marking the front later does not add pigment or increase its colour, and the front may no longer be visible.")]}],
+  why:"A small, concentrated spot is both visible and well separated."},
+ {id:"e5",type:"multi",title:"Reliable Rf values",skill:"Identify what makes Rf values reliable and comparable",
+  q:"Which of these help make your Rf values reliable and comparable with published values? Select all that apply.",
+  opts:[{t:"Use the same solvent and type of paper as the published values",ok:true,fb:"Rf depends on the solvent and the stationary phase."},{t:"Draw the starting line in pencil",ok:true,fb:"Ink dissolves and contaminates the chromatogram."},{t:"Keep the solvent below the starting line",ok:true,fb:"Otherwise the pigments dissolve into the solvent in the tube."},{t:"Keep the bung on during the run",ok:true,fb:"Evaporation makes the front slow and uneven."},{t:"Mark the solvent front immediately",ok:true,fb:"The front may disappear as the solvent evaporates."},{t:"Measure to the centre of each spot",ok:true,fb:"Measuring to an edge gives a different, wrong distance."},{t:"Run every chromatogram for exactly the same time",ok:false,fb:"Rf is a ratio, so the run time does not need to match."},{t:"Use exactly the same mass of leaf each time",ok:false,fb:"The amount affects how dark the spots are, not their Rf."}],
+  why:"Rf is a ratio, so time and amount do not need to match. Solvent, paper, technique and measuring point all do."},
+ {id:"e6",type:"write",title:"Explain in writing",skill:"Explain the reasons for two key steps of the method",
+  q:"Explain why the starting line is drawn in pencil, and why it must be above the level of the solvent.",
+  crit:[{t:"Pencil (graphite) does not dissolve in the solvent, so it does not move",re:[/graphite/i,/pencil.{0,40}(not|n't).{0,15}(dissolv|solub|run|move)/i,/insoluble/i]},
+   {t:"Ink would dissolve and separate, contaminating the chromatogram",re:[/ink/i]},
+   {t:"Above the solvent so the pigments are carried up the paper",re:[/carried|move up|travel up|up the paper/i]},
+   {t:"Otherwise the pigments dissolve into the solvent in the tube",re:[/dissolv.{0,40}(solvent|tube|beaker|pool)/i,/wash/i]}],
+  model:"Pencil is graphite, which does not dissolve in the solvent, so the line stays where it is; ink contains dyes that would dissolve and separate, contaminating the chromatogram. The line must be above the solvent so the solvent soaks up the paper and carries the pigments upwards; if the spot were below the surface, the pigments would dissolve into the solvent in the tube."}]},
+
+{phase:"Compare",name:"Paired examples",model:"chr",help:true,intro:"Two chromatograms side by side. Find the difference that matters, then explain what it means.",tasks:[
+ {id:"k1",type:"mcq",panel:{pair:"length"},title:"Short run and full run",skill:"Compare chromatograms of different lengths using Rf",
+  help:"Work out chlorophyll a's Rf on both: distance ÷ front.",
+  v:[{q:"Compare A and B. Which statement is correct?",opts:[K("The Rf is similar; the longer run separates these spots."),O("The Rf is higher in B because its spot travelled further.","It moved further, but so did the solvent. Calculate both Rf values."),O("A is more accurate because its spots overlap more closely.","Closer spots overlap, which makes them harder to measure."),O("The leaves contain different pigments because distances differ.","Same leaf, same solvent. The difference is the length of the run.")]},
+   {q:"A student only has time for a run to 45 mm. What can they still do reliably?",opts:[K("Calculate Rf for separated spots; overlapping ones are uncertain."),O("Reject every value because short runs always give incorrect Rf for all pigments.","Rf is a ratio, so short runs give the same Rf for separate spots."),O("Measure each overlapping spot as if its centre were distinct.","The overlapping spots have no distinct individual centres, so their distances cannot be measured reliably."),O("Double all measured distances and treat them as a new run.","With equal Rf, a 90 mm front gives twice the spot distance of a 45 mm front in this model. Doubling a measurement is not a new observation and cannot resolve overlapping spots; elapsed times do not simply double.")]}],
+  why:"Same Rf, different separation: longer runs separate pigments with close Rf values."},
+ {id:"k2",type:"mcq",panel:{pair:"solvent"},title:"Two solvents",skill:"Explain why Rf depends on the solvent",
+  help:"Rf reflects the balance between dissolving in the solvent and sticking to the paper. Change the solvent and the balance changes.",
+  v:[{q:"Same leaf, two solvents. Why do the Rf values differ, and what does that mean when you use published values?",opts:[K("Compare matched solvents and paper: partitioning affects Rf."),O("Compare any solvents: Rf is fixed for each pigment molecule.","Rf is not fixed across solvents: it depends on the solvent, stationary phase and other conditions. Compare references made under matched conditions."),O("Compare mass instead: propanone makes pigment molecules lighter.","Propanone does not make pigment molecules lighter. Changing solvent affects partitioning between the phases, not pigment mass."),O("Compare spot darkness: the two leaves contain different amounts.","The same leaf is used for both runs. Pigment amount can affect spot darkness, but changing the solvent can change Rf.")]},
+   {q:"Which solvent separates the pigments better, and why?",opts:[K("The mixture: the model shows more widely separated spots."),O("Propanone: the model shows every pigment moves further.","Moving further is not the aim. Are the spots separate?"),O("Both: their model spots are equally distinct and well separated.","Look at B: the spots are bunched near the front."),O("Water: the model shows every leaf pigment moves further.","This illustrative model assigns the photosynthetic pigments little movement in water; actual behaviour depends on the system.")]}],
+  why:"A good solvent dissolves the pigments to different extents. Rf values only compare within one solvent and paper."},
+ {id:"k3",type:"mcq",panel:{pair:"shade"},title:"Shade-tolerant and shade-intolerant leaves",skill:"Interpret differences in pigment composition between leaves",
+  help:"In these model specimens, relative spot strengths are drawn to represent relative amounts. A real chromatogram needs matched standards and calibrated measurement; absorption needs separate evidence.",
+  v:[{q:"In these model specimens, what differs between A and B, and what does that suggest?",opts:[K("B has a stronger chlorophyll b spot in these model specimens."),O("B has higher Rf values for every pigment in these model specimens.","The Rf values are the same: same pigments, same solvent."),O("B has a new pigment absent from A in these model specimens.","Both have the same four spots. Compare their strength."),O("A has the stronger chlorophyll b spot in these specimens.","In these model specimens, chlorophyll b is stronger in B, not A.")]},
+   {q:"Can these chromatograms show how much more light the shade-tolerant leaf absorbs?",opts:[K("No: absorption needs separate spectral measurements."),O("Yes: a larger Rf directly measures light absorption.","Rf is about solubility and attraction to the paper, not light absorption."),O("Yes: spot size alone gives the absorbed wavelengths.","Spot strength suggests amount, but not which wavelengths are absorbed or how much."),O("No: neither specimen contains a carotene pigment.","Both leaves have carotene.")]}],
+  why:"The model shows a stronger chlorophyll b spot in B. Real spot intensity is not a calibrated amount, and absorption requires separate evidence."},
+ {id:"k4",type:"mcq",panel:{pair:"beet"},title:"Spinach and red beet leaf",skill:"Explain a pigment that stays on the starting line",
+  help:"In this model, the red pigment is poorly soluble in the chosen solvent. For an unknown, strong retention can also limit movement.",
+  v:[{q:"Why does the red spot stay on the starting line?",opts:[K("In this model, poor solubility limits the red pigment's movement."),O("In this model, the red pigment is too heavy to move up the paper.","Weight is not what matters. Does it dissolve?"),O("In this model, the solvent front never reaches the starting line.","The solvent passed the starting line: the other pigments moved."),O("In this model, all chlorophyll has converted into the red pigment.","The chlorophylls are still there in their usual places. This is a different pigment.")]}],
+  why:"The model assigns the red pigment poor solubility in this solvent. An unknown stationary spot could also be strongly retained by the stationary phase.",
+  extra:'<p class="note"><span class="badge">Beyond the spec</span> The red pigment is water-soluble, so it would move in water, where the photosynthetic pigments would not. Try water as the solvent in the model.</p>'},
+ {id:"k5",type:"num",panel:{pair:"measure"},title:"Centre or edge?",skill:"Calculate Rf using the centre of a spot",
+  help:"Rf uses the distance to the centre of each spot. Edges depend on how big the spot is.",
+  v:[{q:"Using the correct measurement, calculate the Rf of xanthophyll. Give your answer to 2 decimal places.",ans:()=>.71,errs:()=>[[.74,"That uses student A's measurement to the top edge. Use the centre."],[1.41,"Divide the spot distance by the front distance, not the other way round."]],why:()=>"Student B is right: Rf = 64 ÷ 90 = 0.71, matching the published value. Measuring to the edge gives 0.74, which is too high and depends on how big the spot is."}],
+  unit:"(no units)",tol:.006},
+ {id:"k6",type:"write",title:"Explaining differences in Rf",skill:"Suggest reasons why measured Rf values differ from published values and from each other",
+  q:"Your Rf for chlorophyll a was 0.62, a classmate's was 0.68, and the published value for this solvent is 0.65. Suggest reasons for the differences.",
+  crit:[{t:"Judging the centre of a spot, or the front, is uncertain by about a millimetre",re:[/centre|center|judg|uncertain|millimet|precis/i]},
+   {t:"An uneven or poorly marked front, for example from evaporation without a bung",re:[/front/i,/evapor/i,/bung|lid/i]},
+   {t:"Conditions differ from the published ones: solvent mixture, paper, temperature",re:[/temperature|paper|composition|mixture|conditions/i]},
+   {t:"Rf varies a little between runs, so repeat and use a mean",re:[/repeat|mean|average/i]}],
+  model:"Judging the centre of a spot and the position of the front is uncertain by about a millimetre, which changes Rf by about 0.01 to 0.02. If the tube was not closed, evaporation can make the front uneven. The published value may have been measured with a slightly different solvent mixture, paper or temperature. Rf values vary a little between runs, so repeats and a mean give a better comparison."}]},
+
+{phase:"Apply",name:"Unfamiliar chromatograms",model:"chr",help:false,intro:"New diagrams with less support. Use the information given; measure carefully, to the centre of each spot.",tasks:[
+ {id:"a1",type:"num",panel:{diag:"tlc"},noGuides:true,title:"A thin-layer plate",skill:"Calculate Rf on a thin-layer plate",
+  v:[{q:"Calculate the Rf of spot 2. Give your answer to 2 decimal places.",ans:()=>.55,errs:()=>[[1.82,"Divide the spot distance by the front distance."],[.59,"Measure from the starting line, not from the bottom of the plate."]],why:()=>"Rf = 44 ÷ 80 = 0.55. The reference value supports chlorophyll a as a possible identification."},
+   {q:"Fresh question: calculate the Rf of spot 4, to 2 decimal places.",ans:()=>.28,errs:()=>[[3.64,"Divide the spot distance by the front distance."]],why:()=>"Rf = 22 ÷ 80 = 0.28. The reference value supports xanthophyll as a possible identification."}],
+  unit:"(no units)",tol:.006,help:"Rf = spot distance ÷ front distance, both from the starting line. Then find the matching value in the table for this plate."},
+ {id:"a2",type:"mcq",panel:{diag:"tlc"},title:"A different order",skill:"Explain why pigment order and Rf depend on the chromatography system",
+  help:"Rf reflects solubility in the solvent and attraction to the stationary phase. Change either and the values can change.",
+  v:[{q:"On this plate, xanthophyll (Rf 0.28) is below the chlorophylls, but on paper with the reference mixture it is above them (0.71). Why?",opts:[K("The solvent and stationary phase change the partitioning."),O("The plate changes each pigment into a completely different molecule.","They are the same pigments. What has changed?"),O("One result must be wrong because Rf cannot change.","Both can be correct for their own systems."),O("The pigment breaks down whenever it meets silica.","Nothing here suggests breakdown.")]}],
+  why:"Compare Rf with references for matched stationary phase, solvent and conditions. A match supports, but does not prove, identification."},
+ {id:"a3",type:"multi",panel:{diag:"flawed"},title:"Diagnose a set-up",skill:"Identify errors in an unfamiliar chromatography set-up",
+  q:"Identify every error in this student's method. Select all that apply.",
+  opts:[{t:"The starting line is drawn in ink",ok:true,fb:"Ink dyes dissolve and run with the pigments."},{t:"The solvent is above the starting line",ok:true,fb:"The pigments will dissolve into the solvent in the tube."},{t:"There is no bung on the tube",ok:true,fb:"Solvent evaporates, so the front rises slowly and unevenly."},{t:"The front was marked after the paper dried",ok:true,fb:"By then the solvent has evaporated, so the front position is a guess."},{t:"The paper is 12 cm long",ok:false,fb:"That is a sensible length."},{t:"A leaf disc was crushed onto the line",ok:false,fb:"That is the AQA method."}],
+  why:"Four errors: each would spoil the Rf values in a different way."},
+ {id:"a4",type:"num",panel:{diag:"unknown"},noGuides:true,title:"An exam-style chromatogram",skill:"Calculate Rf from a given chromatogram",unit:"(no units)",tol:.006,
+  v:[{q:"Calculate the Rf of spot R, to 2 decimal places.",ans:()=>.45,errs:()=>[[2.21,"Divide the spot distance by the front distance."],[.48,"Measure from the starting line, not from the bottom of the paper."]],why:()=>"Rf = 38 ÷ 84 = 0.45. The reference value supports chlorophyll b as a possible identification."},
+   {q:"Fresh question: calculate the Rf of spot Q, to 2 decimal places.",ans:()=>.65,errs:()=>[[1.53,"Divide the spot distance by the front distance."]],why:()=>"Rf = 55 ÷ 84 = 0.65. The reference value supports chlorophyll a as a possible identification."}],
+  help:"Read the spot and the front from the ruler, starting from zero at the starting line."},
+ {id:"a5",type:"mcq",panel:{diag:"unknown"},title:"A spot that did not move",skill:"Interpret a spot with an Rf of zero",
+  help:"Consider both solubility in the mobile phase and attraction to the stationary phase.",
+  v:[{q:"Spot S stayed on the starting line. What is the best explanation?",opts:[K("Poor solubility or strong retention may prevent movement."),O("Its mass alone proves the pigment cannot move in solvent.","Mass alone does not determine how far a pigment moves. Consider its solubility in the mobile phase and retention by the paper."),O("The front never passed the origin, despite the other spots.","The front passed the starting line, as the other spots show. A spot can remain at the origin while the solvent travels."),O("The student must have omitted the spot from the measurement.","Spot S is visible on the starting line, so its distance is zero. That observation does not mean the student omitted the measurement.")]}],
+  why:"Rf 0 indicates no observed movement. Poor solubility in the mobile phase or strong retention by the stationary phase may explain it."},
+ {id:"a6",type:"mcq",panel:{diag:"autumn"},title:"An autumn leaf",skill:"Interpret a chromatogram from a leaf of a different colour",
+  help:"Compare the strength of each spot with a green leaf's chromatogram.",
+  v:[{q:"What does this autumn leaf's chromatogram suggest?",opts:[K("Faint chlorophyll spots are observed in this model specimen."),O("The chromatogram proves new carotene was made in autumn.","A single chromatogram cannot establish when carotene was made. This model shows faint chlorophyll spots relative to the carotenoid spots."),O("The chromatogram shows that no chlorophyll remains at all.","There are faint chlorophyll spots."),O("The chlorophyll stayed at the origin because solvent was wrong.","The chlorophyll spots are in their usual places, just faint.")]}],
+  why:"In this model specimen, faint chlorophyll spots and a grey-olive spot are consistent with reduced chlorophyll. A single chromatogram does not establish when or why it changed."},
+ {id:"a7",type:"write",title:"Evaluate a conclusion",skill:"Evaluate a conclusion about why pigments separate",
+  q:"Exam-style: a student concludes that carotene travels furthest because it is the smallest pigment molecule. Evaluate this conclusion.",
+  crit:[{t:"The conclusion is not established: solubility and attraction to the paper can explain the distance",re:[/not (supported|valid|correct|right)/i,/size/i,/solub/i]},
+   {t:"Carotene is the most soluble in the solvent and/or the least attracted to the paper",re:[/most soluble|more soluble|least attract|less attract/i]},
+   {t:"So carotene spends the greatest proportion of time moving with the solvent",re:[/time/i,/proportion/i]},
+   {t:"Evidence: Rf values change when the solvent changes, although molecule size does not",re:[/solvent/i]}],
+  model:"The conclusion is not established by this chromatogram. In this model, differences in solubility in the solvent and attraction to the paper explain the separation. Carotene spends a greater proportion of time moving with the solvent. The changed Rf values in another solvent support a role for the chromatography system; size alone is not established as the cause."}]}];
+
+const variantWhy={
+ l3:["In this simplified model, greater retention leaves chlorophyll b moving with the solvent for a smaller fraction of time.","In this simplified model, the moving fraction is 0.65, so the model Rf is about 0.65."],
+ l4:["Mark the solvent front promptly because evaporation can make its position invisible.","Outline the spots before fading makes their positions and centres hard to judge."],
+ l9:["A longer run and small starting spot can improve separation of closely migrating pigments.","A wide starting spot can spread across the gap between the pigment centres and overlap."],
+ e4:["A small, concentrated loading gives visible spots with less initial spreading.","Crush more firmly on the same small area to load more pigment; spreading can also make spots paler later."],
+ k1:["In the ideal model the Rf stays similar, while the longer run gives more separation.","On the short run, use well-separated spots; overlapping spots do not have reliable individual centres."],
+ k2:["Compare reference values under matched solvent, stationary phase and other conditions.","In this model the reference mixture gives more widely separated spots than propanone alone."],
+ k3:["B has a stronger chlorophyll b spot in the model; real intensity needs calibration.","Spot appearance alone does not quantify absorbed light; separate spectral measurements are needed."]
+};
+for(const t of ALL())if(variantWhy[t.id])t.v.forEach((v,i)=>v.why=variantWhy[t.id][i]);
+const variantSkills={l4:["Explain why the solvent front should be marked promptly","Explain why spot positions should be recorded promptly"],k1:["Compare Rf and separation in short and long runs","Identify which spots can be measured in a short run"],k2:["Explain why Rf depends on the chromatography system","Compare separation in two model solvents"],k3:["Interpret relative spot strength in model specimens","Evaluate what chromatograms can show about light absorption"]};
+function skillFor(t){return variantSkills[t.id]?.[ST.vr[t.id]||0]||t.skill;}
+
+
+function recordedRunValid(r){return !!(r&&Number.isInteger(r.id)&&r.s&&Number.isFinite(r.Ftrue)&&Number.isFinite(r.tMin)&&(r.front===null||Number.isFinite(r.front))&&Array.isArray(r.spots)&&r.spots.every(o=>o&&typeof o.p==="string"&&Number.isFinite(o.d)&&Number.isFinite(o.r)&&Number.isFinite(o.a)&&typeof o.visible==="boolean"));}
+// Completed calculations cannot retain their status without the exact original evidence.
+for(const task of ALL().filter(t=>t.type==="num"&&t.m)){
+ const key=["l5","l6","l7"].includes(task.id)?"standard-measurement":task.id,ev=ST.evidence[key];
+ const valid=recordedRunValid(ev)&&cmatch(ev.s,task.need)&&(!task.filt||task.filt(ev));
+ if(!valid){delete ST.evidence[key];const hasAnswer=ST.res[task.id]||ST.adv[task.id]||Object.keys(ST.txt).some(k=>k.startsWith(task.id+":"));if(hasAnswer){evidenceLost=true;delete ST.res[task.id];delete ST.adv[task.id];delete ST.vr[task.id];delete ST.hint[task.id];for(const k of Object.keys(ST.txt))if(k.startsWith(task.id+":"))delete ST.txt[k];for(const k of Object.keys(ST.wr))if(k.startsWith(task.id+":"))delete ST.wr[k];}}
+
+}
+for(const task of ALL().filter(t=>t.type==="predict")){
+ const r=ST.seen[task.id];if((ST.res[task.id]||r)&&(!recordedRunValid(r)||!cmatch(r.s,task.need)||task.filt&&!task.filt(r))){
+  evidenceLost=true;delete ST.res[task.id];delete ST.adv[task.id];delete ST.lock[task.id];delete ST.seen[task.id];delete ST.review[task.id];delete ST.attempts[task.id];delete ST.pick[task.id+"o"];delete ST.pick[task.id+"r"];
+ }
+}
+/* ================= Animation loop and start-up ================= */
+let lastT=performance.now();
+function frame(now){const dt=Math.min(.05,(now-lastT)/1000);lastT=now;cStep(dt);
+ if(panel==="close"){zStep(dt*(RM.matches?.5:1));zDraw();}syncZoom();requestAnimationFrame(frame);}
+rfShown=!!ST.adv.l6;cSync();zSync();zReset();cNew();
+if(saved&&saved.version===2){
+ if(saved.CS)CS=saved.CS;if(saved.speed)speed=saved.speed;if(Array.isArray(saved.zLane))zLane=saved.zLane;guides=!!saved.guides;rfShown=!!saved.rfShown;
+ if(saved.cr&&saved.cr.s&&saved.cr.rf){cr=saved.cr;if(["running","lowering","lifting"].includes(cr.status)){cr.resumeStatus=cr.status;cr.status="paused";}cDraw();}
+}
+initialising=false;cSync();zSync();zReset();cUpdate();renderResults();renderTasks();if(saved&&["chr","close"].includes(saved.panel))setPanel(saved.panel);if(evidenceLost||legacyFound){const notice=legacyFound?"Earlier prototype progress could not be restored because it lacked experiment evidence. This activity starts fresh.":"Some saved experiment evidence was unavailable. The dependent answers and completion statuses have been reset.";$("#restore-notice").textContent=notice;$("#restore-notice").hidden=false;say(notice);}requestAnimationFrame(frame);
+setInterval(save,500);window.addEventListener("pagehide",save);
+
+}
+</script>
+</body>
+</html>
