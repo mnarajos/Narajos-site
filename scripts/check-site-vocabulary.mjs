@@ -293,9 +293,12 @@ async function checkAssessment(page) {
   await toolbar(page).waitFor();
   await term(page, "gcse-exothermic").press("Enter");
   assert.match(await panel(page).innerText(), /count as help/i);
+  await panel(page).getByRole("button", {name:"Show definition with help"}).click();
   await close(page).click();
   await page.locator('#qf input[name="a"][value="0"]').check();
   await page.locator("#act").click();
+  assert.equal(await page.evaluate(() => window.__k.ev("L.right")), 0,
+    "Revealing the assessed meaning is not scored as independent mixed practice");
   assert.match(await lookup(page, "exothermic", "Exothermic"), /surroundings/i);
   await close(page).click();
 
