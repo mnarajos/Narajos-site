@@ -57,6 +57,19 @@ function muscleCell() {
     "Locate the mitochondria: aerobic respiration here transfers energy for contraction. The cell and structures are not to scale.");
 }
 
+function nucleusAndRibosomes() {
+  return picture("Inside an animal cell", diagram(
+    "A simplified animal cell has a nucleus containing DNA and ribosomes shown as small dots in the cytoplasm. Ribosomes build proteins.", `
+    <ellipse cx="120" cy="87" rx="92" ry="65" fill="#e2f3f0" stroke="${teal}" stroke-width="3"/>
+    <circle cx="105" cy="88" r="30" fill="#d8c7e4" stroke="${ink}" stroke-width="2"/>
+    <path d="M92 87q7-16 13 0t13 0" fill="none" stroke="${rust}" stroke-width="3"/>
+    ${[[65,51],[152,54],[168,83],[65,111],[150,118]].map(([x,y]) => circle(x,y,3,ink,ink)).join("")}
+    ${line(117,66,200,36,ink,1.5)}${text(254,32,"Nucleus: DNA",ink,14)}
+    ${line(168,83,205,83,ink,1.5)}${text(254,78,"Ribosomes",ink,14)}${text(254,98,"build proteins",ink,14)}
+    ${text(120,166,"Cell shown in section",ink,14)}`,320,180),
+    "Locate DNA in the nucleus and the ribosomes shown as dots. The sizes are exaggerated so the structures can be seen.");
+}
+
 function plantCellJobs() {
   const leaf = node("figure", "", "catchup-picture");
   const image = node("img");
@@ -95,6 +108,17 @@ function transportComparison() {
 
 function gutTransport() {
   return concentrationPanel("Absorption by a gut cell", "Gut lumen: lower", "Cell: higher", true, "Glucose molecules");
+}
+
+function efficiencyExample() {
+  return picture("Energy transferred by a lamp", diagram(
+    "A lamp receives 120 joules. It transfers 30 joules by useful light and 90 joules to other transfers such as heating.", `
+    <rect x="20" y="37" width="280" height="37" fill="#eff4f4" stroke="${ink}" stroke-width="2"/>
+    <rect x="20" y="37" width="70" height="37" fill="#a9d3c9" stroke="${teal}" stroke-width="2"/>
+    ${text(55,62,"30 J",ink,15)}${text(196,62,"90 J",ink,15)}
+    ${text(55,101,"Useful light",teal,14)}${text(196,101,"Other transfers",ink,14)}
+    ${text(160,137,"Total input: 120 J",ink,15)}`,320,155),
+    "The useful part is one quarter of the whole: 30 ÷ 120 = 0.25, or 25%.");
 }
 
 const scaffolds = {
@@ -197,7 +221,7 @@ export function applyYear9Scaffolds(lessons) {
   lessons.osmosis.steps[0].visual = () => year9Visual("osmosis");
   lessons.osmosis.steps[1].visual = () => year9Visual("osmosis");
   lessons.osmosis.steps[2].visual = waterLeavingCell;
-  lessons["cell-structures"].steps[0].visual = () => year9Visual("cell-structures");
+  lessons["cell-structures"].steps[0].visual = nucleusAndRibosomes;
   lessons["cell-structures"].steps[1].visual = muscleCell;
   lessons["cell-structures"].steps[2].visual = plantCellJobs;
   lessons["active-transport"].steps[0].visual = transportComparison;
@@ -217,4 +241,12 @@ export function applyYear9Scaffolds(lessons) {
   for (const [id, additions] of Object.entries(scaffolds)) {
     lessons[id].steps = lessons[id].steps.map((step, index) => ({...step, ...additions[index]}));
   }
+  // Worked figures are shown with the worked explanation only, not the
+  // independent check. Each model is selected for the reasoning it supports.
+  for (const id of ["atomic-number", "periodic-table", "energy-transfer", "enzymes", "ionic-conduction", "molecular-melting"]) {
+    const example = lessons[id].steps[0].worked;
+    if (example) example.visual = () => year9Visual(id);
+  }
+  lessons["gas-exchange"].steps[0].worked.visual = () => year9Visual("gas-exchange");
+  lessons["energy-transfer"].steps[1].worked.visual = efficiencyExample;
 }

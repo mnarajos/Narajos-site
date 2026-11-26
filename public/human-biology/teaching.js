@@ -66,15 +66,15 @@
 
   function teachingDiagram(item) {
     if (!item) return "";
-    return '<figure class="hb-teach-photo"><div class="hb-teaching-diagram" role="region" tabindex="0" aria-label="Scrollable teaching diagram"><img src="' + escape(item.src) + '" alt="' + escape(item.alt) +
-      '" width="' + item.width + '" height="' + item.height + '"></div><span class="hb-diagram-scroll-hint">Scroll sideways to see the whole diagram.</span><figcaption>' + escape(item.caption) + '</figcaption></figure>';
+    return '<figure class="hb-teach-photo"><div class="hb-teaching-diagram' + (item.compact ? ' hb-teaching-diagram-compact' : '') + '"' + (item.compact ? '' : ' role="region" tabindex="0" aria-label="Scrollable teaching diagram"') + '><img src="' + escape(item.src) + '" alt="' + escape(item.alt) +
+      '" width="' + item.width + '" height="' + item.height + '"></div>' + (item.compact ? '' : '<span class="hb-diagram-scroll-hint">Scroll sideways to see the whole diagram.</span>') + '<figcaption>' + escape(item.caption) + '</figcaption></figure>';
   }
 
   function figure(photo, field) {
     if (!photo) return "";
     return '<figure class="hb-teach-photo"><img src="' + escape(photo.src) + '" alt="' +
       escape(photo.alt) + '" width="' + photo.width + '" height="' + photo.height + '" loading="lazy" decoding="async">' +
-      '<figcaption>' + (field ? '<strong>Field ' + field + '</strong> · ' : '') + '<a href="' + escape(photo.source) + '">' + escape(photo.credit) + '</a> · ' +
+      '<figcaption>' + (photo.caption ? escape(photo.caption) + ' ' : '') + (field ? '<strong>Field ' + field + '</strong> · ' : '') + '<a href="' + escape(photo.source) + '">' + escape(photo.credit) + '</a> · ' +
       '<a href="' + escape(photo.licenceUrl) + '">' + escape(photo.licence) + '</a> · ' + escape(photo.changes || 'Resized and converted to WebP') + '</figcaption></figure>';
   }
 
@@ -130,7 +130,7 @@
       ? '<details class="hb-prerequisite"><summary>' + escape(lesson.activate[0]) + '</summary><p>' +
         escape(lesson.activate[1]) + '</p>' + prior + '</details>' : prior;
     const explanation = (context.booklet ? '<section class="paper panel hb-teach-explain"><h2>Understand the idea</h2>' : '<details class="paper panel hb-teach-explain" open><summary><h2>Understand the idea</h2></summary>') +
-      paragraphs(lesson.explain) + teachingDiagram(lesson.teachingDiagram) + table(lesson.compare) +
+      paragraphs(lesson.explain) + figure(lesson.explanationPhoto) + teachingDiagram(lesson.explanationDiagram) + teachingDiagram(lesson.teachingDiagram) + table(lesson.compare) +
       (lesson.afterComparison ? '<h3>' + escape(lesson.afterComparison.heading) + '</h3>' + paragraphs(lesson.afterComparison.lines) : '') +
       context.inline +
       (lesson.revision && !context.booklet ? '<div class="actions hb-start">' + openStageButton("model", "See worked example", "primary") + '</div>' : '') +

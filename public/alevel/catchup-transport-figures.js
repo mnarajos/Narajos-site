@@ -10,12 +10,12 @@
   "Follow water from the vessel into mesophyll, then as vapour through a stoma. The xylem wall and leaf tissues are simplified and not to scale.",
   `<path d="M70 35h72v228H70z" fill="#e4f2f8" stroke="#835e43" stroke-width="7"/><path d="M72 70h8m52 0h8M72 130h8m52 0h8M72 190h8m52 0h8M72 250h8m52 0h8" stroke="#a8734e" stroke-width="7"/>
    <path d="M107 238V62m-8 10 8-10 8 10" fill="none" stroke="#386ba8" stroke-width="4"/><text x="26" y="292">Xylem vessel</text><text x="19" y="313">lignified wall</text>
-   <path d="M185 28Q355 5 553 28v200Q390 246 185 228Z" fill="#f0f9ec" stroke="#699474" stroke-width="3"/>
+   <path d="M185 28Q355 5 553 28v200Q390 246 185 228Z" fill="#f0f9ec" stroke="none"/><path d="M321 232Q246 232 185 228V28Q355 5 553 28v200Q465 238 357 233" fill="none" stroke="#699474" stroke-width="3"/>
    <ellipse cx="265" cy="110" rx="57" ry="45" fill="#b9debf" stroke="#538866" stroke-width="3"/><ellipse cx="415" cy="110" rx="57" ry="45" fill="#b9debf" stroke="#538866" stroke-width="3"/>
    <text x="340" y="58" text-anchor="middle">Mesophyll cells</text><text x="341" y="194" text-anchor="middle">Air space</text>
-   <path d="M144 110h60m-9-7 9 7-9 7M265 156v24m-7-8 7 8 7-8M341 199v55m-7-8 7 8 7-8" fill="none" stroke="#386ba8" stroke-width="3"/>
-   <path d="M305 230q-22 8-17 28q13 12 28-3M377 230q22 8 17 28q-13 12-28-3" fill="#91cda3" stroke="#538866" stroke-width="3"/>
-   <text x="480" y="274">Open stoma</text><path d="M478 264l-91-17" stroke="#344958"/><text x="340" y="297" text-anchor="middle">Water vapour out</text>`, 330);
+   <path d="M144 110h60m-9-7 9 7-9 7M265 156v24m-7-8 7 8 7-8M339 198v67m-7-8 7 8 7-8" fill="none" stroke="#386ba8" stroke-width="3"/>
+   <path d="M321 229q-15 4-15 13q0 9 15 13q8-13 0-26ZM357 229q15 4 15 13q0 9-15 13q-8-13 0-26Z" fill="#91cda3" stroke="#538866" stroke-width="3"/>
+   <text x="454" y="280">Open stoma</text><path d="M451 271L345 244" stroke="#344958"/><text x="339" y="297" text-anchor="middle">Water vapour out</text>`, 330);
  const xylemColumn = figure(
   "Cohesion in the xylem",
   "In an enlarged xylem vessel a column of water is pulled upward. Dashed links between water molecules represent hydrogen bonds responsible for cohesion. Adhesion is attraction between water and the vessel wall.",

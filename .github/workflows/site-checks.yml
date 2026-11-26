@@ -10,6 +10,9 @@ on:
       - 'scripts/check-human-biology.mjs'
       - 'scripts/check-human-challenges.mjs'
       - 'scripts/check-human-skills.mjs'
+      - 'scripts/check-catchup-visual-integrity.mjs'
+      - 'scripts/check-alevel-catchup-figures.mjs'
+      - 'scripts/check-alevel-molecules-figures.mjs'
       - '.github/workflows/site-checks.yml'
   pull_request:
     paths:
@@ -19,6 +22,9 @@ on:
       - 'scripts/check-human-biology.mjs'
       - 'scripts/check-human-challenges.mjs'
       - 'scripts/check-human-skills.mjs'
+      - 'scripts/check-catchup-visual-integrity.mjs'
+      - 'scripts/check-alevel-catchup-figures.mjs'
+      - 'scripts/check-alevel-molecules-figures.mjs'
       - '.github/workflows/site-checks.yml'
   workflow_dispatch:
 
@@ -37,4 +43,7 @@ jobs:
           node scripts/check-human-biology.mjs
           node scripts/check-human-challenges.mjs
           node scripts/check-human-skills.mjs
+          node scripts/check-catchup-visual-integrity.mjs
+          node scripts/check-alevel-catchup-figures.mjs
+          node scripts/check-alevel-molecules-figures.mjs
 

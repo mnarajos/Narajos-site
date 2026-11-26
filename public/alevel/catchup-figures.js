@@ -4,20 +4,19 @@
  const figures = {
   "a2/membrane/0": {
    title: "The fluid-mosaic membrane",
+   compact: true,
    alt: "Cross-section of a membrane: two layers of phospholipids have water-facing heads and inward-facing tails. A protein spans the bilayer. Cholesterol sits between phospholipid tails. A carbohydrate chain on the outside is attached to a membrane protein.",
    caption: "Locate the water-facing heads and inward-facing tails. The protein and cholesterol are embedded in the bilayer; the carbohydrate chain projects outside. Shapes and spacing are simplified.",
-   art: `<text x="120" y="26" text-anchor="middle">Outside cell</text>
-    <g fill="#a8d8d1" stroke="#296b65" stroke-width="2">
-    ${[60,100,140,180,220,260,300,340,380,420,460,500,540].map(x=>`<circle cx="${x}" cy="65" r="11"/><circle cx="${x}" cy="165" r="11"/>`).join("")}</g>
-    <g stroke="#47747a" stroke-width="3">${[60,100,140,180,220,260,300,340,380,420,460,500,540].map(x=>`<path d="M${x-4} 76v30m8-30v30m-8 48v-30m8 30v-30"/>`).join("")}</g>
-    <path d="M260 53 Q238 90 257 115 Q239 142 260 177 L315 177 Q333 145 317 115 Q331 86 315 53Z" fill="#b9c9ee" stroke="#516eaa" stroke-width="3"/>
-    <path d="M287 52V38l-12-9 12-9 12 9 12-9" fill="none" stroke="#995b86" stroke-width="4"/>
-    <path d="M391 91l8 8-7 11 7 11-9 9" fill="none" stroke="#bc7729" stroke-width="5"/>
-    <text x="75" y="222">Phospholipid</text><path d="M125 208L101 175" stroke="#344958" fill="none"/>
-    <text x="263" y="222">Protein</text><path d="M292 208l-5-30" stroke="#344958" fill="none"/>
-    <text x="408" y="222">Cholesterol</text><path d="M457 208l-62-78" stroke="#344958" fill="none"/>
-    <text x="354" y="40">Carbohydrate chain</text><path d="M349 43l-38-14" stroke="#344958" fill="none"/>
-    <text x="300" y="250" text-anchor="middle">Cytoplasm</text>`
+   art: `<text x="130" y="18" text-anchor="middle">Outside cell</text>
+    <g fill="#a8d8d1" stroke="#296b65" stroke-width="2">${[30,55,80,105,130,155,180,205,230].map(x=>`<circle cx="${x}" cy="72" r="8"/><circle cx="${x}" cy="152" r="8"/>`).join("")}</g>
+    <g stroke="#47747a" stroke-width="2">${[30,55,80,105,130,155,180,205,230].map(x=>`<path d="M${x-3} 80v27m6-27v27m-6 37v-27m6 27v-27"/>`).join("")}</g>
+    <path d="M94 64 Q81 91 92 111 Q81 131 94 160 L122 160 Q135 131 123 111 Q133 91 122 64Z" fill="#b9c9ee" stroke="#516eaa" stroke-width="2"/>
+    <path d="M108 64V53l-9-8 9-8 9 8 9-8" fill="none" stroke="#995b86" stroke-width="3"/>
+    <path d="M163 91l7 7-6 9 6 9-7 8" fill="none" stroke="#bc7729" stroke-width="4"/>
+    <g fill="#fff" stroke="#344958" stroke-width="1.5"><circle cx="36" cy="109" r="10"/><circle cx="108" cy="120" r="10"/><circle cx="174" cy="116" r="10"/><circle cx="132" cy="44" r="10"/></g>
+    <g text-anchor="middle" font-weight="700" font-size="13"><text x="36" y="114">1</text><text x="108" y="125">2</text><text x="174" y="121">3</text><text x="132" y="49">4</text></g>
+    <text x="130" y="182" text-anchor="middle">Cytoplasm</text>
+    <text x="12" y="210">1  Phospholipid</text><text x="12" y="233">2  Membrane protein</text><text x="12" y="256">3  Cholesterol</text><text x="12" y="279">4  Carbohydrate chain</text>`
   },
   "a1/enzymes/1": {
    title: "Induced fit at the active site",
@@ -42,7 +41,7 @@
   "a2/euk/0": {
    title: "Inside a eukaryotic cell",
    alt: "Schematic animal cell with a cell-surface membrane, nucleus containing a nucleolus, a mitochondrion, rough endoplasmic reticulum studded with ribosomes, and a Golgi apparatus.",
-   caption: "Locate the nucleus, mitochondrion, rough ER and Golgi apparatus. This simplified animal cell omits many structures; plant and algal cells also contain chloroplasts.",
+   caption: "Locate the nucleus, mitochondrion, rough ER and Golgi apparatus. This simplified animal cell omits many structures; many plant and algal cells also contain chloroplasts.",
    art: `<ellipse cx="300" cy="125" rx="200" ry="95" fill="#eef8f5" stroke="#32776d" stroke-width="3"/><circle cx="250" cy="120" r="42" fill="#d8d9f2" stroke="#665e99" stroke-width="3"/><circle cx="250" cy="120" r="12" fill="#665e99"/>
     <ellipse cx="380" cy="95" rx="38" ry="21" fill="#f5c9ad" stroke="#ad6436" stroke-width="3"/><path d="M351 94q10-15 20 0t20 0t15 0" fill="none" stroke="#ad6436" stroke-width="3"/>
     <path d="M190 167q55-15 105 0m-105 9q55-15 105 0m-105 9q55-15 105 0" fill="none" stroke="#4979a3" stroke-width="4"/><g fill="#2e638e"><circle cx="205" cy="160" r="3"/><circle cx="225" cy="157" r="3"/><circle cx="245" cy="156" r="3"/><circle cx="265" cy="157" r="3"/><circle cx="285" cy="160" r="3"/></g>
@@ -144,6 +143,6 @@
  window.ALevelCatchupFigures = {render(topic, id, group) {
   const f = figures[topic + "/" + id + "/" + group];
   if (!f) return "";
-  return `<figure class="kc-visual"><div class="kc-visual-heading"><strong>${f.title}</strong></div><div class="kc-visual-art" tabindex="0" role="region" aria-label="Scrollable science diagram"><svg viewBox="0 0 600 265" role="img" aria-label="${f.alt}" xmlns="http://www.w3.org/2000/svg" style="font: 15px system-ui, sans-serif; fill:#233e4c">${f.art}</svg></div><figcaption>${f.caption}</figcaption></figure>`;
+  return `<figure class="kc-visual"><div class="kc-visual-heading"><strong>${f.title}</strong></div><div class="kc-visual-art${f.compact ? ' kc-visual-art-compact' : ''}"${f.compact ? '' : ' tabindex="0" role="region" aria-label="Scrollable science diagram"'}><svg viewBox="${f.compact ? '0 0 260 292' : '0 0 600 265'}" role="img" aria-label="${f.alt}" xmlns="http://www.w3.org/2000/svg" style="font: 15px system-ui, sans-serif; fill:#233e4c">${f.art}</svg></div><figcaption>${f.caption}</figcaption></figure>`;
  }};
 })();

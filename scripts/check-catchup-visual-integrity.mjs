@@ -5,6 +5,7 @@ import { readFile, access } from "node:fs/promises";
 import vm from "node:vm";
 import { ks3StepVisuals } from "../public/assets/ks3-step-visuals.js";
 import { gcseStepVisuals } from "../public/assets/gcse-step-visuals.js";
+import { moreGcseStepVisuals, gcseHigherVisuals, heatingCurve } from "../public/assets/gcse-more-step-visuals.js";
 import { year9 } from "../public/assets/school-catchup-year9.js";
 import { gcseCatchup } from "../public/assets/gcse-catchup-data.js";
 import { curriculum, motionLessons } from "../public/assets/ks3-lessons.js";
@@ -35,13 +36,21 @@ for (const [id, figures] of Object.entries(ks3StepVisuals)) {
     inspectFigure(figure());
   });
 }
-for (const [id, figures] of Object.entries(gcseStepVisuals)) {
-  assert.ok(gcseCatchup[id], `unknown GCSE concept ${id}`);
-  for (const [index, figure] of Object.entries(figures)) {
-    assert.ok(gcseCatchup[id].steps[index]?.teach, `unknown GCSE teaching step ${id}/${index}`);
-    inspectFigure(figure());
+for (const mapping of [gcseStepVisuals, moreGcseStepVisuals]) {
+  for (const [id, figures] of Object.entries(mapping)) {
+    assert.ok(gcseCatchup[id], `unknown GCSE concept ${id}`);
+    for (const [index, figure] of Object.entries(figures)) {
+      assert.ok(gcseCatchup[id].steps[index]?.teach, `unknown GCSE teaching step ${id}/${index}`);
+      inspectFigure(figure());
+    }
   }
 }
+for (const [id, figure] of Object.entries(gcseHigherVisuals)) {
+  assert.equal(typeof gcseCatchup[id]?.higher, "string", `${id}: expected non-assessment Higher Tier explanation`);
+  assert.equal(gcseCatchup[id].higherVisual, figure, `${id}: Higher Tier figure is not mapped`);
+  inspectFigure(figure());
+}
+inspectFigure(heatingCurve());
 
 let schoolSteps = 0;
 for (const [id, lesson] of Object.entries(year9)) for (const step of lesson.steps) {
@@ -75,14 +84,23 @@ for (const file of ["teaching-f170.js", "teaching-f171.js", "teaching-knowledge.
   vm.runInNewContext(source, {window: humanWindow});
 }
 let assets = 0;
+let photos = 0;
 for (const [id, lesson] of Object.entries(humanWindow.KeystoneHumanLessons)) {
-  const visual = lesson.teachingDiagram;
-  if (!visual) continue;
+  if (lesson.explanationPhoto) {
+    const photo = lesson.explanationPhoto;
+    assert.match(photo.src, /^\/assets\/micrographs\/[a-z0-9-]+\.webp$/, id);
+    for (const key of ["alt", "caption", "source", "credit", "licence", "licenceUrl", "changes"]) assert.ok(photo[key], `${id}: ${key} required for the photo`);
+    assert.ok(photo.width > 0 && photo.height > 0, `${id}: dimensions required`);
+    await access(new URL("../public" + photo.src, import.meta.url));
+    photos++;
+  }
+  for (const visual of [lesson.teachingDiagram, lesson.explanationDiagram].filter(Boolean)) {
   assert.match(visual.src, /^\/human-biology\/[a-z0-9-]+\.svg$/, id);
   assert.ok(visual.alt?.length >= 20 && visual.caption?.length >= 20, `${id}: meaningful alternative and caption required`);
   assert.ok(visual.width > 0 && visual.height > 0, `${id}: dimensions required`);
   await access(new URL("../public" + visual.src, import.meta.url));
   assets++;
+  }
 }
 assert.ok(assets, "expected Human Biology teaching diagrams");
-console.log(`Visual integrity: ${Object.keys(ks3StepVisuals).length} KS3 mappings, ${gcseSteps} GCSE and ${schoolSteps} Year 9 step placements, ${keys.length} A-level figures and ${assets} Human Biology local diagrams checked.`);
+console.log(`Visual integrity: ${Object.keys(ks3StepVisuals).length} KS3 mappings, ${gcseSteps} GCSE and ${schoolSteps} Year 9 step placements, ${keys.length} A-level figures and ${assets} Human Biology local diagrams and ${photos} sourced teaching photos checked.`);

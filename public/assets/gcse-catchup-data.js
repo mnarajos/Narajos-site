@@ -2,6 +2,7 @@ import { investigations } from "./gcse-investigations.js";
 import { question } from "./school-catchup-journey.js";
 import { priorityCatchup } from "./gcse-catchup-priority.js";
 import { gcseStepVisuals } from "./gcse-step-visuals.js";
+import { moreGcseStepVisuals, gcseHigherVisuals, heatingCurve } from "./gcse-more-step-visuals.js";
 import { gcseVisual } from "./gcse-catchup-visuals.js";
 
 function lesson(year, code, title, hook, notice, idea, visual, stages, independent, retry, higher) {
@@ -50,8 +51,7 @@ export const year10Catchup = {
     "Where does the energy go while ice stays at 0 °C?",
     "Trace the horizontal section of the heating curve. Is energy still being supplied?",
     "During melting, transferred energy changes the arrangement and potential energy of particles. Their average kinetic energy and the temperature can stay steady.",
-    ["curve","Heating ice and then water","Energy supplied","Temperature",[
-      ["Temperature",[[0,0],[1,1],[2,2],[3,2],[4,2],[5,3],[6,4]]]],"The horizontal section at 0 °C represents melting."],
+    ["custom", heatingCurve],
     [
       ["Read the rising line","Internal energy is the total kinetic and potential energy of the particles. A temperature rise means their average kinetic energy rises.",
         "What changes on the first rising section?","The average kinetic energy of the particles increases.","Temperature is related to average kinetic energy.",["Each particle gets bigger.","Heating changes how fast the particles move or vibrate. The particles themselves stay the same size."],["The particles stop vibrating.","A temperature rise means the particles are vibrating faster on average."]],
@@ -575,8 +575,10 @@ scaffold(year11Catchup["inheritance-cross"], "Build a genetic cross", [
 
 export const gcseCatchup = {...year10Catchup, ...year11Catchup, ...complementary, ...furtherCatchup, ...priorityCatchup, ...investigations};
 
-for (const [id, visuals] of Object.entries(gcseStepVisuals)) {
-  for (const [index, render] of Object.entries(visuals)) gcseCatchup[id].steps[index].visual = render;
+for (const mapping of [gcseStepVisuals, moreGcseStepVisuals]) {
+  for (const [id, visuals] of Object.entries(mapping)) {
+    for (const [index, render] of Object.entries(visuals)) gcseCatchup[id].steps[index].visual = render;
+  }
 }
 
 // Only repeat an opening figure when it explains this particular teaching step.
@@ -599,6 +601,14 @@ const openingFigureAtStep = {
 };
 for (const [id, indices] of Object.entries(openingFigureAtStep)) {
   for (const index of indices) gcseCatchup[id].steps[index].visual = () => gcseVisual(gcseCatchup[id].visual);
+}
+
+for (const [id, render] of Object.entries(gcseHigherVisuals)) gcseCatchup[id].higherVisual = render;
+
+// Re-render the matching evidence alongside these worked examples. These
+// placements support their illustrated portion; the ledger records any gaps.
+for (const id of ["national-grid", "solution-concentration", "current-potential-difference", "dynamic-equilibrium", "motion-graphs", "motor-effect"]) {
+  gcseCatchup[id].steps[0].worked.visual = () => gcseVisual(gcseCatchup[id].visual);
 }
 
 gcseCatchup["glucose-control"].higher = [

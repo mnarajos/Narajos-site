@@ -166,32 +166,41 @@ try{
   await pilotPage.getByRole("heading",{name:"Catch-up notes",exact:true}).waitFor();
   assert.equal(await pilotPage.locator(".school-opening-hook").textContent(),opening,path);
   assert(await pilotPage.locator(".school-evidence-panel").evaluate(el=>!!(el.compareDocumentPosition(document.querySelector(".school-journey"))&Node.DOCUMENT_POSITION_FOLLOWING)));
+  const openingEvidence=pilotPage.locator("#catchup-evidence");
   if(path.endsWith("topic=cell-structures")){
-   const comparison=pilotPage.locator(".school-cell-comparison img");
+   const comparison=openingEvidence.locator(".school-cell-comparison img");
    assert.equal(await comparison.count(),2);
    for(const diagram of await comparison.all()){
     await diagram.evaluate(img=>img.decode());
     assert.equal(await diagram.evaluate(img=>getComputedStyle(img).filter),"none");
    }
-   await pilotPage.getByRole("checkbox",{name:"Greyscale",exact:true}).check();
-   assert.equal(await comparison.first().evaluate(img=>getComputedStyle(img).filter),"grayscale(1)");
+   await openingEvidence.getByRole("checkbox",{name:"Greyscale",exact:true}).check();
+   for(const diagram of await comparison.all()){
+    assert.equal(await diagram.evaluate(img=>getComputedStyle(img).filter),"grayscale(1)");
+   }
+   const stage=pilotPage.locator(".school-current-stage .school-step-notes");
+   assert(await stage.getByRole("heading",{name:"Inside a cell",exact:true}).isVisible());
+   assert(await stage.getByRole("img",{name:/nucleus containing DNA and ribosomes shown as small dots/}).isVisible());
   }
-  assert(await pilotPage.locator(".school-evidence-visual").isVisible(), path);
-  assert(await pilotPage.locator(".school-evidence-visual").locator('svg[role="img"],img,.catchup-clock-grid').count() > 0, path);
+  const evidenceVisual=openingEvidence.locator(".school-evidence-visual");
+  assert(await evidenceVisual.isVisible(), path);
+  assert(await evidenceVisual.locator('svg[role="img"],img,.catchup-clock-grid').count() > 0, path);
   assert(await pilotPage.getByRole("progressbar",{name:"Lesson progress"}).isVisible());
   assert.equal(await pilotPage.getByRole("progressbar",{name:"Lesson progress"}).getAttribute("value"),"0");
   assert((await pilotPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Year 9 catch-up overflows at phone width");
  }
  await pilotPage.setViewportSize({width:320,height:844});
  await pilotPage.goto(base+"/science-catch-up/lesson/?topic=energy-transfer");
- await pilotPage.getByRole("button",{name:"Reveal both totals",exact:true}).press("Enter");
+ const energyEvidence=pilotPage.locator("#catchup-evidence");
+ await energyEvidence.getByRole("button",{name:"Reveal both totals",exact:true}).press("Enter");
  for(const total of ["100 J × 2 = 200 J", "50 J × 10 = 500 J"]){
-   assert(await pilotPage.getByText(total,{exact:true}).isVisible());
+   assert(await energyEvidence.getByText(total,{exact:true}).isVisible());
  }
  assert((await pilotPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"The energy timeline overflows at 320px");
  await pilotPage.goto(base+"/ks3/lesson/?topic=earth-structure&guided=1");
- const specimenImages=pilotPage.locator("#catchup-evidence .catchup-photo");
- await specimenImages.first().waitFor();
+ const rockEvidence=pilotPage.locator("#catchup-evidence .ks3-explore");
+ const specimenImages=rockEvidence.locator(".catchup-photo");
+ await rockEvidence.getByRole("img",{name:/close-up of sandstone/}).waitFor();
  assert.equal(await specimenImages.count(),2);
  for(const image of await specimenImages.all()){
    await image.evaluate(img=>img.decode());
@@ -199,8 +208,8 @@ try{
    assert.match(await links.nth(0).getAttribute("href"),/^https:\/\/commons\.wikimedia\.org/);
    assert.match(await links.nth(1).getAttribute("href"),/^https:\/\/creativecommons\.org\/licenses\/by/);
  }
- await pilotPage.getByRole("button",{name:"Heat and press solid rock",exact:true}).press("Enter");
- await pilotPage.getByRole("img",{name:/remains solid throughout/}).waitFor();
+ await rockEvidence.getByRole("button",{name:"Heat and press solid rock",exact:true}).press("Enter");
+ await rockEvidence.getByRole("img",{name:/remains solid throughout/}).waitFor();
  assert((await pilotPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"The rock model overflows at 320px");
  await pilotPage.setViewportSize({width:390,height:844});
  await pilotPage.goto(base+"/science-catch-up/lesson/?topic=osmosis");
@@ -209,7 +218,7 @@ try{
  const startCheck=guide.getByRole("button",{name:"Check",exact:true});
  assert.match(await startCheck.textContent(),/Check.*→/);
  assert(!(await pilotPage.locator(".school-lesson-table").isVisible()));
- assert(await pilotPage.getByText("Net water movement A → B",{exact:true}).isVisible());
+ assert(await pilotPage.locator("#catchup-evidence").getByText("Net water movement A → B",{exact:true}).isVisible());
  const osmosisBreadcrumb=pilotPage.getByRole("navigation",{name:"Breadcrumb",exact:true});
  assert.equal(await osmosisBreadcrumb.getByRole("link",{name:"Science Catch-up",exact:true}).getAttribute("href"),"/science-catch-up/");
  assert.equal(await osmosisBreadcrumb.getByRole("link",{name:"← Year 9 topics",exact:true}).getAttribute("href"),"/science-catch-up/?year=9");
@@ -540,9 +549,10 @@ try{
  assert((await desktop.locator("main").innerText()).includes("Key idea"),"A-level key knowledge step not visible");
  await screen(desktop,"alevel-catchup");
  await desktop.goto(base+"/alevel/#catchup-a1-enzfactors",{waitUntil:"load"});
- await desktop.locator(".kc-visual-art svg").waitFor({state:"visible"});
+ const enzymeRateVisual=desktop.getByRole("img",{name:/With enzyme concentration and other conditions fixed/});
+ await enzymeRateVisual.waitFor({state:"visible"});
  assert.equal(await desktop.locator(".kc-simulation-link").count(),2,"Enzyme catch-up should link to both relevant simulations");
- assert((await desktop.locator(".kc-visual-art svg").getAttribute("aria-label")).includes("reaction rate"),"Accessible enzyme schematic missing");
+ assert.match(await enzymeRateVisual.getAttribute("aria-label"),/rate curve rises.*plateau/,"Accessible enzyme schematic missing");
  await screen(desktop,"alevel-enzyme-visual");
 
  await checkPage(desktop,"human-biology");

@@ -40,6 +40,26 @@ export async function checkGCSECatchup(browser, base) {
         await page.evaluate(key => localStorage.removeItem(key), `narajos.catchup.v1.${lesson.year}.${id}`);
       }
     }
+    // Higher Tier teaching figures belong inside the extension, not the
+    // assessment-stage panel. Worked examples need their own adjacent copy.
+    for (const [id, lesson] of Object.entries(gcseCatchup)) {
+      if (lesson.higherVisual) {
+        await page.goto(lessonURL(id, lesson.year));
+        const extension = page.locator("#catchup-evidence details").filter({has: page.locator("summary:text-is('Higher Tier')")});
+        await extension.locator("summary").click();
+        const diagram = extension.locator("svg[role=img]");
+        assert.equal(await diagram.count(), 1, `${id}: missing Higher Tier diagram`);
+        const alternative = (await diagram.getAttribute("aria-label"))?.trim();
+        assert(alternative, `${id}: missing Higher Tier text alternative`);
+        const stageLabels = await journey.locator(".school-current-stage svg[role=img]").evaluateAll(items => items.map(item => item.getAttribute("aria-label")));
+        assert(!stageLabels.includes(alternative), `${id}: Higher Tier figure leaked into assessment stage`);
+      }
+      if (lesson.steps[0]?.worked?.visual) {
+        await page.goto(lessonURL(id, lesson.year));
+        const example = page.locator(".school-current-stage .school-worked-example");
+        assert(await example.locator("figure, table").count(), `${id}: missing worked-example figure`);
+      }
+    }
     for (const year of [10,11]) {
       await page.goto(base + "/science-catch-up/?year=" + year);
       const ids = Object.entries(gcseCatchup).filter(([,lesson]) => lesson.year === year).map(([id]) => id);

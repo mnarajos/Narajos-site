@@ -119,6 +119,7 @@ export async function checkCatchupScaffolds(browser, base) {
 
     await page.goto(base + "/science-catch-up/lesson/?topic=atomic-number");
     assert(await journey.getByText(/\+11 from the protons and −10/).isVisible());
+    assert(await journey.getByRole("region", {name: "Isotope and ion comparisons"}).isVisible());
     await reopen.press("Enter");
     assert(await dialog.getByRole("table", {name: "Three sodium examples"}).isVisible());
     await choose("11 protons");
@@ -132,12 +133,19 @@ export async function checkCatchupScaffolds(browser, base) {
     await reopen.press("Enter");
     await choose("A, because its power is higher.");
     assert(await journey.getByText("Calculate efficiency", {exact: true}).isVisible());
+    assert(await journey.getByRole("img", {name: /A lamp receives 120 joules/}).isVisible());
     await check.press("Enter");
     await choose("40%");
     await check.press("Enter");
     await choose("35%, because 70 ÷ 200 = 0.35", "Finish guided checks");
     const powerProgress = await page.evaluate(() => JSON.parse(localStorage.getItem("narajos.catchup.v1.9.energy-transfer")));
     assert.deepEqual(Object.values(powerProgress.outcomes), ["supported", "supported", "independent"]);
+    for (const [id, name] of [["space", /Earth spins on its axis/], ["electricity", /A cell, closed switch and wire coil/], ["acids-and-alkalis", /On a pH scale/]]) {
+      await page.goto(base + "/ks3/lesson/?topic=" + id + "&guided=1");
+      const explanation = page.locator(".ks3-explanation");
+      assert(await explanation.getByRole("img", {name}).isVisible(), id + " is missing its explanation figure");
+      await narrow(explanation, id + " explanation");
+    }
     assert.deepEqual(errors, [], "JavaScript errors in Year 7–9 catch-up");
   } finally {
     await page.close();

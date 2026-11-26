@@ -1,22 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="480" height="300" viewBox="0 0 480 300" role="img" aria-labelledby="title description">
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="310" viewBox="0 0 280 310" role="img" aria-labelledby="title description">
   <title id="title">Exchange across a chorionic villus</title>
   <desc id="description">A fetal capillary inside a chorionic villus is separated from the maternal blood surrounding it by the placental barrier. Oxygen moves from maternal to fetal blood and carbon dioxide moves in the opposite direction.</desc>
-  <rect width="480" height="300" rx="12" fill="#f9f3ef"/>
-  <path d="M194 48 C111 76 103 227 194 253 C252 271 367 243 380 167 C393 94 319 44 194 48Z" fill="#e8f4ef" stroke="#52786e" stroke-width="5"/>
-  <path d="M258 76 C322 76 340 112 340 153 C340 196 318 226 258 226" fill="none" stroke="#5674a4" stroke-width="25" stroke-linecap="round"/>
-  <path d="M258 76 C322 76 340 112 340 153 C340 196 318 226 258 226" fill="none" stroke="#e2ebf6" stroke-width="16" stroke-linecap="round"/>
-  <g font-family="system-ui, sans-serif" fill="#253d4a" font-size="15" font-weight="600">
-    <text x="20" y="30">Maternal blood</text>
-    <text x="20" y="49">around villus</text>
-    <text x="295" y="26">Chorionic villus</text>
-    <text x="290" y="282">Fetal capillary</text>
-    <text x="29" y="126">Oxygen</text>
-    <text x="29" y="188">Carbon dioxide</text>
-    <text x="22" y="277">Placental barrier</text>
+  <rect width="280" height="310" rx="12" fill="#f9f3ef"/>
+  <path d="M135 60 C77 65 69 184 130 207 C172 223 235 204 237 143 C239 91 204 59 135 60Z" fill="#e8f4ef" stroke="#52786e" stroke-width="4"/>
+  <path d="M158 82 C198 82 213 109 213 141 C213 173 198 195 158 195" fill="none" stroke="#5674a4" stroke-width="19" stroke-linecap="round"/>
+  <path d="M158 82 C198 82 213 109 213 141 C213 173 198 195 158 195" fill="none" stroke="#e2ebf6" stroke-width="12" stroke-linecap="round"/>
+  <g font-family="system-ui, sans-serif" fill="#253d4a" font-size="16" font-weight="600">
+    <text x="12" y="22">Maternal blood</text><text x="12" y="40">around villus</text>
+    <text x="16" y="104">Oxygen</text><text x="16" y="151">Carbon</text><text x="16" y="168">dioxide</text>
+    <text x="16" y="251">Placental barrier</text><text x="145" y="289">Fetal capillary</text>
+    <text x="142" y="27">Chorionic villus</text>
   </g>
   <g fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M112 140H337 M325 133l12 7-12 7" stroke="#1a766a" stroke-width="4"/>
-    <path d="M310 209H112 M124 202l-12 7 12 7" stroke="#a45438" stroke-width="4"/>
-    <path d="M140 268L166 239 M340 267L324 226 M319 31L302 51" stroke="#425c66" stroke-width="1.8"/>
+    <path d="M24 120H213 M202 113l11 7-11 7" stroke="#1a766a" stroke-width="3.5"/>
+    <path d="M208 184H25 M36 177l-11 7 11 7" stroke="#a45438" stroke-width="3.5"/>
+    <path d="M105 238L108 200 M203 275L205 182 M202 32L196 66" stroke="#425c66" stroke-width="1.7"/>
   </g>
 </svg>

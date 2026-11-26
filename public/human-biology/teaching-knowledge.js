@@ -62,8 +62,8 @@
   window.KeystoneHumanLessons["f172/a4"] = {
     goal: "Trace how a change in gene expression could affect the function of a target tissue.",
     explain: ["Gene therapy aims to alter gene activity in target cells. Some approaches supply a functional copy. Others change expression or edit DNA. Delivery and the proportion of target cells reached affect the outcome."],
-    teachingDiagram: {src:"/human-biology/gene-delivery.svg", width:480, height:300,
-      alt:"A simplified target cell with a nucleus. A functional gene copy is delivered into the cell, followed by expression producing a functional protein. An untreated cell is also shown, indicating that delivery may not reach all cells.",
+    teachingDiagram: {src:"/human-biology/gene-delivery.svg", width:280, height:300, compact:true,
+      alt:"A functional gene copy is delivered to a simplified target cell with a nucleus, followed by expression producing a functional protein. The diagram notes that some cells may not receive the copy.",
       caption:"Follow this example from delivery to protein production. Other gene therapies use different approaches; delivery does not ensure expression in every target cell."},
     model: ["In a fictional disorder, target cells make too little of a functional protein.", "If treated target cells receive and express a functional copy, they may make more of that protein.", "Improvement depends on whether enough relevant cells make sufficient protein. Somatic treatment affects treated cells rather than routinely altering inheritance."],
     guided: choice("The new copy reaches a cell but is not expressed. What is missing?", 0,
@@ -117,7 +117,7 @@
   window.KeystoneHumanLessons["f174/a1"] = {
     goal: "Explain why energy intake alone gives limited information about nutritional adequacy.",
     explain: ["Carbohydrate and fats supply energy. Protein supplies amino acids for synthesis, and can also contribute energy. Vitamins and minerals are needed for particular physiological functions. Fibre and water also have roles."],
-    teachingDiagram: {src:"/human-biology/meals-energy-iron.svg", width:480, height:300,
+    teachingDiagram: {src:"/human-biology/meals-energy-iron.svg", width:280, height:300, compact:true,
       alt:"Two fictional meals have equal-length bars for similar energy. Meal A contains a substantial iron source, whereas meal B does not. The comparison is qualitative and does not show measured values.",
       caption:"Compare the equal energy bars with the iron-source labels. Similar energy alone does not establish that meals contribute equally to iron intake."},
     model: ["Two fictional meals supply similar energy.", "Only one provides a substantial iron source. Iron supports haemoglobin production. Their energy totals cannot establish that they contribute equally to iron intake."],
@@ -243,7 +243,7 @@
     "f175/a2": {
       goal: "Explain how placental structure supports exchange between maternal and fetal circulations.",
       explain: ["Chorionic villi contain fetal vessels and are bathed by maternal blood. The circulations remain largely separate. A large area and short diffusion distances help exchange."],
-      teachingDiagram: {src:"/human-biology/placental-exchange.svg", width:480, height:300,
+      teachingDiagram: {src:"/human-biology/placental-exchange.svg", width:280, height:310, compact:true,
         alt:"Schematic section of a chorionic villus. Maternal blood surrounds the villus, and a fetal capillary lies inside it. Oxygen moves from maternal blood across the placental barrier to fetal blood; carbon dioxide moves in the opposite direction. The circulations are separated by the barrier.",
         caption:"Follow oxygen across the placental barrier into a fetal capillary; carbon dioxide moves the other way. This schematic shows one villus, not its true scale."},
       nodes: ["Maternal blood", "Placental barrier", "Fetal circulation"],
@@ -269,7 +269,7 @@
     "f175/a4": {
       goal: "Distinguish IVF and ICSI by the biological step each method addresses.",
       explain: ["In vitro fertilisation (IVF) involves fertilisation outside the body and later embryo transfer. Intracytoplasmic sperm injection (ICSI) is a particular fertilisation method within an IVF cycle in which one sperm is injected into an oocyte."],
-      teachingDiagram: {src:"/human-biology/ivf-icsi.svg", width:480, height:300,
+      teachingDiagram: {src:"/human-biology/ivf-icsi.svg", width:280, height:300, compact:true,
         alt:"Comparison of fertilisation methods outside the body: conventional IVF brings sperm and an oocyte together, while ICSI injects one sperm into an oocyte. Both can be followed by embryo transfer, then implantation may occur later.",
         caption:"Compare how sperm reaches the oocyte. Transfer follows embryo development; implantation is a later event and is not guaranteed."},
       model: ["When fertilisation is attempted outside the body, the usual journey through the oviduct is bypassed.", "Transfer places an embryo in the uterus. Implantation is still a later process, and its occurrence is uncertain."],
@@ -326,8 +326,8 @@
     "f176/a3": {
       goal: "Distinguish nociceptive signalling from the experience of pain.",
       explain: ["Nociceptors detect potentially damaging stimuli. Nociception is the neural encoding and processing of such stimuli. Pain is an experience shaped by processing, context and other influences."],
-      teachingDiagram: {src:"/human-biology/nociception-pathway.svg", width:480, height:300,
-        alt:"A potentially damaging stimulus activates a nociceptor. Sensory signalling travels to the spinal cord; pathways lead to a muscle withdrawal response and to brain processing involved in the experience of pain. Context and other influences also affect the experience.",
+      teachingDiagram: {src:"/human-biology/nociception-pathway.svg", width:280, height:300, compact:true,
+        alt:"A potentially damaging stimulus activates a nociceptor. Sensory signalling travels to the spinal cord; pathways lead to a withdrawal response and to brain processing. Context also influences the experience of pain.",
         caption:"Follow the sensory signal to the spinal cord, then compare the pathway to a withdrawal response with signalling to the brain. Pain is an experience influenced by more than the incoming signal."},
       model: ["A hot object activates nociceptors and signals travel into the CNS.", "A withdrawal reflex can occur while signals also travel to brain regions involved in the experience of pain."],
       guided: choice("A rapid withdrawal starts before someone can report pain. What is consistent with that observation?", 0,
@@ -426,4 +426,39 @@
         "More people were rated as improved in the treatment group. The small trial and potential rating bias limit how strongly the difference supports a treatment effect. Blinding would keep the assessor from knowing each participant's group.", ["Separate what random allocation changes at the start from what blinding changes during measurement."])
     }
   });
+})();
+
+// Compact original diagrams for the named explanation and worked-example blocks.
+(function () {
+  const figures = {
+    "f172/a1": {src:"/human-biology/meiosis.svg", alt:"One pair of homologous chromosomes carries alleles R and r. After DNA replication each homologue consists of two joined sister chromatids carrying the same allele.", caption:"Compare homologues carrying R and r, then follow replication to joined sisters. The table in the worked example follows their separation in meiosis.", compact:true},
+    "f172/a3": {src:"/human-biology/genetic-test.svg", alt:"A schematic DNA region has variants A and B. A test checks variant A, while variant B is outside its scope. A not detected does not rule out B.", caption:"Notice the boundary of this fictional test: a result for A does not establish whether B is present.", compact:true},
+    "f173/a3": {src:"/human-biology/chromatography.svg", alt:"Chromatography paper has a pencil baseline and solvent front. Standard X and one unknown spot travelled the same distance; standard Y and a second unknown spot travelled different distances.", caption:"Compare each spot with the standards from the same baseline. A matching position is consistent with, but does not prove, identity.", compact:true},
+    "f174/a3": {src:"/human-biology/digestion.svg", alt:"Starch is digested to glucose in the gut lumen. Glucose crosses the intestinal lining into blood and can reach tissues, where it may be used in respiration or stored.", caption:"Follow the glucose: digestion makes it available, absorption moves it into blood, and tissues use or store it.", compact:true},
+    "f175/a3": {src:"/human-biology/oviduct-obstruction.svg", alt:"Simplified reproductive anatomy shows one ovary, an oviduct with an obstruction and the uterus. The lesson example specifies that both oviducts are obstructed.", caption:"Locate the block in the oviduct. In the example both tubes are obstructed, so the chance of sperm and oocyte meeting is reduced. One side is shown and the drawing is not to scale.", compact:true},
+    "f176/a1": {src:"/human-biology/sensory-motor-route.svg", alt:"A receptor sends sensory signals along a peripheral route towards the brain and spinal cord. A motor route carries output from the central nervous system to a muscle effector.", caption:"Follow sensory input towards the central nervous system and motor output back to the muscle. PNS means peripheral nervous system.", compact:true},
+    "f177/a2": {src:"/human-biology/trial-comparison.svg", alt:"Two groups of 24 participants are represented by 24 circles each. Fifteen treatment-group circles and eleven comparison-group circles are filled, representing people who improved after one week.", caption:"Compare the filled circles out of equal-sized groups. Some people improved in the comparison group too; this small fictional study still leaves uncertainty.", compact:true},
+    "f177/a1": {src:"/human-biology/receptor.svg", alt:"An agonist binds and activates a receptor. A competitive antagonist occupies its binding site without activating it, reducing activation by the agonist.", caption:"Compare the effect after binding: the agonist activates the receptor; the competitive antagonist occupies the site without activating it.", compact:true}
+  };
+  window.KeystoneHumanLessons["f173/a2"].explanationPhoto = {
+    src:"/assets/micrographs/hb-blood-cells-sem.webp", width:500, height:326,
+    alt:"Colourised scanning electron micrograph showing a red blood cell at left, a platelet at centre and a white blood cell at right; their external surfaces are visible.",
+    caption:"Notice the external surfaces: this scanning electron micrograph shows a red blood cell, platelet and white blood cell. Colour was added.",
+    source:"https://commons.wikimedia.org/wiki/File:Red_White_Blood_cells.jpg",
+    credit:"Electron Microscopy Facility, NCI-Frederick", licence:"Public domain (US government work)",
+    licenceUrl:"https://commons.wikimedia.org/wiki/Template:PD-USGov", changes:"Converted to WebP; no crop"
+  };
+  window.KeystoneHumanLessons["f176/a1"].explanationDiagram = {
+    src:"/human-biology/brain-regions.svg", width:280, height:300, compact:true,
+    alt:"Simplified side view of the brain. The cerebrum forms the large upper part. The cerebellum lies toward the back, behind the brainstem; the medulla connects with the spinal cord below.",
+    caption:"Locate the cerebrum, cerebellum and medulla in this simplified side view. The medulla continues into the spinal cord."
+  };
+  window.KeystoneHumanLessons["f173/a3"].explanationDiagram = {
+    src:"/human-biology/benedicts-controls.svg", width:280, height:270, compact:true,
+    alt:"Two control tubes after heating with Benedict's reagent. A known reducing-sugar sample is orange, an expected positive result. A sample without reducing sugar is blue, an expected negative result.",
+    caption:"Compare the expected control results. If the known positive stays blue, the test has not demonstrated detection and the unknown result is inconclusive."
+  };
+  for (const [id, figure] of Object.entries(figures)) {
+    window.KeystoneHumanLessons[id].teachingDiagram = {width:280, height:300, ...figure};
+  }
 })();

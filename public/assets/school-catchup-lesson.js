@@ -105,7 +105,9 @@ if (Object.hasOwn(year9, id) || Object.hasOwn(gcseCatchup, id)) {
     } else {
       summary.textContent = "Higher Tier";
       detail.textContent = lesson.higher.replace(/^Higher Tier · /, "");
-      extension.append(summary, detail);
+      extension.append(summary);
+      if (lesson.higherVisual) extension.append(lesson.higherVisual());
+      extension.append(detail);
     }
     model.append(extension);
   }

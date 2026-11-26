@@ -108,6 +108,10 @@
 .hb-teaching-diagram img {
   max-inline-size: none;
 }
+.hb-teaching-diagram-compact img {
+  max-inline-size: min(100%, 320px);
+  margin-inline: auto;
+}
 .hb-diagram-scroll-hint { display: none; }
 @media (max-width: 540px) {
   .hb-diagram-scroll-hint { display: block; font-size: .85rem; margin-block-start: .35rem; }
