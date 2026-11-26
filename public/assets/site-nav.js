@@ -28,7 +28,7 @@
  nav.className="site-nav";
  nav.setAttribute("aria-label","Main navigation");
  nav.innerHTML=`
-  <details><summary><span class="nav-full">Learning Companions</span><span class="nav-short" aria-hidden="true">Study tools</span></summary>
+  <details><summary>Learning Tools</summary>
    <div class="site-dropdown">
     <div class="site-dropdown-group" role="group" aria-labelledby="nav-years">
      <p id="nav-years">Catch up by year</p>
@@ -44,7 +44,7 @@
     </div>
    </div>
   </details>
-  <details class="teacher-menu"><summary>Teacher Tools</summary>
+  <details class="teacher-menu"><summary>Teaching Tools</summary>
    <div class="site-dropdown"><a href="/teacher/">Focused Questions</a><a href="/teaching/focused-writing/">Focused Writing</a></div></details>`;
  header.append(nav);
 

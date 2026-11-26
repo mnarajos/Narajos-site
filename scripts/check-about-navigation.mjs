@@ -8,6 +8,9 @@ export async function checkAboutNavigation(browser, base) {
   await page.goto(base+"/");
   const nav=page.getByRole("navigation",{name:"Main navigation"});
   const menus=nav.locator("details");
+  assert.deepEqual(await nav.locator("summary").allTextContents(),["Learning Tools","Teaching Tools"]);
+  assert(await nav.getByText("Learning Tools",{exact:true}).isVisible());
+  assert(await nav.getByText("Teaching Tools",{exact:true}).isVisible());
   assert.equal(await menus.count(),2,"Only the learning and teacher menus should be top-level");
   const learning=menus.first(), summary=learning.locator("summary"), dropdown=learning.locator(".site-dropdown");
   if(touch) await summary.tap(); else await summary.click();
