@@ -34,6 +34,11 @@ jobs:
         run: node scripts/check-learning-feedback.mjs
       - name: Test A-level practical activities
         run: node scripts/check-alevel-practicals.mjs
+      - name: Test RP7 chromatography simulation
+        run: |
+          node scripts/check-rp7-chromatography.mjs
+          node scripts/check-rp7-mcq-feedback.mjs
+          node scripts/check-rp7-accessibility.mjs
       - name: Test A-level investigation planning
         run: node scripts/check-alevel-plan-investigation.mjs chromium
       - name: Test RP9 respiration simulation

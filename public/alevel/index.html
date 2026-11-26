@@ -6333,6 +6333,7 @@ function showCatchup(t,c,step,focus,returnRoute){
  var h='<p class="crumb"><a href="#catchup-'+t+'">← Catch-up topics</a></p><h1>'+esc(c.title)+'</h1>';
  var practical=practicalFor(t,c.id);
  var practicalAction=practical?'<p>'+practicalLink(practical[0])+'</p>':"";
+ if(t==='a5'&&c.id==='chromat')practicalAction+='<p><a class="btn" href="/alevel/chromatography/">Open the RP7 simulation</a></p>';
  if(t==='a2'&&c.id==='active')practicalAction+='<p><a class="al-quiet-link" href="/alevel/independent-practice/co-transport/">Independent Practice: Co-transport</a> · approximately 20–25 minutes</p>';
  if(!returnRoute)h+=practicalAction;
  if(returnRoute){
