@@ -144,7 +144,6 @@ async function checkCourseContexts(page) {
   await close(page).click();
 
   await page.goto(base + "/science-catch-up/lesson/?topic=salts-and-reactivity&year=10");
-  await page.getByRole("button", {name:"Pause check"}).click();
   const foundationOxidation = await lookup(page, "oxidation", "Oxidation");
   assert.match(foundationOxidation, /gaining oxygen/i);
   assert.doesNotMatch(foundationOxidation, /electron/i);
@@ -180,9 +179,30 @@ async function checkCourseContexts(page) {
   assert.match(await lookup(page, "erythrocyte", "Erythrocyte"), /red blood cell/i);
   await close(page).click();
 
+  await page.goto(base + "/human-biology/#catchup/f170/1.1.5.meiosis");
+  for (const [query, name, meaning] of [
+    ["allele","Allele",/version of a gene/i],
+    ["homologues","Homologous chromosomes",/same genes/i],
+    ["haploid","Haploid",/one set of chromosomes/i],
+    ["antigen","Antigen",/immune system/i]
+  ]) {
+    assert.match(await lookup(page, query, name), meaning);
+    await close(page).click();
+  }
+
+  await page.goto(base + "/science-catch-up/lesson/?topic=vaccine-memory&year=10");
+  assert.match(await lookup(page, "vaccine", "Vaccine"), /preparation/i);
+  await close(page).click();
+  assert.match(await lookup(page, "vaccination", "Vaccination"), /giving a vaccine/i);
+  await close(page).click();
+  await page.goto(base + "/science-catch-up/lesson/?topic=respiration-exercise&year=11");
+  assert.match(await lookup(page, "aerobic respiration", "Aerobic respiration"), /use oxygen/i);
+  await close(page).click();
+  assert.match(await lookup(page, "anaerobic respiration", "Anaerobic respiration"), /without using oxygen/i);
+  await close(page).click();
+
   await page.goto(base + "/science-catch-up/lesson/?topic=wave-motion&year=11");
   assert.match(await page.locator("h1").innerText(), /wave/i);
-  await page.getByRole("button", { name: "Pause check" }).click();
   const waveMeaning = await lookup(page, "wavelength", "Wavelength");
   assert.match(waveMeaning, /distance.*neighbouring waves/i);
   await close(page).click();
@@ -267,6 +287,18 @@ async function checkAssessment(page) {
   await page.locator("#act").click();
   assert.equal(await page.evaluate(() => [...window.__k.ev("L.first").values()][0]), "independent");
 
+  await page.goto(base + "/gcse/#mix-c1");
+  await page.locator("#mixf").getByRole("button", {name:"Start",exact:true}).click();
+  await page.evaluate(() => window.__k.ev('L.queue[L.i]=L.mix.all.find(x=>x.q.q==="What happens in an exothermic reaction?").q; L.t="c5"; showQ()'));
+  await toolbar(page).waitFor();
+  await term(page, "gcse-exothermic").press("Enter");
+  assert.match(await panel(page).innerText(), /count as help/i);
+  await close(page).click();
+  await page.locator('#qf input[name="a"][value="0"]').check();
+  await page.locator("#act").click();
+  assert.match(await lookup(page, "exothermic", "Exothermic"), /surroundings/i);
+  await close(page).click();
+
   await page.goto(base + "/human-biology/#catchup/f170/1.2.1");
   await page.getByRole("button", {name:"Show next step"}).click();
   await page.getByRole("button", {name:"Show next step"}).click();
@@ -285,9 +317,22 @@ async function checkAssessment(page) {
   assert.equal(humanRecord.guided.vocabularyHelp, true);
 
   await page.goto(base + "/science-catch-up/lesson/?topic=photosynthesis-limits&year=10");
+  await term(page, "gcse-photosynthesis").first().press("Enter");
+  assert.match(await panel(page).locator(".vocabulary-meaning").innerText(), /plants and algae/i);
+  await close(page).click();
+  assert.match(await lookup(page, "limiting factor", "Limiting factor"), /restricts the rate/i);
+  await close(page).click();
+  await page.locator(".school-current-stage").getByRole("button", {name:/^(Check|Resume check)$/}).click();
   await term(page, "gcse-photosynthesis").last().press("Enter");
   assert.match(await panel(page).innerText(), /count as help/i);
   await close(page).click();
+  await page.getByRole("button", {name:"Pause check"}).click();
+  await toolbar(page).click();
+  await search(page).fill("photosynthesis");
+  assert.equal(await panel(page).getByRole("button", {name:"Photosynthesis",exact:true}).count(), 0,
+    "Pausing an unfinished attempt cannot bypass its assessment policy");
+  await close(page).click();
+  await page.getByRole("button", {name:"Resume check"}).click();
   await toolbar(page).click();
   await search(page).fill("photosynthesis");
   await panel(page).getByRole("button", {name:"Photosynthesis",exact:true}).click();

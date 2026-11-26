@@ -52,7 +52,7 @@
     }
     const visible = Boolean(topic) && (
       practical || teaching || catchup || /^lesson-/.test(route) || /^learn\//.test(route) ||
-      /^(?:challenge|skills|practice|cards)\//.test(route) || /^practice-/.test(route)
+      /^(?:challenge|skills|practice|cards)\//.test(route) || /^(?:practice|mix)-/.test(route)
     );
     return { route, topic, subject, tier, catchup, visible,
       contexts: new Set([route, topic, subject, catchup ? "catchup" : "revision"]),

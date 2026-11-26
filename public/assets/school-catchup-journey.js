@@ -154,7 +154,9 @@ export function mountJourney(host, model, lesson) {
   }
 
   let viewOnly = false;
-  let paused = false;
+  // Teaching is available before the learner deliberately enters a check.
+  // Saved responses remain available through Resume check after a reload.
+  let paused = inlineCheck;
   let shownIndex = state.step;
   const savedQuestion = (state.repeating && retry) || steps[state.step];
   const changedPrompt = state.prompt && state.prompt !== savedQuestion.prompt;
@@ -217,6 +219,11 @@ export function mountJourney(host, model, lesson) {
         stage.append(dialog);
         renderCheck();
       } else {
+        // Pausing an unfinished attempt must not make its answer available
+        // through the teaching-panel lookup before the same check is resumed.
+        if (inlineCheck && state.wordHelpAttempt && !state.correct && !state.explained) {
+          window.SiteVocabulary?.setAssessment(stage, {});
+        }
         stage.append(checkButton(state.open ? "Resume check" : "Check", showCheck));
       }
       if (state.step > 0 && !inlineCheck) stage.append(button("Catch-up notes", () => showEvidence()));
@@ -281,6 +288,7 @@ export function mountJourney(host, model, lesson) {
     viewOnly = review;
     if (!review) {
       state.open = true;
+      if (inlineCheck) state.wordHelpAttempt = true;
       write();
     }
     if (inlineCheck && !review) {
@@ -539,7 +547,8 @@ export function mountJourney(host, model, lesson) {
     } else {
       if (evidence && !inlineCheck) evidence.hidden = true;
       state.open = false;
-      if (inlineCheck) paused = false;
+      state.wordHelpAttempt = false;
+      if (inlineCheck) paused = true;
       if (atEnd) state.done = true;
       else state.step++;
       if (inlineCheck) { write(); renderStages({animateCompletion: atEnd}); }

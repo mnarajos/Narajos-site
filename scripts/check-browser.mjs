@@ -298,8 +298,7 @@ try{
   assert.equal(await catalogueWithoutGroupBy.locator(".site-nav [aria-current=page]").textContent(),"Year "+year);
   const topic=catalogueWithoutGroupBy.locator(".school-topic-list").getByRole("link").first();
   await topic.click();
-  if(year < 10) await catalogueWithoutGroupBy.locator(".school-journey").getByRole("button",{name:"Check",exact:true}).waitFor();
-  else await catalogueWithoutGroupBy.locator(".school-check-inline input").first().waitFor();
+  await catalogueWithoutGroupBy.locator(".school-journey").getByRole("button",{name:/^(Check|Resume check)$/}).waitFor();
  }
  await catalogueWithoutGroupBy.close();
  const helpPage=await browser.newPage({viewport:{width:320,height:780},isMobile:true,hasTouch:true});
@@ -319,7 +318,7 @@ try{
  ]){
   await helpPage.goto(base+path);
   for(let index=0;index<steps;index++){
-   if(year < 10) await helpJourney.getByRole("button",{name:"Check",exact:true}).tap();
+   await helpJourney.getByRole("button",{name:/^(Check|Resume check)$/}).tap();
    if(index===0){
     await openHelp();
     await helpDialog.getByRole("button",{name:"Need a clue?",exact:true}).press("Enter");
@@ -339,7 +338,7 @@ try{
     } else if(year >= 10) await helpPage.getByRole("button",{name:"Pause check",exact:true}).tap();
     else await helpDialog.getByRole("button",{name:"Save and pause",exact:true}).tap();
     await helpPage.reload();
-    if(year < 10) await helpJourney.getByRole("button",{name:"Resume check",exact:true}).tap();
+    await helpJourney.getByRole("button",{name:"Resume check",exact:true}).tap();
     assert(await helpDialog.getByRole("heading",{name:"Explanation",exact:true}).isVisible());
    }
    await helpDialog.getByRole("button",{name:index===steps-1&&!hasFollowUp?"Finish guided checks":"Continue",exact:true}).tap();
@@ -385,6 +384,7 @@ try{
  await pilotPage.goto(base+"/science-catch-up/lesson/?topic=vaccine-memory&year=10");
  const seniorCheck=guide.locator(".school-check-inline");
  for(const [index,answer] of ["Specific antigens","Their immune system has already responded to its antigens.","The virus lacks the bacterial targets of antibiotics.","Those antibodies may not bind to the new pathogen’s antigens."].entries()){
+  await guide.getByRole("button",{name:/^(Check|Resume check)$/}).click();
   if(index===0){
    await seniorCheck.getByRole("radio",{name:"Any body cell",exact:true}).check();
    await seniorCheck.getByRole("button",{name:"Check",exact:true}).click();

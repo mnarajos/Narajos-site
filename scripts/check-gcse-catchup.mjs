@@ -82,6 +82,7 @@ export async function checkGCSECatchup(browser, base) {
         if (id === "motor-effect" && index < lesson.steps.length - 1) {
           assert(await journey.locator(".school-current-stage h3").evaluate(el => el === document.activeElement));
           await page.reload();
+          await openCheck();
           assert(await dialog.getByRole("heading", {name: lesson.steps[index + 1].prompt, exact: true}).isVisible());
         }
       }

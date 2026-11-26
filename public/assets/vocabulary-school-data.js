@@ -1725,7 +1725,9 @@ window.SiteVocabularyData.push({
       meaning:"A molecule recognised by the immune system that can trigger a specific immune response."},
     {id:"gcse-antibody", term:"Antibody", variants:["antibodies"],
       meaning:"A protein made by white blood cells that binds to a specific antigen."},
-    {id:"gcse-vaccination", term:"Vaccination", variants:["vaccine","vaccines"],
+    {id:"gcse-vaccine", term:"Vaccine", variants:["vaccines"],
+      meaning:"A preparation that trains the immune system to recognise a particular pathogen.", here:"It can contain harmless antigens or instructions for making them."},
+    {id:"gcse-vaccination", term:"Vaccination", variants:["vaccinated"],
       meaning:"Giving a vaccine to prepare the immune system to respond to a pathogen."},
     {id:"gcse-antibiotic", term:"Antibiotic", variants:["antibiotics"],
       meaning:"A medicine that kills bacteria or stops their growth.", here:"Antibiotics do not treat viral infections."}
@@ -1734,7 +1736,11 @@ window.SiteVocabularyData.push({
   group("biology", ["b4"], "/science-catch-up/lesson/?topic=photosynthesis-limits", [
     {id:"gcse-photosynthesis", term:"Photosynthesis", status:"prerequisite",
       meaning:"A process in which plants and algae use light energy to make glucose from carbon dioxide and water, releasing oxygen."},
-    {id:"gcse-respiration", term:"Respiration", variants:["aerobic respiration","anaerobic respiration"], support:"selective",
+    {id:"gcse-aerobic-respiration", term:"Aerobic respiration", support:"selective",
+      meaning:"Reactions in cells that use oxygen to transfer energy from substances such as glucose."},
+    {id:"gcse-anaerobic-respiration", term:"Anaerobic respiration", support:"selective",
+      meaning:"Reactions in cells that transfer energy from glucose without using oxygen.", here:"In human muscles, this produces lactic acid."},
+    {id:"gcse-respiration", term:"Respiration", support:"selective",
       meaning:"Chemical reactions in cells that transfer energy from substances such as glucose.", here:"Aerobic respiration uses oxygen. Breathing moves air into and out of the lungs."},
     {id:"gcse-limiting-factor", term:"Limiting factor", variants:["limiting factors"], support:"selective",
       meaning:"A condition that restricts the rate of a process.", example:"Low light can limit photosynthesis."}
@@ -2044,7 +2050,7 @@ window.SiteVocabularyData.push({
     "active-transport": ["gcse-active-transport"],
     "mitosis": ["gcse-mitosis"],
     "gas-exchange": ["gcse-surface-area"],
-    "respiration-exercise": ["gcse-respiration"],
+    "respiration-exercise": ["gcse-respiration", "gcse-aerobic-respiration", "gcse-anaerobic-respiration"],
     "reflex-response": ["gcse-reflex", "gcse-receptor", "gcse-stimulus"],
     "ruler-drop": ["gcse-reaction-time"],
     "selection-and-variation": ["gcse-natural-selection"],
@@ -2137,7 +2143,7 @@ window.SiteVocabularyData.push({
       meaning:"Long-term scarring and structural change in the liver that can impair its function."}
   ]);
 
-  group(["f171","f177"], [
+  group(["f170","f171","f177"], [
     {id:"aaq-antigen", term:"Antigen", variants:["antigens"], support:"selective",
       meaning:"A molecule recognised by the immune system that can trigger a specific immune response."},
     {id:"aaq-antibody", term:"Antibody", variants:["antibodies"],
@@ -2161,7 +2167,7 @@ window.SiteVocabularyData.push({
       meaning:"A lung function test that measures volumes and rates of air breathed in or out."}
   ]);
 
-  group(["f172"], [
+  group(["f170","f172"], [
     {id:"aaq-allele", term:"Allele", variants:["alleles"], meaning:"A version of a gene."},
     {id:"aaq-genotype", term:"Genotype", variants:["genotypes"], meaning:"The alleles an individual has for a gene or genes."},
     {id:"aaq-phenotype", term:"Phenotype", variants:["phenotypes"], meaning:"An observable characteristic influenced by genotype and environment."},
@@ -2270,4 +2276,17 @@ window.SiteVocabularyData.push({
       match:{cue:"trial|group|treatment|allocation|participants|study"},
       meaning:"Assigning participants to groups by chance.", here:"This helps make groups comparable, although chance differences can still occur."}
   ]);
+
+  // Additional units where the same sense occurs in current teaching.
+  const prerequisites = {
+    f170: ["aaq-microscope","aaq-magnification","aaq-centrifugation","aaq-supernatant",
+      "aaq-carbohydrate","aaq-amino-acid","aaq-oviduct","aaq-cleavage","aaq-gamete",
+      "aaq-fertilisation","aaq-ovulation","aaq-follicle","aaq-neurone","aaq-synapse","aaq-neurotransmitter"],
+    f171: ["aaq-microscope","aaq-placenta","aaq-neurone","aaq-adverse-effect","aaq-randomised"],
+    f172: ["aaq-gamete"], f174: ["aaq-epithelium","aaq-lumen"],
+    f175: ["aaq-diffusion","aaq-screening"], f176: ["aaq-diffusion"]
+  };
+  for (const [unit, ids] of Object.entries(prerequisites)) {
+    for (const id of ids) entries.find(entry => entry.id === id).topics.push(unit);
+  }
 })();
