@@ -83,6 +83,7 @@ try {
   assert.match(await page.locator("#tasks").innerText(), /Correct/);
   assert.equal((await stored()).state.res.l6, "sup");
   await page.locator('[data-act="adv"]').click();
+  assert.match(await page.locator("#results tbody tr").first().innerText(), /Rf 0\./);
   assert.match(await page.locator("#tasks").innerText(), /recorded as supported/);
   const bDist = runA.spots.find(x => x.p === "chb").d;
   await page.locator("#in-l7").fill(String(Math.round(bDist / runA.front * 100) / 100));
