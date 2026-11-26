@@ -96,7 +96,7 @@ walk(root);
 const htmlFiles=fileList.filter(f=>f.endsWith(".html"));
 const required=[
  "index.html","gcse/index.html","alevel/index.html","human-biology/index.html","teacher/index.html",
- "teaching/index.html","teaching/simulations/index.html","privacy/index.html"
+ "teaching/index.html","teaching/simulations/index.html","privacy/index.html","about/index.html"
 ];
 for(const p of required)requireTrue(existsSync(path.join(root,p)),"Missing public page: "+p);
 const simSlugs=["enzyme-kinetics","enzyme-inhibition","molecular-biology","bioenergetics","cardiac-cycle"];
@@ -151,11 +151,24 @@ requireTrue(home.includes('href="/human-biology/"'),"Human Biology link missing 
 requireTrue(read("human-biology/index.html").includes('/human-biology/app.js'),"Human Biology application script missing");
 requireTrue(read("human-biology/index.html").includes('href="/" id="site-home"'),"Human Biology site return link missing");
 requireTrue(home.includes("Focused Questions"),"Teacher tool not discoverable from homepage");
-const sharedHeaderPages=["index.html","teaching/index.html","teaching/simulations/index.html","privacy/index.html"];
+const sharedHeaderPages=["index.html","teaching/index.html","teaching/simulations/index.html","privacy/index.html","about/index.html"];
 for(const p of sharedHeaderPages){
  const html=read(p);
  requireTrue(!/<nav class="site-nav"/.test(html),"Duplicate shared navigation in "+p);
  requireTrue(html.includes('src="/assets/site-nav.js"'),"Shared navigation script missing from "+p);
+}
+
+const about=read("about/index.html"), sharedNav=read("assets/site-nav.js");
+requireTrue(read("sitemap.xml").includes("https://narajos.com/about/"),"About missing from sitemap");
+requireTrue(about.includes('id="feedback"') && about.includes('href="mailto:support@narajos.com"'),"About feedback anchor or email missing");
+for(const href of ["https://my.chartered.college/impact_article/feedback-is-not-a-gift/","https://www.sagepub.com/shop/buy-a-book/teaching-hacks-fixing-everyday-classroom-issues-with-metacognition-1-285877"]){
+ requireTrue(about.includes('href="'+href+'"'),"About publication link missing: "+href);
+}
+requireTrue(sharedNav.indexOf('id="nav-qualifications"') < sharedNav.indexOf('id="nav-simulations"'),"Simulations must follow qualifications in shared navigation");
+requireTrue(sharedNav.includes('["/about/","About"]') && sharedNav.includes('["/about/#feedback","Feedback & Suggestions"]'),"Shared footer links missing");
+for(const p of ["gcse/index.html","alevel/index.html","human-biology/index.html","teacher/index.html","alevel/respiration/index.html"]){
+ const html=read(p);
+ requireTrue(html.includes('href="/about/"') && html.includes('href="/about/#feedback"'),"Resource footer links missing: "+p);
 }
 const teachingOverview=read("teaching/index.html");
 const learnerCards=[...teachingOverview.matchAll(/<a class="app-card[^"]*" href="(\/[^"]+)"/g)].map(m=>m[1]);

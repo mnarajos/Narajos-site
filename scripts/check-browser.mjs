@@ -2,6 +2,7 @@
  * Distinct from unit tests: these exercise rendered DOM, navigation and mobile layout.
  * Run after: npm install --no-save playwright@1.56.1 && npx playwright install chromium
  */
+import {checkAboutNavigation} from "./check-about-navigation.mjs";
 import {checkAssessmentJourneys} from "./check-assessment-journeys.mjs";
 import assert from "node:assert/strict";
 import {checkSharedInteractions} from "./check-shared-interactions.mjs";
@@ -36,6 +37,7 @@ async function checkPage(page,name){
  assert(overflow<=3,name+" overflows viewport horizontally by "+overflow+"px");
 }
 try{
+ await checkAboutNavigation(browser,base);
  await checkAssessmentJourneys(browser,base);
   await checkSharedInteractions(browser,base,true);
  await checkBrowserZoom(base);
@@ -71,8 +73,8 @@ try{
  await pilotPage.getByRole("heading",{name:"Year 7 Science",exact:true}).waitFor();
  const siteNavigation=pilotPage.getByRole("navigation",{name:"Main navigation"});
  const siteMenus=siteNavigation.locator("summary");
- assert.equal(await siteMenus.count(),3);
- await siteMenus.nth(2).press("Enter");
+ assert.equal(await siteMenus.count(),2);
+ await siteMenus.nth(1).press("Enter");
  const teacherLinks=siteNavigation.locator(".teacher-menu a");
  assert.deepEqual(await teacherLinks.allTextContents(),["Focused Questions","Focused Writing"]);
  await pilotPage.keyboard.press("Escape");
@@ -455,7 +457,7 @@ try{
   ...[7,8,9,10,11].map(year=>"/science-catch-up/?year="+year),
   "/gcse/","/alevel/","/human-biology/"
  ]);
- for(const path of ["/teaching/","/privacy/","/teaching/simulations/","/science-catch-up/?year=8","/teaching/focused-writing/"]){
+ for(const path of ["/teaching/","/privacy/","/about/","/teaching/simulations/","/science-catch-up/?year=8","/teaching/focused-writing/"]){
   await desktop.goto(base+path);
   assert.deepEqual(await desktop.locator(".site-nav a").evaluateAll(links=>links.map(a=>[a.getAttribute("href"),a.textContent])),navTargets);
  }
@@ -751,7 +753,7 @@ try{
  assert(dropdown.x>=0&&dropdown.x+dropdown.width<=321,"The grouped menu must fit a narrow phone");
  await mobile.setViewportSize({width:390,height:844});
  await screen(mobile,"home-mobile");
- for(const name of ["teaching","teaching/simulations","privacy","alevel","human-biology"]){
+ for(const name of ["teaching","teaching/simulations","privacy","about","alevel","human-biology"]){
   await checkPage(mobile,name);
   if(name==="teaching"||name==="alevel"||name==="human-biology")await screen(mobile,name.replaceAll("/","-")+"-mobile");
  }
@@ -792,6 +794,12 @@ try{
  }),"The copyright must wrap within a narrow column");
  await constrained.evaluate(style=>style.remove());
  assert.equal(await homeFooter.getByRole("link",{name:"Privacy",exact:true}).getAttribute("href"),"/privacy/");
+ assert.equal(await homeFooter.getByRole("link",{name:"About",exact:true}).getAttribute("href"),"/about/");
+ await homeFooter.getByRole("link",{name:"Feedback & Suggestions",exact:true}).click();
+ await navPage.waitForURL(base+"/about/#feedback");
+ assert(await navPage.getByRole("heading",{name:"Feedback and suggestions"}).isVisible());
+ assert.equal(await navPage.getByRole("link",{name:"support@narajos.com"}).getAttribute("href"),"mailto:support@narajos.com");
+ await navPage.goto(base+"/");
  await homeFooter.getByRole("link",{name:"Terms of Use",exact:true}).click();
  await navPage.getByRole("heading",{name:"Terms of Use",exact:true}).waitFor();
  assert(await navPage.getByRole("heading",{name:"Third-party materials",exact:true}).isVisible());
