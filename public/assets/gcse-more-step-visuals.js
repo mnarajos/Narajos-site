@@ -559,6 +559,17 @@ function habitatDiversity() {
     '<ellipse cx="244" cy="94" rx="61" ry="36" fill="#cbe5ee" stroke="'+blue+'" stroke-width="2"/><path d="M227 94 q15-15 30 0 q-15 15-30 0 M257 94 l12-9 v18 z" fill="#f0d2a6" stroke="'+rust+'" stroke-width="2"/>'+text(244,156,'Pond',ink,15),
     'Compare habitats and the organisms they can support. More kinds of organisms mean greater biodiversity.');
 }
+function protectedPondMargin() {
+  const reed=x=>'<path d="M'+x+' 108 V65 M'+x+' 87 l-9 -9 M'+x+' 78 l9 -9" fill="none" stroke="'+teal+'" stroke-width="3"/>';
+  return fig('Protecting and restoring a habitat',
+    'A fence limits trampling at a pond margin. Plants can re-establish around the water and provide shelter and food for organisms. Protecting or restoring suitable habitats can help populations survive.',
+    text(160,25,'Protected pond margin',ink,15)+'<path d="M20 121 Q160 82 300 121 V151 H20 Z" fill="#e2f0df" stroke="'+teal+'" stroke-width="2"/>'+
+    '<ellipse cx="160" cy="125" rx="79" ry="25" fill="#d5ebf4" stroke="'+blue+'" stroke-width="2"/>'+reed(71)+reed(114)+reed(206)+reed(249)+
+    '<path d="M29 50 V111 M291 50 V111 M29 55 H291 M29 70 H291" fill="none" stroke="#8a6850" stroke-width="3"/>'+
+    text(160,183,'Plants can re-establish',teal,15),
+    'A fence can reduce trampling while pond-margin vegetation recovers. The plants can provide food or shelter for other organisms.',205);
+}
+function habitatAndProtection(){return grouped(habitatDiversity,protectedPondMargin);}
 
 function pondweedLight() {
   return fig('Testing light and pondweed',
@@ -749,6 +760,15 @@ function hormoneFeedback() {
     arrow(101,58,211,58,blue,2)+text(156,44,'FSH and LH',blue,14)+arrow(211,88,101,88,teal,2)+text(156,145,'Oestrogen and progesterone',teal,13)+text(156,177,'feed back to pituitary',teal,13),
     'Follow pituitary hormones to the ovary, then the feedback signal in the other direction. Feedback effects vary through the cycle.',195);
 }
+function fertilityHormones() {
+  return fig('Hormones used in fertility treatment',
+    'FSH and LH may be given as fertility medicines. FSH stimulates follicles containing eggs to mature in the ovary; LH triggers ovulation, the release of an egg. This is a simplified treatment pathway and does not imply treatment always succeeds.',
+    text(74,25,'FSH and LH',blue,15)+'<rect x="48" y="43" width="52" height="62" rx="5" fill="#dcecf3" stroke="'+blue+'" stroke-width="2"/><rect x="58" y="33" width="32" height="10" fill="#c9d7dd" stroke="'+ink+'"/>'+
+    arrow(110,76,171,76,blue,2)+'<ellipse cx="211" cy="75" rx="32" ry="24" fill="#f3d6ce" stroke="'+rust+'" stroke-width="2"/>'+circle(211,75,8,'#fff5df',rust)+arrow(247,75,271,75,teal,2)+circle(285,75,8,'#fff5df',rust)+
+    text(74,136,'Medicine',blue,15)+text(213,136,'Ovary',ink,15)+text(160,173,'Maturation → ovulation',ink,15),
+    'Follow the medicines to the ovary. FSH stimulates follicle maturation and LH can trigger ovulation; treatment does not always succeed.',195);
+}
+function feedbackAndFertility(){return grouped(hormoneFeedback,fertilityHormones);}
 function transformerComparison() {
   return fig('An ideal step-up transformer',
     'The primary has 500 volts and 12 amperes, so its power is 6,000 watts. An ideal transformer has the same output power; at 3,000 volts the secondary current is 2 amperes. In cables of equal resistance, heating power is proportional to current squared, so 12 amperes gives 36 times the heating of 2 amperes.',
@@ -876,12 +896,12 @@ function moleCalculation() {
 }
 function molesAndRatio(){return grouped(moleCalculation,molarRatio);}
 function bondEnergyBalance() {
-  return fig('Compare bond energies',
-    'In an illustrative reaction, energy is transferred into the system to break reactant bonds and out when product bonds form. The difference between energy in and energy out is the overall energy change.',
-    '<rect x="55" y="85" width="70" height="54" fill="#f1d8c7" stroke="'+rust+'" stroke-width="2"/><rect x="195" y="43" width="70" height="96" fill="#d9e8f4" stroke="'+blue+'" stroke-width="2"/>'+
-    text(90,72,'Energy in',rust,15)+text(230,30,'Energy out',blue,15)+text(90,162,'Break bonds',ink,14)+text(230,162,'Form bonds',ink,14)+
-    text(160,197,'Overall change = in − out',ink,15),
-    'Compare the bar heights, then subtract the energy released from the energy needed. No numerical values are implied.',215);
+  return fig('A separate bond-energy example',
+    'In a separate hypothetical reaction, not the hydrogen and chlorine reaction shown above, breaking bonds takes in 300 kilojoules per mole of reaction and making bonds releases 500 kilojoules per mole. The overall change is 300 minus 500, or minus 200 kilojoules per mole: the reaction is exothermic.',
+    '<rect x="55" y="80" width="70" height="60" fill="#f1d8c7" stroke="'+rust+'" stroke-width="2"/><rect x="195" y="40" width="70" height="100" fill="#d9e8f4" stroke="'+blue+'" stroke-width="2"/>'+
+    text(90,65,'Energy in',rust,15)+text(230,25,'Energy out',blue,15)+text(90,119,'300',ink,16)+text(230,105,'500',ink,16)+text(90,170,'Break bonds',ink,14)+text(230,170,'Form bonds',ink,14)+
+    text(160,204,'Values in kJ/mol',ink,15)+text(160,236,'300 − 500 = −200',ink,15),
+    'For this separate hypothetical reaction, subtract energy out from energy in. A negative result indicates an exothermic change.',255);
 }
 function bondsAndBalance(){return grouped(reactionBonds,bondEnergyBalance);}
 function lightLimitation() {
@@ -893,7 +913,16 @@ function lightLimitation() {
     text(78,160,'Less CO₂',blue,15)+text(241,160,'More CO₂',blue,15),
     'Compare carbon dioxide supply when light and temperature are held the same. A higher supply may allow a higher rate; the dots are a model.',180);
 }
-function inverseSquareAndLimit(){return grouped(inverseSquare,lightLimitation);}
+function lightRatePlateau() {
+  return fig('Light intensity and photosynthesis rate',
+    'An illustrative graph shows photosynthesis rate rising with light intensity and then levelling off when another factor limits it. At the marked intensities I and one quarter I, both points lie on the same plateau, so this example has the same rate at both intensities.',
+    line(45,145,295,145)+line(45,145,45,35)+text(45,24,'Rate of photosynthesis',ink,15,'start')+
+    '<path d="M45 143 Q70 60 105 60 H285" fill="none" stroke="'+teal+'" stroke-width="3"/>'+
+    line(105,60,105,145,blue,1.5,'4 4')+line(285,60,285,145,blue,1.5,'4 4')+circle(105,60,4,rust,rust)+circle(285,60,4,rust,rust)+
+    text(105,173,'I ÷ 4',blue,15)+text(285,173,'I',blue,15)+text(165,205,'Light intensity',ink,15),
+    'Compare the two marked intensities on the same illustrative plateau. Another factor limits the rate, so here the rate does not fall fourfold.',225);
+}
+function inverseSquareAndLimit(){return grouped(inverseSquare,lightLimitation,lightRatePlateau);}
 function distanceTangent() {
   return fig('Speed at an instant',
     'A curved distance–time graph has a straight tangent touching it at one point. The gradient of that tangent is the speed at that instant. The graph is qualitative and no numerical readings are implied.',
@@ -962,10 +991,10 @@ function clinicalTrials() {
   const person=(x,y)=>circle(x,y,5,'#d7e9ef',blue)+'<path d="M'+x+' '+(y+5)+' v13 m-6 -6 h12 m-6 6 -5 7 m5 -7 5 7" stroke="'+blue+'" stroke-width="2" fill="none"/>';
   return fig('Clinical trials progress in stages',
     'Early clinical testing examines safety and dose in small groups. Larger controlled trials compare effectiveness and monitor side effects, using treatment and control groups.',
-    text(76,25,'Early stage',ink,15)+person(58,57)+person(93,57)+text(88,126,'Safety and dose',blue,14)+
+    text(76,25,'Early stage',ink,15)+person(58,57)+person(93,57)+text(88,120,'Safety and dose',blue,14)+
     arrow(118,75,160,75,rust,2)+text(240,25,'Larger trial',ink,15)+person(204,57)+person(226,57)+person(254,57)+person(276,57)+
-    line(240,52,240,97,ink,1,'4 3')+text(214,150,'Treatment',teal,13)+text(267,178,'Control',rust,13),
-    'Follow from small early groups to larger controlled comparisons. Trials continue to monitor safety.',200);
+    line(240,52,240,97,ink,1,'4 3')+text(214,153,'Treatment',teal,13)+text(267,186,'Control',rust,13),
+    'Follow from small early groups to larger controlled comparisons. Trials continue to monitor safety.',210);
 }
 function testingAndTrials(){return grouped(treatmentTesting,clinicalTrials);}
 function parallelAndSeries() {
@@ -1040,7 +1069,7 @@ export const gcseHigherVisuals = {
   'reaction-rate': rateAndShift,
   'electromagnet-switch': motorOverview,
   'respiration-exercise': oxygenDebt,
-  'reproductive-hormones': hormoneFeedback,
+  'reproductive-hormones': feedbackAndFertility,
   'national-grid': transformerComparison,
   'electrode-evidence': halfEquations
 };
@@ -1074,5 +1103,5 @@ export const moreGcseStepVisuals = {
   'radiation-types': {0:emissions,1:shieldingAndIonisation,2:alphaDecay},
   'circuit-resistance': {0:circuitMeters,2:electricalPower},
   'reproductive-hormones': {0:menstrualHormones,1:hormonesAndEffects,2:contraception},
-  'carbon-cycling': {2:habitatDiversity}
+  'carbon-cycling': {2:habitatAndProtection}
 };

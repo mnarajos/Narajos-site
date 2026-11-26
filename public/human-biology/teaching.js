@@ -94,6 +94,14 @@
         (lesson.comparisonFigures[index] || []).map(teachingDiagram).join("") + paragraphs(row.slice(1)) + '</section>').join("") + '</section>';
   }
 
+  function afterComparisonContent(lesson) {
+    if (!lesson.afterComparison) return "";
+    return '<h3>' + escape(lesson.afterComparison.heading) + '</h3>' +
+      (lesson.afterComparison.lines || []).map((line, index) =>
+        paragraphs([line]) + (lesson.afterComparisonDiagrams?.[index] || []).map(teachingDiagram).join("")
+      ).join("");
+  }
+
   function writingExample(example) {
     if (!example) return "";
     return '<details class="hb-prerequisite hb-writing-example"><summary>' + escape(example.title) +
@@ -147,7 +155,7 @@
         escape(lesson.activate[1]) + '</p>' + prior + '</details>' : prior;
     const explanation = (context.booklet ? '<section class="paper panel hb-teach-explain"><h2>Understand the idea</h2>' : '<details class="paper panel hb-teach-explain" open><summary><h2>Understand the idea</h2></summary>') +
       explanationParagraphs(lesson) + figure(lesson.explanationPhoto) + figure(lesson.explanationPhoto2) + teachingDiagram(lesson.explanationDiagram) + (lesson.explanationDiagrams || []).map(teachingDiagram).join("") + (lesson.teachingDiagramModelOnly ? "" : teachingDiagram(lesson.teachingDiagram)) + comparisonContent(lesson) +
-      (lesson.afterComparison ? '<h3>' + escape(lesson.afterComparison.heading) + '</h3>' + paragraphs(lesson.afterComparison.lines) : '') +
+      afterComparisonContent(lesson) +
       context.inline +
       (lesson.revision && !context.booklet ? '<div class="actions hb-start">' + openStageButton("model", "See worked example", "primary") + '</div>' : '') +
       (context.booklet ? '</section>' : '</details>');
@@ -432,6 +440,12 @@
       const next = stages[id];
       if (!next || (id === "followup" && root.querySelector("[data-hb-followup]").hidden)) return;
       Object.entries(stages).forEach(([name, stage]) => { if (stage) stage.hidden = name !== id; });
+      // This feedback overview directly answers the later insulin follow-up.
+      // Keep the surrounding explanation available, but restore the figure
+      // only when a learner returns to a teaching or guided stage.
+      root.querySelectorAll("[data-hb-assessment-sensitive]").forEach(figure => {
+        figure.hidden = id === "independent" || id === "followup";
+      });
       const skip = root.querySelector("[data-hb-guided-skip]");
       if (skip) skip.hidden = id !== "guided" || Boolean(record.guided?.accepted || record.guided?.outcome === "selfReview");
       if (persist) { record.view = id; save(key, record); }

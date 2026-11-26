@@ -757,10 +757,12 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.2.2/0", ["epithelia-comparison.svg"]], ["f170/1.2.2/1", ["muscle-tissue-comparison.svg"]],
       ["f170/1.2.2/2", ["connective-tissue-comparison.svg", "blood-components.svg"]],
       ["f170/1.2.3/0", ["cell-culture-vessel.svg"]], ["f170/1.2.3/1", ["organoid-structure.svg"]], ["f170/1.2.3/2", ["organoid-context.svg"]],
+      ["f170/2.1.1/0", ["f170-alveolar-barrier.svg"]], ["f170/2.1.1/1", ["pulse-measurement-context.svg"]], ["f170/2.1.1/2", ["pulse-measurement-context.svg"]],
       ["f170/1.1.2/1", ["hb-blood-cells-sem.webp", "hb-pancreas-tem.webp"]],
       ["f170/1.1.2.counting/1", ["cell-counting-impedance.svg", "cell-counting-clumps.svg"]],
       ["f170/1.1.3/1", ["cell-protein-routing.svg"]],
       ["f170/1.1.3/2", ["cell-mito-protein-import.svg", "cell-er-comparison.svg"]],
+      ["f170/1.1.1.signals/1", ["reflex-pathway.svg", "myelinated-axon.svg"]],
       ["f170/1.1.3.evidence/1", ["f170-ribosome-types.svg"]],
       ["f170/1.1.3.evidence/2", ["cell-er-comparison.svg", "cell-protein-routing.svg"]],
       ["f170/4.1.5/0", ["virus-particle.svg"]], ["f170/4.1.5/1", ["virus-host.svg"]], ["f170/4.1.5/2", ["bacteriophage.svg"]],
@@ -829,6 +831,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.1.2.counting", ["cell-counting-chamber.svg", "cell-counting-impedance.svg"], ["cell-counting-chamber.svg", "cell-counting-clumps.svg"]],
       ["f170/1.1.3", ["cell-nucleus-traffic.svg", "cell-mito-protein-import.svg", "cell-er-comparison.svg", "cell-protein-routing.svg"], ["cell-nucleus-rer.svg", "cell-protein-routing.svg", "cell-secretion-failure.svg"]],
       ["f170/1.1.3.evidence", ["f170-ribosome-assembly.svg", "f170-ribosome-types.svg", "cell-er-comparison.svg"], ["cell-protein-routing.svg", "f170-enzyme-misrouting.svg"]],
+      ["f170/1.1.1.signals", ["f170-rod-cone-structure.svg", "reflex-pathway.svg"], ["reflex-pathway.svg", "reflex-pathway.svg", "f170-retinal-convergence.svg"]],
       ["f170/1.1.4", ["f170-oxygen-diffusion.svg", "f170-water-active.svg"], ["f170-oxygen-diffusion.svg", "f170-oxygen-diffusion.svg", "f170-oxygen-diffusion.svg"]],
       ["f170/1.1.4.surface", ["f170-membrane-labelled.svg", "f170-receptor-signalling.svg", "f170-antigen-recognition.svg", "f170-vesicle-traffic.svg"], ["f170-membrane-labelled.svg", "f170-cholesterol-membrane.svg", "f170-membrane-labelled.svg"]]
     ]) {
@@ -867,6 +870,32 @@ export async function checkHumanCatchup(browser, base) {
       assert(await image.evaluate(async el => { await el.decode(); return el.naturalWidth > 0 && el.alt.length > 20; }));
     }
     assert(await widthFits(), "Surface comparison must fit at phone size");
+    assert.equal(await stage("independent").locator(".hb-teaching-diagram").count(), 0);
+
+    // Microscopy/fractionation explanation, worked steps and original micrograph stay connected.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f170/1.1.2");
+    const microExplain = page.locator(".hb-teach-explain");
+    for (const [text, file] of [
+      ["A scale bar labels a known actual length", "f170-scale-bar-ratio.svg"],
+      ["Magnification is image size", "f170-magnification-resolution.svg"],
+      ["In transmitted light microscopy", "f170-wet-mount.svg"],
+      ["To separate cell components", "f170-fractionation-prep.svg"],
+      ["Worked example: a first", "f170-fractionation-spins.svg"],
+      ["Try predicting the next step", "f170-fractionation-spins.svg"]
+    ]) {
+      const paragraph = microExplain.getByText(text, {exact: false});
+      assert(await paragraph.evaluate((el, name) => Boolean(el.nextElementSibling?.querySelector(`img[src$="/${name}"]`)), file), `${file} follows its matching paragraph`);
+    }
+    const microWorked = page.locator("[data-hb-model-step]");
+    await expand(microWorked);
+    assert(await microWorked.locator('img[src="/assets/micrographs/human-erythrocytes.jpg"]').isVisible());
+    for (let i = 0; i < 4; i++) {
+      const file = i === 3 ? "f170-print-magnification.svg" : "f170-scale-bar-ratio.svg";
+      assert(await microWorked.locator(`li:nth-child(${i + 1}) img[src$="/${file}"]`).isVisible());
+      if (i < 3) await microWorked.getByRole("button", {name: "Show next step"}).click();
+    }
+    assert(await widthFits(), "Microscopy figures must fit the phone viewport");
     assert.equal(await stage("independent").locator(".hb-teaching-diagram").count(), 0);
 
     // Reflex and myelin figures follow the explanation paragraphs they support.

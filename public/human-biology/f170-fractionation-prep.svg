@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 370" role="img" aria-labelledby="title desc">
+<title id="title">Preparing a cell homogenate</title><desc id="desc">Cells are broken open in a cold, buffered isotonic solution. The homogenate passes through a filter which retains larger debris; the filtered liquid contains cell components for centrifugation.</desc>
+<rect width="280" height="370" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Break open cells</text><text x="140" y="49">Cold, buffered, isotonic</text><text x="140" y="71">solution</text>
+<path d="M90 85v62q0 22 50 22t50-22V85" fill="#d8ece7" stroke="#23656c" stroke-width="3"/>
+<circle cx="118" cy="120" r="10" fill="#e5d9ec" stroke="#69447f" stroke-width="2"/><ellipse cx="156" cy="142" rx="10" ry="5" fill="#f4d8ad" stroke="#98451e" stroke-width="2"/><circle cx="166" cy="108" r="4" fill="#23656c"/>
+<path d="M140 173v25m-6-7 6 7 6-7" fill="none" stroke="#263e4a" stroke-width="2"/>
+<text x="140" y="224" font-weight="700">Filter larger debris</text>
+<path d="M90 235h100l-40 47v15h-20v-15z" fill="#fff" stroke="#23656c" stroke-width="3"/><path d="M104 251h72" stroke="#69447f" stroke-width="3" stroke-dasharray="5 3"/>
+<circle cx="122" cy="247" r="4" fill="#69447f"/><circle cx="145" cy="247" r="4" fill="#69447f"/>
+<path d="M140 300v22m-6-7 6 7 6-7" fill="none" stroke="#263e4a" stroke-width="2"/>
+<text x="140" y="348">Filtered homogenate</text>
+</g></svg>

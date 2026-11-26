@@ -61,16 +61,20 @@ var diagrams={
  },
  glucose:{
   label:"Blood-glucose negative feedback",
-  caption:"Insulin and glucagon act in opposing directions to return blood glucose towards the regulated range.",
-  image:svg("Raised blood glucose stimulates insulin secretion, encouraging glucose uptake and storage, lowering glucose. Low blood glucose stimulates glucagon, promoting glucose release from liver glycogen and raising glucose.",
-   box(11,12,458,92,"#e8f3eb")+box(11,121,458,92,"#fff0e0")+
-   text(93,43,"Raised glucose",17,700)+text(241,43,"Insulin",18,800,palettes.teal)+text(389,43,"Glucose falls",17,700)+
-   arrow(151,56,190,56)+arrow(292,56,328,56)+
-   text(240,83,"More glucose uptake and storage",13,500)+
-   text(93,152,"Low glucose",17,700)+text(241,152,"Glucagon",18,800,palettes.orange)+text(389,152,"Glucose rises",17,700)+
-   arrow(151,165,190,165)+arrow(292,165,328,165)+
-   text(240,194,"Liver releases glucose",13,500),
-   230)
+  compact:true,
+  caption:"Insulin increases glucose uptake in some tissues and storage; glucagon promotes glucose release from the liver. As glucose returns towards its usual range, the stimulus for the hormone response decreases.",
+  image:'<svg viewBox="0 0 300 490" role="img" aria-label="When blood glucose rises, pancreatic beta cells release insulin, increasing uptake and storage so blood glucose falls towards its usual range. When blood glucose falls, pancreatic alpha cells release glucagon, promoting glucose release by the liver so blood glucose rises towards its usual range." xmlns="http://www.w3.org/2000/svg">'+
+   text(150,27,"Blood glucose rises",17,700)+arrow(150,35,150,49)+
+   text(150,70,"Pancreatic β cells",17,700)+arrow(150,77,150,91)+
+   text(150,112,"Insulin released",17,800,palettes.teal)+arrow(150,119,150,133)+
+   text(150,154,"Uptake and storage increase",16,600)+arrow(150,161,150,175)+
+   text(150,196,"Blood glucose falls",17,700)+text(150,219,"towards its usual range",15,500)+
+   '<path d="M22 245H278" stroke="#d6e1de" stroke-width="2"/>'+
+   text(150,273,"Blood glucose falls",17,700)+arrow(150,281,150,295)+
+   text(150,316,"Pancreatic α cells",17,700)+arrow(150,323,150,337)+
+   text(150,358,"Glucagon released",17,800,palettes.orange)+arrow(150,365,150,379)+
+   text(150,400,"Liver releases glucose",16,600)+arrow(150,407,150,421)+
+   text(150,442,"Blood glucose rises",17,700)+text(150,465,"towards its usual range",15,500)+'</svg>'
  },
  organisation:{
   label:"Levels of biological organisation",
@@ -428,7 +432,7 @@ function render(course,id,worked){
  var html='<aside class="kc-catchup-extra" aria-label="Visual explanations and related practice">';
  if(item.diagram){
   var d=diagrams[item.diagram];
-  html+='<figure class="kc-visual"><div class="kc-visual-heading"><span class="kc-visual-icon" aria-hidden="true">◈</span><strong>'+d.label+'</strong></div><div class="kc-visual-art" tabindex="0" role="region" aria-label="Scrollable science diagram">'+d.image+'</div><figcaption>'+d.caption+'</figcaption></figure>';
+  html+='<figure class="kc-visual"'+(course==="f170"&&item.diagram==="glucose"?' data-hb-assessment-sensitive':'')+'><div class="kc-visual-heading"><span class="kc-visual-icon" aria-hidden="true">◈</span><strong>'+d.label+'</strong></div><div class="kc-visual-art'+(d.compact?' kc-visual-art-compact':'')+'"'+(d.compact?'':' tabindex="0" role="region" aria-label="Scrollable science diagram"')+'>'+d.image+'</div><figcaption>'+d.caption+'</figcaption></figure>';
  }
  if(item.sequence==="reflex")html+=reflexSequence;
  if(item.microscope)html+=worked?microscopeFigure(true):microscopePractice;

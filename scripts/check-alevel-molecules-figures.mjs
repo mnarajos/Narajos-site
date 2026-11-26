@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import {readFileSync, existsSync} from 'node:fs';
 import vm from 'node:vm';
-const context = {window: {ALevelCatchupFigures: {render: () => ''}}};
+const context = {window: {}};
+vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-figures.js', import.meta.url), 'utf8'), context);
 vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-molecules-figures.js', import.meta.url), 'utf8'), context);
 for (const [id, group] of [['monopoly',1],['sugars',0],['sugars',1],['polysac',1],['lipids',0],['lipids',1],['proteins',0],['proteins',1],['nucleic',0],['nucleic',1],['atp',0],['atp',1],['tests',0],['tests',1],['enzfactors',0],['enzfactors2',0],['replication',0],['replication',1],['water',1]]) {
   const figure = context.window.ALevelCatchupFigures.render('a1', id, group);
@@ -67,14 +68,16 @@ for (const [file,global,rows] of [
  ['catchup-biomolecule-extra-figures.js','ALevelBiomoleculeExtraFigures', [['a1','monopoly',0],['a1','monopoly',2],['a1','enzymes',0],['a1','replication',2],['a1','sugars',1],['a1','polysac',0],['a1','lipids',0],['a1','enzfactors',1],['a1','enzfactors2',1],['a1','tests',1],['a1','water',0]]],
  ['catchup-regulation-figures.js','ALevelRegulationFigures', [['a6','homeo',1],['a6','actionpot',2],['a6','glucose',1],['a6','glucose',2],['a6','secondmsg',0],['a6','secondmsg',1],['a6','diabetes',0],['a6','loop',2]]],
  ['catchup-population-processes.js','ALevelPopulationProcesses', [['a7','hardy',1],['a7','hardy',2],['a7','linkage',0],['a7','linkage',1],['a7','speciation',0],['a7','speciation',1],['a7','ecosys',0],['a7','interact',0],['a7','mrrc',1],['a7','varsel',1]]],
- ['catchup-metabolism-practicals.js','ALevelMetabolismPracticals', [['a5','dcpip',0],['a5','respiro',0],['a5','substrates',0],['a5','substrates',1],['a5','biomass',0],['a5','productivity',1],['a5','fertil',0],['a6','glucal',0],['a6','glucal',1]]]
+ ['catchup-metabolism-practicals.js','ALevelMetabolismPracticals', [['a5','dcpip',0],['a5','respiro',0],['a5','substrates',0],['a5','substrates',1],['a5','biomass',0],['a5','productivity',1],['a5','fertil',0],['a6','glucal',0],['a6','glucal',1]]],
+ ['catchup-gene-techniques.js','ALevelGeneTechniques', [['a8','mut8',0],['a8','mut8',1],['a8','mut8',2],['a8','stemcells',0],['a8','stemcells',1],['a8','stemcells',2],['a8','cancer',0],['a8','cancer',1],['a8','fragments',0],['a8','fragments',2],['a8','invivo',1],['a8','fingerprint',0]]],
+ ['catchup-exchange-extra-figures.js','ALevelExchangeExtraFigures', [['a3','lungs',0],['a3','sav',1]]]
 ]) {
  vm.runInNewContext(readFileSync(new URL('../public/alevel/'+file, import.meta.url), 'utf8'), context);
  for (const [topic,id,group] of rows) { const figure=context.window[global].render(topic,id,group); assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/); assert.match(figure, /<figcaption>.{20,}<\/figcaption>/); }
 }
 vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-guided-figures.js', import.meta.url), 'utf8'), context);
 vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-cell-reuse-figures.js', import.meta.url), 'utf8'), context);
-for (const [id,group] of [['prok',2],['active',0],['ctx2',1],['ctx2',2],['osmchain',0],['osmchain',1],['osmchain',2],['osmosis',0],['osmosis',1]]) {
+for (const [id,group] of [['prok',2],['active',0],['ctx2',1],['ctx2',2],['osmchain',0],['osmchain',1],['osmchain',2],['osmosis',0],['osmosis',1],['phago',0],['diffusion',1]]) {
  const figure=context.window.ALevelCellReuseFigures.render('a2',id,group);
  assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
  assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
