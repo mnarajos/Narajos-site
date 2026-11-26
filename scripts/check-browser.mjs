@@ -1656,10 +1656,11 @@ try{
  await checkReadingSpacing(navPage,"KS3 states of matter");
  await navPage.setViewportSize({width:390,height:844});
  await navPage.goto(base+"/ks3/lesson/?topic=atoms-and-compounds");
- await navPage.getByRole("button",{name:"Add a different pair to A"}).press("Enter");
- await navPage.getByRole("status").filter({hasText:/A now contains two different substances/}).waitFor();
- await navPage.getByRole("button",{name:"Original samples"}).press("Enter");
- assert(await navPage.getByText("Three samples shown as particles",{exact:true}).isVisible());
+ const particleSamples=navPage.locator("#catchup-evidence .ks3-explore");
+ await particleSamples.getByRole("button",{name:"Add a different pair to A"}).press("Enter");
+ await particleSamples.getByRole("status").filter({hasText:/A now contains two different substances/}).waitFor();
+ await particleSamples.getByRole("button",{name:"Original samples"}).press("Enter");
+ assert(await particleSamples.getByText("Three samples shown as particles",{exact:true}).isVisible());
  await navPage.goto(base+"/ks3/lesson/?topic=reproduction");
  await navPage.getByText("Follow a pollen grain",{exact:true}).click();
  const pollen=navPage.locator('science-sequence[kind="pollen"]');
