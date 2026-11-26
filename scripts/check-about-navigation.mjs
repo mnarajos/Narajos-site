@@ -17,7 +17,7 @@ export async function checkAboutNavigation(browser, base) {
   await page.waitForFunction(()=>document.querySelector(".site-nav details[open] .site-dropdown")?.style.getPropertyValue("--dropdown-available"));
   const groups=learning.getByRole("group");
   assert.deepEqual(await groups.evaluateAll(nodes=>nodes.map(n=>n.getAttribute("aria-labelledby"))),["nav-years","nav-qualifications","nav-simulations"]);
-  const simulations=learning.getByRole("group",{name:"Biology Simulations"});
+  const simulations=learning.getByRole("group",{name:"Biology simulations"});
   assert.deepEqual(await simulations.getByRole("link").evaluateAll(links=>links.map(a=>a.getAttribute("href"))),simRoutes);
   assert.deepEqual(await simulations.getByRole("link").allTextContents(),["All simulations","GCSE & A-level","A-level Biology","Guided enzyme investigations"]);
   const box=await dropdown.boundingBox();

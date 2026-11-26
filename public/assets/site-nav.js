@@ -39,7 +39,7 @@
      <a href="/gcse/">GCSE Combined Science — AQA Trilogy</a><a href="/alevel/">A-level Biology — AQA</a><a href="/human-biology/">Human Biology — Cambridge OCR AAQ</a>
     </div>
     <div class="site-dropdown-group" role="group" aria-labelledby="nav-simulations">
-     <p id="nav-simulations">Biology Simulations</p>
+     <p id="nav-simulations">Biology simulations</p>
      <a href="/teaching/simulations/">All simulations</a><a href="/teaching/simulations/#gcse-and-alevel">GCSE &amp; A-level</a><a href="/teaching/simulations/#alevel">A-level Biology</a><a href="/teaching/enzyme-investigations/">Guided enzyme investigations</a>
     </div>
    </div>
