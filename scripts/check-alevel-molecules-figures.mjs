@@ -146,5 +146,17 @@ assert.match(compactLung, /A short diffusion path/);
 assert.match(compactLung, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
 assert(!compactLung.includes('aria-label="Scrollable science diagram"'));
 assert.equal(context.window.ALevelCompactLungs.render('a3','lungs',0), '');
+vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-selection-frequency.js', import.meta.url), 'utf8'), context);
+const frequency=context.window.ALevelSelectionFrequency.render('a7','varsel',2);
+assert.match(frequency, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
+assert.match(frequency, /<figcaption>.{20,}<\/figcaption>/);
+assert.equal(context.window.ALevelSelectionFrequency.render('a7','varsel',1), '');
+vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-enzyme-denaturation.js', import.meta.url), 'utf8'), context);
+for (const id of ['enzfactors','enzfactors2']) {
+ const figure=context.window.ALevelEnzymeDenaturation.render('a1',id,0);
+ assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
+ assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
+}
+assert.equal(context.window.ALevelEnzymeDenaturation.render('a1','enzfactors',1), '');
 assert.equal(context.window.ALevelCatchupFigures.render('a1','sugars',2), '');
 console.log('A-level molecular figure alternatives, captions, mapping and local image checked.');

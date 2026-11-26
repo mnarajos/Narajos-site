@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="410" viewBox="0 0 280 410" role="img">
+ <rect width="280" height="410" rx="12" fill="#f4f8f7"/>
+ <g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+  <text x="140" y="24" font-size="17" font-weight="700">Position of the junction</text>
+  <text x="140" y="48" font-size="14">Usual position</text>
+  <path d="M20 105h105M155 105h105" stroke="#537a94" stroke-width="5" stroke-dasharray="9 4"/>
+  <path d="M130 59v65h20V59" fill="#f4d9c8" stroke="#a65f5b" stroke-width="2.5"/>
+  <path d="M130 124C125 140 109 151 116 169C124 189 165 191 178 170C190 150 171 132 150 124Z" fill="#f4d9c8" stroke="#a65f5b" stroke-width="2.5"/>
+  <circle cx="140" cy="124" r="4.5" fill="#233e4c"/>
+  <text x="36" y="97" font-size="13">Diaphragm</text><text x="212" y="151" font-size="13">Stomach</text>
+  <text x="140" y="207" font-size="14">Sliding hiatus hernia</text>
+  <path d="M20 275h105M155 275h105" stroke="#537a94" stroke-width="5" stroke-dasharray="9 4"/>
+  <path d="M130 216v31h20v-31" fill="#f4d9c8" stroke="#a65f5b" stroke-width="2.5"/>
+  <path d="M130 247C122 262 106 284 115 310C123 330 165 333 179 312C191 292 172 260 150 247Z" fill="#f4d9c8" stroke="#a65f5b" stroke-width="2.5"/>
+  <circle cx="140" cy="247" r="4.5" fill="#233e4c"/>
+  <path d="M145 268v-34m-4 5 4-5 4 5" fill="none" stroke="#a76125" stroke-width="2"/>
+  <text x="63" y="235" font-size="13">Possible reflux</text>
+  <text x="36" y="267" font-size="13">Diaphragm</text>
+  <text x="140" y="366" font-size="14">Dot = oesophagus–stomach junction</text>
+  <text x="140" y="391" font-size="13">Schematic · not to scale</text>
+ </g>
+</svg>

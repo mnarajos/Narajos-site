@@ -90,12 +90,22 @@ function iodineEndpoint() {
 function amylaseSetup() {
   const tube=x=>'<path d="M'+(x-15)+' 43 V74 Q'+x+' 86 '+(x+15)+' 74 V43" fill="#e5f1f5" stroke="'+ink+'" stroke-width="2"/>';
   return fig('Prepare an amylase reaction',
-    'Equal volumes and concentrations of amylase and starch are brought to the same temperature. They are combined with a buffer at the chosen pH, and timing begins. The reaction tube is shown in a water bath.',
+    'Equal volumes of amylase and starch are brought to the same temperature. The volume and concentration of each reagent are kept the same between tests. The reagents are combined with a buffer at the chosen pH, and timing begins.',
     text(55,25,'Enzyme',ink,15)+text(160,25,'Starch',ink,15)+text(265,25,'Buffer',ink,15)+tube(55)+tube(160)+tube(265)+
     '<path d="M75 137 V214 H245 V137" fill="#dceef5" stroke="'+ink+'" stroke-width="2"/><path d="M142 119 V190 Q160 211 178 190 V119" fill="#eef5ee" stroke="'+teal+'" stroke-width="2"/>'+
     arrow(70,84,150,130,teal,2)+arrow(160,85,160,130,teal,2)+arrow(250,84,170,130,teal,2)+text(160,246,'Water bath',blue,15),
-    'Use equal enzyme and starch volumes and concentrations, choose the buffer pH, and use the bath to hold temperature steady.',265);
+    'Keep each reagent’s volume and concentration the same between tests. Change the buffer pH and hold temperature steady.',265);
 }
+function amylaseControls() {
+  const tube=x=>'<path d="M'+x+' 43 V148 Q'+(x+55)+' 171 '+(x+110)+' 148 V43" fill="#eef6f3" stroke="'+teal+'" stroke-width="2"/>'+
+    circle(x+25,73,7,'#c7dff0',blue)+circle(x+25,113,7,'#c7dff0',blue)+line(x+59,73,x+91,73,rust,4)+line(x+59,113,x+91,113,rust,4);
+  return fig('Change pH while keeping other factors the same',
+    'Two identical reaction tubes, labelled pH 5 and pH 7, contain the same numbers of enzyme and starch symbols in the same volume. This models keeping reagent amounts and concentrations the same while changing buffer pH; the symbols are illustrative, not literal molecule counts.',
+    text(80,25,'pH 5',ink,15)+text(240,25,'pH 7',ink,15)+tube(25)+tube(185)+
+    text(82,195,'● Enzyme',blue,15)+text(238,195,'— Starch',rust,15),
+    'Compare both tubes: same starting amounts and volume, different pH. The circle and line symbols are a model, not actual molecule counts.',215);
+}
+function amylasePreparation(){return grouped(amylaseSetup,amylaseControls);}
 function amylaseRates() {
   return fig('Compare reciprocal times',
     'In the worked example, one divided by 40 seconds gives 0.025 per second at pH 7. One divided by 80 seconds gives 0.0125 per second at pH 5. With equal starting starch amounts, these are estimates of relative activity.',
@@ -116,6 +126,17 @@ function rulerMeans() {
     text(160,25,'Mean drop distance (cm)',ink,15)+'<rect x="55" y="50" width="70" height="120" fill="#d9eaf4" stroke="'+blue+'" stroke-width="2"/><rect x="195" y="62" width="70" height="108" fill="#d9eee4" stroke="'+teal+'" stroke-width="2"/>'+
     text(90,116,'20 cm',blue,15)+text(230,128,'18 cm',teal,15)+text(90,201,'Person A',ink,15)+text(230,201,'Person B',ink,15),
     'Compare the mean drop distances on the same scale. This pair of illustrative results cannot represent everyone.',220);
+}
+function rulerControls() {
+  const trial=x=>circle(x,56,10,'#f2d4c3',rust)+line(x,67,x,97,ink,2)+line(x,77,x+28,91,ink,2)+
+    line(x+28,87,x+34,87,ink,2)+line(x+28,95,x+34,95,ink,2)+line(x-10,100,x+10,100,ink,2)+line(x,97,x+16,111,ink,2)+
+    '<rect x="'+(x+37)+'" y="53" width="14" height="58" fill="#fff4d9" stroke="'+ink+'" stroke-width="2"/>'+line(x+37,91,x+45,91,ink,2);
+  const clock=(x,second)=>circle(x,171,17,'#edf4f2',teal,2)+line(x,171,x,158,teal,2)+line(x,171,x+(second?10:5),171+(second?6:-8),teal,2);
+  return fig('Keep the ruler-drop start comparable',
+    'Two schematic trials show the same seated posture, hand position and gap beside the ruler zero. Clock hands differ to represent varying the delay before release, rather than releasing at a predictable count. The clocks do not show measured times.',
+    text(70,25,'Trial 1',ink,15)+text(225,25,'Trial 2',ink,15)+trial(50)+trial(205)+
+    text(160,135,'Same starting position',ink,15)+clock(120,false)+clock(200,true)+text(160,222,'Vary release delay',teal,15),
+    'Compare posture and the starting gap, then vary the release delay so the catcher cannot anticipate it. Use practice trials before collecting results.',240);
 }
 function circuitMeters() {
   return fig('Measuring a component',
@@ -990,13 +1011,13 @@ export const gcseWorkedVisuals = {
 // These worked groups contain several distinct ideas. The renderer places
 // each selected visual directly with its matching line in the teaching stage.
 export const gcseWorkedLineVisuals = {
-  'amylase-endpoint': [amylaseSetup, iodineEndpoint, amylaseRates, iodineInterval],
+  'amylase-endpoint': [amylasePreparation, iodineEndpoint, amylaseRates, iodineInterval],
   'chromatography': [gcseChromatogramSetup, gcseChromatogramResult, rfWorked],
   'domestic-electricity': [alternatingAndDirect, mainsWorkingLoop, faultPath],
   'dynamic-equilibrium': [equilibriumStart, equilibriumRateGraph, dynamicEquilibrium],
   'photosynthesis-limits': [pondweedRateWorked, pondweedLight, pondweedTemperature],
   'reacting-masses': [magnesiumParticles, oxygenRequirement, magnesiumYield],
-  'ruler-drop': [() => investigationFigure('ruler-drop', 'Align zero with the top of the open fingers. The sketch shows only the lower part of a centimetre ruler.'), rulerMeans, () => investigationFigure('ruler-drop', 'Keep the starting gap, hand and posture consistent, and vary the release delay.')],
+  'ruler-drop': [() => investigationFigure('ruler-drop', 'Align zero with the top of the open fingers. The sketch shows only the lower part of a centimetre ruler.'), rulerMeans, rulerControls],
   'respiration-exercise': [circulation, () => airSac(true), oxygenInBlood, leftHeartChambers, muscleDelivery],
   'plant-transport': [rootHairOsmosis, xylemRouteWorked, leafVapourPath, sourceAndSink, windAndVapour],
   'solution-concentration': [concentrationVolumes, concentrationBars, null],

@@ -488,6 +488,11 @@ const nutritionRecap = function(file, alt, caption, height) { return {
  src:"/human-biology/"+file+".svg",width:280,height:height,compact:true,alt:alt,caption:caption
 }; };
 const recapFigureMap = {
+ "f170/4.2/2": [nutritionRecap("f170-microbiota-interventions", "A schematic compares probiotics containing live microbes with faecal microbiota transplantation using screened donor material. FMT is an established option for selected recurrent C. difficile infections; use for obesity remains investigational.", "Compare the intervention and the evidence context. Probiotic effects vary by product and condition; FMT is not an established obesity treatment. The figure does not recommend treatment for an individual.", 480)],
+ "f171/1.2.1.movement/1": [["f171/1.2.1.movement", "explainDiagrams", 1]],
+ "f171/1.2.1.movement/2": [["f171/1.2.1.movement", "explainDiagrams", 2]],
+ "f170/4.2/0": [nutritionRecap("f170-microbiota-sites", "A schematic body marks mouth, skin, gut and genital tract as examples of microbiota sites. Communities vary by site and include bacteria and fungi.", "Locate the example sites. Microbial communities vary by body site and person; the markers do not represent exact species or quantities.", 420)],
+ "f170/4.2/1": [nutritionRecap("f170-microbiota-benefits", "Resident gut microbes and an incoming potential pathogen compete for space and nutrients near the lining. Some gut bacteria also synthesise vitamins.", "Compare the competing microbes, then follow the example of vitamin synthesis. Competition can make establishment harder, but does not prevent every infection.", 395)],
  "f171/1.2.1.airways/1": [["f171/1.2.1.airways", "explainDiagrams", 1]],
  "f171/1.2.1.airways/2": [["f171/1.2.1.airways", "explainDiagrams", 2]],
  "f170/4.1.2/2": [nutritionRecap("f170-fungal-disease-examples", "Selected examples show aspergillosis affecting lungs, Candida-associated thrush affecting the mouth, and tinea pedis affecting foot skin, often caused by dermatophytes such as Trichophyton.", "Use these as examples of sites, not diagnostic signs or the only sites affected. Tinea names an infection, not a fungal genus.", 465)],
