@@ -142,8 +142,9 @@ export async function checkHumanCatchup(browser, base) {
     await open("catchup/f170/1.1.2");
     const microscopy = page.locator(".hb-teach-explain");
     const fractionation = microscopy.getByRole("heading", { name: "Cell fractionation", exact: true });
-    assert(await microscopy.getByRole("table").evaluate((table, heading) =>
-      Boolean(table.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING),
+    const representationComparison = microscopy.locator(".hb-compare-groups").filter({has: microscopy.getByRole("heading", {name: "What kind of representation am I reading?", exact: true})});
+    assert(await representationComparison.evaluate((group, heading) =>
+      Boolean(group.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING),
     await fractionation.elementHandle()));
     assert(await page.getByText(/particles that collect at the bottom|material that collects at the bottom/).isVisible());
     await page.getByText("Related learning and practice", {exact:true}).press("Enter");
@@ -773,6 +774,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f171/1.2.1.renal/1", ["f171-glomerular-barrier.svg"]], ["f171/1.2.1.renal/2", ["f171-kidney-cysts.svg"]],
       ["f171/1.2.1.hodgkin/1", ["f171-lymph-node-airway.svg"]], ["f171/1.2.1.pkd/1", ["f171-kidney-volume-filtration.svg"]], ["f171/4.2.2/1", ["f171-pressure-readings.svg"]],
       ["f171/2.2/1", ["f171-functional-outcome.svg"]],
+      ["f175/2.1/1", ["f175-history-ultrasound.svg"]], ["f170/3.3.1/2", ["hb-endometrium.webp", "hb-follicle-teaching.webp", "hb-tubule-teaching.webp"]],
       ["f170/3.3.1/1", ["f170-sperm-route.svg"]], ["f170/3.3.2/2", ["f170-gamete-patterns.svg"]],
       ["f170/3.3.3/0", ["f170-menopause-change.svg"]], ["f170/3.3.3/1", ["f170-menopause-therapy.svg"]], ["f170/3.3.3/2", ["f170-prostate-enlargement.svg"]],
       ["f170/3.3.2/1", ["f170-ovarian-hormones.svg", "f170-testicular-hormones.svg"]],
@@ -786,20 +788,20 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/2.2.1/0", ["f170-oxygen-delivery.svg"]], ["f170/2.2.1/2", ["f170-oxygen-delivery.svg"]], ["f170/2.2.3/1", ["peak-flow-method.svg"]], ["f170/2.2.3/2", ["f170-ventilation-example.svg"]],
       ["f170/2.1.1/0", ["f170-alveolar-barrier.svg"]], ["f170/2.1.1/1", ["pulse-measurement-context.svg"]], ["f170/2.1.1/2", ["pulse-measurement-context.svg"]],
       ["f170/2.1.4/0", ["f170-antigen-recognition.svg"]], ["f170/2.1.4/1", ["ventricular-assist.svg"]], ["f170/2.1.4/2", ["valve-repair.svg"]],
-      ["f170/1.1.2/1", ["hb-blood-cells-sem.webp", "hb-pancreas-tem.webp"]],
-      ["f170/1.1.2/2", ["f170-wet-mount.svg"]],
+      ["f170/1.1.2/1", ["hb-blood-cells-sem.webp", "hb-lung-mitochondrion-tem.webp"]],
+      ["f170/1.1.2/2", ["f170-wet-mount.svg", "f170-section-stain.svg"]],
       ["f170/1.1.2/3", ["f170-print-magnification.svg", "f170-fractionation-spins.svg", "cell-counting-chamber.svg"]],
       ["f170/1.1.2.counting/1", ["cell-counting-impedance.svg", "cell-counting-clumps.svg"]],
       ["f170/1.1.3/1", ["cell-protein-routing.svg"]],
       ["f170/1.1.3/2", ["cell-mito-protein-import.svg", "f170-ribosome-types.svg"]],
       ["f170/1.1.1.signals/1", ["reflex-pathway.svg", "myelinated-axon.svg"]],
       ["f170/1.1.3.evidence/1", ["f170-ribosome-types.svg"]],
-      ["f170/1.1.3.evidence/2", ["cell-er-comparison.svg", "cell-protein-routing.svg"]],
+      ["f170/1.1.3.evidence/2", ["cell-er-comparison.svg", "cell-protein-routing.svg", "f170-lysosome-digestion.svg"]],
       ["f170/4.2/0", ["f170-microbiota-sites.svg"]], ["f170/4.2/1", ["f170-microbiota-benefits.svg"]], ["f170/4.2/2", ["f170-microbiota-interventions.svg"]],
       ["f170/4.1.3/0", ["f170-microbiota-sites.svg", "f170-microbial-environments.svg"]], ["f170/4.1.3/1", ["f170-sampling-contamination.svg"]], ["f170/4.1.3/2", ["f170-asepsis-limit.svg"]],
       ["f170/4.1.2/0", ["f170-fungal-hyphae.svg"]], ["f170/4.1.2/1", ["f170-fungal-digestion.svg"]], ["f170/4.1.2/2", ["f170-fungal-disease-examples.svg"]],
       ["f170/4.1.4/1", ["f170-growth-graph.svg", "f170-binary-fission.svg", "f170-population-balance.svg"]],
-      ["f170/4.1.1/1", ["f170-gram-envelope.svg", "hb-gram-comparison.webp"]],
+      ["f170/4.1.1/1", ["f170-gram-envelope.svg", "hb-gram-comparison.webp"]], ["f170/4.1.1/2", ["f170-mesosome-artefact.svg"]],
       ["f170/4.1.5/0", ["virus-particle.svg"]], ["f170/4.1.5/1", ["virus-host.svg"]], ["f170/4.1.5/2", ["bacteriophage.svg"]],
       ["f170/1.1.4/1", ["f170-oxygen-diffusion.svg", "f170-channel-diffusion.svg", "f170-water-active.svg"]],
       ["f170/1.1.4/2", ["f170-water-active.svg", "f170-antigen-recognition.svg"]],
@@ -829,6 +831,11 @@ export async function checkHumanCatchup(browser, base) {
         assert(await image.evaluate(async element => { await element.decode(); return element.naturalWidth > 0 && element.alt.length > 20; }));
       }
       assert(await widthFits(), `Recap ${route} must fit the phone viewport`);
+    }
+    await open("catchup/f170/3.3.1/2");
+    for (const file of ["hb-endometrium.webp", "hb-follicle-teaching.webp", "hb-tubule-teaching.webp"]) {
+      const photo = page.locator('figure').filter({has: page.locator(`img[src$="/${file}"]`)});
+      assert.equal(await photo.locator("figcaption a").count(), 2, "recap specimen retains source and licence");
     }
     await open("catchup/f170/4.1.1/1");
     const gramCredit = page.locator('figure').filter({has: page.locator('img[src="/assets/micrographs/hb-gram-comparison.webp"]')});
@@ -882,6 +889,9 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.2.1", ["f170-levels-organisation.svg", "f170-ventricle-damage.svg"], ["f170-ventricle-damage.svg", "f170-ventricle-damage.svg", "f170-ventricle-damage.svg"]],
       ["f170/4.1.4", ["f170-binary-fission.svg"], ["f170-growth-graph.svg", "f170-growth-graph.svg", "f170-growth-graph.svg"]],
       ["f170/4.1.1", ["f170-gram-envelope.svg", "f170-gram-stain-sequence.svg"], ["f170-gram-envelope.svg", "f170-gram-envelope.svg"]],
+      ["f177/a3", ["f177-preclinical-evidence.svg", "f177-study-duration.svg"], ["f177-preclinical-evidence.svg", "f177-study-duration.svg", "f177-safety-signal.svg"]],
+      ["f176/a5", ["f176-eeg-trace.svg"], ["f176-eeg-trace.svg", "f176-mri-ct.svg"]],
+      ["f176/a4", ["f176-coordination-injury.svg"], ["f176-coordination-injury.svg", "f176-coordination-injury.svg"]],
       ["f175/2.1", ["f175-history-ultrasound.svg", "f175-history-ultrasound.svg"], ["f175-history-ultrasound.svg", "f175-baseline-pressure.svg", "f175-history-ultrasound.svg"]],
       ["f171/1.2.1.tissues", [null, "f171-myelin-change.svg", "f171-melanocytes.svg"], ["f171-inflamed-joint.svg", "f171-inflamed-joint.svg"]],
       ["f171/1.2.1.oxygen", [null, "airway-narrowing.svg", "f171-sickle-vessel.svg", "iron-blood-oxygen.svg"], ["f171-sickle-vessel.svg", "iron-blood-oxygen.svg"]],
@@ -1048,6 +1058,51 @@ export async function checkHumanCatchup(browser, base) {
     await expand(page.locator("[data-hb-model-step]"));
     assert(await antenatalTeachingFigures.evaluateAll(figures => figures.every(figure => !figure.hidden)));
 
+    // Non-booklet nervous-system teaching visuals hide during independent practice.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f176/a4");
+    const injuryTeachingFigures = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]');
+    assert.equal(await injuryTeachingFigures.count(), 2);
+    await expand(stage("independent"));
+    await expand(page.locator(".hb-teach-explain"));
+    assert(await injuryTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await page.reload();
+    await expand(stage("independent"));
+    await expand(page.locator(".hb-teach-explain"));
+    assert(await injuryTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await injuryTeachingFigures.evaluateAll(figures => figures.every(figure => !figure.hidden)));
+
+    // Investigation diagrams answer the independent method-choice question.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f176/a5");
+    const investigationFigures = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]');
+    assert.equal(await investigationFigures.count(), 2);
+    await expand(stage("independent"));
+    await expand(page.locator(".hb-teach-explain"));
+    assert(await investigationFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await page.reload();
+    await expand(stage("independent"));
+    await expand(page.locator(".hb-teach-explain"));
+    assert(await investigationFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await investigationFigures.evaluateAll(figures => figures.every(figure => !figure.hidden)));
+
+    // Safety-signal explanation is hidden while its independent question is open.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f177/a3");
+    const signalTeachingFigure = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]');
+    assert.equal(await signalTeachingFigure.count(), 1);
+    await expand(stage("independent"));
+    await expand(page.locator(".hb-teach-explain"));
+    assert(await signalTeachingFigure.evaluate(figure => figure.hidden));
+    await page.reload();
+    await expand(stage("independent"));
+    await expand(page.locator(".hb-teach-explain"));
+    assert(await signalTeachingFigure.evaluate(figure => figure.hidden));
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await signalTeachingFigure.evaluate(figure => !figure.hidden));
+
     // Both linked meiosis views remain on their matching paragraph and worked step.
     await page.evaluate(key => localStorage.removeItem(key), localPractice);
     await open("catchup/f170/1.1.5.meiosis");
@@ -1094,6 +1149,20 @@ export async function checkHumanCatchup(browser, base) {
     for (const src of reproductiveData.photos) assert(!assessmentImages.includes(src), "teaching fields must not be reused as assessment fields");
     assert(await widthFits(), "reproductive teaching must fit at phone size");
 
+    // Acidic lysosome digestion remains in the matching paragraph figure group.
+    for (const [route, index] of [["f170/1.1.3", 3], ["f170/1.1.3.evidence", 2]]) {
+      await open("catchup/" + route);
+      const paragraph = page.locator(".hb-teach-explain > p").nth(index);
+      assert(await paragraph.evaluate(el => {
+        for (let sibling = el.nextElementSibling; sibling && sibling.tagName !== "P"; sibling = sibling.nextElementSibling) {
+          if (sibling.querySelector('img[src$="/f170-lysosome-digestion.svg"]')) return true;
+          if (!sibling.matches("figure")) break;
+        }
+        return false;
+      }), `${route} lysosome figure must follow its matching paragraph`);
+      assert.equal(await stage("independent").locator('img[src$="/f170-lysosome-digestion.svg"]').count(), 0);
+    }
+
     // Surface comparison keeps each figure directly with its complete matching fact.
     await open("catchup/f170/1.1.1.surfaces");
     const surfaceRows = page.locator(".hb-compare-group");
@@ -1126,6 +1195,24 @@ export async function checkHumanCatchup(browser, base) {
       const paragraph = microExplain.getByText(text, {exact: false});
       assert(await paragraph.evaluate((el, name) => Boolean(el.nextElementSibling?.querySelector(`img[src$="/${name}"]`)), file), `${file} follows its matching paragraph`);
     }
+    const representationRows = microExplain.locator(".hb-compare-group");
+    const representationData = await page.evaluate(() => window.KeystoneHumanLessons["f170/1.1.2"].compare.rows);
+    const representationFiles = [["red-cell-section.svg"], ["hb-skeletal-striated.webp"], ["hb-blood-cells-sem.webp", "hb-lung-mitochondrion-tem.webp"]];
+    assert.equal(await representationRows.count(), representationFiles.length);
+    for (let i = 0; i < representationFiles.length; i++) {
+      const row = representationRows.nth(i);
+      assert.equal(await row.locator(":scope > h4").innerText(), representationData[i][0]);
+      assert.equal(await row.locator(":scope > p").innerText(), representationData[i][1]);
+      for (const file of representationFiles[i]) {
+        const image = row.locator(`img[src$="/${file}"]`);
+        await image.scrollIntoViewIfNeeded();
+        assert(await image.evaluate(async el => { await el.decode(); return el.naturalWidth > 0 && el.alt.length > 20; }));
+        if (file.endsWith(".webp")) assert.equal(await image.locator("xpath=ancestor::figure").locator("figcaption a").count(), 2);
+      }
+    }
+    assert.equal(await stage("independent").locator('img[src$="/hb-lung-mitochondrion-tem.webp"]').count(), 0);
+    const sectionParagraph = microExplain.getByText("In transmitted light microscopy", {exact: false});
+    assert(await sectionParagraph.evaluate(el => Boolean(el.nextElementSibling?.nextElementSibling?.querySelector('img[src$="/f170-section-stain.svg"]'))), "section and stain figure follows its matching paragraph after the wet mount");
     const microWorked = page.locator("[data-hb-model-step]");
     await expand(microWorked);
     assert(await microWorked.locator('img[src="/assets/micrographs/human-erythrocytes.jpg"]').isVisible());

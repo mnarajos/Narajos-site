@@ -488,6 +488,9 @@ const nutritionRecap = function(file, alt, caption, height) { return {
  src:"/human-biology/"+file+".svg",width:280,height:height,compact:true,alt:alt,caption:caption
 }; };
 const recapFigureMap = {
+ "f170/4.1.1/2": [nutritionRecap("f170-mesosome-artefact", "A conceptual bacterial membrane is shown before and after a possible alteration during chemical fixation. A membrane infolding is a possible preparation artefact; the drawing is not an actual observation and not every preparation causes it.", "Compare the membrane outlines: chemical fixation can create an infolding that was historically called a mesosome. This is a schematic possibility, not proof that all infoldings or preparations are artefacts.", 365)],
+ "f175/2.1/1": [["f175/2.1", "explainDiagrams", 1]],
+ "f170/3.3.1/2": [["f170/3.3.1", "explainPhotos", 0]],
  "f170/3.3.1/1": [nutritionRecap("f170-sperm-route", "A simplified pathway shows sperm from a testis moving into the epididymis, then along the vas deferens towards the urethra. The seminal vesicle and prostate add fluid to the route. The drawing is not a body section or to scale.", "Follow the sperm route from testis to epididymis and vas deferens. The labelled accessory glands contribute fluid; the simplified layout does not show anatomical positions.", 400)],
  "f170/3.1.2/2": [nutritionRecap("f170-glucose-testing-context", "A fasting period precedes one blood sample, providing a more standardised starting condition. A wearable sensor measures glucose in fluid beneath the skin and provides a trend over time; sensor readings can lag behind blood glucose.", "Compare the single fasting blood sample with the sensor trend. Fasting standardises recent food intake; interstitial-fluid readings can differ from or lag behind blood glucose.", 393)],
  "f171/1.2.1.tissues/1": [["f171/1.2.1.tissues", "explainDiagrams", 1]],
@@ -578,7 +581,7 @@ const recapFigureMap = {
  "f170/1.1.2.counting/1": [["f170/1.1.2.counting", "explainDiagrams", 1], ["f170/1.1.2.counting", "modelDiagrams", 1]],
  "f170/1.1.3/1": [["f170/1.1.3", "explainDiagrams", 3]],
  "f170/1.1.3/2": [["f170/1.1.3", "explainDiagrams", 1], ["f170/1.1.3.evidence", "explainDiagrams", 1]],
- "f170/1.1.2/1": [["f173/a2", "explanationPhoto"], ["f173/a2", "explanationPhoto2"]],
+ "f170/1.1.2/1": [["f170/1.1.2", "comparisonPhotos", 2]],
  "f170/3.2.1/1": [["f176/a2", "explanationDiagram"], ["f170/3.2.1", "myelinDiagram"]],
  "f172/a1/1": [["f172/a1", "teachingDiagram"]],
  "f172/a2/1": [["f172/a2", "teachingDiagram"]],
@@ -605,7 +608,7 @@ function recapFigures(unit,id,step) {
   const field=lessons[entry[0]]?.[entry[1]];
   const item=entry.length>2 ? field?.[entry[2]] : field;
   return (Array.isArray(item) ? item : [item]).filter(Boolean).map(function(visual) {
-   return (entry[1].startsWith("explanationPhoto") || entry[1] === "explainPhotos" || entry[1] === "modelPhotos") ? teaching.renderPhoto(visual) : teaching.renderDiagram(visual);
+   return (entry[1].startsWith("explanationPhoto") || entry[1] === "explainPhotos" || entry[1] === "modelPhotos" || entry[1] === "comparisonPhotos") ? teaching.renderPhoto(visual) : teaching.renderDiagram(visual);
   }).join("");
  }).join("");
 }

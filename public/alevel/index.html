@@ -470,6 +470,13 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <script src="/alevel/catchup-nucleic-comparison.js"></script>
 <script src="/alevel/catchup-osmosis-chain.js"></script>
 <script src="/alevel/catchup-antibody-drug.js"></script>
+<script src="/alevel/catchup-xerophyte-roll.js"></script>
+<script src="/alevel/catchup-lipid-storage.js"></script>
+<script src="/alevel/catchup-single-cell-exchange.js"></script>
+<script src="/alevel/catchup-ileum-adaptations.js"></script>
+<script src="/alevel/catchup-plant-fungus.js"></script>
+<script src="/alevel/catchup-microscope-comparison.js"></script>
+<script src="/alevel/catchup-neural-reuse.js"></script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/home-link.css">
@@ -646,7 +653,7 @@ DATA.a1={
    {"t":"mcq","tier":"H","q":"The same glucose and sucrose solution is then hydrolysed with acid, neutralised and tested again. More precipitate forms than in the first test. What does this show?","opts":["The solution contained a non-reducing sugar as well as a reducing sugar","The acid reacted with the Benedict’s reagent to form extra precipitate","The first test had not been heated for long enough to finish reacting","Hydrolysis changed the glucose into a sugar that is more reducing"],"a":0,"fb":[null,"Acid is neutralised before the second test, and acid does not form the precipitate.","The comparison is between before and after hydrolysis – extra precipitate means extra reducing sugar was made.","Glucose is not changed by hydrolysis; sucrose is hydrolysed to glucose and fructose."],"why":"Hydrolysing sucrose releases glucose and fructose, both reducing sugars. More reducing sugar gives more precipitate: Benedict’s is semi-quantitative."}
   ]},
 
- {id:"lipids",title:"Triglycerides and phospholipids",spec:"3.1.3",needs:["monopoly"],key:["A triglyceride contains one <b>glycerol</b> molecule linked to three <b>fatty acids</b>. Each linkage is an <b>ester bond</b>, formed when glycerol and a fatty acid undergo condensation.","The R-group of a fatty acid may be <b>saturated</b> (no C=C double bonds) or <b>unsaturated</b> (one or more C=C double bonds).","In a typical <b>phospholipid</b>, a phosphate-containing group occupies one of the positions that holds a fatty acid in a triglyceride.","Triglycerides have a high ratio of energy-storing C–H bonds and are insoluble. Phospholipids have a hydrophilic phosphate head and hydrophobic fatty acid tails, so they form a bilayer in membranes."],gate:"Phospholipid structure explains the cell-surface membrane in topic 2 and transport across it.",st:1,
+ {id:"lipids",title:"Triglycerides and phospholipids",spec:"3.1.3",needs:["monopoly"],key:["A triglyceride contains one <b>glycerol</b> molecule linked to three <b>fatty acids</b>. Each linkage is an <b>ester bond</b>, formed when glycerol and a fatty acid undergo condensation.","The R-group of a fatty acid may be <b>saturated</b> (no C=C double bonds) or <b>unsaturated</b> (one or more C=C double bonds).","In a typical <b>phospholipid</b>, a phosphate-containing group occupies one of the positions that holds a fatty acid in a triglyceride.","Triglycerides have many C–H bonds; their overall oxidation transfers energy for ATP synthesis. They are insoluble. Phospholipids have a hydrophilic phosphate head and hydrophobic fatty acid tails, so they form a bilayer in membranes."],gate:"Phospholipid structure explains the cell-surface membrane in topic 2 and transport across it.",st:1,
   qs:[
    {"t":"mcq","tier":"F","warm":true,"q":"From GCSE: lipids (fats and oils) are made from fatty acids and which other molecule?","opts":["Glycerol","Glucose","Amino acids","Starch"],"a":0,"why":"A lipid molecule is made from glycerol and three fatty acids. At A-level this is called a triglyceride."},
    {"t":"tap","tier":"F","mode":"label","fig":"triglyc","q":"Label this triglyceride.","pts":[[42,210],[188,208],[300,14]],"labels":["glycerol","ester bond","fatty acid"],"why":"Glycerol is the three-carbon backbone. Each fatty acid is joined to glycerol by an ester bond, formed in a condensation reaction.","extra":["peptide bond"]},
@@ -6365,6 +6372,13 @@ function showCatchupTopic(t,focus){
  render(h+'</ul>',focus);
 }
 function catchupChunks(notes,synapse,topic,concept){
+ if(topic==='a6'&&concept==='speed'){
+  var speedGroups=[[0,1,window.ALevelEnergyMechanismFigures],[1,3,window.ALevelResponseCoreFigures]];
+  return speedGroups.map(function(g,groupIndex){
+   return '<div class="companion-chunk">'+notes.slice(g[0],g[1]).map(function(k){return '<p>'+rich(k)+'</p>';}).join('')+
+    (g[2]?g[2].render(topic,concept,groupIndex):'')+'</div>';
+  }).join('');
+ }
  if(synapse){
   var groups=[["Release acetylcholine",0,2],["Depolarise the postsynaptic membrane",2,3],
    ["End the signal",3,4],["Why transmission is one-way",4]];
@@ -6400,6 +6414,13 @@ function catchupChunks(notes,synapse,topic,concept){
    (window.ALevelNucleicComparison?window.ALevelNucleicComparison.render(topic,concept,i/2):'')+
    (window.ALevelOsmosisChain?window.ALevelOsmosisChain.render(topic,concept,i/2):'')+
    (window.ALevelAntibodyDrug?window.ALevelAntibodyDrug.render(topic,concept,i/2):'')+
+   (window.ALevelXerophyteRoll?window.ALevelXerophyteRoll.render(topic,concept,i/2):'')+
+   (window.ALevelLipidStorage?window.ALevelLipidStorage.render(topic,concept,i/2):'')+
+   (window.ALevelSingleCellExchange?window.ALevelSingleCellExchange.render(topic,concept,i/2):'')+
+   (window.ALevelIleumAdaptations?window.ALevelIleumAdaptations.render(topic,concept,i/2):'')+
+   (window.ALevelPlantFungus?window.ALevelPlantFungus.render(topic,concept,i/2):'')+
+   (window.ALevelMicroscopeComparison?window.ALevelMicroscopeComparison.render(topic,concept,i/2):'')+
+   (window.ALevelNeuralReuse?window.ALevelNeuralReuse.render(topic,concept,i/2):'')+
    (window.ALevelMetabolismPracticals?window.ALevelMetabolismPracticals.render(topic,concept,i/2):'')+
    (window.ALevelCellReuseFigures?window.ALevelCellReuseFigures.render(topic,concept,i/2):'')+
    (window.ALevelGeneTechniques?window.ALevelGeneTechniques.render(topic,concept,i/2):'')+

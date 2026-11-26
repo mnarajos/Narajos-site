@@ -94,12 +94,12 @@
 
   function comparisonContent(lesson) {
     const comparison = lesson.compare;
-    if (!lesson.comparisonFigures || !comparison) {
+    if ((!lesson.comparisonFigures && !lesson.comparisonPhotos) || !comparison) {
       return teachingDiagram(lesson.comparisonDiagram) + (lesson.comparisonDiagrams || []).map(teachingDiagram).join("") + table(comparison);
     }
     return '<section class="hb-compare-groups"><h3>' + escape(comparison.caption) + '</h3>' +
       comparison.rows.map((row, index) => '<section class="hb-compare-group"><h4>' + escape(row[0]) + '</h4>' +
-        (lesson.comparisonFigures[index] || []).map(teachingDiagram).join("") + paragraphs(row.slice(1)) + '</section>').join("") + '</section>';
+        teachingPhotos(lesson.comparisonPhotos?.[index]) + (lesson.comparisonFigures?.[index] || []).map(teachingDiagram).join("") + paragraphs(row.slice(1)) + '</section>').join("") + '</section>';
   }
 
   function afterComparisonContent(lesson) {

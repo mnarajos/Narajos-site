@@ -80,6 +80,115 @@ function parallelTransects() {
     'Compare the repeated lines: each uses the same distances from the hedge. Real surveys may use more samples.',235);
 }
 function quadratWorked(){return grouped(randomCoordinates,quadratBoundary,quadratMeanWorked,parallelTransects);}
+function trolleySensors() {
+  const gate=x=>'<path d="M'+x+' 139 V70 H'+(x+32)+' V139" fill="none" stroke="'+blue+'" stroke-width="3"/>'+line(x+2,92,x+30,92,blue,1,'3 3');
+  return fig('Measure motion with light gates',
+    'A trolley carrying a vertical card moves along a level track through two light gates. The gates send timing measurements to a data logger, which can be used to determine acceleration. Release the trolley consistently without pushing it.',
+    text(160,25,'Two light gates',ink,15)+gate(125)+gate(224)+line(18,139,285,139,ink,3)+
+    '<rect x="30" y="111" width="68" height="20" fill="#dcecf1" stroke="'+ink+'"/><rect x="58" y="74" width="9" height="37" fill="#d9b07d" stroke="'+ink+'"/>'+
+    circle(45,136,5,'#fff',ink,2)+circle(83,136,5,'#fff',ink,2)+arrow(40,60,94,60,teal,2)+
+    '<rect x="104" y="174" width="112" height="43" rx="4" fill="#edf6ed" stroke="'+teal+'" stroke-width="2"/>'+text(160,202,'Data logger',teal,15)+
+    line(141,139,141,174,blue,1,'4 4')+line(240,139,240,164,blue,1,'4 4')+line(240,164,195,174,blue,1,'4 4'),
+    'The card interrupts each gate as the trolley passes. The dashed lines represent connections to the logger; release without a push.',236);
+}
+function trolleyTrial(y,cartCount,hangerCount) {
+  const blocks=(x,base,count,vertical)=>Array.from({length:count},(_,i)=>'<rect x="'+(x+(vertical?0:i*20))+'" y="'+(base+(vertical?i*14:0))+'" width="18" height="14" fill="#e4bc88" stroke="'+rust+'" stroke-width="1.5"/>').join('');
+  return '<rect x="40" y="'+(y+36)+'" width="95" height="20" fill="#dcecf1" stroke="'+ink+'"/>'+blocks(55,y+22,cartCount,false)+
+    circle(59,y+62,6,'#fff',ink,2)+circle(116,y+62,6,'#fff',ink,2)+line(20,y+68,221,y+68,ink,2)+
+    line(135,y+46,230,y+46,ink,2)+circle(230,y+55,9,'#fff',ink,2)+line(239,y+55,239,y+83,ink,2)+blocks(230,y+83,hangerCount,true);
+}
+function trolleyTransfer() {
+  return fig('Change force at fixed moving mass',
+    'In trial A, two equal slotted masses sit on the trolley and one hangs from the string. In trial B, one mass has been transferred from the trolley to the hanger, so the trolley and hanger together still carry three masses while the hanging weight is larger.',
+    text(160,25,'Trial A',ink,15)+trolleyTrial(35,2,1)+text(160,194,'Trial B',ink,15)+trolleyTrial(204,1,2)+
+    text(160,359,'Same three masses',teal,15),
+    'Move a mass from trolley to hanger: the driving weight rises while the total moving mass stays the same. Allow for friction.',378);
+}
+function trolleyAddMass() {
+  return fig('Change moving mass at fixed drive',
+    'In two trials the same slotted mass remains on the hanger. An additional equal mass is added to the trolley for trial B. The total moving mass increases while the hanging weight stays the same.',
+    text(160,25,'Trial A',ink,15)+trolleyTrial(35,1,1)+text(160,194,'Trial B',ink,15)+trolleyTrial(204,2,1)+
+    text(160,359,'Same hanging mass',teal,15),
+    'Keep the hanger unchanged and add a mass to the trolley. Keep friction small and comparable between runs.',378);
+}
+function copperElectrolysis() {
+  return fig('Electrolyse copper sulfate solution',
+    'A direct-current supply connects its negative terminal to one graphite electrode and its positive terminal to another. Both electrodes dip into copper sulfate solution without touching. Copper coats the negative electrode and oxygen bubbles form at the positive electrode; the products can be collected separately for testing.',
+    '<rect x="120" y="12" width="80" height="50" rx="4" fill="#e9f1f4" stroke="'+ink+'" stroke-width="2"/>'+text(160,35,'DC',ink,15)+text(136,57,'−',ink,15)+text(184,57,'+',ink,15)+
+    line(136,62,136,72,ink,2)+line(136,72,80,72,ink,2)+line(80,72,80,110,ink,2)+
+    line(184,62,184,72,ink,2)+line(184,72,240,72,ink,2)+line(240,72,240,110,ink,2)+
+    '<path d="M35 100v100h250V100" fill="#edf6f7" stroke="'+ink+'" stroke-width="2"/>'+line(37,128,283,128,blue,2)+
+    line(80,98,80,178,ink,8)+line(240,98,240,178,ink,8)+line(75,145,75,176,rust,3)+line(85,145,85,176,rust,3)+
+    circle(251,156,4,'#fff',blue,1)+circle(245,143,4,'#fff',blue,1)+circle(254,132,4,'#fff',blue,1)+
+    text(80,231,'− Cathode',ink,15)+text(240,231,'+ Anode',ink,15),
+    'The electrodes remain separate. Copper forms on the cathode; oxygen forms at the anode and can be collected for a gas test.',250);
+}
+function anodeGasCollection() {
+  return fig('Collect the gas separately',
+    'A tube initially filled with solution is inverted over the anode. Gas bubbles rise from the anode and displace solution from the tube, leaving a sample above the liquid. The wider circuit and other electrode are omitted from this close-up.',
+    text(160,24,'Collected gas',ink,15)+'<rect x="40" y="115" width="240" height="80" fill="#dceef4"/>'+line(40,115,125,115,blue,2)+line(195,115,280,115,blue,2)+
+    '<path d="M125 165 V48 Q160 33 195 48 V165" fill="none" stroke="'+ink+'" stroke-width="2"/>'+line(125,115,195,115,blue,2)+
+    line(160,190,160,145,ink,8)+circle(168,136,4,'#fff',blue,1)+circle(153,127,4,'#fff',blue,1)+circle(165,119,3,'#fff',blue,1)+
+    text(160,224,'Anode in solution',ink,15),
+    'Prefill the inverted tube with solution. Gas displaces liquid as it collects; this close-up omits the rest of the circuit.',243);
+}
+function copperElectrolysisAndCollection(){return grouped(copperElectrolysis,anodeGasCollection);}
+function electrodeProducts() {
+  return fig('Follow ions to the electrodes',
+    'At the negative cathode, positive copper ions move to the graphite and gain electrons, forming a coating of copper. At the positive anode, negative ions move towards the electrode and oxygen forms in this copper sulfate solution.',
+    text(160,25,'Cathode −',ink,15)+line(65,48,65,125,ink,9)+line(72,65,72,117,rust,4)+
+    circle(220,85,25,'#e0eef7',blue,2)+text(220,91,'Cu²⁺',blue,15)+arrow(185,85,84,85,blue,2)+
+    text(160,156,'Copper coating forms',rust,15)+text(160,195,'Anode +',ink,15)+
+    line(255,214,255,289,ink,9)+text(91,242,'Anions',ink,15)+arrow(130,263,237,263,teal,2)+
+    circle(265,240,5,'#fff',blue,1)+circle(272,226,5,'#fff',blue,1)+circle(265,212,5,'#fff',blue,1)+text(160,324,'Oxygen forms',blue,15),
+    'Follow positive copper ions to the cathode and negative ions to the anode. The colours distinguish the graphite, coating and gas.',343);
+}
+function glowingSplint() {
+  return fig('Test the gas for oxygen',
+    'A glowing wooden splint is placed into a test tube containing the collected gas. If it relights, the test indicates oxygen. The presence of bubbles alone does not identify a gas.',
+    text(75,25,'Glowing',ink,15)+text(245,25,'Relights',ink,15)+line(95,47,70,115,rust,4)+circle(68,119,5,'#d77528',rust,1)+
+    '<path d="M208 52v94q32 26 64 0V52" fill="#e8f3f4" stroke="'+ink+'" stroke-width="2"/>'+line(251,46,232,108,rust,4)+
+    '<path d="M232 109 Q218 98 231 86 Q231 95 239 96 Q246 104 232 109Z" fill="#f3bb42" stroke="'+rust+'" stroke-width="2"/>'+
+    text(240,188,'Collected gas',ink,15),
+    'A glowing splint relights in oxygen. Bubbles show that a gas formed, but do not identify it.',207);
+}
+function temperatureRises() {
+  return fig('Compare measured temperature rises',
+    'Both methods start at twenty degrees Celsius. The glass beaker reaches twenty-six degrees, a rise of six degrees Celsius. The insulated cup reaches twenty-nine degrees, a rise of nine degrees Celsius. The vertical comparison starts at twenty degrees, not zero.',
+    text(72,25,'Glass',ink,15)+text(246,25,'Insulated',ink,15)+line(30,182,290,182,ink,2)+
+    arrow(72,178,72,112,blue,3)+circle(72,110,5,blue,blue)+arrow(246,178,246,76,teal,3)+circle(246,74,5,teal,teal)+
+    text(72,91,'26 °C',blue,15)+text(246,55,'29 °C',teal,15)+text(72,215,'+6 °C',blue,16)+text(246,215,'+9 °C',teal,16)+
+    text(160,252,'Both start at 20 °C',ink,15),
+    'Subtract the common starting temperature from each maximum. The arrows compare rises from 20 °C; the example readings are illustrative.',271);
+}
+function energyTransferDirections() {
+  return fig('Warming and cooling reactions',
+    'In an exothermic reaction, energy transfers from the reaction to the surroundings and the surrounding mixture warms. In an endothermic reaction, energy transfers from the surroundings to the reaction and the surrounding mixture can cool.',
+    text(75,25,'Exothermic',ink,15)+text(245,25,'Endothermic',ink,15)+
+    '<path d="M43 58v52h56V58 M221 58v52h56V58" fill="#e8f3f4" stroke="'+ink+'" stroke-width="2"/>'+
+    arrow(101,82,137,82,rust,2)+arrow(183,82,219,82,blue,2)+text(70,146,'Warmer',rust,15)+text(250,146,'Cooler',blue,15)+
+    text(76,180,'Energy out',rust,15)+text(244,180,'Energy in',blue,15),
+    'Follow energy out of an exothermic reaction or into an endothermic reaction. The surrounding mixture can warm or cool.',199);
+}
+function temperatureTrace() {
+  return fig('Record the peak during the reaction',
+    'A qualitative temperature–time trace rises to a peak and then falls. A reading taken only after the peak misses the maximum temperature change. A cooling reaction is monitored in the same way to find its minimum.',
+    text(160,25,'Temperature',ink,15)+line(52,48,52,150,ink,2)+line(52,150,280,150,ink,2)+
+    '<path d="M52 140 C85 135 104 64 155 58 C200 59 230 100 275 113" fill="none" stroke="'+blue+'" stroke-width="3"/>'+circle(155,58,4,rust,rust)+
+    text(215,62,'Peak',rust,15)+text(160,183,'Time',ink,15),
+    'Monitor throughout mixing to capture the peak or minimum, and repeat the method to examine variation. This trace is qualitative.',202);
+}
+function temperatureControls() {
+  const fluid=x=>'<path d="M'+x+' 58 v84 h92 V58" fill="#e7f2f3" stroke="'+ink+'" stroke-width="2"/>'+line(x+2,91,x+90,91,blue,2)+[20,45,70].map(dx=>circle(x+dx,112,4,blue,blue)).join('');
+  return fig('Keep the starting conditions matched',
+    'A glass beaker and an insulated cup contain the same starting volume and concentration of reactants at the same starting temperature of twenty degrees Celsius. The dots are schematic and represent the same concentration in each test.',
+    text(66,24,'Glass',ink,15)+text(254,24,'Insulated',ink,15)+fluid(20)+fluid(208)+
+    '<path d="M202 53 v96 h104 V53" fill="none" stroke="'+teal+'" stroke-width="4"/>'+line(203,53,305,53,teal,4)+
+    text(66,175,'20 °C',ink,15)+text(254,175,'20 °C',ink,15)+text(160,213,'Same volume and',ink,15)+text(160,245,'concentration',ink,15),
+    'Use equal reactant volumes and concentrations, with the same starting temperature. Dots are a model, not counted molecules.',264);
+}
+function temperatureWorkedRises(){return grouped(temperatureRises,energyTransferDirections);}
+function temperatureMeasurement(){return grouped(() => investigationFigure('temperature-evidence', 'Insulation and a lid reduce energy transfer to the surroundings; monitor and stir the mixture.'),temperatureTrace);}
 function infraredReadings() {
   return fig('Compare infrared readings',
     'In the worked example, the detector reads 78 arbitrary units from the matt black face and 24 arbitrary units from the polished face, under matched conditions. Both bars start at zero and use the same scale.',
@@ -1108,6 +1217,9 @@ export const gcseWorkedVisuals = {
 // These worked groups contain several distinct ideas. The renderer places
 // each selected visual directly with its matching line in the teaching stage.
 export const gcseWorkedLineVisuals = {
+  'trolley-evidence': [trolleySensors, trolleyTransfer, trolleyAddMass],
+  'electrode-evidence': [copperElectrolysisAndCollection, electrodeProducts, glowingSplint],
+  'temperature-evidence': [temperatureWorkedRises, temperatureMeasurement, temperatureControls],
   'infrared-evidence': [() => investigationFigure('infrared-evidence', 'Keep the same detector distance and angle as you compare cube faces at similar temperatures.'), infraredReadings, infraredAbsorption],
   'spring-evidence': [springReading, springWorkedLengths, springDepartureAndRecovery],
   'wave-measurement': [rippleCrestIntervals, rippleFrequency, rippleAmplitude],

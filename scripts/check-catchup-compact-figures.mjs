@@ -20,6 +20,17 @@ export async function checkCompactCatchupFigures(browser, base) {
       assert.match(await membrane.locator('svg').getAttribute('aria-label'), /phospholipid.*protein.*cholesterol/i);
       assert.equal(await membrane.getAttribute('tabindex'), null, 'non-scrolling diagram should not add a tab stop');
 
+      // Keep the definition and consequences of the refractory period in the
+      // same teaching block as their shared diagram, without duplicating it.
+      await page.goto(base + '/alevel/#catchup-a6-speed');
+      const speedBlocks = page.locator('.companion-chunk');
+      assert.equal(await speedBlocks.count(), 2);
+      assert.match(await speedBlocks.nth(0).innerText(), /speed of conduction/i);
+      assert.match(await speedBlocks.nth(1).innerText(), /sodium channels cannot be opened/i);
+      assert.match(await speedBlocks.nth(1).innerText(), /limits the frequency/i);
+      assert.equal(await speedBlocks.nth(1).locator('figure').filter({hasText: 'The refractory region and impulse direction'}).count(), 1);
+      assert.equal(await page.locator('figure').filter({hasText: 'The refractory region and impulse direction'}).count(), 1);
+
       await page.goto(base + '/human-biology/#catchup/f175/a2');
       const placenta = page.locator('.hb-teach-explain .hb-teaching-diagram-compact');
       await placenta.waitFor();

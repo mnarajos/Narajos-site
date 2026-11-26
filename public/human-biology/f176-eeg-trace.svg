@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="325" viewBox="0 0 280 325" role="img">
+ <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs>
+ <rect width="280" height="325" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">EEG: activity over time</text><text x="140" y="48" font-size="14">Schematic, not a patient trace</text>
+ <path d="M52 145C37 129 40 94 56 82C70 71 95 76 103 91C114 109 111 131 102 145Z" fill="#efc8b7" stroke="#a65f5b" stroke-width="2"/>
+ <g fill="#537a94"><circle cx="52" cy="96" r="5"/><circle cx="69" cy="82" r="5"/><circle cx="89" cy="84" r="5"/><circle cx="104" cy="98" r="5"/></g>
+ <path d="M104 98q36 0 45 25" stroke="#537a94" stroke-width="2" fill="none" marker-end="url(#a)"/>
+ <text x="77" y="175" font-size="14">Scalp electrodes</text>
+ <text x="208" y="70" font-size="13">Signal · no scale</text>
+ <path d="M168 80v69h83" stroke="#344958" stroke-width="2" fill="none"/>
+ <path d="M170 116l8-4 7 8 7-18 8 28 7-17 7 8 8-12 8 10 7-5 9 2" stroke="#32776d" stroke-width="2.5" fill="none"/>
+ <text x="209" y="171" font-size="14">Time →</text>
+ <text x="140" y="226" font-size="15">EEG records changing</text><text x="140" y="248" font-size="15">electrical activity at the scalp.</text>
+ <text x="140" y="287" font-size="14">The trace is illustrative.</text></g>
+</svg>

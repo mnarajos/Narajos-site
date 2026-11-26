@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="300" viewBox="0 0 280 300" role="img">
+ <rect width="280" height="300" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">A limited clinical study</text><text x="140" y="50" font-size="14">Illustrative participants</text>
+ <g fill="#efc8b7" stroke="#a65f5b" stroke-width="2"><circle cx="58" cy="82" r="10"/><circle cx="99" cy="82" r="10"/><circle cx="140" cy="82" r="10"/><circle cx="181" cy="82" r="10"/><circle cx="222" cy="82" r="10"/></g>
+ <g fill="#d9e8f0" stroke="#537a94" stroke-width="2"><path d="M43 115q0-22 15-22t15 22Z"/><path d="M84 115q0-22 15-22t15 22Z"/><path d="M125 115q0-22 15-22t15 22Z"/><path d="M166 115q0-22 15-22t15 22Z"/><path d="M207 115q0-22 15-22t15 22Z"/></g>
+ <circle cx="140" cy="165" r="30" fill="#fff" stroke="#537a94" stroke-width="3"/><path d="M140 143v22l14 8" fill="none" stroke="#537a94" stroke-width="2"/>
+ <text x="140" y="221" font-size="15">Followed for one month</text><text x="140" y="251" font-size="14">Rare or delayed effects may be missed.</text><text x="140" y="280" font-size="13">Icons are not a sample count.</text></g>
+</svg>

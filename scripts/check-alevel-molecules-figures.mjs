@@ -166,7 +166,14 @@ for (const [file,global,topic,id,group] of [
  ['catchup-mitosis-cancer.js','ALevelMitosisCancer','a2','mitosis',2],
  ['catchup-nucleic-comparison.js','ALevelNucleicComparison','a1','nucleic',1],
  ['catchup-osmosis-chain.js','ALevelOsmosisChain','a2','osmchain',1],
- ['catchup-antibody-drug.js','ALevelAntibodyDrug','a2','hiv',2]
+ ['catchup-antibody-drug.js','ALevelAntibodyDrug','a2','hiv',2],
+ ['catchup-xerophyte-roll.js','ALevelXerophyteRoll','a3','leafgas',1],
+ ['catchup-lipid-storage.js','ALevelLipidStorage','a1','lipids',1],
+ ['catchup-single-cell-exchange.js','ALevelSingleCellExchange','a3','insects',0],
+ ['catchup-ileum-adaptations.js','ALevelIleumAdaptations','a2','active',1],
+ ['catchup-plant-fungus.js','ALevelPlantFungus','a2','euk',2],
+ ['catchup-microscope-comparison.js','ALevelMicroscopeComparison','a2','micro',1],
+ ['catchup-neural-reuse.js','ALevelNeuralReuse','a6','traps6',3]
 ]) {
  vm.runInNewContext(readFileSync(new URL('../public/alevel/'+file, import.meta.url), 'utf8'), context);
  const figure=context.window[global].render(topic,id,group);
