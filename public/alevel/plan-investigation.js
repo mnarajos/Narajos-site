@@ -360,7 +360,10 @@
     mount(container) { host = el('div', null, 'plan-investigation'); container.append(host); current = null; area = 0; resetPending = false; overview(); },
     resetMemory() { memory = { stages: {} }; },
     status() {
-      const stages = Object.values(read().stages);
+      const saved = read().stages;
+      // Apply the same migration used by the activity before reporting progress.
+      // Only inspect records that already exist; leave unrelated saved data intact.
+      const stages = data.investigations.filter(item => Object.hasOwn(saved, item.id)).map(item => state(item.id));
       const count = stages.filter(s => s && s.completed).length;
       if (!stages.some(s => s && (s.started || s.first || s.completed || s.reviewSaved))) return ['Start', ''];
       return [count === data.investigations.length ? 'Review' : 'Resume', count + ' of ' + data.investigations.length + ' with checked decisions'];

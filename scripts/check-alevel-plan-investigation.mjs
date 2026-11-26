@@ -98,17 +98,37 @@ export async function checkPlanInvestigation(browser, base, axeSource) {
     try {
       const prior = { stages: {
         beetroot: {started:true, checked:true, completed:true, answers:{...beetroot, time:'same'}},
-        cress: {started:true, checked:true, completed:true, first:'Earlier independent plan.', revision:'Earlier revised plan.', answers:{...cress}, feedback:[]}
+        cress: {started:true, checked:true, completed:true, first:'Earlier independent plan.', revision:'Earlier revised plan.', answers:{...cress}, feedback:[]},
+        archived: {draft:'An unrelated saved draft.'}
       }};
       // The previously released shape did not have the new coordinated decisions.
       delete prior.stages.beetroot.answers.diagnosis;
       delete prior.stages.beetroot.answers.repair;
       delete prior.stages.beetroot.answers.duration;
       await migration.addInitScript(({k,v}) => localStorage.setItem(k, JSON.stringify(v)), {k:key,v:prior});
-      await migration.goto(route);
+      // The Exam Skills catalogue asks for status before the activity is mounted.
+      await migration.goto(base + '/alevel/');
+      assert.equal(await migration.locator('.plan-investigation').count(), 0, 'The activity has not been mounted');
+      assert.deepEqual(await migration.evaluate(() => window.ALevelPlanInvestigation.status()), ['Resume', '1 of 4 with checked decisions'], 'Status normalises legacy completion before counting, without opening the activity');
+      const afterStatus = await migration.evaluate(k => JSON.parse(localStorage.getItem(k)).stages, key);
+      assert.deepEqual(Object.keys(afterStatus).sort(), ['archived', 'beetroot', 'cress'], 'Status does not create or delete unrelated stage records');
+      assert.deepEqual(afterStatus.archived, prior.stages.archived, 'An unrelated saved draft is preserved');
+      assert.equal(afterStatus.beetroot.answers.procedure, prior.stages.beetroot.answers.procedure, 'Status preserves the earlier procedure');
+      assert.equal(afterStatus.beetroot.answers.reason, prior.stages.beetroot.answers.reason, 'Status preserves the earlier explanation');
+      assert.equal(afterStatus.cress.first, prior.stages.cress.first, 'Status preserves the earlier first attempt');
+      assert.equal(afterStatus.cress.revision, prior.stages.cress.revision, 'Status preserves the earlier revision draft');
+      await migration.evaluate(() => { location.hash = '#exam'; });
+      const catalogueEntry = migration.locator('a[href="#exam-plan-investigation"]');
+      await catalogueEntry.waitFor();
+      assert.match(await catalogueEntry.innerText(), /1 of 4 with checked decisions/, 'The Exam Skills menu does not count the outdated beetroot completion');
+      assert.equal(await migration.locator('.plan-investigation').count(), 0, 'The catalogue status did not mount the activity');
+      await catalogueEntry.click();
+      await migration.locator('[data-plan-stage="beetroot"]').waitFor();
       await stage(migration,'beetroot');
       let migrated = await migration.evaluate(k => JSON.parse(localStorage.getItem(k)).stages,key);
       assert.equal(migrated.beetroot.answers.n0, '4', 'Earlier allocation remains');
+      assert.equal(migrated.beetroot.answers.procedure, prior.stages.beetroot.answers.procedure, 'Earlier written procedure remains');
+      assert.equal(migrated.beetroot.answers.reason, prior.stages.beetroot.answers.reason, 'Earlier written explanation remains');
       assert.equal(migrated.beetroot.answers.duration, '10', 'Earlier common timing is retained');
       assert.equal(migrated.beetroot.completed, false, 'Changed requirements invalidate old completion');
       assert.equal(migrated.beetroot.earlierSavedPlan, true, 'Prior saved work is recorded while it is rechecked');
@@ -127,6 +147,11 @@ export async function checkPlanInvestigation(browser, base, axeSource) {
     const earlierDraft = await browser.newPage();
     try {
       await earlierDraft.addInitScript(k => localStorage.setItem(k, JSON.stringify({stages:{cress:{started:true,firstDraft:'Earlier unfinished draft.',answers:{}}}})), key);
+      await earlierDraft.goto(base + '/alevel/');
+      assert.deepEqual(await earlierDraft.evaluate(() => window.ALevelPlanInvestigation.status()), ['Resume', '0 of 4 with checked decisions'], 'A prior unfinished draft is resumable before mounting');
+      const beforeMount = await earlierDraft.evaluate(k => JSON.parse(localStorage.getItem(k)).stages, key);
+      assert.deepEqual(Object.keys(beforeMount), ['cress'], 'Inspecting status does not create missing stages');
+      assert.equal(beforeMount.cress.firstDraft, 'Earlier unfinished draft.', 'Inspecting status preserves the unsaved first response');
       await earlierDraft.goto(route);
       await stage(earlierDraft,'cress');
       assert.equal(await earlierDraft.locator('[data-plan-first]').inputValue(), 'Earlier unfinished draft.');
