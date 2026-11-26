@@ -327,6 +327,7 @@ async function checkAssessment(page) {
   assert.match(await panel(page).innerText(), /count as help/i);
   await close(page).click();
   await page.getByRole("button", {name:"Pause check"}).click();
+  await page.reload();
   await toolbar(page).click();
   await search(page).fill("photosynthesis");
   assert.equal(await panel(page).getByRole("button", {name:"Photosynthesis",exact:true}).count(), 0,

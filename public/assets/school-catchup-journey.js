@@ -163,7 +163,7 @@ export function mountJourney(host, model, lesson) {
   const missingChoice = state.selected && state.selected !== savedQuestion.answer
     && !savedQuestion.options.some(option => option.label === state.selected);
   if (changedPrompt || missingChoice || state.correct && state.selected !== savedQuestion.answer) {
-    Object.assign(state, {selected: "", correct: false, feedback: "", clues: 0, helped: false, explained: false, incorrectAttempt: false});
+    Object.assign(state, {selected: "", correct: false, feedback: "", clues: 0, helped: false, explained: false, incorrectAttempt: false, wordHelpAttempt: false});
   } else if (!state.correct && state.selected && state.feedback) {
     state.incorrectAttempt = state.selected !== savedQuestion.answer;
   }
