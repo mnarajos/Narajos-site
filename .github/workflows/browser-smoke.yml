@@ -38,6 +38,8 @@ jobs:
         run: |
           node scripts/check-rp7-chromatography.mjs
           node scripts/check-rp7-accessibility.mjs
+      - name: Test A-level investigation planning
+        run: node scripts/check-alevel-plan-investigation.mjs chromium
       - name: Test RP9 respiration simulation
         run: |
           node scripts/check-rp9-simulation.mjs
@@ -80,6 +82,8 @@ jobs:
         run: node scripts/check-alevel-paper-practice.mjs ${{ matrix.engine }}
       - name: Test A-level question interpretation
         run: node scripts/check-alevel-question-interpretation.mjs ${{ matrix.engine }}
+      - name: Test A-level investigation planning
+        run: node scripts/check-alevel-plan-investigation.mjs ${{ matrix.engine }}
       - name: Check representative Narajos flows
         run: node scripts/check-browser-engines.mjs ${{ matrix.engine }}
 

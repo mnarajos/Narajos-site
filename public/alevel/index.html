@@ -417,6 +417,7 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <link rel="stylesheet" href="/assets/topic-finder.css">
 <script src="/assets/topic-finder.js"></script>
 <link rel="stylesheet" href="/alevel/exam-skills.css">
+<link rel="stylesheet" href="/alevel/plan-investigation.css">
 <link rel="stylesheet" href="/assets/stretch.css">
 <link rel="stylesheet" href="/alevel/required-practicals.css">
 <link rel="stylesheet" href="/alevel/practical-simulations.css">
@@ -494,6 +495,9 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <script src="/alevel/essay-practice.js"></script>
 <script src="/alevel/drawing-bank.js"></script>
 <script src="/alevel/drawing-worked.js"></script>
+<script src="/alevel/plan-investigation-data.js"></script>
+<script src="/alevel/plan-investigation-progression.js"></script>
+<script src="/alevel/plan-investigation.js"></script>
 <script src="/alevel/exam-skills.js"></script>
 <script>
 (function(){
@@ -7108,7 +7112,7 @@ function route(focus){
  var h=location.hash.slice(1),m;
  if(h!==viewedRoute){practicalReturn=viewedRoute;viewedRoute=h;}
  setOrigin(h);
- if(h==="exam"||/^exam-[a-z0-9]+$/.test(h)){L=null;render('<div id="exam-host"></div>',false);window.ALevelExamSkills.route($("#exam-host"),h.slice(5));var eh=$("#exam-host h1");if(eh){eh.tabIndex=-1;eh.focus();}return;}
+ if(h==="exam"||/^exam-[a-z0-9-]+$/.test(h)){L=null;render('<div id="exam-host"></div>',false);window.ALevelExamSkills.route($("#exam-host"),h.slice(5));var eh=$("#exam-host h1");if(eh){eh.tabIndex=-1;eh.focus();}return;}
  if(h==="catchup")return showCatchupIndex(focus);
  if((m=/^catchup-([a-z0-9]+)$/.exec(h))&&DATA[m[1]])return showCatchupTopic(m[1],focus);
  if((m=/^catchup-([a-z0-9]+)-([a-z0-9]+)(?:-(\d+))?(?:\?return=(exam-[a-z0-9]+|catchup-[a-z0-9]+-[a-z0-9]+))?$/.exec(h))&&DATA[m[1]]){
@@ -7174,7 +7178,7 @@ var oqk=$("#opt-quick");oqk.checked=S.quick!==false;oqk.onchange=function(){S.qu
 snd.onchange=function(){setSound(snd.checked);if(snd.checked)chime();};
 $("#reset").onclick=function(){$("#reset-confirm").hidden=false;$("#reset-yes").focus();};
 $("#reset-no").onclick=function(){$("#reset-confirm").hidden=true;$("#reset").focus();};
-$("#reset-yes").onclick=function(){S.best={};S.slop={};try{localStorage.removeItem("keystone.alevel.exam-skills.v1");}catch(e){}save();$("#reset-confirm").hidden=true;$("#reset").focus();say("Progress reset.");if(!L)route(false);};
+$("#reset-yes").onclick=function(){S.best={};S.slop={};try{localStorage.removeItem("keystone.alevel.exam-skills.v1");localStorage.removeItem("keystone.alevel.plan-investigation.v1");}catch(e){}window.ALevelPlanInvestigation?.resetMemory?.();save();$("#reset-confirm").hidden=true;$("#reset").focus();say("Progress reset.");if(!L)route(false);};
 
 
 /* Prevent accidental loss of progress when navigating out of unfinished activities. */
