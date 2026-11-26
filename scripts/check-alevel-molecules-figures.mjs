@@ -77,8 +77,14 @@ for (const [file,global,rows] of [
 }
 vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-guided-figures.js', import.meta.url), 'utf8'), context);
 vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-cell-reuse-figures.js', import.meta.url), 'utf8'), context);
-for (const [id,group] of [['prok',2],['active',0],['ctx2',1],['ctx2',2],['osmchain',0],['osmchain',1],['osmchain',2],['osmosis',0],['osmosis',1],['phago',0],['diffusion',1]]) {
+for (const [id,group] of [['prok',2],['active',0],['ctx2',1],['ctx2',2],['osmchain',0],['osmchain',1],['osmchain',2],['osmosis',0],['osmosis',1],['phago',0],['diffusion',1],['traps2',0],['traps2',1],['traps2',2]]) {
  const figure=context.window.ALevelCellReuseFigures.render('a2',id,group);
+ assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
+ assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
+}
+vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-transport-figures.js', import.meta.url), 'utf8'), context);
+for (const [id,group] of [['traps3',0],['traps3',1],['traps3',2],['ctx3',1],['ctx3',2]]) {
+ const figure=context.window.ALevelExchangeExtraFigures.render('a3',id,group);
  assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
  assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
 }

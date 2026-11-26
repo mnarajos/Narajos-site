@@ -113,9 +113,9 @@ function glucoseControl() {
     "After a meal blood glucose rises. The pancreas releases insulin, which acts on body cells and the liver. Cells take up glucose and the liver and muscles store glucose as glycogen; blood glucose falls towards its normal level.",
     text(160,22,"Blood glucose rises",rust,16)+arrow(160,28,160,53,ink)+
     text(160,72,"Pancreas releases insulin",ink,16)+arrow(160,79,160,103,ink)+
-    text(160,119,"Body cells take up glucose",teal,15)+text(160,145,"Liver + muscles store glycogen",teal,15)+
-    arrow(160,150,160,175,ink)+text(160,195,"Blood glucose falls",blue,16),320,213),
-    "Follow the response from the rise in glucose to its return towards the normal range.");
+    text(160,119,"Body cells take up glucose",teal,15)+text(160,151,"Liver and muscle",teal,15)+
+    text(160,183,"store glycogen",teal,15)+arrow(160,192,160,217,ink)+text(160,243,"Blood glucose falls",blue,16),320,260),
+    "Follow the response from the rise in glucose. Liver and muscle cells can store excess glucose as glycogen.");
 }
 
 function gasPressure() {

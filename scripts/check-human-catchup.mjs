@@ -758,7 +758,10 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.2.2/2", ["connective-tissue-comparison.svg", "blood-components.svg"]],
       ["f170/1.2.3/0", ["cell-culture-vessel.svg"]], ["f170/1.2.3/1", ["organoid-structure.svg"]], ["f170/1.2.3/2", ["organoid-context.svg"]],
       ["f170/2.1.1/0", ["f170-alveolar-barrier.svg"]], ["f170/2.1.1/1", ["pulse-measurement-context.svg"]], ["f170/2.1.1/2", ["pulse-measurement-context.svg"]],
+      ["f170/2.1.4/0", ["f170-antigen-recognition.svg"]], ["f170/2.1.4/1", ["ventricular-assist.svg"]], ["f170/2.1.4/2", ["valve-repair.svg"]],
       ["f170/1.1.2/1", ["hb-blood-cells-sem.webp", "hb-pancreas-tem.webp"]],
+      ["f170/1.1.2/2", ["f170-wet-mount.svg"]],
+      ["f170/1.1.2/3", ["f170-print-magnification.svg", "f170-fractionation-spins.svg", "cell-counting-chamber.svg"]],
       ["f170/1.1.2.counting/1", ["cell-counting-impedance.svg", "cell-counting-clumps.svg"]],
       ["f170/1.1.3/1", ["cell-protein-routing.svg"]],
       ["f170/1.1.3/2", ["cell-mito-protein-import.svg", "cell-er-comparison.svg"]],
@@ -768,6 +771,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/4.1.5/0", ["virus-particle.svg"]], ["f170/4.1.5/1", ["virus-host.svg"]], ["f170/4.1.5/2", ["bacteriophage.svg"]],
       ["f170/1.1.4/1", ["f170-oxygen-diffusion.svg", "f170-channel-diffusion.svg", "f170-water-active.svg"]],
       ["f170/1.1.4/2", ["f170-water-active.svg", "f170-antigen-recognition.svg"]],
+      ["f170/1.1.5/2", ["punnett-cross.svg"]],
       ["f170/1.1.4.surface/1", ["f170-receptor-signalling.svg", "f170-extrinsic-receptor.svg"]],
       ["f170/1.1.4.surface/2", ["f170-antigen-recognition.svg"]],
       ["f170/1.1.4.surface/3", ["f170-vesicle-traffic.svg"]],
@@ -832,6 +836,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.1.3", ["cell-nucleus-traffic.svg", "cell-mito-protein-import.svg", "cell-er-comparison.svg", "cell-protein-routing.svg"], ["cell-nucleus-rer.svg", "cell-protein-routing.svg", "cell-secretion-failure.svg"]],
       ["f170/1.1.3.evidence", ["f170-ribosome-assembly.svg", "f170-ribosome-types.svg", "cell-er-comparison.svg"], ["cell-protein-routing.svg", "f170-enzyme-misrouting.svg"]],
       ["f170/1.1.1.signals", ["f170-rod-cone-structure.svg", "reflex-pathway.svg"], ["reflex-pathway.svg", "reflex-pathway.svg", "f170-retinal-convergence.svg"]],
+      ["f170/1.1.5", ["f170-sister-chromatids.svg", "f170-mitosis-stages.svg", "f170-cytokinesis.svg"], ["f170-sister-chromatids.svg", "f170-sister-chromatids.svg", "f170-mitosis-count.svg"]],
       ["f170/1.1.4", ["f170-oxygen-diffusion.svg", "f170-water-active.svg"], ["f170-oxygen-diffusion.svg", "f170-oxygen-diffusion.svg", "f170-oxygen-diffusion.svg"]],
       ["f170/1.1.4.surface", ["f170-membrane-labelled.svg", "f170-receptor-signalling.svg", "f170-antigen-recognition.svg", "f170-vesicle-traffic.svg"], ["f170-membrane-labelled.svg", "f170-cholesterol-membrane.svg", "f170-membrane-labelled.svg"]]
     ]) {

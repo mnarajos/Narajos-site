@@ -60,15 +60,11 @@
     <text x="75" y="237">Ribosomes</text><path d="M145 224l38-75" stroke="#344958"/><text x="300" y="237">Cell-surface membrane</text><path d="M400 223l20-40" stroke="#344958"/>`
   },
   "a3/vessels/1": {
+   compact: true,
    title: "Compare blood vessel walls",
-   alt: "Schematic cross-sections compare an artery with a thick wall and narrower lumen, a vein with a thinner wall and wider lumen, and a capillary with a one-cell-thick endothelial wall. The vessels are not drawn to the same scale.",
-   caption: "Compare wall thickness and lumen in the artery and vein; the capillary wall is one endothelial cell thick. Vessels are not drawn to the same scale. Vein valves are omitted from these cross-sections.",
-   art: `<text x="100" y="35" text-anchor="middle">Artery</text><text x="300" y="35" text-anchor="middle">Vein</text><text x="500" y="35" text-anchor="middle">Capillary</text>
-    <circle cx="100" cy="120" r="68" fill="#ddaaa7" stroke="#9d5e62" stroke-width="3"/><circle cx="100" cy="120" r="32" fill="#fff" stroke="#954f60" stroke-width="3"/>
-    <circle cx="300" cy="120" r="68" fill="#b9c9e2" stroke="#5d7095" stroke-width="3"/><circle cx="300" cy="120" r="53" fill="#fff" stroke="#5d7095" stroke-width="3"/>
-    <circle cx="500" cy="120" r="58" fill="#fff" stroke="#985b72" stroke-width="5"/>
-    <text x="100" y="125" text-anchor="middle">Lumen</text><text x="300" y="125" text-anchor="middle">Lumen</text><text x="500" y="125" text-anchor="middle">Lumen</text>
-    <text x="100" y="225" text-anchor="middle">Thicker wall</text><text x="300" y="225" text-anchor="middle">Thinner wall</text><text x="500" y="215" text-anchor="middle">One-cell-thick</text><text x="500" y="235" text-anchor="middle">endothelium</text>`
+   alt: "Schematic cross sections compare an artery with a thick wall and narrower lumen, a vein with a thinner wall and wider lumen, and a capillary with a one-cell-thick endothelial wall. The vessels are not drawn to the same scale.",
+   caption: "Compare each cross-section: the vein has a thinner wall and wider lumen in this model, while a capillary wall is one endothelial cell thick. They are not drawn to the same scale; vein valves are omitted.",
+   art: `<circle cx="60" cy="47" r="32" fill="#ddaaa7" stroke="#9d5e62" stroke-width="2"/><circle cx="60" cy="47" r="15" fill="#fff" stroke="#954f60" stroke-width="2"/><text x="112" y="44">Artery</text><text x="112" y="66">Thick wall</text><circle cx="60" cy="137" r="32" fill="#b9c9e2" stroke="#5d7095" stroke-width="2"/><circle cx="60" cy="137" r="25" fill="#fff" stroke="#5d7095" stroke-width="2"/><text x="112" y="134">Vein</text><text x="112" y="156">Thinner wall</text><circle cx="60" cy="227" r="30" fill="#fff" stroke="#985b72" stroke-width="4"/><text x="112" y="222">Capillary</text><text x="112" y="244">One-cell-thick wall</text><text x="130" y="285" text-anchor="middle">White centres are lumens</text>`
   },
   "a3/lungs/1": {
    title: "Across the alveolar exchange surface",

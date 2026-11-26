@@ -488,6 +488,12 @@ const nutritionRecap = function(file, alt, caption, height) { return {
  src:"/human-biology/"+file+".svg",width:280,height:height,compact:true,alt:alt,caption:caption
 }; };
 const recapFigureMap = {
+ "f170/1.1.5/2": [["f172/a2", "teachingDiagram"]],
+ "f170/2.1.4/0": [["f170/1.1.4.surface", "explainDiagrams", 2]],
+ "f170/2.1.4/1": [nutritionRecap("ventricular-assist", "A simplified ventricular assist device carries blood from the left ventricle through a pump to the aorta, supporting circulation.", "Follow blood from the ventricle through the assist pump to the aorta. Such support may bridge to recovery or transplant; infection and clotting remain possible.", 300)],
+ "f170/2.1.4/2": [nutritionRecap("valve-repair", "Two schematic views compare a heart valve with a gap allowing backflow during closure and a repaired valve with the leaflets meeting.", "Compare closure in this example. Repair can reduce backflow while retaining the organ; results vary with the problem and procedure.", 300)],
+ "f170/1.1.2/2": [["f170/1.1.2", "explainDiagrams", 2]],
+ "f170/1.1.2/3": [["f170/1.1.2", "modelDiagrams", 3], ["f170/1.1.2", "afterComparisonDiagrams", 1], ["f170/1.1.2.counting", "explainDiagrams", 0]],
  "f170/1.1.1.signals/1": [["f170/1.1.1.signals", "explainDiagrams", 1]],
  "f170/2.1.1/0": [nutritionRecap("f170-alveolar-barrier", "A schematic alveolar barrier separates air and capillary blood. Oxygen moves from air to blood and carbon dioxide moves in the opposite direction.", "Anatomy describes the thin barrier; physiology investigates processes such as gas movement across it. The layers are enlarged for clarity.", 295)],
  "f170/2.1.1/1": [nutritionRecap("pulse-measurement-context", "A resting person and a person after activity each lead to a clock, representing pulse counts over the same time interval with conditions recorded.", "Compare the two conditions when measuring pulse. This is a method, not a set of measured results.", 300)],

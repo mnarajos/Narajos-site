@@ -30,11 +30,13 @@ for (const [concept, group] of [["phago", 1], ["humoral", 0], ["humoral", 1], ["
 }
 const transportContext = {window: {}};
 vm.runInNewContext(readFileSync(new URL("../public/alevel/catchup-transport-figures.js", import.meta.url), "utf8"), transportContext);
+vm.runInNewContext(readFileSync(new URL("../public/alevel/catchup-transport-details.js", import.meta.url), "utf8"), transportContext);
 const transportRender = transportContext.window.ALevelTransportFigures.render;
 for (const [concept, group] of [["xylem", 0], ["xylem", 1], ["phloem", 0], ["phloem", 1]]) {
   const figures = transportRender("a3", concept, group);
   assert.match(figures, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
   assert.match(figures, /<figcaption>.{20,}<\/figcaption>/);
+  assert(!figures.includes('aria-label="Scrollable science diagram"'), `Plant transport ${concept}/${group} must fit a narrow screen`);
 }
 assert.equal(render("a1", "enzymes", 0), "");
 assert.equal(render("a8", "unknown", 0), "");

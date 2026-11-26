@@ -8,16 +8,19 @@ import { gcseOpeningVisuals } from "../public/assets/gcse-more-step-visuals.js";
 
 export async function checkGCSECatchup(browser, base) {
   const page = await browser.newPage({viewport: {width: 320, height: 820}, hasTouch: true, reducedMotion: "reduce"});
-  // Use licensed local test fixtures for deterministic Poppins metrics even
-  // when the site's Google Fonts request is unavailable or still loading.
-  // Normal rendering remains untouched; the label check also tests the native
-  // and system fallback fonts separately.
-  const auditFonts = [600, 700].map(weight => ({weight, data: readFileSync(
-    new URL(`./fixtures/poppins/Poppins-${weight}-latin.woff2`, import.meta.url)).toString("base64")}));
+  // Licensed local fixtures make Poppins and a common DejaVu fallback
+  // deterministic even when fonts are unavailable or still loading. Normal
+  // rendering remains untouched; native and system fonts are checked too.
+  const auditFonts = [
+    ...[600, 700].map(weight => ({family: "CatchupAuditPoppins", weight,
+      path: `./fixtures/poppins/Poppins-${weight}-latin.woff2`})),
+    ...[400, 700].map(weight => ({family: "CatchupAuditDejaVu", weight,
+      path: `./fixtures/dejavu/DejaVuSans-${weight}-subset.woff2`}))
+  ].map(font => ({...font, data: readFileSync(new URL(font.path, import.meta.url)).toString("base64")}));
   await page.addInitScript(fonts => {
-    for (const {weight, data} of fonts) {
+    for (const {family, weight, data} of fonts) {
       const bytes = Uint8Array.from(atob(data), character => character.charCodeAt(0));
-      document.fonts.add(new FontFace("CatchupAuditPoppins", bytes, {weight: String(weight)}));
+      document.fonts.add(new FontFace(family, bytes, {weight: String(weight)}));
     }
   }, auditFonts);
   const errors = [];
@@ -36,7 +39,7 @@ export async function checkGCSECatchup(browser, base) {
   const lessonURL = (id, year) => base + "/science-catch-up/lesson/?topic=" + id + "&year=" + year;
   const checkSvgLabels = async (container, context) => {
     const issues = await container.evaluate(async root => {
-      await Promise.all([...document.fonts].filter(face => face.family === "CatchupAuditPoppins").map(face => face.load()));
+      await Promise.all([...document.fonts].filter(face => ["CatchupAuditPoppins", "CatchupAuditDejaVu"].includes(face.family)).map(face => face.load()));
       const failures = [];
       for (const svg of root.querySelectorAll('svg[role="img"]')) {
         const view = svg.viewBox.baseVal;
@@ -44,7 +47,7 @@ export async function checkGCSECatchup(browser, base) {
         const scale = svg.getBoundingClientRect().width / view.width;
         const texts = [...svg.querySelectorAll('text')];
         const original = texts.map(text => [text.style.getPropertyValue("font-family"), text.style.getPropertyPriority("font-family")]);
-        for (const [fontName, fontFamily] of [["native", null], ["Poppins", '"CatchupAuditPoppins", sans-serif'], ["system fallback", "system-ui, sans-serif"]]) {
+        for (const [fontName, fontFamily] of [["native", null], ["Poppins", '"CatchupAuditPoppins", sans-serif'], ["DejaVu fallback", '"CatchupAuditDejaVu", sans-serif'], ["system fallback", "system-ui, sans-serif"]]) {
           texts.forEach((text, i) => {
             if (fontFamily) text.style.setProperty("font-family", fontFamily, "important");
             else if (original[i][0]) text.style.setProperty("font-family", original[i][0], original[i][1]);
@@ -96,14 +99,19 @@ export async function checkGCSECatchup(browser, base) {
         await page.evaluate(key => localStorage.removeItem(key), `narajos.catchup.v1.${lesson.year}.${id}`);
       }
     }
-    // Opening-note figures are checked in the opening panel, independently of
-    // any repeated diagrams later in the journey.
-    for (const id of Object.keys(gcseOpeningVisuals)) {
+    // Check every custom opening in its own panel, including custom openings
+    // installed outside the registry. A few investigations use a table there;
+    // the original illustrated registry still requires an SVG.
+    const openingIds = new Set([...Object.keys(gcseOpeningVisuals), ...Object.entries(gcseCatchup)
+      .filter(([, lesson]) => lesson.visual?.[0] === "custom").map(([id]) => id)]);
+    for (const id of openingIds) {
       const lesson = gcseCatchup[id];
       await page.goto(lessonURL(id, lesson.year));
       const evidence = page.locator("#catchup-evidence");
       const opening = evidence.locator(":scope > figure, :scope > div");
-      assert(await opening.locator("svg[role=img]").count(), `${id}: opening diagram missing`);
+      if (Object.hasOwn(gcseOpeningVisuals, id))
+        assert(await opening.locator("svg[role=img]").count(), `${id}: opening diagram missing`);
+      else assert(await opening.locator("svg[role=img], img, table").count(), `${id}: custom opening evidence missing`);
       for (const part of await opening.all()) await checkSvgLabels(part, `${id} opening`);
       for (const svg of await opening.locator("svg[role=img]").all())
         assert((await svg.getAttribute("aria-label"))?.trim(), `${id}: opening diagram has no alternative`);

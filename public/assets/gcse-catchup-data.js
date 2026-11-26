@@ -578,6 +578,16 @@ export const gcseCatchup = {...year10Catchup, ...year11Catchup, ...complementary
 // Replace the opening text-only comparisons with diagrams of their ideas.
 for (const [id, render] of Object.entries(gcseOpeningVisuals)) gcseCatchup[id].visual = ["custom", render];
 
+// The opening idea covers both the photosynthesis reaction and limiting rates.
+// Keep the original evidence data as the single source for the later rate step.
+const photosynthesisRateEvidence = gcseCatchup["photosynthesis-limits"].visual;
+gcseCatchup["photosynthesis-limits"].visual = ["custom", () => {
+  const group = document.createElement("div");
+  group.append(readableGcseFigure(gcseStepVisuals["photosynthesis-limits"][0]),
+    readableGcseFigure(() => gcseVisual(photosynthesisRateEvidence)));
+  return group;
+}];
+
 for (const mapping of [gcseStepVisuals, moreGcseStepVisuals]) {
   for (const [id, visuals] of Object.entries(mapping)) {
     for (const [index, render] of Object.entries(visuals)) {
@@ -589,7 +599,6 @@ for (const mapping of [gcseStepVisuals, moreGcseStepVisuals]) {
 // Only repeat an opening figure when it explains this particular teaching step.
 // Other steps need their own representations rather than a generic topic image.
 const openingFigureAtStep = {
-  "photosynthesis-limits": [1],
   "decay-half-life": [0, 1],
   "parallel-circuits": [0],
   "mass-conservation": [0],
@@ -605,6 +614,7 @@ const openingFigureAtStep = {
 for (const [id, indices] of Object.entries(openingFigureAtStep)) {
   for (const index of indices) gcseCatchup[id].steps[index].visual = () => readableGcseFigure(() => gcseVisual(gcseCatchup[id].visual));
 }
+gcseCatchup["photosynthesis-limits"].steps[1].visual = () => readableGcseFigure(() => gcseVisual(photosynthesisRateEvidence));
 
 for (const [id, render] of Object.entries(gcseHigherVisuals)) gcseCatchup[id].higherVisual = render;
 

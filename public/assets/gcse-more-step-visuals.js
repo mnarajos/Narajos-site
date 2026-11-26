@@ -91,16 +91,25 @@ function stopping() {
     text(45,165,'Hazard',ink,13)+text(140,165,'Brake',ink,13)+text(262,165,'Stopped',ink,13)+text(72,28,'Reaction time',rust,13)+text(200,28,'Tyre grip',teal,13),
     'Reaction time affects thinking distance; tyre grip affects braking distance. Add the two distances to find the total.');
 }
+function stationaryBalanced() {
+  return fig('Balanced forces on an object at rest',
+    'A stationary box rests on a horizontal surface. Its 4 newton weight acts downwards and the surface exerts a 4 newton normal contact force upwards. These opposite forces balance, so the resultant force and acceleration are zero. The values are an example.',
+    line(32,135,288,135,ink,2)+'<rect x="110" y="85" width="100" height="50" rx="4" fill="#dcebea" stroke="'+ink+'" stroke-width="2"/>'+
+    arrow(140,135,140,55,blue,3)+arrow(180,103,180,183,rust,3)+text(70,50,'4 N up',blue,15)+text(250,183,'4 N down',rust,15)+text(160,220,'Box at rest',ink,15),
+    'Compare the upward contact force with the equal downward weight. The stationary box has zero resultant force; the values are illustrative.',240);
+}
+function movingAndStationary(){return grouped(gcseStepVisuals['forces-motion'][0],stationaryBalanced);}
 function neuron() {
   return fig('Withdrawal reflex pathway',
-    'A receptor in the skin detects a stimulus. An impulse travels along a sensory neurone to a relay neurone in the spinal cord, then along a motor neurone to a muscle. The muscle contracts and withdraws the hand.',
-    '<path d="M15 67 q20-20 40 0 v35 h-40 z" fill="#f3d4c0" stroke="'+rust+'" stroke-width="2"/>'+text(35,122,'Skin',ink,14)+
-    arrow(55,80,112,80,blue,2)+text(72,61,'Sensory',blue,13)+
-    '<rect x="115" y="38" width="83" height="85" rx="16" fill="#e5eaf8" stroke="'+blue+'" stroke-width="2"/>'+text(156,62,'Spinal',ink,14)+text(156,94,'cord',ink,14)+
-    arrow(199,80,251,80,teal,2)+text(226,61,'Motor',teal,13)+
-    '<path d="M253 57 Q310 35 303 104 Q270 117 253 101 Z" fill="#efc8c2" stroke="'+rust+'" stroke-width="2"/>'+text(280,128,'Muscle',ink,14)+
-    text(160,161,'Receptor → CNS → effector',ink,15),
-    'Follow the impulse to the spinal cord and then to the muscle. The pathway is simplified.');
+    'A receptor in the skin detects a stimulus. An impulse travels along a sensory neurone to a relay neurone in the spinal cord, then along a motor neurone to a muscle. The muscle contracts and withdraws the hand. Signals can also reach the brain, but a conscious decision is not needed for the rapid reflex.',
+    '<ellipse cx="156" cy="28" rx="37" ry="21" fill="#edf0f8" stroke="'+blue+'" stroke-width="2"/>'+text(156,34,'Brain',ink,14)+arrow(156,94,156,53,blue,2)+
+    '<path d="M15 127 q20-20 40 0 v35 h-40 z" fill="#f3d4c0" stroke="'+rust+'" stroke-width="2"/>'+text(35,182,'Skin',ink,14)+
+    arrow(55,140,112,140,blue,2)+text(72,121,'Sensory',blue,13)+
+    '<rect x="115" y="98" width="83" height="85" rx="16" fill="#e5eaf8" stroke="'+blue+'" stroke-width="2"/>'+text(156,122,'Spinal',ink,14)+text(156,154,'cord',ink,14)+
+    arrow(199,140,251,140,teal,2)+text(226,121,'Motor',teal,13)+
+    '<path d="M253 117 Q310 95 303 164 Q270 177 253 161 Z" fill="#efc8c2" stroke="'+rust+'" stroke-width="2"/>'+text(280,188,'Muscle',ink,14)+
+    text(160,220,'Automatic withdrawal',ink,15),
+    'Follow the spinal pathway to the muscle. The brain can also receive signals, but the rapid withdrawal does not wait for a conscious decision.',240);
 }
 function reflexWithSynapse() {
   const group = node('div');
@@ -220,6 +229,26 @@ function waterTreatment() {
     '',
     'The filled dots represent dissolved substances. Compare the samples; the model does not show actual concentrations.');
 }
+function waterSafetyTests() {
+  return fig('Checking water is safe to drink',
+    'A drinking-water sample is checked for microorganisms and harmful chemicals. The results are compared with the relevant safety limits. This is a schematic of the checks, not a set of real test results.',
+    '<path d="M37 39 V104 H112 V39 M39 64 H110" fill="#dceef5" stroke="'+ink+'" stroke-width="2"/>'+text(74,130,'Sample',blue,15)+line(122,73,155,73,teal,2)+line(155,58,155,107,teal,2)+arrow(155,58,168,58,teal,2)+arrow(155,107,168,107,teal,2)+
+    '<circle cx="188" cy="58" r="17" fill="#e2edf5" stroke="'+blue+'" stroke-width="2"/>'+line(181,58,195,58,blue,2)+line(188,51,188,65,blue,2)+text(216,64,'Microbes',ink,15,'start')+
+    '<path d="M176 107 l12 -20 12 20 -12 20 z" fill="#f3e1d7" stroke="'+rust+'" stroke-width="2"/>'+text(216,113,'Chemicals',ink,15,'start')+
+    text(160,175,'Compare results with limits',teal,15),
+    'The two checks address microbes and harmful chemicals. Limits depend on what is being tested; this model does not show measured results.',195);
+}
+function waterForDrinking(){return grouped(waterTreatment,waterSafetyTests);}
+function glucoseFates() {
+  const glucose=(x,y)=>'<polygon points="'+(x-10)+','+y+' '+(x-5)+','+(y-9)+' '+(x+5)+','+(y-9)+' '+(x+10)+','+y+' '+(x+5)+','+(y+9)+' '+(x-5)+','+(y+9)+'" fill="#e2efe4" stroke="'+teal+'" stroke-width="2"/>';
+  return fig('What a plant can do with glucose',
+    'A plant can use glucose in respiration, or link glucose units to make starch for storage. The hexagons are simplified symbols for glucose units; the drawing is not a molecular structure or to scale.',
+    glucose(160,44)+text(160,25,'Glucose',teal,15)+arrow(149,56,97,99,blue,2)+arrow(171,56,223,99,rust,2)+
+    '<ellipse cx="75" cy="130" rx="47" ry="27" fill="#f4ddd4" stroke="'+rust+'" stroke-width="2"/><path d="M40 130 q9 -17 18 0 t18 0 t18 0 t18 0" fill="none" stroke="'+rust+'" stroke-width="2"/>'+text(75,186,'Respiration',rust,15)+
+    glucose(207,130)+line(218,130,226,130,teal,2)+glucose(237,130)+line(248,130,256,130,teal,2)+glucose(267,130)+text(237,186,'Starch',teal,15)+text(237,218,'for storage',teal,15),
+    'Follow glucose into respiration or into a chain used for storage. Each hexagon stands for one glucose unit.',240);
+}
+function photosynthesisAndGlucose(){return grouped(gcseStepVisuals['photosynthesis-limits'][0],glucoseFates);}
 export function heatingCurve() {
   return fig('Heating ice and water',
     'As energy is supplied ice warms to 0 degrees Celsius. At 0 degrees Celsius the temperature stays constant while the ice melts. After melting the liquid water warms. The example assumes ordinary atmospheric pressure.',
@@ -272,7 +301,7 @@ function molarRatio() {
     circle(38,72,10,'#d6e8f4',blue)+circle(62,72,10,'#d6e8f4',blue)+text(50,47,'2 Mg',blue,16)+
     text(89,77,'+',ink,18)+circle(113,72,10,'#f4d7cb',rust)+circle(137,72,10,'#f4d7cb',rust)+line(123,69,127,69)+line(123,75,127,75)+text(125,47,'O₂',rust,16)+
     arrow(152,72,188,72,ink,2)+circle(209,72,10,'#d6e8f4',blue)+circle(230,72,10,'#f4d7cb',rust)+circle(260,72,10,'#d6e8f4',blue)+circle(281,72,10,'#f4d7cb',rust)+text(245,47,'2 MgO',ink,16)+
-    text(160,127,'2 mol : 1 mol : 2 mol',ink,16)+text(160,159,'Compare amounts, not masses',ink,14),
+    text(160,127,'2 mol : 1 mol : 2 mol',ink,16)+text(160,159,'Compare mole amounts',ink,14),
     'Use the balanced coefficients as an amount ratio. Convert mass to moles before applying it.');
 }
 
@@ -299,10 +328,10 @@ function dynamicEquilibrium() {
 function saltsApparatus() {
   return fig('Making soluble salt crystals',
     'Copper oxide is added in excess to warm sulfuric acid. The mixture is filtered to remove excess solid. The copper sulfate solution is evaporated to concentrate it and cooled to crystallise.',
-    '<path d="M18 50 H90 L84 117 H25 Z" fill="#d8edf1" stroke="'+ink+'" stroke-width="2"/>'+circle(41,88,3,ink,ink)+circle(57,100,3,ink,ink)+circle(70,88,3,ink,ink)+text(65,35,'Excess oxide',ink,13)+
+    '<path d="M18 50 H90 L84 117 H25 Z" fill="#d8edf1" stroke="'+ink+'" stroke-width="2"/>'+circle(41,88,3,ink,ink)+circle(57,100,3,ink,ink)+circle(70,88,3,ink,ink)+text(65,35,'Oxide',ink,13)+
     arrow(96,84,127,84,rust,2)+'<path d="M130 48 H187 L164 78 V113 H153 V78 Z" fill="#edf5ee" stroke="'+ink+'" stroke-width="2"/>'+line(139,62,178,62,teal,2)+text(159,35,'Filter',ink,14)+
     arrow(192,84,218,84,rust,2)+'<path d="M223 89 Q253 115 283 89 M226 89 H280" fill="#d8edf1" stroke="'+ink+'" stroke-width="2"/>'+text(253,35,'Evaporate',ink,14)+text(253,143,'then cool',ink,14),
-    'Follow the excess solid through filtration and the solution through concentration and cooling.');
+    'Add the oxide in excess, then follow the solid through filtration and the solution through concentration and cooling.');
 }
 function rulerDrop() {
   return fig('A ruler-drop test',
@@ -321,7 +350,7 @@ function brine() {
     '<rect x="79" y="43" width="12" height="70" fill="#70848b"/><rect x="229" y="43" width="12" height="70" fill="#70848b"/>'+
     text(85,29,'−',blue,21)+text(235,29,'+',rust,21)+text(85,161,'Hydrogen',blue,14)+text(235,161,'Chlorine',rust,14)+
     circle(127,89,12,'#e7ecf9',blue)+text(127,94,'Na⁺',blue,13)+text(185,110,'water',ink,14)+arrow(160,105,98,105,blue,2)+
-    text(160,190,'Sodium ions remain in solution',ink,13),
+    text(160,190,'Sodium ions stay in water',ink,13),
     'Water is present in brine: hydrogen is produced at the negative electrode instead of sodium. The diagram represents concentrated solution.',210);
 }
 function reflexMeasure(){return rulerDrop();}
@@ -337,7 +366,7 @@ function treatmentTesting() {
 function respiratoryComparison() {
   return fig('Aerobic and anaerobic respiration',
     'Aerobic respiration uses glucose and oxygen and produces carbon dioxide and water. In the GCSE muscle model anaerobic respiration produces lactic acid. Yeast anaerobic respiration produces ethanol and carbon dioxide.',
-    text(18,25,'Aerobic',ink,15,'start')+text(18,57,'Glucose + O₂',blue,15,'start')+arrow(157,52,190,52,teal,2)+text(198,57,'CO₂ + water',teal,15,'start')+
+    text(18,25,'Aerobic',ink,15,'start')+text(18,57,'Glucose + O₂',blue,15,'start')+arrow(157,52,190,52,teal,2)+text(198,57,'CO₂ + H₂O',teal,15,'start')+
     line(16,75,304,75,'#aabebc',1)+text(18,100,'Anaerobic in muscle',ink,15,'start')+text(18,132,'Glucose',blue,15,'start')+arrow(102,127,147,127,rust,2)+text(157,132,'Lactic acid',rust,15,'start')+
     line(16,149,304,149,'#aabebc',1)+text(18,174,'Anaerobic in yeast',ink,15,'start')+text(18,206,'Glucose',blue,15,'start')+arrow(102,201,147,201,rust,2)+text(157,206,'Ethanol + CO₂',rust,15,'start'),
     'Compare the inputs and products. If oxygen supply cannot meet demand, muscle cells can also respire anaerobically, transferring less energy per glucose.',225);
@@ -380,8 +409,8 @@ function naturalSelection() {
     '<rect x="14" y="32" width="130" height="98" rx="5" fill="#6d675e"/><rect x="176" y="32" width="130" height="98" rx="5" fill="#6d675e"/>'+
     moth(43,59,true)+moth(77,59,false)+moth(112,59,true)+moth(43,100,false)+moth(77,100,true)+moth(112,100,false)+
     moth(205,59,true)+moth(241,59,true)+moth(277,59,false)+moth(205,100,true)+moth(241,100,true)+moth(277,100,true)+
-    arrow(146,81,174,81,rust,2)+text(79,23,'Variation',ink,15)+text(235,23,'Later generation',ink,15),
-    'Compare the inherited wing colours. The example is illustrative, not a record of real population counts.');
+    arrow(146,81,174,81,rust,2)+text(79,23,'Variation',ink,15)+text(235,23,'Later',ink,15),
+    'Compare the inherited wing colours in the starting and later generations. The example is illustrative, not a record of real population counts.');
 }
 function predationAndInheritance() {
   const moth=(x,y,colour)=>'<path d="M'+x+' '+y+' l-12 -8 v16 z M'+x+' '+y+' l12 -8 v16 z" fill="'+colour+'" stroke="#283e43" stroke-width="1.5"/>';
@@ -526,6 +555,19 @@ function transmission() {
     '<path d="M20 146 H55 L49 161 H26 Z" fill="#edc89f" stroke="'+rust+'" stroke-width="2"/><path d="M23 146 Q37 132 52 146" fill="#dce9cf" stroke="'+teal+'" stroke-width="2"/>'+text(90,153,'Salmonella: food',ink,15,'start'),
     'Match each pathogen to a route so that prevention can interrupt transmission.',180);
 }
+function transmissionPrevention() {
+  return fig('Interrupting infection routes',
+    'A mosquito net can reduce bites that transmit malaria. Thorough cooking can reduce the risk of Salmonella in food. Vaccination reduces the risk of measles. These methods act on different transmission routes.',
+    '<path d="M24 70 V54 Q24 28 53 28 Q82 28 82 54 V70 M24 70 H82" fill="none" stroke="'+blue+'" stroke-width="2"/><circle cx="52" cy="54" r="9" fill="#efd1bd" stroke="'+rust+'"/>'+line(43,65,65,65,rust,2)+
+    '<ellipse cx="12" cy="39" rx="7" ry="3" fill="#cbd8dc" stroke="'+ink+'"/>'+line(8,37,3,31,ink,1)+line(16,37,21,31,ink,1)+
+    text(98,40,'Mosquito net',ink,15,'start')+text(98,72,'reduces bites',teal,15,'start')+
+    '<path d="M25 146 H82 L74 163 H33 Z" fill="#edc89f" stroke="'+rust+'" stroke-width="2"/><path d="M31 146 Q53 128 76 146" fill="#dce9cf" stroke="'+teal+'" stroke-width="2"/>'+arrow(53,125,53,106,rust,2)+
+    text(98,128,'Cook food',ink,15,'start')+text(98,160,'thoroughly',teal,15,'start')+
+    '<path d="M26 225 l32-32 13 13 -32 32 z M22 229 l8 8 M58 193 l6 -6 M64 187 l8 8" fill="#dceaf4" stroke="'+blue+'" stroke-width="2"/><path d="M72 205 l12-12" stroke="'+ink+'" stroke-width="2"/>'+
+    text(98,216,'Vaccination',ink,15,'start')+text(98,248,'reduces measles risk',teal,15,'start'),
+    'Match each prevention to its route: bites, contaminated food or a vaccine-preventable infection.',270);
+}
+function transmissionAndPrevention(){return grouped(transmission,transmissionPrevention);}
 function alphaDecay() {
   return fig('An example of alpha decay',
     'A uranium-238 nucleus with atomic number 92 emits an alpha particle containing two protons and two neutrons. The remaining thorium nucleus has mass number 234 and atomic number 90.',
@@ -681,9 +723,9 @@ function momentum() {
     'A 1 kilogram trolley moving right at 2 metres per second meets a stationary 1 kilogram trolley. If they stick, the 2 kilogram pair moves right at 1 metre per second. Total momentum is 2 kilogram metres per second before and after.',
     text(160,21,'Before',ink,15)+
     '<rect x="30" y="41" width="64" height="30" fill="#dcebf4" stroke="'+blue+'"/><rect x="184" y="41" width="64" height="30" fill="#f2dfd2" stroke="'+rust+'"/>'+text(62,61,'1 kg',ink,14)+text(216,61,'1 kg',ink,14)+arrow(97,55,170,55,blue,2)+text(133,47,'2 m/s',blue,13)+
-    text(160,103,'After sticking',ink,15)+'<rect x="77" y="117" width="128" height="30" fill="#dfebe5" stroke="'+teal+'"/>'+text(140,137,'2 kg',ink,14)+arrow(209,132,246,132,teal,2)+text(257,120,'1 m/s',teal,13)+
-    text(160,177,'2 kg m/s before and after',ink,14),
-    'Compare total momentum before and after the collision. The example assumes a closed system.',195);
+    text(160,103,'After sticking',ink,15)+'<rect x="77" y="117" width="128" height="30" fill="#dfebe5" stroke="'+teal+'"/>'+text(140,137,'2 kg',ink,14)+arrow(209,132,246,132,teal,2)+text(257,154,'1 m/s',teal,13)+
+    text(160,190,'2 kg m/s before and after',ink,14),
+    'Compare total momentum before and after the collision. The example assumes a closed system.',210);
 }
 function equilibriumHeating() {
   return fig('Temperature and equilibrium',
@@ -780,8 +822,8 @@ function transformerComparison() {
 function halfEquations() {
   return fig('Electrode half-equations',
     'Copper ions gain electrons at the negative cathode to form copper. Hydroxide ions lose electrons at the positive anode, forming oxygen and water. The half-equations conserve atoms and charge.',
-    '<rect x="33" y="31" width="11" height="71" fill="#82969c"/><rect x="277" y="31" width="11" height="71" fill="#82969c"/>'+text(65,21,'− cathode',blue,14)+text(278,21,'+ anode',rust,14)+
-    circle(95,67,16,'#dce8f5',blue)+text(95,72,'Cu²⁺',blue,14)+arrow(77,67,50,67,blue,2)+text(260,109,'O₂ ↑',rust,16)+circle(222,67,16,'#e1f0e6',teal)+text(222,72,'OH⁻',teal,13)+arrow(240,67,271,67,teal,2)+
+    '<rect x="33" y="31" width="11" height="71" fill="#82969c"/><rect x="277" y="31" width="11" height="71" fill="#82969c"/>'+text(65,21,'− cathode',blue,14)+text(255,21,'+ anode',rust,14)+
+    circle(95,67,20,'#dce8f5',blue)+text(95,72,'Cu²⁺',blue,14)+arrow(73,67,50,67,blue,2)+text(260,109,'O₂ ↑',rust,16)+circle(222,67,20,'#e1f0e6',teal)+text(222,72,'OH⁻',teal,13)+arrow(244,67,271,67,teal,2)+
     text(160,132,'Cu²⁺ + 2e⁻ → Cu',blue,15)+text(160,161,'4OH⁻ → O₂ + 2H₂O + 4e⁻',rust,14),
     'Follow ions to opposite electrodes. The electrons show reduction at the cathode and oxidation at the anode.',180);
 }
@@ -789,7 +831,7 @@ function halfEquations() {
 function waterRoutes() {
   return fig('Treating fresh water and seawater',
     'Fresh water can be filtered to remove suspended solids and then sterilised to kill microbes. Seawater requires desalination to remove dissolved salts as well as suitable treatment for microbes. One desalination method uses a membrane that lets water through while retaining salts.',
-    text(62,24,'Fresh water',ink,15)+text(240,24,'Seawater',ink,15)+
+    text(75,24,'Fresh water',ink,15)+text(240,24,'Seawater',ink,15)+
     '<path d="M25 42 H100 L72 76 V103 H53 V76 Z" fill="#eef5ee" stroke="'+ink+'" stroke-width="2"/>'+line(37,57,88,57,teal,2)+circle(49,50,3,rust,rust)+circle(71,50,3,rust,rust)+text(62,127,'Filter solids',teal,14)+
     '<rect x="181" y="44" width="120" height="58" fill="#dceef5" stroke="'+ink+'" stroke-width="2"/>'+line(239,44,239,102,teal,3)+circle(201,61,4,rust,rust)+circle(217,84,4,rust,rust)+arrow(224,73,254,73,blue,2)+text(241,127,'Remove salts',blue,14)+
     text(160,162,'Sterilise to reduce microbes',ink,14),
@@ -850,7 +892,16 @@ function resistanceSelection() {
     circle(74,121,6,'#c9def1',blue)+text(87,126,'susceptible',blue,13,'start')+circle(74,153,6,'#b9dfc8',teal)+text(87,158,'resistant',teal,13,'start'),
     'Follow a resistant bacterium already present before treatment. It can survive and reproduce as susceptible bacteria are killed.',175);
 }
-function antibioticsAndSelection(){return grouped(antibioticTargets,resistanceSelection);}
+function painRelief() {
+  const person=(x,mouth)=>circle(x,65,27,'#efd1bd',rust)+circle(x-9,59,2,ink,ink)+circle(x+9,59,2,ink,ink)+'<path d="M'+(x-10)+' 79 Q'+x+' '+mouth+' '+(x+10)+' 79" fill="none" stroke="'+ink+'" stroke-width="2"/>';
+  const microbe=(x,y)=>circle(x,y,7,'#c9def1',blue)+line(x-4,y,x+4,y,blue,1.5)+line(x,y-4,x,y+4,blue,1.5);
+  return fig('Pain relief and infection',
+    'A painkiller can relieve pain, a symptom of illness. The same pathogens are shown before and after the painkiller: pain relief does not kill them. Other treatments may be needed for the underlying cause.',
+    text(70,25,'Pain',rust,15)+text(250,25,'Less pain',teal,15)+person(70,68)+person(250,87)+microbe(39,114)+microbe(100,114)+microbe(220,114)+microbe(280,114)+
+    arrow(110,65,210,65,teal,2)+text(160,48,'Painkiller',teal,14)+text(160,153,'Pathogens remain',blue,15),
+    'Compare the symptom and the pathogen symbols. Painkillers can relieve pain without killing the pathogen.',175);
+}
+function antibioticsAndSelection(){return grouped(painRelief,antibioticTargets,resistanceSelection);}
 
 
 function carbonDioxideComparison() {
@@ -1043,7 +1094,7 @@ export const gcseOpeningVisuals = {
   'glucose-control': gcseStepVisuals['glucose-control'][1],
   'greenhouse': greenhouse,
   'potable-water': waterRoutes,
-  'forces-motion': gcseStepVisuals['forces-motion'][0],
+  'forces-motion': movingAndStationary,
   'respiration-exercise': respiratoryComparison,
   'density-and-gas-pressure': () => grouped(density, gcseStepVisuals['density-and-gas-pressure'][1]),
   'salts-and-reactivity': () => grouped(saltsApparatus, () => photo('copper-deposit', 'Copper deposited on iron', 'In copper sulfate solution, iron displaces copper. Locate the reddish copper on the iron shavings.')),
@@ -1079,7 +1130,7 @@ export const moreGcseStepVisuals = {
   'forces-motion': {2:stopping},
   'decay-half-life': {2:irradiation},
   'density-and-gas-pressure': {0:density},
-  'photosynthesis-limits': {2:() => grouped(testCarbonDioxide, carbonDioxideComparison)},
+  'photosynthesis-limits': {0:photosynthesisAndGlucose,2:() => grouped(testCarbonDioxide, carbonDioxideComparison)},
   'glucose-control': {0:homeostasis,2:diabetes},
   'reaction-rate': {1:collisionsAndEnergy,2:dynamicEquilibrium},
   'salt-electrolysis': {2:brine},
@@ -1095,11 +1146,11 @@ export const moreGcseStepVisuals = {
   'mass-conservation': {2:concentrationExample},
   'crude-oil': {0:methaneStructure,2:alkene},
   'greenhouse': {0:greenhouse,1:emissionsSources,2:pollutants},
-  'potable-water': {0:waterTreatment,1:filtration,2:lifeCycle},
+  'potable-water': {0:waterForDrinking,1:filtration,2:lifeCycle},
   'electromagnet-switch': {0:wireAndCoil,1:currentMagnitudeAndDirection,2:ironCore},
   'salts-and-reactivity': {0:sulfateSalt,1:saltsAndCrystals},
   'electromagnetic-spectrum': {0:spectrumAndWaves,1:emSpectrum,2:emApplications},
-  'prevention-and-medicines': {0:transmission,1:antibioticsAndSelection,2:testingAndTrials},
+  'prevention-and-medicines': {0:transmissionAndPrevention,1:antibioticsAndSelection,2:testingAndTrials},
   'radiation-types': {0:emissions,1:shieldingAndIonisation,2:alphaDecay},
   'circuit-resistance': {0:circuitMeters,2:electricalPower},
   'reproductive-hormones': {0:menstrualHormones,1:hormonesAndEffects,2:contraception},

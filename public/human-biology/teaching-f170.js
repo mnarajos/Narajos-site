@@ -693,17 +693,15 @@ window.KeystoneHumanLessons = {
 (function () {
   const { choice, written } = window.KeystoneHumanTeaching;
   const commons = "https://commons.wikimedia.org/wiki/File:";
-  const chromosomeSource = commons + "Condensation_and_resolution_of_human_sister_chromatids_in_early_mitosis.svg";
   Object.assign(window.KeystoneHumanLessons, {
     "f170/1.1.5": {
       revision: 1,
-      goal: "Distinguish copying DNA from separating chromosomes, and support an interpretation of a real micrograph.",
+      goal: "Distinguish copying DNA from separating chromosomes and trace the chromatids in a model.",
       activate: ["What changes during interphase?", "Cells grow, make proteins and copy their DNA during S (synthesis) phase. They continue preparing for division in G2. Individual chromosomes are usually too diffuse to distinguish in an ordinary light micrograph of interphase."],
       explain: ["One unreplicated chromosome contains one double-stranded DNA molecule. After S phase it has two sister chromatids held together around their centromere regions. It is still one replicated chromosome. A chromatid runs lengthways along the chromosome.",
         "In prophase, chromosomes condense and the spindle begins to form. Once the nuclear envelope breaks down, spindle fibres attach at the centromere regions. In metaphase the chromosomes align at the equator. In anaphase sister chromatids separate. Each is now a daughter chromosome. In telophase nuclei re-form around the two sets.",
         "Mitosis divides the nucleus. Cytokinesis divides the cytoplasm and can overlap the end of mitosis. An animal cell forms a cleavage furrow. A plant cell forms a cell plate. Early erythroblasts in marrow can divide. Mature human erythrocytes have lost their nucleus and cannot enter another mitosis."],
-      photo: {src:"/assets/micrographs/hb-chromosome-sem.webp",width:230,height:268,alt:"Scanning electron micrograph of an isolated human metaphase chromosome. Two ridged lengths run alongside each other and narrow near the same point, closer to one end.",source:chromosomeSource,credit:"Adrian T. Sumner, figure by David O. Morgan",licence:"Attribution terms",licenceUrl:chromosomeSource+"#Licensing",changes:"Metaphase panel cropped and converted to WebP"},
-      modelTitle: "Count one replicated chromosome in an electron micrograph",
+      modelTitle: "Count one replicated chromosome in a model",
       model: ["Follow one sister chromatid from one tip through the narrow region to its other tip. The short and long arms on that side belong to the same chromatid.",
         "Trace the other length. The two sisters are closely joined near the constriction, the centromere region. This is one replicated chromosome with two DNA molecules.",
         "In a model body cell with four chromosomes before S phase, the replicated cell has four chromosomes and eight DNA molecules before separation. At the end of mitosis and cytokinesis, each daughter has four chromosomes and four DNA molecules."],

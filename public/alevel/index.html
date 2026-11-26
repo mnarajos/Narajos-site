@@ -432,8 +432,10 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <script src="/alevel/catchup-cell-reuse-figures.js"></script>
 <script src="/alevel/catchup-gene-techniques.js"></script>
 <script src="/alevel/catchup-exchange-extra-figures.js"></script>
+<script src="/alevel/catchup-muscle-figures.js"></script>
 <script src="/alevel/catchup-immunity-figures.js"></script>
 <script src="/alevel/catchup-transport-figures.js"></script>
+<script src="/alevel/catchup-transport-details.js"></script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/home-link.css">
@@ -6357,7 +6359,8 @@ function catchupChunks(notes,synapse,topic,concept){
    (window.ALevelMetabolismPracticals?window.ALevelMetabolismPracticals.render(topic,concept,i/2):'')+
    (window.ALevelCellReuseFigures?window.ALevelCellReuseFigures.render(topic,concept,i/2):'')+
    (window.ALevelGeneTechniques?window.ALevelGeneTechniques.render(topic,concept,i/2):'')+
-   (window.ALevelExchangeExtraFigures?window.ALevelExchangeExtraFigures.render(topic,concept,i/2):'')+'</div>';
+   (window.ALevelExchangeExtraFigures?window.ALevelExchangeExtraFigures.render(topic,concept,i/2):'')+
+   (window.ALevelMuscleFigures?window.ALevelMuscleFigures.render(topic,concept,i/2):'')+'</div>';
  }
  return h;
 }
