@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="360" viewBox="0 0 280 360" role="img" aria-labelledby="title desc">
+<title id="title">Two treatment aims</title><desc id="desc">In one example, an antibiotic can act against susceptible bacteria as a treatment aimed at clearing a bacterial infection. In a separate example, a walking aid supports mobility. Supportive care helps manage effects or function and can be given alongside treatment aimed at the cause. An intended cure is not guaranteed.</desc>
+<rect width="280" height="360" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16" fill="#243e49" text-anchor="middle">
+ <text x="140" y="26" font-weight="700">Curative intent</text>
+ <g fill="#d8ece7" stroke="#32776d" stroke-width="2"><rect x="29" y="58" width="43" height="17" rx="8" transform="rotate(-18 50 66)"/><rect x="38" y="91" width="43" height="17" rx="8" transform="rotate(15 59 99)"/></g>
+ <rect x="183" y="69" width="51" height="22" rx="11" fill="#d9edf5" stroke="#537a94" stroke-width="2"/><path d="M208 69v22" stroke="#537a94" stroke-width="2"/>
+ <path d="M175 80H94m7-6-7 6 7 6" stroke="#276972" stroke-width="2.5" fill="none"/>
+ <text x="53" y="133">Bacteria</text><text x="208" y="133">Antibiotic</text>
+ <text x="140" y="158">Targets susceptible bacteria</text>
+ <path d="M20 179h240" stroke="#d6e1de" stroke-width="2"/>
+ <text x="140" y="207" font-weight="700">Supportive care</text>
+ <circle cx="106" cy="236" r="11" fill="#eadff1" stroke="#80588f" stroke-width="2"/>
+ <path d="M106 247v37m0-27 27 12m-27-8-20 13m20 10-16 25m16-25 15 25M133 268l9-5v45" stroke="#536c9b" stroke-width="3" fill="none"/>
+ <text x="203" y="275">Walking aid</text><text x="203" y="297">supports</text><text x="203" y="319">mobility</text>
+ <text x="140" y="346" font-size="14">The two aims can be combined.</text>
+</g></svg>
