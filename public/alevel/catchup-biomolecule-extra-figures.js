@@ -58,8 +58,8 @@
  }];
  figures['tests/1']=[{
   title:'Reading a glucose calibration curve',
-  alt:'A schematic calibration graph plots colorimeter absorbance against concentration of glucose. The absorbance of an unknown sample is traced horizontally to the calibration line and then down to the concentration axis. No actual measurements are shown.',
-  caption:'Read across from the unknown sample’s absorbance to the calibration line, then down to estimate glucose concentration. This graph is illustrative, with no experimental values.',
+  alt:'A schematic calibration graph for an assay whose absorbance increases with glucose concentration shows an unknown absorbance traced across to the line and down to the concentration axis. The direction depends on the assay. No actual measurements are shown.',
+  caption:'Read across from the unknown absorbance to the line, then down to estimate concentration. This illustrative assay rises with glucose; the direction depends on what the assay measures. No experimental values are shown.',
   art:`<path d="M44 41v178h223" fill="none" stroke="#344958" stroke-width="2"/><text x="44" y="26">Absorbance</text><text x="153" y="260" text-anchor="middle">Glucose concentration</text><path d="M44 219L259 62" fill="none" stroke="#32776d" stroke-width="3"/><path d="M44 125h129v94" fill="none" stroke="#a76125" stroke-width="2" stroke-dasharray="5 4"/><circle cx="173" cy="125" r="5" fill="#a76125"/><text x="46" y="88">Unknown</text><text x="46" y="106">absorbance</text><text x="181" y="151">Calibration</text><text x="181" y="172">line</text>`
  }];
  figures['water/0']=[...figures['monopoly/2'],{

@@ -529,7 +529,7 @@ const recapFigureMap = {
  "f170/3.3.3/1": [nutritionRecap("f170-menopause-therapy", "A skin patch illustrates systemic therapy delivering hormone into blood, which may relieve hot flushes. Vaginal oestrogen acts mainly in vaginal tissue and can relieve dryness; the examples have different indications.", "Compare systemic and local routes: vaginal oestrogen can help dryness but does not treat hot flushes. Individual suitability and risks need separate assessment; the figure does not establish a treatment choice.", 405)],
  "f170/3.3.3/0": [nutritionRecap("f170-menopause-change", "A schematic compares ovarian follicular activity before and after decline, with changing hormone patterns followed by irregular cycles and eventual cessation of periods. Hot flushes and vaginal dryness can occur, but experiences vary.", "Follow declining follicular activity to changing ovarian hormones and menstrual cycles. The follicle symbols are not counts; symptoms vary.", 420)],
  "f170/3.3.3/2": [nutritionRecap("f170-prostate-enlargement", "Two simplified sections show the urethra running from the bladder through the prostate; an enlarged prostate can narrow the channel and affect urination.", "Compare the urethra through each prostate. Enlargement can restrict urine flow but does not always cause symptoms; these drawings are not to scale.", 470)],
- "f170/3.3.2/1": [["f170/3.3.2", "explainDiagrams", 0], ["f170/3.3.2", "explainDiagrams", 1]],
+ "f170/3.3.2/1": [nutritionRecap('f170-ovarian-lining', 'A developing follicle produces oestrogen, which supports regrowth of the uterine lining. After ovulation, the corpus luteum produces progesterone, helping maintain and prepare the lining. The simplified diagrams show selected roles; both hormones have other effects.', 'Compare two contributions to the uterine lining: oestrogen supports regrowth, and progesterone helps maintain and prepare it. The ovarian cycle is simplified.', 365), ["f170/3.3.2", "explainDiagrams", 1]],
  "f170/2.2.3/1": [["f170/2.2.3", "explainDiagrams", 1], ["f171/4.1", "modelDiagrams", 0], nutritionRecap('f170-feno-measurement', 'A simplified airway and lungs lead to an arrow representing exhaled breath entering a nitric oxide analyser. FeNO measures nitric oxide in breath and can provide an indicator of airway inflammation when interpreted with other clinical information. No reading is shown.', 'Follow exhaled air to the analyser. FeNO measures nitric oxide and can indicate airway inflammation in context; it does not establish a diagnosis alone. No patient reading is shown.', 335)],
  "f170/3.1.2/1": [["f170/3.1.2", "explainDiagrams", 1]],
  "f170/2.2.2/1": [nutritionRecap("bone-functions", "A schematic long bone supports a muscle attached by a tendon. A cutaway marks red marrow inside the bone, and a double arrow indicates calcium exchange between bone and blood.", "Locate the muscle attachment and marrow. Bone supports movement, stores calcium and contains blood-forming marrow; the drawing is not to scale.", 350)],
@@ -635,6 +635,35 @@ function recapBody(unit,id,step,point) {
   "f170/2.2.1/1": [
    {heading:"Digestive system", text:"The gastrointestinal system digests and absorbs;", figures:[0]},
    {heading:"Renal system", text:"the renal/excretory system removes wastes and regulates water and ions.", figures:[1]}
+  ],
+  "f170/1.1.2/3": [
+   {heading:"Magnification", text:"Magnification = image size ÷ actual size.", figures:[0]},
+   {heading:"Fractionation", text:"Differential centrifugation separates components by sedimentation;", figures:[1]},
+   {heading:"Cell counting", text:"a haemocytometer estimates cell concentration from a known chamber volume.", figures:[2]}
+  ],
+  "f170/3.2.2/1": [
+   {heading:"Hypothalamus and pituitary", text:"The hypothalamus regulates aspects of homeostasis and influences the pituitary;", figures:[1]},
+   {heading:"Medulla", text:"the medulla contains centres important in cardiovascular and respiratory control.", figures:[0]}
+  ],
+  "f170/1.2.2/2": [
+   {heading:"Connective tissues", text:"Bone and cartilage are specialised connective tissues.", figures:[0]},
+   {heading:"Blood", text:"Blood is a tissue composed of plasma, erythrocytes, leukocytes, and platelets.", figures:[1]}
+  ],
+  "f170/2.1.3/1": [
+   {heading:"Atherosclerosis", text:"Atherosclerotic plaques narrow arteries and may restrict blood supply.", figures:[0]},
+   {heading:"COPD", text:"COPD can reduce effective ventilation and gas exchange.", figures:[1]}
+  ],
+  "f170/3.1.1/2": [
+   {heading:"Insulin", text:"Insulin lowers plasma glucose;", figures:[0]},
+   {heading:"ADH and erythropoietin", text:"ADH increases water reabsorption in kidney collecting ducts; erythropoietin stimulates red cell production.", figures:[1]}
+  ],
+  "f170/1.1.4/2": [
+   {heading:"Osmosis", text:"Osmosis is net water movement across a partially permeable membrane down a water-potential gradient.", figures:[0]},
+   {heading:"Recognition", text:"Cell-surface glycoproteins contribute to recognition and transplant rejection.", figures:[1]}
+  ],
+  "f170/3.3.2/1": [
+   {heading:"Oestrogen and progesterone", text:"Oestrogen and progesterone are important in endometrial and reproductive regulation;", figures:[0]},
+   {heading:"Testosterone", text:"testosterone supports male-typical secondary sexual characteristics and sperm production.", figures:[1]}
   ]
  };
  const groups = groupedRecaps[unit+"/"+id+"/"+step];

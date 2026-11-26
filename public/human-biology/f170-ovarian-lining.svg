@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="365" viewBox="0 0 280 365" role="img" aria-labelledby="title desc">
+<title id="title">Ovarian hormones and the uterine lining</title><desc id="desc">A developing follicle produces oestrogen, which supports regrowth of the uterine lining. After ovulation, the corpus luteum produces progesterone, helping maintain and prepare the lining. The simplified diagrams show selected roles; both hormones have other effects.</desc>
+<rect width="280" height="365" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="24" font-weight="700">Ovarian hormones</text>
+<text x="140" y="50" font-size="15">Before ovulation: lining regrows</text>
+<circle cx="52" cy="101" r="27" fill="#f7ddc8" stroke="#a86e47" stroke-width="2"/><circle cx="52" cy="101" r="10" fill="#e2d5eb" stroke="#806195"/>
+<path d="M85 100h72m-8-6 8 6-8 6" fill="none" stroke="#286b73" stroke-width="2.5"/><text x="120" y="88" font-size="15">Oestrogen</text>
+<rect x="171" y="82" width="80" height="39" fill="#eed0d6" stroke="#a7667e" stroke-width="2"/><path d="M171 102h80" stroke="#a7667e" stroke-width="2"/><path d="M211 116V89m-6 7 6-7 6 7" fill="none" stroke="#286b73" stroke-width="2"/>
+<text x="52" y="151" font-size="15">Developing</text><text x="52" y="171" font-size="15">follicle</text><text x="211" y="151" font-size="15">Uterine</text><text x="211" y="171" font-size="15">lining</text>
+<path d="M25 188h230" stroke="#b4cbce"/>
+<text x="140" y="213" font-size="15">After ovulation: lining supported</text>
+<circle cx="52" cy="261" r="25" fill="#f7ddc8" stroke="#a86e47" stroke-width="2"/><path d="M42 249q12 6 0 12t0 12M61 249q-12 6 0 12t0 12" fill="none" stroke="#a86e47" stroke-width="2"/>
+<path d="M83 260h74m-8-6 8 6-8 6" fill="none" stroke="#286b73" stroke-width="2.5"/><text x="120" y="248" font-size="15">Progesterone</text>
+<rect x="171" y="240" width="80" height="40" fill="#eed0d6" stroke="#a7667e" stroke-width="2"/><path d="M171 250h80M186 250v18m17-18v14m17-14v18m17-18v14" stroke="#a7667e" stroke-width="2"/>
+<text x="52" y="307" font-size="15">Corpus</text><text x="52" y="327" font-size="15">luteum</text><text x="211" y="307" font-size="15">Lining is</text><text x="211" y="327" font-size="15">maintained</text>
+<text x="140" y="353" font-size="15">Selected roles; model not to scale.</text>
+</g></svg>

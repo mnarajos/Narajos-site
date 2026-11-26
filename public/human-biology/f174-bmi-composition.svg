@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="355" viewBox="0 0 280 355" role="img" aria-labelledby="title desc">
+<title id="title">A fictional BMI and composition comparison</title><desc id="desc">Two fictional adults have the same height and total mass, so they have the same BMI. Two equal-height stacked bars show one possible difference in their muscle and fat amounts; the other component is shown equal in this example. The bar portions are illustrative, not measured data.</desc>
+<rect width="280" height="355" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16" fill="#243e49" text-anchor="middle">
+ <text x="140" y="25" font-weight="700">Fictional adults A and B</text>
+ <text x="140" y="51">Same height and mass</text>
+ <text x="140" y="74">therefore same BMI</text>
+ <text x="75" y="103">A</text><text x="205" y="103">B</text>
+ <rect x="34" y="113" width="82" height="48" fill="#d9edf5" stroke="#537a94" stroke-width="2"/>
+ <rect x="34" y="161" width="82" height="48" fill="#f1dfc6" stroke="#a5792e" stroke-width="2"/>
+ <rect x="34" y="209" width="82" height="72" fill="#e7d9ee" stroke="#80588f" stroke-width="2"/>
+ <rect x="164" y="113" width="82" height="48" fill="#d9edf5" stroke="#537a94" stroke-width="2"/>
+ <rect x="164" y="161" width="82" height="84" fill="#f1dfc6" stroke="#a5792e" stroke-width="2"/>
+ <rect x="164" y="245" width="82" height="36" fill="#e7d9ee" stroke="#80588f" stroke-width="2"/>
+ <text x="75" y="143">Other</text><text x="75" y="191">Fat</text><text x="75" y="250">Muscle</text>
+ <text x="205" y="143">Other</text><text x="205" y="208">Fat</text><text x="205" y="269">Muscle</text>
+ <text x="140" y="308">Equal total; different makeup</text>
+ <text x="140" y="334" font-size="14">Portions illustrative, not measured</text>
+</g></svg>

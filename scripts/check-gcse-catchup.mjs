@@ -99,6 +99,10 @@ export async function checkGCSECatchup(browser, base) {
           assert.equal(await notes.locator('svg[aria-label*="Seawater requires desalination"]').count(), 1,
             "water-treatment stage must show the desalination route");
         }
+        if (id === "selection-and-variation" && index === 2) {
+          assert.equal(await notes.locator('svg[aria-label*="On dark bark, some moths have dark wings"]').count(), 1,
+            "selection comparison must show natural selection alongside selective breeding");
+        }
         for (const svg of await notes.locator("svg[role=img]").all()) {
           assert((await svg.getAttribute("aria-label"))?.trim(), `${id} step ${index + 1}: missing diagram description`);
         }
@@ -259,6 +263,10 @@ export async function checkGCSECatchup(browser, base) {
           for (const diagram of await diagrams.all())
             assert.equal(await diagram.isVisible(), false, `${id}: question answer figure visible before reasoning`);
           await extension.getByText("Check your reasoning", {exact: true}).click();
+        }
+        if (id === "mass-conservation") {
+          assert.equal(await extension.locator('svg[aria-label*="0.20 moles of magnesium need 0.10 moles of oxygen"]').count(), 1,
+            "Higher Tier moles explanation must compare required and available reactants");
         }
         await checkSvgLabels(extension, `${id} Higher Tier`);
         const stageLabels = await journey.locator(".school-current-stage svg[role=img]").evaluateAll(items => items.map(item => item.getAttribute("aria-label")));

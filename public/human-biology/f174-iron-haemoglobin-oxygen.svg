@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="345" viewBox="0 0 280 345" role="img" aria-labelledby="title desc">
+<title id="title">Iron supports haemoglobin and oxygen transport</title><desc id="desc">A schematic shows iron contributing to haemoglobin production in a developing red blood cell. A mature red blood cell contains haemoglobin that binds oxygen; blood carries oxygen towards body tissues. The shapes do not show the molecular structure or scale.</desc>
+<rect width="280" height="345" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16" fill="#243e49" text-anchor="middle">
+ <text x="140" y="25" font-weight="700">Iron and haemoglobin</text>
+ <circle cx="44" cy="88" r="19" fill="#f1dfc6" stroke="#a5792e" stroke-width="2"/><text x="44" y="94">Fe</text>
+ <text x="44" y="131">Iron</text>
+ <path d="M70 88h38m-7-6 7 6-7 6" stroke="#276972" stroke-width="2.5" fill="none"/>
+ <circle cx="173" cy="88" r="40" fill="#f8e3e1" stroke="#a55c58" stroke-width="2"/>
+ <text x="173" y="94" font-size="14">Hb</text>
+ <text x="173" y="148">Developing red cell</text>
+ <text x="173" y="170">makes haemoglobin</text>
+ <path d="M140 182v21m-6-6 6 6 6-6" stroke="#276972" stroke-width="2" fill="none"/>
+ <ellipse cx="86" cy="250" rx="42" ry="29" fill="#e9aaa3" stroke="#a55c58" stroke-width="2"/>
+ <ellipse cx="86" cy="250" rx="19" ry="12" fill="#f8d8d3" stroke="#a55c58" stroke-width="1.5"/>
+ <text x="86" y="255" font-size="14">Hb</text><text x="86" y="298">Red blood cell</text>
+ <path d="M131 250h51m-7-6 7 6-7 6" stroke="#276972" stroke-width="2.5" fill="none"/>
+ <text x="157" y="238">O₂</text>
+ <g fill="#d8ece7" stroke="#32776d" stroke-width="2"><circle cx="207" cy="237" r="14"/><circle cx="235" cy="237" r="14"/><circle cx="221" cy="261" r="14"/></g>
+ <text x="221" y="298">Tissues</text>
+ <text x="140" y="328" font-size="14">Schematic, not to scale</text>
+</g></svg>

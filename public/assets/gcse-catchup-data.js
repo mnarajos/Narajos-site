@@ -361,7 +361,7 @@ const complementary = {
     ],
     ["Yeast makes bubbles in bread dough without an oxygen supply. What gas is in the bubbles?","Carbon dioxide","Carbon dioxide is a product of fermentation in yeast.","Oxygen","Hydrogen"],
     ["Why is less energy transferred per glucose molecule in anaerobic respiration?","Glucose is only partly broken down.","Anaerobic products retain some of the energy available from glucose.","The glucose disappears.","Muscle cells stop using glucose."],
-    "Higher Tier · Blood transports lactic acid from muscles to the liver. Extra oxygen is needed after exercise to deal with the lactic acid produced."),
+    "Higher Tier · Blood transports lactic acid from muscles to the liver, where it is converted back to glucose. Extra oxygen is needed after exercise to deal with the lactic acid produced."),
 
   "density-and-gas-pressure": lesson(10,"P3","Density and the pressure of a gas",
     "How can a sealed container have higher pressure with the same number of gas particles?",

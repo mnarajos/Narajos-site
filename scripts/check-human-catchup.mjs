@@ -780,7 +780,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f175/2.1/1", ["f175-history-ultrasound.svg"]], ["f170/3.3.1/2", ["hb-endometrium.webp", "hb-follicle-teaching.webp", "hb-tubule-teaching.webp"]],
       ["f170/3.3.1/1", ["f170-sperm-route.svg"]], ["f170/3.3.2/2", ["f170-gamete-patterns.svg"]],
       ["f170/3.3.3/0", ["f170-menopause-change.svg"]], ["f170/3.3.3/1", ["f170-menopause-therapy.svg"]], ["f170/3.3.3/2", ["f170-prostate-enlargement.svg"]],
-      ["f170/3.3.2/1", ["f170-ovarian-hormones.svg", "f170-testicular-hormones.svg"]],
+      ["f170/3.3.2/1", ["f170-ovarian-lining.svg", "f170-testicular-hormones.svg"]],
       ["f170/3.1.2/1", ["f170-diabetes-comparison.svg"]], ["f170/3.1.2/2", ["f170-glucose-testing-context.svg"]],
       ["f170/3.1.1/1", ["f170-glucose-response.svg", "f170-beta-insulin.svg", "f170-insulin-targets.svg"]], ["f170/3.1.1/2", ["f170-insulin-targets.svg", "adh-epo-kidney.svg"]],
       ["f170/2.1.3.cirrhosis/1", ["f170-bilirubin-albumin.svg"]],
@@ -846,7 +846,14 @@ export async function checkHumanCatchup(browser, base) {
     for (const [route, text, figures] of [
       ["f170/2.2.3/1", "Spirometry measures volumes and flow; peak flow measures maximal expiratory flow; FeNO can indicate airway inflammation in an appropriate clinical context.", ["f171-expired-volume-time.svg", "peak-flow-method.svg", "f170-feno-measurement.svg"]],
       ["f170/1.1.5/2", "Punnett squares model allele transmission. Most mitochondrial DNA is maternally inherited; mitochondrial replacement can reduce transmission of some mtDNA disorders.", ["punnett-cross.svg", "f170-mitochondrial-donation.svg"]],
-      ["f170/2.2.1/1", "The gastrointestinal system digests and absorbs; the renal/excretory system removes wastes and regulates water and ions.", ["digestion.svg", "f170-nephron-overview.svg"]]
+      ["f170/2.2.1/1", "The gastrointestinal system digests and absorbs; the renal/excretory system removes wastes and regulates water and ions.", ["digestion.svg", "f170-nephron-overview.svg"]],
+      ["f170/1.1.2/3", "Magnification = image size ÷ actual size. Differential centrifugation separates components by sedimentation; a haemocytometer estimates cell concentration from a known chamber volume.", ["f170-print-magnification.svg", "f170-fractionation-spins.svg", "cell-counting-chamber.svg"]],
+      ["f170/3.2.2/1", "The hypothalamus regulates aspects of homeostasis and influences the pituitary; the medulla contains centres important in cardiovascular and respiratory control.", ["hypothalamus-pituitary.svg", "f170-medulla-control.svg"]],
+      ["f170/1.2.2/2", "Bone and cartilage are specialised connective tissues. Blood is a tissue composed of plasma, erythrocytes, leukocytes, and platelets.", ["connective-tissue-comparison.svg", "blood-components.svg"]],
+      ["f170/2.1.3/1", "Atherosclerotic plaques narrow arteries and may restrict blood supply. COPD can reduce effective ventilation and gas exchange.", ["artery-plaque-comparison.svg", "airway-narrowing.svg"]],
+      ["f170/3.1.1/2", "Insulin lowers plasma glucose; ADH increases water reabsorption in kidney collecting ducts; erythropoietin stimulates red cell production.", ["f170-insulin-targets.svg", "adh-epo-kidney.svg"]],
+      ["f170/1.1.4/2", "Osmosis is net water movement across a partially permeable membrane down a water-potential gradient. Cell-surface glycoproteins contribute to recognition and transplant rejection.", ["f170-water-active.svg", "f170-antigen-recognition.svg"]],
+      ["f170/3.3.2/1", "Oestrogen and progesterone are important in endometrial and reproductive regulation; testosterone supports male-typical secondary sexual characteristics and sperm production.", ["f170-ovarian-lining.svg", "f170-testicular-hormones.svg"]]
     ]) {
       await open("catchup/" + route);
       const groups = page.locator(".k-recap-group");
@@ -914,6 +921,8 @@ export async function checkHumanCatchup(browser, base) {
       ["f172/a1", ["meiosis.svg"], ["meiosis.svg", "f172-meiosis-alleles.svg", "f172-mitosis-alleles.svg"]],
       ["f172/a4", [], ["f172-gene-expression-comparison.svg", "f172-gene-expression-comparison.svg", "f172-gene-expression-comparison.svg"]],
       ["f173/a3", [], ["chromatography.svg", "chromatography.svg", "chromatography.svg"]],
+      ["f174/a1", [], ["meals-energy-iron.svg", "f174-iron-haemoglobin-oxygen.svg"]],
+      ["f174/a4", ["f174-bmi-composition.svg", "f174-intake-biomarker.svg"], ["f174-bmi-composition.svg", "f174-intake-biomarker.svg", "f174-intake-biomarker.svg"]],
       ["f177/a3", ["f177-preclinical-evidence.svg", "f177-study-duration.svg"], ["f177-preclinical-evidence.svg", "f177-study-duration.svg", "f177-safety-signal.svg"]],
       ["f177/a1", [], ["f177-antagonist-response.svg", "f177-antagonist-response.svg"]],
       ["f176/a5", ["f176-eeg-trace.svg"], ["f176-eeg-trace.svg", "f176-mri-ct.svg"]],

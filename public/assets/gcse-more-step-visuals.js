@@ -1496,12 +1496,12 @@ export function leftHandDirections() {
 export function motorReversalWorked(){return grouped(coilReversal,splitRing);}
 function oxygenDebt() {
   return fig('Lactate after exercise',
-    'Blood transports lactic acid from muscle to the liver after exercise. The body needs additional oxygen after exercise to deal with the lactic acid produced.',
+    'Blood transports lactic acid from muscle to the liver after exercise. The liver converts it back to glucose. The body needs additional oxygen after exercise to deal with the lactic acid produced.',
     '<path d="M23 57 Q65 35 93 57 Q83 97 23 97 Z" fill="#f1d5cc" stroke="'+rust+'" stroke-width="2"/>'+text(58,122,'Muscle',ink,15)+
     arrow(95,78,205,78,blue,3)+text(150,59,'Blood transports',blue,14)+text(150,101,'lactic acid',blue,14)+
     '<path d="M210 49 Q274 30 297 58 Q302 94 230 99 Q204 91 210 49 Z" fill="#dec5be" stroke="'+rust+'" stroke-width="2"/>'+text(252,123,'Liver',ink,15)+
-    text(160,157,'Extra oxygen after exercise',ink,14),
-    'Follow lactic acid in the blood from muscle to liver. Extra oxygen is required after exercise.',175);
+    text(160,157,'Lactic acid → glucose',teal,15)+text(160,190,'Extra oxygen after exercise',ink,14),
+    'Follow lactic acid in the blood from muscle to liver, where it is converted back to glucose. Extra oxygen is required after exercise.',210);
 }
 function hormoneFeedback() {
   return fig('Hormones and feedback',
@@ -1654,7 +1654,7 @@ function moleCalculation() {
     arrow(129,78,164,78,rust,2)+text(238,45,'Molar mass',ink,14)+text(238,76,'24 g/mol',blue,15)+text(238,106,'4.8 ÷ 24',ink,15)+text(238,139,'= 0.20 mol',teal,16),
     'Divide mass by molar mass before using the balanced equation ratio. The values are a worked example.',160);
 }
-function molesAndRatio(){return grouped(moleCalculation,molarRatio);}
+function molesAndRatio(){return grouped(moleCalculation,molarRatio,oxygenRequirement);}
 function bondEnergyBalance() {
   return fig('A separate bond-energy example',
     'In a separate hypothetical reaction, not the hydrogen and chlorine reaction shown above, breaking bonds takes in 300 kilojoules per mole of reaction and making bonds releases 500 kilojoules per mole. The overall change is 300 minus 500, or minus 200 kilojoules per mole: the reaction is exothermic.',
@@ -1687,7 +1687,7 @@ function distanceTangent() {
   return fig('Speed at an instant',
     'A curved distance–time graph has a straight tangent touching it at one point. The gradient of that tangent is the speed at that instant. The graph is qualitative and no numerical readings are implied.',
     line(45,146,288,146)+line(45,146,45,30)+'<path d="M45 142 C108 138 186 101 270 43" fill="none" stroke="'+teal+'" stroke-width="3"/>'+line(85,141.76,246,69.49,rust,2)+circle(149.625,112.75,4,rust,rust)+
-    text(45,24,'Distance (m)',ink,14,'start')+text(160,175,'Time (s)',ink,14)+text(233,57,'Tangent',rust,14),
+    text(45,24,'Distance (m)',ink,14,'start')+text(160,175,'Time (s)',ink,14)+text(233,30,'Tangent',rust,14),
     'At the chosen point, draw a tangent and find change in distance divided by change in time along that straight line.',190);
 }
 function distanceAndVelocity(){return grouped(velocityArea,distanceTangent);}
@@ -1870,7 +1870,7 @@ export const moreGcseStepVisuals = {
   'reflex-response': {0:neuron,1:reflexWithSynapse,2:reflexMeasure},
   'respiration-exercise': {0:respiratoryComparison,1:muscleRespiration},
   'vaccine-memory': {0:barriersAndAntibodies,1:vaccineMemory,2:vaccineAndAntibiotics},
-  'selection-and-variation': {0:selectionAndInheritance,1:selectionAndInheritance,2:selectiveBreeding},
+  'selection-and-variation': {0:selectionAndInheritance,1:selectionAndInheritance,2:() => grouped(selectiveBreeding,naturalSelection,predationAndInheritance)},
   'inheritance-cross': {0:genotypeAndPhenotype,2:selectionAndInheritance},
   'chromatography': {0:chromatographyPhases,1:rfDistance,2:gasTests},
   'latent-heat': {0:storedEnergy,1:() => grouped(heatingCurve, gcseStepVisuals['latent-heat'][1]),2:latentCalculation},

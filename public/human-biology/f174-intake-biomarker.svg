@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="365" viewBox="0 0 280 365" role="img" aria-labelledby="title desc">
+<title id="title">Intake record and blood biomarker</title><desc id="desc">In a fictional comparison, two people have similar estimated nutrient intake from records. Two schematic paths pass from intake through absorption and use to a blood measurement. The blood symbols differ to illustrate that the result can differ even with similar recorded intake. Sampling conditions can also affect comparison; symbols are not measured values.</desc>
+<rect width="280" height="365" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16" fill="#243e49" text-anchor="middle">
+ <text x="140" y="25" font-weight="700">Two kinds of evidence</text>
+ <text x="140" y="55">Similar recorded intake</text>
+ <g fill="#d9edf5" stroke="#537a94" stroke-width="2"><path d="M52 70h48v39H52zM180 70h48v39h-48z"/></g>
+ <path d="M61 80h30M61 89h30M61 98h22M189 80h30M189 89h30M189 98h22" stroke="#537a94" stroke-width="2"/>
+ <text x="76" y="136">A</text><text x="204" y="136">B</text>
+ <path d="M76 145v25m-6-6 6 6 6-6M204 145v25m-6-6 6 6 6-6" stroke="#276972" stroke-width="2" fill="none"/>
+ <text x="140" y="200">Absorption and use</text><text x="140" y="223">may differ</text>
+ <path d="M76 231v23m-6-6 6 6 6-6M204 231v23m-6-6 6 6 6-6" stroke="#276972" stroke-width="2" fill="none"/>
+ <path d="M56 267h40v36H56zM184 267h40v36h-40z" fill="#f8e3e1" stroke="#a55c58" stroke-width="2"/>
+ <g fill="#a55c58"><circle cx="68" cy="280" r="3"/><circle cx="84" cy="280" r="3"/><circle cx="68" cy="292" r="3"/><circle cx="84" cy="292" r="3"/><circle cx="204" cy="280" r="3"/><circle cx="204" cy="292" r="3"/></g>
+ <text x="140" y="330">Blood measurements can differ</text>
+ <text x="140" y="353" font-size="14">Symbols are illustrative</text>
+</g></svg>
