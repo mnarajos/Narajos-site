@@ -70,7 +70,7 @@ for (const [file,global,rows] of [
  ['catchup-population-processes.js','ALevelPopulationProcesses', [['a7','hardy',1],['a7','hardy',2],['a7','linkage',0],['a7','linkage',1],['a7','speciation',0],['a7','speciation',1],['a7','ecosys',0],['a7','interact',0],['a7','mrrc',1],['a7','varsel',1]]],
  ['catchup-metabolism-practicals.js','ALevelMetabolismPracticals', [['a5','dcpip',0],['a5','respiro',0],['a5','substrates',0],['a5','substrates',1],['a5','biomass',0],['a5','productivity',1],['a5','fertil',0],['a6','glucal',0],['a6','glucal',1]]],
  ['catchup-gene-techniques.js','ALevelGeneTechniques', [['a8','mut8',0],['a8','mut8',1],['a8','mut8',2],['a8','stemcells',0],['a8','stemcells',1],['a8','stemcells',2],['a8','cancer',0],['a8','cancer',1],['a8','fragments',0],['a8','fragments',2],['a8','invivo',1],['a8','fingerprint',0]]],
- ['catchup-exchange-extra-figures.js','ALevelExchangeExtraFigures', [['a3','lungs',0],['a3','sav',1],['a3','fish',0],['a3','fish',1],['a3','vessels',0],['a3','heart',0],['a3','heart',1],['a3','insects',1]]],
+ ['catchup-exchange-extra-figures.js','ALevelExchangeExtraFigures', [['a3','lungs',0],['a3','sav',1],['a3','fish',0],['a3','fish',1],['a3','vessels',0],['a3','heart',0],['a3','heart',1],['a3','insects',1],['a3','lungdata',2]]],
  ['catchup-muscle-figures.js','ALevelMuscleFigures', [['a6','summation',0],['a6','muscle',0],['a6','muscle',1],['a6','sliding',0],['a6','sliding',1],['a6','sliding',2],['a6','sliding',3],['a6','sliding2',0],['a6','sliding2',1],['a6','sliding2',2],['a6','sliding2',3],['a6','fibres',0],['a6','fibres',1]]],
  ['catchup-cardiac-figures.js','ALevelCardiacFigures', [['a6','heartrate',0],['a6','heartrate',1],['a6','hrcontrol',1]]],
  ['catchup-exchange-disease-figures.js','ALevelExchangeDiseaseFigures', [['a2','membrane',1],['a3','lungdata',1]]],
@@ -87,7 +87,10 @@ for (const [file,global,rows] of [
  ['catchup-chisq-figures.js','ALevelChiSquaredFigures', [['a7','chisq',0],['a7','chisq',1],['a7','chisq',2]]],
  ['catchup-population-recap.js','ALevelPopulationRecap', [['a7','traps7',0],['a7','traps7',1],['a7','traps7',2],['a7','traps7',3],['a7','ctx7',0],['a7','ctx7',1],['a7','ctx7',2]]],
  ['catchup-paper2-links.js','ALevelPaper2Links', [['a8','linkp2',0],['a8','linkp2',1],['a8','wordp2',0],['a8','wordp2',1]]],
- ['catchup-genome-context.js','ALevelGenomeContext', [['a8','genome',0],['a8','genome',1],['a8','invivo',2],['a8','probes',1]]]
+ ['catchup-genome-context.js','ALevelGenomeContext', [['a8','genome',0],['a8','genome',1],['a8','invivo',2],['a8','probes',1]]],
+ ['catchup-variation-pool.js','ALevelVariationPool', [['a7','varsel',0],['a7','hardy',0]]],
+ ['catchup-antigen-bonds.js','ALevelAntigenBonds', [['a4','linkp1',1]]],
+ ['catchup-ecology-recap.js','ALevelEcologyRecap', [['a7','epistasis',1],['a7','fieldwork',2],['a7','interact',2]]]
 ]) {
  vm.runInNewContext(readFileSync(new URL('../public/alevel/'+file, import.meta.url), 'utf8'), context);
  for (const [topic,id,group] of rows) { const figure=context.window[global].render(topic,id,group); assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/); assert.match(figure, /<figcaption>.{20,}<\/figcaption>/); }
@@ -114,6 +117,20 @@ for (const g of [0,1]) {
  const figure=context.window.ALevelPracticalExtraFigures.render('a3','dissect',g);
  assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
  assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
+}
+vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-paper1-wording.js', import.meta.url), 'utf8'), context);
+for (const group of [0,1]) {
+ const figure=context.window.ALevelPaper1Wording.render('a4','wordp1',group);
+ assert.equal((figure.match(/<figure\b/g)||[]).length,2);
+ assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
+ assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
+}
+vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-foundation-gene-figures.js', import.meta.url), 'utf8'), context);
+for (const [topic,id,group] of [['a1','enzymes',1],['a4','transcription',0],['a4','transcription',1],['a4','translation',0],['a4','mutation',0],['a4','mutation',1]]) {
+ const figure=context.window.ALevelCatchupFigures.render(topic,id,group);
+ assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
+ assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
+ assert(!figure.includes('aria-label="Scrollable science diagram"'));
 }
 assert.equal(context.window.ALevelCatchupFigures.render('a1','sugars',2), '');
 console.log('A-level molecular figure alternatives, captions, mapping and local image checked.');

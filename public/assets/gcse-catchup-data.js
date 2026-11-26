@@ -635,7 +635,9 @@ gcseCatchup["glucose-control"].higher = [
 ];
 
 scaffold(complementary["respiration-exercise"], "Trace oxygen from the lungs to a working muscle", [
-  "The right ventricle pumps blood to the lungs. Oxygen diffuses across the thin exchange surface into the blood and binds to haemoglobin in red blood cells.",
+  "The right ventricle pumps blood to the lungs.",
+  "Oxygen diffuses across the thin exchange surface into the blood.",
+  "Oxygen binds to haemoglobin in red blood cells.",
   "Blood returns to the left atrium and then the left ventricle. Its thicker muscular wall generates the pressure needed to send blood around the body.",
   "At muscle capillaries oxygen leaves the blood and diffuses into cells. During exercise an increased heart rate can increase oxygen delivery for aerobic respiration."
 ], "Compare oxygen delivery with the working muscle’s demand.");

@@ -1,5 +1,5 @@
 // Original teaching schematics. Positions, sizes and colours are illustrative.
-import { arrow, blue, circle, diagram, ink, line, node, picture, rust, teal, text } from './catchup-models.js';
+import { arrow, blue, circle, diagram, ink, line, node, picture, rust, teal, text, airSac } from './catchup-models.js';
 import { gcseStepVisuals } from './gcse-step-visuals.js';
 import { gcseVisual, gcseChromatogramSetup, gcseChromatogramResult } from './gcse-catchup-visuals.js';
 import { photo } from './catchup-photos.js';
@@ -787,6 +787,42 @@ function bloodMicrograph() {
   figure.append(image, caption);
   return figure;
 }
+function haemoglobinBinding() {
+  return fig('Oxygen and haemoglobin',
+    'Oxygen moves into a red blood cell and binds to haemoglobin inside it. The large oval represents the cell; the smaller red circles represent haemoglobin. The model is greatly simplified and is not to scale.',
+    text(160,25,'Red blood cell',ink,15)+'<ellipse cx="160" cy="99" rx="93" ry="58" fill="#f5d9d4" stroke="'+rust+'" stroke-width="2"/><ellipse cx="160" cy="99" rx="47" ry="27" fill="#faeae6" stroke="none"/>'+
+    circle(130,102,9,'#bc675c',rust)+circle(164,88,9,'#bc675c',rust)+circle(195,108,9,'#bc675c',rust)+
+    text(36,57,'O₂',blue,15)+arrow(40,64,123,98,blue,2)+line(198,191,195,118,ink,1.5)+text(160,210,'Haemoglobin',ink,15),
+    'Follow oxygen into the cell and locate the haemoglobin symbols. This is a model: haemoglobin cannot be seen in the adjacent micrograph.',230);
+}
+function oxygenInBlood(){return grouped(bloodMicrograph,haemoglobinBinding);}
+function leftHeartChambers() {
+  return fig('Blood returns to the left heart',
+    'Oxygenated blood returns from the lungs to the left atrium and then passes to the left ventricle. The left ventricle has a thicker muscular wall and pumps blood around the body. The layout is a simplified pathway, not an anatomical view.',
+    text(160,25,'From lungs',blue,15)+
+    '<rect x="90" y="55" width="150" height="48" rx="8" fill="#f5dfda"/><path d="M145 103 H98 Q90 103 90 95 V63 Q90 55 98 55 H145 M175 55 H232 Q240 55 240 63 V95 Q240 103 232 103 H175" fill="none" stroke="'+rust+'" stroke-width="2"/>'+arrow(160,32,160,64,blue,2)+text(165,86,'Left atrium',ink,15)+
+    line(145,103,145,121,rust,2)+line(175,103,175,121,rust,2)+
+    '<rect x="90" y="121" width="150" height="80" rx="10" fill="#f5dfda"/><path d="M145 121 H100 Q90 121 90 131 V191 Q90 201 100 201 H230 Q240 201 240 191 V131 Q240 121 230 121 H175" fill="none" stroke="'+rust+'" stroke-width="7"/>'+text(165,151,'Left',ink,15)+text(165,183,'ventricle',ink,15)+
+    arrow(160,99,160,132,rust,2)+arrow(241,161,282,161,rust,2)+text(263,213,'To body',rust,15),
+    'Follow blood from atrium to ventricle and on to the body. The thick outline represents the ventricle’s muscular wall.',235);
+}
+function oxygenToMuscle() {
+  return fig('Oxygen reaches muscle cells',
+    'Oxygen diffuses from blood in a muscle capillary into nearby muscle cells. During exercise, a higher heart rate can increase blood flow and oxygen delivery. The vessel and cell are not drawn to scale.',
+    text(85,25,'Capillary',ink,15)+text(235,25,'Muscle cell',ink,15)+'<rect x="25" y="55" width="120" height="80" rx="20" fill="#f5dfda" stroke="'+rust+'" stroke-width="2"/>'+
+    circle(55,82,10,'#d88f83',rust)+circle(100,108,10,'#d88f83',rust)+'<ellipse cx="234" cy="95" rx="55" ry="40" fill="#e3eddd" stroke="'+teal+'" stroke-width="2"/>'+
+    arrow(145,95,193,95,blue,2)+text(160,72,'O₂',blue,15)+text(160,176,'Oxygen diffuses into muscle',blue,15),
+    'Follow oxygen from the capillary into the muscle cell. Greater blood flow during exercise can increase delivery.',195);
+}
+function exerciseDelivery() {
+  const beat=(x,y)=>'<path d="M'+x+' '+(y+9)+' c-22 -14 -13 -29 0 -18 c13 -11 22 4 0 18 Z" fill="#efc8c2" stroke="'+rust+'" stroke-width="2"/>';
+  return fig('Heart rate and delivery during exercise',
+    'The model compares two equal time intervals. There are more heartbeats during the exercise interval than the rest interval. If each beat pumps the same volume, more beats per minute can increase blood and oxygen delivery. The icons are illustrative, not measurements.',
+    text(160,25,'Same time interval',ink,15)+text(62,74,'Rest',ink,15)+beat(145,67)+beat(225,67)+
+    text(62,140,'Exercise',ink,15)+beat(125,132)+beat(170,132)+beat(215,132)+beat(260,132)+text(160,205,'More beats per minute',rust,15),
+    'Compare the number of beat symbols in equal times. If volume per beat is unchanged, a higher heart rate can increase delivery; these counts are illustrative.',225);
+}
+function muscleDelivery(){return grouped(oxygenToMuscle,exerciseDelivery);}
 function circulationWithMicrograph(){return grouped(circulation,bloodMicrograph);}
 function faultPath() {
   return fig('A fault to an earthed metal case',
@@ -857,13 +893,60 @@ function plantPaths() {
     text(84,100,'Xylem',blue,15)+text(84,132,'water up',blue,14)+text(239,98,'Phloem',rust,15)+text(239,130,'sugar to',rust,14)+text(239,162,'root sink',rust,14)+text(160,241,'Roots',ink,15),
     'Trace water up the xylem and sugar from the source leaf to a root sink. Phloem direction varies with source and sink.',255);
 }
+function rootHairOsmosis() {
+  return fig('Water entering a root hair cell',
+    'A root hair cell extends into the soil. When the soil solution is more dilute than the cell contents, water enters the cell by osmosis through its partially permeable membrane. The outer boundary is the cell wall and the inner boundary is the membrane.',
+    text(75,25,'Soil solution',blue,15)+text(230,25,'Root hair cell',teal,15)+
+    '<path d="M145 44 H277 V128 H145 V100 H64 Q38 100 38 86 Q38 72 64 72 H145 Z" fill="#e4f2df" stroke="'+teal+'" stroke-width="3"/>'+
+    '<path d="M151 51 H270 V121 H151 V94 H64 Q45 94 45 86 Q45 78 64 78 H151 Z" fill="none" stroke="'+ink+'" stroke-width="1.5"/>'+arrow(15,86,115,86,blue,3)+
+    text(160,159,'Water enters',blue,15)+text(160,191,'by osmosis',blue,15),
+    'Follow water across the wall and the inner cell membrane. Net osmosis occurs when the soil solution is more dilute than the cell contents.',210);
+}
+function leafVapourPath() {
+  return fig('Water vapour leaves a leaf',
+    'Water evaporates from moist leaf cells into an internal air space, then water vapour diffuses out through the stoma, the pore between guard cells. The leaf section is simplified.',
+    '<ellipse cx="160" cy="55" rx="56" ry="31" fill="#d9eedc" stroke="'+teal+'" stroke-width="2"/>'+text(160,61,'Leaf cell',ink,15)+text(65,135,'Air space',ink,15)+
+    '<path d="M25 185 H142 M178 185 H295" fill="none" stroke="'+ink+'" stroke-width="3"/><path d="M142 173 Q128 185 142 197 Q150 185 142 173 Z M178 173 Q192 185 178 197 Q170 185 178 173 Z" fill="#b5dec9" stroke="'+teal+'" stroke-width="2"/>'+
+    arrow(160,92,160,216,blue,3)+text(80,235,'Water vapour',blue,14)+text(247,235,'Stoma',ink,15)+line(222,222,168,185,ink,1.5),
+    'Follow the vapour arrow from the leaf air space through the pore. The stoma is the opening between the two guard cells.',255);
+}
+function hollowXylem() {
+  return fig('A hollow xylem vessel',
+    'A simplified xylem vessel is a hollow tube with thickened walls. Water and dissolved mineral ions move up through the open lumen. No end wall blocks the section shown.',
+    text(160,25,'Water + mineral ions',blue,15)+'<rect x="100" y="42" width="120" height="128" fill="#e2f1f7"/>'+line(100,42,100,170,rust,6)+line(220,42,220,170,rust,6)+
+    arrow(160,154,160,55,blue,3)+text(160,205,'Hollow vessel',ink,15),
+    'Follow water up the open channel. The thick side walls represent lignin strengthening; the vessel section is simplified.',225);
+}
+function xylemRouteWorked(){return grouped(plantPaths,hollowXylem);}
+function sourceAndSink() {
+  return fig('Phloem carries sugars from source to sink',
+    'In one situation, a mature leaf is a source and a growing fruit is a sink for sugars. Later, a storage organ may become a source supplying a growing shoot. The arrows show the direction of sugar movement in each example.',
+    '<path d="M21 58 Q55 20 91 58 Q55 96 21 58 Z" fill="#d9eedc" stroke="'+teal+'" stroke-width="2"/>'+line(28,58,84,58,teal,2)+arrow(104,58,199,58,rust,2)+circle(247,58,23,'#f3d4bd',rust,2)+
+    text(72,121,'Source: leaf',teal,14)+text(247,121,'Sink: fruit',rust,14)+
+    '<ellipse cx="55" cy="190" rx="33" ry="24" fill="#e9d7b9" stroke="'+rust+'" stroke-width="2"/>'+arrow(99,190,194,190,blue,2)+line(246,211,246,169,teal,3)+'<path d="M246 187 Q217 164 211 181 Q225 194 246 187 M246 178 Q268 156 279 172 Q268 184 246 178" fill="#cfe9d5" stroke="'+teal+'" stroke-width="2"/>'+
+    text(72,250,'Source: store',rust,14)+text(246,250,'Sink: shoot',teal,14),
+    'Follow each arrow from a source to a sink. A storage organ can change roles when its stored sugars supply new growth.',270);
+}
+function vapourBoundaryLayer(wind) {
+  const outside=wind?[[82,70]]:[[52,70],[82,70],[205,70],[235,70]];
+  const inside=[[53,139],[90,139],[127,139],[195,139],[232,139]];
+  return fig(wind?'Moving air removes vapour':'Moist air near a leaf',
+    wind?'Air movement carries water vapour away from an open stoma. With other conditions unchanged, this can maintain a steeper concentration gradient from the leaf to outside air. Dots are a qualitative model.':'In still air, water vapour can accumulate near an open stoma. Dots illustrate water vapour inside and outside the leaf; the numbers are not measured concentrations.',
+    text(160,24,wind?'Moving air':'Still air',ink,15)+(wind?arrow(48,43,269,43,teal,2):'')+
+    '<path d="M25 108 H145 M175 108 H295 M25 108 V160 H295 V108" fill="#eaf5e9" stroke="'+teal+'" stroke-width="2"/>'+
+    outside.map(([x,y])=>circle(x,y,5,'#c8dff0',blue)).join('')+inside.map(([x,y])=>circle(x,y,5,'#c8dff0',blue)).join('')+
+    arrow(160,140,160,75,blue,2)+text(160,190,'Leaf surface and open pore',ink,15),
+    wind?'Dots represent water vapour. Moving air can keep the outside drier and maintain a steeper gradient.':'Dots represent water vapour. In still air it can accumulate near the pore; the dots are illustrative, not measurements.',210);
+}
+function windAndVapour(){return grouped(()=>vapourBoundaryLayer(false),()=>vapourBoundaryLayer(true));}
+function waterTransportWorked(){return grouped(rootHairOsmosis,plantPaths,leafVapourPath);}
 export const gcseWorkedVisuals = {
   'photosynthesis-limits': pondweedLight,
   'chromatography': chromatographyWorked,
   'respiration-exercise': circulationWithMicrograph,
   'domestic-electricity': faultPath,
   'reacting-masses': magnesiumParticles,
-  'plant-transport': plantPaths,
+  'plant-transport': waterTransportWorked,
   'quadrat-evidence': quadratWorked
 };
 // These worked groups contain several distinct ideas. The renderer places
@@ -874,6 +957,8 @@ export const gcseWorkedLineVisuals = {
   'dynamic-equilibrium': [equilibriumStart, equilibriumRateGraph, dynamicEquilibrium],
   'photosynthesis-limits': [pondweedRateWorked, pondweedLight, pondweedTemperature],
   'reacting-masses': [magnesiumParticles, oxygenRequirement, magnesiumYield],
+  'respiration-exercise': [circulation, () => airSac(true), oxygenInBlood, leftHeartChambers, muscleDelivery],
+  'plant-transport': [rootHairOsmosis, xylemRouteWorked, leafVapourPath, sourceAndSink, windAndVapour],
   'solution-concentration': [concentrationVolumes, concentrationBars, null],
   'quadrat-evidence': [() => grouped(randomCoordinates,quadratBoundary), quadratMeanWorked, parallelTransects]
 };

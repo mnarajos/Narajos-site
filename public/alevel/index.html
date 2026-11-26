@@ -450,9 +450,14 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <script src="/alevel/catchup-population-recap.js"></script>
 <script src="/alevel/catchup-paper2-links.js"></script>
 <script src="/alevel/catchup-genome-context.js"></script>
+<script src="/alevel/catchup-variation-pool.js"></script>
+<script src="/alevel/catchup-antigen-bonds.js"></script>
+<script src="/alevel/catchup-ecology-recap.js"></script>
+<script src="/alevel/catchup-paper1-wording.js"></script>
 <script src="/alevel/catchup-immunity-figures.js"></script>
 <script src="/alevel/catchup-transport-figures.js"></script>
 <script src="/alevel/catchup-transport-details.js"></script>
+<script src="/alevel/catchup-foundation-gene-figures.js"></script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="/assets/home-link.css">
@@ -6394,7 +6399,11 @@ function catchupChunks(notes,synapse,topic,concept){
    (window.ALevelChiSquaredFigures?window.ALevelChiSquaredFigures.render(topic,concept,i/2):'')+
    (window.ALevelPopulationRecap?window.ALevelPopulationRecap.render(topic,concept,i/2):'')+
    (window.ALevelPaper2Links?window.ALevelPaper2Links.render(topic,concept,i/2):'')+
-   (window.ALevelGenomeContext?window.ALevelGenomeContext.render(topic,concept,i/2):'')+'</div>';
+   (window.ALevelGenomeContext?window.ALevelGenomeContext.render(topic,concept,i/2):'')+
+   (window.ALevelVariationPool?window.ALevelVariationPool.render(topic,concept,i/2):'')+
+   (window.ALevelAntigenBonds?window.ALevelAntigenBonds.render(topic,concept,i/2):'')+
+   (window.ALevelEcologyRecap?window.ALevelEcologyRecap.render(topic,concept,i/2):'')+
+   (window.ALevelPaper1Wording?window.ALevelPaper1Wording.render(topic,concept,i/2):'')+'</div>';
  }
  return h;
 }

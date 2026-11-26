@@ -66,7 +66,7 @@
 
   function teachingDiagram(item) {
     if (!item) return "";
-    return '<figure class="hb-teach-photo"><div class="hb-teaching-diagram' + (item.compact ? ' hb-teaching-diagram-compact' : '') + '"' + (item.compact ? '' : ' role="region" tabindex="0" aria-label="Scrollable teaching diagram"') + '><img src="' + escape(item.src) + '" alt="' + escape(item.alt) +
+    return '<figure class="hb-teach-photo"' + (item.assessmentSensitive ? ' data-hb-assessment-sensitive' : '') + '><div class="hb-teaching-diagram' + (item.compact ? ' hb-teaching-diagram-compact' : '') + '"' + (item.compact ? '' : ' role="region" tabindex="0" aria-label="Scrollable teaching diagram"') + '><img src="' + escape(item.src) + '" alt="' + escape(item.alt) +
       '" width="' + item.width + '" height="' + item.height + '"></div>' + (item.compact ? '' : '<span class="hb-diagram-scroll-hint">Scroll sideways to see the whole diagram.</span>') + '<figcaption>' + escape(item.caption) + '</figcaption></figure>';
   }
 
@@ -448,9 +448,8 @@
       const next = stages[id];
       if (!next || (id === "followup" && root.querySelector("[data-hb-followup]").hidden)) return;
       Object.entries(stages).forEach(([name, stage]) => { if (stage) stage.hidden = name !== id; });
-      // This feedback overview directly answers the later insulin follow-up.
-      // Keep the surrounding explanation available, but restore the figure
-      // only when a learner returns to a teaching or guided stage.
+      // Some teaching figures answer a later independent question directly.
+      // Restore them when a learner returns to a teaching or guided stage.
       root.querySelectorAll("[data-hb-assessment-sensitive]").forEach(figure => {
         figure.hidden = id === "independent" || id === "followup";
       });

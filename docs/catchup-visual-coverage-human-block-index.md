@@ -123,14 +123,14 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f170/3.3.2 · Model 1 | Begin with the follicle as a target. FSH supports its development. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/3.3.2 · Model 2 | Once a mature follicle is present, the LH surge triggers release of the secondary oocyte. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f170/3.3.2 · Model 3 | The remaining follicular tissue forms the corpus luteum. Progesterone helps maintain the endometrium. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
-| f170/4.1.1 · Explain 1 | Both groups have a cell membrane and a peptidoglycan wall. A typical Gram-positive wall has a thick peptido… | table | Unreviewed; see reviewed exceptions |
-| f170/4.1.1 · Explain 2 | Gram-positive cells typically retain the first purple stain. Gram-negative cells typically lose it and appe… | table | Unreviewed; see reviewed exceptions |
-| f170/4.1.1 · Model 1 | In an unfamiliar description, a thin wall lies between two membranes. That arrangement indicates a typical … | table | Unreviewed; see reviewed exceptions |
-| f170/4.1.1 · Model 2 | In a second specimen there is one membrane and thick peptidoglycan. This is typical of Gram-positive bacter… | table | Unreviewed; see reviewed exceptions |
-| f170/4.1.4 · Explain 1 | Binary fission produces two daughter cells. A population increases when more cells are added than lost. A c… | graph | Unreviewed; see reviewed exceptions |
-| f170/4.1.4 · Model 1 | This teaching graph uses a logarithmic vertical axis. A rise from 2 to 4 means a rise from 100 to 10,000, n… | graph | Unreviewed; see reviewed exceptions |
-| f170/4.1.4 · Model 2 | The first period shows little net increase (lag). The straight rising part represents exponential growth on… | graph | Unreviewed; see reviewed exceptions |
-| f170/4.1.4 · Model 3 | From intervals 3 to 5 the viable count remains about the same. Division could be continuing at roughly the … | graph | Unreviewed; see reviewed exceptions |
+| f170/4.1.1 · Explain 1 | Both groups have a cell membrane and a peptidoglycan wall. A typical Gram-positive wall has a thick peptido… | explainDiagrams, explainPhotos, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/4.1.1 · Explain 2 | Gram-positive cells typically retain the first purple stain. Gram-negative cells typically lose it and appe… | explainDiagrams, explainPhotos, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/4.1.1 · Model 1 | In an unfamiliar description, a thin wall lies between two membranes. That arrangement indicates a typical … | explainDiagrams, explainPhotos, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/4.1.1 · Model 2 | In a second specimen there is one membrane and thick peptidoglycan. This is typical of Gram-positive bacter… | explainDiagrams, explainPhotos, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/4.1.4 · Explain 1 | Binary fission produces two daughter cells. A population increases when more cells are added than lost. A c… | explainDiagrams, modelDiagrams, graph | Unreviewed; see reviewed exceptions |
+| f170/4.1.4 · Model 1 | This teaching graph uses a logarithmic vertical axis. A rise from 2 to 4 means a rise from 100 to 10,000, n… | explainDiagrams, modelDiagrams, graph | Unreviewed; see reviewed exceptions |
+| f170/4.1.4 · Model 2 | The first period shows little net increase (lag). The straight rising part represents exponential growth on… | explainDiagrams, modelDiagrams, graph | Unreviewed; see reviewed exceptions |
+| f170/4.1.4 · Model 3 | From intervals 3 to 5 the viable count remains about the same. Division could be continuing at roughly the … | explainDiagrams, modelDiagrams, graph | Unreviewed; see reviewed exceptions |
 | f171/1.2.1 · Explain 1 | COPD involves persistent difficulty moving air out of the lungs. Narrowed small airways and excess mucus ca… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
 | f171/1.2.1 · Explain 2 | Breathlessness during daily activity and a persistent cough with mucus are common symptoms. An examiner may… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
 | f171/1.2.1 · Explain 3 | Reduced airway clearance can contribute to chest infections, which can worsen symptoms. Persistent breathle… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
@@ -185,12 +185,12 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f171/1.2.1.pkd · Explain 3 | Symptoms vary. Pain or repeated hospital appointments can affect everyday activities. If kidney failure dev… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.pkd · Model 1 | Follow the effect of the structural change. Enlarging cysts can displace and damage functioning kidney tiss… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.pkd · Model 2 | In a fictional example, the urine volume stays similar but blood tests indicate reduced clearance. The volu… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.renal · Explain 1 | Glomeruli filter water and small solutes from blood. Healthy filtration barriers retain blood cells and mos… | None declared | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.renal · Explain 2 | Nephritis means kidney inflammation. In glomerulonephritis the inflamed filters may leak blood cells or pro… | None declared | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.renal · Explain 3 | In polycystic kidney disease, enlarging fluid-filled cysts can damage functioning tissue. Blood pressure ma… | None declared | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.renal · Explain 4 | Swelling or fatigue can restrict daily activities. Appointments and, in advanced disease, kidney replacemen… | None declared | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.renal · Model 1 | Protein in urine suggests a problem retaining protein, but does not show the shape of the kidney. | None declared | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.renal · Model 2 | A scan can reveal cysts. To assess function, consider evidence about waste clearance as well as structure. | None declared | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.renal · Explain 1 | Glomeruli filter water and small solutes from blood. Healthy filtration barriers retain blood cells and mos… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.renal · Explain 2 | Nephritis means kidney inflammation. In glomerulonephritis the inflamed filters may leak blood cells or pro… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.renal · Explain 3 | In polycystic kidney disease, enlarging fluid-filled cysts can damage functioning tissue. Blood pressure ma… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.renal · Explain 4 | Swelling or fatigue can restrict daily activities. Appointments and, in advanced disease, kidney replacemen… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.renal · Model 1 | Protein in urine suggests a problem retaining protein, but does not show the shape of the kidney. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.renal · Model 2 | A scan can reveal cysts. To assess function, consider evidence about waste clearance as well as structure. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.tissues · Explain 1 | Nerves transmit signals, joints permit movement, pigment cells produce melanin and growing bones need miner… | None declared | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.tissues · Explain 2 | In multiple sclerosis, immune-mediated damage to myelin in the central nervous system disrupts nerve conduc… | None declared | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.tissues · Explain 3 | Melanoma develops when melanocytes grow uncontrollably and may spread. A changing pigmented lesion is an ob… | None declared | Unreviewed; see reviewed exceptions |
@@ -219,10 +219,10 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f171/2.1 · Model 1 | A fictional wrist fracture remains aligned on repeat images. That is the evidence that matters for the imme… | None declared | Unreviewed; see reviewed exceptions |
 | f171/2.1 · Model 2 | A cast limits movement without an operation. Fixation can hold fragments from within, but adds risks such a… | None declared | Unreviewed; see reviewed exceptions |
 | f171/2.1 · Model 3 | Since alignment is maintained, the case shows no clear added stabilising benefit from an operation. Externa… | None declared | Unreviewed; see reviewed exceptions |
-| f171/2.2 · Explain 1 | Management therapy can reduce symptoms, help function or improve quality of life. A change in one outcome c… | None declared | Unreviewed; see reviewed exceptions |
-| f171/2.2 · Model 1 | A fictional person with Parkinson's has difficulty starting movements. The target is an effect that makes w… | None declared | Unreviewed; see reviewed exceptions |
-| f171/2.2 · Model 2 | Levodopa can be converted into dopamine in the brain. Improving dopamine signalling can ease some movement … | None declared | Unreviewed; see reviewed exceptions |
-| f171/2.2 · Model 3 | A quicker comparable walk supports a functional benefit in this example. It does not show that the underlyi… | None declared | Unreviewed; see reviewed exceptions |
+| f171/2.2 · Explain 1 | Management therapy can reduce symptoms, help function or improve quality of life. A change in one outcome c… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/2.2 · Model 1 | A fictional person with Parkinson's has difficulty starting movements. The target is an effect that makes w… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/2.2 · Model 2 | Levodopa can be converted into dopamine in the brain. Improving dopamine signalling can ease some movement … | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/2.2 · Model 3 | A quicker comparable walk supports a functional benefit in this example. It does not show that the underlyi… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f171/2.3 · Explain 1 | Prevention aims to reduce risk. Screening identifies people who may need further assessment. Diagnosis inve… | None declared | Unreviewed; see reviewed exceptions |
 | f171/2.3 · Model 1 | A fictional programme supports physical activity to lower the chance of disease developing. The aim is prev… | None declared | Unreviewed; see reviewed exceptions |
 | f171/2.3 · Model 2 | The programme invites apparently well people to a test. The key facts are who is invited and why. A positiv… | None declared | Unreviewed; see reviewed exceptions |
@@ -236,23 +236,23 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f171/3.2.2 · Model 1 | An inactivated vaccine provides antigens in killed organisms. The organisms cannot replicate. | None declared | Unreviewed; see reviewed exceptions |
 | f171/3.2.2 · Model 2 | An mRNA vaccine delivers instructions. Recipient cells temporarily produce an antigen, which the adaptive i… | None declared | Unreviewed; see reviewed exceptions |
 | f171/3.2.2 · Model 3 | Both routes can stimulate immune memory. The delivered material differs. | None declared | Unreviewed; see reviewed exceptions |
-| f171/4.1 · Explain 1 | Start with the medical history. Ask when symptoms began, what affects them, and what else might explain the… | table, compare | Unreviewed; see reviewed exceptions |
-| f171/4.1 · Explain 2 | Initial measurements target different features. A cuff reading of 128/76 mmHg gives systolic pressure first… | table, compare | Unreviewed; see reviewed exceptions |
-| f171/4.1 · Explain 3 | BMI is mass in kilograms divided by height in metres squared. For a fictional adult of 80 kg and 2.00 m, BM… | table, compare | Unreviewed; see reviewed exceptions |
-| f171/4.1 · Explain 4 | Peak expiratory flow estimates the greatest flow during a forced breath out. Spirometry can record both vol… | table, compare | Unreviewed; see reviewed exceptions |
-| f171/4.1 · Explain 5 | Choose further tests for the information still missing. For example, an image can show an area of altered t… | table, compare | Unreviewed; see reviewed exceptions |
-| f171/4.1 · Model 1 | An investigator wants to compare how much air two people exhale in the first second. The target variable is… | table, compare | Unreviewed; see reviewed exceptions |
-| f171/4.1 · Model 2 | Spirometry can provide that volume. A peak-flow reading reports an instant of highest flow, which could be … | table, compare | Unreviewed; see reviewed exceptions |
-| f171/4.1 · Model 3 | A saturation reading answers an oxygenation question. Using the right variable under comparable conditions … | table, compare | Unreviewed; see reviewed exceptions |
+| f171/4.1 · Explain 1 | Start with the medical history. Ask when symptoms began, what affects them, and what else might explain the… | explainDiagrams, modelDiagrams, table, compare | Unreviewed; see reviewed exceptions |
+| f171/4.1 · Explain 2 | Initial measurements target different features. A cuff reading of 128/76 mmHg gives systolic pressure first… | explainDiagrams, modelDiagrams, table, compare | Unreviewed; see reviewed exceptions |
+| f171/4.1 · Explain 3 | BMI is mass in kilograms divided by height in metres squared. For a fictional adult of 80 kg and 2.00 m, BM… | explainDiagrams, modelDiagrams, table, compare | Unreviewed; see reviewed exceptions |
+| f171/4.1 · Explain 4 | Peak expiratory flow estimates the greatest flow during a forced breath out. Spirometry can record both vol… | explainDiagrams, modelDiagrams, table, compare | Unreviewed; see reviewed exceptions |
+| f171/4.1 · Explain 5 | Choose further tests for the information still missing. For example, an image can show an area of altered t… | explainDiagrams, modelDiagrams, table, compare | Unreviewed; see reviewed exceptions |
+| f171/4.1 · Model 1 | An investigator wants to compare how much air two people exhale in the first second. The target variable is… | explainDiagrams, modelDiagrams, table, compare | Unreviewed; see reviewed exceptions |
+| f171/4.1 · Model 2 | Spirometry can provide that volume. A peak-flow reading reports an instant of highest flow, which could be … | explainDiagrams, modelDiagrams, table, compare | Unreviewed; see reviewed exceptions |
+| f171/4.1 · Model 3 | A saturation reading answers an oxygenation question. Using the right variable under comparable conditions … | explainDiagrams, modelDiagrams, table, compare | Unreviewed; see reviewed exceptions |
 | f171/4.2.1 · Explain 1 | Read the screen row first. Then use the diagnostic column. A screen result is true when it agrees with the … | table | Unreviewed; see reviewed exceptions |
 | f171/4.2.1 · Model 1 | Start at Positive. Move to Condition present. The screen and diagnostic assessment agree. This cell contain… | table | Unreviewed; see reviewed exceptions |
 | f171/4.2.1 · Model 2 | Stay in Positive and move to Condition absent. These 12 people were flagged by the screen even though they … | table | Unreviewed; see reviewed exceptions |
 | f171/4.2.1 · Model 3 | Start at Negative and move to Condition present. These two people had the condition and were missed by the … | table | Unreviewed; see reviewed exceptions |
 | f171/4.2.1 · Model 4 | In Negative and Condition absent, the results agree. These 68 people are true negatives. Use the whole rele… | table | Unreviewed; see reviewed exceptions |
-| f171/4.2.2 · Explain 1 | Check units, conditions and equipment before inferring change. Small differences can reflect normal variati… | table | Unreviewed; see reviewed exceptions |
-| f171/4.2.2 · Model 1 | Visit 1 readings are near 135 mmHg. Visit 2 readings are near 146 mmHg. Each set is tightly grouped, but th… | table | Unreviewed; see reviewed exceptions |
-| f171/4.2.2 · Model 2 | The person rested at visit 1 and had just walked at visit 2. The higher readings do not isolate a change in… | table | Unreviewed; see reviewed exceptions |
-| f171/4.2.2 · Model 3 | The comparable rested readings at visit 3 sit close to visit 1. The second reading was not recorded. Any me… | table | Unreviewed; see reviewed exceptions |
+| f171/4.2.2 · Explain 1 | Check units, conditions and equipment before inferring change. Small differences can reflect normal variati… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/4.2.2 · Model 1 | Visit 1 readings are near 135 mmHg. Visit 2 readings are near 146 mmHg. Each set is tightly grouped, but th… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/4.2.2 · Model 2 | The person rested at visit 1 and had just walked at visit 2. The higher readings do not isolate a change in… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/4.2.2 · Model 3 | The comparable rested readings at visit 3 sit close to visit 1. The second reading was not recorded. Any me… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
 | f171/a2 · Explain 1 | Identify the problem and the goal before comparing treatments. In this fictional case, a cast limits moveme… | None declared | Unreviewed; see reviewed exceptions |
 | f171/a2 · Explain 2 | A choice depends on how a mechanism fits the circumstances and whether the expected benefit justifies the r… | None declared | Unreviewed; see reviewed exceptions |
 | f171/a2 · Model 1 | A fictional wrist fracture remains aligned on repeat images. That is the evidence that matters for the imme… | None declared | Unreviewed; see reviewed exceptions |
@@ -264,10 +264,10 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f171/a3 · Model 2 | In many responses, activated helper T cells support the selected B cells. The cells multiply. Ask which dow… | None declared | Unreviewed; see reviewed exceptions |
 | f171/a3 · Model 3 | Some B cells become plasma cells and secrete antibodies. Antibodies can bind or tag a target. A phagocyte e… | None declared | Unreviewed; see reviewed exceptions |
 | f171/a3 · Model 4 | Some selected B and T cells persist as memory cells. On re-exposure to a matching antigen, they can produce… | None declared | Unreviewed; see reviewed exceptions |
-| f171/a4 · Explain 1 | Check units, conditions and equipment before inferring change. Small differences can reflect normal variati… | table | Unreviewed; see reviewed exceptions |
-| f171/a4 · Model 1 | Visit 1 readings are near 135 mmHg. Visit 2 readings are near 146 mmHg. Each set is tightly grouped, but th… | table | Unreviewed; see reviewed exceptions |
-| f171/a4 · Model 2 | The person rested at visit 1 and had just walked at visit 2. The higher readings do not isolate a change in… | table | Unreviewed; see reviewed exceptions |
-| f171/a4 · Model 3 | The comparable rested readings at visit 3 sit close to visit 1. The second reading was not recorded. Any me… | table | Unreviewed; see reviewed exceptions |
+| f171/a4 · Explain 1 | Check units, conditions and equipment before inferring change. Small differences can reflect normal variati… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/a4 · Model 1 | Visit 1 readings are near 135 mmHg. Visit 2 readings are near 146 mmHg. Each set is tightly grouped, but th… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/a4 · Model 2 | The person rested at visit 1 and had just walked at visit 2. The higher readings do not isolate a change in… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/a4 · Model 3 | The comparable rested readings at visit 3 sit close to visit 1. The second reading was not recorded. Any me… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
 | f171/a5 · Explain 1 | Identify the outcome and compare the groups. Then ask how the groups were formed, what else differed and ho… | table | Unreviewed; see reviewed exceptions |
 | f171/a5 · Model 1 | The outcome is change in reported nightly sleep after four weeks. Compare both groups: 35 minutes versus 15… | table | Unreviewed; see reviewed exceptions |
 | f171/a5 · Model 2 | People chose whether to attend. Motivation could influence both that choice and changes in sleep routine, p… | table | Unreviewed; see reviewed exceptions |

@@ -134,7 +134,9 @@ investigations["plant-transport"] = sequence(10, "B2", "Two transport systems in
       ["Water and mineral ions", "Roots → xylem", "Stem and leaves"],
       ["Dissolved sugars", "Mature leaf → phloem", "Growing fruit or storage root"]]),
     model: ["Trace the two routes", [
-      "Root hair cells take in water by osmosis. Hollow xylem vessels carry water and mineral ions upwards. Evaporation from moist leaf cells and diffusion of water vapour through stomata maintain the transpiration stream.",
+      "Root hair cells take in water by osmosis.",
+      "Hollow xylem vessels carry water and mineral ions upwards.",
+      "Evaporation from moist leaf cells and diffusion of water vapour through stomata maintain the transpiration stream.",
       "A mature leaf makes sugars by photosynthesis. Translocation carries dissolved sugars in phloem from that source to sinks such as growing fruit. A storage organ can later become a source.",
       "In moving air the moist layer next to a leaf disperses. If stomata remain open, the steeper water-vapour concentration gradient can increase transpiration."],
       ["Which tissue supplies a fruit with sugars from a leaf?", "Phloem", "The growing fruit is a sink for sugar.", ["Xylem", "Xylem supplies water and mineral ions."]]],

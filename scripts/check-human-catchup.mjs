@@ -765,6 +765,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.2.2/0", ["epithelia-comparison.svg"]], ["f170/1.2.2/1", ["muscle-tissue-comparison.svg"]],
       ["f170/1.2.2/2", ["connective-tissue-comparison.svg", "blood-components.svg"]],
       ["f170/1.2.3/0", ["cell-culture-vessel.svg"]], ["f170/1.2.3/1", ["organoid-structure.svg"]], ["f170/1.2.3/2", ["organoid-context.svg"]],
+      ["f171/2.2/1", ["f171-functional-outcome.svg"]],
       ["f170/3.3.3/0", ["f170-menopause-change.svg"]], ["f170/3.3.3/1", ["f170-menopause-therapy.svg"]], ["f170/3.3.3/2", ["f170-prostate-enlargement.svg"]],
       ["f170/3.3.2/1", ["f170-ovarian-hormones.svg", "f170-testicular-hormones.svg"]],
       ["f170/3.1.2/1", ["f170-diabetes-comparison.svg"]],
@@ -786,6 +787,8 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.1.1.signals/1", ["reflex-pathway.svg", "myelinated-axon.svg"]],
       ["f170/1.1.3.evidence/1", ["f170-ribosome-types.svg"]],
       ["f170/1.1.3.evidence/2", ["cell-er-comparison.svg", "cell-protein-routing.svg"]],
+      ["f170/4.1.4/1", ["f170-growth-graph.svg", "f170-binary-fission.svg", "f170-population-balance.svg"]],
+      ["f170/4.1.1/1", ["f170-gram-envelope.svg", "hb-gram-comparison.webp"]],
       ["f170/4.1.5/0", ["virus-particle.svg"]], ["f170/4.1.5/1", ["virus-host.svg"]], ["f170/4.1.5/2", ["bacteriophage.svg"]],
       ["f170/1.1.4/1", ["f170-oxygen-diffusion.svg", "f170-channel-diffusion.svg", "f170-water-active.svg"]],
       ["f170/1.1.4/2", ["f170-water-active.svg", "f170-antigen-recognition.svg"]],
@@ -811,10 +814,14 @@ export async function checkHumanCatchup(browser, base) {
       for (const file of files) {
         const image = page.locator(`section.paper.panel img[src$="/${file}"]`);
         assert(await image.isVisible(), `Recap ${route} should show ${file}`);
+        await image.scrollIntoViewIfNeeded();
         assert(await image.evaluate(async element => { await element.decode(); return element.naturalWidth > 0 && element.alt.length > 20; }));
       }
       assert(await widthFits(), `Recap ${route} must fit the phone viewport`);
     }
+    await open("catchup/f170/4.1.1/1");
+    const gramCredit = page.locator('figure').filter({has: page.locator('img[src="/assets/micrographs/hb-gram-comparison.webp"]')});
+    assert.equal(await gramCredit.locator("figcaption a").count(), 2, "recap micrograph retains source and licence links");
     await open("catchup/f172/a1");
     const recapDisclosure = page.locator("details.paper.panel").filter({hasText: "Review the key ideas"});
     await recapDisclosure.locator(":scope > summary").click();
@@ -862,13 +869,22 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.1.5", ["f170-sister-chromatids.svg", "f170-mitosis-stages.svg", "f170-cytokinesis.svg"], ["f170-sister-chromatids.svg", "f170-sister-chromatids.svg", "f170-mitosis-count.svg"]],
       ["f170/1.1.5.meiosis", ["f170-crossing-over.svg", "f170-meiosis-first-division.svg", "f170-meiosis-second-division.svg"], ["f170-meiosis-copying.svg", "f170-meiosis-first-division.svg", "f170-meiosis-second-division.svg"]],
       ["f170/1.2.1", ["f170-levels-organisation.svg", "f170-ventricle-damage.svg"], ["f170-ventricle-damage.svg", "f170-ventricle-damage.svg", "f170-ventricle-damage.svg"]],
+      ["f170/4.1.4", ["f170-binary-fission.svg"], ["f170-growth-graph.svg", "f170-growth-graph.svg", "f170-growth-graph.svg"]],
+      ["f170/4.1.1", ["f170-gram-envelope.svg", "f170-gram-stain-sequence.svg"], ["f170-gram-envelope.svg", "f170-gram-envelope.svg"]],
+      ["f171/1.2.1.renal", ["f171-glomerular-barrier.svg", "f171-glomerular-barrier.svg", "f171-kidney-cysts.svg"], ["f171-glomerular-barrier.svg", "f171-kidney-cysts.svg"]],
+      ["f171/4.1", [null, null, null, "peak-flow-method.svg"], ["f171-expired-volume-time.svg", "f171-expired-volume-time.svg", "f171-pulse-oximetry.svg"]],
+      ["f171/4.2.2", [], ["f171-pressure-readings.svg", "f171-pressure-readings.svg", "f171-pressure-readings.svg"]],
+      ["f171/a4", [], ["f171-pressure-readings.svg", "f171-pressure-readings.svg", "f171-pressure-readings.svg"]],
+      ["f171/2.2", ["f171-functional-outcome.svg"], [null, "f171-levodopa-signalling.svg", "f171-functional-outcome.svg"]],
+      ["f171/1.2.1.pkd", ["f171-kidney-cysts.svg"], ["f171-kidney-cysts.svg", "f171-kidney-volume-filtration.svg"]],
+      ["f171/1.2.1.hodgkin", [null, "f171-lymph-node-airway.svg"], ["f171-lymph-node-airway.svg", "f171-lymph-node-airway.svg", null]],
       ["f170/3.3.2", ["f170-ovarian-hormones.svg", "f170-testicular-hormones.svg"], ["f170-ovarian-hormones.svg", "f170-ovarian-hormones.svg", "f170-ovarian-hormones.svg"]],
       ["f170/3.1.2", ["f170-glucose-tolerance-graph.svg", "f170-diabetes-comparison.svg"], ["f170-glucose-tolerance-graph.svg", "f170-glucose-tolerance-graph.svg", "f170-glucose-tolerance-graph.svg"]],
       ["f170/3.1.1", ["f170-glucose-response.svg"], ["f170-glucose-response.svg", "f170-beta-insulin.svg", "f170-insulin-targets.svg", "f170-glucose-response.svg"]],
       ["f170/2.1.3.cirrhosis", ["f170-liver-cirrhosis.svg", "f170-bilirubin-albumin.svg"], ["f170-liver-bruising.svg", "f170-liver-bruising.svg", "f170-liver-bruising.svg"]],
       ["f170/2.1.2", ["f170-circulation-path.svg"], ["f170-pulmonary-valve.svg", "f170-alveolar-barrier.svg", "f170-circulation-path.svg"]],
-      ["f170/2.1.3", ["f170-oxygen-delivery.svg"], [null, "f170-alveolar-barrier.svg", "f170-oxygen-delivery.svg"]],
-      ["f170/2.2.2", ["f170-oxygen-delivery.svg"], [null, "f170-alveolar-barrier.svg", "f170-oxygen-delivery.svg"]],
+      ["f170/2.1.3", ["f170-oxygen-delivery.svg"], ["f170-alveolar-gradient.svg", "f170-alveolar-barrier.svg", "f170-oxygen-delivery.svg"]],
+      ["f170/2.2.2", ["f170-oxygen-delivery.svg"], ["f170-muscle-oxygen-demand.svg", "f170-alveolar-barrier.svg", "f170-oxygen-delivery.svg"]],
       ["f170/2.2.3", ["f170-ventilation-example.svg", "peak-flow-method.svg"], ["f170-ventilation-example.svg", "f170-ventilation-example.svg", "f170-oxygen-delivery.svg"]],
       ["f170/1.1.4", ["f170-oxygen-diffusion.svg", "f170-water-active.svg"], ["f170-oxygen-diffusion.svg", "f170-oxygen-diffusion.svg", "f170-oxygen-diffusion.svg"]],
       ["f170/1.1.4.surface", ["f170-membrane-labelled.svg", "f170-receptor-signalling.svg", "f170-antigen-recognition.svg", "f170-vesicle-traffic.svg"], ["f170-membrane-labelled.svg", "f170-cholesterol-membrane.svg", "f170-membrane-labelled.svg"]]
@@ -879,6 +895,7 @@ export async function checkHumanCatchup(browser, base) {
       const paragraphs = explanation.locator(":scope > p");
       for (let i = 0; i < explain.length; i++) {
         const file = explain[i];
+        if (!file) continue;
         assert(await paragraphs.nth(i).evaluate((el, name) => {
           for (let sibling = el.nextElementSibling; sibling && sibling.tagName !== "P"; sibling = sibling.nextElementSibling) {
             if (sibling.querySelector(`img[src$="/${name}"]`)) return true;
@@ -900,6 +917,30 @@ export async function checkHumanCatchup(browser, base) {
       assert(await widthFits(), route + " must fit at phone size");
       assert.equal(await stage("independent").locator(".hb-teaching-diagram").count(), 0);
     }
+
+    // Oximetry directly answers the independent question: hide it until teaching resumes.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f171/4.1");
+    const oximetryExplanation = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]').filter({has: page.locator('img[src="/human-biology/f171-pulse-oximetry.svg"]')});
+    assert(await oximetryExplanation.isVisible());
+    await expand(stage("independent"));
+    assert(await oximetryExplanation.isHidden());
+    await page.reload();
+    assert(await oximetryExplanation.isHidden());
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await oximetryExplanation.isVisible());
+
+    // Renal diagrams directly answer the independent comparison and must also hide.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f171/1.2.1.renal");
+    const renalTeachingFigures = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]');
+    assert.equal(await renalTeachingFigures.count(), 3);
+    await expand(stage("independent"));
+    assert(await renalTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await page.reload();
+    assert(await renalTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await renalTeachingFigures.evaluateAll(figures => figures.every(figure => !figure.hidden)));
 
     // Both linked meiosis views remain on their matching paragraph and worked step.
     await page.evaluate(key => localStorage.removeItem(key), localPractice);

@@ -488,6 +488,9 @@ const nutritionRecap = function(file, alt, caption, height) { return {
  src:"/human-biology/"+file+".svg",width:280,height:height,compact:true,alt:alt,caption:caption
 }; };
 const recapFigureMap = {
+ "f170/4.1.4/1": [["f170/4.1.4", "modelDiagrams", 0], ["f170/4.1.4", "explainDiagrams", 0]],
+ "f170/4.1.1/1": [["f170/4.1.1", "explainDiagrams", 0], ["f170/4.1.1", "explainPhotos", 1]],
+ "f171/2.2/1": [["f171/2.2", "explainDiagrams", 0]],
  "f170/3.3.3/1": [nutritionRecap("f170-menopause-therapy", "A skin patch illustrates systemic therapy delivering hormone into blood, which may relieve hot flushes. Vaginal oestrogen acts mainly in vaginal tissue and can relieve dryness; the examples have different indications.", "Compare systemic and local routes: vaginal oestrogen can help dryness but does not treat hot flushes. Individual suitability and risks need separate assessment; the figure does not establish a treatment choice.", 405)],
  "f170/3.3.3/0": [nutritionRecap("f170-menopause-change", "A schematic compares ovarian follicular activity before and after decline, with changing hormone patterns followed by irregular cycles and eventual cessation of periods. Hot flushes and vaginal dryness can occur, but experiences vary.", "Follow declining follicular activity to changing ovarian hormones and menstrual cycles. The follicle symbols are not counts; symptoms vary.", 420)],
  "f170/3.3.3/2": [nutritionRecap("f170-prostate-enlargement", "Two simplified sections show the urethra running from the bladder through the prostate; an enlarged prostate can narrow the channel and affect urination.", "Compare the urethra through each prostate. Enlargement can restrict urine flow but does not always cause symptoms; these drawings are not to scale.", 470)],
@@ -574,7 +577,7 @@ function recapFigures(unit,id,step) {
   const field=lessons[entry[0]]?.[entry[1]];
   const item=entry.length>2 ? field?.[entry[2]] : field;
   return (Array.isArray(item) ? item : [item]).filter(Boolean).map(function(visual) {
-   return entry[1].startsWith("explanationPhoto") ? teaching.renderPhoto(visual) : teaching.renderDiagram(visual);
+   return (entry[1].startsWith("explanationPhoto") || entry[1] === "explainPhotos" || entry[1] === "modelPhotos") ? teaching.renderPhoto(visual) : teaching.renderDiagram(visual);
   }).join("");
  }).join("");
 }

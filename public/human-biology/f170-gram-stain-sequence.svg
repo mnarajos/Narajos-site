@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 500" role="img" aria-labelledby="title desc">
+<title id="title">Typical outcomes through Gram staining</title><desc id="desc">A schematic uses the same rod shape for both groups. After crystal violet and iodine both appear purple. Decolourisation typically leaves Gram-positive cells purple and Gram-negative cells colourless. After counterstaining, Gram-negative cells appear pink and Gram-positive cells remain purple. Results can vary with technique.</desc>
+<rect width="280" height="500" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="70" y="25" font-weight="700">Positive</text><text x="210" y="25" font-weight="700">Negative</text>
+<text x="140" y="57">1. Crystal violet</text><rect x="36" y="69" width="68" height="18" rx="9" fill="#69447f"/><rect x="176" y="69" width="68" height="18" rx="9" fill="#69447f"/>
+<text x="140" y="120">2. Iodine</text><rect x="36" y="132" width="68" height="18" rx="9" fill="#69447f"/><rect x="176" y="132" width="68" height="18" rx="9" fill="#69447f"/>
+<text x="140" y="183">3. Decolourise</text><rect x="36" y="195" width="68" height="18" rx="9" fill="#69447f"/><rect x="176" y="195" width="68" height="18" rx="9" fill="#fff" stroke="#263e4a" stroke-width="2" stroke-dasharray="5 3"/>
+<text x="70" y="241">Purple</text><text x="210" y="241">Colourless</text>
+<text x="140" y="283">4. Counterstain</text><rect x="36" y="295" width="68" height="18" rx="9" fill="#69447f"/><rect x="176" y="295" width="68" height="18" rx="9" fill="#e8818d" stroke="#98451e" stroke-width="1.5"/>
+<text x="70" y="343">Purple</text><text x="210" y="343">Pink / red</text>
+<text x="140" y="389">These are typical results.</text><text x="140" y="420">Shape alone does not</text><text x="140" y="443">determine Gram class.</text><text x="140" y="483">The cells are schematic.</text>
+</g></svg>

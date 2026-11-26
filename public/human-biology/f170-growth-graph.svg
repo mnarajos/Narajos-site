@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 310" role="img" aria-labelledby="title desc">
+<title id="title">Illustrative microbial viable count</title><desc id="desc">The log base ten viable count is plotted against time intervals. The illustrative log values are 2, 2, 4, 6, 6, 6 and 5 at intervals 0 to 6. A level section shows little net change; it does not prove that division or death stopped.</desc>
+<rect width="280" height="310" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Log₁₀ viable count</text>
+<g stroke="#c4d4d1" stroke-width="1"><path d="M56 65h174M56 95h174M56 125h174M56 155h174M56 185h174"/></g>
+<path d="M56 65v120h180" fill="none" stroke="#263e4a" stroke-width="2"/>
+<text x="45" y="70" text-anchor="end">8</text><text x="45" y="100" text-anchor="end">6</text><text x="45" y="130" text-anchor="end">4</text><text x="45" y="160" text-anchor="end">2</text><text x="45" y="190" text-anchor="end">0</text>
+<polyline points="56,155 85,155 114,125 143,95 172,95 201,95 230,110" fill="none" stroke="#23656c" stroke-width="3"/>
+<g fill="#23656c"><circle data-time="0" data-log="2" cx="56" cy="155" r="4"/><circle data-time="1" data-log="2" cx="85" cy="155" r="4"/><circle data-time="2" data-log="4" cx="114" cy="125" r="4"/><circle data-time="3" data-log="6" cx="143" cy="95" r="4"/><circle data-time="4" data-log="6" cx="172" cy="95" r="4"/><circle data-time="5" data-log="6" cx="201" cy="95" r="4"/><circle data-time="6" data-log="5" cx="230" cy="110" r="4"/></g>
+<text x="56" y="211">0</text><text x="85" y="211">1</text><text x="114" y="211">2</text><text x="143" y="211">3</text><text x="172" y="211">4</text><text x="201" y="211">5</text><text x="230" y="211">6</text>
+<text x="143" y="243">Time (intervals)</text><text x="140" y="280">Illustrative data</text>
+</g></svg>
