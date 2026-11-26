@@ -6263,7 +6263,7 @@ function showTopic(t,focus){
    if(pr.length)h+='<p class="rel">Prior understanding of '+names(t,pr).map(function(x){return '<strong>'+esc(x)+'</strong>';}).join(" and ")+' recommended.</p>';
    if(/^\d/.test(c.spec))h+='<p class="specref"><em>AQA spec '+esc(c.spec)+'</em></p>';
    h+='<div class="concept-links"><a class="al-quiet-link" href="#catchup-'+t+'-'+c.id+'">Catch up<span class="sr-only">: '+esc(c.title)+'</span></a>';
-   if(t==='a2'&&c.id==='active')h+='<a class="al-quiet-link" href="/alevel/co-transport-homework/">Independent Practice<span class="sr-only">: co-transport, same direction, different gradients</span></a>';
+   if(t==='a2'&&c.id==='active')h+='<a class="al-quiet-link" href="/alevel/independent-practice/co-transport/">Independent Practice<span class="sr-only">: co-transport, same direction, different gradients</span></a>';
    h+='</div>';
    var practical=practicalFor(t,c.id);
    if(practical)h+='<p>'+practicalLink(practical[0],c.title)+'</p>';
@@ -6329,7 +6329,7 @@ function showCatchup(t,c,step,focus,returnRoute){
  var h='<p class="crumb"><a href="#catchup-'+t+'">← Catch-up topics</a></p><h1>'+esc(c.title)+'</h1>';
  var practical=practicalFor(t,c.id);
  var practicalAction=practical?'<p>'+practicalLink(practical[0])+'</p>':"";
- if(t==='a2'&&c.id==='active')practicalAction+='<p><a class="al-quiet-link" href="/alevel/co-transport-homework/">Independent Practice: Co-transport</a> · approximately 45 minutes</p>';
+ if(t==='a2'&&c.id==='active')practicalAction+='<p><a class="al-quiet-link" href="/alevel/independent-practice/co-transport/">Independent Practice: Co-transport</a> · approximately 20–25 minutes</p>';
  if(!returnRoute)h+=practicalAction;
  if(returnRoute){
   h+='<p><a class="al-quiet-link" href="#'+esc(returnRoute)+'">← Return to your question</a></p><section class="key companion-key" aria-label="Key knowledge"><h2>Key ideas</h2>'+
@@ -6440,7 +6440,7 @@ function showIntro(){
  var h=lessonTop()+'<h1>'+esc(c.title)+'</h1><p class="spec">'+(/^\d/.test(c.spec)?'AQA spec ref ':'')+esc(c.spec)+' · '+L.total+' questions</p>'+
  '<section class="key" aria-labelledby="kh"><h2 id="kh">Key idea</h2><ul>'+c.key.map(function(k){return '<li>'+rich(k)+'</li>';}).join("")+'</ul>'+
  (c.gate?'<p class="gate"><strong>Why it matters:</strong> '+fmt(c.gate)+'</p>':'')+introCues(c)+'</section>'+(c.passage?passageHTML(c.passage,true):'')+
- '<div class="actions"><button type="button" class="btn primary big" id="go">Start questions</button>'+(practical?practicalLink(practical[0]):"")+'</div>'+(L.t==='a2'&&c.id==='active'?'<p><a class="al-quiet-link" href="/alevel/co-transport-homework/">Independent Practice: Co-transport</a> · approximately 45 minutes</p>':'');
+ '<div class="actions"><button type="button" class="btn primary big" id="go">Start questions</button>'+(practical?practicalLink(practical[0]):"")+'</div>'+(L.t==='a2'&&c.id==='active'?'<p><a class="al-quiet-link" href="/alevel/independent-practice/co-transport/">Independent Practice: Co-transport</a> · approximately 20–25 minutes</p>':'');
  render(h);wireTop();
  $("#go").onclick=function(){L.phase="q";showQ();};
 }
