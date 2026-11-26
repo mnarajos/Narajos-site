@@ -488,6 +488,16 @@ const nutritionRecap = function(file, alt, caption, height) { return {
  src:"/human-biology/"+file+".svg",width:280,height:height,compact:true,alt:alt,caption:caption
 }; };
 const recapFigureMap = {
+ "f171/1.2.1.airways/1": [["f171/1.2.1.airways", "explainDiagrams", 1]],
+ "f171/1.2.1.airways/2": [["f171/1.2.1.airways", "explainDiagrams", 2]],
+ "f170/4.1.2/2": [nutritionRecap("f170-fungal-disease-examples", "Selected examples show aspergillosis affecting lungs, Candida-associated thrush affecting the mouth, and tinea pedis affecting foot skin, often caused by dermatophytes such as Trichophyton.", "Use these as examples of sites, not diagnostic signs or the only sites affected. Tinea names an infection, not a fungal genus.", 465)],
+ "f171/1.2.1.renal/1": [["f171/1.2.1.renal", "explainDiagrams", 1]],
+ "f171/1.2.1.renal/2": [["f171/1.2.1.renal", "explainDiagrams", 2]],
+ "f170/4.1.2/0": [nutritionRecap("f170-fungal-hyphae", "A branching network of hyphae extends through a substrate. An enlarged hypha has a chitin-containing wall and cross-walls called septa, which occur in some fungi.", "Follow one hypha into the branching mycelium. The enlarged wall and septa are simplified; septal pores and scale are omitted.", 390)],
+ "f170/4.1.2/1": [nutritionRecap("f170-fungal-digestion", "A hypha releases enzymes outside the cell; large food molecules are broken into smaller soluble products, which are absorbed. Saprotrophs use non-living material, while parasites obtain resources from living hosts.", "Follow enzyme release, extracellular breakdown and absorption. The two nutritional sources are examples; the model is not to scale.", 425)],
+ "f171/1.2.1.hodgkin/1": [["f171/1.2.1.hodgkin", "explainDiagrams", 1]],
+ "f171/1.2.1.pkd/1": [["f171/1.2.1.pkd", "modelDiagrams", 1]],
+ "f171/4.2.2/1": [["f171/4.2.2", "modelDiagrams", 0]],
  "f170/4.1.4/1": [["f170/4.1.4", "modelDiagrams", 0], ["f170/4.1.4", "explainDiagrams", 0]],
  "f170/4.1.1/1": [["f170/4.1.1", "explainDiagrams", 0], ["f170/4.1.1", "explainPhotos", 1]],
  "f171/2.2/1": [["f171/2.2", "explainDiagrams", 0]],

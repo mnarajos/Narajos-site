@@ -2,6 +2,7 @@
 import { arrow, blue, circle, diagram, ink, line, node, picture, rust, teal, text, airSac } from './catchup-models.js';
 import { gcseStepVisuals } from './gcse-step-visuals.js';
 import { gcseVisual, gcseChromatogramSetup, gcseChromatogramResult } from './gcse-catchup-visuals.js';
+import { investigationFigure } from './gcse-investigation-figures.js';
 import { photo } from './catchup-photos.js';
 // At phone widths a 320-unit SVG is scaled down inside its card. Use an
 // 18-unit label floor, then reflow individual figures where labels would overlap.
@@ -79,6 +80,43 @@ function parallelTransects() {
     'Compare the repeated lines: each uses the same distances from the hedge. Real surveys may use more samples.',235);
 }
 function quadratWorked(){return grouped(randomCoordinates,quadratBoundary,quadratMeanWorked,parallelTransects);}
+function iodineEndpoint() {
+  return fig('Reading iodine samples',
+    'In an illustrative amylase test, separate iodine wells receive samples at regular 10-second intervals. Selected wells at 0 and 30 seconds are blue-black because starch remains; the first orange-brown well at 40 seconds is the recorded endpoint.',
+    text(70,25,'0 s',ink,15)+text(160,25,'30 s',ink,15)+text(250,25,'40 s',ink,15)+circle(70,72,23,'#253e63',ink,2)+circle(160,72,23,'#253e63',ink,2)+circle(250,72,23,'#db9a53',rust,2)+
+    text(115,133,'Starch present',ink,15)+text(250,133,'Endpoint',rust,15)+text(160,185,'Samples every 10 s',ink,15),
+    'Compare the blue-black wells with the first orange-brown well. The displayed wells are selected samples from an illustrative sequence.',205);
+}
+function amylaseSetup() {
+  const tube=x=>'<path d="M'+(x-15)+' 43 V74 Q'+x+' 86 '+(x+15)+' 74 V43" fill="#e5f1f5" stroke="'+ink+'" stroke-width="2"/>';
+  return fig('Prepare an amylase reaction',
+    'Equal volumes and concentrations of amylase and starch are brought to the same temperature. They are combined with a buffer at the chosen pH, and timing begins. The reaction tube is shown in a water bath.',
+    text(55,25,'Enzyme',ink,15)+text(160,25,'Starch',ink,15)+text(265,25,'Buffer',ink,15)+tube(55)+tube(160)+tube(265)+
+    '<path d="M75 137 V214 H245 V137" fill="#dceef5" stroke="'+ink+'" stroke-width="2"/><path d="M142 119 V190 Q160 211 178 190 V119" fill="#eef5ee" stroke="'+teal+'" stroke-width="2"/>'+
+    arrow(70,84,150,130,teal,2)+arrow(160,85,160,130,teal,2)+arrow(250,84,170,130,teal,2)+text(160,246,'Water bath',blue,15),
+    'Use equal enzyme and starch volumes and concentrations, choose the buffer pH, and use the bath to hold temperature steady.',265);
+}
+function amylaseRates() {
+  return fig('Compare reciprocal times',
+    'In the worked example, one divided by 40 seconds gives 0.025 per second at pH 7. One divided by 80 seconds gives 0.0125 per second at pH 5. With equal starting starch amounts, these are estimates of relative activity.',
+    text(160,25,'Relative activity (s⁻¹)',ink,15)+'<rect x="45" y="50" width="90" height="120" fill="#d9eaf4" stroke="'+blue+'" stroke-width="2"/><rect x="185" y="110" width="90" height="60" fill="#d9eee4" stroke="'+teal+'" stroke-width="2"/>'+
+    text(90,118,'0.025',blue,15)+text(230,147,'0.0125',teal,15)+text(90,201,'pH 7',ink,15)+text(230,201,'pH 5',ink,15),
+    'Divide one by each time. The same-scale bars show the relative activity estimates for equal starting starch amounts.',220);
+}
+function iodineInterval() {
+  return fig('The endpoint is an interval',
+    'In the illustrative 10-second sampling sequence, starch is still detected at 30 seconds and is not detected at 40 seconds. The endpoint occurred between these tests; the recorded time is not an exact instant.',
+    text(160,25,'Change occurs between tests',ink,15)+line(55,82,265,82,ink,2)+circle(70,82,8,'#253e63',ink,2)+circle(250,82,8,'#db9a53',rust,2)+
+    text(70,117,'30 s',ink,15)+text(250,117,'40 s',ink,15)+text(70,152,'Positive',blue,15)+text(250,152,'Negative',rust,15),
+    'The last positive and first negative tests bracket the endpoint. Shorter intervals can reduce this timing uncertainty.',175);
+}
+function rulerMeans() {
+  return fig('Compare ruler-drop distances',
+    'In the illustrative trials, person A catches the ruler after a mean drop of 20 centimetres and person B after 18 centimetres. Under the same method, the shorter distance corresponds to a shorter reaction time.',
+    text(160,25,'Mean drop distance (cm)',ink,15)+'<rect x="55" y="50" width="70" height="120" fill="#d9eaf4" stroke="'+blue+'" stroke-width="2"/><rect x="195" y="62" width="70" height="108" fill="#d9eee4" stroke="'+teal+'" stroke-width="2"/>'+
+    text(90,116,'20 cm',blue,15)+text(230,128,'18 cm',teal,15)+text(90,201,'Person A',ink,15)+text(230,201,'Person B',ink,15),
+    'Compare the mean drop distances on the same scale. This pair of illustrative results cannot represent everyone.',220);
+}
 function circuitMeters() {
   return fig('Measuring a component',
     'An ammeter is in series in the main loop with a cell and lamp. A voltmeter forms a parallel branch connected across the lamp terminals.',
@@ -952,11 +990,13 @@ export const gcseWorkedVisuals = {
 // These worked groups contain several distinct ideas. The renderer places
 // each selected visual directly with its matching line in the teaching stage.
 export const gcseWorkedLineVisuals = {
+  'amylase-endpoint': [amylaseSetup, iodineEndpoint, amylaseRates, iodineInterval],
   'chromatography': [gcseChromatogramSetup, gcseChromatogramResult, rfWorked],
   'domestic-electricity': [alternatingAndDirect, mainsWorkingLoop, faultPath],
   'dynamic-equilibrium': [equilibriumStart, equilibriumRateGraph, dynamicEquilibrium],
   'photosynthesis-limits': [pondweedRateWorked, pondweedLight, pondweedTemperature],
   'reacting-masses': [magnesiumParticles, oxygenRequirement, magnesiumYield],
+  'ruler-drop': [() => investigationFigure('ruler-drop', 'Align zero with the top of the open fingers. The sketch shows only the lower part of a centimetre ruler.'), rulerMeans, () => investigationFigure('ruler-drop', 'Keep the starting gap, hand and posture consistent, and vary the release delay.')],
   'respiration-exercise': [circulation, () => airSac(true), oxygenInBlood, leftHeartChambers, muscleDelivery],
   'plant-transport': [rootHairOsmosis, xylemRouteWorked, leafVapourPath, sourceAndSink, windAndVapour],
   'solution-concentration': [concentrationVolumes, concentrationBars, null],

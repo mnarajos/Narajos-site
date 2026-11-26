@@ -132,5 +132,19 @@ for (const [topic,id,group] of [['a1','enzymes',1],['a4','transcription',0],['a4
  assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
  assert(!figure.includes('aria-label="Scrollable science diagram"'));
 }
+vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-compact-cells.js', import.meta.url), 'utf8'), context);
+for (const [id,group] of [['euk',0],['prok',0],['diffusion',0],['active',1]]) {
+ const figure=context.window.ALevelCompactCells.render('a2',id,group);
+ assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
+ assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
+ assert(!figure.includes('aria-label="Scrollable science diagram"'));
+}
+assert.equal(context.window.ALevelCompactCells.render('a2','active',0), '');
+vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-compact-lungs.js', import.meta.url), 'utf8'), context);
+const compactLung=context.window.ALevelCompactLungs.render('a3','lungs',1);
+assert.match(compactLung, /A short diffusion path/);
+assert.match(compactLung, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
+assert(!compactLung.includes('aria-label="Scrollable science diagram"'));
+assert.equal(context.window.ALevelCompactLungs.render('a3','lungs',0), '');
 assert.equal(context.window.ALevelCatchupFigures.render('a1','sugars',2), '');
 console.log('A-level molecular figure alternatives, captions, mapping and local image checked.');

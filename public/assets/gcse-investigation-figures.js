@@ -6,8 +6,8 @@ const wavePoints = Array.from({length: 137}, (_, i) =>
 const figures = {
   "amylase-endpoint": ["Sampling the reaction", "A tube sits in a water bath. Drops are taken to separate iodine wells at fixed times.",
     '<path d="M20 52v60h100V52 M54 29v57q10 18 20 0V29" fill="none" stroke="currentColor" stroke-width="3"/>'+line(22,66,118,66)+arrow(78,45,180,45)+circle(201,69,11,"white")+circle(241,69,11,"white")+circle(281,69,11,"white")+text(65,137,"Water bath")+text(238,108,"Iodine wells")],
-  "ruler-drop": ["Align the zero mark","A vertical ruler hangs between open fingers with the zero aligned to the top of the fingers before release.",
-    '<rect x="130" y="15" width="40" height="120" fill="#fff4d9" stroke="currentColor"/>'+[0,1,2,3,4].map(n=>line(130,130-n*28,141,130-n*28)+text(157,134-n*28,String(n),ink,12)).join("")+arrow(45,130,124,130)+arrow(245,130,177,130)+text(60,160,"Finger")+text(245,160,"Thumb")],
+  "ruler-drop": ["Align the zero mark","The lower part of a vertical ruler marked in centimetres hangs between open fingers, with zero aligned to the top of the fingers before release.",
+    '<rect x="130" y="3" width="40" height="143" fill="#fff4d9" stroke="currentColor"/>'+[0,1,2,3,4].map(n=>line(130,130-n*28,141,130-n*28)+text(157,134-n*28,String(n),ink,12)).join("")+arrow(45,130,124,130)+arrow(245,130,177,130)+text(60,160,"Finger")+text(245,160,"Thumb")],
   "quadrat-evidence": ["Sample positions","A stream runs beside one edge of a rectangular meadow. Five sample squares sit along this edge. The interior has no samples.",
     '<rect x="18" y="25" width="285" height="96" fill="#edf5e9" stroke="currentColor"/>'+line(25,48,292,48,"#387ba2",5)+[45,90,145,202,260].map(x=>'<rect x="'+x+'" y="58" width="12" height="12" fill="white" stroke="currentColor"/>').join("")+text(155,103,"Meadow")+text(158,145,"Squares = quadrats")],
   "electrode-evidence": ["Electrolysis with inert electrodes","Two graphite rods dip into solution without touching. Separate wires connect the cathode to negative and the anode to positive.",
@@ -24,9 +24,9 @@ const figures = {
     '<rect x="28" y="44" width="82" height="72" fill="#d8e3e9" stroke="currentColor"/><path d="M222 63h48v35h-48z" fill="#efe4d4" stroke="currentColor"/>'+line(112,80,219,80,ink,1,"4 4")+text(67,139,"Hot cube")+text(249,126,"Detector")+text(165,60,"Distance")]
 };
 
-export function investigationFigure(id) {
+export function investigationFigure(id, guide = "") {
   const [title, description, drawing] = figures[id];
-  const figure = picture(title, diagram(description, drawing, 320, id === "ruler-drop" ? 180 : 165));
+  const figure = picture(title, diagram(description, drawing, 320, id === "ruler-drop" ? 180 : 165), guide);
   if (id === "spring-evidence") {
     const axes = line(56,15,56,104)+line(56,104,280,104);
     const points = [0,1,2,3].map(n => circle(56+65*n,104-26*n,3,ink)+
