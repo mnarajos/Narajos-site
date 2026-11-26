@@ -1,6 +1,6 @@
 # Human Biology guided teaching blocks
 
-This index enumerates the authored explanation and sequential worked-example blocks from the guided teaching data. A short excerpt identifies each block; consult the data for the full teaching. The existing-asset column is presence only: it does not establish that a visual explains that block or is visible at that stage. Scientific accuracy, relevance and rendered readability remain **unreviewed** except for the explicit entries in [the block review](catchup-visual-coverage-human-steps.md). Short companion recaps not backed by a guided lesson are not included and remain to be inventoried.
+This index enumerates the authored explanation and sequential worked-example blocks from the guided teaching data. A short excerpt identifies each block; consult the data for the full teaching. The existing-asset column is presence only: it does not establish that a visual explains that block or is visible at that stage. Scientific accuracy, relevance and rendered readability remain **unreviewed** except for the explicit entries in [the block review](catchup-visual-coverage-human-steps.md). Short companion recaps, including those without a guided lesson, are listed separately in [the recap index](catchup-visual-coverage-human-recaps.md).
 
 | Route and block | Content excerpt | Assets declared in lesson | Review |
 | --- | --- | --- | --- |

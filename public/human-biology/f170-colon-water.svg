@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="335" viewBox="0 0 280 335" role="img" aria-labelledby="title desc">
+<title id="title">Water absorption in the colon</title><desc id="desc">A schematic section of colon lining shows net water movement from the intestinal contents across the epithelium, through tissue fluid and into blood. The small intestine also absorbs much water. The drawing is not to scale.</desc>
+<rect width="280" height="335" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="24" font-weight="700">Water and the colon</text>
+<text x="140" y="51">Contents in colon lumen</text>
+<g fill="#67a6bf"><circle cx="90" cy="77" r="6"/><circle cx="140" cy="77" r="6"/><circle cx="190" cy="77" r="6"/></g>
+<path d="M30 100h220v48H30z" fill="#e8d8eb" stroke="#806195" stroke-width="2"/>
+<path d="M66 100v48m37-48v48m37-48v48m37-48v48m37-48v48" stroke="#a98ab5" stroke-width="1.5"/>
+<text x="140" y="130" font-size="15">Colon lining</text>
+<path d="M90 84v90m-6-7 6 7 6-7M190 84v90m-6-7 6 7 6-7" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<text x="140" y="195" font-size="15">Tissue fluid</text>
+<rect x="35" y="212" width="210" height="42" rx="21" fill="#f2d5d0" stroke="#ad6a63" stroke-width="2"/>
+<text x="140" y="238">Blood capillary</text>
+<path d="M90 178v31m-6-7 6 7 6-7M190 178v31m-6-7 6 7 6-7" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<text x="140" y="286" font-size="15">Net water absorption</text><text x="140" y="310" font-size="15">Section is simplified, not to scale.</text>
+</g></svg>

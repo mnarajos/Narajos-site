@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="430" viewBox="0 0 280 430" role="img" aria-labelledby="title desc">
+<title id="title">Mitochondrial inheritance and donation</title><desc id="desc">In usual fertilisation, the egg contributes most embryonic mitochondria and nuclear DNA; sperm contributes nuclear DNA. In one mitochondrial donation approach, nuclear DNA from the intended mother is placed in a donor egg whose nuclear DNA has been removed, then sperm contributes nuclear DNA. Most resulting mitochondria come from the donor egg. Some maternal mitochondrial DNA can remain, and the treatment cannot prevent every mitochondrial disorder.</desc>
+<rect width="280" height="430" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="24" font-weight="700">Mitochondrial inheritance</text><text x="140" y="50">Usual fertilisation</text>
+<circle cx="78" cy="108" r="41" fill="#fff" stroke="#a45f7d" stroke-width="2.5"/><circle cx="78" cy="106" r="12" fill="#8b6aa3"/><g fill="#d58a52"><ellipse cx="55" cy="99" rx="8" ry="4"/><ellipse cx="98" cy="94" rx="8" ry="4"/><ellipse cx="92" cy="126" rx="8" ry="4"/></g>
+<path d="M215 102h-56m8-6-8 6 8 6" fill="none" stroke="#286b73" stroke-width="2.5"/><circle cx="224" cy="102" r="6" fill="#8b6aa3"/><path d="M230 102q10 5 20-1" fill="none" stroke="#8b6aa3" stroke-width="2"/>
+<text x="78" y="169" font-size="15">Egg</text><text x="208" y="142" font-size="15">Sperm nuclear</text><text x="208" y="161" font-size="15">DNA</text>
+<text x="140" y="193" font-size="15">Most mitochondria come from egg.</text>
+<path d="M25 205h230" stroke="#b4cbce"/>
+<text x="140" y="230">One donation approach</text>
+<circle cx="78" cy="285" r="41" fill="#fff" stroke="#a45f7d" stroke-width="2.5"/><circle cx="78" cy="283" r="12" fill="#8b6aa3"/><g fill="#458c85"><ellipse cx="55" cy="276" rx="8" ry="4"/><ellipse cx="98" cy="271" rx="8" ry="4"/><ellipse cx="92" cy="303" rx="8" ry="4"/></g>
+<path d="M215 279h-56m8-6-8 6 8 6" fill="none" stroke="#286b73" stroke-width="2.5"/><circle cx="224" cy="279" r="6" fill="#8b6aa3"/><path d="M230 279q10 5 20-1" fill="none" stroke="#8b6aa3" stroke-width="2"/>
+<text x="78" y="345" font-size="15">Donor egg</text><text x="208" y="319" font-size="15">Sperm nuclear</text><text x="208" y="338" font-size="15">DNA</text>
+<text x="140" y="371" font-size="15">Intended mother’s nuclear DNA;</text><text x="140" y="392" font-size="15">mostly donor mitochondria.</text><text x="140" y="419" font-size="15">Schematic; not a guarantee.</text>
+</g></svg>

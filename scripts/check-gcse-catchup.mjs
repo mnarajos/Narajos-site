@@ -192,7 +192,15 @@ export async function checkGCSECatchup(browser, base) {
       ["spring-evidence", "A spring measures eight centimetres"],
       ["trolley-evidence", "In trial A, two equal slotted masses"],
       ["wave-measurement", "A simplified top view of a ripple tank"],
-      ["infrared-evidence", "Under matched conditions a matt black surface"]
+      ["infrared-evidence", "Under matched conditions a matt black surface"],
+      ["domestic-electricity", "A qualitative alternating-potential-difference graph"],
+      ["national-grid", "The worked example transmits 24 kilowatts"],
+      ["solution-concentration", "The worked example gives sample A a concentration"],
+      ["current-potential-difference", "As potential difference rises, current increases"],
+      ["ruler-drop", "In the illustrative trials, person A catches"],
+      ["electrode-evidence", "Compare molten sodium chloride with sodium chloride dissolved in water"],
+      ["dynamic-equilibrium", "At dynamic equilibrium in a closed system"],
+      ["plant-transport", "Water evaporates from moist leaf cells"]
     ]) {
       const lesson = gcseCatchup[id], key = `narajos.catchup.v1.${lesson.year}.${id}`;
       const figure = `svg[aria-label*="${fragment}"]`;
@@ -288,7 +296,7 @@ export async function checkGCSECatchup(browser, base) {
     // The circuit wires must terminate at the meter and lamp outlines. A path
     // through a symbol incorrectly suggests a bypass rather than a connection.
     await page.goto(lessonURL("current-potential-difference", gcseCatchup["current-potential-difference"].year));
-    const ivCircuit = page.locator('#catchup-evidence > figure svg[role="img"]');
+    const ivCircuit = page.locator('#catchup-evidence svg[role="img"][aria-label="The supply, ammeter and lamp are in the main loop. The voltmeter is on a branch connected across the two lamp terminals."]');
     assert.equal(await ivCircuit.count(), 1, "current–potential difference opening circuit");
     const wireCrossesSymbol = await ivCircuit.evaluate(svg => {
       const wire = svg.querySelector("path");

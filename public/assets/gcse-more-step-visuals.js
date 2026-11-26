@@ -452,6 +452,19 @@ function rulerMeans() {
     text(90,116,'20 cm',blue,15)+text(230,128,'18 cm',teal,15)+text(90,201,'Person A',ink,15)+text(230,201,'Person B',ink,15),
     'Compare the mean drop distances on the same scale. This pair of illustrative results cannot represent everyone.',220);
 }
+export function ionsInElectrolytes() {
+  const ion = (x, y, label, fill, colour) => circle(x, y, 24, fill, colour, 2) + text(x, y + 6, label, colour, 18);
+  return fig('Where the mobile ions come from',
+    'Compare molten sodium chloride with sodium chloride dissolved in water. The melt contains sodium and chloride ions from the compound. The solution also contains hydrogen and hydroxide ions from water. The symbols show types of ions, not their relative amounts.',
+    text(160, 25, 'Molten sodium chloride', ink, 18) +
+    ion(100, 76, 'Na⁺', '#d9eaf4', blue) + ion(220, 76, 'Cl⁻', '#f1d8c7', rust) +
+    text(160, 133, 'Ions from the compound', ink, 18) + line(20, 154, 300, 154, ink, 1) +
+    text(160, 188, 'Sodium chloride solution', ink, 18) +
+    ion(42, 239, 'Na⁺', '#d9eaf4', blue) + ion(120, 239, 'Cl⁻', '#f1d8c7', rust) +
+    ion(200, 239, 'H⁺', '#d9eaf4', blue) + ion(278, 239, 'OH⁻', '#f1d8c7', rust) +
+    text(160, 294, 'Na⁺ and Cl⁻ from NaCl', ink, 18) + text(160, 327, 'H⁺ and OH⁻ from water', ink, 18),
+    'Compare the ion types. In aqueous solutions, ions from water can also contribute to electrode products. The symbols do not show relative amounts.', 345);
+}
 function rulerControls() {
   const trial=x=>circle(x,56,10,'#f2d4c3',rust)+line(x,67,x,97,ink,2)+line(x,77,x+28,91,ink,2)+
     line(x+28,87,x+34,87,ink,2)+line(x+28,95,x+34,95,ink,2)+line(x-10,100,x+10,100,ink,2)+line(x,97,x+16,111,ink,2)+
@@ -1280,7 +1293,7 @@ function magnesiumOxideMass() {
     'Use the one-to-one Mg-to-MgO amount ratio, then multiply by molar mass. The paired circles represent a formula unit; the ionic lattice is omitted.',240);
 }
 function magnesiumYield(){return grouped(molarRatio,magnesiumOxideMass);}
-function plantPaths() {
+export function plantPaths() {
   return fig('Water and sugar transport',
     'Water enters roots and moves upwards in xylem to the leaf. Water vapour leaves the leaf. Sugars made in a mature source leaf are transported in phloem to a sink such as a growing root; phloem movement depends on source and sink.',
     '<path d="M137 53 Q87 15 49 48 Q76 84 137 68 M183 53 Q233 15 271 48 Q244 84 183 68" fill="#d8eddb" stroke="'+teal+'" stroke-width="2"/>'+

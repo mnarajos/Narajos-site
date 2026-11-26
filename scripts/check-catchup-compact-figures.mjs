@@ -45,6 +45,17 @@ export async function checkCompactCatchupFigures(browser, base) {
         assert.equal(await block.locator('figure').filter({hasText: 'Slow and fast fibres compared'}).count(), 0);
       }
 
+      // Keep source and sink mechanisms with their shared mass-flow model;
+      // evidence follows in a separate teaching block.
+      await page.goto(base + '/alevel/#catchup-a3-phloem');
+      const phloemBlocks = page.locator('.companion-chunk');
+      assert.equal(await phloemBlocks.count(), 2);
+      assert.equal(await phloemBlocks.nth(0).locator(':scope > p').count(), 3);
+      assert.match(await phloemBlocks.nth(0).innerText(), /at the sink/i);
+      assert.equal(await phloemBlocks.nth(0).locator('figure').filter({hasText: 'Mass flow from source to sink'}).count(), 1);
+      assert.match(await phloemBlocks.nth(1).innerText(), /ringing experiments/i);
+      assert.equal(await phloemBlocks.nth(1).locator('figure').filter({hasText: 'Ringing and translocation evidence'}).count(), 1);
+
       await page.goto(base + '/human-biology/#catchup/f175/a2');
       const placenta = page.locator('.hb-teach-explain .hb-teaching-diagram-compact');
       await placenta.waitFor();

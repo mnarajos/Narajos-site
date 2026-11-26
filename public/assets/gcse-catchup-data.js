@@ -2,7 +2,7 @@ import { investigations } from "./gcse-investigations.js";
 import { question } from "./school-catchup-journey.js";
 import { priorityCatchup, distanceWorkedGraph, velocityWorkedGraph } from "./gcse-catchup-priority.js";
 import { gcseStepVisuals } from "./gcse-step-visuals.js";
-import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, gcseWorkedLineVisuals, heatingCurve, readableGcseFigure, atomsRearranged, ohmicCurrentGraph, filamentCurrentGraph, gridCurrentComparison, gridHeatingComparison, leftHandDirections, motorReversalWorked, randomDecay, activityUnit, massGasEscape, activationBarrier, reactionNetTransfer, resistanceFromGraph, hotFilament, meanGasRate, infraredAbsorbEmit } from "./gcse-more-step-visuals.js";
+import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, gcseWorkedLineVisuals, heatingCurve, readableGcseFigure, atomsRearranged, ohmicCurrentGraph, filamentCurrentGraph, gridCurrentComparison, gridHeatingComparison, leftHandDirections, motorReversalWorked, randomDecay, activityUnit, massGasEscape, activationBarrier, reactionNetTransfer, resistanceFromGraph, hotFilament, meanGasRate, infraredAbsorbEmit, plantPaths, ionsInElectrolytes } from "./gcse-more-step-visuals.js";
 import { gcseVisual } from "./gcse-catchup-visuals.js";
 
 function lesson(year, code, title, hook, notice, idea, visual, stages, independent, retry, higher) {
@@ -639,7 +639,15 @@ const additionalOpeningFigures = {
   "spring-evidence": [gcseWorkedLineVisuals["spring-evidence"][1]],
   "trolley-evidence": [gcseWorkedLineVisuals["trolley-evidence"][1], gcseWorkedLineVisuals["trolley-evidence"][2]],
   "wave-measurement": [gcseWorkedLineVisuals["wave-measurement"][0], gcseWorkedLineVisuals["wave-measurement"][1]],
-  "infrared-evidence": [gcseWorkedLineVisuals["infrared-evidence"][0], gcseWorkedLineVisuals["infrared-evidence"][2], infraredAbsorbEmit]
+  "infrared-evidence": [gcseWorkedLineVisuals["infrared-evidence"][0], gcseWorkedLineVisuals["infrared-evidence"][2], infraredAbsorbEmit],
+  "domestic-electricity": [gcseWorkedLineVisuals["domestic-electricity"][0]],
+  "national-grid": [gridCurrentComparison, gridHeatingComparison],
+  "solution-concentration": [gcseWorkedLineVisuals["solution-concentration"][0], gcseWorkedLineVisuals["solution-concentration"][1]],
+  "current-potential-difference": [filamentCurrentGraph],
+  "ruler-drop": [gcseWorkedLineVisuals["ruler-drop"][0], gcseWorkedLineVisuals["ruler-drop"][1], gcseWorkedLineVisuals["ruler-drop"][2]],
+  "electrode-evidence": [ionsInElectrolytes],
+  "dynamic-equilibrium": [gcseWorkedLineVisuals["dynamic-equilibrium"][2]],
+  "plant-transport": [plantPaths, gcseWorkedLineVisuals["plant-transport"][2], gcseWorkedLineVisuals["plant-transport"][3]]
 };
 const originalOpeningFigures = {};
 for (const [id, figures] of Object.entries(additionalOpeningFigures)) {
@@ -719,7 +727,7 @@ for (const [id, renders] of Object.entries(gcseWorkedLineVisuals)) {
   gcseCatchup[id].steps[0].worked.lineVisuals = renders.map(render => render ? () => readableGcseFigure(render) : null);
 }
 gcseCatchup["current-potential-difference"].steps[0].worked.lineVisuals = [
-  () => readableGcseFigure(() => gcseVisual(gcseCatchup["current-potential-difference"].visual)),
+  () => readableGcseFigure(() => gcseVisual(originalOpeningFigures["current-potential-difference"])),
   null, // The same variable-supply circuit supports the two adjacent setup lines.
   () => readableGcseFigure(ohmicCurrentGraph),
   () => readableGcseFigure(filamentCurrentGraph)
@@ -728,7 +736,7 @@ gcseCatchup["national-grid"].steps[0].worked.lineVisuals = [
   () => readableGcseFigure(gridCurrentComparison),
   null, // Both adjacent lines use the same equal-power comparison.
   () => readableGcseFigure(gridHeatingComparison),
-  () => readableGcseFigure(() => gcseVisual(gcseCatchup["national-grid"].visual))
+  () => readableGcseFigure(() => gcseVisual(originalOpeningFigures["national-grid"]))
 ];
 gcseCatchup["motion-graphs"].steps[0].worked.lineVisuals = [
   () => readableGcseFigure(distanceWorkedGraph),
