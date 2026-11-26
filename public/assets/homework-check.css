@@ -1,0 +1,10 @@
+/* Compact completed examples for the self-marking homework. */
+.homework .check-diagram{margin:1rem 0;padding:.8rem;border:1px solid #9db6a9;border-radius:.65rem;background:#fff}
+.homework .check-diagram figcaption{font-weight:700;margin-bottom:.6rem}
+.homework .check-compartment,.homework .check-crossing{padding:.6rem;text-align:center}
+.homework .check-compartment{background:#edf6f2;border:1px solid #bdd8ca;border-radius:.4rem}
+.homework .check-crossing{border-block:3px double #5a7890;line-height:1.7}
+.homework .check-table{table-layout:fixed}
+.homework .check-table th:first-child{width:36%}
+.homework .check-table th,.homework .check-table td{overflow-wrap:break-word}
+@media (max-width:480px){.homework .check-table th,.homework .check-table td{padding:.35rem;font-size:.9rem}}
