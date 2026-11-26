@@ -36,7 +36,7 @@ for (const [id, group] of [['sav',0],['insects',0],['leafgas',0],['haemo',1],['b
  assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
 }
 vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-genetics-figures.js', import.meta.url), 'utf8'), context);
-for (const [id, group] of [['dnachrom',0],['code',0],['rnas',1],['chromut',0],['meiosis',0],['meiosis',1],['meiosisvar',0],['taxonomy',2],['dnachrom',1],['chromut',1],['meiosisvar',1],['natsel',0],['natsel',1],['selection',0],['investdiv',0],['biodiv',0],['biodiv',1],['aseptic',0],['aseptic',1]]) {
+for (const [id, group] of [['dnachrom',0],['code',0],['rnas',1],['chromut',0],['meiosis',0],['meiosis',1],['meiosisvar',0],['taxonomy',2],['dnachrom',1],['chromut',1],['meiosisvar',1],['natsel',0],['natsel',1],['selection',0],['investdiv',0],['biodiv',0],['biodiv',1],['aseptic',0],['aseptic',1],['traps4',0],['traps4',1],['traps4',2],['traps4',3],['linkp1',0],['ctx4',0],['ctx4',1],['ctx4',2],['code',1],['translation',1],['translation',2],['mutation',2],['aseptic',2],['taxonomy',0],['taxonomy',1],['dnachrom',2],['rnas',0],['sampling',0],['sampling',1]]) {
  const figure = context.window.ALevelCatchupFigures.render('a4',id,group);
  assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
  assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
@@ -46,6 +46,26 @@ for (const [topic,id,group] of [['a5','glycolysis',0],['a5','glycolysis',1],['a5
  const figure=context.window.ALevelEnergyNeuralFigures.render(topic,id,group);
  assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
  assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
+}
+vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-gene-regulation-figures.js', import.meta.url), 'utf8'), context);
+for (const [id,group] of [['rnai',0],['rnai',1],['fragments',1],['fingerprint',1]]) {
+ const figure=context.window.ALevelGeneRegulationFigures.render('a8',id,group);
+ assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
+ assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
+}
+const courtship = context.window.ALevelCatchupFigures.render('a4','species',0);
+assert.match(courtship, /alt="[^"]{20,}"/);
+assert.match(courtship, /https:\/\/creativecommons\.org\/licenses\/by-sa\/3\.0\//);
+assert(existsSync(new URL('../public/assets/catchup-photos/grebe-courtship.webp', import.meta.url)));
+for (const [file,global,rows] of [
+ ['catchup-energy-mechanism-figures.js','ALevelEnergyMechanismFigures', [['a5','lightdep',0],['a5','lightdep',1],['a5','chemios',0],['a5','chemios',1],['a5','calvin',0],['a5','calvin',1],['a5','calvin',2],['a5','krebs',0],['a5','krebs',1],['a6','speed',0],['a6','adh',0],['a6','adh',1]]],
+ ['catchup-population-figures.js','ALevelPopulationFigures', [['a7','genterms',1],['a7','codom',1],['a7','sexlink',2],['a7','epistasis',0],['a7','interact',1],['a7','fieldwork',0],['a7','fieldwork',1],['a7','mrrc',0]]],
+ ['catchup-gene-control-figures.js','ALevelGeneControlFigures', [['a8','transfac',0],['a8','transfac',1],['a8','transfac',2],['a8','epigen',0],['a8','epigen',1],['a8','invivo',0],['a8','probes',0]]],
+ ['catchup-response-figures.js','ALevelResponseFigures', [['a6','pacinian',0],['a6','pacinian',1],['a6','eye',0],['a6','eye',1],['a6','resting',0],['a6','tropisms',1],['a6','glucose',0]]],
+ ['catchup-synapse-figures.js','ALevelSynapseFigures', [['a6','synapse',0],['a6','synapse',1],['a6','synapse',2],['a6','synapse',3]]]
+]) {
+ vm.runInNewContext(readFileSync(new URL('../public/alevel/'+file, import.meta.url), 'utf8'), context);
+ for (const [topic,id,group] of rows) { const figure=context.window[global].render(topic,id,group); assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/); assert.match(figure, /<figcaption>.{20,}<\/figcaption>/); }
 }
 assert.equal(context.window.ALevelCatchupFigures.render('a1','sugars',2), '');
 console.log('A-level molecular figure alternatives, captions, mapping and local image checked.');

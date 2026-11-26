@@ -21,6 +21,32 @@ export async function checkGCSECatchup(browser, base) {
   const choose = label => dialog.getByRole("radio", {name: label, exact: true}).click();
   const submit = () => dialog.getByRole("button", {name: "Check", exact: true}).press("Enter");
   const lessonURL = (id, year) => base + "/science-catch-up/lesson/?topic=" + id + "&year=" + year;
+  const checkSvgLabels = async (container, context) => {
+    const issues = await container.evaluate(root => {
+      const failures = [];
+      for (const svg of root.querySelectorAll('svg[role="img"]')) {
+        const view = svg.viewBox.baseVal;
+        if (!view.width || !view.height) continue;
+        const scale = svg.getBoundingClientRect().width / view.width;
+        const labels = [...svg.querySelectorAll('text')].map(text => ({
+          name: text.textContent, box: text.getBBox(), size: parseFloat(getComputedStyle(text).fontSize) * scale
+        }));
+        for (const label of labels) {
+          const b = label.box;
+          if (label.size < 13.8) failures.push(`Small: ${label.name} (${label.size.toFixed(1)}px)`);
+          if (b.x < view.x - .5 || b.y < view.y - .5 || b.x + b.width > view.x + view.width + .5 || b.y + b.height > view.y + view.height + .5)
+            failures.push(`Clipped: ${label.name}`);
+        }
+        for (let i = 0; i < labels.length; i++) for (let j = i + 1; j < labels.length; j++) {
+          const a = labels[i].box, b = labels[j].box;
+          if (a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height)
+            failures.push(`Overlapping: ${labels[i].name} / ${labels[j].name}`);
+        }
+      }
+      return failures;
+    });
+    assert.deepEqual(issues, [], context + ": SVG labels must be readable and unclipped at 320px");
+  };
 
   try {
     // A mapped figure must appear with its own teaching step, including after
@@ -38,6 +64,11 @@ export async function checkGCSECatchup(browser, base) {
           assert((await svg.getAttribute("aria-label"))?.trim(), `${id} step ${index + 1}: missing diagram description`);
         }
         assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, `${id}: horizontal overflow`);
+        await checkSvgLabels(notes, `${id} step ${index + 1}`);
+        for (const control of await notes.locator("button.ks3-model-button").all()) {
+          await control.click();
+          await checkSvgLabels(notes, `${id} step ${index + 1} control`);
+        }
         await page.evaluate(key => localStorage.removeItem(key), `narajos.catchup.v1.${lesson.year}.${id}`);
       }
     }
@@ -49,6 +80,7 @@ export async function checkGCSECatchup(browser, base) {
       const evidence = page.locator("#catchup-evidence");
       const opening = evidence.locator(":scope > figure, :scope > div");
       assert(await opening.locator("svg[role=img]").count(), `${id}: opening diagram missing`);
+      for (const part of await opening.all()) await checkSvgLabels(part, `${id} opening`);
       for (const svg of await opening.locator("svg[role=img]").all())
         assert((await svg.getAttribute("aria-label"))?.trim(), `${id}: opening diagram has no alternative`);
       for (const img of await opening.locator("img").all()) {
@@ -72,6 +104,7 @@ export async function checkGCSECatchup(browser, base) {
             assert.equal(await diagram.isVisible(), false, `${id}: question answer figure visible before reasoning`);
           await extension.getByText("Check your reasoning", {exact: true}).click();
         }
+        await checkSvgLabels(extension, `${id} Higher Tier`);
         const stageLabels = await journey.locator(".school-current-stage svg[role=img]").evaluateAll(items => items.map(item => item.getAttribute("aria-label")));
         for (const diagram of await diagrams.all()) {
           assert(await diagram.isVisible(), `${id}: Higher Tier diagram not visible in teaching context`);
@@ -84,6 +117,7 @@ export async function checkGCSECatchup(browser, base) {
         await page.goto(lessonURL(id, lesson.year));
         const example = page.locator(".school-current-stage .school-worked-example");
         assert(await example.locator("figure, table").count(), `${id}: missing worked-example figure`);
+        await checkSvgLabels(example, `${id} worked example`);
         for (const img of await example.locator("img").all()) {
           await img.scrollIntoViewIfNeeded();
           assert((await img.getAttribute("alt"))?.trim(), `${id}: worked photograph has no alternative`);

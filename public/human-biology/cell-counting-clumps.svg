@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 300" role="img" aria-labelledby="title description">
+<title id="title">Separated cells and a clump</title>
+<desc id="description">Two separated cells pass an aperture one after another, producing two events. Two cells joined together may pass as one clump and produce one event. Electrical impedance alone does not identify viable cells.</desc>
+<rect width="280" height="300" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a" text-anchor="middle">
+<text x="140" y="25" font-weight="700">Separated cells</text>
+<circle cx="58" cy="67" r="12" fill="#d8c7e4" stroke="#69447f" stroke-width="2"/><circle cx="94" cy="67" r="12" fill="#d8c7e4" stroke="#69447f" stroke-width="2"/>
+<path d="M121 67h38m-8-6 8 6-8 6" fill="none" stroke="#23558c" stroke-width="2.5"/>
+<path d="M184 93v-25h12v25h12V68h12v25h20" fill="none" stroke="#98451e" stroke-width="3"/>
+<text x="140" y="122">Two particles → two pulses</text>
+<text x="140" y="164" font-weight="700">A clump of two cells</text>
+<circle cx="67" cy="205" r="12" fill="#d8c7e4" stroke="#69447f" stroke-width="2"/><circle cx="86" cy="205" r="12" fill="#d8c7e4" stroke="#69447f" stroke-width="2"/>
+<path d="M121 205h38m-8-6 8 6-8 6" fill="none" stroke="#23558c" stroke-width="2.5"/>
+<path d="M184 231v-35h20v35h36" fill="none" stroke="#98451e" stroke-width="3"/>
+<text x="140" y="265">A clump may make one pulse</text>
+<text x="140" y="288">A pulse does not prove viability</text>
+</g></svg>

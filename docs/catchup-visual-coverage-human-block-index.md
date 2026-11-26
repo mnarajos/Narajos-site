@@ -4,11 +4,11 @@ This index enumerates the authored explanation and sequential worked-example blo
 
 | Route and block | Content excerpt | Assets declared in lesson | Review |
 | --- | --- | --- | --- |
-| f170/1.1.1 · Explain 1 | A mature erythrocyte (red blood cell) is a flexible biconcave disc. Its thin centre shortens the diffusion … | teachingDiagram, explanationPhoto, comparisonDiagram, comparisonDiagrams, compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.1 · Explain 2 | White blood cells have nuclei. A nuclear outline can help you recognise a cell. To explain its function, lo… | teachingDiagram, explanationPhoto, comparisonDiagram, comparisonDiagrams, compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.1 · Model 1 | Oxygen crosses the cell membrane and diffuses a short distance to haemoglobin in the thin disc. | teachingDiagram, explanationPhoto, comparisonDiagram, comparisonDiagrams, compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.1 · Model 2 | Without a nucleus there is more internal space for haemoglobin. Oxygen can bind there and later be released… | teachingDiagram, explanationPhoto, comparisonDiagram, comparisonDiagrams, compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.1 · Model 3 | Shape and haemoglobin do different jobs. A flexible cell with very little haemoglobin could still enter a c… | teachingDiagram, explanationPhoto, comparisonDiagram, comparisonDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1 · Explain 1 | A mature erythrocyte (red blood cell) is a flexible biconcave disc. Its thin centre shortens the diffusion … | teachingDiagram, explainDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1 · Explain 2 | White blood cells have nuclei. A nuclear outline can help you recognise a cell. To explain its function, lo… | teachingDiagram, explainDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1 · Model 1 | Oxygen crosses the cell membrane and diffuses a short distance to haemoglobin in the thin disc. | teachingDiagram, explainDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1 · Model 2 | Without a nucleus there is more internal space for haemoglobin. Oxygen can bind there and later be released… | teachingDiagram, explainDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1 · Model 3 | Shape and haemoglobin do different jobs. A flexible cell with very little haemoglobin could still enter a c… | teachingDiagram, explainDiagrams, compare | Unreviewed; see reviewed exceptions |
 | f170/1.1.1.muscle · Explain 1 | Actin and myosin filaments slide to generate force. In skeletal and cardiac muscle, repeating sarcomeres gi… | compare | Unreviewed; see reviewed exceptions |
 | f170/1.1.1.muscle · Model 1 | Imagine a ring of smooth muscle around a lumen. Shortening around the ring makes the lumen narrower. | compare | Unreviewed; see reviewed exceptions |
 | f170/1.1.1.muscle · Model 2 | The absence of stripes does not mean these cells lack contractile proteins. It reflects how the filaments a… | compare | Unreviewed; see reviewed exceptions |
@@ -31,34 +31,34 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f170/1.1.2 · Model 2 | Both image readings use pixels. Divide the cell width by the bar width: 48 ÷ 122 ≈ 0.39. This number is a f… | visual, compare | Unreviewed; see reviewed exceptions |
 | f170/1.1.2 · Model 3 | Multiply the ratio by 20 µm: 0.39 × 20 µm ≈ 8 µm. The cell is less than half a bar wide, so the result shou… | visual, compare | Unreviewed; see reviewed exceptions |
 | f170/1.1.2 · Model 4 | If the 20 µm bar is 30 mm in print, convert 30 mm to 30,000 µm. Printed magnification is 30,000 ÷ 20 = ×1,5… | visual, compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.2.counting · Explain 1 | A haemocytometer is a ruled counting chamber of known depth. Under a light microscope, the area counted and… | table | Unreviewed; see reviewed exceptions |
-| f170/1.1.2.counting · Explain 2 | A Coulter counter passes particles suspended in a conducting liquid through a narrow aperture. A brief chan… | table | Unreviewed; see reviewed exceptions |
-| f170/1.1.2.counting · Model 1 | A researcher needs to exclude clearly recognisable fragments that overlap the target cells in size. A chamb… | table | Unreviewed; see reviewed exceptions |
-| f170/1.1.2.counting · Model 2 | For many already separated suspensions of similar intact cells with little debris, a Coulter counter can ob… | table | Unreviewed; see reviewed exceptions |
-| f170/1.1.3 · Explain 1 | The nuclear envelope surrounds most of the cell’s DNA. Its pores allow selected molecules, such as messenge… | table | Unreviewed; see reviewed exceptions |
-| f170/1.1.3 · Explain 2 | Mitochondria supply much of the ATP for cell processes. Their own DNA specifies a small fraction of their p… | table | Unreviewed; see reviewed exceptions |
-| f170/1.1.3 · Explain 3 | Rough ER has ribosomes on its cytoplasmic surface and receives many proteins made for secretion. Smooth ER … | table | Unreviewed; see reviewed exceptions |
-| f170/1.1.3 · Explain 4 | The Golgi modifies and sorts proteins. For example, it sends some hydrolytic enzymes towards lysosomes. A l… | table | Unreviewed; see reviewed exceptions |
-| f170/1.1.3 · Model 1 | Ribosomes attached to the RER make a digestive enzyme using instructions from the nucleus. The polypeptide … | table | Unreviewed; see reviewed exceptions |
-| f170/1.1.3 · Model 2 | Carrier vesicles move it to the Golgi for processing and sorting. A secretory vesicle carries the enzyme fr… | table | Unreviewed; see reviewed exceptions |
-| f170/1.1.3 · Model 3 | If the surface fusion step fails, the enzyme can still be made and carried there. It collects in vesicles i… | table | Unreviewed; see reviewed exceptions |
+| f170/1.1.2.counting · Explain 1 | A haemocytometer is a ruled counting chamber of known depth. Under a light microscope, the area counted and… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/1.1.2.counting · Explain 2 | A Coulter counter passes particles suspended in a conducting liquid through a narrow aperture. A brief chan… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/1.1.2.counting · Model 1 | A researcher needs to exclude clearly recognisable fragments that overlap the target cells in size. A chamb… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/1.1.2.counting · Model 2 | For many already separated suspensions of similar intact cells with little debris, a Coulter counter can ob… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/1.1.3 · Explain 1 | The nuclear envelope surrounds most of the cell’s DNA. Its pores allow selected molecules, such as messenge… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/1.1.3 · Explain 2 | Mitochondria supply much of the ATP for cell processes. Their own DNA specifies a small fraction of their p… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/1.1.3 · Explain 3 | Rough ER has ribosomes on its cytoplasmic surface and receives many proteins made for secretion. Smooth ER … | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/1.1.3 · Explain 4 | The Golgi modifies and sorts proteins. For example, it sends some hydrolytic enzymes towards lysosomes. A l… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/1.1.3 · Model 1 | Ribosomes attached to the RER make a digestive enzyme using instructions from the nucleus. The polypeptide … | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/1.1.3 · Model 2 | Carrier vesicles move it to the Golgi for processing and sorting. A secretory vesicle carries the enzyme fr… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f170/1.1.3 · Model 3 | If the surface fusion step fails, the enzyme can still be made and carried there. It collects in vesicles i… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
 | f170/1.1.3.evidence · Explain 1 | The nucleus contains chromosomes. Inside it the nucleolus makes much of the ribosomal RNA and assembles rib… | table | Unreviewed; see reviewed exceptions |
 | f170/1.1.3.evidence · Explain 2 | Human cytosolic ribosomes are 80S, including those attached to rough ER. Typical bacterial ribosomes are 70… | table | Unreviewed; see reviewed exceptions |
 | f170/1.1.3.evidence · Explain 3 | Rough ER receives many newly made proteins. Smooth ER makes many lipids. At the Golgi, different proteins c… | table | Unreviewed; see reviewed exceptions |
 | f170/1.1.3.evidence · Model 1 | Start at the beginning. Finding the protein in rough ER and in the Golgi supports synthesis and passage bet… | table | Unreviewed; see reviewed exceptions |
 | f170/1.1.3.evidence · Model 2 | Now compare destinations. Finding much of the enzyme outside and little in lysosomes suggests misdirected d… | table | Unreviewed; see reviewed exceptions |
-| f170/1.1.4 · Explain 1 | Particles move randomly. In diffusion, more particles move down the concentration gradient than move the ot… | compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.4 · Explain 2 | Osmosis is net movement of water through a partially permeable membrane from higher to lower water potentia… | compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.4 · Model 1 | A respiring cell uses oxygen, so there is more dissolved oxygen per unit volume outside than inside. | compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.4 · Model 2 | Oxygen can pass through the lipid bilayer. Individual oxygen molecules cross in both directions. | compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.4 · Model 3 | More cross in than out. The net movement is into the cell down the oxygen concentration gradient. | compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.4.surface · Explain 1 | In the fluid mosaic model, hydrophilic phospholipid heads face water on both sides. Hydrophobic tails point… | illustration | Unreviewed; see reviewed exceptions |
-| f170/1.1.4.surface · Explain 2 | Intrinsic proteins are embedded in the bilayer and some span it. Extrinsic (peripheral) proteins attach at … | illustration | Unreviewed; see reviewed exceptions |
-| f170/1.1.4.surface · Explain 3 | Glycoproteins have carbohydrate chains on the extracellular side. Cell-surface antigens, including HLA prot… | illustration | Unreviewed; see reviewed exceptions |
-| f170/1.1.4.surface · Explain 4 | In endocytosis the membrane encloses material in an inward-moving vesicle. In exocytosis a vesicle fuses wi… | illustration | Unreviewed; see reviewed exceptions |
-| f170/1.1.4.surface · Model 1 | At 1, polar heads face the fluid. Between the two head layers is the oily core. Cholesterol (2) sits among … | illustration | Unreviewed; see reviewed exceptions |
-| f170/1.1.4.surface · Model 2 | At body temperature cholesterol restrains some movement of nearby tails and can reduce leakage of small pol… | illustration | Unreviewed; see reviewed exceptions |
-| f170/1.1.4.surface · Model 3 | At 3, a chain on a glycoprotein faces the outside, where other cells can encounter it. At 4, a peripheral p… | illustration | Unreviewed; see reviewed exceptions |
+| f170/1.1.4 · Explain 1 | Particles move randomly. In diffusion, more particles move down the concentration gradient than move the ot… | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.4 · Explain 2 | Osmosis is net movement of water through a partially permeable membrane from higher to lower water potentia… | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.4 · Model 1 | A respiring cell uses oxygen, so there is more dissolved oxygen per unit volume outside than inside. | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.4 · Model 2 | Oxygen can pass through the lipid bilayer. Individual oxygen molecules cross in both directions. | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.4 · Model 3 | More cross in than out. The net movement is into the cell down the oxygen concentration gradient. | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.4.surface · Explain 1 | In the fluid mosaic model, hydrophilic phospholipid heads face water on both sides. Hydrophobic tails point… | explainDiagrams, modelDiagrams, illustration | Unreviewed; see reviewed exceptions |
+| f170/1.1.4.surface · Explain 2 | Intrinsic proteins are embedded in the bilayer and some span it. Extrinsic (peripheral) proteins attach at … | explainDiagrams, modelDiagrams, illustration | Unreviewed; see reviewed exceptions |
+| f170/1.1.4.surface · Explain 3 | Glycoproteins have carbohydrate chains on the extracellular side. Cell-surface antigens, including HLA prot… | explainDiagrams, modelDiagrams, illustration | Unreviewed; see reviewed exceptions |
+| f170/1.1.4.surface · Explain 4 | In endocytosis the membrane encloses material in an inward-moving vesicle. In exocytosis a vesicle fuses wi… | explainDiagrams, modelDiagrams, illustration | Unreviewed; see reviewed exceptions |
+| f170/1.1.4.surface · Model 1 | At 1, polar heads face the fluid. Between the two head layers is the oily core. Cholesterol (2) sits among … | explainDiagrams, modelDiagrams, illustration | Unreviewed; see reviewed exceptions |
+| f170/1.1.4.surface · Model 2 | At body temperature cholesterol restrains some movement of nearby tails and can reduce leakage of small pol… | explainDiagrams, modelDiagrams, illustration | Unreviewed; see reviewed exceptions |
+| f170/1.1.4.surface · Model 3 | At 3, a chain on a glycoprotein faces the outside, where other cells can encounter it. At 4, a peripheral p… | explainDiagrams, modelDiagrams, illustration | Unreviewed; see reviewed exceptions |
 | f170/1.1.5 · Explain 1 | One unreplicated chromosome contains one double-stranded DNA molecule. After S phase it has two sister chro… | photo | Unreviewed; see reviewed exceptions |
 | f170/1.1.5 · Explain 2 | In prophase, chromosomes condense and the spindle begins to form. Once the nuclear envelope breaks down, sp… | photo | Unreviewed; see reviewed exceptions |
 | f170/1.1.5 · Explain 3 | Mitosis divides the nucleus. Cytokinesis divides the cytoplasm and can overlap the end of mitosis. An anima… | photo | Unreviewed; see reviewed exceptions |
@@ -131,12 +131,12 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f170/4.1.4 · Model 1 | This teaching graph uses a logarithmic vertical axis. A rise from 2 to 4 means a rise from 100 to 10,000, n… | graph | Unreviewed; see reviewed exceptions |
 | f170/4.1.4 · Model 2 | The first period shows little net increase (lag). The straight rising part represents exponential growth on… | graph | Unreviewed; see reviewed exceptions |
 | f170/4.1.4 · Model 3 | From intervals 3 to 5 the viable count remains about the same. Division could be continuing at roughly the … | graph | Unreviewed; see reviewed exceptions |
-| f171/1.2.1 · Explain 1 | COPD involves persistent difficulty moving air out of the lungs. Narrowed small airways and excess mucus ca… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1 · Explain 2 | Breathlessness during daily activity and a persistent cough with mucus are common symptoms. An examiner may… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1 · Explain 3 | Reduced airway clearance can contribute to chest infections, which can worsen symptoms. Persistent breathle… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1 · Model 1 | In a fictional model, mucus narrows the airway opening. Air meets greater resistance, so the same driving p… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1 · Model 2 | In a different part of the model, alveolar walls have been lost. This reduces the area across which gas can… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
-| f171/1.2.1 · Model 3 | Breathlessness can occur with either problem. To distinguish them, compare evidence about airflow with evid… | modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1 · Explain 1 | COPD involves persistent difficulty moving air out of the lungs. Narrowed small airways and excess mucus ca… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1 · Explain 2 | Breathlessness during daily activity and a persistent cough with mucus are common symptoms. An examiner may… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1 · Explain 3 | Reduced airway clearance can contribute to chest infections, which can worsen symptoms. Persistent breathle… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1 · Model 1 | In a fictional model, mucus narrows the airway opening. Air meets greater resistance, so the same driving p… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1 · Model 2 | In a different part of the model, alveolar walls have been lost. This reduces the area across which gas can… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f171/1.2.1 · Model 3 | Breathlessness can occur with either problem. To distinguish them, compare evidence about airflow with evid… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.airways · Explain 1 | Air flows through bronchioles to alveoli. Thin alveolar walls provide a large surface for diffusion. | None declared | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.airways · Explain 2 | Asthma involves inflamed, sensitive airways. Muscle tightening and mucus can narrow their openings, causing… | None declared | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.airways · Explain 3 | COPD produces persistent airflow obstruction. In emphysema, loss of alveolar walls also reduces surface are… | None declared | Unreviewed; see reviewed exceptions |

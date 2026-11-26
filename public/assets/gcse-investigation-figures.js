@@ -7,7 +7,7 @@ const figures = {
   "amylase-endpoint": ["Sampling the reaction", "A tube sits in a water bath. Drops are taken to separate iodine wells at fixed times.",
     '<path d="M20 52v60h100V52 M54 29v57q10 18 20 0V29" fill="none" stroke="currentColor" stroke-width="3"/>'+line(22,66,118,66)+arrow(78,45,180,45)+circle(201,69,11,"white")+circle(241,69,11,"white")+circle(281,69,11,"white")+text(65,137,"Water bath")+text(238,108,"Iodine wells")],
   "ruler-drop": ["Align the zero mark","A vertical ruler hangs between open fingers with the zero aligned to the top of the fingers before release.",
-    '<rect x="130" y="15" width="40" height="100" fill="#fff4d9" stroke="currentColor"/>'+[0,1,2,3,4].map(n=>line(130,110-n*20,141,110-n*20)+text(157,114-n*20,String(n),ink,12)).join("")+arrow(45,110,124,110)+arrow(245,110,177,110)+text(60,139,"Finger")+text(245,139,"Thumb")],
+    '<rect x="130" y="15" width="40" height="120" fill="#fff4d9" stroke="currentColor"/>'+[0,1,2,3,4].map(n=>line(130,130-n*24,141,130-n*24)+text(157,134-n*24,String(n),ink,12)).join("")+arrow(45,130,124,130)+arrow(245,130,177,130)+text(60,160,"Finger")+text(245,160,"Thumb")],
   "quadrat-evidence": ["Sample positions","A stream runs beside one edge of a rectangular meadow. Five sample squares sit along this edge. The interior has no samples.",
     '<rect x="18" y="25" width="285" height="96" fill="#edf5e9" stroke="currentColor"/>'+line(25,48,292,48,"#387ba2",5)+[45,90,145,202,260].map(x=>'<rect x="'+x+'" y="58" width="12" height="12" fill="white" stroke="currentColor"/>').join("")+text(155,103,"Meadow")+text(158,145,"Squares = quadrats")],
   "electrode-evidence": ["Electrolysis with inert electrodes","Two graphite rods dip into solution without touching. Separate wires connect the cathode to negative and the anode to positive.",
@@ -26,7 +26,7 @@ const figures = {
 
 export function investigationFigure(id) {
   const [title, description, drawing] = figures[id];
-  const figure = picture(title, diagram(description, drawing, 320, 165));
+  const figure = picture(title, diagram(description, drawing, 320, id === "ruler-drop" ? 180 : 165));
   if (id === "spring-evidence") {
     const axes = line(56,15,56,104)+line(56,104,280,104);
     const points = [0,1,2,3].map(n => circle(56+65*n,104-26*n,3,ink)+

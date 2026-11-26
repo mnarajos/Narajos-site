@@ -480,7 +480,28 @@ function showUnit(unit,render){
 }
 // A recap line gets a figure only where the particular idea matches it.
 // Unmapped lines intentionally remain unillustrated pending editorial review.
+const labRecap = function(caption) { return {
+ src:"/human-biology/lab-sample-workflow.svg",width:280,height:360,compact:true,
+ alt:"A labelled sample passes through laboratory testing with quality controls to a result report. The report is considered alongside clinical context to inform a decision.",caption:caption
+}; };
+const nutritionRecap = function(file, alt, caption, height) { return {
+ src:"/human-biology/"+file+".svg",width:280,height:height,compact:true,alt:alt,caption:caption
+}; };
 const recapFigureMap = {
+ "f170/1.1.4/1": [["f170/1.1.4", "explainDiagrams", 0], ["f170/1.1.4", "explainDiagrams", 1]],
+ "f170/1.1.4/2": [["f170/1.1.4", "explainDiagrams", 1], ["f170/1.1.4.surface", "explainDiagrams", 2]],
+ "f170/1.1.4.surface/1": [["f170/1.1.4.surface", "explainDiagrams", 1]],
+ "f170/1.1.4.surface/2": [["f170/1.1.4.surface", "explainDiagrams", 2]],
+ "f170/1.1.4.surface/3": [["f170/1.1.4.surface", "explainDiagrams", 3]],
+ "f174/a2/0": [nutritionRecap("iron-blood-oxygen", "A schematic chain shows less iron available over time, less haemoglobin potentially being made and a possible fall in the oxygen-carrying capacity of blood.", "Follow this example from low iron to blood oxygen-carrying capacity. Other deficiencies can affect different functions.", 280)],
+ "f174/a2/1": [nutritionRecap("water-balance", "A small arrow enters a body representing water intake. A thicker arrow leaves the body representing a greater water loss over time. The arrow widths are schematic.", "Compare intake and loss over time. The thicker arrow represents greater loss in this example; it is not a measurement.", 250)],
+ "f174/a2/2": [nutritionRecap("body-composition", "Two equal-height bars represent equal total body mass but have different proportions of fat mass and other mass. The bars are illustrative rather than measured values.", "Compare equal totals with different compositions. Neither bar establishes an individual's health or nutritional status.", 280)],
+ "f173/a1/0": [labRecap("Follow the sample from the laboratory test to the report that supports a clinical decision.")],
+ "f173/a1/1": [labRecap("Locate the sample label and quality controls: they help make the reported result dependable.")],
+ "f173/a1/2": [labRecap("Notice that a report is considered with clinical context. A result does not always establish a diagnosis on its own.")],
+ "f170/1.1.2.counting/1": [["f170/1.1.2.counting", "explainDiagrams", 1], ["f170/1.1.2.counting", "modelDiagrams", 1]],
+ "f170/1.1.3/1": [["f170/1.1.3", "explainDiagrams", 3]],
+ "f170/1.1.3/2": [["f170/1.1.3", "explainDiagrams", 1], ["f170/1.1.3", "explainDiagrams", 2]],
  "f170/1.1.2/1": [["f173/a2", "explanationPhoto"], ["f173/a2", "explanationPhoto2"]],
  "f170/3.2.1/1": [["f176/a2", "explanationDiagram"], ["f170/3.2.1", "myelinDiagram"]],
  "f172/a1/1": [["f172/a1", "teachingDiagram"]],
@@ -504,9 +525,12 @@ function recapFigures(unit,id,step) {
  const teaching=window.KeystoneHumanTeaching, lessons=window.KeystoneHumanLessons || {};
  if (!teaching) return "";
  return (recapFigureMap[unit+"/"+id+"/"+step] || []).map(function(entry) {
-  const item=lessons[entry[0]]?.[entry[1]];
-  if (!item) return "";
-  return entry[1].startsWith("explanationPhoto") ? teaching.renderPhoto(item) : teaching.renderDiagram(item);
+  if (!Array.isArray(entry)) return teaching.renderDiagram(entry);
+  const field=lessons[entry[0]]?.[entry[1]];
+  const item=entry.length>2 ? field?.[entry[2]] : field;
+  return (Array.isArray(item) ? item : [item]).filter(Boolean).map(function(visual) {
+   return entry[1].startsWith("explanationPhoto") ? teaching.renderPhoto(visual) : teaching.renderDiagram(visual);
+  }).join("");
  }).join("");
 }
 function showConcept(unit,id,step,render,review,simulationStage,resumeStage){

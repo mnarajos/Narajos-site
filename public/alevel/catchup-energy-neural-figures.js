@@ -10,9 +10,9 @@
   },
   "a5/glycolysis/1": {
    title: "Splitting and oxidation",
-   alt: "A six-carbon phosphorylated glucose splits into two three-carbon triose phosphates. These are oxidised to two three-carbon pyruvates; four ATP are produced and two NAD are reduced per original glucose.",
+   alt: "A phosphorylated six-carbon sugar splits into two three-carbon triose phosphates. These are oxidised to two three-carbon pyruvates; four ATP are produced and two NAD are reduced per original glucose.",
    caption: "Count the products per glucose: two triose phosphates lead to two pyruvates. Four ATP are made here; two ATP were used earlier, so the net gain is two.",
-   art: `<text x="150" y="25" text-anchor="middle">Phosphorylated glucose</text><text x="150" y="48" text-anchor="middle">6 carbons</text><path d="M150 59v30M150 88L78 124M150 88l72 36m-10-1 10 1-5-9M88 123l-10 1 5-9" fill="none" stroke="#344958" stroke-width="3"/><text x="78" y="149" text-anchor="middle">Triose</text><text x="222" y="149" text-anchor="middle">Triose</text><text x="78" y="169" text-anchor="middle">phosphate</text><text x="222" y="169" text-anchor="middle">phosphate</text><path d="M78 176v30m-6-7 6 7 6-7M222 176v30m-6-7 6 7 6-7" fill="none" stroke="#32776d" stroke-width="3"/><text x="78" y="231" text-anchor="middle">Pyruvate</text><text x="222" y="231" text-anchor="middle">Pyruvate</text><text x="150" y="265" text-anchor="middle">4 ATP made · 2 NAD reduced</text>`
+   art: `<text x="150" y="25" text-anchor="middle">Phosphorylated six-carbon sugar</text><text x="150" y="48" text-anchor="middle">6 carbons</text><path d="M150 59v30M150 88L78 124M150 88l72 36m-10-1 10 1-5-9M88 123l-10 1 5-9" fill="none" stroke="#344958" stroke-width="3"/><text x="78" y="149" text-anchor="middle">Triose</text><text x="222" y="149" text-anchor="middle">Triose</text><text x="78" y="169" text-anchor="middle">phosphate</text><text x="222" y="169" text-anchor="middle">phosphate</text><path d="M78 176v30m-6-7 6 7 6-7M222 176v30m-6-7 6 7 6-7" fill="none" stroke="#32776d" stroke-width="3"/><text x="78" y="231" text-anchor="middle">Pyruvate</text><text x="222" y="231" text-anchor="middle">Pyruvate</text><text x="150" y="265" text-anchor="middle">4 ATP made · 2 NAD reduced</text>`
   },
   "a5/anaerobic/0": {
    title: "Regenerating NAD without oxygen",

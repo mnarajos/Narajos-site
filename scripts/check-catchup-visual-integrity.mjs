@@ -55,7 +55,7 @@ for (const [id, figure] of Object.entries(gcseHigherVisuals)) {
   inspectFigure(figure());
 }
 for (const [id, figure] of Object.entries(gcseWorkedVisuals)) {
-  assert.equal(gcseCatchup[id]?.steps[0]?.worked?.visual, figure, `${id}: worked figure is not mapped`);
+  assert.equal(typeof gcseCatchup[id]?.steps[0]?.worked?.visual, "function", `${id}: worked figure is not mapped`);
   inspectFigure(figure());
 }
 inspectFigure(heatingCurve());
@@ -87,7 +87,7 @@ for (const [, topic, id, group] of keys) {
 }
 
 const humanWindow = {KeystoneHumanTeaching: {choice: (...args) => ({args}), written: (...args) => ({args})}};
-for (const file of ["teaching-f170.js", "teaching-f171.js", "teaching-knowledge.js"]) {
+for (const file of ["teaching-f170.js", "f170-cell-teaching-figures.js", "f170-membrane-teaching-figures.js", "teaching-f171.js", "teaching-knowledge.js"]) {
   const source = await readFile(new URL("../public/human-biology/" + file, import.meta.url), "utf8");
   vm.runInNewContext(source, {window: humanWindow});
 }
@@ -110,4 +110,47 @@ for (const [id, lesson] of Object.entries(humanWindow.KeystoneHumanLessons)) {
   }
 }
 assert.ok(assets, "expected Human Biology teaching diagrams");
-console.log(`Visual integrity: ${Object.keys(ks3StepVisuals).length} KS3 mappings, ${gcseSteps} GCSE and ${schoolSteps} Year 9 step placements, ${keys.length} A-level figures and ${assets} Human Biology local diagrams and ${photos} sourced teaching photos checked.`);
+// Inspect every explicitly mapped recap visual, including direct original assets.
+const companionSource = await readFile(new URL("../public/human-biology/companion.js", import.meta.url), "utf8");
+const recapStart = companionSource.indexOf("const labRecap =");
+const recapEnd = companionSource.indexOf("function showConcept(", recapStart);
+assert.ok(recapStart >= 0 && recapEnd > recapStart, "expected Human recap registry");
+const recapWindow = {};
+vm.runInNewContext(companionSource.slice(recapStart, recapEnd) + "\nwindow.registry = recapFigureMap;", {window: recapWindow});
+const recapData = {KeystoneHumanChallenges: {}, KeystoneHumanKnowledge: {}};
+vm.runInNewContext(await readFile(new URL("../public/human-biology/content-f170.js", import.meta.url), "utf8"), {window: recapData});
+const notesEnd = companionSource.indexOf("var sectionById={}");
+assert.ok(notesEnd > 0, "expected Human recap data");
+vm.runInNewContext(companionSource.slice(0, notesEnd) + "window.notes = notes;})();", {window: recapData});
+const focusStart = companionSource.indexOf("const focusedLessons={"), focusEnd = companionSource.indexOf("function indexComparisons()", focusStart);
+assert.ok(focusStart > 0 && focusEnd > focusStart, "expected Human focused recap data");
+vm.runInNewContext(companionSource.slice(focusStart, focusEnd) + "window.focus = focusedLessons;", {window: recapData});
+for (const [key, lesson] of Object.entries(humanWindow.KeystoneHumanLessons)) {
+  const focused = /^f170\/2\.1\.3\./.test(key) || /^f171\/1\.[23]\.1\./.test(key) || /^f170\/1\.1\.[1345]\./.test(key);
+  if (focused && lesson.title && !recapData.focus[key]) recapData.focus[key] = {lines: lesson.explain};
+}
+let recapMappings = 0;
+for (const [route, entries] of Object.entries(recapWindow.registry)) {
+  assert.match(route, /^f17[0-7]\/[^/]+\/\d+$/);
+  const [unit, id, step] = route.split("/");
+  const focus = recapData.focus[unit + "/" + id];
+  const section = unit === "f170" ? recapData.KeystoneHumanData.areas.flatMap(area => area.sections).find(item => item.id === id) : null;
+  const points = focus?.lines || section?.points || recapData.notes[unit]?.[id]?.lines;
+  assert.ok(points && Number(step) < points.length, `${route}: unknown recap line`);
+  for (const entry of entries) {
+    const field = Array.isArray(entry) ? humanWindow.KeystoneHumanLessons[entry[0]]?.[entry[1]] : entry;
+    const item = Array.isArray(entry) && entry.length > 2 ? field?.[entry[2]] : field;
+    const visuals = Array.isArray(item) ? item : [item];
+    assert.ok(visuals.length && visuals.every(Boolean), `${route}: mapped visual is missing`);
+    for (const visual of visuals) {
+      assert.match(visual.src, /^\/(human-biology|assets\/micrographs)\/[a-z0-9-]+\.(svg|webp)$/);
+      assert.ok(visual.alt?.length >= 20 && visual.caption?.length >= 20, `${route}: alternative and caption required`);
+      assert.ok(visual.width > 0 && visual.height > 0, `${route}: dimensions required`);
+      if (visual.src.startsWith("/assets/")) for (const key of ["source", "credit", "licence", "licenceUrl", "changes"]) assert.ok(visual[key], `${route}: ${key} required`);
+      await access(new URL("../public" + visual.src, import.meta.url));
+    }
+  }
+  recapMappings++;
+}
+assert.ok(recapMappings, "expected explicitly mapped recap lines");
+console.log(`Visual integrity: ${Object.keys(ks3StepVisuals).length} KS3 mappings, ${gcseSteps} GCSE and ${schoolSteps} Year 9 step placements, ${keys.length} A-level figures and ${assets} Human Biology local diagrams and ${photos} sourced teaching photos; ${recapMappings} recap mappings checked.`);

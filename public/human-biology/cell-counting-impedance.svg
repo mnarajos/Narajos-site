@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 320" role="img" aria-labelledby="title description">
+<title id="title">Electrical sensing through an aperture</title>
+<desc id="description">Particles suspended in conducting liquid pass one at a time through a narrow aperture between electrodes. Each particle changes impedance and produces an electrical pulse. A larger particle can produce a taller pulse.</desc>
+<rect width="280" height="320" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="14" fill="#263e4a">
+<text x="140" y="24" text-anchor="middle" font-weight="700">Conducting liquid and electrodes</text>
+<rect x="18" y="36" width="244" height="104" rx="8" fill="#e4f2f8" stroke="#23656c" stroke-width="2"/>
+<path d="M133 38v34m0 28v38m14-100v34m0 28v38" stroke="#23656c" stroke-width="5"/><path d="M29 51v25M251 51v25" stroke="#98451e" stroke-width="4"/>
+<circle cx="52" cy="87" r="9" fill="#d8c7e4" stroke="#69447f"/><circle cx="93" cy="87" r="6" fill="#d8c7e4" stroke="#69447f"/><circle cx="140" cy="86" r="7" fill="#d8c7e4" stroke="#69447f"/>
+<path d="M63 112h95m-7-5 7 5-7 5" fill="none" stroke="#23558c" stroke-width="2"/>
+<text x="140" y="162" text-anchor="middle">Narrow aperture</text><path d="M140 148v-42" stroke="#263e4a" stroke-width="1.5"/>
+<path d="M34 256h215M34 256v-70" fill="none" stroke="#263e4a" stroke-width="2"/>
+<path d="M39 252h28v-37h14v37h35v-30h14v30h36v-48h14v48h64" fill="none" stroke="#98451e" stroke-width="2.5"/>
+<text x="140" y="184" text-anchor="middle" font-weight="700">Impedance pulses over time</text>
+<text x="140" y="280" text-anchor="middle">Pulse number: particle count</text>
+<text x="140" y="297" text-anchor="middle">Height relates to particle volume</text>
+</g></svg>

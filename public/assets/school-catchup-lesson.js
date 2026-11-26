@@ -4,6 +4,7 @@ import { year9 } from "./school-catchup-year9.js";
 import { year9OpeningSupplement, year9Visual } from "./school-catchup-visuals.js";
 import { gcseCatchup } from "./gcse-catchup-data.js";
 import { gcseVisual } from "./gcse-catchup-visuals.js";
+import { readableGcseFigure } from "./gcse-more-step-visuals.js";
 
 const params = new URLSearchParams(location.search);
 const id = params.get("topic");
@@ -41,7 +42,7 @@ if (Object.hasOwn(year9, id) || Object.hasOwn(gcseCatchup, id)) {
   label.textContent = "The key idea. ";
   idea.append(label, lesson.idea);
   model.append(title, notice);
-  const visual = senior ? gcseVisual(lesson.visual) : year9Visual(id);
+  const visual = senior ? readableGcseFigure(() => gcseVisual(lesson.visual)) : year9Visual(id);
   if (visual) model.append(visual);
   if (!senior && lesson.visual) {
     const [caption, columns, rows] = lesson.visual;

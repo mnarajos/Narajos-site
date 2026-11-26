@@ -730,6 +730,18 @@ export async function checkHumanCatchup(browser, base) {
     await ratioFeedback.waitFor();
     assert.equal((await saved(chromatographyKey)).outcomes[0], "incorrect");
 
+    // A non-guided recap keeps its process visual and a line-specific caption on each step.
+    await open("catchup/f173/a1");
+    for (const [index, caption] of ["Follow the sample", "Locate the sample label", "Notice that a report"].entries()) {
+      const panel = page.locator("section.paper.panel");
+      const image = panel.locator('img[src="/human-biology/lab-sample-workflow.svg"]');
+      assert(await image.isVisible());
+      assert(await image.evaluate(async element => { await element.decode(); return element.naturalWidth > 0 && element.alt.length > 20; }));
+      await panel.getByText(caption, {exact: false}).waitFor();
+      assert(await widthFits(), "Laboratory recap must fit at phone size");
+      if (index < 2) await page.getByRole("link", {name: "Next key idea →"}).click();
+    }
+
     // A short recap keeps each mapped figure beside its own current idea.
     await open("catchup/f173/a3/1");
     const recapPanel = page.locator("section.paper.panel");
@@ -743,11 +755,20 @@ export async function checkHumanCatchup(browser, base) {
     assert.equal(await page.locator('section.paper.panel img[src="/human-biology/chromatography.svg"]').count(), 0);
     for (const [route, files] of [
       ["f170/1.1.2/1", ["hb-blood-cells-sem.webp", "hb-pancreas-tem.webp"]],
+      ["f170/1.1.2.counting/1", ["cell-counting-impedance.svg", "cell-counting-clumps.svg"]],
+      ["f170/1.1.3/1", ["cell-protein-routing.svg"]],
+      ["f170/1.1.3/2", ["cell-mito-protein-import.svg", "cell-er-comparison.svg"]],
+      ["f170/1.1.4/1", ["f170-oxygen-diffusion.svg", "f170-channel-diffusion.svg", "f170-water-active.svg"]],
+      ["f170/1.1.4/2", ["f170-water-active.svg", "f170-antigen-recognition.svg"]],
+      ["f170/1.1.4.surface/1", ["f170-receptor-signalling.svg", "f170-extrinsic-receptor.svg"]],
+      ["f170/1.1.4.surface/2", ["f170-antigen-recognition.svg"]],
+      ["f170/1.1.4.surface/3", ["f170-vesicle-traffic.svg"]],
       ["f170/3.2.1/1", ["action-potential-ions.svg", "myelinated-axon.svg"]],
       ["f172/a1/1", ["meiosis.svg"]], ["f172/a2/1", ["punnett-cross.svg"]],
       ["f172/a2/2", ["punnett-cross.svg"]], ["f172/a3/1", ["genetic-test.svg"]],
       ["f172/a4/2", ["gene-delivery.svg"]],
       ["f173/a2/1", ["hb-blood-cells-sem.webp", "hb-pancreas-tem.webp"]],
+      ["f174/a2/0", ["iron-blood-oxygen.svg"]], ["f174/a2/1", ["water-balance.svg"]], ["f174/a2/2", ["body-composition.svg"]],
       ["f175/a2/1", ["placental-exchange.svg"]], ["f175/a3/1", ["oviduct-obstruction.svg"]],
       ["f176/a3/1", ["nociception-pathway.svg"]], ["f177/a1/2", ["receptor.svg"]],
       ["f177/a2/2", ["trial-comparison.svg"]]
@@ -796,6 +817,33 @@ export async function checkHumanCatchup(browser, base) {
     });
     assert.deepEqual(cellEvidence, ["/assets/micrographs/hb-blood-cells-sem.webp", "/human-biology/red-cell-section.svg", "/human-biology/white-cell-nuclei.svg", "/human-biology/white-cell-defence.svg"]);
     assert.equal(await stage("independent").locator('img[src$="/white-cell-defence.svg"]').count(), 0);
+
+    // Count and organelle diagrams follow the authored paragraph and model step.
+    for (const [route, explain, worked] of [
+      ["f170/1.1.2.counting", ["cell-counting-chamber.svg", "cell-counting-impedance.svg"], ["cell-counting-chamber.svg", "cell-counting-clumps.svg"]],
+      ["f170/1.1.3", ["cell-nucleus-traffic.svg", "cell-mito-protein-import.svg", "cell-er-comparison.svg", "cell-protein-routing.svg"], ["cell-nucleus-rer.svg", "cell-protein-routing.svg", "cell-secretion-failure.svg"]],
+      ["f170/1.1.4", ["f170-oxygen-diffusion.svg", "f170-water-active.svg"], ["f170-oxygen-diffusion.svg", "f170-oxygen-diffusion.svg", "f170-oxygen-diffusion.svg"]],
+      ["f170/1.1.4.surface", ["f170-membrane-labelled.svg", "f170-receptor-signalling.svg", "f170-antigen-recognition.svg", "f170-vesicle-traffic.svg"], ["f170-membrane-labelled.svg", "f170-cholesterol-membrane.svg", "f170-membrane-labelled.svg"]]
+    ]) {
+      await page.evaluate(key => localStorage.removeItem(key), localPractice);
+      await open("catchup/" + route);
+      const explanation = page.locator(".hb-teach-explain");
+      const paragraphs = explanation.locator(":scope > p");
+      for (let i = 0; i < explain.length; i++) {
+        const file = explain[i];
+        assert(await paragraphs.nth(i).evaluate((el, name) => Boolean(el.nextElementSibling?.querySelector(`img[src$="/${name}"]`)), file), file + " must follow its paragraph");
+      }
+      const model = page.locator("[data-hb-model-step]");
+      await expand(model);
+      for (let i = 0; i < worked.length; i++) {
+        const image = model.locator(`li:nth-child(${i + 1}) img[src$="/${worked[i]}"]`);
+        assert(await image.isVisible(), worked[i] + " must follow its worked step");
+        assert(await image.evaluate(async element => { await element.decode(); return element.naturalWidth > 0 && element.alt.length > 20; }));
+        if (i + 1 < worked.length) await model.getByRole("button", {name: "Show next step"}).click();
+      }
+      assert(await widthFits(), route + " must fit at phone size");
+      assert.equal(await stage("independent").locator(".hb-teaching-diagram").count(), 0);
+    }
 
     // Reflex and myelin figures follow the explanation paragraphs they support.
     await page.evaluate(key => localStorage.removeItem(key), localPractice);

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 310" role="img" aria-labelledby="title description">
+<title id="title">From nuclear instructions to rough ER</title>
+<desc id="description">Messenger RNA carrying a copy of instructions exits the nucleus. A ribosome on the cytoplasmic side of rough ER makes a polypeptide that enters the ER lumen and can fold.</desc>
+<rect width="280" height="310" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a" text-anchor="middle">
+<ellipse cx="77" cy="65" rx="53" ry="37" fill="#eee8f4" stroke="#69447f" stroke-width="2"/>
+<path d="M48 65q10-14 20 0t20 0t20 0" fill="none" stroke="#98451e" stroke-width="3"/>
+<text x="77" y="121">Nuclear DNA</text>
+<path d="M128 77L195 138m-9-3 9 3-3-9" fill="none" stroke="#23558c" stroke-width="2.5"/>
+<text x="172" y="80">mRNA</text>
+<text x="220" y="117">Ribosomes</text>
+<path d="M29 153q55-14 110 0t112 0v71q-57-14-112 0t-110 0Z" fill="#d8ece7" stroke="#23656c" stroke-width="3"/>
+<circle cx="200" cy="148" r="8" fill="#69447f"/><circle cx="220" cy="147" r="8" fill="#69447f"/>
+<path d="M210 154v29q-13 0-13 11t20 0t-5 15" fill="none" stroke="#98451e" stroke-width="3"/>
+<text x="108" y="179">Rough ER</text><text x="110" y="202">ER lumen</text>
+<text x="140" y="257">Polypeptide enters ER</text><text x="140" y="278">and can fold</text>
+<text x="140" y="300">Drawing is simplified</text>
+</g></svg>

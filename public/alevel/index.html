@@ -417,6 +417,12 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <script src="/alevel/catchup-exchange-figures.js"></script>
 <script src="/alevel/catchup-genetics-figures.js"></script>
 <script src="/alevel/catchup-energy-neural-figures.js"></script>
+<script src="/alevel/catchup-gene-regulation-figures.js"></script>
+<script src="/alevel/catchup-energy-mechanism-figures.js"></script>
+<script src="/alevel/catchup-population-figures.js"></script>
+<script src="/alevel/catchup-gene-control-figures.js"></script>
+<script src="/alevel/catchup-response-figures.js"></script>
+<script src="/alevel/catchup-synapse-figures.js"></script>
 <script src="/alevel/catchup-immunity-figures.js"></script>
 <script src="/alevel/catchup-transport-figures.js"></script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -2586,13 +2592,13 @@ DATA.a6={
    {"t":"mcq","tier":"H","q":"Same idea, new context: in multiple sclerosis, myelin is damaged. What happens to impulses in the affected neurones?","opts":["Slower, as more of the membrane must depolarise","Faster, as nothing now blocks the flow of ions","Larger, as many more sodium ions can enter the axon","They stop being all-or-nothing and vary in size"],"a":0,"fb":[null,"Losing myelin removes saltatory conduction, so impulses slow down.","Action potentials stay the same size: they are all-or-nothing.","They are still all-or-nothing; only the speed changes."],"why":"Without myelin, impulses cannot jump between nodes, so conduction is slower (and may fail).","seq":"myelin"}
   ]},
 
- {id:"synapse",title:"Synaptic transmission",spec:"3.6.2.2",needs:["actionpot"],key:["At a <b>cholinergic synapse</b>, an action potential arrives at the presynaptic knob. <b>Calcium ion channels</b> open and Ca²⁺ diffuses in.","Vesicles containing <b>acetylcholine</b> fuse with the presynaptic membrane and release it into the <b>synaptic cleft</b> by exocytosis.","Acetylcholine diffuses across the cleft and binds to <b>receptors</b> on the postsynaptic membrane. Sodium channels open, Na⁺ diffuses in, and the postsynaptic membrane depolarises.","<b>Acetylcholinesterase</b> hydrolyses acetylcholine; the products return to the presynaptic knob to be recycled.","Synapses are <b>unidirectional</b>: vesicles are only in the presynaptic knob, receptors only on the postsynaptic membrane."],gate:"Synapse questions are long sequences. Each step causes the next; don’t skip calcium.",st:2,
+ {id:"synapse",title:"Synaptic transmission",spec:"3.6.2.2",needs:["actionpot"],key:["At a <b>cholinergic synapse</b>, an action potential arrives at the presynaptic knob. <b>Calcium ion channels</b> open and Ca²⁺ diffuses in.","Vesicles containing <b>acetylcholine</b> fuse with the presynaptic membrane and release it into the <b>synaptic cleft</b> by exocytosis.","Acetylcholine diffuses across the cleft and binds to <b>receptors</b> on the postsynaptic membrane. Sodium channels open, Na⁺ diffuses in, and the postsynaptic membrane depolarises.","<b>Acetylcholinesterase</b> hydrolyses acetylcholine; choline returns to the presynaptic knob and is reused to make acetylcholine.","Synapses are <b>unidirectional</b>: vesicles are only in the presynaptic knob, receptors only on the postsynaptic membrane."],gate:"Synapse questions are long sequences. Each step causes the next; don’t skip calcium.",st:2,
   qs:[
    {"t":"mcq","tier":"F","warm":true,"q":"From GCSE: what is the gap between two neurones called?","opts":["A synapse","A receptor","An effector","A gland"],"a":0,"why":"A synapse is the junction between two neurones. A chemical diffuses across the gap."},
    {"t":"tap","tier":"F","mode":"label","fig":"synapseFig","q":"Label the synapse.","pts":[[312,104],[318,176],[135,212],[258,18]],"labels":["synaptic vesicle","synaptic cleft","receptor protein","mitochondrion"],"why":"Vesicles hold acetylcholine. Acetylcholine crosses the cleft and binds to receptor proteins. Mitochondria supply ATP.","extra":["myelin sheath"]},
    {"t":"order","tier":"F","q":"Put the events at a cholinergic synapse in order.","items":["An action potential arrives at the presynaptic knob","Calcium ion channels open and Ca²⁺ diffuses in","Vesicles fuse with the presynaptic membrane","Acetylcholine diffuses across the cleft","Acetylcholine binds to receptors on the postsynaptic membrane","Sodium channels open and the postsynaptic membrane depolarises"],"why":"Action potential → Ca²⁺ in → vesicles fuse → acetylcholine crosses → binds receptors → Na⁺ in."},
    {"t":"two","tier":"F","q":"Why can impulses only travel one way across a synapse?","opts":["Vesicles are only presynaptic","The cleft is one-way","Calcium only flows one way"],"a":0,"q2":"Which is the best reason?","opts2":["Receptors are only on the postsynaptic side","Acetylcholine is too large to diffuse back","The postsynaptic neurone has no sodium channels","Impulses always travel towards the brain"],"a2":0,"why":"Release on one side, receptors on the other.","fixed":true},
-   {"t":"mcq","tier":"F","q":"What is the role of acetylcholinesterase?","opts":["It hydrolyses acetylcholine in the cleft","It makes acetylcholine in the vesicles","It opens calcium channels","It pumps sodium ions out"],"a":0,"fb":[null,"Acetylcholine is made in the presynaptic knob, not by this enzyme.","Calcium channels are opened by the action potential.","That is the sodium–potassium pump."],"why":"Removing acetylcholine stops continuous stimulation, and the products are recycled."},
+   {"t":"mcq","tier":"F","q":"What is the role of acetylcholinesterase?","opts":["It hydrolyses acetylcholine in the cleft","It makes acetylcholine in the vesicles","It opens calcium channels","It pumps sodium ions out"],"a":0,"fb":[null,"Acetylcholine is made in the presynaptic knob, not by this enzyme.","Calcium channels are opened by the action potential.","That is the sodium–potassium pump."],"why":"Removing acetylcholine stops continuous stimulation; choline is reused to make acetylcholine."},
    {"t":"match","tier":"F","q":"Match each ion or molecule to its role at the synapse.","pairs":[["Ca²⁺","Causes vesicles to fuse with the presynaptic membrane"],["Acetylcholine","Neurotransmitter that binds to receptors"],["Na⁺","Depolarises the postsynaptic membrane"],["ATP","Provides energy to recycle acetylcholine"]],"why":"Each has a specific job."},
    {"t":"cloze","tier":"F","q":"Complete the sentences about the synapse.","text":"When an action potential arrives, {calcium} ions diffuse into the presynaptic knob. Vesicles release {acetylcholine} by exocytosis. It binds to receptors on the {postsynaptic} membrane. It is then hydrolysed by {acetylcholinesterase}.","extra":["sodium","presynaptic"],"why":"Ca²⁺, acetylcholine, postsynaptic, acetylcholinesterase."},
    {"t":"pick","err":true,"tier":"F","q":"A student wrote this about synapses.","text":"When an action potential arrives at the presynaptic knob, sodium ion channels open and sodium causes the vesicles to fuse with the membrane.","asks":[["Tap the word that is wrong.","sodium"]],"why":"Calcium ion channels open; Ca²⁺ causes the vesicles to fuse."},
@@ -6317,9 +6323,10 @@ function catchupChunks(notes,synapse,topic,concept){
  if(synapse){
   var groups=[["Release acetylcholine",0,2],["Depolarise the postsynaptic membrane",2,3],
    ["End the signal",3,4],["Why transmission is one-way",4]];
-  return groups.map(function(g){
+  return groups.map(function(g, groupIndex){
    return '<div class="companion-chunk"><h3>'+g[0]+'</h3>'+
-    notes.slice(g[1],g[2]).map(function(k){return '<p>'+rich(k)+'</p>';}).join('')+'</div>';
+    notes.slice(g[1],g[2]).map(function(k){return '<p>'+rich(k)+'</p>';}).join('')+
+    (window.ALevelSynapseFigures?window.ALevelSynapseFigures.render(topic,concept,groupIndex):'')+'</div>';
   }).join('');
  }
  var h='';
@@ -6328,7 +6335,12 @@ function catchupChunks(notes,synapse,topic,concept){
    (window.ALevelCatchupFigures?window.ALevelCatchupFigures.render(topic,concept,i/2):'')+
    (window.ALevelImmunityFigures?window.ALevelImmunityFigures.render(topic,concept,i/2):'')+
    (window.ALevelTransportFigures?window.ALevelTransportFigures.render(topic,concept,i/2):'')+
-   (window.ALevelEnergyNeuralFigures?window.ALevelEnergyNeuralFigures.render(topic,concept,i/2):'')+'</div>';
+   (window.ALevelEnergyNeuralFigures?window.ALevelEnergyNeuralFigures.render(topic,concept,i/2):'')+
+   (window.ALevelGeneRegulationFigures?window.ALevelGeneRegulationFigures.render(topic,concept,i/2):'')+
+   (window.ALevelEnergyMechanismFigures?window.ALevelEnergyMechanismFigures.render(topic,concept,i/2):'')+
+   (window.ALevelPopulationFigures?window.ALevelPopulationFigures.render(topic,concept,i/2):'')+
+   (window.ALevelGeneControlFigures?window.ALevelGeneControlFigures.render(topic,concept,i/2):'')+
+   (window.ALevelResponseFigures?window.ALevelResponseFigures.render(topic,concept,i/2):'')+'</div>';
  }
  return h;
 }

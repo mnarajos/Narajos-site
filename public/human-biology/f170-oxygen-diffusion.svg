@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 290" role="img" aria-labelledby="title description">
+<title id="title">Net oxygen diffusion into a cell</title>
+<desc id="description">There is more oxygen per volume outside a respiring cell than inside. Oxygen crosses the lipid bilayer in both directions. A thicker arrow shows greater movement into the cell, giving a net inward movement.</desc>
+<rect width="280" height="290" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a" text-anchor="middle">
+<text x="140" y="24" font-weight="700">Outside: more O₂</text>
+<rect x="24" y="38" width="232" height="196" rx="8" fill="#e6f3fa" stroke="#23656c" stroke-width="2"/>
+<path d="M25 130h230M25 138h230" stroke="#23656c" stroke-width="3"/>
+<g fill="#fff" stroke="#23558c" stroke-width="2"><circle cx="55" cy="61" r="5"/><circle cx="91" cy="89" r="5"/><circle cx="120" cy="60" r="5"/><circle cx="165" cy="89" r="5"/><circle cx="207" cy="59" r="5"/><circle cx="229" cy="105" r="5"/><circle cx="69" cy="175" r="5"/><circle cx="220" cy="202" r="5"/></g>
+<path d="M126 100v72m-7-9 7 9 7-9" fill="none" stroke="#23558c" stroke-width="4"/>
+<path d="M160 171v-70m-5 7 5-7 5 7" fill="none" stroke="#98451e" stroke-width="1.5"/>
+<text x="140" y="216">Inside: O₂ is used</text>
+<text x="140" y="261">Thicker arrow = net inward</text>
+<text x="140" y="282">movement</text>
+</g></svg>

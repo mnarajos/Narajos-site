@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 365" role="img" aria-labelledby="title description">
+<title id="title">Numbered membrane cross-section</title>
+<desc id="description">In a phospholipid bilayer, heads face the fluids and tails face inward. Number 1 marks a head. Number 2 marks cholesterol among tails. Number 3 marks an outside carbohydrate chain on a spanning glycoprotein. Number 4 marks a peripheral protein on the cytoplasmic face. An oxygen arrow crosses the lipid core; a sideways arrow indicates lateral movement.</desc>
+<rect width="280" height="365" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a">
+<text x="140" y="24" text-anchor="middle" font-weight="700">Outside cell</text>
+<g stroke="#23656c" stroke-width="2" fill="#a9d6d0">
+<circle cx="32" cy="94" r="8"/><circle cx="55" cy="94" r="8"/><circle cx="78" cy="94" r="8"/><circle cx="101" cy="94" r="8"/><circle cx="124" cy="94" r="8"/><circle cx="147" cy="94" r="8"/><circle cx="170" cy="94" r="8"/><circle cx="247" cy="94" r="8"/>
+<circle cx="32" cy="166" r="8"/><circle cx="55" cy="166" r="8"/><circle cx="78" cy="166" r="8"/><circle cx="101" cy="166" r="8"/><circle cx="124" cy="166" r="8"/><circle cx="147" cy="166" r="8"/><circle cx="170" cy="166" r="8"/><circle cx="247" cy="166" r="8"/>
+<path d="M32 102v20m23-20v20m23-20v20m23-20v20m23-20v20m23-20v20m23-20v20m77-20v20M32 158v-20m23 20v-20m23 20v-20m23 20v-20m23 20v-20m23 20v-20m23 20v-20m77 20v-20" fill="none"/>
+</g>
+<rect x="92" y="104" width="10" height="27" rx="3" fill="#e7b783" stroke="#98451e"/><circle cx="97" cy="104" r="5" fill="#fff" stroke="#98451e" stroke-width="2"/>
+<path d="M195 88q10-12 22 0v78q-11 12-22 0Z" fill="#b9c9ee" stroke="#4b6491" stroke-width="2"/>
+<path d="M206 87V63m0 11-13-11m13 3 14-11" fill="none" stroke="#69447f" stroke-width="3"/>
+<circle cx="193" cy="63" r="4" fill="#69447f"/><circle cx="206" cy="58" r="4" fill="#69447f"/><circle cx="220" cy="55" r="4" fill="#69447f"/>
+<ellipse cx="235" cy="186" rx="22" ry="10" fill="#d8c7e4" stroke="#69447f" stroke-width="2"/>
+<path d="M26 78l6 8M90 146l6-15M229 50l-8 6M257 194l-8-6" stroke="#98451e" stroke-width="1.5" fill="none"/>
+<g fill="#98451e" font-weight="700"><text x="14" y="78">1</text><text x="81" y="157">2</text><text x="229" y="48">3</text><text x="259" y="202">4</text></g>
+<path d="M153 75v101m-6-8 6 8 6-8" fill="none" stroke="#23558c" stroke-width="2.5"/><text x="153" y="68" text-anchor="middle" >O₂</text>
+<path d="M42 76h70m-8-6 8 6-8 6M78 81v5" fill="none" stroke="#23558c" stroke-width="2"/><text x="77" y="58" text-anchor="middle">Lipids move</text>
+<text x="140" y="220" text-anchor="middle">Cytoplasm</text>
+<text x="18" y="248">1 Head faces water</text><text x="18" y="274">2 Cholesterol among tails</text><text x="18" y="300">3 Outer carbohydrate chain</text><text x="18" y="326">4 Peripheral protein</text>
+<text x="140" y="352" text-anchor="middle" >Tails face inward</text>
+</g></svg>

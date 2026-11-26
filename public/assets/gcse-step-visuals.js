@@ -35,7 +35,7 @@ function ions() {
     text(82,25,"−",blue,22)+text(238,25,"+",rust,22)+
     circle(136,97,12,"#dceafa",blue)+text(136,102,"+",blue,16)+arrow(121,97,96,97,blue)+
     circle(184,97,12,"#fae6da",rust)+text(184,102,"−",rust,16)+arrow(199,97,225,97,rust)+
-    text(82,162,"Negative electrode",blue,13)+text(238,162,"Positive electrode",rust,13),320,175),
+    text(82,162,"Cathode (−)",blue,13)+text(238,162,"Anode (+)",rust,13),320,175),
     "Follow each ion towards the electrode with the opposite charge. The ions must be free to move.");
 }
 
@@ -51,13 +51,13 @@ function carbonCycle() {
   return picture("Carbon in a simple ecosystem", diagram(
     "Carbon dioxide in air is taken into plants by photosynthesis. Feeding transfers carbon from plants to animals. Plant and animal respiration return carbon dioxide to air. Dead material passes to decomposers, whose respiration also returns carbon dioxide to air.",
     text(160,23,"Carbon dioxide in air",blue,16)+text(58,92,"Plants",teal,16)+text(260,92,"Animals",rust,16)+text(160,162,"Decomposers",ink,16)+
-    arrow(107,32,61,69,teal)+text(29,47,"Photo-",teal,12)+text(29,61,"synthesis",teal,12)+
+    arrow(107,32,61,69,teal)+
     arrow(91,86,224,86,ink)+text(158,76,"Feeding",ink,14)+
     arrow(92,70,135,32,blue)+arrow(223,68,182,32,blue)+
     arrow(70,103,129,145,ink)+arrow(249,103,191,145,ink)+text(160,119,"Dead material",ink,13)+
     '<path d="M160 169 C311 220 320 61 245 31" fill="none" stroke="'+blue+'" stroke-width="2.5"/>'+
     arrow(255,35,245,31,blue)+text(265,184,"Respiration",blue,12),320,200),
-    "Follow the arrows as carbon moves through organisms. Respiration by plants, animals and decomposers returns carbon dioxide to the air. This is a simplified cycle.");
+    "Photosynthesis moves carbon dioxide into plants. Respiration by plants, animals and decomposers returns carbon dioxide to the air. This is a simplified cycle.");
 }
 
 function moltenSalt() {
@@ -90,7 +90,7 @@ function photosynthesis() {
     '<path d="M150 135 C100 118 100 56 160 40 C220 56 220 118 170 135 Z" fill="#d6edda" stroke="'+teal+'" stroke-width="2.5"/>'+
     line(160,138,160,59,teal,2)+line(160,100,131,79,teal,1.5)+line(160,91,190,72,teal,1.5)+
     text(160,20,"Light",rust,15)+arrow(160,25,160,48,rust)+
-    text(45,64,"Carbon",blue,14)+text(45,80,"dioxide",blue,14)+arrow(67,88,123,99,blue)+
+    text(45,60,"Carbon",blue,14)+text(45,84,"dioxide",blue,14)+arrow(75,96,123,99,blue)+
     text(47,133,"Water",blue,14)+arrow(73,128,129,121,blue)+
     arrow(198,98,246,82,teal)+text(269,80,"Oxygen",teal,14)+
     '<rect x="126" y="105" width="68" height="20" rx="3" fill="#f7fcf7"/>'+text(160,120,"Glucose",teal,14),320,158),
@@ -113,7 +113,7 @@ function glucoseControl() {
     "After a meal blood glucose rises. The pancreas releases insulin, which acts on body cells and the liver. Cells take up glucose and the liver and muscles store glucose as glycogen; blood glucose falls towards its normal level.",
     text(160,22,"Blood glucose rises",rust,16)+arrow(160,28,160,53,ink)+
     text(160,72,"Pancreas releases insulin",ink,16)+arrow(160,79,160,103,ink)+
-    text(160,123,"Body cells take up glucose",teal,15)+text(160,143,"Liver and muscles store glycogen",teal,15)+
+    text(160,119,"Body cells take up glucose",teal,15)+text(160,145,"Liver and muscles store glycogen",teal,15)+
     arrow(160,150,160,175,ink)+text(160,195,"Blood glucose falls",blue,16),320,213),
     "Follow the response from the rise in glucose to its return towards the normal range.");
 }

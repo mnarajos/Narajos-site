@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 300" role="img" aria-labelledby="title description">
+<title id="title">Counting chamber: area and depth</title>
+<desc id="description">A ruled grid contains drawn cells. A side section shows the cover glass above the chamber floor, with the liquid layer's depth marked. Area multiplied by depth gives the sampled volume.</desc>
+<rect width="280" height="300" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a">
+<text x="140" y="23" text-anchor="middle" font-weight="700">View through microscope</text>
+<rect x="70" y="36" width="140" height="105" fill="#edf6fa" stroke="#23656c" stroke-width="2"/>
+<path d="M105 36v105m35-105v105m35-105v105M70 71h140M70 106h140" fill="none" stroke="#83a8b0" stroke-width="1"/>
+<g fill="#d8c7e4" stroke="#69447f"><circle cx="85" cy="55" r="6"/><circle cx="120" cy="90" r="6"/><circle cx="150" cy="59" r="6"/><circle cx="184" cy="95" r="6"/><circle cx="95" cy="125" r="6"/><circle cx="165" cy="123" r="6"/></g>
+<text x="140" y="163" text-anchor="middle">Counted grid area</text>
+<text x="140" y="191" text-anchor="middle" font-weight="700">Side section</text>
+<path d="M40 214H240M40 252H240" stroke="#23656c" stroke-width="5"/>
+<rect x="40" y="217" width="200" height="32" fill="#dceef5"/>
+<path d="M250 217v32m-4-5 4 5 4-5m-8-22 4-5 4 5" fill="none" stroke="#98451e" stroke-width="2"/>
+<text x="140" y="209" text-anchor="middle">Cover glass</text><text x="269" y="236" text-anchor="middle" transform="rotate(-90 269 236)">Depth</text>
+<text x="140" y="274" text-anchor="middle">Grid area × chamber depth</text>
+<text x="140" y="292" text-anchor="middle">= sampled volume</text>
+</g></svg>

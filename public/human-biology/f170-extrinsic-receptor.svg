@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 300" role="img" aria-labelledby="title description">
+<title id="title">A surface-associated receptor</title>
+<desc id="description">A signal binds a receptor on the outside surface of a membrane. In this simplified example a separate spanning partner relays a response into the cell. Other receptors can themselves span the membrane.</desc>
+<rect width="280" height="300" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a" text-anchor="middle">
+<text x="140" y="26" font-weight="700">Outside cell</text>
+<path d="M20 139h240M20 191h240" stroke="#23656c" stroke-width="4"/>
+<ellipse cx="107" cy="124" rx="28" ry="15" fill="#d8c7e4" stroke="#69447f" stroke-width="2"/>
+<path d="M97 83h20l-3 20h-14Z" fill="#e7b783" stroke="#98451e" stroke-width="2"/>
+<path d="M107 105v5" stroke="#98451e" stroke-width="2"/>
+<path d="M150 132q22-9 37 0v66q-17 9-37 0Z" fill="#b9c9ee" stroke="#4b6491" stroke-width="2"/>
+<path d="M135 124h12m-5-5 5 5-5 5M168 202v25m-6-7 6 7 6-7" fill="none" stroke="#23558c" stroke-width="2"/>
+<text x="107" y="65">Signal</text><text x="54" y="100" font-size="14">Receptor</text><path d="M78 104l13 10" fill="none" stroke="#263e4a"/>
+<text x="205" y="174" font-size="14">Partner</text>
+<text x="140" y="257">Response inside</text>
+<text x="140" y="284" font-size="14">One possible arrangement</text>
+</g></svg>

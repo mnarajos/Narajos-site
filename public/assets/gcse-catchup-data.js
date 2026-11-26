@@ -2,7 +2,7 @@ import { investigations } from "./gcse-investigations.js";
 import { question } from "./school-catchup-journey.js";
 import { priorityCatchup } from "./gcse-catchup-priority.js";
 import { gcseStepVisuals } from "./gcse-step-visuals.js";
-import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, heatingCurve } from "./gcse-more-step-visuals.js";
+import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, heatingCurve, readableGcseFigure } from "./gcse-more-step-visuals.js";
 import { gcseVisual } from "./gcse-catchup-visuals.js";
 
 function lesson(year, code, title, hook, notice, idea, visual, stages, independent, retry, higher) {
@@ -580,7 +580,9 @@ for (const [id, render] of Object.entries(gcseOpeningVisuals)) gcseCatchup[id].v
 
 for (const mapping of [gcseStepVisuals, moreGcseStepVisuals]) {
   for (const [id, visuals] of Object.entries(mapping)) {
-    for (const [index, render] of Object.entries(visuals)) gcseCatchup[id].steps[index].visual = render;
+    for (const [index, render] of Object.entries(visuals)) {
+      gcseCatchup[id].steps[index].visual = mapping === gcseStepVisuals ? () => readableGcseFigure(render) : render;
+    }
   }
 }
 
@@ -603,7 +605,7 @@ const openingFigureAtStep = {
   "circuit-resistance": [1]
 };
 for (const [id, indices] of Object.entries(openingFigureAtStep)) {
-  for (const index of indices) gcseCatchup[id].steps[index].visual = () => gcseVisual(gcseCatchup[id].visual);
+  for (const index of indices) gcseCatchup[id].steps[index].visual = () => readableGcseFigure(() => gcseVisual(gcseCatchup[id].visual));
 }
 
 for (const [id, render] of Object.entries(gcseHigherVisuals)) gcseCatchup[id].higherVisual = render;
@@ -627,3 +629,10 @@ scaffold(complementary["respiration-exercise"], "Trace oxygen from the lungs to 
 
 // The respiratory worked example is added after the core catalogue above.
 for (const [id, render] of Object.entries(gcseWorkedVisuals)) gcseCatchup[id].steps[0].worked.visual = render;
+
+// Apply the phone-size label floor to any reused worked-example graphics.
+for (const lesson of Object.values(gcseCatchup)) for (const step of lesson.steps) {
+  if (!step.worked?.visual) continue;
+  const render = step.worked.visual;
+  step.worked.visual = () => readableGcseFigure(render);
+}

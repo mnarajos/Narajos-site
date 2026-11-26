@@ -200,6 +200,12 @@
   .hb-model-with-evidence .hb-model-steps li:not([aria-current="step"]) { display: none; }
   .hb-model-with-evidence .hb-model-steps li { margin-block-start: 0; }
   .hb-model-with-evidence .hb-model-steps li::before { content: none; }
+  /* Compact worked figures use the card's inner width without forcing a
+     sideways scroll or changing the list's semantics. */
+  .hb-model-path .hb-teach-photo:has(.hb-teaching-diagram-compact) { margin-inline: -.75rem; }
+  .hb-model-path .hb-teach-photo:has(.hb-teaching-diagram-compact) figcaption { padding-inline: .75rem; }
+  .hb-model-steps:not(.hb-model-path) .hb-teach-photo:has(.hb-teaching-diagram-compact) { margin-inline-start: -1.25rem; }
+  .hb-model-steps:not(.hb-model-path) .hb-teach-photo:has(.hb-teaching-diagram-compact) figcaption { padding-inline-start: 1.25rem; }
   .hb-model-with-evidence .hb-model-back:not([hidden]) { display: inline-flex; }
   .hb-worked-micrograph { max-inline-size: min(100%, 16rem); }
 }
