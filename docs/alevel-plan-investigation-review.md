@@ -46,7 +46,12 @@ For each release, attach the exact commit, test commands and outcomes, captures 
 
 ## Current revision verification
 
-The current revision responds to the independent review of `aae52721c6f76d1a4d7a3b19cdd3fe63f59b1d91`. The draft PR records the exact updated commit, current browser and CI results, and any outstanding checks. Hands-on screen-reader and independent teacher reviews remain outstanding. Prior scripted Orca speech output is useful but is not an audible, hands-on review.
+The current revision responds to the independent review of `aae52721c6f76d1a4d7a3b19cdd3fe63f59b1d91`. The revised application and tests were verified at `74e1b8d2033642f8770461548bb2986301d3c42e`; any subsequent documentation-only commit does not change the application. The [draft PR](https://github.com/mnarajos/Narajos-site/pull/102) records its exact current head and current CI results.
+
+- The focused Chromium and WebKit suites passed, including fractional volumes, whole specimen counts, growth alternatives, shared-vessel cases, both beetroot repairs, cress support and unchanged review, progress migration, keyboard and touch interaction, and scoped accessibility checks. Existing A-level practical, question-interpretation and vocabulary checks and the three RP9 Chromium suites passed; site and content checks passed.
+- At the application commit above, Firefox and WebKit passed in the [CI browser run](https://github.com/mnarajos/Narajos-site/actions/runs/45879083258); the broader Chromium and readability jobs were still running when this record was written. Earlier local Firefox launches were blocked by the environment, rather than reporting product failures.
+- The [interactive branch preview](https://codex-plan-an-investigation-twilight-haze-0914.mnarajos.workers.dev/alevel/#exam-plan-investigation) served the revised application. A full focused Chromium journey against that preview passed both beetroot repairs, growth decisions, uncued and supported cress routes, review-state persistence, word help and mobile accessibility.
+- Hands-on screen-reader and independent teacher reviews remain outstanding. Prior scripted Orca speech output was for the earlier reviewed implementation; it is useful context, not an audible, hands-on review of this revision.
 
 ## Historical verification of reviewed commit `aae52721c6f76d1a4d7a3b19cdd3fe63f59b1d91`
 
