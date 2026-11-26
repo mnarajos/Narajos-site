@@ -294,3 +294,8 @@
 .hb-teaching-booklet .hb-help .actions { margin-top: .25rem; }
 .hb-teaching-booklet .hb-skip .button { border: 0; background: transparent; padding-inline: 0; color: var(--brand); text-decoration: underline; text-underline-offset: .15em; }
 .hb-teaching-booklet .hb-stage-next [data-hb-open="model"] { border: 0; background: transparent; color: var(--brand); text-decoration: underline; text-underline-offset: .15em; }
+
+/* Keep a comparison's diagram directly with the fact it explains. */
+.hb-compare-group { border-block-start: 1px solid var(--line, #a4a8af); padding-block: .55rem; }
+.hb-compare-group h4 { margin-block: .3rem .6rem; }
+.hb-compare-group p:last-child { margin-block-end: .25rem; }

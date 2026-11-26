@@ -84,6 +84,16 @@
     ).join("");
   }
 
+  function comparisonContent(lesson) {
+    const comparison = lesson.compare;
+    if (!lesson.comparisonFigures || !comparison) {
+      return teachingDiagram(lesson.comparisonDiagram) + (lesson.comparisonDiagrams || []).map(teachingDiagram).join("") + table(comparison);
+    }
+    return '<section class="hb-compare-groups"><h3>' + escape(comparison.caption) + '</h3>' +
+      comparison.rows.map((row, index) => '<section class="hb-compare-group"><h4>' + escape(row[0]) + '</h4>' +
+        (lesson.comparisonFigures[index] || []).map(teachingDiagram).join("") + paragraphs(row.slice(1)) + '</section>').join("") + '</section>';
+  }
+
   function writingExample(example) {
     if (!example) return "";
     return '<details class="hb-prerequisite hb-writing-example"><summary>' + escape(example.title) +
@@ -136,7 +146,7 @@
       ? '<details class="hb-prerequisite"><summary>' + escape(lesson.activate[0]) + '</summary><p>' +
         escape(lesson.activate[1]) + '</p>' + prior + '</details>' : prior;
     const explanation = (context.booklet ? '<section class="paper panel hb-teach-explain"><h2>Understand the idea</h2>' : '<details class="paper panel hb-teach-explain" open><summary><h2>Understand the idea</h2></summary>') +
-      explanationParagraphs(lesson) + figure(lesson.explanationPhoto) + figure(lesson.explanationPhoto2) + teachingDiagram(lesson.explanationDiagram) + (lesson.explanationDiagrams || []).map(teachingDiagram).join("") + (lesson.teachingDiagramModelOnly ? "" : teachingDiagram(lesson.teachingDiagram)) + teachingDiagram(lesson.comparisonDiagram) + (lesson.comparisonDiagrams || []).map(teachingDiagram).join("") + table(lesson.compare) +
+      explanationParagraphs(lesson) + figure(lesson.explanationPhoto) + figure(lesson.explanationPhoto2) + teachingDiagram(lesson.explanationDiagram) + (lesson.explanationDiagrams || []).map(teachingDiagram).join("") + (lesson.teachingDiagramModelOnly ? "" : teachingDiagram(lesson.teachingDiagram)) + comparisonContent(lesson) +
       (lesson.afterComparison ? '<h3>' + escape(lesson.afterComparison.heading) + '</h3>' + paragraphs(lesson.afterComparison.lines) : '') +
       context.inline +
       (lesson.revision && !context.booklet ? '<div class="actions hb-start">' + openStageButton("model", "See worked example", "primary") + '</div>' : '') +

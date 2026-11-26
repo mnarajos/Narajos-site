@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 395" role="img" aria-labelledby="title desc">
+<title id="title">Reabsorption across a proximal tubule cell</title><desc id="desc">A simplified proximal tubule cell has a brush border facing the filtrate. Sodium and glucose enter the cell together across that surface. At the tissue-fluid side, an ATP-powered pump moves sodium out; glucose leaves by a transporter. The pump helps maintain the sodium gradient that supports uptake.</desc>
+<rect width="280" height="395" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Tubule filtrate</text><text x="140" y="50">Na⁺ + glucose</text>
+<path d="M34 115V85q0-10 7-10t7 10v30h8V85q0-10 7-10t7 10v30h8V85q0-10 7-10t7 10v30h8V85q0-10 7-10t7 10v30h8m40 0h8V85q0-10 7-10t7 10v30h8V85q0-10 7-10t7 10v30h8V85q0-10 7-10t7 10v30h8V85q0-10 7-10t7 10v30h8" fill="none" stroke="#23656c" stroke-width="3"/>
+<path d="M34 115h212v139H34z" fill="#d8ece7" stroke="#23656c" stroke-width="3"/><rect x="123" y="105" width="34" height="20" rx="5" fill="#f4d8ad" stroke="#98451e" stroke-width="2"/>
+<path d="M140 56v98m-6-8 6 8 6-8" fill="none" stroke="#98451e" stroke-width="3"/>
+<text x="140" y="181" font-weight="700">Tubule cell</text><text x="140" y="205">Na⁺ gradient supports</text><text x="140" y="227">glucose uptake</text>
+<rect x="61" y="244" width="54" height="20" rx="5" fill="#f4d8ad" stroke="#98451e" stroke-width="2"/><rect x="165" y="244" width="54" height="20" rx="5" fill="#f4d8ad" stroke="#98451e" stroke-width="2"/>
+<path d="M88 231v56m-6-8 6 8 6-8M192 231v56m-6-8 6 8 6-8" fill="none" stroke="#98451e" stroke-width="3"/>
+<text x="88" y="309">Na⁺ pump</text><text x="88" y="330">uses ATP</text><text x="192" y="309">Glucose</text><text x="192" y="330">leaves cell</text>
+<text x="140" y="367">Tissue fluid → blood</text>
+</g></svg>

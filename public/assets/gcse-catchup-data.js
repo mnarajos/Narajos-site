@@ -16,7 +16,7 @@ export const year10Catchup = {
     "How can a vaccine protect you before you meet a pathogen?",
     "Compare the first and later responses. Which needs less time to build up?",
     "Vaccination prepares a specific immune response. After later exposure to the same pathogen, antibodies can be made more quickly.",
-    ["curve","Antibody level after exposure","Time (arbitrary units)","Antibody level (arbitrary units)",[
+    ["curve","Antibody level after exposure","Time (arbitrary units)","Antibody level",[
       ["First response",[[0,0],[1,0],[2,1],[3,3],[4,2],[5,1]]],
       ["Response after vaccination",[[0,0],[1,3],[2,5],[3,4],[4,3],[5,2]]]],"Illustrative responses for the same antigen."],
     [

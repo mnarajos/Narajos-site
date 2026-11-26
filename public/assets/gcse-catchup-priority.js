@@ -51,7 +51,7 @@ function mains() {
     line(37,50,166,50,"#805037",10) + text(177,55,"Live · brown",ink,15,"start") +
     line(37,79,166,79,blue,10) + text(177,84,"Neutral · blue",ink,15,"start") +
     line(37,108,166,108,"#287340",10) + line(37,108,166,108,"#ffdc51",7,"7 6") +
-    text(177,113,"Earth · striped",ink,15,"start"),320,155),
+    text(167,113,"Earth · striped",ink,15,"start"),320,155),
     "Live and neutral form the working circuit. The earth wire is a safety connection.");
 }
 

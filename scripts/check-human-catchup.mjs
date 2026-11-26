@@ -756,6 +756,7 @@ export async function checkHumanCatchup(browser, base) {
     for (const [route, files] of [
       ["f170/1.2.2/0", ["epithelia-comparison.svg"]], ["f170/1.2.2/1", ["muscle-tissue-comparison.svg"]],
       ["f170/1.2.2/2", ["connective-tissue-comparison.svg", "blood-components.svg"]],
+      ["f170/1.2.3/0", ["cell-culture-vessel.svg"]], ["f170/1.2.3/1", ["organoid-structure.svg"]], ["f170/1.2.3/2", ["organoid-context.svg"]],
       ["f170/1.1.2/1", ["hb-blood-cells-sem.webp", "hb-pancreas-tem.webp"]],
       ["f170/1.1.2.counting/1", ["cell-counting-impedance.svg", "cell-counting-clumps.svg"]],
       ["f170/1.1.3/1", ["cell-protein-routing.svg"]],
@@ -850,6 +851,23 @@ export async function checkHumanCatchup(browser, base) {
       assert(await widthFits(), route + " must fit at phone size");
       assert.equal(await stage("independent").locator(".hb-teaching-diagram").count(), 0);
     }
+
+    // Surface comparison keeps each figure directly with its complete matching fact.
+    await open("catchup/f170/1.1.1.surfaces");
+    const surfaceRows = page.locator(".hb-compare-group");
+    const surfaceData = await page.evaluate(() => window.KeystoneHumanLessons["f170/1.1.1.surfaces"].compare.rows);
+    const surfaceFiles = ["f170-tubule-transport.svg", "f170-hepatocyte-features.svg", "f170-cilia-movement.svg", "f170-alveolar-barrier.svg", "f170-gastric-mucus.svg"];
+    assert.equal(await surfaceRows.count(), surfaceFiles.length);
+    for (let i = 0; i < surfaceFiles.length; i++) {
+      const row = surfaceRows.nth(i);
+      assert.equal(await row.locator(":scope > h4").innerText(), surfaceData[i][0]);
+      assert.equal(await row.locator(":scope > p").innerText(), surfaceData[i][1]);
+      const image = row.locator(`img[src$="/${surfaceFiles[i]}"]`);
+      assert(await image.isVisible());
+      assert(await image.evaluate(async el => { await el.decode(); return el.naturalWidth > 0 && el.alt.length > 20; }));
+    }
+    assert(await widthFits(), "Surface comparison must fit at phone size");
+    assert.equal(await stage("independent").locator(".hb-teaching-diagram").count(), 0);
 
     // Reflex and myelin figures follow the explanation paragraphs they support.
     await page.evaluate(key => localStorage.removeItem(key), localPractice);

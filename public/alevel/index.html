@@ -428,6 +428,8 @@ main #setbox{border:0;padding:0}main #setbox>summary{display:none}
 <script src="/alevel/catchup-biomolecule-extra-figures.js"></script>
 <script src="/alevel/catchup-regulation-figures.js"></script>
 <script src="/alevel/catchup-population-processes.js"></script>
+<script src="/alevel/catchup-metabolism-practicals.js"></script>
+<script src="/alevel/catchup-cell-reuse-figures.js"></script>
 <script src="/alevel/catchup-immunity-figures.js"></script>
 <script src="/alevel/catchup-transport-figures.js"></script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -771,7 +773,7 @@ DATA.a1={
    {"t":"mcq","tier":"H","q":"Iron ions are a component of haemoglobin. Why might a diet that is low in iron make a person feel tired?","opts":["Less haemoglobin, so less oxygen is carried for aerobic respiration","Less ATP is made, because iron ions are a component of ATP","Less water is absorbed, because iron ions control osmosis in the gut","Less glucose is absorbed, because iron ions are used in co-transport"],"a":0,"fb":[null,"Phosphate ions, not iron ions, are a component of ATP.","Iron ions are not involved in controlling osmosis.","Sodium ions are used in the co-transport of glucose."],"why":"Follow the chain: less iron → less haemoglobin → less oxygen to cells → less aerobic respiration → less ATP."}
   ]},
 
- {id:"traps1",title:"Exam traps: Topic 1",spec:"3.1",needs:["enzfactors","replication"],key:["Examiners report the same mistakes in Topic 1 every year. Most are about <b>precision</b>: naming the right bond, the right molecule and the right mechanism.","<b>Bonds</b>: glycosidic (carbohydrates), ester (lipids), peptide (proteins), phosphodiester (nucleotides in a strand), hydrogen (between DNA strands, and in protein shape).","<b>Enzymes</b>: lower the activation energy by forming enzyme–substrate complexes. They are denatured, not killed, and they are not used up.","<b>Energy</b> is released or transferred – never ‘made’ or ‘produced’.","A <b>control</b> shows that the thing you are testing caused the result. It is not the same as a control variable."],gate:"These traps come back in digestion (Topic 3), protein synthesis (Topic 4) and respiration (Topic 5).",st:5,
+ {id:"traps1",title:"Exam traps: Topic 1",spec:"3.1",needs:["enzfactors","replication"],key:["Examiners report the same mistakes in Topic 1 every year. Most are about <b>precision</b>: naming the right bond, the right molecule and the right mechanism.","<b>Bonds</b>: glycosidic (carbohydrates), ester (lipids), peptide (proteins), phosphodiester (nucleotides in a strand), hydrogen (between DNA strands, and in protein shape).","<b>Enzymes</b>: lower the activation energy by forming enzyme–substrate complexes. They are denatured, not killed, and they are not used up.","<b>Energy</b> is released or transferred – never ‘made’ or ‘produced’.","A <b>control</b> provides a comparison to help assess the effect of the factor being tested. A <b>control variable</b> is kept the same across conditions."],gate:"These traps come back in digestion (Topic 3), protein synthesis (Topic 4) and respiration (Topic 5).",st:5,
   qs:[
    {"t":"mcq","tier":"F","warm":true,"q":"Which of these speeds up reactions in living cells?","opts":["Enzymes","Water","Lipids","Glucose"],"a":0,"why":"Enzymes are biological catalysts. This lesson checks the details that examiners say students often get wrong."},
    {"t":"match","tier":"F","q":"Match each bond to the molecules it joins.","pairs":[["Glycosidic bond","Two monosaccharides"],["Ester bond","Glycerol and a fatty acid"],["Peptide bond","Two amino acids"],["Phosphodiester bond","Two nucleotides in a strand"]],"why":"Naming the wrong bond is one of the most common ways to lose a mark in Topic 1."},
@@ -6349,7 +6351,9 @@ function catchupChunks(notes,synapse,topic,concept){
    (window.ALevelPracticalsFigures?window.ALevelPracticalsFigures.render(topic,concept,i/2):'')+
    (window.ALevelBiomoleculeExtraFigures?window.ALevelBiomoleculeExtraFigures.render(topic,concept,i/2):'')+
    (window.ALevelRegulationFigures?window.ALevelRegulationFigures.render(topic,concept,i/2):'')+
-   (window.ALevelPopulationProcesses?window.ALevelPopulationProcesses.render(topic,concept,i/2):'')+'</div>';
+   (window.ALevelPopulationProcesses?window.ALevelPopulationProcesses.render(topic,concept,i/2):'')+
+   (window.ALevelMetabolismPracticals?window.ALevelMetabolismPracticals.render(topic,concept,i/2):'')+
+   (window.ALevelCellReuseFigures?window.ALevelCellReuseFigures.render(topic,concept,i/2):'')+'</div>';
  }
  return h;
 }

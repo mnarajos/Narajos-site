@@ -130,18 +130,16 @@
     <text x="150" y="210" text-anchor="middle">Through bilayer</text><text x="430" y="210" text-anchor="middle">Through channel</text><text x="300" y="250" text-anchor="middle">Lower concentration</text>`
   },
   "a1/enzfactors2/1": {
+   compact: true,
    title: "Two ways inhibitors reduce activity",
-   alt: "Comparison: a competitive inhibitor occupies the enzyme active site, blocking substrate binding. A non-competitive inhibitor binds at a different site and changes the active site, reducing substrate binding or catalysis.",
-   caption: "Compare where each inhibitor binds. Increasing substrate concentration can reduce competitive inhibition; it does not overcome non-competitive inhibition in this model.",
-   art: `<text x="150" y="30" text-anchor="middle">Competitive</text><text x="450" y="30" text-anchor="middle">Non-competitive</text>
-    <g fill="#b9dcd5" stroke="#32776d" stroke-width="3"><path d="M40 185Q35 90 104 85L116 120H184L196 85Q265 90 260 185Z"/><path d="M340 185Q335 90 404 85L421 115Q450 103 479 115L496 85Q565 90 560 185Z"/></g>
-    <path d="M130 86h40v34h-40z" fill="#edbd88" stroke="#a76125" stroke-width="3"/><circle cx="545" cy="145" r="14" fill="#e0b5d9" stroke="#92557e" stroke-width="3"/>
-    <text x="150" y="57" text-anchor="middle">Inhibitor in active site</text><text x="450" y="57" text-anchor="middle">Active site altered</text>
-    <text x="300" y="226" text-anchor="middle">Different-site inhibitor binds here →</text><path d="M465 219l67-61" stroke="#344958" fill="none"/>`
+   alt: "In a competitive inhibition model an inhibitor occupies the enzyme active site. In a non-competitive model an inhibitor binds a different site and changes the active site, reducing substrate binding or catalysis.",
+   caption: "Compare the inhibitor positions: one occupies the active site, the other binds elsewhere and changes it. Increasing substrate can reduce competitive inhibition but does not overcome non-competitive inhibition in this model.",
+   art: `<text x="130" y="22" text-anchor="middle">Competitive</text><path d="M35 114q0-48 54-53l12 25h58l12-25q54 5 54 53v13H35z" fill="#b9dcd5" stroke="#32776d" stroke-width="2"/><path d="M109 60h42v26h-42z" fill="#edbd88" stroke="#a76125" stroke-width="2"/><text x="130" y="151" text-anchor="middle">Inhibitor in active site</text><path d="M14 161h232" stroke="#d6e1de" stroke-width="2"/><text x="130" y="183" text-anchor="middle">Non-competitive</text><path d="M35 259q0-46 54-51l13 23q28-12 56 0l13-23q54 5 54 51v4H35z" fill="#b9dcd5" stroke="#32776d" stroke-width="2"/><circle cx="226" cy="250" r="10" fill="#e0b5d9" stroke="#92557e" stroke-width="2"/><text x="130" y="286" text-anchor="middle">Binds elsewhere; site changes</text>`
   }
  };
  window.ALevelCatchupFigures = {render(topic, id, group) {
-  const f = figures[topic + "/" + id + "/" + group];
+  const key = topic === "a1" && id === "enzfactors" && group === 1 ? "a1/enzfactors2/1" : topic + "/" + id + "/" + group;
+  const f = figures[key];
   if (!f) return "";
   return `<figure class="kc-visual"><div class="kc-visual-heading"><strong>${f.title}</strong></div><div class="kc-visual-art${f.compact ? ' kc-visual-art-compact' : ''}"${f.compact ? '' : ' tabindex="0" role="region" aria-label="Scrollable science diagram"'}><svg viewBox="${f.compact ? '0 0 260 292' : '0 0 600 265'}" role="img" aria-label="${f.alt}" xmlns="http://www.w3.org/2000/svg" style="font: 15px system-ui, sans-serif; fill:#233e4c">${f.art}</svg></div><figcaption>${f.caption}</figcaption></figure>`;
  }};

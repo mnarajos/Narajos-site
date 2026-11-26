@@ -64,12 +64,20 @@ for (const [file,global,rows] of [
  ['catchup-response-figures.js','ALevelResponseFigures', [['a6','pacinian',0],['a6','pacinian',1],['a6','eye',0],['a6','eye',1],['a6','resting',0],['a6','tropisms',1],['a6','glucose',0]]],
  ['catchup-synapse-figures.js','ALevelSynapseFigures', [['a6','synapse',0],['a6','synapse',1],['a6','synapse',2],['a6','synapse',3]]],
  ['catchup-practicals-figures.js','ALevelPracticalsFigures', [['a5','limiting',0],['a5','chromat',0],['a5','chromat',1],['a5','dcpip',1],['a5','oxphos',0],['a5','oxphos',1],['a5','respiro',1],['a5','biomass',1],['a5','productivity',0],['a5','fertil',1],['a6','loop',0],['a6','loop',1]]],
- ['catchup-biomolecule-extra-figures.js','ALevelBiomoleculeExtraFigures', [['a1','monopoly',0],['a1','monopoly',2],['a1','enzymes',0],['a1','replication',2]]],
+ ['catchup-biomolecule-extra-figures.js','ALevelBiomoleculeExtraFigures', [['a1','monopoly',0],['a1','monopoly',2],['a1','enzymes',0],['a1','replication',2],['a1','sugars',1],['a1','polysac',0],['a1','lipids',0],['a1','enzfactors',1],['a1','enzfactors2',1],['a1','tests',1],['a1','water',0]]],
  ['catchup-regulation-figures.js','ALevelRegulationFigures', [['a6','homeo',1],['a6','actionpot',2],['a6','glucose',1],['a6','glucose',2],['a6','secondmsg',0],['a6','secondmsg',1],['a6','diabetes',0],['a6','loop',2]]],
- ['catchup-population-processes.js','ALevelPopulationProcesses', [['a7','hardy',1],['a7','hardy',2],['a7','linkage',0],['a7','linkage',1],['a7','speciation',0],['a7','speciation',1],['a7','ecosys',0],['a7','interact',0],['a7','mrrc',1],['a7','varsel',1]]]
+ ['catchup-population-processes.js','ALevelPopulationProcesses', [['a7','hardy',1],['a7','hardy',2],['a7','linkage',0],['a7','linkage',1],['a7','speciation',0],['a7','speciation',1],['a7','ecosys',0],['a7','interact',0],['a7','mrrc',1],['a7','varsel',1]]],
+ ['catchup-metabolism-practicals.js','ALevelMetabolismPracticals', [['a5','dcpip',0],['a5','respiro',0],['a5','substrates',0],['a5','substrates',1],['a5','biomass',0],['a5','productivity',1],['a5','fertil',0],['a6','glucal',0],['a6','glucal',1]]]
 ]) {
  vm.runInNewContext(readFileSync(new URL('../public/alevel/'+file, import.meta.url), 'utf8'), context);
  for (const [topic,id,group] of rows) { const figure=context.window[global].render(topic,id,group); assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/); assert.match(figure, /<figcaption>.{20,}<\/figcaption>/); }
+}
+vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-guided-figures.js', import.meta.url), 'utf8'), context);
+vm.runInNewContext(readFileSync(new URL('../public/alevel/catchup-cell-reuse-figures.js', import.meta.url), 'utf8'), context);
+for (const [id,group] of [['prok',2],['active',0],['ctx2',1],['ctx2',2],['osmchain',0],['osmchain',1],['osmchain',2],['osmosis',0],['osmosis',1]]) {
+ const figure=context.window.ALevelCellReuseFigures.render('a2',id,group);
+ assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
+ assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
 }
 assert.equal(context.window.ALevelCatchupFigures.render('a1','sugars',2), '');
 console.log('A-level molecular figure alternatives, captions, mapping and local image checked.');

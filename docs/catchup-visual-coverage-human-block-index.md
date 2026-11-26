@@ -9,9 +9,9 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f170/1.1.1 · Model 1 | Oxygen crosses the cell membrane and diffuses a short distance to haemoglobin in the thin disc. | teachingDiagram, explainDiagrams, compare | Unreviewed; see reviewed exceptions |
 | f170/1.1.1 · Model 2 | Without a nucleus there is more internal space for haemoglobin. Oxygen can bind there and later be released… | teachingDiagram, explainDiagrams, compare | Unreviewed; see reviewed exceptions |
 | f170/1.1.1 · Model 3 | Shape and haemoglobin do different jobs. A flexible cell with very little haemoglobin could still enter a c… | teachingDiagram, explainDiagrams, compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.1.muscle · Explain 1 | Actin and myosin filaments slide to generate force. In skeletal and cardiac muscle, repeating sarcomeres gi… | compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.1.muscle · Model 1 | Imagine a ring of smooth muscle around a lumen. Shortening around the ring makes the lumen narrower. | compare | Unreviewed; see reviewed exceptions |
-| f170/1.1.1.muscle · Model 2 | The absence of stripes does not mean these cells lack contractile proteins. It reflects how the filaments a… | compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1.muscle · Explain 1 | Actin and myosin filaments slide to generate force. In skeletal and cardiac muscle, repeating sarcomeres gi… | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1.muscle · Model 1 | Imagine a ring of smooth muscle around a lumen. Shortening around the ring makes the lumen narrower. | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
+| f170/1.1.1.muscle · Model 2 | The absence of stripes does not mean these cells lack contractile proteins. It reflects how the filaments a… | explainDiagrams, modelDiagrams, compare | Unreviewed; see reviewed exceptions |
 | f170/1.1.1.signals · Explain 1 | Rods have long, roughly cylindrical outer segments. Cones have tapering outer segments. Both pack visual pi… | visual, visualFrom | Unreviewed; see reviewed exceptions |
 | f170/1.1.1.signals · Explain 2 | In a typical sensory neurone, a long fibre carries impulses from the receptor region towards the central ne… | visual, visualFrom | Unreviewed; see reviewed exceptions |
 | f170/1.1.1.signals · Model 1 | In the withdrawal reflex diagram, find the fibre that carries information from the receptor into the spinal… | visual, visualFrom | Unreviewed; see reviewed exceptions |

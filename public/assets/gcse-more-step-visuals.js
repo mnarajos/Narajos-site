@@ -13,8 +13,8 @@ function greenhouse() {
     'Short-wave radiation from the Sun reaches and warms Earth’s surface. The surface emits infrared radiation. Greenhouse gases absorb some infrared and re-emit it in all directions, including back towards the surface.',
     circle(43,35,20,'#ffe1a2',rust)+text(43,40,'Sun',rust,14)+arrow(62,49,119,116,rust,3)+text(75,83,'Sunlight',rust,14)+
     '<path d="M0 149 Q160 91 320 149 V185 H0Z" fill="#c7e3d2" stroke="'+teal+'" stroke-width="2"/>'+
-    text(161,170,'Earth’s surface',ink,15)+arrow(156,132,191,90,blue,3)+text(213,50,'Infrared',blue,14)+
-    circle(199,81,10,'#dbe8f7',blue)+text(254,75,'Greenhouse',ink,13)+text(254,99,'gas',ink,13)+
+    text(161,170,'Earth’s surface',ink,15)+arrow(156,132,191,90,blue,3)+text(213,38,'Infrared',blue,14)+
+    circle(199,81,10,'#dbe8f7',blue)+text(254,75,'Greenhouse',ink,13)+text(254,107,'gas',ink,13)+
     arrow(205,88,248,120,blue,2)+arrow(195,91,175,126,blue,2),
     'Follow sunlight to the surface, then infrared from the surface. The gas re-emits absorbed radiation in different directions.');
 }
@@ -24,11 +24,11 @@ function filtration() {
     '<path d="M35 28 H142 L100 83 V126 H78 V83 Z" fill="#eef5ee" stroke="'+ink+'" stroke-width="2"/>'+
     line(53,49,124,49,teal,2)+circle(75,43,4,rust)+circle(95,38,4,rust)+circle(110,43,4,rust)+
     '<path d="M65 128 H114 V166 H65 Z" fill="#d7edf4" stroke="'+ink+'" stroke-width="2"/>'+
-    text(89,24,'Filter',ink,15)+text(89,181,'Filtered water',blue,14)+arrow(121,143,174,143,blue)+
+    text(89,24,'Filter',ink,15)+text(80,181,'Filtered water',blue,14)+arrow(121,143,174,143,blue)+
     '<circle cx="231" cy="119" r="35" fill="#e6f2ed" stroke="'+teal+'" stroke-width="2"/>'+
-    text(231,110,'Sterilise',teal,17)+text(231,135,'microbes',teal,16)+
-    text(229,165,'Dissolved salts',ink,17)+text(229,192,'remain',ink,17),
-    'The filter catches suspended particles; sterilisation acts on microbes. Removing dissolved salts requires desalination.',205);
+    text(231,108,'Sterilise',teal,17)+text(231,140,'microbes',teal,16)+
+    text(229,185,'Dissolved salts',ink,17)+text(229,215,'remain',ink,17),
+    'The filter catches suspended particles; sterilisation acts on microbes. Removing dissolved salts requires desalination.',235);
 }
 function quadrat() {
   const plant=(x,y)=>'<path d="M'+x+' '+(y+5)+' v-12 m0 6 q-8-8-10-5 m10 5 q7-8 10-5" fill="none" stroke="'+teal+'" stroke-width="2"/>';
@@ -40,8 +40,8 @@ function quadrat() {
     '<rect x="175" y="34" width="135" height="110" fill="#edf6ed" stroke="'+teal+'" stroke-width="2"/>'+
     '<path d="M178 34 V144" stroke="'+teal+'" stroke-width="7"/>'+line(184,88,300,88,rust,2)+
     [196,230,264].map(x=>'<rect x="'+x+'" y="76" width="22" height="24" fill="none" stroke="'+blue+'" stroke-width="2"/>').join('')+
-    text(86,24,'Random quadrats',ink,14)+text(242,24,'Transect',ink,14)+text(77,164,'Whole area',ink,14)+text(242,158,'Distance from',ink,14)+text(242,181,'hedge',ink,14),
-    'Compare random locations for a whole-area estimate with regular positions along a gradient. The sketches show only a few samples.',195);
+    text(94,24,'Random quadrats',ink,14)+text(242,24,'Transect',ink,14)+text(77,164,'Whole area',ink,14)+text(242,154,'Distance from',ink,14)+text(242,186,'hedge',ink,14),
+    'Compare random locations for a whole-area estimate with regular positions along a gradient. The sketches show only a few samples.',205);
 }
 function circuitMeters() {
   return fig('Measuring a component',
@@ -60,7 +60,7 @@ function shield() {
     '<rect x="105" y="45" width="5" height="111" fill="#c5c5c5"/><rect x="185" y="45" width="10" height="111" fill="#97a6ad"/><rect x="268" y="45" width="24" height="111" fill="#68777d"/>'+
     arrow(53,66,102,66,rust,2)+arrow(53,96,181,96,teal,2)+arrow(53,123,267,123,blue,1.5)+arrow(53,137,267,137,blue,1.5)+arrow(292,130,307,130,blue,1.5)+
     text(78,57,'α',rust,16)+text(141,87,'β',teal,16)+text(240,117,'γ',blue,16)+
-    text(107,29,'Paper',ink,13)+text(190,29,'Aluminium',ink,13)+text(278,29,'Lead',ink,13),
+    text(97,29,'Paper',ink,13)+text(197,29,'Aluminium',ink,13)+text(278,29,'Lead',ink,13),
     'Follow each ray to the shielding that stops or reduces it. Fewer gamma arrows after the lead illustrate attenuation; their number is not a measurement.');
 }
 function waveCompare() {
@@ -68,8 +68,8 @@ function waveCompare() {
   let b=''; [35,43,51,93,101,109,151,159,167,209,217,225,267,275,283].forEach(x=>b+=line(x,129,x,149,blue,3));
   return fig('Two directions of oscillation',
     'A transverse wave travels right while its particles move up and down, perpendicular to the direction of travel. A longitudinal wave travels right while its particles move backwards and forwards parallel to that direction. Closely spaced lines represent compressions.',
-    a+arrow(188,20,282,20,ink)+text(145,24,'Wave travels',ink,13,'end')+arrow(35,77,35,35,rust)+arrow(35,35,35,77,rust)+text(160,105,'Transverse: motion perpendicular',ink,14)+
-    b+arrow(188,117,282,117,ink)+arrow(58,166,110,166,rust)+arrow(110,166,58,166,rust)+text(218,173,'Longitudinal: parallel',ink,14),
+    a+arrow(188,20,282,20,ink)+text(145,24,'Wave travels',ink,13,'end')+arrow(35,77,35,35,rust)+arrow(35,35,35,77,rust)+text(160,105,'Transverse: perpendicular',ink,14)+
+    b+arrow(188,117,282,117,ink)+arrow(58,166,110,166,rust)+arrow(110,166,58,166,rust)+text(195,173,'Longitudinal: parallel',ink,14),
     'Compare the particle motion arrows with the direction in which each wave travels.');
 }
 function wavelength() {
@@ -95,8 +95,8 @@ function neuron() {
   return fig('Withdrawal reflex pathway',
     'A receptor in the skin detects a stimulus. An impulse travels along a sensory neurone to a relay neurone in the spinal cord, then along a motor neurone to a muscle. The muscle contracts and withdraws the hand.',
     '<path d="M15 67 q20-20 40 0 v35 h-40 z" fill="#f3d4c0" stroke="'+rust+'" stroke-width="2"/>'+text(35,122,'Skin',ink,14)+
-    arrow(55,80,112,80,blue,2)+text(84,61,'Sensory',blue,13)+
-    '<rect x="115" y="38" width="83" height="85" rx="16" fill="#e5eaf8" stroke="'+blue+'" stroke-width="2"/>'+text(156,65,'Spinal',ink,14)+text(156,90,'cord',ink,14)+
+    arrow(55,80,112,80,blue,2)+text(72,61,'Sensory',blue,13)+
+    '<rect x="115" y="38" width="83" height="85" rx="16" fill="#e5eaf8" stroke="'+blue+'" stroke-width="2"/>'+text(156,62,'Spinal',ink,14)+text(156,94,'cord',ink,14)+
     arrow(199,80,251,80,teal,2)+text(226,61,'Motor',teal,13)+
     '<path d="M253 57 Q310 35 303 104 Q270 117 253 101 Z" fill="#efc8c2" stroke="'+rust+'" stroke-width="2"/>'+text(280,128,'Muscle',ink,14)+
     text(160,161,'Receptor → CNS → effector',ink,15),
@@ -118,9 +118,9 @@ function emissions() {
   return fig('Three emissions from a nucleus',
     'Alpha is a helium nucleus containing two protons and two neutrons. Beta minus is an electron emitted from the nucleus. Gamma is an electromagnetic wave.',
     circle(67,78,26,'#e8eaf6',blue)+circle(58,69,8,'#e7b2a3',rust)+circle(75,69,8,'#e7b2a3',rust)+circle(58,87,8,'#bed5eb',blue)+circle(75,87,8,'#bed5eb',blue)+
-    text(67,118,'Alpha',ink,14)+text(67,143,'2p + 2n',ink,13)+circle(159,78,10,'#c6e0f5',blue)+text(159,83,'−',blue,16)+text(159,118,'Beta',ink,14)+text(159,143,'electron',ink,13)+
-    '<path d="M230 79 q6-20 12 0 t12 0 t12 0 t12 0 t12 0" fill="none" stroke="'+teal+'" stroke-width="3"/>'+text(263,118,'Gamma',ink,14)+text(263,143,'wave',ink,13),
-    'Compare the composition of each emission. The sketches are not to scale.',155);
+    text(67,115,'Alpha',ink,14)+text(67,147,'2p + 2n',ink,13)+circle(159,78,10,'#c6e0f5',blue)+text(159,83,'−',blue,16)+text(159,115,'Beta',ink,14)+text(159,147,'electron',ink,13)+
+    '<path d="M230 79 q6-20 12 0 t12 0 t12 0 t12 0 t12 0" fill="none" stroke="'+teal+'" stroke-width="3"/>'+text(263,115,'Gamma',ink,14)+text(263,147,'wave',ink,13),
+    'Compare the composition of each emission. The sketches are not to scale.',170);
 }
 function temperaturePractical() {
   return fig('Measure a temperature change',
@@ -128,7 +128,7 @@ function temperaturePractical() {
     '<path d="M54 66 L67 155 H155 L168 66 Z" fill="#e2f0ee" stroke="'+teal+'" stroke-width="3"/>'+
     '<path d="M64 103 H158 L151 151 H71 Z" fill="#c7dfea"/>'+line(48,65,174,65,ink,5)+line(115,19,115,120,rust,5)+circle(115,121,7,rust,rust)+
     text(228,25,'Thermometer',ink,14)+line(125,24,166,24,ink,1.5)+text(242,93,'Insulated cup',ink,13)+line(170,89,189,89,ink,1.5)+
-    text(229,130,'Stir and record',ink,14)+text(229,155,'peak or minimum',ink,14),
+    text(229,125,'Stir and record',ink,14)+text(229,157,'peak or minimum',ink,14),
     'Compare the starting temperature with the peak or minimum. Insulation reduces energy transfer to the surroundings.');
 }
 
@@ -139,7 +139,7 @@ function irradiation() {
     circle(33,64,13,'#e8d3cb',rust)+text(45,40,'Source',ink,13)+arrow(48,64,95,64,rust)+
     '<circle cx="119" cy="42" r="10" fill="none" stroke="'+ink+'" stroke-width="2"/><path d="M119 52 V91 M102 68 H136 M119 91 L105 116 M119 91 L133 116" stroke="'+ink+'" stroke-width="2" fill="none"/>'+text(79,146,'Irradiation',ink,14)+
     circle(195,64,13,'#e8d3cb',rust)+text(195,40,'Source',ink,13)+arrow(209,64,252,64,rust)+circle(250,75,4,rust,rust)+circle(264,84,4,rust,rust)+
-    '<circle cx="267" cy="42" r="10" fill="none" stroke="'+ink+'" stroke-width="2"/><path d="M267 52 V91 M250 68 H284 M267 91 L253 116 M267 91 L281 116" stroke="'+ink+'" stroke-width="2" fill="none"/>'+text(253,146,'Contamination',ink,14),
+    '<circle cx="267" cy="42" r="10" fill="none" stroke="'+ink+'" stroke-width="2"/><path d="M267 52 V91 M250 68 H284 M267 91 L253 116 M267 91 L281 116" stroke="'+ink+'" stroke-width="2" fill="none"/>'+text(237,146,'Contamination',ink,14),
     'Compare radiation reaching the person with radioactive material being deposited on them.');
 }
 function density() {
@@ -167,8 +167,8 @@ function emSpectrum() {
   return fig('The electromagnetic spectrum',
     'From top to bottom, wavelength decreases and frequency increases: radio waves, microwaves, infrared, visible light, ultraviolet, X-rays and gamma rays. All travel at the same speed in a vacuum.',
     names.map((n,i)=>'<rect x="10" y="'+(20+i*28)+'" width="150" height="25" rx="3" fill="'+colours[i]+'" stroke="#687e86"/>'+text(85,38+i*28,n,ink,19)).join('')+
-    arrow(180,33,180,205,blue,2)+text(245,78,'Frequency',blue,18)+text(245,103,'increases',blue,18)+
-    arrow(310,205,310,33,rust,2)+text(245,150,'Wavelength',rust,17)+text(245,175,'increases',rust,18),
+    arrow(180,33,180,205,blue,2)+text(245,75,'Frequency',blue,18)+text(245,107,'increases',blue,18)+
+    arrow(310,205,310,33,rust,2)+text(245,147,'Wavelength',rust,17)+text(245,179,'increases',rust,18),
     'Read down the bands for increasing frequency. Their displayed sizes are illustrative, not to scale.',225);
 }
 
@@ -205,9 +205,9 @@ function homeostasis() {
 function diabetes() {
   return fig('Two forms of diabetes',
     'In Type 1 diabetes the pancreas produces little or no insulin. In Type 2 diabetes insulin is produced but body cells respond less well to it. The diagrams simplify both conditions.',
-    '<path d="M22 49 Q56 20 88 49 Q80 73 40 71 Z" fill="#efc7b7" stroke="'+rust+'" stroke-width="2"/>'+text(56,27,'Type 1',ink,15)+text(56,101,'Too little',rust,14)+text(56,125,'insulin',rust,14)+
+    '<path d="M22 49 Q56 20 88 49 Q80 73 40 71 Z" fill="#efc7b7" stroke="'+rust+'" stroke-width="2"/>'+text(56,27,'Type 1',ink,15)+text(56,100,'Too little',rust,14)+text(56,132,'insulin',rust,14)+
     '<path d="M170 49 Q204 20 236 49 Q228 73 188 71 Z" fill="#efc7b7" stroke="'+rust+'" stroke-width="2"/>'+text(205,27,'Type 2',ink,15)+circle(238,84,4,blue,blue)+circle(249,84,4,blue,blue)+
-    '<circle cx="280" cy="83" r="27" fill="#dceee5" stroke="'+teal+'" stroke-width="2"/>'+text(280,88,'Cell',teal,14)+text(238,132,'Reduced cell',ink,14)+text(238,155,'response',ink,14),
+    '<circle cx="280" cy="83" r="27" fill="#dceee5" stroke="'+teal+'" stroke-width="2"/>'+text(280,88,'Cell',teal,14)+text(238,127,'Reduced cell',ink,14)+text(238,159,'response',ink,14),
     'Compare the source of insulin with the response of the body cells. Real patients have varied symptoms and treatments.',175);
 }
 function waterTreatment() {
@@ -225,7 +225,7 @@ export function heatingCurve() {
     'As energy is supplied ice warms to 0 degrees Celsius. At 0 degrees Celsius the temperature stays constant while the ice melts. After melting the liquid water warms. The example assumes ordinary atmospheric pressure.',
     line(45,150,291,150,ink,2)+line(45,150,45,35,ink,2)+line(40,95,291,95,'#8b9d9c',1,'5 4')+
     '<polyline points="55,140 115,95 205,95 275,43" fill="none" stroke="'+teal+'" stroke-width="3.5"/>'+
-    text(45,22,'Temperature (°C)',ink,15,'start')+text(37,100,'0',ink,14,'end')+text(171,91,'Melting',teal,14)+text(166,182,'Energy supplied (arbitrary units)',ink,14),
+    text(45,22,'Temperature (°C)',ink,15,'start')+text(37,100,'0',ink,14,'end')+text(171,91,'Melting',teal,14)+text(166,182,'Energy supplied',ink,14),
     'Read the 0 °C plateau: energy continues to be supplied while ice melts at atmospheric pressure.',195);
 }
 function heatParticles() {
@@ -252,7 +252,7 @@ function reactionBonds() {
     circle(110,53,9,'#d9eee2',teal)+circle(136,53,9,'#d9eee2',teal)+line(119,53,127,53)+text(123,81,'Cl₂',teal,15)+
     arrow(151,53,189,53,rust,2)+circle(214,53,9,'#d9e8f5',blue)+circle(240,53,9,'#d9eee2',teal)+line(223,53,231,53)+
     circle(263,53,9,'#d9e8f5',blue)+circle(289,53,9,'#d9eee2',teal)+line(272,53,280,53)+text(252,81,'2 HCl',ink,15)+
-    arrow(90,110,90,136,rust,2)+text(80,160,'Break bonds',rust,14)+text(80,184,'Energy in',rust,14)+arrow(238,136,238,110,blue,2)+text(240,160,'Form bonds',blue,14)+text(240,184,'Energy out',blue,14),
+    arrow(90,110,90,136,rust,2)+text(80,156,'Break bonds',rust,14)+text(80,188,'Energy in',rust,14)+arrow(238,136,238,110,blue,2)+text(240,156,'Form bonds',blue,14)+text(240,188,'Energy out',blue,14),
     'Compare energy needed to break reactant bonds with energy released as product bonds form. Atom counts are conserved.',205);
 }
 function acidStrength() {
@@ -272,7 +272,7 @@ function molarRatio() {
     circle(38,72,10,'#d6e8f4',blue)+circle(62,72,10,'#d6e8f4',blue)+text(50,47,'2 Mg',blue,16)+
     text(89,77,'+',ink,18)+circle(113,72,10,'#f4d7cb',rust)+circle(137,72,10,'#f4d7cb',rust)+line(123,69,127,69)+line(123,75,127,75)+text(125,47,'O₂',rust,16)+
     arrow(152,72,188,72,ink,2)+circle(209,72,10,'#d6e8f4',blue)+circle(230,72,10,'#f4d7cb',rust)+circle(260,72,10,'#d6e8f4',blue)+circle(281,72,10,'#f4d7cb',rust)+text(245,47,'2 MgO',ink,16)+
-    text(160,127,'2 mol : 1 mol : 2 mol',ink,16)+text(160,151,'Compare amounts, not masses',ink,14),
+    text(160,127,'2 mol : 1 mol : 2 mol',ink,16)+text(160,159,'Compare amounts, not masses',ink,14),
     'Use the balanced coefficients as an amount ratio. Convert mass to moles before applying it.');
 }
 
@@ -321,8 +321,8 @@ function brine() {
     '<rect x="79" y="43" width="12" height="70" fill="#70848b"/><rect x="229" y="43" width="12" height="70" fill="#70848b"/>'+
     text(85,29,'−',blue,21)+text(235,29,'+',rust,21)+text(85,161,'Hydrogen',blue,14)+text(235,161,'Chlorine',rust,14)+
     circle(127,89,12,'#e7ecf9',blue)+text(127,94,'Na⁺',blue,13)+text(185,110,'water',ink,14)+arrow(160,105,98,105,blue,2)+
-    text(160,136,'Sodium ions remain in solution',ink,13),
-    'Water is present in brine: hydrogen is produced at the negative electrode instead of sodium. The diagram represents concentrated solution.');
+    text(160,190,'Sodium ions remain in solution',ink,13),
+    'Water is present in brine: hydrogen is produced at the negative electrode instead of sodium. The diagram represents concentrated solution.',210);
 }
 function reflexMeasure(){return rulerDrop();}
 function treatmentTesting() {
@@ -337,20 +337,20 @@ function treatmentTesting() {
 function respiratoryComparison() {
   return fig('Aerobic and anaerobic respiration',
     'Aerobic respiration uses glucose and oxygen and produces carbon dioxide and water. In the GCSE muscle model anaerobic respiration produces lactic acid. Yeast anaerobic respiration produces ethanol and carbon dioxide.',
-    text(18,27,'Aerobic',ink,15,'start')+text(18,51,'Glucose + oxygen',blue,15,'start')+arrow(157,46,190,46,teal,2)+text(198,51,'CO₂ + water',teal,15,'start')+
-    line(16,67,304,67,'#aabebc',1)+text(18,90,'Anaerobic in muscle',ink,15,'start')+text(18,115,'Glucose',blue,15,'start')+arrow(94,110,147,110,rust,2)+text(157,115,'Lactic acid',rust,15,'start')+
-    line(16,128,304,128,'#aabebc',1)+text(18,151,'Anaerobic in yeast',ink,15,'start')+text(18,176,'Glucose',blue,15,'start')+arrow(94,171,147,171,rust,2)+text(157,176,'Ethanol + CO₂',rust,15,'start'),
-    'Compare the inputs and products. If oxygen supply cannot meet demand, muscle cells can also respire anaerobically, transferring less energy per glucose.',195);
+    text(18,25,'Aerobic',ink,15,'start')+text(18,57,'Glucose + O₂',blue,15,'start')+arrow(157,52,190,52,teal,2)+text(198,57,'CO₂ + water',teal,15,'start')+
+    line(16,75,304,75,'#aabebc',1)+text(18,100,'Anaerobic in muscle',ink,15,'start')+text(18,132,'Glucose',blue,15,'start')+arrow(102,127,147,127,rust,2)+text(157,132,'Lactic acid',rust,15,'start')+
+    line(16,149,304,149,'#aabebc',1)+text(18,174,'Anaerobic in yeast',ink,15,'start')+text(18,206,'Glucose',blue,15,'start')+arrow(102,201,147,201,rust,2)+text(157,206,'Ethanol + CO₂',rust,15,'start'),
+    'Compare the inputs and products. If oxygen supply cannot meet demand, muscle cells can also respire anaerobically, transferring less energy per glucose.',225);
 }
 function menstrualHormones() {
   return fig('Hormones act on target organs',
     'The pituitary gland releases FSH and LH into the blood. FSH supports follicle maturation; a surge of LH triggers ovulation. The ovary releases oestrogen and progesterone, which act on the uterus lining.',
     circle(130,33,22,'#e1e6f7',blue)+text(130,38,'P',ink,16)+text(177,38,'Pituitary',ink,15,'start')+
-    arrow(130,57,130,85,blue,2)+text(177,76,'via blood',ink,15,'start')+text(13,68,'FSH',blue,20,'start')+text(13,94,'LH',blue,20,'start')+
+    arrow(130,57,130,85,blue,2)+text(177,76,'via blood',ink,15,'start')+text(13,66,'FSH',blue,20,'start')+text(13,98,'LH',blue,20,'start')+
     '<ellipse cx="130" cy="111" rx="28" ry="20" fill="#f3d6ce" stroke="'+rust+'" stroke-width="2"/>'+circle(130,111,7,'#f6eee1',rust)+text(177,116,'Ovary',ink,15,'start')+
-    arrow(130,133,130,160,teal,2)+text(5,143,'Oestrogen',teal,16,'start')+text(5,168,'Progesterone',teal,16,'start')+
-    '<path d="M109 166 Q110 193 130 201 Q150 193 151 166 L140 174 L130 183 L120 174 Z" fill="#f4d2cc" stroke="'+rust+'" stroke-width="2"/>'+text(177,185,'Uterus',ink,15,'start')+text(177,210,'lining',ink,14,'start'),
-    'FSH helps a follicle mature; LH triggers ovulation. Oestrogen helps rebuild the uterus lining; progesterone helps maintain it. Hormones travel in blood. The organ sketches are simplified.',225);
+    arrow(130,133,130,160,teal,2)+text(5,140,'Oestrogen',teal,16,'start')+text(5,172,'Progesterone',teal,16,'start')+
+    '<path d="M109 166 Q110 193 130 201 Q150 193 151 166 L140 174 L130 183 L120 174 Z" fill="#f4d2cc" stroke="'+rust+'" stroke-width="2"/>'+text(177,182,'Uterus',ink,15,'start')+text(177,214,'lining',ink,14,'start'),
+    'FSH helps a follicle mature; LH triggers ovulation. Oestrogen helps rebuild the uterus lining; progesterone helps maintain it. Hormones travel in blood. The organ sketches are simplified.',235);
 }
 
 
@@ -370,7 +370,7 @@ function antibioticTargets() {
     '<rect x="34" y="43" width="95" height="54" rx="26" fill="#dceee6" stroke="'+teal+'" stroke-width="3"/>'+circle(62,65,4,blue,blue)+circle(81,76,4,blue,blue)+circle(105,63,4,blue,blue)+text(81,122,'Bacterium',ink,15)+
     '<path d="M229 36 L254 50 V82 L229 97 L204 82 V50 Z" fill="#e1e8f7" stroke="'+blue+'" stroke-width="3"/>'+
     '<path d="M217 64 q7-10 14 0 t14 0" fill="none" stroke="'+rust+'" stroke-width="2"/>'+text(229,122,'Virus',ink,15)+
-    arrow(80,28,80,40,rust,2)+text(80,24,'Some antibiotics',rust,13)+text(229,154,'Needs host cells',ink,14),
+    arrow(80,28,80,40,rust,2)+text(85,24,'Antibiotics',rust,13)+text(229,154,'Needs host cells',ink,14),
     'Compare the bacterial cell with the virus. Antibiotics work against susceptible bacteria, not viral infections. The models are not to scale.');
 }
 function naturalSelection() {
@@ -380,9 +380,21 @@ function naturalSelection() {
     '<rect x="14" y="32" width="130" height="98" rx="5" fill="#6d675e"/><rect x="176" y="32" width="130" height="98" rx="5" fill="#6d675e"/>'+
     moth(43,59,true)+moth(77,59,false)+moth(112,59,true)+moth(43,100,false)+moth(77,100,true)+moth(112,100,false)+
     moth(205,59,true)+moth(241,59,true)+moth(277,59,false)+moth(205,100,true)+moth(241,100,true)+moth(277,100,true)+
-    arrow(146,81,174,81,rust,2)+text(79,23,'Variation',ink,15)+text(241,23,'Later generation',ink,15),
+    arrow(146,81,174,81,rust,2)+text(79,23,'Variation',ink,15)+text(235,23,'Later generation',ink,15),
     'Compare the inherited wing colours. The example is illustrative, not a record of real population counts.');
 }
+function predationAndInheritance() {
+  const moth=(x,y,colour)=>'<path d="M'+x+' '+y+' l-12 -8 v16 z M'+x+' '+y+' l12 -8 v16 z" fill="'+colour+'" stroke="#283e43" stroke-width="1.5"/>';
+  return fig('Selection and inherited variation',
+    'On dark bark, a bird may spot and eat a light moth more readily than a camouflaged dark moth. A surviving dark moth may reproduce and pass an allele associated with dark wings to offspring. Two parents contribute alleles; the second parent is omitted from this simplified illustration.',
+    text(160,23,'Predation',ink,16)+
+    '<rect x="15" y="35" width="290" height="75" rx="5" fill="#6d675e"/>'+circle(55,72,17,'#d8e5e4',ink,2)+circle(59,67,2,ink,ink)+'<path d="M71 67 l20 6 -20 6 z" fill="#f1c49c" stroke="'+ink+'"/>'+arrow(100,73,195,73,rust,2)+moth(232,73,'#f0e4c9')+
+    text(160,132,'Light moth is easier to see',ink,15)+text(160,169,'Survival and reproduction',ink,16)+
+    '<rect x="15" y="182" width="290" height="57" rx="5" fill="#6d675e"/>'+moth(58,210,'#374b50')+arrow(85,210,230,210,'white',2)+moth(264,210,'#374b50')+
+    text(60,260,'Survivor',ink,14)+text(260,260,'Offspring',ink,14)+text(160,286,'Allele may be inherited',teal,15),
+    'Notice the bird can find the light moth, then follow the surviving dark moth to offspring. The second parent is omitted.',305);
+}
+function selectionAndInheritance(){return grouped(naturalSelection,predationAndInheritance);}
 function selectiveBreeding() {
   const parent=(x,y,dark)=>circle(x,y,13,dark?'#5b7366':'#e0edd7',teal,2)+line(x,y+13,x,y+25,teal,2)+line(x,y+18,x-9,y+13,teal,2)+line(x,y+18,x+9,y+13,teal,2);
   return fig('Selecting parents for breeding',
@@ -396,11 +408,11 @@ function gasTests() {
   return fig('Tests for three gases',
     'Carbon dioxide bubbled through limewater makes it cloudy. Oxygen relights a glowing splint. Hydrogen burns with a squeaky pop when a lit splint is applied.',
     '<path d="M25 30 V65 Q35 77 45 65 V30 M25 54 H45" fill="#e3f0f4" stroke="'+ink+'" stroke-width="2"/>'+circle(35,57,5,'#d2d7da','#d2d7da')+
-    text(65,42,'Carbon dioxide',ink,15,'start')+text(65,67,'Limewater turns cloudy',blue,14,'start')+
+    text(65,40,'Carbon dioxide',ink,15,'start')+text(65,70,'Limewater turns cloudy',blue,14,'start')+
     '<path d="M25 107 V142 Q35 154 45 142 V107" fill="none" stroke="'+ink+'" stroke-width="2"/>'+line(35,100,35,122,rust,3)+circle(35,118,4,'#eeb875',rust)+
-    text(65,119,'Oxygen',ink,15,'start')+text(65,144,'Glowing splint relights',rust,14,'start')+
+    text(65,116,'Oxygen',ink,15,'start')+text(65,146,'Glowing splint relights',rust,14,'start')+
     '<path d="M25 184 V219 Q35 231 45 219 V184" fill="none" stroke="'+ink+'" stroke-width="2"/>'+line(35,176,35,193,rust,3)+text(43,184,'✦',rust,16)+
-    text(65,196,'Hydrogen',ink,15,'start')+text(65,221,'Lit splint: squeaky pop',rust,14,'start'),
+    text(65,192,'Hydrogen',ink,15,'start')+text(65,222,'Lit splint: squeaky pop',rust,14,'start'),
     'Match each test to its observation. These sketches are simplified; carry out gas tests only using the practical guidance provided.',240);
 }
 function electrolysisReduction() {
@@ -457,7 +469,7 @@ function pollutants() {
 function lifeCycle() {
   return fig('A product life cycle',
     'A life-cycle assessment compares impacts across obtaining materials, manufacturing, use and disposal or recycling. Reuse, transport and other assumptions can affect the result.',
-    '<path d="M18 83 l22-37 22 37 Z" fill="#dbe6df" stroke="'+teal+'" stroke-width="2"/>'+text(48,109,'Extract',ink,13)+arrow(66,74,91,74,rust,2)+
+    '<path d="M18 83 l22-37 22 37 Z" fill="#dbe6df" stroke="'+teal+'" stroke-width="2"/>'+text(48,135,'Extract',ink,13)+arrow(66,74,91,74,rust,2)+
     '<path d="M95 83 V51 l16 8 V48 l17 10 V83 Z" fill="#dce6ec" stroke="'+blue+'" stroke-width="2"/>'+text(111,109,'Make',ink,13)+arrow(134,74,160,74,rust,2)+
     '<path d="M177 43 H193 V54 H200 V89 H170 V54 H177 Z" fill="#def0ec" stroke="'+teal+'" stroke-width="2"/>'+text(185,109,'Use',ink,13)+arrow(207,74,231,74,rust,2)+
     '<path d="M253 45 C277 45 282 76 269 87 M269 87 l-2 -11 M269 87 l10 -4 M255 89 C231 89 226 58 239 47 M239 47 l2 10 M239 47 l-10 4" fill="none" stroke="'+teal+'" stroke-width="3"/>'+text(256,109,'End of life',ink,13)+
@@ -494,9 +506,9 @@ function currentMagnitudeAndDirection(){return grouped(currentStrength,reverseCo
 function sulfateSalt() {
   return fig('Naming copper sulfate',
     'Sulfuric acid reacts with copper oxide to form copper sulfate and water. Sulfuric acid supplies the sulfate part of the salt, and copper oxide supplies copper.',
-    text(16,40,'Sulfuric acid',blue,15,'start')+text(16,65,'H₂SO₄',blue,17,'start')+text(151,65,'+',ink,18)+text(175,40,'Copper oxide',rust,15,'start')+text(175,65,'CuO',rust,17,'start')+
-    arrow(160,82,160,107,teal,2)+text(17,138,'Copper sulfate',teal,15,'start')+text(17,163,'CuSO₄',teal,17,'start')+text(175,138,'and water',ink,15,'start')+text(175,163,'H₂O',ink,17,'start'),
-    'Match copper from copper oxide and sulfate from sulfuric acid to the name of the soluble salt.',180);
+    text(16,38,'Sulfuric acid',blue,15,'start')+text(16,70,'H₂SO₄',blue,17,'start')+text(151,70,'+',ink,18)+text(175,38,'Copper oxide',rust,15,'start')+text(175,70,'CuO',rust,17,'start')+
+    arrow(160,84,160,112,teal,2)+text(17,145,'Copper sulfate',teal,15,'start')+text(17,177,'CuSO₄',teal,17,'start')+text(175,145,'and water',ink,15,'start')+text(175,177,'H₂O',ink,17,'start'),
+    'Match copper from copper oxide and sulfate from sulfuric acid to the name of the soluble salt.',200);
 }
 function xray() {
   return fig('X-rays and body tissue',
@@ -520,8 +532,8 @@ function alphaDecay() {
     circle(65,75,34,'#dfe7f4',blue)+text(65,60,'U',blue,21)+text(65,90,'238 / 92',ink,13)+arrow(104,75,144,75,rust,2)+
     circle(190,75,30,'#e0efe5',teal)+text(190,60,'Th',teal,18)+text(190,90,'234 / 90',ink,13)+text(244,80,'+',ink,18)+
     circle(285,75,18,'#f3d8c9',rust)+text(285,80,'α',rust,16)+
-    text(160,145,'Mass: 238 = 234 + 4',ink,15)+text(160,168,'Protons: 92 = 90 + 2',ink,15),
-    'Compare the mass numbers and proton numbers before and after emission. The nuclei are simplified models.',185);
+    text(160,145,'Mass: 238 = 234 + 4',ink,15)+text(160,175,'Protons: 92 = 90 + 2',ink,15),
+    'Compare the mass numbers and proton numbers before and after emission. The nuclei are simplified models.',195);
 }
 function electricalPower() {
   return fig('Power and energy',
@@ -534,7 +546,7 @@ function contraception() {
   return fig('Two ways to prevent pregnancy',
     'A condom is a barrier that can prevent sperm reaching an egg. Hormonal contraceptives can prevent ovulation. Condoms also reduce the risk of transmission of many sexually transmitted infections when used correctly.',
     text(74,27,'Barrier',ink,15)+circle(34,75,6,'#d5e8f3',blue)+line(40,75,56,75,blue,2)+arrow(56,75,95,75,blue,2)+line(105,48,105,104,rust,5)+circle(130,75,12,'#f6e3d2',rust)+
-    text(78,137,'Sperm',blue,14)+text(125,137,'Egg',rust,14)+
+    text(46,137,'Sperm',blue,14)+text(130,137,'Egg',rust,14)+
     '<rect x="194" y="48" width="43" height="65" rx="7" fill="#dce9f2" stroke="'+blue+'" stroke-width="2"/>'+circle(215,69,7,'#fff4e3',rust)+text(257,27,'Hormonal',ink,15)+
     '<ellipse cx="275" cy="80" rx="20" ry="14" fill="#f3d6ce" stroke="'+rust+'" stroke-width="2"/>'+line(244,58,300,105,rust,3)+text(253,137,'No ovulation',rust,14),
     'Compare a barrier stopping sperm with hormonal prevention of ovulation. The sketches are simplified.');
@@ -562,9 +574,9 @@ function pondweedLight() {
 function circulation() {
   return fig('Oxygen from lungs to working muscle',
     'The right ventricle pumps blood to lung capillaries, where oxygen diffuses into blood and binds to haemoglobin. Blood returns to the left atrium, then left ventricle, and is pumped to muscle capillaries. Oxygen diffuses from blood into muscle cells.',
-    '<path d="M126 18 Q111 23 109 54 Q117 68 140 59 L140 30 Z M180 18 Q195 23 197 54 Q189 68 166 59 L166 30 Z" fill="#e2f2f3" stroke="'+teal+'" stroke-width="2"/>'+text(153,83,'Lungs: oxygen in',teal,14)+
-    '<rect x="90" y="101" width="126" height="57" rx="8" fill="#f5dfda" stroke="'+rust+'" stroke-width="2"/>'+line(153,101,153,158,rust,1)+text(122,120,'Right',ink,14)+text(122,145,'ventricle',ink,13)+text(185,120,'Left',ink,14)+text(185,145,'heart',ink,14)+
-    arrow(100,101,99,43,blue,2)+arrow(208,45,208,99,rust,2)+arrow(186,160,186,193,rust,2)+
+    '<path d="M126 18 Q111 23 109 54 Q117 68 140 59 L140 30 Z M180 18 Q195 23 197 54 Q189 68 166 59 L166 30 Z" fill="#e2f2f3" stroke="'+teal+'" stroke-width="2"/>'+text(153,83,'Lungs',teal,14)+
+    '<rect x="65" y="95" width="174" height="70" rx="8" fill="#f5dfda" stroke="'+rust+'" stroke-width="2"/>'+line(153,95,153,165,rust,1)+text(109,117,'Right',ink,14)+text(109,149,'ventricle',ink,13)+text(196,117,'Left',ink,14)+text(196,149,'heart',ink,14)+
+    arrow(100,95,99,43,blue,2)+arrow(208,45,208,93,rust,2)+arrow(186,167,186,193,rust,2)+
     '<rect x="105" y="198" width="104" height="33" rx="12" fill="#e7ede1" stroke="'+teal+'" stroke-width="2"/>'+text(157,220,'Muscle cells',ink,14)+text(70,184,'Blood',blue,13)+text(248,181,'Oxygen',rust,13),
     'Follow blood from the right ventricle to the lungs and back to the left side of the heart, then to muscle. This is a simplified pathway.',245);
 }
@@ -591,7 +603,7 @@ function faultPath() {
   return fig('A fault to an earthed metal case',
     'If a live wire touches an earthed metal case, current can flow through the low-resistance earth wire back towards the supply. The large fault current causes a correctly rated fuse or circuit breaker to disconnect the circuit.',
     text(47,25,'Live',rust,16)+line(18,48,103,48,rust,4)+'<rect x="103" y="34" width="48" height="29" rx="4" fill="#f5e6dc" stroke="'+rust+'" stroke-width="2"/>'+text(127,54,'Fuse',rust,14)+
-    line(151,48,181,48,rust,4)+'<path d="M181 34 H283 V125 H181 Z" fill="#e6eeee" stroke="'+ink+'" stroke-width="3"/>'+text(232,72,'Metal case',ink,14)+circle(184,49,5,rust,rust)+text(237,96,'Fault contact',rust,13)+
+    line(151,48,181,48,rust,4)+'<path d="M181 34 H283 V125 H181 Z" fill="#e6eeee" stroke="'+ink+'" stroke-width="3"/>'+text(232,68,'Metal case',ink,14)+circle(184,49,5,rust,rust)+text(237,100,'Fault contact',rust,13)+
     '<path d="M230 125 V151 H65" fill="none" stroke="'+teal+'" stroke-width="4"/>'+arrow(189,151,92,151,teal,2)+text(108,176,'Earth wire to supply',teal,14),
     'Follow the fault path through the earth connection. The diagram shows the fault path only; the fuse or breaker then disconnects the supply.',190);
 }
@@ -601,7 +613,7 @@ function magnesiumParticles() {
   for(let i=0;i<6;i++)art+=mg(26+(i%3)*25,50+Math.floor(i/3)*26);
   for(let i=0;i<4;i++)art+=o(24+i*32,115)+o(39+i*32,115);
   for(let i=0;i<6;i++)art+=mg(190+(i%3)*31,50+Math.floor(i/3)*26)+o(205+(i%3)*31,50+Math.floor(i/3)*26);
-  art+=o(229,115)+o(244,115)+arrow(119,82,163,82,ink,2)+text(75,154,'6 Mg + 4 O₂',ink,14)+text(246,154,'6 MgO + O₂ left',ink,14)+mg(65,181)+text(81,186,'Mg',blue,14,'start')+o(200,181)+text(216,186,'O',rust,14,'start');
+  art+=o(229,115)+o(244,115)+arrow(119,82,163,82,ink,2)+text(75,154,'6 Mg + 4 O₂',ink,14)+text(234,154,'6 MgO + O₂ left',ink,14)+mg(65,181)+text(81,186,'Mg',blue,14,'start')+o(200,181)+text(216,186,'O',rust,14,'start');
   return fig('A limiting reactant in particles',
     'Six magnesium atoms react with three of four oxygen molecules to form six magnesium oxide units. One oxygen molecule remains. Magnesium is the limiting reactant in this model.',art,
     'Count atoms on each side. Six magnesium atoms use three oxygen molecules, leaving one oxygen molecule.',200);
@@ -612,7 +624,7 @@ function plantPaths() {
     '<path d="M137 53 Q87 15 49 48 Q76 84 137 68 M183 53 Q233 15 271 48 Q244 84 183 68" fill="#d8eddb" stroke="'+teal+'" stroke-width="2"/>'+
     '<rect x="137" y="47" width="46" height="131" fill="#e9efe0" stroke="'+teal+'" stroke-width="2"/><path d="M160 177 Q141 204 112 215 M160 177 Q179 204 208 215" fill="none" stroke="'+teal+'" stroke-width="3"/>'+
     arrow(149,166,149,65,blue,2)+arrow(171,72,171,167,rust,2)+arrow(69,40,49,17,blue,2)+arrow(239,40,259,17,blue,2)+
-    text(84,107,'Xylem',blue,15)+text(84,132,'water up',blue,14)+text(239,105,'Phloem',rust,15)+text(239,130,'sugar to',rust,14)+text(239,155,'root sink',rust,14)+text(160,241,'Roots',ink,15),
+    text(84,100,'Xylem',blue,15)+text(84,132,'water up',blue,14)+text(239,98,'Phloem',rust,15)+text(239,130,'sugar to',rust,14)+text(239,162,'root sink',rust,14)+text(160,241,'Roots',ink,15),
     'Trace water up the xylem and sugar from the source leaf to a root sink. Phloem direction varies with source and sink.',255);
 }
 export const gcseWorkedVisuals = {
@@ -635,11 +647,13 @@ function inverseSquare() {
 }
 function glucagonResponse() {
   return fig('Response to low blood glucose',
-    'When blood glucose falls the pancreas releases glucagon. Glucagon causes liver glycogen to be converted to glucose and released into the blood. As the glucose concentration recovers, the stimulus for glucagon secretion decreases.',
+    'When blood glucose falls the pancreas releases glucagon. Glucagon causes liver glycogen to be converted to glucose and released into the blood. As the glucose concentration recovers, the stimulus for glucagon secretion decreases. An arrow returns to the pancreas to show this feedback.',
     text(160,22,'Blood glucose falls',blue,16)+arrow(160,29,160,52,ink,2)+
     '<path d="M96 65 Q160 37 224 65 Q214 91 116 84 Z" fill="#f2d1c4" stroke="'+rust+'" stroke-width="2"/>'+text(160,78,'Pancreas',ink,15)+arrow(160,89,160,112,ink,2)+
-    text(160,130,'Glucagon → liver',rust,15)+text(160,157,'Glycogen → glucose',teal,15)+arrow(160,161,160,184,ink,2)+text(160,204,'Blood glucose rises',blue,16),
-    'Follow the hormonal signal to the liver and the glucose released to the blood. As glucose recovers, the original stimulus decreases.',220);
+    text(160,130,'Glucagon → liver',rust,15)+text(160,157,'Glycogen → glucose',teal,15)+arrow(160,161,160,184,ink,2)+text(160,204,'Blood glucose rises',blue,16)+
+    arrow(160,212,160,235,ink,2)+text(160,251,'Less stimulus for',teal,15)+text(160,283,'glucagon release',teal,15)+
+    '<path d="M64 269 H35 V75 H88" fill="none" stroke="'+teal+'" stroke-width="2"/>'+arrow(75,75,88,75,teal,2),
+    'Follow the hormonal signal to the liver, then the feedback to the pancreas: as glucose recovers, the stimulus for glucagon release decreases.',300);
 }
 function dilution() {
   const beaker=(x,top)=>'<path d="M'+x+' 40 V143 H'+(x+90)+' V40" fill="none" stroke="'+ink+'" stroke-width="2"/><path d="M'+(x+2)+' '+top+' H'+(x+88)+' V141 H'+(x+2)+' Z" fill="#dceef5"/>';
@@ -648,8 +662,8 @@ function dilution() {
     beaker(15,104)+circle(37,121,4,rust,rust)+circle(60,128,4,rust,rust)+circle(83,120,4,rust,rust)+
     arrow(111,85,185,85,teal,2)+text(148,70,'Add water',teal,14)+
     beaker(210,53)+circle(232,91,4,rust,rust)+circle(255,112,4,rust,rust)+circle(279,72,4,rust,rust)+
-    text(60,165,'100 cm³',ink,14)+text(255,165,'250 cm³',ink,14)+text(160,193,'3 g solute throughout',ink,15)+text(160,217,'3 ÷ 0.250 = 12 g/dm³',blue,15),
-    'Compare the same solute amount in a larger total volume. The dots are a model, not the real number of particles.',235);
+    text(60,165,'100 cm³',ink,14)+text(255,165,'250 cm³',ink,14)+text(160,192,'3 g solute throughout',ink,15)+text(160,224,'3 ÷ 0.250 = 12 g/dm³',blue,15),
+    'Compare the same solute amount in a larger total volume. The dots are a model, not the real number of particles.',245);
 }
 function momentum() {
   return fig('Momentum in a closed system',
@@ -657,7 +671,7 @@ function momentum() {
     text(160,21,'Before',ink,15)+
     '<rect x="30" y="41" width="64" height="30" fill="#dcebf4" stroke="'+blue+'"/><rect x="184" y="41" width="64" height="30" fill="#f2dfd2" stroke="'+rust+'"/>'+text(62,61,'1 kg',ink,14)+text(216,61,'1 kg',ink,14)+arrow(97,55,170,55,blue,2)+text(133,47,'2 m/s',blue,13)+
     text(160,103,'After sticking',ink,15)+'<rect x="77" y="117" width="128" height="30" fill="#dfebe5" stroke="'+teal+'"/>'+text(140,137,'2 kg',ink,14)+arrow(209,132,246,132,teal,2)+text(257,120,'1 m/s',teal,13)+
-    text(160,177,'2 kg m/s before = 2 kg m/s after',ink,14),
+    text(160,177,'2 kg m/s before and after',ink,14),
     'Compare total momentum before and after the collision. The example assumes a closed system.',195);
 }
 function equilibriumHeating() {
@@ -674,16 +688,16 @@ function velocityArea() {
   return fig('Distance from a velocity–time graph',
     'A trolley accelerates uniformly from 0 to 4 metres per second in 2 seconds, then continues at 4 metres per second until 5 seconds. The triangular area is 4 metres; the rectangular area is 12 metres. Total distance is 16 metres.',
     '<path d="M44 146 L132 52 H264 V146 Z" fill="#d9eee6" stroke="none"/><path d="M44 146 L132 52 H264" fill="none" stroke="'+teal+'" stroke-width="3"/>'+line(44,146,285,146)+line(44,146,44,32)+line(132,146,132,52,ink,1,'5 4')+
-    text(44,24,'Velocity (m/s)',ink,14,'start')+text(35,151,'0',ink,13,'end')+text(35,57,'4',ink,13,'end')+text(44,165,'0',ink,13)+text(132,165,'2',ink,13)+text(264,165,'5',ink,13)+text(164,189,'Time (s)',ink,14)+
+    text(44,24,'Velocity (m/s)',ink,14,'start')+text(35,151,'0',ink,13,'end')+text(35,57,'4',ink,13,'end')+text(44,165,'0',ink,13)+text(132,165,'2',ink,13)+text(264,165,'5',ink,13)+text(164,197,'Time (s)',ink,14)+
     text(100,129,'4 m',blue,14)+text(199,109,'12 m',blue,14),
-    'Add the triangle and rectangle under the velocity–time graph to find the 16 m travelled.',205);
+    'Add the triangle and rectangle under the velocity–time graph to find the 16 m travelled.',215);
 }
 
 function rateTangent() {
   return fig('Rate from a tangent',
     'On a product quantity against time graph, the gradient of a straight tangent touching the curve gives the rate at that instant. A steep tangent means a high rate; here the tangent rises from left to right.',
     line(45,146,288,146)+line(45,146,45,28)+'<path d="M45 140 C120 80 195 60 270 60" fill="none" stroke="'+teal+'" stroke-width="3"/>'+line(75,105,240,50,rust,2)+circle(158,78,4,rust,rust)+
-    text(45,24,'Product (relative)',ink,14,'start')+text(167,174,'Time (arbitrary units)',ink,14)+text(247,39,'Tangent',rust,14),
+    text(45,24,'Product (relative)',ink,14,'start')+text(167,174,'Time (arbitrary units)',ink,14)+text(255,112,'Tangent',rust,14),
     'Draw a straight tangent at the point, then calculate its gradient as change in product quantity divided by change in time.',190);
 }
 function pressureShift() {
@@ -692,7 +706,7 @@ function pressureShift() {
     circle(37,57,8,'#bed7ef',blue)+circle(52,57,8,'#bed7ef',blue)+text(45,31,'N₂',blue,15)+text(73,62,'+',ink,17)+
     [100,130,160].map(x=>circle(x,57,6,'#e3e9e9',ink)+circle(x+11,57,6,'#e3e9e9',ink)).join('')+text(135,31,'3 H₂',ink,15)+
     arrow(182,50,213,50,rust,2)+arrow(213,68,182,68,blue,2)+circle(239,57,10,'#c9e6d3',teal)+circle(270,57,10,'#c9e6d3',teal)+text(255,31,'2 NH₃',teal,15)+
-    text(84,116,'4 gas molecules',ink,14)+text(244,116,'2 gas molecules',ink,14)+text(160,150,'Higher pressure favours this side →',teal,14),
+    text(76,116,'4 molecules',ink,14)+text(244,116,'2 molecules',ink,14)+text(160,150,'Pressure favours →',teal,14),
     'Count gas molecules on each side. Each product circle represents one ammonia molecule; its atomic structure is omitted. Higher pressure favours the side with fewer gas molecules.',170);
 }
 function rateAndShift(){const group=node('div');group.append(rateTangent(),pressureShift());return group;}
@@ -700,7 +714,7 @@ function motorForce() {
   return fig('Force on a current-carrying wire',
     'A wire carries conventional current out of the page, shown by a dot. The magnetic field points from north on the left to south on the right. The force on the wire is upwards. At right angles the force magnitude is magnetic flux density times current times length in the field.',
     text(29,79,'N',blue,20)+text(291,79,'S',blue,20)+arrow(50,40,270,40,blue,2)+text(160,26,'Magnetic field',blue,14)+
-    circle(160,91,19,'white',ink)+circle(160,91,4,ink,ink)+arrow(160,69,160,46,rust,2)+text(239,108,'Current out',ink,14)+text(239,133,'of page',ink,14)+text(85,67,'Force',rust,14)+
+    circle(160,91,19,'white',ink)+circle(160,91,4,ink,ink)+arrow(160,69,160,46,rust,2)+text(239,105,'Current out',ink,14)+text(239,137,'of page',ink,14)+text(85,67,'Force',rust,14)+
     text(160,175,'F = B × I × l  (at 90°)',ink,16),
     'Use the conventional current and field directions to find the force. A dot means current out of the page.',195);
 }
@@ -724,7 +738,7 @@ function oxygenDebt() {
     '<path d="M23 57 Q65 35 93 57 Q83 97 23 97 Z" fill="#f1d5cc" stroke="'+rust+'" stroke-width="2"/>'+text(58,122,'Muscle',ink,15)+
     arrow(95,78,205,78,blue,3)+text(150,59,'Blood transports',blue,14)+text(150,101,'lactic acid',blue,14)+
     '<path d="M210 49 Q274 30 297 58 Q302 94 230 99 Q204 91 210 49 Z" fill="#dec5be" stroke="'+rust+'" stroke-width="2"/>'+text(252,123,'Liver',ink,15)+
-    text(160,157,'Extra oxygen needed after exercise',ink,14),
+    text(160,157,'Extra oxygen after exercise',ink,14),
     'Follow lactic acid in the blood from muscle to liver. Extra oxygen is required after exercise.',175);
 }
 function hormoneFeedback() {
@@ -732,16 +746,16 @@ function hormoneFeedback() {
     'The pituitary releases FSH and LH, which act on the ovary. Oestrogen and progesterone from the ovary feed back on pituitary hormone release. In fertility treatment FSH and LH can be used to stimulate follicle maturation and ovulation.',
     circle(66,70,32,'#e1e6f7',blue)+text(66,75,'Pituitary',ink,13)+
     '<ellipse cx="247" cy="70" rx="33" ry="24" fill="#f3d6ce" stroke="'+rust+'" stroke-width="2"/>'+circle(247,70,8,'#fff5df',rust)+text(247,115,'Ovary',ink,15)+
-    arrow(101,58,211,58,blue,2)+text(156,44,'FSH and LH',blue,14)+arrow(211,88,101,88,teal,2)+text(156,150,'Oestrogen and progesterone',teal,13)+text(156,175,'feed back to pituitary',teal,13),
+    arrow(101,58,211,58,blue,2)+text(156,44,'FSH and LH',blue,14)+arrow(211,88,101,88,teal,2)+text(156,145,'Oestrogen and progesterone',teal,13)+text(156,177,'feed back to pituitary',teal,13),
     'Follow pituitary hormones to the ovary, then the feedback signal in the other direction. Feedback effects vary through the cycle.',195);
 }
 function transformerComparison() {
   return fig('An ideal step-up transformer',
     'The primary has 500 volts and 12 amperes, so its power is 6,000 watts. An ideal transformer has the same output power; at 3,000 volts the secondary current is 2 amperes. In cables of equal resistance, heating power is proportional to current squared, so 12 amperes gives 36 times the heating of 2 amperes.',
-    text(75,25,'Primary',ink,15)+text(245,25,'Secondary',ink,15)+text(75,54,'500 V',blue,16)+text(75,78,'12 A',blue,16)+
-    '<path d="M116 44 q10 0 10 10 q0 10 -10 10 M129 44 q10 0 10 10 q0 10 -10 10 M158 44 q-10 0 -10 10 q0 10 10 10 M171 44 q-10 0 -10 10 q0 10 10 10" fill="none" stroke="'+rust+'" stroke-width="3"/>'+text(245,54,'3,000 V',teal,16)+text(245,78,'2 A',teal,16)+
-    text(160,112,'6,000 W in = 6,000 W out',ink,15)+text(160,142,'Heating ratio: 12² : 2² = 36 : 1',ink,14),
-    'Compare power on both sides of the ideal transformer. At equal cable resistance, compare the squares of the currents.',160);
+    text(75,25,'Primary',ink,15)+text(245,25,'Secondary',ink,15)+text(75,56,'500 V',blue,16)+text(75,88,'12 A',blue,16)+
+    '<path d="M116 44 q10 0 10 10 q0 10 -10 10 M129 44 q10 0 10 10 q0 10 -10 10 M158 44 q-10 0 -10 10 q0 10 10 10 M171 44 q-10 0 -10 10 q0 10 10 10" fill="none" stroke="'+rust+'" stroke-width="3"/>'+text(245,56,'3,000 V',teal,16)+text(245,88,'2 A',teal,16)+
+    text(160,123,'6,000 W in = 6,000 W out',ink,15)+text(160,155,'Heating ratio: 12² : 2² = 36 : 1',ink,14),
+    'Compare power on both sides of the ideal transformer. At equal cable resistance, compare the squares of the currents.',175);
 }
 function halfEquations() {
   return fig('Electrode half-equations',
@@ -758,7 +772,7 @@ function waterRoutes() {
     text(62,24,'Fresh water',ink,15)+text(240,24,'Seawater',ink,15)+
     '<path d="M25 42 H100 L72 76 V103 H53 V76 Z" fill="#eef5ee" stroke="'+ink+'" stroke-width="2"/>'+line(37,57,88,57,teal,2)+circle(49,50,3,rust,rust)+circle(71,50,3,rust,rust)+text(62,127,'Filter solids',teal,14)+
     '<rect x="181" y="44" width="120" height="58" fill="#dceef5" stroke="'+ink+'" stroke-width="2"/>'+line(239,44,239,102,teal,3)+circle(201,61,4,rust,rust)+circle(217,84,4,rust,rust)+arrow(224,73,254,73,blue,2)+text(241,127,'Remove salts',blue,14)+
-    text(160,162,'Sterilise to reduce harmful microbes',ink,14),
+    text(160,162,'Sterilise to reduce microbes',ink,14),
     'Compare the treatments. Filtering removes suspended solids; desalination removes dissolved salts. Microbes need appropriate treatment too.',180);
 }
 export function readableGcseFigure(render) {
@@ -791,8 +805,8 @@ function frequency() {
   return fig('Count oscillations in time',
     'A graph of displacement against time shows two complete oscillations in one second. Its frequency is two hertz. The vertical displacement values are illustrative.',
     line(40,130,289,130)+line(40,130,40,30)+'<polyline points="'+pts+'" fill="none" stroke="'+teal+'" stroke-width="3"/>'+line(40,85,270,85,ink,1,'5 4')+
-    text(40,24,'Displacement (illustrative)',ink,14,'start')+text(40,151,'0',ink,13)+text(155,151,'0.5',ink,13)+text(270,151,'1',ink,13)+text(160,176,'Time (s)',ink,15),
-    'Count two complete cycles in one second: the frequency is 2 Hz. This is an illustrative example.',190);
+    text(40,24,'Displacement (illustrative)',ink,14,'start')+text(40,151,'0',ink,13)+text(155,151,'0.5',ink,13)+text(270,151,'1',ink,13)+text(160,183,'Time (s)',ink,15),
+    'Count two complete cycles in one second: the frequency is 2 Hz. This is an illustrative example.',200);
 }
 function waveMeasures(){return grouped(wavelength,frequency);}
 function energyDistribution() {
@@ -801,7 +815,7 @@ function energyDistribution() {
     'Illustrative particle energy distributions for a cooler and a warmer sample. The warmer curve is broader with a lower peak; a larger fraction lies above the same activation energy threshold.',
     line(40,145,292,145)+line(40,145,40,35)+'<polyline points="'+curve(16)+'" fill="none" stroke="'+blue+'" stroke-width="3"/>'+
     '<polyline points="'+curve(28)+'" fill="none" stroke="'+rust+'" stroke-width="3" stroke-dasharray="7 4"/>'+line(187,33,187,145,ink,1.5,'5 3')+
-    text(40,24,'Relative number of particles',ink,15,'start')+text(163,173,'Particle energy (arbitrary units)',ink,15)+text(240,55,'Threshold',ink,14),
+    text(40,24,'Relative particle count',ink,15,'start')+text(163,173,'Particle energy',ink,15)+text(240,55,'Threshold',ink,14),
     'Solid: cooler. Dashed: warmer. The dotted line shows activation energy. Compare the proportion beyond the threshold.',190);
 }
 function collisionsAndEnergy(){return grouped(collisionFrequency,energyDistribution);}
@@ -809,12 +823,12 @@ function resistanceSelection() {
   const dot=(x,y,resistant)=>circle(x,y,7,resistant?'#b9dfc8':'#c9def1',resistant?teal:blue)+(resistant?text(x,y+4,'R',teal,11):'');
   return fig('Antibiotic resistance and selection',
     'Before treatment, a bacterial population includes a resistant variant. An antibiotic kills susceptible bacteria, while the resistant bacterium survives and can reproduce. The antibiotic selects an existing variant; it does not direct bacteria to develop resistance.',
-    text(50,22,'Before',ink,15)+text(160,22,'After treatment',ink,14)+text(270,22,'Later',ink,15)+
+    text(50,22,'Before',ink,15)+text(160,22,'Treated',ink,14)+text(270,22,'Later',ink,15)+
     dot(28,53,false)+dot(53,53,false)+dot(77,53,true)+dot(40,82,false)+dot(66,82,false)+
     arrow(94,70,123,70,rust,2)+dot(160,68,true)+arrow(190,70,219,70,rust,2)+
     dot(246,53,true)+dot(270,53,true)+dot(294,53,true)+dot(258,82,true)+dot(282,82,true)+
-    circle(74,121,6,'#c9def1',blue)+text(87,126,'susceptible',blue,13,'start')+circle(205,121,6,'#b9dfc8',teal)+text(218,126,'resistant',teal,13,'start'),
-    'Follow a resistant bacterium already present before treatment. It can survive and reproduce as susceptible bacteria are killed.',145);
+    circle(74,121,6,'#c9def1',blue)+text(87,126,'susceptible',blue,13,'start')+circle(74,153,6,'#b9dfc8',teal)+text(87,158,'resistant',teal,13,'start'),
+    'Follow a resistant bacterium already present before treatment. It can survive and reproduce as susceptible bacteria are killed.',175);
 }
 function antibioticsAndSelection(){return grouped(antibioticTargets,resistanceSelection);}
 
@@ -824,7 +838,7 @@ function carbonDioxideComparison() {
     '<path d="M'+(x+50)+' 130 q-12 -18 0 -45 q12 12 0 45" fill="#d6edda" stroke="'+teal+'" stroke-width="2"/>'+Array.from({length:bubbles},(_,i)=>circle(x+55+(i%2)*8,74-i*11,3,'white',blue)).join('');
   return fig('Compare two carbon dioxide supplies',
     'Two otherwise similar pondweed samples are compared at the same high light and temperature. The higher-carbon-dioxide setup shows more bubbles in the same time in this illustrative example. Bubble size can vary, so collected gas volume is a more reliable rate comparison.',
-    beaker(20,1)+beaker(200,3)+text(70,24,'Less CO₂',blue,15)+text(250,24,'More CO₂',blue,15)+text(160,171,'Same light, temperature and time',ink,15),
+    beaker(20,1)+beaker(200,3)+text(70,24,'Less CO₂',blue,15)+text(250,24,'More CO₂',blue,15)+text(160,171,'Same light, heat and time',ink,15),
     'More bubbles can suggest a faster rate, but bubble size varies. Compare collected gas volume per minute for a more reliable test. These bubbles are illustrative.',190);
 }
 function testCarbonDioxide(){return grouped(highLightExperiment,carbonDioxideComparison);}
@@ -847,18 +861,18 @@ function splitRing() {
 function vaccineMemory() {
   return fig('How vaccination prepares a response',
     'A vaccine safely introduces antigens, or instructions to make an antigen, so that the immune system responds and memory cells can form. On later exposure to that same antigen, the immune response can be faster.',
-    circle(50,72,24,'#dceaf7',blue)+text(50,77,'Vaccine',blue,13)+arrow(78,72,118,72,teal,2)+
-    circle(155,72,27,'#dcefe6',teal)+text(155,65,'Memory',teal,13)+text(155,89,'cells',teal,13)+arrow(187,72,226,72,teal,2)+
-    '<path d="M238 51 L257 43 L276 51 V76 Q270 91 257 98 Q244 91 238 76 Z" fill="#f4e4d3" stroke="'+rust+'" stroke-width="2"/>'+text(257,120,'Faster',ink,13)+text(257,143,'response',ink,13)+text(257,166,'on exposure',ink,13),
-    'Follow the preparation of immune memory. On later exposure, the response to the same antigen can be faster.',185);
+    circle(50,72,24,'#dceaf7',blue)+text(50,77,'Vaccine',blue,13)+arrow(78,72,108,72,teal,2)+
+    circle(155,72,43,'#dcefe6',teal)+text(155,59,'Memory',teal,13)+text(155,91,'cells',teal,13)+arrow(201,72,226,72,teal,2)+
+    '<path d="M238 51 L257 43 L276 51 V76 Q270 91 257 98 Q244 91 238 76 Z" fill="#f4e4d3" stroke="'+rust+'" stroke-width="2"/>'+text(257,126,'Faster',ink,13)+text(257,158,'response',ink,13)+text(240,190,'on exposure',ink,13),
+    'Follow the preparation of immune memory. On later exposure, the response to the same antigen can be faster.',210);
 }
 function vaccineAndAntibiotics(){return grouped(vaccineMemory,antibioticTargets);}
 function moleCalculation() {
   return fig('Convert mass to amount',
     'An illustrative 4.8 gram sample of magnesium has a molar mass of 24 grams per mole. Dividing 4.8 grams by 24 grams per mole gives 0.20 moles of magnesium.',
     '<rect x="30" y="42" width="92" height="72" rx="8" fill="#e2eef4" stroke="'+blue+'" stroke-width="2"/>'+text(76,72,'Mg',blue,18)+text(76,98,'4.8 g',ink,16)+
-    arrow(129,78,164,78,rust,2)+text(238,51,'Molar mass',ink,14)+text(238,75,'24 g/mol',blue,15)+text(238,106,'4.8 ÷ 24',ink,15)+text(238,131,'= 0.20 mol',teal,16),
-    'Divide mass by molar mass before using the balanced equation ratio. The values are a worked example.',155);
+    arrow(129,78,164,78,rust,2)+text(238,45,'Molar mass',ink,14)+text(238,76,'24 g/mol',blue,15)+text(238,106,'4.8 ÷ 24',ink,15)+text(238,139,'= 0.20 mol',teal,16),
+    'Divide mass by molar mass before using the balanced equation ratio. The values are a worked example.',160);
 }
 function molesAndRatio(){return grouped(moleCalculation,molarRatio);}
 function bondEnergyBalance() {
@@ -873,7 +887,7 @@ function bondsAndBalance(){return grouped(reactionBonds,bondEnergyBalance);}
 function lightLimitation() {
   return fig('When another factor limits the rate',
     'Under the same high light and temperature, the photosynthesis rate can be limited by the carbon dioxide supply. If carbon dioxide is increased while other factors are controlled, the rate may rise.',
-    text(73,26,'Same high light',ink,14)+text(244,26,'Same temp.',ink,14)+
+    text(83,26,'Same high light',ink,14)+text(244,26,'Same temp.',ink,14)+
     '<path d="M29 42 H127 V135 H29 Z M192 42 H290 V135 H192 Z" fill="#e8f4f1" stroke="'+teal+'" stroke-width="2"/>'+
     circle(57,75,5,blue,blue)+circle(91,104,5,blue,blue)+circle(213,65,5,blue,blue)+circle(234,89,5,blue,blue)+circle(255,65,5,blue,blue)+circle(276,104,5,blue,blue)+
     text(78,160,'Less CO₂',blue,15)+text(241,160,'More CO₂',blue,15),
@@ -893,11 +907,11 @@ function voltageCircuits() {
   return fig('Potential difference in two circuits',
     'In a 6 volt parallel circuit, each lamp is connected across the supply and has a potential difference of 6 volts. In a series circuit with two identical lamps, the 6 volts is shared equally, 3 volts across each. Current is the same at every point in the series loop.',
     text(160,22,'Parallel branches',ink,16)+
-    '<path d="M48 45 H145 M175 45 H272 V122 H48 Z M48 84 H272" fill="none" stroke="'+ink+'" stroke-width="2"/>'+line(145,35,145,55)+line(175,40,175,50)+
+    '<path d="M48 45 H145 M175 45 H272 V122 H174 M146 122 H48 V45 M48 84 H146 M174 84 H272" fill="none" stroke="'+ink+'" stroke-width="2"/>'+line(145,35,145,55)+line(175,40,175,50)+
     circle(160,84,14,'white',ink)+line(151,75,169,93)+line(151,93,169,75)+circle(160,122,14,'white',ink)+line(151,113,169,131)+line(151,131,169,113)+
-    text(160,72,'6 V',blue,16)+text(160,155,'6 V',blue,16)+
+    text(210,73,'6 V',blue,16)+text(210,111,'6 V',blue,16)+
     text(160,194,'Series: identical lamps',ink,16)+
-    '<path d="M48 215 H145 M175 215 H272 V285 H48 Z" fill="none" stroke="'+ink+'" stroke-width="2"/>'+line(145,205,145,225)+line(175,210,175,220)+
+    '<path d="M48 215 H145 M175 215 H272 V285 H228 M200 285 H120 M92 285 H48 V215" fill="none" stroke="'+ink+'" stroke-width="2"/>'+line(145,205,145,225)+line(175,210,175,220)+
     circle(106,285,14,'white',ink)+line(97,276,115,294)+line(97,294,115,276)+circle(214,285,14,'white',ink)+line(205,276,223,294)+line(205,294,223,276)+
     text(106,321,'3 V',blue,16)+text(214,321,'3 V',blue,16)+text(160,247,'6 V supply in each circuit',ink,15),
     'Compare each lamp’s potential difference. The equal series shares shown require identical lamps; the parallel branches each span the supply.',340);
@@ -948,10 +962,10 @@ function clinicalTrials() {
   const person=(x,y)=>circle(x,y,5,'#d7e9ef',blue)+'<path d="M'+x+' '+(y+5)+' v13 m-6 -6 h12 m-6 6 -5 7 m5 -7 5 7" stroke="'+blue+'" stroke-width="2" fill="none"/>';
   return fig('Clinical trials progress in stages',
     'Early clinical testing examines safety and dose in small groups. Larger controlled trials compare effectiveness and monitor side effects, using treatment and control groups.',
-    text(76,25,'Early stage',ink,15)+person(58,57)+person(93,57)+text(76,111,'Safety and dose',blue,14)+
+    text(76,25,'Early stage',ink,15)+person(58,57)+person(93,57)+text(88,126,'Safety and dose',blue,14)+
     arrow(118,75,160,75,rust,2)+text(240,25,'Larger trial',ink,15)+person(204,57)+person(226,57)+person(254,57)+person(276,57)+
-    line(240,52,240,97,ink,1,'4 3')+text(214,123,'Treatment',teal,13)+text(267,149,'Control',rust,13),
-    'Follow from small early groups to larger controlled comparisons. Trials continue to monitor safety.',170);
+    line(240,52,240,97,ink,1,'4 3')+text(214,150,'Treatment',teal,13)+text(267,178,'Control',rust,13),
+    'Follow from small early groups to larger controlled comparisons. Trials continue to monitor safety.',200);
 }
 function testingAndTrials(){return grouped(treatmentTesting,clinicalTrials);}
 function parallelAndSeries() {
@@ -1043,8 +1057,8 @@ export const moreGcseStepVisuals = {
   'reflex-response': {0:neuron,1:reflexWithSynapse,2:reflexMeasure},
   'respiration-exercise': {0:respiratoryComparison,1:muscleRespiration},
   'vaccine-memory': {0:barriersAndAntibodies,1:vaccineMemory,2:vaccineAndAntibiotics},
-  'selection-and-variation': {0:naturalSelection,1:naturalSelection,2:selectiveBreeding},
-  'inheritance-cross': {2:naturalSelection},
+  'selection-and-variation': {0:selectionAndInheritance,1:selectionAndInheritance,2:selectiveBreeding},
+  'inheritance-cross': {2:selectionAndInheritance},
   'chromatography': {1:rfDistance,2:gasTests},
   'latent-heat': {0:storedEnergy,1:() => grouped(heatingCurve, gcseStepVisuals['latent-heat'][1]),2:latentCalculation},
   'parallel-circuits': {2:parallelAndSeries},

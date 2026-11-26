@@ -78,9 +78,9 @@ function resultantForces() {
   return picture("Forces on an object moving right", diagram(
     "Two views of an object moving to the right. In the first, forces of 40 newtons left and 40 newtons right balance and its velocity is constant. In the second, forces of 40 newtons left and 20 newtons right give a resultant of 20 newtons left, so it slows down while moving right.",
     text(160,22,"Moving right →",ink,15)+object(64)+arrow(135,64,35,64,blue,3)+arrow(185,64,285,64,blue,3)+
-    text(60,50,"40 N",blue,15)+text(260,50,"40 N",blue,15)+text(160,100,"Resultant 0 N: constant velocity",ink,14)+
+    text(60,50,"40 N",blue,15)+text(260,50,"40 N",blue,15)+text(160,100,"0 N resultant: constant speed",ink,14)+
     text(160,130,"Moving right →",ink,15)+object(169)+arrow(135,169,35,169,blue,3)+arrow(185,169,235,169,blue,3)+
-    text(60,155,"40 N",blue,15)+text(255,155,"20 N",blue,15)+text(160,207,"Resultant 20 N left: slowing down",ink,14),320,220),
+    text(60,155,"40 N",blue,15)+text(255,155,"20 N",blue,15)+text(160,207,"20 N left: slowing down",ink,14),320,220),
     "Compare the force arrows, then the direction of motion. A force opposite to motion causes the moving object to slow down initially.");
 }
 
@@ -90,7 +90,7 @@ function photosynthesis() {
     '<path d="M150 135 C100 118 100 56 160 40 C220 56 220 118 170 135 Z" fill="#d6edda" stroke="'+teal+'" stroke-width="2.5"/>'+
     line(160,138,160,59,teal,2)+line(160,100,131,79,teal,1.5)+line(160,91,190,72,teal,1.5)+
     text(160,24,"Light",rust,15)+arrow(160,25,160,48,rust)+
-    text(45,60,"Carbon",blue,14)+text(45,84,"dioxide",blue,14)+arrow(75,96,123,99,blue)+
+    text(45,55,"Carbon",blue,14)+text(45,87,"dioxide",blue,14)+arrow(75,96,123,99,blue)+
     text(47,133,"Water",blue,14)+arrow(73,128,129,121,blue)+
     arrow(198,98,246,82,teal)+text(269,80,"Oxygen",teal,14)+
     '<rect x="126" y="105" width="68" height="20" rx="3" fill="#f7fcf7"/>'+text(160,120,"Glucose",teal,14),320,158),
@@ -113,7 +113,7 @@ function glucoseControl() {
     "After a meal blood glucose rises. The pancreas releases insulin, which acts on body cells and the liver. Cells take up glucose and the liver and muscles store glucose as glycogen; blood glucose falls towards its normal level.",
     text(160,22,"Blood glucose rises",rust,16)+arrow(160,28,160,53,ink)+
     text(160,72,"Pancreas releases insulin",ink,16)+arrow(160,79,160,103,ink)+
-    text(160,119,"Body cells take up glucose",teal,15)+text(160,145,"Liver and muscles store glycogen",teal,15)+
+    text(160,119,"Body cells take up glucose",teal,15)+text(160,145,"Liver + muscles store glycogen",teal,15)+
     arrow(160,150,160,175,ink)+text(160,195,"Blood glucose falls",blue,16),320,213),
     "Follow the response from the rise in glucose to its return towards the normal range.");
 }
