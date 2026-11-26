@@ -2088,7 +2088,7 @@ window.SiteVocabularyData.push({
   function group(units, words) {
     for (const word of words) {
       entries.push({
-        courses: ["aaq"], subjects: ["human-biology"], topics: units,
+        courses: ["aaq"], subjects: ["human-biology"], topics: [...units],
         tiers: ["all"], status: "core", support: "increased", sources: [spec],
         ...word
       });
@@ -2287,6 +2287,9 @@ window.SiteVocabularyData.push({
     f175: ["aaq-diffusion","aaq-screening"], f176: ["aaq-diffusion"]
   };
   for (const [unit, ids] of Object.entries(prerequisites)) {
-    for (const id of ids) entries.find(entry => entry.id === id).topics.push(unit);
+    for (const id of ids) {
+      const topics = entries.find(entry => entry.id === id).topics;
+      if (!topics.includes(unit)) topics.push(unit);
+    }
   }
 })();

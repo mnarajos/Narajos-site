@@ -162,10 +162,19 @@ export function mountJourney(host, model, lesson) {
   const changedPrompt = state.prompt && state.prompt !== savedQuestion.prompt;
   const missingChoice = state.selected && state.selected !== savedQuestion.answer
     && !savedQuestion.options.some(option => option.label === state.selected);
-  if (changedPrompt || missingChoice || state.correct && state.selected !== savedQuestion.answer) {
+  const invalidSavedAnswer = changedPrompt || missingChoice || state.correct && state.selected !== savedQuestion.answer;
+  if (invalidSavedAnswer) {
     Object.assign(state, {selected: "", correct: false, feedback: "", clues: 0, helped: false, explained: false, incorrectAttempt: false, wordHelpAttempt: false});
   } else if (!state.correct && state.selected && state.feedback) {
     state.incorrectAttempt = state.selected !== savedQuestion.answer;
+  }
+  // Older inline checks did not store wordHelpAttempt. An open or otherwise
+  // started unfinished legacy check must retain assessment restrictions on
+  // reload, even though old versions could open checks automatically.
+  if (inlineCheck && !Object.hasOwn(prior, "wordHelpAttempt") && !invalidSavedAnswer &&
+      !state.done && !state.correct && !state.explained) {
+    state.wordHelpAttempt = Boolean(prior.open || prior.selected || prior.feedback || prior.helped ||
+      prior.clues || prior.hintOpen || prior.incorrectAttempt || prior.draft?.trim());
   }
   function write() {
     state.prompt = (state.repeating && retry ? retry : steps[state.step]).prompt;

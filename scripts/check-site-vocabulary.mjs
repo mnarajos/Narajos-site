@@ -21,6 +21,16 @@ for (const topic of ["b1","b2","b3","b4","b5","b6","b7","c1","c2","c3","c4","c5"
 for (const unit of ["f170","f171","f172","f173","f174","f175","f176","f177"]) {
   assert(entries.some(entry => entry.courses.includes("aaq") && entry.topics.includes(unit)), unit);
 }
+const aaQEntry = id => entries.find(entry => entry.id === "aaq-" + id);
+assert(aaQEntry("microscope").topics.includes("f171"));
+assert(!aaQEntry("pipette").topics.includes("f171"), "A sibling does not inherit microscope's extra unit");
+assert.notStrictEqual(aaQEntry("microscope").topics, aaQEntry("pipette").topics);
+assert(aaQEntry("gamete").topics.includes("f172"));
+assert(!aaQEntry("zygote").topics.includes("f172"), "A sibling does not inherit gamete's extra unit");
+assert.notStrictEqual(aaQEntry("gamete").topics, aaQEntry("zygote").topics);
+for (const entry of entries.filter(entry => entry.courses.includes("aaq"))) {
+  assert.equal(new Set(entry.topics).size, entry.topics.length, entry.id + " has duplicate units");
+}
 assert.match(entries.find(entry => entry.id === "gcse-mitosis").catchup, /topic=mitosis$/);
 assert.equal(entries.find(entry => entry.id === "gcse-microscope-resolution").catchup, null);
 assert.deepEqual(Array.from(entries.find(entry => entry.id === "gcse-mole").tiers), ["FH"]);
@@ -169,6 +179,12 @@ async function checkCourseContexts(page) {
   await close(page).click();
 
   await page.goto(base + "/human-biology/#catchup/f171/3.2.1");
+  assert.match(await lookup(page, "microscope", "Microscope"), /magnified image/i);
+  await close(page).click();
+  await toolbar(page).click();
+  await search(page).fill("pipette");
+  assert.equal(await panel(page).getByRole("button", {name:"Pipette",exact:true}).count(), 0);
+  await close(page).click();
   const aaQ = await lookup(page, "immunosuppression", "Immunosuppression");
   assert.match(aaQ, /reduction in immune activity/i);
   assert.match(await panel(page).innerText(), /transplant.*infection/i);
@@ -189,6 +205,13 @@ async function checkCourseContexts(page) {
     assert.match(await lookup(page, query, name), meaning);
     await close(page).click();
   }
+  await page.goto(base + "/human-biology/#catchup/f172/a1");
+  assert.match(await lookup(page, "gamete", "Gamete"), /reproductive cell/i);
+  await close(page).click();
+  await toolbar(page).click();
+  await search(page).fill("zygote");
+  assert.equal(await panel(page).getByRole("button", {name:"Zygote",exact:true}).count(), 0);
+  await close(page).click();
 
   await page.goto(base + "/science-catch-up/lesson/?topic=vaccine-memory&year=10");
   assert.match(await lookup(page, "vaccine", "Vaccine"), /preparation/i);
@@ -319,6 +342,55 @@ async function checkAssessment(page) {
   const humanRecord = await page.evaluate(() => JSON.parse(localStorage.getItem("narajos-human-catchup-v1"))["f170/1.2.1"]);
   assert.equal(humanRecord.guided.vocabularyHelp, true);
 
+  const legacyKey = "narajos.catchup.v1.10.photosynthesis-limits";
+  await page.goto(base + "/science-catch-up/lesson/?topic=photosynthesis-limits&year=10");
+  for (const legacy of [
+    {step:0, open:true},
+    {step:0, open:false, selected:"Carbon dioxide"}
+  ]) {
+    await page.evaluate(({key, legacy}) => localStorage.setItem(key, JSON.stringify(legacy)), {key:legacyKey, legacy});
+    await page.reload();
+    await toolbar(page).click();
+    await search(page).fill("photosynthesis");
+    assert.equal(await panel(page).getByRole("button", {name:"Photosynthesis",exact:true}).count(), 0,
+      "An open or answered-in-progress legacy record retains assessment restrictions");
+    await close(page).click();
+  }
+  await page.evaluate(key => localStorage.setItem(key, JSON.stringify({
+    step:0, open:true, selected:"Oxygen", correct:true,
+    prompt:"Which gas does photosynthesis produce?", feedback:"Correct!"
+  })), legacyKey);
+  await page.reload();
+  assert.match(await lookup(page, "photosynthesis", "Photosynthesis"), /plants and algae/i,
+    "A completed legacy check does not restrict teaching lookup");
+  await close(page).click();
+  await page.evaluate(key => localStorage.setItem(key, JSON.stringify({
+    step: 0, open: true, prompt: "Which gas does photosynthesis produce?",
+    selected: "Carbon dioxide", correct: false, feedback: "", helped: false,
+    notes: {previous: ["Keep this note"]}
+  })), legacyKey);
+  await page.reload();
+  await toolbar(page).click();
+  await search(page).fill("photosynthesis");
+  assert.equal(await panel(page).getByRole("button", {name:"Photosynthesis",exact:true}).count(), 0,
+    "An unfinished legacy attempt cannot look up its assessed answer before resuming");
+  await close(page).click();
+  await page.reload();
+  await page.getByRole("button", {name:"Resume check"}).click();
+  assert(await page.getByRole("radio", {name:"Carbon dioxide",exact:true}).isChecked(), "The legacy response survives");
+  await term(page, "gcse-photosynthesis").last().press("Enter");
+  assert.match(await panel(page).innerText(), /count as help/i);
+  await close(page).click();
+  assert.equal(await page.evaluate(key => JSON.parse(localStorage.getItem(key)).helped, legacyKey), false,
+    "Dismissing the reveal does not mark the legacy attempt as helped");
+  await page.getByRole("radio", {name:"Oxygen",exact:true}).check();
+  await page.locator(".school-check-inline").getByRole("button", {name:"Check",exact:true}).click();
+  await page.locator(".school-check-inline").getByRole("button", {name:"Continue",exact:true}).click();
+  const legacyResult = await page.evaluate(key => JSON.parse(localStorage.getItem(key)), legacyKey);
+  assert.equal(legacyResult.step, 1);
+  assert.equal(legacyResult.outcomes[0], "supported", "The existing worked-example outcome is preserved");
+  assert.deepEqual(legacyResult.notes.previous, ["Keep this note"]);
+  await page.evaluate(key => localStorage.removeItem(key), legacyKey);
   await page.goto(base + "/science-catch-up/lesson/?topic=photosynthesis-limits&year=10");
   await term(page, "gcse-photosynthesis").first().press("Enter");
   assert.match(await panel(page).locator(".vocabulary-meaning").innerText(), /plants and algae/i);
