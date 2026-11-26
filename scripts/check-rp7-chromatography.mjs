@@ -93,7 +93,28 @@ try {
   await page.locator('input[name="l8o"][value="0"]').check();
   await page.locator('input[name="l8r"][value="0"]').check();
   await page.locator('[data-act="lock"]').click();
-  await startTo(45); await finish();
+  // Fix the short-run starting condition while paused, then exercise the real
+  // removal and marking controls. At the fast speed, waiting for a displayed
+  // threshold and then clicking can overshoot enough to separate these spots.
+  await page.locator("#cstart").click();
+  await page.waitForFunction(() => document.querySelector("#cstate").textContent === "Running");
+  await page.locator("#cpause").click();
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem("kst-rp7-v2")).cr.status === "paused");
+  const shortState = await stored();
+  const shortFront = 45;
+  shortState.cr.t = 18 * (shortFront / 95) ** 2;
+  await seed(shortState);
+  assert.equal(await page.locator("#cstate").innerText(), "Paused");
+  assert.equal(await page.locator("#cfront").innerText(), `${shortFront} mm`);
+  await page.locator("#cremove").click();
+  await page.waitForFunction(() => document.querySelector("#cstate").textContent === "Removed");
+  await finish();
+  const shortRun = (await stored()).cRuns.at(-1);
+  assert.equal(shortRun.front, shortFront);
+  assert.equal(shortRun.overlap, true, "Short run should record overlapping spots");
+  assert(shortRun.spots.find(x => x.p === "xan").overlap);
+  assert(shortRun.spots.find(x => x.p === "cha").overlap);
+  assert.equal(shortRun.spots.find(x => x.p === "car").overlap, undefined);
   assert.match(await page.locator("#tasks").innerText(), /separated carotene spot.*Rf/i);
   assert.match(await page.locator("#results tbody tr").last().innerText(), /Overlapping spots cannot be measured separately/i);
   assert((await stored()).state.res.l8);
