@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="335" viewBox="0 0 280 335" role="img">
+ <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs>
+ <rect width="280" height="335" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">A starting measurement</text>
+ <path d="M41 75h142q16 0 16 15t-16 15H41Z" fill="#efc8b7" stroke="#a65f5b" stroke-width="2"/><rect x="89" y="66" width="54" height="48" rx="6" fill="#d9e8f0" stroke="#537a94" stroke-width="3"/><text x="221" y="96" font-size="14">Cuff</text>
+ <path d="M140 122v21" stroke="#344958" stroke-width="2" marker-end="url(#a)"/>
+ <path d="M59 161v82h172" stroke="#344958" stroke-width="2" fill="none"/><circle cx="92" cy="203" r="5" fill="#32776d"/><text x="192" y="208" font-size="20">?</text>
+ <text x="20" y="202" font-size="13" transform="rotate(-90 20 202)">Pressure (mmHg)</text>
+ <text x="92" y="265" font-size="14">First</text><text x="192" y="265" font-size="14">Later?</text>
+ <text x="145" y="291" font-size="14">Time →</text>
+ <text x="140" y="319" font-size="14">One point cannot show a trend.</text></g>
+</svg>

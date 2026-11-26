@@ -173,13 +173,13 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f171/1.2.1.movement · Explain 4 | Someone may need extra time to dress, adapted equipment or help with meals. Progressive changes can alter a… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.movement · Model 1 | A person can hold a cup firmly once they reach it but takes a long time to start reaching. That observation… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.movement · Model 2 | In contrast, a declining measured grip force is evidence of weakness. Ask what function changed before sugg… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.oxygen · Explain 1 | Oxygen must reach the alveoli, bind to haemoglobin in red cells and be carried through vessels to tissues. | None declared | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.oxygen · Explain 2 | Inherited CFTR variants in cystic fibrosis can produce thick secretions. Mucus can obstruct airways and imp… | None declared | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.oxygen · Explain 3 | In sickle cell disease an inherited haemoglobin variant can make red cells rigid and sickle-shaped. Cells m… | None declared | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.oxygen · Explain 4 | In iron-deficiency anaemia too little available iron limits haemoglobin production. Blood then carries less… | None declared | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.oxygen · Explain 5 | Fatigue may restrict exercise. Repeated respiratory treatment or unpredictable pain may disrupt education, … | None declared | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.oxygen · Model 1 | Trace the route backwards from a muscle. A blocked small vessel limits blood reaching it even if air reache… | None declared | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.oxygen · Model 2 | With low haemoglobin, each volume of blood can carry less oxygen even with open vessels. Airway obstruction… | None declared | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.oxygen · Explain 1 | Oxygen must reach the alveoli, bind to haemoglobin in red cells and be carried through vessels to tissues. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.oxygen · Explain 2 | Inherited CFTR variants in cystic fibrosis can produce thick secretions. Mucus can obstruct airways and imp… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.oxygen · Explain 3 | In sickle cell disease an inherited haemoglobin variant can make red cells rigid and sickle-shaped. Cells m… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.oxygen · Explain 4 | In iron-deficiency anaemia too little available iron limits haemoglobin production. Blood then carries less… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.oxygen · Explain 5 | Fatigue may restrict exercise. Repeated respiratory treatment or unpredictable pain may disrupt education, … | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.oxygen · Model 1 | Trace the route backwards from a muscle. A blocked small vessel limits blood reaching it even if air reache… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.oxygen · Model 2 | With low haemoglobin, each volume of blood can carry less oxygen even with open vessels. Airway obstruction… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.pkd · Explain 1 | Autosomal dominant polycystic kidney disease is an inherited disorder. Fluid-filled cysts can enlarge the k… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.pkd · Explain 2 | Some people experience pain in the side or back. Blood in the urine and raised blood pressure can be signs.… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.pkd · Explain 3 | Symptoms vary. Pain or repeated hospital appointments can affect everyday activities. If kidney failure dev… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
@@ -191,12 +191,12 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f171/1.2.1.renal · Explain 4 | Swelling or fatigue can restrict daily activities. Appointments and, in advanced disease, kidney replacemen… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.renal · Model 1 | Protein in urine suggests a problem retaining protein, but does not show the shape of the kidney. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f171/1.2.1.renal · Model 2 | A scan can reveal cysts. To assess function, consider evidence about waste clearance as well as structure. | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.tissues · Explain 1 | Nerves transmit signals, joints permit movement, pigment cells produce melanin and growing bones need miner… | None declared | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.tissues · Explain 2 | In multiple sclerosis, immune-mediated damage to myelin in the central nervous system disrupts nerve conduc… | None declared | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.tissues · Explain 3 | Melanoma develops when melanocytes grow uncontrollably and may spread. A changing pigmented lesion is an ob… | None declared | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.tissues · Explain 4 | Walking difficulties can have nervous, joint or bone causes. School access, transport, family support and t… | None declared | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.tissues · Model 1 | A clinician observes swollen finger joints. The patient reports pain when gripping a handle. Swelling is a … | None declared | Unreviewed; see reviewed exceptions |
-| f171/1.2.1.tissues · Model 2 | Inflammation can restrict joint movement. This differs from disrupted nerve signalling or reduced bone stre… | None declared | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.tissues · Explain 1 | Nerves transmit signals, joints permit movement, pigment cells produce melanin and growing bones need miner… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.tissues · Explain 2 | In multiple sclerosis, immune-mediated damage to myelin in the central nervous system disrupts nerve conduc… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.tissues · Explain 3 | Melanoma develops when melanocytes grow uncontrollably and may spread. A changing pigmented lesion is an ob… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.tissues · Explain 4 | Walking difficulties can have nervous, joint or bone causes. School access, transport, family support and t… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.tissues · Model 1 | A clinician observes swollen finger joints. The patient reports pain when gripping a handle. Swelling is a … | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
+| f171/1.2.1.tissues · Model 2 | Inflammation can restrict joint movement. This differs from disrupted nerve signalling or reduced bone stre… | explainDiagrams, modelDiagrams | Unreviewed; see reviewed exceptions |
 | f171/1.3.1.bacteria · Explain 1 | A bacterium can cause disease; a vector carries a pathogen between hosts. The tick in Lyme disease is the v… | compare | Unreviewed; see reviewed exceptions |
 | f171/1.3.1.bacteria · Model 1 | A tick is seen attached to skin. That establishes a possible exposure. It does not show that the tick carri… | compare | Unreviewed; see reviewed exceptions |
 | f171/1.3.1.bacteria · Model 2 | A characteristic expanding rash can support a clinical diagnosis of Lyme disease. A tired person after a wa… | compare | Unreviewed; see reviewed exceptions |
@@ -307,11 +307,11 @@ This index enumerates the authored explanation and sequential worked-example blo
 | f174/a4 · Model 1 | Two fictional adults have the same BMI and very different muscle mass. BMI describes their mass relative to… | table | Unreviewed; see reviewed exceptions |
 | f174/a4 · Model 2 | One adult has a food record with a similar nutrient intake estimate to the other. If a blood marker differs… | table | Unreviewed; see reviewed exceptions |
 | f174/a4 · Model 3 | The record is evidence about what was eaten. The blood marker is evidence about physiology. Differences in … | table | Unreviewed; see reviewed exceptions |
-| f175/2.1 · Explain 1 | A first antenatal appointment helps a midwife establish a pregnancy and health history, discuss support nee… | table | Unreviewed; see reviewed exceptions |
-| f175/2.1 · Explain 2 | Later follow-up may track development or offer distinct screening and diagnostic assessments. A booking his… | table | Unreviewed; see reviewed exceptions |
-| f175/2.1 · Model 1 | In a fictional record, the initial visit includes questions about previous pregnancies. The purpose is to u… | table | Unreviewed; see reviewed exceptions |
-| f175/2.1 · Model 2 | The record also has one blood-pressure reading. This supplies a starting measurement. A single entry alone … | table | Unreviewed; see reviewed exceptions |
-| f175/2.1 · Model 3 | Later scan measurements provide evidence about development. Compare them with gestational age and relevant … | table | Unreviewed; see reviewed exceptions |
+| f175/2.1 · Explain 1 | A first antenatal appointment helps a midwife establish a pregnancy and health history, discuss support nee… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f175/2.1 · Explain 2 | Later follow-up may track development or offer distinct screening and diagnostic assessments. A booking his… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f175/2.1 · Model 1 | In a fictional record, the initial visit includes questions about previous pregnancies. The purpose is to u… | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f175/2.1 · Model 2 | The record also has one blood-pressure reading. This supplies a starting measurement. A single entry alone … | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
+| f175/2.1 · Model 3 | Later scan measurements provide evidence about development. Compare them with gestational age and relevant … | explainDiagrams, modelDiagrams, table | Unreviewed; see reviewed exceptions |
 | f175/a1 · Explain 1 | Sperm travel from the epididymis along the vas deferens. Secretions from accessory glands contribute to sem… | None declared | Unreviewed; see reviewed exceptions |
 | f175/a1 · Explain 2 | The oviduct (Fallopian tube) opens near the ovary. Fimbriae help receive the released oocyte, then cilia an… | None declared | Unreviewed; see reviewed exceptions |
 | f175/a1 · Model 1 | Locate the growing follicle. FSH supports its development, so growth is visible while the oocyte is still i… | None declared | Unreviewed; see reviewed exceptions |

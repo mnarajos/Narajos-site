@@ -438,6 +438,11 @@
       } else showModelStep(booklet ? Math.min(record.modelStep || 0, steps.children.length - 1) : 0, false);
     }
     const explanation = root.querySelector(".hb-teach-explain");
+    function setAssessmentVisuals(id) {
+      root.querySelectorAll("[data-hb-assessment-sensitive]").forEach(figure => {
+        figure.hidden = id === "independent" || id === "followup";
+      });
+    }
     function showBookletStage(id, focus, persist) {
       const stages = {
         model: root.querySelector("[data-hb-model-step]"),
@@ -450,15 +455,14 @@
       Object.entries(stages).forEach(([name, stage]) => { if (stage) stage.hidden = name !== id; });
       // Some teaching figures answer a later independent question directly.
       // Restore them when a learner returns to a teaching or guided stage.
-      root.querySelectorAll("[data-hb-assessment-sensitive]").forEach(figure => {
-        figure.hidden = id === "independent" || id === "followup";
-      });
+      setAssessmentVisuals(id);
       const skip = root.querySelector("[data-hb-guided-skip]");
       if (skip) skip.hidden = id !== "guided" || Boolean(record.guided?.accepted || record.guided?.outcome === "selfReview");
       if (persist) { record.view = id; save(key, record); }
       if (focus) next.querySelector(".hb-stage-heading")?.focus();
     }
     function prepareStage(next) {
+      setAssessmentVisuals(next.dataset.hbStage || "model");
       root.querySelectorAll("details.hb-teach-stage[open]").forEach(stage => {
         if (stage !== next) stage.open = false;
       });

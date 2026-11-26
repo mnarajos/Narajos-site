@@ -765,14 +765,18 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.2.2/0", ["epithelia-comparison.svg"]], ["f170/1.2.2/1", ["muscle-tissue-comparison.svg"]],
       ["f170/1.2.2/2", ["connective-tissue-comparison.svg", "blood-components.svg"]],
       ["f170/1.2.3/0", ["cell-culture-vessel.svg"]], ["f170/1.2.3/1", ["organoid-structure.svg"]], ["f170/1.2.3/2", ["organoid-context.svg"]],
+      ["f171/1.2.1.tissues/1", ["f171-myelin-change.svg", "f171-inflamed-joint.svg"]], ["f171/1.2.1.tissues/2", ["f171-melanocytes.svg", "f171-vitamin-d-calcium.svg", "f171-bone-mineral.svg"]],
+      ["f171/1.2.1.oxygen/1", ["airway-narrowing.svg"]], ["f171/1.2.1.oxygen/2", ["f171-sickle-vessel.svg"]], ["f171/1.2.1.oxygen/3", ["iron-blood-oxygen.svg"]],
+      ["f171/1.2.1.digestive/1", ["f171-intestinal-absorption.svg"]], ["f171/1.2.1.digestive/2", ["f171-hiatus-position.svg"]],
       ["f171/1.2.1.movement/1", ["f171-movement-pathways.svg"]], ["f171/1.2.1.movement/2", ["f171-movement-pathways.svg"]],
       ["f171/1.2.1.airways/1", ["f171-asthma-airway.svg"]], ["f171/1.2.1.airways/2", ["alveolar-wall-loss.svg"]],
       ["f171/1.2.1.renal/1", ["f171-glomerular-barrier.svg"]], ["f171/1.2.1.renal/2", ["f171-kidney-cysts.svg"]],
       ["f171/1.2.1.hodgkin/1", ["f171-lymph-node-airway.svg"]], ["f171/1.2.1.pkd/1", ["f171-kidney-volume-filtration.svg"]], ["f171/4.2.2/1", ["f171-pressure-readings.svg"]],
       ["f171/2.2/1", ["f171-functional-outcome.svg"]],
+      ["f170/3.3.1/1", ["f170-sperm-route.svg"]], ["f170/3.3.2/2", ["f170-gamete-patterns.svg"]],
       ["f170/3.3.3/0", ["f170-menopause-change.svg"]], ["f170/3.3.3/1", ["f170-menopause-therapy.svg"]], ["f170/3.3.3/2", ["f170-prostate-enlargement.svg"]],
       ["f170/3.3.2/1", ["f170-ovarian-hormones.svg", "f170-testicular-hormones.svg"]],
-      ["f170/3.1.2/1", ["f170-diabetes-comparison.svg"]],
+      ["f170/3.1.2/1", ["f170-diabetes-comparison.svg"]], ["f170/3.1.2/2", ["f170-glucose-testing-context.svg"]],
       ["f170/3.1.1/1", ["f170-glucose-response.svg", "f170-beta-insulin.svg", "f170-insulin-targets.svg"]], ["f170/3.1.1/2", ["f170-insulin-targets.svg", "adh-epo-kidney.svg"]],
       ["f170/2.1.3.cirrhosis/1", ["f170-bilirubin-albumin.svg"]],
       ["f170/2.1.2/1", ["f170-alveolar-barrier.svg", "digestion.svg"]],
@@ -787,11 +791,12 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.1.2/3", ["f170-print-magnification.svg", "f170-fractionation-spins.svg", "cell-counting-chamber.svg"]],
       ["f170/1.1.2.counting/1", ["cell-counting-impedance.svg", "cell-counting-clumps.svg"]],
       ["f170/1.1.3/1", ["cell-protein-routing.svg"]],
-      ["f170/1.1.3/2", ["cell-mito-protein-import.svg", "cell-er-comparison.svg"]],
+      ["f170/1.1.3/2", ["cell-mito-protein-import.svg", "f170-ribosome-types.svg"]],
       ["f170/1.1.1.signals/1", ["reflex-pathway.svg", "myelinated-axon.svg"]],
       ["f170/1.1.3.evidence/1", ["f170-ribosome-types.svg"]],
       ["f170/1.1.3.evidence/2", ["cell-er-comparison.svg", "cell-protein-routing.svg"]],
       ["f170/4.2/0", ["f170-microbiota-sites.svg"]], ["f170/4.2/1", ["f170-microbiota-benefits.svg"]], ["f170/4.2/2", ["f170-microbiota-interventions.svg"]],
+      ["f170/4.1.3/0", ["f170-microbiota-sites.svg", "f170-microbial-environments.svg"]], ["f170/4.1.3/1", ["f170-sampling-contamination.svg"]], ["f170/4.1.3/2", ["f170-asepsis-limit.svg"]],
       ["f170/4.1.2/0", ["f170-fungal-hyphae.svg"]], ["f170/4.1.2/1", ["f170-fungal-digestion.svg"]], ["f170/4.1.2/2", ["f170-fungal-disease-examples.svg"]],
       ["f170/4.1.4/1", ["f170-growth-graph.svg", "f170-binary-fission.svg", "f170-population-balance.svg"]],
       ["f170/4.1.1/1", ["f170-gram-envelope.svg", "hb-gram-comparison.webp"]],
@@ -877,6 +882,9 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/1.2.1", ["f170-levels-organisation.svg", "f170-ventricle-damage.svg"], ["f170-ventricle-damage.svg", "f170-ventricle-damage.svg", "f170-ventricle-damage.svg"]],
       ["f170/4.1.4", ["f170-binary-fission.svg"], ["f170-growth-graph.svg", "f170-growth-graph.svg", "f170-growth-graph.svg"]],
       ["f170/4.1.1", ["f170-gram-envelope.svg", "f170-gram-stain-sequence.svg"], ["f170-gram-envelope.svg", "f170-gram-envelope.svg"]],
+      ["f175/2.1", ["f175-history-ultrasound.svg", "f175-history-ultrasound.svg"], ["f175-history-ultrasound.svg", "f175-baseline-pressure.svg", "f175-history-ultrasound.svg"]],
+      ["f171/1.2.1.tissues", [null, "f171-myelin-change.svg", "f171-melanocytes.svg"], ["f171-inflamed-joint.svg", "f171-inflamed-joint.svg"]],
+      ["f171/1.2.1.oxygen", [null, "airway-narrowing.svg", "f171-sickle-vessel.svg", "iron-blood-oxygen.svg"], ["f171-sickle-vessel.svg", "iron-blood-oxygen.svg"]],
       ["f171/1.2.1.digestive", ["f171-intestinal-absorption.svg", "f171-intestinal-absorption.svg", "f171-hiatus-position.svg"], ["f171-hiatus-position.svg", "f171-hiatus-position.svg"]],
       ["f171/1.2.1.movement", ["f171-movement-pathways.svg", "f171-movement-pathways.svg", "f171-movement-pathways.svg"], ["f171-movement-pathways.svg", "f171-movement-pathways.svg"]],
       ["f171/1.2.1.airways", [null, "f171-asthma-airway.svg", "alveolar-wall-loss.svg"], ["f171-asthma-airway.svg", "f171-asthma-airway.svg"]],
@@ -999,6 +1007,46 @@ export async function checkHumanCatchup(browser, base) {
     assert(await digestiveTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
     await expand(page.locator("[data-hb-model-step]"));
     assert(await digestiveTeachingFigures.evaluateAll(figures => figures.every(figure => !figure.hidden)));
+
+    // Sickle-cell and iron-deficiency figures directly support the independent comparison.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f171/1.2.1.oxygen");
+    const oxygenTeachingFigures = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]');
+    assert.equal(await oxygenTeachingFigures.count(), 2);
+    await expand(stage("independent"));
+    assert(await oxygenTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await page.reload();
+    assert(await oxygenTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await oxygenTeachingFigures.evaluateAll(figures => figures.every(figure => !figure.hidden)));
+
+    // Myelin and bone-mineral figures directly support the independent tissue comparison.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f171/1.2.1.tissues");
+    const tissueTeachingFigures = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]');
+    assert.equal(await tissueTeachingFigures.count(), 3);
+    await expand(stage("independent"));
+    assert(await tissueTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await page.reload();
+    assert(await tissueTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await tissueTeachingFigures.evaluateAll(figures => figures.every(figure => !figure.hidden)));
+
+    // Booking-history versus scan figures would answer the independent task.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f175/2.1");
+    const antenatalTeachingFigures = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]');
+    assert.equal(await antenatalTeachingFigures.count(), 2);
+    await expand(stage("independent"));
+    await expand(page.locator(".hb-teach-explain"));
+    assert(await antenatalTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    assert(await page.locator('.hb-teach-explain img[src="/human-biology/f175-baseline-pressure.svg"]').isVisible());
+    await page.reload();
+    await expand(stage("independent"));
+    await expand(page.locator(".hb-teach-explain"));
+    assert(await antenatalTeachingFigures.evaluateAll(figures => figures.every(figure => figure.hidden)));
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await antenatalTeachingFigures.evaluateAll(figures => figures.every(figure => !figure.hidden)));
 
     // Both linked meiosis views remain on their matching paragraph and worked step.
     await page.evaluate(key => localStorage.removeItem(key), localPractice);

@@ -80,6 +80,103 @@ function parallelTransects() {
     'Compare the repeated lines: each uses the same distances from the hedge. Real surveys may use more samples.',235);
 }
 function quadratWorked(){return grouped(randomCoordinates,quadratBoundary,quadratMeanWorked,parallelTransects);}
+function infraredReadings() {
+  return fig('Compare infrared readings',
+    'In the worked example, the detector reads 78 arbitrary units from the matt black face and 24 arbitrary units from the polished face, under matched conditions. Both bars start at zero and use the same scale.',
+    text(160,25,'Detector reading',ink,16)+text(160,55,'arbitrary units',ink,15)+
+    line(36,163,287,163,ink,2)+'<rect x="60" y="85" width="76" height="78" fill="#48515b" stroke="'+ink+'"/>'+
+    '<rect x="188" y="139" width="76" height="24" fill="#dce6ed" stroke="'+ink+'"/>'+text(98,112,'78','#fff',16)+text(226,131,'24',ink,16)+
+    text(98,193,'Matt black',ink,15)+text(226,193,'Polished',ink,15),
+    'Compare the illustrative readings on the same scale. Repeat measurements while checking that the cube temperature remains comparable.',212);
+}
+function infraredAbsorption() {
+  return fig('Compare infrared absorption',
+    'Two identical plates have different surface finishes. A source sends infrared towards both plates from equal distances. Thermometers measure the temperature rise of each plate over the same time.',
+    text(50,25,'Matt',ink,15)+text(270,25,'Shiny',ink,15)+text(160,25,'Infrared',ink,15)+text(160,57,'source',ink,15)+
+    '<rect x="25" y="75" width="45" height="50" fill="#48515b" stroke="'+ink+'"/><rect x="250" y="75" width="45" height="50" fill="#dce6ed" stroke="'+ink+'"/>'+
+    '<rect x="140" y="80" width="40" height="40" fill="#f5cfac" stroke="'+rust+'"/>'+arrow(135,100,78,100,rust,2)+arrow(185,100,242,100,rust,2)+
+    line(50,125,50,151,rust,3)+circle(50,155,5,rust,rust)+line(270,125,270,151,rust,3)+circle(270,155,5,rust,rust)+
+    text(160,190,'Same distance and time',ink,15)+text(160,225,'Compare temperature rise',teal,15),
+    'Use matching plates and equal source distances. Measure their temperature rises over the same period.',244);
+}
+function springReading() {
+  return fig('Read a spring at eye level',
+    'A spring and load hang from a fixed support beside a vertical ruler. A pointer at the lower end of the spring is read on the ruler at eye level, after the spring stops oscillating.',
+    line(52,32,171,32,ink,4)+'<path d="M95 32v12l-12 7 24 8-24 8 24 8-24 8 12 7v12" fill="none" stroke="'+ink+'" stroke-width="2"/>'+
+    '<rect x="82" y="102" width="26" height="28" fill="#d9eaf0" stroke="'+ink+'"/>'+line(95,102,175,102,teal,2)+
+    line(177,37,177,143,ink,2)+Array.from({length:8},(_,i)=>line(177,45+i*12,186,45+i*12,ink,1)).join('')+
+    '<path d="M221 102q17-14 34 0q-17 14-34 0Z" fill="#eef5ee" stroke="'+ink+'" stroke-width="2"/>'+circle(238,102,4,ink,ink)+line(190,102,219,102,rust,1,'4 4')+
+    text(134,177,'Pointer',teal,15)+text(238,177,'Eye level',rust,15),
+    'Let the spring settle, then read the pointer straight across the ruler to reduce parallax.',195);
+}
+function springLengths() {
+  const spring=(x,bottom)=>{const top=48,dy=(bottom-top)/8;let d='M'+x+' '+top+' v'+(dy/2);for(let i=0;i<7;i++)d+=' l'+(i%2===0?-9:9)+' '+dy;d+=' L'+x+' '+bottom;return '<path d="'+d+'" fill="none" stroke="'+blue+'" stroke-width="2"/>';};
+  return fig('Compare lengths from one reference',
+    'A spring measures eight centimetres unloaded and twelve centimetres with a two-newton force. Both lengths are measured from the same upper reference. The extension is twelve minus eight, or four centimetres.',
+    text(75,25,'0 N',ink,16)+text(245,25,'2 N',ink,16)+line(36,48,284,48,ink,3)+
+    spring(75,128)+spring(245,168)+'<rect x="235" y="168" width="20" height="18" fill="#d9eaf0" stroke="'+ink+'"/>'+
+    text(75,158,'8 cm',blue,15)+text(245,210,'12 cm',blue,15)+text(160,248,'12 − 8 = 4 cm',teal,16),
+    'Compare lengths from the same fixed top; subtract the unloaded length to find the extension.',267);
+}
+function springProportional() {
+  return fig('Plot extension against force',
+    'The plotted values are zero, two, four and six centimetres extension at zero, one, two and three newtons respectively. A straight line through the origin represents proportionality in these measurements.',
+    text(160,23,'Extension (cm)',ink,15)+line(54,40,54,164,ink,2)+line(54,164,270,164,ink,2)+
+    line(54,164,249,44,blue,2)+[0,1,2,3].map(n=>circle(54+65*n,164-40*n,4,blue,blue)+text(54+65*n,190,String(n),ink,15)+text(32,169-40*n,String(2*n),ink,15)).join('')+
+    text(160,224,'Force (N)',ink,15),
+    'Each additional newton produces 2 cm of extension in these measurements. The straight line passes through the origin.',243);
+}
+function springRecovery() {
+  return fig('Departure from proportionality',
+    'A schematic extension–force graph is straight at first and then curves away. This shows departure from proportionality; it does not establish whether the spring will recover its original length.',
+    text(160,23,'Extension',ink,15)+line(50,40,50,145,ink,2)+line(50,145,273,145,ink,2)+
+    '<path d="M50 145 L160 105 Q210 95 255 44" fill="none" stroke="'+blue+'" stroke-width="3"/>'+circle(160,105,4,rust,rust)+
+    text(235,110,'Curve',rust,15)+text(160,177,'Force',ink,15),
+    'The curve shows a departure from proportionality. Unload the spring separately to check whether it recovers.',196);
+}
+function springUnloading() {
+  const coil=x=>'<path d="M'+x+' 52 v10 l-9 8 18 8-18 8 18 8-18 8 9 8 v10" fill="none" stroke="'+blue+'" stroke-width="2"/>';
+  return fig('Compare the unloaded lengths',
+    'The same spring has the same unloaded length before loading and after unloading. Recovery to the original length shows elastic recovery for this load, separately from whether extension was proportional to force.',
+    text(80,25,'Before',ink,16)+text(240,25,'After',ink,16)+line(40,52,280,52,ink,3)+coil(80)+coil(240)+
+    line(60,120,260,120,teal,1,'5 4')+text(160,157,'Same unloaded length',teal,15),
+    'Compare the unloaded length before loading and after removal of the load. Here the spring recovered for this load.',177);
+}
+function springWorkedLengths(){return grouped(springLengths,springProportional);}
+function springDepartureAndRecovery(){return grouped(springRecovery,springUnloading);}
+function rippleCrestIntervals() {
+  const crests = [32,96,160,224,288];
+  return fig('Measure across several crests',
+    'A simplified top view of a ripple tank shows five successive parallel crests. The measured distance from the first crest to the fifth is 24 centimetres, which contains four wavelengths. One wavelength is therefore 24 divided by 4, or 6 centimetres.',
+    text(160,25,'24 cm',ink,16)+line(32,43,288,43,ink,2)+
+    crests.map(x=>line(x,37,x,49,ink,2)+line(x,65,x,121,blue,3)).join('')+
+    text(160,153,'Five crests: four intervals',ink,15)+text(160,190,'λ = 24 ÷ 4 = 6 cm',teal,15),
+    'Count the gaps between crests, not the crests themselves. The parallel lines are a simplified view from above.',210);
+}
+function rippleFrequency() {
+  const wave = Array.from({length:201},(_,i)=>[40+i*1.2,(103-25*Math.sin(i*Math.PI/10)).toFixed(2)].join(',')).join(' ');
+  return fig('Count oscillations at one point',
+    'A displacement–time graph at a fixed point shows ten complete oscillations during five seconds, corresponding to two oscillations per second or two hertz. With wavelength 0.06 metres, speed is two times 0.06, or 0.12 metres per second.',
+    text(160,25,'10 oscillations',ink,16)+text(112,54,'Displacement',ink,15)+
+    line(40,65,40,135,ink,2)+line(40,103,280,103,ink,1,'4 4')+
+    '<polyline points="'+wave+'" fill="none" stroke="'+blue+'" stroke-width="2"/>'+
+    line(40,135,280,135,ink,2)+line(40,130,40,140,ink,2)+line(280,130,280,140,ink,2)+
+    text(40,160,'0',ink,15)+text(280,160,'5 s',ink,15)+text(160,195,'f = 10 ÷ 5 = 2 Hz',teal,15)+
+    text(160,232,'v = 2 × 0.06 = 0.12 m/s',ink,15),
+    'Follow the complete cycles at one fixed point. Convert 6 cm to 0.06 m before using wave speed = frequency × wavelength.',250);
+}
+function rippleAmplitude() {
+  const wave = Array.from({length:141},(_,i)=>[20+i*2,(110-30*Math.cos((20+i*2-100)*Math.PI/60)).toFixed(2)].join(',')).join(' ');
+  return fig('Amplitude and a moving ripple',
+    'A simplified side view shows the maximum vertical displacement from equilibrium to a crest. A floating marker moves up and down as the wave pattern travels horizontally; the diagram represents this visible vertical motion, not the marker’s exact path.',
+    text(221,25,'Wave travels',ink,15)+arrow(182,44,274,44,teal,2)+
+    line(20,110,300,110,ink,1,'5 4')+'<polyline points="'+wave+'" fill="none" stroke="'+blue+'" stroke-width="2"/>'+
+    circle(100,80,6,'#f3c381',rust,2)+arrow(130,77,130,53,rust,2)+arrow(130,53,130,77,rust,2)+line(55,80,100,80,ink,1,'4 4')+
+    arrow(60,109,60,81,rust,2)+arrow(60,81,60,109,rust,2)+
+    text(78,171,'Amplitude',rust,15)+text(230,171,'Equilibrium',ink,15)+
+    text(160,208,'Marker rises and falls',ink,15),
+    'Measure from equilibrium to a crest. The marker oscillates as the pattern travels; its exact path is simplified.',225);
+}
 function iodineEndpoint() {
   return fig('Reading iodine samples',
     'In an illustrative amylase test, separate iodine wells receive samples at regular 10-second intervals. Selected wells at 0 and 30 seconds are blue-black because starch remains; the first orange-brown well at 40 seconds is the recorded endpoint.',
@@ -1011,6 +1108,9 @@ export const gcseWorkedVisuals = {
 // These worked groups contain several distinct ideas. The renderer places
 // each selected visual directly with its matching line in the teaching stage.
 export const gcseWorkedLineVisuals = {
+  'infrared-evidence': [() => investigationFigure('infrared-evidence', 'Keep the same detector distance and angle as you compare cube faces at similar temperatures.'), infraredReadings, infraredAbsorption],
+  'spring-evidence': [springReading, springWorkedLengths, springDepartureAndRecovery],
+  'wave-measurement': [rippleCrestIntervals, rippleFrequency, rippleAmplitude],
   'amylase-endpoint': [amylasePreparation, iodineEndpoint, amylaseRates, iodineInterval],
   'chromatography': [gcseChromatogramSetup, gcseChromatogramResult, rfWorked],
   'domestic-electricity': [alternatingAndDirect, mainsWorkingLoop, faultPath],

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="335" viewBox="0 0 280 335" role="img">
+ <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs>
+ <rect width="280" height="335" rx="12" fill="#f4f8f7"/>
+ <g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+  <text x="140" y="24" font-size="17" font-weight="700">Red cells in small vessels</text>
+  <text x="140" y="48" font-size="14">Schematic · not to scale</text>
+  <text x="140" y="75" font-size="15">Open route</text>
+  <path d="M25 92h230v59H25" fill="#f9e9e4" stroke="#a65f5b" stroke-width="3"/>
+  <g fill="#dd9889" stroke="#a65f5b" stroke-width="2"><circle cx="74" cy="120" r="11"/><circle cx="121" cy="120" r="11"/><circle cx="168" cy="120" r="11"/></g>
+  <path d="M192 120h41" stroke="#344958" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M20 175h240" stroke="#cbdedb" stroke-width="2"/>
+  <text x="140" y="200" font-size="15">Possible obstruction</text>
+  <path d="M25 217h230v59H25" fill="#f9e9e4" stroke="#a65f5b" stroke-width="3"/>
+  <path d="M135 217q-18 14-5 22q-20-3-14-16q4-6 19-6Z M150 235q-18 14-5 22q-20-3-14-16q4-6 19-6Z M135 252q-18 14-5 22q-20-3-14-16q4-6 19-6Z" fill="#b86459" stroke="#8d4945" stroke-width="2"/>
+  <path d="M192 246h29" stroke="#344958" stroke-width="2.5" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+  <text x="140" y="309" font-size="14">Flow to nearby tissue can fall.</text>
+ </g>
+</svg>

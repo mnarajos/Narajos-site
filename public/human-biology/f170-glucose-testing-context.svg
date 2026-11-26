@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="393" viewBox="0 0 280 393" role="img" aria-labelledby="title desc">
+<title id="title">Glucose testing contexts</title><desc id="desc">A fasting period before a blood sample gives a more standardised starting condition. A wearable sensor in the fluid under the skin supplies a glucose trend over time. Its reading can lag behind blood glucose.</desc>
+<rect width="280" height="393" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16" text-anchor="middle" fill="#243e49">
+<text x="140" y="24" font-weight="700">Fasting test</text>
+<circle cx="54" cy="66" r="24" fill="#fff" stroke="#356a71" stroke-width="2"/><path d="M54 50v17l11 7" fill="none" stroke="#356a71" stroke-width="2.5"/>
+<text x="54" y="105">Fasting</text>
+<path d="M91 67h53m-8-6 8 6-8 6" fill="none" stroke="#356a71" stroke-width="2"/>
+<path d="M183 43h23v12l-5 35h-13l-5-35z" fill="#fff" stroke="#73588c" stroke-width="2"/><path d="M187 68h15l-2 18h-11z" fill="#c65d55"/>
+<text x="194" y="105">Blood sample</text>
+<text x="140" y="131">More standardised starting point</text>
+<path d="M25 148h230" stroke="#b4cbce"/>
+<text x="140" y="175" font-weight="700">Wearable sensor</text>
+<rect x="30" y="214" width="220" height="63" rx="5" fill="#f3e0cf"/><path d="M30 214h220" stroke="#ad7d63" stroke-width="3"/>
+<rect x="104" y="198" width="72" height="16" rx="8" fill="#78628b"/><path d="M140 214v30" stroke="#78628b" stroke-width="4"/>
+<text x="140" y="268" font-size="15">Fluid beneath skin</text>
+<path d="M102 305h76" stroke="#356a71" stroke-width="2"/><path d="M168 299l10 6-10 6" fill="none" stroke="#356a71" stroke-width="2"/>
+<text x="140" y="332">Glucose trend over time</text>
+<text x="140" y="355">Sensor readings can lag</text><text x="140" y="377">behind blood glucose.</text>
+</g></svg>

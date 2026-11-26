@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="305" viewBox="0 0 280 305" role="img">
+ <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs>
+ <rect width="280" height="305" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">Myelin and nerve signals</text><text x="140" y="50" font-size="15">Intact myelin</text>
+ <path d="M30 99h220" stroke="#537a94" stroke-width="5"/><g fill="#e9d9a8" stroke="#a5792e" stroke-width="2"><rect x="47" y="78" width="48" height="42" rx="12"/><rect x="108" y="78" width="48" height="42" rx="12"/><rect x="169" y="78" width="48" height="42" rx="12"/></g>
+ <path d="M35 137h210" stroke="#344958" stroke-width="2" marker-end="url(#a)"/><text x="140" y="165" font-size="15">Myelin damaged</text>
+ <path d="M30 214h220" stroke="#537a94" stroke-width="5"/><g fill="#e9d9a8" stroke="#a5792e" stroke-width="2"><rect x="47" y="193" width="48" height="42" rx="12"/><rect x="169" y="193" width="48" height="42" rx="12"/></g><path d="M110 194l9 11-5 11 11 9m13-31-8 10 8 12-7 10" stroke="#a65f5b" stroke-width="3" fill="none"/>
+ <path d="M35 252h84" stroke="#344958" stroke-width="2" marker-end="url(#a)"/><path d="M151 252h94" stroke="#a76125" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#a)"/>
+ <text x="140" y="284" font-size="14">Signals may slow or be blocked.</text></g>
+</svg>

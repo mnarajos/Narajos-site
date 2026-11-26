@@ -158,5 +158,20 @@ for (const id of ['enzfactors','enzfactors2']) {
  assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
 }
 assert.equal(context.window.ALevelEnzymeDenaturation.render('a1','enzfactors',1), '');
+for (const [file,global,topic,id,group] of [
+ ['catchup-cell-organisation.js','ALevelCellOrganisation','a2','euk',2],
+ ['catchup-protein-detail.js','ALevelProteinDetail','a1','proteins',1],
+ ['catchup-herd-immunity.js','ALevelHerdImmunity','a2','vaccines',0],
+ ['catchup-cellulose-structure.js','ALevelCelluloseStructure','a1','polysac',1],
+ ['catchup-mitosis-cancer.js','ALevelMitosisCancer','a2','mitosis',2],
+ ['catchup-nucleic-comparison.js','ALevelNucleicComparison','a1','nucleic',1],
+ ['catchup-osmosis-chain.js','ALevelOsmosisChain','a2','osmchain',1],
+ ['catchup-antibody-drug.js','ALevelAntibodyDrug','a2','hiv',2]
+]) {
+ vm.runInNewContext(readFileSync(new URL('../public/alevel/'+file, import.meta.url), 'utf8'), context);
+ const figure=context.window[global].render(topic,id,group);
+ assert.match(figure, /<svg[^>]+role="img"[^>]+aria-label="[^"]{20,}"/);
+ assert.match(figure, /<figcaption>.{20,}<\/figcaption>/);
+}
 assert.equal(context.window.ALevelCatchupFigures.render('a1','sugars',2), '');
 console.log('A-level molecular figure alternatives, captions, mapping and local image checked.');

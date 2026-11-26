@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="360" viewBox="0 0 280 360" role="img">
+ <rect width="280" height="360" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">Different antenatal evidence</text>
+ <text x="140" y="51" font-size="15">Booking history</text>
+ <rect x="40" y="66" width="87" height="76" rx="6" fill="#fff" stroke="#537a94" stroke-width="2"/><rect x="67" y="59" width="33" height="13" rx="4" fill="#d9e8f0" stroke="#537a94" stroke-width="2"/>
+ <path d="M54 88h59M54 105h59M54 122h59" stroke="#789c94" stroke-width="2"/>
+ <text x="194" y="93" font-size="14">Health and</text><text x="194" y="113" font-size="14">past pregnancies:</text><text x="194" y="133" font-size="14">background</text>
+ <path d="M20 162h240" stroke="#cbdedb" stroke-width="2"/>
+ <text x="140" y="189" font-size="15">Ultrasound measurement</text>
+ <rect x="34" y="205" width="117" height="82" rx="7" fill="#273d48" stroke="#537a94" stroke-width="3"/>
+ <ellipse cx="93" cy="246" rx="38" ry="28" fill="none" stroke="#fff" stroke-width="2"/><circle cx="80" cy="239" r="10" fill="none" stroke="#fff" stroke-width="2"/><path d="M68 239h24m-24-5v10m24-10v10" stroke="#e9c58e" stroke-width="2"/>
+ <text x="208" y="225" font-size="14">Current fetal</text><text x="208" y="245" font-size="14">measurement</text><text x="208" y="267" font-size="14">+ gestational</text><text x="208" y="287" font-size="14">age</text>
+ <text x="140" y="325" font-size="14">Scan icon is not a patient image.</text><text x="140" y="346" font-size="13">Measurements are interpreted in context.</text></g>
+</svg>
