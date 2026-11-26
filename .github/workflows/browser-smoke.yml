@@ -36,6 +36,11 @@ jobs:
         run: node scripts/check-alevel-practicals.mjs
       - name: Test A-level investigation planning
         run: node scripts/check-alevel-plan-investigation.mjs chromium
+      - name: Test RP9 respiration simulation
+        run: |
+          node scripts/check-rp9-simulation.mjs
+          node scripts/check-rp9-resume.mjs
+          node scripts/check-rp9-review.mjs
       - name: Test A-level vocabulary support
         run: node scripts/check-alevel-vocabulary.mjs
       - name: Test vocabulary across courses
