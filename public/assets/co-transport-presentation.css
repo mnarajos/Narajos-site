@@ -16,3 +16,7 @@ body{background:#f8f7f3;color:#1f2937;font:1rem/1.55 system-ui,-apple-system,"Se
 .homework .notice{background:#e1f0ee;border-color:#0a6b66}
 .homework .time{color:#4f5057}
 .homework :is(a,summary):focus-visible{outline:3px solid #1f4fd1;outline-offset:2px}
+.homework .refresher .bio-diagram svg{display:block;width:100%;height:auto;border:1px solid #bdced6;background:#fff}
+.homework .refresher-control{min-height:44px;padding:.55rem 1.1rem;border:2px solid #0a6b66;border-radius:12px;background:#fff;color:#0a6b66;font:inherit;font-weight:700;cursor:pointer}
+.homework .refresher-control:focus-visible{outline:3px solid #1f4fd1;outline-offset:2px}
+.homework .refresher-motion-note{color:#4f5057;font-size:.92rem;margin:.7rem 0 0}
