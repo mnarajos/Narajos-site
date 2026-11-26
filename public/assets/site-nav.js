@@ -4,7 +4,7 @@
 (function(){
  "use strict";
  var footer=document.querySelector("footer.footer .footer-inner");
- if(footer&&!footer.querySelector('a[href="/terms/"]')){
+ if(footer){
   var footerLinks=footer.querySelector(".footer-links, .school-footer-links");
   if(!footerLinks){
    footerLinks=document.createElement("nav");
@@ -14,10 +14,13 @@
    if(privacy)footerLinks.append(privacy);
    footer.append(footerLinks);
   }
-  var terms=document.createElement("a");
-  terms.href="/terms/";
-  terms.textContent="Terms of Use";
-  footerLinks.append(terms);
+  [["/terms/","Terms of Use"],["/about/","About"],["/about/#feedback","Feedback & Suggestions"]].forEach(function(item){
+   if(footer.querySelector('a[href="'+item[0]+'"]'))return;
+   var link=document.createElement("a");
+   link.href=item[0];
+   link.textContent=item[1];
+   footerLinks.append(link);
+  });
  }
  var header=document.querySelector(".topbar .topbar-inner");
  if(!header)return;
@@ -35,10 +38,12 @@
      <p id="nav-qualifications">By qualification</p>
      <a href="/gcse/">GCSE Combined Science — AQA Trilogy</a><a href="/alevel/">A-level Biology — AQA</a><a href="/human-biology/">Human Biology — Cambridge OCR AAQ</a>
     </div>
+    <div class="site-dropdown-group" role="group" aria-labelledby="nav-simulations">
+     <p id="nav-simulations">Biology Simulations</p>
+     <a href="/teaching/simulations/">All simulations</a><a href="/teaching/simulations/#gcse-and-alevel">GCSE &amp; A-level</a><a href="/teaching/simulations/#alevel">A-level Biology</a><a href="/teaching/enzyme-investigations/">Guided enzyme investigations</a>
+    </div>
    </div>
   </details>
-  <details><summary><span class="nav-full">Biology Simulations</span><span class="nav-short" aria-hidden="true">Simulations</span></summary>
-   <div class="site-dropdown"><a href="/teaching/simulations/">All simulations</a><a href="/teaching/simulations/#gcse-and-alevel">GCSE &amp; A-level</a><a href="/teaching/simulations/#alevel">A-level Biology</a><a href="/teaching/enzyme-investigations/">Guided enzyme investigations</a></div></details>
   <details class="teacher-menu"><summary>Teacher Tools</summary>
    <div class="site-dropdown"><a href="/teacher/">Focused Questions</a><a href="/teaching/focused-writing/">Focused Writing</a></div></details>`;
  header.append(nav);
@@ -70,9 +75,21 @@
  function closeOthers(keep){
   menus.forEach(function(menu){if(menu!==keep)menu.open=false;});
  }
+ function fitOpenMenu(){
+  var open=menus.find(function(menu){return menu.open;});
+  if(!open)return;
+  var dropdown=open.querySelector(".site-dropdown");
+  if(!dropdown)return;
+  var viewport=window.visualViewport;
+  var bottom=viewport?viewport.offsetTop+viewport.height:window.innerHeight;
+  dropdown.style.setProperty("--dropdown-available",Math.max(0,bottom-dropdown.getBoundingClientRect().top-8)+"px");
+ }
  menus.forEach(function(menu){
-  menu.addEventListener("toggle",function(){if(menu.open)closeOthers(menu);});
+  menu.addEventListener("toggle",function(){if(menu.open){closeOthers(menu);fitOpenMenu();}});
  });
+ window.addEventListener("resize",fitOpenMenu);
+ window.addEventListener("scroll",fitOpenMenu);
+ if(window.visualViewport)window.visualViewport.addEventListener("resize",fitOpenMenu);
  document.addEventListener("pointerdown",function(event){
   if(!event.target.closest(".site-nav details"))closeOthers(null);
  });
