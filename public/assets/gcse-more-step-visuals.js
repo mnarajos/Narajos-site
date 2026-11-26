@@ -1,6 +1,7 @@
 // Original teaching schematics. Positions, sizes and colours are illustrative.
 import { arrow, blue, circle, diagram, ink, line, node, picture, rust, teal, text } from './catchup-models.js';
 import { gcseStepVisuals } from './gcse-step-visuals.js';
+import { gcseVisual } from './gcse-catchup-visuals.js';
 import { photo } from './catchup-photos.js';
 // At phone widths a 320-unit SVG is scaled down inside its card. Use an
 // 18-unit label floor, then reflow individual figures where labels would overlap.
@@ -953,6 +954,47 @@ function clinicalTrials() {
     'Follow from small early groups to larger controlled comparisons. Trials continue to monitor safety.',170);
 }
 function testingAndTrials(){return grouped(treatmentTesting,clinicalTrials);}
+function parallelAndSeries() {
+  return fig('Potential difference in two circuits',
+    'In a 9 volt parallel circuit, each lamp is connected across the supply and has a potential difference of 9 volts. In a series circuit with two identical lamps, the 9 volts is shared equally, 4.5 volts across each. Current is the same at every point in the series loop.',
+    text(160,25,'Parallel branches',ink,16)+
+    '<path d="M48 45 H145 M175 45 H272 V122 H174 M146 122 H48 V45 M48 84 H146 M174 84 H272" fill="none" stroke="'+ink+'" stroke-width="2"/>'+line(145,35,145,55)+line(175,40,175,50)+
+    circle(160,84,14,'white',ink)+line(151,75,169,93)+line(151,93,169,75)+circle(160,122,14,'white',ink)+line(151,113,169,131)+line(151,131,169,113)+
+    text(210,73,'9 V',blue,16)+text(210,111,'9 V',blue,16)+
+    text(160,193,'Series: identical lamps',ink,16)+
+    '<path d="M48 215 H145 M175 215 H272 V285 H228 M200 285 H120 M92 285 H48 V215" fill="none" stroke="'+ink+'" stroke-width="2"/>'+line(145,205,145,225)+line(175,210,175,220)+
+    circle(106,285,14,'white',ink)+line(97,276,115,294)+line(97,294,115,276)+circle(214,285,14,'white',ink)+line(205,276,223,294)+line(205,294,223,276)+
+    text(106,321,'4.5 V',blue,16)+text(214,321,'4.5 V',blue,16)+text(160,247,'9 V supply in each circuit',ink,15),
+    'Compare each lamp’s potential difference. The equal series shares shown require identical lamps; parallel branches each span the supply.',340);
+}
+function rfDistance() {
+  return fig('Measure both chromatography distances',
+    'A sample spot and a solvent front started from the same baseline. The spot is 2 centimetres from the baseline and the solvent front is 8 centimetres from it, so Rf is 2 divided by 8, or 0.25.',
+    '<rect x="51" y="20" width="216" height="158" fill="#fffdf3" stroke="'+ink+'" stroke-width="2"/>'+line(61,40,257,40,teal,2,'5 4')+line(61,160,257,160,ink,2)+circle(102,130,8,'#e5bf9c',rust)+
+    line(147,130,147,160,blue,2)+line(140,130,154,130,blue,2)+line(140,160,154,160,blue,2)+text(158,151,'2 cm',blue,15,'start')+
+    line(218,40,218,160,rust,2)+line(211,40,225,40,rust,2)+line(211,160,225,160,rust,2)+text(230,104,'8 cm',rust,15,'start')+
+    text(160,205,'Rf = 2 ÷ 8 = 0.25',ink,16),
+    'Both distances start at the baseline. Divide the spot distance by the solvent-front distance. The values are illustrative.',225);
+}
+function activationBarrier() {
+  return fig('Read activation energy',
+    'A reaction energy profile starts at a reactant energy level, rises to a peak, then falls to a lower product energy level. Activation energy is the vertical energy difference between the reactants and the peak.',
+    line(45,148,286,148)+line(45,148,45,35)+text(45,25,'Energy (arbitrary units)',ink,15,'start')+text(160,198,'Progress of reaction',ink,15)+
+    '<path d="M55 125 H100 C132 125 135 55 164 55 S202 136 247 136 H277" fill="none" stroke="'+teal+'" stroke-width="3"/>'+
+    line(75,125,75,55,rust,2)+line(68,125,82,125,rust,2)+line(68,55,82,55,rust,2)+text(160,225,'Activation energy: red marker',rust,15)+
+    text(89,172,'Reactants',ink,14)+text(243,172,'Products',ink,14),
+    'Measure the energy difference from the reactant level to the peak. This example has lower-energy products.',246);
+}
+function wireField() {
+  return fig('Field around a straight wire',
+    'A dot represents current coming out of the page. The magnetic field circles the wire anticlockwise, as given by the right-hand grip rule.',
+    '<circle cx="160" cy="100" r="58" fill="none" stroke="'+blue+'" stroke-width="2"/>'+circle(160,100,15,'white',ink)+circle(160,100,4,ink,ink)+
+    arrow(185,47,160,42,blue,2)+arrow(218,110,218,80,blue,2)+arrow(135,153,160,158,blue,2)+arrow(102,80,102,110,blue,2)+
+    text(160,25,'Current out of page',ink,15)+text(160,193,'Field circles the wire',blue,15),
+    'Use the right-hand grip rule: thumb out of the page, fingers curl around the field. The dot marks current towards you.',210);
+}
+function coilWithCurrent(){return gcseVisual(['coil', true]);}
+function wireAndCoil(){return grouped(wireField,coilWithCurrent);}
 export const gcseOpeningVisuals = {
   'salt-electrolysis': () => grouped(gcseStepVisuals['salt-electrolysis'][1], brine),
   'glucose-control': gcseStepVisuals['glucose-control'][1],
@@ -992,7 +1034,6 @@ export const moreGcseStepVisuals = {
   'food-web-change': {2:quadrat},
   'wave-motion': {1:waveMeasures,2:waveCompare},
   'forces-motion': {2:stopping},
-  'reaction-profiles': {2:temperaturePractical},
   'decay-half-life': {2:irradiation},
   'density-and-gas-pressure': {0:density},
   'photosynthesis-limits': {2:() => grouped(testCarbonDioxide, carbonDioxideComparison)},
@@ -1001,16 +1042,18 @@ export const moreGcseStepVisuals = {
   'salt-electrolysis': {2:brine},
   'reflex-response': {0:neuron,1:reflexWithSynapse,2:reflexMeasure},
   'respiration-exercise': {0:respiratoryComparison,1:muscleRespiration},
-  'vaccine-memory': {0:barriersAndAntibodies,2:vaccineAndAntibiotics},
+  'vaccine-memory': {0:barriersAndAntibodies,1:vaccineMemory,2:vaccineAndAntibiotics},
   'selection-and-variation': {0:naturalSelection,1:naturalSelection,2:selectiveBreeding},
   'inheritance-cross': {2:naturalSelection},
-  'chromatography': {2:gasTests},
-  'latent-heat': {0:storedEnergy,2:latentCalculation},
+  'chromatography': {1:rfDistance,2:gasTests},
+  'latent-heat': {0:storedEnergy,1:() => grouped(heatingCurve, gcseStepVisuals['latent-heat'][1]),2:latentCalculation},
+  'parallel-circuits': {2:parallelAndSeries},
+  'reaction-profiles': {0:activationBarrier,2:temperaturePractical},
   'mass-conservation': {2:concentrationExample},
   'crude-oil': {0:methaneStructure,2:alkene},
   'greenhouse': {0:greenhouse,1:emissionsSources,2:pollutants},
   'potable-water': {0:waterTreatment,1:filtration,2:lifeCycle},
-  'electromagnet-switch': {1:currentMagnitudeAndDirection,2:ironCore},
+  'electromagnet-switch': {0:wireAndCoil,1:currentMagnitudeAndDirection,2:ironCore},
   'salts-and-reactivity': {0:sulfateSalt,1:saltsAndCrystals},
   'electromagnetic-spectrum': {0:spectrumAndWaves,1:emSpectrum,2:emApplications},
   'prevention-and-medicines': {0:transmission,1:antibioticsAndSelection,2:testingAndTrials},

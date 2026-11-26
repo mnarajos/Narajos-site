@@ -107,7 +107,7 @@ function wave() {
   return steps("Follow a point on the rope", [["Start position",()=>state(0)],["Wave moves right",()=>state(1)],["A little later",()=>state(3)]]);
 }
 
-function coil() {
+function coil([initialOn = false] = []) {
   function state(on) {
     return picture(on?"Current on":"Current off",diagram(on?"Current flows through a coil wrapped around the iron core. Curved arrows show its magnetic field.":
       "No current flows in the coil. The model shows no field from the current.",`
@@ -116,10 +116,10 @@ function coil() {
       <rect x="52" y="77" width="215" height="30" rx="5" fill="#c3d2d2" stroke="${ink}" stroke-width="2"/>
       <path d="M70 111q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51"
       fill="none" stroke="${rust}" stroke-width="3"/>
-      ${on?text(42,82,"N",blue)+text(280,82,"S",blue):""}${text(158,146,"Coil around a soft iron core",ink,15)}`,320,178),
+      ${on?text(42,82,"N",blue)+text(280,82,"S",blue):""}${text(158,198,"Coil around a soft iron core",ink,15)}`,320,218),
       on?"A current in the coil produces a magnetic field.":"Without current, the coil does not produce a magnetic field.");
   }
-  return steps("Switch the electromagnet", [["Switch off",()=>state(false)],["Switch on",()=>state(true)]]);
+  return steps("Switch the electromagnet", [["Switch off",()=>state(false)],["Switch on",()=>state(true)]], initialOn ? 1 : 0);
 }
 
 function punnett() {

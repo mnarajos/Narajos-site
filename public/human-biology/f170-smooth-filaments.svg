@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 275" role="img" aria-labelledby="title description">
+<title id="title">Filaments in a smooth muscle cell</title>
+<desc id="description">A spindle-shaped smooth muscle cell contains thin actin filaments and thicker myosin filaments. They are not organised into repeating sarcomeres, so the cell lacks visible striations. The drawing is schematic.</desc>
+<rect width="280" height="275" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a" text-anchor="middle">
+<text x="140" y="25" font-weight="700">Smooth muscle cell</text>
+<path d="M20 115q120-76 240 0-120 76-240 0Z" fill="#d8ece7" stroke="#23656c" stroke-width="3"/>
+<g stroke="#23558c" stroke-width="3"><path d="M51 116l34-23M75 130l38-25M109 144l40-27M152 135l37-25M188 123l36-23"/></g>
+<g stroke="#98451e" stroke-width="6"><path d="M90 112l21-14M126 128l22-15M163 115l20-14"/></g>
+<ellipse cx="140" cy="92" rx="17" ry="8" fill="#d8c7e4" stroke="#69447f" stroke-width="2"/>
+<path d="M40 192h35" stroke="#23558c" stroke-width="3"/><text x="88" y="198" text-anchor="start">Thin actin</text>
+<path d="M40 222h35" stroke="#98451e" stroke-width="6"/><text x="88" y="228" text-anchor="start">Thick myosin</text>
+<text x="140" y="260">No repeating striations</text>
+</g></svg>

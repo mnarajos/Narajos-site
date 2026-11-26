@@ -589,18 +589,16 @@ for (const mapping of [gcseStepVisuals, moreGcseStepVisuals]) {
 // Only repeat an opening figure when it explains this particular teaching step.
 // Other steps need their own representations rather than a generic topic image.
 const openingFigureAtStep = {
-  "vaccine-memory": [1],
   "photosynthesis-limits": [1],
   "decay-half-life": [0, 1],
-  "parallel-circuits": [0, 2],
+  "parallel-circuits": [0],
   "mass-conservation": [0],
-  "reaction-profiles": [0, 1],
+  "reaction-profiles": [1],
   "food-web-change": [0, 1],
   "reaction-rate": [0],
   "crude-oil": [1],
-  "chromatography": [0, 1],
+  "chromatography": [0],
   "wave-motion": [0],
-  "electromagnet-switch": [0],
   "inheritance-cross": [0, 1],
   "circuit-resistance": [1]
 };

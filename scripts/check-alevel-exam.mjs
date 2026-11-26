@@ -480,6 +480,8 @@ export async function checkALevelExam(browser, base) {
     await page.evaluate(key => { const snapshot = JSON.parse(localStorage.getItem(key)); delete snapshot.pressures; localStorage.setItem(key, JSON.stringify(snapshot)); }, key);
     await page.goto(base + "/alevel/#exam-pressures");
     await page.getByRole("button", { name: "See worked example" }).press("Enter");
+    // The opening step now explains valve mechanics; the graph begins at step two.
+    await page.getByRole("button", { name: "Next step", exact: true }).press("Enter");
     const enlarge = page.getByRole("button", { name: "Enlarge diagram", exact: true });
     const fontSize = await page.locator(".al-model-visual svg text").first().evaluate(label =>
       label.getScreenCTM().a * parseFloat(getComputedStyle(label).fontSize));
@@ -505,6 +507,8 @@ export async function checkALevelExam(browser, base) {
       return { width, viewport: innerWidth, offenders };
     });
     assert(reflow.width <= reflow.viewport + 3, "Enlarged text caused page overflow: " + JSON.stringify(reflow));
+    // Return to the valve model so zoomed keyboard navigation enters crossing B.
+    await page.getByRole("button", { name: "Previous step", exact: true }).press("Enter");
     const cdp = await page.context().newCDPSession(page);
     await cdp.send("Emulation.setPageScaleFactor", {pageScaleFactor: 2});
     assert.equal(await page.evaluate(() => visualViewport.scale), 2);

@@ -56,7 +56,7 @@ export function compare(...panels) {
 }
 
 // Each step is a still. Pupils can inspect it for as long as they need.
-export function steps(label, stages) {
+export function steps(label, stages, initialIndex = 0) {
   const model = node("section", "", "catchup-model");
   model.setAttribute("aria-label", label);
   const controls = node("div", "", "ks3-model-controls catchup-model-controls");
@@ -76,7 +76,7 @@ export function steps(label, stages) {
   buttons.forEach((button, index) => button.addEventListener("click", () => show(index, true)));
   controls.append(...buttons);
   model.append(controls, view, status);
-  show(0, false);
+  show(initialIndex, false);
   return model;
 }
 

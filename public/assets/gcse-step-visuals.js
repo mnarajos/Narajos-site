@@ -94,7 +94,7 @@ function photosynthesis() {
     text(47,133,"Water",blue,14)+arrow(73,128,129,121,blue)+
     arrow(198,98,246,82,teal)+text(269,80,"Oxygen",teal,14)+
     '<rect x="126" y="105" width="68" height="20" rx="3" fill="#f7fcf7"/>'+text(160,120,"Glucose",teal,14),320,158),
-    "Follow the inputs into the leaf. Oxygen leaves; glucose made in the leaf can be used, stored or transported.");
+    "Chlorophyll absorbs light. Oxygen leaves; glucose made in the leaf can be used, stored or transported.");
 }
 
 function formulaMass() {
