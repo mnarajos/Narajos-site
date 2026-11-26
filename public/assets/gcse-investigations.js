@@ -16,7 +16,7 @@ export const investigations = {
     "Compare the time needed to digest a fixed amount of starch. Buffer sets the pH. A water bath keeps temperature constant.",
     ["First sample that stayed orange-brown",["pH","Time (s)"],[["5","80"],["7","40"],["9","100"]]],
     ["Equilibrate equal volumes and concentrations of enzyme and starch at the same temperature. Mix with the chosen buffer and start timing.",
-     "Every 10 s transfer a drop to fresh iodine. Blue-black shows starch remains. The first orange-brown sample is the recorded endpoint.",
+     "Every 10 s transfer a drop to fresh iodine. Blue-black shows starch remains. The first orange-brown sample is the recorded endpoint. AQA’s specified practical uses 30-second sampling; the shorter interval here illustrates timing uncertainty.",
      "At pH 7 the reciprocal time is 1 ÷ 40 = 0.025 s⁻¹. At pH 5 it is 0.0125 s⁻¹. For equal starting starch amounts this estimates relative activity.",
      "The endpoint occurred between the last positive test and the first negative one. Shorter sampling intervals reduce this uncertainty."],
     ["Which pH gave the greatest estimated activity?","7","The same starch amount disappeared in the shortest time.",["9","The longest endpoint time gives the smallest reciprocal."]],

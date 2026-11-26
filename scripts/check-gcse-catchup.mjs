@@ -184,7 +184,15 @@ export async function checkGCSECatchup(browser, base) {
       ["crude-oil", "One butane molecule"],
       ["chromatography", "A sample spot and a solvent front"],
       ["electromagnet-switch", "Two coils have the same current"],
-      ["selection-and-variation", "Two of five symbols are dark"]
+      ["selection-and-variation", "Two of five symbols are dark"],
+      ["amylase-endpoint", "Equal volumes of amylase and starch"],
+      ["quadrat-evidence", "On a field grid"],
+      ["reacting-masses", "Six magnesium atoms react with three"],
+      ["temperature-evidence", "Both methods start at twenty degrees"],
+      ["spring-evidence", "A spring measures eight centimetres"],
+      ["trolley-evidence", "In trial A, two equal slotted masses"],
+      ["wave-measurement", "A simplified top view of a ripple tank"],
+      ["infrared-evidence", "Under matched conditions a matt black surface"]
     ]) {
       const lesson = gcseCatchup[id], key = `narajos.catchup.v1.${lesson.year}.${id}`;
       const figure = `svg[aria-label*="${fragment}"]`;

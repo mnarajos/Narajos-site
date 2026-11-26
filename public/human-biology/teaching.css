@@ -92,6 +92,13 @@
   text-align: start;
   overflow-wrap: anywhere;
 }
+@media (max-width: 480px) {
+  .hb-teach-table--screening th,
+  .hb-teach-table--screening td {
+    padding-inline: .2em;
+    overflow-wrap: normal;
+  }
+}
 .hb-teach-photo {
   margin: .7rem 0;
 }

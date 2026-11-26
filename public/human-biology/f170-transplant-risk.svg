@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="390" viewBox="0 0 280 390" role="img" aria-labelledby="title desc">
+<title id="title">Reducing transplant rejection risk</title><desc id="desc">A donor and recipient have some matching tissue-marker symbols. Matching helps assess compatibility. A medicine symbol represents immunosuppression, which reduces immune responses against the transplanted organ. Neither approach makes rejection impossible.</desc>
+<rect width="280" height="390" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="24" font-weight="700">Reducing rejection risk</text>
+<text x="140" y="53">Tissue matching</text>
+<circle cx="69" cy="103" r="30" fill="#e3d7ed" stroke="#806195" stroke-width="2"/><circle cx="211" cy="103" r="30" fill="#e3d7ed" stroke="#806195" stroke-width="2"/>
+<g fill="#397b76"><circle cx="60" cy="97" r="5"/><circle cx="202" cy="97" r="5"/></g><g fill="#af6b43"><path d="M78 90l7 12H71zM220 90l7 12h-14z"/></g><path d="M58 115h19M201 111l13 10m0-10-13 10" stroke="#536b8a" stroke-width="3"/>
+<text x="69" y="153" font-size="15">Donor</text><text x="211" y="153" font-size="15">Recipient</text>
+<text x="140" y="179" font-size="15">Some symbols match in this model.</text>
+<path d="M25 195h230" stroke="#b4cbce"/>
+<text x="140" y="222">Reduce immune response</text>
+<rect x="20" y="240" width="56" height="24" rx="12" fill="#e7d8bd" stroke="#a67543" stroke-width="2"/><path d="M48 240v24" stroke="#a67543" stroke-width="2"/>
+<path d="M79 252h27m0-10v20" stroke="#a67543" stroke-width="2.5"/>
+<circle cx="137" cy="253" r="22" fill="#dfd4ee" stroke="#806195" stroke-width="2"/><circle cx="137" cy="253" r="8" fill="#806195"/>
+<path d="M163 253h37m-8-6 8 6-8 6" fill="none" stroke="#286b73" stroke-width="2" stroke-dasharray="5 4"/>
+<path d="M223 232q-22-4-22 20t22 23q15-3 14-18-1-8-8-8 8-15-6-17z" fill="#eaaa9e" stroke="#ad675e" stroke-width="2"/>
+<text x="48" y="295" font-size="14">Medicine</text><text x="137" y="295" font-size="14">Immune</text><text x="137" y="313" font-size="14">response</text><text x="220" y="295" font-size="14">Transplanted</text><text x="220" y="313" font-size="14">organ</text>
+<text x="140" y="347" font-size="15">Both reduce risk;</text><text x="140" y="369" font-size="15">rejection can still happen.</text>
+</g></svg>

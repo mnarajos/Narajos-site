@@ -31,6 +31,20 @@ export async function checkCompactCatchupFigures(browser, base) {
       assert.equal(await speedBlocks.nth(1).locator('figure').filter({hasText: 'The refractory region and impulse direction'}).count(), 1);
       assert.equal(await page.locator('figure').filter({hasText: 'The refractory region and impulse direction'}).count(), 1);
 
+      // The fibre comparison replaces the older one, while the phosphocreatine
+      // explanation remains in the first teaching block.
+      await page.goto(base + '/alevel/#catchup-a6-fibres');
+      const fibreBlocks = page.locator('.companion-chunk');
+      assert.equal(await fibreBlocks.count(), 2);
+      assert.equal(await fibreBlocks.nth(0).locator('figure').filter({hasText: 'Phosphocreatine regenerates ATP'}).count(), 1);
+      for (const block of [fibreBlocks.nth(0), fibreBlocks.nth(1)]) {
+        const comparison = block.locator('figure').filter({hasText: 'Fibre features and energy supply'});
+        assert.equal(await comparison.count(), 1);
+        assert.match(await comparison.locator('svg').getAttribute('aria-label'), /capillar.*myoglobin/i);
+        assert(await comparison.locator('.kc-visual-art-compact').evaluate(el => el.scrollWidth <= el.clientWidth + 1));
+        assert.equal(await block.locator('figure').filter({hasText: 'Slow and fast fibres compared'}).count(), 0);
+      }
+
       await page.goto(base + '/human-biology/#catchup/f175/a2');
       const placenta = page.locator('.hb-teach-explain .hb-teaching-diagram-compact');
       await placenta.waitFor();

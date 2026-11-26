@@ -51,7 +51,7 @@
 
   function table(data, markCells) {
     if (!data) return "";
-    return '<table class="hb-teach-table"><caption>' + escape(data.caption) + '</caption><thead><tr>' +
+    return '<table class="hb-teach-table' + (data.compactScreening ? ' hb-teach-table--screening' : '') + '"><caption>' + escape(data.caption) + '</caption><thead><tr>' +
       data.head.map(cell => '<th scope="col">' + escape(cell) + '</th>').join("") + '</tr></thead><tbody>' +
       data.rows.map((row, r) => '<tr><th scope="row">' + escape(row[0]) + '</th>' +
         row.slice(1).map((cell, c) => '<td' + (markCells ? ' data-hb-cell="' + r + ':' + c + '"' : '') +

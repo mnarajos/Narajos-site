@@ -788,9 +788,9 @@ export async function checkHumanCatchup(browser, base) {
       ["f170/2.1.3/2", ["dexa-scan.svg"]],
       ["f170/2.1.3/1", ["artery-plaque-comparison.svg", "airway-narrowing.svg", "alveolar-wall-loss.svg"]],
       ["f170/2.2.2/1", ["bone-functions.svg"]],
-      ["f170/2.2.1/0", ["f170-oxygen-delivery.svg"]], ["f170/2.2.1/1", ["digestion.svg", "f170-nephron-overview.svg"]], ["f170/2.2.1/2", ["f170-oxygen-delivery.svg"]], ["f170/2.2.3/1", ["peak-flow-method.svg"]], ["f170/2.2.3/2", ["f170-ventilation-example.svg"]],
+      ["f170/2.2.1/0", ["f170-oxygen-delivery.svg"]], ["f170/2.2.1/1", ["digestion.svg", "f170-nephron-overview.svg"]], ["f170/2.2.1/2", ["f170-oxygen-delivery.svg"]], ["f170/2.2.3/1", ["peak-flow-method.svg", "f171-expired-volume-time.svg", "f170-feno-measurement.svg"]], ["f170/2.2.3/2", ["f170-ventilation-example.svg"]],
       ["f170/2.1.1/0", ["f170-alveolar-barrier.svg"]], ["f170/2.1.1/1", ["pulse-measurement-context.svg"]], ["f170/2.1.1/2", ["pulse-measurement-context.svg"]],
-      ["f170/2.1.4/0", ["f170-antigen-recognition.svg"]], ["f170/2.1.4/1", ["ventricular-assist.svg"]], ["f170/2.1.4/2", ["valve-repair.svg"]],
+      ["f170/2.1.4/0", ["f170-antigen-recognition.svg", "f170-transplant-risk.svg"]], ["f170/2.1.4/1", ["ventricular-assist.svg", "f170-vad-risks.svg"]], ["f170/2.1.4/2", ["valve-repair.svg"]],
       ["f170/1.1.2/1", ["hb-blood-cells-sem.webp", "hb-lung-mitochondrion-tem.webp"]],
       ["f170/1.1.2/2", ["f170-wet-mount.svg", "f170-section-stain.svg"]],
       ["f170/1.1.2/3", ["f170-print-magnification.svg", "f170-fractionation-spins.svg", "cell-counting-chamber.svg"]],
@@ -898,7 +898,11 @@ export async function checkHumanCatchup(browser, base) {
       ["f176/a5", ["f176-eeg-trace.svg"], ["f176-eeg-trace.svg", "f176-mri-ct.svg"]],
       ["f176/a4", ["f176-coordination-injury.svg"], ["f176-coordination-injury.svg", "f176-coordination-injury.svg"]],
       ["f175/2.1", ["f175-history-ultrasound.svg", "f175-history-ultrasound.svg"], ["f175-history-ultrasound.svg", "f175-baseline-pressure.svg", "f175-history-ultrasound.svg"]],
+      ["f175/a1", ["f170-sperm-route.svg", "f175-oocyte-route.svg"], []],
       ["f171/3.2.1", ["f171-immune-targets.svg"], ["f171-immune-targets.svg", "f171-graft-immune-tradeoff.svg", "f171-graft-immune-tradeoff.svg"]],
+      ["f171/2.3", ["f171-risk-prevention.svg"], ["f171-risk-prevention.svg", "f171-screen-diagnose-monitor.svg", "f171-screen-diagnose-monitor.svg", "f171-screen-diagnose-monitor.svg"]],
+      ["f171/2.1", ["f171-fracture-treatment.svg"], ["f171-fracture-alignment.svg", "f171-fracture-treatment.svg", "f171-fracture-alignment.svg"]],
+      ["f171/a2", ["f171-fracture-treatment.svg"], ["f171-fracture-alignment.svg", "f171-fracture-treatment.svg", "f171-fracture-alignment.svg"]],
       ["f171/1.3.1.worms", ["f171-fluke-ingestion.svg"], ["f171-cyst-evidence.svg", "f171-hydatid-ingestion.svg"]],
       ["f171/1.3.1.protozoa", ["f171-malaria-vector.svg"], ["f171-malaria-blood-cells.svg", "f171-malaria-vector.svg"]],
       ["f171/1.3.1.fungi", ["f171-candida-overgrowth.svg"], ["f171-histoplasma-exposure.svg", "f171-candida-overgrowth.svg"]],
@@ -956,6 +960,46 @@ export async function checkHumanCatchup(browser, base) {
       assert(await widthFits(), route + " must fit at phone size");
       assert.equal(await stage("independent").locator(".hb-teaching-diagram").count(), 0);
     }
+
+    // Additional figures remain in the first paragraph's own figure group.
+    for (const [route, filename] of [["f170/1.1.1.signals", "f170-cone-sensitivity.svg"], ["f170/1.1.2.counting", "f170-chamber-sampling.svg"], ["f171/2.3", "f171-screen-diagnose-monitor.svg"]]) {
+      await page.evaluate(key => localStorage.removeItem(key), localPractice);
+      await open("catchup/" + route);
+      const firstParagraph = page.locator(".hb-teach-explain > p").first();
+      assert(await firstParagraph.evaluate((el, name) => {
+        for (let sibling = el.nextElementSibling; sibling && sibling.tagName !== "P"; sibling = sibling.nextElementSibling) {
+          if (sibling.querySelector(`img[src$="/${name}"]`)) return true;
+          if (!sibling.matches("figure, .hb-teaching-diagram, .hb-teaching-photo")) break;
+        }
+        return false;
+      }, filename), filename + " must follow the matching explanation");
+      assert.equal(await stage("independent").locator(`img[src$="/${filename}"]`).count(), 0);
+    }
+
+    // The screening sequence answers independent practice and must hide when it starts.
+    const preventionSequence = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]').filter({has: page.locator('img[src="/human-biology/f171-screen-diagnose-monitor.svg"]')});
+    assert(await preventionSequence.isVisible());
+    await expand(stage("independent"));
+    assert(await preventionSequence.isHidden());
+    await page.reload();
+    assert(await preventionSequence.isHidden());
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(await preventionSequence.isVisible());
+
+    // The oocyte route includes the event asked about in the fresh check.
+    await page.evaluate(key => localStorage.removeItem(key), localPractice);
+    await open("catchup/f175/a1");
+    const oocyteRoute = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]').filter({has: page.locator('img[src="/human-biology/f175-oocyte-route.svg"]')});
+    assert(await oocyteRoute.isVisible());
+    await expand(stage("independent"));
+    assert(await oocyteRoute.isHidden());
+    await page.reload();
+    await expand(stage("independent"));
+    assert(await oocyteRoute.isHidden());
+    await expand(page.locator("[data-hb-model-step]"));
+    assert(!(await oocyteRoute.evaluate(figure => figure.hidden)));
+    await expand(page.locator(".hb-teach-explain"));
+    assert(await oocyteRoute.isVisible());
 
     // Red-cell flexibility and haemoglobin capacity address the same worked step.
     await page.evaluate(key => localStorage.removeItem(key), localPractice);

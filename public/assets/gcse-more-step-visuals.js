@@ -299,6 +299,15 @@ function temperatureControls() {
 }
 function temperatureWorkedRises(){return grouped(temperatureRises,energyTransferDirections);}
 function temperatureMeasurement(){return grouped(() => investigationFigure('temperature-evidence', 'Insulation and a lid reduce energy transfer to the surroundings; monitor and stir the mixture.'),temperatureTrace);}
+export function infraredAbsorbEmit() {
+  return fig('Absorption and emission compared',
+    'Under matched conditions a matt black surface absorbs more incident infrared and emits more infrared than a polished surface. In this schematic thicker arrows represent more radiation; incoming arrows show absorption and outgoing arrows show emission.',
+    text(70,25,'Matt black',ink,15)+text(250,25,'Polished',ink,15)+text(160,65,'Absorb',ink,15)+text(160,145,'Emit',ink,15)+
+    arrow(70,43,70,79,rust,4)+arrow(250,43,250,79,rust,1.5)+
+    '<rect x="48" y="80" width="44" height="35" fill="#48515b" stroke="'+ink+'"/><rect x="228" y="80" width="44" height="35" fill="#dce6ed" stroke="'+ink+'"/>'+
+    arrow(70,116,70,154,blue,4)+arrow(250,116,250,154,blue,1.5)+text(160,197,'Thicker arrow: more',ink,15),
+    'Compare equal areas at the same temperature and under the same incident radiation. Thicker arrows represent more radiation, not measured amounts.',216);
+}
 function infraredReadings() {
   return fig('Compare infrared readings',
     'In the worked example, the detector reads 78 arbitrary units from the matt black face and 24 arbitrary units from the polished face, under matched conditions. Both bars start at zero and use the same scale.',
@@ -401,7 +410,7 @@ function iodineEndpoint() {
     'In an illustrative amylase test, separate iodine wells receive samples at regular 10-second intervals. Selected wells at 0 and 30 seconds are blue-black because starch remains; the first orange-brown well at 40 seconds is the recorded endpoint.',
     text(70,25,'0 s',ink,15)+text(160,25,'30 s',ink,15)+text(250,25,'40 s',ink,15)+circle(70,72,23,'#253e63',ink,2)+circle(160,72,23,'#253e63',ink,2)+circle(250,72,23,'#db9a53',rust,2)+
     text(115,133,'Starch present',ink,15)+text(250,133,'Endpoint',rust,15)+text(160,185,'Samples every 10 s',ink,15),
-    'Compare the blue-black wells with the first orange-brown well. The displayed wells are selected samples from an illustrative sequence.',205);
+    'Compare the blue-black wells with the first orange-brown well. This illustrative sequence samples every 10 seconds; AQA’s specified practical uses 30-second intervals.',205);
 }
 function amylaseSetup() {
   const tube=x=>'<path d="M'+(x-15)+' 43 V74 Q'+x+' 86 '+(x+15)+' 74 V43" fill="#e5f1f5" stroke="'+ink+'" stroke-width="2"/>';
@@ -970,7 +979,7 @@ function coreStrength() {
     text(160,25,'Air core',ink,15)+coil(85,false)+'<path d="M90 85 Q160 25 230 85" fill="none" stroke="'+blue+'" stroke-width="2"/>'+text(160,132,'Weaker field',blue,15)+
     text(160,169,'Soft iron core',ink,15)+coil(230,true)+'<path d="M90 230 Q160 170 230 230 M80 230 Q160 153 240 230" fill="none" stroke="'+blue+'" stroke-width="2"/>'+
     text(160,286,'Stronger field',blue,15)+text(160,322,'Same current and turns',ink,15),
-    'Compare otherwise identical coils. The extra curve indicates a stronger field qualitatively; complete field loops are omitted.',341);
+    'With current flowing, compare otherwise identical coils. The extra curve indicates a stronger field qualitatively; complete field loops are omitted.',341);
 }
 function ironCore() {
   const coil=y=>'<rect x="65" y="'+(y-12)+'" width="180" height="25" fill="#bccacd" stroke="'+ink+'"/>'+[91,116,141,166,191,216].map(x=>'<ellipse cx="'+x+'" cy="'+y+'" rx="8" ry="20" fill="none" stroke="'+rust+'" stroke-width="2"/>').join('');
@@ -1260,7 +1269,7 @@ function oxygenRequirement() {
     text(160,24,'Oxygen amounts',ink,15)+text(55,70,'Needed',blue,15)+'<rect x="110" y="48" width="100" height="30" fill="#d7e8f4" stroke="'+blue+'" stroke-width="2"/>'+text(160,70,'0.10 mol',ink,15)+
     text(55,125,'Available',teal,15)+'<rect x="110" y="103" width="150" height="30" fill="#d9eee2" stroke="'+teal+'" stroke-width="2"/>'+text(185,125,'0.15 mol',ink,15)+
     text(160,174,'0.20 mol Mg needs',ink,15)+text(160,206,'0.10 mol O₂',ink,15),
-    'Compare oxygen required with oxygen available on the same scale. The oxygen is in excess, so magnesium limits the yield.',225);
+    'In a separate mole example, compare oxygen required with oxygen available on the same scale. Oxygen is in excess, so magnesium limits the yield.',225);
 }
 function magnesiumOxideMass() {
   return fig('Convert product amount to mass',

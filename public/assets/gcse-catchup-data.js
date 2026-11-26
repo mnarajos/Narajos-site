@@ -2,7 +2,7 @@ import { investigations } from "./gcse-investigations.js";
 import { question } from "./school-catchup-journey.js";
 import { priorityCatchup, distanceWorkedGraph, velocityWorkedGraph } from "./gcse-catchup-priority.js";
 import { gcseStepVisuals } from "./gcse-step-visuals.js";
-import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, gcseWorkedLineVisuals, heatingCurve, readableGcseFigure, atomsRearranged, ohmicCurrentGraph, filamentCurrentGraph, gridCurrentComparison, gridHeatingComparison, leftHandDirections, motorReversalWorked, randomDecay, activityUnit, massGasEscape, activationBarrier, reactionNetTransfer, resistanceFromGraph, hotFilament, meanGasRate } from "./gcse-more-step-visuals.js";
+import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, gcseWorkedLineVisuals, heatingCurve, readableGcseFigure, atomsRearranged, ohmicCurrentGraph, filamentCurrentGraph, gridCurrentComparison, gridHeatingComparison, leftHandDirections, motorReversalWorked, randomDecay, activityUnit, massGasEscape, activationBarrier, reactionNetTransfer, resistanceFromGraph, hotFilament, meanGasRate, infraredAbsorbEmit } from "./gcse-more-step-visuals.js";
 import { gcseVisual } from "./gcse-catchup-visuals.js";
 
 function lesson(year, code, title, hook, notice, idea, visual, stages, independent, retry, higher) {
@@ -631,7 +631,15 @@ const additionalOpeningFigures = {
   "crude-oil": [moreGcseStepVisuals["crude-oil"][2]],
   "chromatography": [moreGcseStepVisuals["chromatography"][1]],
   "electromagnet-switch": [moreGcseStepVisuals["electromagnet-switch"][2]],
-  "selection-and-variation": [moreGcseStepVisuals["selection-and-variation"][0]]
+  "selection-and-variation": [moreGcseStepVisuals["selection-and-variation"][0]],
+  "amylase-endpoint": [gcseWorkedLineVisuals["amylase-endpoint"][0], gcseWorkedLineVisuals["amylase-endpoint"][1]],
+  "quadrat-evidence": [moreGcseStepVisuals["food-web-change"][2]],
+  "reacting-masses": [gcseWorkedLineVisuals["reacting-masses"][0], gcseWorkedLineVisuals["reacting-masses"][1]],
+  "temperature-evidence": [gcseWorkedLineVisuals["temperature-evidence"][0], gcseWorkedLineVisuals["temperature-evidence"][1]],
+  "spring-evidence": [gcseWorkedLineVisuals["spring-evidence"][1]],
+  "trolley-evidence": [gcseWorkedLineVisuals["trolley-evidence"][1], gcseWorkedLineVisuals["trolley-evidence"][2]],
+  "wave-measurement": [gcseWorkedLineVisuals["wave-measurement"][0], gcseWorkedLineVisuals["wave-measurement"][1]],
+  "infrared-evidence": [gcseWorkedLineVisuals["infrared-evidence"][0], gcseWorkedLineVisuals["infrared-evidence"][2], infraredAbsorbEmit]
 };
 const originalOpeningFigures = {};
 for (const [id, figures] of Object.entries(additionalOpeningFigures)) {

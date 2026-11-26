@@ -175,6 +175,7 @@ for (const [file,global,topic,id,group] of [
  ['catchup-microscope-comparison.js','ALevelMicroscopeComparison','a2','micro',1],
  ['catchup-neural-reuse.js','ALevelNeuralReuse','a6','traps6',3],
  ['catchup-antagonistic-muscles.js','ALevelAntagonisticMuscles','a6','muscle',0],
+ ['catchup-context-reuse.js','ALevelContextReuse','a2','phago',1],
  ['catchup-context-reuse.js','ALevelContextReuse','a3','absorption',2],
  ['catchup-context-reuse.js','ALevelContextReuse','a7','varsel',1],
  ['catchup-context-reuse.js','ALevelContextReuse','a8','fragments',0],
@@ -204,7 +205,12 @@ for (const [file,global,topic,id,group] of [
  ['catchup-proton-leak.js','ALevelProtonLeak','a5','ctx5',1],
  ['catchup-forced-expiration.js','ALevelForcedExpiration','a3','ventilation',1],
  ['catchup-succession-competition.js','ALevelSuccessionCompetition','a7','succession',1],
- ['catchup-xylem-water-potential.js','ALevelXylemWaterPotential','a3','xylem',0]
+ ['catchup-xylem-water-potential.js','ALevelXylemWaterPotential','a3','xylem',0],
+ ['catchup-gene-synthesis.js','ALevelGeneSynthesis','a8','fragments',0],
+ ['catchup-fibre-oxygen.js','ALevelFibreOxygen','a6','fibres',0],
+ ['catchup-fibre-oxygen.js','ALevelFibreOxygen','a6','fibres',1],
+ ['catchup-segment-changes.js','ALevelSegmentChanges','a8','mut8',0],
+ ['catchup-synaptic-delay.js','ALevelSynapticDelay','a6','reflex',1]
 ]) {
  vm.runInNewContext(readFileSync(new URL('../public/alevel/'+file, import.meta.url), 'utf8'), context);
  const figure=context.window[global].render(topic,id,group);
