@@ -4,7 +4,8 @@
 .plan-investigation .plan-card, .plan-investigation .plan-area, .plan-investigation .plan-revision { padding: 1rem; border: 1px solid #c9d5dc; border-radius: .65rem; background: #fff; }
 .plan-investigation .plan-card h2 { font-size: 1.1rem; margin-top: 0; }
 .plan-investigation .plan-card .btn { white-space: normal; text-align: left; }
-.plan-investigation .plan-brief, .plan-investigation .plan-summary, .plan-investigation .plan-help, .plan-investigation .plan-model, .plan-investigation .plan-calculation, .plan-investigation .plan-first-saved { margin: .75rem 0; padding: .75rem 1rem; border: 1px solid #c9d5dc; border-radius: .5rem; background: #f6f9fa; }
+.plan-investigation .plan-revision .btn { white-space: normal; max-width: 100%; margin: .3rem .4rem .3rem 0; }
+.plan-investigation .plan-brief, .plan-investigation .plan-summary, .plan-investigation .plan-help, .plan-investigation .plan-guide, .plan-investigation .plan-first-help, .plan-investigation .plan-model, .plan-investigation .plan-calculation, .plan-investigation .plan-first-saved { margin: .75rem 0; padding: .75rem 1rem; border: 1px solid #c9d5dc; border-radius: .5rem; background: #f6f9fa; }
 .plan-investigation summary { cursor: pointer; font-weight: 600; }
 .plan-investigation details details { margin: .7rem 0; }
 .plan-investigation .plan-question { font-weight: 650; }

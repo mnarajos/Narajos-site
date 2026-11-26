@@ -9,11 +9,12 @@ import { servePublic } from './browser-test-site.mjs';
 // Exercise the authored decision rules without interpreting free text as evidence.
 const sandbox = { window: {} };
 vm.runInNewContext(readFileSync(new URL('../public/alevel/plan-investigation-data.js', import.meta.url), 'utf8'), sandbox);
+vm.runInNewContext(readFileSync(new URL('../public/alevel/plan-investigation-progression.js', import.meta.url), 'utf8'), sandbox);
 const { investigations, check } = sandbox.window.ALevelPlanInvestigationData;
 assert.deepEqual(Array.from(investigations, x => x.id), ['potato', 'beetroot', 'growth', 'cress']);
 const potato = { n0:'3', n1:'3', n2:'3', n3:'3', unit:'individual', measure:'beforeafter', time:'same', process:'percent', volume:'10', conditions:'same', reason:'Similar pieces make the comparison useful.' };
-const beetroot = { n0:'4', n1:'4', n2:'4', unit:'individual', measure:'absorbance', time:'same', process:'mean', volume:'10', conditions:'same', procedure:'Rinse and treat equally.', reason:'Time could also change pigment release.' };
-const growth = { n0:'6', n1:'6', n2:'6', unit:'individual', allocation:'random', measure:'beforeafter', process:'change', conditions:'same', reason:'Random allocation helps distribute starting variation.' };
+const beetroot = { diagnosis:'volume', repair:'three', n0:'4', n1:'4', n2:'4', unit:'individual', measure:'absorbance', duration:'10', process:'mean', volume:'10', conditions:'same', procedure:'Rinse and treat equally.', reason:'Time could also change pigment release.' };
+const growth = { n0:'6', n1:'6', n2:'6', unit:'individual', allocation:'random', independent_count:'18', measure:'beforeafter', endday:'7', inference:'finalonly', process:'change', conditions:'same', reason:'Random allocation helps distribute starting variation.' };
 const cress = { n0:'8', n1:'8', n2:'8', unit:'individual', conditions:'same', measure:'proportion' };
 const flagged = (id, answers, type, pattern) => check(id, answers).some(issue => issue.type === type && pattern.test(issue.text));
 for (const [id, answers] of Object.entries({potato, beetroot, growth, cress})) {
@@ -26,20 +27,45 @@ for (const [id, answers] of Object.entries({potato, beetroot, growth, cress})) {
   assert(flagged(id, {...answers, unit:'other'}, 'missing', /alternative/i), `${id}: request details for an alternative`);
 }
 assert(flagged('potato', {...potato, n0:'4', n1:'4', n2:'4', n3:'4'}, 'problem', /16.*12/));
+for (const [id, answers] of [['potato',potato], ['beetroot',beetroot]]) {
+  assert(!flagged(id, {...answers, volume:'12.5'}, 'problem', /volume|whole|number|precision/i), `${id}: half-cubic-centimetre volume is permitted`);
+  assert(flagged(id, {...answers, volume:'12.25'}, 'problem', /volume|precision|0\.5|half/i), `${id}: volume must fit stated apparatus precision`);
+  assert(flagged(id, {...answers, n0:'2.5'}, 'problem', /whole|number/i), `${id}: specimen counts remain whole numbers`);
+}
 assert(flagged('potato', {...potato, process:'final'}, 'problem', /percentage change/i));
-assert(flagged('beetroot', {...beetroot, time:'varies'}, 'problem', /time/i));
+assert(flagged('beetroot', {...beetroot, duration:'15'}, 'problem', /10.minute/i));
+assert(flagged('beetroot', {...beetroot, diagnosis:'random'}, 'problem', /water|volume/i));
+assert(flagged('beetroot', {...beetroot, repair:'divide'}, 'problem', /volume/i));
+assert(!check('beetroot', {...beetroot, repair:'two', n0:'4', n1:'4', n2:'0'}).some(issue => ['problem','missing'].includes(issue.type)), 'A defensible two-temperature repair is accepted');
+assert(!check('beetroot', {...beetroot, repair:'three', volume:'12.5'}).some(issue => ['problem','missing'].includes(issue.type)), 'A defensible three-temperature equal-volume repair is accepted');
+assert(flagged('beetroot', {...beetroot, repair:'two', n2:'4'}, 'problem', /20 and 40|zero/i), 'Comparison must match the selected two-temperature repair');
+assert(flagged('beetroot', {...beetroot, repair:'two', n2:'0', volume:'12.5'}, 'problem', /10 cm³/i), 'Retaining supplied two-treatment plan retains its 10 cm³ volume');
 assert(flagged('beetroot', {...beetroot, process:'percent'}, 'problem', /absorbance/i));
 assert(flagged('beetroot', {...beetroot, measure:'colour', process:'percent'}, 'problem', /colour descriptions/i));
 assert(flagged('beetroot', {...beetroot, measure:'other', process:'percent', details:'Another measurement'}, 'unassessed', /cannot tell/i));
 assert(!check('beetroot', {...beetroot, measure:'other', process:'percent', details:'Another measurement'}).some(issue => issue.type === 'problem' && /absorbance readings/.test(issue.text)), 'Do not assume an unassessed measurement is absorbance');
-assert(flagged('growth', {...growth, n0:'0'}, 'advisory', /zero-concentration reference/i));
-assert(!check('growth', {...growth, n0:'0'}).some(issue => issue.type === 'problem'), 'Two non-zero regulator concentrations support a concentration comparison');
-assert(flagged('growth', {...growth, measure:'finalstandard', process:'change'}, 'problem', /initial/i));
-assert(flagged('growth', {...growth, measure:'finalstandard', process:'final'}, 'alternative', /standard/i));
+assert(flagged('growth', {...growth, n0:'0', independent_count:'12'}, 'advisory', /zero-concentration reference/i));
+assert(!check('growth', {...growth, n0:'0', independent_count:'12'}).some(issue => issue.type === 'problem'), 'Two non-zero regulator concentrations support a concentration comparison');
+assert(flagged('growth', {...growth, independent_count:'6'}, 'problem', /18 independent treatment applications/i), 'Application count must agree with individually treated allocation');
+assert(!check('growth', growth).some(issue => issue.field === 'independent_count' && issue.type === 'problem'), 'Matching treatment-application count is accepted');
+assert(flagged('growth', {...growth, unit:'other', details:'Separate independently treated grouped vessels.'}, 'unassessed', /depends on how the treatment is applied/i), 'Other treatment arrangements remain unassessed');
+assert(!check('growth', {...growth, measure:'finalknown', process:'change'}).some(issue => issue.type === 'problem'), 'Known common initial length supports calculating each increase');
+assert(flagged('growth', {...growth, measure:'finalstandard', process:'change'}, 'unassessed', /initial|start/i), 'Vague standardisation is insufficient to establish each increase');
+assert(flagged('growth', {...growth, measure:'finalstandard', process:'final'}, 'unassessed', /initial|start/i), 'Unspecified standardisation is not assessed as a known baseline');
+assert(!check('growth', {...growth, measure:'final', process:'final'}).some(issue => issue.type === 'problem'), 'Randomised final-outcome comparison is not automatically invalid');
+assert(flagged('growth', {...growth, measure:'final', process:'change'}, 'problem', /initial|start/i), 'An unknown initial length cannot yield each seedling’s increase');
 assert(flagged('growth', {...growth, allocation:'size'}, 'problem', /size/i));
+assert(flagged('growth', {...growth, inference:'individual'}, 'problem', /initial|start/i));
+assert(flagged('growth', {...growth, endday:'5'}, 'problem', /seven|7/i));
 assert(flagged('cress', {...cress, n0:'0'}, 'problem', /reference/i));
 assert(flagged('cress', {...cress, n0:'7', n1:'9', n2:'0'}, 'alternative', /proportions/i));
 assert(flagged('cress', {...cress, measure:'length'}, 'problem', /root length/i));
+const rootLengthIssue = check('cress', {...cress, measure:'length'}).find(issue => issue.field === 'measure' && issue.type === 'problem');
+assert.match(rootLengthIssue.text, /germinat/i, 'Feedback keeps the stated germination outcome');
+assert.doesNotMatch(rootLengthIssue.text, /or change what you measure/i, 'Root growth alone must not be offered as an equivalent outcome');
+const singletonCress = {...cress, n0:'1', n1:'1', n2:'0', unit:'shared'};
+assert(!check('cress', singletonCress).some(issue => issue.field === 'unit' && issue.type === 'problem'), 'One specimen per vessel is physically identical to individually treated specimens');
+assert(flagged('cress', {...cress, unit:'shared'}, 'problem', /independent|vessel/i), 'Several specimens sharing one treatment vessel are not several independent applications');
 assert(flagged('potato', potato, 'unassessed', /written response/i), 'Do not certify written explanations');
 
 async function audit(page, label) {
@@ -68,6 +94,47 @@ export async function checkPlanInvestigation(browser, base, axeSource) {
     }
   }
   try {
+    const migration = await browser.newPage();
+    try {
+      const prior = { stages: {
+        beetroot: {started:true, checked:true, completed:true, answers:{...beetroot, time:'same'}},
+        cress: {started:true, checked:true, completed:true, first:'Earlier independent plan.', revision:'Earlier revised plan.', answers:{...cress}, feedback:[]}
+      }};
+      // The previously released shape did not have the new coordinated decisions.
+      delete prior.stages.beetroot.answers.diagnosis;
+      delete prior.stages.beetroot.answers.repair;
+      delete prior.stages.beetroot.answers.duration;
+      await migration.addInitScript(({k,v}) => localStorage.setItem(k, JSON.stringify(v)), {k:key,v:prior});
+      await migration.goto(route);
+      await stage(migration,'beetroot');
+      let migrated = await migration.evaluate(k => JSON.parse(localStorage.getItem(k)).stages,key);
+      assert.equal(migrated.beetroot.answers.n0, '4', 'Earlier allocation remains');
+      assert.equal(migrated.beetroot.answers.duration, '10', 'Earlier common timing is retained');
+      assert.equal(migrated.beetroot.completed, false, 'Changed requirements invalidate old completion');
+      assert.equal(migrated.beetroot.earlierSavedPlan, true, 'Prior saved work is recorded while it is rechecked');
+      await action(migration,'back').click();
+      await stage(migration,'cress');
+      migrated = await migration.evaluate(k => JSON.parse(localStorage.getItem(k)).stages,key);
+      assert.equal(migrated.cress.first, 'Earlier independent plan.');
+      assert.equal(migrated.cress.revision, 'Earlier revised plan.');
+      assert.equal(migrated.cress.firstSupport, 'uncued', 'Previously saved first responses were written before pre-first planning help existed');
+      await migration.reload();
+      await stage(migration,'cress');
+      migrated = await migration.evaluate(k => JSON.parse(localStorage.getItem(k)).stages,key);
+      assert.equal(migrated.cress.first, 'Earlier independent plan.');
+      assert.equal(migrated.cress.revision, 'Earlier revised plan.');
+    } finally { await migration.close(); }
+    const earlierDraft = await browser.newPage();
+    try {
+      await earlierDraft.addInitScript(k => localStorage.setItem(k, JSON.stringify({stages:{cress:{started:true,firstDraft:'Earlier unfinished draft.',answers:{}}}})), key);
+      await earlierDraft.goto(route);
+      await stage(earlierDraft,'cress');
+      assert.equal(await earlierDraft.locator('[data-plan-first]').inputValue(), 'Earlier unfinished draft.');
+      await action(earlierDraft,'first-help').click();
+      assert.equal(await earlierDraft.locator('[data-plan-first]').inputValue(), 'Earlier unfinished draft.', 'Asking for help preserves an earlier draft');
+      const draftAfterHelp = await earlierDraft.evaluate(k => JSON.parse(localStorage.getItem(k)).stages.cress,key);
+      assert.equal(draftAfterHelp.preFirstHelpTiming, 'during-draft', 'Help requested after drafting is not described as preceding all writing');
+    } finally { await earlierDraft.close(); }
     const vocabulary = await browser.newPage({viewport:{width:1280,height:900}});
     try {
       await vocabulary.goto(route);
@@ -101,7 +168,7 @@ export async function checkPlanInvestigation(browser, base, axeSource) {
     } finally { await vocabulary.close(); }
     for (const [id, comparison, measurement, samples] of [
       ['potato', {n0:'3',n1:'3',n2:'3',n3:'3',unit:'individual'}, {measure:'beforeafter',time:'same',process:'percent'}, {volume:'10',conditions:'same',reason:'Comparable pieces make treatment comparisons useful.'}],
-      ['beetroot', {n0:'4',n1:'4',n2:'4',unit:'individual'}, {measure:'absorbance',time:'same',process:'mean'}, {volume:'10',conditions:'same',procedure:'Rinse comparable discs and treat in separate tubes.',reason:'Time also affects pigment release.'}],
+      ['beetroot', {diagnosis:'volume',repair:'three',n0:'4',n1:'4',n2:'4',unit:'individual'}, {measure:'absorbance',duration:'10',process:'mean'}, {volume:'10',conditions:'same',procedure:'Rinse comparable discs and treat in separate tubes.',reason:'Time also affects pigment release.'}],
     ]) {
       const revisionGate = await browser.newPage({viewport:{width:1280,height:900}});
       try {
@@ -117,25 +184,33 @@ export async function checkPlanInvestigation(browser, base, axeSource) {
         await action(revisionGate,'complete').click();
 
         await action(revisionGate,'previous').click();
-        await field(revisionGate,'time').selectOption('varies');
+        if (id === 'beetroot') await field(revisionGate,'duration').fill('15');
+        else await field(revisionGate,'time').selectOption('varies');
         await action(revisionGate,'next').click();
         await action(revisionGate,'check').click();
-        assert.match(await revisionGate.locator('[data-plan-feedback]').innerText(), /Exposure time changes/);
+        assert.match(await revisionGate.locator('[data-plan-feedback]').innerText(), /Exposure time changes|10.minute treatment/i);
         assert.equal(await action(revisionGate,'complete').count(),0, `${id}: a detected error blocks completion`);
         await field(revisionGate,'reason').fill(samples.reason + ' An unrelated edit.');
         await action(revisionGate,'check').click();
         assert.equal(await action(revisionGate,'complete').count(),0, `${id}: an unrelated edit cannot repair differing timings`);
         await action(revisionGate,'previous').click();
-        await field(revisionGate,'time').selectOption('same');
-        await field(revisionGate,'time').selectOption('varies');
+        if (id === 'beetroot') {
+          await field(revisionGate,'duration').fill('10');
+          await field(revisionGate,'duration').fill('15');
+        } else {
+          await field(revisionGate,'time').selectOption('same');
+          await field(revisionGate,'time').selectOption('varies');
+        }
         await action(revisionGate,'next').click();
         await action(revisionGate,'check').click();
         assert.equal(await action(revisionGate,'complete').count(),0, `${id}: restoring the original error remains blocked`);
 
         await action(revisionGate,'previous').click();
-        await field(revisionGate,'time').selectOption('other');
+        if (id === 'beetroot') await field(revisionGate,'measure').selectOption('other');
+        else await field(revisionGate,'time').selectOption('other');
+        if (id === 'beetroot') await field(revisionGate,'duration').fill('10');
         await action(revisionGate,'next').click();
-        await field(revisionGate,'details').fill('A different approach to timing.');
+        await field(revisionGate,'details').fill('A different approach to this decision.');
         await action(revisionGate,'check').click();
         assert.equal(await action(revisionGate,'complete').count(),0, `${id}: an unassessed alternative is not a successful repair`);
         await action(revisionGate,'save-review').click();
@@ -144,7 +219,8 @@ export async function checkPlanInvestigation(browser, base, axeSource) {
         assert.equal(saved[id].completed, false, `${id}: saving an unassessed alternative does not record completion`);
 
         await action(revisionGate,'previous').click();
-        await field(revisionGate,'time').selectOption('same');
+        if (id === 'beetroot') await field(revisionGate,'measure').selectOption('absorbance');
+        else await field(revisionGate,'time').selectOption('same');
         await action(revisionGate,'next').click();
         await action(revisionGate,'check').click();
         assert.equal(await action(revisionGate,'complete').count(),1, `${id}: corrected timings permit completion`);
@@ -188,8 +264,8 @@ export async function checkPlanInvestigation(browser, base, axeSource) {
     await action(desktop,'check').click();
     assert.match(await desktop.locator('[data-plan-feedback]').innerText(), /16.*12/);
     const allocationIssue = desktop.locator('[data-plan-feedback] li').filter({hasText:'16 specimens'});
-    assert.match(await allocationIssue.innerText(), /Number at 0 mol dm⁻³/);
-    await allocationIssue.getByRole('button',{name:'Go to Number at 0 mol dm⁻³'}).click();
+    assert.match(await allocationIssue.innerText(), /Number of specimens at 0 mol dm⁻³/);
+    await allocationIssue.getByRole('button',{name:'Go to Number of specimens at 0 mol dm⁻³'}).click();
     assert(await field(desktop,'n0').evaluate(el => el === document.activeElement), 'Repair moves focus to the relevant decision');
     assert.equal(await field(desktop,'n0').getAttribute('aria-invalid'), 'true');
     await fillArea(desktop, {n0:'3',n1:'3',n2:'3',n3:'3'});
@@ -214,33 +290,37 @@ export async function checkPlanInvestigation(browser, base, axeSource) {
     await desktop.locator('.plan-help > summary').press('Enter');
     await desktop.locator('.plan-help details > summary').first().press('Enter');
     assert.match(await desktop.locator('.plan-help').innerText(), /temperature/i);
-    await fillArea(desktop,{n0:'4',n1:'4',n2:'4',unit:'individual'});
+    await fillArea(desktop,{diagnosis:'volume',repair:'three',n0:'4',n1:'4',n2:'4',unit:'individual'});
     await action(desktop,'next').click();
-    await fillArea(desktop,{measure:'absorbance',time:'varies',process:'mean'});
+    await fillArea(desktop,{measure:'absorbance',duration:'15',process:'mean'});
     await action(desktop,'next').click();
     await fillArea(desktop,{volume:'10',conditions:'same',procedure:'Rinse comparable discs and treat in separate tubes.',reason:'Time also affects pigment release.'});
     await action(desktop,'check').click();
-    assert.match(await desktop.locator('[data-plan-feedback]').innerText(), /time changes/i);
-    await desktop.locator('[data-plan-feedback] li').filter({hasText:'Exposure time changes'}).getByRole('button',{name:'Go to How will exposure time relate to temperature?'}).click();
-    await field(desktop,'time').selectOption('same');
+    assert.match(await desktop.locator('[data-plan-feedback]').innerText(), /10.minute treatment/i);
+    await desktop.locator('[data-plan-feedback] li').filter({hasText:'10-minute treatment'}).getByRole('button',{name:'Go to Exposure time for every tube / minutes'}).click();
+    await field(desktop,'duration').fill('10');
     await action(desktop,'next').click();
     await action(desktop,'check').click();
     await action(desktop,'complete').click();
     await action(desktop,'back').click();
     await stage(desktop,'growth');
-    await fillArea(desktop,{n0:'6',n1:'6',n2:'6',unit:'individual',allocation:'random'});
+    await fillArea(desktop,{n0:'6',n1:'6',n2:'6',unit:'individual',allocation:'random',independent_count:'18'});
     await action(desktop,'next').click();
-    await fillArea(desktop,{measure:'finalstandard',process:'change'});
+    await fillArea(desktop,{measure:'finalknown',endday:'7',process:'change',inference:'finalonly'});
     await action(desktop,'next').click();
     await fillArea(desktop,{conditions:'same',reason:'Standardise the initial lengths.'});
     await action(desktop,'check').click();
-    assert.match(await desktop.locator('[data-plan-feedback]').innerText(), /initial as well as final/i);
-    await desktop.locator('[data-plan-feedback] li').filter({hasText:'initial as well as final'}).getByRole('button',{name:'Go to How will you process the measurements?'}).click();
-    await field(desktop,'process').selectOption('final');
+    assert.equal(await action(desktop,'complete').count(), 1, 'A known common initial length permits calculating each increase');
+    await action(desktop,'previous').click();
+    await field(desktop,'measure').selectOption('finalstandard');
     await action(desktop,'next').click();
     await action(desktop,'check').click();
-    assert.match(await desktop.locator('[data-plan-feedback]').innerText(), /valid alternative/i);
-    await action(desktop,'complete').click();
+    assert.match(await desktop.locator('[data-plan-feedback]').innerText(), /starting information is not specified/i);
+    assert.equal(await action(desktop,'complete').count(), 0);
+    await action(desktop,'save-review').click();
+    const ambiguousGrowth = await desktop.evaluate(k => JSON.parse(localStorage.getItem(k)).stages.growth,key);
+    assert.equal(ambiguousGrowth.completed, false);
+    assert.equal(ambiguousGrowth.reviewSaved, true, 'Insufficient starting information remains saved for review');
     await action(desktop,'back').click();
 
     // The cress first response is captured before any planning headings or checks appear.
@@ -266,8 +346,23 @@ export async function checkPlanInvestigation(browser, base, axeSource) {
     assert.equal(await desktop.locator('[data-plan-revision]').count(),0, 'Editing follow-up decisions hides revision until a fresh check');
     await field(desktop,'measure').selectOption('proportion');
     await action(desktop,'check').click();
-    await action(desktop,'revise').click();
-    assert.match(await desktop.locator('.plan-revision [role="status"]').innerText(), /change|clarify/i);
+    const unselectedDraft = 'A possible later revision that I am not choosing.';
+    await desktop.locator('[data-plan-revision]').fill(unselectedDraft);
+    await action(desktop,'keep-first').click();
+    assert.match(await desktop.locator('.plan-revision [role="status"]').innerText(), /unchanged.*not automatically assessed/i);
+    let unchanged = await desktop.evaluate(k => JSON.parse(localStorage.getItem(k)).stages.cress,key);
+    assert.equal(unchanged.first, first, 'A review never overwrites the first response');
+    assert.equal(unchanged.firstSupport, 'uncued', 'No planning help was requested before the first response');
+    assert.equal(unchanged.firstSupportTiming, 'none');
+    assert.equal(unchanged.reviewDecision, 'unchanged');
+    assert.equal(unchanged.completed, true, 'Unchanged written work can be retained when represented decisions have passed');
+    assert.equal(unchanged.revision, unselectedDraft, 'An unselected revision remains a distinct draft');
+    await desktop.reload();
+    await stage(desktop,'cress');
+    assert.match(await desktop.locator('.plan-outcome').last().innerText(), /unchanged.*draft.*not the plan/i);
+    await action(desktop,'next').click();
+    await action(desktop,'next').click();
+    assert.equal(await desktop.locator('[data-plan-revision]').inputValue(), unselectedDraft, 'The unselected revision draft remains available after reload');
     const revised = first + ' Compare the proportion germinated after five days for salt and no salt.';
     await desktop.locator('[data-plan-revision]').fill(revised);
     await action(desktop,'revise').click();
@@ -279,6 +374,7 @@ export async function checkPlanInvestigation(browser, base, axeSource) {
     const record = await desktop.evaluate(k => JSON.parse(localStorage.getItem(k)),key);
     assert.equal(record.stages.cress.first,first);
     assert.equal(record.stages.cress.revision,revised);
+    assert.equal(record.stages.cress.reviewDecision,'revised');
     assert.equal(record.stages.cress.answers.measure,'proportion');
     await desktop.reload();
     await stage(desktop,'cress');
@@ -288,6 +384,54 @@ export async function checkPlanInvestigation(browser, base, axeSource) {
     await action(desktop,'next').click();
     await action(desktop,'next').click();
     assert.equal(await desktop.locator('[data-plan-revision]').inputValue(), revised, 'Revised text resumes separately from the first attempt');
+
+    const supported = await browser.newPage();
+    try {
+      await supported.goto(route);
+      await stage(supported,'cress');
+      assert.equal(await supported.locator('[data-plan-field]').count(), 0);
+      assert.equal(await supported.locator('[data-plan-first]').inputValue(), '');
+      await action(supported,'first-help').click();
+      assert.match(await supported.locator('.plan-first-help').innerText(), /recorded as supported/i);
+      assert.equal(await supported.locator('[data-plan-first]').inputValue(), '', 'Help can be opened without filler');
+      await supported.locator('[data-plan-first]').fill('Compare salt treatments using pots.');
+      await supported.reload();
+      await stage(supported,'cress');
+      assert.equal(await supported.locator('[data-plan-first]').inputValue(), 'Compare salt treatments using pots.', 'Opening help preserves the draft');
+      assert.equal(await supported.locator('.plan-first-help').count(), 1, 'Pre-first planning help remains available on resume');
+      await action(supported,'save-first').click();
+      const firstRecord = await supported.evaluate(k => JSON.parse(localStorage.getItem(k)).stages.cress,key);
+      assert.equal(firstRecord.preFirstHelp, true);
+      assert.equal(firstRecord.firstSupport, 'supported');
+      assert.equal(firstRecord.firstSupportTiming, 'before-draft', 'Help opened before any writing is distinguishable');
+      await fillArea(supported,{n0:'8',n1:'8',n2:'8',unit:'individual'});
+      await action(supported,'next').click();
+      await field(supported,'conditions').selectOption('varies');
+      await action(supported,'next').click();
+      await field(supported,'measure').selectOption('proportion');
+      await action(supported,'check').click();
+      assert.equal(await action(supported,'keep-first').count(), 0, 'An unresolved represented problem blocks checked completion');
+      await action(supported,'previous').click();
+      await field(supported,'conditions').selectOption('other');
+      await action(supported,'next').click();
+      await field(supported,'details').fill('I will use another way to balance light exposure.');
+      await action(supported,'check').click();
+      await action(supported,'keep-first').click();
+      const reviewRecord = await supported.evaluate(k => JSON.parse(localStorage.getItem(k)).stages.cress,key);
+      assert.equal(reviewRecord.first, firstRecord.first);
+      assert.equal(reviewRecord.reviewDecision, 'unchanged');
+      assert.equal(reviewRecord.completed, false, 'An unassessed follow-up does not become checked completion');
+      assert.equal(reviewRecord.reviewSaved, true, 'An unassessed decision is saved for review');
+      await supported.reload();
+      await stage(supported,'cress');
+      const resumed = await supported.evaluate(k => JSON.parse(localStorage.getItem(k)).stages.cress,key);
+      assert.equal(resumed.firstSupport, 'supported');
+      assert.equal(resumed.firstSupportTiming, 'before-draft');
+      assert.equal(resumed.reviewDecision, 'unchanged');
+      assert.equal(resumed.answers.conditions, 'other');
+      assert.equal(resumed.reviewSaved, true);
+    } finally { await supported.close(); }
+
     await desktop.evaluate(() => { location.hash = '#settings'; });
     await desktop.getByRole('heading',{name:'Settings',exact:true}).waitFor();
     await desktop.locator('#reset').click();
@@ -305,8 +449,16 @@ export async function checkPlanInvestigation(browser, base, axeSource) {
     await mobile.screenshot({path:`/tmp/narajos-plan-investigation-mobile-${browser.browserType().name()}.png`,fullPage:true});
     await action(mobile,'back').tap();
     await stage(mobile,'cress');
+    assert.equal(await mobile.locator('[data-plan-first]').inputValue(), '');
+    await action(mobile,'first-help').tap();
+    assert.equal(await mobile.locator('[data-plan-first]').inputValue(), '', 'Phone help can be requested before writing');
+    assert.match(await mobile.locator('.plan-first-help').innerText(), /supported/i);
+    await audit(mobile,'320px cress pre-first help');
     await mobile.locator('[data-plan-first]').fill('Compare seeds in pots.');
     await action(mobile,'save-first').tap();
+    const mobileFirst = await mobile.evaluate(k => JSON.parse(localStorage.getItem(k)).stages.cress, key);
+    assert.equal(mobileFirst.firstSupport, 'supported');
+    assert.equal(mobileFirst.firstSupportTiming, 'before-draft');
     await fillArea(mobile,{n0:'8',n1:'8',n2:'8',unit:'individual'});
     await action(mobile,'next').tap();
     await fillArea(mobile,{conditions:'same'});

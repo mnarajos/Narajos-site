@@ -9,8 +9,8 @@
   let resetPending = false;
   const reasoningModels = {
     potato: 'Comparable pieces help limit differences in surface area or starting tissue that could also affect the mass change. Check whether your explanation links the choice to a fairer comparison.',
-    beetroot: 'Different exposure times could change how much pigment leaks, independently of temperature. Check whether your explanation links the same exposure time to a clearer temperature comparison.',
-    growth: 'Random allocation helps prevent initial size being deliberately tied to a treatment; measuring initial and final length describes each seedling’s change. Neither alone removes every possible confounder. Compare this reasoning with your own.'
+    beetroot: 'Different volumes can dilute the released pigment by different amounts, so absorbance could differ for a reason other than temperature. Consistent exposure time also helps keep the treatment comparison clear. Compare this reasoning with your own.',
+    growth: 'Paired lengths allow an individual increase to be calculated; a known common initial length can also supply the starting value. A randomised comparison of final outcomes can estimate a treatment contrast, but is not an individual increase. Randomisation does not remove every possible confounder.'
   };
 
   function read() {
@@ -29,7 +29,31 @@
     const stages = read().stages;
     if (!stages[id] || typeof stages[id] !== 'object') stages[id] = { answers: {} };
     if (!stages[id].answers || typeof stages[id].answers !== 'object') stages[id].answers = {};
-    return stages[id];
+    const s = stages[id];
+    if (s.checkerVersion !== 2) {
+      // Retain earlier work while ensuring a changed checker never displays stale success.
+      const hadSavedPlan = Boolean(s.completed || s.reviewSaved);
+      if (hadSavedPlan) s.earlierSavedPlan = true;
+      if (id === 'beetroot' && s.answers.duration === undefined && s.answers.time === 'same') s.answers.duration = '10';
+      if (id === 'cress' && s.first) {
+        // The earlier version did not offer planning support before the first attempt.
+        if (!s.firstSupport) s.firstSupport = 'uncued';
+        if (!s.firstSupportTiming && s.firstSupport === 'uncued') s.firstSupportTiming = 'none';
+        if (s.completed && !s.reviewDecision) s.reviewDecision = 'revised';
+      }
+      const item = data.investigations.find(task => task.id === id);
+      if (item && (s.checked || hadSavedPlan)) {
+        const updated = data.check(id, s.answers);
+        if (updated.some(message => message.type === 'problem' || message.type === 'missing')) {
+          s.checked = false; s.completed = false; s.reviewSaved = false; s.feedback = [];
+        } else {
+          s.feedback = updated;
+          if (hasUnassessedDecision(item, updated)) { s.completed = false; s.reviewSaved = hadSavedPlan; }
+        }
+      }
+      s.checkerVersion = 2;
+    }
+    return s;
   }
   function el(tag, text, cls) {
     const n = document.createElement(tag);
@@ -52,7 +76,7 @@
   }
   function allFields(investigation) { return investigation.areas.flatMap(a => a.fields); }
   function hasUnassessedDecision(investigation, feedback) {
-    return feedback.some(message => message.type === 'unassessed' && allFields(investigation).some(field => field.id === message.field && field.type === 'select'));
+    return feedback.some(message => message.type === 'unassessed' && allFields(investigation).some(field => field.id === message.field && !['text', 'textarea'].includes(field.type)));
   }
   function readable(field, answer) {
     if (answer === undefined || answer === '') return 'Not yet specified';
@@ -103,6 +127,7 @@
     details.append(el('summary', 'Your current plan'));
     item.areas.forEach(a => {
       const section = el('section'); section.append(el('h3', a.title));
+      if (a.instruction) addText(section, a.instruction);
       const dl = el('dl');
       a.fields.forEach(f => { dl.append(el('dt', f.label), el('dd', readable(f, s.answers[f.id]))); });
       section.append(dl); details.append(section);
@@ -152,7 +177,7 @@
       const empty = el('option', 'Choose an answer'); empty.value = ''; input.append(empty);
       (field.options || []).forEach(o => { const opt = el('option', o.label); opt.value = o.value; input.append(opt); });
     } else if (field.type === 'textarea') { input = el('textarea'); input.rows = 3; input.maxLength = 1200; }
-    else { input = el('input'); input.type = field.type === 'number' ? 'number' : 'text'; if (input.type === 'number') { input.min = field.min ?? 0; if (field.max !== undefined) input.max = field.max; input.step = '1'; } else input.maxLength = 300; }
+    else { input = el('input'); input.type = field.type === 'number' ? 'number' : 'text'; if (input.type === 'number') { input.min = field.min ?? 0; if (field.max !== undefined) input.max = field.max; input.step = field.step ?? '1'; } else input.maxLength = 300; }
     input.id = id; input.dataset.planField = field.id; input.value = s.answers[field.id] ?? '';
     input.setAttribute('aria-describedby', [field.description && id + '-description', id + '-feedback'].filter(Boolean).join(' '));
     block.append(input);
@@ -223,7 +248,8 @@
     host.append(action('All investigations', 'back', () => { overview(); focus(host.querySelector('h1')); }));
     host.append(el('h1', item.title));
     const note = el('p', '', 'plan-storage'); note.dataset.planStorage = ''; host.append(note);
-    if (s.completed) host.append(el('p', (s.helped ? 'Optional planning hints opened. ' : 'No optional planning hints opened. ') + (current === 'cress' ? 'Follow-up checks are structured practice; neither written plan is automatically assessed.' : 'This is structured practice, not an unaided examination response.'), 'plan-outcome'));
+    if (s.earlierSavedPlan && !s.completed && !s.reviewSaved) host.append(el('p', 'Your earlier saved work is retained. Review the updated planning checks before saving this plan again.', 'plan-outcome'));
+    if (s.completed) host.append(el('p', (s.helped ? 'Optional planning hints opened. ' : 'No optional planning hints opened. ') + (current === 'cress' ? 'Follow-up decisions checked. Your written plan was not automatically assessed.' : 'This is structured practice, not an unaided examination response.'), 'plan-outcome'));
     else if (s.reviewSaved) host.append(el('p', 'Saved for review. The checker could not assess one or more planning decisions, so it cannot confirm that they resolve the problem.', 'plan-outcome'));
     if (current === 'cress' && !s.first) {
       host.append(brief(item, false));
@@ -231,9 +257,18 @@
       const first = el('textarea'); first.id = 'plan-first'; first.rows = 9; first.maxLength = 6000; first.dataset.planFirst = ''; first.value = s.firstDraft || '';
       first.addEventListener('input', () => { s.firstDraft = first.value; persist(); });
       const msg = el('p'); msg.setAttribute('role', 'status');
+      if (!s.preFirstHelp) host.append(action('I need help getting started', 'first-help', () => {
+        s.preFirstHelp = true; s.preFirstHelpTiming = first.value.trim() ? 'during-draft' : 'before-draft'; s.helped = true; persist(); render(); focus(host.querySelector('.plan-first-help h2'));
+      }));
+      else {
+        const starter = el('section', null, 'plan-first-help');
+        starter.append(el('h2', 'Getting started'), el('p', 'Start by deciding which salt treatments you will compare and what you will count after five days. Think about how you will treat the pots and keep other conditions comparable. This first response will be recorded as supported.'));
+        const optionalHelp = help(item, s); if (optionalHelp) starter.append(optionalHelp);
+        host.append(starter);
+      }
       host.append(label, first, msg, action('Save first attempt', 'save-first', () => {
         if (!first.value.trim()) { msg.textContent = 'Write your first plan before saving it.'; first.focus(); return; }
-        s.first = first.value.trim(); s.revision = s.first; delete s.firstDraft; area = 0; persist(); render(); focus(host.querySelector('h2'));
+        s.first = first.value.trim(); s.firstSupport = s.preFirstHelp ? 'supported' : 'uncued'; s.firstSupportTiming = s.preFirstHelpTiming || 'none'; s.revision = s.first; delete s.firstDraft; area = 0; persist(); render(); focus(host.querySelector('h2'));
       }, true));
       persist(); return;
     }
@@ -255,13 +290,20 @@
     }
     if (current === 'cress') {
       const saved = el('details', null, 'plan-first-saved');
-      saved.append(el('summary', 'Your saved first attempt'), el('p', s.first, 'plan-written'));
+      saved.append(el('summary', 'Your saved first attempt'), el('p', s.firstSupport === 'supported' ? 'Planning help was opened before this response was saved.' : 'This first response was saved before planning help was opened.'), el('p', s.first, 'plan-written'));
       host.append(saved, el('p', 'These checks apply to your follow-up decisions. They do not assess your first attempt.'));
+      if (s.reviewDecision && (s.completed || s.reviewSaved)) host.append(el('p', s.reviewDecision === 'unchanged' ? 'Recorded review: keep the first plan unchanged. Any text in the revised-plan box remains a draft and is not the plan you chose to keep.' : 'Recorded review: save the revised plan.', 'plan-outcome'));
     } else if (item.model) {
       const model = el('details', null, 'plan-model');
       model.open = current === 'potato' && area === 0;
       model.append(el('summary', 'Worked reasoning'));
       addText(model, item.model); host.append(model);
+    }
+    if (item.guide) {
+      const guide = el('details', null, 'plan-guide');
+      guide.append(el('summary', 'About this activity'));
+      addText(guide, item.guide);
+      host.append(guide);
     }
     const h = help(item, s); if (h) host.append(h);
     host.append(summary(item, s));
@@ -290,16 +332,21 @@
     }
     if (s.checked && Array.isArray(s.feedback) && !s.feedback.some(m => m.type === 'problem' || m.type === 'missing')) {
       if (current === 'cress') {
+        const unassessed = hasUnassessedDecision(item, s.feedback);
         const revision = el('section', null, 'plan-revision'); revision.dataset.planPostcheck = '';
-        revision.append(el('h2', 'Revise your plan'), el('p', 'Improve or clarify a concrete decision using the checks. Your original stays saved separately; this writing is not automatically assessed.'));
+        revision.append(el('h2', 'Review your plan'), el('p', 'Use the checks to review a concrete decision. You can revise your plan or keep your first response unchanged. Neither written response is automatically assessed.'));
+        if (unassessed) revision.append(el('p', 'One or more follow-up decisions are outside this checker’s scope. Your plan can be saved for review, but those decisions cannot be confirmed automatically.'));
         const label = el('label', 'Revised plan'); label.htmlFor = 'plan-revision';
-        const text = el('textarea'); text.id = 'plan-revision'; text.rows = 9; text.maxLength = 6000; text.value = s.revision || s.first; text.dataset.planRevision = '';
+        const text = el('textarea'); text.id = 'plan-revision'; text.rows = 9; text.maxLength = 6000; text.value = s.revision ?? s.first; text.dataset.planRevision = '';
         const result = el('p'); result.setAttribute('role', 'status');
-        text.addEventListener('input', () => { s.revision = text.value; s.completed = false; result.textContent = ''; host.querySelectorAll('.plan-outcome').forEach(n => n.remove()); persist(); });
-        revision.append(label, text, result, action('Save revision', 'revise', () => {
-          if (!text.value.trim() || text.value.trim() === s.first.trim()) { result.textContent = 'Change or clarify a decision in your plan before saving the revision.'; text.focus(); return; }
-          s.revision = text.value; s.completed = true; persist(); result.textContent = 'Revision saved. ' + (s.helped ? 'Optional planning hints opened. ' : 'No optional planning hints opened. ') + 'Follow-up checks are structured practice. Your first attempt and revision remain separate and are not automatically assessed.';
-        }, true)); host.append(revision);
+        text.addEventListener('input', () => { s.revision = text.value; s.completed = false; s.reviewSaved = false; result.textContent = ''; host.querySelectorAll('.plan-outcome').forEach(n => n.remove()); persist(); });
+        const saveReview = decision => {
+          if (decision === 'revised' && !text.value.trim()) { result.textContent = 'Write your revised plan before saving it.'; text.focus(); return; }
+          if (decision === 'revised') s.revision = text.value;
+          s.reviewDecision = decision; s.completed = !unassessed; s.reviewSaved = unassessed; persist();
+          result.textContent = (decision === 'unchanged' ? 'Recorded: keep the first plan unchanged. Any text in the revised-plan box remains a draft and is not the plan you chose to keep. ' : 'Revision saved. ') + (unassessed ? 'Saved for review because a follow-up decision is not assessed. ' : 'The follow-up decisions have been checked. ') + 'Your written plan is not automatically assessed.';
+        };
+        revision.append(label, text, result, action(unassessed ? 'Save revision for review' : 'Save revision', 'revise', () => saveReview('revised'), true), action(unassessed ? 'Reviewed—keep my plan unchanged for review' : 'Reviewed—keep my plan unchanged', 'keep-first', () => saveReview('unchanged'))); host.append(revision);
       } else if (hasUnassessedDecision(item, s.feedback)) {
         const note = el('p', 'The checker cannot assess one or more of your planning decisions. You can save this plan for review, but the checker cannot confirm that those decisions resolve a problem.'); note.dataset.planPostcheck = ''; host.append(note);
         const save = action(s.reviewSaved ? 'Saved for review' : 'Save plan for review', 'save-review', () => { s.reviewSaved = true; s.completed = false; persist(); render(); focus(host.querySelector('[data-plan-feedback]')); }, true); save.dataset.planPostcheck = ''; host.append(save);
@@ -315,8 +362,8 @@
     status() {
       const stages = Object.values(read().stages);
       const count = stages.filter(s => s && s.completed).length;
-      if (!stages.some(s => s && (s.started || s.first || s.completed))) return ['Start', ''];
-      return [count === data.investigations.length ? 'Review' : 'Resume', count + ' of ' + data.investigations.length + ' investigations saved'];
+      if (!stages.some(s => s && (s.started || s.first || s.completed || s.reviewSaved))) return ['Start', ''];
+      return [count === data.investigations.length ? 'Review' : 'Resume', count + ' of ' + data.investigations.length + ' with checked decisions'];
     }
   };
 }());

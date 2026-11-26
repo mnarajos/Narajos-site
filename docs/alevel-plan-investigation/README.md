@@ -1,6 +1,15 @@
 # Investigation-planning review views
 
-These labelled captures show the actual activity at successive points in a scripted Chromium journey. The example responses and entered values are illustrative. Screenshots show one possible path; they do not establish pupil attainment or assess written methods. The [scientific and verification record](../alevel-plan-investigation-review.md) records the checks and their limits.
+The following captures show the revised implementation in a scripted 390 px Chromium journey. The responses and entered values are illustrative. Screenshots do not establish pupil attainment or assess written methods. The [scientific and verification record](../alevel-plan-investigation-review.md) records the checks and their limits.
+
+- [Potato: worked start and comparison](revised-01-potato.png)
+- [Beetroot: partial proposal and planning decisions](revised-02-beetroot-partial.png) · [one represented repair](revised-03-beetroot-repair.png)
+- [Growth regulator: allocation and treatment units](revised-04-growth-allocation.png) · [measurement and reasoning scenario](revised-04-growth-reasoning.png)
+- [Cress: uncued first-attempt screen](revised-05-cress-uncued.png) · [optional support before saving a first response](revised-06-cress-help.png) · [first response, follow-up and review controls](revised-07-cress-review.png) · [recorded unchanged review](revised-08-cress-kept.png)
+
+The deliberately brief cress response in the last three captures demonstrates that later follow-up selections do not validate the original writing. Recording that the pupil kept the response unchanged is a review decision, not a software judgement of its completeness.
+
+The captures below this point show the earlier implementation reviewed at commit `aae52721c6f76d1a4d7a3b19cdd3fe63f59b1d91`. They are retained as historical comparison rather than evidence of the revised sequence.
 
 ## 1. Potato and sucrose: supported introduction
 
