@@ -33,7 +33,7 @@
     const saved = load();
     const started = state => state && (
       Number.isInteger(state.selected) || state.draft?.trim() || state.original ||
-      state.outcome || state.wrong || state.hint
+      state.outcome || state.wrong || state.hint || state.vocabularyHelp
     );
     const complete = state => state && (state.accepted || state.outcome === "selfReview");
     return Object.fromEntries(Object.entries(saved).flatMap(([key, record]) => {
@@ -191,7 +191,7 @@
     function updateFollowup() {
       const state = record.independent;
       root.querySelector("[data-hb-followup]").hidden = !lesson.followup ||
-        !state || !(state.wrong || state.hint || state.revealed || state.outcome === "selfReview");
+        !state || !(state.wrong || state.hint || state.vocabularyHelp || state.revealed || state.outcome === "selfReview");
     }
 
     function nextAction(section, state) {
@@ -226,6 +226,17 @@
       const feedback = section.querySelector(".hb-feedback");
       const review = section.querySelector("[data-hb-review]");
       const comparing = state.original !== undefined;
+      const wordHelp = question.wordHelp || {};
+      window.SiteVocabulary?.setAssessment(section, state.accepted || state.outcome || comparing ? { completed: true } : {
+        incidental: wordHelp.incidental,
+        targets: wordHelp.targets,
+        reveal() {
+          if (!section.isConnected || state.accepted || state.outcome || state.original !== undefined) return false;
+          state.vocabularyHelp = true;
+          save(key, record);
+          return true;
+        }
+      });
       const help = section.querySelector(".hb-help");
       if (help) help.hidden = comparing || Boolean(state.accepted);
       const count = state.hint || 0;
@@ -335,7 +346,7 @@
           } else if (!state.outcome || state.outcome === "explained") {
             state.accepted = true;
             state.outcome = state.revealed ? "explained" : state.wrong ? "corrected" :
-              stage === "guided" || state.hint ? "guided" : stage === "followup" ? "followup" : "independent";
+              stage === "guided" || state.hint || state.vocabularyHelp ? "guided" : stage === "followup" ? "followup" : "independent";
           }
         }
         save(key, record);

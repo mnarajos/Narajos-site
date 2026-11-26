@@ -36,6 +36,8 @@ jobs:
         run: node scripts/check-alevel-practicals.mjs
       - name: Test A-level vocabulary support
         run: node scripts/check-alevel-vocabulary.mjs
+      - name: Test vocabulary across courses
+        run: node scripts/check-site-vocabulary.mjs
       - name: Test actual browser interactions and mobile layout
         run: node scripts/check-browser.mjs
       - name: Retain viewport screenshots for visual review

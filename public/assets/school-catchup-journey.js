@@ -154,16 +154,27 @@ export function mountJourney(host, model, lesson) {
   }
 
   let viewOnly = false;
-  let paused = false;
+  // Teaching is available before the learner deliberately enters a check.
+  // Saved responses remain available through Resume check after a reload.
+  let paused = inlineCheck;
   let shownIndex = state.step;
   const savedQuestion = (state.repeating && retry) || steps[state.step];
   const changedPrompt = state.prompt && state.prompt !== savedQuestion.prompt;
   const missingChoice = state.selected && state.selected !== savedQuestion.answer
     && !savedQuestion.options.some(option => option.label === state.selected);
-  if (changedPrompt || missingChoice || state.correct && state.selected !== savedQuestion.answer) {
-    Object.assign(state, {selected: "", correct: false, feedback: "", clues: 0, helped: false, explained: false, incorrectAttempt: false});
+  const invalidSavedAnswer = changedPrompt || missingChoice || state.correct && state.selected !== savedQuestion.answer;
+  if (invalidSavedAnswer) {
+    Object.assign(state, {selected: "", correct: false, feedback: "", clues: 0, helped: false, explained: false, incorrectAttempt: false, wordHelpAttempt: false});
   } else if (!state.correct && state.selected && state.feedback) {
     state.incorrectAttempt = state.selected !== savedQuestion.answer;
+  }
+  // Older inline checks did not store wordHelpAttempt. An open or otherwise
+  // started unfinished legacy check must retain assessment restrictions on
+  // reload, even though old versions could open checks automatically.
+  if (inlineCheck && !Object.hasOwn(prior, "wordHelpAttempt") && !invalidSavedAnswer &&
+      !state.done && !state.correct && !state.explained) {
+    state.wordHelpAttempt = Boolean(prior.open || prior.selected || prior.feedback || prior.helped ||
+      prior.clues || prior.hintOpen || prior.incorrectAttempt || prior.draft?.trim());
   }
   function write() {
     state.prompt = (state.repeating && retry ? retry : steps[state.step]).prompt;
@@ -217,7 +228,12 @@ export function mountJourney(host, model, lesson) {
         stage.append(dialog);
         renderCheck();
       } else {
-        stage.append(checkButton(state.open ? "Resume check" : "Check", showCheck));
+        // Pausing an unfinished attempt must not make its answer available
+        // through the teaching-panel lookup before the same check is resumed.
+        if (inlineCheck && state.wordHelpAttempt && !state.correct && !state.explained) {
+          window.SiteVocabulary?.setAssessment(stage, {});
+        }
+        stage.append(checkButton(state.open || state.wordHelpAttempt ? "Resume check" : "Check", showCheck));
       }
       if (state.step > 0 && !inlineCheck) stage.append(button("Catch-up notes", () => showEvidence()));
       checkList.append(stage);
@@ -281,6 +297,7 @@ export function mountJourney(host, model, lesson) {
     viewOnly = review;
     if (!review) {
       state.open = true;
+      if (inlineCheck) state.wordHelpAttempt = true;
       write();
     }
     if (inlineCheck && !review) {
@@ -311,6 +328,28 @@ export function mountJourney(host, model, lesson) {
 
   function renderCheck() {
     const q = currentQuestion();
+    // These definitions have been reviewed against the complete question,
+    // its choices and the feedback. Other terms remain unavailable while the
+    // check is active.
+    const reviewed = {
+      "vaccine-memory": {
+        "What do antibodies recognise?": { incidental: ["gcse-pathogen"] }
+      },
+      "photosynthesis-limits": {
+        "Which gas does photosynthesis produce?": { targets: ["gcse-photosynthesis"] }
+      }
+    };
+    const wordHelp = reviewed[id]?.[q.prompt] || {};
+    window.SiteVocabulary?.setAssessment(dialog, viewOnly || state.explained || state.correct ? { completed: true } : {
+      incidental: wordHelp.incidental,
+      targets: wordHelp.targets,
+      reveal() {
+        if (!dialog.isConnected || state.correct || state.explained || currentQuestion() !== q) return false;
+        state.helped = true;
+        write();
+        return true;
+      }
+    });
     const heading = element("h2", q.prompt, "school-check-question");
     heading.id = "school-check-heading";
     heading.tabIndex = -1;
@@ -449,6 +488,7 @@ export function mountJourney(host, model, lesson) {
       write();
       showVerdict(state.correct);
       if (state.correct) {
+        window.SiteVocabulary?.setAssessment(dialog, { completed: true });
         support.hidden = true;
         choices.disabled = true;
         submit.hidden = true;
@@ -516,7 +556,8 @@ export function mountJourney(host, model, lesson) {
     } else {
       if (evidence && !inlineCheck) evidence.hidden = true;
       state.open = false;
-      if (inlineCheck) paused = false;
+      state.wordHelpAttempt = false;
+      if (inlineCheck) paused = true;
       if (atEnd) state.done = true;
       else state.step++;
       if (inlineCheck) { write(); renderStages({animateCompletion: atEnd}); }

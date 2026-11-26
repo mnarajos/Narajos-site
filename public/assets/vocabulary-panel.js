@@ -20,7 +20,7 @@
     return value.toLocaleLowerCase("en-GB").replace(/[‐‑–—]/g, "-").replace(/’/g, "'").replace(/\s+/g, " ").trim();
   }
 
-  function create({ main, onLookup, onPreferenceChange }) {
+  function create({ main, onLookup, onPreferenceChange, searchLabel = "Find a biology term" }) {
     const id = "vocabulary-help-" + ++nextId;
     const wide = window.matchMedia("(min-width: 64rem)");
     const layout = element("div", "vocabulary-layout");
@@ -57,13 +57,13 @@
     const searchForm = element("form", "vocabulary-search-form");
     searchForm.setAttribute("role", "search");
     searchForm.setAttribute("aria-label", "Word help");
-    const searchLabel = element("label", "", "Find a biology term");
+    const searchLabelElement = element("label", "", searchLabel);
     const search = element("input", "vocabulary-search");
     search.type = "search";
     search.id = id + "-search";
     search.autocomplete = "off";
-    searchLabel.htmlFor = search.id;
-    searchForm.append(searchLabel, search);
+    searchLabelElement.htmlFor = search.id;
+    searchForm.append(searchLabelElement, search);
     const summary = element("p", "vocabulary-search-summary");
     summary.setAttribute("aria-live", "polite");
     const results = element("ul", "vocabulary-results");

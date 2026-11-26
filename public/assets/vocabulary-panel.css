@@ -20,7 +20,7 @@
   border-radius: .25rem;
   padding: .25rem .35rem;
   background: transparent;
-  color: var(--acc, LinkText);
+  color: var(--acc, var(--brand, var(--teal, #0d6967)));
   font: inherit;
   font-weight: 650;
   text-align: start;
