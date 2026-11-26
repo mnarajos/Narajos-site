@@ -1,0 +1,43 @@
+/* Investigation planning uses the existing Exam Skills controls and typography. */
+.plan-investigation { max-width: 58rem; }
+.plan-investigation .plan-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: 1rem; padding: 0; list-style: none; }
+.plan-investigation .plan-card, .plan-investigation .plan-area, .plan-investigation .plan-revision { padding: 1rem; border: 1px solid #c9d5dc; border-radius: .65rem; background: #fff; }
+.plan-investigation .plan-card h2 { font-size: 1.1rem; margin-top: 0; }
+.plan-investigation .plan-card .btn { white-space: normal; text-align: left; }
+.plan-investigation .plan-brief, .plan-investigation .plan-summary, .plan-investigation .plan-help, .plan-investigation .plan-model, .plan-investigation .plan-calculation, .plan-investigation .plan-first-saved { margin: .75rem 0; padding: .75rem 1rem; border: 1px solid #c9d5dc; border-radius: .5rem; background: #f6f9fa; }
+.plan-investigation summary { cursor: pointer; font-weight: 600; }
+.plan-investigation details details { margin: .7rem 0; }
+.plan-investigation .plan-question { font-weight: 650; }
+.plan-investigation .plan-areas, .plan-investigation .plan-controls { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0; }
+.plan-investigation .plan-areas [aria-current] { outline: 2px solid currentColor; outline-offset: 2px; }
+/* WebKit can include native option text in page overflow even when the select fits.
+   Keep space for the focus outline while containing that internal overflow. */
+.plan-investigation .plan-field { margin: 1rem 0; overflow-x: clip; overflow-clip-margin: 8px; }
+.plan-investigation label { display: block; font-weight: 600; margin: .5rem 0; }
+.plan-investigation input, .plan-investigation select, .plan-investigation textarea { display: block; box-sizing: border-box; max-width: 100%; width: 100%; min-height: 2.75rem; padding: .55rem; font: inherit; color: #182d36; background: #fff; border: 1px solid #526d7a; border-radius: .3rem; }
+.plan-investigation input[type=number] { width: 8rem; }
+.plan-investigation textarea { resize: vertical; }
+.plan-investigation :is(button, input, select, textarea, summary):focus-visible { outline: 3px solid #096d9c; outline-offset: 3px; }
+.plan-investigation .plan-feedback:not(:empty), .plan-investigation .plan-local-feedback:not(:empty) { border-left: .25rem solid #206785; padding: .5rem .75rem; margin: 1rem 0; background: #eef7fa; }
+.plan-investigation .plan-feedback li { margin: .6rem 0; }
+.plan-investigation .plan-feedback .btn { font-size: .9em; }
+.plan-investigation .plan-storage, .plan-investigation .plan-field-description { font-size: .9em; }
+.plan-investigation .plan-summary dl { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: .3rem .75rem; }
+.plan-investigation .plan-summary dt { font-weight: 600; }
+.plan-investigation .plan-summary dd { margin: 0; overflow-wrap: anywhere; }
+.plan-investigation .plan-written { white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (max-width: 30rem) {
+  .plan-investigation .plan-summary dl { display: block; }
+  .plan-investigation .plan-summary dd { margin: 0 0 .7rem; }
+  .plan-investigation .plan-controls .btn { width: 100%; }
+}
+.plan-investigation .plan-allocation { margin: 1rem 0; padding: .75rem; background: #f2f7f9; border-radius: .4rem; }
+.plan-investigation .plan-allocation figcaption { font-weight: 600; }
+.plan-investigation .plan-allocation p { margin: .4rem 0; overflow-wrap: anywhere; }
+.plan-investigation .plan-allocation span { color: #245f78; letter-spacing: .08em; }
+.plan-investigation .plan-measurement { margin: 1rem 0; }
+.plan-investigation .plan-measurement figcaption { font-weight: 600; margin-bottom: .5rem; }
+.plan-investigation .plan-measurement-diagram { display: flex; align-items: center; flex-wrap: wrap; gap: .45rem; }
+.plan-investigation .plan-measurement-diagram span:not(:nth-child(2)) { padding: .5rem; border: 1px solid #9ab2bd; border-radius: .35rem; background: #fff; }
+.plan-investigation .plan-self-review { margin: 1rem 0; padding: .75rem 1rem; background: #f6f9fa; border-left: .25rem solid #718c99; }
+.plan-investigation .plan-self-review h3 { margin-top: 0; }

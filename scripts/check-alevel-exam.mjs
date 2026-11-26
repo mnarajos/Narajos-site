@@ -20,7 +20,7 @@ export async function checkExistingRoutes(browser, base) {
       assert(await page.locator("html").evaluate(el => el.classList.contains("big")));
       await route("exam");
       await main.getByRole("heading", { name: "Exam Skills", exact: true }).waitFor();
-      assert.equal(await main.locator(".al-catalogue-row").count(), 16);
+      assert.equal(await main.locator(".al-catalogue-row").count(), 17);
       await route("lesson-a1-monopoly");
       await main.locator(".ltop").waitFor();
       assert.match(await main.innerText(), /starch is a large molecule/);
