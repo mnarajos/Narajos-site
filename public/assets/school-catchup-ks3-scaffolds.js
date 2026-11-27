@@ -137,13 +137,14 @@ function oxygenRoute(processes = true) {
   return picture("From the air sacs to muscle cells", diagram(processes
     ? "Oxygen diffuses from an air sac into blood. Circulation carries it to the muscle. Oxygen diffuses from the blood into a muscle cell."
     : "Arrows follow oxygen from an air sac to nearby lung capillary blood, then to muscle capillary blood, then into a muscle cell.", `
-    <rect x="17" y="10" width="177" height="31" rx="8" fill="#deeff3" stroke="${teal}"/>
-    <rect x="17" y="68" width="177" height="31" rx="8" fill="#f7e7e2" stroke="${rust}"/>
-    <rect x="17" y="126" width="177" height="31" rx="8" fill="#f7e7e2" stroke="${rust}"/>
-    <rect x="17" y="184" width="177" height="31" rx="8" fill="#e4eee4" stroke="${teal}"/>
-    ${text(105,31,"Air sac in lung")}${text(105,89,"Lung capillary blood")}${text(105,147,"Muscle capillary blood")}${text(105,205,"Muscle cell")}
-    ${arrow(105,41,105,67,blue)}${arrow(105,99,105,125,rust)}${arrow(105,157,105,183,blue)}
-    ${processes ? text(126,59,"Diffusion",blue,15,"start")+text(126,117,"Circulation via the heart",rust,15,"start")+text(126,175,"Diffusion",blue,15,"start") : ""}`, 320,225));
+    <rect x="20" y="10" width="240" height="38" rx="8" fill="#deeff3" stroke="${teal}"/>
+    <rect x="20" y="100" width="240" height="38" rx="8" fill="#f7e7e2" stroke="${rust}"/>
+    <rect x="20" y="206" width="240" height="38" rx="8" fill="#f7e7e2" stroke="${rust}"/>
+    <rect x="20" y="296" width="240" height="38" rx="8" fill="#e4eee4" stroke="${teal}"/>
+    ${text(140,35,"Air sac in lung",ink,20)}${text(140,125,"Lung capillary blood",ink,20)}
+    ${text(140,231,"Muscle capillary blood",ink,20)}${text(140,321,"Muscle cell",ink,20)}
+    ${arrow(65,48,65,99,blue)}${arrow(65,138,65,205,rust)}${arrow(65,244,65,295,blue)}
+    ${processes ? text(85,78,"Diffusion",blue,19,"start")+text(85,164,"Circulation via",rust,19,"start")+text(85,189,"the heart",rust,19,"start")+text(85,274,"Diffusion",blue,19,"start") : ""}`, 280,345));
 }
 
 function compressedGas() {
@@ -180,9 +181,9 @@ function seesaw(leftForce, leftDistance, rightForce, rightDistance) {
   return picture("Downward forces on a seesaw", diagram(`${leftForce} acts down on the left at ${leftDistance}. ${rightForce} acts down on the right at ${rightDistance} from the pivot.`, `
     ${line(28,83,292,83,ink,4)}<path d="M160 84L146 110H174Z" fill="#c8e0d9" stroke="${teal}" stroke-width="2"/>
     ${arrow(left,41,left,78,blue,3)}${arrow(right,41,right,78,rust,3)}
-    ${text(left,31,leftForce,blue)}${text(right,31,rightForce,rust)}
+    ${text(left,31,leftForce,blue,20)}${text(right,31,rightForce,rust,20)}
     ${line(left,98,145,98)}${line(175,98,right,98)}
-    ${text((left+145)/2,120,leftDistance)}${text((175+right)/2,120,rightDistance)}${text(160,143,"Pivot",teal)}`,320,153),
+    ${text((left+145)/2,120,leftDistance,ink,20)}${text((175+right)/2,120,rightDistance,ink,20)}${text(160,151,"Pivot",teal,20)}`,320,165),
     known ? "Compare each force and its distance from the pivot. The beam is shown level before any turning." : "The unknown distance is not drawn to scale; calculate it from the moments.");
 }
 
@@ -193,7 +194,7 @@ function unequalForces() {
     <path d="M125 104l25-32 16 32 17 0-12-38h-8M125 104h41l8-29h-23" fill="none" stroke="${teal}" stroke-width="3"/>
     ${circle(168,44,7,"#db9963",ink,2)}<path d="M164 52l-14 17 19 15-6 18" fill="none" stroke="${ink}" stroke-width="5"/>
     ${arrow(106,79,43,79,blue,3)}${arrow(202,79,290,79,blue,3)}
-    ${text(55,64,"25 N",blue,15)}${text(268,64,"35 N",blue,15)}${arrow(110,136,210,136,rust,2)}${text(160,159,"Travel right",rust,14)}`,320,175),
+    ${text(55,64,"25 N",blue,20)}${text(268,64,"35 N",blue,20)}${arrow(110,136,210,136,rust,2)}${text(160,161,"Travel right",rust,20)}`,320,175),
     "Subtract opposite forces: 35 N − 25 N = 10 N to the right, in the direction of travel.");
 }
 
@@ -210,8 +211,8 @@ function filtrationWorked() {
 
 function reactivityLadder() {
   return picture("More reactive metals go higher", diagram("From most to least reactive in this comparison: zinc, iron, copper.", `
-    ${arrow(60,142,60,20,teal,3)}${text(37,164,"More reactive",teal,13,"start")}
-    ${["Zinc", "Iron", "Copper"].map((metal,index)=>`<rect x="105" y="${11+47*index}" width="141" height="37" rx="6" fill="#e8f2ed" stroke="${teal}"/>${text(175,35+47*index,metal)}`).join("")}`,320,172));
+    ${arrow(60,142,60,20,teal,3)}${text(45,164,"More",teal,18)}${text(45,185,"reactive",teal,18)}
+    ${["Zinc", "Iron", "Copper"].map((metal,index)=>`<rect x="105" y="${11+47*index}" width="141" height="37" rx="6" fill="#e8f2ed" stroke="${teal}"/>${text(175,38+47*index,metal,ink,20)}`).join("")}`,320,200));
 }
 
 export function withKS3Scaffolds(id, steps, renderVisual) {

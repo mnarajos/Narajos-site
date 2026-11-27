@@ -4,6 +4,8 @@ This index enumerates the authored explanation and sequential worked-example blo
 
 The [F171 vaccine and immune-memory review](catchup-visual-coverage-human-f171-vaccines.md), [F171 measurement and evidence review](catchup-visual-coverage-human-f171-measure-evidence.md), [F171 disease basics review](catchup-visual-coverage-human-f171-disease-basics.md), [F171 daily-life review](catchup-visual-coverage-human-f171-daily-life.md), and [focused F172–F173 review](catchup-visual-coverage-human-f172-f173.md) record additional figures and their remaining limits.
 
+The [remaining recap review](catchup-visual-coverage-human-unmapped-review.md) distinguishes short connecting statements from the inline kidney-graft visual and from recap mappings that are not visible in guided booklets.
+
 | Route and block | Content excerpt | Assets declared in lesson | Review |
 | --- | --- | --- | --- |
 | f170/1.1.1 · Explain 1 | A mature erythrocyte (red blood cell) is a flexible biconcave disc. Its thin centre shortens the diffusion … | teachingDiagram, explainDiagrams, explainPhotos, modelDiagrams, compare | Unreviewed; see reviewed exceptions |

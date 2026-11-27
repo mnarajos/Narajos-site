@@ -5,7 +5,7 @@ import {ks3ExplanationVisuals} from "../public/assets/ks3-step-visuals.js";
 import {year9OpeningSupplement} from "../public/assets/school-catchup-visuals.js";
 import {year9} from "../public/assets/school-catchup-year9.js";
 import {curriculum, motionLessons} from "../public/assets/ks3-lessons.js";
-import {withKS3Scaffolds} from "../public/assets/school-catchup-ks3-scaffolds.js";
+import {ks3Scaffolds, withKS3Scaffolds} from "../public/assets/school-catchup-ks3-scaffolds.js";
 
 class Element {
   constructor(tag) { this.tag=tag; this.children=[]; this.style={}; this.innerHTML=""; this.textContent=""; }
@@ -32,17 +32,15 @@ for(const [id,figures] of Object.entries(ks3ExplanationVisuals)) for(const [inde
 }
 for(const id of ["energy-transfer","gas-exchange"]) checkFigure(year9OpeningSupplement(id), `Year 9 ${id} opening`);
 assert.equal(year9OpeningSupplement("unknown"),null);
-const workedMappings={"atomic-number":[0],"periodic-table":[0],"energy-transfer":[0,1],"gas-exchange":[0],enzymes:[0],"ionic-conduction":[0],"molecular-melting":[0]};
 let workedCount=0;
-for(const [id,indices] of Object.entries(workedMappings)) for(const index of indices) {
-  const worked=year9[id]?.steps[index]?.worked;
-  assert.equal(typeof worked?.visual,"function",`${id}/${index}: missing worked visual`);
-  checkFigure(worked.visual(),`Year 9 ${id}/${index}`); workedCount++;
+for(const [id, lesson] of Object.entries(year9)) for(const [index, step] of lesson.steps.entries()) {
+  if (!step.worked) continue;
+  assert.equal(typeof step.worked.visual,"function",`${id}/${index}: missing worked visual`);
+  checkFigure(step.worked.visual(),`Year 9 ${id}/${index}`); workedCount++;
 }
 // Catalogue figures render through the actual page renderer; the browser
 // scaffold check exercises those. Here check their step associations and the
 // original SVGs without importing a page module that expects a browser.
-const catalogueWorked={"atoms-and-compounds":[0],forces:[0,1],"energy-transfers":[0],"separating-techniques":[0],"balanced-moments":[0],"work-done":[0]};
 let catalogueWorkedCount=0;
 const mockVisual = model => {
   assert.ok(model?.reference, "the question visual should use reference mode");
@@ -51,9 +49,10 @@ const mockVisual = model => {
   caption.textContent="The browser check verifies the catalogue figure.";
   figure.append(drawing,caption);return figure;
 };
-for(const [id,indices] of Object.entries(catalogueWorked)) {
-  const steps=withKS3Scaffolds(id, [{},{},{}], mockVisual);
-  for(const index of indices) {
+for(const [id, sourceSteps] of Object.entries(ks3Scaffolds)) {
+  const steps=withKS3Scaffolds(id, sourceSteps.map(() => ({})), mockVisual);
+  for(const [index, source] of sourceSteps.entries()) {
+    if (!source.worked) continue;
     assert.equal(typeof steps[index]?.worked?.visual,"function",`${id}/${index}: missing worked visual`);
     checkFigure(steps[index].worked.visual(),`KS3 ${id}/${index}`); catalogueWorkedCount++;
   }

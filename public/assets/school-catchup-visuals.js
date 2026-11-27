@@ -120,7 +120,7 @@ function atom(title, neutrons, shellCounts, note, highlightNeutron = false, lost
       return circle(x,y,outer ? 6 : 4.5,outer && count === 1 ? "#edab65" : blue,outer && count === 1 ? rust : blue);
     }).join("");
   }).join("") + circle(centreX,centreY,34,"#e5eeef",teal,2) +
-    text(160,116,protons + " p⁺",teal,17) + text(160,136,neutrons + " n",highlightNeutron ? rust : ink,17) +
+    text(160,114,protons + " p⁺",teal,21) + text(160,139,neutrons + " n",highlightNeutron ? rust : ink,21) +
     (lostElectron ? circle(160,17,6,"white",rust,2) + line(155,21,165,12,rust,2) : "");
   return picture(title,diagram(title + ". " + protons + " protons, " + neutrons + " neutrons, electron arrangement " + shellCounts.filter(Boolean).join(", ") + ".",drawing,320,229),note);
 }
@@ -231,9 +231,9 @@ function enzymes() {
       : "An orange rectangular substrate fits the rectangular pocket in a teal enzyme.", `
       <path d="${solid}" fill="#b6ded3" stroke="${teal}" stroke-width="2.5"/>
       <rect x="135" y="${changed ? 42 : 76}" width="50" height="26" rx="2" fill="#f5bc73" stroke="${rust}" stroke-width="2"/>
-      ${text(160,28,"Substrate",rust)}
-      ${text(160,140,"Enzyme",teal)}
-      ${changed ? text(247,68,"Active site",teal,14) + line(211,65,177,85,teal) : ""}
+      ${text(changed ? 120 : 160,28,"Substrate",rust,20)}
+      ${text(160,140,"Enzyme",teal,20)}
+      ${changed ? text(250,48,"Active site",teal,20) + line(216,53,177,85,teal) : ""}
       ${warm ? arrow(109,65,129,82,rust)+arrow(211,65,191,82,rust) : ""}`);
   }
   return steps("How temperature changes enzyme activity", [
@@ -253,7 +253,7 @@ function conduction() {
       "Positive and negative ions form a regular lattice. They vibrate in position and do not move across the solid.", `
       ${moving ? line(22,35,22,136,ink,5)+line(294,35,294,136,ink,5)+text(22,25,"+")+text(294,25,"−") : ""}
       ${points.map(([x,y],i) => circle(x,y,13,signs[i] ? "#e7b783" : "#cce4f1",signs[i] ? rust : blue) + text(x,y+5,signs[i] ? "+" : "−",ink,19)).join("")}
-      ${moving ? arrow(117,151,264,151,rust)+arrow(202,161,55,161,blue) : text(145,150,"Vibrate in fixed positions",teal,15)}
+      ${moving ? arrow(117,151,264,151,rust)+arrow(202,161,55,161,blue) : text(160,154,"Vibrate in fixed positions",teal,20)}
       `,320,179),moving ? "A voltage moves positive ions one way and negative ions the other." : "The ions have charge, but they cannot flow through the solid.");
   }
   return compare(ions("Solid salt",solid,false),ions("Molten salt",liquid,true));
@@ -274,7 +274,7 @@ function melting() {
       ${line(positions[0][0]+18,positions[0][1]+14,positions[3][0]-8,positions[3][1]-9,violet,2,"4 4")}
       ${line(positions[2][0],positions[2][1]+16,positions[5][0]-9,positions[5][1]-10,violet,2,"4 4")}
       ${positions.map(molecule).join("")}
-      ${text(160,161,"Follow the circled molecule",teal)}`),liquid ? "The complete molecules can move past one another." : "Attractions hold molecules in a fixed arrangement overall.");
+      ${text(160,161,"Follow the circled molecule",teal,20)}`),liquid ? "The complete molecules can move past one another." : "Attractions hold molecules in a fixed arrangement overall.");
   }
   const panel = node("div");
   panel.append(compare(state("Ice",fixed,false),state("Liquid water",moving,true)),

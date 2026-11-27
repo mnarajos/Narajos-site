@@ -7,9 +7,11 @@ This is a working inventory, **not a claim of full visual coverage**. The step l
 | KS3 Years 7–9 | [KS3 block ledger](catchup-visual-coverage-ks3-steps.md) | 37 indexed routes; block mappings recorded. Some individual figure labels and specialist stages still require review as marked. |
 | GCSE Combined Science | [GCSE block ledger](catchup-visual-coverage-gcse-steps.md) | 48 routes: 48 openings, 87 teaching steps, 73 worked lines and 17 Higher entries reviewed. See the ledger for the scope and limitations of each figure. |
 | A-level Biology | [A-level block ledger](catchup-visual-coverage-alevel-steps.md) | 413 recap groups reviewed: 367 mapped to figures, 36 instruction-only and 10 isolated short statements. Guided catch-up stages are recorded separately; some figures illustrate only the relationships identified in the ledger. |
-| AAQ Human Biology | [Human Biology block ledger](catchup-visual-coverage-human-steps.md) | Partial. Guided teaching, model steps and short recaps need separate review. |
+| AAQ Human Biology | [Human Biology block ledger](catchup-visual-coverage-human-steps.md) | 201 reachable recap lines: 188 explicitly mapped, 1 supported by an existing inline graft visual, and 12 short statements classified separately. Guided stages and partial representations require separate quality review. |
 
 The concept inventories below list routes and their original opening-visual categories; they are not a live assessment of each step. The block ledgers are the current review records. All checked claims in a ledger have the scope stated there; a visual may cover only a part of its explanation.
+
+Representative mobile and desktop captures are listed in the [visual review record](catchup-visual-review/README.md). On the current Human Biology batch, the standalone Chromium suite passed all 75 guided routes, including stage placement, assessment isolation and responsive checks; the visual-integrity check also passed. These automated checks do not replace the separate scientific and teaching reviews or close the limitations recorded in the ledgers.
 
 ## School catch-up: Years 7–9
 
@@ -116,7 +118,7 @@ The catch-up index has 171 concepts across topics 1–8 (17, 20, 23, 23, 22, 28,
 
 ## AAQ Human Biology
 
-The companion index contains 90 routes: 37 F170, 29 F171, and 4, 3, 4, 5, 5 and 3 across F172–F177. These include sections, notes and focused lessons. See the [route inventory](catchup-visual-coverage-human.md), [guided block index](catchup-visual-coverage-human-block-index.md), [reviewed teaching blocks](catchup-visual-coverage-human-steps.md) and [recap inventory](catchup-visual-coverage-human-recaps.md). Stage-specific figures and adjacent recap groups have been added, but substantial blocks remain unmapped or only partly reviewed. The ledgers distinguish those gaps from existing suitable figures and short statements.
+The companion index contains 90 routes: 37 F170, 29 F171, and 4, 3, 4, 5, 5 and 3 across F172–F177. These include sections, notes and focused lessons. The recap inventory has 254 lines; 53 first-step F170/F171 lines open guided lessons rather than a recap, leaving 201 reachable recap lines. Of these, 188 have explicit figure mappings; one has the existing inline kidney-graft visual; and 12 short orientation or interpretation statements are [classified separately](catchup-visual-coverage-human-unmapped-review.md). The current guided inventory has 75 lessons, with 140/145 explanation paragraphs and 204/209 worked steps carrying explicit figure fields; other steps can use existing tables, images or interactions. These are placement counts, not a claim that every mapped figure fully explains its block. See the [route inventory](catchup-visual-coverage-human.md), [guided block index](catchup-visual-coverage-human-block-index.md), [reviewed teaching blocks](catchup-visual-coverage-human-steps.md) and [recap inventory](catchup-visual-coverage-human-recaps.md) for exact checks and remaining partial support.
 
 ## Verification still needed
 

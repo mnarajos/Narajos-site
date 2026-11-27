@@ -60,13 +60,13 @@ function muscleCell() {
 function nucleusAndRibosomes() {
   return picture("Inside an animal cell", diagram(
     "A simplified animal cell has a nucleus containing DNA and ribosomes shown as small dots in the cytoplasm. Ribosomes build proteins.", `
-    <ellipse cx="120" cy="87" rx="92" ry="65" fill="#e2f3f0" stroke="${teal}" stroke-width="3"/>
+    <ellipse cx="115" cy="87" rx="90" ry="65" fill="#e2f3f0" stroke="${teal}" stroke-width="3"/>
     <circle cx="105" cy="88" r="30" fill="#d8c7e4" stroke="${ink}" stroke-width="2"/>
     <path d="M92 87q7-16 13 0t13 0" fill="none" stroke="${rust}" stroke-width="3"/>
     ${[[65,51],[152,54],[168,83],[65,111],[150,118]].map(([x,y]) => circle(x,y,3,ink,ink)).join("")}
-    ${line(117,66,200,36,ink,1.5)}${text(254,32,"Nucleus: DNA",ink,14)}
-    ${line(168,83,205,83,ink,1.5)}${text(254,78,"Ribosomes",ink,14)}${text(254,98,"build proteins",ink,14)}
-    ${text(120,166,"Cell shown in section",ink,14)}`,320,180),
+    ${line(117,66,200,36,ink,1.5)}${text(254,32,"Nucleus: DNA",ink,16)}
+    ${line(168,83,205,83,ink,1.5)}${text(265,78,"Ribosomes",ink,16)}${text(265,98,"build proteins",ink,16)}
+    ${text(115,181,"Cell shown in section",ink,16)}`,320,195),
     "Locate DNA in the nucleus and the ribosomes shown as dots. The sizes are exaggerated so the structures can be seen.");
 }
 
@@ -115,9 +115,9 @@ function efficiencyExample() {
     "A lamp receives 120 joules. It transfers 30 joules by useful light and 90 joules to other transfers such as heating.", `
     <rect x="20" y="37" width="280" height="37" fill="#eff4f4" stroke="${ink}" stroke-width="2"/>
     <rect x="20" y="37" width="70" height="37" fill="#a9d3c9" stroke="${teal}" stroke-width="2"/>
-    ${text(55,62,"30 J",ink,15)}${text(196,62,"90 J",ink,15)}
-    ${text(55,101,"Useful light",teal,14)}${text(196,101,"Other transfers",ink,14)}
-    ${text(160,137,"Total input: 120 J",ink,15)}`,320,155),
+    ${text(55,62,"30 J",ink,20)}${text(196,62,"90 J",ink,20)}
+    ${text(55,103,"Useful light",teal,20)}${text(200,103,"Other transfers",ink,20)}
+    ${text(160,140,"Total input: 120 J",ink,20)}`,320,160),
     "The useful part is one quarter of the whole: 30 ÷ 120 = 0.25, or 25%.");
 }
 
@@ -126,9 +126,9 @@ function groupOneExamples() {
   host.append(year9Visual("periodic-table"));
   host.append(picture("Potassium electron arrangement", diagram(
     "A potassium atom has four electron shells. Its electron arrangement is 2, 8, 8, 1. One electron is shown in the outer shell; inner-shell electrons are omitted.", `
-    ${circle(112,82,13,"#d8e8e5",teal,2)}${circle(112,82,29,"none",ink,1)}${circle(112,82,45,"none",ink,1)}
-    ${circle(112,82,61,"none",ink,1)}${circle(112,82,76,"none",ink,1)}${circle(112,6,5,rust,rust)}
-    ${text(230,48,"Potassium",ink,15)}${text(230,72,"2, 8, 8, 1",blue,15)}${text(230,100,"1 outer",rust,14)}${text(230,120,"electron",rust,14)}`,320,170),
+    ${circle(140,90,13,"#d8e8e5",teal,2)}${circle(140,90,29,"none",ink,1)}${circle(140,90,45,"none",ink,1)}
+    ${circle(140,90,61,"none",ink,1)}${circle(140,90,76,"none",ink,1)}${circle(140,14,5,rust,rust)}
+    ${text(140,195,"Potassium",ink,20)}${text(140,221,"2, 8, 8, 1",blue,20)}${text(140,248,"One outer electron",rust,20)}`,280,270),
     "The last number counts the outer-shell electron. Inner-shell electrons are omitted from this schematic."));
   return host;
 }
@@ -140,9 +140,9 @@ function dissolvedIons() {
     "A salt solution contains separated positive and negative ions. When a voltage is applied, the positive ions move toward the negative electrode and the negative ions move toward the positive electrode.", `
     <path d="M25 32v102h270V32" fill="#e6f3f6" stroke="${teal}" stroke-width="2"/>
     ${line(57,43,57,120,ink,5)}${line(263,43,263,120,ink,5)}${text(57,26,"−",blue,20)}${text(263,26,"+",rust,20)}
-    ${circle(110,71,11,"#e7b783",rust)}${text(110,76,"+",ink,16)}${arrow(96,71,70,71,rust,2)}
-    ${circle(208,98,11,"#cce4f1",blue)}${text(208,103,"−",ink,16)}${arrow(222,98,250,98,blue,2)}
-    ${text(160,157,"Salt dissolved in water",ink,14)}`,320,170),
+    ${circle(110,71,11,"#e7b783",rust)}${text(110,77,"+",ink,19)}${arrow(96,71,70,71,rust,2)}
+    ${circle(208,98,11,"#cce4f1",blue)}${text(208,104,"−",ink,19)}${arrow(222,98,250,98,blue,2)}
+    ${text(160,157,"Salt dissolved in water",ink,20)}`,320,170),
     "Follow the charged ions towards the electrodes of opposite charge. Water molecules are omitted to make the ion movement clear."));
   return host;
 }

@@ -776,6 +776,9 @@ export async function checkHumanCatchup(browser, base) {
       ["f171/1.2.1.airways/1", ["f171-asthma-airway.svg"]], ["f171/1.2.1.airways/2", ["alveolar-wall-loss.svg"]],
       ["f171/1.2.1.renal/1", ["f171-glomerular-barrier.svg"]], ["f171/1.2.1.renal/2", ["f171-kidney-cysts.svg"]],
       ["f171/1.2.1.hodgkin/1", ["f171-lymph-node-airway.svg"]], ["f171/1.2.1.pkd/1", ["f171-kidney-volume-filtration.svg"]], ["f171/4.2.2/1", ["f171-pressure-readings.svg"]],
+      ["f171/1.2.1.movement/3", ["f171-grip-fasteners.svg"]], ["f171/1.2.1.aorta/3", ["f171-aorta-measurements.svg", "f171-care-activity-timeline.svg"]],
+      ["f171/1.2.1.airways/3", ["f171-activity-breathlessness.svg"]], ["f171/1.2.1.digestive/3", ["f171-travel-urgency.svg"]],
+      ["f171/1.2.1.renal/3", ["f171-care-activity-timeline.svg"]], ["f171/1.2.1.oxygen/4", ["f171-activity-breathlessness.svg", "f171-care-activity-timeline.svg"]], ["f171/1.2.1.tissues/3", ["f171-walking-mechanisms.svg"]],
       ["f171/3.2.1/2", ["f171-immune-targets.svg"]], ["f171/3.2.1/3", ["f171-graft-immune-tradeoff.svg"]],
       ["f171/2.2/1", ["f171-functional-outcome.svg"]],
       ["f175/2.1/1", ["f175-history-ultrasound.svg"]], ["f170/3.3.1/2", ["hb-endometrium.webp", "hb-follicle-teaching.webp", "hb-tubule-teaching.webp"]],
@@ -982,7 +985,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f171/1.2.1.tissues", ["f171-tissues-normal-functions.svg", "f171-myelin-change.svg", "f171-melanocytes.svg", "f171-walking-mechanisms.svg"], ["f171-inflamed-joint.svg", "f171-inflamed-joint.svg"]],
       ["f171/1.2.1.oxygen", ["f170-oxygen-delivery.svg", "airway-narrowing.svg", "f171-sickle-vessel.svg", "iron-blood-oxygen.svg", "f171-activity-breathlessness.svg"], ["f171-sickle-vessel.svg", "iron-blood-oxygen.svg"]],
       ["f171/1.2.1.digestive", ["f171-intestinal-absorption.svg", "f171-intestinal-absorption.svg", "f171-hiatus-position.svg", "f171-travel-urgency.svg"], ["f171-hiatus-position.svg", "f171-hiatus-position.svg"]],
-      ["f171/1.2.1.hiatus", ["f171-hiatus-position.svg", "f171-hiatus-position.svg"], ["f171-hiatus-position.svg", "f171-hiatus-position.svg", "f171-hiatus-evidence.svg"]],
+      ["f171/1.2.1.hiatus", ["f171-hiatus-position.svg", "f171-hiatus-position.svg", "f171-reflux-daily-life.svg"], ["f171-hiatus-position.svg", "f171-hiatus-position.svg", "f171-hiatus-evidence.svg"]],
       ["f171/1.2.1.movement", ["f171-movement-pathways.svg", "f171-movement-pathways.svg", "f171-movement-pathways.svg", "f171-grip-fasteners.svg"], ["f171-movement-pathways.svg", "f171-movement-pathways.svg"]],
       ["f171/1.2.1.airways", ["f171-bronchiole-alveoli.svg", "f171-asthma-airway.svg", "alveolar-wall-loss.svg", "f171-activity-breathlessness.svg"], ["f171-asthma-airway.svg", "f171-asthma-airway.svg"]],
       ["f171/1.2.1.aorta", ["f171-aorta-local-widening.svg", "f171-aorta-local-widening.svg", "f171-aorta-measurements.svg", "f171-aorta-measurements.svg"], ["f171-aorta-local-widening.svg", "f171-aorta-measurements.svg"]],
@@ -991,8 +994,8 @@ export async function checkHumanCatchup(browser, base) {
       ["f171/4.2.2", ["f171-pressure-readings.svg"], ["f171-pressure-readings.svg", "f171-pressure-readings.svg", "f171-pressure-readings.svg"]],
       ["f171/a4", ["f171-pressure-readings.svg"], ["f171-pressure-readings.svg", "f171-pressure-readings.svg", "f171-pressure-readings.svg"]],
       ["f171/4.2.1", ["f171-screen-mismatches.svg"], []],
-      ["f171/2.2", ["f171-functional-outcome.svg"], [null, "f171-levodopa-signalling.svg", "f171-functional-outcome.svg"]],
-      ["f171/1.2.1.pkd", ["f171-kidney-cysts.svg", "f171-kidney-volume-filtration.svg"], ["f171-kidney-cysts.svg", "f171-kidney-volume-filtration.svg"]],
+      ["f171/2.2", ["f171-functional-outcome.svg"], ["f171-starting-movement.svg", "f171-levodopa-signalling.svg", "f171-functional-outcome.svg"]],
+      ["f171/1.2.1.pkd", ["f171-kidney-cysts.svg", "f171-kidney-volume-filtration.svg", "f171-care-activity-timeline.svg"], ["f171-kidney-cysts.svg", "f171-kidney-volume-filtration.svg"]],
       ["f171/1.2.1.hodgkin", ["f171-hodgkin-node-cells.svg", "f171-lymph-node-airway.svg", "f171-node-biopsy-evidence.svg"], ["f171-lymph-node-airway.svg", "f171-lymph-node-airway.svg", "f171-node-biopsy-evidence.svg"]],
       ["f170/3.3.2", ["f170-ovarian-hormones.svg", "f170-testicular-hormones.svg"], ["f170-ovarian-hormones.svg", "f170-ovarian-hormones.svg", "f170-ovarian-hormones.svg"]],
       ["f170/3.1.2", ["f170-glucose-tolerance-graph.svg", "f170-diabetes-comparison.svg"], ["f170-glucose-tolerance-graph.svg", "f170-glucose-tolerance-graph.svg", "f170-glucose-tolerance-graph.svg"]],
@@ -1169,7 +1172,7 @@ export async function checkHumanCatchup(browser, base) {
     await expand(page.locator("[data-hb-model-step]"));
     assert(await preventionSequence.isVisible());
 
-    for (const [route, filename] of [["f171/a5", "f171-sleep-study-bars.svg"], ["f171/3.2.2", "f171-vaccine-delivery.svg"], ["f171/a3", "f171-antigen-presentation.svg"]]) {
+    for (const [route, filename] of [["f171/a5", "f171-sleep-study-bars.svg"], ["f171/3.2.2", "f171-vaccine-delivery.svg"], ["f171/a3", "f171-antigen-presentation.svg"], ["f171/1.2.1.hiatus", "f171-reflux-daily-life.svg"], ["f171/1.2.1.pkd", "f171-care-activity-timeline.svg"]]) {
       await page.evaluate(key => localStorage.removeItem(key), localPractice);
       await open("catchup/" + route);
       const figure = page.locator('.hb-teach-explain figure[data-hb-assessment-sensitive]').filter({has: page.locator(`img[src$="/${filename}"]`)});

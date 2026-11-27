@@ -13,8 +13,8 @@ export function cyclist(reduced, {showExplanation = true} = {}) {
     <path d="M150 64l17-15 17 7 3 12 M150 64l20 18-11 24 M148 64l1 21-17 17" fill="none" stroke="${ink}" stroke-width="6" stroke-linecap="round"/>
     ${circle(178,42,8,"#db9963",ink,2)}
     ${arrow(111,93,35,93,blue,3)}${arrow(209,93,reduced ? 247 : 285,93,blue,3)}
-    ${text(55,78,"40 N",blue)}${text(reduced ? 229 : 265,78,forward + " N",blue)}
-    ${arrow(109,151,207,151,rust,2.5)}${text(163,174,"Direction of travel",rust)}
+    ${text(55,78,"40 N",blue,20)}${text(reduced ? 229 : 265,78,forward + " N",blue,20)}
+    ${arrow(109,151,207,151,rust,2.5)}${text(163,174,"Direction of travel",rust,20)}
     `,320,186), showExplanation ? explanation : undefined);
 }
 
@@ -176,11 +176,11 @@ function evaporation() {
   return picture("From clear filtrate to salt crystals",diagram("Clear salt solution from filtration is transferred to an evaporating basin. Water leaves as vapour and solid salt remains.", `
     <path d="M40 48v66q0 12 13 12h49q12 0 12-12V48" fill="#eef8fb" stroke="${blue}" stroke-width="3"/>
     <path d="M41 82h72v31q-2 12-12 12H53q-11 0-12-12Z" fill="#c7eaf4" stroke="${blue}"/>
-    ${text(79,151,"Salt solution",blue,15)}${arrow(126,87,181,87,teal)}
+    ${text(79,151,"Salt solution",blue,20)}${arrow(126,87,181,87,teal)}
     <path d="M187 106q18 32 49 32t50-32Z" fill="#f6f2e6" stroke="${rust}" stroke-width="2.5"/>
     <path d="M205 110l11-7 8 8 10-13 10 13 9-6 10 6Z" fill="white" stroke="${ink}"/>
     ${arrow(216,96,216,51,blue)}${arrow(248,96,248,51,blue)}
-    ${text(234,36,"Water vapour",blue,15)}${text(234,159,"Salt crystals",rust,15)}`,320,173),
+    ${text(234,36,"Water vapour",blue,20)}${text(234,159,"Salt crystals",rust,20)}`,320,173),
     "The water leaves. The dissolved salt stays behind when enough water evaporates.");
 }
 
@@ -193,7 +193,7 @@ function leaf(dark) {
     ${arrow(29,76,115,91,blue)}${text(60,40,"Carbon",blue,17)}${text(60,60,"dioxide",blue,17)}
     ${arrow(27,128,100,128,blue)}${text(56,149,"Water",blue,17)}
     ${dark ? text(163,29,"No light reaches the leaf",rust,15) : arrow(163,27,163,55,rust)+text(163,22,"Light",rust)}
-    ${dark ? "" : arrow(223,85,298,85,teal)+text(257,71,"Oxygen",teal,17)}
+    ${dark ? "" : arrow(223,85,298,85,teal)+text(270,71,"Oxygen",teal,17)}
     ${text(163,183,dark ? "Photosynthesis stops" : "Glucose is made in the leaf",teal)}`,320,198),
     dark ? "There is no light energy for photosynthesis. Respiration continues." : "Light supplies energy for photosynthesis.");
 }

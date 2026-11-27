@@ -1,4 +1,7 @@
 import assert from "node:assert/strict";
+import {curriculum, motionLessons} from "../public/assets/ks3-lessons.js";
+import {ks3Scaffolds} from "../public/assets/school-catchup-ks3-scaffolds.js";
+import {year9} from "../public/assets/school-catchup-year9.js";
 
 export async function checkCatchupScaffolds(browser, base) {
   const page = await browser.newPage({viewport: {width: 320, height: 780}, hasTouch: true, isMobile: true});
@@ -165,6 +168,48 @@ export async function checkCatchupScaffolds(browser, base) {
     await page.goto(base + "/ks3/lesson/?topic=balanced-moments&guided=1");
     const seesawWorked = page.locator(".school-current-stage .school-worked-example");
     assert(await seesawWorked.getByRole("img", {name: /10 N acts down on the left at 2 m.*10 N acts down on the right at 3 m/}).isVisible());
+
+    // Discover every authored worked block, including visual mappings applied
+    // by the KS3 scaffold adapter. Opening evidence and a question reference
+    // do not count: the figure must be inside the current worked explanation.
+    const workedBlocks = [];
+    for (const [id, source] of Object.entries(ks3Scaffolds)) {
+      const year = [7, 8].find(value => [...curriculum[value], ...(value === 8 ? motionLessons : [])].some(lesson => lesson.id === id));
+      for (const [step, item] of source.entries()) if (item.worked) {
+        assert(year, `No catalogue year for ${id}`);
+        workedBlocks.push({year, id, step, example: item.worked});
+      }
+    }
+    for (const [id, lesson] of Object.entries(year9)) {
+      for (const [step, item] of lesson.steps.entries()) if (item.worked) {
+        workedBlocks.push({year: 9, id, step, example: item.worked});
+      }
+    }
+    for (const width of [320, 1280]) {
+      await page.setViewportSize({width, height: 780});
+      for (const {year, id, step, example} of workedBlocks) {
+        const key = `narajos.catchup.v1.${year}.${id}`;
+        await page.evaluate(({key, step}) => localStorage.setItem(key, JSON.stringify({step})), {key, step});
+        const route = year === 9 ? `/science-catch-up/lesson/?topic=${id}` : `/ks3/lesson/?topic=${id}&guided=1`;
+        await page.goto(base + route);
+        const worked = page.locator(".school-current-stage > .school-worked-example");
+        await worked.getByRole("heading", {name: example.title, exact: true}).waitFor();
+        assert.equal(await worked.locator(":scope > ol > li").count(), example.lines.length, `${id}/${step}: worked lines`);
+        const images = worked.locator('img, svg[role="img"], [role="img"]');
+        const bars = worked.locator(".ks3-bar-rows > div");
+        assert(await images.count() || await bars.count() >= 2, `${id}/${step}: missing adjacent worked figure`);
+        for (const bar of await bars.all()) assert((await bar.innerText()).trim(), `${id}/${step}: bar needs a text value`);
+        for (const image of await images.all()) {
+          assert((await image.getAttribute("alt") || await image.getAttribute("aria-label"))?.trim(), `${id}/${step}: missing text alternative`);
+          if (await image.evaluate(node => node.tagName === "IMG")) {
+            assert(await image.evaluate(async node => { await node.decode(); return node.naturalWidth > 0; }), `${id}/${step}: image did not load`);
+          }
+        }
+        await narrow(worked, `${id}/${step} worked example at ${width}px`);
+        await page.evaluate(key => localStorage.removeItem(key), key);
+      }
+    }
+    await page.setViewportSize({width: 320, height: 780});
     assert.deepEqual(errors, [], "JavaScript errors in Year 7–9 catch-up");
   } finally {
     await page.close();

@@ -616,6 +616,7 @@ Object.assign(recapFigureMap, window.HumanF171FocusedRecapFigures || {});
 Object.assign(recapFigureMap, window.KeystoneF171MeasureEvidenceRecaps || {});
 Object.assign(recapFigureMap, window.KeystoneF171DiseaseBasicsRecaps || {});
 Object.assign(recapFigureMap, window.HumanF170OrganelleRecapFigures || {});
+Object.assign(recapFigureMap, window.KeystoneF171DailyLifeRecaps || {});
 function recapFigures(unit,id,step,indices) {
  const teaching=window.KeystoneHumanTeaching, lessons=window.KeystoneHumanLessons || {};
  if (!teaching) return "";

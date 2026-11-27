@@ -17,5 +17,14 @@
  const journey=fig('f171-travel-urgency',355,'A hypothetical route from home to work includes a planned stop where a toilet is available. Urgent bowel movements may mean someone plans a route or allows extra time. Experiences vary and planning does not treat the underlying condition.','Follow the planned journey. Bowel urgency can affect timing or route choices for some people; this example is not a treatment.');
  const walking=fig('f171-walking-mechanisms',430,'Schematic examples show a disrupted nerve signal, inflammation restricting a joint and a weakened curved bone under load. Each may affect walking by a different route. The diagrams do not establish an individual diagnosis.','Compare the three possible mechanisms. Different nervous, joint or bone changes can contribute to walking difficulties; symptoms and support needs vary.');
  function add(key,index,items){const lesson=window.KeystoneHumanLessons?.['f171/1.2.1.'+key];if(!lesson)return;lesson.explainDiagrams={...lesson.explainDiagrams,[index]:[...(lesson.explainDiagrams?.[index]||[]),...items]};}
+ window.KeystoneF171DailyLifeRecaps={
+  'f171/1.2.1.movement/3':[grip],
+  'f171/1.2.1.aorta/3':[measures,timing],
+  'f171/1.2.1.airways/3':[activity],
+  'f171/1.2.1.digestive/3':[journey],
+  'f171/1.2.1.renal/3':[timing],
+  'f171/1.2.1.oxygen/4':[fatigueActivity,timing],
+  'f171/1.2.1.tissues/3':[walking]
+ };
  add('movement',3,[grip]);add('aorta',3,[measures,timing]);add('airways',3,[activity]);add('digestive',3,[journey]);add('renal',3,[timing]);add('oxygen',4,[fatigueActivity,timing]);add('tissues',3,[walking]);
 })();
