@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
 import {curriculum, motionLessons} from "../public/assets/ks3-lessons.js";
 import {ks3Scaffolds} from "../public/assets/school-catchup-ks3-scaffolds.js";
 import {year9} from "../public/assets/school-catchup-year9.js";
@@ -165,6 +166,20 @@ export async function checkCatchupScaffolds(browser, base) {
       };
     });
     assert.deepEqual(conductor, {cellConnected: true, coilConnected: true, bypass: false, coilCurvesAroundCore: true});
+    // The deployed Poppins font is wider than the fallback used offline.
+    // Test the real label pair with the same licensed font fixture as GCSE.
+    const poppins = readFileSync(new URL("./fixtures/poppins/Poppins-700-latin.woff2", import.meta.url)).toString("base64");
+    const labelsOverlap = await magnet.locator("svg").evaluate(async (svg, data) => {
+      const bytes = Uint8Array.from(atob(data), character => character.charCodeAt(0));
+      const font = new FontFace("ElectromagnetAuditPoppins", bytes, {weight: "700"});
+      document.fonts.add(await font.load());
+      const labels = [...svg.querySelectorAll("text")].filter(label => ["Cell", "Closed switch"].includes(label.textContent));
+      if (labels.length !== 2) return true;
+      labels.forEach(label => label.style.setProperty("font-family", '"ElectromagnetAuditPoppins", sans-serif', "important"));
+      const [a, b] = labels.map(label => label.getBBox());
+      return a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height;
+    }, poppins);
+    assert.equal(labelsOverlap, false, "electromagnet cell and switch labels must remain distinct in Poppins");
 
     // The active-transport comparison must remain readable and follow the
     // learner into the gut example, without leaking into independent checks.
