@@ -132,6 +132,28 @@ export async function checkCompactCatchupFigures(browser, base) {
         return issues;
       });
       assert.deepEqual(placentaLabelIssues, [], 'placental labels must be unclipped and distinct');
+      const placentaTargets = await page.locator('svg').evaluate(svg => {
+        const names = ['maternal-blood', 'foetal-vessel', 'chorionic-villus', 'uterus-wall'];
+        const targetContains = (element, dot, stroke = false) => {
+          const point = svg.createSVGPoint();
+          point.x = Number(dot.getAttribute('cx'));
+          point.y = Number(dot.getAttribute('cy'));
+          const local = point.matrixTransform(element.getCTM().inverse().multiply(dot.getCTM()));
+          return stroke ? element.isPointInStroke(local) : element.isPointInFill(local);
+        };
+        return names.map(name => {
+          const dot = svg.querySelector(`[data-label="${name}"]`);
+          const line = svg.querySelector(`[data-label-line="${name}"]`);
+          const regions = [...svg.querySelectorAll(`[data-region="${name}"]`)];
+          if (!dot || !line || !regions.length) return false;
+          const end = line.getPointAtLength(line.getTotalLength());
+          const joinsDot = Math.hypot(end.x - Number(dot.getAttribute('cx')), end.y - Number(dot.getAttribute('cy'))) < .1;
+          const inTarget = regions.some(region => targetContains(region, dot, name === 'foetal-vessel'));
+          const outsideVilli = name !== 'maternal-blood' || [...svg.querySelectorAll('[data-region="chorionic-villus"]')].every(region => !targetContains(region, dot));
+          return joinsDot && inTarget && outsideVilli;
+        });
+      });
+      assert.deepEqual(placentaTargets, [true, true, true, true], 'each label leader must end on its intended structure');
 
       // The same feedback figure appears in both courses. Check the actual
       // lesson card and text bounds rather than treating no page overflow as

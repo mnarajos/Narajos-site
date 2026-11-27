@@ -7,7 +7,7 @@
  lesson.modelDiagrams={...lesson.modelDiagrams,
   0:[
    {...orientation,caption:'Locate the placenta and umbilical cord. The dashed box marks the area shown in figure 2.'},
-   {...many,caption:'Figure 2 turns the section so the foetal side is at the top. All villi remain attached to foetal-side tissue. Some also anchor to the uterine wall; others project freely into maternal blood. Foetal vessels lie inside. Only a few villi are shown; the dashed box marks the villus in figure 3.'},
+   {...many,caption:'Figure 2 turns the section so the foetal side is at the top. Fine lines and dots point to structures. All villi remain attached to foetal-side tissue. Some also anchor to the uterine wall; others project freely into maternal blood. Foetal vessels lie inside. Only a few villi are shown; the dashed box marks the villus in figure 3.'},
    {...villus,caption:'Figure 3 enlarges the marked villus. Locate maternal blood around it and the foetal capillary inside; the barrier is exaggerated.'}
   ],
   1:{...villus,caption:'Follow the oxygen arrow across the barrier into the foetal capillary. The arrow shows net transfer.'},
