@@ -187,7 +187,7 @@ requireTrue(!support.includes('href="https://ko-fi.com/narajos"'),"Ko-fi link mu
 requireTrue(home.includes("GCSE Combined Science (AQA)"),"Homepage must name AQA after GCSE Combined Science");
 requireTrue((home.match(/class="home-icon"/g)||[]).length===3,"Homepage must give each resource type a distinctive icon");
 const simulated=read("teaching/simulations/index.html");
-requireTrue((simulated.match(/class="app-card sim-card sim-card--/g)||[]).length===5,"Simulation catalogue should have five fully clickable cards");
+requireTrue((simulated.match(/class="app-card sim-card sim-card--/g)||[]).length===6,"Simulation catalogue should have six fully clickable cards");
 requireTrue(existsSync(path.join(root,"assets/site-nav.js")),"Site nav script missing");
 requireTrue(existsSync(path.join(root,"assets/catchup-visuals.css")),"Catch-up diagram styles missing");
 requireTrue(alevel.includes('src="/assets/catchup-visuals.js"')&&alevel.includes("KeystoneCatchupVisuals.render(t,c.id)"),"A-level catch-up visuals not wired");

@@ -505,7 +505,8 @@ try{
  await screen(desktop,"teaching-overview");
  await checkPage(desktop,"teaching/simulations");
  const simulationCards=desktop.locator(".simulation-list a.sim-card");
- assert.equal(await simulationCards.count(),5,"Simulation catalogue does not contain five clickable cards");
+ assert.equal(await simulationCards.count(),6,"Simulation catalogue does not contain six clickable cards");
+ assert.equal(await simulationCards.filter({has:desktop.getByRole("heading",{name:"Glucose calibration (RP11)"})}).getAttribute("href"),"/alevel/glucose-calibration/");
  assert(!(await simulationCards.first().innerText()).includes("Open simulation"),"Redundant simulation CTA is still visible");
  await simulationCards.first().click();
  await desktop.waitForURL("**/teaching/simulations/enzyme-kinetics/");

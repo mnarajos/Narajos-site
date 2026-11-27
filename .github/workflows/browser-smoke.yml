@@ -46,6 +46,8 @@ jobs:
           node scripts/check-rp9-simulation.mjs
           node scripts/check-rp9-resume.mjs
           node scripts/check-rp9-review.mjs
+      - name: Test RP11 glucose calibration simulation
+        run: node scripts/check-rp11-simulation.mjs
       - name: Test A-level vocabulary support
         run: node scripts/check-alevel-vocabulary.mjs
       - name: Test vocabulary across courses
@@ -79,6 +81,8 @@ jobs:
         run: |
           npm install --no-save playwright@1.56.1 axe-core@4.10.3
           npx playwright install --with-deps ${{ matrix.engine }}
+      - name: Test RP11 glucose calibration simulation
+        run: node scripts/check-rp11-simulation.mjs ${{ matrix.engine }}
       - name: Test A-level independent paper practice
         run: node scripts/check-alevel-paper-practice.mjs ${{ matrix.engine }}
       - name: Test A-level question interpretation

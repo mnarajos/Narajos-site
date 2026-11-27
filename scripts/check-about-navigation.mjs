@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 
 // Exercise the shared menu with keyboard, pointer and touch at constrained viewports.
 export async function checkAboutNavigation(browser, base) {
- const simRoutes=["/teaching/simulations/","/teaching/simulations/#gcse-and-alevel","/teaching/simulations/#alevel","/teaching/enzyme-investigations/"];
+ const simRoutes=["/teaching/simulations/","/teaching/simulations/#gcse-and-alevel","/teaching/simulations/#alevel","/alevel/glucose-calibration/","/teaching/enzyme-investigations/"];
  for(const [width,height,touch] of [[320,568,true],[390,844,true],[640,360,true],[1024,600,false],[1280,800,false]]) {
   const page=await browser.newPage({viewport:{width,height},hasTouch:touch,isMobile:touch});
   await page.goto(base+"/");
@@ -19,7 +19,7 @@ export async function checkAboutNavigation(browser, base) {
   assert.deepEqual(await groups.evaluateAll(nodes=>nodes.map(n=>n.getAttribute("aria-labelledby"))),["nav-years","nav-qualifications","nav-simulations"]);
   const simulations=learning.getByRole("group",{name:"Biology simulations"});
   assert.deepEqual(await simulations.getByRole("link").evaluateAll(links=>links.map(a=>a.getAttribute("href"))),simRoutes);
-  assert.deepEqual(await simulations.getByRole("link").allTextContents(),["All simulations","GCSE & A-level","A-level Biology","Guided enzyme investigations"]);
+  assert.deepEqual(await simulations.getByRole("link").allTextContents(),["All simulations","GCSE & A-level","A-level Biology","Glucose calibration (RP11)","Guided enzyme investigations"]);
   const box=await dropdown.boundingBox();
   assert(box.x>=0 && box.x+box.width<=width+1 && box.y>=0 && box.y+box.height<=height+1,`Menu must fit ${width}x${height}: ${JSON.stringify(box)}`);
   assert(await dropdown.evaluate(el=>el.scrollHeight>el.clientHeight),"Long menu should scroll in the available space");
@@ -34,7 +34,7 @@ export async function checkAboutNavigation(browser, base) {
   assert(!(await learning.evaluate(el=>el.open)) && await summary.evaluate(el=>el===document.activeElement),"Escape must close the menu and restore focus");
   if(!touch){
    await summary.press("Enter");
-   for(let i=0;i<12;i++) await page.keyboard.press("Tab");
+   for(let i=0;i<13;i++) await page.keyboard.press("Tab");
    assert(await simulations.getByRole("link",{name:"Guided enzyme investigations"}).evaluate(el=>el===document.activeElement),"Tab should reach every link in order");
    await page.keyboard.press("Escape");
   }

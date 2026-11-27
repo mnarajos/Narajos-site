@@ -16,7 +16,7 @@ The links below open the new routes on Narajos once the change is deployed. In a
 | [RP8 · Chloroplast extracts](https://narajos.com/alevel/#practical-8) | Predict and step through illuminated, dark, and extract-free treatments. Compare dye colour and absorbance and calculate a rate of absorbance change. |
 | [RP9 · Respiration](https://narajos.com/alevel/#practical-9) | Open the guided respiration simulation for methylene blue, a respirometer, paired examples and unfamiliar apparatus. Simulation progress and evidence are saved in this browser, separately from course progress. The existing endpoint activity and topic questions remain available. |
 | [RP10 · Animal responses](https://narajos.com/alevel/#practical-10) | Follow tracks in a choice chamber, use speed and heading evidence to distinguish kinesis and taxis, and compare equal conditions. |
-| [RP11 · Glucose calibration](https://narajos.com/alevel/#practical-11) | Follow quantitative Benedict’s colorimetry, interpolate unknown glucose values and account for dilution. |
+| [RP11 · Glucose calibration](https://narajos.com/alevel/#practical-11) | Open the guided glucose calibration simulation for Core, optional methods and independent Apply questions. Compare qualitative and quantitative Benedict’s, interpolate unknown values and account for dilution. The existing quantitative activity remains available. |
 | [RP12 · Fieldwork](https://narajos.com/alevel/#practical-12) | Choose random quadrats, a systematic transect or chosen positions, collect plant counts and compare the density estimate with the virtual field’s census. |
 
 ## Sources and image attribution
@@ -28,6 +28,7 @@ The links below open the new routes on Narajos once the change is deployed. In a
 - [RP8 and RP9 scientific sources and model assumptions](../required-practicals-mechanisms.md)
 - [RP10 and RP12 model assumptions and sources](../required-practicals-simulations.md)
 - [RP1, RP3, RP4 and RP11 apparatus and assay references](../required-practicals-methods.md)
+- [RP11 glucose simulation, assumptions and assessment evidence](../required-practicals-glucose.md)
 
 The onion fields and agar photograph are uncalibrated. The agar calculation uses a separate explicitly scaled diagram. RP7 uses image units that cancel in the Rf calculation. The simulated values and movement rules are illustrative.
 

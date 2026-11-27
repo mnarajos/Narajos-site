@@ -260,6 +260,11 @@
   });
 
   practicals.register(11, function (host, ui) {
+    const simulation = section(host, "Explore glucose calibration");
+    simulation.append(node("p", "Try the guided investigation, compare Benedict’s methods and apply your skills to unfamiliar data. Progress is saved separately in this browser."));
+    const link = node("a", "Open the RP11 simulation", "btn primary");
+    link.href = "/alevel/glucose-calibration/";
+    simulation.append(link);
     const setup = section(host, "Prepare standards and measure the remaining blue colour");
     setup.append(node("p", "Prepare 0, 2, 4, 6, 8 and 10 mmol dm⁻³ glucose standards from a 10 mmol dm⁻³ stock solution. For 6 mmol dm⁻³, mix 6.0 cm³ stock with 4.0 cm³ water. Use equal volumes of each standard or simulated urine sample and treat them with the same volume of quantitative Benedict’s reagent. Heat them together for the same time."));
     apparatus(setup, 11, "Clear glucose standards and an unknown go into a water bath with reagent. A paler blue tube has white precipitate; the pale blue liquid is transferred to a colorimeter reading at 680 nanometres.",
