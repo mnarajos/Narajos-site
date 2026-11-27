@@ -85,6 +85,9 @@
 .school-lesson-table { width: 100%; max-width: 38rem; }
 .school-lesson-table caption { text-align: left; font-weight: 700; }
 .school-lesson-table :is(td,th) { overflow-wrap: anywhere; }
+/* Keep the electrode heading whole so its column has room for the short
+   electrode names; the other column may still wrap naturally on phones. */
+.school-lesson-table.school-electrode-evidence th:first-child { overflow-wrap: normal; }
 .school-evidence-visual { margin: .75rem 0; }
 .school-evidence-visual img { display: block; width: min(100%,26rem); height: auto; background: #f7fafb; border-radius: .5rem; }
 .school-evidence-visual figcaption { margin-top: .4rem; font-size: .9rem; color: #354d57; }

@@ -44,7 +44,7 @@ export const investigations = {
 
 Object.assign(investigations, {
   "electrode-evidence": investigation(10,"C4","Electrolysis from ions to observations","In a molten ionic compound the mobile ions come from the compound. In water, hydrogen and hydroxide ions can also contribute to electrode products.",
-    ["Aqueous copper sulfate and inert graphite electrodes",["Electrode","Observation"],[["Negative","Reddish solid forms"],["Positive","Gas relights a glowing splint"]]],
+    ["Aqueous copper sulfate and inert graphite electrodes",["Electrode","Observation"],[["Negative","Reddish solid forms"],["Positive","Gas relights a glowing splint"]],"school-electrode-evidence"],
     ["Connect two separate inert electrodes to a dc supply and immerse both in the electrolyte. Collect the products separately.",
     "Positive copper ions move towards the negative cathode and gain electrons to form copper metal. The positive anode attracts anions. With sulfate solution and inert electrodes, oxygen forms there.",
     "A glowing splint relighting identifies oxygen. Bubbles alone would show gas formation without identifying the gas."],

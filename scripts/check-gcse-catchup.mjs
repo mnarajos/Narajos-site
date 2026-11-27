@@ -352,6 +352,14 @@ export async function checkGCSECatchup(browser, base) {
       await extension.locator(":scope > summary").click();
       const reduction = extension.locator("figure").filter({hasText: "Electron gain at the cathode"});
       assert.match(await reduction.locator("svg").getAttribute("aria-label"), /at the electrode surface.*electron passes.*ion movement.*electron transfer/i);
+      for (const width of [320, 1280]) {
+        await page.setViewportSize({width, height: 820});
+        const material = reduction.locator("svg").getByText("Molten sodium chloride", {exact: true});
+        assert.equal(await material.count(), 1, "the molten material must be labelled inside the reduction diagram");
+        assert(await material.isVisible(), `the molten label must be visible at ${width}px`);
+        if (width === 320) await checkSvgLabels(reduction, "molten sodium chloride Higher Tier figure");
+      }
+      await page.setViewportSize({width: 320, height: 820});
       assert.equal(await page.evaluate(key => localStorage.getItem(key), key), progressBefore,
         "opening Higher Tier visual must not change progress");
       await page.evaluate(({key}) => localStorage.setItem(key, JSON.stringify({step: 2})), {key});
@@ -364,6 +372,45 @@ export async function checkGCSECatchup(browser, base) {
         "aqueous figure must not appear in the independent check");
       await page.evaluate(key => localStorage.removeItem(key), key);
     }
+
+    // The electrode observation table must not split the electrode heading
+    // or names within a word at phone widths, including with fallback fonts.
+    for (const width of [320, 375, 1280]) {
+      await page.setViewportSize({width, height: 820});
+      await page.goto(lessonURL("electrode-evidence", 10));
+      const table = page.locator("#catchup-evidence table.school-electrode-evidence");
+      assert.equal(await table.count(), 1, "electrode evidence table should appear in the opening");
+      const issues = await table.evaluate(async element => {
+        await Promise.all([...document.fonts].filter(face => ["CatchupAuditPoppins", "CatchupAuditDejaVu"].includes(face.family)).map(face => face.load()));
+        const cells = [...element.querySelectorAll("th, td")];
+        const saved = cells.map(cell => [cell.style.getPropertyValue("font-family"), cell.style.getPropertyPriority("font-family")]);
+        const problems = [];
+        for (const [name, family] of [["native", null], ["Poppins", '"CatchupAuditPoppins", sans-serif'], ["DejaVu", '"CatchupAuditDejaVu", sans-serif'], ["system", "system-ui, sans-serif"]]) {
+          cells.forEach((cell, index) => {
+            if (family) cell.style.setProperty("font-family", family, "important");
+            else if (saved[index][0]) cell.style.setProperty("font-family", saved[index][0], saved[index][1]);
+            else cell.style.removeProperty("font-family");
+          });
+          for (const [selector, expected] of [["thead th:first-child", "Electrode"], ["tbody tr:first-child td:first-child", "Negative"]]) {
+            const cell = element.querySelector(selector);
+            const text = cell?.firstChild;
+            if (!text || text.textContent !== expected) { problems.push(`${name}: missing ${expected}`); continue; }
+            const tops = [...expected].map((_, index) => {
+              const range = document.createRange();
+              range.setStart(text, index); range.setEnd(text, index + 1);
+              return range.getBoundingClientRect().top;
+            });
+            if (Math.max(...tops) - Math.min(...tops) > 1) problems.push(`${name}: ${expected} breaks within the word`);
+          }
+          const bounds = element.getBoundingClientRect(), parent = element.parentElement.getBoundingClientRect();
+          if (bounds.width > parent.width + 1 || element.parentElement.scrollWidth > element.parentElement.clientWidth + 1 || document.documentElement.scrollWidth > innerWidth + 3) problems.push(`${name}: table overflows`);
+        }
+        cells.forEach((cell, index) => saved[index][0] ? cell.style.setProperty("font-family", saved[index][0], saved[index][1]) : cell.style.removeProperty("font-family"));
+        return problems;
+      });
+      assert.deepEqual(issues, [], `electrode table at ${width}px`);
+    }
+    await page.setViewportSize({width: 320, height: 820});
 
     // Higher Tier teaching figures belong inside the extension, not the
     // assessment-stage panel. Worked examples need their own adjacent copy.

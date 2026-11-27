@@ -25,9 +25,10 @@ export function sequence(year, code, title, hook, idea, options) {
   };
 }
 
-export function table(title, headers, rows) {
+export function table(title, headers, rows, className = "") {
   const container = node("div", "", "writing-data");
   const data = node("table", "", "school-lesson-table");
+  if (className) data.classList.add(className);
   data.createCaption().textContent = title;
   const headings = data.createTHead().insertRow();
   for (const label of headers) {

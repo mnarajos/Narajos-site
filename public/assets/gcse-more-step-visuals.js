@@ -935,14 +935,15 @@ function gasTests() {
 function electrolysisReduction() {
   return fig('Electron gain at the cathode',
     'In molten sodium chloride, a positive sodium ion approaches the negative cathode. At the electrode surface, an electron passes from the cathode to the ion. A sodium atom forms: Na⁺ plus an electron gives Na. The first arrow shows ion movement; the second shows electron transfer.',
-    text(160,25,'1. Sodium ion approaches',ink,18)+
-    text(68,57,'Cathode −',ink,18)+'<rect x="29" y="69" width="40" height="74" fill="#dce5e7" stroke="'+ink+'" stroke-width="2"/>'+
-    circle(218,106,23,'#dce8f5',blue,2)+text(218,112,'Na⁺',blue,18)+arrow(190,106,73,106,blue,3)+
-    text(160,184,'2. Electron transfer at surface',ink,18)+
-    '<rect x="29" y="205" width="80" height="82" fill="#dce5e7" stroke="'+ink+'" stroke-width="2"/>'+
-    circle(134,246,23,'#dce8f5',blue,2)+text(134,252,'Na⁺',blue,18)+text(67,231,'e⁻',rust,18)+arrow(52,246,106,246,rust,3)+
-    text(160,326,'Na⁺ + e⁻ → Na',ink,20)+text(160,357,'Sodium forms at the cathode',ink,18),
-    'The first arrow shows the ion approaching. The arrow beside e⁻ shows an electron passing from the cathode to the ion at its surface. Electron gain is reduction.',375);
+    text(160,25,'Molten sodium chloride',ink,18)+
+    text(160,61,'1. Sodium ion approaches',ink,18)+
+    text(68,93,'Cathode −',ink,18)+'<rect x="29" y="105" width="40" height="74" fill="#dce5e7" stroke="'+ink+'" stroke-width="2"/>'+
+    circle(218,142,23,'#dce8f5',blue,2)+text(218,148,'Na⁺',blue,18)+arrow(190,142,73,142,blue,3)+
+    text(160,220,'2. Electron transfer at surface',ink,18)+
+    '<rect x="29" y="241" width="80" height="82" fill="#dce5e7" stroke="'+ink+'" stroke-width="2"/>'+
+    circle(134,282,23,'#dce8f5',blue,2)+text(134,288,'Na⁺',blue,18)+text(67,267,'e⁻',rust,18)+arrow(52,282,106,282,rust,3)+
+    text(160,362,'Na⁺ + e⁻ → Na',ink,20)+text(160,393,'Sodium forms at the cathode',ink,18),
+    'The first arrow shows the ion approaching. The arrow beside e⁻ shows an electron passing from the cathode to the ion at its surface. Electron gain is reduction.',411);
 }
 
 function latentCalculation() {
