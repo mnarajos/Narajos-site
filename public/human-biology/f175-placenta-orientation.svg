@@ -15,10 +15,11 @@
     <rect x="181" y="102" width="48" height="116" rx="5" fill="none" stroke="#243c81" stroke-width="2" stroke-dasharray="5 3"/>
     <!-- A simple filled foetal silhouette; no free-floating limb lines. -->
     <circle cx="113" cy="150" r="23" fill="#e1ad8f" stroke="#845e51" stroke-width="2"/>
-    <path d="M102 171 C90 177 91 197 99 211 C105 222 115 227 125 228 C136 235 149 230 155 224 C160 219 156 212 150 214 L140 219 C136 221 132 218 129 215 C141 214 148 203 144 192 C140 181 128 174 118 172Z" fill="#e1ad8f" stroke="#845e51" stroke-width="2" stroke-linejoin="round"/>
-    <!-- Filled folded limb shapes remain distinct from the cord. -->
-    <path d="M116 183 Q124 180 130 187 L136 193 Q139 197 136 199 Q133 201 130 197 L124 193 Q119 194 116 191Z" fill="#e9b99d" stroke="#845e51" stroke-width="1.5" stroke-linejoin="round"/>
-    <path d="M114 214 Q120 210 126 215 L132 220 Q137 223 142 219 L148 216 Q152 214 154 218 Q155 221 151 224 L145 228 Q135 233 127 228 L118 223Z" fill="#e9b99d" stroke="#845e51" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M104 172 C94 174 91 189 95 202 C98 216 104 224 113 226 C125 230 137 222 141 209 C145 196 138 181 128 176 C120 172 112 171 104 172Z" fill="#e1ad8f" stroke="#845e51" stroke-width="2" stroke-linejoin="round"/>
+    <!-- Near arm: shoulder to bent elbow and hand near the chest. -->
+    <path d="M105 179 Q111 178 112 183 L110 191 L119 188 Q123 187 125 190 Q126 193 122 194 L109 199 Q102 201 101 195 Q99 191 101 185Z" fill="#e9b99d" stroke="#845e51" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- Near leg: hip to bent knee, with the lower leg and foot folded back. -->
+    <path d="M105 210 Q110 207 116 211 L137 214 Q144 215 145 220 Q145 223 143 226 L139 232 L147 234 Q151 235 150 238 Q149 240 146 240 L134 239 Q130 239 130 235 L134 222 L114 220 Q107 219 105 215Z" fill="#e9b99d" stroke="#845e51" stroke-width="1.5" stroke-linejoin="round"/>
     <!-- The cord joins the foetal abdomen to the placenta, not the uterine wall. -->
     <path d="M140 204 C159 208 166 174 197 168" fill="none" stroke="#a65066" stroke-width="9" stroke-linecap="round"/>
     <path d="M140 204 C159 208 166 174 197 168" fill="none" stroke="#f3cbd3" stroke-width="4" stroke-linecap="round"/>
