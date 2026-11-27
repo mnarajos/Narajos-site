@@ -19,7 +19,7 @@ export function cyclist(reduced, {showExplanation = true} = {}) {
 }
 
 function flower(missed, tube = false) {
-  const pollen = missed ? arrow(86,77,32,52,rust) : arrow(88,77,146,47,rust);
+  const pollen = missed ? arrow(86,77,32,52,rust,3.5) : arrow(88,77,146,47,rust,3.5);
   return picture(tube ? "Fertilisation can happen in the ovule" : missed ? "Pollen misses the stigma" : "Pollination",
     diagram(tube ? "A pollen tube grows down the style to the ovule. A male sex cell can reach the female sex cell."
       : missed ? "Pollen moves away from the anther without reaching the stigma." : "Pollen moves from an anther to the stigma.", `
@@ -33,13 +33,13 @@ function flower(missed, tube = false) {
       <ellipse cx="237" cy="81" rx="10" ry="6" fill="#e9ad64" stroke="${rust}" stroke-width="2"/>
       <ellipse cx="162" cy="143" rx="10" ry="12" fill="#efe0f3" stroke="${violet}" stroke-width="2"/>
       ${tube ? circle(158,45,3,"#dc8c39",rust)+`<path d="M158 46C161 66 157 93 159 113Q164 123 162 136" fill="none" stroke="${rust}" stroke-width="3"/>`+circle(163,138,3,"#dc8c39",rust) : pollen}
-      ${text(49,59,"Anther",ink,17)}${line(62,63,80,76)}
-      ${text(215,46,"Stigma")}${line(182,46,174,47)}
-      ${text(220,153,"Ovule",violet)}${line(196,148,172,143,violet)}
-      ${tube ? text(253,71,"Pollen tube",rust,17)+line(220,75,160,101,rust) : ""}`,320,179),
+      ${text(49,59,"Anther",ink,20)}${line(62,63,80,76)}
+      ${text(215,46,"Stigma",ink,20)}${line(182,46,174,47)}
+      ${text(220,153,"Ovule",violet,20)}${line(196,148,168,146,ink,1.5)}${circle(168,146,2,ink,ink)}
+      ${tube ? text(253,71,"Pollen tube",rust,20)+line(220,75,159,101,ink,1.5)+circle(159,101,2,ink,ink) : ""}`,320,179),
     tube ? "The tube carries the male sex cell to the ovule. Fertilisation happens when the sex cells join."
       : missed ? "The pollen has left the anther. Pollination needs it to land on a stigma."
-        : "Pollen has landed on a stigma. Follow the next step to see how the sex cells meet.");
+        : "The arrow traces pollen from anther to stigma; the thin lines point to flower parts. Follow the next step to see how the sex cells meet.");
 }
 
 function flask(open, after) {

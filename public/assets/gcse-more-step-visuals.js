@@ -534,26 +534,31 @@ function stationaryBalanced() {
 function movingAndStationary(){return grouped(gcseStepVisuals['forces-motion'][0],stationaryBalanced);}
 function neuron() {
   return fig('Withdrawal reflex pathway',
-    'A receptor in the skin detects a stimulus. An impulse travels along a sensory neurone to a relay neurone in the spinal cord, then along a motor neurone to a muscle. The muscle contracts and withdraws the hand. Signals can also reach the brain, but a conscious decision is not needed for the rapid reflex.',
-    '<ellipse cx="156" cy="28" rx="37" ry="21" fill="#edf0f8" stroke="'+blue+'" stroke-width="2"/>'+text(156,34,'Brain',ink,14)+arrow(156,94,156,53,blue,2)+
-    '<path d="M15 127 q20-20 40 0 v35 h-40 z" fill="#f3d4c0" stroke="'+rust+'" stroke-width="2"/>'+text(35,182,'Skin',ink,14)+
-    arrow(55,140,112,140,blue,2)+text(72,121,'Sensory',blue,13)+
-    '<rect x="115" y="98" width="83" height="85" rx="16" fill="#e5eaf8" stroke="'+blue+'" stroke-width="2"/>'+text(156,122,'Spinal',ink,14)+text(156,154,'cord',ink,14)+
-    arrow(199,140,251,140,teal,2)+text(226,121,'Motor',teal,13)+
-    '<path d="M253 117 Q310 95 303 164 Q270 177 253 161 Z" fill="#efc8c2" stroke="'+rust+'" stroke-width="2"/>'+text(280,188,'Muscle',ink,14)+
-    text(160,220,'Automatic withdrawal',ink,15),
-    'Follow the spinal pathway to the muscle. The brain can also receive signals, but the rapid withdrawal does not wait for a conscious decision.',240);
+    'A flow diagram shows a receptor in the skin detecting a hot object. An impulse travels along a sensory neurone to a relay neurone in the spinal cord, then along a motor neurone to a muscle. The muscle contracts and withdraws the hand. Signals can also reach the brain, but a conscious decision is not needed for the rapid reflex.',
+    text(160,23,'Hot object',ink,18)+arrow(160,29,160,45,ink,2)+[
+      ['Receptor in skin', '#f3d4c0', rust],
+      ['Sensory neurone', '#dce9f8', blue],
+      ['Relay neurone in spinal cord', '#e5eaf8', blue],
+      ['Motor neurone', '#d8eee6', teal],
+      ['Muscle contracts', '#efc8c2', rust]
+    ].map(([label,fill,stroke],i)=>
+      '<rect x="14" y="'+(48+i*64)+'" width="292" height="42" rx="9" fill="'+fill+'" stroke="'+stroke+'" stroke-width="2"/>'+text(160,75+i*64,label,ink,18)+
+      (i<4?arrow(160,93+i*64,160,109+i*64,ink,2):'')).join(''),
+    'A receptor detects the hot object. Follow the arrows through the spinal cord to the muscle; signals can also reach the brain without delaying the reflex for a conscious decision.',370);
 }
 function reflexWithSynapse() {
   const group = node('div');
   group.append(neuron(), fig('Across a synapse',
-    'An electrical impulse reaches the end of one neurone. A chemical transmitter crosses the synaptic gap and binds to receptors on the next neurone, triggering a new electrical impulse.',
-    '<path d="M18 45 H116 Q133 45 133 62 V120 Q133 137 116 137 H18 Z" fill="#dce9f8" stroke="'+blue+'" stroke-width="2"/>'+
-    '<path d="M210 45 H302 V137 H210 Q193 137 193 120 V62 Q193 45 210 45 Z" fill="#d8eee6" stroke="'+teal+'" stroke-width="2"/>'+
-    arrow(38,90,110,90,blue,2)+text(71,71,'Impulse',blue,14)+
-    circle(151,74,4,rust,rust)+circle(160,91,4,rust,rust)+circle(151,107,4,rust,rust)+arrow(142,90,181,90,rust,2)+
-    arrow(212,90,279,90,teal,2)+text(247,71,'Impulse',teal,14)+text(161,28,'Chemical crosses gap',rust,13)+text(160,161,'Synaptic gap',ink,14),
-    'Follow the signal across the small gap: a chemical carries it between the two neurones.',175));
+    'An electrical impulse reaches the end of the first neurone. A chemical transmitter crosses the synaptic gap and binds to receptors on the next neurone, triggering a new electrical impulse. The circles represent transmitter molecules; arrows show the direction of the signal.',
+    text(160,25,'Transmitter crosses gap',rust,18)+
+    '<path d="M14 63 H103 Q117 63 117 77 V157 Q117 171 103 171 H14 Z" fill="#dce9f8" stroke="'+blue+'" stroke-width="2"/>'+
+    '<path d="M219 63 H306 V171 H219 Q203 171 203 157 V77 Q203 63 219 63 Z" fill="#d8eee6" stroke="'+teal+'" stroke-width="2"/>'+
+    text(65,89,'Impulse',blue,18)+arrow(28,110,101,110,blue,2)+
+    arrow(125,54,195,54,rust,2)+circle(137,105,4,rust,rust)+circle(159,120,4,rust,rust)+circle(181,105,4,rust,rust)+circle(191,145,4,rust,rust)+
+    '<path d="M203 137 l-8 8 l8 8" fill="none" stroke="'+ink+'" stroke-width="3"/>'+
+    text(255,89,'Impulse',teal,18)+arrow(218,110,291,110,teal,2)+
+    text(160,199,'Receptor on next neurone',ink,18)+line(230,181,203,153,ink,1.5)+circle(203,153,3,'#fff',ink,1)+text(160,228,'Synaptic gap',ink,18),
+    'The circles represent transmitter molecules. The arrow above the gap shows their direction; they bind to receptors on the next neurone.',246));
   return group;
 }
 function emissions() {
@@ -817,13 +822,15 @@ function rulerDrop() {
 }
 function brine() {
   return fig('Electrolysis of brine',
-    'In concentrated aqueous sodium chloride, sodium ions and hydrogen-containing species are present. Hydrogen forms at the negative electrode rather than sodium. Chlorine forms at the positive electrode.',
-    '<path d="M36 48 V139 H284 V48" fill="none" stroke="'+ink+'" stroke-width="2"/><path d="M38 72 H282 V137 H38 Z" fill="#deeff3"/>'+
-    '<rect x="79" y="43" width="12" height="70" fill="#70848b"/><rect x="229" y="43" width="12" height="70" fill="#70848b"/>'+
-    text(85,29,'−',blue,21)+text(235,29,'+',rust,21)+text(85,161,'Hydrogen',blue,14)+text(235,161,'Chlorine',rust,14)+
-    circle(127,89,12,'#e7ecf9',blue)+text(127,94,'Na⁺',blue,13)+text(185,110,'water',ink,14)+arrow(160,105,98,105,blue,2)+
-    text(160,190,'Sodium ions stay in water',ink,13),
-    'Water is present in brine: hydrogen is produced at the negative electrode instead of sodium. The diagram represents concentrated solution.',210);
+    'In concentrated sodium chloride solution, hydrogen bubbles form at the negative electrode and chlorine bubbles at the positive electrode. Sodium ions remain in solution, where they can still move. Water is present as well as the dissolved ions.',
+    '<path d="M36 48 V150 H284 V48" fill="none" stroke="'+ink+'" stroke-width="2"/><path d="M38 72 H282 V148 H38 Z" fill="#deeff3"/>'+
+    '<rect x="79" y="43" width="12" height="91" fill="#70848b"/><rect x="229" y="43" width="12" height="91" fill="#70848b"/>'+
+    text(85,29,'−',blue,21)+text(235,29,'+',rust,21)+
+    circle(70,112,5,'#fff',blue,1.5)+circle(68,96,5,'#fff',blue,1.5)+circle(72,80,5,'#fff',blue,1.5)+
+    circle(249,112,5,'#fff',rust,1.5)+circle(252,96,5,'#fff',rust,1.5)+circle(248,80,5,'#fff',rust,1.5)+
+    circle(139,111,19,'#e7ecf9',blue)+text(139,117,'Na⁺',blue,18)+text(198,117,'water',ink,18)+
+    text(85,177,'Hydrogen',blue,18)+text(235,177,'Chlorine',rust,18)+text(160,212,'Na⁺ remains in solution',ink,18),
+    'In concentrated solution, hydrogen forms at the negative electrode instead of sodium. The bubbles show the gaseous products; sodium ions remain free to move in solution.',230);
 }
 function reflexMeasure(){return rulerDrop();}
 function treatmentTesting() {
@@ -927,12 +934,15 @@ function gasTests() {
 }
 function electrolysisReduction() {
   return fig('Electron gain at the cathode',
-    'In molten sodium chloride, a positive sodium ion moves to the negative cathode and gains an electron to form a sodium atom. Electron gain is reduction.',
-    '<rect x="36" y="30" width="24" height="90" fill="#82969c"/>'+text(60,22,'Cathode −',ink,14)+
-    circle(111,72,22,'#dce8f5',blue)+text(111,77,'Na⁺',blue,17)+arrow(87,56,61,56,blue,2)+
-    text(73,103,'e⁻',blue,15)+arrow(61,84,87,84,blue,2)+arrow(140,72,200,72,teal,2)+circle(238,72,22,'#e1f0e6',teal)+text(238,77,'Na',teal,17)+
-    text(160,155,'Na⁺ + e⁻ → Na',ink,18),
-    'Follow a sodium ion to the negative electrode. It gains an electron, so the ion is reduced.',175);
+    'In molten sodium chloride, a positive sodium ion approaches the negative cathode. At the electrode surface, an electron passes from the cathode to the ion. A sodium atom forms: Na⁺ plus an electron gives Na. The first arrow shows ion movement; the second shows electron transfer.',
+    text(160,25,'1. Sodium ion approaches',ink,18)+
+    text(68,57,'Cathode −',ink,18)+'<rect x="29" y="69" width="40" height="74" fill="#dce5e7" stroke="'+ink+'" stroke-width="2"/>'+
+    circle(218,106,23,'#dce8f5',blue,2)+text(218,112,'Na⁺',blue,18)+arrow(190,106,73,106,blue,3)+
+    text(160,184,'2. Electron transfer at surface',ink,18)+
+    '<rect x="29" y="205" width="80" height="82" fill="#dce5e7" stroke="'+ink+'" stroke-width="2"/>'+
+    circle(134,246,23,'#dce8f5',blue,2)+text(134,252,'Na⁺',blue,18)+text(67,231,'e⁻',rust,18)+arrow(52,246,106,246,rust,3)+
+    text(160,326,'Na⁺ + e⁻ → Na',ink,20)+text(160,357,'Sodium forms at the cathode',ink,18),
+    'The first arrow shows the ion approaching. The arrow beside e⁻ shows an electron passing from the cathode to the ion at its surface. Electron gain is reduction.',375);
 }
 
 function latentCalculation() {

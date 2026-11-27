@@ -1,6 +1,6 @@
 # Placenta visual: follow-up design
 
-The F175/a2 teaching text and worked steps remain available in Phase 1, but the single-villus exchange figure and the separate many-villi schematic are withheld from the live explanation, worked stages and recaps. Their editable SVG files and accompanying source modules are retained. This leaves a genuine visual-support gap until a separately reviewed replacement is ready.
+The F175/a2 teaching text and worked steps remain available in Phase 1, but the single-villus exchange figure and the separate many-villi schematic are withheld from the live explanation, worked stages and recaps. Their editable SVG files and accompanying source modules are retained. Phase 2 replaces them with an original pregnancy-orientation view and a linked enlarged-villus view; the earlier files remain withheld. The review criteria below document the basis for that replacement.
 
 The replacement should begin with an orientation view showing the pregnant person, uterus, placenta, umbilical cord and foetus. Clearly distinguish the maternal and foetal sides before zooming in to a villus and its foetal capillaries. Keep each zoom connected to the preceding view, and explain that sizes and distances are simplified rather than implying a real scale.
 

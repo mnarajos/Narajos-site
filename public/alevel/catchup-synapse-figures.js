@@ -10,9 +10,10 @@
   },
   {
    title: "Acetylcholine opens channels",
-   alt: "Acetylcholine diffuses across the synaptic cleft and binds receptors on the postsynaptic membrane. Sodium channels open and sodium enters the postsynaptic cell, producing depolarisation.",
-   caption: "Follow acetylcholine across the cleft to its receptors, then follow sodium into the postsynaptic cell. The schematic shows one stage of transmission.",
-   art: `<text x="150" y="24" text-anchor="middle">Synaptic cleft</text><g fill="#a76125"><circle cx="120" cy="62" r="5"/><circle cx="153" cy="50" r="5"/><circle cx="181" cy="70" r="5"/></g><text x="150" y="98" text-anchor="middle">Acetylcholine ↓</text><path d="M25 135h250" stroke="#537a94" stroke-width="5"/><rect x="115" y="115" width="70" height="42" rx="7" fill="#d2e0f2" stroke="#537a94" stroke-width="2"/><text x="226" y="117" text-anchor="middle">Receptor</text><path d="M150 113v70m-6-7 6 7 6-7" stroke="#a76125" stroke-width="3" fill="none"/><text x="150" y="209" text-anchor="middle">Na⁺ enters</text><text x="150" y="236" text-anchor="middle">Postsynaptic cell depolarises</text>`
+   height: 315,
+   alt: "In the synaptic cleft, acetylcholine diffuses to a receptor on the postsynaptic membrane and binds on the outside. This opens the receptor channel. Sodium ions then enter the postsynaptic cell through the channel, depolarising it. The drawing is schematic, and shows sodium movement rather than every ion passing through the channel.",
+   caption: "The diamond represents acetylcholine (ACh); it binds to the receptor outside the cell. Follow the orange arrow: sodium enters through the opened channel and depolarises the postsynaptic membrane. Shapes are schematic.",
+   art: `<text x="150" y="24" text-anchor="middle">Synaptic cleft</text><path d="M55 48l9 9-9 9-9-9z" fill="#d7c8e8" stroke="#76518a" stroke-width="2"/><text x="73" y="63">ACh</text><path d="M65 72l40 40m-2-10 2 10-10-2" fill="none" stroke="#344958" stroke-width="2"/><text x="177" y="73">Na⁺</text><circle cx="160" cy="68" r="6" fill="#e9bd8d" stroke="#a76125" stroke-width="2"/><path d="M25 172h250" stroke="#537a94" stroke-width="5"/><rect x="100" y="140" width="100" height="62" rx="8" fill="#d2e0f2" stroke="#537a94" stroke-width="2"/><path d="M155 141v60" stroke="#fff" stroke-width="16"/><path d="M120 123l9 9-9 9-9-9z" fill="#d7c8e8" stroke="#76518a" stroke-width="2"/><path d="M160 83v140m-7-8 7 8 7-8" fill="none" stroke="#a76125" stroke-width="3"/><text x="205" y="125">Receptor</text><path d="M205 132l-19 8" stroke="#344958" stroke-width="2"/><text x="150" y="254" text-anchor="middle">Na⁺ enters the cell</text><text x="150" y="279" text-anchor="middle">Membrane depolarises</text>`
   },
   {
    title: "Ending the signal",
@@ -30,6 +31,6 @@
  window.ALevelSynapseFigures={render(topic,id,group){
   if(topic!=="a6"||id!=="synapse")return "";
   const f=figures[group]; if(!f)return "";
-  return `<figure class="kc-visual"><div class="kc-visual-heading"><strong>${f.title}</strong></div><div class="kc-visual-art kc-visual-art-compact"><svg viewBox="0 0 300 290" role="img" aria-label="${f.alt}" xmlns="http://www.w3.org/2000/svg" style="font:16px system-ui,sans-serif;fill:#233e4c">${f.art}</svg></div><figcaption>${f.caption}</figcaption></figure>`;
+  return `<figure class="kc-visual"><div class="kc-visual-heading"><strong>${f.title}</strong></div><div class="kc-visual-art kc-visual-art-compact"><svg viewBox="0 0 300 ${f.height || 290}" role="img" aria-label="${f.alt}" xmlns="http://www.w3.org/2000/svg" style="font:16px system-ui,sans-serif;fill:#233e4c">${f.art}</svg></div><figcaption>${f.caption}</figcaption></figure>`;
  }};
 })();

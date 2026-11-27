@@ -89,16 +89,21 @@ function plantCellJobs() {
 }
 
 function concentrationPanel(title, from, to, against, substance) {
-  const dots = [[65,55],[88,79],[60,105],[105,54],[112,110],[89,54],[236,79]];
-  const positions = against ? dots.map(([x,y]) => [320-x,y]) : dots;
+  const dots = [[40,70],[72,70],[48,120],[75,126],[86,70],[78,113],[192,98]];
+  const positions = against ? dots.map(([x,y]) => [240-x,y]) : dots;
+  const label = (x, value) => {
+    const [place, amount] = value.split(": ");
+    return text(x,20,place,ink,17) + (amount ? text(x,40,`(${amount})`,ink,17) : "");
+  };
   return picture(title, diagram(
-    `${substance} particles are ${against ? "less concentrated on the left and more concentrated on the right; movement shown is from left to right, against the concentration gradient" : "more concentrated on the left and less concentrated on the right; net movement shown is from left to right, down the concentration gradient"}.`, `
-    <rect x="18" y="28" width="284" height="111" rx="8" fill="#f5fafb" stroke="${teal}" stroke-width="2"/>
-    ${line(160,29,160,138,teal,3)}
+    `${substance} are ${against ? "less concentrated on the left and more concentrated on the right; a membrane carrier moves them from left to right, against the concentration gradient, using energy from respiration" : "more concentrated on the left and less concentrated on the right; net movement shown is from left to right, down the concentration gradient"}.`, `
+    <rect x="10" y="49" width="220" height="99" rx="8" fill="#f5fafb" stroke="${teal}" stroke-width="2"/>
+    ${line(120,50,120,148,teal,3)}
+    ${against ? `<rect x="111" y="77" width="18" height="42" rx="5" fill="#e0c9eb" stroke="#69447f" stroke-width="2"/>` : ""}
     ${positions.map(([x,y]) => circle(x,y,5,"#eab776",rust)).join("")}
-    ${arrow(125,82,194,82,blue,3)}
-    ${text(87,20,from,ink,14)}${text(233,20,to,ink,14)}
-    ${text(160,161,substance,ink,14)}`), against ? "Movement against the gradient needs energy from respiration and membrane proteins, which are omitted here." : "For particles able to cross the membrane, net diffusion is down the concentration gradient.");
+    ${arrow(87,98,153,98,blue,3)}
+    ${label(60,from)}${label(180,to)}
+    ${against ? line(100,160,111,116,ink,1.5)+text(95,182,"Carrier protein",ink,17) : line(155,160,120,140,ink,1.5)+text(165,182,"Membrane",ink,17)}`,240,195), against ? "The carrier protein uses energy from respiration to move particles towards the higher concentration." : "For particles able to cross the membrane, net diffusion is down the concentration gradient.");
 }
 
 function transportComparison() {

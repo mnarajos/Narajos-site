@@ -149,6 +149,54 @@ export async function checkCatchupScaffolds(browser, base) {
       assert(await explanation.getByRole("img", {name}).isVisible(), id + " is missing its explanation figure");
       await narrow(explanation, id + " explanation");
     }
+    // A complete electromagnet needs both cell terminals connected and the
+    // circuit wire joined to the winding, without a wire bypassing the coil.
+    await page.goto(base + "/ks3/lesson/?topic=electricity&guided=1");
+    const magnet = page.locator(".ks3-explanation figure").filter({hasText: "An electromagnet in a complete circuit"});
+    const conductor = await magnet.locator("svg").evaluate(svg => {
+      const wire = svg.querySelector('[data-role="circuit-wire"]');
+      const coil = svg.querySelector('[data-role="coil-wire"]');
+      const on = (path, x, y) => path?.isPointInStroke(new DOMPoint(x, y)) ?? false;
+      return {
+        cellConnected: on(wire, 100, 47) && on(wire, 111, 47),
+        coilConnected: on(wire, 130, 119) && on(coil, 130, 119) && on(wire, 225, 119) && on(coil, 225, 119),
+        bypass: on(wire, 178, 119),
+        coilCurvesAroundCore: on(coil, 138, 102.5) && on(coil, 154, 135.5)
+      };
+    });
+    assert.deepEqual(conductor, {cellConnected: true, coilConnected: true, bypass: false, coilCurvesAroundCore: true});
+
+    // The active-transport comparison must remain readable and follow the
+    // learner into the gut example, without leaking into independent checks.
+    const activeKey = "narajos.catchup.v1.9.active-transport";
+    for (const width of [320, 1280]) {
+      await page.setViewportSize({width, height: 780});
+      await page.goto(base + "/science-catch-up/lesson/?topic=active-transport&year=9");
+      for (const step of [0, 1, 2, 3]) {
+        await page.evaluate(({activeKey, step}) => localStorage.setItem(activeKey, JSON.stringify({step})), {activeKey, step});
+        await page.reload();
+        const notes = journey.locator(".school-current-stage .school-step-notes");
+        if (step === 0) {
+          assert.equal(await notes.getByRole("img", {name: /carrier moves them.*against the concentration gradient/}).count(), 1);
+          assert.match(await notes.innerText(), /Carrier protein[\s\S]*energy from respiration/);
+          if (width === 320) {
+            const smallLabels = await notes.locator("svg").evaluateAll(svgs => svgs.flatMap(svg => {
+              const scale = svg.getBoundingClientRect().width / svg.viewBox.baseVal.width;
+              return [...svg.querySelectorAll("text")].filter(label => parseFloat(getComputedStyle(label).fontSize) * scale < 13.8).map(label => label.textContent);
+            }));
+            assert.deepEqual(smallLabels, [], "active-transport comparison labels must be readable on a phone");
+          }
+        }
+        if (step === 1) assert.match(await notes.innerText(), /Across the cell membrane/);
+        if (step === 2) assert.match(await notes.innerText(), /Gut lumen[\s\S]*Carrier protein/);
+        if (step === 3) assert.equal(await notes.getByRole("img", {name: /carrier moves them/}).count(), 0);
+        assert.deepEqual(await page.evaluate(key => JSON.parse(localStorage.getItem(key)), activeKey), {step},
+          "opening or restoring a visual must not record understanding");
+        await narrow(journey, `active transport step ${step + 1} at ${width}px`);
+      }
+      await page.evaluate(key => localStorage.removeItem(key), activeKey);
+    }
+    await page.setViewportSize({width: 320, height: 780});
     await page.goto(base + "/ks3/particles/");
     const gas = page.locator("[data-gas-pressure]");
     await gas.getByRole("button", {name: "Explore freely"}).click();

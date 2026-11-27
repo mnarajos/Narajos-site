@@ -322,11 +322,11 @@ The [remaining recap review](catchup-visual-coverage-human-unmapped-review.md) d
 | f175/a1 · Model 2 | Look for what moves when LH acts. The follicle stays in the ovary and forms the corpus luteum. The released… | None declared | Unreviewed; see reviewed exceptions |
 | f175/a1 · Model 3 | Compare the two routes. Both can reach the ampulla of an oviduct. If the gametes are in different oviducts,… | None declared | Unreviewed; see reviewed exceptions |
 | f175/a1 · Model 4 | Follow the embryo only on the fertilisation branch. Cleavage starts during transport. The blastocyst may im… | None declared | Unreviewed; see reviewed exceptions |
-| f175/a2 · Explain 1 | The placenta is attached to the wall of the uterus. The foetus is connected to the placenta by the umbilical cord, which carries foetal blood between them. | No current structural figure | Withheld from Phase 1; see follow-up |
-| f175/a2 · Explain 2 | Chorionic villi contain foetal vessels and are bathed by maternal blood. The circulations remain largely sep… | No current structural figure | Withheld from Phase 1; see follow-up |
-| f175/a2 · Model 1 | Oxygen reaches the spaces around the villi in maternal blood. | No current structural figure | Withheld from Phase 1; see follow-up |
-| f175/a2 · Model 2 | Oxygen moves down its gradient across the placental barrier. | No current structural figure | Withheld from Phase 1; see follow-up |
-| f175/a2 · Model 3 | Foetal capillaries take up oxygen and foetal blood carries it away. Carbon dioxide moves in the opposite dire… | No current structural figure | Withheld from Phase 1; see follow-up |
+| f175/a2 · Explain 1 | The placenta is attached to the wall of the uterus. The foetus is connected to the placenta by the umbilical cord, which carries foetal blood between them. | Orientation figure | See F175/a2 block review |
+| f175/a2 · Explain 2 | Chorionic villi contain foetal vessels and are bathed by maternal blood. The circulations remain largely sep… | Enlarged villus figure | See F175/a2 block review |
+| f175/a2 · Model 1 | Oxygen reaches the spaces around the villi in maternal blood. | Orientation and enlarged villus | See F175/a2 block review |
+| f175/a2 · Model 2 | Oxygen moves down its gradient across the placental barrier. | Enlarged villus figure adjacent to this step | See F175/a2 block review |
+| f175/a2 · Model 3 | Foetal capillaries take up oxygen and foetal blood carries it away. Carbon dioxide moves in the opposite dire… | Enlarged villus figure adjacent to this step | See F175/a2 block review |
 | f175/a3 · Explain 1 | Fertility can be affected by gamete production, ovulation, transport or conditions affecting fertilisation … | teachingDiagram | Unreviewed; see reviewed exceptions |
 | f175/a3 · Model 1 | In a fictional example both oviducts are obstructed. | teachingDiagram | Unreviewed; see reviewed exceptions |
 | f175/a3 · Model 2 | An oocyte and sperm may still be produced. The obstruction can reduce their chance of meeting in an oviduct. | teachingDiagram | Unreviewed; see reviewed exceptions |

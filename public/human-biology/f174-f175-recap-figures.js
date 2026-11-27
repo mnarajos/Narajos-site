@@ -23,6 +23,8 @@
  const gametes=figure('f175-oocyte-route',350,'A secondary oocyte is released from the ovary, passes toward the fimbriae and may be transported along the oviduct towards the uterus.','Locate the oviduct, where fertilisation usually occurs. Transport is assisted by cilia and contractions.');
  const ivf={...window.KeystoneHumanLessons['f175/a4'].teachingDiagram,assessmentSensitive:true};
  const obstruction=figure('f175-blocked-gamete-routes',315,'Schematic opposing sperm and oocyte routes are interrupted by an obstructed oviduct. In this fictional example both tubes are blocked. Gametes may still be produced but their chance of meeting is reduced.','Follow both gamete routes to the obstruction. The example represents blocked tubes, one possible cause of reduced fertility.');
+ const placentaOrientation=window.KeystoneHumanLessons['f175/a2'].explainDiagrams[0][0];
+ const placentaVillus=window.KeystoneHumanLessons['f175/a2'].explainDiagrams[1][0];
  function addExplain(key, visual) {
   const lesson=window.KeystoneHumanLessons?.[key]; if(!lesson)return;
   lesson.explainDiagrams={...lesson.explainDiagrams,0:[...(lesson.explainDiagrams?.[0]||[]),{...visual,assessmentSensitive:true}]};
@@ -37,7 +39,6 @@
  addModel('f174/a3',1,absorption);
  addModel('f174/a3',2,feedback);
  addExplain('f174/a4',bmiCalculation);
- // The F175 placental structural figures are withheld pending an orientated redesign.
  addExplain('f175/a3',fertility);
  addModel('f175/a4',0,bypass);
  addModel('f175/a4',1,bypass);
@@ -47,6 +48,7 @@
   'f174/a4/0':[bmiCalculation,bmi], 'f174/a4/1':[bmi],
   'f175/2.1/0':window.KeystoneHumanLessons['f175/2.1'].explainDiagrams[0].map(item=>({...item,assessmentSensitive:true})),
   'f175/a1/0':[gametes], 'f175/a1/1':[journey], 'f175/a1/2':[hormones],
+  'f175/a2/0':[placentaOrientation,placentaVillus], 'f175/a2/1':[placentaOrientation,placentaVillus],
   'f175/a2/2':[figure('f175-ultrasound-echo',330,'A probe sends sound pulses into the body. Some sound reflects at a tissue boundary and returns as echoes. The scanner uses echoes to form an image.','Follow the sound pulse to the boundary and its echo back to the probe. The scanner uses returning echoes to create an image; the diagram is simplified.')],
   'f175/a3/0':[obstruction], 'f175/a3/1':[{...window.KeystoneHumanLessons['f175/a3'].teachingDiagram,assessmentSensitive:true},fertility,obstruction], 'f175/a4/0':[ivf], 'f175/a4/1':[bypass], 'f175/a4/2':[ivf]
  };

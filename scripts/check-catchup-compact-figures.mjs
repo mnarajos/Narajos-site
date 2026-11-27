@@ -20,6 +20,35 @@ export async function checkCompactCatchupFigures(browser, base) {
       assert.match(await membrane.locator('svg').getAttribute('aria-label'), /phospholipid.*protein.*cholesterol/i);
       assert.equal(await membrane.getAttribute('tabindex'), null, 'non-scrolling diagram should not add a tab stop');
 
+      // These figures explain different directions of movement. Keep each
+      // within its matching teaching block, with its labels visible on phones.
+      for (const {route, title, teaching, alternative} of [
+        {route: 'a2-active', title: 'Glucose absorption by an ileum cell', teaching: /sodium ions.*diffuse into the cell/is, alternative: /sodium.*gradient.*glucose.*potassium/i},
+        {route: 'a3-absorption', title: 'Sodium–glucose co-transport', teaching: /co-transport with sodium ions.*sodium concentration in the cells low/is, alternative: /sodium.*pumped.*sodium.*gradient/i},
+        {route: 'a5-chemios', title: 'Electron transfer builds a proton gradient', teaching: /electrons.*energy.*proton pumps/is, alternative: /electrons.*protons.*low-proton.*high-proton/i},
+        {route: 'a5-oxphos', title: 'Electron transfer in a mitochondrion', teaching: /reduced NAD.*electrons.*energy.*protons/is, alternative: /reduced NAD.*electrons.*proton.*matrix.*intermembrane/i},
+        {route: 'a6-synapse', title: 'Acetylcholine opens channels', teaching: /acetylcholine.*binds.*sodium channels/is, alternative: /acetylcholine.*binds.*sodium ions.*enter/i},
+        {route: 'a6-speed', title: 'Conduction along a myelinated axon', teaching: /local current spreads beneath myelin.*regenerated at the nodes/is, alternative: /myelin.*nodes.*local current/i}
+      ]) {
+        await page.goto(base + '/alevel/#catchup-' + route);
+        const figure = page.locator('.companion-chunk figure.kc-visual').filter({has: page.getByText(title, {exact: true})});
+        await figure.waitFor();
+        assert.equal(await figure.count(), 1, `${route}: figure should occur once in teaching`);
+        const block = figure.locator('xpath=ancestor::*[contains(concat(" ", normalize-space(@class), " "), " companion-chunk ")][1]');
+        assert.match(await block.innerText(), teaching, `${route}: figure should accompany its explanation`);
+        const art = figure.locator('.kc-visual-art');
+        assert(await art.evaluate(el => el.scrollWidth <= el.clientWidth + 1), `${route}: figure should fit`);
+        const svg = art.locator('svg');
+        assert.match(await svg.getAttribute('aria-label'), alternative, `${route}: equivalent text should explain movement`);
+        const clipped = await svg.locator('text').evaluateAll(nodes => nodes.some(node => {
+          const box = node.getBoundingClientRect();
+          const bounds = node.ownerSVGElement.getBoundingClientRect();
+          return box.left < bounds.left - 1 || box.right > bounds.right + 1 || box.top < bounds.top - 1 || box.bottom > bounds.bottom + 1;
+        }));
+        assert.equal(clipped, false, `${route}: diagram text should fit the figure`);
+        assert.equal(await figure.locator('button, a').count(), 0, `${route}: viewing the static figure should not create a progress action`);
+      }
+
       // Keep the definition and consequences of the refractory period in the
       // same teaching block as their shared diagram, without duplicating it.
       await page.goto(base + '/alevel/#catchup-a6-speed');

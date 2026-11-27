@@ -245,6 +245,17 @@
       // Orientation checked against OpenStax Anatomy and Physiology 2e, 28.2:
       // https://openstax.org/books/anatomy-and-physiology-2e/pages/28-2-embryonic-development
       explain: ["The placenta is attached to the wall of the uterus. The foetus is connected to the placenta by the umbilical cord, which carries foetal blood between them.", "Chorionic villi contain foetal vessels and are bathed by maternal blood. The circulations remain largely separate. A large area and short diffusion distances help exchange."],
+      // Original schematics, checked against OCR F175 and OpenStax Anatomy and
+      // Physiology 2e 28.2 (see docs/placenta-visual-followup.md). Figure 2
+      // is deliberately an enlargement, rather than an anatomically scaled view.
+      explainDiagrams: {
+        0: [{src:"/human-biology/f175-placenta-orientation.svg", width:280, height:390, compact:true, assessmentSensitive:true,
+          alt:"A simplified section through a pregnant person's body shows the placenta attached to the wall of the uterus. An umbilical cord connects the placenta to the foetus and carries foetal blood. Fine lines label the structures. The drawing is not to scale.",
+          caption:"Locate the placenta on the uterus wall, then follow the umbilical cord to the foetus. The placenta is enlarged and the drawing is not to scale."}],
+        1: [{src:"/human-biology/f175-placenta-villus.svg", width:280, height:434, compact:true, assessmentSensitive:true,
+          alt:"An enlarged section of the placenta in figure 1 shows a chorionic villus attached to tissue on the foetal side, with a foetal capillary inside and maternal blood around it. A thick arrow shows net oxygen transfer from maternal blood across the placental barrier into foetal blood. A second thick arrow shows carbon dioxide moving the other way. Fine lines ending in dots label structures. The barrier is exaggerated and the drawing is not to scale.",
+          caption:"Zoom in from the placenta in figure 1. Follow the thick arrows for net gas transfer; fine lines and dots label structures. The barrier includes tissue between the villus surface and the foetal capillary, and is exaggerated here. Many villi provide a large exchange area; this view shows one."}]
+      },
       // Retained for a future, orientated redesign; not shown in Phase 1.
       deferredTeachingDiagram: {src:"/human-biology/placental-exchange.svg", width:280, height:310, compact:true,
         alt:"Schematic section of a chorionic villus. Maternal blood surrounds the villus, and a foetal capillary lies inside it. Oxygen moves from maternal blood across the placental barrier to foetal blood; carbon dioxide moves in the opposite direction. The circulations are separated by the barrier.",

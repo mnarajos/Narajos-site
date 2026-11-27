@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="390" viewBox="0 0 280 390" role="img" aria-labelledby="title desc">
+  <title id="title">Where the placenta is during pregnancy</title>
+  <desc id="desc">A simplified section through a pregnant person's body shows the uterus, foetus, placenta attached to the uterine wall and umbilical cord connecting foetus and placenta. The cord carries foetal blood. The placenta is shown larger than life so its location is clear.</desc>
+  <rect width="280" height="390" rx="12" fill="#faf8f7"/>
+  <g font-family="system-ui,sans-serif" fill="#243c48">
+    <text x="14" y="25" font-size="17" font-weight="700">1. Locate the placenta</text>
+    <text x="14" y="48" font-size="14">Section through a pregnant person</text>
+    <!-- The outer contour gives body context; the dark inner border is the uterus. -->
+    <path d="M72 80 C43 86 30 121 34 166 C36 213 51 260 72 315 Q140 347 208 315 C229 260 244 213 246 166 C250 121 237 86 208 80" fill="#f4e9df" stroke="#b99a85" stroke-width="3"/>
+    <path d="M78 107 C54 122 53 170 62 213 C69 253 94 297 140 313 C186 297 211 253 218 213 C227 170 226 122 202 107 C170 90 110 90 78 107Z" fill="#fffdf9" stroke="#855e72" stroke-width="8"/>
+    <!-- Placenta lies against the inner wall of the uterus. -->
+    <path d="M196 112 C214 124 218 160 216 191 C209 205 200 210 189 205 C197 175 200 144 187 115Z" fill="#ba687b" stroke="#8b465a" stroke-width="2"/>
+    <!-- Foetal head, body and flexed limbs, deliberately simplified. -->
+    <circle cx="115" cy="150" r="23" fill="#e1ad8f" stroke="#845e51" stroke-width="2"/>
+    <path d="M100 174 C108 167 126 168 139 178 C151 187 153 210 143 224 C133 238 108 231 102 216 C96 203 94 184 100 174Z" fill="#e1ad8f" stroke="#845e51" stroke-width="2"/>
+    <path d="M135 190 Q155 192 157 207 Q155 215 147 213 L135 203 M124 225 Q145 242 160 222 Q165 215 158 211 Q153 210 148 217 L137 217" fill="none" stroke="#845e51" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- The cord joins the foetal abdomen to the placenta, not the uterine wall. -->
+    <path d="M146 208 C167 218 166 180 190 174" fill="none" stroke="#a65066" stroke-width="9" stroke-linecap="round"/>
+    <path d="M146 208 C167 218 166 180 190 174" fill="none" stroke="#f3cbd3" stroke-width="4" stroke-linecap="round"/>
+    <!-- Fine dark leader lines end in dots; none has an arrowhead. -->
+    <g fill="none" stroke="#233f4e" stroke-width="1.5">
+      <path d="M14 75 H69 L78 108"/><path d="M167 75 H221 L207 136"/>
+      <path d="M12 247 H75 L102 201"/><path d="M179 337 H197 L171 196"/>
+    </g>
+    <g fill="#233f4e" stroke="#fff" stroke-width="1.2"><circle cx="78" cy="108" r="3"/><circle cx="207" cy="136" r="3"/><circle cx="102" cy="201" r="3"/><circle cx="171" cy="196" r="3"/></g>
+    <g font-size="16" font-weight="600"><text x="14" y="69">Uterus wall</text><text x="167" y="69">Placenta</text><text x="12" y="241">Foetus</text><text x="103" y="356">Umbilical cord</text></g>
+    <text x="14" y="378" font-size="13">Simplified; not to scale.</text>
+  </g>
+</svg>

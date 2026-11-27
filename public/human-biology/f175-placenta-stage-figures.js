@@ -1,15 +1,15 @@
-/* Reuse the reviewed villus section at each matching placental exchange step.
- * OCR F175: https://www.ocr.org.uk/Images/697578-specification-cambridge-advanced-national-in-human-biology.pdf
- */
+/* Orientate the worked example even when the learner opens it directly. */
 (function () {
  'use strict';
- const lesson=window.KeystoneHumanLessons?.['f175/a2'];if(!lesson?.teachingDiagram)return;
- const original=lesson.teachingDiagram;
- const captions=[
-  'Locate the maternal blood around the villus. Oxygen is carried to this space in maternal blood; the foetal capillary is inside the villus.',
-  'Follow oxygen from maternal blood across the placental barrier into foetal blood. The arrow shows the net direction down its gradient.',
-  'Locate the foetal capillary inside the villus. Oxygen enters foetal blood; carbon dioxide moves across the barrier in the opposite direction.'
- ];
- lesson.skipModelTeachingDiagram=true;
- lesson.modelDiagrams={...lesson.modelDiagrams,...Object.fromEntries(captions.map((caption,index)=>[index,{...original,caption,assessmentSensitive:true}]))};
+ const lesson=window.KeystoneHumanLessons?.['f175/a2'];
+ if(!lesson?.explainDiagrams?.[0]?.[0] || !lesson?.explainDiagrams?.[1]?.[0])return;
+ const orientation=lesson.explainDiagrams[0][0], villus=lesson.explainDiagrams[1][0];
+ lesson.modelDiagrams={...lesson.modelDiagrams,
+  0:[
+   {...orientation,caption:'Locate the placenta and umbilical cord before following exchange in the enlarged view below.'},
+   {...villus,caption:'Locate maternal blood around the villus. The foetal capillary lies inside it; the barrier is exaggerated.'}
+  ],
+  1:{...villus,caption:'Follow the oxygen arrow across the barrier into the foetal capillary. The arrow shows net transfer.'},
+  2:{...villus,caption:'Compare the oxygen and carbon dioxide arrows. The gases move across the barrier in opposite directions.'}
+ };
 }());
