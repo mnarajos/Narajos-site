@@ -76,10 +76,13 @@
 
   function figure(photo, field) {
     if (!photo) return "";
+    const externalLink = photo.linksNewTab ? ' target="_blank" rel="noopener noreferrer"' : '';
+    const externalNote = photo.linksNewTab ? ' (opens in a new tab)' : '';
+    const credit = (field ? '<strong>Field ' + field + '</strong> · ' : '') + '<a href="' + escape(photo.source) + '"' + externalLink + '>' + escape(photo.credit) + externalNote + '</a> · ' +
+      '<a href="' + escape(photo.licenceUrl) + '"' + externalLink + '>' + escape(photo.licence) + externalNote + '</a> · ' + escape(photo.changes || 'Resized and converted to WebP');
     return '<figure class="hb-teach-photo"' + (photo.assessmentSensitive ? ' data-hb-assessment-sensitive' : '') + '><img src="' + escape(photo.src) + '" alt="' +
       escape(photo.alt) + '" width="' + photo.width + '" height="' + photo.height + '" loading="lazy" decoding="async">' +
-      '<figcaption>' + (photo.caption ? escape(photo.caption) + ' ' : '') + (field ? '<strong>Field ' + field + '</strong> · ' : '') + '<a href="' + escape(photo.source) + '">' + escape(photo.credit) + '</a> · ' +
-      '<a href="' + escape(photo.licenceUrl) + '">' + escape(photo.licence) + '</a> · ' + escape(photo.changes || 'Resized and converted to WebP') + '</figcaption></figure>';
+      '<figcaption>' + (photo.caption ? escape(photo.caption) + ' ' : '') + (photo.creditDisclosure ? '<details class="hb-image-credit"><summary>Image credit</summary>' + credit + '</details>' : credit) + '</figcaption></figure>';
   }
 
   function teachingPhotos(items) {

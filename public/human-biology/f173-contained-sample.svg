@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="370" viewBox="0 0 280 370" role="img" aria-labelledby="title desc">
+<title id="title">Containing a specimen for a local transfer</title>
+<desc id="desc">A schematic capped and labelled specimen tube is enclosed within a sealed secondary bag. The two layers help contain leaks during a local transfer. Follow the laboratory's own procedures for containment, labelling and transfer.</desc>
+<rect width="280" height="370" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" text-anchor="middle" fill="#263e4a" font-size="17">
+<text x="140" y="28" font-weight="700">Contain the sample</text>
+
+<path d="M73 101q0-8 8-8h118q8 0 8 8v156q0 13-13 13H86q-13 0-13-13z" fill="#e9f6f5" stroke="#3f8582" stroke-width="3"/>
+<path d="M79 105h122" stroke="#3f8582" stroke-width="5"/>
+<path d="M115 146h50v79q0 17-25 17t-25-17z" fill="#fff" stroke="#566f7b" stroke-width="3"/>
+<path d="M118 202h44v23q0 14-22 14t-22-14z" fill="#bd7d75"/>
+<path d="M110 142h60v14h-60z" fill="#566f7b"/>
+<rect x="120" y="171" width="40" height="25" rx="2" fill="#fff" stroke="#566f7b"/><path d="M125 176v15m5-15v15m5-15v15m6-15v15m5-15v15m5-15v15" stroke="#566f7b" stroke-width="1.4"/>
+<path d="M108 149H32v-35" fill="none" stroke="#23656c" stroke-width="2"/><text x="29" y="73" text-anchor="start">Capped</text><text x="29" y="102" text-anchor="start">tube</text>
+<path d="M205 230h38v-34" fill="none" stroke="#23656c" stroke-width="2"/><text x="214" y="153" text-anchor="start">Sealed</text><text x="214" y="181" text-anchor="start">bag</text>
+<text x="140" y="302">Containment helps limit</text><text x="140" y="325">leaks and exposure.</text><text x="140" y="352">Follow local procedures.</text>
+</g></svg>

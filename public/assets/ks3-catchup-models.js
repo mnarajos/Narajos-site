@@ -33,10 +33,10 @@ function flower(missed, tube = false) {
       <ellipse cx="237" cy="81" rx="10" ry="6" fill="#e9ad64" stroke="${rust}" stroke-width="2"/>
       <ellipse cx="162" cy="143" rx="10" ry="12" fill="#efe0f3" stroke="${violet}" stroke-width="2"/>
       ${tube ? circle(158,45,3,"#dc8c39",rust)+`<path d="M158 46C161 66 157 93 159 113Q164 123 162 136" fill="none" stroke="${rust}" stroke-width="3"/>`+circle(163,138,3,"#dc8c39",rust) : pollen}
-      ${text(49,108,"Anther")}${line(59,100,80,86)}
+      ${text(49,59,"Anther",ink,17)}${line(62,63,80,76)}
       ${text(215,46,"Stigma")}${line(182,46,174,47)}
       ${text(220,153,"Ovule",violet)}${line(196,148,172,143,violet)}
-      ${tube ? text(253,105,"Pollen tube",rust,15)+line(212,101,160,101,rust) : ""}`,320,179),
+      ${tube ? text(253,71,"Pollen tube",rust,17)+line(220,75,160,101,rust) : ""}`,320,179),
     tube ? "The tube carries the male sex cell to the ovule. Fertilisation happens when the sex cells join."
       : missed ? "The pollen has left the anther. Pollination needs it to land on a stigma."
         : "Pollen has landed on a stigma. Follow the next step to see how the sex cells meet.");
@@ -73,7 +73,7 @@ function lightningModel() {
       ${circle(281,46,10,"#db9b70",ink)}${line(281,56,281,82,ink,3)}
       ${line(281,65,267,75,ink,3)}${line(281,65,296,74,ink,3)}
       ${line(281,81,270,101,ink,3)}${line(281,81,293,101,ink,3)}
-      ${text(269,119,"Observer")}
+      ${text(281,22,"Observer",ink,16)}
       ${line(85,120,282,120,"#a6bcbd",1.5,"4 4")}
       ${line(85,151,282,151,"#a6bcbd",1.5,"4 4")}
       ${arrow(85,120,light ? 281 : 104,120,blue,3)}
@@ -96,12 +96,12 @@ function lightningModel() {
 function vacuum() {
   return picture("Light and sound in a vacuum",diagram("Light crosses an evacuated chamber from the source to a detector. Sound cannot cross the empty space.", `
     <rect x="25" y="32" width="270" height="101" rx="18" fill="#edf4fa" stroke="${teal}" stroke-width="2.5"/>
-    ${text(160,22,"Chamber with the air removed")}
+    ${text(160,22,"Chamber with the air removed",ink,17)}
     ${circle(63,64,13,"#ecb75f",rust,2)}
-    ${arrow(80,64,267,64,blue,3)}${text(164,57,"Light crosses",blue)}
+    ${arrow(80,64,267,64,blue,3)}${text(164,57,"Light crosses",blue,17)}
     <rect x="268" y="55" width="12" height="18" rx="2" fill="#4a7e82"/>
     <path d="M51 100h10l9-7v21l-9-7H51Z" fill="#cdad8e" stroke="${rust}"/>
-    ${line(82,92,82,111,rust,3)}${text(175,109,"Sound stops at source",rust,15)}`,320,151),
+    ${line(82,92,82,111,rust,3)}${text(185,109,"Sound stops at source",rust,17)}`,320,151),
     "Sound is passed on by particles. Light can travel through empty space.");
 }
 
@@ -190,10 +190,10 @@ function leaf(dark) {
       : "Carbon dioxide and water reach the leaf. Light transfers energy to the leaf. It makes glucose and releases oxygen.", `
     <path d="M108 118q20-75 121-73q2 105-95 94Z" fill="${dark ? "#c0d4cc" : "#b8d9a4"}" stroke="${teal}" stroke-width="3"/>
     <path d="M100 150l104-84 M146 115l3-30 M168 96l31 3" fill="none" stroke="${teal}" stroke-width="3"/>
-    ${arrow(29,76,115,91,blue)}${text(70,62,"Carbon dioxide",blue,14)}
-    ${arrow(27,128,100,128,blue)}${text(56,149,"Water",blue,15)}
+    ${arrow(29,76,115,91,blue)}${text(60,40,"Carbon",blue,17)}${text(60,60,"dioxide",blue,17)}
+    ${arrow(27,128,100,128,blue)}${text(56,149,"Water",blue,17)}
     ${dark ? text(163,29,"No light reaches the leaf",rust,15) : arrow(163,27,163,55,rust)+text(163,22,"Light",rust)}
-    ${dark ? "" : arrow(223,85,298,85,teal)+text(257,71,"Oxygen",teal,15)}
+    ${dark ? "" : arrow(223,85,298,85,teal)+text(257,71,"Oxygen",teal,17)}
     ${text(163,183,dark ? "Photosynthesis stops" : "Glucose is made in the leaf",teal)}`,320,198),
     dark ? "There is no light energy for photosynthesis. Respiration continues." : "Light supplies energy for photosynthesis.");
 }
@@ -210,8 +210,8 @@ function metals(reversed) {
       <path d="M80 85h160v48q0 14-15 14H95q-15 0-15-14Z" fill="${liquid}" stroke="${teal}"/>
       <path d="M141 29h22l12 106h-22Z" fill="${strip}" stroke="${ink}" stroke-width="2"/>
       ${showDeposit ? `<path d="M149 87l11 5 9-5 7 49-24 3Z" fill="#b96841" stroke="${rust}" stroke-width="2"/>`+
-        line(180,112,212,112,rust)+text(216,120,"Deposit",rust,14,"start") : ""}
-      ${text(216,27,reversed ? "Copper strip" : "Iron strip",ink,15)}`,320,161),
+        line(180,112,212,112,rust)+text(216,120,"Deposit",rust,17,"start") : ""}
+      ${text(216,27,reversed ? "Copper strip" : "Iron strip",ink,17)}`,320,161),
       reversed ? (index ? "No iron coating forms." : "Iron sulfate solution.") :
         showDeposit ? "Copper coats the part under the liquid." : "Copper sulfate solution.");
   });

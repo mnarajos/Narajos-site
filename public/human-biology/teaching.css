@@ -102,6 +102,11 @@
 .hb-teach-photo {
   margin: .7rem 0;
 }
+.hb-image-credit summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding-block: .6rem;
+}
 .hb-teach-photo img {
   display: block;
   max-inline-size: min(100%, 40rem);

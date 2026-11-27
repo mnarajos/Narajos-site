@@ -70,7 +70,7 @@ var notes={
     "a1": {
       "title": "Causes and effects of disease",
       "lines": [
-        "A symptom is something a patient experiences and describes. A sign is observed or measured by someone else.",
+        "A symptom is something a patient experiences and describes. A sign is an objective finding that can be observed or measured.",
         "A disease may have infectious or non-infectious causes. Risk factors increase the chance of a condition but do not prove it will occur.",
         "When explaining disease, connect a change in tissue structure or function to its effect on the person."
       ]
@@ -614,6 +614,7 @@ Object.assign(recapFigureMap, window.KeystoneF171VaccineRecaps || {});
 Object.assign(recapFigureMap, window.HumanF171ScreenTreatmentRecapFigures || {});
 Object.assign(recapFigureMap, window.HumanF171FocusedRecapFigures || {});
 Object.assign(recapFigureMap, window.KeystoneF171MeasureEvidenceRecaps || {});
+Object.assign(recapFigureMap, window.KeystoneF171DiseaseBasicsRecaps || {});
 Object.assign(recapFigureMap, window.HumanF170OrganelleRecapFigures || {});
 function recapFigures(unit,id,step,indices) {
  const teaching=window.KeystoneHumanTeaching, lessons=window.KeystoneHumanLessons || {};
@@ -700,6 +701,10 @@ function recapBody(unit,id,step,point) {
   "f171/a5/1": [
    {heading:"Observation", text:"Reports should distinguish observed results from explanations or conclusions.", figures:[0]},
    {heading:"Association", text:"An association does not always show cause and effect.", figures:[1]}
+  ],
+  "f171/a1/1": [
+   {heading:"Causes", text:"A disease may have infectious or non-infectious causes.", figures:[0]},
+   {heading:"Risk factors", text:"Risk factors increase the chance of a condition but do not prove it will occur.", figures:[1]}
   ]
  };
  const groups = groupedRecaps[unit+"/"+id+"/"+step];

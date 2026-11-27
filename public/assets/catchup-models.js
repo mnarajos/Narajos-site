@@ -119,7 +119,7 @@ export function periodicOutline() {
       }
       if (period === 1 && group === 18) square.textContent = "He";
       if (group === 1 && period > 1) square.className = "catchup-group-one";
-      if (group === 18) square.className = "catchup-group-zero";
+      if (group === 18) square.className = period === 1 ? "catchup-group-zero catchup-helium" : "catchup-group-zero";
       grid.append(square);
     }
   }

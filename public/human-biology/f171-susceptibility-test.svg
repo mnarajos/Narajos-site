@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="315" viewBox="0 0 280 315" role="img" aria-labelledby="t d">
+<title id="t">A susceptibility test uses a laboratory standard</title><desc id="d">A schematic agar plate contains bacterial growth and one antibiotic disc. A clear zone around the disc shows an area where visible growth was inhibited. The zone diameter is measured across the disc, and the laboratory interprets it using standards appropriate to the organism, antibiotic and method. No size or test result is supplied.</desc>
+<rect width="280" height="315" rx="12" fill="#f5faf9"/><g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="26" font-weight="700">Testing susceptibility</text>
+<circle cx="86" cy="119" r="68" fill="#d8ece7" stroke="#32776d" stroke-width="2"/>
+<g fill="#32776d"><circle cx="49" cy="75" r="3"/><circle cx="70" cy="62" r="3"/><circle cx="101" cy="60" r="3"/><circle cx="125" cy="75" r="3"/><circle cx="35" cy="101" r="3"/><circle cx="137" cy="103" r="3"/><circle cx="37" cy="137" r="3"/><circle cx="135" cy="140" r="3"/><circle cx="49" cy="163" r="3"/><circle cx="74" cy="176" r="3"/><circle cx="104" cy="176" r="3"/><circle cx="126" cy="163" r="3"/></g>
+<circle cx="86" cy="119" r="36" fill="#fff" stroke="#8ba5a0" stroke-width="2"/>
+<path d="M50 119h72m-6-5 6 5-6 5M56 114l-6 5 6 5" fill="none" stroke="#80588f" stroke-width="2"/>
+<circle cx="86" cy="119" r="11" fill="#f1dfc6" stroke="#a5792e" stroke-width="2"/><text x="86" y="124" font-size="12">AB</text>
+<text x="86" y="207" font-size="14">AB: antibiotic disc</text><text x="86" y="228" font-size="14">Clear-zone diameter</text>
+<path d="M161 119h25m-6-6 6 6-6 6" stroke="#276972" stroke-width="2" fill="none"/>
+<path d="M192 78h56v80h-56z" fill="#fff" stroke="#537a94" stroke-width="2"/><path d="M201 93h38M201 105h38M201 117h25M201 129h32M201 141h30" stroke="#537a94" stroke-width="2"/>
+<text x="220" y="189" font-size="14">Interpret</text><text x="220" y="209" font-size="14">with standard</text>
+<text x="140" y="265" font-size="14">Schematic: no measured result.</text><text x="140" y="290" font-size="14">Method and organism both matter.</text>
+</g></svg>

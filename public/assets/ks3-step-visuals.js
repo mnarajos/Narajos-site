@@ -9,9 +9,9 @@ function ramp(angle, label, measurement = false) {
       <rect x="${carX}" y="${carY}" width="32" height="10" rx="3" fill="#eab776" stroke="${rust}"/>
       ${circle(carX+6,carY+11,3,"#fff",ink)}${circle(carX+26,carY+11,3,"#fff",ink)}
     </g>
-    ${line(20,135,300,135,ink,2)}${text(180,163,"Ramp foot",teal,18)}
-    ${measurement ? `${line(180,147,292,147,blue,2)}${arrow(180,147,292,147,blue,2)}${arrow(292,147,180,147,blue,2)}${line(292,131,292,153,blue,2)}${text(240,125,"Stop",blue,14)}` : ""}`;
-  return picture(label, diagram(`${label}: a toy starts near the top and rolls towards the ramp foot${measurement ? "; distance is measured from the foot to where the toy stops" : ""}.`, shape),
+    ${line(20,135,300,135,ink,2)}${text(180,178,"Ramp foot",teal,18)}
+    ${measurement ? `${line(180,147,292,147,blue,2)}${arrow(180,147,292,147,blue,2)}${arrow(292,147,180,147,blue,2)}${line(292,131,292,153,blue,2)}${text(280,125,"Stop",blue,17)}` : ""}`;
+  return picture(label, diagram(`${label}: a toy starts near the top and rolls towards the ramp foot${measurement ? "; distance is measured from the foot to where the toy stops" : ""}.`, shape, 320, 190),
     measurement ? "Measure from the foot of the ramp to the stopping point." : "The same toy starts at the same release point on each ramp.");
 }
 
@@ -61,12 +61,12 @@ function earthOrbit() {
   return picture("Earth's rotation and orbit", diagram(
     "Earth spins on its axis in about 24 hours. Earth travels around the Sun in about one year. The drawing is not to scale.", `
     <ellipse cx="100" cy="80" rx="97" ry="49" fill="none" stroke="${blue}" stroke-width="2" stroke-dasharray="5 4"/>
-    ${circle(100,80,24,"#f8d47f",rust,2)}${text(100,124,"Sun",ink,15)}
+    ${circle(100,80,24,"#f8d47f",rust,2)}${text(100,124,"Sun",ink,17)}
     ${circle(195,80,15,"#a8d3e4",blue,2)}${line(190,57,201,101,ink,1.5)}
     <path d="M210 60q20 20 3 40" fill="none" stroke="${rust}" stroke-width="2.5"/>
     <path d="M213 100l-1-9 8 4Z" fill="${rust}"/>
-    ${text(204,116,"Earth",blue,14)}${text(249,47,"Spin: about",rust,14)}${text(249,64,"24 hours",rust,14)}
-    ${text(160,151,"Orbit: about one year",blue,15)}`,320,170),
+    ${text(204,116,"Earth",blue,17)}${text(260,45,"Spin: about",rust,17)}${text(260,65,"24 hours",rust,17)}
+    ${text(160,153,"Orbit: about one year",blue,17)}`,320,170),
     "Compare Earth's daily spin with its yearly path around the Sun. Sizes and distances are not to scale.");
 }
 
@@ -87,9 +87,9 @@ function electromagnet() {
 function neutralisation() {
   return picture("pH while alkali is added", diagram(
     "On a pH scale, the reading increases from pH 3 to pH 6 after alkali is added. Both readings are below neutral pH 7.", `
-    ${line(35,90,285,90,ink,3)}${[3,6,7,10].map((v,i) => line([65,155,185,275][i],82,[65,155,185,275][i],98,ink,2)+text([65,155,185,275][i],116,String(v),ink,15)).join("")}
+    ${line(35,90,285,90,ink,3)}${[3,6,7,10].map((v,i) => line([65,155,185,275][i],82,[65,155,185,275][i],98,ink,2)+text([65,155,185,275][i],118,String(v),ink,17)).join("")}
     ${circle(65,90,5,rust,rust)}${circle(155,90,5,blue,blue)}${arrow(72,63,148,63,teal,2.5)}
-    ${text(110,48,"Add alkali",teal,15)}${text(110,146,"Still acidic",rust,14)}${text(200,146,"Neutral at 7",ink,14)}`,320,170),
+    ${text(110,48,"Add alkali",teal,17)}${text(87,149,"Still acidic",rust,17)}${text(224,149,"Neutral at 7",ink,17)}`,320,170),
     "Compare the final reading with 7: pH 6 is less acidic than pH 3, but it is still acidic.");
 }
 
@@ -98,7 +98,7 @@ function breathing() {
     "Air moves in through the airway to the lungs when a person breathes in. Air moves out through the same airway when they breathe out.", `
     <path d="M148 60V24h24v36M148 60Q115 49 90 83Q70 111 87 139Q109 160 136 129V78M172 60Q205 49 230 83Q250 111 233 139Q211 160 184 129V78" fill="#d6eaf2" stroke="${teal}" stroke-width="3"/>
     ${arrow(135,28,135,68,blue,3)}${arrow(185,68,185,28,rust,3)}
-    ${text(69,30,"Air in",blue,15)}${text(251,30,"Air out",rust,15)}${text(160,165,"Lungs",ink,15)}`,320,180),
+    ${text(69,30,"Air in",blue,17)}${text(251,30,"Air out",rust,17)}${text(160,165,"Lungs",ink,17)}`,320,180),
     "Follow air in and out. Oxygen can pass from the air in the lungs into the blood; respiration occurs in cells.");
 }
 
@@ -116,7 +116,7 @@ function humanFertilisation() {
     ${circle(215,89,42,"#f4e3d2",rust,3)}${circle(215,89,13,"#d8c7e4",ink,2)}
     <ellipse cx="88" cy="87" rx="14" ry="8" fill="#b6d4e5" stroke="${blue}" stroke-width="2"/>
     <path d="M74 87q-20-17-33 2t-22 0" fill="none" stroke="${blue}" stroke-width="2"/>
-    ${arrow(108,88,162,88,teal,2)}${text(76,52,"Sperm cell",blue,15)}${text(215,155,"Egg cell",rust,15)}`,320,174),
+    ${arrow(108,88,162,88,teal,2)}${text(76,52,"Sperm cell",blue,17)}${text(215,155,"Egg cell",rust,17)}`,320,174),
     "Fertilisation is the joining of male and female sex-cell nuclei. This drawing is not to scale."));
   return host;
 }
@@ -127,33 +127,33 @@ function rockFormation() {
     <path d="M31 45h98v75H31Z" fill="#e8d7b7" stroke="${ink}"/><path d="M31 70h98M31 95h98" stroke="${rust}" stroke-width="2"/>
     ${arrow(145,82,185,82,teal)}<path d="M200 52h88v68h-88Z" fill="#cfae8e" stroke="${ink}"/>
     <path d="M201 76h86M201 99h86" stroke="${rust}" stroke-width="3"/>
-    ${text(80,145,"Sediment",ink,15)}${text(246,145,"Rock",ink,15)}`),
+    ${text(80,145,"Sediment",ink,17)}${text(246,145,"Rock",ink,17)}`),
     "Layers are pressed and cemented together."), picture("Igneous rock", diagram(
     "Molten rock cools and solidifies. Crystals grow as it cools.", `
     <path d="M35 53h85l-10 66H45Z" fill="#e8a76e" stroke="${rust}" stroke-width="2"/>
     ${arrow(140,86,180,86,teal)}<path d="M197 55h88v64h-88Z" fill="#e4dfe3" stroke="${ink}"/>
     <path d="M197 85l20-20 18 18 24-18 26 20M208 119l12-23 20 23M250 119l13-21 22 15" fill="none" stroke="${violet}" stroke-width="2"/>
-    ${text(78,145,"Molten rock",rust,15)}${text(240,145,"Crystals",ink,15)}`),
+    ${text(78,145,"Molten rock",rust,17)}${text(240,145,"Crystals",ink,17)}`),
     "Cooling and solidifying produces igneous rock."));
 }
 
 function atomsRearranged() {
   return picture("Atoms rearrange in a reaction", diagram(
     "Two X atoms are joined to one another and two Y atoms are joined to one another. After reaction there are two X–Y pairs. There are still two X atoms and two Y atoms.", `
-    ${text(78,24,"Before",ink,15)}${text(244,24,"After",ink,15)}
-    ${line(55,63,95,63,ink,3)}${circle(55,63,15,"#cce4f1",blue,2)}${circle(95,63,15,"#cce4f1",blue,2)}${text(55,68,"X",ink,14)}${text(95,68,"X",ink,14)}
-    ${line(55,114,95,114,ink,3)}${circle(55,114,15,"#e7b783",rust,2)}${circle(95,114,15,"#e7b783",rust,2)}${text(55,119,"Y",ink,14)}${text(95,119,"Y",ink,14)}
+    ${text(78,24,"Before",ink,17)}${text(244,24,"After",ink,17)}
+    ${line(55,63,95,63,ink,3)}${circle(55,63,15,"#cce4f1",blue,2)}${circle(95,63,15,"#cce4f1",blue,2)}${text(55,69,"X",ink,17)}${text(95,69,"X",ink,17)}
+    ${line(55,114,95,114,ink,3)}${circle(55,114,15,"#e7b783",rust,2)}${circle(95,114,15,"#e7b783",rust,2)}${text(55,120,"Y",ink,17)}${text(95,120,"Y",ink,17)}
     ${arrow(128,88,175,88,teal,2.5)}
-    ${[63,114].map(y=>line(223,y,263,y,ink,3)+circle(223,y,15,"#cce4f1",blue,2)+circle(263,y,15,"#e7b783",rust,2)+text(223,y+5,"X",ink,14)+text(263,y+5,"Y",ink,14)).join("")}`,320,145),
+    ${[63,114].map(y=>line(223,y,263,y,ink,3)+circle(223,y,15,"#cce4f1",blue,2)+circle(263,y,15,"#e7b783",rust,2)+text(223,y+6,"X",ink,17)+text(263,y+6,"Y",ink,17)).join("")}`,320,145),
     "Count each type before and after. Bonds have changed; the same atoms remain. X and Y stand for different types of atom.");
 }
 
 function speedTimeline() {
   return picture("Average speed for 10 m in 5 s", diagram(
     "A line marks 10 metres over 5 seconds. Five equal intervals represent an average of 2 metres for each second.", `
-    ${line(35,90,285,90,blue,3)}${[0,1,2,3,4,5].map(i=>line(35+i*50,80,35+i*50,100,ink,2)+text(35+i*50,121,String(i*2),ink,14)).join("")}
-    ${text(160,27,"10 m ÷ 5 s = 2 m/s",ink,16)}${text(60,51,"1 s",teal,14)}
-    ${arrow(37,61,82,61,teal,2)}${text(160,151,"Distance (m)",blue,14)}`,320,170),
+    ${line(35,90,285,90,blue,3)}${[0,1,2,3,4,5].map(i=>line(35+i*50,80,35+i*50,100,ink,2)+text(35+i*50,122,String(i*2),ink,17)).join("")}
+    ${text(160,27,"10 m ÷ 5 s = 2 m/s",ink,17)}${text(60,51,"1 s",teal,17)}
+    ${arrow(37,61,82,61,teal,2)}${text(160,153,"Distance (m)",blue,17)}`,320,170),
     "Divide total distance by total time. Equal 2 m sections illustrate an average of 2 m per second; the real speed need not have been constant.");
 }
 
@@ -185,7 +185,7 @@ function plantGlucose() {
     "A simplified model shows glucose units joining into a chain representing starch, which a plant can store.", `
     ${[29,59,89,119].map(x=>circle(x,77,10,"#e7b783",rust,2)).join("")}${arrow(145,77,177,77,teal,2)}
     ${line(201,77,285,77,rust,3)}${[201,229,257,285].map(x=>circle(x,77,10,"#e7b783",rust,2)).join("")}
-    ${text(83,47,"Glucose",rust,15)}${text(243,47,"Starch",teal,15)}${text(160,130,"Building a storage substance",ink,14)}`,320,150),
+    ${text(83,47,"Glucose",rust,17)}${text(243,47,"Starch",teal,17)}${text(160,130,"Building a storage substance",ink,17)}`,320,150),
     "Follow glucose units into the simplified starch chain. Water released as bonds form is omitted. Plants can also use glucose in respiration, including in darkness.");
 }
 
@@ -206,7 +206,7 @@ function warmingParticles() {
     <rect x="176" y="35" width="122" height="92" rx="6" fill="#f5fafb" stroke="${teal}" stroke-width="2"/>
     ${[[47,58],[82,98],[115,62],[199,58],[234,98],[267,62]].map(([x,y])=>circle(x,y,6,"#cce4f1",blue,2)).join("")}
     ${arrow(52,58,65,58,rust,2)}${arrow(87,98,100,98,rust,2)}${arrow(204,58,228,58,rust,2)}${arrow(239,98,263,98,rust,2)}
-    ${text(83,24,"Cooler",ink,15)}${text(237,24,"Warmer",ink,15)}${text(160,154,"Longer arrows: greater speed",rust,14)}`,320,169),
+    ${text(83,24,"Cooler",ink,17)}${text(237,24,"Warmer",ink,17)}${text(160,151,"Longer arrows:",rust,17)}${text(160,173,"greater speed",rust,17)}`,320,190),
     "For a gas, warming increases average particle kinetic energy. The particles are unchanged; arrow lengths show movement, not particle size.");
 }
 

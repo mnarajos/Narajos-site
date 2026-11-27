@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 365" role="img" aria-labelledby="title desc">
+<title id="title">A lymph-node biopsy provides tissue</title><desc id="desc">A schematic enlarged lymph node leads to a small tissue sample on a slide. Laboratory microscopy examines the tissue; the findings can help establish the cause of enlargement. Additional tests may be needed. The symbols are not a patient specimen.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5 0 10Z" fill="#285f68"/></marker></defs>
+<rect width="280" height="365" rx="12" fill="#f4f9f8"/><g font-family="system-ui,sans-serif" font-size="16" fill="#243e49" text-anchor="middle">
+<text x="140" y="24" font-weight="700">From node to evidence</text>
+<ellipse cx="65" cy="77" rx="38" ry="25" fill="#e3d6e9" stroke="#80588f" stroke-width="2"/><path d="M48 76q15-12 30 0" fill="none" stroke="#80588f" stroke-width="2"/>
+<text x="173" y="72">Enlarged node</text><text x="173" y="93">has several causes</text>
+<path d="M140 110v23" stroke="#285f68" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="29" y="146" width="72" height="46" rx="3" fill="#fff" stroke="#537a94" stroke-width="2"/><path d="M51 172q5-17 20-12q9 8-2 15q-12 7-18-3Z" fill="#c99ab0" stroke="#a55c70" stroke-width="2"/>
+<text x="177" y="164">Biopsy provides</text><text x="177" y="185">a tissue sample</text>
+<path d="M140 207v23" stroke="#285f68" stroke-width="2" marker-end="url(#arr)"/>
+<circle cx="65" cy="266" r="30" fill="#fff" stroke="#80588f" stroke-width="2"/><g fill="#e7d9ee" stroke="#80588f"><circle cx="52" cy="258" r="7"/><circle cx="70" cy="255" r="8"/><circle cx="78" cy="272" r="7"/><circle cx="58" cy="277" r="8"/></g>
+<text x="177" y="255">Laboratory examines</text><text x="177" y="276">the tissue</text>
+<text x="140" y="316">Findings can identify the cause.</text><text x="140" y="339" font-size="14">Further tests may be needed.</text><text x="140" y="357" font-size="14">Symbols are schematic.</text>
+</g></svg>

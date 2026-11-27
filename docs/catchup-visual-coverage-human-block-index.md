@@ -2,7 +2,7 @@
 
 This index enumerates the authored explanation and sequential worked-example blocks from the guided teaching data. A short excerpt identifies each block; consult the data for the full teaching. The asset column records the initial inventory and can omit later additions; it is presence only and does not establish that a visual explains that block or is visible at that stage. The current block-by-block decisions, including separate accuracy, relevance and readability checks, are in [the block review](catchup-visual-coverage-human-steps.md); blocks without an explicit review remain **unreviewed**. Short companion recaps, including those without a guided lesson, are listed separately in [the recap index](catchup-visual-coverage-human-recaps.md).
 
-The [F171 vaccine and immune-memory review](catchup-visual-coverage-human-f171-vaccines.md), [F171 measurement and evidence review](catchup-visual-coverage-human-f171-measure-evidence.md), and [focused F172–F173 review](catchup-visual-coverage-human-f172-f173.md) record additional figures and their remaining limits.
+The [F171 vaccine and immune-memory review](catchup-visual-coverage-human-f171-vaccines.md), [F171 measurement and evidence review](catchup-visual-coverage-human-f171-measure-evidence.md), [F171 disease basics review](catchup-visual-coverage-human-f171-disease-basics.md), [F171 daily-life review](catchup-visual-coverage-human-f171-daily-life.md), and [focused F172–F173 review](catchup-visual-coverage-human-f172-f173.md) record additional figures and their remaining limits.
 
 | Route and block | Content excerpt | Assets declared in lesson | Review |
 | --- | --- | --- | --- |
