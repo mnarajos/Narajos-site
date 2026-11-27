@@ -136,12 +136,12 @@ function respiration(root) {
       : `<path d="M76 113Q103 62 158 63q48 1 86 50q-43 47-86 48q-57 0-82-48Z" fill="#f3ded9" stroke="${rust}" stroke-width="3"/>`}
     <ellipse cx="160" cy="109" rx="31" ry="15" fill="#e1ccea" stroke="${violet}" stroke-width="2"/>
     <path d="M138 108q5-11 10 0t10 0t10 0t10 0" fill="none" stroke="${violet}" stroke-width="2"/>
-    ${text(160,146,"Mitochondrion",violet,15)}
+    ${line(160,125,160,207,violet,1.5)}${text(160,230,"Mitochondrion",violet,17)}
     ${text(67,26,"Oxygen",blue)}${text(250,26,"Glucose",teal)}
     ${arrow(78,35,139,93,blue)}${arrow(239,35,183,93,teal)}
     ${arrow(134,117,63,175,blue)}${arrow(186,118,251,176,teal)}
     ${text(69,199,"Carbon dioxide",blue,14)}${text(249,199,"Water",teal,15)}
-    `,320,213),
+    `,320,245),
     root ? "Oxygen reaches the root cell from the soil. Aerobic respiration transfers energy for the cell’s activities."
       : "Oxygen arrives in the blood. Aerobic respiration transfers energy for muscle cell activities.");
 }

@@ -23,7 +23,7 @@
   'f176/a5/0':[['f176/a5','modelDiagrams',0]],
   'f176/a5/1':[['f176/a5','modelDiagrams',1]],
   'f177/a1/1':[antibacterial],
-  'f177/a2/0':[['f177/a3','explainDiagrams',0]],
+  'f177/a2/0':[['f177/a3','explainDiagrams',0],['f177/a3','modelDiagrams',1]],
   'f177/a2/1':[['f177/a2','explainDiagrams',0]],
   'f177/a3/1':[['f177/a3','modelDiagrams',1],['f177/a3','modelDiagrams',2]]
  };

@@ -206,8 +206,8 @@ function maintainedGradient() {
     "A model compares one spherical air space with four smaller spherical air spaces of the same total volume. The four small spheres have a greater total surface area.", `
     ${circle(70,90,39.685,"#e6f3fa",teal,2)}
     ${[[190,62],[244,62],[190,116],[244,116]].map(([x,y])=>circle(x,y,25,"#e6f3fa",teal,2)).join("")}
-    ${text(70,29,"One space",ink,14)}${text(217,24,"Four smaller",ink,14)}
-    ${text(160,164,"Same total volume in this model",ink,14)}`,320,180),
+    ${text(70,29,"One space",ink,17)}${text(217,24,"Four smaller",ink,17)}
+    ${text(160,160,"Same total volume",ink,17)}${text(160,181,"in this model",ink,17)}`,320,200),
     "Compare the boundaries. Dividing the same total volume into smaller spheres increases the total surface area. Air sacs are shown as simplified spheres."));
   return host;
 }

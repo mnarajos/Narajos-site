@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="405" viewBox="0 0 280 405" role="img" aria-labelledby="title desc">
+<title id="title">Independent pregnancies in a fictional recessive trait</title>
+<desc id="desc">For two Rr carrier parents in this example, each pregnancy has four equally likely allele combinations: RR, Rr, Rr and rr. The chance of rr is one quarter for each pregnancy. The outcome of the first pregnancy does not alter the chance in the next.</desc>
+<rect width="280" height="405" rx="12" fill="#f5faf9"/>
+<g text-anchor="middle" font-family="system-ui,sans-serif" fill="#263e4a" font-size="16">
+<text x="140" y="25" font-weight="700">Two Rr carrier parents</text>
+<text x="140" y="54">First pregnancy</text>
+<g fill="#fff" stroke="#497c79" stroke-width="2"><rect x="41" y="67" width="99" height="45"/><rect x="140" y="67" width="99" height="45"/><rect x="41" y="112" width="99" height="45"/><rect x="140" y="112" width="99" height="45" fill="#f4e6d6"/></g>
+<text x="90" y="96">RR</text><text x="189" y="96">Rr</text><text x="90" y="141">Rr</text><text x="189" y="141">rr</text>
+<text x="140" y="181">P(rr) = 1 in 4</text>
+<text x="140" y="210">Next pregnancy</text>
+<g fill="#fff" stroke="#497c79" stroke-width="2"><rect x="41" y="223" width="99" height="45"/><rect x="140" y="223" width="99" height="45"/><rect x="41" y="268" width="99" height="45"/><rect x="140" y="268" width="99" height="45" fill="#f4e6d6"/></g>
+<text x="90" y="252">RR</text><text x="189" y="252">Rr</text><text x="90" y="297">Rr</text><text x="189" y="297">rr</text>
+<text x="140" y="337">P(rr) = 1 in 4 again</text>
+<text x="140" y="365">The earlier outcome does</text><text x="140" y="386">not change this probability.</text>
+</g></svg>

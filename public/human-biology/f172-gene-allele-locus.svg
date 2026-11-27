@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 410" width="280" height="410" role="img" aria-labelledby="title desc">
+<title id="title">DNA, genes and alleles</title><desc id="desc">A highlighted segment of a schematic DNA molecule represents a gene and points towards a functional RNA or protein product. Below, two homologous chromosomes carry gene versions R and r at corresponding positions. Shapes and lengths are not to scale.</desc>
+<style>text{font:18px system-ui,sans-serif;fill:#203c49}.head{font-weight:700}.small{font-size:16px}.arrow{stroke:#286d70;stroke-width:3;fill:none;marker-end:url(#a)}</style>
+<defs><marker id="a" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3z" fill="#286d70"/></marker></defs>
+<text x="140" y="24" text-anchor="middle" class="head">A gene is a DNA region</text>
+<path d="M32 63 C58 47 84 79 110 63 S162 47 188 63 S222 75 248 63 M32 90 C58 106 84 74 110 90 S162 106 188 90 S222 78 248 90" fill="none" stroke="#477d9d" stroke-width="3"/>
+<path d="M45 59v36 M73 61v31 M101 71v13 M132 71v13 M161 61v31 M190 64v25 M220 72v10" stroke="#477d9d" stroke-width="2"/>
+<path d="M96 58h67v37H96z" fill="none" stroke="#a55b32" stroke-width="3"/><text x="140" y="122" text-anchor="middle" class="small">Highlighted gene region</text>
+<path class="arrow" d="M140 132v25"/><text x="140" y="181" text-anchor="middle" class="head">Functional product</text><text x="140" y="205" text-anchor="middle" class="small">RNA or protein</text>
+<path d="M20 219h240" stroke="#bdcfce"/><text x="140" y="247" text-anchor="middle" class="head">Alleles at the same locus</text>
+<rect x="67" y="262" width="35" height="88" rx="15" fill="#d7e8f4" stroke="#39718b" stroke-width="2"/><rect x="178" y="262" width="35" height="88" rx="15" fill="#e3efe0" stroke="#397b6f" stroke-width="2"/>
+<path d="M67 305h35" stroke="#a55b32" stroke-width="8"/><path d="M178 305h35" stroke="#a55b32" stroke-width="8"/><text x="84" y="332" text-anchor="middle" class="head">R</text><text x="196" y="332" text-anchor="middle" class="head">r</text>
+<text x="140" y="376" text-anchor="middle" class="small">Homologous chromosomes</text><text x="140" y="400" text-anchor="middle" class="small">Schematic; not to scale.</text>
+</svg>

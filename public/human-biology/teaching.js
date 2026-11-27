@@ -168,13 +168,14 @@
       (lesson.revision && !context.booklet ? '<div class="actions hb-start">' + openStageButton("model", "See worked example", "primary") + '</div>' : '') +
       (context.booklet ? '</section>' : '</details>');
     const evidenceModel = lesson.revision && (lesson.focusCells || lesson.graph || lesson.visual === "model");
+    const modelVisualAtSteps = Array.isArray(lesson.modelVisualAtSteps) ? lesson.modelVisualAtSteps : null;
     const model = lesson.model?.length ?
       '<' + (context.booklet ? 'section' : 'details') + ' class="paper panel hb-teach-stage' + (evidenceModel ? ' hb-model-with-evidence' : '') +
-      '" data-hb-model-step="1">' + stageSummary("eye", "Worked example", lesson.modelTitle, context.booklet) + context.modelVisual + teachingDiagram(lesson.teachingDiagram) + illustration(lesson.illustration) + figure(lesson.photo) +
+      '" data-hb-model-step="1">' + stageSummary("eye", "Worked example", lesson.modelTitle, context.booklet) + (modelVisualAtSteps ? "" : context.modelVisual) + (lesson.skipModelTeachingDiagram ? "" : teachingDiagram(lesson.teachingDiagram)) + illustration(lesson.illustration) + figure(lesson.photo) +
       (lesson.graph ? window.KeystoneHumanSkills.graphHTML(lesson.graph) : "") + table(lesson.table, lesson.focusCells) +
       '<ol class="hb-model-steps' + (lesson.nodes ? ' hb-model-path' : '') + '">' + lesson.model.map((step, i) =>
         '<li value="' + (i + 1) + '"' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
-        escape(step) + teachingPhotos(lesson.modelPhotos?.[i]) + teachingDiagrams(lesson.modelDiagrams?.[i]) + '</li>').join("") +
+        escape(step) + (modelVisualAtSteps?.includes(i) ? context.modelVisual : "") + teachingPhotos(lesson.modelPhotos?.[i]) + teachingDiagrams(lesson.modelDiagrams?.[i]) + '</li>').join("") +
       '</ol>' + (lesson.model.length > 1 ?
         '<button type="button" class="button secondary" data-hb-action="model">Show next step</button>' : '') +
       (evidenceModel ? '<button type="button" class="button quiet hb-model-back" hidden>Previous step</button>' : '') +

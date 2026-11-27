@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="320" viewBox="0 0 280 320" role="img" aria-labelledby="t d">
+<title id="t">Reading systolic and diastolic pressure</title><desc id="d">A fictional cuff reading of 128 over 76 millimetres of mercury is shown with a schematic pressure pulse. The first number is systolic pressure as the ventricles contract; the second is diastolic pressure between contractions. The waveform is illustrative, not a recorded measurement.</desc>
+<rect width="280" height="320" rx="12" fill="#f5faf9"/><g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle">
+<text x="140" y="25" font-size="16" font-weight="700">Fictional cuff reading</text><text x="140" y="56" font-size="21">128 / 76 mmHg</text>
+<path d="M42 100v105h205" stroke="#344958" stroke-width="2" fill="none"/><path d="M44 188C65 188 67 112 102 112C133 112 137 188 169 188C196 188 202 129 235 129" stroke="#32776d" stroke-width="3" fill="none"/>
+<text x="14" y="154" font-size="13" transform="rotate(-90 14 154)">Pressure (mmHg)</text><circle cx="102" cy="112" r="4" fill="#a76125"/><circle cx="169" cy="188" r="4" fill="#80588f"/>
+<text x="100" y="94" font-size="14">128</text><text x="174" y="178" font-size="14">76</text><text x="147" y="229" font-size="14">Time →</text>
+<text x="140" y="254" font-size="15">Systolic: ventricles contract</text><text x="140" y="277" font-size="15">Diastolic: between contractions</text><text x="140" y="305" font-size="14">Pulse is schematic, not a recording.</text>
+</g></svg>

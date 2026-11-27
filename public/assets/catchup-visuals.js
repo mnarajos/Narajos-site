@@ -3,8 +3,8 @@
 (function(){
 "use strict";
 var palettes={teal:"#1d7469",blue:"#386ba8",orange:"#b66f24",purple:"#7657aa"};
-function svg(description,inner,height){
- return '<svg viewBox="0 0 480 '+height+'" role="img" aria-label="'+description+'" xmlns="http://www.w3.org/2000/svg">'+inner+'</svg>';
+function svg(description,inner,height,width){
+ return '<svg viewBox="0 0 '+(width||480)+' '+height+'" role="img" aria-label="'+description+'" xmlns="http://www.w3.org/2000/svg">'+inner+'</svg>';
 }
 function box(x,y,w,h,fill){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="12" fill="'+fill+'" stroke="#c3d2d2" stroke-width="1.6"/>';}
 function text(x,y,string,size,weight,colour,anchor){
@@ -108,19 +108,19 @@ var diagrams={
  },
  dna:{
   label:"Semi-conservative DNA replication",
+  compact:true,
   caption:"Each daughter DNA molecule contains one original template strand and one newly synthesised strand.",
   image:svg("Before replication there are two original strands. After replication there are two DNA molecules, each with one original and one newly made strand.",
-   text(85,30,"Parent DNA",17,700)+text(327,30,"Two daughter DNA molecules",17,700)+
-   '<path d="M65 53V153M84 53V153" stroke="'+palettes.blue+'" stroke-width="8" stroke-linecap="round"/>'+
-   arrow(119,104,178,104)+
-   '<path d="M232 53V153" stroke="'+palettes.blue+'" stroke-width="8" stroke-linecap="round"/>'+
-   '<path d="M251 53V153" stroke="'+palettes.orange+'" stroke-width="8" stroke-linecap="round"/>'+
-   '<path d="M377 53V153" stroke="'+palettes.orange+'" stroke-width="8" stroke-linecap="round"/>'+
-   '<path d="M396 53V153" stroke="'+palettes.blue+'" stroke-width="8" stroke-linecap="round"/>'+
-   '<path d="M232 65h19M232 89h19M232 113h19M232 137h19M377 65h19M377 89h19M377 113h19M377 137h19M65 65h19M65 89h19M65 113h19M65 137h19" stroke="#a8b8bf" stroke-width="2"/>'+
-   '<path d="M195 190h30" stroke="'+palettes.blue+'" stroke-width="6"/>'+text(258,195,"Original",14,600,"#344958","start")+
-   '<path d="M195 214h30" stroke="'+palettes.orange+'" stroke-width="6"/>'+text(258,219,"New",14,600,"#344958","start"),
-   238)
+   text(140,24,"Parent DNA",18,700)+
+   '<path d="M130 43V104M150 43V104" stroke="'+palettes.blue+'" stroke-width="8" stroke-linecap="round"/>'+
+   '<path d="M130 54h20M130 72h20M130 90h20" stroke="#a8b8bf" stroke-width="2"/>'+
+   arrow(122,116,80,149)+arrow(158,116,200,149)+text(140,174,"Two daughter molecules",18,700)+
+   '<path d="M60 188V250M220 188V250" stroke="'+palettes.blue+'" stroke-width="8" stroke-linecap="round"/>'+
+   '<path d="M80 188V250M200 188V250" stroke="'+palettes.orange+'" stroke-width="8" stroke-linecap="round"/>'+
+   '<path d="M60 200h20M60 218h20M60 236h20M200 200h20M200 218h20M200 236h20" stroke="#a8b8bf" stroke-width="2"/>'+
+   '<path d="M58 280h27" stroke="'+palettes.blue+'" stroke-width="6"/>'+text(96,286,"Original strand",17,600,"#344958","start")+
+   '<path d="M58 311h27" stroke="'+palettes.orange+'" stroke-width="6"/>'+text(96,317,"New strand",17,600,"#344958","start"),
+   335,280)
  },
  expression:{
   label:"Gene expression in eukaryotes",

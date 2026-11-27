@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="365" viewBox="0 0 280 365" role="img" aria-labelledby="t d">
+<title id="t">Four examination methods</title><desc id="d">A schematic eye represents inspection by looking; a hand touching a surface represents palpation by feeling; a fingertip and motion marks represent percussion by tapping and judging sound; a stethoscope represents auscultation by listening. Icons show methods rather than a complete examination.</desc>
+<rect width="280" height="365" rx="12" fill="#f5faf9"/><g font-family="system-ui,sans-serif" fill="#243e49" font-size="16">
+<text x="140" y="26" text-anchor="middle" font-weight="700">Examination methods</text>
+<path d="M28 72q24-22 48 0q-24 22-48 0z" fill="#d9edf5" stroke="#537a94" stroke-width="2"/><circle cx="52" cy="72" r="7" fill="#537a94"/><text x="100" y="68">Inspection</text><text x="100" y="89" font-size="14">Look</text>
+<path d="M24 144h58" stroke="#805d45" stroke-width="3"/><path d="M44 101v29q4 8 11 8h12v-21M54 101v24M64 105v20M74 111v18" stroke="#a76125" stroke-width="3" fill="none"/><text x="100" y="126">Palpation</text><text x="100" y="147" font-size="14">Feel</text>
+<path d="M24 215h58" stroke="#805d45" stroke-width="3"/><path d="M46 175v28M56 175v28M66 175v28M42 162l-5-7M52 159v-9M62 162l5-7" stroke="#a76125" stroke-width="3" fill="none"/><text x="100" y="196">Percussion</text><text x="100" y="217" font-size="14">Tap and judge sound</text>
+<path d="M27 246v15q0 21 20 21t20-21v-15M47 282v18q0 13 13 13h9" stroke="#537a94" stroke-width="3" fill="none"/><circle cx="73" cy="313" r="6" fill="#d9edf5" stroke="#537a94" stroke-width="2"/><text x="100" y="272">Auscultation</text><text x="100" y="293" font-size="14">Listen to body sounds</text>
+<text x="140" y="346" text-anchor="middle" font-size="14">Icons are schematic.</text></g></svg>

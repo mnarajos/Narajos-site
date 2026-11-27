@@ -17,6 +17,8 @@
  const villi=figure('f175-many-villi',330,'Several branching chorionic villi extend into maternal blood. Fetal vessels lie inside the villi, separated from maternal blood by a barrier. The many branches provide a large exchange surface.','Compare the many branching villi. Their surfaces provide a large area for exchange; the diagram is schematic.');
  const bypass=figure('f175-ivf-bypass',370,'In an IVF cycle sperm and oocyte are brought together outside the body. If an embryo develops it may be transferred into the uterus, bypassing the oviducts. Implantation is not guaranteed.','Follow the outside-body fertilisation attempt and, if an embryo develops, transfer into the uterus. This bypasses the oviducts; implantation is a later event.');
  const fertility=figure('f175-fertility-factors',320,'A schematic compares failure to release an oocyte with reduced sperm motility. Either may reduce the chance that gametes meet; these examples do not diagnose a cause in an individual.','Compare where each example affects the route to fertilisation. Other causes, including a blocked oviduct, are possible.');
+ const digestion=figure('f174-starch-digestion',350,'Starch is represented as a chain of linked units. Amylase breaks starch into smaller carbohydrates, and other enzymes complete digestion to glucose. The drawing is schematic and does not show every intermediate.','Follow starch through amylase action and further digestion to glucose. Shapes represent units and omit chemical detail.');
+ const absorption=figure('f174-glucose-absorption',320,'Glucose from the intestinal lumen crosses an epithelial lining into the blood. Impaired absorption can reduce this transfer even if glucose is available. Transport proteins are omitted.','Follow glucose from the intestinal lumen across the epithelial lining into blood. This schematic omits the transport proteins involved.');
  const journey=figure('f175-fertilisation-development',410,'A sperm and oocyte may meet in the oviduct. If fertilisation occurs, a zygote forms, divides during transport, becomes a blastocyst and may later implant in the uterine lining. The schematic is not to scale.','Follow the conditional sequence from fertilisation in an oviduct to a blastocyst that may implant in the uterus.');
  const hormones=figure('f175-fsh-lh',325,'FSH supports the growth of an ovarian follicle containing an oocyte. An LH surge normally triggers release of the secondary oocyte; the remaining follicle forms the corpus luteum.','Compare the developing follicle with the released oocyte. The LH surge normally triggers ovulation.');
  const gametes=figure('f175-oocyte-route',350,'A secondary oocyte is released from the ovary, passes toward the fimbriae and may be transported along the oviduct towards the uterus.','Locate the oviduct, where fertilisation usually occurs. Transport is assisted by cilia and contractions.');
@@ -33,6 +35,9 @@
   lesson.modelDiagrams={...lesson.modelDiagrams,[index]:[...(Array.isArray(prior)?prior:prior?[prior]:[]),{...visual,assessmentSensitive:true}]};
  }
  addExplain('f174/a1',nutrients);
+ addModel('f174/a3',0,digestion);
+ addModel('f174/a3',1,absorption);
+ addModel('f174/a3',2,feedback);
  addExplain('f174/a4',bmiCalculation);
  addExplain('f175/a2',villi);
  addExplain('f175/a3',fertility);

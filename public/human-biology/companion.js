@@ -609,6 +609,12 @@ Object.assign(recapFigureMap, window.HumanF176F177RecapFigures || {});
 Object.assign(recapFigureMap, window.KeystoneF174F175RecapFigures || {});
 Object.assign(recapFigureMap, window.KeystoneF172F173RecapFigures || {});
 Object.assign(recapFigureMap, window.HumanF170SystemsGrowthRecapFigures || {});
+Object.assign(recapFigureMap, window.HumanF170StemRecapFigures || {});
+Object.assign(recapFigureMap, window.KeystoneF171VaccineRecaps || {});
+Object.assign(recapFigureMap, window.HumanF171ScreenTreatmentRecapFigures || {});
+Object.assign(recapFigureMap, window.HumanF171FocusedRecapFigures || {});
+Object.assign(recapFigureMap, window.KeystoneF171MeasureEvidenceRecaps || {});
+Object.assign(recapFigureMap, window.HumanF170OrganelleRecapFigures || {});
 function recapFigures(unit,id,step,indices) {
  const teaching=window.KeystoneHumanTeaching, lessons=window.KeystoneHumanLessons || {};
  if (!teaching) return "";
@@ -681,6 +687,19 @@ function recapBody(unit,id,step,point) {
   "f170/4.2/0": [
    {heading:"Microbiota sites", text:"The human microbiota includes bacteria and fungi in different body sites;", figures:[0]},
    {heading:"Microbial activities", text:"its activities can support metabolism, colonisation resistance, and immune responses.", figures:[1,2]}
+  ],
+  "f170/1.1.1/1": [
+   {heading:"Protein handling", text:"Rough endoplasmic reticulum carries ribosomes; the Golgi modifies and packages cell products.", figures:[0]},
+   {heading:"ATP supply", text:"Mitochondria supply ATP by aerobic respiration.", figures:[1]}
+  ],
+  "f171/a4/1": [
+   {heading:"ECG", text:"An ECG records cardiac electrical activity;", figures:[0]},
+   {heading:"Peak flow", text:"peak flow measures maximum expiratory airflow;", figures:[1]},
+   {heading:"Blood pressure", text:"a blood-pressure cuff measures arterial pressure.", figures:[2]}
+  ],
+  "f171/a5/1": [
+   {heading:"Observation", text:"Reports should distinguish observed results from explanations or conclusions.", figures:[0]},
+   {heading:"Association", text:"An association does not always show cause and effect.", figures:[1]}
   ]
  };
  const groups = groupedRecaps[unit+"/"+id+"/"+step];

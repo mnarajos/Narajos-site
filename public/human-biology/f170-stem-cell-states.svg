@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 420" role="img" aria-labelledby="title desc">
+<title id="title">Stem-cell activity and potential</title><desc id="desc">An adult stem cell may be quiescent, then respond to a local signal and divide. Some descendant cells can differentiate within its tissue lineage. A pluripotent stem cell is shown as able to form cells from several different body tissues; this is a simplified comparison of potential.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5 0 10Z" fill="#285f68"/></marker></defs><rect width="280" height="420" rx="12" fill="#f4f9f8"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="15"><text x="140" y="24" font-weight="700">Stem-cell states</text><text x="140" y="50">Adult stem cell example</text>
+<circle cx="53" cy="98" r="19" fill="#cbded9" stroke="#397d75" stroke-width="2"/><circle cx="53" cy="98" r="7" fill="#67877e"/>
+<path d="M78 98h50" stroke="#285f68" stroke-width="2" fill="none" marker-end="url(#arr)"/><text x="103" y="80" font-size="13">Local signal</text>
+<circle cx="151" cy="88" r="15" fill="#cbded9" stroke="#397d75" stroke-width="2"/><circle cx="151" cy="88" r="6" fill="#67877e"/><circle cx="151" cy="119" r="15" fill="#cbded9" stroke="#397d75" stroke-width="2"/><circle cx="151" cy="119" r="6" fill="#67877e"/>
+<path d="M166 119L204 108" stroke="#285f68" stroke-width="2" fill="none" marker-end="url(#arr)"/><circle cx="225" cy="104" r="19" fill="#e8b79e" stroke="#a35d43" stroke-width="2"/><circle cx="225" cy="104" r="6" fill="#a35d43"/>
+<text x="53" y="150" font-size="14">Quiescent</text><text x="151" y="150" font-size="14">Division</text><text x="225" y="150" font-size="14">Specialised</text><text x="225" y="167" font-size="14">descendant</text>
+<path d="M20 185h240" stroke="#c0d6d2"/><text x="140" y="211">Pluripotent cell potential</text>
+<circle cx="140" cy="250" r="20" fill="#d8c8e2" stroke="#7b6289" stroke-width="2"/><circle cx="140" cy="250" r="7" fill="#7b6289"/>
+<path d="M122 267L67 307M140 272v35M158 267l55 40" stroke="#285f68" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+<circle cx="55" cy="325" r="16" fill="#e5c3ae" stroke="#a16b4d" stroke-width="2"/><circle cx="140" cy="325" r="16" fill="#accfca" stroke="#438076" stroke-width="2"/><circle cx="225" cy="325" r="16" fill="#e2c2d1" stroke="#a76683" stroke-width="2"/>
+<text x="55" y="359" font-size="14">Nerve cell</text><text x="140" y="359" font-size="14">Gut cell</text><text x="225" y="359" font-size="14">Muscle cell</text>
+<text x="140" y="392" font-size="14">Examples, not a complete lineage.</text><text x="140" y="411" font-size="14">Cells are schematic.</text></g></svg>
