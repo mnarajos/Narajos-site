@@ -42,10 +42,12 @@ const checkpoints = [
   observation:"The blastocyst attaches to the endometrium several days after fertilisation if conditions allow. Fertilisation can occur even when implantation fails."
  }
 ];
-function guideMarkup(){
+function guideMarkup(reviewFigures){
  return '<details class="krp-guide"><summary>Predict and explain</summary>'+
   '<label for="krp-checkpoint">Revisit a stage</label><select id="krp-checkpoint">'+
   checkpoints.map(step=>'<option value="'+step.id+'">'+step.title+'</option>').join("")+'</select>'+
+  (reviewFigures ? '<p class="krp-review-note">The review figure shows this stage. The interactive model below starts at the beginning.</p>' : '')+
+  (reviewFigures ? checkpoints.map(step=>reviewFigures[step.id] ? '<div class="krp-review-figure" data-krp-review-stage="'+step.id+'" hidden><h3>Review: '+step.title+'</h3>'+reviewFigures[step.id]+'</div>' : '').join("") : '')+
   '<form><fieldset><legend></legend><div class="krp-options"></div></fieldset>'+
   '<button class="krp-btn" type="submit">Check prediction</button></form>'+
   '<p class="krp-prediction" role="status" aria-atomic="true"></p>'+
@@ -88,6 +90,7 @@ function mountGuide(root, observed, withoutFertilisation, onChange, initialStep,
   accepted = false;
   const step = checkpoints[index];
   select.value = step.id;
+  guide.querySelectorAll('[data-krp-review-stage]').forEach(figure=>{figure.hidden=figure.dataset.krpReviewStage!==step.id;});
   form.querySelector("legend").textContent = step.prompt;
   explanation.open = false;
   explanation.querySelector("p").textContent = step.observation;
@@ -203,10 +206,10 @@ function svg(){
  '<text x="430" y="565" text-anchor="middle" font-size="18" font-weight="700" fill="#23668a">Sperm entry</text><path d="M529 569V545M518 556L529 545L540 556" stroke="#23668a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'+
  '</g></svg>';
 }
-function markup(){
+function markup(reviewFigures){
  return '<section class="krp-root" id="krp-model" aria-label="Interactive ovulation and sperm transport model">'+
  '<div class="krp-intro"><h2>Explore ovulation and fertilisation</h2><p>Make a prediction or explore the diagram freely.</p></div>'+
- guideMarkup()+
+ guideMarkup(reviewFigures)+
  '<button class="krp-btn krp-zoom" data-krp="zoom" type="button" aria-pressed="false" aria-controls="krp-view">Follow the current stage</button>'+
  '<div class="krp-view" id="krp-view" role="region" aria-label="Reproductive anatomy diagram" tabindex="0">'+svg()+'</div>'+
  '<p class="krp-swipe">Swipe to see the whole diagram, or select Follow the current stage.</p>'+

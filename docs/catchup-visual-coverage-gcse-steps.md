@@ -8,6 +8,8 @@ The salts-and-reactivity opening also reuses an approved still of a real displac
 
 The respiration-exercise worked group reuses [Sedimented red blood cells](https://commons.wikimedia.org/wiki/File:Sedimented_red_blood_cells.jpg), MDougM, released into the [public domain](https://commons.wikimedia.org/wiki/Template:PD-self). The local original at `public/assets/micrographs/human-erythrocytes.jpg` is unchanged (SHA-1 matches the source); it retains the 20 µm scale bar. The figure identifies the membrane stain and notes that haemoglobin is not visible.
 
+The 22 GCSE worked examples can also be revisited from later checks. Their optional review now uses the same line-specific figures as the original teaching stage, mounting them only when opened. Photosynthesis, National Grid and the Higher-only reacting-masses examples were checked at 320 and 1280 px; viewing support pauses the check and a subsequent correct answer is recorded as supported, not independent. An additional inspection of all 22 reviews found no duplicate document IDs; full scientific and readability claims remain tied to the individually reviewed original figures below.
+
 Original diagrams are schematic and not to scale; colours differentiate features. The additional diagrams in `gcse-more-step-visuals.js` were reviewed against the displayed explanation; desktop and 320 px rendering checks are recorded below after inspection. Other rows marked pending need individual review even when they have a mapping.
 
 | Concept and block | Teaching content | Figure in this block | Scientific accuracy | Teaching relevance | Rendered readability |

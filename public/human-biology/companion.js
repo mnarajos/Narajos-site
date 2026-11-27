@@ -743,7 +743,15 @@ function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
   var recap='<details class="paper panel"><summary>Review the key ideas</summary><ul class="keylines">'+
    points.map(function(point,i){return "<li>"+recapBody(unit,id,i,point)+"</li>";}).join("")+"</ul></details>";
   var sim=lesson.simulation&&window.KeystoneReproductionSimulation;
-  var interactive=sim?'<details class="hb-inline-model"'+(simulationStage?' open':'')+'><summary>Open the reproductive pathway model</summary>'+sim.render()+'</details>':"";
+  var reviewFigures=null;
+  if(sim && simulationStage && teaching.renderDiagram){
+   const models=lesson.modelDiagrams || {};
+   const first=item=>Array.isArray(item)?item[0]:item;
+   const ovulation=Array.isArray(models[1])?models[1][1]:models[1];
+   const stages={follicle:first(models[0]),ovulation,transport:first(models[2]),fertilisation:first(models[3]),development:first(models[3]),implantation:first(models[3])};
+   reviewFigures=Object.fromEntries(Object.entries(stages).filter(([,item])=>item).map(([name,item])=>[name,teaching.renderDiagram(item)]));
+  }
+  var interactive=sim?'<details class="hb-inline-model"'+(simulationStage?' open':'')+'><summary>Open the reproductive pathway model</summary>'+sim.render(reviewFigures)+'</details>':"";
   render('<div class="k-wrap k-catchup-concept" data-unit="'+unit+'">'+crumb("catchup/"+unit,u.title)+
    '<div class="k-eyebrow">'+unitKind(unit)+'</div><h1>'+esc(topic)+'</h1>'+
    teaching.render(lesson,{booklet:unit==="f170"||unit==="f171",inline:lesson.visual==="model"?"":visual,method:skillLinks(unit,id,lesson),modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:(unit==="f170"||unit==="f171"?"":recap)+related})+'</div>');

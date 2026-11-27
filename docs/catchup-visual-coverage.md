@@ -4,10 +4,10 @@ This is a working inventory, **not a claim of full visual coverage**. The step l
 
 | Course | Detailed teaching-block record | Coverage status |
 | --- | --- | --- |
-| KS3 Years 7–9 | [KS3 block ledger](catchup-visual-coverage-ks3-steps.md) | 37 indexed routes; block mappings recorded. Some individual figure labels and specialist stages still require review as marked. |
+| KS3 Years 7–9 | [KS3 block ledger](catchup-visual-coverage-ks3-steps.md) | 37 routes and 17 worked stages reviewed, including desktop label checks. The Elodea annotation remains a plausible interpretation; its source does not independently identify the marked features. |
 | GCSE Combined Science | [GCSE block ledger](catchup-visual-coverage-gcse-steps.md) | 48 routes: 48 openings, 87 teaching steps, 73 worked lines and 17 Higher entries reviewed. See the ledger for the scope and limitations of each figure. |
 | A-level Biology | [A-level block ledger](catchup-visual-coverage-alevel-steps.md) | 413 recap groups reviewed: 367 mapped to figures, 36 instruction-only and 10 isolated short statements. Guided catch-up stages are recorded separately; some figures illustrate only the relationships identified in the ledger. |
-| AAQ Human Biology | [Human Biology block ledger](catchup-visual-coverage-human-steps.md) | 201 reachable recap lines: 188 explicitly mapped, 1 supported by an existing inline graft visual, and 12 short statements classified separately. Guided stages and partial representations require separate quality review. |
+| AAQ Human Biology | [Human Biology block ledger](catchup-visual-coverage-human-steps.md) | 201 reachable recap lines: 188 explicitly mapped, 1 supported by an existing inline graft visual, and 12 short statements classified separately. Guided-stage checks and the scope of partial representations are recorded in the ledger. |
 
 The concept inventories below list routes and their original opening-visual categories; they are not a live assessment of each step. The block ledgers are the current review records. All checked claims in a ledger have the scope stated there; a visual may cover only a part of its explanation.
 

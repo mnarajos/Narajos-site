@@ -222,7 +222,7 @@
   .hb-worked-micrograph { max-inline-size: min(100%, 16rem); }
 }
 
-.hb-teaching-sequence :is(summary, [tabindex="-1"]) { scroll-margin-block-start: 8rem; }
+.hb-teaching :is(summary, [tabindex="-1"]) { scroll-margin-block-start: 8rem; }
 
 .hb-teach-stage {
   --hb-stage-border: #8ab5ad;

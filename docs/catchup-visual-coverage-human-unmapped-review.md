@@ -18,4 +18,4 @@ This review classifies the reachable recap lines that had no entry in the figure
 | F177/a3 · 1 | Step 0 opens guided teaching, which includes a preclinical-model figure. The optional recap's short regulatory orientation sentence has no separate mapping. |
 | F177/a3 · 3 | One short reminder to weigh benefits, uncertainty and unwanted effects. No separate figure is mapped to this sentence. |
 
-The seven F171 focused impact recaps at movement/3, aorta/3, airways/3, digestive/3, renal/3, oxygen/4 and tissues/3 were subsequently mapped to their corresponding reviewed guided figures and remain subject to their own live-route checks. Earlier counts of raw registry entries must not count the suppressed F170/F171 guided step-0 recap as visible.
+The seven F171 focused impact recaps at movement/3, aorta/3, airways/3, digestive/3, renal/3, oxygen/4 and tissues/3 were subsequently mapped to their corresponding reviewed guided figures. Their direct recap routes were checked at 320 and 1280 px, as recorded in the F171 daily-life ledger. Earlier counts of raw registry entries must not count the suppressed F170/F171 guided step-0 recap as visible.

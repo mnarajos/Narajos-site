@@ -118,6 +118,8 @@ The [England key stage 3 science programme of study](https://www.gov.uk/governme
 
 Independent annotation review used the [Elodea source](https://commons.wikimedia.org/wiki/File:Chloroplasts_-_Microscopic_view_of_Elodea_canadensis.jpg) (Juan Carlos Fonseca Mata, CC BY-SA 4.0) and the [stained cheek-cell source](https://commons.wikimedia.org/wiki/File:Cheekcells_stained.jpg) (Mulletsrokk, CC BY-SA 3.0). The latter source reports a magnification for its original image; that value is not applied to the resized display.
 
+KS3 does not create the separate GCSE “Review the worked example” disclosure. At later stages, “Catch-up notes” reopens the original lesson and “Review answers” shows the completed question, answer and feedback; neither copies the worked explanation. The Year 7 `the-body` and Year 9 `energy-transfer` routes were checked at 320 and 1280 px, including independent-check isolation. The worked examples themselves remain beside their figures in their original stages.
+
 ### Year 7–8 guided worked explanations
 
 All nine explicitly authored Year 7–8 worked stages are listed here. Each figure is rendered in its worked stage; six are attached by `withKS3Scaffolds` rather than directly in the source data. References in questions were reviewed separately from worked figures; individual short prompts and feedback do not establish a new teaching block. All listed stages were opened at 390 and 1280 px and checked for page overflow; the new figures were visually inspected at 390 px. The browser suite now also discovers every authored worked stage and checks figure placement, alternatives and overflow at 320 and 1280 px; this is an integrity check, not independent scientific certification.

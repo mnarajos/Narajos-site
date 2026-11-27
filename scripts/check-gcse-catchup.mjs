@@ -115,6 +115,60 @@ export async function checkGCSECatchup(browser, base) {
         await page.evaluate(key => localStorage.removeItem(key), `narajos.catchup.v1.${lesson.year}.${id}`);
       }
     }
+    // Revisited worked examples retain the figures beside their own lines.
+    // The review is populated only when requested and pauses the active check.
+    for (const width of [320, 1280]) {
+      await page.setViewportSize({width, height: 820});
+      for (const id of ["photosynthesis-limits", "national-grid", "reacting-masses"]) {
+        const lesson = gcseCatchup[id];
+        const key = `narajos.catchup.v1.${lesson.year}.${id}`;
+        await page.goto(lessonURL(id, lesson.year));
+        await page.evaluate(({key, step}) => localStorage.setItem(key, JSON.stringify({step})),
+          {key, step: lesson.steps.length - 1});
+        await page.reload();
+        const review = page.locator("#catchup-evidence > details.school-worked-example");
+        assert(await review.isVisible(), `${id}: worked review is available`);
+        assert.equal(await review.locator("figure, table").count(), 0, `${id}: unopened review must not mount figures`);
+        assert.equal(await journey.locator(".school-current-stage .school-worked-line-visuals").count(), 0,
+          `${id}: worked figures must not appear in independent practice`);
+        await openCheck();
+        assert.equal(await dialog.locator(".school-worked-line-visuals").count(), 0, `${id}: check must not contain the review`);
+        await dialog.getByText("Need help?", {exact: true}).press("Enter");
+        await dialog.getByRole("button", {name: "Revisit the worked example"}).press("Enter");
+        const items = review.locator("ol.school-worked-line-visuals > li");
+        await items.first().waitFor({state: "visible"});
+        assert.equal(await items.count(), lesson.steps[0].worked.lines.length, `${id}: review line count`);
+        for (let index = 0; index < lesson.steps[0].worked.lines.length; index++) {
+          const item = items.nth(index);
+          assert.equal(await item.locator("p").innerText(), lesson.steps[0].worked.lines[index], `${id}: review line ${index + 1}`);
+          assert.equal(Boolean(await item.locator("figure, table").count()), Boolean(lesson.steps[0].worked.lineVisuals[index]),
+            `${id}: review figure belongs beside line ${index + 1}`);
+          for (const svg of await item.locator('svg[role="img"]').all()) {
+            assert((await svg.getAttribute("aria-label"))?.trim().length > 15, `${id}: review figure needs an alternative`);
+          }
+        }
+        assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, `${id}: review overflows`);
+        const duplicateIds = await page.evaluate(() => {
+          const ids = [...document.querySelectorAll("[id]")].map(node => node.id);
+          return [...new Set(ids.filter((value, index) => ids.indexOf(value) !== index))];
+        });
+        assert.deepEqual(duplicateIds, [], `${id}: review must not duplicate document IDs`);
+        if (width === 320) await checkSvgLabels(review, `${id} worked review`);
+        let saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key)), key);
+        assert.equal(Boolean(saved.done), false, `${id}: viewing a figure must not complete the lesson`);
+        assert.equal(Boolean(saved.correct), false, `${id}: viewing a figure must not demonstrate understanding`);
+        assert.equal(saved.helped, true, `${id}: revisiting support must be recorded as help`);
+        await journey.getByRole("button", {name: "Resume check"}).press("Enter");
+        await choose(lesson.steps.at(-1).answer);
+        await submit();
+        await dialog.getByRole("button", {name: /^(Continue|Finish guided checks|Try one more on your own)$/}).press("Enter");
+        saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key)), key);
+        assert.equal(saved.outcomes[lesson.steps.length - 1], "supported", `${id}: revisited review must not count as independent`);
+        await page.evaluate(key => localStorage.removeItem(key), key);
+      }
+    }
+    await page.setViewportSize({width: 320, height: 820});
+
     // Decay uses the original halving evidence only where it is relevant. The
     // opening also explains randomness, while the first stage explains Bq.
     const decayId = "decay-half-life";

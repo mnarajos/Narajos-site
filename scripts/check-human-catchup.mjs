@@ -1668,6 +1668,79 @@ export async function checkHumanCatchup(browser, base) {
     assert(!(await threshold.isVisible()), "Returning to the preceding step hides the later figure");
     assert.equal(await stage("independent").locator('img[src="/human-biology/threshold-comparison.svg"]').count(), 0);
 
+    // Review links select a static figure for the named simulation guide, without
+    // moving the student-controlled model or recording a prediction as correct.
+    for (const width of [320, 1280]) {
+      await page.setViewportSize({width, height: 800});
+      for (const [name, file] of [["follicle", "f175-fsh-lh.svg"], ["ovulation", "f175-oocyte-route.svg"], ["transport", "f175-gamete-meeting.svg"], ["fertilisation", "f175-fertilisation-development.svg"], ["development", "f175-fertilisation-development.svg"], ["implantation", "f175-fertilisation-development.svg"]]) {
+        await page.evaluate(key => localStorage.removeItem(key), localPractice);
+        await open("catchup/f175/a1?stage=" + name);
+        const simulation = page.locator("#krp-model");
+        const guide = simulation.locator(".krp-guide");
+        assert(await guide.evaluate(details => details.open), `${name}: review guide opens`);
+        assert.equal(await guide.locator("select").inputValue(), name);
+        const reviewFigure = guide.locator(`[data-krp-review-stage="${name}"]`);
+        assert(await reviewFigure.locator(`img[src$="/${file}"]`).isVisible(), `${name}: matching review figure`);
+        assert.equal(await guide.locator("[data-krp-review-stage]:visible").count(), 1);
+        assert.match(await simulation.locator(".krp-status").innerText(), /Select an ovary or press FSH to begin/);
+        assert.equal((await simulation.locator(".krp-observation").innerText()).trim(), "");
+        assert.equal(await page.evaluate(key => localStorage.getItem(key), localPractice), null, "opening review must not record progress");
+        assert(await widthFits(), `${name}: review figure fits`);
+        if (name === "follicle") {
+          await guide.locator("select").focus();
+          await page.keyboard.press("ArrowDown");
+          assert.equal(await guide.locator("select").inputValue(), "ovulation");
+          assert(await guide.locator('[data-krp-review-stage="ovulation"] img[src$="/f175-oocyte-route.svg"]').isVisible());
+          assert(!(await reviewFigure.isVisible()));
+          assert.equal(await page.evaluate(key => localStorage.getItem(key), localPractice), null, "changing the review does not record progress");
+        }
+        await expand(stage("independent"));
+        assert(await simulation.isHidden(), `${name}: review figures stay out of independent practice`);
+        assert.equal(await stage("independent").locator(".krp-review-figure").count(), 0);
+        await expand(page.locator("[data-hb-model-step]"));
+        assert(await simulation.isVisible(), `${name}: model returns to teaching`);
+        assert.equal(await guide.locator("[data-krp-review-stage]:visible").count(), 1);
+      }
+    }
+
+    // Deep-linked non-booklet reviews should arrive at the selected step after
+    // late layout, with its text below the sticky header.
+    for (const width of [320, 1280]) {
+      await page.setViewportSize({width, height: 800});
+      for (const route of ["f173/a2?review=1", "f174/a3?review=3", "f175/a2?review=3", "f176/a2?review=4", "f176/a2?review=6", "f177/a2?review=2"]) {
+        await open("catchup/" + route);
+        await page.waitForFunction(() => {
+          const step = document.querySelector('[data-hb-model-step] li[aria-current="step"]');
+          const header = document.querySelector(".top");
+          if (!step || !header || document.activeElement !== step) return false;
+          const top = step.getBoundingClientRect().top;
+          return top >= header.getBoundingClientRect().bottom - 1 && top < innerHeight;
+        }, null, {timeout: 10000});
+      }
+    }
+
+    // A delayed page must not pull someone back after they have moved focus or
+    // deliberately scrolled before the review alignment can run.
+    for (const mode of ["focus", "scroll"]) {
+      const guardPage = await browser.newPage({viewport: {width: 320, height: 800}});
+      await guardPage.addInitScript(() => {
+        const held = new Promise(resolve => { window.__releaseReviewFonts = resolve; });
+        Object.defineProperty(document.fonts, "ready", {get: () => held, configurable: true});
+      });
+      await guardPage.goto(base + "/human-biology/#catchup/f176/a2?review=4");
+      await guardPage.locator('[data-hb-model-step] li[aria-current="step"]').waitFor({state: "visible"});
+      await guardPage.evaluate(input => {
+        if (input === "focus") document.querySelector("main").focus({preventScroll: true});
+        else window.dispatchEvent(new WheelEvent("wheel", {deltaY: -200}));
+        window.scrollTo({top: 0, behavior: "instant"});
+        window.__releaseReviewFonts();
+      }, mode);
+      await guardPage.waitForTimeout(400);
+      assert((await guardPage.evaluate(() => scrollY)) < 60, `${mode}: delayed review alignment must not pull the learner back`);
+      if (mode === "focus") assert.equal(await guardPage.evaluate(() => document.activeElement.tagName), "MAIN");
+      await guardPage.close();
+    }
+
     assert.deepEqual(errors, []);
     console.log("Human Biology Catch-up: " + chapters.length + " routes across eight units, feedback, saved drafts, session return, licensed images, reproduction controls, and responsive accessibility passed.");
   } finally {

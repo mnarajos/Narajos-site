@@ -439,6 +439,26 @@
       if (reviewStep) {
         model.open = true;
         showModelStep(Math.min(reviewStep, steps.children.length) - 1, true);
+        const target = steps.children[Math.min(reviewStep, steps.children.length) - 1];
+        // Fonts and models above the worked example can settle after initial focus.
+        // Realign only while the requested step still has focus; never pull a
+        // learner back after they have moved to another control or stage.
+        let userMoved = false;
+        const userEvents = ["pointerdown", "wheel", "touchstart", "keydown"];
+        const stopListening = () => userEvents.forEach(type => window.removeEventListener(type, cancelAlignment, true));
+        const cancelAlignment = () => { userMoved = true; stopListening(); };
+        userEvents.forEach(type => window.addEventListener(type, cancelAlignment, {capture: true, passive: true}));
+        const alignReview = () => {
+          const fontsReady = document.fonts?.ready || Promise.resolve();
+          fontsReady.then(() => requestAnimationFrame(() => {
+            if (!userMoved && target.isConnected && document.activeElement === target && target.getClientRects().length) {
+              target.scrollIntoView({block: "start", behavior: "instant"});
+            }
+            stopListening();
+          }));
+        };
+        if (document.readyState === "complete") alignReview();
+        else window.addEventListener("load", alignReview, {once: true});
       } else showModelStep(booklet ? Math.min(record.modelStep || 0, steps.children.length - 1) : 0, false);
     }
     const explanation = root.querySelector(".hb-teach-explain");

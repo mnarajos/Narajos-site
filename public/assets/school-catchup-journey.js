@@ -128,13 +128,34 @@ export function mountJourney(host, model, lesson) {
     model.after(journey);
   }
 
+  function workedContent(container, worked, headingTag) {
+    const {title, lines, visual, lineVisuals} = worked;
+    container.append(element(headingTag, title));
+    if (visual && !lineVisuals) container.append(visual());
+    const reasoning = element("ol", "", lineVisuals ? "school-worked-line-visuals" : "");
+    // List semantics remain available even when CSS removes native markers.
+    if (lineVisuals) reasoning.setAttribute("role", "list");
+    reasoning.append(...lines.map((line, index) => {
+      if (!lineVisuals) return element("li", line);
+      const item = element("li");
+      if (lineVisuals[index]) item.append(lineVisuals[index]());
+      item.append(element("p", line));
+      return item;
+    }));
+    container.append(reasoning);
+  }
+
   const workedModel = Number(year) >= 10 && steps.find(step => step.worked)?.worked;
   const workedReview = workedModel ? element("details", "", "school-worked-example") : null;
   if (workedReview) {
-    const workedLines = element("ol");
-    workedLines.append(...workedModel.lines.map(line => element("li", line)));
-    workedReview.append(element("summary", "Review the worked example"),
-      element("h3", workedModel.title), workedLines);
+    workedReview.append(element("summary", "Review the worked example"));
+    // Build on request: unopened review figures do not appear in the opening
+    // evidence or active assessment, and their controls are not mounted twice.
+    workedReview.addEventListener("toggle", () => {
+      if (!workedReview.open || workedReview.dataset.populated) return;
+      workedContent(workedReview, workedModel, "h3");
+      workedReview.dataset.populated = "true";
+    });
     model.append(workedReview);
   }
 
@@ -214,22 +235,8 @@ export function mountJourney(host, model, lesson) {
         stage.append(teaching);
       }
       if (guided && step.worked) {
-        const { title, lines, visual, lineVisuals } = step.worked;
         const example = element("div", "", "school-worked-example");
-        example.append(element("h4", title));
-        if (visual && !lineVisuals) example.append(visual());
-        const reasoning = element("ol", "", lineVisuals ? "school-worked-line-visuals" : "");
-        // Explicit list semantics are retained in browsers that suppress them
-        // when CSS removes the native marker for full-width figures.
-        if (lineVisuals) reasoning.setAttribute("role", "list");
-        reasoning.append(...lines.map((line, index) => {
-          if (!lineVisuals) return element("li", line);
-          const item = element("li");
-          if (lineVisuals[index]) item.append(lineVisuals[index]());
-          item.append(element("p", line));
-          return item;
-        }));
-        example.append(reasoning);
+        workedContent(example, step.worked, "h4");
         stage.append(example);
       }
       if (inlineCheck && !paused) {

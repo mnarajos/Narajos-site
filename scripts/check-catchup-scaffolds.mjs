@@ -209,6 +209,41 @@ export async function checkCatchupScaffolds(browser, base) {
         await page.evaluate(key => localStorage.removeItem(key), key);
       }
     }
+    // KS3 reopens its original notes or completed question feedback, rather
+    // than copying a worked example into an assessment dialog. Verify both
+    // a catalogue route and a Year 9 route at phone and desktop widths.
+    for (const width of [320, 1280]) {
+      await page.setViewportSize({width, height: 780});
+      for (const {year, id, route, workedLine} of [
+        {year: 7, id: "the-body", route: "/ks3/lesson/?topic=the-body&guided=1", workedLine: "At the lung, oxygen diffuses from the air sac into nearby blood."},
+        {year: 9, id: "energy-transfer", route: "/science-catch-up/lesson/?topic=energy-transfer", workedLine: "A transfers 100 J each second."}
+      ]) {
+        const key = `narajos.catchup.v1.${year}.${id}`;
+        await page.evaluate(key => localStorage.setItem(key, JSON.stringify({step: 1, outcomes: {0: "supported"}})), key);
+        await page.goto(base + route);
+        await journey.getByRole("button", {name: "Catch-up notes", exact: true}).click();
+        const notes = page.locator("#catchup-evidence");
+        assert(await notes.isVisible());
+        assert.equal(await notes.locator(".school-worked-example").count(), 0, `${id}: KS3 notes must not copy a worked example without its figure`);
+        const review = journey.locator("details").filter({hasText: "Review answers"});
+        await review.locator("summary").click();
+        await review.getByRole("button", {name: "Check 1", exact: true}).click();
+        assert(await dialog.isVisible());
+        assert(!(await dialog.innerText()).includes(workedLine), `${id}: answer review is not a text-only worked example`);
+        assert.equal(await dialog.locator(".school-worked-example").count(), 0);
+        await dialog.getByRole("button", {name: "Close review"}).click();
+        await page.evaluate(key => localStorage.setItem(key, JSON.stringify({step: 2, outcomes: {0: "supported", 1: "supported"}})), key);
+        await page.reload();
+        assert(!(await notes.isVisible()), `${id}: opening evidence remains hidden for the independent check`);
+        await journey.getByRole("button", {name: "Check", exact: true}).click();
+        assert(await dialog.isVisible());
+        assert.equal(await dialog.locator(".school-worked-example").count(), 0, `${id}: independent check must not expose worked content`);
+        assert.equal(await dialog.getByRole("button", {name: "Revisit the worked example"}).count(), 0);
+        assert(!(await dialog.innerText()).includes(workedLine));
+        await page.keyboard.press("Escape");
+        await page.evaluate(key => localStorage.removeItem(key), key);
+      }
+    }
     await page.setViewportSize({width: 320, height: 780});
     assert.deepEqual(errors, [], "JavaScript errors in Year 7–9 catch-up");
   } finally {

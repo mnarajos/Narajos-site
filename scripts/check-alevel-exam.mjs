@@ -102,6 +102,14 @@ export async function checkALevelExam(browser, base) {
       const art = scope.locator(".al-model-visual");
       if (["regulation", "calvin", "osmosis", "hardy"].includes(family.id))
         assert.equal(await art.locator("figure.kc-visual").count(), 1);
+      if (family.id === "calvin") {
+        const supply = art.locator("figure.kc-visual").filter({hasText: "From light-dependent reactions to the cycle"});
+        assert.match(await supply.getByRole("img").getAttribute("aria-label"), /ATP and reduced NADP.*Calvin cycle in the stroma/i);
+      }
+      if (family.id === "regulation") {
+        const access = art.locator("figure.kc-visual").filter({hasText: "Access and transcription"});
+        assert.match(await access.getByRole("img").getAttribute("aria-label"), /packed chromatin.*factor.*polymerase.*RNA/i);
+      }
       if (family.id === "dihybrid") {
         assert.equal(await art.getByRole("table").count(), 0);
         assert(await art.getByRole("img", {name: /Both parents therefore have genotype AaBb/}).isVisible());
@@ -118,6 +126,11 @@ export async function checkALevelExam(browser, base) {
           assert.equal(await art.getByText("AABB", { exact: true }).count(), 1);
         if (family.id === "dihybrid" && i === 4)
           assert.equal(await art.getByText("AaBb", { exact: true }).count(), 4);
+        if (family.id === "dihybrid" && i === 5) {
+          const testCross = art.locator("figure.kc-visual").filter({hasText: "A dihybrid test cross"});
+          assert(await testCross.isVisible());
+          assert.match(await testCross.getByRole("img").getAttribute("aria-label"), /independently.*complete dominance.*non-interacting traits/i);
+        }
         if (family.id === "pressures" && [1, 3, 4, 5].includes(i)) {
           const crossover = {1:"B", 3:"C", 4:"D", 5:"E"}[i];
           assert.equal(await art.locator(".al-crossover-current").getAttribute("data-crossover"), crossover);
@@ -348,8 +361,47 @@ export async function checkALevelExam(browser, base) {
     await page.getByText("Review the worked example", { exact: true }).press("Enter");
     await page.locator(".al-review-example .al-model").waitFor();
     assert.equal(await page.locator(".al-practice input").first().inputValue(), "9");
-    await page.getByText("Review the worked example", { exact: true }).press("Enter");
+    const crossReview = page.locator(".al-review-example");
+    for (let i = 0; i < 5; i++) await crossReview.getByRole("button", {name: "Next step", exact: true}).click();
+    const reviewTestCross = crossReview.locator("figure.kc-visual").filter({hasText: "A dihybrid test cross"});
+    assert(await reviewTestCross.isVisible());
+    await crossReview.locator(":scope > summary").press("Enter");
+    assert.equal(await reviewTestCross.isVisible(), false);
     assert.equal(await page.locator(".al-model:visible").count(), 0);
+    assert.equal(await page.locator(".al-practice input").first().inputValue(), "9");
+    // The guided explanation remains available beside the same worked step in review,
+    // but is not exposed in the independent question unless the learner opens it.
+    await page.evaluate(key => { const state = JSON.parse(localStorage.getItem(key)); delete state.calvin; localStorage.setItem(key, JSON.stringify(state)); }, key);
+    await page.goto(base + "/alevel/#catchup-a5-calvin");
+    await page.getByRole("button", {name: "Go straight to questions", exact: true}).click();
+    const calvinReview = page.locator(".al-review-example");
+    assert.equal(await calvinReview.locator(".al-model-visual").count(), 0);
+    await page.locator(".al-practice-help > summary").click();
+    await calvinReview.locator(":scope > summary").click();
+    const calvinArt = calvinReview.locator(".al-model-visual");
+    await calvinArt.waitFor();
+    const supplyReview = calvinArt.locator("figure.kc-visual").filter({hasText: "From light-dependent reactions to the cycle"});
+    assert(await supplyReview.isVisible());
+    assert.match(await supplyReview.getByRole("img").getAttribute("aria-label"), /ATP and reduced NADP.*Calvin cycle in the stroma/i);
+    await calvinReview.getByRole("button", {name: "Next step", exact: true}).click();
+    assert.equal(await supplyReview.count(), 0);
+    assert(await calvinArt.locator("figure.kc-visual").isVisible());
+    await calvinReview.locator(":scope > summary").click();
+    assert.equal(await calvinArt.isVisible(), false);
+    await calvinReview.locator(":scope > summary").click();
+    assert(await calvinArt.locator("figure.kc-visual").isVisible());
+    await page.evaluate(key => { const state = JSON.parse(localStorage.getItem(key)); delete state.regulation; localStorage.setItem(key, JSON.stringify(state)); }, key);
+    await page.goto(base + "/alevel/#catchup-a8-epigen");
+    await page.getByRole("button", {name: "Go straight to questions", exact: true}).click();
+    const regulationReview = page.locator(".al-review-example");
+    assert.equal(await regulationReview.locator(".al-model-visual").count(), 0);
+    await page.locator(".al-practice-help > summary").click();
+    await regulationReview.locator(":scope > summary").click();
+    const regulationArt = regulationReview.locator(".al-model-visual");
+    await regulationArt.waitFor();
+    assert(await regulationArt.locator("figure.kc-visual").filter({hasText: "Access and transcription"}).isVisible());
+    await regulationReview.locator(":scope > summary").click();
+    assert.equal(await regulationArt.isVisible(), false);
     await page.goto(base + "/alevel/");
     assert.equal(await page.getByRole("link", { name: "Exam Skills", exact: true }).count(), 1);
     const finder = page.locator("[data-topic-finder]");

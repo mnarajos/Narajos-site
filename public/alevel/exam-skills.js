@@ -249,6 +249,13 @@
         cross.classList.add("al-punnett");
         box.append(cross);
         if (step >= 5) box.append(node("p", "Expected phenotypes · 9 A_B_ : 3 A_bb : 3 aaB_ : 1 aabb"));
+        if (step === 5 && window.ALevelInheritanceDetails) {
+          const figures = node("div");
+          figures.innerHTML = window.ALevelInheritanceDetails.render("a7", "dihybrid", 1);
+          const testCross = Array.from(figures.querySelectorAll("figure"))
+            .find(figure => figure.querySelector("strong")?.textContent === "A dihybrid test cross");
+          if (testCross) box.append(testCross);
+        }
       }
       return box;
     }
@@ -336,9 +343,9 @@
       return box.firstElementChild ? box : null;
     }
     const maps = {
-      regulation: [[control, "a8", "transfac", 0], [control, "a8", "epigen", 0],
+      regulation: [[window.ALevelTranscriptionAccess, "a8", "transfac", 0], [control, "a8", "epigen", 0],
         [control, "a8", "epigen", 1], [control, "a8", "transfac", 2]],
-      calvin: [[energy, "a5", "lightdep", 0], [energy, "a5", "calvin", 0],
+      calvin: [[window.ALevelCalvinSupply, "a5", "calvin", 0], [energy, "a5", "calvin", 0],
         [energy, "a5", "calvin", 1], [energy, "a5", "calvin", 2], [energy, "a5", "calvin", 2]],
     };
     const selected = maps[family.id]?.[index];
