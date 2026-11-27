@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="434" viewBox="0 0 280 434" role="img" aria-labelledby="title desc">
+  <title id="title">Inside the placenta: exchange at a chorionic villus</title>
+  <desc id="desc">A simplified enlargement of the marked villus in figure 2. A chorionic villus projects from placental tissue into surrounding maternal blood. A foetal capillary inside the villus connects with vessels in the placental tissue. Thick arrows show net oxygen transfer from maternal blood, through the placental barrier, into foetal blood and net carbon dioxide transfer in the opposite direction. Fine lines ending in dots label structures; they are not movement arrows. The barrier is exaggerated and the drawing is not to scale. Maternal and foetal blood are normally separate.</desc>
+  <defs><marker id="movement" viewBox="-2 -2 14 14" refX="9" refY="5" markerWidth="12" markerHeight="12" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0 0 L10 5 L0 10 Z" fill="#243c81" stroke="#fff" stroke-width="1.5" paint-order="stroke"/></marker></defs>
+  <rect width="280" height="434" rx="12" fill="#faf8f7"/>
+  <g font-family="system-ui,sans-serif" fill="#243c48">
+    <text x="14" y="25" font-size="17" font-weight="700">3. Zoom in: one villus</text>
+    <text x="14" y="47" font-size="16">Foetal side links to cord</text>
+    <text x="14" y="69" font-size="16">Maternal blood around villus</text>
+    <g transform="translate(0 24)">
+    <!-- Pink represents maternal blood around the villi, not a vessel wall. -->
+    <rect x="10" y="67" width="260" height="211" rx="6" fill="#f8e7e5"/>
+    <!-- A cross-section of tissue on the foetal side, continuous with the villus. -->
+    <path d="M10 67 H270 V95 H10 Z" fill="#dbeaf1" stroke="#53798c" stroke-width="2"/>
+    <path d="M71 95 H208 V208 C208 253 178 272 140 272 C102 272 71 253 71 208Z" fill="#fffdf9" stroke="#9c6275" stroke-width="3"/>
+    <!-- Capillary lumen is continuous with foetal vessels in the tissue above. -->
+    <path d="M115 67 V207 C115 234 125 245 140 245 C155 245 165 234 165 207 V67" fill="none" stroke="#497888" stroke-width="23"/>
+    <path d="M115 67 V207 C115 234 125 245 140 245 C155 245 165 234 165 207 V67" fill="none" stroke="#dff2f7" stroke-width="17"/>
+    <!-- Gas arrows are drawn last so their heads remain visible over all structures. -->
+    <g fill="none" stroke="#fff" stroke-width="6"><path d="M24 157 H120"/><path d="M165 206 H254"/></g>
+    <g fill="none" stroke="#243c81" stroke-width="3.5" marker-end="url(#movement)"><path d="M24 157 H120"/><path d="M165 206 H254"/></g>
+    <g font-size="16" font-weight="700" fill="#243c81"><text x="23" y="148">O₂</text><text x="207" y="197">CO₂</text></g>
+    <!-- The following are label leaders, with contrasting dots at their targets. -->
+    <g fill="none" stroke="#263d49" stroke-width="1.5">
+      <path d="M151 290 L157 258 L165 225"/><path d="M12 309 L12 280 L73 229"/><path d="M245 338 L183 240"/>
+    </g>
+    <g fill="#263d49" stroke="#fff" stroke-width="1.2"><circle cx="165" cy="225" r="3"/><circle cx="73" cy="229" r="3"/><circle cx="183" cy="240" r="3"/></g>
+    <g font-size="16" font-weight="600">
+      <text x="25" y="296">Foetal capillary</text>
+      <text x="14" y="318">Villus surface</text>
+      <text x="115" y="346">Placental barrier</text>
+    </g>
+    <text x="14" y="374" font-size="15">Thick arrows: net gas transfer</text>
+    <text x="14" y="394" font-size="15">Fine lines + dots: labels</text>
+    </g>
+  </g>
+</svg>

@@ -103,6 +103,14 @@ export async function checkGCSECatchup(browser, base) {
           assert.equal(await notes.locator('svg[aria-label*="On dark bark, some moths have dark wings"]').count(), 1,
             "selection comparison must show natural selection alongside selective breeding");
         }
+        if (id === "reflex-response" && index < 2) {
+          const pathway = notes.locator('svg[aria-label*="flow diagram shows a receptor"]');
+          assert.equal(await pathway.count(), 1, "reflex stages must show the receptor-to-muscle pathway");
+          assert.match(await pathway.textContent(), /Receptor in skin.*Sensory neurone.*Relay neurone in spinal cord.*Motor neurone.*Muscle contracts/s);
+          const synapse = notes.locator('svg[aria-label*="chemical transmitter crosses the synaptic gap"]');
+          assert.equal(await synapse.count(), index === 1 ? 1 : 0, "synapse must appear with its own explanation");
+          if (index === 1) assert.match(await synapse.textContent(), /Transmitter crosses gap.*Receptor on next neurone/s);
+        }
         for (const svg of await notes.locator("svg[role=img]").all()) {
           assert((await svg.getAttribute("aria-label"))?.trim(), `${id} step ${index + 1}: missing diagram description`);
         }
@@ -115,6 +123,29 @@ export async function checkGCSECatchup(browser, base) {
         await page.evaluate(key => localStorage.removeItem(key), `narajos.catchup.v1.${lesson.year}.${id}`);
       }
     }
+    // The vaccination explanation locates the antigen on a pathogen and
+    // shows the matching antibody; the diagram is not an independent answer.
+    for (const width of [320, 1280]) {
+      await page.setViewportSize({width, height: 820});
+      const key = "narajos.catchup.v1.10.vaccine-memory";
+      await page.goto(lessonURL("vaccine-memory", 10));
+      await page.evaluate(key => localStorage.setItem(key, JSON.stringify({step: 0})), key);
+      await page.reload();
+      const notes = journey.locator(".school-current-stage .school-step-notes");
+      const antigen = notes.getByRole("img", {name: /binding site fits a triangular antigen on the surface of a pathogen/});
+      assert.equal(await antigen.count(), 1);
+      assert.deepEqual(await antigen.locator("text").allTextContents(), ["Pathogen", "Antigen", "Antibody"]);
+      assert.match(await notes.innerText(), /binding site has a complementary shape/);
+      if (width === 320) await checkSvgLabels(notes, "vaccination-specific defence");
+      assert.deepEqual(await page.evaluate(key => JSON.parse(localStorage.getItem(key)), key), {step: 0});
+      await page.evaluate(key => localStorage.setItem(key, JSON.stringify({step: 3})), key);
+      await page.reload();
+      assert.equal(await journey.locator(".school-current-stage").getByRole("img", {name: /binding site fits a triangular antigen/}).count(), 0,
+        "teaching figure must not appear in the independent stage");
+      assert.deepEqual(await page.evaluate(key => JSON.parse(localStorage.getItem(key)), key), {step: 3});
+      await page.evaluate(key => localStorage.removeItem(key), key);
+    }
+
     // Revisited worked examples retain the figures beside their own lines.
     // The review is populated only when requested and pauses the active check.
     for (const width of [320, 1280]) {
@@ -303,6 +334,35 @@ export async function checkGCSECatchup(browser, base) {
         assert((await img.getAttribute("alt"))?.trim(), `${id}: opening photograph has no alternative`);
         await page.waitForFunction(image => image.complete && image.naturalWidth > 0, await img.elementHandle());
       }
+    }
+
+    // The aqueous comparison stays with its teaching step, not the fresh
+    // independent check. Opening Higher Tier help is not a progress outcome.
+    {
+      const id = "salt-electrolysis", key = `narajos.catchup.v1.10.${id}`;
+      await page.goto(lessonURL(id, 10));
+      await page.evaluate(key => localStorage.removeItem(key), key);
+      await page.reload();
+      const evidence = page.locator("#catchup-evidence");
+      const brine = evidence.locator("figure").filter({hasText: "Electrolysis of brine"});
+      assert.equal(await brine.count(), 1);
+      assert.match(await brine.locator("svg").getAttribute("aria-label"), /hydrogen bubbles.*negative electrode.*chlorine bubbles.*positive electrode.*can still move/i);
+      const progressBefore = await page.evaluate(key => localStorage.getItem(key), key);
+      const extension = evidence.locator("details").filter({has: page.locator("summary:text-is('Higher Tier')")});
+      await extension.locator(":scope > summary").click();
+      const reduction = extension.locator("figure").filter({hasText: "Electron gain at the cathode"});
+      assert.match(await reduction.locator("svg").getAttribute("aria-label"), /at the electrode surface.*electron passes.*ion movement.*electron transfer/i);
+      assert.equal(await page.evaluate(key => localStorage.getItem(key), key), progressBefore,
+        "opening Higher Tier visual must not change progress");
+      await page.evaluate(({key}) => localStorage.setItem(key, JSON.stringify({step: 2})), {key});
+      await page.reload();
+      assert.equal(await journey.locator(".school-current-stage figure").filter({hasText: "Electrolysis of brine"}).count(), 1,
+        "aqueous figure must appear with the aqueous teaching step");
+      await page.evaluate(({key, index}) => localStorage.setItem(key, JSON.stringify({step: index})), {key, index: gcseCatchup[id].steps.length - 1});
+      await page.reload();
+      assert.equal(await journey.locator(".school-current-stage figure").filter({hasText: "Electrolysis of brine"}).count(), 0,
+        "aqueous figure must not appear in the independent check");
+      await page.evaluate(key => localStorage.removeItem(key), key);
     }
 
     // Higher Tier teaching figures belong inside the extension, not the

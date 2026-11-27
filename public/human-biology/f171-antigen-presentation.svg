@@ -1,1 +1,37 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="280" height="420" viewBox="0 0 280 420" role="img" aria-labelledby="t d"><title id="t">Recognising an antigen</title><desc id="d">An antigen-presenting cell displays a peptide fragment on MHC for a matching helper T cell to recognise. Separately, a B cell receptor binds a matching feature of an intact antigen. These different recognition routes are schematic.</desc><defs><marker id="a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0v7l6-3.5z" fill="#32776d"/></marker></defs><rect width="280" height="420" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle" font-size="15"><text x="140" y="25" font-size="16" font-weight="700">Two recognition routes</text><text x="140" y="57">Antigen-presenting cell</text><circle cx="71" cy="108" r="32" fill="#d9e8f0" stroke="#537a94" stroke-width="2"/><path d="M99 95h15v17H99z" fill="#e5cfe8" stroke="#80588f"/><path d="M114 95l8-12 8 12Z" fill="#a76125"/><circle cx="210" cy="108" r="32" fill="#e8d9ec" stroke="#80588f" stroke-width="2"/><path d="M177 108h-38" fill="none" stroke="#32776d" stroke-width="2" marker-end="url(#a)"/><text x="210" y="104" font-size="14">Helper</text><text x="210" y="122" font-size="14">T cell</text><text x="140" y="168" font-size="14">Matching T cell recognises</text><text x="140" y="188" font-size="14">peptide displayed on MHC.</text><path d="M20 207h240" stroke="#bfd4cf"/><text x="140" y="235">Intact antigen binds B cell</text><path d="M58 282l14-21 14 21Z" fill="#a76125"/><path d="M100 273h45" stroke="#32776d" stroke-width="2" marker-end="url(#a)"/><circle cx="192" cy="273" r="31" fill="#d9e8f0" stroke="#537a94" stroke-width="2"/><path d="M160 273h-6l-7-7m7 7-7 7" stroke="#a76125" stroke-width="2" fill="none"/><text x="192" y="278">B cell</text><text x="74" y="313" font-size="13">Surface receptor</text><path d="M124 308h23v-28" fill="none" stroke="#a76125" stroke-width="1.5"/><text x="140" y="338" font-size="14">The B-cell receptor binds</text><text x="140" y="358" font-size="14">a matching antigen feature.</text><text x="140" y="397" font-size="14">Routes are simplified.</text></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="420" viewBox="0 0 280 420" role="img" aria-labelledby="t d">
+<title id="t">Two ways lymphocytes recognise antigen</title>
+<desc id="d">An antigen-presenting cell displays a peptide on an MHC molecule. A matching helper T-cell receptor recognises the peptide and MHC together. In a separate example, a B-cell receptor binds an intact antigen directly. The shapes and sizes are simplified.</desc>
+<rect width="280" height="420" rx="12" fill="#f4f8f7"/>
+<g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="25" font-size="16" font-weight="700">Two recognition routes</text>
+ <text x="140" y="49" font-size="17">Antigen-presenting cell (APC)</text>
+ <!-- Two cells; the contacting surface molecules are enlarged for clarity. -->
+ <circle cx="57" cy="113" r="38" fill="#d9e8f0" stroke="#537a94" stroke-width="2"/>
+ <text x="57" y="119" font-size="17">APC</text>
+ <circle cx="223" cy="113" r="38" fill="#e8d9ec" stroke="#80588f" stroke-width="2"/>
+ <text x="223" y="109" font-size="17">Helper</text><text x="223" y="129" font-size="17">T cell</text>
+ <!-- MHC is anchored to the presenting-cell membrane; peptide sits in its exposed groove. -->
+ <path d="M94 100H109V104H118V110H123V116H118V122H109V126H94Z" fill="#e5cfe8" stroke="#80588f" stroke-width="2"/>
+ <circle cx="123" cy="113" r="6" fill="#a76125"/>
+ <!-- Receptor on the helper T cell contacts the peptide–MHC complex. -->
+ <path d="M185 113H151M151 113l-25-5M151 113l-25 5" fill="none" stroke="#537a94" stroke-width="3" stroke-linecap="round"/>
+ <g font-size="17">
+  <text x="129" y="71">Peptide</text><path d="M129 75v24l-4 8" fill="none" stroke="#233e4c" stroke-width="1.5"/>
+  <text x="80" y="169">MHC</text><path d="M93 162L107 127" fill="none" stroke="#233e4c" stroke-width="1.5"/>
+  <text x="195" y="169">T-cell receptor</text><path d="M181 157L154 113" fill="none" stroke="#233e4c" stroke-width="1.5"/><circle cx="154" cy="113" r="2" fill="#233e4c"/>
+ </g>
+ <text x="140" y="193" font-size="14">The receptor recognises the</text><text x="140" y="212" font-size="14">peptide displayed on MHC.</text>
+ <path d="M20 224h240" stroke="#bfd4cf"/>
+ <text x="140" y="249" font-size="15">B-cell recognition</text>
+ <!-- The second example shows direct binding to intact antigen. -->
+ <circle cx="218" cy="298" r="34" fill="#d9e8f0" stroke="#537a94" stroke-width="2"/>
+ <text x="218" y="304" font-size="17">B cell</text>
+ <path d="M184 298h-36m0 0-8-10m8 10-8 10" stroke="#80588f" stroke-width="3" stroke-linecap="round" fill="none"/>
+ <path d="M119 286l29 12-29 12Z" fill="#a76125"/>
+ <text x="68" y="292" font-size="17">Intact</text><text x="68" y="311" font-size="17">antigen</text>
+ <path d="M98 300h20" fill="none" stroke="#233e4c" stroke-width="1.5"/>
+ <text x="127" y="343" font-size="17">B-cell receptor</text><path d="M164 333l-9-35" fill="none" stroke="#233e4c" stroke-width="1.5"/><circle cx="155" cy="298" r="2" fill="#233e4c"/>
+ <text x="140" y="367" font-size="14">The B-cell receptor binds a</text><text x="140" y="386" font-size="14">matching feature of intact antigen.</text>
+ <text x="140" y="408" font-size="13">Shapes and sizes are simplified.</text>
+</g>
+</svg>

@@ -1,8 +1,15 @@
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 
 // Exercise the diagrams in their teaching routes, including the narrowest
 // supported viewport. These checks complement visual and scientific review.
 export async function checkCompactCatchupFigures(browser, base) {
+  // Deterministic font metrics supplement the host's system font: its
+  // fallback can differ from the one used by the CI runner.
+  const placentaFonts = [
+    ...[600, 700].map(weight => ({family:'PlacentaAuditPoppins', weight, file:`./fixtures/poppins/Poppins-${weight}-latin.woff2`})),
+    ...[400, 700].map(weight => ({family:'PlacentaAuditDejaVu', weight, file:`./fixtures/dejavu/DejaVuSans-${weight}-subset.woff2`}))
+  ].map(font => ({...font, data:readFileSync(new URL(font.file, import.meta.url)).toString('base64')}));
   for (const width of [320, 1280]) {
     const page = await browser.newPage({viewport: {width, height: 850}});
     try {
@@ -19,6 +26,35 @@ export async function checkCompactCatchupFigures(browser, base) {
       assert(await membrane.evaluate(el => el.scrollWidth <= el.clientWidth + 1), 'membrane diagram should fit its container');
       assert.match(await membrane.locator('svg').getAttribute('aria-label'), /phospholipid.*protein.*cholesterol/i);
       assert.equal(await membrane.getAttribute('tabindex'), null, 'non-scrolling diagram should not add a tab stop');
+
+      // These figures explain different directions of movement. Keep each
+      // within its matching teaching block, with its labels visible on phones.
+      for (const {route, title, teaching, alternative} of [
+        {route: 'a2-active', title: 'Glucose absorption by an ileum cell', teaching: /sodium ions.*diffuse into the cell/is, alternative: /sodium.*gradient.*glucose.*potassium/i},
+        {route: 'a3-absorption', title: 'Sodium–glucose co-transport', teaching: /co-transport with sodium ions.*sodium concentration in the cells low/is, alternative: /sodium.*pumped.*sodium.*gradient/i},
+        {route: 'a5-chemios', title: 'Electron transfer builds a proton gradient', teaching: /electrons.*energy.*proton pumps/is, alternative: /electrons.*protons.*low-proton.*high-proton/i},
+        {route: 'a5-oxphos', title: 'Electron transfer in a mitochondrion', teaching: /reduced NAD.*electrons.*energy.*protons/is, alternative: /reduced NAD.*electrons.*proton.*matrix.*intermembrane/i},
+        {route: 'a6-synapse', title: 'Acetylcholine opens channels', teaching: /acetylcholine.*binds.*sodium channels/is, alternative: /acetylcholine.*binds.*sodium ions.*enter/i},
+        {route: 'a6-speed', title: 'Conduction along a myelinated axon', teaching: /local current spreads beneath myelin.*regenerated at the nodes/is, alternative: /myelin.*nodes.*local current/i}
+      ]) {
+        await page.goto(base + '/alevel/#catchup-' + route);
+        const figure = page.locator('.companion-chunk figure.kc-visual').filter({has: page.getByText(title, {exact: true})});
+        await figure.waitFor();
+        assert.equal(await figure.count(), 1, `${route}: figure should occur once in teaching`);
+        const block = figure.locator('xpath=ancestor::*[contains(concat(" ", normalize-space(@class), " "), " companion-chunk ")][1]');
+        assert.match(await block.innerText(), teaching, `${route}: figure should accompany its explanation`);
+        const art = figure.locator('.kc-visual-art');
+        assert(await art.evaluate(el => el.scrollWidth <= el.clientWidth + 1), `${route}: figure should fit`);
+        const svg = art.locator('svg');
+        assert.match(await svg.getAttribute('aria-label'), alternative, `${route}: equivalent text should explain movement`);
+        const clipped = await svg.locator('text').evaluateAll(nodes => nodes.some(node => {
+          const box = node.getBoundingClientRect();
+          const bounds = node.ownerSVGElement.getBoundingClientRect();
+          return box.left < bounds.left - 1 || box.right > bounds.right + 1 || box.top < bounds.top - 1 || box.bottom > bounds.bottom + 1;
+        }));
+        assert.equal(clipped, false, `${route}: diagram text should fit the figure`);
+        assert.equal(await figure.locator('button, a').count(), 0, `${route}: viewing the static figure should not create a progress action`);
+      }
 
       // Keep the definition and consequences of the refractory period in the
       // same teaching block as their shared diagram, without duplicating it.
@@ -71,14 +107,69 @@ export async function checkCompactCatchupFigures(browser, base) {
       assert.equal(await soluteFigure.count(), 0, 'solute teaching figure should not remain in the independent question view');
 
       await page.goto(base + '/human-biology/#catchup/f175/a2');
-      // Both structural figures are deferred until they have anatomical context.
-      // The Phase 1 teaching remains present and fits without the figures.
+      // The old structural figures remain deferred; the replacement gives
+      // orientation, an intermediate section and a single-villus enlargement.
       const placentaExplanation = page.locator('.hb-teach-explain');
       await placentaExplanation.waitFor();
       assert.match(await placentaExplanation.innerText(), /placenta is attached to the wall of the uterus.*umbilical cord.*foetal blood/is);
       assert.match(await placentaExplanation.innerText(), /Chorionic villi contain foetal vessels.*maternal blood/is);
       assert.equal(await page.locator('img[src="/human-biology/placental-exchange.svg"], img[src="/human-biology/f175-many-villi.svg"]').count(), 0);
+      const orderedPlacentaFigures = await placentaExplanation.locator('img[src*="/f175-placenta-"]').evaluateAll(images => images.map(image => image.getAttribute('src').split('/').at(-1)));
+      assert.deepEqual(orderedPlacentaFigures, ['f175-placenta-orientation.svg','f175-placenta-many-villi.svg','f175-placenta-villus.svg']);
+      for (const image of await placentaExplanation.locator('img[src*="/f175-placenta-"]').all()) {
+        await image.evaluate(node => node.decode());
+        assert(await image.evaluate(node => node.getBoundingClientRect().width <= node.parentElement.getBoundingClientRect().width + 1), 'placental figure should fit its container');
+        assert((await image.getAttribute('alt'))?.trim().length > 50, 'placental figure needs a meaningful alternative');
+      }
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 3), 'placental teaching should fit the viewport');
+      // Check labels in the actual standalone SVG as well as its containing
+      // page: two lines can look adjacent in a screenshot yet overlap.
+      await page.goto(base + '/human-biology/f175-placenta-many-villi.svg');
+      const placentaLabelIssues = await page.locator('svg').evaluate(async (svg, fonts) => {
+        for (const {family, weight, data} of fonts) {
+          const bytes = Uint8Array.from(atob(data), character => character.charCodeAt(0));
+          const font = new FontFace(family, bytes, {weight:String(weight)});
+          document.fonts.add(await font.load());
+        }
+        const view = svg.viewBox.baseVal;
+        const nodes = [...svg.querySelectorAll('text')];
+        const issues = [];
+        for (const [name, family] of [['native', null], ['Poppins', '"PlacentaAuditPoppins", sans-serif'], ['DejaVu', '"PlacentaAuditDejaVu", sans-serif'], ['system', 'system-ui, sans-serif']]) {
+          nodes.forEach(node => family ? node.style.setProperty('font-family', family, 'important') : node.style.removeProperty('font-family'));
+          const labels = nodes.map(node => ({text:node.textContent, box:node.getBBox()}));
+          for (const {text, box} of labels) {
+            if (box.x < view.x - .5 || box.y < view.y - .5 || box.x + box.width > view.x + view.width + .5 || box.y + box.height > view.y + view.height + .5) issues.push(name + ' clipped: ' + text);
+          }
+          for (let i = 0; i < labels.length; i++) for (let j = i + 1; j < labels.length; j++) {
+            const a = labels[i].box, b = labels[j].box;
+            if (a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height) issues.push(name + ' overlap: ' + labels[i].text + ' / ' + labels[j].text);
+          }
+        }
+        return issues;
+      }, placentaFonts);
+      assert.deepEqual(placentaLabelIssues, [], 'placental labels must be unclipped and distinct');
+      const placentaTargets = await page.locator('svg').evaluate(svg => {
+        const names = ['maternal-blood', 'foetal-vessel', 'chorionic-villus', 'uterus-wall'];
+        const targetContains = (element, dot, stroke = false) => {
+          const point = svg.createSVGPoint();
+          point.x = Number(dot.getAttribute('cx'));
+          point.y = Number(dot.getAttribute('cy'));
+          const local = point.matrixTransform(element.getCTM().inverse().multiply(dot.getCTM()));
+          return stroke ? element.isPointInStroke(local) : element.isPointInFill(local);
+        };
+        return names.map(name => {
+          const dot = svg.querySelector(`[data-label="${name}"]`);
+          const line = svg.querySelector(`[data-label-line="${name}"]`);
+          const regions = [...svg.querySelectorAll(`[data-region="${name}"]`)];
+          if (!dot || !line || !regions.length) return false;
+          const end = line.getPointAtLength(line.getTotalLength());
+          const joinsDot = Math.hypot(end.x - Number(dot.getAttribute('cx')), end.y - Number(dot.getAttribute('cy'))) < .1;
+          const inTarget = regions.some(region => targetContains(region, dot, name === 'foetal-vessel'));
+          const outsideVilli = name !== 'maternal-blood' || [...svg.querySelectorAll('[data-region="chorionic-villus"]')].every(region => !targetContains(region, dot));
+          return joinsDot && inTarget && outsideVilli;
+        });
+      });
+      assert.deepEqual(placentaTargets, [true, true, true, true], 'each label leader must end on its intended structure');
 
       // The same feedback figure appears in both courses. Check the actual
       // lesson card and text bounds rather than treating no page overflow as

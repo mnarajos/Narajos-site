@@ -73,12 +73,12 @@ function earthOrbit() {
 function electromagnet() {
   return picture("An electromagnet in a complete circuit", diagram(
     "A cell, closed switch and wire coil around an iron core make a complete loop. An iron paper clip is attracted near the core while current flows.", `
-    <path d="M55 47H100M116 47H170M205 47H245V119H55V47" fill="none" stroke="${ink}" stroke-width="3"/>
+    <path data-role="circuit-wire" d="M55 47H100M111 47H170M205 47H245V119H225 M130 119H55V47" fill="none" stroke="${ink}" stroke-width="3"/>
     ${circle(171,47,2.5,"white",ink)}${circle(204,47,2.5,"white",ink)}${line(174,47,201,47,ink,2.5)}${text(188,27,"Closed switch",ink,17)}
-    ${line(100,34,100,60,ink,2)}${line(111,27,111,67,ink,4)}${line(116,47,132,47,ink,3)}
-    <rect x="142" y="102" width="74" height="32" rx="4" fill="#d2dddd" stroke="${ink}"/>
-    <path d="M150 99q-14 19 0 38m12-38q-14 19 0 38m12-38q-14 19 0 38m12-38q-14 19 0 38m12-38q-14 19 0 38m12-38q-14 19 0 38" fill="none" stroke="${rust}" stroke-width="3"/>
-    ${text(106,20,"Cell",ink,17)}${text(115,178,"Coil on iron",rust,17)}
+    ${line(100,34,100,60,ink,2)}${line(111,27,111,67,ink,4)}
+    <rect x="140" y="103" width="75" height="32" rx="4" fill="#d2dddd" stroke="${ink}"/>
+    <path data-role="coil-wire" d="M130 119 C130 97 146 97 146 119 C146 141 134 141 134 119 C134 97 158 97 158 119 C158 141 146 141 146 119 C146 97 170 97 170 119 C170 141 158 141 158 119 C158 97 182 97 182 119 C182 141 170 141 170 119 C170 97 194 97 194 119 C194 141 182 141 182 119 C182 97 206 97 206 119 C206 141 194 141 194 119 C194 97 225 97 225 119" fill="none" stroke="${rust}" stroke-width="3"/>
+    ${text(55,20,"Cell",ink,17)}${line(75,23,100,34,ink,1.5)}${circle(100,34,2,"white",ink,1)}${text(115,178,"Coil on iron",rust,17)}
     <path d="M228 133q12-7 17 2t-3 17q-7 7-11 1l10-11" fill="none" stroke="${blue}" stroke-width="3"/>
     ${text(260,178,"Iron clip",blue,17)}`,320,195),
     "Trace the complete loop through the coil. When the switch opens, current stops and the electromagnet releases the clip.");

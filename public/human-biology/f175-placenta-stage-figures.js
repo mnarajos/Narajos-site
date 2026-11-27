@@ -1,15 +1,16 @@
-/* Reuse the reviewed villus section at each matching placental exchange step.
- * OCR F175: https://www.ocr.org.uk/Images/697578-specification-cambridge-advanced-national-in-human-biology.pdf
- */
+/* Orientate the worked example even when the learner opens it directly. */
 (function () {
  'use strict';
- const lesson=window.KeystoneHumanLessons?.['f175/a2'];if(!lesson?.teachingDiagram)return;
- const original=lesson.teachingDiagram;
- const captions=[
-  'Locate the maternal blood around the villus. Oxygen is carried to this space in maternal blood; the foetal capillary is inside the villus.',
-  'Follow oxygen from maternal blood across the placental barrier into foetal blood. The arrow shows the net direction down its gradient.',
-  'Locate the foetal capillary inside the villus. Oxygen enters foetal blood; carbon dioxide moves across the barrier in the opposite direction.'
- ];
- lesson.skipModelTeachingDiagram=true;
- lesson.modelDiagrams={...lesson.modelDiagrams,...Object.fromEntries(captions.map((caption,index)=>[index,{...original,caption,assessmentSensitive:true}]))};
+ const lesson=window.KeystoneHumanLessons?.['f175/a2'];
+ if(!lesson?.explainDiagrams?.[0]?.[0] || !lesson?.explainDiagrams?.[1]?.[1])return;
+ const orientation=lesson.explainDiagrams[0][0], many=lesson.explainDiagrams[1][0], villus=lesson.explainDiagrams[1][1];
+ lesson.modelDiagrams={...lesson.modelDiagrams,
+  0:[
+   {...orientation,caption:'Locate the placenta and umbilical cord. The dashed box marks the area shown in figure 2.'},
+   {...many,caption:'Figure 2 turns the section so the foetal side is at the top. Fine lines and dots point to structures. All villi remain attached to foetal-side tissue. Some also anchor to the uterine wall; others project freely into maternal blood. Foetal vessels lie inside. Only a few villi are shown; the dashed box marks the villus in figure 3.'},
+   {...villus,caption:'Figure 3 enlarges the marked villus. Locate maternal blood around it and the foetal capillary inside; the barrier is exaggerated.'}
+  ],
+  1:{...villus,caption:'Follow the oxygen arrow across the barrier into the foetal capillary. The arrow shows net transfer.'},
+  2:{...villus,caption:'Compare the oxygen and carbon dioxide arrows. The gases move across the barrier in opposite directions.'}
+ };
 }());

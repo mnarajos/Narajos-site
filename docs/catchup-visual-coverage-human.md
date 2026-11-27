@@ -1,6 +1,6 @@
 # Human Biology catch-up visual inventory
 
-This route inventory was generated from the companion search index and teaching keys. “Shared registry” means a mapping exists in `catchup-visuals.js`, not that it is displayed at every stage or is suitable for every idea. Guided teaching can also contain tables, models, or other visuals. All rows require inspection against the actual teaching steps and OCR course requirements. Current step-level decisions are recorded in the teaching-block ledger. The F175/a2 placental structural figures were withheld from Phase 1 pending an orientated redesign; their files remain in the repository.
+This route inventory was generated from the companion search index and teaching keys. “Shared registry” means a mapping exists in `catchup-visuals.js`, not that it is displayed at every stage or is suitable for every idea. Guided teaching can also contain tables, models, or other visuals. All rows require inspection against the actual teaching steps and OCR course requirements. Current step-level decisions are recorded in the teaching-block ledger. The earlier F175/a2 placental structural figures were withheld from Phase 1; Phase 2 adds an orientated replacement, and the earlier files remain in the repository.
 
 | Unit | Catch-up concept | Guided lesson key | Shared registry | Status |
 | --- | --- | --- | --- | --- |

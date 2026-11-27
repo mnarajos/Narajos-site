@@ -4,15 +4,14 @@ import { arrow, blue, circle, diagram, ink, line, picture, rust, teal, text } fr
 
 function antibody() {
   return picture("Antibody and antigen", diagram(
-    "A simplified Y-shaped antibody has binding sites at its tips. One tip fits an antigen on the surface of a pathogen; a different-shaped antigen does not fit.",
-    '<path d="M116 121 L116 85 L79 48 M116 85 L153 48" fill="none" stroke="'+blue+'" stroke-width="13" stroke-linecap="round"/>' +
-    '<path d="M72 43 L79 50 L86 43 M146 43 L153 50 L160 43" fill="none" stroke="'+blue+'" stroke-width="4"/>' +
-    '<path d="M57 35 L79 35 L79 44 L86 37 L93 44 L93 35 L113 35" fill="none" stroke="'+rust+'" stroke-width="4"/>' +
-    text(190,25,"Antigen on pathogen",rust,14) + line(168,29,104,35,rust,1.5) +
-    text(116,151,"Antibody",blue,16) + text(220,77,"Different shape",ink,14) +
-    '<path d="M216 49 Q226 31 236 49" fill="none" stroke="'+rust+'" stroke-width="4"/>' +
-    text(240,109,"does not fit",ink,14), 320, 165),
-    "Notice how a binding site fits a particular antigen. The shapes are simplified.");
+    "A simplified Y-shaped antibody has binding sites at its tips. One binding site fits a triangular antigen on the surface of a pathogen.",
+    '<ellipse cx="72" cy="46" rx="49" ry="28" fill="#fae6da" stroke="'+rust+'" stroke-width="2"/>' +
+    '<path d="M62 70 L72 85 L82 70 Z" fill="#fae6da" stroke="'+rust+'" stroke-width="2"/>' +
+    '<path d="M72 92 L110 130 L110 166 M110 130 L148 92" fill="none" stroke="'+blue+'" stroke-width="10" stroke-linecap="round"/>' +
+    '<path d="M62 84 L72 94 L82 84 M138 84 L148 94 L158 84" fill="none" stroke="'+blue+'" stroke-width="4"/>' +
+    text(72,51,"Pathogen",ink,16) + text(180,62,"Antigen",ink,17) + line(143,68,77,78,ink,1.5) +
+    text(110,190,"Antibody",blue,17), 240, 203),
+    "The antigen is on the pathogen. The antibody’s binding site has a complementary shape. The shapes are simplified.");
 }
 
 function melting() {

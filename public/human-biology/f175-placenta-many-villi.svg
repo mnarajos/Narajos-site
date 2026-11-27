@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="580" viewBox="0 0 280 580" role="img" aria-labelledby="title desc">
+  <title id="title">Inside the placenta: several chorionic villi</title>
+  <desc id="desc">A simplified section of the placenta selected in figure 1 is turned so that the foetal side, towards the umbilical cord, is at the top and the uterine wall is below. Several branching chorionic villi extend from foetal-side tissue into surrounding maternal blood. All remain attached to the foetal-side tissue. One also anchors to the uterine wall; the others project freely into maternal blood without attaching to the wall. Each contains foetal vessels; only their main loops are shown. Fine lines with contrasting dots point to the blood outside the villi, a vessel inside a villus, a chorionic villus and the uterine wall. A dashed box marks the middle villus as the one enlarged in figure 3. Maternal and foetal blood normally remain separate. The diagram is not to scale.</desc>
+  <rect width="280" height="580" rx="12" fill="#faf8f7"/>
+  <g font-family="system-ui,sans-serif" fill="#243c48">
+    <text x="14" y="25" font-size="17" font-weight="700">2. Inside the placenta</text>
+    <text x="14" y="49" font-size="15">Foetal side: towards the cord</text>
+    <g font-size="17" font-weight="600">
+      <text x="14" y="84">Maternal blood</text>
+      <text x="164" y="76">Foetal</text><text x="164" y="101">vessel</text>
+    </g>
+    <!-- The selected section is turned: pink is maternal blood outside villi. -->
+    <g transform="translate(0 58)">
+      <rect data-region="maternal-blood" x="10" y="72" width="260" height="214" fill="#f8e7e5"/>
+      <rect x="10" y="72" width="260" height="25" fill="#dbeaf1" stroke="#53798c" stroke-width="2"/>
+      <rect data-region="uterus-wall" x="10" y="277" width="260" height="20" fill="#d8c4ce" stroke="#855e72" stroke-width="2"/>
+      <!-- Every villus joins foetal-side tissue; one also anchors to the uterus. -->
+      <g fill="#fffdf9" stroke="#9c6275" stroke-width="2.5">
+        <path data-region="chorionic-villus" d="M32 97 H73 V175 Q86 167 87 180 Q87 191 73 193 V208 Q73 225 65 229 V277 H43 V229 Q32 225 32 208 V199 Q18 199 20 187 Q21 176 32 183Z"/>
+        <path data-region="chorionic-villus" d="M118 97 H162 V225 Q162 249 140 249 Q118 249 118 225Z"/>
+        <path data-region="chorionic-villus" d="M207 97 H248 V174 Q261 168 262 181 Q261 191 248 193 V208 Q248 229 228 229 Q207 229 207 208 V198 Q193 198 194 187 Q195 177 207 183Z"/>
+      </g>
+      <!-- Each blue loop represents a foetal vessel within a villus. -->
+      <g fill="none" stroke="#497888" stroke-width="9" stroke-linecap="round"><path d="M43 72 V204 Q43 217 53 217 Q62 217 62 204 V72"/><path d="M129 72 V222 Q129 237 140 237 Q151 237 151 222 V72"/><path data-region="foetal-vessel" d="M218 72 V204 Q218 217 228 217 Q237 217 237 204 V72"/></g>
+      <g fill="none" stroke="#dff2f7" stroke-width="5" stroke-linecap="round"><path d="M43 72 V204 Q43 217 53 217 Q62 217 62 204 V72"/><path d="M129 72 V222 Q129 237 140 237 Q151 237 151 222 V72"/><path d="M218 72 V204 Q218 217 228 217 Q237 217 237 204 V72"/></g>
+      <rect x="96" y="101" width="88" height="155" rx="4" fill="none" stroke="#243c81" stroke-width="2" stroke-dasharray="5 3"/>
+    </g>
+    <!-- Fine unheaded label leaders end at contrasting dots, not arrowheads. -->
+    <g fill="none" stroke="#243c48" stroke-width="1.5">
+      <path data-label-line="maternal-blood" d="M72 92 L88 110 V208"/>
+      <path data-label-line="foetal-vessel" d="M220 108 L254 120 V204 L218 216"/>
+      <path data-label-line="uterus-wall" d="M54 385 V345"/>
+      <path data-label-line="chorionic-villus" d="M180 384 L190 370 V258 L200 243"/>
+    </g>
+    <g fill="#243c48" stroke="#fff" stroke-width="1.2">
+      <circle data-label="maternal-blood" cx="88" cy="208" r="3"/><circle data-label="foetal-vessel" cx="218" cy="216" r="3"/>
+      <circle data-label="uterus-wall" cx="54" cy="345" r="3"/><circle data-label="chorionic-villus" cx="200" cy="243" r="3"/>
+    </g>
+    <g font-size="17" font-weight="600">
+      <text x="14" y="407">Uterus wall</text>
+      <text x="150" y="404">Chorionic</text><text x="150" y="430">villus</text>
+    </g>
+    <g font-size="16">
+      <text x="14" y="459">Dashed box: villus in figure 3</text>
+      <text x="14" y="484">All join foetal-side tissue.</text>
+      <text x="14" y="509">Some also anchor to the wall.</text>
+      <text x="14" y="534">Blood normally stays separate.</text>
+      <text x="14" y="559">Not to scale.</text>
+    </g>
+  </g>
+</svg>

@@ -72,9 +72,9 @@ function activeTransport() {
     <path d="M310 61H227Q198 61 186 81L86 92Q72 95 77 104Q80 111 92 110L195 107Q209 126 228 128H310Z"
       fill="#d8efe3" stroke="${teal}" stroke-width="4"/>
     ${circle(252,94,12,"#b496cd",violet)}
-    ${line(125,116,99,139,teal)}${text(107,160,"Root hair",teal)}
-    ${text(63,25,"Soil")}
-    ${text(267,51,"Root cell",teal)}
+    ${line(150,108,150,138,ink,1.7)}${text(150,160,"Root hair",ink,19)}
+    ${text(63,25,"Soil",ink,19)}
+    ${text(263,51,"Root cell",teal,19)}
     <rect x="89" y="83" width="45" height="33" rx="5" fill="none" stroke="${rust}" stroke-width="2" stroke-dasharray="4 4"/>`,320,172);
   const membrane = diagram("In the magnified membrane, fewer ions are outside than inside. One ion moves through a protein from outside into the cell using energy from respiration.", `
     <rect x="12" y="36" width="296" height="111" rx="9" fill="#e8f3ef"/>
@@ -82,9 +82,9 @@ function activeTransport() {
     <path d="M148 70q12 7 24 0v42q-12-7-24 0Z" fill="#e0c9eb" stroke="${violet}" stroke-width="2.5"/>
     ${[[53,61],[66,122],[201,52],[226,66],[267,56],[290,76],[222,121],[265,108],[287,134]].map(([x,y]) => circle(x,y,5,"#d8964e",rust)).join("")}
     ${circle(112,90,5,"#d8964e",rust)}${arrow(120,90,207,90,blue,3.5)}
-    ${text(75,24,"Soil water",ink)}${text(249,24,"Inside the cell",ink)}
-    ${text(74,166,"Fewer ions",rust)}${text(250,166,"More ions",rust)}
-    ${line(160,112,160,188,violet)}${text(160,207,"Membrane protein",violet)}`,320,218);
+    ${text(75,24,"Soil water",ink,19)}${text(240,24,"Inside cell",ink,19)}
+    ${text(74,166,"Fewer ions",rust,19)}${text(250,166,"More ions",rust,19)}
+    ${line(160,112,180,187,ink,1.7)}${text(160,207,"Membrane protein",ink,19)}`,320,218);
   return compare(picture("Root hair in the soil", root, "Zoom in where the root hair takes up mineral ions."),
     picture("Across the cell membrane", membrane, "Energy from respiration allows the cell to move ions into the side with the higher concentration."));
 }

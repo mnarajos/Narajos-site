@@ -216,6 +216,8 @@
      sideways scroll or changing the list's semantics. */
   .hb-model-path .hb-teach-photo:has(.hb-teaching-diagram-compact) { margin-inline: -.75rem; }
   .hb-model-path .hb-teach-photo:has(.hb-teaching-diagram-compact) figcaption { padding-inline: .75rem; }
+  /* Reclaim the list indentation so F175 labels fit inside the card. */
+  [data-unit="f175"] .hb-model-path li:has(img[src*="/f175-placenta-"]) { margin-inline-start: -1.25rem; }
   .hb-model-steps:not(.hb-model-path) .hb-teach-photo:has(.hb-teaching-diagram-compact) { margin-inline-start: -1.25rem; }
   .hb-model-steps:not(.hb-model-path) .hb-teach-photo:has(.hb-teaching-diagram-compact) figcaption { padding-inline-start: 1.25rem; }
   .hb-model-with-evidence .hb-model-back:not([hidden]) { display: inline-flex; }

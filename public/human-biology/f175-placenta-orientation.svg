@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="390" viewBox="0 0 280 390" role="img" aria-labelledby="title desc">
+  <title id="title">Where the placenta is during pregnancy</title>
+  <desc id="desc">A simplified section through a pregnant female's body shows the uterus, foetus, placenta attached to the uterine wall and umbilical cord connecting foetus and placenta. The cord carries foetal blood. A dashed box marks the placenta region enlarged in figure 2. The placenta is enlarged so its location is clear; the view is not to scale.</desc>
+  <rect width="280" height="390" rx="12" fill="#faf8f7"/>
+  <g font-family="system-ui,sans-serif" fill="#243c48">
+    <text x="14" y="25" font-size="17" font-weight="700">1. Locate the placenta</text>
+    <text x="14" y="48" font-size="14">Section through a pregnant female</text>
+    <!-- The outer contour gives body context; the dark inner border is the uterus. -->
+    <path d="M72 80 C43 86 30 121 34 166 C36 213 51 260 72 315 Q140 347 208 315 C229 260 244 213 246 166 C250 121 237 86 208 80" fill="#f4e9df" stroke="#b99a85" stroke-width="3"/>
+    <path d="M78 107 C54 122 53 170 62 213 C69 253 94 297 140 313 C186 297 211 253 218 213 C227 170 226 122 202 107 C170 90 110 90 78 107Z" fill="#fffdf9" stroke="#855e72" stroke-width="8"/>
+    <!-- Placenta lies against the inner wall of the uterus. -->
+    <path d="M202 107 C226 122 227 170 218 213 C207 216 197 211 192 203 C199 173 200 142 187 115Z" fill="#ba687b" stroke="#8b465a" stroke-width="2"/>
+    <path d="M78 107 C54 122 53 170 62 213 C69 253 94 297 140 313 C186 297 211 253 218 213 C227 170 226 122 202 107 C170 90 110 90 78 107Z" fill="none" stroke="#855e72" stroke-width="8"/>
+    <!-- Dashed selection connects this region to the next view. -->
+    <rect x="181" y="102" width="48" height="116" rx="5" fill="none" stroke="#243c81" stroke-width="2" stroke-dasharray="5 3"/>
+    <!-- A simple filled foetal silhouette; no free-floating limb lines. -->
+    <circle cx="113" cy="150" r="23" fill="#e1ad8f" stroke="#845e51" stroke-width="2"/>
+    <path d="M104 172 C94 174 91 189 95 202 C98 216 104 224 113 226 C125 230 137 222 141 209 C145 196 138 181 128 176 C120 172 112 171 104 172Z" fill="#e1ad8f" stroke="#845e51" stroke-width="2" stroke-linejoin="round"/>
+    <!-- Near arm: shoulder to bent elbow and hand near the chest. -->
+    <path d="M105 179 Q111 178 112 183 L110 191 L119 188 Q123 187 125 190 Q126 193 122 194 L109 199 Q102 201 101 195 Q99 191 101 185Z" fill="#e9b99d" stroke="#845e51" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- Near leg: hip to bent knee, with the lower leg and foot folded back. -->
+    <path d="M105 210 Q110 207 116 211 L137 214 Q144 215 145 220 Q145 223 143 226 L139 232 L147 234 Q151 235 150 238 Q149 240 146 240 L134 239 Q130 239 130 235 L134 222 L114 220 Q107 219 105 215Z" fill="#e9b99d" stroke="#845e51" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- The cord joins the foetal abdomen to the placenta, not the uterine wall. -->
+    <path d="M140 204 C159 208 166 174 197 168" fill="none" stroke="#a65066" stroke-width="9" stroke-linecap="round"/>
+    <path d="M140 204 C159 208 166 174 197 168" fill="none" stroke="#f3cbd3" stroke-width="4" stroke-linecap="round"/>
+    <!-- Fine dark leader lines end in dots; none has an arrowhead. -->
+    <g fill="none" stroke="#233f4e" stroke-width="1.5">
+      <path d="M14 75 H69 L78 108"/><path d="M167 75 H221 L207 136"/>
+      <path d="M12 247 H75 L102 201"/><path d="M179 337 H197 L171 187"/>
+    </g>
+    <g fill="#233f4e" stroke="#fff" stroke-width="1.2"><circle cx="78" cy="108" r="3"/><circle cx="207" cy="136" r="3"/><circle cx="102" cy="201" r="3"/><circle cx="171" cy="187" r="3"/></g>
+    <g font-size="16" font-weight="600"><text x="14" y="69">Uterus wall</text><text x="167" y="69">Placenta</text><text x="12" y="241">Foetus</text><text x="103" y="356">Umbilical cord</text></g>
+    <text x="14" y="378" font-size="13">Simplified; not to scale.</text>
+  </g>
+</svg>
