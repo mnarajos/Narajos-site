@@ -1692,6 +1692,11 @@ try{
  assert.equal(await cellPhotos[0].getAttribute("src"),"/assets/micrographs/elodea-leaf.webp");
  assert.match(await cellPhotos[0].getAttribute("alt"),/small green oval bodies/);
  assert(await navPage.locator(".micrograph-grid").getByRole("link",{name:"Juan Carlos Fonseca Mata"}).isVisible());
+ await navPage.getByText("Zoom in on a cheek cell",{exact:true}).press("Enter");
+ const closeups=navPage.locator(".catchup-closeups");
+ assert.equal(await closeups.locator("svg").count(),1,"only the independently reviewed cheek-cell marker is shown");
+ assert.match(await closeups.locator("svg").getAttribute("aria-label"),/cheek.*nucleus/i);
+ assert.equal(await closeups.locator('image[href="/assets/micrographs/elodea-leaf.webp"]').count(),0,"the uncertain Elodea overlay must not return");
  await navPage.getByText("Check what you spotted",{exact:true}).press("Enter");
  assert(await navPage.getByText("Sample A is plant tissue.",{exact:true}).isVisible());
  assert(await navPage.getByText(/small green bodies inside the cells are chloroplasts/).isVisible());

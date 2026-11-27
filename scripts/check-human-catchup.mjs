@@ -1556,6 +1556,8 @@ export async function checkHumanCatchup(browser, base) {
     const rashFigure = bacterialRows.nth(0).locator('figure').filter({has: page.locator('img[src="/assets/micrographs/hb-lyme-erythema.webp"]')});
     assert(await rashFigure.isVisible());
     assert.equal(await rashFigure.locator("figcaption a").count(), 2, "Lyme photo retains source and licence");
+    assert.match(await rashFigure.locator("img").getAttribute("alt"), /lighter.skin/i, "Lyme photo describes the skin tone shown");
+    assert.match(await rashFigure.locator("figcaption").innerText(), /look different across skin tones.*harder to see on brown or black skin/i, "Lyme caption explains variation across skin tones");
     const mrsaFigure = bacterialRows.nth(1).locator('figure[data-hb-assessment-sensitive]').filter({has: page.locator('img[src="/human-biology/f171-mrsa-contact.svg"]')});
     const susceptibilityFigure = bacterialRows.nth(1).locator('figure[data-hb-assessment-sensitive]').filter({has: page.locator('img[src="/human-biology/f171-susceptibility-test.svg"]')});
     assert(await mrsaFigure.isVisible());

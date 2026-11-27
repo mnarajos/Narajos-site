@@ -18,8 +18,8 @@
   'A schematic person breathes infectious respiratory particles into indoor air, and an open window allows air exchange. Ventilation can reduce airborne exposure to infectious pulmonary TB; latent TB infection does not spread to others.',
   'Follow the particles into the shared air and towards the opening. Ventilation can reduce airborne exposure; latent TB is not infectious. This is schematic.');
  const rash={src:'/assets/micrographs/hb-lyme-erythema.webp',width:640,height:952,
-  alt:'A real photograph of an upper arm shows a broad reddish rash with a darker centre and paler ring. This is one appearance of erythema migrans.',
-  caption:'Notice one example of an expanding erythema migrans rash. Its appearance varies, some people do not notice a rash, and other conditions can look similar.',
+  alt:'A photograph of a lighter-skinned upper arm shows a broad reddish rash with a darker centre and paler ring. This is one appearance of erythema migrans.',
+  caption:'This shows one possible appearance of erythema migrans on lighter skin. A rash can look different across skin tones and may be harder to see on brown or black skin. Some people do not notice a rash, and other conditions can look similar.',
   source:'https://phil.cdc.gov/Details.aspx?pid=9875',credit:'James Gathany / CDC, PHIL 9875',
   licence:'Public domain (US federal work)',licenceUrl:'https://commons.wikimedia.org/wiki/Template:PD-USGov-HHS-CDC',
   changes:'Resized; no crop'};
