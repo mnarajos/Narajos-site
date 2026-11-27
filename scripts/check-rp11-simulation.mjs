@@ -41,6 +41,26 @@ async function seedTask(sectionIndex,taskIndex,variant=0){
 }
 try {
  await page.goto(url);await fresh();
+ // A previously saved run keeps its readings and assessment evidence under the new labels.
+ const oldReadings=await page.evaluate(()=>{
+  const d=JSON.parse(localStorage.getItem('kst-rp11-v3')),r=window.__rp11.simRun(window.__rp11.CSTD,27),old={Katniss:'Tom',Arya:'Dick',Carrie:'Harry'};
+  r.id=7;r.unk.forEach(u=>{u.n=old[u.n]||u.n;});d.runs=[r];d.cid=7;d.st.area='core';d.st.sec=0;
+  for(const id of ['c1','c2','c3','c4','c5'])d.st.adv[id]=true;
+  d.st.res.c3='sup';d.st.seen.c3=structuredClone(r);d.st.refs={h3:structuredClone(r)};d.st.bind.c6=7;
+  d.st.txt['c6:0']='4.2';d.st.txt.a9='Dick is a name in my own draft.';d.st.wr['c6:0']="That is Harry's sample.";
+  sessionStorage.setItem('rp11-test-seed',JSON.stringify(d));return JSON.parse(JSON.stringify(r.unk.map(({c,A,df})=>({c,A,df}))));
+ });
+ await page.reload();let migrated=await state();
+ assert.deepEqual(migrated.runs[0].unk.map(u=>u.n),['Katniss','Arya','Carrie']);
+ assert.deepEqual(migrated.runs[0].unk.map(({c,A,df})=>({c,A,df})),oldReadings);
+ assert.deepEqual(migrated.st.seen.c3.unk.map(u=>u.n),['Katniss','Arya','Carrie']);assert.deepEqual(migrated.st.refs.h3.unk.map(u=>u.n),['Katniss','Arya','Carrie']);
+ assert.equal(migrated.st.bind.c6,7);assert.equal(migrated.st.txt['c6:0'],'4.2');assert.equal(migrated.st.txt.a9,'Dick is a name in my own draft.');assert.equal(migrated.st.wr['c6:0'],"That is Carrie's sample.");
+ assert.match(await page.locator('#task-c6').innerText(),/Arya/);assert.match(await page.locator('#results').innerText(),/Katniss/);assert.match(await page.locator('#results').innerText(),/Carrie/);
+ await fresh();
+ const names=await page.evaluate(()=>window.__rp11.simRun(window.__rp11.CSTD,1).unk.map(({n,c})=>[n,c]));assert.deepEqual(names,[['Katniss',0],['Arya',5],['Carrie',8]]);
+ // The longer names must not overlap on the live apparatus.
+ const labels=await page.locator('#csvg .t-lab').evaluateAll(nodes=>nodes.slice(6,9).map(n=>{const b=n.getBBox();return {x:b.x,y:b.y,w:b.width,h:b.height}}));
+ for(let i=0;i<labels.length;i++)for(let j=i+1;j<labels.length;j++){const a=labels[i],b=labels[j];assert(a.x+a.w<=b.x||b.x+b.w<=a.x||a.y+a.h<=b.y||b.y+b.h<=a.y,'Sample labels overlap on the apparatus');}
  assert.match(await page.locator('#tasks').innerText(),/Task 1 of 8/);
  assert.equal(await page.locator('#cadvw').evaluate(el=>el.open),false);
  await next();
@@ -64,14 +84,14 @@ try {
  await page.emulateMedia({reducedMotion:'reduce'});await waitRun(2);
  assert.equal((await state()).st.bind.c6,first);
  assert.match(await page.locator('#task-c6').innerText(),/Using run 1/);
- assert((await page.locator('#task-c6').innerText()).includes(oldQuestion.split('Read Dick\'s glucose concentration')[1].split('Your answer')[0]));
+ assert((await page.locator('#task-c6').innerText()).includes(oldQuestion.split('Read Arya\'s glucose concentration')[1].split('Your answer')[0]));
  assert.equal(await page.locator('#runsel').isDisabled(),true);
  if(capture){
   await page.locator('#gfig').scrollIntoViewIfNeeded();await page.screenshot({path:'docs/required-practicals/rp11-graph-desktop.png'});
   await page.setViewportSize({width:390,height:844});await page.locator('#tasks').scrollIntoViewIfNeeded();await page.screenshot({path:'docs/required-practicals/rp11-question-phone.png'});await page.setViewportSize({width:1280,height:900});
  }
  await page.locator('#gguide').click();await page.locator('#gguide').click();assert.equal((await state()).st.peek.c6,1);await page.locator('[data-act="rebind"]').click();assert.equal((await state()).st.tried.c6,1);assert.equal((await state()).st.bind.c6,2);
- const answer=await page.evaluate(()=>{const d=JSON.parse(localStorage.getItem('kst-rp11-v3'));const r=d.runs.find(x=>x.id===d.st.bind.c6),u=r.unk.find(x=>x.n==='Dick');return window.__rp11.readOff(r,u.A,'curve','A').toFixed(1)});
+ const answer=await page.evaluate(()=>{const d=JSON.parse(localStorage.getItem('kst-rp11-v3'));const r=d.runs.find(x=>x.id===d.st.bind.c6),u=r.unk.find(x=>x.n==='Arya');return window.__rp11.readOff(r,u.A,'curve','A').toFixed(1)});
  await page.locator('#in-c6').fill(answer);await page.locator('[data-act="num"]').click();assert.equal((await state()).st.res.c6,'sup');
  const feedback=await page.locator('#task-c6 .fb.good').innerText();await page.locator('#call').click();await waitRun(3);await page.reload();
  assert.equal((await state()).st.bind.c6,2);assert.equal(await page.locator('#task-c6 .fb.good').innerText(),feedback);
@@ -88,7 +108,7 @@ try {
   const m=window.__rp11,base=m.CSTD,q=m.QSTD;
   const run=(o,seed=44)=>m.simRun({...base,...o},seed);
   const normal=run({}),serial=run({dil:'serial'}),spill=run({dil:'serial',pip:'slip'}),mistake=run({pip:'slip'}),narrow=run({dil:'custom',urine:'yz'}),quant=m.simRun(q,44),orange=m.simRun({...q,filt:'600'},44),zero=m.simRun({...q,blank:'zero'},44),water=run({blank:'water'}),bad=m.simRun({...q,tech:'bad'},44),late=run({heat:'late'}),high=run({urine:'x'}),x2=run({urine:'x2'}),z4=run({urine:'yz4'});
-  const poor=structuredClone(normal);poor.std[2].A+=.6;const dick=normal.unk.find(x=>x.n==='Dick');return {normal,serial,spill,mistake,narrow,quant,orange,zero,water,bad,late,high,x2,z4,T:m.gT(.3),poorResult:m.readOff(poor,dick.A,'curve','A'),straightResult:m.readOff(normal,dick.A,'straight','A'),readA:m.readOff(normal,dick.A,'curve','A'),readT:m.readOff(normal,dick.A,'curve','T'),highResult:m.readOff(high,high.unk.find(x=>x.n==='X').A,'curve','A'),badResult:m.readOff(bad,bad.unk[1].A,'curve','A'),xResult:m.readOff(x2,x2.unk.find(x=>x.n==='X ÷ 2').A,'curve','A'),zResult:m.readOff(z4,z4.unk.find(x=>x.n==='Z ÷ 4').A,'curve','A')};
+  const poor=structuredClone(normal);poor.std[2].A+=.6;const arya=normal.unk.find(x=>x.n==='Arya');return {normal,serial,spill,mistake,narrow,quant,orange,zero,water,bad,late,high,x2,z4,T:m.gT(.3),poorResult:m.readOff(poor,arya.A,'curve','A'),straightResult:m.readOff(normal,arya.A,'straight','A'),readA:m.readOff(normal,arya.A,'curve','A'),readT:m.readOff(normal,arya.A,'curve','T'),highResult:m.readOff(high,high.unk.find(x=>x.n==='X').A,'curve','A'),badResult:m.readOff(bad,bad.unk[1].A,'curve','A'),xResult:m.readOff(x2,x2.unk.find(x=>x.n==='X ÷ 2').A,'curve','A'),zResult:m.readOff(z4,z4.unk.find(x=>x.n==='Z ÷ 4').A,'curve','A')};
  });
  const close=(a,b,t=1e-6)=>assert(Math.abs(a-b)<=t,`${a} not close to ${b}`);
  facts.normal.std.forEach(p=>{close(p.conc,p.c);close(p.vol,2)});

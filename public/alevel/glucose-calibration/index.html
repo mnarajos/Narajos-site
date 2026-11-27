@@ -349,7 +349,7 @@ select{font:inherit;color:var(--ink);background:var(--card);border:2px solid var
     <summary class="sumh">These results are simulated: the model's assumptions</summary>
     <ul>
       <li><b>Published and simulated data.</b> The values labelled "Published AQA readings" come from the <a href="https://filestore.aqa.org.uk/resources/biology/AQA-7401-7402-PHBK.PDF">AQA practical handbook</a>. Its text reports 4.7 mmol dm⁻³ for a 0.89 reading, but its own table brackets 0.89 between the 2 and 4 mmol dm⁻³ standards. The worked interpolation uses the table. All lab readings here are simulated; Apply graphs are illustrative data made up for the questions.</li>
-      <li>The method follows the AQA practical handbook: standards of 0 to 10 mmol dm⁻³ made from a 10 mmol dm⁻³ standard, 2 cm³ of each sample and 2 cm³ of Benedict's, 4 minutes in a 90 °C water bath, cooled before reading. Tom, Dick and Harry's samples contain 0, 5 and 8 mmol dm⁻³ glucose.</li>
+      <li>The method follows the AQA practical handbook: standards of 0 to 10 mmol dm⁻³ made from a 10 mmol dm⁻³ standard, 2 cm³ of each sample and 2 cm³ of Benedict's, 4 minutes in a 90 °C water bath, cooled before reading. Katniss, Arya and Carrie's samples contain 0, 5 and 8 mmol dm⁻³ glucose.</li>
       <li>Qualitative Benedict's is read shaken, at 600 nm, against the heated 0 tube. Its readings are fitted to the handbook's sample results (0.76 at 2, 1.39 at 10 mmol dm⁻³). Quantitative Benedict's is read at 680 nm against water; the blue Cu²⁺ left absorbs about 0.80 with no glucose.</li>
       <li>The Cu²⁺ in 2 cm³ of either reagent is assumed to be used up by about 11 mmol dm⁻³ of glucose (illustrative), so higher concentrations give almost the same reading.</li>
       <li>Percentage transmission is relative to the selected blank (100 × 10<sup>−A</sup>); negative absorbance relative to a darker blank can therefore give more than 100% relative transmission.</li>
@@ -414,10 +414,10 @@ let speed="normal";
  handbook's sample results (600 nm). The blue Cu²⁺ left absorbs 0.30 × (1 − fr) at 600 nm and 0.80 × (1 − fr) at 680 nm. */
 const CAP=11,PXC=15,TAU=1.25;
 const BEN={qual:"Qualitative Benedict's",quant:"Quantitative Benedict's"};
-const URN=[["Tom",0],["Dick",5],["Harry",8]];
+const URN=[["Katniss",0],["Arya",5],["Carrie",8]];
 /* sample sets: [label, glucose in the tube (mmol dm⁻³), dilution factor]. Y and Z are for the planning challenge. */
 const SAMP={thd:URN,x:[...URN,["X",15]],x2:[...URN,["X ÷ 2",7.5,2]],yz:[["Y",1.3],["Z",17]],yz4:[["Y",1.3],["Z ÷ 4",4.25,4]],yz2:[["Y",1.3],["Z ÷ 2",8.5,2]]};
-const SAMPN={thd:"Tom, Dick and Harry",x:"Tom, Dick, Harry and patient X",x2:"Tom, Dick, Harry and patient X diluted 1 in 2",yz:"Patients Y and Z",yz4:"Patient Y, and Z diluted 1 in 4",yz2:"Patient Y, and Z diluted 1 in 2"};
+const SAMPN={thd:"Katniss, Arya and Carrie",x:"Katniss, Arya, Carrie and patient X",x2:"Katniss, Arya, Carrie and patient X diluted 1 in 2",yz:"Patients Y and Z",yz4:"Patient Y, and Z diluted 1 in 4",yz2:"Patient Y, and Z diluted 1 in 2"};
 const CSTD={ben:"qual",filt:"600",blank:"zero",dil:"prop",cst:"0,0.5,1,1.5,2,2.5",pip:"ok",heat:"all",tech:"good",urine:"thd"};
 const QSTD={...CSTD,ben:"quant",filt:"680",blank:"water"};
 const NOM={prop:[0,2,4,6,8,10],serial:[0,.625,1.25,2.5,5,10]};
@@ -549,7 +549,8 @@ function tubeSVG(t,i){const x=TX(i)+(t.wig?Math.sin(performance.now()/30)*2.5:0)
   g+=`<path d="M${x-8} ${top} H${x+8} V${yb-r} A8 8 0 0 1 ${x-8} ${yb-r} Z" fill="${rgb(lc)}" opacity=".92"/>`;
   if(ppt>0)g+=`<path d="M${x-8} ${yb-r-Math.max(0,ppt-r)} H${x+8} V${yb-r} A8 8 0 0 1 ${x-8} ${yb-r} Z" fill="${cr.s.ben==="qual"?"#a5432a":"#f4f4f2"}" stroke="${cr.s.ben==="qual"?"none":"#9aa1a9"}" stroke-width=".8"/>`;}
  g+=`<path class="t-glass" d="M${x-9} ${y} V${yb-r} A9 9 0 0 0 ${x+9} ${yb-r} V${y}"/>`;
- g+=`<text class="f-sm t-lab" x="${x}" y="${y-6}" text-anchor="middle"${t.lab.length>4?' style="font-size:10px"':""}>${esc(t.lab)}</text>`;return g;}
+ const labelY=y-6-(t.k==="urn"&&(i-6)%2===0?11:0);
+ g+=`<text class="f-sm t-lab" x="${x}" y="${labelY}" text-anchor="middle"${t.lab.length>4?' style="font-size:10px"':""}>${esc(t.lab)}</text>`;return g;}
 function sySVG(){if(!SY.vis)return"";const x=SY.x,y=SY.y,h=SY.load/4*30;let g=`<rect class="t-barrel" x="${x-4}" y="${y-44}" width="8" height="34" rx="1.5"/>`;
  if(h>0)g+=`<rect x="${x-3}" y="${y-11-h}" width="6" height="${h}" fill="${rgb(SY.col)}"/>`;
  g+=`<line class="f-thin" x1="${x}" y1="${y-10}" x2="${x}" y2="${y}"/><line class="f-thin" x1="${x}" y1="${y-44}" x2="${x}" y2="${y-54+h*.3}"/><line class="f-thin" x1="${x-5}" y1="${y-54+h*.3}" x2="${x+5}" y2="${y-54+h*.3}"/>`;
@@ -560,7 +561,7 @@ function cDraw(){if(!cr)return;const s=cr.s;let g="";
  g+=`<rect class="t-bath" x="8" y="168" width="302" height="128" rx="6"/><rect class="t-bathw" x="10" y="178" width="298" height="116" rx="4"/>`;
  g+=`<text class="f-sm" x="16" y="290">Water bath, 90 °C${cr.status==="heating"&&cr.t>0?` · ${cr.t.toFixed(1)} min`:""}${s.heat==="none"&&cr.status==="heating"?" (not used)":""}</text>`;
  // headers
- g+=`<text class="f-sm" x="99" y="12" text-anchor="middle">Standards, mmol dm⁻³</text><text class="f-sm" x="${206+(cr.tubes.length-7)*15}" y="12" text-anchor="middle">"Urine" samples</text>`;
+ g+=`<text class="f-sm" x="99" y="12" text-anchor="middle">Standards, mmol dm⁻³</text><text class="f-sm" x="${206+(cr.tubes.length-7)*15}" y="2" text-anchor="middle">"Urine" samples</text>`;
  // racks
  g+=`<rect class="t-rack" x="10" y="${104+cr.yS}" width="178" height="7" rx="2"/><rect class="t-rack" x="192" y="${104+cr.yU}" width="${cr.tubes.length>9?118:90}" height="7" rx="2"/>`;
  cr.tubes.forEach((t,i)=>g+=tubeSVG(t,i));
@@ -801,7 +802,7 @@ const PAIRS={
   b:{s:NQ({filt:"600"}),seed:8,line:"curve",txt:"Orange filter, 600 nm: absorbance falls only from about 0.30 to 0.04."}},
  trans:{same:"One set of qualitative Benedict's readings, plotted two ways.",a:{s:N0({}),seed:2,line:"curve",txt:"Absorbance against concentration."},
   b:{s:N0({}),seed:2,line:"curve",Y:"T",txt:"% transmission against concentration: the same data. More light absorbed means less transmitted."}},
- line:{same:"One set of qualitative Benedict's readings. Dick's sample was made at 5.0 mmol dm⁻³.",a:{s:N0({}),seed:4,line:"curve",guides:true,txt:"Curve of best fit, with construction lines for each sample."},
+ line:{same:"One set of qualitative Benedict's readings. Arya's sample was made at 5.0 mmol dm⁻³.",a:{s:N0({}),seed:4,line:"curve",guides:true,txt:"Curve of best fit, with construction lines for each sample."},
   b:{s:N0({}),seed:4,line:"straight",guides:true,txt:"Straight line through the same points, with construction lines. This line fits poorly; the value is for comparison only."}},
  shake:{same:"Qualitative Benedict's, the same tubes.",a:{s:N0({}),seed:6,line:"curve",txt:"Each tube shaken just before sampling: the precipitate is evenly suspended."},
   b:{s:N0({tech:"bad"}),seed:6,line:"curve",txt:"Not shaken: the precipitate settled, more in the tubes sampled later. Readings are lower and scattered."}}};
@@ -841,7 +842,11 @@ function showTaskPanel(tp){curTaskPanel=tp||null;curPair=tp&&tp.pair||null;if(tp
  Runs are saved with progress, so evidence survives reloads and later experiments. */
 let ST={area:"core",sec:null,res:{},adv:{},pick:{},vr:{},wr:{},lock:{},hint:{},txt:{},self:{},seen:{},bind:{},peek:{},rt:{},tried:{},lost:{}},fresh=null;
 const SKEY="kst-rp11-v3";
-try{const d=JSON.parse(localStorage.getItem(SKEY)||"null");if(d&&d.st){ST={...ST,...d.st};if(Array.isArray(d.runs))cRuns=d.runs;cId=Math.max(d.cid||0,...cRuns.map(r=>r.id),0);if(d.ui){CS={...CSTD,...d.ui.settings};speed=d.ui.speed||"normal";gLine=d.ui.line||"none";gY=d.ui.axis||"A";guides=!!d.ui.guides;showRun=cRuns.find(r=>r.id===d.ui.run)||null;}}}catch(e){}
+// Preserve stored experiment evidence when the illustrative sample labels change.
+const OLD_SAMPLE_NAMES={Tom:"Katniss",Dick:"Arya",Harry:"Carrie"};
+function renameSavedRun(r){if(r&&Array.isArray(r.unk))r.unk.forEach(u=>{if(Object.hasOwn(OLD_SAMPLE_NAMES,u.n))u.n=OLD_SAMPLE_NAMES[u.n];});return r;}
+function renameSavedFeedback(v){return typeof v==="string"?v.replace(/\b(?:Tom|Dick|Harry)\b/g,n=>OLD_SAMPLE_NAMES[n]):Array.isArray(v)?v.map(renameSavedFeedback):v;}
+try{const d=JSON.parse(localStorage.getItem(SKEY)||"null");if(d&&d.st){ST={...ST,...d.st};if(Array.isArray(d.runs))cRuns=d.runs.map(renameSavedRun);Object.values(ST.seen).forEach(renameSavedRun);Object.values(ST.refs||{}).forEach(renameSavedRun);for(const k of Object.keys(ST.wr))ST.wr[k]=renameSavedFeedback(ST.wr[k]);cId=Math.max(d.cid||0,...cRuns.map(r=>r.id),0);if(d.ui){CS={...CSTD,...d.ui.settings};speed=d.ui.speed||"normal";gLine=d.ui.line||"none";gY=d.ui.axis||"A";guides=!!d.ui.guides;showRun=cRuns.find(r=>r.id===d.ui.run)||null;}}}catch(e){}
 function save(){try{localStorage.setItem(SKEY,JSON.stringify({st:ST,runs:cRuns,cid:cId,ui:{settings:CS,speed,line:gLine,axis:gY,guides,run:showRun?.id??null}}));}catch(e){$("#save-warning").hidden=false;}}
 function setOK(m,n){return cmatch(cr.s,n);}
 function latestRun(m,n,f){for(let i=cRuns.length-1;i>=0;i--){const r=cRuns[i];if(cmatch(r.s,n)&&(!f||f(r)))return r;}return null;}
@@ -1068,11 +1073,11 @@ const SECTIONS=[
   q:"Under the graph, choose the line for your calibration graph, then press Check.",get:()=>gLine,ok:"curve",
   fb:{none:"Choose a line under the graph first.",straight:"A straight line misses the pattern: your points curve, so the line runs above some points and below others.",dots:"Joining the points copies every small error in the readings. A line of best fit shows the trend."},
   why:"Your points curve, so a smooth curve of best fit shows the trend without following every small error."},
- {id:"c6",type:"num",m:"lab",need:N({}),filt:full,read:true,line:"curve",title:"Read Dick's sample",skill:"Read a concentration from a calibration curve",missing:"You need a run with the AQA set-up.",unit:"mmol dm⁻³",tol:.3,
+ {id:"c6",type:"num",m:"lab",need:N({}),filt:full,read:true,line:"curve",title:"Read Arya's sample",skill:"Read a concentration from a calibration curve",missing:"You need a run with the AQA set-up.",unit:"mmol dm⁻³",tol:.3,
   worked:"<p><b>Published AQA readings:</b> 0.89 lies between 0.76 at 2 and 1.00 at 4 mmol dm⁻³. Straight-line interpolation gives 2 + (0.89 − 0.76) ÷ (1.00 − 0.76) × 2 ≈ 3.1 mmol dm⁻³. A smooth fitted curve may give a slightly different estimate.</p>",
-  q:r=>`Read Dick's glucose concentration from the curve of best fit (his absorbance: ${f2(uA(r,"Dick"))}). Give 1 decimal place.`,
-  ans:r=>rdC(r,"Dick"),errs:r=>[[rdC(r,"Dick","straight","A",true),"That is from a straight line. Use the curve of best fit."],[rdC(r,"Harry"),"That is Harry's sample."],[rdC(r,"Dick","dots"),"That is from joined points. Use the curve."]],
-  help:"Find Dick's absorbance on the y-axis, go across to the curve, then down.",why:r=>`Dick's sample reads ${f1(rdC(r,"Dick"))} mmol dm⁻³ (it was made at 5.0).`},
+  q:r=>`Read Arya's glucose concentration from the curve of best fit (the sample’s absorbance: ${f2(uA(r,"Arya"))}). Give 1 decimal place.`,
+  ans:r=>rdC(r,"Arya"),errs:r=>[[rdC(r,"Arya","straight","A",true),"That is from a straight line. Use the curve of best fit."],[rdC(r,"Carrie"),"That is Carrie's sample."],[rdC(r,"Arya","dots"),"That is from joined points. Use the curve."]],
+  help:"Find Arya's absorbance on the y-axis, go across to the curve, then down.",why:r=>`Arya's sample reads ${f1(rdC(r,"Arya"))} mmol dm⁻³ (it was made at 5.0).`},
  {id:"c7",type:"mcq",title:"The blank",skill:"Explain what zeroing with the heated 0 mmol dm⁻³ tube does",help:"The heated 0 tube has been through everything the other tubes have, except that it has no glucose.",
   v:[{q:"In the AQA method, the colorimeter is zeroed with the heated 0 mmol dm⁻³ tube. What does that do?",opts:[K("It cancels the absorbance of the Benedict's itself"),O("It gives the lamp time to warm up before the readings","Zeroing sets a reference point; it is not a warm-up."),O("It makes the 10 mmol dm⁻³ standard read 1.00","The blank sets zero, not the top of the scale."),O("It cancels any fingerprints left on the cuvettes","Each cuvette's marks differ, so a blank cannot cancel them.")],
     why:"The heated zero-glucose tube contains the Benedict's, treated like every other tube, so zeroing on it cancels the reagent's own absorbance: readings show the change caused by glucose. Distilled water is a different reference (see the Explore card on blanks)."},
@@ -1096,9 +1101,9 @@ const SECTIONS=[
   v:[{q:"How should the cuvettes be prepared for each method?",opts:[K("Qualitative: shake, read at once. Quantitative: settle, take clear liquid."),O("Qualitative: settle, take clear liquid. Quantitative: shake, read at once.","Swapped: the qualitative method measures the suspended precipitate."),O("Both methods: shake each tube well, then read the cuvette at once.","For quantitative Benedict's, precipitate in the cuvette adds to the reading."),O("Both methods: let it settle, then take only the clear liquid.","For qualitative Benedict's, the precipitate is what is being measured.")],
     why:"Qualitative Benedict's is read as an evenly mixed suspension. Quantitative Benedict's measures the blue left in solution, so the precipitate must be kept out."}]},
  {id:"q4",type:"num",m:"lab",need:QSTD,filt:full,read:true,line:"curve",title:"Read a falling curve",skill:"Read a concentration from a falling calibration curve",missing:"You need a run with quantitative Benedict's.",unit:"mmol dm⁻³",tol:.35,
-  q:r=>`From the curve of best fit, read Dick's concentration (absorbance ${f2(uA(r,"Dick"))}). 1 decimal place.`,
-  ans:r=>rdC(r,"Dick"),errs:r=>[[rdC(r,"Harry"),"That is Harry's sample."],[rdC(r,"Dick")!=null?10-rdC(r,"Dick"):null,"The curve falls here: lower absorbance means more glucose."]],
-  help:"Same method: across to the curve, then down. This curve slopes the other way.",why:r=>`Dick reads ${f1(rdC(r,"Dick"))} mmol dm⁻³ with quantitative Benedict's.`},
+  q:r=>`From the curve of best fit, read Arya's concentration (absorbance ${f2(uA(r,"Arya"))}). 1 decimal place.`,
+  ans:r=>rdC(r,"Arya"),errs:r=>[[rdC(r,"Carrie"),"That is Carrie's sample."],[rdC(r,"Arya")!=null?10-rdC(r,"Arya"):null,"The curve falls here: lower absorbance means more glucose."]],
+  help:"Same method: across to the curve, then down. This curve slopes the other way.",why:r=>`Arya reads ${f1(rdC(r,"Arya"))} mmol dm⁻³ with quantitative Benedict's.`},
  {id:"q5",type:"mcq",title:"Limitations",skill:"Identify a limitation of each Benedict's method",
   v:[{q:"Which limitation applies to the qualitative method but not the quantitative one?",opts:[K("Readings change as the suspended precipitate settles"),O("It needs a water bath kept at 90 °C for every tube","Both methods are heated in the same way."),O("It needs a full set of glucose standards to be made","Both methods need a calibration curve."),O("It only detects reducing sugars, such as glucose here","Both methods depend on reducing sugars.")],
     why:"The qualitative method reads a suspension, which settles over time; the quantitative method reads the clear liquid."},
@@ -1112,7 +1117,7 @@ const SECTIONS=[
    {q:"Fresh question: a 1 in 10 serial dilution starts at 10 mmol dm⁻³. Concentration after 2 steps?",help:"Each 1 in 10 step divides the concentration by 10.",ans:()=>.1,errs:()=>[[1,"That is after 1 step."],[5,"Each step divides by 10."]],why:()=>"10 → 1 → 0.1 mmol dm⁻³."}],
   help:"Each 1 in 2 step halves the concentration."},
  {id:"s2",type:"run",m:"lab",need:N({dil:"serial"}),title:"Run serial standards",text:"Run the method with serial dilutions, then look at where the points sit on the graph.",
-  res:r=>`Your standards: 0, 0.63, 1.25, 2.5, 5 and 10 mmol dm⁻³. Four of the six are below 3, so the low end of the curve is well defined but there are few points near Dick (5) and Harry (8).`},
+  res:r=>`Your standards: 0, 0.63, 1.25, 2.5, 5 and 10 mmol dm⁻³. Four of the six are below 3, so the low end of the curve is well defined but there are few points near Arya (5) and Carrie (8).`},
  {id:"s3",type:"mcq",panel:{pair:"dil"},title:"One mistake, two methods",skill:"Explain how an error spreads in a serial dilution",help:"In a serial dilution, where does each tube's glucose come from?",
   v:[{q:"Both sets had one volume wrong. Why does B have several low points but A only one?",opts:[K("Each serial tube is made from the one before it"),O("Serial dilutions were heated for less time","Both sets were heated the same way."),O("Serial standards use a weaker glucose stock","Both start from the same 10 mmol dm⁻³ stock."),O("Serial dilutions always contain more mistakes overall","Each set had exactly one mistake.")],
     why:"In a serial dilution an error in one tube is carried into every tube made from it. A proportional error affects only its own tube."}]},
@@ -1173,7 +1178,7 @@ const SECTIONS=[
   q:"The urine tubes go into the bath 2 minutes after the standards. Predict the urine concentrations read from the curve.",
   out:[K("Too low"),O("Too high","Less time in the bath means less reaction."),O("Unchanged","The standards had 4 minutes; the urine only 2.")],
   why:[K("The samples react for less time than the standards did"),O("The urine tubes cool the bath and slow the standards","The bath stays at 90 °C."),O("Late tubes collect extra glucose from the bath","Nothing enters the tubes from the bath.")],
-  res:r=>`Dick (made at 5.0 mmol dm⁻³) has absorbance ${f2(uA(r,"Dick"))}; a matched four-minute run gives about ${f2(uA(BASE,"Dick"))}. The mismatch makes the concentration estimate unreliable.`,
+  res:r=>`Arya (made at 5.0 mmol dm⁻³) has absorbance ${f2(uA(r,"Arya"))}; a matched four-minute run gives about ${f2(uA(BASE,"Arya"))}. The mismatch makes the concentration estimate unreliable.`,
   because:"Less Cu²⁺ is reduced in 2 minutes, so the samples' absorbance is lower than standards of the same concentration. Heat everything together for the same time."}]},
 
 {id:"trans",area:"explore",name:"Absorbance or % transmission",card:"Plot the same readings as % transmission, and read a sample from that graph.",start:N({}),graph:{Y:"T",line:"curve"},model:"lab",help:true,intro:"A colorimeter can show absorbance or % transmission. They describe the same light, in opposite directions.",tasks:[
@@ -1182,9 +1187,9 @@ const SECTIONS=[
     why:"Transmission is the light that gets through the sample; absorbance rises as transmission falls."}],
   extra:'<p class="note"><span class="badge">Beyond the spec</span> Absorbance = log₁₀(100 ÷ % transmission).</p>'},
  {id:"t2",type:"num",m:"lab",need:N({}),filt:full,read:true,line:"curve",gy:"T",title:"Read from % transmission",skill:"Read a concentration from a % transmission calibration curve",missing:"You need a run with the AQA set-up.",unit:"mmol dm⁻³",tol:.35,
-  q:r=>`The graph now shows % transmission. Read Dick's concentration from the curve of best fit (his transmission: ${gT(uA(r,"Dick")).toFixed(0)}%). 1 decimal place.`,
-  ans:r=>rdC(r,"Dick","curve","T"),errs:r=>[[rdC(r,"Harry","curve","T"),"That is Harry's sample."]],
-  help:"Find Dick's % transmission on the y-axis, go across to the curve, then down.",why:r=>`About ${f1(rdC(r,"Dick","curve","T"))} mmol dm⁻³, the same as from absorbance, within reading error.`},
+  q:r=>`The graph now shows % transmission. Read Arya's concentration from the curve of best fit (the sample’s transmission: ${gT(uA(r,"Arya")).toFixed(0)}%). 1 decimal place.`,
+  ans:r=>rdC(r,"Arya","curve","T"),errs:r=>[[rdC(r,"Carrie","curve","T"),"That is Carrie's sample."]],
+  help:"Find Arya's % transmission on the y-axis, go across to the curve, then down.",why:r=>`About ${f1(rdC(r,"Arya","curve","T"))} mmol dm⁻³, the same as from absorbance, within reading error.`},
  {id:"t3",type:"mcq",title:"Which has more glucose?",skill:"Compare samples using % transmission",
   v:[{q:"Qualitative Benedict's: sample P has a lower % transmission than sample Q. Which contains more glucose?",opts:[K("P: it lets less light through"),O("Q: it lets more light through","More glucose means more precipitate, which blocks light."),O("Neither: transmission ignores glucose","Transmission depends on the precipitate glucose made."),O("You can't tell without absorbance","% transmission carries the same information.")],
     why:"More glucose makes more precipitate, so less light is transmitted."},
@@ -1193,10 +1198,10 @@ const SECTIONS=[
 
 {id:"line",area:"explore",name:"Lines of best fit",card:"A curve of best fit, a straight line and joined points, on the same data.",start:N({}),graph:{line:"straight"},model:"lab",help:true,intro:"The line you draw decides the concentrations you read.",tasks:[
  {id:"l1",type:"num",panel:{pair:"line"},title:"Read the curve",skill:"Read the same data from different lines",unit:"mmol dm⁻³",tol:.3,
-  v:[{q:"Read Dick's concentration from the curve of best fit in A. 1 decimal place.",ans:()=>rdC(PL,"Dick"),errs:()=>[[rdC(PL,"Dick","straight","A",true),"That is from the straight line in B."]],why:()=>`About ${f1(rdC(PL,"Dick"))} mmol dm⁻³ from the curve; the straight line gives ${f1(rdC(PL,"Dick","straight","A",true))}.`}],
-  help:"Follow A's construction line for Dick down to the concentration axis. The displayed guide counts as support."},
+  v:[{q:"Read Arya's concentration from the curve of best fit in A. 1 decimal place.",ans:()=>rdC(PL,"Arya"),errs:()=>[[rdC(PL,"Arya","straight","A",true),"That is from the straight line in B."]],why:()=>`About ${f1(rdC(PL,"Arya"))} mmol dm⁻³ from the curve; the straight line gives ${f1(rdC(PL,"Arya","straight","A",true))}.`}],
+  help:"Follow A's construction line for Arya down to the concentration axis. The displayed guide counts as support."},
  {id:"l2",type:"mcq",panel:{pair:"line"},title:"Why they differ",skill:"Explain why a straight line is a poor fit to curved data",
-  v:[{q:"Why does B give a different reading for Dick?",opts:[K("The straight line misses the curved pattern of points"),O("Dick's sample was measured again for graph B","Same data, different line."),O("A straight line is always the more accurate choice","Only when the points lie on a straight line."),O("B's points were plotted on a different scale","Both use the same axes.")],
+  v:[{q:"Why does B give a different reading for Arya?",opts:[K("The straight line misses the curved pattern of points"),O("Arya's sample was measured again for graph B","Same data, different line."),O("A straight line is always the more accurate choice","Only when the points lie on a straight line."),O("B's points were plotted on a different scale","Both use the same axes.")],
     why:"The straight line runs above some points and below others, so readings from it are too high in some places and too low in others."}]},
  {id:"l3",type:"mcq",title:"Joining the points",skill:"Explain why points are not joined dot to dot",
   v:[{q:"Why not join the points with straight lines from point to point?",opts:[K("It follows every small error in each reading"),O("It makes the concentrations too hard to read","Joined points are easy to read; that is not the problem."),O("It always gives values that are too low","It can be too high or too low."),O("It is only allowed for straight-line data","A fitted line can show a trend without copying every point. Local interpolation may be useful when justified.")],
