@@ -1,8 +1,15 @@
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 
 // Exercise the diagrams in their teaching routes, including the narrowest
 // supported viewport. These checks complement visual and scientific review.
 export async function checkCompactCatchupFigures(browser, base) {
+  // Deterministic font metrics supplement the host's system font: its
+  // fallback can differ from the one used by the CI runner.
+  const placentaFonts = [
+    ...[600, 700].map(weight => ({family:'PlacentaAuditPoppins', weight, file:`./fixtures/poppins/Poppins-${weight}-latin.woff2`})),
+    ...[400, 700].map(weight => ({family:'PlacentaAuditDejaVu', weight, file:`./fixtures/dejavu/DejaVuSans-${weight}-subset.woff2`}))
+  ].map(font => ({...font, data:readFileSync(new URL(font.file, import.meta.url)).toString('base64')}));
   for (const width of [320, 1280]) {
     const page = await browser.newPage({viewport: {width, height: 850}});
     try {
@@ -118,19 +125,28 @@ export async function checkCompactCatchupFigures(browser, base) {
       // Check labels in the actual standalone SVG as well as its containing
       // page: two lines can look adjacent in a screenshot yet overlap.
       await page.goto(base + '/human-biology/f175-placenta-many-villi.svg');
-      const placentaLabelIssues = await page.locator('svg').evaluate(svg => {
-        const view = svg.viewBox.baseVal;
-        const labels = [...svg.querySelectorAll('text')].map(node => ({text:node.textContent, box:node.getBBox()}));
-        const issues = [];
-        for (const {text, box} of labels) {
-          if (box.x < view.x - .5 || box.y < view.y - .5 || box.x + box.width > view.x + view.width + .5 || box.y + box.height > view.y + view.height + .5) issues.push('clipped: ' + text);
+      const placentaLabelIssues = await page.locator('svg').evaluate(async (svg, fonts) => {
+        for (const {family, weight, data} of fonts) {
+          const bytes = Uint8Array.from(atob(data), character => character.charCodeAt(0));
+          const font = new FontFace(family, bytes, {weight:String(weight)});
+          document.fonts.add(await font.load());
         }
-        for (let i = 0; i < labels.length; i++) for (let j = i + 1; j < labels.length; j++) {
-          const a = labels[i].box, b = labels[j].box;
-          if (a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height) issues.push('overlap: ' + labels[i].text + ' / ' + labels[j].text);
+        const view = svg.viewBox.baseVal;
+        const nodes = [...svg.querySelectorAll('text')];
+        const issues = [];
+        for (const [name, family] of [['native', null], ['Poppins', '"PlacentaAuditPoppins", sans-serif'], ['DejaVu', '"PlacentaAuditDejaVu", sans-serif'], ['system', 'system-ui, sans-serif']]) {
+          nodes.forEach(node => family ? node.style.setProperty('font-family', family, 'important') : node.style.removeProperty('font-family'));
+          const labels = nodes.map(node => ({text:node.textContent, box:node.getBBox()}));
+          for (const {text, box} of labels) {
+            if (box.x < view.x - .5 || box.y < view.y - .5 || box.x + box.width > view.x + view.width + .5 || box.y + box.height > view.y + view.height + .5) issues.push(name + ' clipped: ' + text);
+          }
+          for (let i = 0; i < labels.length; i++) for (let j = i + 1; j < labels.length; j++) {
+            const a = labels[i].box, b = labels[j].box;
+            if (a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height) issues.push(name + ' overlap: ' + labels[i].text + ' / ' + labels[j].text);
+          }
         }
         return issues;
-      });
+      }, placentaFonts);
       assert.deepEqual(placentaLabelIssues, [], 'placental labels must be unclipped and distinct');
       const placentaTargets = await page.locator('svg').evaluate(svg => {
         const names = ['maternal-blood', 'foetal-vessel', 'chorionic-villus', 'uterus-wall'];

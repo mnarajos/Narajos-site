@@ -7,7 +7,7 @@
     <text x="14" y="49" font-size="15">Foetal side: towards the cord</text>
     <g font-size="17" font-weight="600">
       <text x="14" y="84">Maternal blood</text>
-      <text x="164" y="84">Foetal vessel</text>
+      <text x="164" y="76">Foetal</text><text x="164" y="101">vessel</text>
     </g>
     <!-- The selected section is turned: pink is maternal blood outside villi. -->
     <g transform="translate(0 58)">
@@ -28,7 +28,7 @@
     <!-- Fine unheaded label leaders end at contrasting dots, not arrowheads. -->
     <g fill="none" stroke="#243c48" stroke-width="1.5">
       <path data-label-line="maternal-blood" d="M72 92 L88 110 V208"/>
-      <path data-label-line="foetal-vessel" d="M220 92 L254 110 V204 L218 216"/>
+      <path data-label-line="foetal-vessel" d="M220 108 L254 120 V204 L218 216"/>
       <path data-label-line="uterus-wall" d="M54 385 V345"/>
       <path data-label-line="chorionic-villus" d="M180 384 L190 370 V258 L200 243"/>
     </g>
