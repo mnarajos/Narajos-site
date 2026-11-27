@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="350" viewBox="0 0 280 350" role="img" aria-labelledby="title desc">
+<title id="title">Oocyte route towards the uterus</title>
+<desc id="desc">A simplified pathway shows a secondary oocyte released from an ovary crossing a small gap towards fimbriae at the open end of an oviduct. The oviduct leads towards the uterus. Motile cilia and muscular contractions help transport the oocyte along the oviduct. The layout is not a body section or to scale.</desc>
+<rect width="280" height="350" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16" fill="#243e49" text-anchor="middle">
+ <text x="140" y="25" font-weight="700">Oocyte route</text>
+ <ellipse cx="49" cy="92" rx="29" ry="24" fill="#e7d9ee" stroke="#77598a" stroke-width="2"/>
+ <circle cx="91" cy="92" r="6" fill="#e7d9ee" stroke="#77598a" stroke-width="2"/>
+ <path d="M66 92h15m-6-5 6 5-6 5" fill="none" stroke="#276972" stroke-width="2"/>
+ <path d="M102 68q9 17 20 19M102 78q9 13 20 12M102 106q9-14 20-12M102 116q9-18 20-19" fill="none" stroke="#ad6748" stroke-width="3"/>
+ <path d="M120 87h95v10h-95" fill="#f1d9ca" stroke="#ad6748" stroke-width="2"/>
+ <path d="M130 92h70m-7-6 7 6-7 6" fill="none" stroke="#276972" stroke-width="2"/>
+ <path d="M215 69q26 0 37 18v23q-20 13-37-2z" fill="#eed7db" stroke="#a76170" stroke-width="2"/>
+ <text x="49" y="138">Ovary</text><text x="119" y="160">Fimbriae</text><text x="188" y="138">Oviduct</text><text x="235" y="160">Uterus</text>
+ <path d="M119 146v-31M188 122v-22M235 145v-30" stroke="#405968" stroke-width="1.5" fill="none"/>
+ <text x="140" y="197">Cilia and muscular contractions</text>
+ <text x="140" y="220">help move the oocyte</text>
+ <text x="140" y="243">along the oviduct</text>
+ <path d="M50 276h180m-8-6 8 6-8 6" fill="none" stroke="#276972" stroke-width="2.5"/>
+ <path d="M52 305v-19m22 19v-19m22 19v-19m22 19v-19m22 19v-19m22 19v-19m22 19v-19m22 19v-19m22 19v-19" stroke="#23656c" stroke-width="2"/>
+ <path d="M47 306h186v13H47z" fill="#d8ece7" stroke="#23656c" stroke-width="2"/>
+ <text x="140" y="342" font-size="14">Schematic pathway, not to scale</text>
+</g></svg>

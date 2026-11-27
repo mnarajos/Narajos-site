@@ -10,6 +10,13 @@ on:
       - 'scripts/check-human-biology.mjs'
       - 'scripts/check-human-challenges.mjs'
       - 'scripts/check-human-skills.mjs'
+      - 'scripts/check-catchup-visual-integrity.mjs'
+      - 'scripts/check-f171-pressure-figure.mjs'
+      - 'scripts/check-f170-growth-graph.mjs'
+      - 'scripts/check-f171-measurements-figure.mjs'
+      - 'scripts/check-alevel-catchup-figures.mjs'
+      - 'scripts/check-alevel-molecules-figures.mjs'
+      - 'scripts/check-ks3-explanation-visuals.mjs'
       - 'scripts/check-co-transport-routes.mjs'
       - 'scripts/browser-test-site.mjs'
       - '.github/workflows/site-checks.yml'
@@ -21,6 +28,13 @@ on:
       - 'scripts/check-human-biology.mjs'
       - 'scripts/check-human-challenges.mjs'
       - 'scripts/check-human-skills.mjs'
+      - 'scripts/check-catchup-visual-integrity.mjs'
+      - 'scripts/check-f171-pressure-figure.mjs'
+      - 'scripts/check-f170-growth-graph.mjs'
+      - 'scripts/check-f171-measurements-figure.mjs'
+      - 'scripts/check-alevel-catchup-figures.mjs'
+      - 'scripts/check-alevel-molecules-figures.mjs'
+      - 'scripts/check-ks3-explanation-visuals.mjs'
       - 'scripts/check-co-transport-routes.mjs'
       - 'scripts/browser-test-site.mjs'
       - '.github/workflows/site-checks.yml'
@@ -41,5 +55,9 @@ jobs:
           node scripts/check-human-biology.mjs
           node scripts/check-human-challenges.mjs
           node scripts/check-human-skills.mjs
+          node scripts/check-catchup-visual-integrity.mjs
+          node scripts/check-alevel-catchup-figures.mjs
+          node scripts/check-alevel-molecules-figures.mjs
+          node scripts/check-ks3-explanation-visuals.mjs
           node scripts/check-co-transport-routes.mjs
 

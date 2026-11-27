@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="370" viewBox="0 0 280 370" role="img" aria-labelledby="title desc">
+<title id="title">ATP and the sodium gradient</title><desc id="desc">A mitochondrion supplies ATP to a sodium pump. The pump moves sodium out of the tubule cell, maintaining a gradient that supports sodium and glucose entering together from the filtrate. ATP does not directly power the sodium-glucose transporter.</desc>
+<rect width="280" height="370" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="24" font-weight="700">ATP supports uptake</text>
+<ellipse cx="62" cy="72" rx="39" ry="23" fill="#f4dbc8" stroke="#ae6b49" stroke-width="2"/><path d="M37 73q5-12 10 0t10 0 10 0 10 0 10 0" fill="none" stroke="#ae6b49" stroke-width="2"/><text x="62" y="115" font-size="15">Mitochondrion</text>
+<path d="M110 71h40m-8-6 8 6-8 6" fill="none" stroke="#286b73" stroke-width="2.5"/><text x="131" y="59" font-size="15">ATP</text>
+<rect x="157" y="48" width="101" height="48" rx="9" fill="#d9eae6" stroke="#397c77" stroke-width="2"/><text x="207" y="69" font-size="15">Sodium</text><text x="207" y="88" font-size="15">pump</text>
+<path d="M207 108v29m-6-7 6 7 6-7" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<text x="140" y="163">Na⁺ pumped out of cell</text>
+<path d="M140 175v28m-6-7 6 7 6-7" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<text x="140" y="229">Na⁺ gradient maintained</text>
+<path d="M140 241v28m-6-7 6 7 6-7" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<text x="140" y="295">Na⁺ enters with glucose</text><text x="140" y="318">from the filtrate</text>
+<text x="140" y="351" font-size="15">Indirect coupling; steps simplified.</text>
+</g></svg>

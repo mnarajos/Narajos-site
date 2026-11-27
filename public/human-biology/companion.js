@@ -70,7 +70,7 @@ var notes={
     "a1": {
       "title": "Causes and effects of disease",
       "lines": [
-        "A symptom is something a patient experiences and describes. A sign is observed or measured by someone else.",
+        "A symptom is something a patient experiences and describes. A sign is an objective finding that can be observed or measured.",
         "A disease may have infectious or non-infectious causes. Risk factors increase the chance of a condition but do not prove it will occur.",
         "When explaining disease, connect a change in tissue structure or function to its effect on the person."
       ]
@@ -205,7 +205,7 @@ var notes={
   "f175": {
     "2.1": {
       title: "First antenatal appointment and later monitoring",
-      lines: ["Booking history supplies context for later care. Starting measurements provide a baseline.", "Later measures can address a separate question about fetal growth or a possible condition."]
+      lines: ["Booking history supplies context for later care. Starting measurements provide a baseline.", "Later measures can address a separate question about foetal growth or a possible condition."]
     },
     "a1": {
       "title": "Conception and pregnancy",
@@ -218,8 +218,8 @@ var notes={
     "a2": {
       "title": "Pregnancy and antenatal care",
       "lines": [
-        "The placenta supports exchange of oxygen, nutrients and wastes between maternal and fetal circulations.",
-        "Maternal and fetal blood are normally separated by the placental barrier.",
+        "The placenta supports exchange of oxygen, nutrients and wastes between maternal and foetal circulations.",
+        "Maternal and foetal blood are normally separated by the placental barrier.",
         "Ultrasound uses reflected sound waves to create images for antenatal assessment."
       ]
     },
@@ -478,6 +478,242 @@ function showUnit(unit,render){
  });
  h+='</div></div>';render(h);
 }
+// A recap line gets a figure only where the particular idea matches it.
+// Unmapped lines intentionally remain unillustrated pending editorial review.
+const labRecap = function(caption) { return {
+ src:"/human-biology/lab-sample-workflow.svg",width:280,height:360,compact:true,
+ alt:"A labelled sample passes through laboratory testing with quality controls to a result report. The report is considered alongside clinical context to inform a decision.",caption:caption
+}; };
+const nutritionRecap = function(file, alt, caption, height) { return {
+ src:"/human-biology/"+file+".svg",width:280,height:height,compact:true,alt:alt,caption:caption
+}; };
+const recapFigureMap = {
+ "f171/3.2.1/2": [["f171/3.2.1", "modelDiagrams", 0]],
+ "f171/3.2.1/3": [["f171/3.2.1", "modelDiagrams", 1]],
+ "f170/2.2.1/1": [["f174/a3", "teachingDiagram"], nutritionRecap("f170-nephron-overview", "Blood reaches a glomerulus, where fluid is filtered into the nephron. Some water and ions return from the tubule to blood; remaining fluid and wastes continue as urine. The pathway is simplified.", "Follow filtration into the tubule, then reabsorption of some water and ions back to blood. Remaining fluid and wastes form urine; this overview omits secretion and detailed tubule regions.", 425)],
+ "f170/3.2.1/2": [nutritionRecap("f170-autonomic-cns-pns", "The brain and spinal cord regulate autonomic pathways. A schematic signal leaves the central nervous system, passes through an autonomic ganglion in the peripheral nervous system and can influence effectors such as cardiac muscle, smooth muscle or glands. The illustration simplifies many distinct circuits.", "Follow a simplified autonomic motor pathway from the CNS through a peripheral ganglion. Different pathways can influence cardiac muscle, smooth muscle or glands; feedback and circuit differences are omitted.", 390)],
+ "f170/4.1.1/2": [nutritionRecap("f170-mesosome-artefact", "A conceptual bacterial membrane is shown before and after a possible alteration during chemical fixation. A membrane infolding is a possible preparation artefact; the drawing is not an actual observation and not every preparation causes it.", "Compare the membrane outlines: chemical fixation can create an infolding that was historically called a mesosome. This is a schematic possibility, not proof that all infoldings or preparations are artefacts.", 365)],
+ "f175/2.1/1": [["f175/2.1", "explainDiagrams", 1]],
+ "f170/3.3.1/2": [["f170/3.3.1", "explainPhotos", 0]],
+ "f170/3.3.1/1": [nutritionRecap("f170-sperm-route", "A simplified pathway shows sperm from a testis moving into the epididymis, then along the vas deferens towards the urethra. The seminal vesicle and prostate add fluid to the route. The drawing is not a body section or to scale.", "Follow the sperm route from testis to epididymis and vas deferens. The labelled accessory glands contribute fluid; the simplified layout does not show anatomical positions.", 400)],
+ "f170/3.1.2/2": [nutritionRecap("f170-glucose-testing-context", "A fasting period precedes one blood sample, providing a more standardised starting condition. A wearable sensor measures glucose in fluid beneath the skin and provides a trend over time; sensor readings can lag behind blood glucose.", "Compare the single fasting blood sample with the sensor trend. Fasting standardises recent food intake; interstitial-fluid readings can differ from or lag behind blood glucose.", 393)],
+ "f171/1.2.1.tissues/1": [["f171/1.2.1.tissues", "explainDiagrams", 1]],
+ "f171/1.2.1.tissues/2": [["f171/1.2.1.tissues", "explainDiagrams", 2]],
+ "f170/3.3.2/2": [nutritionRecap("f170-gamete-patterns", "A conceptual time line shows oocyte maturation and release generally recurring in cycles, with variable intervals. A second line shows sperm production as relatively continuous after puberty. The drawing has no time scale and does not predict fertility.", "Compare the recurring ovarian pattern with relatively continuous sperm production. Timing and production vary; ovulation does not occur in every cycle and this is not a fertility prediction.", 325)],
+ "f171/1.2.1.oxygen/1": [["f171/1.2.1.oxygen", "explainDiagrams", 1]],
+ "f171/1.2.1.oxygen/2": [["f171/1.2.1.oxygen", "explainDiagrams", 2]],
+ "f171/1.2.1.oxygen/3": [["f171/1.2.1.oxygen", "explainDiagrams", 3]],
+ "f170/4.1.3/0": [nutritionRecap("f170-microbiota-sites", "A schematic body marks mouth, skin, gut and genital tract as examples of microbiota sites. Communities vary by site and include bacteria and fungi.", "Locate the example sites. Microbial communities vary by body site and person; the markers do not represent exact species or quantities.", 420), nutritionRecap("f170-microbial-environments", "Examples of bacterial locations include the conjunctiva, teeth, water, soil and surfaces; presence and abundance vary.", "Locate the body and environmental examples. These are possible locations, not positive test results.", 395)],
+ "f170/4.1.3/1": [nutritionRecap("f170-sampling-contamination", "Material from an unintended surface can reach a sample alongside material from the intended site, obscuring the source of a result; unknown samples can present unknown risks.", "Compare the intended site with the unintended source. This conceptual diagram is not a sampling or culture protocol.", 380)],
+ "f170/4.1.3/2": [nutritionRecap("f170-asepsis-limit", "Aseptic technique aims to reduce accidental entry into a sample and escape to the environment, but an unknown sample may still contain harmful organisms.", "The bars indicate reduced transfer, not a guarantee or proof that the original sample is safe.", 335)],
+ "f171/1.2.1.digestive/1": [["f171/1.2.1.digestive", "explainDiagrams", 1]],
+ "f171/1.2.1.digestive/2": [["f171/1.2.1.digestive", "explainDiagrams", 2]],
+ "f170/4.2/2": [nutritionRecap("f170-microbiota-interventions", "A schematic compares probiotics containing live microbes with faecal microbiota transplantation using screened donor material. FMT is an established option for selected recurrent C. difficile infections; use for obesity remains investigational.", "Compare the intervention and the evidence context. Probiotic effects vary by product and condition; FMT is not an established obesity treatment. The figure does not recommend treatment for an individual.", 480)],
+ "f171/1.2.1.movement/1": [["f171/1.2.1.movement", "explainDiagrams", 1]],
+ "f171/1.2.1.movement/2": [["f171/1.2.1.movement", "explainDiagrams", 2]],
+ "f170/4.2/0": [nutritionRecap("f170-microbiota-sites", "A schematic body marks mouth, skin, gut and genital tract as examples of microbiota sites. Communities vary by site and include bacteria and fungi.", "Locate the example sites. Microbial communities vary by body site and person; the markers do not represent exact species or quantities.", 420), nutritionRecap('f170-microbial-metabolites', 'Some gut microbes ferment fibre to short-chain fatty acids such as butyrate, which colon cells can use for energy; microbial metabolites can influence immune responses. Not all microbes perform this pathway and effects depend on context.', 'Follow this example of microbial fermentation and its possible effects. The pathway is qualitative; immune responses vary with context.', 365), nutritionRecap("f170-microbiota-benefits", "Resident gut microbes and an incoming potential pathogen compete for space and nutrients near the lining. Some gut bacteria also synthesise vitamins.", "Compare the competing microbes, then follow the example of vitamin synthesis. Competition can make establishment harder, but does not prevent every infection.", 395)],
+ "f170/4.2/1": [nutritionRecap("f170-microbiota-benefits", "Resident gut microbes and an incoming potential pathogen compete for space and nutrients near the lining. Some gut bacteria also synthesise vitamins.", "Compare the competing microbes, then follow the example of vitamin synthesis. Competition can make establishment harder, but does not prevent every infection.", 395)],
+ "f171/1.2.1.airways/1": [["f171/1.2.1.airways", "explainDiagrams", 1]],
+ "f171/1.2.1.airways/2": [["f171/1.2.1.airways", "explainDiagrams", 2]],
+ "f170/4.1.2/2": [nutritionRecap("f170-fungal-disease-examples", "Selected examples show aspergillosis affecting lungs, Candida-associated thrush affecting the mouth, and tinea pedis affecting foot skin, often caused by dermatophytes such as Trichophyton.", "Use these as examples of sites, not diagnostic signs or the only sites affected. Tinea names an infection, not a fungal genus.", 465)],
+ "f171/1.2.1.renal/1": [["f171/1.2.1.renal", "explainDiagrams", 1]],
+ "f171/1.2.1.renal/2": [["f171/1.2.1.renal", "explainDiagrams", 2]],
+ "f170/4.1.2/0": [nutritionRecap("f170-fungal-hyphae", "A branching network of hyphae extends through a substrate. An enlarged hypha has a chitin-containing wall and cross-walls called septa, which occur in some fungi.", "Follow one hypha into the branching mycelium. The enlarged wall and septa are simplified; septal pores and scale are omitted.", 390)],
+ "f170/4.1.2/1": [nutritionRecap("f170-fungal-digestion", "A hypha releases enzymes outside the cell; large food molecules are broken into smaller soluble products, which are absorbed. Saprotrophs use non-living material, while parasites obtain resources from living hosts.", "Follow enzyme release, extracellular breakdown and absorption. The two nutritional sources are examples; the model is not to scale.", 425)],
+ "f171/1.2.1.hodgkin/1": [["f171/1.2.1.hodgkin", "explainDiagrams", 1]],
+ "f171/1.2.1.pkd/1": [["f171/1.2.1.pkd", "modelDiagrams", 1]],
+ "f171/4.2.2/1": [["f171/4.2.2", "modelDiagrams", 0]],
+ "f170/4.1.4/1": [["f170/4.1.4", "modelDiagrams", 0], ["f170/4.1.4", "explainDiagrams", 0]],
+ "f170/4.1.1/1": [["f170/4.1.1", "explainDiagrams", 0], ["f170/4.1.1", "explainPhotos", 1]],
+ "f171/2.2/1": [["f171/2.2", "explainDiagrams", 0]],
+ "f170/3.3.3/1": [nutritionRecap("f170-menopause-therapy", "A skin patch illustrates systemic therapy delivering hormone into blood, which may relieve hot flushes. Vaginal oestrogen acts mainly in vaginal tissue and can relieve dryness; the examples have different indications.", "Compare systemic and local routes: vaginal oestrogen can help dryness but does not treat hot flushes. Individual suitability and risks need separate assessment; the figure does not establish a treatment choice.", 405)],
+ "f170/3.3.3/0": [nutritionRecap("f170-menopause-change", "A schematic compares ovarian follicular activity before and after decline, with changing hormone patterns followed by irregular cycles and eventual cessation of periods. Hot flushes and vaginal dryness can occur, but experiences vary.", "Follow declining follicular activity to changing ovarian hormones and menstrual cycles. The follicle symbols are not counts; symptoms vary.", 420)],
+ "f170/3.3.3/2": [nutritionRecap("f170-prostate-enlargement", "Two simplified sections show the urethra running from the bladder through the prostate; an enlarged prostate can narrow the channel and affect urination.", "Compare the urethra through each prostate. Enlargement can restrict urine flow but does not always cause symptoms; these drawings are not to scale.", 470), nutritionRecap('f170-age-fertility', 'Two schematic ovaries show a general decline in remaining follicles with age. An upward arrow notes that some pregnancy risks, such as miscarriage, increase with maternal age on average. Symbols are not counts or predictions for an individual.', 'Compare these qualitative examples: follicle reserve generally falls with age, and some pregnancy risks can increase. Fertility and pregnancy outcomes vary between individuals; the dots are not measurements.', 370)],
+ "f170/3.3.2/1": [nutritionRecap('f170-ovarian-lining', 'A developing follicle produces oestrogen, which supports regrowth of the uterine lining. After ovulation, the corpus luteum produces progesterone, helping maintain and prepare the lining. The simplified diagrams show selected roles; both hormones have other effects.', 'Compare two contributions to the uterine lining: oestrogen supports regrowth, and progesterone helps maintain and prepare it. The ovarian cycle is simplified.', 365), ["f170/3.3.2", "explainDiagrams", 1], nutritionRecap('f170-testosterone-puberty', 'Testosterone contributes to selected puberty changes: development of facial and body hair, larynx and vocal-fold growth associated with a lower voice, and muscle development. The extent and timing vary between individuals; these features are not diagnostic.', 'Explore three examples of changes testosterone can support at puberty. Timing and extent vary, and these characteristics are not exclusive to one sex or diagnostic.', 365)],
+ "f170/2.2.3/1": [["f170/2.2.3", "explainDiagrams", 1], ["f171/4.1", "modelDiagrams", 0], nutritionRecap('f170-feno-measurement', 'A simplified airway and lungs lead to an arrow representing exhaled breath entering a nitric oxide analyser. FeNO measures nitric oxide in breath and can provide an indicator of airway inflammation when interpreted with other clinical information. No reading is shown.', 'Follow exhaled air to the analyser. FeNO measures nitric oxide and can indicate airway inflammation in context; it does not establish a diagnosis alone. No patient reading is shown.', 335)],
+ "f170/3.1.2/1": [["f170/3.1.2", "explainDiagrams", 1]],
+ "f170/2.2.2/1": [nutritionRecap("bone-functions", "A schematic long bone supports a muscle attached by a tendon. A cutaway marks red marrow inside the bone, and a double arrow indicates calcium exchange between bone and blood.", "Locate the muscle attachment and marrow. Bone supports movement, stores calcium and contains blood-forming marrow; the drawing is not to scale.", 350)],
+ "f170/3.1.1/1": [["f170/3.1.1", "modelDiagrams", 0], ["f170/3.1.1", "modelDiagrams", 1], ["f170/3.1.1", "modelDiagrams", 2]],
+ "f170/3.1.1/2": [["f170/3.1.1", "modelDiagrams", 2], nutritionRecap("adh-epo-kidney", "ADH signals kidney collecting ducts to reabsorb more water into blood. Separately, the kidney releases erythropoietin, which stimulates red-cell production in bone marrow.", "Compare the targets: ADH acts on kidney collecting ducts; erythropoietin travels from the kidney to bone marrow. These are simplified pathways.", 360)],
+ "f170/2.1.3/2": [nutritionRecap("dexa-scan", "A simplified side view shows a person on a DXA table, an X-ray source underneath and a detector above. An X-ray beam with two energy peaks passes through tissue and bone; absorption is used to estimate bone mineral density.", "Follow the X-rays from source to detector. The beam has two energy peaks; their different absorption helps estimate bone mineral density.", 330)],
+ "f170/2.1.3.cirrhosis/1": [["f170/2.1.3.cirrhosis", "explainDiagrams", 1]],
+ "f170/1.2.1/2": [nutritionRecap("gut-wall-tissues", "A simplified cutaway of gut wall shows the epithelium at the lumen, underlying connective tissue and a nerve plexus between layers of smooth muscle.", "Locate each tissue in this simplified wall. The epithelium lines the lumen, connective tissue supports it, and nerves help coordinate smooth muscle.", 350)],
+ "f170/2.1.2/1": [["f170/1.1.1.surfaces", "comparisonFigures", 3], nutritionRecap('f170-alveolar-area', 'A model compares one sphere with eight spheres, each half its radius. The eight smaller spheres have the same total volume but greater combined surface area. The spheres are mathematical models, not a drawing of the exact shape or surface area of real alveoli.', 'Compare the model spheres: eight at half the radius have the same combined volume and more surface area than the single larger sphere. Numerous alveoli provide a large exchange surface; real alveoli are not separate spheres.', 390), ["f174/a3", "teachingDiagram"], nutritionRecap('f170-colon-water', 'A schematic section of colon lining shows net water movement from intestinal contents across the epithelium, through tissue fluid and into blood. The small intestine also absorbs much water. The drawing is not to scale.', 'Follow net water movement from the colon lumen to blood. Much water is also absorbed in the small intestine; this section is simplified.', 335)],
+ "f170/2.1.3/1": [nutritionRecap("artery-plaque-comparison", "Two schematic cross-sections have the same outer diameter; one has an artery-wall plaque projecting into and narrowing the lumen.", "Compare the open lumens. A plaque can narrow an artery and restrict blood supply; these sections are simplified models.", 290), ["f171/1.2.1", "explainDiagrams", 0]],
+ "f170/1.2.1/1": [["f170/1.2.1", "explainDiagrams", 0]],
+ "f170/1.1.5/1": [["f170/1.1.5.meiosis", "explainDiagrams", 0], ["f170/1.1.5.meiosis", "explainDiagrams", 1], ["f170/1.1.5.meiosis", "modelDiagrams", 2]],
+ "f170/2.2.1/0": [["f170/2.1.3", "explainDiagrams", 0]],
+ "f170/2.2.1/2": [["f170/2.1.3", "explainDiagrams", 0]],
+ "f170/2.2.3/2": [["f170/2.2.3", "explainDiagrams", 0]],
+ "f170/1.1.5.meiosis/1": [["f170/1.1.5.meiosis", "explainDiagrams", 1]],
+ "f170/1.1.5.meiosis/2": [["f170/1.1.5.meiosis", "explainDiagrams", 2]],
+ "f170/1.1.5/2": [["f172/a2", "teachingDiagram"], nutritionRecap('f170-mitochondrial-donation', 'In usual fertilisation, the egg contributes most embryonic mitochondria and one set of nuclear DNA; sperm contributes the other set of nuclear DNA. In one mitochondrial donation approach, nuclear DNA from the intended mother is placed in a donor egg whose nuclear DNA has been removed, then sperm contributes nuclear DNA. Most resulting mitochondria come from the donor egg; some maternal mitochondrial DNA can remain.', 'Compare the mitochondrial source in the two examples. Mitochondrial donation may reduce transmission of some mitochondrial-DNA disorders, but it is not a guarantee and does not prevent disorders caused by nuclear DNA. The diagram simplifies one approach.', 430)],
+ "f170/2.1.4/0": [["f170/1.1.4.surface", "explainDiagrams", 2], nutritionRecap('f170-transplant-risk', 'A donor and recipient share some schematic tissue-marker symbols. Matching helps assess compatibility. A medicine symbol represents immunosuppression, which reduces immune responses against the transplanted organ. Neither approach makes rejection impossible.', 'Compare the donor and recipient markers, then the reduced immune response to the organ. Matching and immunosuppressants can reduce rejection risk; rejection is still possible. The symbols are illustrative, not test results.', 390)],
+ "f170/2.1.4/1": [nutritionRecap("ventricular-assist", "A simplified ventricular assist device carries blood from the left ventricle through a pump to the aorta, supporting circulation.", "Follow blood from the ventricle through the assist pump to the aorta. Such support may bridge to recovery or transplant; infection and clotting remain possible.", 300), nutritionRecap('f170-vad-risks', 'A schematic shows germs near a driveline passing through skin; organisms may enter at the exit site in some ventricular assist devices. A second schematic shows a clot within a blood pathway that can obstruct flow. These are possible complications, not inevitable outcomes.', 'Compare two possible complications of a ventricular assist device: infection at a driveline exit and a clot affecting blood flow. Not every device or patient experiences these problems.', 360)],
+ "f170/2.1.4/2": [nutritionRecap("valve-repair", "Two schematic views compare a heart valve with a gap allowing backflow during closure and a repaired valve with the leaflets meeting.", "Compare closure in this example. Repair can reduce backflow while retaining the organ; results vary with the problem and procedure.", 300)],
+ "f170/1.1.2/2": [["f170/1.1.2", "explainDiagrams", 2]],
+ "f170/1.1.2/3": [["f170/1.1.2", "modelDiagrams", 3], ["f170/1.1.2", "afterComparisonDiagrams", 1], ["f170/1.1.2.counting", "explainDiagrams", 0]],
+ "f170/1.1.1.signals/1": [["f170/1.1.1.signals", "explainDiagrams", 1]],
+ "f170/2.1.1/0": [nutritionRecap("f170-alveolar-barrier", "A schematic alveolar barrier separates air and capillary blood. Oxygen moves from air to blood and carbon dioxide moves in the opposite direction.", "Anatomy describes the thin barrier; physiology investigates processes such as gas movement across it. The layers are enlarged for clarity.", 295)],
+ "f170/2.1.1/1": [nutritionRecap("pulse-measurement-context", "A resting person and a person after activity each lead to a clock, representing pulse counts over the same time interval with conditions recorded.", "Compare the two conditions when measuring pulse. This is a method, not a set of measured results.", 300)],
+ "f170/2.1.1/2": [nutritionRecap("pulse-measurement-context", "A resting person and a person after activity each lead to a clock, representing pulse counts over the same time interval with conditions recorded.", "Record the activity condition alongside each pulse count. Hydration and time of day can also matter.", 300)],
+ "f170/1.2.3/0": [nutritionRecap("cell-culture-vessel", "A schematic covered vessel contains cells and medium. A thermometer and labels indicate that temperature and medium pH are controlled to suit the culture.", "Locate the cells and medium. Suitable conditions and aseptic handling help maintain a culture; the drawing is a simplified setup.", 365)],
+ "f170/1.2.3/1": [nutritionRecap("organoid-structure", "A schematic cross-section of a three-dimensional organoid shows a layer of cells around a lumen. Other organoids have different structures.", "Notice the organised cell layer around the lumen in this section through a three-dimensional model. Not every organoid has this shape.", 280)],
+ "f170/1.2.3/2": [nutritionRecap("organoid-context", "A simplified organoid represents selected tissue features, while a body has interconnected systems. Models vary and do not reproduce the whole body.", "Compare selected tissue features with whole-body context. Some organoids include vascular or immune components, but no organoid reproduces the entire body's physiology.", 290)],
+ "f170/3.2.2/2": [nutritionRecap("meninges-csf", "A schematic section shows skull, dura, arachnoid, a cerebrospinal-fluid-filled subarachnoid space, pia, and brain tissue containing a ventricle with cerebrospinal fluid.", "Locate the CSF-filled space around the brain and the ventricle within it. The layers are exaggerated for clarity.", 360)],
+ "f170/3.2.2/0": [["f176/a1", "explanationDiagram"]],
+ "f170/3.2.2/1": [nutritionRecap("f170-medulla-control", "A side-view schematic highlights the medulla in the lower brainstem above the spinal cord. Arrows connect it to heart-rate regulation and the muscles of breathing. The arrows indicate functions, not anatomical nerve routes; other brainstem regions also contribute.", "Locate the medulla, then follow its contribution to heart-rate regulation and breathing muscles. The pons and other circuits also influence breathing; arrows are functional, not nerve maps.", 350), nutritionRecap("hypothalamus-pituitary", "A simplified side view locates the hypothalamus within the brain and the pituitary below it, linked by a stalk. The hypothalamus helps regulate homeostasis and influences pituitary activity.", "Locate the hypothalamus and the pituitary below it. The hypothalamus helps regulate homeostasis and influences pituitary activity.", 300)],
+ "f170/1.2.2/2": [nutritionRecap("connective-tissue-comparison", "A compact-bone schematic shows concentric matrix around a central canal, with cells marked. A hyaline-cartilage schematic shows cells in spaces within extracellular matrix.", "Compare the selected examples: both contain cells within extracellular matrix; the matrix and arrangement differ. These drawings are not to scale.", 300), nutritionRecap("blood-components", "Red blood cells, a white blood cell and small platelets are shown suspended in plasma. The symbols are schematic and not to scale.", "Locate red cells, a white cell and platelets within the plasma. Colours and sizes are schematic.", 320)],
+ "f170/1.2.2/0": [nutritionRecap("epithelia-comparison", "Three schematic epithelial layers: a thin squamous layer, ciliated cells with surface cilia, and cuboidal cells. An arrow indicates movement over the cilia.", "Compare the cell shapes. The thin layer supports exchange; cilia move surface material, while many cuboidal cells absorb or secrete.", 350)],
+ "f170/1.2.2/1": [nutritionRecap("muscle-tissue-comparison", "Three simplified muscle shapes: a long striated skeletal fibre, a branched striated cardiac cell, and a spindle-shaped smooth muscle cell without striations.", "Compare the striations and branching. The drawings show selected features, not size or an identification test.", 320)],
+ "f170/1.1.3.evidence/1": [["f170/1.1.3.evidence", "explainDiagrams", 1]],
+ "f170/1.1.3.evidence/2": [["f170/1.1.3.evidence", "explainDiagrams", 2]],
+ "f170/4.1.5/0": [nutritionRecap("virus-particle", "A schematic enveloped virus has an outer envelope and spikes surrounding a protein capsid and genetic material. Some viruses do not have an envelope.", "Locate the genetic material and protein capsid. The outer envelope and spikes shown here occur in some viruses, not all.", 300)],
+ "f170/4.1.5/1": [nutritionRecap("virus-host", "A virus delivers genetic material to a living host cell. The viral genome is copied and host ribosomes make viral proteins; new virus particles assemble.", "Follow this generalised example. Viruses depend on a living host cell; details differ between viruses.", 300)],
+ "f170/4.1.5/2": [nutritionRecap("bacteriophage", "A tailed bacteriophage has a protein capsid, genetic material and tail. It attaches to a bacterial cell and its genome enters that cell.", "Follow the genome into the bacterial cell. This is one type of bacteriophage; their structures vary.", 300)],
+ "f170/1.1.4/1": [["f170/1.1.4", "explainDiagrams", 0], ["f170/1.1.4", "explainDiagrams", 1]],
+ "f170/1.1.4/2": [["f170/1.1.4", "explainDiagrams", 1], ["f170/1.1.4.surface", "explainDiagrams", 2]],
+ "f170/1.1.4.surface/1": [["f170/1.1.4.surface", "explainDiagrams", 1]],
+ "f170/1.1.4.surface/2": [["f170/1.1.4.surface", "explainDiagrams", 2]],
+ "f170/1.1.4.surface/3": [["f170/1.1.4.surface", "explainDiagrams", 3]],
+ "f174/a2/0": [nutritionRecap("iron-blood-oxygen", "A schematic chain shows less iron available over time, less haemoglobin potentially being made and a possible fall in the oxygen-carrying capacity of blood.", "Follow this example from low iron to blood oxygen-carrying capacity. Other deficiencies can affect different functions.", 280)],
+ "f174/a2/1": [nutritionRecap("water-balance", "A small arrow enters a body representing water intake. A thicker arrow leaves the body representing a greater water loss over time. The arrow widths are schematic.", "Compare intake and loss over time. The thicker arrow represents greater loss in this example; it is not a measurement.", 250)],
+ "f174/a2/2": [nutritionRecap("body-composition", "Two equal-height bars represent equal total body mass but have different proportions of fat mass and other mass. The bars are illustrative rather than measured values.", "Compare equal totals with different compositions. Neither bar establishes an individual's health or nutritional status.", 280)],
+ "f173/a1/0": [labRecap("Follow the sample from the laboratory test to the report that supports a clinical decision.")],
+ "f173/a1/1": [labRecap("Locate the sample label and quality controls: they help make the reported result dependable.")],
+ "f173/a1/2": [labRecap("Notice that a report is considered with clinical context. A result does not always establish a diagnosis on its own.")],
+ "f170/1.1.2.counting/0": [["f170/1.1.2.counting", "explainDiagrams", 0]],
+ "f170/1.1.2.counting/1": [["f170/1.1.2.counting", "explainDiagrams", 1], ["f170/1.1.2.counting", "modelDiagrams", 1]],
+ "f170/1.1.3/1": [["f170/1.1.3", "explainDiagrams", 3]],
+ "f170/1.1.3/2": [["f170/1.1.3", "explainDiagrams", 1], ["f170/1.1.3.evidence", "explainDiagrams", 1]],
+ "f170/1.1.2/1": [["f170/1.1.2", "comparisonPhotos", 2]],
+ "f170/3.2.1/1": [["f176/a2", "explanationDiagram"], ["f170/3.2.1", "myelinDiagram"]],
+ "f172/a1/1": [["f172/a1", "teachingDiagram"]],
+ "f172/a2/1": [["f172/a2", "teachingDiagram"]],
+ "f172/a2/2": [["f172/a2", "teachingDiagram"]],
+ "f172/a3/1": [["f172/a3", "teachingDiagram"]],
+ "f172/a4/2": [["f172/a4", "teachingDiagram"]],
+ "f173/a2/1": [["f173/a2", "explanationPhoto"], ["f173/a2", "explanationPhoto2"]],
+ "f173/a3/1": [["f173/a3", "teachingDiagram"]],
+ "f173/a3/2": [["f173/a3", "explanationDiagram"]],
+ "f174/a3/0": [["f174/a3", "teachingDiagram"]],
+ "f175/a3/1": [["f175/a3", "teachingDiagram"]],
+ "f176/a1/0": [["f176/a1", "teachingDiagram"]],
+ "f176/a2/0": [["f176/a1", "teachingDiagram"]],
+ "f176/a3/1": [["f176/a3", "teachingDiagram"]],
+ "f177/a1/2": [["f177/a1", "teachingDiagram"]],
+ "f177/a2/2": [["f177/a2", "teachingDiagram"]]
+};
+Object.assign(recapFigureMap, window.HumanF176F177RecapFigures || {});
+Object.assign(recapFigureMap, window.KeystoneF174F175RecapFigures || {});
+Object.assign(recapFigureMap, window.KeystoneF172F173RecapFigures || {});
+Object.assign(recapFigureMap, window.HumanF170SystemsGrowthRecapFigures || {});
+Object.assign(recapFigureMap, window.HumanF170StemRecapFigures || {});
+Object.assign(recapFigureMap, window.KeystoneF171VaccineRecaps || {});
+Object.assign(recapFigureMap, window.HumanF171ScreenTreatmentRecapFigures || {});
+Object.assign(recapFigureMap, window.HumanF171FocusedRecapFigures || {});
+Object.assign(recapFigureMap, window.KeystoneF171MeasureEvidenceRecaps || {});
+Object.assign(recapFigureMap, window.KeystoneF171DiseaseBasicsRecaps || {});
+Object.assign(recapFigureMap, window.HumanF170OrganelleRecapFigures || {});
+Object.assign(recapFigureMap, window.KeystoneF171DailyLifeRecaps || {});
+function recapFigures(unit,id,step,indices) {
+ const teaching=window.KeystoneHumanTeaching, lessons=window.KeystoneHumanLessons || {};
+ if (!teaching) return "";
+ return (recapFigureMap[unit+"/"+id+"/"+step] || []).filter(function(_,index) {return !indices || indices.includes(index);}).map(function(entry) {
+  if (!Array.isArray(entry)) return teaching.renderDiagram(entry);
+  const field=lessons[entry[0]]?.[entry[1]];
+  const item=entry.length>2 ? field?.[entry[2]] : field;
+  return (Array.isArray(item) ? item : [item]).filter(Boolean).map(function(visual) {
+   return (entry[1].startsWith("explanationPhoto") || entry[1] === "explainPhotos" || entry[1] === "modelPhotos" || entry[1] === "comparisonPhotos") ? teaching.renderPhoto(visual) : teaching.renderDiagram(visual);
+  }).join("");
+ }).join("");
+}
+function recapBody(unit,id,step,point) {
+ const groupedRecaps = {
+  "f170/2.1.2/1": [
+  {heading:"Gas exchange", text:"Alveoli provide a large surface area for gas exchange.", figures:[0,1]},
+  {heading:"Small intestine", text:"The small intestine absorbs digested molecules;", figures:[2]},
+  {heading:"Colon", text:"the colon reabsorbs water.", figures:[3]}
+  ],
+  "f170/2.1.2/2": [
+   {heading:"Nephrons", text:"Nephrons form urine by filtration and selective reabsorption;", figures:[0]},
+   {heading:"Pancreas", text:"the pancreas has exocrine digestive and endocrine hormonal functions.", figures:[1]}
+  ],
+  "f170/2.2.3/1": [
+   {heading:"Spirometry", text:"Spirometry measures volumes and flow;", figures:[1]},
+   {heading:"Peak flow", text:"peak flow measures maximal expiratory flow;", figures:[0]},
+   {heading:"FeNO", text:"FeNO can indicate airway inflammation in an appropriate clinical context.", figures:[2]}
+  ],
+  "f170/1.1.5/2": [
+   {heading:"Allele transmission", text:"Punnett squares model allele transmission.", figures:[0]},
+   {heading:"Mitochondrial DNA", text:"Most mitochondrial DNA is maternally inherited; mitochondrial replacement can reduce transmission of some mtDNA disorders.", figures:[1]}
+  ],
+  "f170/2.2.1/1": [
+   {heading:"Digestive system", text:"The gastrointestinal system digests and absorbs;", figures:[0]},
+   {heading:"Renal system", text:"the renal/excretory system removes wastes and regulates water and ions.", figures:[1]}
+  ],
+  "f170/1.1.2/3": [
+   {heading:"Magnification", text:"Magnification = image size ÷ actual size.", figures:[0]},
+   {heading:"Fractionation", text:"Differential centrifugation separates components by sedimentation;", figures:[1]},
+   {heading:"Cell counting", text:"a haemocytometer estimates cell concentration from a known chamber volume.", figures:[2]}
+  ],
+  "f170/3.2.2/1": [
+   {heading:"Hypothalamus and pituitary", text:"The hypothalamus regulates aspects of homeostasis and influences the pituitary;", figures:[1]},
+   {heading:"Medulla", text:"the medulla contains centres important in cardiovascular and respiratory control.", figures:[0]}
+  ],
+  "f170/1.2.2/2": [
+   {heading:"Connective tissues", text:"Bone and cartilage are specialised connective tissues.", figures:[0]},
+   {heading:"Blood", text:"Blood is a tissue composed of plasma, erythrocytes, leukocytes, and platelets.", figures:[1]}
+  ],
+  "f170/2.1.3/1": [
+   {heading:"Atherosclerosis", text:"Atherosclerotic plaques narrow arteries and may restrict blood supply.", figures:[0]},
+   {heading:"COPD", text:"COPD can reduce effective ventilation and gas exchange.", figures:[1]}
+  ],
+  "f170/3.1.1/2": [
+   {heading:"Insulin", text:"Insulin lowers plasma glucose;", figures:[0]},
+   {heading:"ADH and erythropoietin", text:"ADH increases water reabsorption in kidney collecting ducts; erythropoietin stimulates red cell production.", figures:[1]}
+  ],
+  "f170/1.1.4/2": [
+   {heading:"Osmosis", text:"Osmosis is net water movement across a partially permeable membrane down a water-potential gradient.", figures:[0]},
+   {heading:"Recognition", text:"Cell-surface glycoproteins contribute to recognition and transplant rejection.", figures:[1]}
+  ],
+  "f170/3.3.2/1": [
+   {heading:"Oestrogen and progesterone", text:"Oestrogen and progesterone are important in endometrial and reproductive regulation;", figures:[0]},
+   {heading:"Testosterone", text:"testosterone supports male-typical secondary sexual characteristics and sperm production.", figures:[1,2]}
+  ],
+  "f170/3.3.3/2": [
+   {heading:"Prostate enlargement", text:"Benign prostatic enlargement can obstruct the urethra and affect urination;", figures:[0]},
+   {heading:"Age and fertility", text:"fertility and pregnancy risks change with age.", figures:[1]}
+  ],
+  "f170/4.2/0": [
+   {heading:"Microbiota sites", text:"The human microbiota includes bacteria and fungi in different body sites;", figures:[0]},
+   {heading:"Microbial activities", text:"its activities can support metabolism, colonisation resistance, and immune responses.", figures:[1,2]}
+  ],
+  "f170/1.1.1/1": [
+   {heading:"Protein handling", text:"Rough endoplasmic reticulum carries ribosomes; the Golgi modifies and packages cell products.", figures:[0]},
+   {heading:"ATP supply", text:"Mitochondria supply ATP by aerobic respiration.", figures:[1]}
+  ],
+  "f171/a4/1": [
+   {heading:"ECG", text:"An ECG records cardiac electrical activity;", figures:[0]},
+   {heading:"Peak flow", text:"peak flow measures maximum expiratory airflow;", figures:[1]},
+   {heading:"Blood pressure", text:"a blood-pressure cuff measures arterial pressure.", figures:[2]}
+  ],
+  "f171/a5/1": [
+   {heading:"Observation", text:"Reports should distinguish observed results from explanations or conclusions.", figures:[0]},
+   {heading:"Association", text:"An association does not always show cause and effect.", figures:[1]}
+  ],
+  "f171/a1/1": [
+   {heading:"Causes", text:"A disease may have infectious or non-infectious causes.", figures:[0]},
+   {heading:"Risk factors", text:"Risk factors increase the chance of a condition but do not prove it will occur.", figures:[1]}
+  ]
+ };
+ const groups = groupedRecaps[unit+"/"+id+"/"+step];
+ // If the authored fact changes, retain it in full rather than displaying stale fragments.
+ if (!groups || groups.map(group => group.text).join(" ") !== point) return '<p class="k-catchup-text">'+esc(point)+'</p>'+recapFigures(unit,id,step);
+ return groups.map(function(group) {
+  return '<div class="k-recap-group"><h3>'+esc(group.heading)+'</h3><p class="k-catchup-text">'+esc(group.text)+'</p>'+recapFigures(unit,id,step,group.figures)+'</div>';
+ }).join("");
+}
 function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
  var u=units.filter(function(x){return x.id===unit;})[0];
  if(!u)return showHome(render);
@@ -504,9 +740,17 @@ function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
  if(lesson&&teaching&&step===0){
   var visual=window.KeystoneCatchupVisuals?window.KeystoneCatchupVisuals.render(...(lesson.visualFrom||[unit,id]),Boolean(lesson.revision&&lesson.visual==="model")):"";
   var recap='<details class="paper panel"><summary>Review the key ideas</summary><ul class="keylines">'+
-   points.map(function(point){return "<li>"+esc(point)+"</li>";}).join("")+"</ul></details>";
+   points.map(function(point,i){return "<li>"+recapBody(unit,id,i,point)+"</li>";}).join("")+"</ul></details>";
   var sim=lesson.simulation&&window.KeystoneReproductionSimulation;
-  var interactive=sim?'<details class="hb-inline-model"'+(simulationStage?' open':'')+'><summary>Open the reproductive pathway model</summary>'+sim.render()+'</details>':"";
+  var reviewFigures=null;
+  if(sim && simulationStage && teaching.renderDiagram){
+   const models=lesson.modelDiagrams || {};
+   const first=item=>Array.isArray(item)?item[0]:item;
+   const ovulation=Array.isArray(models[1])?models[1][1]:models[1];
+   const stages={follicle:first(models[0]),ovulation,transport:first(models[2]),fertilisation:first(models[3]),development:first(models[3]),implantation:first(models[3])};
+   reviewFigures=Object.fromEntries(Object.entries(stages).filter(([,item])=>item).map(([name,item])=>[name,teaching.renderDiagram(item)]));
+  }
+  var interactive=sim?'<details class="hb-inline-model"'+(simulationStage?' open':'')+'><summary>Open the reproductive pathway model</summary>'+sim.render(reviewFigures)+'</details>':"";
   render('<div class="k-wrap k-catchup-concept" data-unit="'+unit+'">'+crumb("catchup/"+unit,u.title)+
    '<div class="k-eyebrow">'+unitKind(unit)+'</div><h1>'+esc(topic)+'</h1>'+
    teaching.render(lesson,{booklet:unit==="f170"||unit==="f171",inline:lesson.visual==="model"?"":visual,method:skillLinks(unit,id,lesson),modelVisual:(lesson.visual==="model"?visual:"")+interactive,related:(unit==="f170"||unit==="f171"?"":recap)+related})+'</div>');
@@ -516,7 +760,7 @@ function showConcept(unit,id,step,render,review,simulationStage,resumeStage){
  }
 
  var h='<div class="k-wrap k-catchup-concept">'+crumb("catchup/"+unit,u.title)+'<div class="k-eyebrow">Catch-up · '+(step+1)+' of '+points.length+'</div><h1>'+esc(topic)+'</h1><div class="progress-track" role="progressbar" aria-label="Key ideas reviewed" aria-valuemin="0" aria-valuemax="'+points.length+'" aria-valuenow="'+(step+1)+'"><div style="width:'+(100*(step+1)/points.length)+'%"></div></div>';
- h+='<section class="paper panel"><h2>Key idea '+(step+1)+'</h2><p class="k-catchup-text">'+esc(points[step])+'</p></section>';
+ h+='<section class="paper panel"><h2>Key idea '+(step+1)+'</h2>'+recapBody(unit,id,step,points[step])+'</section>';
  if(step===0&&window.KeystoneCatchupVisuals)h+=window.KeystoneCatchupVisuals.render(unit,id);
  h+='<div class="k-catchup-controls">'+(step>0?'<a class="button secondary" href="'+key+'/'+(step-1)+'">Previous</a>':'')+
  (step<points.length-1?'<a class="button primary" href="'+key+'/'+(step+1)+'">Next key idea →</a>':'<a class="button primary" href="#'+esc(practice)+'">'+esc(label)+' →</a>')+'</div>';

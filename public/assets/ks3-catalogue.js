@@ -7,6 +7,7 @@ import { fairTestPractice, fairTestPlan } from "./ks3-fair-tests.js";
 import { addKS3Journey } from "./school-catchup-ks3.js";
 import { ks3CatchupModel } from "./ks3-catchup-models.js";
 import { separationOrder } from "./separation-order.js";
+import { ks3ExplanationVisuals } from "./ks3-step-visuals.js";
 
 const illustrations = {
   "fair-tests": ["ramps", "A green toy car on a low ramp and a blue car on a higher ramp."],
@@ -119,6 +120,53 @@ function renderIllustration(id) {
   image.src = "/assets/ks3-diagrams/" + file + ".svg";
   image.alt = description;
   figure.append(image);
+  return figure;
+}
+
+// Map explanations to the existing evidence that actually shows the idea.
+// A model shown elsewhere on the page is not a substitute for a nearby figure.
+function explanationVisual(lesson, index) {
+  const at = {
+    "atoms-and-compounds": {1: () => renderVisual({...lesson.visual, reference: true})},
+    "states-of-matter": {3: () => {
+      const figures = element("div");
+      figures.append(renderVisual({...lesson.visual, reference: true}), ks3ExplanationVisuals["states-of-matter"][3]());
+      return figures;
+    }},
+    forces: {0: () => ks3CatchupModel("forces"), 1: () => ks3CatchupModel("forces", true)},
+    "the-body": {0: () => ks3CatchupModel("the-body", true), 1: () => {
+      const figures = element("div");
+      figures.append(labelledIllustration("the-body", "Follow oxygen from the lungs in the blood to the muscle."), ks3CatchupModel("respiration"));
+      return figures;
+    }},
+    "energy-transfers": {1: () => renderVisual({...lesson.visual, reference: true})},
+    "acids-and-alkalis": {0: () => renderVisual({...lesson.visual, reference: true})},
+    reproduction: {0: () => ks3CatchupModel("reproduction")},
+    "chemical-reactions": {1: () => ks3CatchupModel("chemical-reactions")},
+    "light-and-sound": {0: () => ks3CatchupModel("light-and-sound"), 1: () => ks3CatchupModel("light-and-sound", true)},
+    space: {0: () => renderVisual(lesson.visual)},
+    "health-and-lifestyle": {1: () => ks3CatchupModel("health-and-lifestyle")},
+    "journey-speed": {1: () => renderVisual({...lesson.visual, reference: true})},
+    "balanced-moments": {1: () => renderVisual(lesson.visual)},
+    "periodic-table": {1: () => ks3CatchupModel("periodic-table")},
+    "separating-techniques": {1: () => labelledIllustration("separating-techniques", "Follow the sand and the dissolved salt through the filter.")},
+    "work-done": {1: () => ks3CatchupModel("work-done", true)},
+    respiration: {1: () => ks3CatchupModel("respiration")},
+    "earth-structure": {1: () => ks3CatchupModel("earth-structure", true)},
+    electricity: {0: () => renderVisual({...lesson.visual, reference: true})},
+    photosynthesis: {0: () => ks3CatchupModel("photosynthesis"), 1: () => {
+      const figures = element("div");
+      figures.append(ks3CatchupModel("respiration", true), ks3ExplanationVisuals.photosynthesis[1]());
+      return figures;
+    }},
+    metals: {1: () => ks3CatchupModel("metals")}
+  };
+  return at[lesson.id]?.[index]?.() || ks3ExplanationVisuals[lesson.id]?.[index]?.() || null;
+}
+
+function labelledIllustration(id, caption) {
+  const figure = renderIllustration(id);
+  figure.append(element("figcaption", caption));
   return figure;
 }
 
@@ -374,7 +422,11 @@ function renderLesson(lesson, year, index) {
       teaching.append(...explore(lesson, original, renderVisual));
     }
   }
-  explanation.append(...lesson.explain.map(scienceParagraph));
+  lesson.explain.forEach((text, index) => {
+    explanation.append(scienceParagraph(text));
+    const figure = explanationVisual(lesson, index);
+    if (figure) explanation.append(figure);
+  });
   teaching.append(recallFor(lesson.id), explanation);
   if (fairTests) {
     teaching.append(disclosure("Compare the two ramp shapes", renderIllustration(lesson.id),

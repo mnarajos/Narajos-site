@@ -51,7 +51,7 @@
 
   function table(data, markCells) {
     if (!data) return "";
-    return '<table class="hb-teach-table"><caption>' + escape(data.caption) + '</caption><thead><tr>' +
+    return '<table class="hb-teach-table' + (data.compactScreening ? ' hb-teach-table--screening' : '') + '"><caption>' + escape(data.caption) + '</caption><thead><tr>' +
       data.head.map(cell => '<th scope="col">' + escape(cell) + '</th>').join("") + '</tr></thead><tbody>' +
       data.rows.map((row, r) => '<tr><th scope="row">' + escape(row[0]) + '</th>' +
         row.slice(1).map((cell, c) => '<td' + (markCells ? ' data-hb-cell="' + r + ':' + c + '"' : '') +
@@ -64,12 +64,53 @@
       '" width="' + (item.width || 360) + '" height="' + (item.height || 212) + '">';
   }
 
+  function teachingDiagram(item) {
+    if (!item) return "";
+    return '<figure class="hb-teach-photo"' + (item.assessmentSensitive ? ' data-hb-assessment-sensitive' : '') + '><div class="hb-teaching-diagram' + (item.compact ? ' hb-teaching-diagram-compact' : '') + '"' + (item.compact ? '' : ' role="region" tabindex="0" aria-label="Scrollable teaching diagram"') + '><img src="' + escape(item.src) + '" alt="' + escape(item.alt) +
+      '" width="' + item.width + '" height="' + item.height + '"></div>' + (item.compact ? '' : '<span class="hb-diagram-scroll-hint">Scroll sideways to see the whole diagram.</span>') + '<figcaption>' + escape(item.caption) + '</figcaption></figure>';
+  }
+
+  function teachingDiagrams(items) {
+    return (Array.isArray(items) ? items : [items]).filter(Boolean).map(teachingDiagram).join("");
+  }
+
   function figure(photo, field) {
     if (!photo) return "";
-    return '<figure class="hb-teach-photo"><img src="' + escape(photo.src) + '" alt="' +
+    const externalLink = photo.linksNewTab ? ' target="_blank" rel="noopener noreferrer"' : '';
+    const externalNote = photo.linksNewTab ? ' (opens in a new tab)' : '';
+    const credit = (field ? '<strong>Field ' + field + '</strong> · ' : '') + '<a href="' + escape(photo.source) + '"' + externalLink + '>' + escape(photo.credit) + externalNote + '</a> · ' +
+      '<a href="' + escape(photo.licenceUrl) + '"' + externalLink + '>' + escape(photo.licence) + externalNote + '</a> · ' + escape(photo.changes || 'Resized and converted to WebP');
+    return '<figure class="hb-teach-photo"' + (photo.assessmentSensitive ? ' data-hb-assessment-sensitive' : '') + '><img src="' + escape(photo.src) + '" alt="' +
       escape(photo.alt) + '" width="' + photo.width + '" height="' + photo.height + '" loading="lazy" decoding="async">' +
-      '<figcaption>' + (field ? '<strong>Field ' + field + '</strong> · ' : '') + '<a href="' + escape(photo.source) + '">' + escape(photo.credit) + '</a> · ' +
-      '<a href="' + escape(photo.licenceUrl) + '">' + escape(photo.licence) + '</a> · ' + escape(photo.changes || 'Resized and converted to WebP') + '</figcaption></figure>';
+      '<figcaption>' + (photo.caption ? escape(photo.caption) + ' ' : '') + (photo.creditDisclosure ? '<details class="hb-image-credit"><summary>Image credit</summary>' + credit + '</details>' : credit) + '</figcaption></figure>';
+  }
+
+  function teachingPhotos(items) {
+    return (Array.isArray(items) ? items : [items]).filter(Boolean).map(photo => figure(photo)).join("");
+  }
+
+  function explanationParagraphs(lesson) {
+    return (lesson.explain || []).map((line, index) =>
+      paragraphs([line]) + (lesson.explainPhotos?.[index] || []).map(photo => figure(photo)).join("") + (lesson.explainDiagrams?.[index] || []).map(teachingDiagram).join("")
+    ).join("");
+  }
+
+  function comparisonContent(lesson) {
+    const comparison = lesson.compare;
+    if ((!lesson.comparisonFigures && !lesson.comparisonPhotos) || !comparison) {
+      return teachingDiagram(lesson.comparisonDiagram) + (lesson.comparisonDiagrams || []).map(teachingDiagram).join("") + table(comparison);
+    }
+    return '<section class="hb-compare-groups"><h3>' + escape(comparison.caption) + '</h3>' +
+      comparison.rows.map((row, index) => '<section class="hb-compare-group"><h4>' + escape(row[0]) + '</h4>' +
+        teachingPhotos(lesson.comparisonPhotos?.[index]) + (lesson.comparisonFigures?.[index] || []).map(teachingDiagram).join("") + paragraphs(row.slice(1)) + '</section>').join("") + '</section>';
+  }
+
+  function afterComparisonContent(lesson) {
+    if (!lesson.afterComparison) return "";
+    return '<h3>' + escape(lesson.afterComparison.heading) + '</h3>' +
+      (lesson.afterComparison.lines || []).map((line, index) =>
+        paragraphs([line]) + (lesson.afterComparisonDiagrams?.[index] || []).map(teachingDiagram).join("")
+      ).join("");
   }
 
   function writingExample(example) {
@@ -124,19 +165,20 @@
       ? '<details class="hb-prerequisite"><summary>' + escape(lesson.activate[0]) + '</summary><p>' +
         escape(lesson.activate[1]) + '</p>' + prior + '</details>' : prior;
     const explanation = (context.booklet ? '<section class="paper panel hb-teach-explain"><h2>Understand the idea</h2>' : '<details class="paper panel hb-teach-explain" open><summary><h2>Understand the idea</h2></summary>') +
-      paragraphs(lesson.explain) + table(lesson.compare) +
-      (lesson.afterComparison ? '<h3>' + escape(lesson.afterComparison.heading) + '</h3>' + paragraphs(lesson.afterComparison.lines) : '') +
+      explanationParagraphs(lesson) + figure(lesson.explanationPhoto) + figure(lesson.explanationPhoto2) + teachingDiagram(lesson.explanationDiagram) + (lesson.explanationDiagrams || []).map(teachingDiagram).join("") + (lesson.teachingDiagramModelOnly ? "" : teachingDiagram(lesson.teachingDiagram)) + comparisonContent(lesson) +
+      afterComparisonContent(lesson) +
       context.inline +
       (lesson.revision && !context.booklet ? '<div class="actions hb-start">' + openStageButton("model", "See worked example", "primary") + '</div>' : '') +
       (context.booklet ? '</section>' : '</details>');
     const evidenceModel = lesson.revision && (lesson.focusCells || lesson.graph || lesson.visual === "model");
+    const modelVisualAtSteps = Array.isArray(lesson.modelVisualAtSteps) ? lesson.modelVisualAtSteps : null;
     const model = lesson.model?.length ?
       '<' + (context.booklet ? 'section' : 'details') + ' class="paper panel hb-teach-stage' + (evidenceModel ? ' hb-model-with-evidence' : '') +
-      '" data-hb-model-step="1">' + stageSummary("eye", "Worked example", lesson.modelTitle, context.booklet) + context.modelVisual + illustration(lesson.illustration) + figure(lesson.photo) +
+      '" data-hb-model-step="1">' + stageSummary("eye", "Worked example", lesson.modelTitle, context.booklet) + (modelVisualAtSteps ? "" : context.modelVisual) + (lesson.skipModelTeachingDiagram ? "" : teachingDiagram(lesson.teachingDiagram)) + illustration(lesson.illustration) + figure(lesson.photo) +
       (lesson.graph ? window.KeystoneHumanSkills.graphHTML(lesson.graph) : "") + table(lesson.table, lesson.focusCells) +
       '<ol class="hb-model-steps' + (lesson.nodes ? ' hb-model-path' : '') + '">' + lesson.model.map((step, i) =>
         '<li value="' + (i + 1) + '"' + (i ? ' hidden' : '') + '>' + (lesson.nodes ? '<strong>' + escape(lesson.nodes[i]) + '</strong> ' : '') +
-        escape(step) + '</li>').join("") +
+        escape(step) + (modelVisualAtSteps?.includes(i) ? context.modelVisual : "") + teachingPhotos(lesson.modelPhotos?.[i]) + teachingDiagrams(lesson.modelDiagrams?.[i]) + '</li>').join("") +
       '</ol>' + (lesson.model.length > 1 ?
         '<button type="button" class="button secondary" data-hb-action="model">Show next step</button>' : '') +
       (evidenceModel ? '<button type="button" class="button quiet hb-model-back" hidden>Previous step</button>' : '') +
@@ -397,9 +439,34 @@
       if (reviewStep) {
         model.open = true;
         showModelStep(Math.min(reviewStep, steps.children.length) - 1, true);
+        const target = steps.children[Math.min(reviewStep, steps.children.length) - 1];
+        // Fonts and models above the worked example can settle after initial focus.
+        // Realign only while the requested step still has focus; never pull a
+        // learner back after they have moved to another control or stage.
+        let userMoved = false;
+        const userEvents = ["pointerdown", "wheel", "touchstart", "keydown"];
+        const stopListening = () => userEvents.forEach(type => window.removeEventListener(type, cancelAlignment, true));
+        const cancelAlignment = () => { userMoved = true; stopListening(); };
+        userEvents.forEach(type => window.addEventListener(type, cancelAlignment, {capture: true, passive: true}));
+        const alignReview = () => {
+          const fontsReady = document.fonts?.ready || Promise.resolve();
+          fontsReady.then(() => requestAnimationFrame(() => {
+            if (!userMoved && target.isConnected && document.activeElement === target && target.getClientRects().length) {
+              target.scrollIntoView({block: "start", behavior: "instant"});
+            }
+            stopListening();
+          }));
+        };
+        if (document.readyState === "complete") alignReview();
+        else window.addEventListener("load", alignReview, {once: true});
       } else showModelStep(booklet ? Math.min(record.modelStep || 0, steps.children.length - 1) : 0, false);
     }
     const explanation = root.querySelector(".hb-teach-explain");
+    function setAssessmentVisuals(id) {
+      root.querySelectorAll("[data-hb-assessment-sensitive]").forEach(figure => {
+        figure.hidden = id === "independent" || id === "followup";
+      });
+    }
     function showBookletStage(id, focus, persist) {
       const stages = {
         model: root.querySelector("[data-hb-model-step]"),
@@ -410,12 +477,16 @@
       const next = stages[id];
       if (!next || (id === "followup" && root.querySelector("[data-hb-followup]").hidden)) return;
       Object.entries(stages).forEach(([name, stage]) => { if (stage) stage.hidden = name !== id; });
+      // Some teaching figures answer a later independent question directly.
+      // Restore them when a learner returns to a teaching or guided stage.
+      setAssessmentVisuals(id);
       const skip = root.querySelector("[data-hb-guided-skip]");
       if (skip) skip.hidden = id !== "guided" || Boolean(record.guided?.accepted || record.guided?.outcome === "selfReview");
       if (persist) { record.view = id; save(key, record); }
       if (focus) next.querySelector(".hb-stage-heading")?.focus();
     }
     function prepareStage(next) {
+      setAssessmentVisuals(next.dataset.hbStage || "model");
       root.querySelectorAll("details.hb-teach-stage[open]").forEach(stage => {
         if (stage !== next) stage.open = false;
       });
@@ -454,5 +525,5 @@
     ({ prompt, answer, options, explanation, hints, ...extra });
   const written = (prompt, points, explanation, hints) => ({ prompt, points, explanation, hints });
 
-  window.KeystoneHumanTeaching = { render, mount, savedStages, storageKey, choice, written };
+  window.KeystoneHumanTeaching = { render, mount, savedStages, storageKey, choice, written, renderDiagram: teachingDiagram, renderPhoto: figure };
 })();

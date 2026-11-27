@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="390" viewBox="0 0 280 390" role="img" aria-labelledby="title desc">
+<title id="title">Central and peripheral autonomic pathways</title><desc id="desc">The brain and spinal cord regulate autonomic pathways. A schematic signal leaves the central nervous system, passes through an autonomic ganglion in the peripheral nervous system and can influence effectors such as cardiac muscle, smooth muscle or glands. The illustration simplifies many distinct circuits.</desc>
+<rect width="280" height="390" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="24" font-weight="700">Autonomic pathways</text>
+<path d="M108 74q-10-13 2-23 9-10 20-5 11-9 22 0 14-4 20 9 9 13-2 23-9 8-22 4-11 8-21 0-11 4-19-8z" fill="#e1d2ed" stroke="#806195" stroke-width="2"/>
+<path d="M140 82v33" stroke="#806195" stroke-width="8" stroke-linecap="round"/>
+<text x="140" y="139">Brain and spinal cord</text><text x="140" y="159" font-size="15">central nervous system (CNS)</text>
+<path d="M140 169v27m-6-7 6 7 6-7" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<rect x="15" y="207" width="250" height="100" rx="12" fill="none" stroke="#739b96" stroke-width="2" stroke-dasharray="6 5"/>
+<text x="140" y="229" font-size="15">Peripheral autonomic pathway</text><text x="140" y="248" font-size="15">part of the PNS</text>
+<circle cx="140" cy="275" r="11" fill="#e9d4ee" stroke="#806195" stroke-width="2"/><text x="160" y="280" text-anchor="start" font-size="15">ganglion</text>
+<path d="M140 196v6H31v73h98m-7-6 7 6-7 6M140 286v17M50 303h180M50 303v13m-5-6 5 6 5-6M140 303v13m-5-6 5 6 5-6M230 303v13m-5-6 5 6 5-6" fill="none" stroke="#286b73" stroke-width="2"/>
+<text x="50" y="340" font-size="14">Cardiac</text><text x="50" y="358" font-size="14">muscle</text><text x="140" y="340" font-size="14">Smooth</text><text x="140" y="358" font-size="14">muscle</text><text x="230" y="349" font-size="14">Glands</text>
+</g></svg>

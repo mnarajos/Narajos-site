@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="465" viewBox="0 0 280 465" role="img" aria-labelledby="title desc">
+<title id="title">Sampling and chamber boundaries</title><desc id="desc">Two schematic suspensions compare settled cells with cells distributed after mixing; mixing can help a small sample represent the suspension but does not guarantee it. A counting square illustrates one rule: include cells touching the top or left boundary, and exclude those touching the bottom or right. Other consistent rules can be used.</desc>
+<rect width="280" height="465" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="24" font-weight="700">Sampling and counting</text>
+<text x="65" y="50" font-size="15">Settled</text><text x="212" y="50" font-size="15">After mixing</text>
+<path d="M28 62v90q0 12 12 12h50q12 0 12-12V62M178 62v90q0 12 12 12h50q12 0 12-12V62" fill="#fff" stroke="#688491" stroke-width="2"/>
+<g fill="#b85c51"><circle cx="46" cy="142" r="5"/><circle cx="61" cy="150" r="5"/><circle cx="75" cy="140" r="5"/><circle cx="88" cy="150" r="5"/><circle cx="47" cy="155" r="5"/><circle cx="75" cy="155" r="5"/><circle cx="60" cy="135" r="5"/><circle cx="90" cy="135" r="5"/>
+<circle cx="192" cy="86" r="5"/><circle cx="217" cy="78" r="5"/><circle cx="239" cy="95" r="5"/><circle cx="203" cy="111" r="5"/><circle cx="229" cy="120" r="5"/><circle cx="191" cy="138" r="5"/><circle cx="214" cy="148" r="5"/><circle cx="238" cy="148" r="5"/></g>
+<path d="M113 113h49m-8-6 8 6-8 6" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<text x="140" y="191" font-size="15">Mixing can improve the sample.</text>
+<text x="140" y="220" font-weight="700">One boundary rule</text>
+<path d="M67 245h130M67 245v130" fill="none" stroke="#286b73" stroke-width="4"/><path d="M197 245v130M67 375h130" fill="none" stroke="#a75e3d" stroke-width="4" stroke-dasharray="8 5"/>
+<g fill="#f0c0b7" stroke="#a75e3d" stroke-width="2"><circle cx="96" cy="245" r="9"/><circle cx="67" cy="305" r="9"/><circle cx="151" cy="375" r="9"/><circle cx="197" cy="292" r="9"/><circle cx="132" cy="310" r="9"/></g>
+<text x="140" y="405" font-size="15">Include top or left; exclude</text><text x="140" y="426" font-size="15">bottom or right contacts.</text><text x="140" y="452" font-size="15">Apply the chosen rule consistently.</text>
+</g></svg>

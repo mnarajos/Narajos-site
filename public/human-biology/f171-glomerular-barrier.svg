@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="385" viewBox="0 0 280 385" role="img">
+ <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs>
+ <rect width="280" height="385" rx="12" fill="#f4f8f7"/>
+ <g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+  <text x="140" y="24" font-size="17" font-weight="700">Glomerular filtration</text>
+  <text x="140" y="48" font-size="14">Simplified barriers · not to scale</text>
+  <text x="140" y="76" font-size="15">Healthy barrier</text>
+  <text x="29" y="104" font-size="13">Blood</text>
+  <circle cx="85" cy="101" r="10" fill="#d98576" stroke="#a65f5b" stroke-width="2"/>
+  <circle cx="130" cy="101" r="9" fill="#f1dfc6" stroke="#a5792e" stroke-width="2"/><text x="130" y="106" font-size="12">P</text>
+  <circle cx="201" cy="101" r="4" fill="#537a94"/>
+  <path d="M17 124h44m10 0h44m10 0h44m10 0h44m10 0h30" stroke="#32776d" stroke-width="4"/>
+  <path d="M201 109v35" stroke="#344958" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="33" y="164" font-size="13">Filtrate</text><text x="123" y="164" font-size="13">Water + solutes</text><circle cx="201" cy="158" r="4" fill="#537a94"/>
+  <text x="140" y="189" font-size="14">Cells and most large proteins stay</text>
+  <path d="M20 202h240" stroke="#cbdedb" stroke-width="2"/>
+  <text x="140" y="228" font-size="15">Inflamed, damaged barrier</text>
+  <text x="29" y="254" font-size="13">Blood</text>
+  <circle cx="85" cy="252" r="10" fill="#d98576" stroke="#a65f5b" stroke-width="2"/>
+  <circle cx="170" cy="252" r="9" fill="#f1dfc6" stroke="#a5792e" stroke-width="2"/><text x="170" y="257" font-size="12">P</text>
+  <path d="M17 275h49m39 0h42m46 0h70" stroke="#a65f5b" stroke-width="4"/>
+  <path d="M85 264v31M170 263v32" stroke="#344958" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="33" y="318" font-size="13">Filtrate</text><circle cx="85" cy="312" r="10" fill="#d98576" stroke="#a65f5b" stroke-width="2"/>
+  <circle cx="170" cy="312" r="9" fill="#f1dfc6" stroke="#a5792e" stroke-width="2"/><text x="170" y="317" font-size="12">P</text>
+  <text x="140" y="346" font-size="14">Cells or protein may leak</text>
+  <text x="140" y="369" font-size="13">P = protein · blue dot = small solute</text>
+ </g>
+</svg>

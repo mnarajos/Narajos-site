@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="300" viewBox="0 0 280 300" role="img" aria-labelledby="title desc">
+<title id="title">Compare screening with assessment</title><desc id="desc">A two by two table compares positive and negative screens with a later assessment finding the condition present or absent. A false positive is a positive screen when the condition is absent. A false negative is a negative screen when the condition is present. Other cells are true positive and true negative.</desc>
+<rect width="280" height="300" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle">
+ <text x="140" y="25" font-size="16" font-weight="700">Screen and assessment</text><text x="174" y="52" font-size="15">Condition on assessment</text>
+ <text x="120" y="76" font-size="14">Present</text><text x="224" y="76" font-size="14">Absent</text>
+ <text x="39" y="117" font-size="14">Screen</text><text x="39" y="136" font-size="14">positive</text>
+ <text x="39" y="199" font-size="14">Screen</text><text x="39" y="218" font-size="14">negative</text>
+ <rect x="70" y="89" width="102" height="73" fill="#e6f3ef" stroke="#537a94" stroke-width="2"/><rect x="172" y="89" width="102" height="73" fill="#f1dfc6" stroke="#a5792e" stroke-width="2"/>
+ <rect x="70" y="162" width="102" height="73" fill="#f1dfc6" stroke="#a5792e" stroke-width="2"/><rect x="172" y="162" width="102" height="73" fill="#e6f3ef" stroke="#537a94" stroke-width="2"/>
+ <text x="121" y="120" font-size="15">True</text><text x="121" y="141" font-size="15">positive</text>
+ <text x="223" y="120" font-size="15">False</text><text x="223" y="141" font-size="15">positive</text>
+ <text x="121" y="193" font-size="15">False</text><text x="121" y="214" font-size="15">negative</text>
+ <text x="223" y="193" font-size="15">True</text><text x="223" y="214" font-size="15">negative</text>
+ <text x="140" y="265" font-size="14">Compare the row and column.</text><text x="140" y="288" font-size="14">The table is a classification model.</text>
+</g></svg>

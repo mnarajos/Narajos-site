@@ -3,8 +3,8 @@
 (function(){
 "use strict";
 var palettes={teal:"#1d7469",blue:"#386ba8",orange:"#b66f24",purple:"#7657aa"};
-function svg(description,inner,height){
- return '<svg viewBox="0 0 480 '+height+'" role="img" aria-label="'+description+'" xmlns="http://www.w3.org/2000/svg">'+inner+'</svg>';
+function svg(description,inner,height,width){
+ return '<svg viewBox="0 0 '+(width||480)+' '+height+'" role="img" aria-label="'+description+'" xmlns="http://www.w3.org/2000/svg">'+inner+'</svg>';
 }
 function box(x,y,w,h,fill){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="12" fill="'+fill+'" stroke="#c3d2d2" stroke-width="1.6"/>';}
 function text(x,y,string,size,weight,colour,anchor){
@@ -61,16 +61,20 @@ var diagrams={
  },
  glucose:{
   label:"Blood-glucose negative feedback",
-  caption:"Insulin and glucagon act in opposing directions to return blood glucose towards the regulated range.",
-  image:svg("Raised blood glucose stimulates insulin secretion, encouraging glucose uptake and storage, lowering glucose. Low blood glucose stimulates glucagon, promoting glucose release from liver glycogen and raising glucose.",
-   box(11,12,458,92,"#e8f3eb")+box(11,121,458,92,"#fff0e0")+
-   text(93,43,"Raised glucose",17,700)+text(241,43,"Insulin",18,800,palettes.teal)+text(389,43,"Glucose falls",17,700)+
-   arrow(151,56,190,56)+arrow(292,56,328,56)+
-   text(240,83,"More glucose uptake and storage",13,500)+
-   text(93,152,"Low glucose",17,700)+text(241,152,"Glucagon",18,800,palettes.orange)+text(389,152,"Glucose rises",17,700)+
-   arrow(151,165,190,165)+arrow(292,165,328,165)+
-   text(240,194,"Liver releases glucose",13,500),
-   230)
+  compact:true,
+  caption:"Insulin increases glucose uptake in some tissues and storage; glucagon promotes glucose release from the liver. As glucose returns towards its usual range, the stimulus for the hormone response decreases.",
+  image:'<svg viewBox="0 0 300 490" role="img" aria-label="When blood glucose rises, pancreatic beta cells release insulin, increasing uptake and storage so blood glucose falls towards its usual range. When blood glucose falls, pancreatic alpha cells release glucagon, promoting glucose release by the liver so blood glucose rises towards its usual range." xmlns="http://www.w3.org/2000/svg">'+
+   text(150,27,"Blood glucose rises",17,700)+arrow(150,35,150,49)+
+   text(150,70,"Pancreatic β cells",17,700)+arrow(150,77,150,91)+
+   text(150,112,"Insulin released",17,800,palettes.teal)+arrow(150,119,150,133)+
+   text(150,154,"Uptake and storage increase",16,600)+arrow(150,161,150,175)+
+   text(150,196,"Blood glucose falls",17,700)+text(150,219,"towards its usual range",15,500)+
+   '<path d="M22 245H278" stroke="#d6e1de" stroke-width="2"/>'+
+   text(150,273,"Blood glucose falls",17,700)+arrow(150,281,150,295)+
+   text(150,316,"Pancreatic α cells",17,700)+arrow(150,323,150,337)+
+   text(150,358,"Glucagon released",17,800,palettes.orange)+arrow(150,365,150,379)+
+   text(150,400,"Liver releases glucose",16,600)+arrow(150,407,150,421)+
+   text(150,442,"Blood glucose rises",17,700)+text(150,465,"towards its usual range",15,500)+'</svg>'
  },
  organisation:{
   label:"Levels of biological organisation",
@@ -104,19 +108,19 @@ var diagrams={
  },
  dna:{
   label:"Semi-conservative DNA replication",
+  compact:true,
   caption:"Each daughter DNA molecule contains one original template strand and one newly synthesised strand.",
   image:svg("Before replication there are two original strands. After replication there are two DNA molecules, each with one original and one newly made strand.",
-   text(85,30,"Parent DNA",17,700)+text(327,30,"Two daughter DNA molecules",17,700)+
-   '<path d="M65 53V153M84 53V153" stroke="'+palettes.blue+'" stroke-width="8" stroke-linecap="round"/>'+
-   arrow(119,104,178,104)+
-   '<path d="M232 53V153" stroke="'+palettes.blue+'" stroke-width="8" stroke-linecap="round"/>'+
-   '<path d="M251 53V153" stroke="'+palettes.orange+'" stroke-width="8" stroke-linecap="round"/>'+
-   '<path d="M377 53V153" stroke="'+palettes.orange+'" stroke-width="8" stroke-linecap="round"/>'+
-   '<path d="M396 53V153" stroke="'+palettes.blue+'" stroke-width="8" stroke-linecap="round"/>'+
-   '<path d="M232 65h19M232 89h19M232 113h19M232 137h19M377 65h19M377 89h19M377 113h19M377 137h19M65 65h19M65 89h19M65 113h19M65 137h19" stroke="#a8b8bf" stroke-width="2"/>'+
-   '<path d="M195 190h30" stroke="'+palettes.blue+'" stroke-width="6"/>'+text(258,195,"Original",14,600,"#344958","start")+
-   '<path d="M195 214h30" stroke="'+palettes.orange+'" stroke-width="6"/>'+text(258,219,"New",14,600,"#344958","start"),
-   238)
+   text(140,24,"Parent DNA",18,700)+
+   '<path d="M130 43V104M150 43V104" stroke="'+palettes.blue+'" stroke-width="8" stroke-linecap="round"/>'+
+   '<path d="M130 54h20M130 72h20M130 90h20" stroke="#a8b8bf" stroke-width="2"/>'+
+   arrow(122,116,80,149)+arrow(158,116,200,149)+text(140,174,"Two daughter molecules",18,700)+
+   '<path d="M60 188V250M220 188V250" stroke="'+palettes.blue+'" stroke-width="8" stroke-linecap="round"/>'+
+   '<path d="M80 188V250M200 188V250" stroke="'+palettes.orange+'" stroke-width="8" stroke-linecap="round"/>'+
+   '<path d="M60 200h20M60 218h20M60 236h20M200 200h20M200 218h20M200 236h20" stroke="#a8b8bf" stroke-width="2"/>'+
+   '<path d="M58 280h27" stroke="'+palettes.blue+'" stroke-width="6"/>'+text(96,286,"Original strand",17,600,"#344958","start")+
+   '<path d="M58 311h27" stroke="'+palettes.orange+'" stroke-width="6"/>'+text(96,317,"New strand",17,600,"#344958","start"),
+   335,280)
  },
  expression:{
   label:"Gene expression in eukaryotes",
@@ -299,8 +303,8 @@ const reflexSequence = `<details class="kc-visual-check">
  <summary>Trace a withdrawal reflex</summary>
  <science-sequence kind="reflex"></science-sequence>
  <details class="kc-visual-check">
-  <summary>Predict what happens if the motor neuron fails to carry the impulse</summary>
-  <p>The receptor and sensory neuron can still send a signal towards the spinal cord. The effector muscle would receive no impulse along this route, so this pathway would fail to trigger the withdrawal.</p>
+  <summary>Predict what happens if the motor neurone fails to carry the impulse</summary>
+  <p>The receptor and sensory neurone can still send a signal towards the spinal cord. The effector muscle would receive no impulse along this route, so this pathway would fail to trigger the withdrawal.</p>
  </details>
 </details>`;
 
@@ -428,7 +432,7 @@ function render(course,id,worked){
  var html='<aside class="kc-catchup-extra" aria-label="Visual explanations and related practice">';
  if(item.diagram){
   var d=diagrams[item.diagram];
-  html+='<figure class="kc-visual"><div class="kc-visual-heading"><span class="kc-visual-icon" aria-hidden="true">◈</span><strong>'+d.label+'</strong></div><div class="kc-visual-art" tabindex="0" role="region" aria-label="Scrollable science diagram">'+d.image+'</div><figcaption>'+d.caption+'</figcaption></figure>';
+  html+='<figure class="kc-visual"'+(course==="f170"&&item.diagram==="glucose"?' data-hb-assessment-sensitive':'')+'><div class="kc-visual-heading"><span class="kc-visual-icon" aria-hidden="true">◈</span><strong>'+d.label+'</strong></div><div class="kc-visual-art'+(d.compact?' kc-visual-art-compact':'')+'"'+(d.compact?'':' tabindex="0" role="region" aria-label="Scrollable science diagram"')+'>'+d.image+'</div><figcaption>'+d.caption+'</figcaption></figure>';
  }
  if(item.sequence==="reflex")html+=reflexSequence;
  if(item.microscope)html+=worked?microscopeFigure(true):microscopePractice;

@@ -2237,7 +2237,7 @@ window.SiteVocabularyData.push({
     {id:"aaq-follicle", term:"Ovarian follicle", variants:["follicle","follicles"], match:{cue:"ovar|egg|oocyte|FSH|ovulat"},
       meaning:"A structure in an ovary containing a developing egg cell."},
     {id:"aaq-placenta", term:"Placenta",
-      meaning:"An organ that enables exchange between maternal and fetal blood supplies during pregnancy."}
+      meaning:"An organ that enables exchange between maternal and foetal blood supplies during pregnancy."}
   ]);
 
   group(["f176"], [

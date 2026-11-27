@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 290" role="img" aria-labelledby="title description">
+<title id="title">Artery cross-sections with and without a plaque</title>
+<desc id="description">Two schematic artery cross-sections of equal outer diameter. In the second, a plaque in the vessel wall projects into and narrows the central open lumen.</desc>
+<rect width="280" height="290" fill="#f5f9f8"/>
+<g font-family="sans-serif" fill="#183848" text-anchor="middle"><text x="140" y="25" font-size="16" font-weight="bold">Artery cross-sections</text><text x="72" y="52" font-size="14">No plaque shown</text><text x="208" y="52" font-size="14">Plaque narrows</text><text x="208" y="70" font-size="14">the lumen</text></g>
+<g stroke="#8c4540" stroke-width="5" fill="#f4d4cf"><circle cx="72" cy="139" r="55"/><circle cx="208" cy="139" r="55"/></g>
+<circle cx="72" cy="139" r="37" fill="#fff" stroke="#8c4540" stroke-width="2"/>
+<circle cx="208" cy="139" r="37" fill="#fff" stroke="#8c4540" stroke-width="2"/>
+<path d="M175 122 Q188 105 205 103 Q218 115 211 130 Q204 145 182 147 Q173 139 175 122Z" fill="#d9a65a" stroke="#72502d" stroke-width="2"/>
+<path d="M209 113 L238 87" stroke="#443b34" stroke-width="1.5" fill="none"/><text x="258" y="84" font-size="14" text-anchor="end" fill="#183848" font-family="sans-serif">Plaque</text>
+<g font-family="sans-serif" font-size="14" text-anchor="middle" fill="#183848"><text x="72" y="144">Lumen</text><text x="218" y="166">Lumen</text><text x="140" y="228">Compare the space for blood flow.</text><text x="140" y="250">The wall is shown in section;</text><text x="140" y="270">these are simplified models.</text></g>
+</svg>

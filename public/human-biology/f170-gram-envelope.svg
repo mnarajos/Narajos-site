@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 390" role="img" aria-labelledby="title desc">
+<title id="title">Typical Gram-positive and Gram-negative envelopes</title><desc id="desc">From cytoplasm outward, a typical Gram-positive bacterium has one cell membrane and a thick peptidoglycan wall. A typical Gram-negative bacterium has an inner membrane, a thin peptidoglycan layer, and an outer membrane. Layer spacing is exaggerated.</desc>
+<rect width="280" height="390" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a">
+<text x="140" y="25" text-anchor="middle" font-weight="700">Gram-positive</text><text x="70" y="51" text-anchor="middle">Outside</text>
+<path d="M22 64h96v49H22z" fill="#f9dfc8" stroke="#98451e" stroke-width="2"/><path d="M22 123h96v10H22z" fill="#e5d9ec" stroke="#69447f" stroke-width="2"/>
+<path d="M119 83h20M119 128h20" stroke="#263e4a" stroke-width="1.5"/><text x="145" y="79">Thick</text><text x="145" y="101">peptidoglycan</text><text x="145" y="133">Cell membrane</text>
+<text x="70" y="159" text-anchor="middle">Cytoplasm</text>
+<text x="140" y="195" text-anchor="middle" font-weight="700">Gram-negative</text><text x="70" y="219" text-anchor="middle">Outside</text>
+<path d="M22 231h96v10H22z" fill="#e5d9ec" stroke="#69447f" stroke-width="2"/><path d="M22 268h96v7H22z" fill="#f9dfc8" stroke="#98451e" stroke-width="2"/><path d="M22 303h96v10H22z" fill="#e5d9ec" stroke="#69447f" stroke-width="2"/>
+<path d="M119 236h20M119 272h20M119 308h20" stroke="#263e4a" stroke-width="1.5"/>
+<text x="145" y="232">Outer</text><text x="145" y="251">membrane</text><text x="145" y="270">Thin</text><text x="145" y="288">peptidoglycan</text><text x="145" y="307">Inner</text><text x="145" y="325">membrane</text>
+<text x="70" y="341" text-anchor="middle">Cytoplasm</text><text x="140" y="377" text-anchor="middle">Spacing is exaggerated.</text>
+</g></svg>

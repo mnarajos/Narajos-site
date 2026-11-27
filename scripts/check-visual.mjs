@@ -4,6 +4,7 @@ import {checkHumanReliability} from "./check-human-reliability.mjs";
 import {checkHumanCatchup} from "./check-human-catchup.mjs";
 import {checkALevelExam} from "./check-alevel-exam.mjs";
 import {checkGCSECatchup} from "./check-gcse-catchup.mjs";
+import {checkCompactCatchupFigures} from "./check-catchup-compact-figures.mjs";
 import assert from "node:assert/strict";
 import { chromium } from "playwright";
 import axe from "axe-core";
@@ -21,6 +22,7 @@ const pages = [
 ];
 
 try {
+  await checkCompactCatchupFigures(browser,base);
   await checkLearningNavigation(browser,base);
   await checkALevelExam(browser,base);
   await checkGCSECatchup(browser,base);

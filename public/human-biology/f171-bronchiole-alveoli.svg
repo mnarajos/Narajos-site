@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="350" viewBox="0 0 280 350" role="img" aria-labelledby="title desc">
+ <title id="title">Airways branch towards air sacs</title><desc id="desc">A simplified airway branches into smaller bronchioles. A selected small branch leads to a cluster of alveoli, which is enlarged to show the air spaces. Branching and relative sizes are not to scale.</desc>
+ <rect width="280" height="350" rx="12" fill="#f4f8f7"/>
+ <g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+  <text x="140" y="25" font-size="18" font-weight="700">Airways to air sacs</text>
+  <text x="140" y="49" font-size="16">Air enters</text>
+  <path d="M140 60v38M140 96L90 132M140 96l49 36M90 132l-31 26M90 132l26 26M189 132l-24 26M189 132l30 26" fill="none" stroke="#276c70" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M140 60v38M140 96L90 132M140 96l49 36M90 132l-31 26M90 132l26 26M189 132l-24 26M189 132l30 26" fill="none" stroke="#e2f1ed" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="140" y="185" font-size="16">Small bronchioles branch</text>
+  <text x="140" y="209" font-size="16">towards alveoli</text>
+  <path d="M140 222v22" fill="none" stroke="#276c70" stroke-width="10" stroke-linecap="round"/>
+  <path d="M140 222v25" fill="none" stroke="#e2f1ed" stroke-width="5"/>
+  <g fill="#e6f3fa" stroke="#537a94" stroke-width="2"><circle cx="113" cy="264" r="17"/><circle cx="140" cy="258" r="17"/><circle cx="167" cy="264" r="17"/><circle cx="124" cy="287" r="17"/><circle cx="156" cy="287" r="17"/></g>
+  <text x="140" y="326" font-size="16">Alveoli (enlarged)</text>
+  <text x="140" y="345" font-size="14">Simplified; not to scale</text>
+ </g>
+</svg>

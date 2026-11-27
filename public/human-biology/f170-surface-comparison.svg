@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 495" role="img" aria-labelledby="title desc">
+<title id="title">Cell surfaces and movement</title><desc id="desc">Three simplified views compare a brush border of microvilli that increases membrane area, cilia beating to move mucus along the surface, and a thin alveolar cell between air and blood providing a short path for diffusion.</desc>
+<rect width="280" height="495" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Microvilli</text><text x="140" y="48">Lumen / filtrate</text>
+<path d="M40 110v-28q0-13 9-13t9 13v28h9V82q0-13 9-13t9 13v28h9V82q0-13 9-13t9 13v28h9V82q0-13 9-13t9 13v28h9V82q0-13 9-13t9 13v28h9V82q0-13 9-13t9 13v28h9V82q0-13 9-13t9 13v28h9V82q0-13 9-13t9 13v28" fill="none" stroke="#23656c" stroke-width="3"/>
+<path d="M40 110h200v28H40z" fill="#d8ece7" stroke="#23656c" stroke-width="2"/><text x="140" y="132">More membrane area</text>
+<text x="140" y="175" font-weight="700">Motile cilia</text><text x="140" y="199">Mucus moves along</text>
+<path d="M67 215h130m-9-6 9 6-9 6" fill="none" stroke="#98451e" stroke-width="3"/>
+<path d="M45 261v-35m24 35v-35m24 35v-35m24 35v-35m24 35v-35m24 35v-35m24 35v-35m24 35v-35m24 35v-35" stroke="#23656c" stroke-width="3"/>
+<path d="M40 262h200v27H40z" fill="#d8ece7" stroke="#23656c" stroke-width="2"/><text x="140" y="283">Ciliated lining</text>
+<text x="140" y="329" font-weight="700">Thin alveolar lining</text><text x="140" y="355">Air</text>
+<path d="M42 379q98-12 196 0v14q-98-12-196 0z" fill="#d8ece7" stroke="#23656c" stroke-width="2"/>
+<path d="M140 359v48m-6-7 6 7 6-7M134 366l6-7 6 7" fill="none" stroke="#98451e" stroke-width="3"/>
+<text x="140" y="432">Blood</text><text x="140" y="464">Short path across lining</text><text x="140" y="486">for diffusion</text>
+</g></svg>

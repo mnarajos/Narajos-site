@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="390" viewBox="0 0 280 390" role="img" aria-labelledby="title desc">
+<title id="title">An unexpected negative control</title>
+<desc id="desc">A fictional Benedict's test compares a known negative control with an unknown, both heated for the same time and at the same temperature. The negative control unexpectedly turns orange rather than staying blue. Possible contamination or another error means the run needs investigation; it does not establish the unknown result.</desc>
+<rect width="280" height="390" rx="12" fill="#f5faf9"/>
+<g text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Benedict’s: fictional run</text>
+<text x="72" y="60">Known negative</text><text x="210" y="60">Unknown</text>
+<path d="M48 85v80q0 22 24 22t24-22V85 M186 85v80q0 22 24 22t24-22V85" fill="#fff" stroke="#4d6b78" stroke-width="3"/>
+<path d="M51 136v28q0 19 21 19t21-19v-28z" fill="#ca792c"/><path d="M189 136v28q0 19 21 19t21-19v-28z" fill="#d7e2e0"/>
+<text x="210" y="165" font-size="22" font-weight="700">?</text>
+<text x="72" y="217">Orange</text><text x="210" y="217">Not interpreted</text>
+<path d="M72 237v15h138v-15 M140 252v14" fill="none" stroke="#ab6332" stroke-width="2.5"/>
+<text x="140" y="286" font-weight="700">Same heat and time</text>
+<text x="140" y="315">Negative should stay blue.</text>
+<text x="140" y="341">Unexpected result: investigate</text>
+<text x="140" y="367">contamination or other error.</text>
+</g></svg>

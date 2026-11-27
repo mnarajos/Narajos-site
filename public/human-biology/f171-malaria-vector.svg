@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="325" viewBox="0 0 280 325" role="img">
+ <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs><rect width="280" height="325" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">Malaria: vector and parasite</text><text x="140" y="51" font-size="14">Schematic · different scales</text>
+ <ellipse cx="85" cy="104" rx="30" ry="11" fill="#baa383" stroke="#805d45" stroke-width="2"/><circle cx="53" cy="104" r="8" fill="#805d45"/><path d="M47 108l-18 18M75 97q-8-31 13-27t12 27M87 99q5-33 20-21t-8 23M69 111l-12 32m26-29-2 34m18-35 10 32" fill="none" stroke="#805d45" stroke-width="2"/>
+ <path d="M20 165h115v35H20Z" fill="#efc8b7" stroke="#a65f5b" stroke-width="2"/><path d="M29 127v34" stroke="#344958" stroke-width="2" marker-end="url(#a)"/>
+ <text x="76" y="229" font-size="14">Infected mosquito</text><text x="76" y="249" font-size="14">= vector</text>
+ <ellipse cx="205" cy="116" rx="29" ry="18" fill="#e3edf5" stroke="#537a94" stroke-width="2"/><path d="M190 116q8-10 15 0t15 0" stroke="#80588f" stroke-width="2" fill="none"/>
+ <text x="205" y="167" font-size="14">Plasmodium</text><text x="205" y="187" font-size="14">= parasite</text>
+ <text x="140" y="289" font-size="14">An infected mosquito bite</text><text x="140" y="310" font-size="14">can transmit the parasite.</text></g>
+</svg>

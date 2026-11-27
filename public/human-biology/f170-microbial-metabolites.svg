@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="385" viewBox="0 0 280 385" role="img" aria-labelledby="title desc">
+<title id="title">An example of microbial metabolites</title><desc id="desc">Some gut microbes ferment dietary fibre, producing short-chain fatty acids such as butyrate. Butyrate can be used as an energy source by colon lining cells; microbial metabolites can also influence immune responses. This is one example, not a claim about every microbe or a clinical result.</desc>
+<rect width="280" height="385" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="24" font-weight="700">One microbial example</text>
+<path d="M39 62h15l8 10 9-10h15" stroke="#ad7645" stroke-width="3" fill="none"/><circle cx="38" cy="62" r="4" fill="#ad7645"/><circle cx="86" cy="62" r="4" fill="#ad7645"/>
+<text x="62" y="101" font-size="15">Dietary fibre</text>
+<path d="M103 64h32m-8-6 8 6-8 6" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<g fill="#d6e9d9" stroke="#4c866c" stroke-width="2"><ellipse cx="181" cy="57" rx="22" ry="9" transform="rotate(-18 181 57)"/><ellipse cx="213" cy="79" rx="22" ry="9" transform="rotate(16 213 79)"/></g>
+<text x="197" y="112" font-size="15">Some microbes</text>
+<path d="M197 121v28m-6-7 6 7 6-7" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<text x="140" y="174">Fermentation produces</text><text x="140" y="197">short-chain fatty acids</text><text x="140" y="220" font-size="15">such as butyrate</text>
+<path d="M115 233L65 258m8-8-8 8 11 1M165 233l50 25-7-8 7 8-11 1" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<rect x="28" y="270" width="72" height="43" rx="5" fill="#e8d8eb" stroke="#806195" stroke-width="2"/><path d="M52 270v43m24-43v43" stroke="#a98ab5"/>
+<circle cx="216" cy="292" r="24" fill="#e3d7ed" stroke="#806195" stroke-width="2"/><circle cx="216" cy="292" r="9" fill="#806195"/>
+<text x="64" y="336" font-size="15">Colon cells:</text><text x="64" y="355" font-size="15">energy use</text>
+<text x="216" y="336" font-size="15">Immune cells:</text><text x="216" y="355" font-size="15">responses vary</text>
+</g></svg>

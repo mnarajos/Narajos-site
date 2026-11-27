@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 440" role="img" aria-labelledby="title desc">
+<title id="title">Follow the supernatant through two spins</title><desc id="desc">A first, lower-speed spin produces a pellet enriched in nuclei, while many mitochondria and smaller particles remain in the supernatant. Only this liquid is transferred into a fresh tube. A faster second spin produces a pellet enriched in mitochondria, with many smaller particles still in the supernatant. Fractions are not necessarily pure.</desc>
+<rect width="280" height="440" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a">
+<text x="140" y="26" text-anchor="middle" font-weight="700">1. Lower-speed spin</text>
+<path d="M33 47v113q0 20 37 20t37-20V47" fill="#fff" stroke="#23656c" stroke-width="3"/>
+<path d="M35 149q35 6 70 0v13q0 16-35 16t-35-16z" fill="#d2b8dd"/><ellipse cx="57" cy="80" rx="8" ry="4" fill="#98451e"/><ellipse cx="79" cy="105" rx="8" ry="4" fill="#98451e"/><circle cx="52" cy="121" r="3" fill="#23656c"/><circle cx="88" cy="73" r="3" fill="#23656c"/>
+<text x="120" y="75">Supernatant:</text><text x="120" y="98">mitochondria</text><text x="120" y="120">and smaller parts</text><text x="120" y="162">Pellet: nuclei</text>
+<text x="140" y="213" text-anchor="middle">Transfer supernatant only</text><path d="M140 222v28m-6-7 6 7 6-7" fill="none" stroke="#23656c" stroke-width="2.5"/>
+<text x="140" y="276" text-anchor="middle" font-weight="700">2. Faster spin</text>
+<path d="M33 292v95q0 20 37 20t37-20v-95" fill="#fff" stroke="#23656c" stroke-width="3"/>
+<path d="M35 378q35 6 70 0v11q0 16-35 16t-35-16z" fill="#f4d8ad"/><circle cx="52" cy="318" r="3" fill="#23656c"/><circle cx="84" cy="338" r="3" fill="#23656c"/><circle cx="64" cy="354" r="3" fill="#23656c"/>
+<text x="120" y="320">Supernatant:</text><text x="120" y="343">smaller parts</text><text x="120" y="382">Pellet: many</text><text x="120" y="405">mitochondria</text>
+<text x="140" y="430" text-anchor="middle">Fractions are not necessarily pure.</text>
+</g></svg>

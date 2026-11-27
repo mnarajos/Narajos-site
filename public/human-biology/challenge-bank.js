@@ -727,7 +727,7 @@ window.KeystoneHumanChallenges={
       "section": "3.2.1",
       "type": "diagram",
       "level": "apply",
-      "stem": "The highlighted interrupted segments surround a neuron axon. What does loss of this structure mainly impair?",
+      "stem": "The highlighted interrupted segments surround a neurone axon. What does loss of this structure mainly impair?",
       "figure": "neuron",
       "options": [
         "Speed and reliability of saltatory conduction",
@@ -752,11 +752,11 @@ window.KeystoneHumanChallenges={
       "stem": "Arrange the simplified pathway of a spinal withdrawal reflex.",
       "items": [
         "A stimulus activates a skin receptor",
-        "A sensory neuron transmits a signal into the CNS",
+        "A sensory neurone transmits a signal into the CNS",
         "The signal is relayed to a motor pathway",
-        "A motor neuron activates a muscle effector"
+        "A motor neurone activates a muscle effector"
       ],
-      "model": "Receptor → sensory neuron → CNS relay → motor neuron → effector.",
+      "model": "Receptor → sensory neurone → CNS relay → motor neurone → effector.",
       "explain": "The withdrawal pathway is coordinated through the spinal cord.",
       "misconception": "Conscious perception is not always required before the withdrawal begins.",
       "samAligned": false,
@@ -769,17 +769,17 @@ window.KeystoneHumanChallenges={
       "section": "3.2.1",
       "type": "single",
       "level": "core",
-      "stem": "Which neuron carries impulses from the central nervous system to an effector?",
+      "stem": "Which neurone carries impulses from the central nervous system to an effector?",
       "options": [
-        "Motor neuron",
-        "Sensory neuron",
+        "Motor neurone",
+        "Sensory neurone",
         "Receptor cell",
         "Glial cell"
       ],
       "correct": 0,
-      "model": "Motor neuron",
-      "explain": "Motor neurons transmit CNS signals towards effectors such as muscles.",
-      "misconception": "Sensory neurons transmit impulses towards the CNS.",
+      "model": "Motor neurone",
+      "explain": "Motor neurones transmit CNS signals towards effectors such as muscles.",
+      "misconception": "Sensory neurones transmit impulses towards the CNS.",
       "samAligned": false,
       "hintCue": "Does the signal travel towards the central nervous system, or away from it?"
     },
@@ -1935,8 +1935,8 @@ window.KeystoneHumanChallenges={
       "correct": 0,
       "reasons": [
         "Action potentials are regenerated at specialised sites on the axon membrane.",
-        "The sheath produces electrical impulses independently of the neuron.",
-        "The sheath replaces synapses between each pair of neurons.",
+        "The sheath produces electrical impulses independently of the neurone.",
+        "The sheath replaces synapses between each pair of neurones.",
         "More synapses along an axon increase the speed of impulse propagation."
       ],
       "reasonCorrect": 0,

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="330" viewBox="0 0 280 330" role="img">
+ <rect width="280" height="330" rx="12" fill="#f4f8f7"/>
+ <g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+  <text x="140" y="25" font-size="17" font-weight="700">Two different measures</text>
+  <text x="75" y="59" font-size="15">First visit</text><text x="205" y="59" font-size="15">Later visit</text>
+  <path d="M47 82h56l-5 82H52Z M177 82h56l-5 82h-46Z" fill="#fff" stroke="#537a94" stroke-width="2"/>
+  <path d="M50 121h50l-2 41H52Z M180 121h50l-2 41h-46Z" fill="#e8d39c"/>
+  <text x="140" y="194" font-size="15">Similar urine volumes</text>
+  <path d="M20 216h240" stroke="#cbdedb" stroke-width="2"/>
+  <text x="140" y="246" font-size="15">Blood-test evidence:</text>
+  <text x="140" y="271" font-size="15">filtration has fallen</text>
+  <text x="140" y="306" font-size="14">Volume ≠ waste clearance</text>
+ </g>
+</svg>

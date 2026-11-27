@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="320" viewBox="0 0 280 320" role="img">
+ <rect width="280" height="320" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">A fictional injury location</text><text x="140" y="48" font-size="14">Schematic brain · side view</text>
+ <path d="M45 139C27 118 38 90 65 85C76 65 108 65 124 74C149 58 183 72 191 92C214 93 227 114 219 136C224 153 210 165 190 166L101 177C75 175 51 162 45 139Z" fill="#e6f3ef" stroke="#397b6f" stroke-width="3"/>
+ <ellipse cx="195" cy="175" rx="32" ry="25" fill="#f9eadd" stroke="#a55b32" stroke-width="3"/><path d="M155 165L177 168L171 209Q169 224 166 235L151 235Q156 217 153 203Z" fill="#e9edf8" stroke="#647a9d" stroke-width="3"/>
+ <circle cx="161" cy="184" r="10" fill="#fff" stroke="#a65f5b" stroke-width="2"/><path d="M156 179l10 10m0-10-10 10" stroke="#a65f5b" stroke-width="2"/>
+ <path d="M218 181l28 10M153 183l-36 25" stroke="#344958" stroke-width="2"/>
+ <text x="236" y="209" font-size="13">Cerebellum</text><text x="80" y="222" font-size="13">Injury nearby</text>
+ <text x="140" y="266" font-size="15">This region helps coordinate</text><text x="140" y="288" font-size="15">movement through circuits.</text>
+ <text x="140" y="309" font-size="13">The image is not a patient scan.</text></g>
+</svg>

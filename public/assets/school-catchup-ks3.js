@@ -2,6 +2,7 @@ import { mountJourney, question } from "./school-catchup-journey.js";
 import { addPracticeAnswer } from "./school-catchup-writing.js";
 import { withKS3Scaffolds, ks3FollowUps } from "./school-catchup-ks3-scaffolds.js";
 import { curriculum } from "./ks3-lessons.js";
+import { ks3StepVisuals } from "./ks3-step-visuals.js";
 
 const extendedJourneys = {
   "fair-tests": {
@@ -249,7 +250,10 @@ export function addKS3Journey(model, lesson, year, renderVisual) {
   ];
   const extension = extendedJourneys[lesson.id];
   if (extension) {
-    extension.teaching.forEach((teach, index) => { steps[index].teach = teach; });
+    extension.teaching.forEach((teach, index) => {
+      steps[index].teach = teach;
+      steps[index].visual = ks3StepVisuals[lesson.id]?.[index];
+    });
     steps[1].hint = extension.practiceHint;
     steps.push(extension.transfer);
   }

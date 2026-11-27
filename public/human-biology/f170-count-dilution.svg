@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 330" role="img" aria-labelledby="title desc">
+ <title id="title">A twofold dilution example</title><desc id="desc">The same four schematic cells occupy one part of suspension before dilution and two parts afterwards. The concentration is halved, so an estimate for the original is twice the diluted concentration.</desc>
+ <style>text{font:15px sans-serif;fill:#20383c}.small{font-size:14px}.cell{fill:#5a8e96;stroke:#234f56;stroke-width:2}.box{fill:#f2f7f6;stroke:#426e72;stroke-width:2}</style>
+ <text x="140" y="22" text-anchor="middle" font-weight="bold">A twofold dilution</text>
+ <text x="71" y="47" text-anchor="middle">Before</text><text x="209" y="47" text-anchor="middle">After mixing</text>
+ <rect class="box" x="22" y="60" width="95" height="90" rx="4"/><rect class="box" x="163" y="60" width="95" height="180" rx="4"/>
+ <circle class="cell" cx="46" cy="84" r="7"/><circle class="cell" cx="90" cy="88" r="7"/><circle class="cell" cx="55" cy="122" r="7"/><circle class="cell" cx="89" cy="131" r="7"/>
+ <circle class="cell" cx="190" cy="92" r="7"/><circle class="cell" cx="233" cy="113" r="7"/><circle class="cell" cx="194" cy="175" r="7"/><circle class="cell" cx="232" cy="210" r="7"/>
+ <path d="M123 101h26" stroke="#234f56" stroke-width="3"/><path d="m144 95 7 6-7 6" fill="none" stroke="#234f56" stroke-width="3"/>
+ <text x="69" y="175" text-anchor="middle" class="small">1 part suspension</text>
+ <text x="210" y="260" text-anchor="middle" class="small">2 parts total</text>
+ <text x="140" y="282" text-anchor="middle" class="small">Add an equal volume of cell-free diluent.</text>
+ <text x="140" y="304" text-anchor="middle" class="small">Original concentration =</text>
+ <text x="140" y="322" text-anchor="middle" class="small">2 × diluted estimate</text>
+</svg>

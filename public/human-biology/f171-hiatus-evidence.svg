@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 375" role="img" aria-labelledby="title desc">
+<title id="title">An image finding and a reported symptom</title><desc id="desc">A fictional schematic imaging finding places the junction between oesophagus and stomach above the diaphragm. In a separate speech bubble a person reports waking with a burning feeling. The image finding is objective evidence of position; the burning feeling is a reported symptom. The illustration is not a patient scan, and either finding can occur without the other.</desc>
+<rect width="280" height="375" rx="12" fill="#f4f9f8"/><g font-family="system-ui,sans-serif" font-size="16" fill="#243e49" text-anchor="middle">
+<text x="140" y="24" font-weight="700">Two kinds of evidence</text>
+<text x="140" y="49">Fictional image finding</text>
+<rect x="25" y="59" width="230" height="129" rx="7" fill="#e9f2f1" stroke="#537a94" stroke-width="2"/>
+<path d="M34 139h212" stroke="#537a94" stroke-width="2" stroke-dasharray="6 4"/>
+<path d="M101 69v35q0 10 11 12q24 3 24 24q0 13-20 17q-29 3-34-17q-3-10 3-17q5-6 5-17V69" fill="#f2d9c8" stroke="#a16b4d" stroke-width="2"/>
+<circle cx="101" cy="112" r="5" fill="#80588f"/><path d="M106 112l25-20h9" fill="none" stroke="#344958" stroke-width="1.5"/>
+<text x="190" y="92" font-size="15">Junction</text><text x="190" y="112" font-size="15">above</text><text x="191" y="159" font-size="15">Diaphragm</text>
+<text x="140" y="211">Position: observed finding</text>
+<path d="M36 234h176q12 0 12 12v39q0 12-12 12h-80l-20 15 3-15H36q-12 0-12-12v-39q0-12 12-12Z" fill="#fff" stroke="#80588f" stroke-width="2"/>
+<text x="124" y="258">“I wake with a</text><text x="124" y="280">burning feeling.”</text>
+<text x="140" y="338">Feeling: reported symptom</text><text x="140" y="360" font-size="14">Schematic, not a patient scan.</text>
+</g></svg>

@@ -15,6 +15,7 @@ function cells() {
     image.height = 280;
     image.alt = alt;
     figure.append(node("figcaption", title), image);
+    if (file === "palisade") figure.append(node("p", "In this specialised leaf cell, chloroplasts absorb light for photosynthesis."));
     return [title, figure];
   });
   const controls = node("div", "", "ks3-model-controls");
@@ -54,8 +55,8 @@ function osmosis(forQuestion = false) {
     ${text(77,23,"A · more dilute")}${text(237,23,"B · more concentrated",ink,14)}
     ${text(160,207,"Partially permeable membrane",blue)}
     ${circle(42,229,4,"white",blue)}${text(53,234,"Water",ink,15,"start")}
-    <rect x="169" y="224" width="10" height="10" fill="${violet}"/>
-    ${text(185,234,"Dissolved particles",ink,15,"start")}`;
+    <rect x="157" y="224" width="10" height="10" fill="${violet}"/>
+    ${text(173,234,"Dissolved particles",ink,14,"start")}`;
   const description = "Equal volumes divided by a partially permeable membrane. Side A is more dilute. Side B is more concentrated.";
   return forQuestion ? picture("Sides A and B", diagram(description, drawing, 320, 244))
     : picture("Net water movement A → B",
@@ -119,7 +120,7 @@ function atom(title, neutrons, shellCounts, note, highlightNeutron = false, lost
       return circle(x,y,outer ? 6 : 4.5,outer && count === 1 ? "#edab65" : blue,outer && count === 1 ? rust : blue);
     }).join("");
   }).join("") + circle(centreX,centreY,34,"#e5eeef",teal,2) +
-    text(160,116,protons + " p⁺",teal,17) + text(160,136,neutrons + " n",highlightNeutron ? rust : ink,17) +
+    text(160,114,protons + " p⁺",teal,21) + text(160,139,neutrons + " n",highlightNeutron ? rust : ink,21) +
     (lostElectron ? circle(160,17,6,"white",rust,2) + line(155,21,165,12,rust,2) : "");
   return picture(title,diagram(title + ". " + protons + " protons, " + neutrons + " neutrons, electron arrangement " + shellCounts.filter(Boolean).join(", ") + ".",drawing,320,229),note);
 }
@@ -180,6 +181,41 @@ function power() {
   return steps("Joules each second", [["Compare the seconds", () => timeline(false)], ["Reveal both totals", () => timeline(true)]]);
 }
 
+function efficiencyNote() {
+  return picture("Useful energy as a fraction of input", diagram(
+    "A device receives 10 joules. Four joules are transferred usefully, and six joules are transferred in other ways. Four of ten equal blocks are highlighted.", `
+    ${Array.from({length:10},(_,i)=>`<rect x="${20+i*28}" y="44" width="24" height="34" rx="2" fill="${i<4?'#a9d3c9':'#e9eeee'}" stroke="${i<4?teal:ink}"/>`).join("")}
+    ${text(76,101,"4 J useful",teal,14)}${text(216,101,"6 J other",ink,14)}
+    ${text(160,140,"10 J total input",ink,15)}`,320,160),
+    "Read the four shaded blocks as 4 J out of 10 J supplied: the useful fraction is 4 ÷ 10 = 0.4, or 40%.");
+}
+
+function maintainedGradient() {
+  const host = node("div");
+  host.append(picture("Keeping oxygen moving into blood", diagram(
+    "Air in an air sac has more oxygen than incoming blood. Ventilation refreshes the air and blood flow carries oxygen away. A net oxygen arrow points across the wall into the blood.", `
+    <rect x="24" y="34" width="272" height="61" rx="7" fill="#e6f3fa" stroke="${teal}" stroke-width="2"/>
+    <rect x="24" y="100" width="272" height="48" rx="7" fill="#f8e2de" stroke="${rust}" stroke-width="2"/>
+    ${[[68,51],[105,66],[145,51],[190,66],[226,51],[262,67]].map(([x,y])=>circle(x,y,4,"white",blue)).join("")}
+    ${[[67,116],[106,116]].map(([x,y])=>circle(x,y,4,"white",blue)).join("")}
+    ${arrow(160,74,160,118,blue,3)}${arrow(195,124,270,124,rust,2.5)}
+    ${text(160,22,"Air refreshed by breathing",blue,16)}${text(160,168,"Blood flows away",rust,16)}
+    ${text(80,88,"More oxygen",ink,16)}${text(80,141,"Less oxygen",ink,16)}`,320,180),
+    "Follow oxygen into the blood. Ventilation and blood flow help maintain a concentration difference; dots represent oxygen, not all particles present."));
+  host.append(picture("Many small air spaces", diagram(
+    "A model compares one spherical air space with four smaller spherical air spaces of the same total volume. The four small spheres have a greater total surface area.", `
+    ${circle(70,90,39.685,"#e6f3fa",teal,2)}
+    ${[[190,62],[244,62],[190,116],[244,116]].map(([x,y])=>circle(x,y,25,"#e6f3fa",teal,2)).join("")}
+    ${text(70,29,"One space",ink,17)}${text(217,24,"Four smaller",ink,17)}
+    ${text(160,160,"Same total volume",ink,17)}${text(160,181,"in this model",ink,17)}`,320,200),
+    "Compare the boundaries. Dividing the same total volume into smaller spheres increases the total surface area. Air sacs are shown as simplified spheres."));
+  return host;
+}
+
+export function year9OpeningSupplement(id) {
+  return id === "energy-transfer" ? efficiencyNote() : id === "gas-exchange" ? maintainedGradient() : null;
+}
+
 function gasExchange() {
   return steps("Gas exchange at the lung surface", [
     ["Healthy air sac", () => airSac(true)],
@@ -195,9 +231,9 @@ function enzymes() {
       : "An orange rectangular substrate fits the rectangular pocket in a teal enzyme.", `
       <path d="${solid}" fill="#b6ded3" stroke="${teal}" stroke-width="2.5"/>
       <rect x="135" y="${changed ? 42 : 76}" width="50" height="26" rx="2" fill="#f5bc73" stroke="${rust}" stroke-width="2"/>
-      ${text(160,28,"Substrate",rust)}
-      ${text(160,140,"Enzyme",teal)}
-      ${changed ? text(247,68,"Active site",teal,14) + line(211,65,177,85,teal) : ""}
+      ${text(changed ? 120 : 160,28,"Substrate",rust,20)}
+      ${text(160,140,"Enzyme",teal,20)}
+      ${changed ? text(250,48,"Active site",teal,20) + line(216,53,177,85,teal) : ""}
       ${warm ? arrow(109,65,129,82,rust)+arrow(211,65,191,82,rust) : ""}`);
   }
   return steps("How temperature changes enzyme activity", [
@@ -217,7 +253,7 @@ function conduction() {
       "Positive and negative ions form a regular lattice. They vibrate in position and do not move across the solid.", `
       ${moving ? line(22,35,22,136,ink,5)+line(294,35,294,136,ink,5)+text(22,25,"+")+text(294,25,"−") : ""}
       ${points.map(([x,y],i) => circle(x,y,13,signs[i] ? "#e7b783" : "#cce4f1",signs[i] ? rust : blue) + text(x,y+5,signs[i] ? "+" : "−",ink,19)).join("")}
-      ${moving ? arrow(117,151,264,151,rust)+arrow(202,161,55,161,blue) : text(145,150,"Vibrate in fixed positions",teal,15)}
+      ${moving ? arrow(117,151,264,151,rust)+arrow(202,161,55,161,blue) : text(160,154,"Vibrate in fixed positions",teal,20)}
       `,320,179),moving ? "A voltage moves positive ions one way and negative ions the other." : "The ions have charge, but they cannot flow through the solid.");
   }
   return compare(ions("Solid salt",solid,false),ions("Molten salt",liquid,true));
@@ -238,7 +274,7 @@ function melting() {
       ${line(positions[0][0]+18,positions[0][1]+14,positions[3][0]-8,positions[3][1]-9,violet,2,"4 4")}
       ${line(positions[2][0],positions[2][1]+16,positions[5][0]-9,positions[5][1]-10,violet,2,"4 4")}
       ${positions.map(molecule).join("")}
-      ${text(160,161,"Follow the circled molecule",teal)}`),liquid ? "The complete molecules can move past one another." : "Attractions hold molecules in a fixed arrangement overall.");
+      ${text(160,161,"Follow the circled molecule",teal,20)}`),liquid ? "The complete molecules can move past one another." : "Attractions hold molecules in a fixed arrangement overall.");
   }
   const panel = node("div");
   panel.append(compare(state("Ice",fixed,false),state("Liquid water",moving,true)),

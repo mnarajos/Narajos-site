@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 350" role="img" aria-labelledby="title desc">
+<title id="title">Bone as support and living tissue</title>
+<desc id="desc">A schematic long bone is attached to muscle by a tendon. A cutaway exposes marrow inside the bone. Arrows represent calcium exchange between bone and blood.</desc>
+<rect width="280" height="350" fill="#f5f9f8"/>
+<g font-family="sans-serif" fill="#183848" font-size="16" font-weight="bold" text-anchor="middle"><text x="140" y="23">Bone: several functions</text></g>
+<path d="M105 54 Q94 44 88 55 Q79 63 86 77 L94 91 L94 218 L86 232 Q79 246 88 254 Q95 263 105 254 Q115 263 122 254 Q130 246 123 232 L115 218 L115 91 L123 77 Q130 63 122 55 Q115 45 105 54Z" fill="#f7ebcc" stroke="#927d55" stroke-width="3"/>
+<ellipse cx="105" cy="70" rx="11" ry="9" fill="#d8878d" stroke="#9a5b61" stroke-width="2"/>
+<path d="M143 79 Q181 79 178 133 Q175 163 147 167 Q130 153 132 128 Q133 98 143 79Z" fill="#d9a0a0" stroke="#9d6060" stroke-width="2"/>
+<path d="M146 167 Q137 181 116 195" stroke="#aa9880" stroke-width="5" fill="none"/>
+<g font-family="sans-serif" fill="#183848" font-size="14"><text x="184" y="113">Muscle</text><text x="157" y="185">Tendon</text><text x="13" y="128">Bone</text><text x="4" y="73">Red marrow</text></g>
+<g stroke="#294551" stroke-width="1.5" fill="none"><path d="M181 108 L171 111"/><path d="M154 180 L139 178"/><path d="M52 123 L92 123"/><path d="M78 68 L94 68"/></g>
+<g font-family="sans-serif" font-size="14" fill="#183848" text-anchor="middle"><text x="140" y="287">Calcium in bone ↔ blood</text><text x="140" y="308">Red marrow makes blood cells.</text><text x="140" y="329">Schematic, not to scale.</text></g>
+</svg>

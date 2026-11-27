@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="370" viewBox="0 0 280 370" role="img">
+ <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs>
+ <rect width="280" height="370" rx="12" fill="#f4f8f7"/>
+ <g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+  <text x="140" y="25" font-size="17" font-weight="700">One treatment mechanism</text>
+  <rect x="35" y="50" width="210" height="54" rx="22" fill="#fae5df" stroke="#a65f5b" stroke-width="3"/>
+  <text x="80" y="83" font-size="16">Blood</text><text x="184" y="83" font-size="16">Levodopa</text>
+  <path d="M185 105v41" stroke="#344958" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M52 127h105M205 127h43" stroke="#537a94" stroke-width="4"/>
+  <text x="105" y="148" font-size="13">Brain boundary</text>
+  <path transform="translate(0 15)" d="M54 211C38 192 47 165 66 163C68 145 90 142 102 151C114 138 136 145 140 155C154 143 177 151 178 166C197 161 210 177 207 192C225 207 217 228 200 233C189 250 167 251 153 243C140 253 122 250 112 243C97 253 77 247 72 236C55 236 46 226 54 211Z" fill="#dfeaf5" stroke="#537a94" stroke-width="2.5"/>
+  <text x="132" y="198" font-size="15">Brain</text>
+  <text x="132" y="222" font-size="15">Levodopa →</text>
+  <text x="132" y="243" font-size="15">dopamine</text>
+  <path d="M140 273v26" stroke="#344958" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="140" y="320" font-size="15">Dopamine signalling</text>
+  <text x="140" y="347" font-size="15">can improve movement</text>
+ </g>
+</svg>

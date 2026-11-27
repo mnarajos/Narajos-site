@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="400" viewBox="0 0 280 400" role="img" aria-labelledby="title desc">
+<title id="title">Sperm route and added fluids</title><desc id="desc">A simplified route shows sperm produced in a testis moving into the epididymis, then along the vas deferens towards the urethra. Seminal vesicle and prostate secretions join the route. The layout is not a body section or to scale.</desc>
+<rect width="280" height="400" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16" fill="#243e49">
+<text x="140" y="24" font-weight="700" text-anchor="middle">Sperm route</text>
+<ellipse cx="57" cy="80" rx="25" ry="29" fill="#e7d9ee" stroke="#77598a" stroke-width="2"/>
+<path d="M67 51c20 0 27 14 27 29s-7 27-22 29" fill="none" stroke="#bd6b4a" stroke-width="6"/>
+<path d="M33 76h-13M94 70h16" stroke="#405968" stroke-width="1.5"/>
+<text x="20" y="49">Testis</text><text x="112" y="75">Epididymis</text><text x="112" y="96" font-size="14.5">maturation and storage</text>
+<path d="M75 109v49m-6-8 6 8 6-8" fill="none" stroke="#276972" stroke-width="2.5"/>
+<text x="94" y="145">Vas deferens</text>
+<path d="M75 158v77m-6-8 6 8 6-8" fill="none" stroke="#276972" stroke-width="2.5"/>
+<rect x="126" y="178" width="132" height="31" rx="15" fill="#f1d9ca" stroke="#ad6748" stroke-width="2"/>
+<text x="192" y="199" text-anchor="middle" font-size="15">Seminal vesicle</text>
+<path d="M126 194h-39m8-6-8 6 8 6" fill="none" stroke="#ad6748" stroke-width="2"/>
+<rect x="139" y="241" width="108" height="31" rx="15" fill="#f1d9ca" stroke="#ad6748" stroke-width="2"/>
+<text x="193" y="262" text-anchor="middle">Prostate</text>
+<path d="M139 257H87m8-6-8 6 8 6" fill="none" stroke="#ad6748" stroke-width="2"/>
+<path d="M75 235v66m-6-8 6 8 6-8" fill="none" stroke="#276972" stroke-width="2.5"/><text x="95" y="298">Urethra</text>
+<text x="140" y="333" text-anchor="middle">Glands add fluid to semen</text>
+<text x="140" y="358" text-anchor="middle" font-size="15">Simplified pathway;</text><text x="140" y="379" text-anchor="middle" font-size="15">not a body section or to scale</text>
+</g></svg>

@@ -1,9 +1,10 @@
 import { identifyCatchupYear, mountJourney } from "./school-catchup-journey.js";
 import { createWritingPractice, year9Writing } from "./school-catchup-writing.js";
 import { year9 } from "./school-catchup-year9.js";
-import { year9Visual } from "./school-catchup-visuals.js";
+import { year9OpeningSupplement, year9Visual } from "./school-catchup-visuals.js";
 import { gcseCatchup } from "./gcse-catchup-data.js";
 import { gcseVisual } from "./gcse-catchup-visuals.js";
+import { readableGcseFigure } from "./gcse-more-step-visuals.js";
 
 const params = new URLSearchParams(location.search);
 const id = params.get("topic");
@@ -41,7 +42,7 @@ if (Object.hasOwn(year9, id) || Object.hasOwn(gcseCatchup, id)) {
   label.textContent = "The key idea. ";
   idea.append(label, lesson.idea);
   model.append(title, notice);
-  const visual = senior ? gcseVisual(lesson.visual) : year9Visual(id);
+  const visual = senior ? readableGcseFigure(() => gcseVisual(lesson.visual)) : year9Visual(id);
   if (visual) model.append(visual);
   if (!senior && lesson.visual) {
     const [caption, columns, rows] = lesson.visual;
@@ -72,6 +73,10 @@ if (Object.hasOwn(year9, id) || Object.hasOwn(gcseCatchup, id)) {
     } else model.append(box);
   }
   model.append(idea);
+  if (!senior) {
+    const supplemental = year9OpeningSupplement(id);
+    if (supplemental) model.append(supplemental);
+  }
   const earlier = lesson.earlier ? [lesson.earlier[0], "/science-catch-up/lesson/?topic=" + lesson.earlier[1]] : {
     osmosis: ["States of matter", "/ks3/lesson/?topic=states-of-matter&guided=1"],
     "active-transport": ["Osmosis and partially permeable membranes", "/science-catch-up/lesson/?topic=osmosis"],
@@ -100,12 +105,18 @@ if (Object.hasOwn(year9, id) || Object.hasOwn(gcseCatchup, id)) {
       reveal.textContent = "Check your reasoning";
       const reasoning = document.createElement("p");
       reasoning.textContent = answer;
-      worked.append(reveal, reasoning);
+      worked.append(reveal);
+      // Question-specific diagrams can reveal the answer, so keep them with
+      // the optional reasoning, never alongside the unanswered prompt.
+      if (lesson.higherVisual) worked.append(lesson.higherVisual());
+      worked.append(reasoning);
       extension.append(summary, detail, worked);
     } else {
       summary.textContent = "Higher Tier";
       detail.textContent = lesson.higher.replace(/^Higher Tier · /, "");
-      extension.append(summary, detail);
+      extension.append(summary);
+      if (lesson.higherVisual) extension.append(lesson.higherVisual());
+      extension.append(detail);
     }
     model.append(extension);
   }

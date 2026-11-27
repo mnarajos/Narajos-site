@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 465" role="img" aria-labelledby="title desc">
+<title id="title">Examples of fungal disease sites</title><desc id="desc">Schematic examples show aspergillosis affecting the lungs, Candida-associated thrush affecting the mouth, and tinea pedis affecting skin of the feet. Dermatophytes such as Trichophyton commonly cause tinea pedis. These are selected examples, not diagnostic signs or the only possible sites.</desc>
+<rect width="280" height="465" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Examples, not diagnoses</text><text x="140" y="55">Aspergillosis: lungs</text>
+<path d="M137 76c-13-19-35-11-40 8l-7 28q-4 21 18 21 22 0 29-19zM143 76c13-19 35-11 40 8l7 28q4 21-18 21-22 0-29-19z" fill="#f9dfc8" stroke="#98451e" stroke-width="2"/><path d="M140 57v52" stroke="#69447f" stroke-width="2"/>
+<text x="140" y="171">Candida: mouth (thrush)</text><path d="M74 205q66-46 132 0-66 46-132 0z" fill="#f9dfc8" stroke="#98451e" stroke-width="2"/><path d="M74 205q66 18 132 0" fill="none" stroke="#98451e" stroke-width="2"/>
+<text x="140" y="269">Tinea pedis: foot skin</text><path d="M92 330q-4 22 10 44 13 20 31 10 18-8 22-27l15-28q8-15-5-20-15-4-25 3-15-6-26 0-12-3-22 18z" fill="#f9dfc8" stroke="#98451e" stroke-width="2"/><g fill="#f9dfc8" stroke="#98451e" stroke-width="2"><circle cx="107" cy="309" r="7"/><circle cx="120" cy="302" r="7"/><circle cx="134" cy="300" r="7"/><circle cx="148" cy="302" r="7"/><circle cx="161" cy="307" r="7"/></g>
+<text x="140" y="412">Often caused by dermatophytes</text><text x="140" y="437">such as Trichophyton.</text>
+</g></svg>

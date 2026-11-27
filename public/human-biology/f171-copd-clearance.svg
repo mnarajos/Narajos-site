@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="380" viewBox="0 0 280 380" role="img" aria-labelledby="title desc">
+ <title id="title">Airway clearance and infection risk</title><desc id="desc">In a simplified airway, mucus is normally moved along by cilia. When clearance is reduced, mucus can remain; retained secretions can contribute to infection, and infection can worsen symptoms. Infection is a risk, not an inevitable outcome.</desc>
+ <rect width="280" height="380" rx="12" fill="#f4f8f7"/>
+ <g font-family="system-ui,sans-serif" fill="#233e4c">
+  <text x="140" y="26" text-anchor="middle" font-size="18" font-weight="700">Airway clearance</text>
+  <text x="140" y="53" text-anchor="middle" font-size="16">Usual clearance</text>
+  <path d="M28 101H252" stroke="#344958" stroke-width="4"/>
+  <path d="M38 100l8-19M66 100l8-19M94 100l8-19M122 100l8-19M150 100l8-19M178 100l8-19M206 100l8-19M234 100l8-19" stroke="#26756d" stroke-width="3"/>
+  <path d="M38 82q23-6 46 0t46 0 46 0 46 0" fill="none" stroke="#aa5429" stroke-width="3" stroke-linecap="round"/>
+  <path d="M57 68H211M200 62l11 6-11 6" fill="none" stroke="#aa5429" stroke-width="3"/>
+  <text x="140" y="123" text-anchor="middle" font-size="15">Cilia move mucus along</text>
+  <text x="140" y="156" text-anchor="middle" font-size="16">Reduced clearance</text>
+  <path d="M28 206H252" stroke="#344958" stroke-width="4"/>
+  <path d="M38 205l4-10M75 205l3-8M112 205l3-9M151 205l3-8M190 205l3-9M230 205l3-8" stroke="#26756d" stroke-width="3"/>
+  <path d="M38 183q23-12 46 0t46 0 46 0 46 0" fill="none" stroke="#aa5429" stroke-width="8" stroke-linecap="round"/>
+  <text x="140" y="229" text-anchor="middle" font-size="16">Mucus can remain</text>
+  <path d="M140 239v25m-6-9 6 9 6-9" fill="none" stroke="#344958" stroke-width="2.5"/>
+  <text x="140" y="286" text-anchor="middle" font-size="16">Can contribute to infection</text>
+  <path d="M140 297v25m-6-9 6 9 6-9" fill="none" stroke="#344958" stroke-width="2.5"/>
+  <text x="140" y="344" text-anchor="middle" font-size="16">Symptoms can worsen</text>
+  <text x="140" y="368" text-anchor="middle" font-size="14">One simplified example</text>
+ </g>
+</svg>

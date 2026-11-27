@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 290" role="img" aria-labelledby="title desc">
+ <title id="title">A pulse does not establish viability</title><desc id="desc">A living cell and a non-living cell are shown as similar-sized examples, each producing a schematic electrical pulse. A pulse alone does not distinguish whether a particle is alive.</desc>
+ <style>text{font:15px sans-serif;fill:#20383c}.small{font-size:14px}.cell{fill:#e9f4f2;stroke:#356d70;stroke-width:3}.pulse{fill:none;stroke:#285e66;stroke-width:3}</style>
+ <text x="140" y="23" text-anchor="middle" font-weight="bold">What does a pulse tell us?</text>
+ <circle class="cell" cx="65" cy="86" r="24"/><circle class="cell" cx="215" cy="86" r="24"/>
+ <text x="65" y="91" text-anchor="middle">A</text><text x="215" y="91" text-anchor="middle">B</text>
+ <text x="65" y="129" text-anchor="middle" class="small">Living cell</text><text x="215" y="129" text-anchor="middle" class="small">Non-living cell</text>
+ <path class="pulse" d="M20 185h28v-25h16v25h40 M165 185h28v-25h16v25h40"/>
+ <text x="140" y="244" text-anchor="middle">A pulse indicates a particle.</text>
+ <text x="140" y="267" text-anchor="middle" class="small">It does not establish viability.</text>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 340" role="img" aria-labelledby="title description">
+<title id="title">Endocytosis and exocytosis</title>
+<desc id="description">In endocytosis, the surface membrane folds inward around material and a vesicle moves into the cell. In exocytosis, an internal vesicle fuses with the surface membrane and releases material outside. Cargo does not pass through the membrane's hydrophobic core.</desc>
+<rect width="280" height="340" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a" text-anchor="middle">
+<text x="140" y="24" font-weight="700">Endocytosis</text>
+<text x="48" y="51" font-size="14">Outside</text>
+<path d="M20 66H95q15 0 15 12q0 20 30 20t30-20q0-12 15-12h75" fill="none" stroke="#23656c" stroke-width="4"/>
+<circle cx="140" cy="79" r="6" fill="#e7b783" stroke="#98451e"/>
+<path d="M140 101v10m-5-5 5 5 5-5" fill="none" stroke="#23558c" stroke-width="2"/>
+<circle cx="140" cy="132" r="18" fill="#e6f3fa" stroke="#23558c" stroke-width="2"/><circle cx="140" cy="132" r="6" fill="#e7b783" stroke="#98451e"/>
+<text x="140" y="169">Vesicle moves inside</text>
+<text x="140" y="203" font-weight="700">Exocytosis</text><text x="48" y="229" font-size="14">Outside</text>
+<path d="M20 240h80M180 240h80M100 240q0 42 40 42t40-42" fill="none" stroke="#23656c" stroke-width="4"/>
+<g fill="#e7b783" stroke="#98451e"><circle cx="132" cy="262" r="5"/><circle cx="150" cy="260" r="5"/><circle cx="140" cy="225" r="5"/></g>
+<path d="M140 257v-20m-5 6 5-6 5 6" fill="none" stroke="#23558c" stroke-width="2"/>
+<text x="140" y="318">Fusion releases cargo</text>
+</g></svg>

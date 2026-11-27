@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="335" viewBox="0 0 280 335" role="img">
+ <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs>
+ <rect width="280" height="335" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">Vitamin D and calcium</text>
+ <text x="140" y="51" font-size="15">Small intestine · lumen</text>
+ <g fill="#a76125"><circle cx="90" cy="75" r="6"/><circle cx="140" cy="75" r="6"/><circle cx="190" cy="75" r="6"/></g>
+ <path d="M35 96h210v35H35Z" fill="#cde8dc" stroke="#32776d" stroke-width="2"/>
+ <path d="M90 82v63" stroke="#344958" stroke-width="2" marker-end="url(#arrow)"/><path d="M140 82v63" stroke="#344958" stroke-width="2" marker-end="url(#arrow)"/><path d="M190 82v63" stroke="#344958" stroke-width="2" marker-end="url(#arrow)"/>
+ <text x="140" y="169" font-size="15">Calcium enters blood</text>
+ <text x="140" y="193" font-size="14">Vitamin D helps absorption.</text>
+ <path d="M140 205v27" stroke="#344958" stroke-width="2" marker-end="url(#arrow)"/>
+ <path d="M100 244q-10-7-16 0q-5 7 3 13v21q-8 6-3 13q6 7 16 0q10 7 16 0q5-7-3-13v-21q8-6 3-13q-6-7-16 0Z" fill="#f0e3cf" stroke="#a5792e" stroke-width="2"/>
+ <text x="177" y="262" font-size="15">Growing bone</text><text x="177" y="283" font-size="14">needs mineral.</text>
+ <text x="140" y="320" font-size="13">Dots and arrows are schematic.</text></g>
+</svg>

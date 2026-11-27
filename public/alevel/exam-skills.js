@@ -243,10 +243,19 @@
         const combine = (x, y) => [x[0], y[0]].sort().join("") + [x[1], y[1]].sort().join("");
         const title = step === 2 ? "Put one parent's gametes along each edge" :
           step === 3 ? "Combine the highlighted row and column" : "AaBb × AaBb · worked cross";
-        box.append(table(title, ["Gametes", ...gametes], gametes.map((x, i) =>
+        const cross = table(title, ["Gamete", ...gametes], gametes.map((x, i) =>
           [x, ...gametes.map((y, j) => step >= 4 || (step === 3 && i === 0 && j === 0) ? combine(x, y) : "—")]),
-        step === 3 ? [1] : []));
+        step === 3 ? [1] : []);
+        cross.classList.add("al-punnett");
+        box.append(cross);
         if (step >= 5) box.append(node("p", "Expected phenotypes · 9 A_B_ : 3 A_bb : 3 aaB_ : 1 aabb"));
+        if (step === 5 && window.ALevelInheritanceDetails) {
+          const figures = node("div");
+          figures.innerHTML = window.ALevelInheritanceDetails.render("a7", "dihybrid", 1);
+          const testCross = Array.from(figures.querySelectorAll("figure"))
+            .find(figure => figure.querySelector("strong")?.textContent === "A dihybrid test cross");
+          if (testCross) box.append(testCross);
+        }
       }
       return box;
     }
@@ -323,6 +332,29 @@
     }
   }
 
+  // These diagrams explain the current worked step. They are not mounted in
+  // independent practice, and do not change progress or mastery state.
+  function workedStepVisual(family, index) {
+    const control = window.ALevelGeneControlFigures;
+    const energy = window.ALevelEnergyMechanismFigures;
+    if (family.id === "hardy" || (family.id === "pressures" && index === 0) || (["osmosis", "dihybrid"].includes(family.id) && index < 2)) {
+      const box = node("div", null, "al-guided-visual");
+      box.innerHTML = window.ALevelGuidedFigures?.render(family.id, index) || "";
+      return box.firstElementChild ? box : null;
+    }
+    const maps = {
+      regulation: [[window.ALevelTranscriptionAccess, "a8", "transfac", 0], [control, "a8", "epigen", 0],
+        [control, "a8", "epigen", 1], [control, "a8", "transfac", 2]],
+      calvin: [[window.ALevelCalvinSupply, "a5", "calvin", 0], [energy, "a5", "calvin", 0],
+        [energy, "a5", "calvin", 1], [energy, "a5", "calvin", 2], [energy, "a5", "calvin", 2]],
+    };
+    const selected = maps[family.id]?.[index];
+    if (!selected?.[0]) return null;
+    const box = node("div", null, "al-guided-visual");
+    box.innerHTML = selected[0].render(selected[1], selected[2], selected[3]);
+    return box.firstElementChild ? box : null;
+  }
+
   function model(host, family, state, persist, finish, finishLabel = "Try with support", backToIdea = null) {
     const paper = paperRoutes[family.id] || (family.id === "geneExpression" ? { stimulus: "Investigation" } : null);
     const block = node("section", null, "al-teaching al-model");
@@ -375,7 +407,8 @@
         panel.replaceChildren(steps, node("p", (index + 1) + " of " + (last + 1), "al-task-count"));
       }
       announcement.textContent = "Step " + (index + 1) + " of " + (last + 1) + ". " + family.model[index];
-      art.replaceChildren(family.evidence ? table(...family.evidence, family.evidenceHighlights?.[index], paper, family.id === "geneExpression") : visual(family.visual, index));
+      const relevantVisual = workedStepVisual(family, index);
+      art.replaceChildren(relevantVisual || (family.evidence ? table(...family.evidence, family.evidenceHighlights?.[index], paper, family.id === "geneExpression") : visual(family.visual, index)));
       previous.disabled = index === 0 && !backToIdea;
       previous.textContent = index === 0 && backToIdea ? "Key idea" : "Previous step";
       next.textContent = index < last ? "Next step" : finishLabel;
@@ -440,6 +473,27 @@
         });
         start.classList.add("primary");
         panel.append(heading, node("p", family.principle));
+        // Keep explanatory models beside the principle, before the worked steps.
+        if (family.id === "regulation") {
+          const access = workedStepVisual(family, 2);
+          const binding = workedStepVisual(family, 0);
+          if (access) panel.append(access);
+          if (binding) panel.append(binding);
+        } else if (family.id === "calvin") {
+          const carbon = workedStepVisual(family, 2);
+          if (carbon) panel.append(carbon);
+        } else if (family.id === "countercurrent") {
+          panel.append(visual("countercurrent", 2));
+        } else if (family.id === "causal") {
+          panel.append(visual("pathway", 0));
+        } else if (["osmosis", "hardy", "dihybrid", "pressures"].includes(family.id)) {
+          const example = workedStepVisual(family, family.id === "dihybrid" ? 1 : 0);
+          if (example) panel.append(example);
+          if (family.id === "osmosis") {
+            const membrane = workedStepVisual(family, 1);
+            if (membrane) panel.append(membrane);
+          }
+        }
         if (family.commandGuide) {
           const guide = node("details", null, "al-key-notes");
           const entries = node("dl");

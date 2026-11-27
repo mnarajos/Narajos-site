@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="425" viewBox="0 0 280 425" role="img" aria-labelledby="title desc">
+<title id="title">A nephron filters and reabsorbs</title><desc id="desc">Blood reaches a glomerulus, where water and small solutes are filtered into the nephron. As fluid travels along a simplified tubule, some water and ions return to blood. Remaining fluid and wastes pass onwards as urine. The drawing omits secretion and detailed tubule regions.</desc>
+<rect width="280" height="425" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="24" font-weight="700">Nephron overview</text>
+<text x="140" y="44" font-size="15">Blood to glomerulus</text>
+<path d="M15 79h42m-8-6 8 6-8 6" fill="none" stroke="#b95e53" stroke-width="3"/>
+<circle cx="90" cy="80" r="30" fill="#fff" stroke="#806195" stroke-width="2"/><path d="M70 80q8-23 15 0t15 0 10 0" fill="none" stroke="#b95e53" stroke-width="3"/>
+<path d="M121 80h108q22 0 22 22v187" fill="none" stroke="#b95e53" stroke-width="5"/>
+<text x="200" y="128" font-size="15">Blood</text><text x="200" y="148" font-size="15">capillaries</text>
+<path d="M90 92v43H55v37m-6-7 6 7 6-7" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<text x="105" y="156" font-size="15">Filtration</text>
+<path d="M55 180v88q0 30 25 30t25-30v-42q0-18 18-18h17v113" fill="none" stroke="#5586a0" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="80" y="352" font-size="15">Tubule</text>
+<path d="M151 234h90m-8-6 8 6-8 6" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<text x="190" y="185" font-size="15">Some water</text><text x="190" y="205" font-size="15">and ions</text><text x="195" y="263" font-size="15">reabsorbed</text>
+<path d="M140 322v33m-6-7 6 7 6-7" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<text x="140" y="382" font-size="15">Remaining fluid and wastes</text><text x="140" y="404" font-size="15">continue as urine</text>
+</g></svg>

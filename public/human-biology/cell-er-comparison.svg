@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 320" role="img" aria-labelledby="title description">
+<title id="title">Rough and smooth endoplasmic reticulum</title>
+<desc id="description">Ribosomes are attached to the cytoplasmic surface of rough ER, which receives many proteins for secretion. Smooth ER lacks attached ribosomes and makes many lipids. Human cytoplasmic ribosomes are 80S and typical bacterial ribosomes are 70S; S describes sedimentation.</desc>
+<rect width="280" height="320" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="14" fill="#263e4a" text-anchor="middle">
+<text x="140" y="24" font-weight="700">Rough ER</text>
+<path d="M44 53q35-14 70 0t70 0t50 0v28q-25-14-50 0t-70 0t-70 0Z" fill="#d8ece7" stroke="#23656c" stroke-width="2"/>
+<g fill="#69447f"><circle cx="57" cy="48" r="4"/><circle cx="83" cy="45" r="4"/><circle cx="112" cy="50" r="4"/><circle cx="141" cy="55" r="4"/><circle cx="168" cy="48" r="4"/><circle cx="197" cy="45" r="4"/><circle cx="224" cy="49" r="4"/></g>
+<text x="140" y="106">Attached ribosomes</text><text x="140" y="124">make proteins that enter ER</text>
+<text x="140" y="159" font-weight="700">Smooth ER</text>
+<path d="M41 194c25-30 45 29 70 0s45 29 70 0s38 15 58 2M41 206c25-30 45 29 70 0s45 29 70 0s38 15 58 2" fill="none" stroke="#23656c" stroke-width="3"/>
+<text x="140" y="239">No attached ribosomes</text><text x="140" y="257">Makes many lipids</text>
+<text x="140" y="286">Human cytoplasm: 80S</text><text x="140" y="305">Typical bacteria: 70S</text>
+</g></svg>

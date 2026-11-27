@@ -1,5 +1,5 @@
 import { question as q } from "./school-catchup-journey.js";
-import { airSac, diagram, line, node, picture, blue, ink, teal, text } from "./catchup-models.js";
+import { airSac, arrow, circle, compare, diagram, line, node, picture, blue, ink, rust, teal, text } from "./catchup-models.js";
 import { osmosisQuestionDiagram, year9Visual } from "./school-catchup-visuals.js";
 
 const worked = (title, ...lines) => ({title, lines});
@@ -31,6 +31,135 @@ function exchangeSurface() {
     ${text(45,29,"A",ink,17)}${line(60,27,266,27,blue,3)}
     ${text(45,118,"B",ink,17)}${bottom}${line(60,121,265,121,teal,2)}
     ${text(160,145,"Same overall width",ink,14)}`,320,157));
+}
+
+function waterLeavingCell() {
+  return picture("A plant cell in concentrated brine", diagram(
+    "A plant cell is surrounded by concentrated brine. Water crosses the cell membrane in both directions, with more moving out of the cell.", `
+    <rect x="14" y="25" width="292" height="132" rx="10" fill="#f5f0e5" stroke="${rust}" stroke-width="2"/>
+    <rect x="70" y="47" width="130" height="90" rx="8" fill="#e2f3f0" stroke="${teal}" stroke-width="3"/>
+    ${text(135,75,"Cell contents",teal,15)}${text(135,96,"more dilute",teal,14)}
+    ${text(253,54,"Brine",rust,15)}${text(253,72,"more",rust,14)}${text(253,90,"concentrated",rust,14)}
+    ${arrow(168,110,243,110,blue,4)}${arrow(243,126,168,126,blue,1.5)}
+    ${text(241,148,"Water",blue,14)}`,320,174),
+    "Follow the thicker arrow: more water crosses out than back in. The boundary represents the partially permeable cell membrane.");
+}
+
+function muscleCell() {
+  const mitochondria = [70, 110, 150, 190, 230].map(x =>
+    `<ellipse cx="${x}" cy="80" rx="15" ry="9" fill="#f1c7ab" stroke="${rust}" stroke-width="2"/>
+    <path d="M${x-8} 80q4-6 8 0t8 0" fill="none" stroke="${rust}"/>`).join("");
+  return picture("A working muscle cell", diagram(
+    "A simplified elongated muscle cell contains many mitochondria, the sites of aerobic respiration.", `
+    <path d="M23 80Q40 45 160 48T297 80Q280 115 160 112T23 80Z" fill="#e2f3f0" stroke="${teal}" stroke-width="3"/>
+    ${mitochondria}${line(190,68,220,39,rust,2)}${text(238,31,"Mitochondria",rust,15)}
+    ${text(160,145,"Muscle cell · simplified",ink,15)}`),
+    "Locate the mitochondria: aerobic respiration here transfers energy for contraction. The cell and structures are not to scale.");
+}
+
+function nucleusAndRibosomes() {
+  return picture("Inside an animal cell", diagram(
+    "A simplified animal cell has a nucleus containing DNA and ribosomes shown as small dots in the cytoplasm. Ribosomes build proteins.", `
+    <ellipse cx="115" cy="87" rx="90" ry="65" fill="#e2f3f0" stroke="${teal}" stroke-width="3"/>
+    <circle cx="105" cy="88" r="30" fill="#d8c7e4" stroke="${ink}" stroke-width="2"/>
+    <path d="M92 87q7-16 13 0t13 0" fill="none" stroke="${rust}" stroke-width="3"/>
+    ${[[65,51],[152,54],[168,83],[65,111],[150,118]].map(([x,y]) => circle(x,y,3,ink,ink)).join("")}
+    ${line(117,66,200,36,ink,1.5)}${text(254,32,"Nucleus: DNA",ink,16)}
+    ${line(168,83,205,83,ink,1.5)}${text(265,78,"Ribosomes",ink,16)}${text(265,98,"build proteins",ink,16)}
+    ${text(115,181,"Cell shown in section",ink,16)}`,320,195),
+    "Locate DNA in the nucleus and the ribosomes shown as dots. The sizes are exaggerated so the structures can be seen.");
+}
+
+function plantCellJobs() {
+  const leaf = node("figure", "", "catchup-picture");
+  const image = node("img");
+  image.className = "catchup-photo";
+  image.src = "/assets/ks3-diagrams/palisade-cell.svg";
+  image.alt = "Palisade cell with chloroplasts, nucleus, mitochondria and a cell wall labelled.";
+  image.width = 360;
+  image.height = 280;
+  leaf.append(image, node("figcaption", "Palisade cell: chloroplasts absorb light for photosynthesis."));
+  const root = picture("Root hair cell", diagram(
+    "A root hair cell has a long, thin extension that contacts the soil. The extension increases surface area for absorption.", `
+    <path d="M40 42H170Q195 42 202 71L277 74Q289 75 289 85Q289 95 277 96L202 99Q195 128 170 128H40Z" fill="#e2f3f0" stroke="${teal}" stroke-width="4"/>
+    ${circle(87,84,16,"#d8c7e4",ink,2)}${line(235,74,235,44,teal,2)}${text(235,35,"Root hair",teal,15)}
+    ${text(115,151,"Cell body",ink,15)}`,320,170),
+    "The long extension increases the area in contact with soil, helping water and mineral ions enter.");
+  return compare(leaf, root);
+}
+
+function concentrationPanel(title, from, to, against, substance) {
+  const dots = [[65,55],[88,79],[60,105],[105,54],[112,110],[89,54],[236,79]];
+  const positions = against ? dots.map(([x,y]) => [320-x,y]) : dots;
+  return picture(title, diagram(
+    `${substance} particles are ${against ? "less concentrated on the left and more concentrated on the right; movement shown is from left to right, against the concentration gradient" : "more concentrated on the left and less concentrated on the right; net movement shown is from left to right, down the concentration gradient"}.`, `
+    <rect x="18" y="28" width="284" height="111" rx="8" fill="#f5fafb" stroke="${teal}" stroke-width="2"/>
+    ${line(160,29,160,138,teal,3)}
+    ${positions.map(([x,y]) => circle(x,y,5,"#eab776",rust)).join("")}
+    ${arrow(125,82,194,82,blue,3)}
+    ${text(87,20,from,ink,14)}${text(233,20,to,ink,14)}
+    ${text(160,161,substance,ink,14)}`), against ? "Movement against the gradient needs energy from respiration and membrane proteins, which are omitted here." : "For particles able to cross the membrane, net diffusion is down the concentration gradient.");
+}
+
+function transportComparison() {
+  return compare(concentrationPanel("Diffusion", "Higher", "Lower", false, "Particles"),
+    concentrationPanel("Active transport", "Lower", "Higher", true, "Particles"));
+}
+
+function gutTransport() {
+  return concentrationPanel("Absorption by a gut cell", "Gut lumen: lower", "Cell: higher", true, "Glucose molecules");
+}
+
+function efficiencyExample() {
+  return picture("Energy transferred by a lamp", diagram(
+    "A lamp receives 120 joules. It transfers 30 joules by useful light and 90 joules to other transfers such as heating.", `
+    <rect x="20" y="37" width="280" height="37" fill="#eff4f4" stroke="${ink}" stroke-width="2"/>
+    <rect x="20" y="37" width="70" height="37" fill="#a9d3c9" stroke="${teal}" stroke-width="2"/>
+    ${text(55,62,"30 J",ink,20)}${text(196,62,"90 J",ink,20)}
+    ${text(55,103,"Useful light",teal,20)}${text(200,103,"Other transfers",ink,20)}
+    ${text(160,140,"Total input: 120 J",ink,20)}`,320,160),
+    "The useful part is one quarter of the whole: 30 ÷ 120 = 0.25, or 25%.");
+}
+
+function groupOneExamples() {
+  const host = node("div");
+  host.append(year9Visual("periodic-table"));
+  host.append(picture("Potassium electron arrangement", diagram(
+    "A potassium atom has four electron shells. Its electron arrangement is 2, 8, 8, 1. One electron is shown in the outer shell; inner-shell electrons are omitted.", `
+    ${circle(140,90,13,"#d8e8e5",teal,2)}${circle(140,90,29,"none",ink,1)}${circle(140,90,45,"none",ink,1)}
+    ${circle(140,90,61,"none",ink,1)}${circle(140,90,76,"none",ink,1)}${circle(140,14,5,rust,rust)}
+    ${text(140,195,"Potassium",ink,20)}${text(140,221,"2, 8, 8, 1",blue,20)}${text(140,248,"One outer electron",rust,20)}`,280,270),
+    "The last number counts the outer-shell electron. Inner-shell electrons are omitted from this schematic."));
+  return host;
+}
+
+function dissolvedIons() {
+  const host = node("div");
+  host.append(year9Visual("ionic-conduction"));
+  host.append(picture("Ions in a salt solution", diagram(
+    "A salt solution contains separated positive and negative ions. When a voltage is applied, the positive ions move toward the negative electrode and the negative ions move toward the positive electrode.", `
+    <path d="M25 32v102h270V32" fill="#e6f3f6" stroke="${teal}" stroke-width="2"/>
+    ${line(57,43,57,120,ink,5)}${line(263,43,263,120,ink,5)}${text(57,26,"−",blue,20)}${text(263,26,"+",rust,20)}
+    ${circle(110,71,11,"#e7b783",rust)}${text(110,77,"+",ink,19)}${arrow(96,71,70,71,rust,2)}
+    ${circle(208,98,11,"#cce4f1",blue)}${text(208,104,"−",ink,19)}${arrow(222,98,250,98,blue,2)}
+    ${text(160,157,"Salt dissolved in water",ink,20)}`,320,170),
+    "Follow the charged ions towards the electrodes of opposite charge. Water molecules are omitted to make the ion movement clear."));
+  return host;
+}
+
+function mitosisInTissues() {
+  const host = node("div");
+  host.append(year9Visual("mitosis"));
+  host.append(picture("New cells for repair and growth", diagram(
+    "Skin cells divide near a damaged area during repair, and cells divide near a growing plant root tip. Both depend on copying and separating DNA before cell division.", `
+    <path d="M20 55H105l9 15 9-15h32v59H20Z" fill="#f2d7c2" stroke="${rust}" stroke-width="2"/>
+    ${[40,60,80,100,120,140].map(x=>circle(x,96,7,"#e9bca5",rust)).join("")}
+    ${arrow(104,85,113,73,teal,2)}${arrow(124,85,116,73,teal,2)}
+    <path d="M211 43h47v43q0 35-23 51-24-16-24-51Z" fill="#e9edd7" stroke="${teal}" stroke-width="2"/>
+    ${[[224,91],[237,92],[250,92],[230,105],[244,105],[237,118]].map(([x,y])=>circle(x,y,4,"#c8dbb4",teal)).join("")}
+    ${text(87,145,"Skin repair",ink,15)}${text(235,160,"Growing root tip",ink,15)}`,320,175),
+    "Cell division contributes to repair in skin and growth at a root tip. The details are simplified."));
+  return host;
 }
 
 const scaffolds = {
@@ -128,6 +257,20 @@ const scaffolds = {
 };
 
 export function applyYear9Scaffolds(lessons) {
+  // The membrane model explains the first two stages; the cell view applies it
+  // to a different situation rather than assuming the opening view does so.
+  lessons.osmosis.steps[0].visual = () => year9Visual("osmosis");
+  lessons.osmosis.steps[1].visual = () => year9Visual("osmosis");
+  lessons.osmosis.steps[2].visual = waterLeavingCell;
+  lessons["cell-structures"].steps[0].visual = nucleusAndRibosomes;
+  lessons["cell-structures"].steps[1].visual = muscleCell;
+  lessons["cell-structures"].steps[2].visual = plantCellJobs;
+  lessons["active-transport"].steps[0].visual = transportComparison;
+  lessons["active-transport"].steps[1].visual = () => year9Visual("active-transport");
+  lessons["active-transport"].steps[2].visual = gutTransport;
+  lessons.mitosis.steps[0].visual = () => year9Visual("mitosis");
+  lessons.mitosis.steps[1].visual = () => year9Visual("mitosis");
+  lessons.mitosis.steps[2].visual = mitosisInTissues;
   lessons["atomic-number"].retry = q("A neutral oxygen atom gains two electrons. What happens?", "It becomes an oxygen ion with charge −2.",
     "The proton number is unchanged. Two extra electrons give a net negative charge of −2.",
     ["It becomes an oxygen ion with charge +2.", "Each added electron contributes a negative charge."],
@@ -139,4 +282,14 @@ export function applyYear9Scaffolds(lessons) {
   for (const [id, additions] of Object.entries(scaffolds)) {
     lessons[id].steps = lessons[id].steps.map((step, index) => ({...step, ...additions[index]}));
   }
+  // Worked figures are shown with the worked explanation only, not the
+  // independent check. Each model is selected for the reasoning it supports.
+  for (const id of ["atomic-number", "periodic-table", "energy-transfer", "enzymes", "ionic-conduction", "molecular-melting"]) {
+    const example = lessons[id].steps[0].worked;
+    if (example) example.visual = () => year9Visual(id);
+  }
+  lessons["periodic-table"].steps[0].worked.visual = groupOneExamples;
+  lessons["ionic-conduction"].steps[0].worked.visual = dissolvedIons;
+  lessons["gas-exchange"].steps[0].worked.visual = () => year9Visual("gas-exchange");
+  lessons["energy-transfer"].steps[1].worked.visual = efficiencyExample;
 }

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="320" viewBox="0 0 280 320" role="img" aria-labelledby="title desc">
+<title id="title">Genotype, environment and phenotype</title>
+<desc id="desc">Two arrows point from genotype, the alleles a person has, and environmental influences, such as nutrition, to phenotype, an observable characteristic. The relative effects depend on the characteristic; not every environmental factor affects every trait.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0l8 4-8 4z" fill="#23656c"/></marker></defs>
+<rect width="280" height="320" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" text-anchor="middle" fill="#263e4a" font-size="17">
+<text x="140" y="27" font-weight="700">A characteristic</text>
+<rect x="15" y="47" width="250" height="67" rx="8" fill="#e5f0f7" stroke="#3c7899" stroke-width="2"/>
+<text x="140" y="72" font-weight="700">Genotype</text><text x="140" y="99">The alleles a person has</text>
+<rect x="15" y="135" width="250" height="67" rx="8" fill="#fff6e9" stroke="#a56329" stroke-width="2"/>
+<text x="140" y="160" font-weight="700">Environment</text><text x="140" y="187">For example, nutrition</text>
+<g fill="none" stroke="#23656c" stroke-width="2.5" marker-end="url(#arrow)"><path d="M15 80H7v146h88v14"/><path d="M265 168h8v58h-88v14"/></g>
+<rect x="15" y="245" width="250" height="58" rx="8" fill="#e4f3ed" stroke="#34785e" stroke-width="2"/>
+<text x="140" y="269" font-weight="700">Phenotype</text><text x="140" y="293">An observable characteristic</text>
+</g></svg>

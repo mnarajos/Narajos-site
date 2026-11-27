@@ -1,0 +1,8 @@
+/* Original model of gas exchange across a unicellular organism's membrane. */
+(function () {
+ "use strict";
+ window.ALevelSingleCellExchange={render(topic,id,group){
+  if(topic!=='a3'||id!=='insects'||group!==0)return '';
+  return `<figure class="kc-visual"><div class="kc-visual-heading"><strong>Gas exchange in one cell</strong></div><div class="kc-visual-art kc-visual-art-compact"><svg viewBox="0 0 300 300" role="img" aria-label="A schematic single-celled organism has a cell-surface membrane. Oxygen diffuses into the cell, and carbon dioxide diffuses out, when their concentration gradients point in those directions. A small cell has a large surface-area-to-volume ratio. Shapes and arrow sizes are not to scale." xmlns="http://www.w3.org/2000/svg" style="font:16px system-ui,sans-serif;fill:#233e4c"><ellipse cx="150" cy="147" rx="90" ry="79" fill="#e5f3ee" stroke="#32776d" stroke-width="4"/><circle cx="145" cy="145" r="25" fill="#d9d8ed" stroke="#766d99" stroke-width="2"/><text x="150" y="211" text-anchor="middle">One cell</text><path d="M12 102h81m-7-6 7 6-7 6M208 171h80m-7-6 7 6-7 6" stroke="#456e83" stroke-width="3" fill="none"/><text x="16" y="87">O₂ in</text><text x="213" y="156">CO₂ out</text><text x="150" y="30" text-anchor="middle">Cell-surface membrane</text><path d="M150 38v28" stroke="#344958" stroke-width="2"/><text x="150" y="260" text-anchor="middle">Large surface area for its volume</text></svg></div><figcaption>Follow the arrows across the membrane. When concentration gradients point this way, oxygen diffuses in and carbon dioxide diffuses out. The single cell has a large surface-area-to-volume ratio; the model is not to scale.</figcaption></figure>`+(window.ALevelCatchupFigures?.render('a3','sav',0)||'');
+ }};
+})();

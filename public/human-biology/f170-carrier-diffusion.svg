@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="465" viewBox="0 0 280 465" role="img" aria-labelledby="title desc">
+<title id="title">Facilitated diffusion through a carrier</title><desc id="desc">Three schematic membrane views show a solute binding to an outward-facing carrier, the carrier changing shape, and the solute being released inside. In this example there is more solute outside; the reverse sequence can also occur. No ATP is directly used for this diffusion.</desc>
+<rect width="280" height="465" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="24" font-weight="700">Carrier diffusion</text><text x="140" y="47" font-size="15">Example: more solute outside</text>
+<text x="140" y="75" font-weight="700">1. Solute binds</text>
+<rect x="25" y="97" width="230" height="40" fill="#d9eae6"/><path d="M120 91h40v51h-40z" fill="#a884b7"/><path d="M132 91v21q8 10 16 0V91" fill="#f5faf9"/><circle cx="140" cy="106" r="6" fill="#b85835"/>
+<text x="42" y="94" font-size="14">Outside</text><text x="42" y="157" font-size="14">Inside</text>
+<path d="M140 160v17m-6-7 6 7 6-7" fill="none" stroke="#286b73" stroke-width="2"/>
+<text x="140" y="202" font-weight="700">2. Carrier changes shape</text>
+<rect x="25" y="217" width="230" height="40" fill="#d9eae6"/><path d="M117 212q23-8 46 0v50q-23 8-46 0z" fill="#a884b7"/><circle cx="140" cy="237" r="6" fill="#b85835"/>
+<path d="M140 270v17m-6-7 6 7 6-7" fill="none" stroke="#286b73" stroke-width="2"/>
+<text x="140" y="312" font-weight="700">3. Solute is released</text>
+<rect x="25" y="327" width="230" height="40" fill="#d9eae6"/><path d="M120 322h40v51h-40z" fill="#a884b7"/><path d="M132 373v-21q8-10 16 0v21" fill="#f5faf9"/><circle cx="140" cy="386" r="6" fill="#b85835"/>
+<text x="140" y="421" font-size="15">Net movement down the gradient;</text><text x="140" y="443" font-size="15">no ATP directly used.</text>
+</g></svg>

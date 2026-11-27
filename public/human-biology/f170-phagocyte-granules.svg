@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 382" role="img" aria-labelledby="title desc">
+<title id="title">Engulfment and granule delivery</title>
+<desc id="desc">Inside a schematic neutrophil, an engulfed particle is enclosed by a phagosome membrane. A granule approaches and fuses with the phagosome, delivering digestive contents to the enclosed material. The second panel shows fragments as an illustrative outcome.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5 0 10Z" fill="#285f68"/></marker></defs>
+<rect width="280" height="382" rx="12" fill="#f4f9f8"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" font-size="15">
+<text x="140" y="23" text-anchor="middle" font-weight="700">Inside a phagocyte</text>
+<text x="140" y="49" text-anchor="middle">1. Particle enclosed</text>
+<circle cx="92" cy="112" r="55" fill="#e0f0ec" stroke="#357d72" stroke-width="2"/>
+<circle cx="99" cy="108" r="20" fill="#fff" stroke="#357d72" stroke-width="2"/>
+<circle cx="99" cy="108" r="10" fill="#ba684c"/>
+<circle cx="57" cy="133" r="9" fill="#e7ce96" stroke="#8b7041" stroke-width="2"/>
+<path d="M67 129l15-10" fill="none" stroke="#285f68" stroke-width="2" marker-end="url(#arr)"/>
+<path d="M115 96l26-18h12M65 140l73 12h15" fill="none" stroke="#44626a" stroke-width="1.5"/>
+<text x="157" y="75">Phagosome</text><text x="157" y="93">with particle</text><text x="157" y="155">Granule</text>
+<path d="M140 177v23" stroke="#285f68" stroke-width="2.5" marker-end="url(#arr)"/>
+<text x="140" y="224" text-anchor="middle">2. Granule contents delivered</text>
+<circle cx="92" cy="292" r="55" fill="#e0f0ec" stroke="#357d72" stroke-width="2"/>
+<circle cx="99" cy="291" r="24" fill="#fff"/>
+<path d="M76 284 A24 24 0 1 1 78 303" fill="none" stroke="#357d72" stroke-width="2"/>
+<path d="M76 284 Q63 283 64 294 Q64 307 78 303" fill="#e7ce96" stroke="#8b7041" stroke-width="2"/>
+<g fill="#ba684c"><circle cx="94" cy="287" r="4"/><circle cx="107" cy="295" r="4"/><circle cx="99" cy="301" r="3"/></g>
+<g fill="#8b7041"><circle cx="86" cy="296" r="2"/><circle cx="107" cy="282" r="2"/><circle cx="104" cy="305" r="2"/></g>
+<path d="M105 287l34-28h14M68 302l68 18h17" fill="none" stroke="#44626a" stroke-width="1.5"/>
+<text x="157" y="256">Particle</text><text x="157" y="274">fragments</text><text x="157" y="320">Granule</text><text x="157" y="338">fusing</text>
+<text x="140" y="371" text-anchor="middle" font-size="14">Digestive contents act inside.</text>
+</g></svg>

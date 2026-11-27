@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="305" viewBox="0 0 280 305" role="img">
+ <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs><rect width="280" height="305" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">Airborne exposure</text><text x="140" y="50" font-size="14">Infectious pulmonary TB</text>
+ <circle cx="53" cy="98" r="16" fill="#efc8b7" stroke="#a65f5b" stroke-width="2"/><path d="M29 153q0-38 24-38t24 38Z" fill="#d9e8f0" stroke="#537a94" stroke-width="2"/>
+ <g fill="#a76125"><circle cx="93" cy="97" r="3"/><circle cx="107" cy="89" r="3"/><circle cx="116" cy="107" r="3"/></g><path d="M84 128h56" stroke="#344958" stroke-width="2" marker-end="url(#a)"/>
+ <path d="M160 69h87v86h-87Z" fill="#e3edf5" stroke="#537a94" stroke-width="3"/><path d="M202 69v86M202 69l30-12v75l-30 23Z" fill="#d0e5ef" stroke="#537a94" stroke-width="2"/>
+ <text x="50" y="184" font-size="14">Particles</text><text x="203" y="184" font-size="14">Ventilation</text>
+ <text x="140" y="227" font-size="14">Air exchange can reduce</text><text x="140" y="248" font-size="14">exposure to infectious particles.</text><text x="140" y="283" font-size="13">Latent TB does not spread.</text></g>
+</svg>

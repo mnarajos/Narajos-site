@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 250" role="img" aria-labelledby="title desc">
+<title id="title">Two homologous pairs before and after DNA replication</title><desc id="desc">A model cell begins with two long homologous chromosomes and two short homologous chromosomes, four chromosomes and four DNA molecules. After S phase each chromosome consists of two sister chromatids. There are still four chromosomes but now eight DNA molecules.</desc>
+<rect width="280" height="250" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Before S phase</text><ellipse cx="140" cy="61" rx="84" ry="26" fill="#fff" stroke="#23656c" stroke-width="2"/>
+<path d="M100 47v28M126 47v28M155 53v16M180 53v16" stroke="#98451e" stroke-width="4" stroke-linecap="round"/><text x="140" y="111">4 chromosomes, 4 DNA</text>
+<path d="M140 116v20m-6-7 6 7 6-7" fill="none" stroke="#263e4a" stroke-width="2"/>
+<text x="140" y="159" font-weight="700">After S phase</text><ellipse cx="140" cy="195" rx="84" ry="26" fill="#fff" stroke="#23656c" stroke-width="2"/>
+<path d="M94 181l12 28m0-28-12 28M120 181l12 28m0-28-12 28M151 187l8 16m0-16-8 16M176 187l8 16m0-16-8 16" stroke="#98451e" stroke-width="3" stroke-linecap="round"/>
+<text x="140" y="242">4 chromosomes, 8 DNA</text>
+</g></svg>

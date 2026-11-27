@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="370" viewBox="0 0 280 370" role="img" aria-labelledby="title desc">
+ <title id="title">Cells in a Hodgkin lymphoma node</title><desc id="desc">A conceptual model links B-cell origin to an affected lymph node. Inside the node, a large marker represents a lymphoma cell and small markers represent surrounding inflammatory cells. A node can enlarge; swelling has other possible causes. The markers are not an actual tissue image or a quantitative cell count.</desc>
+ <rect width="280" height="370" rx="12" fill="#f4f8f7"/>
+ <g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+  <text x="140" y="25" font-size="18" font-weight="700">Hodgkin lymphoma</text>
+  <text x="140" y="51" font-size="16">B-lymphocyte origin</text>
+  <circle cx="140" cy="78" r="18" fill="#d9d0e9" stroke="#705481" stroke-width="2"/><circle cx="140" cy="78" r="8" fill="#705481"/>
+  <path d="M140 101v25m-6-9 6 9 6-9" fill="none" stroke="#276c70" stroke-width="2.5"/>
+  <text x="140" y="149" font-size="16">Affected lymph node</text>
+  <ellipse cx="140" cy="211" rx="81" ry="49" fill="#e7f1ed" stroke="#276c70" stroke-width="2"/>
+  <g fill="#b2d4c4" stroke="#43856e" stroke-width="1.5"><circle cx="96" cy="194" r="6"/><circle cx="110" cy="216" r="6"/><circle cx="126" cy="186" r="6"/><circle cx="158" cy="188" r="6"/><circle cx="185" cy="196" r="6"/><circle cx="179" cy="221" r="6"/><circle cx="153" cy="238" r="6"/><circle cx="127" cy="237" r="6"/><circle cx="92" cy="230" r="6"/></g>
+  <circle cx="142" cy="212" r="13" fill="#d9d0e9" stroke="#705481" stroke-width="2"/><circle cx="138" cy="211" r="4" fill="#705481"/><circle cx="146" cy="211" r="4" fill="#705481"/>
+  <circle cx="45" cy="281" r="9" fill="#d9d0e9" stroke="#705481" stroke-width="2"/><text x="62" y="286" text-anchor="start" font-size="16">Lymphoma cell</text>
+  <circle cx="45" cy="310" r="6" fill="#b2d4c4" stroke="#43856e" stroke-width="1.5"/><text x="62" y="315" text-anchor="start" font-size="16">Inflammatory cells</text>
+  <text x="140" y="344" font-size="16">The node can enlarge</text>
+  <text x="140" y="365" font-size="14">Conceptual model, not a biopsy</text>
+ </g>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="350" viewBox="0 0 280 350" role="img" aria-labelledby="title desc">
+<title id="title">Lysosomal breakdown</title><desc id="desc">An enclosed worn cell component is delivered to a lysosome. In its acidic interior, hydrolytic enzymes break down material into smaller products, some of which can be reused in the cell.</desc>
+<rect width="280" height="350" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="24" font-weight="700">Lysosomal breakdown</text>
+<ellipse cx="65" cy="80" rx="45" ry="29" fill="#fff" stroke="#79608a" stroke-width="2"/><ellipse cx="65" cy="80" rx="27" ry="15" fill="#ecd3b8" stroke="#ad7047" stroke-width="2"/><path d="M47 79q6-8 11 0t11 0 12 0" fill="none" stroke="#ad7047" stroke-width="2"/>
+<text x="168" y="70" text-anchor="start" font-size="15">Enclosed worn</text><text x="168" y="90" text-anchor="start" font-size="15">cell component</text><path d="M111 80h51" stroke="#52656e" stroke-width="1.5"/>
+<path d="M65 117v24m-6-7 6 7 6-7" fill="none" stroke="#286b73" stroke-width="2.5"/><text x="91" y="137" text-anchor="start" font-size="15">Delivery and fusion</text>
+<ellipse cx="140" cy="205" rx="92" ry="57" fill="#e6dcee" stroke="#77598a" stroke-width="2.5"/>
+<g fill="#a75b36"><path d="M61 198l7 11H54zM219 198l7 11h-14z"/></g>
+<text x="140" y="185" font-size="15">Acidic interior</text><text x="140" y="210" font-size="15">Hydrolytic enzymes</text><text x="140" y="232" font-size="15">break down material</text>
+<text x="140" y="279">Lysosome</text>
+<path d="M140 287v21m-6-7 6 7 6-7" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<text x="140" y="334">Smaller products can be reused</text>
+</g></svg>

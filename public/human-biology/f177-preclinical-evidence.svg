@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="300" viewBox="0 0 280 300" role="img">
+ <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs><rect width="280" height="300" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">Preclinical evidence</text><text x="140" y="50" font-size="14">Example: a laboratory model</text>
+ <path d="M38 110h125v30q-62 22-125 0Z" fill="#e3edf5" stroke="#537a94" stroke-width="2.5"/><ellipse cx="100" cy="110" rx="62" ry="13" fill="#fff" stroke="#537a94" stroke-width="2.5"/>
+ <g fill="#88bc9c"><circle cx="75" cy="112" r="6"/><circle cx="100" cy="115" r="6"/><circle cx="126" cy="111" r="6"/></g>
+ <path d="M102 67v20" stroke="#a76125" stroke-width="4" marker-end="url(#a)"/><text x="212" y="110" font-size="14">Model</text><text x="212" y="130" font-size="14">response</text>
+ <path d="M140 161v26" stroke="#344958" stroke-width="2" marker-end="url(#a)"/>
+ <circle cx="58" cy="220" r="12" fill="#efc8b7" stroke="#a65f5b" stroke-width="2"/><path d="M37 260q0-29 21-29t21 29Z" fill="#d9e8f0" stroke="#537a94" stroke-width="2"/>
+ <text x="174" y="221" font-size="15">Patient benefit</text><text x="174" y="242" font-size="15">is not yet known.</text><text x="140" y="282" font-size="13">The icons are schematic.</text></g>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="365" viewBox="0 0 280 365" role="img" aria-labelledby="title desc">
+ <title id="title">Spirometry: exhaled volume over time</title><desc id="desc">Two qualitative exhalation curves have the same final volume in this example. The slower curve rises less in the first second. The illustration is not a patient test or a diagnosis.</desc>
+ <rect width="280" height="365" rx="12" fill="#f4f8f7"/>
+ <g font-family="system-ui,sans-serif" fill="#233e4c">
+  <text x="140" y="25" text-anchor="middle" font-size="18" font-weight="700">Spirometry</text>
+  <text x="140" y="49" text-anchor="middle" font-size="16">Illustrative patterns</text>
+  <text x="19" y="163" transform="rotate(-90 19 163)" text-anchor="middle" font-size="16">Volume exhaled</text>
+  <path d="M56 238V75M56 238H250" fill="none" stroke="#344958" stroke-width="2"/>
+  <path d="M124 75V238" stroke="#777" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <path d="M56 238C75 163 95 115 124 99C164 77 208 76 248 76" fill="none" stroke="#26756d" stroke-width="4"/>
+  <path d="M56 238C77 200 99 181 124 164C160 137 197 100 248 76" fill="none" stroke="#aa5429" stroke-width="4" stroke-dasharray="8 4"/>
+  <circle cx="124" cy="99" r="4" fill="#26756d"/><circle cx="124" cy="164" r="4" fill="#aa5429"/>
+  <text x="124" y="260" text-anchor="middle" font-size="16">1 second</text>
+  <text x="155" y="284" text-anchor="middle" font-size="16">Time from start</text>
+  <path d="M27 310H62" stroke="#26756d" stroke-width="4"/><text x="73" y="316" font-size="16">Faster exhalation</text>
+  <path d="M27 341H62" stroke="#aa5429" stroke-width="4" stroke-dasharray="8 4"/><text x="73" y="347" font-size="16">Slower exhalation</text>
+ </g>
+</svg>

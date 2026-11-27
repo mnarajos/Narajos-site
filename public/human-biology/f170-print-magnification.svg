@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 325" role="img" aria-labelledby="title desc">
+<title id="title">Magnification of a printed scale bar</title><desc id="desc">In this hypothetical print, the image of a bar measures 30 millimetres and the bar represents 20 micrometres. Thirty millimetres equals thirty thousand micrometres. Thirty thousand divided by twenty gives magnification of fifteen hundred. Enlarging a blurred image does not make unresolved detail visible.</desc>
+<defs><filter id="blur"><feGaussianBlur stdDeviation="2.5"/></filter></defs><rect width="280" height="325" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">A hypothetical print</text><text x="140" y="52">Printed bar: 30 mm</text>
+<path d="M65 68h150" stroke="#98451e" stroke-width="7"/><text x="140" y="96">Actual length: 20 µm</text>
+<text x="140" y="133">30 mm = 30,000 µm</text><text x="140" y="164">30,000 ÷ 20 = ×1,500</text>
+<circle cx="75" cy="213" r="8" fill="#69447f" filter="url(#blur)"/><g transform="translate(205 213) scale(2)"><circle r="8" fill="#69447f" filter="url(#blur)"/></g>
+<path d="M110 213h60m-7-6 7 6-7 6" fill="none" stroke="#23656c" stroke-width="2"/>
+<text x="140" y="263">Enlarging the same blur</text><text x="140" y="287">does not resolve detail.</text><text x="140" y="314">Bar drawn schematically.</text>
+</g></svg>

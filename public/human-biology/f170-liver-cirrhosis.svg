@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 365" role="img" aria-labelledby="title desc">
+<title id="title">Liver tissue and cirrhosis</title><desc id="desc">A schematic compares a smooth liver outline with an irregular liver showing internal bands of scar tissue around nodules. Cirrhosis involves long-term scarring and changes to liver function. The drawings are illustrative, not scans.</desc>
+<defs><pattern id="h" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0v6" stroke="#69447f" stroke-width="2"/></pattern></defs>
+<rect width="280" height="365" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Liver</text><path d="M42 73q57-39 185-17l10 34q-53 23-93 13-47 20-102-1z" fill="#f9dfc8" stroke="#98451e" stroke-width="3"/>
+<text x="140" y="137">Hepatocytes are liver cells.</text><text x="140" y="180" font-weight="700">Cirrhosis</text>
+<path d="M42 224q16-14 28-10 17-15 34-8 19-12 35-5 19-10 35-2 23-6 53 7l10 34q-24 13-40 9-20 10-39 5-17 11-35 5-22 10-42 1-20 5-39-9z" fill="#f9dfc8" stroke="#98451e" stroke-width="3"/>
+<path d="M59 224q33 14 48 34M103 207q15 23 22 53M144 202q0 26 14 52M182 202q-8 26 15 47M61 243q80-23 158-16" fill="none" stroke="#69447f" stroke-width="5" stroke-dasharray="5 3"/>
+<text x="140" y="302">Dashed bands: scar tissue</text><text x="140" y="334">Function can be affected.</text>
+</g></svg>

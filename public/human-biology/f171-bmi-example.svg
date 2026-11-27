@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="260" viewBox="0 0 280 260" role="img" aria-labelledby="t d">
+<title id="t">Fictional BMI calculation</title><desc id="d">A fictional person with mass 80 kilograms and height 2.00 metres has BMI 80 divided by two squared, or 20 kilograms per square metre. BMI alone cannot distinguish muscle from fat or diagnose disease.</desc>
+<rect width="280" height="260" rx="12" fill="#f5faf9"/><g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="25" font-weight="700">Fictional BMI example</text><text x="140" y="59">Mass 80 kg · height 2.00 m</text><path d="M25 78h230" stroke="#bfd4cf"/>
+<text x="140" y="110">BMI = mass ÷ height²</text><text x="140" y="143">= 80 ÷ (2.00 × 2.00)</text><text x="140" y="176">= 20 kg/m²</text>
+<text x="140" y="218" font-size="14">BMI does not separate muscle and fat</text><text x="140" y="240" font-size="14">or diagnose disease by itself.</text></g></svg>

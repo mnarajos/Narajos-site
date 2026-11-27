@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="390" viewBox="0 0 280 390" role="img" aria-labelledby="title desc">
+<title id="title">Many small sacs and surface area</title><desc id="desc">A model compares one sphere with eight spheres, each half its radius. The eight smaller spheres have the same total volume but greater combined surface area. The spheres are mathematical models, not a drawing of the exact shape or surface area of real alveoli.</desc>
+<rect width="280" height="390" rx="12" fill="#f5faf9"/>
+<defs><radialGradient id="sphere" cx="35%" cy="25%"><stop stop-color="#fff"/><stop offset="1" stop-color="#c1d9e5"/></radialGradient></defs>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="24" font-weight="700">Many small sacs</text>
+<text x="140" y="51">One model sphere</text>
+<circle cx="140" cy="97" r="36" fill="url(#sphere)" stroke="#578194" stroke-width="2"/>
+<path d="M140 139v24m-6-7 6 7 6-7" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<text x="140" y="187">Eight smaller spheres</text>
+<g fill="url(#sphere)" stroke="#578194" stroke-width="2"><circle cx="86" cy="214" r="18"/><circle cx="122" cy="214" r="18"/><circle cx="158" cy="214" r="18"/><circle cx="194" cy="214" r="18"/><circle cx="86" cy="250" r="18"/><circle cx="122" cy="250" r="18"/><circle cx="158" cy="250" r="18"/><circle cx="194" cy="250" r="18"/></g>
+<text x="140" y="290" font-size="15">Each has half the radius.</text><text x="140" y="316" font-size="15">Same combined model volume;</text><text x="140" y="337" font-size="15">more combined surface area.</text>
+<text x="140" y="367" font-size="15">Real alveoli are not spheres.</text>
+</g></svg>

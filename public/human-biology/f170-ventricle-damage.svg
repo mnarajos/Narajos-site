@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 460" role="img" aria-labelledby="title desc">
+<title id="title">Cardiac muscle damage and ventricular output</title><desc id="desc">Two simplified ventricular cross-sections compare a functioning muscle wall with a wall containing a hatched damaged area. Coordinated contraction normally generates pressure. Damage can reduce the amount ejected per beat. At the same heart rate, lower volume per beat means lower output per minute; other conditions can also affect output.</desc>
+<defs><pattern id="h" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0v6" stroke="#69447f" stroke-width="2"/></pattern></defs><rect width="280" height="460" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Ventricle: cross-sections</text>
+<text x="140" y="55">Muscle contracts together</text><circle cx="140" cy="110" r="42" fill="#f9dfc8" stroke="#98451e" stroke-width="3"/><circle cx="140" cy="110" r="22" fill="#fff" stroke="#98451e" stroke-width="2"/>
+<path d="M82 110h14m-6-5 6 5-6 5M198 110h-14m6-5-6 5 6 5M140 168v-14m-5 6 5-6 5 6" fill="none" stroke="#23656c" stroke-width="2"/>
+<text x="140" y="186">Pressure helps eject blood</text>
+<text x="140" y="222">Damaged muscle region</text><circle cx="140" cy="278" r="42" fill="#f9dfc8" stroke="#98451e" stroke-width="3"/><path d="M140 236a42 42 0 0 1 40 55l-19-6a22 22 0 0 0-21-29z" fill="url(#h)" stroke="#69447f" stroke-width="2"/><circle cx="140" cy="278" r="22" fill="#fff" stroke="#98451e" stroke-width="2"/>
+<path d="M82 278h14m-6-5 6 5-6 5M140 336v-14m-5 6 5-6 5 6" fill="none" stroke="#23656c" stroke-width="2"/>
+<text x="140" y="353">May eject less per beat</text><text x="140" y="389">At the same heart rate:</text><text x="140" y="414">less blood per beat means</text><text x="140" y="439">less blood per minute.</text>
+</g></svg>

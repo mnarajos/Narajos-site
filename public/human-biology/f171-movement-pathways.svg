@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="410" viewBox="0 0 280 410" role="img">
+ <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs>
+ <rect width="280" height="410" rx="12" fill="#f4f8f7"/>
+ <g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+  <text x="140" y="24" font-size="17" font-weight="700">Movement pathways</text>
+  <text x="140" y="48" font-size="14">Simplified comparison</text>
+  <text x="140" y="76" font-size="15">Motor neurone disease</text>
+  <path d="M25 111q-8-13 4-19q2-13 14-10q9-9 17 1q15-4 17 9q13 6 4 19q3 12-9 14H35q-13-2-10-14Z" fill="#e3edf5" stroke="#537a94" stroke-width="2"/>
+  <circle cx="140" cy="104" r="14" fill="#e1ebd7" stroke="#4b8361" stroke-width="2"/>
+  <path d="M81 105h42" stroke="#344958" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M155 105h40" stroke="#a76125" stroke-width="3" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+  <ellipse cx="226" cy="104" rx="25" ry="16" fill="#efd0c3" stroke="#a65f5b" stroke-width="2"/>
+  <path d="M214 94v20m12-25v30m12-25v20" stroke="#a65f5b" stroke-width="1.5"/>
+  <text x="52" y="148" font-size="13">Brain</text><text x="140" y="145" font-size="13">Motor</text><text x="140" y="162" font-size="13">neurone</text><text x="226" y="148" font-size="13">Muscle</text>
+  <text x="140" y="187" font-size="14">Fewer effective signals to muscle</text>
+  <path d="M20 202h240" stroke="#cbdedb" stroke-width="2"/>
+  <text x="140" y="230" font-size="15">Parkinson’s disease</text>
+  <path d="M25 266q-8-13 4-19q2-13 14-10q9-9 17 1q15-4 17 9q13 6 4 19q3 12-9 14H35q-13-2-10-14Z" fill="#e3edf5" stroke="#537a94" stroke-width="2"/>
+  <circle cx="52" cy="258" r="5" fill="#a76125"/>
+  <path d="M46 252l12 12m0-12-12 12" stroke="#a65f5b" stroke-width="2.5"/>
+  <circle cx="140" cy="259" r="14" fill="#e1ebd7" stroke="#4b8361" stroke-width="2"/>
+  <path d="M81 260h42" stroke="#344958" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M155 260h40" stroke="#344958" stroke-width="2" marker-end="url(#arrow)"/>
+  <ellipse cx="226" cy="259" rx="25" ry="16" fill="#efd0c3" stroke="#a65f5b" stroke-width="2"/>
+  <path d="M214 249v20m12-25v30m12-25v20" stroke="#a65f5b" stroke-width="1.5"/>
+  <text x="52" y="303" font-size="13">Brain</text><text x="140" y="300" font-size="13">Motor</text><text x="140" y="317" font-size="13">neurone</text><text x="226" y="303" font-size="13">Muscle</text>
+  <text x="140" y="348" font-size="14">Loss of dopamine-producing cells</text>
+  <text x="140" y="369" font-size="14">can disrupt brain movement circuits.</text>
+  <text x="140" y="396" font-size="13">× marks cell loss · schematic</text>
+ </g>
+</svg>

@@ -124,6 +124,7 @@
 .ks3-day-night{display:flex;align-items:center;gap:.6rem;font-weight:700}
 .ks3-earth-globe{display:flex;align-items:center;justify-content:space-evenly;position:relative;width:7.5rem;height:7.5rem;border-radius:50%;background:linear-gradient(90deg,#f5d592 50%,#324f61 50%);font-size:.9rem;color:#253134}
 .ks3-earth-globe span:nth-child(2){color:white}
+.ks3-earth-globe > span:not(.ks3-location){align-self:flex-start;margin-top:2rem}
 .ks3-earth-globe::after{content:"";position:absolute;left:24%;top:29%;width:.4rem;height:.4rem;border-radius:50%;background:#253134}
 .ks3-circuit{width:min(100%,10rem)}
 .ks3-circuit svg{width:100%;height:auto;display:block}

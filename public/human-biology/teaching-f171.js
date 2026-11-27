@@ -2,6 +2,7 @@
 (function () {
   const { choice, written } = window.KeystoneHumanTeaching;
   const screening = {
+    compactScreening: true,
     caption: "Fictional screening results compared with diagnostic assessment",
     head: ["Screen", "Condition present", "Condition absent"],
     rows: [["Positive", "18", "12"], ["Negative", "2", "68"]]
@@ -28,6 +29,14 @@
         "Breathlessness during daily activity and a persistent cough with mucus are common symptoms. An examiner may hear wheeze, and spirometry can provide objective evidence of airflow obstruction. Similar symptoms can occur with different conditions.",
         "Reduced airway clearance can contribute to chest infections, which can worsen symptoms. Persistent breathlessness can limit activities such as climbing stairs. Repeated flare-ups can mean missed work, greater healthcare use and extra help from family."
       ],
+      explainDiagrams: {0:[
+        {src:"/human-biology/airway-narrowing.svg",width:220,height:280,compact:true,alt:"Two cross-sections of an airway have equal outer widths. The narrower opening has a thicker mucus layer and less open space for airflow.",caption:"Compare the white openings. More mucus narrows the airway and can increase resistance to airflow."},
+        {src:"/human-biology/alveolar-wall-loss.svg",width:220,height:280,compact:true,alt:"A simplified group of four intact alveoli is compared with a larger air space where some partitions have been lost.",caption:"Compare the partitions. Loss of alveolar walls leaves less surface for gas exchange; this is a schematic, not to scale."}
+      ]},
+      modelDiagrams: {
+        0:{src:"/human-biology/airway-narrowing.svg",width:220,height:280,compact:true,alt:"Two cross-sections of an airway have equal outer widths. The narrower opening has a thicker mucus layer and less open space for airflow.",caption:"Compare the openings: mucus narrows the passage and can increase resistance."},
+        1:{src:"/human-biology/alveolar-wall-loss.svg",width:220,height:280,compact:true,alt:"A simplified group of four intact alveoli is compared with a larger air space where some partitions have been lost.",caption:"Compare intact and lost walls. The model leaves less surface for gas exchange."}
+      },
       table: {caption: "Match a structural change to its most direct consequence", head: ["Change", "Direct consequence"], rows: [
         ["Smaller airway opening", "Greater resistance to airflow"], ["Loss of alveolar walls", "Less gas exchange area and reduced recoil"]
       ]},
@@ -260,11 +269,11 @@
       guided: choice("A service wants to review people who had the condition but were missed. Which cell and count give this group?", 1,
         [["Positive / condition absent: 9.", "That group was flagged by the screen and did not have the condition."], ["Negative / condition present: 4.", ""], ["Negative / condition absent: 57.", "That group did not have the condition, so it was correctly screened negative."]],
         "Read the negative row because the screen missed the person, and the present column because diagnostic assessment found the condition.", ["Find the row for a screen that failed to flag the person.", "Then choose the column where diagnostic assessment finds the condition."],
-        { table: {caption: "Fictional pilot screening and follow-up", head: screening.head, rows: [["Positive", "10", "9"], ["Negative", "4", "57"]] } }),
+        { table: {caption: "Fictional pilot screening and follow-up", compactScreening: true, head: screening.head, rows: [["Positive", "10", "9"], ["Negative", "4", "57"]] } }),
       apply: choice("A leaflet says most positive screens in this fictional group were confirmed. Which comparison justifies or corrects the claim?", 0,
         [["Correct it: only 7 of 24 positive screens were confirmed.", ""], ["Keep it: 7 of the 10 people with the condition screened positive.", "That is the proportion of people with the condition picked up. The claim is about all positive screens."], ["Correct it: 3 of 50 negative screens were missed.", "That is a useful result for a different group. It cannot test a claim about positive screens."]],
         "The denominator is everyone who screened positive: 7 + 17 = 24. Only 7 had the condition on diagnostic assessment, so most positive screens were not confirmed.", ["Which set of people belongs in the denominator of the leaflet's claim?"],
-        { table: {caption: "A different fictional screening programme", head: screening.head, rows: [["Positive", "7", "17"], ["Negative", "3", "47"]] } }),
+        { table: {caption: "A different fictional screening programme", compactScreening: true, head: screening.head, rows: [["Positive", "7", "17"], ["Negative", "3", "47"]] } }),
       followup: choice("A service reports 32 positive screens. Diagnostic assessment finds the condition in 11 of them. How many positive results were false?", 2,
         [["11", "Those are true positives because the condition was present."], ["32", "This counts all positive screens, including those confirmed by diagnostic assessment."], ["21", ""]],
         "32 − 11 = 21 people screened positive but did not have the condition.")

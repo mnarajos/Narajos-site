@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="365" viewBox="0 0 280 365" role="img">
+ <rect width="280" height="365" rx="12" fill="#f4f8f7"/>
+ <g font-family="system-ui,sans-serif" fill="#233e4c">
+  <text x="140" y="25" text-anchor="middle" font-size="17" font-weight="700">Repeat pressure readings</text>
+  <text x="140" y="49" text-anchor="middle" font-size="14">Fictional systolic values</text>
+  <text x="16" y="160" text-anchor="middle" font-size="14" transform="rotate(-90 16 160)">Pressure (mmHg)</text>
+  <path d="M56 78v160h202" stroke="#344958" stroke-width="2" fill="none"/>
+  <path d="M56 78h202M56 118h202M56 158h202M56 198h202" stroke="#d5e2df" stroke-width="1"/>
+  <g text-anchor="end" font-size="14"><text x="51" y="243">130</text><text x="51" y="203">135</text><text x="51" y="163">140</text><text x="51" y="123">145</text><text x="51" y="83">150</text></g>
+  <g fill="#32776d" stroke="#1f594f" stroke-width="1.5"><circle data-visit="1" data-reading="136" cx="74" cy="190" r="5"/><circle data-visit="1" data-reading="134" cx="86" cy="206" r="5"/><circle data-visit="1" data-reading="135" cx="98" cy="198" r="5"/><circle data-visit="3" data-reading="135" cx="214" cy="198" r="5"/><circle data-visit="3" data-reading="134" cx="238" cy="206" r="5"/></g>
+  <g fill="#a76125" stroke="#7e451b" stroke-width="1.5"><circle data-visit="2" data-reading="146" cx="144" cy="110" r="5"/><circle data-visit="2" data-reading="145" cx="156" cy="118" r="5"/><circle data-visit="2" data-reading="147" cx="168" cy="102" r="5"/></g>
+  <g text-anchor="middle" font-size="14"><text x="86" y="261">Visit 1</text><text x="156" y="261">Visit 2</text><text x="226" y="261">Visit 3</text><text x="86" y="281">Rested</text><text x="156" y="281">After</text><text x="156" y="299">walking</text><text x="226" y="281">Rested</text></g>
+  <text x="140" y="332" text-anchor="middle" font-size="14">Visit 3: one reading missing</text>
+  <text x="140" y="352" text-anchor="middle" font-size="13">Each dot is one recorded reading</text>
+ </g>
+</svg>

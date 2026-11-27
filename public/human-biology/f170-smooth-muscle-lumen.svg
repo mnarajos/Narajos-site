@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 320" role="img" aria-labelledby="title description">
+<title id="title">Smooth muscle around an artery</title>
+<desc id="description">Two matched schematic cross-sections show a ring of smooth muscle in an artery wall. When the ring shortens, the inner lumen is narrower. The other layers of the vessel wall are omitted.</desc>
+<rect width="280" height="320" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a" text-anchor="middle">
+<text x="140" y="24" font-weight="700">Relaxed muscle</text>
+<circle cx="140" cy="83" r="48" fill="#d8ece7" stroke="#23656c" stroke-width="3"/><circle cx="140" cy="83" r="32" fill="#fff" stroke="#23656c" stroke-width="2"/>
+<text x="140" y="89">Lumen</text>
+<path d="M61 83h24m-7-5 7 5-7 5M219 83h-24m7-5-7 5 7 5" fill="none" stroke="#98451e" stroke-width="2.5"/>
+<text x="140" y="155" font-weight="700">Muscle shortens</text>
+<circle cx="140" cy="214" r="48" fill="#d8ece7" stroke="#23656c" stroke-width="3"/><circle cx="140" cy="214" r="16" fill="#fff" stroke="#23656c" stroke-width="2"/>
+<path d="M61 214h24m-7-5 7 5-7 5M219 214h-24m7-5-7 5 7 5" fill="none" stroke="#98451e" stroke-width="2.5"/>
+<text x="140" y="288">Narrower lumen</text><text x="140" y="308">Simplified cross-sections</text>
+</g></svg>

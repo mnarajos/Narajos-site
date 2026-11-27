@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="300" viewBox="0 0 280 300" role="img">
+ <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs><rect width="280" height="300" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">Red-cell loss and oxygen</text><text x="140" y="51" font-size="15">Illustrative red cells</text>
+ <g fill="#e3a39a" stroke="#a65f5b" stroke-width="2"><circle cx="55" cy="88" r="14"/><circle cx="97" cy="88" r="14"/><circle cx="139" cy="88" r="14"/><circle cx="181" cy="88" r="14"/><circle cx="223" cy="88" r="14"/></g>
+ <path d="M140 110v24" stroke="#344958" stroke-width="2" marker-end="url(#a)"/><text x="140" y="158" font-size="15">Red-cell loss can cause anaemia</text>
+ <g fill="#e3a39a" stroke="#a65f5b" stroke-width="2"><circle cx="111" cy="195" r="14"/><circle cx="169" cy="195" r="14"/></g>
+ <text x="140" y="240" font-size="14">Less haemoglobin may reduce</text><text x="140" y="261" font-size="14">oxygen-carrying capacity.</text><text x="140" y="287" font-size="13">Symbols are not measured counts.</text></g>
+</svg>

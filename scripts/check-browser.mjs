@@ -168,32 +168,41 @@ try{
   await pilotPage.getByRole("heading",{name:"Catch-up notes",exact:true}).waitFor();
   assert.equal(await pilotPage.locator(".school-opening-hook").textContent(),opening,path);
   assert(await pilotPage.locator(".school-evidence-panel").evaluate(el=>!!(el.compareDocumentPosition(document.querySelector(".school-journey"))&Node.DOCUMENT_POSITION_FOLLOWING)));
+  const openingEvidence=pilotPage.locator("#catchup-evidence");
   if(path.endsWith("topic=cell-structures")){
-   const comparison=pilotPage.locator(".school-cell-comparison img");
+   const comparison=openingEvidence.locator(".school-cell-comparison img");
    assert.equal(await comparison.count(),2);
    for(const diagram of await comparison.all()){
     await diagram.evaluate(img=>img.decode());
     assert.equal(await diagram.evaluate(img=>getComputedStyle(img).filter),"none");
    }
-   await pilotPage.getByRole("checkbox",{name:"Greyscale",exact:true}).check();
-   assert.equal(await comparison.first().evaluate(img=>getComputedStyle(img).filter),"grayscale(1)");
+   await openingEvidence.getByRole("checkbox",{name:"Greyscale",exact:true}).check();
+   for(const diagram of await comparison.all()){
+    assert.equal(await diagram.evaluate(img=>getComputedStyle(img).filter),"grayscale(1)");
+   }
+   const stage=pilotPage.locator(".school-current-stage .school-step-notes");
+   assert(await stage.getByRole("heading",{name:"Inside a cell",exact:true}).isVisible());
+   assert(await stage.getByRole("img",{name:/nucleus containing DNA and ribosomes shown as small dots/}).isVisible());
   }
-  assert(await pilotPage.locator(".school-evidence-visual").isVisible(), path);
-  assert(await pilotPage.locator(".school-evidence-visual").locator('svg[role="img"],img,.catchup-clock-grid').count() > 0, path);
+  const evidenceVisual=openingEvidence.locator(".school-evidence-visual");
+  assert(await evidenceVisual.isVisible(), path);
+  assert(await evidenceVisual.locator('svg[role="img"],img,.catchup-clock-grid').count() > 0, path);
   assert(await pilotPage.getByRole("progressbar",{name:"Lesson progress"}).isVisible());
   assert.equal(await pilotPage.getByRole("progressbar",{name:"Lesson progress"}).getAttribute("value"),"0");
   assert((await pilotPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"Year 9 catch-up overflows at phone width");
  }
  await pilotPage.setViewportSize({width:320,height:844});
  await pilotPage.goto(base+"/science-catch-up/lesson/?topic=energy-transfer");
- await pilotPage.getByRole("button",{name:"Reveal both totals",exact:true}).press("Enter");
+ const energyEvidence=pilotPage.locator("#catchup-evidence");
+ await energyEvidence.getByRole("button",{name:"Reveal both totals",exact:true}).press("Enter");
  for(const total of ["100 J × 2 = 200 J", "50 J × 10 = 500 J"]){
-   assert(await pilotPage.getByText(total,{exact:true}).isVisible());
+   assert(await energyEvidence.getByText(total,{exact:true}).isVisible());
  }
  assert((await pilotPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"The energy timeline overflows at 320px");
  await pilotPage.goto(base+"/ks3/lesson/?topic=earth-structure&guided=1");
- const specimenImages=pilotPage.locator("#catchup-evidence .catchup-photo");
- await specimenImages.first().waitFor();
+ const rockEvidence=pilotPage.locator("#catchup-evidence .ks3-explore");
+ const specimenImages=rockEvidence.locator(".catchup-photo");
+ await rockEvidence.getByRole("img",{name:/close-up of sandstone/}).waitFor();
  assert.equal(await specimenImages.count(),2);
  for(const image of await specimenImages.all()){
    await image.evaluate(img=>img.decode());
@@ -201,8 +210,8 @@ try{
    assert.match(await links.nth(0).getAttribute("href"),/^https:\/\/commons\.wikimedia\.org/);
    assert.match(await links.nth(1).getAttribute("href"),/^https:\/\/creativecommons\.org\/licenses\/by/);
  }
- await pilotPage.getByRole("button",{name:"Heat and press solid rock",exact:true}).press("Enter");
- await pilotPage.getByRole("img",{name:/remains solid throughout/}).waitFor();
+ await rockEvidence.getByRole("button",{name:"Heat and press solid rock",exact:true}).press("Enter");
+ await rockEvidence.getByRole("img",{name:/remains solid throughout/}).waitFor();
  assert((await pilotPage.evaluate(()=>document.documentElement.scrollWidth-innerWidth))<=3,"The rock model overflows at 320px");
  await pilotPage.setViewportSize({width:390,height:844});
  await pilotPage.goto(base+"/science-catch-up/lesson/?topic=osmosis");
@@ -211,7 +220,7 @@ try{
  const startCheck=guide.getByRole("button",{name:"Check",exact:true});
  assert.match(await startCheck.textContent(),/Check.*→/);
  assert(!(await pilotPage.locator(".school-lesson-table").isVisible()));
- assert(await pilotPage.getByText("Net water movement A → B",{exact:true}).isVisible());
+ assert(await pilotPage.locator("#catchup-evidence").getByText("Net water movement A → B",{exact:true}).isVisible());
  const osmosisBreadcrumb=pilotPage.getByRole("navigation",{name:"Breadcrumb",exact:true});
  assert.equal(await osmosisBreadcrumb.getByRole("link",{name:"Science Catch-up",exact:true}).getAttribute("href"),"/science-catch-up/");
  assert.equal(await osmosisBreadcrumb.getByRole("link",{name:"← Year 9 topics",exact:true}).getAttribute("href"),"/science-catch-up/?year=9");
@@ -542,9 +551,10 @@ try{
  assert((await desktop.locator("main").innerText()).includes("Key idea"),"A-level key knowledge step not visible");
  await screen(desktop,"alevel-catchup");
  await desktop.goto(base+"/alevel/#catchup-a1-enzfactors",{waitUntil:"load"});
- await desktop.locator(".kc-visual-art svg").waitFor({state:"visible"});
+ const enzymeRateVisual=desktop.getByRole("img",{name:/With enzyme concentration and other conditions fixed/});
+ await enzymeRateVisual.waitFor({state:"visible"});
  assert.equal(await desktop.locator(".kc-simulation-link").count(),2,"Enzyme catch-up should link to both relevant simulations");
- assert((await desktop.locator(".kc-visual-art svg").getAttribute("aria-label")).includes("reaction rate"),"Accessible enzyme schematic missing");
+ assert.match(await enzymeRateVisual.getAttribute("aria-label"),/rate curve rises.*plateau/,"Accessible enzyme schematic missing");
  await screen(desktop,"alevel-enzyme-visual");
 
  await checkPage(desktop,"human-biology");
@@ -646,11 +656,13 @@ try{
  await reflex.getByRole("status").filter({hasText:"Effector muscle"}).waitFor();
  assert.equal(await reflexNext.getAttribute("aria-disabled"),"true");
  await reflex.getByRole("button",{name:"Previous step"}).press("Enter");
- await reflex.getByRole("status").filter({hasText:"Motor neuron"}).waitFor();
+ await reflex.getByRole("status").filter({hasText:"Motor neurone"}).waitFor();
  await desktop.goto(base+"/human-biology/#catchup/f170/1.1.2",{waitUntil:"load"});
  await desktop.locator("[data-hb-model-step]").waitFor({state:"visible"});
  const microscope=desktop.locator("[data-hb-model-step]");
- assert(await microscope.locator(".micrograph-single img").evaluate(async img=>{await img.decode();return img.naturalWidth===386;}));
+ const workedMicrograph=microscope.locator(".micrograph-single img");
+ await workedMicrograph.scrollIntoViewIfNeeded();
+ assert(await workedMicrograph.evaluate(async img=>{await img.decode();return img.naturalWidth===386;}));
  assert(await microscope.locator(".hb-bar-length").isVisible());
  await microscope.getByRole("button",{name:"Show next step"}).press("Enter");
  await microscope.getByRole("button",{name:"Show next step"}).press("Enter");
@@ -1654,10 +1666,11 @@ try{
  await checkReadingSpacing(navPage,"KS3 states of matter");
  await navPage.setViewportSize({width:390,height:844});
  await navPage.goto(base+"/ks3/lesson/?topic=atoms-and-compounds");
- await navPage.getByRole("button",{name:"Add a different pair to A"}).press("Enter");
- await navPage.getByRole("status").filter({hasText:/A now contains two different substances/}).waitFor();
- await navPage.getByRole("button",{name:"Original samples"}).press("Enter");
- assert(await navPage.getByText("Three samples shown as particles",{exact:true}).isVisible());
+ const particleSamples=navPage.locator("#catchup-evidence .ks3-explore");
+ await particleSamples.getByRole("button",{name:"Add a different pair to A"}).press("Enter");
+ await particleSamples.getByRole("status").filter({hasText:/A now contains two different substances/}).waitFor();
+ await particleSamples.getByRole("button",{name:"Original samples"}).press("Enter");
+ assert(await particleSamples.getByText("Three samples shown as particles",{exact:true}).isVisible());
  await navPage.goto(base+"/ks3/lesson/?topic=reproduction");
  await navPage.getByText("Follow a pollen grain",{exact:true}).click();
  const pollen=navPage.locator('science-sequence[kind="pollen"]');
@@ -1679,6 +1692,11 @@ try{
  assert.equal(await cellPhotos[0].getAttribute("src"),"/assets/micrographs/elodea-leaf.webp");
  assert.match(await cellPhotos[0].getAttribute("alt"),/small green oval bodies/);
  assert(await navPage.locator(".micrograph-grid").getByRole("link",{name:"Juan Carlos Fonseca Mata"}).isVisible());
+ await navPage.getByText("Zoom in on a cheek cell",{exact:true}).press("Enter");
+ const closeups=navPage.locator(".catchup-closeups");
+ assert.equal(await closeups.locator("svg").count(),1,"only the independently reviewed cheek-cell marker is shown");
+ assert.match(await closeups.locator("svg").getAttribute("aria-label"),/cheek.*nucleus/i);
+ assert.equal(await closeups.locator('image[href="/assets/micrographs/elodea-leaf.webp"]').count(),0,"the uncertain Elodea overlay must not return");
  await navPage.getByText("Check what you spotted",{exact:true}).press("Enter");
  assert(await navPage.getByText("Sample A is plant tissue.",{exact:true}).isVisible());
  assert(await navPage.getByText(/small green bodies inside the cells are chloroplasts/).isVisible());
@@ -1694,17 +1712,20 @@ try{
  await navPage.getByText("Compare rock pocket mouse populations",{exact:true}).click();
  assert((await navPage.getByRole("link",{name:/Open the HHMI pictures/}).getAttribute("href")).endsWith("MouseColorVar-Illustrations-act.pdf"));
  await navPage.goto(year7Paths[11]);
- const rotateEarth=navPage.getByRole("button",{name:"Turn Earth a quarter turn"});
+ const earthOpening=navPage.locator("#catchup-evidence > figure.ks3-diagram");
+ const rotateEarth=earthOpening.getByRole("button",{name:"Turn Earth a quarter turn"});
  await rotateEarth.click();
- await navPage.getByRole("status").filter({hasText:"Daytime. The location faces the Sun."}).waitFor();
+ await earthOpening.getByRole("status").filter({hasText:"Daytime. The location faces the Sun."}).waitFor();
  await navPage.goto(year8Paths[9]);
- await navPage.getByRole("button",{name:"Close switch in circuit A"}).click();
- await navPage.getByRole("status").filter({hasText:"The lamp lights."}).waitFor();
+ const circuitOpening=navPage.locator("#catchup-evidence > figure.ks3-diagram");
+ await circuitOpening.getByRole("button",{name:"Close switch in circuit A"}).click();
+ await circuitOpening.getByRole("status").filter({hasText:"The lamp lights."}).waitFor();
  await navPage.getByText("Explore with PhET (optional)",{exact:true}).click();
  assert(await navPage.getByRole("link",{name:/Open Circuit Construction Kit/}).isVisible());
  await navPage.goto(base+"/ks3/lesson/?topic=balanced-moments");
- await navPage.getByRole("button",{name:"3 m",exact:true}).click();
- await navPage.getByRole("status").filter({hasText:"The right end drops."}).waitFor();
+ const momentsOpening=navPage.locator("#catchup-evidence > figure.ks3-diagram");
+ await momentsOpening.getByRole("button",{name:"3 m",exact:true}).click();
+ await momentsOpening.getByRole("status").filter({hasText:"The right end drops."}).waitFor();
  await navPage.goto(year8Paths[10]);
  await navPage.getByRole("link",{name:"Choose another Year 8 topic"}).click();
  await navPage.waitForURL(base+"/science-catch-up/?year=8");

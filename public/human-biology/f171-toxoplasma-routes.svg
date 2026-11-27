@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="345" viewBox="0 0 280 345" role="img">
+ <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs><rect width="280" height="345" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">Toxoplasma: ingestion routes</text><text x="140" y="50" font-size="14">Possible exposure · schematic</text>
+ <path d="M29 88q18-21 37-6q12 9 0 28q-18 14-37-4q-8-9 0-18Z" fill="#e3a39a" stroke="#a65f5b" stroke-width="2"/>
+ <text x="50" y="140" font-size="14">Undercooked</text><text x="50" y="160" font-size="14">infected meat</text>
+ <path d="M29 215q20-11 40 0v28H29Z" fill="#d6b494" stroke="#805d45" stroke-width="2"/><path d="M41 207q9-17 18 0" fill="#805d45"/>
+ <text x="50" y="271" font-size="14">Soil with</text><text x="50" y="291" font-size="14">cat faeces</text>
+ <circle cx="221" cy="151" r="28" fill="#efc8b7" stroke="#a65f5b" stroke-width="2"/><path d="M205 164h14" stroke="#a65f5b" stroke-width="2"/>
+ <path d="M80 105l107 40M80 222l107-57" stroke="#344958" stroke-width="2" fill="none"/><path d="M180 137l7 8-11 0M178 164l9 1-6 7" stroke="#344958" stroke-width="2" fill="none"/>
+ <text x="220" y="210" font-size="14">Swallowed</text><text x="140" y="329" font-size="13">Contact with a cat alone is not proof.</text></g>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 355" role="img" aria-labelledby="title desc">
+<title id="title">Homologues separate in meiosis I</title><desc id="desc">In a model cell two pairs of homologous chromosomes align at the equator, each chromosome still duplicated. Homologues move to opposite poles while sister chromatids remain attached. Each resulting nucleus contains one long and one short duplicated chromosome: two chromosomes and four DNA molecules.</desc>
+<defs><g id="long" fill="none" stroke="#98451e" stroke-width="3" stroke-linecap="round"><path d="M-7-15l14 30M7-15l-14 30"/></g><g id="short" fill="none" stroke="#23656c" stroke-width="3" stroke-linecap="round"><path d="M-5-9l10 18M5-9L-5 9"/></g></defs>
+<rect width="280" height="355" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Metaphase I → anaphase I</text><ellipse cx="140" cy="96" rx="100" ry="53" fill="#fff" stroke="#23656c" stroke-width="2"/>
+<path d="M140 52v90" stroke="#69447f" stroke-width="2" stroke-dasharray="5 3"/><use href="#long" x="104" y="78"/><use href="#long" x="176" y="78"/><use href="#short" x="104" y="115"/><use href="#short" x="176" y="115"/>
+<path d="M93 96H61m7-6-7 6 7 6M187 96h32m-7-6 7 6-7 6" fill="none" stroke="#263e4a" stroke-width="2"/>
+<text x="140" y="174">Homologues separate.</text><text x="140" y="197">Sisters stay joined.</text>
+<text x="140" y="234" font-weight="700">After division I</text><ellipse cx="72" cy="270" rx="59" ry="27" fill="#fff" stroke="#23656c" stroke-width="2"/><ellipse cx="208" cy="270" rx="59" ry="27" fill="#fff" stroke="#23656c" stroke-width="2"/>
+<use href="#long" x="57" y="270"/><use href="#short" x="87" y="270"/><use href="#long" x="193" y="270"/><use href="#short" x="223" y="270"/>
+<text x="140" y="329">Each nucleus: 2 chromosomes,</text><text x="140" y="350">4 DNA molecules</text>
+</g></svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 320" role="img" aria-labelledby="title description">
+<title id="title">A tagged enzyme at two destinations</title>
+<desc id="description">A tagged enzyme is detected in rough ER and the Golgi. From the Golgi, little is detected in lysosomes and much more than usual outside the cell. The pattern suggests misdirected delivery but does not identify a particular sorting molecule.</desc>
+<rect width="280" height="320" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a" text-anchor="middle">
+<path d="M33 42h92v39H33Z" fill="#d8ece7" stroke="#23656c" stroke-width="2"/><text x="79" y="67">Rough ER</text>
+<path d="M130 61h26m-7-6 7 6-7 6" fill="none" stroke="#23558c" stroke-width="2"/>
+<path d="M162 42h88v39h-88Z" fill="#f3e6d9" stroke="#98451e" stroke-width="2"/><text x="206" y="67">Golgi</text>
+<text x="140" y="112">Protein present in both</text>
+<path d="M140 129L73 184m8-2-8 2 3-8" fill="none" stroke="#69447f" stroke-width="1.5"/>
+<path d="M140 129l67 55m-3-8 3 8-8-2" fill="none" stroke="#98451e" stroke-width="5"/>
+<circle cx="65" cy="208" r="21" fill="#eee8f4" stroke="#69447f" stroke-width="2"/>
+<path d="M172 207h68" stroke="#23656c" stroke-width="3"/><circle cx="204" cy="221" r="4" fill="#98451e"/><circle cx="217" cy="230" r="4" fill="#98451e"/><circle cx="191" cy="234" r="4" fill="#98451e"/>
+<text x="65" y="254">Little in</text><text x="65" y="276">lysosomes</text>
+<text x="207" y="254">More outside</text><text x="207" y="276">than usual</text>
+<text x="140" y="304">Illustrative finding pattern</text>
+</g></svg>

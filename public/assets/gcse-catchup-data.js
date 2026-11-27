@@ -1,6 +1,9 @@
 import { investigations } from "./gcse-investigations.js";
 import { question } from "./school-catchup-journey.js";
-import { priorityCatchup } from "./gcse-catchup-priority.js";
+import { priorityCatchup, distanceWorkedGraph, velocityWorkedGraph } from "./gcse-catchup-priority.js";
+import { gcseStepVisuals } from "./gcse-step-visuals.js";
+import { moreGcseStepVisuals, gcseOpeningVisuals, gcseHigherVisuals, gcseWorkedVisuals, gcseWorkedLineVisuals, heatingCurve, readableGcseFigure, atomsRearranged, ohmicCurrentGraph, filamentCurrentGraph, gridCurrentComparison, gridHeatingComparison, leftHandDirections, motorReversalWorked, randomDecay, activityUnit, massGasEscape, activationBarrier, reactionNetTransfer, resistanceFromGraph, hotFilament, meanGasRate, infraredAbsorbEmit, plantPaths, ionsInElectrolytes, alkene, waterTreatment } from "./gcse-more-step-visuals.js";
+import { gcseVisual } from "./gcse-catchup-visuals.js";
 
 function lesson(year, code, title, hook, notice, idea, visual, stages, independent, retry, higher) {
   return {year, code, title, hook, notice, idea, visual, higher,
@@ -13,7 +16,7 @@ export const year10Catchup = {
     "How can a vaccine protect you before you meet a pathogen?",
     "Compare the first and later responses. Which needs less time to build up?",
     "Vaccination prepares a specific immune response. After later exposure to the same pathogen, antibodies can be made more quickly.",
-    ["curve","Antibody level after exposure","Time after exposure","Antibody level",[
+    ["curve","Antibody level after exposure","Time (arbitrary units)","Antibody level",[
       ["First response",[[0,0],[1,0],[2,1],[3,3],[4,2],[5,1]]],
       ["Response after vaccination",[[0,0],[1,3],[2,5],[3,4],[4,3],[5,2]]]],"Illustrative responses for the same antigen."],
     [
@@ -48,8 +51,7 @@ export const year10Catchup = {
     "Where does the energy go while ice stays at 0 °C?",
     "Trace the horizontal section of the heating curve. Is energy still being supplied?",
     "During melting, transferred energy changes the arrangement and potential energy of particles. Their average kinetic energy and the temperature can stay steady.",
-    ["curve","Heating ice and then water","Energy supplied","Temperature",[
-      ["Temperature",[[0,0],[1,1],[2,2],[3,2],[4,2],[5,3],[6,4]]]],"The horizontal section at 0 °C represents melting."],
+    ["custom", heatingCurve],
     [
       ["Read the rising line","Internal energy is the total kinetic and potential energy of the particles. A temperature rise means their average kinetic energy rises.",
         "What changes on the first rising section?","The average kinetic energy of the particles increases.","Temperature is related to average kinetic energy.",["Each particle gets bigger.","Heating changes how fast the particles move or vibrate. The particles themselves stay the same size."],["The particles stop vibrating.","A temperature rise means the particles are vibrating faster on average."]],
@@ -134,7 +136,7 @@ export const year10Catchup = {
     "How can a reaction release energy if it needs energy to start?",
     "Compare the start, peak, and finish. The starting level is the same on both profiles.",
     "The activation energy is the initial barrier. The difference between the reactant and product energy levels shows the overall transfer.",
-    ["curve","Energy profiles for two reactions","Progress of reaction","Energy",[
+    ["curve","Energy profiles for two reactions","Progress of reaction","Energy (arbitrary units)",[
       ["Exothermic",[[0,2],[1,2],[2,3],[3,5],[4,3],[5,1],[6,1]]],
       ["Endothermic",[[0,2],[1,2],[2,3],[3,6],[4,5],[5,4],[6,4]]]],"Both profiles require activation energy. Compare the finishing levels."],
     [
@@ -190,7 +192,7 @@ export const year11Catchup = {
     "How can two reactions make the same amount of gas and finish at different times?",
     "Find the curve that is steepest at the start. Then compare their final readings.",
     "Rate is the amount of reactant used or product made per unit time. Two reactions can reach the same final yield at different rates.",
-    ["curve","Gas production in two trials","Time","Volume of gas",[
+    ["curve","Gas production in two trials","Time (s)","Volume of gas (cm³)",[
       ["Faster trial",[[0,0],[1,5],[2,8],[3,9],[4,9],[5,9]]],["Slower trial",[[0,0],[1,2],[2,4],[3,6],[4,8],[5,9]]]],
       "Equal quantities of the same reactants were used."],
     [
@@ -359,7 +361,7 @@ const complementary = {
     ],
     ["Yeast makes bubbles in bread dough without an oxygen supply. What gas is in the bubbles?","Carbon dioxide","Carbon dioxide is a product of fermentation in yeast.","Oxygen","Hydrogen"],
     ["Why is less energy transferred per glucose molecule in anaerobic respiration?","Glucose is only partly broken down.","Anaerobic products retain some of the energy available from glucose.","The glucose disappears.","Muscle cells stop using glucose."],
-    "Higher Tier · Blood transports lactic acid from muscles to the liver. Extra oxygen is needed after exercise to deal with the lactic acid produced."),
+    "Higher Tier · Blood transports lactic acid from muscles to the liver, where it is converted back to glucose. Extra oxygen is needed after exercise to deal with the lactic acid produced."),
 
   "density-and-gas-pressure": lesson(10,"P3","Density and the pressure of a gas",
     "How can a sealed container have higher pressure with the same number of gas particles?",
@@ -489,7 +491,7 @@ const furtherCatchup = {
     "Why does a filament lamp not follow a straight-line graph?",
     "Compare the slopes of the current–potential difference curves as the potential difference rises.",
     "Resistance is potential difference divided by current. Heating a filament increases its resistance.",
-    ["curve","Current changes as potential difference increases","Potential difference","Current",[
+    ["curve","Current changes as potential difference increases","Potential difference (V)","Current (A)",[
       ["Fixed resistor",[[0,0],[1,2],[2,4],[3,6],[4,8]]],
       ["Filament lamp",[[0,0],[1,2],[2,3],[3,3.7],[4,4.2]]]],"The fixed resistor is at a constant temperature."],
     [
@@ -573,13 +575,184 @@ scaffold(year11Catchup["inheritance-cross"], "Build a genetic cross", [
 
 export const gcseCatchup = {...year10Catchup, ...year11Catchup, ...complementary, ...furtherCatchup, ...priorityCatchup, ...investigations};
 
+// Replace the opening text-only comparisons with diagrams of their ideas.
+for (const [id, render] of Object.entries(gcseOpeningVisuals)) gcseCatchup[id].visual = ["custom", render];
+
+// The opening idea covers both the photosynthesis reaction and limiting rates.
+// Keep the original evidence data as the single source for the later rate step.
+const photosynthesisRateEvidence = gcseCatchup["photosynthesis-limits"].visual;
+gcseCatchup["photosynthesis-limits"].visual = ["custom", () => {
+  const group = document.createElement("div");
+  group.append(readableGcseFigure(gcseStepVisuals["photosynthesis-limits"][0]),
+    readableGcseFigure(() => gcseVisual(photosynthesisRateEvidence)));
+  return group;
+}];
+const massBalanceEvidence = gcseCatchup["mass-conservation"].visual;
+gcseCatchup["mass-conservation"].visual = ["custom", () => {
+  const group = document.createElement("div");
+  group.append(readableGcseFigure(atomsRearranged), readableGcseFigure(massGasEscape), readableGcseFigure(() => gcseVisual(massBalanceEvidence)));
+  return group;
+}];
+// The original activity bars explain repeated halving. Pair them with a model
+// of random decay in the opening, and keep the unit and halving steps distinct.
+const decayEvidence = gcseCatchup["decay-half-life"].visual;
+gcseCatchup["decay-half-life"].visual = ["custom", () => {
+  const group = document.createElement("div");
+  group.append(readableGcseFigure(randomDecay), readableGcseFigure(() => gcseVisual(decayEvidence)));
+  return group;
+}];
+// The interactive circuit explains separate paths and potential difference;
+// the companion junction diagram makes the current sum visible as well.
+const parallelCircuitEvidence = gcseCatchup["parallel-circuits"].visual;
+gcseCatchup["parallel-circuits"].visual = ["custom", () => {
+  const group = document.createElement("div");
+  group.append(readableGcseFigure(() => gcseVisual(parallelCircuitEvidence)),
+    readableGcseFigure(gcseStepVisuals["parallel-circuits"][1]));
+  return group;
+}];
+const reactionProfileEvidence = gcseCatchup["reaction-profiles"].visual;
+gcseCatchup["reaction-profiles"].visual = ["custom", () => {
+  const group = document.createElement("div");
+  group.append(readableGcseFigure(() => gcseVisual(reactionProfileEvidence)), readableGcseFigure(activationBarrier), readableGcseFigure(reactionNetTransfer));
+  return group;
+}];
+const resistanceEvidence = gcseCatchup["circuit-resistance"].visual;
+gcseCatchup["circuit-resistance"].visual = ["custom", () => {
+  const group = document.createElement("div");
+  group.append(readableGcseFigure(() => gcseVisual(resistanceEvidence)), readableGcseFigure(resistanceFromGraph), readableGcseFigure(hotFilament));
+  return group;
+}];
+// Preserve each original opening while placing a second, relevant explanation
+// next to concepts whose key idea includes another substantial process.
+const additionalOpeningFigures = {
+  "vaccine-memory": [gcseStepVisuals["vaccine-memory"][0], moreGcseStepVisuals["vaccine-memory"][1]],
+  "food-web-change": [moreGcseStepVisuals["food-web-change"][2]],
+  "reaction-rate": [meanGasRate],
+  "crude-oil": [alkene],
+  "chromatography": [moreGcseStepVisuals["chromatography"][1]],
+  "electromagnet-switch": [moreGcseStepVisuals["electromagnet-switch"][2]],
+  "selection-and-variation": [moreGcseStepVisuals["selection-and-variation"][0]],
+  "amylase-endpoint": [gcseWorkedLineVisuals["amylase-endpoint"][0], gcseWorkedLineVisuals["amylase-endpoint"][1]],
+  "quadrat-evidence": [moreGcseStepVisuals["food-web-change"][2]],
+  "reacting-masses": [gcseWorkedLineVisuals["reacting-masses"][0], gcseWorkedLineVisuals["reacting-masses"][1]],
+  "temperature-evidence": [gcseWorkedLineVisuals["temperature-evidence"][0], gcseWorkedLineVisuals["temperature-evidence"][1]],
+  "spring-evidence": [gcseWorkedLineVisuals["spring-evidence"][1]],
+  "trolley-evidence": [gcseWorkedLineVisuals["trolley-evidence"][1], gcseWorkedLineVisuals["trolley-evidence"][2]],
+  "wave-measurement": [gcseWorkedLineVisuals["wave-measurement"][0], gcseWorkedLineVisuals["wave-measurement"][1]],
+  "infrared-evidence": [gcseWorkedLineVisuals["infrared-evidence"][0], gcseWorkedLineVisuals["infrared-evidence"][2], infraredAbsorbEmit],
+  "domestic-electricity": [gcseWorkedLineVisuals["domestic-electricity"][0]],
+  "national-grid": [gridCurrentComparison, gridHeatingComparison],
+  "solution-concentration": [gcseWorkedLineVisuals["solution-concentration"][0], gcseWorkedLineVisuals["solution-concentration"][1]],
+  "current-potential-difference": [filamentCurrentGraph],
+  "ruler-drop": [gcseWorkedLineVisuals["ruler-drop"][0], gcseWorkedLineVisuals["ruler-drop"][1], gcseWorkedLineVisuals["ruler-drop"][2]],
+  "electrode-evidence": [ionsInElectrolytes],
+  "potable-water": [waterTreatment],
+  "dynamic-equilibrium": [gcseWorkedLineVisuals["dynamic-equilibrium"][2]],
+  "plant-transport": [plantPaths, gcseWorkedLineVisuals["plant-transport"][2], gcseWorkedLineVisuals["plant-transport"][3]]
+};
+const originalOpeningFigures = {};
+for (const [id, figures] of Object.entries(additionalOpeningFigures)) {
+  const original = gcseCatchup[id].visual;
+  originalOpeningFigures[id] = original;
+  gcseCatchup[id].visual = ["custom", () => {
+    const group = document.createElement("div");
+    group.append(readableGcseFigure(() => gcseVisual(original)), ...figures.map(readableGcseFigure));
+    return group;
+  }];
+}
+
+for (const mapping of [gcseStepVisuals, moreGcseStepVisuals]) {
+  for (const [id, visuals] of Object.entries(mapping)) {
+    for (const [index, render] of Object.entries(visuals)) {
+      gcseCatchup[id].steps[index].visual = mapping === gcseStepVisuals ? () => readableGcseFigure(render) : render;
+    }
+  }
+}
+
+// Only repeat an opening figure when it explains this particular teaching step.
+// Other steps need their own representations rather than a generic topic image.
+const openingFigureAtStep = {
+  "wave-motion": [0],
+  "inheritance-cross": [1],
+};
+for (const [id, indices] of Object.entries(openingFigureAtStep)) {
+  for (const index of indices) gcseCatchup[id].steps[index].visual = () => readableGcseFigure(() => gcseVisual(gcseCatchup[id].visual));
+}
+gcseCatchup["photosynthesis-limits"].steps[1].visual = () => readableGcseFigure(() => gcseVisual(photosynthesisRateEvidence));
+gcseCatchup["mass-conservation"].steps[0].visual = () => {
+  const group = document.createElement("div");
+  group.append(readableGcseFigure(massGasEscape), readableGcseFigure(() => gcseVisual(massBalanceEvidence)));
+  return group;
+};
+gcseCatchup["decay-half-life"].steps[0].visual = () => readableGcseFigure(activityUnit);
+gcseCatchup["decay-half-life"].steps[1].visual = () => readableGcseFigure(() => gcseVisual(decayEvidence));
+gcseCatchup["parallel-circuits"].steps[0].visual = () => readableGcseFigure(() => gcseVisual(parallelCircuitEvidence));
+gcseCatchup["reaction-profiles"].steps[1].visual = () => {
+  const group = document.createElement("div");
+  group.append(readableGcseFigure(() => gcseVisual(reactionProfileEvidence)), readableGcseFigure(reactionNetTransfer));
+  return group;
+};
+gcseCatchup["circuit-resistance"].steps[1].visual = () => {
+  const group = document.createElement("div");
+  group.append(readableGcseFigure(() => gcseVisual(resistanceEvidence)), readableGcseFigure(hotFilament));
+  return group;
+};
+for (const [id, indices] of Object.entries({"food-web-change": [0, 1], "reaction-rate": [0], "crude-oil": [1]})) {
+  for (const index of indices) gcseCatchup[id].steps[index].visual = () => readableGcseFigure(() => gcseVisual(originalOpeningFigures[id]));
+}
+
+for (const [id, render] of Object.entries(gcseHigherVisuals)) gcseCatchup[id].higherVisual = render;
+
+// Re-render the matching evidence alongside these worked examples. These
+// placements support their illustrated portion; the ledger records any gaps.
+for (const id of ["national-grid", "solution-concentration", "current-potential-difference", "dynamic-equilibrium", "motion-graphs", "motor-effect", "chromatography", "inheritance-cross"]) {
+  gcseCatchup[id].steps[0].worked.visual = () => gcseVisual(gcseCatchup[id].visual);
+}
+
 gcseCatchup["glucose-control"].higher = [
   "Higher Tier", "After exercise, blood glucose falls. Trace the response from detection to recovery. What happens to the signal as the level recovers?",
   "The pancreas releases glucagon. Liver cells convert glycogen to glucose and release glucose into the blood. As the concentration rises towards its normal level, the stimulus for glucagon secretion decreases. This is negative feedback."
 ];
 
 scaffold(complementary["respiration-exercise"], "Trace oxygen from the lungs to a working muscle", [
-  "The right ventricle pumps blood to the lungs. Oxygen diffuses across the thin exchange surface into the blood and binds to haemoglobin in red blood cells.",
+  "The right ventricle pumps blood to the lungs.",
+  "Oxygen diffuses across the thin exchange surface into the blood.",
+  "Oxygen binds to haemoglobin in red blood cells.",
   "Blood returns to the left atrium and then the left ventricle. Its thicker muscular wall generates the pressure needed to send blood around the body.",
   "At muscle capillaries oxygen leaves the blood and diffuses into cells. During exercise an increased heart rate can increase oxygen delivery for aerobic respiration."
 ], "Compare oxygen delivery with the working muscle’s demand.");
+
+// The respiratory worked example is added after the core catalogue above.
+for (const [id, render] of Object.entries(gcseWorkedVisuals)) gcseCatchup[id].steps[0].worked.visual = render;
+for (const [id, renders] of Object.entries(gcseWorkedLineVisuals)) {
+  gcseCatchup[id].steps[0].worked.lineVisuals = renders.map(render => render ? () => readableGcseFigure(render) : null);
+}
+gcseCatchup["current-potential-difference"].steps[0].worked.lineVisuals = [
+  () => readableGcseFigure(() => gcseVisual(originalOpeningFigures["current-potential-difference"])),
+  null, // The same variable-supply circuit supports the two adjacent setup lines.
+  () => readableGcseFigure(ohmicCurrentGraph),
+  () => readableGcseFigure(filamentCurrentGraph)
+];
+gcseCatchup["national-grid"].steps[0].worked.lineVisuals = [
+  () => readableGcseFigure(gridCurrentComparison),
+  null, // Both adjacent lines use the same equal-power comparison.
+  () => readableGcseFigure(gridHeatingComparison),
+  () => readableGcseFigure(() => gcseVisual(originalOpeningFigures["national-grid"]))
+];
+gcseCatchup["motion-graphs"].steps[0].worked.lineVisuals = [
+  () => readableGcseFigure(distanceWorkedGraph),
+  () => readableGcseFigure(velocityWorkedGraph),
+  null // The preceding velocity graph also supplies the final-section values.
+];
+gcseCatchup["motor-effect"].steps[0].worked.lineVisuals = [
+  () => readableGcseFigure(leftHandDirections),
+  () => readableGcseFigure(() => gcseVisual(gcseCatchup["motor-effect"].visual)),
+  () => readableGcseFigure(motorReversalWorked)
+];
+
+// Apply the phone-size label floor to any reused worked-example graphics.
+for (const lesson of Object.values(gcseCatchup)) for (const step of lesson.steps) {
+  if (!step.worked?.visual) continue;
+  const render = step.worked.visual;
+  step.worked.visual = () => readableGcseFigure(render);
+}

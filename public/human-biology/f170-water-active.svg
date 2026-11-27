@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 340" role="img" aria-labelledby="title description">
+<title id="title">Water potential and active transport</title>
+<desc id="description">Across a partially permeable membrane, water crosses both ways; net movement is from higher to lower water potential. A transporter uses energy to move an ion from lower to higher concentration.</desc>
+<rect width="280" height="340" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a" text-anchor="middle">
+<text x="140" y="25" font-weight="700">Osmosis</text>
+<rect x="20" y="40" width="240" height="76" rx="6" fill="#e6f3fa" stroke="#23656c" stroke-width="2"/>
+<path d="M140 41v74" stroke="#23656c" stroke-width="4" stroke-dasharray="7 4"/>
+<path d="M84 77h100m-8-6 8 6-8 6" fill="none" stroke="#23558c" stroke-width="3"/><path d="M184 98H84m8-5-8 5 8 5" fill="none" stroke="#98451e" stroke-width="1.5"/>
+<text x="79" y="63">Higher Ψ</text><text x="201" y="63">Lower Ψ</text>
+<text x="140" y="140">Thicker: net water movement</text>
+<text x="140" y="180" font-weight="700">Active transport</text>
+<rect x="20" y="196" width="240" height="78" rx="6" fill="#e9f3ef" stroke="#23656c" stroke-width="2"/>
+<path d="M140 197v77" stroke="#23656c" stroke-width="4"/>
+<rect x="129" y="224" width="22" height="25" rx="4" fill="#d8c7e4" stroke="#69447f" stroke-width="2"/>
+<circle cx="99" cy="237" r="7" fill="#e7b783" stroke="#98451e"/><path d="M107 237h70m-8-6 8 6-8 6" fill="none" stroke="#98451e" stroke-width="2.5"/>
+<text x="75" y="215">Lower</text><text x="206" y="215">Higher</text>
+<text x="140" y="297">Ion against gradient</text><text x="140" y="319">Energy + transporter</text>
+</g></svg>

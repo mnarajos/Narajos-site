@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 330" role="img" aria-labelledby="title desc">
+<title id="title">How a DXA scan estimates bone mineral density</title>
+<desc id="desc">A simplified side view shows a person lying on a scan table. An X-ray beam with two energy peaks passes from a source below the table through tissue and bone to a detector above. The measurements support an estimate of bone mineral density.</desc>
+<rect width="280" height="330" fill="#f5f9f8"/>
+<g font-family="sans-serif" fill="#183848" text-anchor="middle"><text x="140" y="23" font-size="16" font-weight="bold">DXA: bone density</text><text x="140" y="42" font-size="14">Simplified side view</text></g>
+<rect x="72" y="59" width="100" height="33" rx="6" fill="#d9e8ee" stroke="#54728a" stroke-width="2"/><text x="122" y="81" font-family="sans-serif" text-anchor="middle" font-size="14" fill="#183848">Detector</text>
+<g stroke="#ac7132" stroke-width="2.5" fill="none"><path d="M120 241 V97"/><path d="M120 97 l-5 8 m5 -8 5 8"/></g>
+<rect x="25" y="157" width="202" height="9" rx="3" fill="#53707b"/><circle cx="50" cy="139" r="12" fill="#e5b8aa" stroke="#865c53" stroke-width="2"/><path d="M62 139 Q78 130 100 135 L149 137 Q166 138 180 146 L211 150" stroke="#865c53" stroke-width="13" stroke-linecap="round" fill="none"/><path d="M79 140 L156 143" stroke="#f9f3dd" stroke-width="5" stroke-linecap="round"/>
+<rect x="67" y="242" width="107" height="39" rx="6" fill="#e2ecdf" stroke="#517864" stroke-width="2"/><text x="121" y="266" font-family="sans-serif" text-anchor="middle" font-size="14" fill="#183848">X-ray source</text>
+<g font-family="sans-serif" font-size="16" fill="#183848"><text x="178" y="62">X-rays:</text><text x="178" y="81">two energy</text><text x="178" y="100">peaks</text><text x="170" y="183">Bone and</text><text x="170" y="202">other tissues</text><text x="170" y="221">absorb</text><text x="170" y="240">differently</text></g>
+<g font-family="sans-serif" font-size="16" fill="#183848" text-anchor="middle"><text x="140" y="302">Measurements estimate</text><text x="140" y="322">bone density.</text></g>
+</svg>

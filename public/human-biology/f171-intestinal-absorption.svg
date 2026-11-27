@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="390" viewBox="0 0 280 390" role="img">
+ <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs>
+ <rect width="280" height="390" rx="12" fill="#f4f8f7"/>
+ <g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+  <text x="140" y="24" font-size="17" font-weight="700">Intestinal absorption</text>
+  <text x="140" y="48" font-size="14">Simplified sections · same intake</text>
+  <text x="140" y="75" font-size="15">Absorptive lining</text>
+  <text x="35" y="103" font-size="13">Lumen</text>
+  <g fill="#a76125"><circle cx="104" cy="100" r="5"/><circle cx="144" cy="100" r="5"/><circle cx="184" cy="100" r="5"/></g>
+  <path d="M48 121h184v30H48Z" fill="#cde8dc" stroke="#32776d" stroke-width="2"/>
+  <path d="M104 108v63" stroke="#344958" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M144 108v63" stroke="#344958" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M184 108v63" stroke="#344958" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="140" y="193" font-size="14">Nutrients enter blood</text>
+  <path d="M20 205h240" stroke="#cbdedb" stroke-width="2"/>
+  <text x="140" y="233" font-size="15">Extensive inflammation</text>
+  <text x="35" y="260" font-size="13">Lumen</text>
+  <g fill="#a76125"><circle cx="104" cy="257" r="5"/><circle cx="144" cy="257" r="5"/><circle cx="184" cy="257" r="5"/></g>
+  <path d="M48 278h184v30H48Z" fill="#f4c9b8" stroke="#a65f5b" stroke-width="2"/>
+  <path d="M144 265v63" stroke="#344958" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="140" y="351" font-size="14">Uptake may be reduced</text>
+  <text x="140" y="377" font-size="13">Arrows are not measurements.</text>
+ </g>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 390" width="280" height="390" role="img" aria-labelledby="title desc">
+<title id="title">Discussing a genetic test</title><desc id="desc">A patient and clinician discuss the test's purpose, choices and possible implications. A protected report is linked by a dashed line to relatives, indicating the result may be relevant to them. The diagram does not imply that results are shared automatically.</desc>
+<style>text{font:18px system-ui,sans-serif;fill:#203c49}.head{font-weight:700}.small{font-size:16px}.arrow{stroke:#286d70;stroke-width:3;fill:none;marker-end:url(#a)}</style>
+<defs><marker id="a" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3z" fill="#286d70"/></marker></defs>
+<text x="140" y="24" text-anchor="middle" class="head">Before a genetic test</text>
+<circle cx="52" cy="65" r="15" fill="#f1d5c8" stroke="#a55b32" stroke-width="2"/><path d="M27 109q1-29 25-29t25 29" fill="#cce2ec" stroke="#39718b" stroke-width="2"/>
+<circle cx="228" cy="65" r="15" fill="#f1d5c8" stroke="#a55b32" stroke-width="2"/><path d="M203 109q1-29 25-29t25 29" fill="#d7ebdf" stroke="#397b6f" stroke-width="2"/>
+<path d="M80 48h120v72H80z" fill="#f1f7f4" stroke="#397b6f" stroke-width="2"/><text x="140" y="67" text-anchor="middle" class="small">Purpose</text><text x="140" y="90" text-anchor="middle" class="small">Choices</text><text x="140" y="113" text-anchor="middle" class="small">Implications</text>
+<text x="52" y="130" text-anchor="middle">Person</text><text x="228" y="130" text-anchor="middle">Clinician</text>
+<path class="arrow" d="M140 141v29"/><text x="140" y="195" text-anchor="middle" class="head">Informed decision</text>
+<path d="M39 232h83v91H39z" fill="#e6f1f5" stroke="#39718b" stroke-width="2"/><path d="M51 249h44 M51 262h35 M51 275h39" stroke="#71919e" stroke-width="3"/>
+<rect x="76" y="287" width="27" height="22" rx="3" fill="#fff4df" stroke="#a55b32" stroke-width="2"/><path d="M82 287v-6a8 8 0 0 1 16 0v6" fill="none" stroke="#a55b32" stroke-width="2"/>
+<path d="M129 278h34" stroke="#6b888b" stroke-width="2" stroke-dasharray="4 4"/><circle cx="190" cy="262" r="11" fill="#d7ebdf" stroke="#397b6f" stroke-width="2"/><circle cx="231" cy="262" r="11" fill="#d7ebdf" stroke="#397b6f" stroke-width="2"/><path d="M174 294q1-20 16-20t16 20 M215 294q1-20 16-20t16 20" fill="#d7ebdf" stroke="#397b6f" stroke-width="2"/>
+<text x="80" y="348" text-anchor="middle" class="small">Confidential</text><text x="207" y="325" text-anchor="middle" class="small">May matter</text><text x="207" y="350" text-anchor="middle" class="small">to relatives</text>
+<text x="140" y="377" text-anchor="middle" class="small">Sharing is not automatic.</text>
+</svg>

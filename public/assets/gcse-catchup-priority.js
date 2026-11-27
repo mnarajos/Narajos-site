@@ -51,7 +51,7 @@ function mains() {
     line(37,50,166,50,"#805037",10) + text(177,55,"Live · brown",ink,15,"start") +
     line(37,79,166,79,blue,10) + text(177,84,"Neutral · blue",ink,15,"start") +
     line(37,108,166,108,"#287340",10) + line(37,108,166,108,"#ffdc51",7,"7 6") +
-    text(177,113,"Earth · striped",ink,15,"start"),320,155),
+    text(167,113,"Earth · striped",ink,15,"start"),320,155),
     "Live and neutral form the working circuit. The earth wire is a safety connection.");
 }
 
@@ -68,7 +68,7 @@ function grid() {
 function ivCircuit() {
   return picture("Circuit for a filament lamp", diagram(
     "The supply, ammeter and lamp are in the main loop. The voltmeter is on a branch connected across the two lamp terminals.",
-    '<path d="M145 24H43V99H278V24H163 M106 99V151H216V99" fill="none" stroke="currentColor" stroke-width="2.5"/>' +
+    '<path d="M145 24H43V99H55 M81 99H143 M177 99H278V24H163 M106 99V151H147 M173 151H216V99" fill="none" stroke="currentColor" stroke-width="2.5"/>' +
     line(145,13,145,35)+line(163,17,163,31)+text(157,52,"Variable dc supply",ink,15)+
     circle(68,99,13,"white")+text(68,104,"A")+circle(160,99,17,"white")+
     line(150,89,170,109)+line(150,109,170,89)+circle(106,99,3,ink)+circle(216,99,3,ink)+
@@ -79,15 +79,15 @@ function ivCircuit() {
 function motor() {
   return picture("Two sides of a motor coil viewed end-on", diagram(
     "The field goes from N on the left to S on the right. On the left, current goes into the page and the force is down. On the right, current comes out of the page and the force is up.",
-    text(27,70,"N",ink,20)+text(293,70,"S",ink,20)+arrow(46,38,274,38,blue)+text(160,25,"Magnetic field",blue,15)+
+    text(27,60,"N",ink,20)+text(293,60,"S",ink,20)+arrow(46,38,274,38,blue)+text(160,25,"Magnetic field",blue,15)+
     circle(109,91,14,"white")+circle(210,91,14,"white")+text(109,96,"×",ink,17)+circle(210,91,4,ink)+
-    arrow(109,109,109,150,rust)+arrow(210,73,210,50,rust)+text(153,134,"Force down",rust,14)+
-    text(256,92,"Force up",rust,14)+line(217,62,243,79,rust,1)+
-    text(160,169,"× into page     • out of page",ink,15),320,185),
+    arrow(109,109,109,150,rust)+arrow(210,73,210,50,rust)+text(75,176,"Force down",rust,14)+
+    text(245,176,"Force up",rust,14)+
+    text(160,212,"× into page     • out of page",ink,15),320,230),
     "The opposite forces act on different sides of the coil, so they can turn it.");
 }
 
-function motionGraph(title, unit, values, max) {
+function motionGraph(title, unit, values, max, explanation = "") {
   const points = values.map(([t,y]) => [47 + t * 36, 142 - y * 106 / max]);
   const path = points.map(point => point.join(",")).join(" ");
   const ticks = [0, max / 2, max].map(v => {
@@ -97,10 +97,10 @@ function motionGraph(title, unit, values, max) {
   const times = values.map(([t], i) => text(points[i][0],161,String(t),ink,13)).join("");
   const description = values.map(([t,y]) => t + " seconds: " + y + " " + unit).join(". ");
   return picture(title, diagram(title + ". " + description,
-    line(47,28,47,142)+line(47,142,286,142)+ticks+times+text(168,182,"Time (s)",ink,15)+
-    text(48,18,title,ink,15,"start")+
+    line(47,28,47,142)+line(47,142,286,142)+ticks+times+text(168,194,"Time (s)",ink,15)+
+    text(48,24,title,ink,15,"start")+
     '<polyline points="' + path + '" fill="none" stroke="' + blue + '" stroke-width="3"/>'+
-    points.map(([x,y]) => circle(x,y,3,rust)).join(""),320,193));
+    points.map(([x,y]) => circle(x,y,3,rust)).join(""),320,210), explanation);
 }
 
 function equilibriumRates() {
@@ -108,10 +108,17 @@ function equilibriumRates() {
     [["0","8","0"],["2","5","3"],["4","4","4"],["6","4","4"]]);
 }
 
+export function distanceWorkedGraph() {
+  return motionGraph("Distance (m)", "metres", [[0,0],[2,4],[4,4]], 4,
+    "Read the slope for speed. A horizontal section means the distance stays unchanged.");
+}
+export function velocityWorkedGraph() {
+  return motionGraph("Velocity (m/s)", "metres per second", [[0,2],[2,2],[4,0]], 4,
+    "Read the slope for acceleration. A horizontal section can represent a steady, non-zero velocity.");
+}
 function pairedMotion() {
   const panel = node("div");
-  panel.append(motionGraph("Distance (m)", "metres", [[0,0],[2,4],[4,4]], 4),
-    motionGraph("Velocity (m/s)", "metres per second", [[0,2],[2,2],[4,0]], 4));
+  panel.append(distanceWorkedGraph(), velocityWorkedGraph());
   return panel;
 }
 

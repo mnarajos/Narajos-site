@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="350" viewBox="0 0 280 350" role="img">
+ <rect width="280" height="350" rx="12" fill="#f4f8f7"/>
+ <g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+  <text x="140" y="25" font-size="17" font-weight="700">Kidney tissue and cysts</text>
+  <text x="140" y="52" font-size="15">Simplified comparison</text>
+  <path d="M38 100C20 127 30 186 57 199C79 210 98 190 93 172C89 156 78 153 78 145C78 138 90 132 90 117C90 89 58 76 38 100Z" fill="#d99c87" stroke="#94584a" stroke-width="3"/>
+  <path d="M166 89C139 114 146 194 180 208C207 220 238 195 227 173C221 159 208 153 209 143C210 134 229 128 226 108C222 76 186 69 166 89Z" fill="#d99c87" stroke="#94584a" stroke-width="3"/>
+  <g fill="#e3f1f6" stroke="#537a94" stroke-width="2"><circle cx="170" cy="118" r="14"/><circle cx="202" cy="105" r="12"/><circle cx="180" cy="151" r="17"/><circle cx="210" cy="184" r="13"/><circle cx="178" cy="187" r="11"/></g>
+  <text x="63" y="238" font-size="15">No cysts</text><text x="63" y="257" font-size="15">shown</text>
+  <text x="187" y="238" font-size="15">Several</text><text x="187" y="257" font-size="15">fluid-filled cysts</text>
+  <text x="140" y="298" font-size="15">Cysts may displace or</text><text x="140" y="318" font-size="15">damage working tissue</text>
+ </g>
+</svg>

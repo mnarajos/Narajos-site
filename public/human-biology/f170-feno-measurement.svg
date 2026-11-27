@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="335" viewBox="0 0 280 335" role="img" aria-labelledby="title desc">
+<title id="title">FeNO: an exhaled-breath measurement</title><desc id="desc">A simplified airway and lungs lead to an arrow representing exhaled breath entering a nitric oxide analyser. FeNO measures nitric oxide in breath and can provide an indicator of airway inflammation when interpreted with other clinical information. No reading is shown.</desc>
+<rect width="280" height="335" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="24" font-weight="700">FeNO breath test</text>
+<path d="M85 82v32m-3-4q-27-27-40 4l-9 43q14 14 44 2v-36m11-13q27-27 40 4l9 43q-14 14-44 2v-36" fill="#dceaf2" stroke="#64869c" stroke-width="2.5"/>
+<path d="M85 81h58m-8-6 8 6-8 6" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<text x="114" y="65" font-size="15">exhaled</text>
+<rect x="158" y="56" width="96" height="93" rx="10" fill="#fff" stroke="#66818c" stroke-width="2.5"/><rect x="172" y="70" width="68" height="32" rx="4" fill="#e3f0eb" stroke="#648f86"/>
+<text x="206" y="92" font-weight="700">NO</text><circle cx="205" cy="126" r="8" fill="#8cadad"/>
+<text x="85" y="191">Airways</text><text x="206" y="177" font-size="15">NO analyser</text>
+<text x="140" y="225">Measures nitric oxide</text><text x="140" y="248">in exhaled breath</text>
+<text x="140" y="278" font-size="15">Can indicate airway inflammation</text><text x="140" y="302" font-size="15">when interpreted in context.</text><text x="140" y="324" font-size="15">No reading is shown.</text>
+</g></svg>

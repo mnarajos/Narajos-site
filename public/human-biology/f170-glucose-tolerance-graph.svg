@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 295" role="img" aria-labelledby="title desc">
+<title id="title">Fictional glucose-tolerance data</title><desc id="desc">Blood glucose in millimoles per litre is plotted against time after a glucose load. Readings are 5.0 at 0 minutes, 8.8 at 30 minutes, 7.6 at 60 minutes, 6.1 at 90 minutes and 5.3 at 120 minutes. The values are fictional.</desc>
+<rect width="280" height="295" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Blood glucose (mmol/L)</text>
+<g stroke="#c4d4d1" stroke-width="1"><path d="M61 65h168M61 95h168M61 125h168M61 155h168M61 185h168"/></g>
+<path d="M61 65v120h176" fill="none" stroke="#263e4a" stroke-width="2"/>
+<text x="45" y="70" text-anchor="end">12</text><text x="45" y="100" text-anchor="end">9</text><text x="45" y="130" text-anchor="end">6</text><text x="45" y="160" text-anchor="end">3</text><text x="45" y="190" text-anchor="end">0</text>
+<path d="M61 135L103 97L145 109L187 124L229 132" fill="none" stroke="#23656c" stroke-width="3"/>
+<g fill="#23656c"><circle cx="61" cy="135" r="4"/><circle cx="103" cy="97" r="4"/><circle cx="145" cy="109" r="4"/><circle cx="187" cy="124" r="4"/><circle cx="229" cy="132" r="4"/></g>
+<text x="61" y="211">0</text><text x="103" y="211">30</text><text x="145" y="211">60</text><text x="187" y="211">90</text><text x="229" y="211">120</text>
+<text x="145" y="242">Time after load (min)</text><text x="140" y="278">Fictional data</text>
+</g></svg>

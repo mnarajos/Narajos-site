@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="620" viewBox="0 0 280 620" role="img" aria-labelledby="title desc">
+ <title id="title">Four tissues and their functions</title><desc id="desc">A nerve fibre carries a signal; a movable joint allows one bone to move relative to another; a melanocyte makes the pigment melanin; and mineral contributes to the strength of growing bone. All four illustrations are simplified and are not to scale.</desc>
+ <rect width="280" height="620" rx="12" fill="#f4f8f7"/>
+ <g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+  <text x="140" y="25" font-size="18" font-weight="700">Tissues and function</text>
+  <text x="140" y="53" font-size="16" font-weight="700">Nerve signal</text>
+  <path d="M40 90h200" stroke="#8a6099" stroke-width="5"/><g fill="#d3e8de" stroke="#387f70" stroke-width="2"><rect x="48" y="80" width="42" height="20" rx="10"/><rect x="101" y="80" width="42" height="20" rx="10"/><rect x="154" y="80" width="42" height="20" rx="10"/></g>
+  <path d="M66 116h145m-10-6 10 6-10 6" fill="none" stroke="#984b26" stroke-width="3"/><text x="140" y="142" font-size="16">Signal along nerve fibre</text>
+  <path d="M20 158h240" stroke="#c4d7d0" stroke-width="2"/>
+  <text x="140" y="183" font-size="16" font-weight="700">Movable joint</text>
+  <path d="M55 199h71q15 0 15 15t-15 15H55Z" fill="#f0d6ae" stroke="#a35c2f" stroke-width="2"/>
+  <path d="M225 199h-63q-15 0-15 15t15 15h63Z" fill="#f0d6ae" stroke="#a35c2f" stroke-width="2"/>
+  <path d="M169 238q31 16 53-4m-3 10 3-10-11 1" fill="none" stroke="#276c70" stroke-width="2.5"/>
+  <text x="140" y="271" font-size="16">Bones can move at a joint</text>
+  <path d="M20 286h240" stroke="#c4d7d0" stroke-width="2"/>
+  <text x="140" y="311" font-size="16" font-weight="700">Pigment-producing cell</text>
+  <path d="M93 350q7-16 27-15l-5-12 10 10q9-5 15-4l6-10 1 12q12 2 16 10l14-3-11 9q1 15-12 20l4 10-11-8q-12 2-20-3l-9 8 2-12q-18-3-27-12Z" fill="#ddc7e7" stroke="#765180" stroke-width="2"/>
+  <g fill="#7c4c31"><circle cx="122" cy="347" r="3"/><circle cx="134" cy="342" r="3"/><circle cx="146" cy="352" r="3"/><circle cx="130" cy="359" r="3"/><circle cx="154" cy="343" r="3"/></g>
+  <text x="140" y="401" font-size="16">Melanocyte makes melanin</text>
+  <path d="M20 416h240" stroke="#c4d7d0" stroke-width="2"/>
+  <text x="140" y="441" font-size="16" font-weight="700">Growing bone</text>
+  <path d="M80 469q-13-16-24-3t5 24l28 42q3 17 20 13t9-22l-25-43q4-14-13-11ZM200 469q13-16 24-3t-5 24l-28 42q-3 17-20 13t-9-22l25-43q-4-14 13-11Z" fill="#f0d6ae" stroke="#a35c2f" stroke-width="2"/>
+  <g fill="#276c70"><circle cx="83" cy="486" r="3"/><circle cx="91" cy="500" r="3"/><circle cx="100" cy="515" r="3"/><circle cx="197" cy="486" r="3"/><circle cx="189" cy="500" r="3"/><circle cx="180" cy="515" r="3"/></g>
+  <text x="140" y="575" font-size="16">Mineral strengthens bone</text>
+  <text x="140" y="603" font-size="14">Schematic; not to scale</text>
+ </g>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 385" width="280" height="385" role="img" aria-labelledby="title desc">
+<title id="title">Gene delivery and gene editing</title><desc id="desc">One schematic shows a functional gene copy entering a target cell. Another shows an existing DNA sequence being changed by an editing tool. These are distinct processes; editing tools also need delivery and neither guarantees successful treatment.</desc>
+<style>text{font:18px system-ui,sans-serif;fill:#203c49}.head{font-weight:700}.small{font-size:16px}.arrow{stroke:#286d70;stroke-width:3;fill:none;marker-end:url(#a)}</style>
+<defs><marker id="a" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3z" fill="#286d70"/></marker></defs>
+<text x="140" y="24" text-anchor="middle" class="head">Delivery and editing</text>
+<text x="140" y="57" text-anchor="middle" class="head">Deliver a gene copy</text>
+<circle cx="55" cy="104" r="25" fill="#e6f2ee" stroke="#397b6f" stroke-width="2"/><path d="M39 104h32" stroke="#a55b32" stroke-width="5"/><text x="55" y="149" text-anchor="middle" class="small">Copy</text>
+<path class="arrow" d="M89 104h55"/><circle cx="205" cy="104" r="47" fill="#e7f1f6" stroke="#39718b" stroke-width="2"/><circle cx="205" cy="104" r="20" fill="#fff" stroke="#39718b" stroke-width="2"/><path d="M189 104h32" stroke="#a55b32" stroke-width="5"/><text x="205" y="166" text-anchor="middle" class="small">Target cell</text>
+<path d="M15 185h250" stroke="#bdcfce" stroke-width="1"/><text x="140" y="213" text-anchor="middle" class="head">Edit an existing sequence</text>
+<path d="M32 260h77" stroke="#477d9d" stroke-width="8"/><circle cx="70" cy="260" r="9" fill="#d16d44"/><text x="70" y="291" text-anchor="middle" class="small">Before</text>
+<path class="arrow" d="M116 260h48"/><path d="M171 260h77" stroke="#477d9d" stroke-width="8"/><circle cx="209" cy="260" r="9" fill="#90bd94"/><text x="209" y="291" text-anchor="middle" class="small">After edit</text>
+<text x="140" y="326" text-anchor="middle" class="small">An editing tool also needs delivery.</text><text x="140" y="350" text-anchor="middle" class="small">Neither step guarantees success.</text><text x="140" y="373" text-anchor="middle" class="small">The sequences are schematic.</text>
+</svg>

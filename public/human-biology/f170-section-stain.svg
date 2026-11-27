@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="365" viewBox="0 0 280 365" role="img" aria-labelledby="title desc">
+<title id="title">A prepared tissue section</title><desc id="desc">A simplified microtome blade cuts a thin section from a fixed tissue block. In a conceptual comparison, staining makes cell nuclei more distinct from their surroundings. Fixed cells cannot show living motion.</desc>
+<rect width="280" height="365" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="25" font-weight="700">Preparing a thin section</text>
+<rect x="31" y="46" width="90" height="60" rx="4" fill="#e2dced" stroke="#79618c" stroke-width="2"/><path d="M55 61q20-13 39 0v23q-18 12-39 0z" fill="#eab8ac" stroke="#ad705e" stroke-width="2"/>
+<text x="76" y="135" font-size="15">Fixed tissue</text><text x="76" y="155" font-size="15">in a block</text>
+<path d="M20 106h126l-15 12H35z" fill="#9daeb6" stroke="#52666f" stroke-width="2"/>
+<path d="M137 61v40m-6-7 6 7 6-7" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<path d="M146 110h15" stroke="#52666f" stroke-width="1.5"/><text x="203" y="100" font-size="15">Microtome</text><text x="203" y="120" font-size="15">blade</text>
+<path d="M140 162v23m-6-7 6 7 6-7" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<path d="M43 199h194v10H43z" fill="#eed4cb" stroke="#ad705e" stroke-width="1.5"/><text x="140" y="231">Thin section</text>
+<text x="140" y="254" font-size="15">Staining can improve contrast</text>
+<rect x="32" y="271" width="85" height="45" rx="5" fill="#fff" stroke="#a0b1b7"/><g fill="#edf0ef" stroke="#d5dcdb"><circle cx="55" cy="293" r="11"/><circle cx="90" cy="293" r="11"/></g><g fill="#ccd6d5"><circle cx="55" cy="293" r="4"/><circle cx="90" cy="293" r="4"/></g>
+<path d="M124 294h27m-7-6 7 6-7 6" fill="none" stroke="#286b73" stroke-width="2"/>
+<rect x="159" y="271" width="85" height="45" rx="5" fill="#fff" stroke="#a0b1b7"/><g fill="#f0dbe1" stroke="#b98e9a"><circle cx="182" cy="293" r="11"/><circle cx="217" cy="293" r="11"/></g><g fill="#73558a"><circle cx="182" cy="293" r="4"/><circle cx="217" cy="293" r="4"/></g>
+<text x="140" y="343" font-size="15">Fixed cells cannot show living motion.</text>
+</g></svg>

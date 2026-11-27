@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 300" role="img" aria-labelledby="title description">
+<title id="title">A surface receptor and its signal</title>
+<desc id="description">A signal outside a cell fits an accessible site on a membrane-spanning receptor. Binding changes the receptor and can trigger a response inside the cell. A peripheral protein lies on the cytoplasmic surface; not every receptor spans the membrane.</desc>
+<rect width="280" height="300" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a" text-anchor="middle">
+<text x="140" y="25" font-weight="700">Outside cell</text>
+<path d="M20 101h240M20 159h240" fill="none" stroke="#23656c" stroke-width="4"/>
+<path d="M110 87q30 13 60 0v78q-30 13-60 0Z" fill="#b9c9ee" stroke="#4b6491" stroke-width="3"/>
+<path d="M130 65h20l-3 20h-14Z" fill="#e7b783" stroke="#98451e" stroke-width="2"/>
+<path d="M140 41v17m-6-7 6 7 6-7" fill="none" stroke="#98451e" stroke-width="2"/>
+<ellipse cx="212" cy="173" rx="24" ry="11" fill="#d8c7e4" stroke="#69447f" stroke-width="2"/>
+<path d="M140 173v27m-6-7 6 7 6-7" fill="none" stroke="#23558c" stroke-width="2.5"/>
+<text x="140" y="228">Response in cell</text>
+<text x="72" y="69">Signal</text><text x="62" y="137">Receptor</text>
+<text x="140" y="265">Peripheral protein is</text><text x="140" y="287">on the inner surface</text>
+</g></svg>

@@ -70,6 +70,6 @@
     <text x="250" y="108">Vacuole</text>
     <text x="250" y="155">Nucleus</text>
     <text x="250" y="196">DNA</text>
-    <text x="233" y="273">Mitochondrion</text>
+    <text x="355" y="273" text-anchor="end">Mitochondrion</text>
   </g>
 </svg>

@@ -423,6 +423,9 @@ window.KeystoneHumanLessons = {
         "Electrical signals travel along neurones. At a chemical synapse, a neurotransmitter carries information across the gap. A relay neurone in the spinal cord can connect sensory input to a motor response.",
         "Myelin insulates sections of an axon. Current spreads quickly under myelin and action potentials are regenerated at nodes of Ranvier, the small gaps in the sheath. This faster node-to-node propagation is saltatory conduction. In multiple sclerosis, damage to myelin in the CNS can slow or interrupt conduction along affected axons."
       ],
+      explanationDiagram: {src:"/human-biology/myelinated-axon.svg",width:280,height:270,compact:true,
+        alt:"A schematic axon has three myelin-covered sections separated by nodes of Ranvier. An arrow shows current spreading along the axon, and the nodes are marked as places where action potentials regenerate.",
+        caption:"Follow current under the myelin to the gaps. Action potentials regenerate at the nodes; the drawings are simplified."},
       visual: "model",
       nodes: ["Receptor and sensory neurone", "Relay in the spinal cord", "Motor neurone and effector"],
       model: [
@@ -505,6 +508,20 @@ window.KeystoneHumanLessons = {
         "A mature erythrocyte (red blood cell) is a flexible biconcave disc. Its thin centre shortens the diffusion distance for oxygen. Loss of the nucleus leaves room for haemoglobin, which binds oxygen. Its flexible membrane helps it pass through narrow capillaries.",
         "White blood cells have nuclei. A nuclear outline can help you recognise a cell. To explain its function, look for the equipment it uses to recognise, engulf or release material."
       ],
+      teachingDiagram: {src:"/human-biology/red-cell-section.svg",width:220,height:260,compact:true,
+        alt:"A schematic side section of a mature red blood cell shows a thin centre, no nucleus, and dots representing haemoglobin. An arrow shows oxygen entering the cell.",
+        caption:"Follow oxygen into the thin centre; the dots represent haemoglobin, which binds oxygen. A mature human red cell has no nucleus. The section is schematic and not to scale."},
+      explanationPhoto: {src:"/assets/micrographs/hb-blood-cells-sem.webp",width:500,height:326,
+        alt:"Colourised scanning electron micrograph: a red blood cell at left, a platelet in the centre and a white blood cell at right.",
+        caption:"Notice the red blood cell's indented shape at left. The colours have been added to this electron micrograph.",
+        source:"https://commons.wikimedia.org/wiki/File:Red_White_Blood_cells.jpg",credit:"Electron Microscopy Facility, NCI-Frederick",
+        licence:"Public domain (US government work)",licenceUrl:"https://commons.wikimedia.org/wiki/Template:PD-USGov",changes:"Converted to WebP; no crop"},
+      comparisonDiagram: {src:"/human-biology/white-cell-nuclei.svg",width:220,height:300,compact:true,
+        alt:"Four simplified white cells. The neutrophil has a multilobed nucleus, the lymphocyte a large rounded nucleus, the eosinophil a two-lobed nucleus and red granules, and the monocyte an indented nucleus.",
+        caption:"Compare the nucleus shapes and the eosinophil granules before reading the table. These are simplified diagrams, not size-matched photographs; a nucleus alone does not establish a cell's function."},
+      comparisonDiagrams: [{src:"/human-biology/white-cell-defence.svg",width:220,height:300,compact:true,
+        alt:"A phagocyte surrounds a small particle and encloses it in a compartment. In a separate example a cell releases granule contents towards an external target surface.",
+        caption:"Compare enclosing a small particle with releasing granule contents towards a target too large to engulf. The drawings are simplified."}],
       compare: {caption: "How four white cells defend the body", head: ["Cell", "Feature and consequence"], rows: [
         ["Neutrophil", "A flexible cell with a multi-lobed nucleus can move through tissue. It engulfs particles and delivers granule contents to the compartment holding them."],
         ["Lymphocyte", "Many small lymphocytes have a large rounded nucleus and little visible cytoplasm. Specific receptors on B and T cells recognise particular antigens. Activated B cells can give rise to antibody-secreting plasma cells."],
@@ -638,7 +655,7 @@ window.KeystoneHumanLessons = {
         [["The cell is releasing twice as much digestive enzyme as a resting cell.", "A single section shows structures. To compare release rates, measure product leaving comparable cells over time."], ["The dark particles show that the digestive enzymes are already active in the cytoplasm.", "Small particles along membrane surfaces are consistent with ribosomes. Their appearance cannot establish digestive enzyme activity."], ["Membranes with particles along their surfaces support a capacity to make proteins on rough ER.", ""]],
         "The membrane profiles and attached particles support an interpretation of rough ER in a secretory cell. The image gives structural evidence and cannot measure secretion rate.",
         ["Find the stacks outside the large pale region. What kind of evidence can a still section provide?"], {
-          photo:{src:"/assets/micrographs/hb-secretory-field.webp",width:640,height:454,alt:"Grayscale thin section. A large mottled region fills the centre. Closely spaced membrane profiles run beside its edges, with small dark particles along them.",source:"https://commons.wikimedia.org/wiki/File:Mammalian_pancreatic_tissue,_nuclear_pores_and_rough_endoplasmic_reticulum.jpg",credit:"Louisa Howard, Dartmouth College",licence:"Public domain",licenceUrl:"https://commons.wikimedia.org/wiki/File:Mammalian_pancreatic_tissue,_nuclear_pores_and_rough_endoplasmic_reticulum.jpg#Licensing",changes:"Footer cropped and image converted to WebP"}
+          photo:{src:"/assets/micrographs/hb-pancreas-tem.webp",width:640,height:480,alt:"Grayscale thin section. A large mottled region fills the centre. Closely spaced membrane profiles run beside its edges, with small dark particles along them. The original scale bar at the bottom is 500 nm.",source:"https://commons.wikimedia.org/wiki/File:Mammalian_pancreatic_tissue,_nuclear_pores_and_rough_endoplasmic_reticulum.jpg",credit:"Louisa Howard, Dartmouth College",licence:"Public domain",licenceUrl:"https://commons.wikimedia.org/wiki/File:Mammalian_pancreatic_tissue,_nuclear_pores_and_rough_endoplasmic_reticulum.jpg#Licensing",changes:"Converted to WebP; no crop"}
         }),
       practice: "f170-lysosome-evidence",
       further: [["challenge/f170/f170-nucleolus-export","Distinguish assembly from export"],["challenge/f170/f170-ribosome-fractions","Interpret ribosome measurements"]]
@@ -676,17 +693,15 @@ window.KeystoneHumanLessons = {
 (function () {
   const { choice, written } = window.KeystoneHumanTeaching;
   const commons = "https://commons.wikimedia.org/wiki/File:";
-  const chromosomeSource = commons + "Condensation_and_resolution_of_human_sister_chromatids_in_early_mitosis.svg";
   Object.assign(window.KeystoneHumanLessons, {
     "f170/1.1.5": {
       revision: 1,
-      goal: "Distinguish copying DNA from separating chromosomes, and support an interpretation of a real micrograph.",
+      goal: "Distinguish copying DNA from separating chromosomes and trace the chromatids in a model.",
       activate: ["What changes during interphase?", "Cells grow, make proteins and copy their DNA during S (synthesis) phase. They continue preparing for division in G2. Individual chromosomes are usually too diffuse to distinguish in an ordinary light micrograph of interphase."],
       explain: ["One unreplicated chromosome contains one double-stranded DNA molecule. After S phase it has two sister chromatids held together around their centromere regions. It is still one replicated chromosome. A chromatid runs lengthways along the chromosome.",
         "In prophase, chromosomes condense and the spindle begins to form. Once the nuclear envelope breaks down, spindle fibres attach at the centromere regions. In metaphase the chromosomes align at the equator. In anaphase sister chromatids separate. Each is now a daughter chromosome. In telophase nuclei re-form around the two sets.",
         "Mitosis divides the nucleus. Cytokinesis divides the cytoplasm and can overlap the end of mitosis. An animal cell forms a cleavage furrow. A plant cell forms a cell plate. Early erythroblasts in marrow can divide. Mature human erythrocytes have lost their nucleus and cannot enter another mitosis."],
-      photo: {src:"/assets/micrographs/hb-chromosome-sem.webp",width:230,height:268,alt:"Scanning electron micrograph of an isolated human metaphase chromosome. Two ridged lengths run alongside each other and narrow near the same point, closer to one end.",source:chromosomeSource,credit:"Adrian T. Sumner, figure by David O. Morgan",licence:"Attribution terms",licenceUrl:chromosomeSource+"#Licensing",changes:"Metaphase panel cropped and converted to WebP"},
-      modelTitle: "Count one replicated chromosome in an electron micrograph",
+      modelTitle: "Count one replicated chromosome in a model",
       model: ["Follow one sister chromatid from one tip through the narrow region to its other tip. The short and long arms on that side belong to the same chromatid.",
         "Trace the other length. The two sisters are closely joined near the constriction, the centromere region. This is one replicated chromosome with two DNA molecules.",
         "In a model body cell with four chromosomes before S phase, the replicated cell has four chromosomes and eight DNA molecules before separation. At the end of mitosis and cytokinesis, each daughter has four chromosomes and four DNA molecules."],
@@ -728,4 +743,28 @@ window.KeystoneHumanLessons = {
       practice:"f170-division-variation"
     }
   });
+})();
+
+// Keep cell examples alongside their relevant explanation paragraphs.
+(function () {
+  const lesson = window.KeystoneHumanLessons["f170/1.1.1"];
+  lesson.explainPhotos = {0:[lesson.explanationPhoto]};
+  lesson.explainDiagrams = {0:[lesson.teachingDiagram], 1:[lesson.comparisonDiagram, ...lesson.comparisonDiagrams]};
+  lesson.teachingDiagramModelOnly = true;
+  delete lesson.explanationPhoto;
+  delete lesson.comparisonDiagram;
+  delete lesson.comparisonDiagrams;
+})();
+
+// Keep the myelin and reflex explanations with their own visual evidence.
+(function () {
+  const lesson = window.KeystoneHumanLessons["f170/3.2.1"];
+  const myelin = lesson.explanationDiagram;
+  const reflex = {src:"/human-biology/reflex-pathway.svg",width:220,height:320,compact:true,
+    alt:"A simplified pathway runs from a receptor along a sensory neurone to synapses and a relay neurone in the spinal cord, then along a motor neurone to a muscle effector.",
+    caption:"Follow sensory input to the spinal cord and motor output to the muscle. At each indicated synapse, a neurotransmitter carries the signal across the gap."};
+  lesson.myelinDiagram = myelin;
+  lesson.explanationDiagram = null;
+  lesson.explainDiagrams = {0:[reflex], 1:[myelin]};
+  lesson.modelDiagrams = {0:reflex, 1:reflex, 2:reflex};
 })();

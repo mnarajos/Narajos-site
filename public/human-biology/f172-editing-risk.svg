@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 285" width="280" height="285" role="img" aria-labelledby="title desc">
+<title id="title">A possible editing risk</title><desc id="desc">A schematic DNA region has an intended target and another site. After an editing attempt, the intended target is altered and an unintended change at another site is shown as a possible off-target event. This is not a measured frequency or a claim that every treatment causes such a change.</desc>
+<style>text{font:18px system-ui,sans-serif;fill:#203c49}.head{font-weight:700}.small{font-size:16px}.arrow{stroke:#286d70;stroke-width:3;fill:none;marker-end:url(#a)}</style>
+<defs><marker id="a" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3z" fill="#286d70"/></marker></defs>
+<text x="140" y="24" text-anchor="middle" class="head">A possible editing risk</text>
+<text x="140" y="53" text-anchor="middle" class="small">Before editing</text><path d="M32 78h216" stroke="#477d9d" stroke-width="8"/><circle cx="82" cy="78" r="9" fill="#f1d8c7" stroke="#a55b32" stroke-width="2"/><circle cx="198" cy="78" r="9" fill="#dceef4" stroke="#39718b" stroke-width="2"/>
+<text x="82" y="108" text-anchor="middle" class="small">Target</text><text x="198" y="108" text-anchor="middle" class="small">Other site</text>
+<path class="arrow" d="M140 120v28"/><text x="140" y="173" text-anchor="middle" class="small">Possible result</text>
+<path d="M32 198h216" stroke="#477d9d" stroke-width="8"/><circle cx="82" cy="198" r="9" fill="#9fca9f" stroke="#397b6f" stroke-width="2"/><circle cx="198" cy="198" r="9" fill="#f1d8c7" stroke="#a55b32" stroke-width="2"/>
+<text x="82" y="229" text-anchor="middle" class="small">Edited</text><text x="198" y="229" text-anchor="middle" class="small">Unintended</text><text x="198" y="250" text-anchor="middle" class="small">change</text>
+<text x="140" y="276" text-anchor="middle" class="small">A schematic possibility, not a rate.</text>
+</svg>

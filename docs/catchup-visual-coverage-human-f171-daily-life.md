@@ -1,0 +1,29 @@
+# F171: daily-life and healthcare-impact teaching blocks
+
+This record covers the final explanation paragraph on seven F171 comparison routes. These illustrations are schematic possible examples, not a clinical prediction, a prescribed adaptation or evidence about an individual. The original figure module cites the relevant OCR specification and NHS condition sources. Scientific and explanatory usefulness requires review beyond checking that a figure loads.
+
+| Exact paragraph | Adjacent figure and relationship | Accuracy / teaching relevance | Readability and limitations |
+| --- | --- | --- | --- |
+| `f171/1.2.1.movement`, explanation 4 | `f171-grip-fasteners.svg` compares a small button with a larger loop on a zip pull. | The comparison shows a different possible grip when dressing is difficult. Independently reviewed as a conditional applied example. | Wired 320/1280 checked. The aid is an example and does not guarantee independence or suit every person; caring responsibilities and therapy remain in text. |
+| `f171/1.2.1.aorta`, explanation 4 | `f171-aorta-measurements.svg` distinguishes aortic scan measurement and cuff pressure; `f171-care-activity-timeline.svg` shows an illustrative overlap between an activity and care. | Shows why different checks and, potentially, changes to personal plans are relevant. Independently reviewed as a conditional applied example. | Wired 320/1280 checked. Timeline does not specify an actual appointment or schedule; it cannot predict service needs. |
+| `f171/1.2.1.airways`, explanation 4 | `f171-activity-breathlessness.svg` shows a possible pause while using steps. | Relates an episode of breathlessness to one possible interruption of activity. Independently reviewed as a conditional applied example. | Wired 320/1280 checked. Not everyone experiences the same symptoms or needs a pause. |
+| `f171/1.2.1.digestive`, explanation 4 | `f171-travel-urgency.svg` shows a hypothetical journey with a planned stop near a toilet. | Connects bowel urgency to a possible change in journey planning. Independently reviewed as a conditional applied example. | Wired 320/1280 checked. Planning is not treatment; impacts vary. |
+| `f171/1.2.1.renal`, explanation 4 | `f171-care-activity-timeline.svg` shows a care visit or treatment overlapping planned activity. | Illustrates how arranging treatment can affect routines. Independently reviewed as a conditional applied example. | Wired 320/1280 checked. The schematic does not imply every person needs kidney replacement therapy. |
+| `f171/1.2.1.oxygen`, explanation 5 | `f171-activity-breathlessness.svg` and `f171-care-activity-timeline.svg`. | Show a possible activity interruption and a possible treatment/school or work scheduling conflict. Independently reviewed as a conditional applied example. | Wired 320/1280 checked. They do not assert every person experiences these effects, identify a cause, or prescribe a schedule. |
+| `f171/1.2.1.tissues`, explanation 4 | `f171-walking-mechanisms.svg` compares disrupted nerve signalling, an inflamed joint and weakened bone under load. | Shows different routes that can contribute to a shared walking difficulty. Independently reviewed as a conditional applied example. | Wired 320/1280 checked. The diagrams do not identify a diagnosis or predict an individual's needs. |
+
+On all seven routes, each new figure was visible beside the stated teaching paragraph and was explicitly hidden when independent practice opened. Independent science and teaching-quality review found no substantive scientific error; alternative descriptions were corrected to match the drawn approaching fingertips and paused activity. The oxygen route now uses a fatigue-specific caption rather than equating fatigue with breathlessness. Images do not demonstrate understanding.
+
+## Matching reachable recap blocks
+
+The following are distinct short-recap routes, not the opening guided pages. They reuse the reviewed figures and their conditional, route-specific text alternatives and captions. Each matching paragraph and all figures were checked on the wired route at 320 and 1280 pixels, with no horizontal page overflow. Each associated practice route was checked and did not contain its recap figures.
+
+| Exact recap block | Adjacent figure(s) | Scientific accuracy and teaching relevance | Readability / limits |
+| --- | --- | --- | --- |
+| `f171/1.2.1.movement/3` | `f171-grip-fasteners.svg` | Compares one possible grip adaptation for dressing; independently reviewed. | 320/1280 checked; no aid or independence outcome is guaranteed. |
+| `f171/1.2.1.aorta/3` | `f171-aorta-measurements.svg`, `f171-care-activity-timeline.svg` | Shows different monitored quantities and a possible overlap between a care visit and planned activity. | 320/1280 checked; no actual schedule or service demand is predicted. |
+| `f171/1.2.1.airways/3` | `f171-activity-breathlessness.svg` | Shows one possible activity interruption associated with breathlessness. | 320/1280 checked; symptoms and needs vary. |
+| `f171/1.2.1.digestive/3` | `f171-travel-urgency.svg` | Connects bowel urgency to a possible journey-planning adjustment. | 320/1280 checked; the route is illustrative, not treatment. |
+| `f171/1.2.1.renal/3` | `f171-care-activity-timeline.svg` | Shows how a care visit or treatment can overlap a planned activity. | 320/1280 checked; does not imply every person needs renal replacement therapy. |
+| `f171/1.2.1.oxygen/4` | `f171-activity-breathlessness.svg`, `f171-care-activity-timeline.svg` | Uses a fatigue-specific caption for one possible pause and a separate illustrative care/activity conflict. | 320/1280 checked; fatigue and breathlessness are not equated. |
+| `f171/1.2.1.tissues/3` | `f171-walking-mechanisms.svg` | Compares nervous, joint and bone routes that can contribute to walking difficulty. | 320/1280 checked; not an individual diagnosis or prediction of support needs. |

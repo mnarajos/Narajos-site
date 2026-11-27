@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 390" role="img" aria-labelledby="title desc">
+<title id="title">FSH and LH act on different testicular cells</title><desc id="desc">The anterior pituitary releases FSH and LH into blood. FSH acts on Sertoli cells to support sperm production. LH acts on Leydig cells to stimulate testosterone production; testosterone also supports sperm production.</desc>
+<defs><marker id="a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0v7l6-3.5z" fill="#23656c"/></marker></defs><rect width="280" height="390" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Anterior pituitary</text><text x="140" y="50">Hormones travel in blood</text>
+<g stroke="#23656c" stroke-width="2" marker-end="url(#a)"><path d="M128 59L70 96"/><path d="M152 59l58 37"/></g><text x="70" y="120" font-weight="700">FSH</text><text x="210" y="120" font-weight="700">LH</text>
+<g stroke="#23656c" stroke-width="2" marker-end="url(#a)"><path d="M70 129v22"/><path d="M210 129v22"/></g>
+<circle cx="70" cy="180" r="27" fill="#e5d9ec" stroke="#69447f" stroke-width="2"/><circle cx="210" cy="180" r="27" fill="#f9dfc8" stroke="#98451e" stroke-width="2"/>
+<text x="70" y="230">Sertoli cells</text><text x="210" y="230">Leydig cells</text>
+<path d="M210 238v22" stroke="#23656c" stroke-width="2" marker-end="url(#a)"/><text x="210" y="283">Testosterone</text>
+<g fill="none" stroke="#23656c" stroke-width="2" marker-end="url(#a)"><path d="M70 240v70l45 23"/><path d="M210 292v18l-45 23"/></g>
+<text x="140" y="362" font-weight="700">Support sperm production</text>
+</g></svg>

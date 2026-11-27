@@ -1,0 +1,30 @@
+/* Original illustrative models for variation and population allele frequencies. */
+(function () {
+ "use strict";
+ const figures={
+  "a7/varsel/0": [{
+   title:"Environment can affect phenotype",
+   alt:"A hypothetical comparison shows two genetically identical plants grown with different water supplies. The plant with adequate water is taller than the plant with very little water. This illustrates an environmental effect on phenotype, not measured results or a universal response.",
+   caption:"Compare plants with the same genotype but different water supplies. Their phenotype can differ because of the environment; this is a hypothetical example, not measured growth data.",
+   height:290,
+   art:`<text x="150" y="24" text-anchor="middle">Same genotype · different water</text><path d="M73 196V82M73 143q-35-1-35-31q32 0 35 31m0-27q33-2 33-32q-31 0-33 32" fill="#a6d3ab" stroke="#4b8361" stroke-width="3"/><path d="M221 196V139M221 171q-24-1-24-22q22 0 24 22m0-15q24-1 24-22q-22 0-24 22" fill="#d9e8ca" stroke="#789464" stroke-width="3"/><path d="M20 198h260" stroke="#805d45" stroke-width="3"/><path d="M49 77q-12-16 0-31q12 15 0 31ZM73 77q-12-16 0-31q12 15 0 31ZM97 77q-12-16 0-31q12 15 0 31ZM221 111q-12-16 0-31q12 15 0 31Z" fill="#cbdcf0" stroke="#537a94" stroke-width="2"/><text x="73" y="231" text-anchor="middle">Adequate</text><text x="73" y="253" text-anchor="middle">water</text><text x="221" y="231" text-anchor="middle">Little</text><text x="221" y="253" text-anchor="middle">water</text>`
+  },{
+   title:"Mutation and combinations of alleles",
+   alt:"A schematic DNA change can create a new allele a from allele A. In a separate cross, parent 1, Aa, makes A or a gametes by meiosis and parent 2, AA, makes A gametes; each depicted fertilisation combines one gamete from each parent. Fertilisation can combine them to give offspring genotypes AA or Aa. The example is hypothetical and omits many meiotic details.",
+   caption:"Follow the two sources of variation: mutation can create a new allele; meiosis and random fertilisation combine alleles in offspring. Each outcome combines a gamete from parent 1 (Aa) with one from parent 2 (AA). Mutations can also occur during gamete formation.",
+   height:400,
+   art:`<text x="150" y="24" text-anchor="middle">Mutation can create an allele</text><path d="M48 57h58M194 57h58" stroke="#537a94" stroke-width="5"/><circle cx="77" cy="57" r="14" fill="#f1dfc6" stroke="#a5792e" stroke-width="2"/><circle cx="223" cy="57" r="14" fill="#e3edf5" stroke="#537a94" stroke-width="2"/><text x="77" y="63" text-anchor="middle">A</text><text x="223" y="63" text-anchor="middle">a</text><path d="M112 57h76m-7-6 7 6-7 6" stroke="#344958" stroke-width="2" fill="none"/><text x="150" y="110" text-anchor="middle">Separate example: Aa × AA</text><text x="150" y="139" text-anchor="middle">Gametes: 1 = Aa · 2 = AA</text><text x="58" y="163" text-anchor="middle">1</text><text x="112" y="163" text-anchor="middle">2</text><text x="188" y="163" text-anchor="middle">1</text><text x="242" y="163" text-anchor="middle">2</text><g transform="translate(0 25)"><circle cx="58" cy="178" r="20" fill="#f1dfc6" stroke="#a5792e" stroke-width="2"/><circle cx="112" cy="178" r="20" fill="#f1dfc6" stroke="#a5792e" stroke-width="2"/><circle cx="188" cy="178" r="20" fill="#e3edf5" stroke="#537a94" stroke-width="2"/><circle cx="242" cy="178" r="20" fill="#f1dfc6" stroke="#a5792e" stroke-width="2"/><text x="58" y="184" text-anchor="middle">A</text><text x="112" y="184" text-anchor="middle">A</text><text x="188" y="184" text-anchor="middle">a</text><text x="242" y="184" text-anchor="middle">A</text><path d="M58 202l27 30m-1-9 1 9-9-2M112 202l-27 30m9-2-9 2 1-9M188 202l27 30m-1-9 1 9-9-2M242 202l-27 30m9-2-9 2 1-9" stroke="#344958" stroke-width="2" fill="none"/><text x="85" y="263" text-anchor="middle">AA</text><text x="215" y="263" text-anchor="middle">Aa</text><text x="150" y="307" text-anchor="middle">Two possible combinations</text><text x="150" y="337" text-anchor="middle">after fertilisation</text></g>`
+  }],
+  "a7/hardy/0": [{
+   title:"Alleles in a population",
+   alt:"A hypothetical population at one time contains four diploid individuals of one species. At one gene their genotypes are AA, Aa, Aa and aa. Across these eight allele copies there are four A and four a, so each allele has frequency four eighths or one half. The whole gene pool contains alleles of all genes, not just this one.",
+   caption:"Count allele copies for this one gene: four A and four a among eight copies, so each has frequency ½. A population's full gene pool contains alleles of all its genes; this example is hypothetical.",
+   height:325,
+   art:`<text x="150" y="24" text-anchor="middle">One population · one time</text><path d="M25 45h250v159H25z" fill="#f2f7f6" stroke="#789c94" stroke-width="2" stroke-dasharray="6 4"/><g fill="#d9e8ca" stroke="#4b8361" stroke-width="2"><ellipse cx="82" cy="92" rx="28" ry="22"/><ellipse cx="218" cy="92" rx="28" ry="22"/><ellipse cx="82" cy="161" rx="28" ry="22"/><ellipse cx="218" cy="161" rx="28" ry="22"/></g><text x="82" y="98" text-anchor="middle">AA</text><text x="218" y="98" text-anchor="middle">Aa</text><text x="82" y="167" text-anchor="middle">Aa</text><text x="218" y="167" text-anchor="middle">aa</text><text x="150" y="235" text-anchor="middle">One gene: 8 allele copies</text><text x="150" y="267" text-anchor="middle">A: 4/8 = ½</text><text x="150" y="295" text-anchor="middle">a: 4/8 = ½</text>`
+  }]
+ };
+ window.ALevelVariationPool={render(topic,id,group){
+  const list=figures[topic+"/"+id+"/"+group];if(!list)return "";
+  return list.map(f=>`<figure class="kc-visual"><div class="kc-visual-heading"><strong>${f.title}</strong></div><div class="kc-visual-art kc-visual-art-compact"><svg viewBox="0 0 300 ${f.height}" role="img" aria-label="${f.alt}" xmlns="http://www.w3.org/2000/svg" style="font:16px system-ui,sans-serif;fill:#233e4c">${f.art}</svg></div><figcaption>${f.caption}</figcaption></figure>`).join("");
+ }};
+})();

@@ -79,8 +79,9 @@ try {
   await fits();
 
   await open("/alevel/#catchup-a1-enzfactors");
-  const diagram = page.locator(".kc-visual-art");
-  await diagram.locator("svg").waitFor({ state: "visible" });
+  const rateGraph = page.getByRole("img", {name: /Graph of initial reaction rate against substrate concentration/});
+  const diagram = page.locator(".kc-visual-art").filter({has: rateGraph});
+  await rateGraph.waitFor({ state: "visible" });
   assert(await diagram.evaluate(el => el.scrollWidth > el.clientWidth), "A large diagram should scroll inside its panel");
   assert(await page.locator(".kc-simulation-link").count() > 0);
   await fits();

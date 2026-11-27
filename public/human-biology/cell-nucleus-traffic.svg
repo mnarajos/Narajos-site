@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 300" role="img" aria-labelledby="title description">
+<title id="title">Nucleus and nuclear pores</title>
+<desc id="description">A nucleus contains DNA and a nucleolus. A double nuclear envelope has pores. Messenger RNA and ribosome subunits are shown passing through a pore into the cytoplasm.</desc>
+<rect width="280" height="300" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="14" fill="#263e4a">
+<ellipse cx="101" cy="145" rx="78" ry="82" fill="#eee8f4" stroke="#69447f" stroke-width="3"/>
+<ellipse cx="101" cy="145" rx="70" ry="74" fill="none" stroke="#69447f" stroke-width="2"/>
+<path d="M168 125v38M175 125v38" stroke="#f5faf9" stroke-width="7"/>
+<path d="M168 125v38M175 125v38" stroke="#eee8f4" stroke-width="3"/>
+<path d="M55 108c18-18 21 20 40 4s20 20 36 2M54 161c16-19 24 16 43-1s21 19 37 4" fill="none" stroke="#98451e" stroke-width="3"/>
+<circle cx="93" cy="193" r="18" fill="#c3abd1" stroke="#69447f" stroke-width="2"/>
+<path d="M140 135h72m-8-6 8 6-8 6M140 155h72m-8-6 8 6-8 6" fill="none" stroke="#23558c" stroke-width="2.5"/>
+<text x="88" y="42" text-anchor="middle" font-weight="700">Inside nucleus</text>
+<text x="67" y="89">DNA</text><path d="M84 93l2 12" stroke="#98451e"/>
+<text x="94" y="255" text-anchor="middle">Nucleolus</text><path d="M94 239v-27" stroke="#69447f"/>
+<text x="190" y="62">Nuclear</text><text x="190" y="80">envelope</text><path d="M190 84l-32 22" stroke="#69447f"/>
+<text x="204" y="113">Pore</text><path d="M202 117l-26 16" stroke="#263e4a"/>
+<text x="169" y="185" font-size="13">mRNA and</text><text x="169" y="203" font-size="13">subunits exit</text>
+<text x="140" y="284" text-anchor="middle">Nucleolus: rRNA and subunits</text>
+</g></svg>

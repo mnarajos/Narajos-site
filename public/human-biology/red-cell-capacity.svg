@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 300" role="img" aria-labelledby="title desc">
+<title id="title">Red-cell shape and haemoglobin</title>
+<desc id="desc">Two schematic red-cell sections have the same shape but different numbers of dots representing haemoglobin. The lower-haemoglobin example can bind less oxygen; the dots are not counts of actual molecules.</desc>
+<rect width="280" height="300" fill="#f5f9f8"/>
+<g font-family="sans-serif" fill="#183848" text-anchor="middle"><text x="140" y="24" font-size="16" font-weight="bold">Same shape, different contents</text><text x="140" y="53" font-size="15">More haemoglobin</text></g>
+<path d="M43 99 Q50 75 75 80 Q140 98 205 80 Q230 75 237 99 Q235 119 218 123 Q201 127 190 121 Q140 108 90 121 Q79 127 62 123 Q45 119 43 99Z" fill="#f5dfd8" stroke="#a55b54" stroke-width="3"/>
+<g fill="#a55b54"><circle cx="70" cy="101" r="5"/><circle cx="91" cy="101" r="5"/><circle cx="112" cy="104" r="5"/><circle cx="133" cy="104" r="5"/><circle cx="154" cy="104" r="5"/><circle cx="175" cy="101" r="5"/><circle cx="196" cy="101" r="5"/><circle cx="216" cy="101" r="5"/></g>
+<text x="140" y="157" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#183848">Less haemoglobin</text>
+<path d="M43 205 Q50 181 75 186 Q140 204 205 186 Q230 181 237 205 Q235 225 218 229 Q201 233 190 227 Q140 214 90 227 Q79 233 62 229 Q45 225 43 205Z" fill="#f5dfd8" stroke="#a55b54" stroke-width="3"/>
+<g fill="#a55b54"><circle cx="91" cy="207" r="5"/><circle cx="133" cy="210" r="5"/><circle cx="175" cy="207" r="5"/></g>
+<g font-family="sans-serif" font-size="14" fill="#183848" text-anchor="middle"><text x="140" y="262">Fewer dots: less capacity to bind O₂.</text><text x="140" y="283">Dots are schematic, not molecule counts.</text></g>
+</svg>

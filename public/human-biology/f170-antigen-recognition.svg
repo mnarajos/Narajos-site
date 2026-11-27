@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 320" role="img" aria-labelledby="title description">
+<title id="title">Recognising a different cell surface</title>
+<desc id="description">An immune cell encounters a donor cell. A surface protein on the donor has an extracellular carbohydrate chain and a protein antigen. Differences in donor cell surface antigens can trigger an immune response; the diagram is schematic.</desc>
+<rect width="280" height="320" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a" text-anchor="middle">
+<text x="75" y="29" font-weight="700">Donor cell</text><text x="207" y="29" font-weight="700">Immune cell</text>
+<path d="M89 51q-65 60 0 120" fill="none" stroke="#23656c" stroke-width="5"/>
+<path d="M191 51q65 60 0 120" fill="none" stroke="#69447f" stroke-width="5"/>
+<path d="M78 110h32v28H78Z" fill="#b9c9ee" stroke="#4b6491" stroke-width="2"/>
+<path d="M110 117h21m-7-8 7 8-7 8" fill="none" stroke="#69447f" stroke-width="3"/>
+<path d="M191 108h-29v23h29" fill="none" stroke="#98451e" stroke-width="4"/>
+<path d="M87 109v-23m0 8-10-9m10 5 10-10" fill="none" stroke="#69447f" stroke-width="3"/>
+<circle cx="77" cy="85" r="4" fill="#69447f"/><circle cx="97" cy="80" r="4" fill="#69447f"/>
+<path d="M90 175l4-37M202 175l-30-44" stroke="#263e4a" fill="none"/>
+<text x="72" y="195" font-size="14">Antigen</text><text x="212" y="195" font-size="14">Receptor</text>
+<text x="140" y="224">Different surface antigens</text><text x="140" y="246">can trigger a response</text>
+<text x="140" y="278">Outer chain is shown</text><text x="140" y="298">outside the donor cell</text>
+</g></svg>

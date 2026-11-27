@@ -224,7 +224,6 @@
     conditionId = id;
     condition = setting;
     controls.forEach(control => { control.checked = control.value === id; });
-    if (output.textContent !== setting.description) output.textContent = setting.description;
     updateReadings();
     draw();
   }
@@ -235,6 +234,12 @@
     const pressure = condition.pressure * particles.length / defaultCount;
     pressureReading.textContent = pressure.toFixed(1) + "×";
     pressureMeter.value = pressure;
+    // The default descriptions compare like-for-like particle counts. After a
+    // count change, report the current conditions instead of calling a 2×
+    // reading the starting pressure (or a 0.9× reading simply "higher").
+    const description = particles.length === defaultCount ? condition.description :
+      `${particles.length} particles in the ${conditionId === "warm" ? "warmer" : conditionId === "small" ? "smaller" : "starting"} box. Relative pressure is ${pressure.toFixed(1)} times the starting ${defaultCount}-particle box.`;
+    if (output.textContent !== description) output.textContent = description;
   }
 
   function startComparison() {

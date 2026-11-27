@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 375" role="img" aria-labelledby="title desc">
+<title id="title">Aerobic respiration and ATP</title><desc id="desc">A simplified cell pathway shows glucose broken down by glycolysis in the cytoplasm to pyruvate. Pyruvate enters a mitochondrion; oxygen enters and carbon dioxide and water leave. Aerobic respiration transfers energy for ATP formation, and ATP supplies energy for cell processes. Some ATP is also made in glycolysis. Intermediate reactions are omitted.</desc>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5 0 10Z" fill="#285f68"/></marker></defs><rect width="280" height="375" rx="12" fill="#f4f9f8"/>
+<g font-family="system-ui,sans-serif" font-size="16" text-anchor="middle" fill="#243e49">
+<text x="140" y="24" font-weight="700">Aerobic respiration</text><text x="140" y="49">Glucose</text>
+<path d="M140 55v19" stroke="#285f68" stroke-width="2" marker-end="url(#ar)"/><text x="140" y="94">Glycolysis in cytoplasm</text><text x="140" y="116">makes pyruvate</text>
+
+<ellipse cx="140" cy="210" rx="83" ry="52" fill="#f2ded1" stroke="#98451e" stroke-width="3"/><path d="M76 204q8-23 16 0t16 0t16 0t16 0t16 0t16 0t16 0t16 0" fill="none" stroke="#98451e" stroke-width="2"/>
+<path d="M140 122v43" stroke="#285f68" stroke-width="2" marker-end="url(#ar)"/><text x="140" y="184">Mitochondrion</text><text x="140" y="231">More ATP made</text>
+<text x="27" y="179">O₂</text><path d="M37 185l27 12" stroke="#285f68" stroke-width="2" marker-end="url(#ar)"/>
+<path d="M218 201h25" stroke="#285f68" stroke-width="2" marker-end="url(#ar)"/><text x="253" y="187">CO₂</text><text x="253" y="220">H₂O</text>
+<path d="M140 267v25" stroke="#285f68" stroke-width="2" marker-end="url(#ar)"/><text x="140" y="314">ATP supplies energy</text><text x="140" y="335">for cell processes</text><text x="140" y="360" font-size="14">Some ATP also forms in glycolysis.</text>
+</g></svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 500" role="img" aria-labelledby="title desc">
+<title id="title">From cardiac muscle cell to circulatory system</title><desc id="desc">A schematic traces a cardiac muscle cell to cardiac muscle tissue, the heart, and the circulatory system. Many muscle cells contribute to cardiac muscle tissue; the heart also contains other tissues, and the circulatory system includes the heart and vessels.</desc>
+<rect width="280" height="500" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Cardiac muscle cell</text><path d="M72 48h98l23-10 12 9-20 13 20 13-12 9-23-10H72z" fill="#f9dfc8" stroke="#98451e" stroke-width="2"/><path d="M95 50v20m20-20v20m20-20v20m20-20v20" stroke="#98451e" stroke-width="2"/>
+<path d="M140 87v21m-6-7 6 7 6-7" fill="none" stroke="#23656c" stroke-width="2"/>
+<text x="140" y="132" font-weight="700">Cardiac muscle tissue</text><g fill="none" stroke="#98451e" stroke-width="5"><path d="M75 149h130M75 162h130M75 175h130"/></g><path d="M102 149v26M140 149v26M178 149v26" stroke="#98451e" stroke-width="2"/><path d="M140 184v19m-6-7 6 7 6-7" fill="none" stroke="#23656c" stroke-width="2"/>
+<text x="140" y="227" font-weight="700">Heart: an organ</text><path d="M140 299C113 278 90 261 98 244C105 230 128 234 140 248C152 234 175 230 182 244C190 261 167 278 140 299z" fill="#f9dfc8" stroke="#98451e" stroke-width="2.5"/><text x="140" y="325">Several tissues work together</text>
+<path d="M140 332v19m-6-7 6 7 6-7" fill="none" stroke="#23656c" stroke-width="2"/>
+<text x="140" y="375" font-weight="700">Circulatory system</text><path d="M140 418c-13-11-22-19-17-27 3-6 13-4 17 2 4-6 14-8 17-2 5 8-4 16-17 27z" fill="#f9dfc8" stroke="#98451e" stroke-width="2"/><path d="M125 403H65v42h150v-42h-60" fill="none" stroke="#23656c" stroke-width="3"/>
+<text x="140" y="474">Heart and blood vessels</text>
+</g></svg>

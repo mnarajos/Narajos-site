@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="350" viewBox="0 0 280 350" role="img" aria-labelledby="title desc">
+<title id="title">Medulla and physiological control</title><desc id="desc">A side-view schematic highlights the medulla in the lower brainstem, above the spinal cord. Arrows connect it to heart-rate regulation and the muscles of breathing. The arrows indicate functions, not anatomical nerve routes; other brainstem regions also contribute.</desc>
+<rect width="280" height="350" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="24" font-weight="700">Medulla in the brainstem</text>
+<g transform="translate(37 28) scale(.72)"><path d="M45 124 C27 103 38 75 65 70 C76 50 108 50 124 59 C149 43 183 57 191 77 C214 78 227 99 219 121 C224 138 210 150 190 151 L101 162 C75 160 51 147 45 124Z" fill="#e6f3ef" stroke="#397b6f" stroke-width="3"/><ellipse cx="195" cy="160" rx="32" ry="25" fill="#f9eadd" stroke="#a55b32" stroke-width="3"/><path d="M155 150 L177 153 L171 194 Q169 209 166 220 L151 220 Q156 202 153 188Z" fill="#e9edf8" stroke="#647a9d" stroke-width="3"/><path d="M153 188L171 190Q169 209 166 220H151Q156 202 153 188Z" fill="#b693c6" stroke="#705886" stroke-width="2"/><path d="M160 221v25" stroke="#647a9d" stroke-width="12"/></g>
+<path d="M157 176l35 13" fill="none" stroke="#52666f" stroke-width="1.5"/><text x="204" y="206" font-size="15">Medulla</text>
+<path d="M143 195L70 221m8-9-8 9 11 1M153 201l50 20-8-7 8 7-11 3" fill="none" stroke="#286b73" stroke-width="2"/>
+<path d="M65 247c-14-15-30 3 0 23 30-20 14-38 0-23z" fill="#efb4aa" stroke="#a85f57" stroke-width="2"/>
+<path d="M208 236v10m-3-4q-14-11-18 4l-5 20q6 6 19 0v-19m10-5q14-11 18 4l5 20q-6 6-19 0v-19" fill="#dbe8f2" stroke="#6486a0" stroke-width="2"/><path d="M180 276q28-11 56 0" fill="none" stroke="#a65f76" stroke-width="3"/>
+<text x="65" y="296" font-size="15">Heart rate</text><text x="208" y="296" font-size="15">Breathing</text><text x="208" y="316" font-size="15">muscles</text>
+<text x="140" y="340" font-size="15">Brainstem circuits interact.</text>
+</g></svg>

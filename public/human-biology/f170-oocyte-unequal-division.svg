@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="350" viewBox="0 0 280 350" role="img" aria-labelledby="title desc">
+<title id="title">Unequal division of cytoplasm</title><desc id="desc">A primary oocyte completes meiosis I with unequal cytokinesis. A large secondary oocyte receives most of the cytoplasm, and a small first polar body receives much less. The schematic does not show chromosome numbers or all later stages.</desc>
+<rect width="280" height="350" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="25" font-weight="700">Unequal cytokinesis</text>
+<text x="140" y="54">Primary oocyte</text>
+<circle cx="140" cy="103" r="37" fill="#f3d7dc" stroke="#a65d7c" stroke-width="2.5"/>
+<path d="M140 147v23m-6-7 6 7 6-7" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<text x="140" y="193">Meiosis I and cytokinesis</text>
+<circle cx="90" cy="250" r="37" fill="#f3d7dc" stroke="#a65d7c" stroke-width="2.5"/>
+<circle cx="197" cy="250" r="14" fill="#f3d7dc" stroke="#a65d7c" stroke-width="2"/>
+<text x="90" y="307" font-size="15">Secondary</text><text x="90" y="328" font-size="15">oocyte</text>
+<text x="197" y="307" font-size="15">First polar</text><text x="197" y="328" font-size="15">body</text>
+</g></svg>

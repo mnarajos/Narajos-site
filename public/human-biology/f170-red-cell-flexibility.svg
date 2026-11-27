@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="315" viewBox="0 0 280 315" role="img" aria-labelledby="title desc">
+<title id="title">A flexible red cell in a narrow vessel</title><desc id="desc">A schematic red cell appears in two positions along a vessel. It changes shape to pass through a narrower part of the capillary. The diagram exaggerates the shape and is not to scale; flexibility helps passage while haemoglobin binds oxygen.</desc>
+<rect width="280" height="315" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="16">
+<text x="140" y="24" font-weight="700">A flexible red cell</text><text x="140" y="47">through a narrow capillary</text>
+<path d="M20 80H75q35 0 58 28h127M20 190H75q35 0 58-28h127" fill="none" stroke="#906477" stroke-width="3"/>
+<ellipse cx="62" cy="135" rx="15" ry="30" fill="#eaaa9e" stroke="#ad675e" stroke-width="2"/><ellipse cx="62" cy="135" rx="7" ry="14" fill="#f2cdc4"/>
+<path d="M91 135h36m-8-6 8 6-8 6" fill="none" stroke="#286b73" stroke-width="2.5"/>
+<path d="M147 135q13-17 39-17h26q16 0 27 17-11 17-27 17h-26q-26 0-39-17z" fill="#eaaa9e" stroke="#ad675e" stroke-width="2"/>
+<text x="140" y="220">Same cell: two positions</text>
+<text x="140" y="246">Shape change helps passage.</text>
+<text x="140" y="278" font-size="15">Haemoglobin binds oxygen.</text><text x="140" y="299" font-size="15">Schematic; not to scale.</text>
+</g></svg>

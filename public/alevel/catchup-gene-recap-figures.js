@@ -1,0 +1,15 @@
+/* Gene-expression recap diagrams and context-specific reuse. */
+(function(){
+ 'use strict';
+ const cdna={title:'From a gene to intron-free cDNA',alt:'A simplified gene contains exon, intron and exon regions. Transcription produces pre-mRNA, and splicing removes the intron to produce mature mRNA. Reverse transcriptase uses the mature mRNA as a template for complementary DNA; a second DNA strand can then be made.',caption:'Follow the gene through transcription and splicing. Reverse transcriptase makes cDNA from mature mRNA, so the cDNA lacks the introns removed from that transcript. Bacteria cannot splice eukaryotic introns; segments are schematic.',art:`<text x="150" y="24" text-anchor="middle">Gene · DNA</text><rect x="45" y="40" width="65" height="21" fill="#c7e2ef" stroke="#537a94"/><rect x="110" y="40" width="80" height="21" fill="#f0d3bb" stroke="#a76125"/><rect x="190" y="40" width="65" height="21" fill="#c7e2ef" stroke="#537a94"/><text x="77" y="56" text-anchor="middle">Exon</text><text x="150" y="56" text-anchor="middle">Intron</text><text x="222" y="56" text-anchor="middle">Exon</text><path d="M150 68v17m-5-5 5 5 5-5" fill="none" stroke="#344958" stroke-width="2"/><text x="150" y="108" text-anchor="middle">Transcription → pre-mRNA</text><path d="M150 117v17m-5-5 5 5 5-5" fill="none" stroke="#344958" stroke-width="2"/><text x="150" y="155" text-anchor="middle">Splicing removes introns</text><rect x="85" y="168" width="65" height="21" fill="#c7e2ef" stroke="#537a94"/><rect x="150" y="168" width="65" height="21" fill="#c7e2ef" stroke="#537a94"/><text x="150" y="216" text-anchor="middle">Mature mRNA · exons joined</text><path d="M150 224v17m-5-5 5 5 5-5" fill="none" stroke="#344958" stroke-width="2"/><text x="150" y="264" text-anchor="middle">Reverse transcriptase</text><text x="150" y="289" text-anchor="middle">→ cDNA → second DNA strand</text>`};
+ const pack=f=>`<figure class="kc-visual"><div class="kc-visual-heading"><strong>${f.title}</strong></div><div class="kc-visual-art kc-visual-art-compact"><svg viewBox="0 0 300 305" role="img" aria-label="${f.alt}" xmlns="http://www.w3.org/2000/svg" style="font:16px system-ui,sans-serif;fill:#233e4c">${f.art}</svg></div><figcaption>${f.caption}</figcaption></figure>`;
+ window.ALevelGeneRecapFigures={render(topic,id,group){if(topic!=='a8')return '';const key=id+'/'+group,c=window.ALevelGeneControlFigures,g=window.ALevelGeneRegulationFigures,t=window.ALevelGeneTechniques;
+  if(key==='ctx8/0')return (c?.render('a8','epigen',0)||'')+(c?.render('a8','epigen',1)||'');
+  if(key==='ctx8/1')return (g?.render('a8','rnai',1)||'')+pack(cdna);
+  if(key==='ctx8/2')return t?.render('a8','fragments',2)||'';
+  if(key==='traps8/0')return (t?.render('a8','mut8',1)||'')+(c?.render('a8','epigen',0)||'');
+  if(key==='traps8/1')return (c?.render('a8','epigen',1)||'')+(t?.render('a8','fragments',0)||'')+(g?.render('a8','fragments',1)||'');
+  if(key==='traps8/2')return g?.render('a8','fingerprint',1)||'';
+  return '';
+ }};
+})();

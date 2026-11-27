@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 290" role="img" aria-labelledby="title description">
+<title id="title">Diffusion through a membrane channel</title>
+<desc id="description">A permeant solute is more concentrated on the left than the right. It can cross through a membrane channel in both directions. More moves to the right overall, down the concentration gradient, without the channel using ATP.</desc>
+<rect width="280" height="290" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a" text-anchor="middle">
+<text x="140" y="24" font-weight="700">Facilitated diffusion</text>
+<text x="75" y="50">Higher</text><text x="205" y="50">Lower</text>
+<rect x="21" y="63" width="238" height="143" rx="8" fill="#e6f3fa" stroke="#23656c" stroke-width="2"/>
+<path d="M135 64v142m10-142v142" stroke="#23656c" stroke-width="3"/>
+<path d="M126 113h28v44h-28Z" fill="#d8c7e4" stroke="#69447f" stroke-width="2"/>
+<path d="M140 114v42" stroke="#fff" stroke-width="8"/>
+<g fill="#e7b783" stroke="#98451e"><circle cx="48" cy="87" r="6"/><circle cx="79" cy="104" r="6"/><circle cx="52" cy="150" r="6"/><circle cx="92" cy="178" r="6"/><circle cx="222" cy="93" r="6"/><circle cx="207" cy="179" r="6"/></g>
+<path d="M99 128h83m-8-6 8 6-8 6" fill="none" stroke="#23558c" stroke-width="4"/>
+<path d="M182 144H99m8-5-8 5 8 5" fill="none" stroke="#98451e" stroke-width="1.5"/>
+<text x="140" y="229">Channel protein</text>
+<text x="140" y="253">Net movement down</text><text x="140" y="275">the gradient</text>
+</g></svg>

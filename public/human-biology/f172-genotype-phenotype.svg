@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="315" viewBox="0 0 280 315" role="img" aria-labelledby="title desc">
+<title id="title">Genotype and phenotype in a fictional trait</title><desc id="desc">In this fictional single-gene trait, both RR and Rr give the dominant phenotype and rr gives the recessive phenotype. Rr carries a recessive r allele that may be passed on. Coloured circles are symbols for phenotypes, not actual appearance.</desc>
+<rect width="280" height="315" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16" fill="#243e49" text-anchor="middle">
+ <text x="140" y="25" font-weight="700">A fictional trait</text><text x="140" y="50">R is dominant</text>
+ <text x="45" y="82">Genotype</text><text x="179" y="82">Phenotype</text>
+ <text x="45" y="123" font-size="19">RR</text><circle cx="119" cy="117" r="11" fill="#80588f" stroke="#80588f" stroke-width="2"/><text x="196" y="123">Dominant</text>
+ <text x="45" y="177" font-size="19">Rr</text><circle cx="119" cy="171" r="11" fill="#80588f" stroke="#80588f" stroke-width="2"/><text x="196" y="177">Dominant</text>
+ <text x="45" y="231" font-size="19">rr</text><circle cx="119" cy="225" r="11" fill="#fff" stroke="#80588f" stroke-width="2"/><text x="196" y="231">Recessive</text>
+ <text x="140" y="272">Rr carries r and can pass it on.</text>
+ <text x="140" y="297" font-size="14">Symbols are not actual appearances.</text>
+</g></svg>

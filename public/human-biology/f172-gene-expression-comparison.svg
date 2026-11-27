@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="365" viewBox="0 0 280 365" role="img" aria-labelledby="title desc">
+<title id="title">A fictional gene therapy comparison</title><desc id="desc">Before treatment, four simplified target cells each make a small amount of functional protein. After treatment, two cells receive and express a functional copy and make more protein, while the other two were not reached and still make little. The cells and protein dots illustrate an example, not a measured response.</desc>
+<rect width="280" height="365" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16" fill="#243e49" text-anchor="middle">
+ <text x="140" y="25" font-weight="700">Fictional target cells</text>
+ <text x="140" y="55">Before treatment</text>
+ <g fill="#f0f1ed" stroke="#7b8b88" stroke-width="2"><circle cx="35" cy="91" r="23"/><circle cx="105" cy="91" r="23"/><circle cx="175" cy="91" r="23"/><circle cx="245" cy="91" r="23"/></g>
+ <g fill="#80588f"><circle cx="35" cy="91" r="4"/><circle cx="105" cy="91" r="4"/><circle cx="175" cy="91" r="4"/><circle cx="245" cy="91" r="4"/></g>
+ <text x="140" y="141">Each makes little protein</text>
+ <path d="M140 151v24m-6-6 6 6 6-6" stroke="#276972" stroke-width="2" fill="none"/>
+ <text x="140" y="201">After treatment</text>
+ <g stroke-width="2"><circle cx="35" cy="238" r="23" fill="#d8ece7" stroke="#32776d"/><circle cx="105" cy="238" r="23" fill="#d8ece7" stroke="#32776d"/><circle cx="175" cy="238" r="23" fill="#f0f1ed" stroke="#7b8b88"/><circle cx="245" cy="238" r="23" fill="#f0f1ed" stroke="#7b8b88"/></g>
+ <g fill="#80588f"><circle cx="28" cy="233" r="4"/><circle cx="42" cy="233" r="4"/><circle cx="35" cy="246" r="4"/><circle cx="98" cy="233" r="4"/><circle cx="112" cy="233" r="4"/><circle cx="105" cy="246" r="4"/><circle cx="175" cy="238" r="4"/><circle cx="245" cy="238" r="4"/></g>
+ <text x="70" y="280">Copy expressed</text><text x="210" y="280">Not reached</text>
+ <circle cx="28" cy="306" r="4" fill="#80588f"/><text x="43" y="312" text-anchor="start">Functional protein</text>
+ <text x="140" y="342">Illustrative counts, not results</text>
+</g></svg>

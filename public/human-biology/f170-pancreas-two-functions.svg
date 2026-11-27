@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 360" role="img" aria-labelledby="title desc">
+<title id="title">Two functions of the pancreas</title><desc id="desc">One schematic route shows pancreatic exocrine cells releasing digestive enzymes into a duct that carries them to the small intestine. A second shows endocrine islet cells releasing hormones, including insulin, into the blood.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5 0 10Z" fill="#285f68"/></marker></defs><rect width="280" height="360" rx="12" fill="#f4f9f8"/>
+<g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle" font-size="15">
+<text x="140" y="24" font-weight="700">Two pancreatic routes</text>
+<text x="140" y="51" font-weight="700">Exocrine</text>
+<g fill="#f1cdaa" stroke="#925e3f" stroke-width="1.5"><circle cx="42" cy="96" r="11"/><circle cx="58" cy="82" r="11"/><circle cx="74" cy="96" r="11"/><circle cx="58" cy="109" r="11"/></g>
+<path d="M85 96h85" fill="none" stroke="#397d75" stroke-width="7"/><path d="M92 96h75" stroke="#fff" stroke-width="2" marker-end="url(#arr)"/>
+<path d="M196 72v50M220 72v50" fill="none" stroke="#b87652" stroke-width="5"/><path d="M170 96h33" stroke="#397d75" stroke-width="4" marker-end="url(#arr)"/>
+<text x="58" y="140">Cells</text><text x="130" y="140">Duct</text><text x="208" y="140">Small intestine</text>
+<text x="140" y="163" font-size="14">Digestive enzymes travel in the duct.</text>
+<path d="M20 181h240" stroke="#c0d6d2"/>
+<text x="140" y="207" font-weight="700">Endocrine</text>
+<g fill="#b8a6cc" stroke="#67517a" stroke-width="1.5"><circle cx="62" cy="252" r="11"/><circle cx="80" cy="244" r="11"/><circle cx="80" cy="262" r="11"/><circle cx="98" cy="252" r="11"/></g>
+<path d="M113 252h40" fill="none" stroke="#285f68" stroke-width="2.5" marker-end="url(#arr)"/>
+<rect x="161" y="237" width="75" height="30" rx="15" fill="#efd2cd" stroke="#ac6459" stroke-width="2"/>
+<path d="M174 252h46" stroke="#ac6459" stroke-width="2" marker-end="url(#arr)"/>
+<text x="80" y="291">Islet cells</text><text x="198" y="291">Blood</text>
+<text x="140" y="318" font-size="14">Hormones, including insulin,</text><text x="140" y="338" font-size="14">enter the blood.</text>
+</g></svg>

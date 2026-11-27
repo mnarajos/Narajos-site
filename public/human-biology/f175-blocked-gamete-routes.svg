@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="315" viewBox="0 0 280 315" role="img" aria-labelledby="title desc">
+<title id="title">Gametes and an obstructed oviduct</title><desc id="desc">A schematic shows an ovary, one oviduct with a blockage and a uterus. An oocyte approaches the blockage from the ovarian side and sperm approach from the uterine side; they cannot pass the illustrated block. In the fictional lesson both oviducts are obstructed, so the chance of gametes meeting is reduced. Production of gametes may continue. The drawing is not to scale.</desc>
+<rect width="280" height="315" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16" fill="#243e49" text-anchor="middle">
+ <text x="140" y="25" font-weight="700">A blocked route</text>
+ <text x="44" y="62">Ovary</text><text x="235" y="62">Uterus</text>
+ <ellipse cx="42" cy="112" rx="24" ry="22" fill="#e7d9ee" stroke="#77598a" stroke-width="2"/>
+ <path d="M70 98h142M70 126h142" stroke="#ad6748" stroke-width="3" fill="none"/>
+ <path d="M212 88q30 0 42 18v21q-20 13-42-2z" fill="#eed7db" stroke="#a76170" stroke-width="2"/>
+ <path d="M141 97v30" stroke="#a34843" stroke-width="8"/>
+ <path d="M83 112h39m-7-6 7 6-7 6M199 112h-39m7-6-7 6 7 6" stroke="#276972" stroke-width="2.5" fill="none"/>
+ <text x="91" y="158">Oocyte</text><text x="188" y="158">Sperm</text>
+ <path d="M141 90v-24" stroke="#405968" stroke-width="1.5"/><text x="141" y="57">Block</text>
+ <text x="140" y="194">Oviduct: one side shown</text>
+ <text x="140" y="226">In the fictional case</text><text x="140" y="248">both tubes are obstructed.</text>
+ <text x="140" y="280">Chance of meeting is reduced.</text>
+ <text x="140" y="305" font-size="14">Schematic, not to scale</text>
+</g></svg>

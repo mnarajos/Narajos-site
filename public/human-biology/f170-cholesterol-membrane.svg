@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 405" role="img" aria-labelledby="title description">
+<title id="title">Cholesterol in the bilayer</title>
+<desc id="description">At body temperature a schematic comparison shows higher membrane cholesterol associated with less lateral lipid movement and less leakage of a small polar tracer. At lower temperatures cholesterol can interfere with tight tail packing. Arrow weights illustrate direction of change, not measured values.</desc>
+<rect width="280" height="405" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a" text-anchor="middle">
+<text x="140" y="24" font-weight="700">At body temperature</text>
+<text x="70" y="46">Lower</text><text x="70" y="65">cholesterol</text><text x="210" y="46">Higher</text><text x="210" y="65">cholesterol</text>
+<g transform="translate(0 14)">
+<g fill="#a9d6d0" stroke="#23656c" stroke-width="2">
+<circle cx="35" cy="94" r="6"/><circle cx="60" cy="94" r="6"/><circle cx="85" cy="94" r="6"/><circle cx="110" cy="94" r="6"/>
+<circle cx="170" cy="94" r="6"/><circle cx="195" cy="94" r="6"/><circle cx="220" cy="94" r="6"/><circle cx="245" cy="94" r="6"/>
+<circle cx="35" cy="150" r="6"/><circle cx="60" cy="150" r="6"/><circle cx="85" cy="150" r="6"/><circle cx="110" cy="150" r="6"/>
+<circle cx="170" cy="150" r="6"/><circle cx="195" cy="150" r="6"/><circle cx="220" cy="150" r="6"/><circle cx="245" cy="150" r="6"/>
+<path d="M35 100v20m25-20v20m25-20v20m25-20v20m60-20v20m25-20v20m25-20v20m25-20v20M35 144v-20m25 20v-20m25 20v-20m25 20v-20m60 20v-20m25 20v-20m25 20v-20m25 20v-20" fill="none"/>
+</g>
+<rect x="180" y="107" width="8" height="31" rx="3" fill="#e7b783" stroke="#98451e"/><rect x="229" y="107" width="8" height="31" rx="3" fill="#e7b783" stroke="#98451e"/>
+<path d="M32 72h75m-8-6 8 6-8 6" fill="none" stroke="#23558c" stroke-width="3"/>
+<path d="M181 72h31m-7-5 7 5-7 5" fill="none" stroke="#23558c" stroke-width="2"/>
+<path d="M73 106v32m-5-7 5 7 5-7" fill="none" stroke="#98451e" stroke-width="3"/>
+<path d="M207 107v30m-4-6 4 6 4-6" fill="none" stroke="#98451e" stroke-width="1.5"/>
+<text x="140" y="180">Horizontal: lipid motion</text><text x="140" y="202">Downward: tracer leakage</text><text x="140" y="224">Less of each on the right</text>
+<text x="140" y="267" font-weight="700">At low temperature</text>
+<path d="M51 290v25m26-25v25m26-25v25m26-25v25m26-25v25m26-25v25m26-25v25m26-25v25" stroke="#23656c" stroke-width="3"/>
+<rect x="138" y="286" width="10" height="34" rx="4" fill="#e7b783" stroke="#98451e"/>
+<text x="140" y="346">Can limit tight packing</text>
+<text x="140" y="369" >Arrow weights are illustrative</text>
+</g>
+</g></svg>

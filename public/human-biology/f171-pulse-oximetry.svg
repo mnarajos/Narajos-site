@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="305" viewBox="0 0 280 305" role="img">
+ <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0v6l6-3Z" fill="#344958"/></marker></defs>
+ <rect width="280" height="305" rx="12" fill="#f4f8f7"/>
+ <g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+  <text x="140" y="25" font-size="17" font-weight="700">Pulse oximetry</text>
+  <text x="140" y="52" font-size="14">Simplified fingertip clip</text>
+  <path d="M33 121q0-22 22-22h124q25 0 25 22t-25 22H55q-22 0-22-22Z" fill="#efc8b7" stroke="#a65f5b" stroke-width="2"/>
+  <path d="M92 90V73q0-11 12-11h73q12 0 12 11v17M92 152v16q0 12 12 12h73q12 0 12-12v-16" fill="none" stroke="#537a94" stroke-width="8"/>
+  <circle cx="140" cy="86" r="6" fill="#a76125"/><circle cx="140" cy="157" r="6" fill="#32776d"/>
+  <path d="M140 94v53" stroke="#344958" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+  <text x="228" y="89" font-size="14">Light</text><path d="M205 85h-53" stroke="#344958" stroke-width="1.5"/>
+  <text x="228" y="162" font-size="14">Sensor</text><path d="M204 158h-52" stroke="#344958" stroke-width="1.5"/>
+  <text x="140" y="219" font-size="15">Estimates oxygen saturation:</text>
+  <text x="140" y="243" font-size="15">% of haemoglobin carrying O₂</text>
+  <text x="140" y="277" font-size="14">It does not measure airflow.</text>
+ </g>
+</svg>

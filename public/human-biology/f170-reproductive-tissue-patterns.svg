@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 550" role="img" aria-labelledby="title desc">
+<title id="title">Patterns in reproductive tissue sections</title><desc id="desc">Three schematic sections compare endometrial glands below a free surface, a large oocyte surrounded by smaller follicle cells, and a seminiferous tubule with layers of developing germ cells around a lumen. Shapes and sizes are illustrative, not a scale comparison.</desc>
+<rect width="280" height="550" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" text-anchor="middle" fill="#263e4a">
+<text x="140" y="25" font-weight="700">Endometrium</text><text x="140" y="49">Free surface</text><path d="M42 60h196v97H42z" fill="#f9dfc8" stroke="#98451e" stroke-width="2"/>
+<g fill="#fff" stroke="#69447f" stroke-width="2"><ellipse cx="77" cy="91" rx="15" ry="10"/><ellipse cx="137" cy="112" rx="12" ry="17"/><ellipse cx="202" cy="90" rx="17" ry="11"/><ellipse cx="75" cy="136" rx="13" ry="10"/><ellipse cx="200" cy="137" rx="13" ry="11"/></g>
+<text x="140" y="181">Several gland profiles</text>
+<text x="140" y="220" font-weight="700">Ovarian follicle</text><circle cx="140" cy="284" r="47" fill="#f9dfc8" stroke="#98451e" stroke-width="2"/><circle cx="140" cy="284" r="25" fill="#e5d9ec" stroke="#69447f" stroke-width="2"/>
+<g fill="#23656c"><circle cx="140" cy="247" r="4"/><circle cx="166" cy="258" r="4"/><circle cx="177" cy="284" r="4"/><circle cx="166" cy="310" r="4"/><circle cx="140" cy="321" r="4"/><circle cx="114" cy="310" r="4"/><circle cx="103" cy="284" r="4"/><circle cx="114" cy="258" r="4"/></g>
+<text x="140" y="355">Large oocyte, smaller cells</text>
+<text x="140" y="394" font-weight="700">Seminiferous tubule</text><circle cx="140" cy="458" r="47" fill="#f9dfc8" stroke="#98451e" stroke-width="2"/><circle cx="140" cy="458" r="21" fill="#fff" stroke="#69447f" stroke-width="2"/>
+<g fill="#23656c"><circle cx="140" cy="422" r="4"/><circle cx="165" cy="433" r="4"/><circle cx="176" cy="458" r="4"/><circle cx="165" cy="483" r="4"/><circle cx="140" cy="494" r="4"/><circle cx="115" cy="483" r="4"/><circle cx="104" cy="458" r="4"/><circle cx="115" cy="433" r="4"/><circle cx="140" cy="431" r="3"/><circle cx="167" cy="458" r="3"/><circle cx="140" cy="485" r="3"/><circle cx="113" cy="458" r="3"/></g>
+<text x="140" y="529">Layers around a lumen</text>
+</g></svg>

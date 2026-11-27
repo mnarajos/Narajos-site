@@ -56,7 +56,7 @@ export function compare(...panels) {
 }
 
 // Each step is a still. Pupils can inspect it for as long as they need.
-export function steps(label, stages) {
+export function steps(label, stages, initialIndex = 0) {
   const model = node("section", "", "catchup-model");
   model.setAttribute("aria-label", label);
   const controls = node("div", "", "ks3-model-controls catchup-model-controls");
@@ -76,7 +76,7 @@ export function steps(label, stages) {
   buttons.forEach((button, index) => button.addEventListener("click", () => show(index, true)));
   controls.append(...buttons);
   model.append(controls, view, status);
-  show(0, false);
+  show(initialIndex, false);
   return model;
 }
 
@@ -88,15 +88,15 @@ export function airSac(detailed = false, thick = false) {
     <path d="M31 ${115 + offset} Q66 ${164 + offset} 119 ${165 + offset} H190 Q249 ${165 + offset} 288 ${116 + offset}
       L301 ${134 + offset} Q254 ${189 + offset} 194 ${190 + offset} H117 Q58 ${190 + offset} 17 ${136 + offset} Z"
       fill="#f8e2de" stroke="${rust}" stroke-width="2.5"/>
-    ${text(160, 74, "Air in the air sac")}
-    ${text(160, 96, "Oxygen", blue)}
-    ${arrow(160, 105, 160, 174 + offset, blue, 3)}
-    ${text(160, 225, "Blood in the capillary", rust)}
-    ${detailed ? arrow(187, 179 + offset, 236, 169 + offset, rust) + text(255, 208, "Blood flow", rust, 15) : ""}
-    ${thick ? text(225, 165, "Thicker barrier", rust, 14) : ""}`;
+    ${text(160, 76, "Air in the air sac", ink, 20)}
+    ${text(160, 108, "Oxygen", blue, 20)}
+    ${arrow(160, 117, 160, 174 + offset, blue, 3)}
+    ${text(160, 250 + offset, "Blood in the capillary", rust, 20)}
+    ${detailed ? arrow(187, 179 + offset, 236, 169 + offset, rust) + text(255, 215 + offset, "Blood flow", rust, 20) : ""}
+    ${thick ? text(245, 165, "Thicker", rust, 20) : ""}`;
   return picture(thick ? "Thicker barrier" : "An air sac and its capillary",
     diagram(thick ? "Oxygen crosses a longer path from the air sac to the capillary because the barrier is thicker."
-      : "An oxygen arrow crosses from air inside one alveolus, through its wall and the capillary wall, into blood.", drawing, 320, 239),
+      : "An oxygen arrow crosses from air inside one alveolus, through its wall and the capillary wall, into blood.", drawing, 320, 270 + offset),
     thick ? "The longer diffusion distance slows gas exchange."
       : detailed ? "Oxygen diffuses into the blood across a thin barrier. Many small sacs provide a large total surface."
         : "Oxygen passes from air in the lung into the nearby blood.");
@@ -119,7 +119,7 @@ export function periodicOutline() {
       }
       if (period === 1 && group === 18) square.textContent = "He";
       if (group === 1 && period > 1) square.className = "catchup-group-one";
-      if (group === 18) square.className = "catchup-group-zero";
+      if (group === 18) square.className = period === 1 ? "catchup-group-zero catchup-helium" : "catchup-group-zero";
       grid.append(square);
     }
   }

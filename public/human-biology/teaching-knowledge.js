@@ -62,6 +62,9 @@
   window.KeystoneHumanLessons["f172/a4"] = {
     goal: "Trace how a change in gene expression could affect the function of a target tissue.",
     explain: ["Gene therapy aims to alter gene activity in target cells. Some approaches supply a functional copy. Others change expression or edit DNA. Delivery and the proportion of target cells reached affect the outcome."],
+    teachingDiagram: {src:"/human-biology/gene-delivery.svg", width:280, height:300, compact:true,
+      alt:"A functional gene copy is delivered to a simplified target cell with a nucleus, followed by expression producing a functional protein. The diagram notes that some cells may not receive the copy.",
+      caption:"Follow this example from delivery to protein production. Other gene therapies use different approaches; delivery does not ensure expression in every target cell."},
     model: ["In a fictional disorder, target cells make too little of a functional protein.", "If treated target cells receive and express a functional copy, they may make more of that protein.", "Improvement depends on whether enough relevant cells make sufficient protein. Somatic treatment affects treated cells rather than routinely altering inheritance."],
     guided: choice("The new copy reaches a cell but is not expressed. What is missing?", 0,
       [["Production of the functional gene product.", ""], ["Delivery of the copy.", "The scenario already says delivery succeeded."], ["Inheritance by the next generation.", "The target in this example is a somatic cell."]],
@@ -114,6 +117,9 @@
   window.KeystoneHumanLessons["f174/a1"] = {
     goal: "Explain why energy intake alone gives limited information about nutritional adequacy.",
     explain: ["Carbohydrate and fats supply energy. Protein supplies amino acids for synthesis, and can also contribute energy. Vitamins and minerals are needed for particular physiological functions. Fibre and water also have roles."],
+    teachingDiagram: {src:"/human-biology/meals-energy-iron.svg", width:280, height:300, compact:true,
+      alt:"Two fictional meals have equal-length bars for similar energy. Meal A contains a substantial iron source, whereas meal B does not. The comparison is qualitative and does not show measured values.",
+      caption:"Compare the equal energy bars with the iron-source labels. Similar energy alone does not establish that meals contribute equally to iron intake."},
     model: ["Two fictional meals supply similar energy.", "Only one provides a substantial iron source. Iron supports haemoglobin production. Their energy totals cannot establish that they contribute equally to iron intake."],
     guided: choice("Which comparison would help to evaluate protein intake across typical diets?", 1,
       [["Compare energy alone.", "Many different nutrient mixes can give the same energy."], ["Compare protein quantity and amino acid supply.", ""], ["Compare volume of food alone.", "Volume does not reveal nutrient composition."]],
@@ -181,7 +187,7 @@
   Object.assign(window.KeystoneHumanLessons, {
     "f175/2.1": {
       revision: 1,
-      goal: "Distinguish the purpose of the first antenatal appointment from tracking fetal development.",
+      goal: "Distinguish the purpose of the first antenatal appointment from tracking foetal development.",
       activate: ["What is a baseline?", "It is a starting observation against which later observations can be compared."],
       prior: ["f175/a2", "Review placental exchange and ultrasound"],
       explain: [
@@ -202,8 +208,8 @@
       guided: choice("A record says blood pressure has increased since the first appointment. What makes this a monitoring claim?", 1,
         [["The first reading concerned the mother's health.", "The subject of a measurement does not establish change."], ["It compares readings over time.", ""], ["It used the same record as the booking history.", "Location in the record does not establish a trend."]],
         "Monitoring depends on comparable observations over time.", ["Look for what the later reading is being compared with."]),
-      apply: written("Why can a fictional record of previous pregnancies help at booking while leaving the growth of the current fetus unknown? Name a different type of evidence for growth.",
-        ["History supplies context for the assessment.", "History is not a measurement of this fetus.", "Ultrasound measurements interpreted with gestational age or previous measurements provide growth evidence."],
+      apply: written("Why can a fictional record of previous pregnancies help at booking while leaving the growth of the current foetus unknown? Name a different type of evidence for growth.",
+        ["History supplies context for the assessment.", "History is not a measurement of this foetus.", "Ultrasound measurements interpreted with gestational age or previous measurements provide growth evidence."],
         "Separate background information from measurements of the current pregnancy. Ultrasound can provide direct size measurements that help assess development in context.")
     },
     "f175/a1": {
@@ -235,16 +241,22 @@
         "The LH surge triggers ovulation.")
     },
     "f175/a2": {
-      goal: "Explain how placental structure supports exchange between maternal and fetal circulations.",
-      explain: ["Chorionic villi contain fetal vessels and are bathed by maternal blood. The circulations remain largely separate. A large area and short diffusion distances help exchange."],
-      nodes: ["Maternal blood", "Placental barrier", "Fetal circulation"],
-      model: ["Oxygen reaches the spaces around the villi in maternal blood.", "Oxygen moves down its gradient across the placental barrier.", "Fetal capillaries take up oxygen and fetal blood carries it away. Carbon dioxide moves in the opposite direction."],
+      goal: "Explain how placental structure supports exchange between maternal and foetal circulations.",
+      // Orientation checked against OpenStax Anatomy and Physiology 2e, 28.2:
+      // https://openstax.org/books/anatomy-and-physiology-2e/pages/28-2-embryonic-development
+      explain: ["The placenta is attached to the wall of the uterus. The foetus is connected to the placenta by the umbilical cord, which carries foetal blood between them.", "Chorionic villi contain foetal vessels and are bathed by maternal blood. The circulations remain largely separate. A large area and short diffusion distances help exchange."],
+      // Retained for a future, orientated redesign; not shown in Phase 1.
+      deferredTeachingDiagram: {src:"/human-biology/placental-exchange.svg", width:280, height:310, compact:true,
+        alt:"Schematic section of a chorionic villus. Maternal blood surrounds the villus, and a foetal capillary lies inside it. Oxygen moves from maternal blood across the placental barrier to foetal blood; carbon dioxide moves in the opposite direction. The circulations are separated by the barrier.",
+        caption:"Follow oxygen across the placental barrier into a foetal capillary; carbon dioxide moves the other way. This schematic shows one villus, not its true scale."},
+      nodes: ["Maternal blood", "Placental barrier", "Foetal circulation"],
+      model: ["Oxygen reaches the spaces around the villi in maternal blood.", "Oxygen moves down its gradient across the placental barrier.", "Foetal capillaries take up oxygen and foetal blood carries it away. Carbon dioxide moves in the opposite direction."],
       guided: choice("Which change would directly reduce exchange area?", 0,
-        [["Fewer villi in contact with maternal blood.", ""], ["A faster fetal pulse alone.", "Pulse changes flow, rather than surface area itself."], ["Mixing of the two circulations is stopped.", "Exchange usually occurs across a barrier between the circulations."]],
+        [["Fewer villi in contact with maternal blood.", ""], ["A faster foetal pulse alone.", "Pulse changes flow, rather than surface area itself."], ["Mixing of the two circulations is stopped.", "Exchange usually occurs across a barrier between the circulations."]],
         "Villi increase the area across which substances can move."),
       apply: written("Explain why a thicker placental barrier could reduce oxygen transfer.",
         ["The diffusion distance increases.", "At otherwise comparable conditions, the oxygen transfer rate can fall."],
-        "Oxygen must diffuse further to reach a fetal capillary. A longer distance reduces diffusion rate if other factors stay similar.")
+        "Oxygen must diffuse further to reach a foetal capillary. A longer distance reduces diffusion rate if other factors stay similar.")
     },
     "f175/a3": {
       goal: "Link general causes of reduced fertility to the affected biological step.",
@@ -260,6 +272,9 @@
     "f175/a4": {
       goal: "Distinguish IVF and ICSI by the biological step each method addresses.",
       explain: ["In vitro fertilisation (IVF) involves fertilisation outside the body and later embryo transfer. Intracytoplasmic sperm injection (ICSI) is a particular fertilisation method within an IVF cycle in which one sperm is injected into an oocyte."],
+      teachingDiagram: {src:"/human-biology/ivf-icsi.svg", width:280, height:300, compact:true,
+        alt:"Comparison of fertilisation methods outside the body: conventional IVF brings sperm and an oocyte together, while ICSI injects one sperm into an oocyte. Both can be followed by embryo transfer, then implantation may occur later.",
+        caption:"Compare how sperm reaches the oocyte. Transfer follows embryo development; implantation is a later event and is not guaranteed."},
       model: ["When fertilisation is attempted outside the body, the usual journey through the oviduct is bypassed.", "Transfer places an embryo in the uterus. Implantation is still a later process, and its occurrence is uncertain."],
       guided: choice("Which action distinguishes ICSI from conventional insemination of oocytes in IVF?", 2,
         [["Transferring an embryo.", "Both may involve a later transfer."], ["Preserving an embryo for later use.", "Storage does not distinguish how fertilisation was attempted."], ["Injecting an individual sperm into an oocyte.", ""]],
@@ -314,6 +329,9 @@
     "f176/a3": {
       goal: "Distinguish nociceptive signalling from the experience of pain.",
       explain: ["Nociceptors detect potentially damaging stimuli. Nociception is the neural encoding and processing of such stimuli. Pain is an experience shaped by processing, context and other influences."],
+      teachingDiagram: {src:"/human-biology/nociception-pathway.svg", width:280, height:300, compact:true,
+        alt:"A potentially damaging stimulus activates a nociceptor. Sensory signalling travels to the spinal cord; pathways lead to a withdrawal response and to brain processing. Context also influences the experience of pain.",
+        caption:"Follow the sensory signal to the spinal cord, then compare the pathway to a withdrawal response with signalling to the brain. Pain is an experience influenced by more than the incoming signal."},
       model: ["A hot object activates nociceptors and signals travel into the CNS.", "A withdrawal reflex can occur while signals also travel to brain regions involved in the experience of pain."],
       guided: choice("A rapid withdrawal starts before someone can report pain. What is consistent with that observation?", 0,
         [["A spinal pathway can organise withdrawal before conscious report.", ""], ["The muscles detected pain without a neural pathway.", "The movement can be explained by sensory input and motor output."], ["The nociceptors cannot have acted.", "They can supply input to the reflex."]],
@@ -411,4 +429,58 @@
         "More people were rated as improved in the treatment group. The small trial and potential rating bias limit how strongly the difference supports a treatment effect. Blinding would keep the assessor from knowing each participant's group.", ["Separate what random allocation changes at the start from what blinding changes during measurement."])
     }
   });
+})();
+
+// Compact original diagrams for the named explanation and worked-example blocks.
+(function () {
+  const figures = {
+    "f172/a1": {src:"/human-biology/meiosis.svg", alt:"One pair of homologous chromosomes carries alleles R and r. After DNA replication each homologue consists of two joined sister chromatids carrying the same allele.", caption:"Compare homologues carrying R and r, then follow replication to joined sisters. The table in the worked example follows their separation in meiosis.", compact:true},
+    "f172/a2": {src:"/human-biology/punnett-cross.svg", alt:"Punnett square for Rr crossed with Rr. Both parents can produce R or r gametes. The four equally likely combinations are RR, Rr, Rr and rr.", caption:"Combine one gamete from each parent in each cell. In this fictional trait R is dominant; among the three dominant-phenotype cells, two are Rr.", compact:true},
+    "f172/a3": {src:"/human-biology/genetic-test.svg", alt:"A schematic DNA region marks the sites of possible variants A and B. A test checks for variant A, while B is outside its scope. A is not detected; whether B is present remains unknown.", caption:"The dots mark possible variant sites, not results. The test checks for A; the result does not establish whether B is present.", compact:true},
+    "f173/a3": {src:"/human-biology/chromatography.svg", alt:"Chromatography paper has a pencil baseline and solvent front. An arrow shows the solvent moving up the stationary paper. Standard X and one unknown spot travelled the same distance; standard Y and a second unknown spot travelled different distances.", caption:"Follow the solvent up the stationary paper, then compare the spots. A matching position in the same run is consistent with, but does not prove, identity.", compact:true},
+    "f174/a3": {src:"/human-biology/digestion.svg", alt:"Starch is digested to glucose in the gut lumen. Glucose crosses the intestinal lining into blood and can reach tissues, where it may be used in respiration or stored.", caption:"Follow the glucose: digestion makes it available, absorption moves it into blood, and tissues use or store it.", compact:true},
+    "f175/a3": {src:"/human-biology/oviduct-obstruction.svg", alt:"Simplified reproductive anatomy shows one ovary, an oviduct with an obstruction and the uterus. The lesson example specifies that both oviducts are obstructed.", caption:"Locate the block in the oviduct. In the example both tubes are obstructed, so the chance of sperm and oocyte meeting is reduced. One side is shown and the drawing is not to scale.", compact:true},
+    "f176/a1": {src:"/human-biology/sensory-motor-route.svg", alt:"A receptor sends sensory signals along a peripheral route towards the brain and spinal cord. A motor route carries output from the central nervous system to a muscle effector.", caption:"Follow sensory input towards the central nervous system and motor output back to the muscle. PNS means peripheral nervous system.", compact:true},
+    "f177/a2": {src:"/human-biology/trial-comparison.svg", alt:"Two groups of 24 participants are represented by 24 circles each. Fifteen treatment-group circles and eleven comparison-group circles are filled, representing people who improved after one week.", caption:"Compare the filled circles out of equal-sized groups. Some people improved in the comparison group too; this small fictional study still leaves uncertainty.", compact:true},
+    "f177/a1": {src:"/human-biology/receptor.svg", alt:"An agonist binds and activates a receptor. A competitive antagonist occupies its binding site without activating it, reducing activation by the agonist.", caption:"Compare the effect after binding: the agonist activates the receptor; the competitive antagonist occupies the site without activating it.", compact:true}
+  };
+  window.KeystoneHumanLessons["f173/a2"].explanationPhoto = {
+    src:"/assets/micrographs/hb-blood-cells-sem.webp", width:500, height:326,
+    alt:"Colourised scanning electron micrograph showing a red blood cell at left, a platelet at centre and a white blood cell at right; their external surfaces are visible.",
+    caption:"Notice the external surfaces: this scanning electron micrograph shows a red blood cell, platelet and white blood cell. Colour was added.",
+    source:"https://commons.wikimedia.org/wiki/File:Red_White_Blood_cells.jpg",
+    credit:"Electron Microscopy Facility, NCI-Frederick", licence:"Public domain (US government work)",
+    licenceUrl:"https://commons.wikimedia.org/wiki/Template:PD-USGov", changes:"Converted to WebP; no crop"
+  };
+  window.KeystoneHumanLessons["f173/a2"].explanationPhoto2 = {
+    src:"/assets/micrographs/hb-pancreas-tem.webp", width:640, height:480,
+    alt:"Transmission electron micrograph of a thin section of mammalian pancreatic tissue. A large cell nucleus and closely spaced profiles of rough endoplasmic reticulum are visible. A scale bar of 500 nanometres is at the bottom.",
+    caption:"Compare this thin section with the SEM surface above. Notice the internal membrane profiles. The original scale bar is 500 nm.",
+    source:"https://commons.wikimedia.org/wiki/File:Mammalian_pancreatic_tissue,_nuclear_pores_and_rough_endoplasmic_reticulum.jpg",
+    credit:"Louisa Howard, Dartmouth College", licence:"Public domain (author release)",
+    licenceUrl:"https://commons.wikimedia.org/wiki/Template:PD-author", changes:"Converted to WebP; no crop"
+  };
+  window.KeystoneHumanLessons["f176/a2"].modelDiagrams = {5: {
+    src:"/human-biology/threshold-comparison.svg", width:220, height:280, compact:true,
+    alt:"Vertical potential axis from minus 70 to minus 50 millivolts. A starting point at minus 65 rises to a changed point at minus 58; both lie below the dashed threshold at minus 55 millivolts.",
+    caption:"Read the fictional potentials against threshold. The changed value is closer to −55 mV but remains below threshold, so the example has not fired."
+  }};
+  window.KeystoneHumanLessons["f176/a2"].explanationDiagram = {
+    src:"/human-biology/action-potential-ions.svg", width:280, height:300, compact:true,
+    alt:"Two simplified stages of an action potential. Sodium ions enter through channels during depolarisation; potassium ions leave through channels during repolarisation.",
+    caption:"Compare the stages and the direction of ion movement. Sodium entry contributes to depolarisation; potassium leaving contributes to repolarisation."
+  };
+  window.KeystoneHumanLessons["f176/a1"].explanationDiagram = {
+    src:"/human-biology/brain-regions.svg", width:280, height:300, compact:true,
+    alt:"Simplified side view of the brain. The cerebrum forms the large upper part. The cerebellum lies toward the back, behind the brainstem; the medulla connects with the spinal cord below.",
+    caption:"Locate the cerebrum, cerebellum and medulla in this simplified side view. The medulla continues into the spinal cord."
+  };
+  window.KeystoneHumanLessons["f173/a3"].explanationDiagram = {
+    src:"/human-biology/benedicts-controls.svg", width:280, height:270, compact:true,
+    alt:"Two control tubes after heating with Benedict's reagent. A known reducing-sugar sample is orange, an expected positive result. A sample without reducing sugar is blue, an expected negative result.",
+    caption:"Compare the expected control results. If the known positive stays blue, the test has not demonstrated detection and the unknown result is inconclusive."
+  };
+  for (const [id, figure] of Object.entries(figures)) {
+    window.KeystoneHumanLessons[id].teachingDiagram = {width:280, height:300, ...figure};
+  }
 })();

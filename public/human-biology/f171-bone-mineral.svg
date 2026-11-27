@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="310" viewBox="0 0 280 310" role="img">
+ <rect width="280" height="310" rx="12" fill="#f4f8f7"/><g font-family="system-ui,sans-serif" fill="#233e4c" text-anchor="middle">
+ <text x="140" y="24" font-size="17" font-weight="700">Mineral in growing bone</text><text x="140" y="49" font-size="14">Illustrative comparison</text>
+ <path d="M47 83q-14-10-22 0q-7 10 4 18v86q-11 8-4 18q8 10 22 0q14 10 22 0q7-10-4-18v-86q11-8 4-18q-8-10-22 0Z M207 83q-14-10-22 0q-7 10 4 18v86q-11 8-4 18q8 10 22 0q14 10 22 0q7-10-4-18v-86q11-8 4-18q-8-10-22 0Z" fill="#f0e3cf" stroke="#a5792e" stroke-width="2"/>
+ <g fill="#80588f"><circle cx="39" cy="111" r="3"/><circle cx="55" cy="111" r="3"/><circle cx="39" cy="132" r="3"/><circle cx="55" cy="132" r="3"/><circle cx="39" cy="153" r="3"/><circle cx="55" cy="153" r="3"/><circle cx="39" cy="174" r="3"/><circle cx="55" cy="174" r="3"/><circle cx="199" cy="121" r="3"/><circle cx="215" cy="154" r="3"/><circle cx="199" cy="179" r="3"/></g>
+ <text x="47" y="235" font-size="15">More</text><text x="47" y="255" font-size="15">mineral</text><text x="207" y="235" font-size="15">Less</text><text x="207" y="255" font-size="15">mineral</text>
+ <text x="140" y="286" font-size="14">Dots are symbolic, not measurements.</text></g>
+</svg>

@@ -9,7 +9,7 @@ function curve([title, xLabel, yLabel, series, note]) {
      fill="none" stroke="${keys[index]}" stroke-width="3.8" stroke-linejoin="round"
      ${index ? 'stroke-dasharray="7 5"' : ""}/>`).join("");
   return picture(title, diagram(title + ". " + note + " Horizontal axis: " + xLabel + ". Vertical axis: " + yLabel + ".",
-    line(45,152,298,152)+line(45,27,45,152)+text(168,181,xLabel,ink,16)+text(46,18,yLabel,ink,16,"start")+plot,320,190),
+    line(45,152,298,152)+line(45,35,45,152)+text(168,181,xLabel,ink,16)+text(46,24,yLabel,ink,16,"start")+plot,320,190),
     series.length === 1 ? note : "Solid line · " + series[0][0] + ". Dashed line · " + series[1][0] + ". " + note);
 }
 
@@ -50,7 +50,7 @@ function circuit() {
       diagram(open?"Parallel circuit. The top branch is open. Lamp B remains on in its separate branch.":
         "Two lamps share a supply in two parallel branches.",wires+line(136,12,136,34)+line(151,17,151,29)+
         (open ? '<rect x="98" y="74" width="34" height="20" fill="#f4f9f8"/>'+line(98,84,126,69,teal,2.5):"")+
-        bulb(166,84,!open)+bulb(166,159,true)+text(206,72,"Lamp A")+text(205,148,"Lamp B")+
+        bulb(166,84,!open)+bulb(166,159,true)+text(220,72,"Lamp A")+text(220,148,"Lamp B")+
         circle(52,84,3,ink)+circle(269,84,3,ink),320,191),
       open?"Lamp B still has a complete circuit.":"The same potential difference is across both branches.");
   }
@@ -67,13 +67,13 @@ function web() {
 function column() {
   return picture("Fractional distillation column",diagram("A fractionating column is cooler at the top and hotter at the bottom. Short hydrocarbons leave near the top and long hydrocarbons leave lower down.",`
     <path d="M85 37Q85 17 105 17H143Q163 17 163 37V177H85Z" fill="#e1eeec" stroke="${teal}" stroke-width="3"/>
-    ${arrow(161,54,216,54,blue)}${arrow(162,112,216,112,rust)}${arrow(27,155,84,155,rust)}
-    ${text(65,138,"Heated oil",rust,14)}${text(123,45,"Cooler",blue,14)}${text(123,162,"Hotter",rust,14)}
-    ${text(265,58,"Short chains",ink,15)}${text(265,116,"Long chains",ink,15)}`,320,190),
+    ${arrow(161,54,185,54,blue)}${arrow(162,112,185,112,rust)}${arrow(27,155,84,155,rust)}
+    ${text(45,112,"Heated",rust,14)}${text(45,142,"oil",rust,14)}${text(123,45,"Cooler",blue,14)}${text(123,170,"Hotter",rust,14)}
+    ${text(250,58,"Short chains",ink,15)}${text(250,116,"Long chains",ink,15)}`,320,190),
     "Vapours rise and cool. Each fraction condenses over a range of temperatures.");
 }
 
-function chromatogram() {
+function chromatogramParts() {
   const results = picture("Paper chromatography of two inks",diagram("Paper with two lanes. Ink A has two separate spots and ink B has one. Both started from the same baseline. The solvent front is above the spots.",`
     <rect x="55" y="12" width="214" height="173" rx="4" fill="#fffdf3" stroke="${ink}" stroke-width="2"/>
     ${line(69,42,253,42,teal,2,"5 4")}${line(69,152,253,152,ink)}
@@ -90,24 +90,27 @@ function chromatogram() {
     line(57,119,259,119,blue,2,"4 3")+text(164,90,"Pencil baseline",ink,15,"start")+
     text(175,142,"Solvent",blue,15,"start"),320,175),
     "Set the solvent level below both sample spots.");
-  return compare(setup, results);
+  return [setup, results];
 }
+export function gcseChromatogramSetup() { return chromatogramParts()[0]; }
+export function gcseChromatogramResult() { return chromatogramParts()[1]; }
+function chromatogram() { return compare(...chromatogramParts()); }
 
 function wave() {
   function state(stage) {
     const y = x => 91 + 33 * Math.sin((x - 126 - stage * 25)/23);
     const coords = Array.from({length:61},(_,i)=>[16+i*4.8,y(16+i*4.8)].join(",")).join(" ");
-    return picture("Transverse wave on a rope",diagram("The wave pattern moves to the right. The marked rope point moves only up and down at the same horizontal position.",`
+    return picture("Transverse wave on a rope",diagram("The wave pattern transfers energy to the right. The marked rope point moves only up and down at the same horizontal position.",`
       ${line(18,91,306,91,"#8b9d9c",1,"5 3")}
       <polyline points="${coords}" fill="none" stroke="${teal}" stroke-width="4"/>
       ${line(126,49,126,132,rust,1.6,"4 4")}${circle(126,y(126),7,"#efa468",rust,2)}
       ${arrow(205,26,295,26,blue)}${text(193,30,"Wave travels",blue,15,"end")}`,320,148),
-      "The coloured marker moves up and down along the dashed line.");
+      "The wave transfers energy to the right. The coloured marker moves up and down along the dashed line.");
   }
   return steps("Follow a point on the rope", [["Start position",()=>state(0)],["Wave moves right",()=>state(1)],["A little later",()=>state(3)]]);
 }
 
-function coil() {
+function coil([initialOn = false] = []) {
   function state(on) {
     return picture(on?"Current on":"Current off",diagram(on?"Current flows through a coil wrapped around the iron core. Curved arrows show its magnetic field.":
       "No current flows in the coil. The model shows no field from the current.",`
@@ -116,10 +119,10 @@ function coil() {
       <rect x="52" y="77" width="215" height="30" rx="5" fill="#c3d2d2" stroke="${ink}" stroke-width="2"/>
       <path d="M70 111q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51q-13-35 4-51t15 51"
       fill="none" stroke="${rust}" stroke-width="3"/>
-      ${on?text(42,82,"N",blue)+text(280,82,"S",blue):""}${text(158,146,"Coil around a soft iron core",ink,15)}`,320,178),
+      ${on?text(42,82,"N",blue)+text(280,82,"S",blue):""}${text(158,198,"Coil around a soft iron core",ink,15)}`,320,218),
       on?"A current in the coil produces a magnetic field.":"Without current, the coil does not produce a magnetic field.");
   }
-  return steps("Switch the electromagnet", [["Switch off",()=>state(false)],["Switch on",()=>state(true)]]);
+  return steps("Switch the electromagnet", [["Switch off",()=>state(false)],["Switch on",()=>state(true)]], initialOn ? 1 : 0);
 }
 
 function punnett() {

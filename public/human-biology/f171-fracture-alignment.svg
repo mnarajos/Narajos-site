@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 260" role="img">
+ <rect width="280" height="260" fill="#fff"/>
+ <g font-family="system-ui,sans-serif" font-size="16" fill="#233e4c" text-anchor="middle">
+  <text x="140" y="25">Fictional follow-up</text>
+  <text x="140" y="55">First review</text>
+  <path d="M35 75h96l7 8-6 7H35zM245 75h-96l-7 8 6 7h97z" fill="#fff" stroke="#756956" stroke-width="2"/>
+  <path d="M137 78l7 10" stroke="#8d544b" stroke-width="2"/>
+  <path d="M140 102v23m-6-6 6 6 6-6" fill="none" stroke="#344958" stroke-width="2"/>
+  <text x="140" y="154">Later review</text>
+  <path d="M35 174h96l7 8-6 7H35zM245 174h-96l-7 8 6 7h97z" fill="#fff" stroke="#756956" stroke-width="2"/>
+  <path d="M137 177l7 10" stroke="#8d544b" stroke-width="2"/>
+  <text x="140" y="225">Alignment maintained</text>
+  <text x="140" y="249">Schematic, not X-rays</text>
+ </g>
+</svg>

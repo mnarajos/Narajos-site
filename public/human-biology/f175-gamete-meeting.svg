@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="405" viewBox="0 0 280 405" role="img" aria-labelledby="t d">
+<title id="t">Gametes in the same or different oviducts</title><desc id="d">Two schematic views compare gamete locations. In the first, a sperm and an oocyte are in the ampulla of the same oviduct, so meeting may be possible. In the second they are in different oviducts and cannot meet at those locations. Symbols show positions rather than actual cell size; fusion is not guaranteed.</desc>
+<rect width="280" height="405" rx="12" fill="#f5faf9"/><g font-family="system-ui,sans-serif" fill="#243e49" text-anchor="middle">
+<text x="140" y="25" font-size="16" font-weight="700">Compare gamete locations</text><text x="140" y="54" font-size="16">Same oviduct</text>
+<path d="M118 113Q91 77 43 90M162 113Q189 77 237 90" fill="none" stroke="#a76170" stroke-width="7"/><path d="M118 109q22-10 44 0l-5 42q-17 12-34 0z" fill="#eed7db" stroke="#a76170" stroke-width="2"/>
+<text x="48" y="72" font-size="13">Ampulla</text><circle cx="63" cy="88" r="10" fill="#d9edf5" stroke="#537a94" stroke-width="2"/><text x="63" y="92" font-size="12">S</text><circle cx="87" cy="91" r="10" fill="#f1dfc6" stroke="#a5792e" stroke-width="2"/><text x="87" y="95" font-size="12">O</text>
+<text x="140" y="177" font-size="14">Meeting may be possible</text><path d="M20 193h240" stroke="#d6e1de"/>
+<text x="140" y="220" font-size="16">Different oviducts</text>
+<path d="M118 278Q91 242 43 255M162 278Q189 242 237 255" fill="none" stroke="#a76170" stroke-width="7"/><path d="M118 274q22-10 44 0l-5 42q-17 12-34 0z" fill="#eed7db" stroke="#a76170" stroke-width="2"/>
+<circle cx="75" cy="255" r="10" fill="#d9edf5" stroke="#537a94" stroke-width="2"/><text x="75" y="259" font-size="12">S</text><circle cx="205" cy="255" r="10" fill="#f1dfc6" stroke="#a5792e" stroke-width="2"/><text x="205" y="259" font-size="12">O</text>
+<text x="140" y="340" font-size="14">They cannot meet at these locations</text><text x="140" y="366" font-size="14">S = sperm · O = oocyte</text><text x="140" y="389" font-size="14">Schematic; fusion is not guaranteed.</text>
+</g></svg>

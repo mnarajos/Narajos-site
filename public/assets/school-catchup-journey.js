@@ -128,13 +128,34 @@ export function mountJourney(host, model, lesson) {
     model.after(journey);
   }
 
+  function workedContent(container, worked, headingTag) {
+    const {title, lines, visual, lineVisuals} = worked;
+    container.append(element(headingTag, title));
+    if (visual && !lineVisuals) container.append(visual());
+    const reasoning = element("ol", "", lineVisuals ? "school-worked-line-visuals" : "");
+    // List semantics remain available even when CSS removes native markers.
+    if (lineVisuals) reasoning.setAttribute("role", "list");
+    reasoning.append(...lines.map((line, index) => {
+      if (!lineVisuals) return element("li", line);
+      const item = element("li");
+      if (lineVisuals[index]) item.append(lineVisuals[index]());
+      item.append(element("p", line));
+      return item;
+    }));
+    container.append(reasoning);
+  }
+
   const workedModel = Number(year) >= 10 && steps.find(step => step.worked)?.worked;
   const workedReview = workedModel ? element("details", "", "school-worked-example") : null;
   if (workedReview) {
-    const workedLines = element("ol");
-    workedLines.append(...workedModel.lines.map(line => element("li", line)));
-    workedReview.append(element("summary", "Review the worked example"),
-      element("h3", workedModel.title), workedLines);
+    workedReview.append(element("summary", "Review the worked example"));
+    // Build on request: unopened review figures do not appear in the opening
+    // evidence or active assessment, and their controls are not mounted twice.
+    workedReview.addEventListener("toggle", () => {
+      if (!workedReview.open || workedReview.dataset.populated) return;
+      workedContent(workedReview, workedModel, "h3");
+      workedReview.dataset.populated = "true";
+    });
     model.append(workedReview);
   }
 
@@ -208,17 +229,14 @@ export function mountJourney(host, model, lesson) {
       if (step.teach) {
         const [title, text] = step.teach;
         const teaching = element("div", "", "school-step-notes");
-        teaching.append(element("h4", title), element("p", text));
+        teaching.append(element("h4", title));
+        if (step.visual) teaching.append(step.visual());
+        teaching.append(element("p", text));
         stage.append(teaching);
       }
       if (guided && step.worked) {
-        const { title, lines, visual } = step.worked;
         const example = element("div", "", "school-worked-example");
-        example.append(element("h4", title));
-        if (visual) example.append(visual());
-        const reasoning = element("ol");
-        reasoning.append(...lines.map(line => element("li", line)));
-        example.append(reasoning);
+        workedContent(example, step.worked, "h4");
         stage.append(example);
       }
       if (inlineCheck && !paused) {
@@ -317,13 +335,13 @@ export function mountJourney(host, model, lesson) {
       paused = !viewOnly;
       viewOnly = false;
       renderStages();
-      checkList.querySelector(paused ? ".school-current-stage button" : "summary")?.focus({preventScroll: true});
+      checkList.querySelector(paused ? ".school-current-stage > button.school-primary" : "summary")?.focus({preventScroll: true});
       return;
     }
     dialog.close();
     if (viewOnly) return;
     renderStages({animateCompletion});
-    checkList.querySelector(".school-current-stage button")?.focus({preventScroll: true});
+    checkList.querySelector(".school-current-stage > button.school-primary")?.focus({preventScroll: true});
   }
 
   function renderCheck() {

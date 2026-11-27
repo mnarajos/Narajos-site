@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 310" role="img" aria-labelledby="title description">
+<title id="title">Ribosome subunits from nucleus to cytoplasm</title>
+<desc id="description">The nucleolus in the nucleus produces ribosomal RNA and assembles ribosome subunits. Subunits leave through a nuclear pore and can join on messenger RNA in the cytoplasm to make a polypeptide.</desc>
+<rect width="280" height="310" rx="12" fill="#f5faf9"/>
+<g font-family="system-ui,sans-serif" font-size="16.5" fill="#263e4a" text-anchor="middle">
+<ellipse cx="80" cy="82" rx="58" ry="49" fill="#eee8f4" stroke="#69447f" stroke-width="3"/>
+<path d="M134 68v17" stroke="#f5faf9" stroke-width="8"/><text x="140" y="43" font-size="14">Pore</text><path d="M140 47l-5 19" stroke="#263e4a" stroke-width="1.5"/><circle cx="75" cy="83" r="17" fill="#c3abd1" stroke="#69447f" stroke-width="2"/>
+<path d="M134 76h55m-8-6 8 6-8 6" fill="none" stroke="#23558c" stroke-width="3"/>
+<text x="80" y="156">Nucleolus</text><text x="80" y="179">in nucleus</text>
+<path d="M205 103q-20-20-37-4 6 18 20 18 17 0 17-14Z" fill="#b6d8d1" stroke="#23656c" stroke-width="2"/>
+<path d="M171 123q16-9 34 0l-3 14h-28Z" fill="#d8c7e4" stroke="#69447f" stroke-width="2"/>
+<path d="M151 132h73" stroke="#98451e" stroke-width="3"/>
+<text x="195" y="166">mRNA</text><text x="199" y="188">and subunits</text>
+<path d="M190 198v35m-6-8 6 8 6-8" fill="none" stroke="#23558c" stroke-width="2"/>
+<text x="140" y="261">Polypeptide made</text>
+<text x="140" y="291">Arrows show the route</text>
+</g></svg>
