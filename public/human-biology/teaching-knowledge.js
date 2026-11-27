@@ -187,7 +187,7 @@
   Object.assign(window.KeystoneHumanLessons, {
     "f175/2.1": {
       revision: 1,
-      goal: "Distinguish the purpose of the first antenatal appointment from tracking fetal development.",
+      goal: "Distinguish the purpose of the first antenatal appointment from tracking foetal development.",
       activate: ["What is a baseline?", "It is a starting observation against which later observations can be compared."],
       prior: ["f175/a2", "Review placental exchange and ultrasound"],
       explain: [
@@ -208,8 +208,8 @@
       guided: choice("A record says blood pressure has increased since the first appointment. What makes this a monitoring claim?", 1,
         [["The first reading concerned the mother's health.", "The subject of a measurement does not establish change."], ["It compares readings over time.", ""], ["It used the same record as the booking history.", "Location in the record does not establish a trend."]],
         "Monitoring depends on comparable observations over time.", ["Look for what the later reading is being compared with."]),
-      apply: written("Why can a fictional record of previous pregnancies help at booking while leaving the growth of the current fetus unknown? Name a different type of evidence for growth.",
-        ["History supplies context for the assessment.", "History is not a measurement of this fetus.", "Ultrasound measurements interpreted with gestational age or previous measurements provide growth evidence."],
+      apply: written("Why can a fictional record of previous pregnancies help at booking while leaving the growth of the current foetus unknown? Name a different type of evidence for growth.",
+        ["History supplies context for the assessment.", "History is not a measurement of this foetus.", "Ultrasound measurements interpreted with gestational age or previous measurements provide growth evidence."],
         "Separate background information from measurements of the current pregnancy. Ultrasound can provide direct size measurements that help assess development in context.")
     },
     "f175/a1": {
@@ -241,19 +241,22 @@
         "The LH surge triggers ovulation.")
     },
     "f175/a2": {
-      goal: "Explain how placental structure supports exchange between maternal and fetal circulations.",
-      explain: ["Chorionic villi contain fetal vessels and are bathed by maternal blood. The circulations remain largely separate. A large area and short diffusion distances help exchange."],
-      teachingDiagram: {src:"/human-biology/placental-exchange.svg", width:280, height:310, compact:true,
-        alt:"Schematic section of a chorionic villus. Maternal blood surrounds the villus, and a fetal capillary lies inside it. Oxygen moves from maternal blood across the placental barrier to fetal blood; carbon dioxide moves in the opposite direction. The circulations are separated by the barrier.",
-        caption:"Follow oxygen across the placental barrier into a fetal capillary; carbon dioxide moves the other way. This schematic shows one villus, not its true scale."},
-      nodes: ["Maternal blood", "Placental barrier", "Fetal circulation"],
-      model: ["Oxygen reaches the spaces around the villi in maternal blood.", "Oxygen moves down its gradient across the placental barrier.", "Fetal capillaries take up oxygen and fetal blood carries it away. Carbon dioxide moves in the opposite direction."],
+      goal: "Explain how placental structure supports exchange between maternal and foetal circulations.",
+      // Orientation checked against OpenStax Anatomy and Physiology 2e, 28.2:
+      // https://openstax.org/books/anatomy-and-physiology-2e/pages/28-2-embryonic-development
+      explain: ["The placenta is attached to the wall of the uterus. The foetus is connected to the placenta by the umbilical cord, which carries foetal blood between them.", "Chorionic villi contain foetal vessels and are bathed by maternal blood. The circulations remain largely separate. A large area and short diffusion distances help exchange."],
+      // Retained for a future, orientated redesign; not shown in Phase 1.
+      deferredTeachingDiagram: {src:"/human-biology/placental-exchange.svg", width:280, height:310, compact:true,
+        alt:"Schematic section of a chorionic villus. Maternal blood surrounds the villus, and a foetal capillary lies inside it. Oxygen moves from maternal blood across the placental barrier to foetal blood; carbon dioxide moves in the opposite direction. The circulations are separated by the barrier.",
+        caption:"Follow oxygen across the placental barrier into a foetal capillary; carbon dioxide moves the other way. This schematic shows one villus, not its true scale."},
+      nodes: ["Maternal blood", "Placental barrier", "Foetal circulation"],
+      model: ["Oxygen reaches the spaces around the villi in maternal blood.", "Oxygen moves down its gradient across the placental barrier.", "Foetal capillaries take up oxygen and foetal blood carries it away. Carbon dioxide moves in the opposite direction."],
       guided: choice("Which change would directly reduce exchange area?", 0,
-        [["Fewer villi in contact with maternal blood.", ""], ["A faster fetal pulse alone.", "Pulse changes flow, rather than surface area itself."], ["Mixing of the two circulations is stopped.", "Exchange usually occurs across a barrier between the circulations."]],
+        [["Fewer villi in contact with maternal blood.", ""], ["A faster foetal pulse alone.", "Pulse changes flow, rather than surface area itself."], ["Mixing of the two circulations is stopped.", "Exchange usually occurs across a barrier between the circulations."]],
         "Villi increase the area across which substances can move."),
       apply: written("Explain why a thicker placental barrier could reduce oxygen transfer.",
         ["The diffusion distance increases.", "At otherwise comparable conditions, the oxygen transfer rate can fall."],
-        "Oxygen must diffuse further to reach a fetal capillary. A longer distance reduces diffusion rate if other factors stay similar.")
+        "Oxygen must diffuse further to reach a foetal capillary. A longer distance reduces diffusion rate if other factors stay similar.")
     },
     "f175/a3": {
       goal: "Link general causes of reduced fertility to the affected biological step.",

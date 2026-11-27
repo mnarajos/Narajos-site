@@ -875,29 +875,29 @@ window.KeystoneHumanData={
         },
         {
           "id": "3.2.1",
-          "title": "Neurons and the reflex arc",
-          "summary": "Specialised neurons carry signals, and rapid reflex pathways can operate through the spinal cord.",
+          "title": "Neurones and the reflex arc",
+          "summary": "Specialised neurones carry signals, and rapid reflex pathways can operate through the spinal cord.",
           "points": [
-            "Sensory neurons transmit signals from receptors; relay neurons coordinate within the CNS; motor neurons transmit signals to effectors.",
+            "Sensory neurones transmit signals from receptors; relay neurones coordinate within the CNS; motor neurones transmit signals to effectors.",
             "An action potential involves depolarisation and repolarisation. Myelin increases conduction speed by supporting saltatory conduction between nodes of Ranvier.",
             "The autonomic nervous system is part of the peripheral nervous system, regulated through central pathways; it is not an alternative to the CNS."
           ],
           "cards": [
             {
               "id": "3.2.1-01",
-              "q": "Neuron carrying signals from a receptor towards the CNS",
-              "a": "Sensory neuron",
+              "q": "Neurone carrying signals from a receptor towards the CNS",
+              "a": "Sensory neurone",
               "aliases": [
-                "Sensory neurone"
+                "Sensory neuron"
               ],
               "explain": ""
             },
             {
               "id": "3.2.1-02",
-              "q": "Neuron carrying signals from the CNS to an effector",
-              "a": "Motor neuron",
+              "q": "Neurone carrying signals from the CNS to an effector",
+              "a": "Motor neurone",
               "aliases": [
-                "Motor neurone"
+                "Motor neuron"
               ],
               "explain": ""
             },

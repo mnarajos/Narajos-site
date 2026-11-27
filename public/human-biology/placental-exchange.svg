@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="280" height="310" viewBox="0 0 280 310" role="img" aria-labelledby="title description">
   <title id="title">Exchange across a chorionic villus</title>
-  <desc id="description">A fetal capillary inside a chorionic villus is separated from the maternal blood surrounding it by the placental barrier. Oxygen moves from maternal to fetal blood and carbon dioxide moves in the opposite direction.</desc>
+  <desc id="description">A foetal capillary inside a chorionic villus is separated from the maternal blood surrounding it by the placental barrier. Oxygen moves from maternal to foetal blood and carbon dioxide moves in the opposite direction.</desc>
   <rect width="280" height="310" rx="12" fill="#f9f3ef"/>
   <path d="M135 60 C77 65 69 184 130 207 C172 223 235 204 237 143 C239 91 204 59 135 60Z" fill="#e8f4ef" stroke="#52786e" stroke-width="4"/>
   <path d="M158 82 C198 82 213 109 213 141 C213 173 198 195 158 195" fill="none" stroke="#5674a4" stroke-width="19" stroke-linecap="round"/>
@@ -8,7 +8,7 @@
   <g font-family="system-ui, sans-serif" fill="#253d4a" font-size="16" font-weight="600">
     <text x="12" y="22">Maternal blood</text><text x="12" y="40">around villus</text>
     <text x="16" y="104">Oxygen</text><text x="16" y="151">Carbon</text><text x="16" y="168">dioxide</text>
-    <text x="16" y="251">Placental barrier</text><text x="145" y="289">Fetal capillary</text>
+    <text x="16" y="251">Placental barrier</text><text x="145" y="289">Foetal capillary</text>
     <text x="142" y="27">Chorionic villus</text>
   </g>
   <g fill="none" stroke-linecap="round" stroke-linejoin="round">

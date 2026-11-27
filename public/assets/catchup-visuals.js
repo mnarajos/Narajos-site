@@ -303,8 +303,8 @@ const reflexSequence = `<details class="kc-visual-check">
  <summary>Trace a withdrawal reflex</summary>
  <science-sequence kind="reflex"></science-sequence>
  <details class="kc-visual-check">
-  <summary>Predict what happens if the motor neuron fails to carry the impulse</summary>
-  <p>The receptor and sensory neuron can still send a signal towards the spinal cord. The effector muscle would receive no impulse along this route, so this pathway would fail to trigger the withdrawal.</p>
+  <summary>Predict what happens if the motor neurone fails to carry the impulse</summary>
+  <p>The receptor and sensory neurone can still send a signal towards the spinal cord. The effector muscle would receive no impulse along this route, so this pathway would fail to trigger the withdrawal.</p>
  </details>
 </details>`;
 

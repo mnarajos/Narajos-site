@@ -656,7 +656,7 @@ try{
  await reflex.getByRole("status").filter({hasText:"Effector muscle"}).waitFor();
  assert.equal(await reflexNext.getAttribute("aria-disabled"),"true");
  await reflex.getByRole("button",{name:"Previous step"}).press("Enter");
- await reflex.getByRole("status").filter({hasText:"Motor neuron"}).waitFor();
+ await reflex.getByRole("status").filter({hasText:"Motor neurone"}).waitFor();
  await desktop.goto(base+"/human-biology/#catchup/f170/1.1.2",{waitUntil:"load"});
  await desktop.locator("[data-hb-model-step]").waitFor({state:"visible"});
  const microscope=desktop.locator("[data-hb-model-step]");

@@ -71,17 +71,14 @@ export async function checkCompactCatchupFigures(browser, base) {
       assert.equal(await soluteFigure.count(), 0, 'solute teaching figure should not remain in the independent question view');
 
       await page.goto(base + '/human-biology/#catchup/f175/a2');
-      const placenta = page.locator('.hb-teach-explain .hb-teaching-diagram-compact').filter({
-        has: page.locator('img[src="/human-biology/placental-exchange.svg"]')
-      });
-      await placenta.waitFor();
-      assert.equal(await placenta.count(), 1);
-      assert(await placenta.evaluate(el => el.scrollWidth <= el.clientWidth + 1), 'placental diagram should fit its container');
-      const img = placenta.locator('img');
-      assert(await img.evaluate(el => el.complete && el.naturalWidth > 0), 'placental diagram should load');
-      assert.match(await img.getAttribute('alt'), /maternal.*fetal.*oxygen.*carbon dioxide/i);
-      assert.equal(await placenta.getAttribute('tabindex'), null, 'non-scrolling diagram should not add a tab stop');
-      assert.equal(await placenta.locator('..').locator('.hb-diagram-scroll-hint').count(), 0);
+      // Both structural figures are deferred until they have anatomical context.
+      // The Phase 1 teaching remains present and fits without the figures.
+      const placentaExplanation = page.locator('.hb-teach-explain');
+      await placentaExplanation.waitFor();
+      assert.match(await placentaExplanation.innerText(), /placenta is attached to the wall of the uterus.*umbilical cord.*foetal blood/is);
+      assert.match(await placentaExplanation.innerText(), /Chorionic villi contain foetal vessels.*maternal blood/is);
+      assert.equal(await page.locator('img[src="/human-biology/placental-exchange.svg"], img[src="/human-biology/f175-many-villi.svg"]').count(), 0);
+      assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 3), 'placental teaching should fit the viewport');
 
       // The same feedback figure appears in both courses. Check the actual
       // lesson card and text bounds rather than treating no page overflow as

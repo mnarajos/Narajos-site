@@ -205,7 +205,7 @@ var notes={
   "f175": {
     "2.1": {
       title: "First antenatal appointment and later monitoring",
-      lines: ["Booking history supplies context for later care. Starting measurements provide a baseline.", "Later measures can address a separate question about fetal growth or a possible condition."]
+      lines: ["Booking history supplies context for later care. Starting measurements provide a baseline.", "Later measures can address a separate question about foetal growth or a possible condition."]
     },
     "a1": {
       "title": "Conception and pregnancy",
@@ -218,8 +218,8 @@ var notes={
     "a2": {
       "title": "Pregnancy and antenatal care",
       "lines": [
-        "The placenta supports exchange of oxygen, nutrients and wastes between maternal and fetal circulations.",
-        "Maternal and fetal blood are normally separated by the placental barrier.",
+        "The placenta supports exchange of oxygen, nutrients and wastes between maternal and foetal circulations.",
+        "Maternal and foetal blood are normally separated by the placental barrier.",
         "Ultrasound uses reflected sound waves to create images for antenatal assessment."
       ]
     },
@@ -597,7 +597,6 @@ const recapFigureMap = {
  "f173/a3/1": [["f173/a3", "teachingDiagram"]],
  "f173/a3/2": [["f173/a3", "explanationDiagram"]],
  "f174/a3/0": [["f174/a3", "teachingDiagram"]],
- "f175/a2/1": [["f175/a2", "teachingDiagram"]],
  "f175/a3/1": [["f175/a3", "teachingDiagram"]],
  "f176/a1/0": [["f176/a1", "teachingDiagram"]],
  "f176/a2/0": [["f176/a1", "teachingDiagram"]],

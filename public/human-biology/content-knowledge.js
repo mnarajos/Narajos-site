@@ -75,7 +75,7 @@ window.KeystoneHumanKnowledge={
       "areas": [
         "",
         "Nervous system structure",
-        "Neuron communication",
+        "Neurone communication",
         "Pain and neurotransmitters",
         "Brain disorders and injuries",
         "Brain scanning"
@@ -1025,18 +1025,18 @@ window.KeystoneHumanKnowledge={
       "section": "1.3",
       "type": "single",
       "level": "warmup",
-      "stem": "What does the placenta allow between mother and fetus?",
+      "stem": "What does the placenta allow between mother and foetus?",
       "options": [
         "Exchange of substances",
-        "Mixing of all maternal and fetal blood",
-        "Production of every fetal organ",
-        "Replacement of the fetal heart"
+        "Mixing of all maternal and foetal blood",
+        "Production of every foetal organ",
+        "Replacement of the foetal heart"
       ],
       "correct": 0,
       "model": "Exchange of substances",
       "explain": "The placenta enables oxygen, nutrient and waste exchange without usual direct mixing of blood.",
       "misconception": "Placental exchange is not the same as blood mixing.",
-      "hintCue": "Which structure links maternal and fetal supplies?",
+      "hintCue": "Which structure links maternal and foetal supplies?",
       "samAligned": false,
       "knowledgeOnly": true,
       "warmup": true,
@@ -1179,7 +1179,7 @@ window.KeystoneHumanKnowledge={
       "section": "1.3",
       "type": "multi",
       "level": "apply",
-      "stem": "Which TWO substances usually cross the placenta towards the fetus?",
+      "stem": "Which TWO substances usually cross the placenta towards the foetus?",
       "options": [
         "Oxygen",
         "Glucose",
@@ -1192,8 +1192,8 @@ window.KeystoneHumanKnowledge={
       ],
       "model": "Oxygen and glucose",
       "explain": "They move from maternal circulation across the placental barrier.",
-      "misconception": "Maternal and fetal blood are normally separated.",
-      "hintCue": "Which substances support fetal respiration and growth?",
+      "misconception": "Maternal and foetal blood are normally separated.",
+      "hintCue": "Which substances support foetal respiration and growth?",
       "samAligned": false,
       "knowledgeOnly": true
     },
@@ -1360,7 +1360,7 @@ window.KeystoneHumanKnowledge={
       "section": "2.1",
       "type": "single",
       "level": "warmup",
-      "stem": "What is the role of a motor neuron?",
+      "stem": "What is the role of a motor neurone?",
       "options": [
         "Send signals to effectors",
         "Carry oxygen in blood",
@@ -1369,8 +1369,8 @@ window.KeystoneHumanKnowledge={
       ],
       "correct": 0,
       "model": "Signals to effectors",
-      "explain": "Motor neurons transmit signals towards muscles or glands.",
-      "misconception": "Sensory neurons carry signals from receptors towards the CNS.",
+      "explain": "Motor neurones transmit signals towards muscles or glands.",
+      "misconception": "Sensory neurones carry signals from receptors towards the CNS.",
       "hintCue": "Which direction does a motor signal travel?",
       "samAligned": false,
       "knowledgeOnly": true,
@@ -1423,7 +1423,7 @@ window.KeystoneHumanKnowledge={
       "correct": 0,
       "model": "Protective membranes",
       "explain": "The meninges surround the brain and spinal cord.",
-      "misconception": "Meninges are not neurons or neurotransmitters.",
+      "misconception": "Meninges are not neurones or neurotransmitters.",
       "hintCue": "What structures cushion and protect the CNS?",
       "samAligned": false,
       "knowledgeOnly": true
@@ -1438,14 +1438,14 @@ window.KeystoneHumanKnowledge={
       "stem": "Put a simple neural pathway in order.",
       "items": [
         "Receptor detects stimulus",
-        "Sensory neuron carries signal",
+        "Sensory neurone carries signal",
         "CNS processes information",
-        "Motor neuron activates effector"
+        "Motor neurone activates effector"
       ],
       "model": "Receptor → sensory → CNS → motor → effector.",
       "explain": "Signals usually travel through defined pathways.",
-      "misconception": "Motor neurons do not normally detect the initial external stimulus.",
-      "hintCue": "Which neuron enters the CNS?",
+      "misconception": "Motor neurones do not normally detect the initial external stimulus.",
+      "hintCue": "Which neurone enters the CNS?",
       "samAligned": false,
       "knowledgeOnly": true
     },
@@ -1542,7 +1542,7 @@ window.KeystoneHumanKnowledge={
         "Reducing nociceptive transmission",
         "Altering CNS processing of pain",
         "Increasing every nociceptor signal",
-        "Destroying all sensory neurons"
+        "Destroying all sensory neurones"
       ],
       "correct": [
         0,
@@ -2099,18 +2099,18 @@ window.KeystoneHumanKnowledge={
       "options": [
         "The reading confirms that pressure has risen since the start of pregnancy.",
         "The history and reading supply context and a starting point for assessment.",
-        "The history measures how fast the fetus is growing.",
+        "The history measures how fast the foetus is growing.",
         "The reading confirms that no further assessment will be useful."
       ],
       "correct": 1,
       "model": "The history and reading supply context and a starting point for assessment.",
-      "explain": "Booking gathers relevant history and baseline measurements. A single reading does not establish change over time. Current fetal growth requires evidence about the current pregnancy.",
+      "explain": "Booking gathers relevant history and baseline measurements. A single reading does not establish change over time. Current foetal growth requires evidence about the current pregnancy.",
       "misconception": "A starting value gives a comparator for later readings.",
       "hintCue": "Ask whether one visit can establish a trend.",
       "optionFeedback": [
         "A trend needs comparable readings at more than one time.",
         null,
-        "A previous pregnancy supplies context. It does not measure this fetus.",
+        "A previous pregnancy supplies context. It does not measure this foetus.",
         "One observation cannot establish what later evidence may be needed."
       ],
       "samAligned": false,

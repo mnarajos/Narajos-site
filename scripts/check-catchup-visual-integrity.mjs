@@ -181,4 +181,36 @@ for (const [route, entries] of Object.entries(recapWindow.registry)) {
   if ((unit === "f170" || unit === "f171") && Number(step) === 0 && humanWindow.KeystoneHumanLessons[unit + "/" + id]) guidedFirstRecaps.push(route);
 }
 assert.ok(recapMappings, "expected explicitly mapped recap lines");
+
+// Check British spellings in the F175 teaching and recap text and the actual
+// A-level foetal-haemoglobin figure. Machine identifiers and answer aliases
+// are deliberately excluded: they can remain stable and accept other spellings.
+const visibleStrings = (value, key = "") => {
+  if (["id", "src", "source", "licenceUrl", "practice", "prior", "visualFrom", "aliases", "variants"].includes(key)) return [];
+  if (typeof value === "string") return [value];
+  if (Array.isArray(value)) return value.flatMap(item => visibleStrings(item));
+  if (value && typeof value === "object") return Object.entries(value).flatMap(([name, item]) => visibleStrings(item, name));
+  return [];
+};
+const f175Text = Object.entries(humanWindow.KeystoneHumanLessons)
+  .filter(([id]) => id.startsWith("f175/"))
+  .flatMap(([, lesson]) => visibleStrings(lesson))
+  .concat(Object.values(recapData.notes.f175 || {}).flatMap(note => visibleStrings(note.lines)))
+  .join(" ");
+assert.match(f175Text, /\bfoetal\b/i, "F175 uses British foetal terminology");
+assert.doesNotMatch(f175Text, /\b(?:fetal|fetus|fetuses)\b/i, "F175 teaching text uses British spellings");
+const ultrasound = await readFile(new URL("../public/human-biology/f175-history-ultrasound.svg", import.meta.url), "utf8");
+const ultrasoundLabels = (ultrasound.match(/<(?:text|desc)\b[^>]*>[^<]*<\/(?:text|desc)>/g) || []).join(" ");
+assert.match(ultrasoundLabels, /\bfoetal\b/i);
+assert.doesNotMatch(ultrasoundLabels, /\b(?:fetal|fetus|fetuses)\b/i);
+const exchangeWindow = {ALevelCatchupFigures: {render: () => ""}};
+vm.runInNewContext(await readFile(new URL("../public/alevel/catchup-exchange-figures.js", import.meta.url), "utf8"), {window: exchangeWindow});
+const foetalGraph = exchangeWindow.ALevelCatchupFigures.render("a3", "bohr", 1);
+assert.match(foetalGraph, /\bfoetal\b/i);
+assert.doesNotMatch(foetalGraph, /\b(?:fetal|fetus|fetuses)\b/i);
+for (const [id, answer, alias] of [["3.2.1-01", "Sensory neurone", "Sensory neuron"], ["3.2.1-02", "Motor neurone", "Motor neuron"]]) {
+  const card = recapData.KeystoneHumanData.areas.flatMap(area => area.sections).flatMap(section => section.cards || []).find(item => item.id === id);
+  assert.equal(card?.a, answer, `${id}: display the British answer`);
+  assert.ok(card?.aliases?.includes(alias), `${id}: retain the accepted alternative`);
+}
 console.log(`Visual integrity: ${Object.keys(ks3StepVisuals).length} KS3 mappings, ${gcseSteps} GCSE and ${schoolSteps} Year 9 step placements, ${keys.length} A-level figures and ${assets} Human Biology local diagrams and ${photos} sourced teaching photos; ${recapMappings} recap mappings checked, ${recapMappings - guidedFirstRecaps.length} reachable as recap content. ${guidedFirstRecaps.length} first-step mappings open guided lessons instead: ${guidedFirstRecaps.join(", ") || "none"}.`);

@@ -9,6 +9,6 @@
  <text x="140" y="189" font-size="15">Ultrasound measurement</text>
  <rect x="34" y="205" width="117" height="82" rx="7" fill="#273d48" stroke="#537a94" stroke-width="3"/>
  <ellipse cx="93" cy="246" rx="38" ry="28" fill="none" stroke="#fff" stroke-width="2"/><circle cx="80" cy="239" r="10" fill="none" stroke="#fff" stroke-width="2"/><path d="M68 239h24m-24-5v10m24-10v10" stroke="#e9c58e" stroke-width="2"/>
- <text x="208" y="225" font-size="14">Current fetal</text><text x="208" y="245" font-size="14">measurement</text><text x="208" y="267" font-size="14">+ gestational</text><text x="208" y="287" font-size="14">age</text>
+ <text x="208" y="225" font-size="14">Current foetal</text><text x="208" y="245" font-size="14">measurement</text><text x="208" y="267" font-size="14">+ gestational</text><text x="208" y="287" font-size="14">age</text>
  <text x="140" y="325" font-size="14">Scan icon is not a patient image.</text><text x="140" y="346" font-size="13">Measurements are interpreted in context.</text></g>
 </svg>

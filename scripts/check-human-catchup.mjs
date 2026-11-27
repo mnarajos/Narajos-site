@@ -831,7 +831,7 @@ export async function checkHumanCatchup(browser, base) {
       ["f173/a3/2", ["benedicts-controls.svg", "f173-control-comparison.svg"]],
       ["f173/a2/1", ["hb-blood-cells-sem.webp", "hb-pancreas-tem.webp"]],
       ["f174/a2/0", ["iron-blood-oxygen.svg"]], ["f174/a2/1", ["water-balance.svg"]], ["f174/a2/2", ["body-composition.svg"]],
-      ["f175/a2/1", ["placental-exchange.svg"]], ["f175/a3/1", ["oviduct-obstruction.svg"]],
+      ["f175/a3/1", ["oviduct-obstruction.svg"]],
       ["f176/a3/1", ["nociception-pathway.svg"]], ["f177/a1/2", ["receptor.svg"]],
       ["f177/a2/2", ["trial-comparison.svg"]]
     ]) {
@@ -968,7 +968,6 @@ export async function checkHumanCatchup(browser, base) {
       ["f176/a4", ["f176-coordination-injury.svg"], ["f176-coordination-injury.svg", "f176-coordination-injury.svg"]],
       ["f175/2.1", ["f175-history-ultrasound.svg", "f175-history-ultrasound.svg"], ["f175-history-ultrasound.svg", "f175-baseline-pressure.svg", "f175-history-ultrasound.svg"]],
       ["f175/a1", ["f170-sperm-route.svg", "f175-oocyte-route.svg"], ["f175-fsh-lh.svg", "f175-fsh-lh.svg", "f175-gamete-meeting.svg", "f175-fertilisation-development.svg"]],
-      ["f175/a2", ["f175-many-villi.svg"], ["placental-exchange.svg", "placental-exchange.svg", "placental-exchange.svg"]],
       ["f175/a3", [], ["f175-blocked-gamete-routes.svg", "f175-blocked-gamete-routes.svg"]],
       ["f171/3.2.1", ["f171-immune-targets.svg"], ["f171-immune-targets.svg", "f171-graft-immune-tradeoff.svg", "f171-graft-immune-tradeoff.svg"]],
       ["f171/2.3", ["f171-risk-prevention.svg"], ["f171-risk-prevention.svg", "f171-screen-diagnose-monitor.svg", "f171-screen-diagnose-monitor.svg", "f171-screen-diagnose-monitor.svg"]],
@@ -1099,14 +1098,30 @@ export async function checkHumanCatchup(browser, base) {
     await open("catchup/f175/a2");
     const placentaModel = page.locator("[data-hb-model-step]");
     await expand(placentaModel);
-    assert.equal(await placentaModel.locator(':scope > figure img[src="/human-biology/placental-exchange.svg"]').count(), 0, "placenta is not duplicated above the worked steps");
-    for (let index = 0; index < 3; index++) {
-      const figure = placentaModel.locator(`li:nth-child(${index + 1}) img[src="/human-biology/placental-exchange.svg"]`);
-      assert(await figure.isVisible(), `placenta follows worked step ${index + 1}`);
-      if (index < 2) await placentaModel.getByRole("button", {name:"Show next step"}).click();
+    // Phase 1 withholds both unorientated structural diagrams, while retaining
+    // every authored fact and worked step for the future scaffolded redesign.
+    const deferredPlacenta = 'img[src="/human-biology/placental-exchange.svg"], img[src="/human-biology/f175-many-villi.svg"]';
+    assert.equal(await page.locator(deferredPlacenta).count(), 0, "deferred placental figures must not be rendered in teaching or recap");
+    const placentaExplanation = page.locator(".hb-teach-explain");
+    assert.match(await placentaExplanation.innerText(), /placenta is attached to the wall of the uterus.*foetus is connected to the placenta by the umbilical cord.*foetal blood/is);
+    assert.match(await placentaExplanation.innerText(), /Chorionic villi contain foetal vessels.*maternal blood.*large area and short diffusion distances/is);
+    const placentaSteps = [
+      /Oxygen reaches the spaces around the villi in maternal blood\./,
+      /Oxygen moves down its gradient across the placental barrier\./,
+      /Foetal capillaries take up oxygen and foetal blood carries it away\. Carbon dioxide moves in the opposite direction\./
+    ];
+    for (let index = 0; index < placentaSteps.length; index++) {
+      const step = placentaModel.locator(`li:nth-child(${index + 1})`);
+      assert(await step.isVisible(), `placental worked step ${index + 1} remains visible`);
+      assert.match(await step.innerText(), placentaSteps[index]);
+      if (index + 1 < placentaSteps.length) await placentaModel.getByRole("button", {name:"Show next step"}).click();
     }
     await expand(stage("independent"));
-    assert.equal(await stage("independent").locator('img[src="/human-biology/placental-exchange.svg"]').count(), 0);
+    assert(await stage("independent").isVisible(), "independent practice remains available");
+    assert.equal(await page.locator(deferredPlacenta).count(), 0);
+    await open("catchup/f175/a2/1");
+    assert.match(await page.locator("section.paper.panel").innerText(), /Maternal and foetal blood are normally separated by the placental barrier\./);
+    assert.equal(await page.locator(deferredPlacenta).count(), 0, "deferred figures must not reappear in the recap");
 
     // Additional figures remain in the first paragraph's own figure group.
     for (const [route, filename] of [["f170/1.1.1.signals", "f170-cone-sensitivity.svg"], ["f170/1.1.2.counting", "f170-chamber-sampling.svg"], ["f171/2.3", "f171-screen-diagnose-monitor.svg"]]) {

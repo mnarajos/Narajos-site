@@ -1,6 +1,6 @@
 # Human Biology catch-up visual inventory
 
-This route inventory was generated from the companion search index and teaching keys. “Shared registry” means a mapping exists in `catchup-visuals.js`, not that it is displayed at every stage or is suitable for every idea. Guided teaching can also contain tables, models, or other visuals. All rows require inspection against the actual teaching steps and OCR course requirements. The F172/a4 gene delivery, F174/a1 nutrition, F175/a2 placental exchange, F175/a4 IVF/ICSI and F176/a3 nociception schematics are newly mapped to explanation and worked-model stages.
+This route inventory was generated from the companion search index and teaching keys. “Shared registry” means a mapping exists in `catchup-visuals.js`, not that it is displayed at every stage or is suitable for every idea. Guided teaching can also contain tables, models, or other visuals. All rows require inspection against the actual teaching steps and OCR course requirements. Current step-level decisions are recorded in the teaching-block ledger. The F175/a2 placental structural figures were withheld from Phase 1 pending an orientated redesign; their files remain in the repository.
 
 | Unit | Catch-up concept | Guided lesson key | Shared registry | Status |
 | --- | --- | --- | --- | --- |
@@ -21,7 +21,7 @@ This route inventory was generated from the companion search index and teaching 
 | F170 | Measuring system activity (`f170/2.2.3`) | Yes | No mapping | Needs step review |
 | F170 | Hormones and homeostasis (`f170/3.1.1`) | Yes | Mapped | Needs step review |
 | F170 | Monitoring homeostasis (`f170/3.1.2`) | Yes | No mapping | Needs step review |
-| F170 | Neurons and the reflex arc (`f170/3.2.1`) | Yes | Mapped | Needs step review |
+| F170 | Neurones and the reflex arc (`f170/3.2.1`) | Yes | Mapped | Needs step review |
 | F170 | Brain and spinal cord (`f170/3.2.2`) | No | No mapping | Needs step review |
 | F170 | Reproductive anatomy (`f170/3.3.1`) | Yes | Mapped | Needs step review |
 | F170 | Hormonal control of gametes (`f170/3.3.2`) | Yes | No mapping | Needs step review |

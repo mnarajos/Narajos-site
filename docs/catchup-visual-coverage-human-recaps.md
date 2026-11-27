@@ -56,7 +56,7 @@ This inventory enumerates authored recap lines. Presence of a line does not mean
 | f170/3.1.2 · 1 | Hypoglycaemia means abnormally low blood glucose; hyperglycaemia means abnormally high blood glucose. | Unreviewed except explicit block-review entries |
 | f170/3.1.2 · 2 | Type 1 diabetes involves autoimmune destruction of beta cells; type 2 involves impaired insulin sensitivity and progressive insulin-secretion problems. | Unreviewed except explicit block-review entries |
 | f170/3.1.2 · 3 | Fasting provides a more standardised starting point for glucose testing. Wearable glucose sensors offer useful trends but have measurement limitations. | Unreviewed except explicit block-review entries |
-| f170/3.2.1 · 1 | Sensory neurons transmit signals from receptors; relay neurons coordinate within the CNS; motor neurons transmit signals to effectors. | Unreviewed except explicit block-review entries |
+| f170/3.2.1 · 1 | Sensory neurones transmit signals from receptors; relay neurones coordinate within the CNS; motor neurones transmit signals to effectors. | Unreviewed except explicit block-review entries |
 | f170/3.2.1 · 2 | An action potential involves depolarisation and repolarisation. Myelin increases conduction speed by supporting saltatory conduction between nodes of Ranvier. | Unreviewed except explicit block-review entries |
 | f170/3.2.1 · 3 | The autonomic nervous system is part of the peripheral nervous system, regulated through central pathways; it is not an alternative to the CNS. | Unreviewed except explicit block-review entries |
 | f170/3.2.2 · 1 | The cerebrum supports higher processing and voluntary function; the cerebellum supports movement coordination. | Unreviewed except explicit block-review entries |
@@ -161,12 +161,12 @@ This inventory enumerates authored recap lines. Presence of a line does not mean
 | f174/a4 · 2 | BMI can be useful for population screening but does not directly distinguish fat from muscle or diagnose health. | Unreviewed except explicit block-review entries |
 | f174/a4 · 3 | Interpret biological measurements alongside other evidence rather than from one number. | Unreviewed except explicit block-review entries |
 | f175/2.1 · 1 | Booking history supplies context for later care. Starting measurements provide a baseline. | Unreviewed except explicit block-review entries |
-| f175/2.1 · 2 | Later measures can address a separate question about fetal growth or a possible condition. | Unreviewed except explicit block-review entries |
+| f175/2.1 · 2 | Later measures can address a separate question about foetal growth or a possible condition. | Unreviewed except explicit block-review entries |
 | f175/a1 · 1 | An oviduct is also called a Fallopian tube or uterine tube. Fertilisation usually occurs within an oviduct. | Unreviewed except explicit block-review entries |
 | f175/a1 · 2 | The zygote begins cleavage as it travels towards the uterus. The embryo develops into a blastocyst that may implant in the uterine lining. Development continues after implantation. | Unreviewed except explicit block-review entries |
 | f175/a1 · 3 | FSH supports follicle development, while a surge in LH normally triggers ovulation. | Unreviewed except explicit block-review entries |
-| f175/a2 · 1 | The placenta supports exchange of oxygen, nutrients and wastes between maternal and fetal circulations. | Unreviewed except explicit block-review entries |
-| f175/a2 · 2 | Maternal and fetal blood are normally separated by the placental barrier. | Unreviewed except explicit block-review entries |
+| f175/a2 · 1 | The placenta supports exchange of oxygen, nutrients and wastes between maternal and foetal circulations. | Unreviewed except explicit block-review entries |
+| f175/a2 · 2 | Maternal and foetal blood are normally separated by the placental barrier. | Unreviewed except explicit block-review entries |
 | f175/a2 · 3 | Ultrasound uses reflected sound waves to create images for antenatal assessment. | Unreviewed except explicit block-review entries |
 | f175/a3 · 1 | Fertility depends on viable gametes, reproductive anatomy, and suitable physiology. | Unreviewed except explicit block-review entries |
 | f175/a3 · 2 | Absent ovulation, low sperm motility or blocked oviducts can reduce the chance of fertilisation. | Unreviewed except explicit block-review entries |

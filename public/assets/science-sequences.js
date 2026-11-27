@@ -13,7 +13,7 @@
     <g data-stage="3" hidden><path class="ks-sequence-route" d="M183 68Q185 85 185 120V158Q184 177 192 179"/><circle class="ks-sequence-focus" cx="183" cy="67" r="4"/><circle class="ks-sequence-focus" cx="200" cy="179" r="5"/></g>
   </svg>`;
 
-  const reflex = `<svg viewBox="0 0 360 238" role="img" aria-label="A pathway from a skin receptor along a sensory neuron to a relay neuron in the spinal cord, then along a motor neuron to an arm muscle">
+  const reflex = `<svg viewBox="0 0 360 238" role="img" aria-label="A pathway from a skin receptor along a sensory neurone to a relay neurone in the spinal cord, then along a motor neurone to an arm muscle">
     <rect class="ks-sequence-organ" x="228" y="37" width="116" height="172" rx="14"/>
     <text x="286" y="61" text-anchor="middle">Spinal cord</text>
     <path class="ks-sequence-path" data-stage="1" d="M55 93H267M258 88L267 93L258 98"/>
@@ -21,9 +21,9 @@
     <path class="ks-sequence-path" data-stage="3" d="M270 154H59M68 149L59 154L68 159"/>
     <circle class="ks-sequence-path" data-stage="0" cx="44" cy="93" r="9"/>
     <path class="ks-sequence-path" data-stage="4" d="M20 154Q35 136 50 154Q35 172 20 154Z"/>
-    <text x="15" y="73">Receptor</text><text x="91" y="82">Sensory neuron</text>
-    <text x="285" y="126">Relay</text><text x="285" y="141">neuron</text>
-    <text x="94" y="181">Motor neuron</text><text x="14" y="181">Muscle</text>
+    <text x="15" y="73">Receptor</text><text x="91" y="82">Sensory neurone</text>
+    <text x="285" y="126">Relay</text><text x="285" y="141">neurone</text>
+    <text x="94" y="181">Motor neurone</text><text x="14" y="181">Muscle</text>
   </svg>`;
 
   const sequences = {
@@ -40,9 +40,9 @@
       image: reflex,
       stages: [
         ["Receptor", "Touching a hot object provides a stimulus. A receptor in the skin detects the stimulus and triggers a nerve impulse."],
-        ["Sensory neuron", "The impulse travels along the sensory neuron towards the spinal cord."],
-        ["Relay neuron", "In the spinal cord, the sensory neuron passes the signal across a synapse to a relay neuron."],
-        ["Motor neuron", "The relay neuron passes the signal across another synapse. An impulse travels along the motor neuron to the effector."],
+        ["Sensory neurone", "The impulse travels along the sensory neurone towards the spinal cord."],
+        ["Relay neurone", "In the spinal cord, the sensory neurone passes the signal across a synapse to a relay neurone."],
+        ["Motor neurone", "The relay neurone passes the signal across another synapse. An impulse travels along the motor neurone to the effector."],
         ["Effector muscle", "The effector muscle contracts, pulling the hand away. This withdrawal can begin before you consciously decide to move."]
       ]
     }
