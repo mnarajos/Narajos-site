@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="280" height="495" viewBox="0 0 280 495" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="535" viewBox="0 0 280 535" role="img" aria-labelledby="title desc">
   <title id="title">Inside the placenta: several chorionic villi</title>
-  <desc id="desc">A simplified section of the placenta selected in figure 1 is turned so that the foetal side, towards the umbilical cord, is at the top and the uterine wall is below. Several branching chorionic villi extend from foetal-side tissue into surrounding maternal blood. One villus anchors to the uterine wall while others float in maternal blood. Each contains foetal vessels; only their main loops are shown. A dashed box marks the middle villus as the one enlarged in figure 3. Maternal and foetal blood normally remain separate. The diagram is not to scale.</desc>
-  <rect width="280" height="495" rx="12" fill="#faf8f7"/>
+  <desc id="desc">A simplified section of the placenta selected in figure 1 is turned so that the foetal side, towards the umbilical cord, is at the top and the uterine wall is below. Several branching chorionic villi extend from foetal-side tissue into surrounding maternal blood. All remain attached to the foetal-side tissue. One also anchors to the uterine wall; the others project freely into maternal blood without attaching to the wall. Each contains foetal vessels; only their main loops are shown. A dashed box marks the middle villus as the one enlarged in figure 3. Maternal and foetal blood normally remain separate. The diagram is not to scale.</desc>
+  <rect width="280" height="535" rx="12" fill="#faf8f7"/>
   <g font-family="system-ui,sans-serif" fill="#243c48">
     <text x="14" y="25" font-size="17" font-weight="700">2. Inside the placenta</text>
     <text x="14" y="49" font-size="15">Foetal side: towards the cord</text>
@@ -9,7 +9,7 @@
     <rect x="10" y="72" width="260" height="214" fill="#f8e7e5"/>
     <rect x="10" y="72" width="260" height="25" fill="#dbeaf1" stroke="#53798c" stroke-width="2"/>
     <rect x="10" y="277" width="260" height="20" fill="#d8c4ce" stroke="#855e72" stroke-width="2"/>
-    <!-- One villus anchors to the uterine wall; the others float in maternal blood. -->
+    <!-- All villi join foetal-side tissue; one also anchors to the uterine wall. -->
     <g fill="#fffdf9" stroke="#9c6275" stroke-width="2.5">
       <path d="M32 97 H73 V175 Q86 167 87 180 Q87 191 73 193 V208 Q73 225 65 229 V277 H43 V229 Q32 225 32 208 V199 Q18 199 20 187 Q21 176 32 183Z"/>
       <path d="M118 97 H162 V225 Q162 249 140 249 Q118 249 118 225Z"/>
@@ -27,8 +27,9 @@
       <text x="14" y="396">Dashed box: villus in figure 3</text>
       <text x="14" y="421">Lower band: uterus wall</text>
     </g>
-    <text x="14" y="445" font-size="14">Some villi anchor; others float.</text>
-    <text x="14" y="465" font-size="14">Blood normally remains separate.</text>
-    <text x="14" y="485" font-size="13">Simplified; not to scale.</text>
+    <text x="14" y="445" font-size="16">All join foetal-side tissue.</text>
+    <text x="14" y="470" font-size="16">Some also anchor to the wall.</text>
+    <text x="14" y="495" font-size="16">Blood normally stays separate.</text>
+    <text x="14" y="520" font-size="16">Not to scale.</text>
   </g>
 </svg>

@@ -1116,11 +1116,14 @@ export async function checkHumanCatchup(browser, base) {
     assert.deepEqual(await orderedFiles(placentaExplanation), placentaFiles, 'teaching zooms from pregnancy to several villi to one villus');
     assert.match(await placentaExplanation.locator(orientationSelector).getAttribute('alt'), /pregnant female.*dashed box.*figure 2/i);
     assert.match(await placentaExplanation.locator(manySelector).getAttribute('alt'), /turned.*foetal side.*maternal blood.*anchors.*villus.*figure 3/i);
+    assert.match(await placentaExplanation.locator(manySelector).getAttribute('alt'), /all remain attached to the foetal-side tissue.*anchors to the uterine wall.*project freely/i);
+    assert.match(await placentaExplanation.locator(manySelector).locator('xpath=ancestor::figure[1]/figcaption').innerText(), /all remain attached to the foetal-side tissue.*anchor to the wall.*project freely/i);
     const firstPlacentaStep = placentaModel.locator('li:nth-child(1)');
     assert(await firstPlacentaStep.locator(orientationSelector).isVisible(), 'direct worked-example entry has an orientation view');
     assert(await firstPlacentaStep.locator(manySelector).isVisible(), 'direct worked-example entry includes the intermediate view');
     assert(await firstPlacentaStep.locator(villusSelector).isVisible(), 'the worked example includes the linked villus view');
     assert.deepEqual(await orderedFiles(firstPlacentaStep), placentaFiles, 'worked example preserves the three-view order');
+    assert.match(await firstPlacentaStep.locator(manySelector).locator('xpath=ancestor::figure[1]/figcaption').innerText(), /all villi remain attached to foetal-side tissue.*anchor to the uterine wall.*project freely/i);
     assert.match(await firstPlacentaStep.locator(villusSelector).getAttribute('alt'), /maternal blood.*foetal blood.*carbon dioxide/i);
     const placentaSteps = [
       /Oxygen reaches the spaces around the villi in maternal blood\./,

@@ -115,6 +115,23 @@ export async function checkCompactCatchupFigures(browser, base) {
         assert((await image.getAttribute('alt'))?.trim().length > 50, 'placental figure needs a meaningful alternative');
       }
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 3), 'placental teaching should fit the viewport');
+      // Check labels in the actual standalone SVG as well as its containing
+      // page: two lines can look adjacent in a screenshot yet overlap.
+      await page.goto(base + '/human-biology/f175-placenta-many-villi.svg');
+      const placentaLabelIssues = await page.locator('svg').evaluate(svg => {
+        const view = svg.viewBox.baseVal;
+        const labels = [...svg.querySelectorAll('text')].map(node => ({text:node.textContent, box:node.getBBox()}));
+        const issues = [];
+        for (const {text, box} of labels) {
+          if (box.x < view.x - .5 || box.y < view.y - .5 || box.x + box.width > view.x + view.width + .5 || box.y + box.height > view.y + view.height + .5) issues.push('clipped: ' + text);
+        }
+        for (let i = 0; i < labels.length; i++) for (let j = i + 1; j < labels.length; j++) {
+          const a = labels[i].box, b = labels[j].box;
+          if (a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height) issues.push('overlap: ' + labels[i].text + ' / ' + labels[j].text);
+        }
+        return issues;
+      });
+      assert.deepEqual(placentaLabelIssues, [], 'placental labels must be unclipped and distinct');
 
       // The same feedback figure appears in both courses. Check the actual
       // lesson card and text bounds rather than treating no page overflow as
