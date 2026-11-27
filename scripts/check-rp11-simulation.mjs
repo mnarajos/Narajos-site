@@ -6,6 +6,7 @@ import { servePublic } from './browser-test-site.mjs';
 
 const {server,base}=await servePublic();
 const engineName=process.argv[2]||'chromium';
+const capture=engineName==='chromium'&&process.env.RP11_CAPTURE_SCREENSHOTS==='1';
 const engine={chromium,firefox,webkit}[engineName];
 assert(engine,`Unsupported browser: ${engineName}`);
 const browser=await engine.launch({headless:true});
@@ -20,6 +21,7 @@ const waitRun=async n=>page.waitForFunction(n=>JSON.parse(localStorage.getItem('
 const next=async()=>page.locator('#tasks [data-act="adv"]').click();
 const choose=async(name,value)=>page.locator(`#tasks input[name="${name}"][value="${value}"]`).check();
 const check=async()=>page.locator('#tasks [data-act="check"]').click();
+const chooseSetting=async(p,name,value)=>{const input=p.locator(`input[name="${name}"][value="${value}"]`);await input.locator('..').click();assert(await input.isChecked(),`${name} should select ${value}`);};
 async function seedTask(sectionIndex,taskIndex,variant=0){
  await page.evaluate(({sectionIndex,taskIndex,variant})=>{
   const d=JSON.parse(localStorage.getItem('kst-rp11-v3'));
@@ -54,17 +56,17 @@ try {
  assert.equal((await state()).st.res.c3,'sup');await next();
  for(let i=0;i<6;i++)await page.locator(`#tasks input[data-multi="c4"][value="${i}"]`).check();
  await page.locator('[data-act="multi"]').click();assert.equal((await state()).st.res.c4,'ind');await next();
- await page.locator('#gctrls input[name="gline"][value="curve"]').check({force:true});await page.locator('[data-act="ctl"]').click();await next();
+ await chooseSetting(page,'gline','curve');await page.locator('[data-act="ctl"]').click();await next();
  let s=await state(),first=s.st.bind.c6;assert.equal(first,1);
  const oldQuestion=await page.locator('#task-c6').innerText();
- await page.emulateMedia({reducedMotion:'no-preference'});await page.locator('input[name="speed"][value="fast"]').check({force:true});await page.locator('#call').click();
+ await page.emulateMedia({reducedMotion:'no-preference'});await chooseSetting(page,'speed','fast');await page.locator('#call').click();
  await page.waitForFunction(()=>document.querySelector('#cstate')?.textContent==='Measuring',null,{timeout:25000});assert.match(await page.locator('#gnote').innerText(),/graph remains linked to the current question/);assert.match(await page.locator('#gnote').innerText(),/Showing run 1/);
  await page.emulateMedia({reducedMotion:'reduce'});await waitRun(2);
  assert.equal((await state()).st.bind.c6,first);
  assert.match(await page.locator('#task-c6').innerText(),/Using run 1/);
  assert((await page.locator('#task-c6').innerText()).includes(oldQuestion.split('Read Dick\'s glucose concentration')[1].split('Your answer')[0]));
  assert.equal(await page.locator('#runsel').isDisabled(),true);
- if(engineName==='chromium'){
+ if(capture){
   await page.locator('#gfig').scrollIntoViewIfNeeded();await page.screenshot({path:'docs/required-practicals/rp11-graph-desktop.png'});
   await page.setViewportSize({width:390,height:844});await page.locator('#tasks').scrollIntoViewIfNeeded();await page.screenshot({path:'docs/required-practicals/rp11-question-phone.png'});await page.setViewportSize({width:1280,height:900});
  }
@@ -119,7 +121,7 @@ try {
 
  // A real interruption preserves selected conditions and does not invent readings. The enlarged apparatus follows the live run.
  const live=await browser.newPage({viewport:{width:1000,height:850},reducedMotion:'no-preference'});const liveErrors=[];live.on('pageerror',e=>liveErrors.push(e.message));
- await live.goto(url);await live.locator('#cadvw summary').click();await live.locator('input[name="ben"][value="quant"]').check({force:true});await live.locator('input[name="dil"][value="serial"]').check({force:true});
+ await live.goto(url);await live.locator('#cadvw summary').click();await chooseSetting(live,'ben','quant');await chooseSetting(live,'dil','serial');
  await live.locator('#call').click();await live.locator('#csvg + .diagram-zoom').click();const before=await live.locator('#zoom-content svg').innerHTML();await live.waitForTimeout(500);const after=await live.locator('#zoom-content svg').innerHTML();assert.notEqual(after,before);await live.keyboard.press('Escape');assert.equal(await live.locator('#zoom-dialog').evaluate(el=>el.open),false);
  await live.reload();assert.match(await live.locator('#cnote').innerText(),/interrupted/);const interrupted=await live.evaluate(()=>JSON.parse(localStorage.getItem('kst-rp11-v3')));assert.equal(interrupted.runs.length,0);assert.equal(interrupted.ui.settings.ben,'quant');assert.equal(interrupted.ui.settings.dil,'serial');assert.deepEqual(liveErrors,[]);await live.close();
 
@@ -157,7 +159,7 @@ try {
   assert.equal(await page.locator('#tasks [data-act="adv"]').count(),0);await choose(q.id+(kind==='out'?'co':'cr'),0);await page.locator('[data-act="corr"]').click();assert.equal((await state()).st.res[q.id],'sup');predictionPaths++;
  }
  // Custom ranges use real preparation volumes and survive a reload.
- await fresh();await page.locator('#cadvw summary').click();await page.locator('input[name="dil"][value="custom"]').check({force:true});
+ await fresh();await page.locator('#cadvw summary').click();await chooseSetting(page,'dil','custom');
  for(const bad of ['1,2,3,4,5,6','0,1,1,2,3,4','0,0.03,1,2,3,4','0,2,4,6,8,11']){await page.locator('#custom-values').fill(bad);await page.locator('#custom-apply').click();assert.match(await page.locator('#custom-error').innerText(),/six increasing values/);}
  await page.locator('#custom-values').fill('0,0.4,0.8,1.2,1.6,2');await page.locator('#custom-apply').click();await page.reload();
  assert.equal((await state()).ui.settings.cst,'0,0.4,0.8,1.2,1.6,2');
@@ -176,7 +178,7 @@ try {
  for(const [width,height,name] of [[1280,900,'desktop'],[320,820,'phone']]){
   await page.setViewportSize({width,height});await page.emulateMedia({colorScheme:'light',reducedMotion:'reduce'});await fresh();
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),`${name}: horizontal overflow`);
-  if(engineName==='chromium')await page.screenshot({path:`docs/required-practicals/rp11-simulation-${name}.png`,fullPage:true});
+  if(capture)await page.screenshot({path:`docs/required-practicals/rp11-simulation-${name}.png`,fullPage:true});
   await page.locator('[data-area="explore"]').click();assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),`${name}: hub overflow`);
  }
  await page.emulateMedia({colorScheme:'dark',reducedMotion:'reduce'});await page.reload();assert(await page.evaluate(()=>getComputedStyle(document.body).backgroundColor!=='rgb(248, 247, 243)'));
