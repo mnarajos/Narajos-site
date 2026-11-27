@@ -40,7 +40,7 @@
     </div>
     <div class="site-dropdown-group" role="group" aria-labelledby="nav-simulations">
      <p id="nav-simulations">Biology simulations</p>
-     <a href="/teaching/simulations/">All simulations</a><a href="/teaching/simulations/#gcse-and-alevel">GCSE &amp; A-level</a><a href="/teaching/simulations/#alevel">A-level Biology</a><a href="/teaching/enzyme-investigations/">Guided enzyme investigations</a>
+     <a href="/teaching/simulations/">All simulations</a><a href="/teaching/simulations/#gcse-and-alevel">GCSE &amp; A-level</a><a href="/teaching/simulations/#alevel">A-level Biology</a><a href="/alevel/glucose-calibration/">Glucose calibration (RP11)</a><a href="/teaching/enzyme-investigations/">Guided enzyme investigations</a>
     </div>
    </div>
   </details>

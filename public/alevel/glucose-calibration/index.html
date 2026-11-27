@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glucose calibration curve (RP11) – Narajos Keystone</title>
+<meta name="description" content="Explore glucose standards, Benedict’s methods and calibration curves in an interactive RP11 simulation.">
+<link rel="canonical" href="https://narajos.com/alevel/glucose-calibration/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Narajos">
+<meta property="og:title" content="Glucose calibration curve – Narajos Keystone">
+<meta property="og:description" content="Explore glucose calibration using guided practical models and unfamiliar questions.">
+<meta property="og:url" content="https://narajos.com/alevel/glucose-calibration/">
+<meta property="og:image" content="https://narajos.com/assets/social/alevel-v1.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:type" content="image/png"><meta property="og:image:alt" content="Narajos Keystone logo with AQA A-level Biology">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Glucose calibration curve – Narajos Keystone"><meta name="twitter:description" content="Explore glucose calibration using guided practical models and unfamiliar questions."><meta name="twitter:image" content="https://narajos.com/assets/social/alevel-v1.png"><meta name="twitter:image:alt" content="Narajos Keystone logo with AQA A-level Biology">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="stylesheet" href="/assets/home-link.css">
+<style>
+/* Keystone site tokens and components, copied from the AQA A-level Biology site so this page matches it. */
+:root{--bg:#F8F7F3;--card:#fff;--ink:#1F2937;--brand:#0a6b66;--muted:#4f5057;--line:#d3d1c8;--acc:#0a6b66;--acc-ink:#fff;--acc-soft:#e1f0ee;--good:#17672f;--good-soft:#e4f3e8;--bad:#a3221a;--bad-soft:#fbe9e7;--warn-soft:#fff4d6;--amb:#d98a2b;--amb-soft:#fff0dc;--grey-soft:#ecebe6;--focus:#1f4fd1;color-scheme:light dark;
+--shadow:0 1px 2px rgba(28,28,30,.05),0 4px 14px rgba(28,28,30,.05);--tc:#2e7a33;
+--o2:#2f6fb5;--co2:#b8691c;--cc:#4a5565;--water:#d6eaf8;--susp:#f7f1d6;--oil:#f0cf5e;--yeast:#c9a86a;--yeast-b:#a49d90;--yeast-s:#7d6536;--pellet:#f4f1ea;--dye:#c2513b;--bung:#5a6372;--glass:#fbfdff}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--brand:#5ccfc4;--bg:#131518;--card:#1c1f23;--ink:#eceef0;--muted:#b6b9c0;--line:#3b3f46;--acc:#5ccfc4;--acc-ink:#0b1a19;--acc-soft:#163331;--good:#80dc99;--good-soft:#15301e;--bad:#ff9d93;--bad-soft:#3a1d1a;--warn-soft:#3a3218;--amb:#d39a52;--amb-soft:#3a2a15;--grey-soft:#26292d;--focus:#9db9ff;--shadow:0 1px 2px rgba(0,0,0,.4);--tc:#8fd694;
+--o2:#8db6f2;--co2:#f0a271;--cc:#b4bdc9;--water:#1f3a4d;--susp:#3a3624;--oil:#8a7420;--yeast:#a8875a;--yeast-b:#6f6a62;--yeast-s:#d8c08e;--pellet:#cfcac0;--dye:#e2735c;--bung:#8a93a3;--glass:#20252b}}
+:root[data-theme=dark]{color-scheme:dark;--brand:#5ccfc4;--bg:#131518;--card:#1c1f23;--ink:#eceef0;--muted:#b6b9c0;--line:#3b3f46;--acc:#5ccfc4;--acc-ink:#0b1a19;--acc-soft:#163331;--good:#80dc99;--good-soft:#15301e;--bad:#ff9d93;--bad-soft:#3a1d1a;--warn-soft:#3a3218;--amb:#d39a52;--amb-soft:#3a2a15;--grey-soft:#26292d;--focus:#9db9ff;--shadow:0 1px 2px rgba(0,0,0,.4);--tc:#8fd694;
+--o2:#8db6f2;--co2:#f0a271;--cc:#b4bdc9;--water:#1f3a4d;--susp:#3a3624;--oil:#8a7420;--yeast:#a8875a;--yeast-b:#6f6a62;--yeast-s:#d8c08e;--pellet:#cfcac0;--dye:#e2735c;--bung:#8a93a3;--glass:#20252b}
+:root[data-theme=light]{color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:1rem/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-text-size-adjust:100%;overflow-x:clip}
+.wrap{max-width:46rem;margin:0 auto;padding:0 1rem}
+a{color:var(--acc)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+[tabindex="-1"]:focus{outline:none}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+[hidden]{display:none!important}.skip{position:absolute;left:-9999px;top:.5rem;background:var(--card);color:var(--ink);padding:.6rem;z-index:20}.skip:focus{left:1rem}
+header.top{background:var(--card);border-bottom:1px solid var(--line)}
+.top-inner{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem;align-items:center;padding-top:.55rem;padding-bottom:.55rem}
+.brand{font-weight:800;text-decoration:none;color:var(--ink);font-size:1.1rem;min-height:44px;display:inline-flex;align-items:center}
+.brand .btxt{display:flex;flex-direction:column;line-height:1.15}.brand .eyebrow{display:block;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.brand .logo{width:2.3em;height:1.45em;margin-right:.45rem;flex:none}
+.lg-arch{fill:var(--ink);stroke:var(--ink);stroke-width:2.6;stroke-linejoin:round}
+main{padding-top:1.25rem;padding-bottom:2rem}
+h1{font-size:1.6rem;line-height:1.2;margin:.25rem 0 .5rem;font-weight:800;letter-spacing:-.01em;border-bottom:4px solid var(--tc);padding-bottom:.35rem;display:inline-block}
+h2{font-size:1.25rem;margin:1.5rem 0 .6rem}
+h3{font-size:1.06rem;margin:0 0 .4rem}
+.lead{color:var(--muted)}
+.spec{color:var(--muted);font-size:.86rem;margin:.15rem 0 .3rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;text-align:center;min-height:44px;padding:.55rem 1.1rem;border-radius:12px;border:2px solid var(--acc);background:var(--card);color:var(--acc);font:inherit;font-weight:700;text-decoration:none;cursor:pointer;box-shadow:0 3px 0 rgba(28,28,30,.18);transition:transform .08s,box-shadow .08s}
+.btn.primary{background:var(--acc);color:var(--acc-ink);box-shadow:0 4px 0 rgba(0,0,0,.28)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(28,28,30,.18)}
+.btn:disabled{opacity:.45;cursor:default;transform:none}
+.btn[aria-pressed=true]{background:var(--acc);color:var(--acc-ink)}
+.seg{display:inline-flex;flex-wrap:wrap;border:2px solid var(--acc);border-radius:999px;overflow:hidden}
+.seg label{position:relative;cursor:pointer}
+.seg input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.seg span{display:flex;align-items:center;min-height:40px;padding:.3rem .9rem;font-weight:700;font-size:.92rem;color:var(--acc)}
+.seg input:checked+span{background:var(--acc);color:var(--acc-ink)}
+.seg input:focus-visible+span{outline:3px solid var(--focus);outline-offset:-5px}
+.seg input:disabled+span{opacity:.55;cursor:default}
+.note{background:var(--warn-soft);border-radius:10px;padding:.65rem .85rem;font-size:.93rem;margin:1rem 0}
+.gate{background:var(--acc-soft);padding:.6rem .8rem;border-radius:10px;margin:.8rem 0 0}
+.badge{font-size:.78rem;padding:.08rem .55rem;border-radius:99px;background:var(--warn-soft);color:var(--ink);border:1px solid var(--line);font-weight:700}
+.opt{display:flex;align-items:flex-start;gap:.75rem;padding:.75rem 1rem;margin:.5rem 0;background:var(--card);border:2px solid var(--line);border-radius:12px;cursor:pointer;box-shadow:0 3px 0 var(--line);transition:border-color .15s,background .15s}
+.opt:hover{border-color:var(--tc)}
+.opt input{width:1.3rem;height:1.3rem;margin:.15rem 0 0;flex:none;accent-color:var(--acc)}
+.opt:not(.right):not(.wrong):has(input:checked){border-color:var(--acc);background:var(--acc-soft)}
+.opt .otext{flex:1}
+.mark{font-weight:700;font-size:.9rem;white-space:nowrap}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.right .mark{color:var(--good)}.wrong .mark{color:var(--bad)}
+.opt.out{opacity:.6;cursor:default}
+fieldset.q{border:0;padding:0;margin:0;min-width:0}
+fieldset.q legend{font-size:1.1rem;font-weight:700;line-height:1.4;margin-bottom:.4rem;padding:0}
+.fb{border-radius:14px;padding:.2rem 1rem .7rem;margin:.6rem 0;border:2px solid}
+.fb.good{background:var(--good-soft);border-color:var(--good)}
+.fb.bad{background:var(--bad-soft);border-color:var(--bad)}
+.fb.good.new{animation:pop .4s ease-out}.fb.bad.new{animation:nudge .3s ease-in-out}
+.fb.idk{background:var(--acc-soft);border-color:var(--acc)}
+.fb h3{margin:.6rem 0 .3rem;font-size:1.1rem}
+@keyframes pop{0%{transform:scale(.94);opacity:0}60%{transform:scale(1.03);opacity:1}100%{transform:scale(1)}}
+@keyframes nudge{0%,100%{transform:translateX(0)}30%{transform:translateX(-6px)}70%{transform:translateX(6px)}}
+@media (prefers-reduced-motion:reduce){.fb.good,.fb.bad{animation:none}}
+input[type=text]{font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--muted);border-radius:10px;padding:.5rem .7rem;min-height:44px;width:100%}
+.numlab{font-weight:700;display:block;margin:.3rem 0}
+.numrow{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.numrow input{max-width:12rem}
+.unit{font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0}
+.chip{font:inherit;min-height:44px;padding:.45rem .85rem;border:2px solid var(--line);border-radius:12px;background:var(--card);color:inherit;cursor:pointer;box-shadow:0 2px 0 var(--line);font-weight:600}
+.chip.sel{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.chip .tick{color:var(--good);font-weight:800}.chip.sel .tick{color:inherit}
+.fig{margin:.25rem 0 1rem;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.6rem;box-shadow:var(--shadow)}
+.fig table{border-collapse:collapse;margin:.4rem 0;font-size:.92rem;width:100%}
+.fig caption{caption-side:top;text-align:left;font-size:.88rem;color:var(--muted);padding-bottom:.35rem}
+.fig th,.fig td{border:1px solid var(--line);padding:.25rem .6rem;text-align:left}
+.fig td.n{text-align:right;font-variant-numeric:tabular-nums}
+.f-ink{stroke:var(--ink);fill:none;stroke-width:2}
+.f-thin{stroke:var(--ink);fill:none;stroke-width:1.3}
+.f-txt{fill:var(--ink);font:600 15px system-ui,sans-serif}
+.f-sm{fill:var(--muted);font:500 12px system-ui,sans-serif}
+.f-grid{stroke:var(--line);stroke-width:1}
+.f-axis{stroke:var(--ink);stroke-width:1.6}
+.f-line{fill:none;stroke:var(--acc);stroke-width:2.5}
+.f-line2{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-dasharray:7 4}
+.f-zero{stroke:var(--ink);stroke-width:1.2;stroke-dasharray:4 3}
+.f-dot{fill:var(--acc)}.f-dot2{fill:var(--ink)}
+/* Page-specific: task cards, apparatus, controls */
+.task{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--tc);border-radius:14px;padding:.85rem 1rem;margin:.75rem 0;box-shadow:var(--shadow)}
+.task.done{border-left-color:var(--good)}
+.task p{margin:.3rem 0}
+.task .need{font-size:.93rem;margin:.5rem 0}
+.task .row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.6rem}
+.msg{color:var(--bad);font-weight:700;margin:.4rem 0 0}.msg:empty{display:none}
+.ok{color:var(--good);font-weight:700}.notyet{color:var(--muted);font-weight:600}
+.readout{display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;align-items:baseline;padding:.1rem .2rem .4rem}
+.readout b{font-size:1.25rem;font-variant-numeric:tabular-nums}
+.readout .st{margin-left:auto;font-size:.9rem;font-weight:700;padding:.15rem .6rem;border-radius:99px;background:var(--acc-soft)}
+.app svg{display:block;width:100%;height:auto;max-width:34rem;margin:0 auto}
+.runbar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.5rem 0 .2rem}
+.runbar .btn{flex:1 1 7rem}
+.legend{display:flex;flex-wrap:wrap;gap:.3rem 1rem;font-size:.9rem;margin:.3rem .2rem}
+.legend svg{width:2.2rem;height:1rem;vertical-align:-.2em}
+.tally{font-size:.9rem;color:var(--muted);margin:.2rem .2rem 0}
+.ctrls{display:grid;gap:.7rem;margin:.3rem 0}
+.ctrls .cl{font-weight:700;font-size:.93rem;margin:0 0 .25rem}
+.ctrls fieldset{border:0;margin:0;padding:0;min-width:0}
+.ctrls .seg{border-radius:14px}
+.gsvg svg{display:block;width:100%;height:auto;max-width:28rem;margin:0 auto}
+.gsvg .legend svg{display:inline-block;width:2.2rem;height:1rem;margin:0;vertical-align:-.2em}
+.a-water{fill:var(--water)}.a-susp{fill:var(--susp)}.a-oil{fill:var(--oil);opacity:.9}
+.a-cell{fill:var(--yeast);stroke:var(--yeast-s);stroke-width:1}.boiled .a-cell{fill:var(--yeast-b)}
+.a-pel{fill:var(--pellet);stroke:var(--ink);stroke-width:1}
+.a-gauze{fill:none;stroke:var(--muted);stroke-width:1.2;stroke-dasharray:2 2}
+.a-glass{fill:var(--glass);stroke:var(--ink);stroke-width:2}
+.a-bung{fill:var(--bung)}
+.a-cap{fill:none;stroke:var(--ink);stroke-width:7;stroke-linecap:round}
+.a-bore{fill:none;stroke:var(--glass);stroke-width:4;stroke-linecap:round}
+.a-dye{stroke:var(--dye);stroke-width:4.5;stroke-linecap:butt}
+.m-o2{fill:var(--o2)}.m-co2{fill:var(--co2)}.m-c{fill:var(--cc)}
+.a-note{fill:var(--ink);font:700 12px system-ui,sans-serif}
+
+/* Wide screens: tasks beside the apparatus, results side by side */
+@media (min-width:68rem){.wrap{max-width:78rem}
+ .lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:1.5rem;align-items:start}
+ .col-app{position:sticky;top:.75rem;max-height:calc(100vh - 1.5rem);overflow-y:auto;padding:0 .3rem .3rem}
+ .col-app>h2:first-child,.col-tasks>.chips:first-child{margin-top:0}
+ .res{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem;align-items:start}
+ .lead{max-width:60rem}
+ .col-app .app svg{max-width:27rem}}
+/* RP9 v2: sections, panels, paired examples, worked examples, written answers */
+.phases{display:flex;flex-wrap:wrap;gap:.45rem;margin:.6rem 0 1rem}
+.phases .ph{font-size:.75rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;opacity:.75;margin-right:.25rem}
+.ptabs{display:flex;flex-wrap:wrap;gap:.4rem;margin:0 0 .5rem}
+.sechead{margin-bottom:.4rem}.sechead h2{margin:.1rem 0 .2rem}.sechead .phase{margin:0;font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--tc)}
+.prog{margin:.2rem 0;font-size:.88rem;color:var(--muted)}.pbar{height:6px;border-radius:9px;background:var(--grey-soft);overflow:hidden}.pbar span{display:block;height:100%;background:var(--tc)}
+.task h3{margin:.1rem 0 .5rem;font-size:1.08rem}
+.steps{margin:.3rem 0 .6rem;padding-left:1.3rem}.steps li{margin:.35rem 0}
+.worked{background:var(--acc-soft);border-radius:10px;padding:.55rem .85rem;margin:.6rem 0}.worked p{margin:.25rem 0}.wlab{font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--acc)}
+.fresh{font-weight:800;color:var(--acc);margin:.2rem 0}
+.help{margin:.4rem 0 0}.hint{background:var(--warn-soft);border-radius:10px;padding:.5rem .8rem}
+fieldset.q legend.sub{font-size:1rem;margin-top:.6rem}
+.donelist{margin:.8rem 0;font-size:.93rem}.donelist summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}.donelist li{margin:.25rem 0}
+.badge.b-ind{background:var(--good-soft);border-color:var(--good)}.badge.b-sup{background:var(--amb-soft);border-color:var(--amb)}.badge.b-self{background:var(--acc-soft);border-color:var(--acc)}
+.btn.small{min-height:40px;padding:.35rem .8rem;font-size:.92rem}
+textarea{font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--muted);border-radius:10px;padding:.55rem .7rem;width:100%;resize:vertical}
+textarea:disabled{opacity:.85}
+.crit{margin:.7rem 0}.copt{display:flex;gap:.6rem;align-items:flex-start;padding:.5rem .7rem;margin:.35rem 0;border:2px solid var(--line);border-radius:10px;cursor:pointer}
+.copt input{width:1.25rem;height:1.25rem;flex:none;margin-top:.15rem;accent-color:var(--acc)}.copt em{display:block;font-style:normal;font-size:.85rem;font-weight:700}
+.pair{display:grid;gap:.7rem;grid-template-columns:minmax(0,1fr)}
+@media (min-width:34rem){.pair{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.pcard{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:.6rem;display:flex;flex-direction:column;gap:.4rem}
+.pcard h4{margin:0;font-size:1rem;color:var(--tc)}.pcard svg{width:100%;height:auto;display:block}.pres{margin:0;font-size:.93rem}
+.info{background:var(--warn-soft);border-radius:10px;padding:.6rem .85rem;font-size:.95rem}
+#p-task svg{width:100%;height:auto;display:block;max-width:34rem;margin:0 auto}
+.figh{margin:.2rem .2rem .4rem;font-size:1rem}.sumh{font-weight:700;min-height:44px;display:flex;align-items:center;cursor:pointer}
+#assume ul{margin:.4rem 0 .2rem;padding-left:1.2rem}#assume li{margin:.3rem 0}
+.f-open{fill:var(--card);stroke:var(--ink);stroke-width:1.6}
+.a-tube{fill:none;stroke:var(--ink);stroke-width:2}.a-therm{fill:var(--card);stroke:var(--ink);stroke-width:1.2}.a-thermb{fill:var(--dye);stroke:var(--ink);stroke-width:1.2}
+.a-bubble{fill:none;stroke:var(--ink);stroke-width:.9;opacity:.65}
+.m-sol{fill:var(--susp);opacity:.55}.m-cell{fill:var(--yeast);stroke:var(--yeast-s);stroke-width:1.2}
+.k-mbb{fill:#2858be;stroke:var(--ink);stroke-width:.8}.k-mbr{fill:var(--card);stroke:var(--muted);stroke-width:1.2;stroke-dasharray:2 2}
+.k-o2{fill:var(--o2)}.k-co2{fill:var(--co2)}.k-c{fill:var(--cc)}.k-fl{fill:none;stroke:var(--amb);stroke-width:1.5}
+.a-koh{fill:#cfe3ef;stroke:var(--ink);stroke-width:.8}.a-chemx{fill:#e7d9f2;stroke:var(--ink);stroke-width:.8}
+.a-seed{fill:#c9a86a;stroke:var(--ink);stroke-width:.8}.a-bead{fill:var(--card);stroke:var(--ink);stroke-width:1}.a-louse{fill:#7a7f87;stroke:var(--ink);stroke-width:.8}
+.a-plunger{fill:var(--grey-soft);stroke:var(--ink);stroke-width:1}.a-dyeline{fill:none;stroke:var(--dye);stroke-width:4}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .a-koh{fill:#2a4352}:root:not([data-theme=light]) .a-chemx{fill:#3f3150}}
+:root[data-theme=dark] .a-koh{fill:#2a4352}:root[data-theme=dark] .a-chemx{fill:#3f3150}
+/* RP11 glucose calibration */
+.t-glass{fill:none;stroke:var(--ink);stroke-width:1.4}.t-lab{font-size:10px}.t-rack{fill:var(--bung)}
+.t-bath{fill:var(--card);stroke:var(--ink);stroke-width:1.4}.t-bathw{fill:var(--water);opacity:.7}
+.t-bottle{fill:var(--glass);stroke:var(--ink);stroke-width:1.2}.t-barrel{fill:var(--glass);stroke:var(--ink);stroke-width:1.1}
+.t-cuv{fill:var(--glass);stroke:var(--ink);stroke-width:1.1}.t-fp{fill:rgba(120,110,100,.35);stroke:none}
+.t-colo{fill:var(--grey-soft);stroke:var(--ink);stroke-width:1.4}.t-slot{fill:var(--ink)}.t-disp{fill:#1d2b24;stroke:var(--ink)}.t-dtxt{fill:#7df0a4;font:700 14px ui-monospace,Menlo,monospace}
+.g-maj{stroke:var(--line);stroke-width:.9}.g-min{stroke:var(--line);stroke-width:.45;opacity:.7}.g-line{fill:none;stroke:var(--acc);stroke-width:2.2}
+.g-pt{fill:none;stroke:var(--ink);stroke-width:1.8}.g-umark{fill:var(--amb);stroke:var(--ink);stroke-width:.6}.g-guide{fill:none;stroke:var(--amb);stroke-width:1.4;stroke-dasharray:4 3}.g-gtxt{fill:var(--ink);font-weight:700}
+.z-box{fill:var(--card);stroke:var(--line);stroke-width:1.4}.z-cu2{fill:#3a70ce;stroke:var(--ink);stroke-width:.7}.z-cu1{fill:#a5432a;stroke:var(--ink);stroke-width:.5}.z-cu1q{fill:#f6f6f4;stroke:var(--ink);stroke-width:.8}
+.z-glu{fill:#f4d35e;stroke:var(--ink);stroke-width:.9}.z-used{fill:#bfbfbf;stroke:var(--ink);stroke-width:.9}.z-suc{fill:#e8c7e8;stroke:var(--ink);stroke-width:.9}
+.z-flok{fill:none;stroke:#e0592a;stroke-width:2}.z-flno{fill:none;stroke:var(--muted);stroke-width:1.2;stroke-dasharray:2 2}
+.l-lamp{fill:#ffe27a;stroke:var(--ink)}.l-cuv{fill:none;stroke:var(--ink);stroke-width:1.4}.l-det{fill:var(--grey-soft);stroke:var(--ink)}
+#p-lab .runbar{display:grid;grid-template-columns:repeat(auto-fill,minmax(8.5rem,1fr));gap:.5rem;align-items:stretch}
+#p-lab .runbar .btn{width:100%;margin:0;line-height:1.25;padding:.55rem .6rem}
+.pfig svg{width:100%;height:auto;display:block;max-width:24rem;margin:0 auto}.dfig svg{max-width:30rem}
+.meth{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.6rem .8rem .6rem 2rem}
+#p-rx .tsel{margin:.2rem 0 .5rem}#zsvg,#lsvg,#gsvg{display:block;width:100%;height:auto;max-width:30rem;margin:0 auto}
+#gfig .ctrls{margin-top:.4rem}
+
+.app .legend svg{display:inline-block;width:2.2rem;height:1rem;margin:0;vertical-align:-.2em}
+
+/* RP11 v2: areas, hub, method comparison, visual strip */
+.phases .cnt{font-size:.8rem;font-weight:700;opacity:.8;margin-left:.2rem}
+.hub{display:grid;gap:.7rem;grid-template-columns:minmax(0,1fr)}@media (min-width:40rem){.hub{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.vcard{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:.7rem .85rem;display:flex;flex-direction:column;gap:.35rem}.vcard.key{border-color:var(--tc)}
+.vcard h3{margin:0;font-size:1.02rem;display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}.vcard p{margin:0}.vcard .btn{align-self:flex-start;margin-top:auto}
+.strip{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(6.2rem,1fr));gap:.5rem;padding:0;margin:.3rem 0 .6rem}
+.strip li{background:var(--acc-soft);border-radius:10px;padding:.4rem;display:flex;flex-direction:column;align-items:center;text-align:center;font-size:.86rem;gap:.2rem}
+.strip svg{width:3.4rem;height:auto}.ic{fill:none;stroke:var(--ink);stroke-width:1.6}.icl{fill:var(--acc);stroke:none}.icb{fill:#3a70ce;stroke:none}.icc{stroke:var(--acc);stroke-width:2.4}.ict{fill:var(--ink);stroke:none;font:700 9px system-ui,sans-serif}
+.mcomp{display:grid;gap:.6rem;grid-template-columns:minmax(0,1fr)}@media (min-width:30rem){.mcomp{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.mcol{border:2px solid var(--line);border-radius:12px;padding:.5rem .7rem}.mcol h4{margin:.1rem 0 .3rem;color:var(--tc)}
+.mcol dl{margin:0}.mcol dt{font-weight:800;font-size:.82rem;margin-top:.4rem}.mcol dd{margin:0;font-size:.9rem}
+.mvis svg{width:100%;max-width:14rem;height:auto;display:block}.mv-g{fill:var(--glass);stroke:var(--ink);stroke-width:1.2}.mv-d{fill:#7a2a18}.mv-a{fill:none;stroke:var(--ink);stroke-width:1.2}.mv-c{fill:none;stroke:var(--acc);stroke-width:2.4}.mv-t{fill:var(--ink);font:700 10px system-ui,sans-serif}
+.mline{font-size:.9rem;margin:.3rem 0}.chg{color:var(--bad);font-weight:700}
+.obs{background:var(--acc-soft);border-radius:10px;padding:.5rem .75rem}
+#cadvw{margin-top:.4rem}#cadvw .ctrls{margin-top:.3rem}
+.strip .sn{display:inline-flex;align-items:center;justify-content:center;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--acc);color:var(--acc-ink);font-weight:800;font-size:.8rem}
+
+/* v3: hide the lab on the optional-methods hub */
+.hubmode .col-app,.hubmode #resh,.hubmode #results,.hubmode #assume{display:none}
+@media (min-width:68rem){.hubmode .lab{display:block}}
+.opt-note{background:var(--acc-soft);border-radius:10px;padding:.5rem .75rem;margin:.3rem 0}
+.tsel{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.4rem .6rem;align-items:center}.tsel label{font-weight:700}
+select{font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--muted);border-radius:10px;padding:.5rem .7rem;min-height:44px;width:100%}
+.diagram-zoom{margin:.35rem 0}.zoom-dialog{max-width:min(96vw,60rem);max-height:92vh;border:2px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);padding:1rem}.zoom-dialog::backdrop{background:rgba(0,0,0,.65)}.zoom-scroll{overflow:auto;max-height:70vh}.zoom-scroll svg{display:block;width:max(100%,640px);height:auto}
+
+</style>
+</head>
+<body data-tc="a6"><a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="/alevel/" aria-label="AQA A-level Biology, Narajos Keystone"><svg class="logo" viewBox="4 12 92 60" aria-hidden="true" focusable="false"><path class="lg-arch" stroke-width="2.6" stroke-linejoin="round" d="M6 70 A44 44 0 0 1 7.7 57.9 L28 65.1 A22.5 22.5 0 0 0 27.5 70 ZM92.3 57.9 A44 44 0 0 1 94 70 L72.5 70 A22.5 22.5 0 0 0 72 65.1 ZM9.5 52.8 A44 44 0 0 1 14.4 44.1 L31.1 57.9 A22.5 22.5 0 0 0 29.9 60 ZM85.6 44.1 A44 44 0 0 1 90.5 52.8 L70.2 60 A22.5 22.5 0 0 0 69 57.9 ZM17.8 40 A44 44 0 0 1 25.1 33.8 L36.2 52.2 A22.5 22.5 0 0 0 34.5 53.7 ZM74.9 33.8 A44 44 0 0 1 82.2 40 L65.5 53.7 A22.5 22.5 0 0 0 63.8 52.2 Z"/><path fill="#F97316" stroke="#F97316" stroke-width="2.6" stroke-linejoin="round" d="M26.6 21 Q50 13 73.4 21 L61.6 48 L38.4 48 Z"/><circle cx="42.4" cy="38.6" r="5.2" fill="none" stroke="#fff" stroke-width="3.9"/><path d="M46.3 35.1 L58 24.6" stroke="#fff" stroke-width="3.9" stroke-linecap="round"/><path d="M53.2 28.8 l2.9 3.3" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/><path d="M56.7 25.8 l2.9 3.3" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/></svg><span class="btxt"><span class="eyebrow">Narajos Keystone</span>AQA A-level&nbsp;Biology</span></a>
+    <a href="/" id="site-home" class="narajos-home" aria-label="Narajos homepage" title="Narajos homepage"><img src="/favicon.svg" alt=""><span>Narajos</span></a>
+  </div>
+</header>
+<main id="main" class="wrap" tabindex="-1">
+  <p class="crumb"><a href="/alevel/#practical-11">← Back to required practical 11</a></p>
+  <p class="spec">3.6.4.2 · Required practical 11</p>
+  <h1>Glucose calibration curve</h1>
+  <p class="lead">Make a dilution series of glucose, use Benedict's and a colorimeter to produce a calibration curve, and find the glucose concentration of "urine" samples. Start with the core investigation, or open any method in Explore.</p>
+
+  <p class="spec">Benedict’s detects reducing sugars, not glucose alone. Here the samples are simulated and contain glucose as the only reducing sugar.</p>
+  <nav class="phases" id="nav" aria-label="Sections"></nav>
+
+  <p id="save-warning" class="note" role="status" hidden>Progress could not be saved in this browser. Check browser storage before leaving this page.</p>
+  <div class="lab">
+  <div class="col-tasks">
+    <section id="tasks" aria-label="Current task" tabindex="-1"></section>
+  </div>
+  <div class="col-app">
+    <div class="ptabs" id="ptabs" aria-label="Model"></div>
+
+    <div id="p-lab" class="panel">
+      <div class="fig app">
+        <div class="readout"><span class="st" id="cstate">Ready</span></div>
+        <svg id="csvg" viewBox="0 0 420 340" role="img" aria-label="Lab bench: a rack of glucose standard tubes and urine sample tubes above a water bath, bottles of glucose standard, water, Benedict's reagent and a waste beaker, a syringe, a cuvette and a colorimeter showing absorbance."></svg>
+        <p class="tally" id="cnote"></p>
+        <div class="runbar">
+          <button class="btn" id="cfill" type="button">1. Make the dilutions</button>
+          <button class="btn" id="cben" type="button" disabled>2. Add Benedict's</button>
+          <button class="btn" id="cheat" type="button" disabled>3. Heat</button>
+          <button class="btn" id="cmeas" type="button" disabled>4. Measure absorbance</button>
+          <button class="btn primary" id="call" type="button">Run every step</button>
+          <button class="btn" id="cnew" type="button">New run</button>
+        </div>
+      </div>
+      <div class="fig app" id="gfig" tabindex="-1">
+        <h3 class="figh">Calibration graph</h3>
+        <p class="spec"><a href="#tasks">Back to the current question</a></p>
+        <svg id="gsvg" viewBox="0 0 360 290" role="img" aria-label="Calibration graph of the standards' readings against glucose concentration, with the urine samples' readings marked on the right."></svg>
+        <div class="ctrls" id="gctrls"></div>
+        <div class="row"><button class="btn small" id="gguide" type="button" aria-pressed="false">Show construction lines</button></div>
+        <p class="spec" id="gnote"></p><p class="spec">Read only within the measured range. A flatter line makes the concentration more uncertain.</p>
+      </div>
+      <div class="fig" id="csetup">
+        <h3 class="figh">Set-up</h3>
+        <div class="ctrls" id="cctrls"></div>
+        <details id="cadvw"><summary class="sumh">Advanced settings: filter, blank, standards, mistakes</summary><div class="ctrls" id="cadv"></div></details>
+        <p class="spec" id="clock" hidden>Start a new run to change the set-up.</p>
+      </div>
+    </div>
+
+    <div id="p-methods" class="panel" hidden>
+      <div class="fig app">
+        <h3 class="figh">Two Benedict's methods</h3>
+        <div class="mcomp">
+          <section class="mcol"><h4>Qualitative</h4>
+            <div class="mvis"><svg viewBox="0 0 120 70" role="img" aria-label="A tube of cloudy brick-red suspension, and a calibration sketch rising steeply then levelling off."><path d="M14 8 V54 a8 8 0 0 0 16 0 V8" class="mv-g"/><path d="M15 20 H29 V54 a7 7 0 0 1 -14 0 Z" fill="#b6482e" opacity=".85"/><circle cx="19" cy="34" r="1.3" class="mv-d"/><circle cx="24" cy="42" r="1.3" class="mv-d"/><circle cx="21" cy="50" r="1.3" class="mv-d"/><circle cx="26" cy="28" r="1.3" class="mv-d"/><path d="M48 8 V62 H114" class="mv-a"/><path d="M48 62 C58 30 76 20 110 14" class="mv-c"/><text x="81" y="44" class="mv-t">rises</text></svg></div>
+            <dl><dt>What is measured</dt><dd>Light blocked by the red-brown precipitate (copper(I) oxide) suspended in the liquid.</dd>
+            <dt>Preparing the cuvette</dt><dd>Shake the tube, fill the cuvette and read at once: the precipitate settles.</dd>
+            <dt>As glucose rises</dt><dd>Absorbance increases: more precipitate. It levels off as the Cu²⁺ runs short.</dd>
+            <dt>Handbook filter</dt><dd>600 nm (orange).</dd>
+            <dt>Limitations</dt><dd>Readings fall if the precipitate settles; a curved calibration, less precise at high glucose.</dd></dl></section>
+          <section class="mcol"><h4>Quantitative</h4>
+            <div class="mvis"><svg viewBox="0 0 120 70" role="img" aria-label="A tube of pale blue liquid above a white precipitate, and a calibration sketch falling in a near-straight line."><path d="M14 8 V54 a8 8 0 0 0 16 0 V8" class="mv-g"/><path d="M15 20 H29 V54 a7 7 0 0 1 -14 0 Z" fill="#9fc0e6" opacity=".9"/><path d="M15 50 H29 V54 a7 7 0 0 1 -14 0 Z" fill="#f4f4f2" stroke="#8a9097" stroke-width=".8"/><path d="M48 8 V62 H114" class="mv-a"/><path d="M48 14 L110 56" class="mv-c"/><text x="84" y="30" class="mv-t">falls</text></svg></div>
+            <dl><dt>What is measured</dt><dd>Light absorbed by the blue Cu²⁺ ions left in solution.</dd>
+            <dt>Preparing the cuvette</dt><dd>Let the white precipitate settle (or centrifuge), then take only the clear liquid.</dd>
+            <dt>As glucose rises</dt><dd>Absorbance decreases: more Cu²⁺ is used up, so less blue is left.</dd>
+            <dt>Handbook filter</dt><dd>680 nm (red).</dd>
+            <dt>Limitations</dt><dd>Any precipitate in the cuvette scatters light and raises the reading; small volumes are hard to separate cleanly.</dd></dl></section>
+        </div>
+        <p class="note"><b>Blanks depend on the procedure.</b> The AQA example zeroes with a heated zero-glucose tube, which cancels the Benedict's own absorbance. Distilled water is a different reference: it does not cancel Benedict's own absorbance, so that is included in every reading, but a calibration still works if every standard and sample is read against the same blank. The AQA handbook says the quantitative method gives more reliable results.</p>
+        <div class="row"><button type="button" class="btn" data-try="qual">Run qualitative</button><button type="button" class="btn" data-try="quant">Run quantitative</button></div>
+      </div>
+    </div>
+
+    <div id="p-rx" class="panel" hidden>
+      <div class="fig app">
+        <h3 class="figh">Reaction close-up (schematic, not to scale)</h3>
+        <div class="tsel" id="zsel"></div>
+        <svg id="zsvg" viewBox="0 0 360 245" role="img" aria-label="Two lanes of solution. Blue Cu²⁺ ions and sugar molecules drift. When hot glucose touches a Cu²⁺ ion, the ion is reduced to copper(I); copper(I) ions join into precipitate that sinks."></svg>
+        <div class="legend">
+          <span><svg viewBox="-12 -7 24 14" aria-hidden="true"><circle r="4.5" class="z-cu2"/></svg>Cu²⁺ ion (blue)</span>
+          <span><svg viewBox="-12 -7 24 14" aria-hidden="true"><polygon points="6.5,0 3.3,5.6 -3.3,5.6 -6.5,0 -3.3,-5.6 3.3,-5.6" class="z-glu"/></svg>Glucose (reducing sugar)</span>
+          <span><svg viewBox="-12 -7 24 14" aria-hidden="true"><polygon points="6.5,0 3.3,5.6 -3.3,5.6 -6.5,0 -3.3,-5.6 3.3,-5.6" class="z-used"/></svg>Glucose that has reacted</span>
+          <span><svg viewBox="-12 -7 24 14" aria-hidden="true"><polygon points="0.5,0 -2.2,4.8 -7.8,4.8 -10.5,0 -7.8,-4.8 -2.2,-4.8" class="z-suc"/><polygon points="11,0 8.3,4.8 2.7,4.8 0,0 2.7,-4.8 8.3,-4.8" class="z-suc"/></svg>Sucrose (non-reducing)</span>
+          <span id="zleg1"><svg viewBox="-12 -7 24 14" aria-hidden="true"><circle r="3.2" class="z-cu1"/><circle cx="5" r="3.2" class="z-cu1"/></svg>Copper(I): joins into precipitate</span>
+        </div>
+        <p class="tally" id="ztally"></p>
+        <div class="row"><button class="btn small" id="zreset" type="button">Restart</button></div>
+        <p class="spec"><b>Schematic.</b> The numbers of particles are arbitrary: they do not show the real ratio of glucose to Cu²⁺, and each dot stands for a very large number. What it does show: a Cu²⁺ ion is reduced only when glucose touches it, and only when hot; copper(I) joins into precipitate; when the Cu²⁺ is used up, extra glucose changes nothing.</p>
+      </div>
+    </div>
+
+    <div id="p-light" class="panel" hidden>
+      <div class="fig app">
+        <h3 class="figh">Light close-up: inside the colorimeter</h3>
+        <div class="ctrls" id="lsel"></div>
+        <svg id="lsvg" viewBox="0 0 360 185" role="img" aria-label="Light waves from a lamp: red, orange, green and blue reach a coloured filter, and only one colour passes. The beam dims as it crosses the cuvette, because blue Cu²⁺ ions absorb it and precipitate or fingerprints scatter it, and less reaches the detector."></svg>
+        <p class="tally" id="ltally"></p>
+        <p class="spec">White light contains many wavelengths; the filter lets one colour through. Blue Cu²⁺ ions absorb red light strongly and orange light less, so the beam dims as it crosses the cuvette. Precipitate and fingerprints scatter light out of the beam. Less light at the detector than with the blank means a higher absorbance.</p>
+      </div>
+    </div>
+
+    <div id="p-task" class="panel" hidden></div>
+    <p class="sr-only" id="announce" aria-live="polite"></p>
+  </div>
+  </div>
+
+  <h2 id="resh">Results</h2>
+  <div id="results"></div>
+  <details class="note" id="assume">
+    <summary class="sumh">These results are simulated: the model's assumptions</summary>
+    <ul>
+      <li><b>Published and simulated data.</b> The values labelled "Published AQA readings" come from the <a href="https://filestore.aqa.org.uk/resources/biology/AQA-7401-7402-PHBK.PDF">AQA practical handbook</a>. Its text reports 4.7 mmol dm⁻³ for a 0.89 reading, but its own table brackets 0.89 between the 2 and 4 mmol dm⁻³ standards. The worked interpolation uses the table. All lab readings here are simulated; Apply graphs are illustrative data made up for the questions.</li>
+      <li>The method follows the AQA practical handbook: standards of 0 to 10 mmol dm⁻³ made from a 10 mmol dm⁻³ standard, 2 cm³ of each sample and 2 cm³ of Benedict's, 4 minutes in a 90 °C water bath, cooled before reading. Tom, Dick and Harry's samples contain 0, 5 and 8 mmol dm⁻³ glucose.</li>
+      <li>Qualitative Benedict's is read shaken, at 600 nm, against the heated 0 tube. Its readings are fitted to the handbook's sample results (0.76 at 2, 1.39 at 10 mmol dm⁻³). Quantitative Benedict's is read at 680 nm against water; the blue Cu²⁺ left absorbs about 0.80 with no glucose.</li>
+      <li>The Cu²⁺ in 2 cm³ of either reagent is assumed to be used up by about 11 mmol dm⁻³ of glucose (illustrative), so higher concentrations give almost the same reading.</li>
+      <li>Percentage transmission is relative to the selected blank (100 × 10<sup>−A</sup>); negative absorbance relative to a darker blank can therefore give more than 100% relative transmission.</li>
+      <li>Each reading varies randomly by up to about ±0.01. Fingerprints add 0.04 to 0.12 to some cuvettes. Unshaken precipitate settles over time; precipitate poured into a quantitative cuvette adds to the absorbance.</li>
+      <li>A fitted line is only a model: inspect the points, replicates and sensitivity before trusting it. Estimates are withheld for simulated handling errors and outside the observed range. A narrower standard range can improve local definition but does not guarantee accuracy or remove systematic errors. The curve of best fit is calculated, and drawn only between the lowest and highest standards. The reaction close-up is schematic: its particle numbers are arbitrary. The light close-up's percentages come from the same absorbance model as the lab.</li>
+    </ul>
+  </details>
+</main>
+<footer class="wrap"><p>Progress and experiment evidence are saved in this browser on this device. This is an unofficial revision tool and is not produced or endorsed by AQA.</p><div class="resource-footer-row"><p class="site-copyright">© 2026 <strong>Narajos</strong> <em>/nerr-RA-hoss/</em></p><nav class="resource-footer-links" aria-label="Footer navigation"><a href="/privacy/">Privacy</a> <a href="/terms/">Terms of Use</a><a href="/about/">About</a> <a href="/about/#feedback">Feedback &amp; Suggestions</a></nav></div></footer>
+<dialog id="zoom-dialog" class="zoom-dialog" aria-labelledby="zoom-title"><h2 id="zoom-title">Enlarged diagram</h2><p>Scroll sideways if needed.</p><div class="zoom-scroll" id="zoom-content"></div><button type="button" class="btn" id="zoom-close">Close diagram</button></dialog>
+
+
+<script>
+{
+const NS="http://www.w3.org/2000/svg";
+const $=(q,r=document)=>r.querySelector(q),$$=(q,r=document)=>[...r.querySelectorAll(q)];
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const mr=Math.random,RM=matchMedia("(prefers-reduced-motion: reduce)");
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function hash(s){let h=2166136261;for(const c of String(s))h=Math.imul(h^c.charCodeAt(0),16777619);return h>>>0;}
+function shuffled(n,seed){const r=rng(seed),a=[...Array(n).keys()];for(let i=n-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const SUP={"-":"⁻","0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹"};
+const supn=n=>String(n).split("").map(c=>SUP[c]||c).join("");
+/* standard form to sf significant figures, e.g. 7.8 × 10⁻³ */
+function sf(v,n=2){if(!isFinite(v))return"—";if(v===0)return"0";let e=Math.floor(Math.log10(Math.abs(v))),m=+(v/10**e).toPrecision(n);if(Math.abs(m)>=10){m/=10;e++;}
+ const ms=m.toFixed(n-1);return e===0?ms:`${ms} × 10${supn(e)}`;}
+/* reads 0.0078, 7.8e-3, 7.8 x 10^-3, 7.8×10⁻³ */
+function parseNum(str){let s=String(str||"").trim().replace(/,/g,".").replace(/[−–]/g,"-").replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]/g,c=>({"⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9","⁻":"-"}[c])).replace(/\s+/g,"");
+ const m=s.match(/^([+-]?\d*\.?\d+)(?:[x×*X]10\^?([+-]?\d+))?$/);if(m)return parseFloat(m[1])*(m[2]!=null?10**(+m[2]):1);
+ const v=Number(s);return s!==""&&isFinite(v)?v:NaN;}
+let zoomSource=null,zoomResults=false;
+function syncZoom(){
+ const dialog=$("#zoom-dialog");if(!dialog.open||!zoomSource)return;
+ // Results graphs are replaced as new readings arrive; follow the current graph.
+ if(zoomResults&&!zoomSource.isConnected)zoomSource=$("#results svg[role='img']");
+ if(!zoomSource||!zoomSource.isConnected)return;
+ const copy=zoomSource.cloneNode(true),ids=new Map();
+ for(const el of [copy,...copy.querySelectorAll("[id]")])if(el.id){ids.set(el.id,el.id+"-zoom");el.id+="-zoom";}
+ // Keep SVG definitions local to the enlarged copy without duplicate document IDs.
+ for(const el of [copy,...copy.querySelectorAll("*")])for(const attr of [...el.attributes]){
+  let value=attr.value.replace(/url\(#([^)]*)\)/g,(all,id)=>ids.has(id)?`url(#${ids.get(id)})`:all);
+  if((attr.name==="href"||attr.name==="xlink:href")&&value.startsWith("#")&&ids.has(value.slice(1)))value="#"+ids.get(value.slice(1));
+  if(value!==attr.value)el.setAttribute(attr.name,value);
+ }
+ $("#zoom-content").replaceChildren(copy);
+}
+function installZoom(){for(const svg of document.querySelectorAll('svg[role="img"]')){if(svg.closest("dialog")||svg.nextElementSibling?.classList.contains("diagram-zoom"))continue;const b=document.createElement("button");b.type="button";b.className="btn small diagram-zoom";b.textContent="Enlarge diagram";b.setAttribute("aria-label","Enlarge diagram: "+(svg.getAttribute("aria-label")||"illustration"));b.addEventListener("click",()=>{zoomSource=svg;zoomResults=!!svg.closest("#results");const dialog=$("#zoom-dialog");dialog.showModal();syncZoom();$("#zoom-close").focus();});svg.after(b);}}
+$("#zoom-close").addEventListener("click",()=>$("#zoom-dialog").close());
+$("#zoom-dialog").addEventListener("close",()=>{zoomSource=null;zoomResults=false;});
+
+const r2=v=>Math.round(v*100)/100;
+function mix(a,b,f){return`rgb(${a.map((v,i)=>Math.round(v+(b[i]-v)*f)).join(",")})`;}
+function say(h){const d=document.createElement("div");d.innerHTML=h;$("#announce").textContent=d.textContent;}
+let speed="normal";
+
+/* ================= RP11: glucose calibration model =================
+ Concentrations in mmol dm⁻³. Each tube holds 2 cm³ of sample; 2 cm³ of Benedict's is added and the tubes are
+ heated at 90 °C. The Cu²⁺ in 2 cm³ of Benedict's can be reduced by the glucose in 2 cm³ of about 11 mmol dm⁻³
+ glucose (CAP), so above that the reagent runs out.
+ Fraction of Cu²⁺ reduced: fr = min(ce, CAP) × p ÷ CAP; ce = glucose amount ÷ 2 cm³; p = 1 − e^(−t/1.25), t in min at 90 °C.
+ Qualitative (shaken): absorbance above the heated blank = 1.70·cr ÷ (2.45 + cr), cr = fr × CAP, which fits the AQA
+ handbook's sample results (600 nm). The blue Cu²⁺ left absorbs 0.30 × (1 − fr) at 600 nm and 0.80 × (1 − fr) at 680 nm. */
+const CAP=11,PXC=15,TAU=1.25;
+const BEN={qual:"Qualitative Benedict's",quant:"Quantitative Benedict's"};
+const URN=[["Tom",0],["Dick",5],["Harry",8]];
+/* sample sets: [label, glucose in the tube (mmol dm⁻³), dilution factor]. Y and Z are for the planning challenge. */
+const SAMP={thd:URN,x:[...URN,["X",15]],x2:[...URN,["X ÷ 2",7.5,2]],yz:[["Y",1.3],["Z",17]],yz4:[["Y",1.3],["Z ÷ 4",4.25,4]],yz2:[["Y",1.3],["Z ÷ 2",8.5,2]]};
+const SAMPN={thd:"Tom, Dick and Harry",x:"Tom, Dick, Harry and patient X",x2:"Tom, Dick, Harry and patient X diluted 1 in 2",yz:"Patients Y and Z",yz4:"Patient Y, and Z diluted 1 in 4",yz2:"Patient Y, and Z diluted 1 in 2"};
+const CSTD={ben:"qual",filt:"600",blank:"zero",dil:"prop",cst:"0,0.5,1,1.5,2,2.5",pip:"ok",heat:"all",tech:"good",urine:"thd"};
+const QSTD={...CSTD,ben:"quant",filt:"680",blank:"water"};
+const NOM={prop:[0,2,4,6,8,10],serial:[0,.625,1.25,2.5,5,10]};
+const nomOf=s=>s.dil==="custom"?s.cst.split(",").map(Number):NOM[s.dil];
+const METHOD_STD={qual:{filt:"600",blank:"zero",tech:"good"},quant:{filt:"680",blank:"water",tech:"good"}};
+const fmtC=c=>c===.625?"0.63":String(+c.toFixed(2));
+const cmatch=(s,n)=>Object.keys(n).every(k=>s[k]===n[k]);
+const ext=t=>1-Math.exp(-t/TAU);
+const ease=p=>p*p*(3-2*p),lerp=(a,b,p)=>a+(b-a)*p;
+const mixA=(a,b,f)=>a.map((v,i)=>Math.round(v+(b[i]-v)*Math.max(0,Math.min(1,f))));
+const rgb=c=>`rgb(${c.join(",")})`;
+function techTxt(s){return s.tech==="good"?(s.ben==="qual"?"each tube shaken just before sampling":"precipitate left to settle; clear liquid sampled"):s.tech==="prints"?"fingerprints on some cuvettes":(s.ben==="qual"?"tubes not shaken, so the precipitate settles":"precipitate poured into the cuvettes");}
+const dilTxt=s=>s.dil==="prop"?"proportional dilutions (0 to 10 mmol dm⁻³), each made directly from the 10 mmol dm⁻³ standard and water":s.dil==="serial"?"serial 1 in 2 dilutions (10 down to 0.63 mmol dm⁻³), each made from the one before":"a narrow range ("+s.cst.replace(/,/g,", ")+" mmol dm⁻³), each made directly from the 10 mmol dm⁻³ standard and water";
+function cdesc(s){return `${BEN[s.ben].replace("Q","q")}, ${s.filt} nm filter, zeroed with ${s.blank==="zero"?"the heated 0 mmol dm⁻³ tube":"distilled water"}, ${dilTxt(s)}, ${s.pip==="ok"?"accurate volumes":"one volume wrong"}, ${s.heat==="all"?"all tubes 4 min at 90 °C":s.heat==="late"?"sample tubes heated for only 2 min":"not heated"}, ${techTxt(s)}, samples: ${SAMPN[s.urine]}`;}
+function cshort(s){return (s.ben==="qual"?"Qualitative":"Quantitative")+", "+s.filt+" nm"+(s.blank!==(s.ben==="qual"?"zero":"water")?(s.blank==="water"?", water blank":", 0 tube blank"):"")+(s.dil==="serial"?", serial":s.dil==="custom"?", standards 0 to "+s.cst.split(",").pop():"")+(s.pip==="slip"?", one volume wrong":"")+(s.heat==="late"?", urine heated 2 min":s.heat==="none"?", not heated":"")+(s.tech==="prints"?", fingerprints":s.tech==="bad"?(s.ben==="qual"?", not shaken":", precipitate in cuvette"):"")+({thd:"",x:", + patient X",x2:", + X diluted",yz:", Y and Z",yz4:", Y and Z ÷ 4",yz2:", Y and Z ÷ 2"}[s.urine]);}
+/* dilution steps: [from, to, cm³, spilled cm³]; from/to are "std", "water", "waste" or a tube index */
+function dilSteps(s){const st=[];
+ if(s.dil!=="serial"){nomOf(s).forEach((c,i)=>{let a=Math.round(c/10*2*100)/100;const w=Math.round((2-a)*100)/100;if(s.pip==="slip"&&i===1)a=Math.round(a/2*1000)/1000;if(a)st.push(["std",i,a,0]);if(w)st.push(["water",i,w,0]);});}
+ else{for(let i=0;i<5;i++)st.push(["water",i,2,0]);st.push(["std",5,4,0]);for(let i=5;i>1;i--)st.push([i,i-1,2,s.pip==="slip"&&i===4?1:0]);st.push([1,"waste",2,0]);}
+ return st;}
+function newTubes(s){const T=nomOf(s).map(c=>({k:"std",lab:fmtC(c),nom:c,vol:0,g:0,bv:0,fr:0,sl:0,tb:0,wig:0}));
+ SAMP[s.urine].forEach(([n,c,df])=>T.push({k:"urn",lab:n,c,df:df||1,vol:2,g:2*c,bv:0,fr:0,sl:0,tb:0,wig:0}));return T;}
+/* Each tube is tracked as liquid volume (cm³) and glucose amount (µmol; 1 µmol = 1 mmol dm⁻³ × 1 cm³).
+ Concentration = amount ÷ sample volume. The Cu²⁺ in 2 cm³ of Benedict's is used up by about 22 µmol of glucose
+ (2 cm³ of 11 mmol dm⁻³), so the fraction of Cu²⁺ reduced depends on the AMOUNT of glucose in the tube.
+ Absorbance depends on concentration in the cuvette, so readings are scaled by 4 cm³ ÷ the tube's total volume. */
+const BV=2,GCAP=2*CAP;
+const sampVol=t=>t.vol-(t.bv||0);
+const concOf=t=>sampVol(t)>0?t.g/sampVol(t):0;
+const frOf=(t,p)=>Math.min(1,t.g/GCAP)*p;
+/* absorbance against water, read now */
+function absNow(s,t,rand,slv){const sl=slv==null?t.sl:slv,fr=t.fr,Ab=s.filt==="680"?.8:.3,cr_=fr*CAP,k=t.vol>0?4/t.vol:1;let A=Ab*(1-fr);
+ if(s.ben==="qual")A+=(1.72*cr_/(2.45+cr_)+.30*fr)*(1-.55*Math.min(1,sl));
+ else if(s.tech==="bad")A+=.45*fr*(.8+.4*rand());
+ A*=k;if(s.tech==="prints"&&t.fp)A+=t.fp;return A+(rand()-.5)*.024;}
+/* a whole run without animation (paired examples and checks) */
+function simRun(s,seed){const rand=rng(seed),T=newTubes(s);
+ for(const[f,to,v,sp]of dilSteps(s)){const cS=f==="std"?10:f==="water"?0:T[f].g/T[f].vol;if(typeof f==="number"){T[f].g-=cS*v;T[f].vol-=v;}if(typeof to==="number"){T[to].vol+=v-sp;T[to].g+=cS*(v-sp);}}
+ T.forEach(t=>{t.vol+=BV;t.bv=BV;});
+ const pS=s.heat==="none"?.02:ext(4),pU=s.heat==="none"?.02:s.heat==="late"?ext(2):ext(4);
+ T.forEach((t,i)=>{t.fr=frOf(t,t.k==="std"?pS:pU);t.fp=s.tech==="prints"&&rand()<.5?.04+.08*rand():0;t.sl=s.tech==="bad"&&s.ben==="qual"?Math.min(1,.15+.07*i):.02;});
+ const b=s.blank==="zero"?absNow(s,T[0],rand):(rand()-.5)*.01;
+ return mkRun(s,T,i=>i===0&&s.blank==="zero"?0:absNow(s,T[i],rand)-b);}
+function mkRun(s,T,read){return{s:{...s},std:T.filter(t=>t.k==="std").map((t,i)=>({c:t.nom,conc:concOf(t),vol:sampVol(t),A:r2(read(i))})),unk:T.map((t,i)=>[t,i]).filter(([t])=>t.k==="urn").map(([t,i])=>({n:t.lab,c:t.c,df:t.df,A:r2(read(i))}))};}
+
+/* ---------- live lab: action queue ---------- */
+let CS={...CSTD},cr=null,cRuns=[],cId=0,Q=[],cRand=rng(Math.floor(mr()*1e9));
+const SY={x:372,y:140,vis:true,load:0,c:0,col:[226,236,244]},CU={x:440,y:150,fill:0,col:null,fp:0};
+let disp="",dispNote="";
+function act(d,f,start,end){Q.push({d,f,start,end,p:0,st:false});}
+const SPD=()=>RM.matches?1000:(speed==="fast"?4.5:1.6);
+function stepQ(dt){let k=SPD()*dt;const k0=k;
+ while(Q.length&&k>1e-9){const a=Q[0];if(!a.st){a.st=true;a.start&&a.start();}const use=Math.min((1-a.p)*a.d,k);a.p=a.d?Math.min(1,a.p+use/a.d):1;a.f&&a.f(a.p,use);k-=use;if(a.p>=1){Q.shift();a.end&&a.end();}else break;}
+ if(!Q.length)k=0;return k0-k;}
+/* geometry */
+const TX=i=>i<6?24+i*30:206+(i-6)*30,TTOP=38,TH=92,DROP=130;
+const BOT={std:[343,24,"Glucose 10"],water:[393,24,"Water"],ben:[343,86,"Benedict's"],waste:[393,86,"Waste"]};
+const tTop=i=>TTOP+(cr.tubes[i].k==="std"?cr.yS:cr.yU);
+function srcXY(f){return typeof f==="number"?[TX(f),tTop(f)+14]:[BOT[f][0],BOT[f][1]+14];}
+function mvTo(gx,gy,d=.35){let x0,y0;act(d,p=>{const H=6,a=.3,b=.7;const[x,y]=typeof gx==="function"?gx():[gx,gy];
+  if(p<a){SY.x=x0;SY.y=lerp(y0,H,ease(p/a));}else if(p<b){SY.x=lerp(x0,x,ease((p-a)/(b-a)));SY.y=H;}else{SY.x=x;SY.y=lerp(H,y,ease((p-b)/(1-b)));}},()=>{x0=SY.x;y0=SY.y;SY.vis=true;});}
+function qTransfer(f,to,v,sp){let cS=0,col;
+ mvTo(()=>srcXY(f));
+ act(.14,p=>{SY.load=v*p;},()=>{if(typeof f==="number"){const t=cr.tubes[f];cS=t.g/t.vol;col=tubeCol(t);t.g0=t.g;t.v0=t.vol;}else{cS=f==="std"?10:0;col=f==="ben"?C_BLUE:C_WATER;}SY.c=cS;SY.col=col;},
+  ()=>{if(typeof f==="number"){const t=cr.tubes[f];t.vol=t.v0-v;t.g=t.g0-cS*v;}});
+ if(typeof f==="number")Q[Q.length-1].f=p=>{SY.load=v*p;const t=cr.tubes[f];t.vol=t.v0-v*p;t.g=t.g0-cS*v*p;};
+ mvTo(()=>to==="waste"?srcXY("waste"):srcXY(to));
+ act(.18,p=>{SY.load=v*(1-p);if(typeof to==="number"){const t=cr.tubes[to],q=(v-sp)*p;t.vol=t.va+q;t.g=t.ga+SY.c*q;if(f==="ben")t.bv=t.ba+q;}cr.spill=sp?p:0;},
+  ()=>{if(typeof to==="number"){const t=cr.tubes[to];t.va=t.vol;t.ga=t.g;t.ba=t.bv;}},()=>{cr.spill=0;if(sp)say("Some liquid was spilled during this transfer.");});}
+function park(){mvTo(372,140,.3);act(0,null,null,()=>{SY.load=0;});}
+
+/* ---------- run steps ---------- */
+function cNew(){Q=[];const rand=rng(Math.floor(cRand()*1e9));cr={s:{...CS},status:"ready",tubes:newTubes(CS),yS:0,yU:0,t:0,rand,read:{},spill:0,heatOn:false};
+ cr.tubes.forEach(t=>{t.fp=cr.s.tech==="prints"&&rand()<.5?.04+.08*rand():0;});SY.x=372;SY.y=140;SY.load=0;CU.x=440;CU.fill=0;disp="";dispNote="";cUpdate();renderResults();}
+function trimRuns(){const keep=new Set([...Object.values(ST.bind),...Object.values(ST.seen).map(r=>r&&r.id),cRuns[cRuns.length-1]?.id]);while(cRuns.length>30){const i=cRuns.findIndex(r=>!keep.has(r.id));if(i<0)break;cRuns.splice(i,1);}}
+function sFill(){if(cr.status!=="ready")return;ST.live={t:Date.now()};save();cr.note="";cr.status="filling";cUpdate();say("Making the dilution series.");
+ for(const[f,to,v,sp]of dilSteps(cr.s))qTransfer(f,to,v,sp);park();act(0,null,null,()=>{cr.status="filled";cUpdate();});}
+function sBen(){if(cr.status!=="filled")return;cr.status="adding";cUpdate();say("Adding 2 cm³ of Benedict's to every tube.");
+ cr.tubes.forEach((t,i)=>qTransfer("ben",i,2,0));park();act(0,null,null,()=>{cr.status="reagent";cUpdate();say("Every tube is the same blue before heating.");});}
+function sHeat(){if(cr.status!=="reagent")return;cr.status="heating";cUpdate();const s=cr.s;
+ if(s.heat!=="none")act(.6,p=>{cr.yS=DROP*ease(p);if(s.heat==="all")cr.yU=cr.yS;},()=>say(s.heat==="late"?"Standards in the 90 °C water bath. The urine tubes go in 2 minutes late.":"All tubes in the 90 °C water bath together."));
+ const HD=6;act(HD,(p,use)=>{const dtm=use*4/HD;cr.t=4*p;cr.heatOn=s.heat!=="none";
+   if(s.heat==="late"&&cr.t>=2&&cr.yU<DROP)cr.yU=Math.min(DROP,cr.yU+use*DROP/.6);
+   cr.tubes.forEach(t=>{t.tb=s.heat==="none"?0:(s.heat==="late"&&t.k==="urn"?Math.max(0,cr.t-2):cr.t);t.fr=frOf(t,s.heat==="none"?.02*cr.t/4:ext(t.tb));});},
+  ()=>{cr.t=0;cr.heatOn=s.heat!=="none";});
+ if(s.heat!=="none")act(.6,p=>{cr.yS=DROP*(1-ease(p));cr.yU=cr.yS;});
+ act(.9,null,()=>{cr.heatOn=false;cr.cooling=true;say("Tubes removed and left to cool.");},()=>{cr.cooling=false;cr.status="heated";cUpdate();say(s.ben==="qual"?"Cooled. The precipitate starts to settle, so shake each tube just before sampling.":"Cooled. Let the white precipitate settle, then sample the clear liquid above it.");});}
+function sMeasure(){if(cr.status!=="heated")return;cr.status="measuring";cUpdate();const s=cr.s;
+ qSample(s.blank==="zero"?0:"water",true);
+ cr.tubes.forEach((t,i)=>{if(i===0&&s.blank==="zero"){act(0,null,null,()=>{cr.read[0]=0;renderResults();});return;}qSample(i,false);});
+ park();act(0,null,null,()=>cFinish());}
+function qSample(i,isBlank){const s=cr.s,t=typeof i==="number"?cr.tubes[i]:null;
+ act(.3,p=>{CU.x=lerp(440,343,ease(p));CU.y=150;},()=>{CU.fill=0;CU.col=null;CU.fp=isBlank?0:(t?t.fp:0);});
+ const shake=t&&((s.ben==="qual"&&s.tech!=="bad")||(s.ben==="quant"&&s.tech==="bad"));
+ if(shake)act(.3,p=>{t.wig=p<1?1:0;},null,()=>{t.wig=0;t.sl=0;});
+ mvTo(()=>t?[TX(i),tTop(i)+(s.ben==="quant"&&s.tech!=="bad"?22:40)]:srcXY("water"));
+ act(.12,p=>{SY.load=1.5*p;},()=>{SY.col=t?liqCol(t,s.ben==="quant"&&s.tech!=="bad"):C_WATER;cr.slS=t?t.sl:0;});
+ mvTo(343,154);
+ act(.12,p=>{SY.load=1.5*(1-p);CU.fill=p;},()=>{CU.col=SY.col;});
+ mvTo(372,140,.25);
+ act(.3,p=>{CU.y=lerp(150,204,ease(p));});
+ let A;act(.35,p=>{disp=p<.5?"…":A.toFixed(2).replace("-","−");},()=>{
+   if(isBlank){A=0;cr.blankA=t?absNow(s,t,cr.rand,cr.slS):(cr.rand()-.5)*.01;dispNote="Zero set";}
+   else{A=r2(absNow(s,t,cr.rand,cr.slS)-cr.blankA);dispNote=t.lab;}},
+  ()=>{if(!isBlank){cr.read[i]=A;renderResults();}});
+ act(.4,p=>{if(p<.5)CU.y=lerp(204,150,ease(p*2));else CU.x=lerp(343,440,ease((p-.5)*2));});}
+function cFinish(){cr.status="done";if(cr.id==null)cr.id=++cId;const T=cr.tubes;
+ const r=mkRun(cr.s,T,i=>cr.read[i]??0);r.id=cr.id;cRuns.push(r);trimRuns();delete ST.live;showRun=null;save();cUpdate();renderResults();onRun("lab",r);}
+/* chaining the steps when "Run every step" is used */
+function chain(){if(!cr.auto||Q.length)return;const st=cr.status;if(st==="filled")sBen();else if(st==="reagent")sHeat();else if(st==="heated")sMeasure();else if(st==="done"){cr.auto=false;cUpdate();}}
+function cStep(dt){const used=Q.length?stepQ(dt):0;
+ if(cr&&(cr.cooling||cr.status==="heated"||cr.status==="measuring")){const k=used*(cr.s.ben==="qual"?.06:.5);cr.tubes.forEach(t=>{if(t.fr>0&&!t.wig)t.sl=Math.min(1,t.sl+k);});}
+ if(cr){chain();cDraw();}}
+
+/* ---------- colours ---------- */
+const C_WATER=[224,236,246],C_URN=[236,214,150],C_BLUE=[58,112,206],C_PALE=[214,228,236];
+const RAMP=[[0,C_BLUE],[.12,[46,138,150]],[.28,[92,160,70]],[.45,[196,186,58]],[.65,[222,138,48]],[.85,[182,72,42]],[1,[160,58,36]]];
+function ramp(f){for(let i=1;i<RAMP.length;i++)if(f<=RAMP[i][0]){const[a,ca]=RAMP[i-1],[b,cb]=RAMP[i];return mixA(ca,cb,(f-a)/(b-a));}return RAMP[RAMP.length-1][1];}
+function tubeCol(t){const base=t.k==="urn"?C_URN:C_WATER;if(!t.bv)return base;const c=mixA(base,C_BLUE,Math.min(1,t.bv/Math.max(.01,t.vol)*2));
+ if(t.fr<=0)return c;return cr.s.ben==="qual"?ramp(t.fr):mixA(C_BLUE,C_PALE,t.fr*.95);}
+/* colour of the liquid drawn off: suspended (shaken) or the clearer liquid above a settled precipitate */
+function liqCol(t,clear){if(cr.s.ben==="qual")return t.sl>0?mixA(ramp(t.fr),mixA(C_BLUE,C_PALE,t.fr),.35*t.sl):ramp(t.fr);return clear?mixA(C_BLUE,C_PALE,t.fr*.95):mixA(mixA(C_BLUE,C_PALE,t.fr*.95),[245,245,245],.5*t.fr);}
+
+/* ---------- drawing ---------- */
+function tubeSVG(t,i){const x=TX(i)+(t.wig?Math.sin(performance.now()/30)*2.5:0),y=tTop(i),yb=y+TH,r=9;let g="";
+ const h=t.vol/4.4*80;
+ if(h>0){const top=yb-r-Math.max(0,h-r);const ppt=t.fr>0&&t.sl>0?Math.min(h,(cr.s.ben==="qual"?14:12)*t.fr*Math.min(1,t.sl*1.4)):0;
+  const lc=t.fr>0?liqCol(t,cr.s.ben==="quant"&&t.sl>.3):tubeCol(t);
+  g+=`<path d="M${x-8} ${top} H${x+8} V${yb-r} A8 8 0 0 1 ${x-8} ${yb-r} Z" fill="${rgb(lc)}" opacity=".92"/>`;
+  if(ppt>0)g+=`<path d="M${x-8} ${yb-r-Math.max(0,ppt-r)} H${x+8} V${yb-r} A8 8 0 0 1 ${x-8} ${yb-r} Z" fill="${cr.s.ben==="qual"?"#a5432a":"#f4f4f2"}" stroke="${cr.s.ben==="qual"?"none":"#9aa1a9"}" stroke-width=".8"/>`;}
+ g+=`<path class="t-glass" d="M${x-9} ${y} V${yb-r} A9 9 0 0 0 ${x+9} ${yb-r} V${y}"/>`;
+ g+=`<text class="f-sm t-lab" x="${x}" y="${y-6}" text-anchor="middle"${t.lab.length>4?' style="font-size:10px"':""}>${esc(t.lab)}</text>`;return g;}
+function sySVG(){if(!SY.vis)return"";const x=SY.x,y=SY.y,h=SY.load/4*30;let g=`<rect class="t-barrel" x="${x-4}" y="${y-44}" width="8" height="34" rx="1.5"/>`;
+ if(h>0)g+=`<rect x="${x-3}" y="${y-11-h}" width="6" height="${h}" fill="${rgb(SY.col)}"/>`;
+ g+=`<line class="f-thin" x1="${x}" y1="${y-10}" x2="${x}" y2="${y}"/><line class="f-thin" x1="${x}" y1="${y-44}" x2="${x}" y2="${y-54+h*.3}"/><line class="f-thin" x1="${x-5}" y1="${y-54+h*.3}" x2="${x+5}" y2="${y-54+h*.3}"/>`;
+ if(cr.spill>0&&cr.spill<1)for(let k=0;k<3;k++){const yy=y+8+((cr.spill*3+k*.33)%1)*60;g+=`<circle cx="${x+10+k*3}" cy="${yy}" r="2" fill="${rgb(SY.col)}" stroke="var(--ink)" stroke-width=".5"/>`;}
+ return g;}
+function cDraw(){if(!cr)return;const s=cr.s;let g="";
+ // bath
+ g+=`<rect class="t-bath" x="8" y="168" width="302" height="128" rx="6"/><rect class="t-bathw" x="10" y="178" width="298" height="116" rx="4"/>`;
+ g+=`<text class="f-sm" x="16" y="290">Water bath, 90 °C${cr.status==="heating"&&cr.t>0?` · ${cr.t.toFixed(1)} min`:""}${s.heat==="none"&&cr.status==="heating"?" (not used)":""}</text>`;
+ // headers
+ g+=`<text class="f-sm" x="99" y="12" text-anchor="middle">Standards, mmol dm⁻³</text><text class="f-sm" x="${206+(cr.tubes.length-7)*15}" y="12" text-anchor="middle">"Urine" samples</text>`;
+ // racks
+ g+=`<rect class="t-rack" x="10" y="${104+cr.yS}" width="178" height="7" rx="2"/><rect class="t-rack" x="192" y="${104+cr.yU}" width="${cr.tubes.length>9?118:90}" height="7" rx="2"/>`;
+ cr.tubes.forEach((t,i)=>g+=tubeSVG(t,i));
+ // bottles
+ for(const[k,[x,y,l]]of Object.entries(BOT)){g+=`<rect class="t-bottle" x="${x-15}" y="${y}" width="30" height="40" rx="4"/><rect x="${x-13}" y="${y+12}" width="26" height="26" rx="3" fill="${k==="ben"?rgb(C_BLUE):k==="waste"?"#d9e3ea":rgb(C_WATER)}"/><text class="f-sm" style="font-size:10.5px" x="${x}" y="${y+51}" text-anchor="middle">${l}</text>`;}
+ // cuvette (behind the colorimeter body so it slides into the slot)
+ if(CU.x<430){const x=CU.x,y=CU.y;g+=`<rect class="t-cuv" x="${x-7}" y="${y}" width="14" height="22" rx="1.5"/>`;if(CU.fill>0&&CU.col)g+=`<rect x="${x-6}" y="${y+22-19*CU.fill}" width="12" height="${19*CU.fill}" fill="${rgb(CU.col)}"/>`;
+  if(CU.fp)g+=`<ellipse cx="${x-1}" cy="${y+9}" rx="3.5" ry="2.5" class="t-fp"/><ellipse cx="${x+2}" cy="${y+15}" rx="3" ry="2" class="t-fp"/>`;}
+ g+=`<rect class="t-colo" x="322" y="200" width="94" height="96" rx="8"/><rect class="t-slot" x="334" y="198" width="18" height="8" rx="2"/>`;
+ g+=`<rect class="t-disp" x="358" y="210" width="52" height="30" rx="4"/><text class="t-dtxt" x="384" y="231" text-anchor="middle">${disp||"—"}</text><text class="f-sm" style="font-size:10px" x="384" y="252" text-anchor="middle">${dispNote||"absorbance"}</text>`;
+ g+=`<text class="f-sm" style="font-size:10px" x="369" y="272" text-anchor="middle">Filter ${s.filt} nm</text><text class="f-sm" style="font-size:10px" x="369" y="288" text-anchor="middle">Colorimeter</text>`;
+ g+=sySVG();
+ $("#csvg").innerHTML=`<g transform="translate(0 40)">${g}</g>`;}
+function cText(){const st=cr.status,s=cr.s;if(cr.note&&st==="ready"){$("#cnote").textContent=cr.note;return;}$("#cnote").textContent={ready:`The urine samples are in their tubes. Step 1: make the standards: ${dilTxt(s)}.`,
+ filling:"Making the standards: each tube should end with 2 cm³.",filled:"Step 2: add 2 cm³ of Benedict's to every tube.",adding:"Adding Benedict's.",reagent:"Every tube is the same blue. Step 3: heat them together.",
+ heating:s.heat==="none"?"The tubes are left at room temperature.":"Heating at 90 °C. Watch the colours change.",heated:"Step 4: zero the colorimeter with the blank, then measure each sample.",measuring:"Measuring. Each new reading is added to the graph.",done:"Done. The points are on the calibration graph below."}[st]||"";}
+function cUpdate(){const st=cr.status,busy=Q.length>0||cr.auto;
+ $("#cfill").disabled=st!=="ready"||busy;$("#cben").disabled=st!=="filled"||busy;$("#cheat").disabled=st!=="reagent"||busy;$("#cmeas").disabled=st!=="heated"||busy;
+ $("#call").disabled=busy;$("#call").textContent=st==="done"?"New run: every step":"Run every step";$("#cnew").disabled=busy;
+ $("#cstate").textContent={ready:"Ready",filling:"Diluting",filled:"Standards made",adding:"Adding Benedict's",reagent:"Ready to heat",heating:"Heating",heated:"Cooled",measuring:"Measuring",done:"Finished"}[st];
+ $$("#cctrls input, #cadv input, #urine, #cstd, #custom-apply").forEach(i=>i.disabled=!(st==="ready"||st==="done")&&i.name!=="speed");$("#clock").hidden=st==="ready"||st==="done";
+ cText();cDraw();gDraw();renderNav();renderTasks();}
+$("#cfill").onclick=sFill;$("#cben").onclick=sBen;$("#cheat").onclick=sHeat;$("#cmeas").onclick=sMeasure;
+$("#call").onclick=()=>{if(cr.status==="done")cNew();cr.auto=true;if(cr.status==="ready")sFill();else chain();cUpdate();};
+$("#cnew").onclick=()=>cNew();
+
+/* ---------- set-up controls ---------- */
+const CESS=[["ben","Benedict's method",[["qual","Qualitative"],["quant","Quantitative"]]],["speed","Speed",[["normal","Normal"],["fast","Fast"]]]];
+const CADV=[["filt","Colorimeter filter",[["600","600 nm (orange)"],["680","680 nm (red)"]]],["blank","Zero the colorimeter with",[["zero","Heated 0 mmol dm⁻³ tube"],["water","Distilled water"]]],
+ ["dil","Standards",[["prop","Proportional: 0, 2, 4, 6, 8, 10"],["serial","Serial, 1 in 2: 10 to 0.63"],["custom","Custom range, made directly"]]],["pip","Measuring volumes",[["ok","Accurate"],["slip","One mistake (2nd standard, or a spill if serial)"]]],
+ ["heat","Heating",[["all","All tubes, 4 min at 90 °C"],["late","Samples in 2 min late"],["none","Not heated"]]],["tech","Sampling into cuvettes",[["good","As the method says"],["prints","Fingerprints on cuvettes"],["bad","Precipitate mishandled"]]]];
+const CCTRL=[...CESS,...CADV];
+const segHTML=([k,l,o])=>`<fieldset><legend class="cl">${l}</legend><div class="seg">${o.map(([v,t])=>`<label><input type="radio" name="${k}" value="${v}"><span>${t}</span></label>`).join("")}</div></fieldset>`;
+$("#cctrls").innerHTML=segHTML(CESS[0])+`<div class="tsel"><label for="urine">Samples</label><select id="urine" name="urine">${Object.entries(SAMPN).map(([k,t])=>`<option value="${k}">${t}</option>`).join("")}</select></div>`+segHTML(CESS[1])+
+ `<p class="mline" id="mline"></p><div class="row"><button type="button" class="btn small" id="cstd">Reset to standard conditions</button></div>`;
+$("#cadv").innerHTML=CADV.map(segHTML).join("")+'<div id="custom-panel" hidden><label class="numlab" for="custom-values">Custom standards (mmol dm⁻³)</label><p class="spec" id="custom-help">Enter six increasing concentrations, beginning with 0 and no higher than 10, in steps of 0.05. Separate values with commas.</p><input type="text" id="custom-values" aria-describedby="custom-help custom-error"><div class="row"><button type="button" class="btn small" id="custom-apply">Use these standards</button></div><p class="msg" role="status" id="custom-error"></p></div><p class="spec" id="technote"></p>';
+function stdFor(b){return{...CSTD,ben:b,...METHOD_STD[b]};}
+function changed(s){const d=stdFor(s.ben),L=[];for(const[k,l,o]of CADV)if(s[k]!==d[k])L.push(l.toLowerCase()+": "+o.find(x=>x[0]===s[k])[1].toLowerCase());return L;}
+function cSync(){CCTRL.forEach(([k])=>{const v=k==="speed"?speed:CS[k];$$(`#p-lab input[name=${k}]`).forEach(i=>i.checked=String(v)===i.value);});$("#urine").value=CS.urine;
+ const m=METHOD_STD[CS.ben],ch=changed(CS);$("#mline").innerHTML=`<b>Standard conditions for this method:</b> ${m.filt} nm filter · zeroed with ${m.blank==="zero"?"the heated 0 mmol dm⁻³ tube (AQA handbook)":"distilled water"} · ${CS.ben==="qual"?"each tube shaken just before sampling":"precipitate left to settle, clear liquid sampled"}.`+(ch.length?`<br><span class="chg">Changed: ${ch.join("; ")}.</span>`:"");
+ $("#technote").textContent="Sampling now: "+techTxt(CS)+".";$("#custom-panel").hidden=CS.dil!=="custom";$("#custom-values").value=CS.cst;}
+function setCS(k,v){CS[k]=v;if(k==="ben")Object.assign(CS,METHOD_STD[v]);cSync();if(cr.status==="ready"||cr.status==="done")cNew();zReset();lReset();lSync();}
+$("#p-lab").addEventListener("change",e=>{const i=e.target,k=i.name;if(!k||!(k==="urine"||CCTRL.some(c=>c[0]===k)))return;if(k==="speed"){speed=i.value;save();return;}setCS(k,i.value);});
+$("#custom-apply").onclick=()=>{const parts=$("#custom-values").value.split(",").map(x=>x.trim());const values=parts.map(Number),valid=parts.length===6&&parts.every(x=>x!=="")&&values.every((v,i)=>Number.isFinite(v)&&v>=0&&v<=10&&Math.abs(v*20-Math.round(v*20))<1e-8&&(i===0?v===0:v>values[i-1]));if(!valid){$("#custom-error").textContent="Use six increasing values from 0 to 10, starting at 0 and in steps of 0.05.";return;}$("#custom-error").textContent="";setCS("cst",values.join(","));};
+$("#cstd").onclick=()=>{CS=stdFor(CS.ben);CS.urine="thd";cSync();if(cr.status==="ready"||cr.status==="done")cNew();};
+function cApply(n){CS={...CSTD,...n};cSync();cNew();zReset();lReset();lSync();}
+
+/* ================= Calibration graph ================= */
+let calN=0,gLine="none",gY="A",guides=false,showRun=null,readShown=false;
+const gT=A=>100*Math.pow(10,-A);
+function guidesLocked(){const t=typeof activeTask==="function"?activeTask():null;return!!(t&&t.noGuides);}
+/* curve of best fit: y = p + q·x/(b + x), b chosen by least squares (large b is close to a straight line) */
+function fitCurve(P){let best=null;for(let k=0;k<=72;k++){const b=.2*Math.pow(10,k/18),X=P.map(p=>p[0]/(b+p[0])),Y=P.map(p=>p[1]),n=P.length,mx=X.reduce((a,v)=>a+v,0)/n,my=Y.reduce((a,v)=>a+v,0)/n;
+  let sxx=0,sxy=0;X.forEach((x,i)=>{sxx+=(x-mx)**2;sxy+=(x-mx)*(Y[i]-my);});const q=sxx?sxy/sxx:0,p0=my-q*mx,sse=X.reduce((a,x,i)=>a+(p0+q*x-Y[i])**2,0);if(!best||sse<best.sse)best={b,q,p:p0,sse};}
+ const h=x=>best.p+best.q*x/(best.b+x),qd=fitQuad(P),sq=P.reduce((a,[x,y])=>a+(qd(x)-y)**2,0);
+ // a calibration curve must not turn back on itself between the standards: reject a quadratic whose turning point is inside the range
+ const xs=P.map(p=>p[0]),lo=Math.min(...xs),hi=Math.max(...xs),d1=qd(lo+1e-3)-qd(lo),mono=[...Array(41)].every((_,i)=>{const x=lo+(hi-lo)*i/40;return Math.sign(qd(x+1e-3)-qd(x))===Math.sign(d1)||Math.abs(qd(x+1e-3)-qd(x))<1e-9;});
+ return sq<best.sse*.8&&mono?qd:h;}
+function fitQuad(P){const S=k=>P.reduce((a,[x])=>a+x**k,0),T=k=>P.reduce((a,[x,y])=>a+y*x**k,0),M=[[S(0),S(1),S(2),T(0)],[S(1),S(2),S(3),T(1)],[S(2),S(3),S(4),T(2)]];
+ for(let i=0;i<3;i++){let m=i;for(let j=i+1;j<3;j++)if(Math.abs(M[j][i])>Math.abs(M[m][i]))m=j;[M[i],M[m]]=[M[m],M[i]];for(let j=0;j<3;j++)if(j!==i){const f=M[j][i]/M[i][i];for(let k=i;k<4;k++)M[j][k]-=f*M[i][k];}}
+ const c=M.map((r,i)=>r[3]/r[i]);return x=>c[0]+c[1]*x+c[2]*x*x;}
+function fitLine(P){const n=P.length,mx=P.reduce((a,p)=>a+p[0],0)/n,my=P.reduce((a,p)=>a+p[1],0)/n;let sxx=0,sxy=0;P.forEach(([x,y])=>{sxx+=(x-mx)**2;sxy+=(x-mx)*(y-my);});const m=sxy/sxx;return x=>my+m*(x-mx);}
+function dots(P){const S=[...P].sort((a,b)=>a[0]-b[0]);return x=>{for(let i=1;i<S.length;i++)if(x<=S[i][0]){const[a,ya]=S[i-1],[b,yb]=S[i];return ya+(yb-ya)*(x-a)/(b-a);}return S[S.length-1][1];};}
+const yv=(A,Y)=>Y==="T"?gT(A):A;
+function lineFn(r,type,Y){const P=r.std.map(o=>[o.c,yv(o.A,Y||"A")]);if(type==="curve"&&Y==="T"){const f=fitCurve(r.std.map(o=>[o.c,o.A]));return x=>gT(f(x));}return type==="curve"?fitCurve(P):type==="straight"?fitLine(P):type==="dots"?dots(P):null;}
+/* read a concentration off a line: first crossing between the lowest and highest standard */
+function calibrationIssue(r,type,Y){
+ if(!r||r.std.length<3)return "At least three measured standards are needed.";
+ const s=r.s;if(s&&(s.pip!=="ok"||s.heat!=="all"||s.tech!=="good"))return "A simulated procedural error makes this run unreliable.";
+ const P=[...r.std].sort((a,b)=>a.c-b.c);if(P.some((p,i)=>!Number.isFinite(p.A)||!Number.isFinite(p.c)||(i&&p.c<=P[i-1].c)))return "The standard values are incomplete or repeated.";
+ const values=P.map(p=>yv(p.A,Y||"A")),span=Math.max(...values)-Math.min(...values),noise=Y==="T"?4:.045;
+ if(span<noise)return "The standards have too little separation to estimate a concentration reliably.";
+ const f=lineFn(r,type,Y);if(!f)return "Choose a line before reading a concentration.";
+ if(P.some((p,i)=>!Number.isFinite(f(p.c))||Math.abs(f(p.c)-values[i])>Math.max(noise,span*.08)))return "The chosen line fits the standards poorly; review the data or choose a better fit.";
+ return "";
+}
+function readOff(r,A,type,Y,allowPoor=false){if(!r||!Number.isFinite(A)||r.std.length<3)return null;const issue=calibrationIssue(r,type,Y);if(issue&&!(allowPoor&&issue.startsWith("The chosen line fits")))return null;const measured=r.std.map(p=>p.A);if(A<Math.min(...measured)||A>Math.max(...measured))return null;const f=lineFn(r,type,Y);if(!f)return null;const cs=r.std.map(o=>o.c),x0=Math.min(...cs),x1=Math.max(...cs),y=yv(A,Y||"A");let pv=f(x0)-y;
+ if(Math.abs(pv)<1e-9)return x0;for(let i=1;i<=600;i++){const x=x0+(x1-x0)*i/600,v=f(x)-y;if(pv*v<=0)return x-(x1-x0)/600*v/(v-pv||1);pv=v;}return null;}
+const curRun=()=>{const at=typeof activeTask==="function"?activeTask():null,pinned=at&&at.m?((at.type==="predict"||at.type==="run")?ST.seen[at.id]:cRuns.find(r=>r.id===ST.bind[at.id])):null;if(pinned)return pinned;if(cr&&cr.status==="measuring"){const T=cr.tubes;return{live:true,s:cr.s,std:T.map((t,i)=>[t,i]).filter(([t,i])=>t.k==="std"&&cr.read[i]!=null).map(([t,i])=>({c:t.nom,A:cr.read[i]})),unk:T.map((t,i)=>[t,i]).filter(([t,i])=>t.k==="urn"&&cr.read[i]!=null).map(([t,i])=>({n:t.lab,c:t.c,A:cr.read[i]}))};}
+ return showRun||cRuns[cRuns.length-1];};
+/* graph drawing, shared by the live graph and the paired examples */
+function calSVG(r,o){o=o||{};const W=o.w||360,H=o.h||290,x0=o.mini?40:56,x1=W-(o.mini?14:62),y0=16,y1=H-(o.mini?36:46),Y=o.Y||"A",line=o.line||"none";
+ const cmax=Math.max(...r.std.map(p=>p.c),1),XM=cmax<=3?3:cmax<=6?6:12,XS=XM===3?.5:XM===6?1:2,XN=XM===3?.1:XM===6?.2:.5;
+ const vals=r.std.map(p=>yv(p.A,Y)).concat(r.unk.map(u=>yv(u.A,Y)));let lo,hi,step;
+ if(Y==="T"){lo=0;hi=Math.max(100,Math.ceil(Math.max(...vals,0)/20)*20);step=20;}else{step=.2;lo=Math.min(0,Math.floor((Math.min(...vals,0)+.04)/.2)*.2);hi=Math.max(.6,Math.ceil((Math.max(...vals,0)+.05)/.2)*.2);if(hi-lo>2.4)step=.4;}
+ const X=c=>x0+(x1-x0)*c/XM,Yp=v=>y1-(y1-y0)*(v-lo)/(hi-lo),cid="cp"+(++calN);let g=`<clipPath id="${cid}"><rect x="${x0}" y="${y0}" width="${x1-x0}" height="${y1-y0}"/></clipPath>`;
+ for(let k=0;k<=Math.round(XM/XN);k++){const c=k*XN,mj=Math.abs(c/XS-Math.round(c/XS))<1e-6;g+=`<line class="${mj?"g-maj":"g-min"}" x1="${X(c)}" y1="${y0}" x2="${X(c)}" y2="${y1}"/>`;}
+ const mn=Y==="T"?5:step/4,nl=Math.round((hi-lo)/mn);for(let k=0;k<=nl;k++){const v=lo+k*mn;const maj=Math.abs(v/step-Math.round(v/step))<1e-6;g+=`<line class="${maj?"g-maj":"g-min"}" x1="${x0}" y1="${Yp(v)}" x2="${x1}" y2="${Yp(v)}"/>`;if(maj)g+=`<text class="f-sm" style="font-size:${o.mini?9:10}px" x="${x0-4}" y="${Yp(v)+3}" text-anchor="end">${Y==="T"?Math.round(v):(+v.toFixed(1)).toFixed(1).replace("-","−")}</text>`;}
+ for(let k=0;k<=Math.round(XM/XS);k++){const c=k*XS;g+=`<text class="f-sm" style="font-size:${o.mini?9:10}px" x="${X(c)}" y="${y1+13}" text-anchor="middle">${+c.toFixed(1)}</text>`;}
+ g+=`<line class="f-axis" x1="${x0}" y1="${y1}" x2="${x1}" y2="${y1}"/><line class="f-axis" x1="${x0}" y1="${y0}" x2="${x0}" y2="${y1}"/>`;
+ if(lo<0)g+=`<line class="f-zero" x1="${x0}" y1="${Yp(0)}" x2="${x1}" y2="${Yp(0)}"/>`;
+ g+=`<text class="f-sm" style="font-size:${o.mini?9:11}px" x="${(x0+x1)/2}" y="${H-(o.mini?6:16)}" text-anchor="middle">Glucose concentration / mmol dm⁻³</text>`;
+ g+=`<text class="f-sm" style="font-size:${o.mini?9:11}px" transform="translate(${o.mini?10:14} ${(y0+y1)/2}) rotate(-90)" text-anchor="middle">${Y==="T"?"Transmission / %":"Absorbance"}</text>`;
+ const f=r.std.length>=3&&line!=="none"?lineFn(r,line,Y):null;
+ if(f){const cs=r.std.map(p=>p.c),a=Math.min(...cs),b=Math.max(...cs);let d="";for(let i=0;i<=80;i++){const c=a+(b-a)*i/80;d+=(i?" L":"M")+X(c).toFixed(1)+" "+Yp(f(c)).toFixed(1);}g+=`<path class="g-line" clip-path="url(#${cid})" d="${d}"/>`;}
+ for(const p of r.std){const x=X(p.c),y=Yp(yv(p.A,Y));g+=`<path class="g-pt" d="M${x-4} ${y-4} L${x+4} ${y+4} M${x-4} ${y+4} L${x+4} ${y-4}"/>`;}
+ // unknowns: marks on the right edge; construction lines when guides are on
+ const U=(o.unk||r.unk).filter(u=>u.A!=null),lab=spreadLab(U.map(u=>({y:Yp(yv(u.A,Y)),t:u.n})),12);
+ let lastC=-9,lift=0;U.map(u=>({u,c:o.guides&&f?readOff(r,u.A,line,Y,!!o.allowPoor):null})).sort((a,b)=>(a.c??-1)-(b.c??-1)).forEach(({u,c})=>{const y=Yp(yv(u.A,Y));g+=`<path class="g-umark" d="M${x1} ${y} l6 -4 v8 z"/>`;
+  if(o.guides&&f){if(c!=null){lift=c-lastC<1.3?(lift?0:12):0;lastC=c;g+=`<path class="g-guide" d="M${x1} ${y} H${X(c)} V${y1}"/><text class="f-sm g-gtxt" data-n="${esc(u.n)}" x="${X(c)+3}" y="${y1-4-lift}">${c.toFixed(1)}</text>`;}
+   else g+=`<path class="g-guide" d="M${x1} ${y} H${x0}"/>`;}});
+ if(!o.mini)lab.forEach(l=>g+=`<text class="f-sm" style="font-size:10px" x="${x1+10}" y="${l.ly+3}">${esc(l.t)}</text>`);
+ else lab.forEach(l=>g+=`<text class="f-sm" style="font-size:9px" x="${x1+8}" y="${l.ly+3}">${esc(l.t[0])}</text>`);
+ return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.aria||"Calibration graph of "+(Y==="T"?"transmission":"absorbance")+" against glucose concentration")}">${g}</svg>`;}
+function spreadLab(items,gap){const a=items.map(o=>({...o,ly:o.y})).sort((p,q)=>p.y-q.y);for(let i=1;i<a.length;i++)if(a[i].ly-a[i-1].ly<gap)a[i].ly=a[i-1].ly+gap;return a;}
+function gDraw(){const r=curRun();if(!r){$("#gsvg").innerHTML=`<text class="f-sm" x="180" y="140" text-anchor="middle">Measure the samples to plot the calibration graph.</text>`;$("#gnote").textContent="";return;}
+ const gl=guidesLocked();$("#gsvg").innerHTML=calSVG(r,{line:gLine,Y:gY,guides:guides&&!gl}).replace(/^<svg[^>]*>|<\/svg>$/g,"");
+ const issue=!r.live&&gLine!=="none"?calibrationIssue(r,gLine,gY):"";$("#gnote").textContent=(cr.status==="measuring"&&!r.live?"A new run is being measured; this graph remains linked to the current question. ":"")+(issue?issue+" Concentrations are withheld. ":gLine==="dots"?"Joined points can follow measurement noise; check the trend. ":"")+(r.live?"Plotting as each reading comes in. ":`Showing run ${r.id}: ${cshort(r.s)}. `)+(gLine==="none"?"Choose a line to draw through the standards.":gl?"Construction lines are switched off for this task: read the graph yourself.":guides?"Construction lines go across from each sample's reading to your line, then down to the concentration axis.":"Turn on construction lines to read each sample off your line.");}
+const GCTRL=[["gline","Line through the standards",[["none","No line"],["curve","Curve of best fit"],["straight","Straight line of best fit"],["dots","Join the points"]]],["gy","Plot",[["A","Absorbance"],["T","% transmission"]]]];
+$("#gctrls").innerHTML=GCTRL.map(([k,l,o])=>`<fieldset><legend class="cl">${l}</legend><div class="seg">${o.map(([v,t])=>`<label><input type="radio" name="${k}" value="${v}"${(k==="gline"?gLine:gY)===v?" checked":""}><span>${t}</span></label>`).join("")}</div></fieldset>`).join("");
+$("#gctrls").addEventListener("change",e=>{const i=e.target;if(i.name==="gline")gLine=i.value;if(i.name==="gy")gY=i.value;gDraw();renderResults();save();});
+$("#gguide").onclick=()=>{guides=!guides;renderTasks();};
+
+/* ---------- results ---------- */
+/* what was really in any standard that was made wrongly (a real student would not see this) */
+function behind(r){if(r.live||!r.std.some(p=>p.conc!=null))return"";const bad=r.std.filter(p=>p.conc!=null&&(Math.abs(p.conc-p.c)>.005*Math.max(1,p.c)||Math.abs(p.vol-2)>.01));
+ return bad.length?`<p class="note"><b>Behind the scenes (simulation only):</b> ${bad.map(p=>`the ${fmtC(p.c)} tube held ${p.vol.toFixed(2).replace(/0$/,"")} cm³ of ${p.conc.toFixed(2)} mmol dm⁻³ glucose (${(p.conc*p.vol/1000).toFixed(4)} mmol), not 2 cm³ of ${fmtC(p.c)} (${(p.c*2/1000).toFixed(4)} mmol)`).join("; ")}.</p>`:"";}
+function renderResults(){if(!cr)return;const r=curRun();
+ const opts=(r&&!r.live&&!cRuns.some(x=>x.id===r.id)?[r]:[]).concat(cRuns).map(x=>`<option value="${x.id}"${r&&!r.live&&x.id===r.id?" selected":""}>Run ${x.id}: ${esc(cshort(x.s))}</option>`).join("");
+ if(!r){$("#results").innerHTML='<p class="spec">No runs yet. Readings appear here as you measure them.</p>';return;}
+ const showC=guides&&!guidesLocked()&&gLine!=="none"&&!r.live,T=gY==="T",rd=u=>{if(!showC)return"";const c=readOff(r,u.A,gLine,gY);return`<td class="n">${c==null?"not determined":c.toFixed(1)}</td>`;};
+ $("#results").innerHTML=`${cRuns.length>1?`<div class="tsel"><label for="runsel">Show</label><select id="runsel">${opts}</select></div>`:""}<div class="res">
+ <div class="fig"><div class="scroll"><table><caption>${r.live?"Measuring now: ":"Run "+r.id+": "}${esc(cshort(r.s))}. Simulated readings.</caption><thead><tr><th scope="col">Glucose / mmol dm⁻³</th><th scope="col">Absorbance</th>${T?'<th scope="col">Transmission / %</th>':""}</tr></thead>
+ <tbody>${r.std.map(p=>`<tr><td class="n">${fmtC(p.c)}</td><td class="n">${p.A.toFixed(2).replace("-","−")}</td>${T?`<td class="n">${gT(p.A).toFixed(0)}</td>`:""}</tr>`).join("")}</tbody></table></div>${behind(r)}</div>
+ <div class="fig"><div class="scroll"><table><caption>"Urine" samples (simulated).${showC?" Concentrations read from your "+({curve:"curve of best fit",straight:"straight line",dots:"joined points"}[gLine])+", as the construction lines show.":""}</caption><thead><tr><th scope="col">Sample</th><th scope="col">Absorbance</th>${T?'<th scope="col">Transmission / %</th>':""}${showC?'<th scope="col">Glucose / mmol dm⁻³</th>':""}</tr></thead>
+ <tbody>${r.unk.map(u=>`<tr><td>${esc(u.n)}</td><td class="n">${u.A.toFixed(2).replace("-","−")}</td>${T?`<td class="n">${gT(u.A).toFixed(0)}</td>`:""}${rd(u)}</tr>`).join("")||'<tr><td colspan="3">Not measured yet.</td></tr>'}</tbody></table></div></div></div>`;
+ const sel=$("#runsel"),at=activeTask();if(sel&&at&&at.m&&(at.type==="num"||at.type==="predict"||at.type==="control"||at.type==="run")&&taskRun(at)){sel.disabled=true;sel.title="The graph is linked to the current question’s run.";}else if(sel)sel.onchange=()=>{showRun=cRuns.find(x=>x.id===+sel.value)||null;gDraw();renderResults();save();};}
+
+/* read-only hook for automated checks of the model */
+window.__rp11={simRun,absNow,readOff,lineFn,calibrationIssue,dilSteps,newTubes,nomOf,gT,ext,CAP,CSTD,QSTD,SAMP,frOf,concOf,sampVol,calSVG};
+
+/* ================= Reaction close-up =================
+ Cu²⁺ ions and sugar molecules drift. Only on contact can glucose reduce a Cu²⁺ ion to copper(I), and only when hot.
+ SCHEMATIC: particle numbers are arbitrary and do not show the real ratio of glucose to Cu²⁺ (each glucose here reduces
+ up to 3 ions). Copper(I) ions that touch join into precipitate, which sinks. Sucrose and cold glucose bounce off. */
+const ZOPT={g4:{n:"Less glucose, 90 °C",g:3,hot:1},g10:{n:"More glucose, 90 °C",g:7,hot:1},g20:{n:"Glucose in excess, 90 °C",g:14,hot:1},
+ cold:{n:"More glucose, room temperature",g:7,hot:0},suc:{n:"Sucrose, 90 °C",s:7,hot:1}};
+const ZCU=22,ZW=165,ZH=200,ZY=34;let zLane=["g4","g10"],ZL=[],zFl=[];
+function zMk(key,li){const o=ZOPT[key],r=rng(hash(key+li+Date.now())),P=[],x0=10+li*175;
+ const put=(kind,rad,extra)=>{for(let k=0;k<60;k++){const x=x0+rad+r()*(ZW-2*rad),y=ZY+rad+r()*(ZH-2*rad);if(P.every(q=>Math.hypot(q.x-x,q.y-y)>q.r+rad+2)){P.push({kind,x,y,r:rad,vx:(r()-.5)*40,vy:(r()-.5)*40,...extra});return;}}};
+ for(let i=0;i<ZCU;i++)put("cu2",4.5,{});for(let i=0;i<(o.g||0);i++)put("glu",7,{pw:3});for(let i=0;i<(o.s||0);i++)put("suc",8,{});
+ return{key,o,x0,P,cl:[],r,flash:[]};}
+function zReset(){ZL=zLane.map((k,i)=>zMk(k,i));zDraw();}
+function zStep(dt){for(const L of ZL){const sp=L.o.hot?1:.6,r=L.r,xa=L.x0,xb=L.x0+ZW,ya=ZY,yb=ZY+ZH;
+ for(const p of L.P){if(p.cl!=null)continue;const k=p.kind==="cu1"?.4:1;p.vx+=(r()-.5)*160*dt*sp;p.vy+=(r()-.5)*160*dt*sp;const v=Math.hypot(p.vx,p.vy),vm=(p.kind==="cu1"?14:58)*sp;if(v>vm){p.vx*=vm/v;p.vy*=vm/v;}
+  if(p.kind==="cu1")p.vy+=10*dt;p.x+=p.vx*dt*k;p.y+=p.vy*dt*k;
+  if(p.x<xa+p.r){p.x=xa+p.r;p.vx=Math.abs(p.vx);}if(p.x>xb-p.r){p.x=xb-p.r;p.vx=-Math.abs(p.vx);}if(p.y<ya+p.r){p.y=ya+p.r;p.vy=Math.abs(p.vy);}if(p.y>yb-p.r){p.y=yb-p.r;p.vy=-Math.abs(p.vy)*.2;}}
+ for(const c of L.cl){if(!c.m.length)continue;c.vy=Math.min(16,c.vy+12*dt);c.vx+=(r()-.5)*20*dt;c.vx*=.98;c.x+=c.vx*dt;c.y+=c.vy*dt;const m=c.m,minx=Math.min(...m.map(q=>q.dx-q.p.r)),maxx=Math.max(...m.map(q=>q.dx+q.p.r)),maxy=Math.max(...m.map(q=>q.dy+q.p.r)),miny=Math.min(...m.map(q=>q.dy-q.p.r));
+  if(c.x+minx<xa){c.x=xa-minx;c.vx=Math.abs(c.vx);}if(c.x+maxx>xb){c.x=xb-maxx;c.vx=-Math.abs(c.vx);}if(c.y+maxy>yb){c.y=yb-maxy;c.vy=0;}if(c.y+miny<ya)c.y=ya-miny;m.forEach(q=>{q.p.x=c.x+q.dx;q.p.y=c.y+q.dy;});}
+ // contacts
+ const S=L.P.filter(p=>p.kind==="glu"||p.kind==="suc"),C=L.P.filter(p=>p.kind==="cu2");
+ for(const g of S)for(const c of C){if(c.kind!=="cu2")continue;const dx=c.x-g.x,dy=c.y-g.y,d=Math.hypot(dx,dy);if(d>g.r+c.r||d===0)continue;
+  const nx=dx/d,ny=dy/d,rv=(c.vx-g.vx)*nx+(c.vy-g.vy)*ny;if(rv<0){c.vx-=rv*nx;c.vy-=rv*ny;g.vx+=rv*nx;g.vy+=rv*ny;}
+  const ok=g.kind==="glu"&&g.pw>0&&L.o.hot&&r()<.85,mx=(g.x+c.x)/2,my=(g.y+c.y)/2;
+  if(ok){c.kind="cu1";c.r=3.2;g.pw--;L.flash.push({x:mx,y:my,t:.5,ok:1});}else if(!L.flash.some(f=>Math.hypot(f.x-mx,f.y-my)<10))L.flash.push({x:mx,y:my,t:.35,ok:0});
+  c.x=g.x+nx*(g.r+c.r+.5);c.y=g.y+ny*(g.r+c.r+.5);}
+ const U=L.P.filter(p=>p.kind==="cu1");
+ for(let i=0;i<U.length;i++)for(let j=i+1;j<U.length;j++){const a=U[i],b=U[j];if(a.cl!=null&&a.cl===b.cl)continue;if(Math.hypot(a.x-b.x,a.y-b.y)>a.r+b.r+.5)continue;zJoin(L,a,b);}
+ L.flash=L.flash.filter(f=>(f.t-=dt)>0);}}
+function zAdd(c,id,p){p.cl=id;c.m.push({p,dx:p.x-c.x,dy:p.y-c.y});}
+function zJoin(L,a,b){const ca=a.cl!=null?L.cl[a.cl]:null,cb=b.cl!=null?L.cl[b.cl]:null;
+ if(!ca&&!cb){const c={x:a.x,y:a.y,vx:(a.vx+b.vx)/2,vy:(a.vy+b.vy)/2,m:[]};L.cl.push(c);const id=L.cl.length-1;zAdd(c,id,a);zAdd(c,id,b);return;}
+ if(ca&&!cb){zAdd(ca,a.cl,b);return;}if(cb&&!ca){zAdd(cb,b.cl,a);return;}
+ const id=a.cl;cb.m.forEach(q=>zAdd(ca,id,q.p));cb.m=[];}
+const hexP=(x,y,r)=>[...Array(6)].map((_,k)=>`${(x+r*Math.cos(k*Math.PI/3)).toFixed(1)},${(y+r*Math.sin(k*Math.PI/3)).toFixed(1)}`).join(" ");
+function zDraw(){const q=CS.ben==="quant";let g="";
+ ZL.forEach((L,li)=>{g+=`<rect class="z-box" x="${L.x0}" y="${ZY}" width="${ZW}" height="${ZH}" rx="6"/><text class="f-sm" x="${L.x0+ZW/2}" y="${ZY-8}" text-anchor="middle">Lane ${li+1}${L.o.hot?" · 90 °C":" · room temp."}</text>`;
+  for(const p of L.P){if(p.kind==="cu2")g+=`<circle class="z-cu2" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.r}"/>`;
+   else if(p.kind==="cu1")g+=`<circle class="${q?"z-cu1q":"z-cu1"}" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.r}"/>`;
+   else if(p.kind==="glu")g+=`<polygon class="${p.pw>0?"z-glu":"z-used"}" points="${hexP(p.x,p.y,6.5)}"/>`;
+   else g+=`<polygon class="z-suc" points="${hexP(p.x-5,p.y,5.5)}"/><polygon class="z-suc" points="${hexP(p.x+5.5,p.y,5.5)}"/>`;}
+  for(const f of L.flash)g+=`<circle class="${f.ok?"z-flok":"z-flno"}" cx="${f.x.toFixed(1)}" cy="${f.y.toFixed(1)}" r="${(9-f.t*8).toFixed(1)}"/>`;});
+ $("#zsvg").innerHTML=g;
+ $("#ztally").innerHTML=ZL.map((L,i)=>{const cu=L.P.filter(p=>p.kind==="cu2").length,gl=L.P.filter(p=>p.kind==="glu"),left=gl.filter(p=>p.pw>0).length,pp=L.P.filter(p=>p.kind==="cu1").length;
+  return`<b>Lane ${i+1}:</b> Cu²⁺ (blue) left: ${cu} of ${ZCU}; copper(I) formed: ${pp}. ${L.o.s?"Sucrose is a non-reducing sugar: it cannot reduce Cu²⁺.":`Glucose that can still react: ${left} of ${gl.length}.`}${!L.o.hot&&L.o.g?" Cold: contacts do not react.":""}${L.o.g&&cu===0?" All the Cu²⁺ has been used: extra glucose cannot change the colour any more.":""}`;}).join("<br>");}
+function zSync(){$("#zsel").innerHTML=[0,1].map(i=>`<label for="zl${i}">Lane ${i+1}</label><select id="zl${i}">${Object.entries(ZOPT).map(([k,o])=>`<option value="${k}"${zLane[i]===k?" selected":""}>${o.n}</option>`).join("")}</select>`).join("");
+ [0,1].forEach(i=>$("#zl"+i).onchange=e=>{zLane[i]=e.target.value;zReset();});}
+function zSet(a,b){zLane=[a,b];zSync();zReset();}
+$("#zreset").onclick=()=>zReset();
+
+/* ================= Light close-up =================
+ Light is drawn as waves, not particles. White light (red, orange, green and blue, each with its own wavelength)
+ reaches the filter; only the filter's colour passes. In the cuvette the beam dims gradually: blue Cu²⁺ absorbs red
+ light strongly and orange light less; precipitate and fingerprints scatter light out of the beam. How much light
+ reaches the detector comes from the same absorbance model as the lab. */
+const LCOL={r:"#d8403a",o:"#f08c28",g:"#3aa655",b:"#3a6fd8"},LLAM={r:15,o:13,g:11.2,b:10},LPASS={"600":"o","680":"r"},LRAY=[86,105,124];
+let lS={samp:"c10",filt:"600",fp:false},lI=[],lSc=[],lT=0,lRand=rng(7);
+const LSAMP={water:"Distilled water",zero:"Heated 0 mmol dm⁻³ tube",c4:"4 mmol dm⁻³ standard",c10:"10 mmol dm⁻³ standard"};
+function lFr(){const c={water:null,zero:0,c4:4,c10:10}[lS.samp];return c==null?null:Math.min(c,CAP)/CAP*ext(4);}
+/* absorbance of the cuvette's contents compared with water: [absorbed by Cu²⁺, scattered by precipitate] */
+function lAbs(){const fr=lFr();if(fr==null)return[0,0];const c_=fr*CAP;return[(lS.filt==="680"?.8:.3)*(1-fr),CS.ben==="qual"?1.72*c_/(2.45+c_)+.3*fr:CS.tech==="bad"?.45*fr:0];}
+function lReset(){lS.filt=CS.filt;const fr=lFr(),nCu=fr==null?0:Math.round(18*(1-fr)),nP=fr==null?0:CS.ben==="qual"?Math.round(10*fr):CS.tech==="bad"?Math.round(7*fr):0;lI=[];lSc=[];
+ const put=(k,r)=>{for(let t=0;t<50;t++){const x=166+r+lRand()*(68-2*r),y=56+r+lRand()*(98-2*r);if(lI.every(q=>Math.hypot(q.x-x,q.y-y)>q.r+r+3)){lI.push({k,x,y,r,vx:0,vy:0});return;}}};
+ for(let i=0;i<nCu;i++)put("cu",4.5);for(let i=0;i<nP;i++)put("pp",6+lRand()*2);lSync();lDraw();}
+function lStep(dt){lT+=dt;const[,sc]=lAbs(),pass=LPASS[lS.filt];
+ for(const q of lI){q.vx+=(lRand()-.5)*30*dt;q.vy+=(lRand()-.5)*30*dt;q.vx*=.97;q.vy*=.97;q.x=Math.max(166+q.r,Math.min(234-q.r,q.x+q.vx*dt*8));q.y=Math.max(56+q.r,Math.min(154-q.r,q.y+q.vy*dt*8));
+  // light hitting precipitate in the beam is scattered off in another direction
+  if(q.k==="pp"&&Math.abs(q.y-105)<28&&lRand()<dt*1.6)lSc.push({x:q.x,y:q.y,a:(lRand()<.5?-1:1)*(35+lRand()*110),t:0,c:pass});}
+ if(lS.fp&&lRand()<dt*2.2){const w=lRand()<.5?163:237;lSc.push({x:w,y:LRAY[Math.floor(lRand()*3)],a:(lRand()<.5?-1:1)*(40+lRand()*90),t:0,c:pass});}
+ lSc.forEach(w=>w.t+=dt);lSc=lSc.filter(w=>w.t<1);}
+/* a travelling wave from x0 to x1 about yc; amp may vary along x */
+function lWave(x0,x1,yc,lam,amp,ph){let d="";for(let x=x0;x<=x1+.01;x+=1.5){const a=typeof amp==="function"?amp(x):amp;d+=(d?" L":"M")+x.toFixed(1)+" "+(yc+a*Math.sin(2*Math.PI*(x-ph)/lam)).toFixed(1);}return d;}
+function lDraw(){const fr=lFr(),liq=fr==null?C_WATER:CS.ben==="qual"?ramp(fr):mixA(C_BLUE,C_PALE,fr*.95),pass=LPASS[lS.filt],col=LCOL[pass],lam=LLAM[pass],[ab,sc]=lAbs(),At=ab+sc,fpA=lS.fp?.04:0;
+ const ph=RM.matches?0:lT*38,I=x=>x<160?1:x<240?Math.pow(10,-(fpA+At*(x-160)/80)):Math.pow(10,-(2*fpA+At)),Iout=I(300);let g="";
+ g+=`<circle class="l-lamp" cx="18" cy="105" r="11"/><text class="f-sm" x="18" y="174" text-anchor="middle">Lamp</text>`;
+ // white light: four colours, four wavelengths
+ LRAY.forEach(yc=>["r","o","g","b"].forEach((k,j)=>g+=`<path d="${lWave(30,78,yc+(j-1.5)*3,LLAM[k],2.2,ph)}" fill="none" stroke="${LCOL[k]}" stroke-width="1.3" opacity=".9"/>`));
+ g+=`<rect x="72" y="58" width="12" height="94" rx="2" fill="${col}" opacity=".55" stroke="var(--ink)"/><text class="f-sm" x="80" y="174" text-anchor="middle">Filter ${lS.filt} nm</text>`;
+ g+=`<rect x="161" y="52" width="78" height="106" rx="3" fill="${rgb(liq)}" opacity="${fr==null?.35:.45}"/>`;
+ for(const q of lI)g+=q.k==="cu"?`<circle class="z-cu2" cx="${q.x.toFixed(1)}" cy="${q.y.toFixed(1)}" r="${q.r}"/>`:`<circle class="${CS.ben==="qual"?"z-cu1":"z-cu1q"}" cx="${q.x.toFixed(1)}" cy="${q.y.toFixed(1)}" r="${q.r}"/>`;
+ // one colour after the filter: it dims through the cuvette
+ LRAY.forEach(yc=>{g+=`<path d="${lWave(84,160,yc,lam,4,ph)}" fill="none" stroke="${col}" stroke-width="2"/>`;
+  for(let x=160;x<240;x+=8)g+=`<path d="${lWave(x,x+8,yc,lam,4,ph)}" fill="none" stroke="${col}" stroke-width="2" opacity="${Math.max(.05,I(x+4)).toFixed(3)}"/>`;
+  g+=`<path d="${lWave(240,330,yc,lam,4,ph)}" fill="none" stroke="${col}" stroke-width="2" opacity="${Math.max(.04,Iout).toFixed(3)}"/>`;});
+ for(const w of lSc)g+=`<g transform="translate(${w.x.toFixed(1)} ${w.y.toFixed(1)}) rotate(${w.a.toFixed(0)})"><path d="${lWave(4,4+26*w.t+6,0,lam*.8,2,ph)}" fill="none" stroke="${LCOL[w.c]}" stroke-width="1.4" opacity="${(.9*(1-w.t)).toFixed(2)}"/></g>`;
+ g+=`<rect class="l-cuv" x="160" y="50" width="80" height="110" rx="3"/><text class="f-sm" x="200" y="174" text-anchor="middle">Cuvette</text>`;
+ if(lS.fp)[78,104,130].forEach((y,i)=>g+=`<ellipse class="t-fp" cx="${i%2?237:163}" cy="${y}" rx="4" ry="8"/>`);
+ g+=`<rect class="l-det" x="330" y="60" width="14" height="90" rx="2"/><rect x="331.5" y="61.5" width="11" height="87" rx="1.5" fill="${col}" opacity="${(.85*Iout).toFixed(3)}"/><text class="f-sm" x="356" y="174" text-anchor="end">Detector</text>`;
+ $("#lsvg").innerHTML=g;
+ $("#ltally").textContent=`Light reaching the detector: ${Math.round(100*Iout)}% of the light that left the filter (distilled water lets 100% through).`;}
+function lSync(){$("#lsel").innerHTML=`<fieldset><legend class="cl">Cuvette contains (${CS.ben==="qual"?"qualitative":"quantitative"} Benedict's, heated)</legend><div class="seg">${Object.entries(LSAMP).map(([k,t])=>`<label><input type="radio" name="lsamp" value="${k}"${lS.samp===k?" checked":""}><span>${t}</span></label>`).join("")}</div></fieldset>
+ <fieldset><legend class="cl">Filter</legend><div class="seg">${["600","680"].map(f=>`<label><input type="radio" name="lfilt" value="${f}"${lS.filt===f?" checked":""}><span>${f} nm</span></label>`).join("")}</div></fieldset>
+ <label class="copt"><input type="checkbox" id="lfp"${lS.fp?" checked":""}><span>Fingerprints on the clear sides</span></label>`;}
+$("#lsel").addEventListener("change",e=>{const i=e.target;if(i.name==="lsamp"){lS.samp=i.value;const f=lS.filt;lReset();lS.filt=f;}if(i.name==="lfilt"){lS.filt=i.value;lSc=[];}if(i.id==="lfp")lS.fp=i.checked;lSync();lDraw();});
+function lSet(o){Object.assign(lS,o);const f=lS.filt;lReset();if(o.filt)lS.filt=o.filt;else lS.filt=f;lSync();}
+
+/* ================= Paired examples (Compare) and fresh diagrams (Apply) =================
+ Paired graphs come from the same model as the live lab (fixed random seeds). */
+const N0=o=>({...CSTD,...o}),NQ=o=>({...QSTD,...o});
+const PAIRS={
+ ben:{same:"Same glucose standards and the same three urine samples.",a:{s:N0({}),seed:11,line:"curve",txt:"Qualitative Benedict's, 600 nm, zeroed with the heated 0 tube. Absorbance rises as more precipitate forms, and the curve flattens."},
+  b:{s:NQ({}),seed:11,line:"curve",txt:"Quantitative Benedict's, 680 nm, zeroed with water. Absorbance falls as the blue Cu²⁺ is used up, in close to a straight line."}},
+ dil:{same:"Qualitative Benedict's. In each set, one volume went wrong.",a:{s:N0({pip:"slip"}),seed:5,line:"curve",txt:"Proportional: the 2 tube got 0.2 cm³ of standard instead of 0.4 cm³ (plus 1.6 cm³ water), so it held 1.8 cm³ of 1.11 mmol dm⁻³. That point is low; the others are not affected."},
+  b:{s:N0({dil:"serial",pip:"slip"}),seed:5,line:"curve",txt:"Serial: 1 cm³ of the 2 cm³ transfer into the 2.5 tube was spilled, so it held 1.67 mmol dm⁻³. That point, and every tube made from it (0.83 and 0.42 instead of 1.25 and 0.63), is low."}},
+ blank:{same:"Same qualitative Benedict's tubes, zeroed two ways.",a:{s:N0({}),seed:3,line:"curve",txt:"Zeroed with the heated 0 mmol dm⁻³ tube, which cancels the Benedict's own absorbance: the 0 standard reads 0.00."},
+  b:{s:N0({blank:"water"}),seed:3,line:"curve",txt:"Zeroed with distilled water, which does not cancel it: every reading is about 0.30 higher, because the blue Benedict's in every tube absorbs some light too."}},
+ filt:{same:"Quantitative Benedict's, zeroed with water, the same tubes read with two filters.",a:{s:NQ({}),seed:8,line:"curve",txt:"Red filter, 680 nm: absorbance falls from about 0.80 to 0.10 across the standards."},
+  b:{s:NQ({filt:"600"}),seed:8,line:"curve",txt:"Orange filter, 600 nm: absorbance falls only from about 0.30 to 0.04."}},
+ trans:{same:"One set of qualitative Benedict's readings, plotted two ways.",a:{s:N0({}),seed:2,line:"curve",txt:"Absorbance against concentration."},
+  b:{s:N0({}),seed:2,line:"curve",Y:"T",txt:"% transmission against concentration: the same data. More light absorbed means less transmitted."}},
+ line:{same:"One set of qualitative Benedict's readings. Dick's sample was made at 5.0 mmol dm⁻³.",a:{s:N0({}),seed:4,line:"curve",guides:true,txt:"Curve of best fit, with construction lines for each sample."},
+  b:{s:N0({}),seed:4,line:"straight",guides:true,txt:"Straight line through the same points, with construction lines. This line fits poorly; the value is for comparison only."}},
+ shake:{same:"Qualitative Benedict's, the same tubes.",a:{s:N0({}),seed:6,line:"curve",txt:"Each tube shaken just before sampling: the precipitate is evenly suspended."},
+  b:{s:N0({tech:"bad"}),seed:6,line:"curve",txt:"Not shaken: the precipitate settled, more in the tubes sampled later. Readings are lower and scattered."}}};
+const pairRun=x=>simRun(x.s,x.seed);
+document.addEventListener("click",e=>{const b=e.target.closest("[data-try]");if(!b)return;cApply(b.dataset.try==="quant"?QSTD:CSTD);setPanel("lab");});
+function pairCard(x,L){const r=pairRun(x);return`<article class="pcard"><h4>Example ${L}</h4><div class="pfig">${calSVG(r,{mini:true,w:230,h:200,line:x.line,Y:x.Y||"A",guides:x.guides,allowPoor:x.line==="straight",aria:"Example "+L+": calibration graph, "+cdesc(x.s)})}</div><p class="pres">${x.txt}</p><button type="button" class="btn small" data-load="${L}">Make this in the model</button></article>`;}
+function pairHTML(id){const P=PAIRS[id];return`${P.same?`<p class="spec">${P.same} Simulated.</p>`:""}<div class="pair">${pairCard(P.a,"A")}${pairCard(P.b,"B")}</div>${P.info?`<p class="info">${P.info}</p>`:""}`;}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-load]");if(!b)return;const P=PAIRS[curPair];if(!P)return;const x=b.dataset.load==="A"?P.a:P.b;cApply(x.s);gLine=x.line;gY=x.Y||"A";$$("#gctrls input").forEach(i=>i.checked=(i.name==="gline"?gLine:gY)===i.value);setPanel("lab");});
+/* fresh diagrams */
+const DCENT={std:[0,2,4,6,8,10].map((c,i)=>({c,A:[.81,.66,.53,.37,.25,.10][i]})),unk:[{n:"Sample S",A:.42}]};
+const DTRANS={std:[0,2,4,6,8,10].map((c,i)=>({c,A:[.80,.66,.52,.38,.25,.11][i]})),unk:[{n:"Sample W",A:-Math.log10(.5)}]};
+const DIAG={
+ cent:()=>calSVG(DCENT,{line:"straight",aria:"Calibration graph: absorbance of the supernatant at 680 nm falls in a straight line from 0.81 at 0 to 0.10 at 10 mmol dm⁻³. Sample S has absorbance 0.42."}),
+ trans:()=>calSVG(DTRANS,{line:"curve",Y:"T",aria:"Calibration graph: transmission rises in a curve from about 16% at 0 to about 78% at 10 mmol dm⁻³. Sample W has 50% transmission."}),
+ flawed:()=>`<ol class="steps meth"><li>Made glucose standards of 0, 2, 4, 6, 8 and 10 mmol dm⁻³ from a 10 mmol dm⁻³ stock.</li><li>Added 2 cm³ of Benedict's to each standard, and 1 cm³ to each urine sample.</li><li>Heated the standards at 90 °C for 4 minutes. The urine tubes went in 2 minutes after the standards and came out with them.</li><li>Zeroed the colorimeter (600 nm) with the heated 0 mmol dm⁻³ tube.</li><li>Held each cuvette by its clear sides while wiping it.</li><li>Read the standards, then left the urine tubes to stand for 30 minutes before reading them.</li></ol>`};
+const DINFO={cent:"Illustrative data, made up for this question. A student added quantitative Benedict's to glucose standards and a sample, heated them, then centrifuged each tube and measured the absorbance of the clear liquid (supernatant) at 680 nm.",
+ trans:"Illustrative data, made up for this question. Quantitative Benedict's, 680 nm. This colorimeter shows % transmission instead of absorbance.",
+ flawed:"A student's method for qualitative Benedict's and a calibration curve."};
+function diagHTML(id){return`<div class="pfig dfig">${DIAG[id]()}</div><p class="info"><b>Information:</b> ${DINFO[id]}</p>`;}
+
+/* ================= Panel switching ================= */
+let panel="lab",curPair=null,curTaskPanel=null,taskShown=null;
+function setPanel(p){panel=p;["lab","methods","rx","light","task"].forEach(k=>$("#p-"+k).hidden=p!==k);const at=typeof activeTask==="function"?activeTask():null;
+ if(p==="rx"){if(at&&at.zl){zLane=at.zl.slice();zSync();}zReset();}if(p==="light"){if(at&&at.ls)lSet(at.ls);else lReset();}renderTabs();}
+function renderTabs(){const tabs=[["lab","Lab"],["methods","Two methods"],["rx","Reaction close-up"],["light","Light close-up"]];if(curTaskPanel)tabs.push(["task",curTaskPanel.pair?"Paired examples":"Task diagram"]);
+ $("#ptabs").innerHTML=tabs.map(([k,l])=>`<button type="button" class="chip${panel===k?" sel":""}" aria-pressed="${panel===k}" data-p="${k}">${l}</button>`).join("");}
+$("#ptabs").addEventListener("click",e=>{const b=e.target.closest("button[data-p]");if(b)setPanel(b.dataset.p);});
+function showTaskPanel(tp){curTaskPanel=tp||null;curPair=tp&&tp.pair||null;if(tp)$("#p-task").innerHTML=tp.pair?pairHTML(tp.pair):diagHTML(tp.diag);}
+
+/* ================= Task engine (RP11 v2) =================
+ Areas: Core investigation (one short sequence), Explore methods (independent cards, any order), Apply.
+ Task types: info, predict (outcome + reason, locked, observed in a run; a wrong prediction must be corrected before
+ it counts as "right after support"), mcq (variants: a fresh question after feedback), num (bound to one saved run),
+ multi, control (set something in the model, then check), write (self-checked against criteria: never automatic).
+ Results: "ind" right first time with no help; "sup" right after feedback, a hint, a fresh question, a correction or
+ a revealed answer (construction lines or the results table); "self:n/m"; "seen" for information.
+ Runs are saved with progress, so evidence survives reloads and later experiments. */
+let ST={area:"core",sec:null,res:{},adv:{},pick:{},vr:{},wr:{},lock:{},hint:{},txt:{},self:{},seen:{},bind:{},peek:{},rt:{},tried:{},lost:{}},fresh=null;
+const SKEY="kst-rp11-v3";
+try{const d=JSON.parse(localStorage.getItem(SKEY)||"null");if(d&&d.st){ST={...ST,...d.st};if(Array.isArray(d.runs))cRuns=d.runs;cId=Math.max(d.cid||0,...cRuns.map(r=>r.id),0);if(d.ui){CS={...CSTD,...d.ui.settings};speed=d.ui.speed||"normal";gLine=d.ui.line||"none";gY=d.ui.axis||"A";guides=!!d.ui.guides;showRun=cRuns.find(r=>r.id===d.ui.run)||null;}}}catch(e){}
+function save(){try{localStorage.setItem(SKEY,JSON.stringify({st:ST,runs:cRuns,cid:cId,ui:{settings:CS,speed,line:gLine,axis:gY,guides,run:showRun?.id??null}}));}catch(e){$("#save-warning").hidden=false;}}
+function setOK(m,n){return cmatch(cr.s,n);}
+function latestRun(m,n,f){for(let i=cRuns.length-1;i>=0;i--){const r=cRuns[i];if(cmatch(r.s,n)&&(!f||f(r)))return r;}return null;}
+const ALL=()=>SECTIONS.flatMap(s=>s.tasks);
+const find=id=>ALL().find(t=>t.id===id);
+const secIdx=id=>SECTIONS.findIndex(s=>s.id===id);
+const secDone=i=>SECTIONS[i].tasks.every(t=>ST.adv[t.id]);
+const secStarted=i=>SECTIONS[i].tasks.some(t=>ST.adv[t.id]||ST.res[t.id]);
+const AREAS=[["core","Core investigation"],["explore","Explore methods"],["apply","Apply"]];
+const inArea=a=>SECTIONS.map((s,i)=>i).filter(i=>SECTIONS[i].area===a);
+/* the run a task uses: once a numerical task has used a run, it keeps it */
+function taskRun(t){if(!t||!t.m)return null;if(t.type==="predict"||t.type==="run")return ST.seen[t.id]||null;const b=ST.bind[t.id];if(b!=null){const r=cRuns.find(x=>x.id===b);if(r)return r;loseEvidence(t,b);}
+ const r=latestRun(t.m,t.need,t.filt);if(r&&(t.type==="num"||t.type==="control")){ST.bind[t.id]=r.id;if(t.id==="h3"){ST.refs=ST.refs||{};ST.refs.h3=latestRun("lab",N({urine:"yz"}));}save();}return r;}
+/* saved evidence that can no longer be found: say so, and withdraw any completion that relied on it */
+function loseEvidence(t,id){ST.lost[t.id]=id;delete ST.bind[t.id];delete ST.res[t.id];delete ST.adv[t.id];delete ST.seen[t.id];delete ST.lock[t.id];delete ST.peek[t.id];save();}
+function validateEvidence(){for(const t of ALL()){if(!t.m)continue;
+  if((t.type==="num"||t.type==="control")&&ST.bind[t.id]!=null&&!cRuns.some(r=>r.id===ST.bind[t.id]))loseEvidence(t,ST.bind[t.id]);
+  else if((t.type==="num"||t.type==="control")&&ST.res[t.id]&&ST.bind[t.id]==null)loseEvidence(t,"?");
+  if((t.type==="predict"||t.type==="run")&&(ST.res[t.id]||ST.adv[t.id])&&!(ST.seen[t.id]&&ST.seen[t.id].std))loseEvidence(t,"?");}}
+const lostNote=t=>ST.lost[t.id]!=null?`<p class="note">The saved run${ST.lost[t.id]==="?"?"":" "+ST.lost[t.id]} for this task could not be found, so this task has been reset. Run the method again to complete it.</p>`:"";
+function newerRun(t){const b=ST.bind[t.id],r=latestRun(t.m,t.need,t.filt);return r&&b!=null&&r.id!==b?r:null;}
+
+function renderNav(){$("#nav").innerHTML=AREAS.map(([a,l])=>{const ix=inArea(a),done=ix.filter(secDone).length,sel=ST.area===a;
+  const st=a==="explore"?` <span class="cnt">optional${done?` · ${done} explored`:""}</span>`:done===ix.length?' <span class="tick" aria-label="complete">✓</span>':"";
+  return`<button type="button" class="chip${sel?" sel":""}" data-area="${a}"${sel?' aria-current="page"':""}>${l}${st}</button>`;}).join("");}
+$("#nav").addEventListener("click",e=>{const b=e.target.closest("button[data-area]");if(!b)return;goArea(b.dataset.area);});
+function goArea(a){ST.area=a;ST.sec=a==="explore"?null:inArea(a)[0];save();renderTasks(true);}
+
+function needLine(t,help){const ok=setOK(t.m,t.need),d=cdesc(t.need);
+ return`<p class="need">${help?`Set-up needed: ${esc(d)}. `:""}${ok?`<span class="ok">Your set-up matches. Run the method: step by step, or with Run every step.</span>`:'<span class="notyet">Your set-up does not match yet.</span>'}</p>${!ok?`<div class="row"><button type="button" class="btn" data-act="setup" data-id="${t.id}">Set it up for me</button></div>`:""}`;}
+function optList(t,name,opts,seed,dis,wrongs,rightIdx){const ord=shuffled(opts.length,hash(seed));
+ return ord.map(i=>{const o=opts[i],w=(wrongs||[]).includes(i),r=rightIdx===i;
+  return`<label class="opt${w?" wrong":""}${r?" right":""}${dis?" out":""}"><input type="radio" name="${name}" value="${i}"${ST.pick[name]===i?" checked":""}${dis||w?" disabled":""}><span class="otext">${o.t}</span><span class="mark">${r?"✓":w?"✗":""}</span></label>`;}).join("");}
+const nw=id=>fresh===id?" new":"";
+const resultBadge=id=>{const r=ST.res[id];return r==="ind"?'<span class="badge b-ind">Right first time</span>':r==="sup"?'<span class="badge b-sup">Right after support</span>':String(r||"").startsWith("self")?`<span class="badge b-self">Self-checked: ${r.slice(5)} points</span>`:r==="seen"?'<span class="badge">Viewed</span>':"";};
+const nextBtn=t=>`<div class="row"><button type="button" class="btn primary" data-act="adv" data-id="${t.id}">Next</button></div>`;
+const hintBtn=t=>t.hint&&!ST.res[t.id]?(ST.hint[t.id]?`<p class="hint"><b>Hint:</b> ${t.hint}</p>`:`<div class="row"><button type="button" class="btn small" data-act="hint" data-id="${t.id}">Show a hint (counts as help)</button></div>`):"";
+const okIdx=opts=>opts.findIndex(o=>o.ok);
+
+function renderTask(t,help){let h=`<div class="task${ST.res[t.id]?" done":""}" id="task-${t.id}">`;if(t.title)h+=`<h3>${t.title}</h3>`;h+=lostNote(t);
+ if(t.type==="info"){h+=(t.html||"")+(t.steps?`<ol class="steps">${t.steps.map(s=>`<li>${s}</li>`).join("")}</ol>`:"")+(t.text?`<p>${t.text}</p>`:"");
+  if(t.need)h+=`<div class="row"><button type="button" class="btn" data-act="setup" data-id="${t.id}">${t.btn||"Use this set-up"}</button></div>`;return h+nextBtn(t)+"</div>";}
+ if(t.type==="run"){const r=latestRun(t.m,t.need,t.filt);if(r&&!ST.res[t.id]){ST.res[t.id]="seen";ST.seen[t.id]=r;delete ST.lost[t.id];save();}const R=ST.seen[t.id]||r;
+  return h+`<p>${t.text}</p>${R?`<div class="fb good${nw(t.id)}"><p>${t.res(R)}</p></div>`+nextBtn(t):needLine(t,help)}</div>`;}
+ if(t.type==="predict"){const L=t.id in ST.lock,res=ST.res[t.id],r=ST.seen[t.id];
+  if(!r){h+=`<fieldset class="q"><legend>${t.q}</legend>${optList(t,t.id+"o",t.out,t.id+"o",L)}</fieldset><fieldset class="q"><legend class="sub">Why? Choose the best reason.</legend>${optList(t,t.id+"r",t.why,t.id+"r",L)}</fieldset>`;
+   if(!L)return h+hintBtn(t)+`<div class="row"><button type="button" class="btn primary" data-act="lock" data-id="${t.id}">Lock in my prediction and reason</button></div><p class="msg" id="m-${t.id}"></p></div>`;
+   return h+`<p class="gate">Locked in. Now observe: run the method with this set-up.</p>${needLine(t,help)}</div>`;}
+  const oo=t.out[ST.pick[t.id+"o"]],rr=t.why[ST.pick[t.id+"r"]];
+  h+=`<p class="obs"><b>Observed</b> (run ${r.id}): ${t.res(r)}</p>`;
+  h+=`<p class="spec">Your prediction: ${oo.t}. Your reason: ${rr.t}.</p>`;
+  if(oo.ok&&rr.ok)return h+`<div class="fb good${nw(t.id)}"><h3>Your prediction and reason were right.</h3><p>${t.because}</p></div>${t.extra||""}${nextBtn(t)}</div>`;
+  // correction needed before it can count as right after support
+  const wo=[ST.pick[t.id+"o"]],wr=[ST.pick[t.id+"r"]];
+  h+=`<div class="fb bad${nw(t.id)}"><h3>${oo.ok?"Your prediction was right, but your reason has a missing link.":"That is not what happened."}</h3>${oo.ok?"":`<p>${oo.fb||""}</p>`}${rr.ok?"":`<p>${rr.fb||""}</p>`}</div>`;
+  if(res)return h+`<div class="fb good"><h3>Corrected.</h3><p>${t.because}</p></div>${t.extra||""}${nextBtn(t)}</div>`;
+  h+=`<p class="gate"><b>Correct your prediction</b> so it matches what you observed.</p>`;
+  if(!oo.ok)h+=`<fieldset class="q"><legend>${t.cq||"What actually happened?"}</legend>${optList(t,t.id+"co",t.out,t.id+"o",false,wo)}</fieldset>`;
+  if(!rr.ok)h+=`<fieldset class="q"><legend class="sub">Which reason explains it?</legend>${optList(t,t.id+"cr",t.why,t.id+"r",false,wr)}</fieldset>`;
+  return h+`<div class="row"><button type="button" class="btn primary" data-act="corr" data-id="${t.id}">Check my correction</button></div><p class="msg" id="m-${t.id}"></p></div>`;}
+ if(t.type==="mcq"){const vi=ST.vr[t.id]||0,V=t.v[vi],key=t.id+":"+vi,w=ST.wr[key]||[],res=ST.res[t.id],last=w[w.length-1];
+  if(vi>0)h+=`<p class="fresh">Fresh question on the same idea:</p>`;
+  h+=`<fieldset class="q"><legend>${V.q}</legend>${optList(t,key,V.opts,key,!!res,w,res?okIdx(V.opts):-1)}</fieldset>`;
+  if(res)return h+`<div class="fb good${nw(t.id)}"><h3>Correct.</h3><p>${V.why}</p></div>${t.extra||""}${nextBtn(t)}</div>`;
+  const ack=ST.rt[key]||0;if(last!=null&&ack<w.length){h+=`<div class="fb bad${nw(t.id)}"><h3>Not quite.</h3><p>${V.opts[last].fb}</p>${t.help?`<p class="help"><b>Catch-up:</b> ${t.help}</p>`:""}</div>`;
+   return h+`<div class="row">${vi+1<t.v.length?`<button type="button" class="btn primary" data-act="freshq" data-id="${t.id}">Try a fresh question</button>`:""}<button type="button" class="btn${vi+1<t.v.length?"":" primary"}" data-act="retry" data-id="${t.id}">Try this one again</button></div></div>`;}
+  return h+hintBtn(t)+`<div class="row"><button type="button" class="btn primary" data-act="check" data-id="${t.id}">Check</button></div><p class="msg" id="m-${t.id}"></p></div>`;}
+ if(t.type==="multi"){const res=ST.res[t.id],sel=ST.pick[t.id]||[],fb=ST.wr[t.id];
+  h+=`<fieldset class="q"><legend>${t.q}</legend>${shuffled(t.opts.length,hash(t.id)).map(i=>`<label class="opt${res&&t.opts[i].ok?" right":""}${res?" out":""}"><input type="checkbox" data-multi="${t.id}" value="${i}"${sel.includes(i)?" checked":""}${res?" disabled":""}><span class="otext">${t.opts[i].t}</span></label>`).join("")}</fieldset>`;
+  if(res)return h+`<div class="fb good${nw(t.id)}"><h3>Correct.</h3><p>${t.why}</p></div>${nextBtn(t)}</div>`;
+  if(fb)h+=`<div class="fb bad${nw(t.id)}"><h3>Not quite.</h3><ul>${fb.map(f=>`<li>${f}</li>`).join("")}</ul></div>`;
+  return h+`<div class="row"><button type="button" class="btn primary" data-act="multi" data-id="${t.id}">Check</button></div><p class="msg" id="m-${t.id}"></p></div>`;}
+ if(t.type==="control"){const res=ST.res[t.id],r=t.m?taskRun(t):true;if(t.m&&!r)return h+`<p>${t.missing}</p>${needLine(t,help)}</div>`;
+  h+=`<p><b>${t.q}</b></p>`;
+  if(res)return h+`<div class="fb good${nw(t.id)}"><h3>Correct.</h3><p>${t.why}</p></div>${nextBtn(t)}</div>`;
+  const wm=ST.wr[t.id];if(wm)h+=`<div class="fb bad${nw(t.id)}"><h3>Not quite.</h3><p>${wm}</p></div>`;
+  return h+`<div class="row"><button type="button" class="btn primary" data-act="ctl" data-id="${t.id}">Check</button></div></div>`;}
+ if(t.type==="num"){const vi=ST.vr[t.id]||0,V=t.v?t.v[vi]:t,r=t.m?taskRun(t):null,res=ST.res[t.id];
+  if(t.m&&!r)return h+`<p>${t.missing}</p>${needLine(t,help)}</div>`;
+  if(t.worked)h+=`<div class="worked"><p class="wlab">Worked example</p>${t.worked}</div>`;
+  if(r){h+=`<p class="spec">Using run ${r.id} (${esc(cshort(r.s))}), shown on the graph.</p>`;const nr=!res&&newerRun(t);if(nr)h+=`<div class="row"><button type="button" class="btn small" data-act="rebind" data-id="${t.id}">Use my newer run ${nr.id} instead</button></div>`;}
+  if(vi>0)h+=`<p class="fresh">Fresh question on the same idea:</p>`;
+  h+=`<p><b>${typeof V.q==="function"?V.q(r):V.q}</b></p>`;
+  h+=`<label class="numlab" for="in-${t.id}">Your answer</label><div class="numrow"><input type="text" inputmode="decimal" autocomplete="off" id="in-${t.id}" value="${esc(ST.txt[t.id+":"+vi]||"")}"${res?" disabled":""}><span class="unit">${t.unit}</span>${res?"":`<button type="button" class="btn primary" data-act="num" data-id="${t.id}">Check</button>`}</div>`;
+  if(t.read&&!res)h+=`<p class="spec"><a href="#gfig">View the calibration graph</a>. ${t.noGuides?"Construction lines are off for this question.":"Showing construction lines on the graph counts as help for this question."}</p>`;
+  if(res)return h+`<div class="fb good${nw(t.id)}"><h3>Correct.</h3><p>${V.why(r)}</p>${ST.peek[t.id]&&res==="sup"?'<p class="spec">Counted as right after support: the construction lines showed the value.</p>':""}</div>${nextBtn(t)}</div>`;
+  const wm=ST.wr[t.id+":"+vi];if(wm){h+=`<div class="fb bad${nw(t.id)}"><h3>Not quite.</h3><p>${wm}</p>${(V.help||t.help)&&(V.help||t.help)!==wm?`<p class="help"><b>Catch-up:</b> ${V.help||t.help}</p>`:""}</div>`;
+   if(t.v&&vi+1<t.v.length)h+=`<div class="row"><button type="button" class="btn" data-act="freshq" data-id="${t.id}">Try a fresh question</button></div>`;}
+  return h+hintBtn(t)+"</div>";}
+ if(t.type==="write"){const S=ST.self[t.id],editing=!S||S.rev,res=ST.res[t.id];
+  h+=`<p><b>${t.q}</b></p><label class="numlab" for="wr-${t.id}">Your answer</label><textarea id="wr-${t.id}" rows="5"${editing?"":" disabled"}>${esc(ST.txt[t.id]||"")}</textarea>`;
+  if(editing)return h+`<p class="spec">Write 2 to 4 sentences. You will then compare it with a checklist yourself: it is not marked automatically.</p><div class="row"><button type="button" class="btn primary" data-act="write" data-id="${t.id}">Compare with the checklist</button></div><p class="msg" id="m-${t.id}"></p></div>`;
+  h+=`<div class="crit"><p><b>Self-check (not marked automatically).</b> Tick each point your answer makes. You decide: the page does not judge your wording.</p>${t.crit.map((c,i)=>`<label class="copt"><input type="checkbox" data-self="${t.id}" value="${i}"${(S.ticks||[]).includes(i)?" checked":""}${res?" disabled":""}><span>${c.t}</span></label>`).join("")}</div><div class="worked"><p class="wlab">Example answer</p><p>${t.model}</p></div>`;
+  const rv=`<button type="button" class="btn" data-act="revise" data-id="${t.id}">Revise my answer</button>`;
+  if(res)return h+`<p class="spec">Saved: you judged that your answer makes ${res.slice(5)} points.</p><div class="row">${rv}<button type="button" class="btn primary" data-act="adv" data-id="${t.id}">Next</button></div></div>`;
+  return h+`<div class="row"><button type="button" class="btn primary" data-act="selfdone" data-id="${t.id}">Save my self-check</button>${rv}</div></div>`;}
+ return h+"</div>";}
+
+function sectionSummary(sec,i){const T=sec.tasks,ind=T.filter(t=>t.skill&&ST.res[t.id]==="ind"),sup=T.filter(t=>t.skill&&ST.res[t.id]==="sup"),wr=T.filter(t=>t.type==="write");
+ let h=`<div class="task done"><h3>${sec.name}: complete</h3>`;
+ if(ind.length)h+=`<p><b>Right first time, without help:</b></p><ul>${ind.map(t=>`<li>${t.skill}</li>`).join("")}</ul>`;
+ if(sup.length)h+=`<p><b>Right after support (worth revisiting):</b></p><ul>${sup.map(t=>`<li>${t.skill}</li>`).join("")}</ul>`;
+ wr.forEach(t=>{const r=ST.res[t.id]||"";h+=`<p><b>Written answer:</b> self-checked, ${r.slice(5)} points.</p>`;});
+ h+=sec.outro||"";
+ if(sec.area==="explore")h+=`<p class="spec">The other cards are optional.</p><div class="row"><button type="button" class="btn primary" data-act="hub">Back to the optional methods</button><button type="button" class="btn" data-act="goarea" data-a="apply">Go to Apply</button></div>`;
+ else if(sec.area==="core")h+=`<div class="row"><button type="button" class="btn primary" data-act="goarea" data-a="apply">Go to Apply</button><button type="button" class="btn" data-act="goarea" data-a="explore">Optional: explore other methods</button></div>`;
+ return h+"</div>";}
+function activeTask(){if(ST.sec==null)return null;const sec=SECTIONS[ST.sec];return sec.tasks.find(t=>!ST.adv[t.id])||null;}
+function hubHTML(){const ix=inArea("explore");let h=`<div class="sechead"><p class="phase">Explore methods (optional)</p><h2>Pick any that interest you</h2><p class="opt-note">These cards are optional extras. You do not need to do them all: open any one, in any order. Each sets up its own starting conditions and opens the lab.</p></div><div class="hub">`;
+ ix.forEach(i=>{const s=SECTIONS[i],n=s.tasks.length,d=s.tasks.filter(t=>ST.adv[t.id]).length,st=d===n?'<span class="badge b-ind">Done</span>':d?`<span class="badge b-sup">${d} of ${n}</span>`:'<span class="badge">Optional</span>';
+  h+=`<article class="vcard${s.key?" key":""}"><h3>${s.name} ${st}</h3><p>${s.card}</p><p class="spec">Starts with: ${esc(cshort(s.start||CSTD))}. ${n} short tasks.</p><button type="button" class="btn${d===n?"":" primary"}" data-act="open" data-sec="${i}">${d===n?"Review":d?"Continue":"Open"}</button></article>`;});
+ return h+"</div>";}
+let shownFor=null;
+function syncTaskView(at){// graph shows the run the task uses; reading tasks use the curve of best fit; construction lines count as help
+ const tr=at&&at.m&&(at.type==="num"||at.type==="predict"||at.type==="control"||at.type==="run")?taskRun(at):null;if(tr&&showRun!==tr)showRun=tr;
+ if(at&&at.line&&at.id!==shownFor&&gLine!==at.line){gLine=at.line;$$("#gctrls input[name=gline]").forEach(i=>i.checked=i.value===gLine);}
+ const wantY=at&&(at.gy||(at.read?"A":null));if(wantY&&at.id!==shownFor&&gY!==wantY){gY=wantY;$$("#gctrls input[name=gy]").forEach(i=>i.checked=i.value===gY);}
+ shownFor=at&&at.id;const lockedGraph=!!(at&&at.read&&tr);$$("#gctrls input").forEach(i=>i.disabled=lockedGraph);const gl=guidesLocked();$("#gguide").disabled=gl;$("#gguide").textContent=guides&&!gl?"Hide construction lines":"Show construction lines";$("#gguide").setAttribute("aria-pressed",guides&&!gl);
+ if(at&&at.read&&tr&&guides&&!gl&&gLine!=="none"&&!ST.res[at.id])ST.peek[at.id]=1;
+ gDraw();renderResults();}
+function renderTasks(scroll){if(!cr)return;const hub=ST.area==="explore"&&ST.sec==null;document.body.classList.toggle("hubmode",hub);if(!hub&&ST.sec==null)ST.sec=inArea(ST.area)[0];
+ const at=activeTask();if(at&&at.id==="l1"&&!ST.res[at.id])ST.peek[at.id]=1;syncTaskView(at);let h="";
+ if(hub)h=hubHTML();else{const sec=SECTIONS[ST.sec],i=at?sec.tasks.indexOf(at):sec.tasks.length,help=sec.help;
+  h=`<div class="sechead">${sec.area==="explore"?`<div class="row"><button type="button" class="btn small" data-act="hub">← Optional methods</button></div>`:""}<p class="phase">${AREAS.find(a=>a[0]===sec.area)[1]}${sec.area==="explore"?" (optional)":""}</p><h2>${sec.name}</h2><p class="spec">${sec.intro}</p>`;
+  if(sec.start&&at)h+=`<div class="row"><button type="button" class="btn small" data-act="start">Set up the starting conditions</button></div>`;
+  h+=`<p class="prog">Task ${Math.min(i+1,sec.tasks.length)} of ${sec.tasks.length}</p><div class="pbar"><span style="width:${(i/sec.tasks.length*100).toFixed(0)}%"></span></div></div>`;
+  h+=at?renderTask(at,help):sectionSummary(sec,ST.sec);
+  const doneT=sec.tasks.filter(t=>ST.adv[t.id]);
+  if(doneT.length)h+=`<details class="donelist"><summary>Completed here (${doneT.length})</summary><ul>${doneT.map(t=>`<li>${t.title} ${resultBadge(t.id)}</li>`).join("")}</ul></details>`;}
+ fresh=null;const ae=document.activeElement,aid=ae&&ae.id,pos=ae&&ae.selectionStart;
+ $("#tasks").innerHTML=h;if(aid&&(aid.startsWith("in-")||aid.startsWith("wr-"))){const el=$("#"+aid);if(el&&!el.disabled){el.focus();try{el.setSelectionRange(pos,pos);}catch(e){}}}
+ const sec=hub?null:SECTIONS[ST.sec],raw=at&&at.panel?at.panel:null,isS=typeof raw==="string",tp=raw&&!isS?raw:null,want=at?(isS?raw:tp?"task":sec.model):(sec?sec.model:"lab");
+ const key=hub?"hub":at?at.id:"sum"+ST.sec;if(key!==taskShown){taskShown=key;showTaskPanel(tp);setPanel(want);}else renderTabs();
+ renderNav();installZoom();save();if(scroll){$("#tasks").focus({preventScroll:true});$("#tasks").scrollIntoView({behavior:RM.matches?"auto":"smooth",block:"start"});}}
+
+function resolveCheck(t,usedSupport){delete ST.lost[t.id];ST.res[t.id]=usedSupport||ST.hint[t.id]||ST.peek[t.id]?"sup":"ind";}
+$("#tasks").addEventListener("change",e=>{const i=e.target;
+ if(i.type==="radio")ST.pick[i.name]=+i.value;
+ if(i.dataset.multi){const a=ST.pick[i.dataset.multi]=(ST.pick[i.dataset.multi]||[]).filter(x=>x!==+i.value);if(i.checked)a.push(+i.value);}
+ if(i.dataset.self){const s=ST.self[i.dataset.self];s.ticks=(s.ticks||[]).filter(x=>x!==+i.value);if(i.checked)s.ticks.push(+i.value);}
+ save();});
+let saveT=null;$("#tasks").addEventListener("input",e=>{const i=e.target;if(i.id&&i.id.startsWith("in-")){const t=find(i.id.slice(3));ST.txt[t.id+":"+(ST.vr[t.id]||0)]=i.value;}if(i.id&&i.id.startsWith("wr-"))ST.txt[i.id.slice(3)]=i.value;clearTimeout(saveT);saveT=setTimeout(save,300);});
+addEventListener("pagehide",save);
+$("#tasks").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id&&e.target.id.startsWith("in-")){const b=e.target.parentNode.querySelector("button");if(b)b.click();}});
+function toLab(){setPanel("lab");const col=$(".col-app");if(col&&getComputedStyle(col).position==="sticky")col.scrollTo({top:0,behavior:"smooth"});else col.scrollIntoView({behavior:"smooth",block:"start"});}
+$("#tasks").addEventListener("click",e=>{const b=e.target.closest("button[data-act]");if(!b)return;const act=b.dataset.act,t=b.dataset.id?find(b.dataset.id):null;
+ if(act==="hub"){ST.area="explore";ST.sec=null;renderTasks(true);return;}
+ if(act==="goarea"){goArea(b.dataset.a);return;}
+ if(act==="open"){ST.area="explore";ST.sec=+b.dataset.sec;const s=SECTIONS[ST.sec];if(s.start&&!secStarted(ST.sec))applyStart(s);renderTasks(true);return;}
+ if(act==="start"){applyStart(SECTIONS[ST.sec]);toLab();renderTasks();return;}
+ if(act==="adv"){ST.adv[t.id]=true;if(t.onAdv)t.onAdv();if(!ST.res[t.id])ST.res[t.id]="seen";renderTasks(true);return;}
+ if(act==="hint"){ST.hint[t.id]=true;renderTasks();return;}
+ if(act==="setup"){cApply(t.need);toLab();renderTasks();return;}
+ if(act==="rebind"){const r=newerRun(t);if(r){ST.bind[t.id]=r.id;showRun=r;if(ST.peek[t.id]||Object.keys(ST.wr).some(k=>k.startsWith(t.id+":")))ST.tried[t.id]=1;for(const k of Object.keys(ST.wr))if(k.startsWith(t.id+":"))delete ST.wr[k];for(const k of Object.keys(ST.txt))if(k.startsWith(t.id+":"))delete ST.txt[k];delete ST.peek[t.id];}renderTasks();return;}
+ if(act==="lock"){if(ST.pick[t.id+"o"]==null||ST.pick[t.id+"r"]==null){$("#m-"+t.id).textContent="Choose a prediction and a reason first.";return;}
+  ST.lock[t.id]=cId;renderTasks();return;}
+ if(act==="corr"){const oo=t.out[ST.pick[t.id+"o"]],rr=t.why[ST.pick[t.id+"r"]],co=oo.ok?null:ST.pick[t.id+"co"],cw=rr.ok?null:ST.pick[t.id+"cr"];
+  if((!oo.ok&&co==null)||(!rr.ok&&cw==null)){$("#m-"+t.id).textContent="Choose your corrected answer first.";return;}
+  const bad=[];if(!oo.ok&&!t.out[co].ok)bad.push(t.out[co].fb||"That outcome does not match what you observed.");if(!rr.ok&&!t.why[cw].ok)bad.push(t.why[cw].fb||"That reason does not explain it.");
+  if(bad.length){$("#m-"+t.id).textContent="Not yet. "+bad.join(" ");return;}
+  ST.res[t.id]="sup";fresh=t.id;renderTasks();say("Corrected.");return;}
+ if(act==="check"){const vi=ST.vr[t.id]||0,key=t.id+":"+vi,p=ST.pick[key],w=ST.wr[key]||[];if(p==null||w.includes(p)){$("#m-"+t.id).textContent="Choose an answer first.";return;}
+  fresh=t.id;const ok=t.v[vi].opts[p].ok,anyWrong=Object.keys(ST.wr).some(k=>k.startsWith(t.id+":")&&ST.wr[k].length);
+  if(ok)resolveCheck(t,anyWrong||vi>0);else(ST.wr[key]=w).push(p);
+  renderTasks();say(ok?"Correct.":"Not quite. "+t.v[vi].opts[p].fb);return;}
+ if(act==="freshq"){ST.vr[t.id]=(ST.vr[t.id]||0)+1;renderTasks();return;}
+ if(act==="retry"){const key=t.id+":"+(ST.vr[t.id]||0);ST.rt[key]=(ST.wr[key]||[]).length;renderTasks();return;}
+ if(act==="multi"){const sel=ST.pick[t.id]||[];if(!sel.length){$("#m-"+t.id).textContent="Select at least one.";return;}fresh=t.id;
+  const issues=[];t.opts.forEach((o,i)=>{const s=sel.includes(i);if(o.ok&&!s)issues.push(`Missing: ${o.t}. ${o.fb}`);if(!o.ok&&s)issues.push(`Not this one: ${o.t}. ${o.fb}`);});
+  if(issues.length){ST.wr[t.id]=issues;ST.tried[t.id]=1;}else{delete ST.wr[t.id];resolveCheck(t,!!ST.tried[t.id]);}
+  renderTasks();say(issues.length?"Not quite. "+issues.join(" "):"Correct.");return;}
+ if(act==="ctl"){const v=t.get();fresh=t.id;if(v===t.ok){resolveCheck(t,!!ST.tried[t.id]);delete ST.wr[t.id];}else{ST.wr[t.id]=t.fb[v]||"Not quite.";ST.tried[t.id]=1;}renderTasks();say(ST.res[t.id]?"Correct.":"Not quite. "+ST.wr[t.id]);return;}
+ if(act==="num"){const vi=ST.vr[t.id]||0,V=t.v?t.v[vi]:t,r=t.m?taskRun(t):null,v=parseNum(ST.txt[t.id+":"+vi]),key=t.id+":"+vi;fresh=t.id;
+  if(isNaN(v)){ST.wr[key]="Type a number. Standard form such as 7.8 × 10^-3 or 7.8e-3 is fine.";renderTasks();return;}
+  const a=V.ans(r),tol=t.rel?Math.abs(a)*t.rel:t.tol;
+  if(a!=null&&Math.abs(v-a)<=tol+1e-12){const anyWrong=Object.keys(ST.wr).some(k=>k.startsWith(t.id+":"));resolveCheck(t,anyWrong||vi>0||!!ST.tried[t.id]);}
+  else{const hit=(V.errs?V.errs(r):[]).find(([x])=>x!=null&&Math.abs(v-x)<=Math.max(tol,Math.abs(x)*.02)+1e-12);ST.wr[key]=hit?hit[1]:(V.help||t.help||({a1:"Read across from 0.42 absorbance to the line, then down to concentration.",a3:"Read across from 50% transmission to the line, then down to concentration.",a5:"Divide 20 by 10 once for each of the three dilution steps."}[t.id]||"Use the values and units in this question to check your calculation."));}
+  renderTasks();say(ST.res[t.id]?"Correct.":"Not quite. "+ST.wr[key]);return;}
+ if(act==="write"){const txt=(ST.txt[t.id]||"").trim();if(txt.length<20){$("#m-"+t.id).textContent="Write a little more first: at least one full sentence.";return;}
+  ST.self[t.id]={ticks:(ST.self[t.id]&&ST.self[t.id].ticks)||[]};delete ST.res[t.id];renderTasks();return;}
+ if(act==="revise"){ST.self[t.id]={...(ST.self[t.id]||{}),rev:true};delete ST.res[t.id];renderTasks();return;}
+ if(act==="selfdone"){const n=(ST.self[t.id].ticks||[]).length;ST.res[t.id]=`self:${n}/${t.crit.length}`;fresh=t.id;renderTasks();return;}});
+function applyStart(s){cApply(s.start);if(s.graph){if(s.graph.line)gLine=s.graph.line;if(s.graph.Y)gY=s.graph.Y;$$("#gctrls input").forEach(i=>i.checked=(i.name==="gline"?gLine:gY)===i.value);}}
+function onRun(m,r){for(const t of ALL()){if(t.type==="predict"&&t.m===m&&t.id in ST.lock&&!ST.seen[t.id]&&r.id>ST.lock[t.id]&&cmatch(r.s,t.need)&&(!t.filt||t.filt(r))){
+  const oo=t.out[ST.pick[t.id+"o"]],rr=t.why[ST.pick[t.id+"r"]];ST.seen[t.id]=r;delete ST.lost[t.id];if(oo.ok&&rr.ok)ST.res[t.id]=ST.hint[t.id]?"sup":"ind";fresh=t.id;}}renderTasks();}
+
+/* ================= Content: Core investigation, Explore methods, Apply ================= */
+const O=(t,fb)=>({t,ok:false,fb}),K=t=>({t,ok:true});
+const N=o=>({...CSTD,...o}),NQ2=o=>({...QSTD,...o});
+const sA=(r,c)=>{const p=r.std.find(o=>Math.abs(o.c-c)<1e-6);return p?p.A:null;};
+const uA=(r,n)=>{const u=r.unk.find(o=>o.n===n);return u?u.A:null;};
+const rdC=(r,n,t,Y,allowPoor=false)=>{const a=uA(r,n);if(a==null)return null;const v=readOff(r,a,t||"curve",Y||"A",allowPoor);return v==null?null:Math.round(v*10)/10;};
+const f2=v=>v==null?"—":v.toFixed(2).replace("-","−"),f1=v=>v==null?"off the curve":v.toFixed(1);
+const full=r=>r.unk.length>=2;
+const BASE=simRun(N({}),1),QBASE=simRun(QSTD,1),PL=pairRun(PAIRS.line.a);
+const ICON={
+ dil:'<svg viewBox="0 0 60 44" aria-hidden="true"><g class="ic">'+[0,1,2,3,4].map(i=>`<path d="M${8+i*11} 6 V34 a4 4 0 0 0 8 0 V6"/><rect x="${9+i*11}" y="${30-i*4}" width="6" height="${i*4+4}" class="icl" opacity="${.25+i*.15}"/>`).join("")+'</g></svg>',
+ ben:'<svg viewBox="0 0 60 44" aria-hidden="true"><g class="ic"><path d="M26 4 h8 v10 l6 8 v14 h-20 v-14 l6 -8z"/><path d="M22 26 h16 v10 h-16z" class="icb"/></g></svg>',
+ heat:'<svg viewBox="0 0 60 44" aria-hidden="true"><g class="ic"><rect x="6" y="18" width="48" height="22" rx="3"/><path d="M14 14 q3 -4 0 -8 M30 14 q3 -4 0 -8 M46 14 q3 -4 0 -8"/><text x="30" y="34" text-anchor="middle" class="ict">90 °C</text></g></svg>',
+ col:'<svg viewBox="0 0 60 44" aria-hidden="true"><g class="ic"><rect x="8" y="10" width="44" height="30" rx="4"/><rect x="16" y="4" width="8" height="12" class="icb"/><rect x="30" y="18" width="16" height="10" rx="2"/></g></svg>',
+ graph:'<svg viewBox="0 0 60 44" aria-hidden="true"><g class="ic"><path d="M10 6 V38 H54"/><path d="M10 38 C18 18 30 12 50 9" class="icc"/><path d="M30 13 V38" stroke-dasharray="3 2"/></g></svg>'};
+const STRIP=`<ol class="strip">${[["dil","Dilute the 10 mmol dm⁻³ standard: 0 to 10"],["ben","2 cm³ Benedict's in every tube"],["heat","All tubes together, 4 min"],["col","Zero with a blank, then read each tube"],["graph","Plot, draw the line, read the samples"]].map(([k,t],i)=>`<li><span class="sn">${i+1}</span>${ICON[k]}<span>${t}</span></li>`).join("")}</ol>`;
+const SECTIONS=[
+/* ---------------- Core investigation ---------------- */
+{id:"core",area:"core",name:"The AQA method, start to finish",model:"lab",help:true,intro:"Make standards, test them with Benedict's, measure absorbance, plot a calibration curve and read the urine samples.",
+ outro:'<p class="note">Next: compare qualitative and quantitative Benedict\'s in Explore methods. Each card there can be opened on its own.</p>',tasks:[
+ {id:"c1",type:"info",m:"lab",need:N({}),title:"The method at a glance",btn:"Use the AQA set-up",html:STRIP+'<p class="spec">AQA handbook method, qualitative Benedict\'s. Wear eye protection: Benedict\'s is an irritant. Run it in the Lab step by step, or with Run every step.</p>'},
+ {id:"c2",type:"num",title:"Volumes for a standard",skill:"Calculate the volumes needed to make a standard by dilution",unit:"cm³",tol:.011,
+  worked:"<p>2 cm³ of 4 mmol dm⁻³: standard = 4 ÷ 10 × 2 = 0.8 cm³, plus 1.2 cm³ water.</p>",
+  v:[{q:"Volume of the 10 mmol dm⁻³ standard needed for 2 cm³ of 6 mmol dm⁻³?",ans:()=>1.2,errs:()=>[[.8,"That is the volume of water. The standard is 6 ÷ 10 of the total."],[1.67,"That is 10 ÷ 6. The fraction of standard needed is 6 ÷ 10."],[.6,"That makes only 1 cm³. Multiply 6 ÷ 10 by the total, 2 cm³."]],why:()=>"6 ÷ 10 × 2 = 1.2 cm³ of standard, plus 0.8 cm³ of water."},
+   {q:"Fresh question: volume of the standard needed for 2 cm³ of 8 mmol dm⁻³?",ans:()=>1.6,errs:()=>[[.4,"That is the volume of water."],[1.25,"That is 10 ÷ 8. Use 8 ÷ 10."]],why:()=>"8 ÷ 10 × 2 = 1.6 cm³ of standard, plus 0.4 cm³ of water."}],
+  help:"Volume of standard = (concentration wanted ÷ 10) × 2 cm³. The rest is water."},
+ {id:"c3",type:"predict",m:"lab",need:N({}),title:"Predict, then observe",skill:"Predict and explain how absorbance changes with glucose concentration",
+  q:"Run the method. Predict how absorbance changes from the 0 to the 10 mmol dm⁻³ standard.",
+  out:[K("It rises quickly, then levels off"),O("It rises steadily in a straight line","Compare the rise from 0 to 2 with the rise from 8 to 10."),O("It falls steadily as glucose rises","More glucose makes more precipitate. Does that let more light through, or less?")],
+  why:[K("More glucose makes more precipitate; the reagent is limited"),O("Glucose itself absorbs the orange light, more as it rises","Glucose solution is colourless: it hardly absorbs at 600 nm."),O("Stronger glucose solutions stay hotter for longer","All the tubes cool before they are read.")],
+  res:r=>`absorbance rose from 0.00 to ${f2(sA(r,10))}: by ${f2(sA(r,2))} from 0 to 2 mmol dm⁻³, but by only ${f2(sA(r,10)-sA(r,8))} from 8 to 10.`,
+  because:"Hot glucose reduces blue Cu²⁺ to copper(I), which forms a red-brown precipitate. More glucose makes more precipitate, which blocks more light. The simulated response is nonlinear; at high concentrations the limited reagent also restricts the response. A curve flattening alone does not prove which effect caused it."},
+ {id:"c4",type:"multi",title:"Keep it the same",skill:"Identify the variables to control",
+  q:"Which must be the same for every standard and every urine sample? Select all that apply.",
+  opts:[{t:"Volume of sample (2 cm³)",ok:true,fb:"Less sample means less glucose."},{t:"Volume of Benedict's (2 cm³)",ok:true,fb:"More Benedict's means more Cu²⁺."},{t:"Water bath temperature",ok:true,fb:"Temperature changes how much reacts in the time."},{t:"Heating time",ok:true,fb:"Less time, less reaction."},{t:"Shaking and time before reading",ok:true,fb:"The precipitate settles."},{t:"Filter",ok:true,fb:"Absorbance depends on the wavelength."},{t:"Glucose concentration",ok:false,fb:"That is the independent variable: it must differ."},{t:"Colour after heating",ok:false,fb:"The colour is what you are measuring."}],
+  why:"Keeping these conditions matched helps make the sample readings comparable with the standards. Random variation and other reducing sugars can still affect a reading."},
+ {id:"c5",type:"control",m:"lab",need:N({}),filt:full,line:"none",title:"Choose the line",skill:"Choose a suitable line for a calibration graph",missing:"You need a run with the AQA set-up.",
+  q:"Under the graph, choose the line for your calibration graph, then press Check.",get:()=>gLine,ok:"curve",
+  fb:{none:"Choose a line under the graph first.",straight:"A straight line misses the pattern: your points curve, so the line runs above some points and below others.",dots:"Joining the points copies every small error in the readings. A line of best fit shows the trend."},
+  why:"Your points curve, so a smooth curve of best fit shows the trend without following every small error."},
+ {id:"c6",type:"num",m:"lab",need:N({}),filt:full,read:true,line:"curve",title:"Read Dick's sample",skill:"Read a concentration from a calibration curve",missing:"You need a run with the AQA set-up.",unit:"mmol dm⁻³",tol:.3,
+  worked:"<p><b>Published AQA readings:</b> 0.89 lies between 0.76 at 2 and 1.00 at 4 mmol dm⁻³. Straight-line interpolation gives 2 + (0.89 − 0.76) ÷ (1.00 − 0.76) × 2 ≈ 3.1 mmol dm⁻³. A smooth fitted curve may give a slightly different estimate.</p>",
+  q:r=>`Read Dick's glucose concentration from the curve of best fit (his absorbance: ${f2(uA(r,"Dick"))}). Give 1 decimal place.`,
+  ans:r=>rdC(r,"Dick"),errs:r=>[[rdC(r,"Dick","straight","A",true),"That is from a straight line. Use the curve of best fit."],[rdC(r,"Harry"),"That is Harry's sample."],[rdC(r,"Dick","dots"),"That is from joined points. Use the curve."]],
+  help:"Find Dick's absorbance on the y-axis, go across to the curve, then down.",why:r=>`Dick's sample reads ${f1(rdC(r,"Dick"))} mmol dm⁻³ (it was made at 5.0).`},
+ {id:"c7",type:"mcq",title:"The blank",skill:"Explain what zeroing with the heated 0 mmol dm⁻³ tube does",help:"The heated 0 tube has been through everything the other tubes have, except that it has no glucose.",
+  v:[{q:"In the AQA method, the colorimeter is zeroed with the heated 0 mmol dm⁻³ tube. What does that do?",opts:[K("It cancels the absorbance of the Benedict's itself"),O("It gives the lamp time to warm up before the readings","Zeroing sets a reference point; it is not a warm-up."),O("It makes the 10 mmol dm⁻³ standard read 1.00","The blank sets zero, not the top of the scale."),O("It cancels any fingerprints left on the cuvettes","Each cuvette's marks differ, so a blank cannot cancel them.")],
+    why:"The heated zero-glucose tube contains the Benedict's, treated like every other tube, so zeroing on it cancels the reagent's own absorbance: readings show the change caused by glucose. Distilled water is a different reference (see the Explore card on blanks)."},
+   {q:"Fresh question: a student zeroes with distilled water instead of the heated 0 tube. Which is true?",opts:[K("Readings include Benedict's own absorbance, but can still be used"),O("The readings can no longer be used for a calibration","The calibration still works if standards and samples share the blank."),O("Every reading is lowered by Benedict's own absorbance","Water absorbs less than Benedict's, so readings go up, not down."),O("Readings now show only the absorbance that is caused by glucose itself","Water does not cancel the reagent's own absorbance.")],
+    why:"Water does not cancel Benedict's own absorbance, so every reading includes it. The calibration still works if every standard and sample is read against the same blank."}]},
+ {id:"c8",type:"mcq",title:"A sample above the top standard",skill:"Decide what to do when a sample is outside the calibration range",help:"A calibration curve can only be used between its lowest and highest standards.",
+  v:[{q:"Patient X's absorbance is higher than the 10 mmol dm⁻³ standard's. What should you do?",opts:[K("Dilute X by a known factor, read it, then multiply"),O("Extend the curve beyond 10 mmol dm⁻³ and read X from it","That is extrapolating, and above about 11 mmol dm⁻³ the Cu²⁺ runs out, so readings stop rising."),O("Record X as 10 mmol dm⁻³, the top standard","X has more glucose than that: its reading is higher."),O("Add extra Benedict's to X's tube, then re-read","X would then be treated differently from the standards.")],
+    why:"Diluting can bring X within the range of the standards. Then check that the diluted sample's reading does fall within them, and multiply by the dilution factor: × 2 for a 1 in 2 dilution."}]}]},
+
+/* ---------------- Explore methods: independent cards ---------------- */
+{id:"ben",area:"explore",key:true,name:"Qualitative or quantitative Benedict's",card:"What each method measures, how its cuvettes are prepared, and why the readings rise or fall.",start:QSTD,model:"lab",help:true,intro:"The AQA handbook allows either method. They measure opposite sides of the same reaction.",tasks:[
+ {id:"q1",type:"info",panel:"methods",title:"The two methods side by side",html:'<p>Read the comparison in the <b>Two methods</b> panel. Then run quantitative Benedict\'s, which this card has set up.</p>'},
+ {id:"q2",type:"predict",m:"lab",need:QSTD,title:"Predict, then observe",skill:"Predict and explain the calibration curve for quantitative Benedict's",
+  q:"Quantitative Benedict's, 680 nm, zeroed with water. Predict how absorbance changes as glucose concentration rises.",
+  out:[K("It falls"),O("It rises","What does this method measure: something made, or something used up?"),O("It stays the same","Watch the blue fade in the tubes as they heat.")],
+  why:[K("Less blue Cu²⁺ is left in the liquid that is measured"),O("More white precipitate forms, and it blocks the light","The white precipitate is kept out of the cuvette, so it is not measured."),O("Glucose absorbs red light more strongly than water","Glucose solution is colourless.")],
+  res:r=>`absorbance fell from ${f2(sA(r,0))} at 0 to ${f2(sA(r,10))} at 10 mmol dm⁻³.`,
+  because:"Quantitative Benedict's makes a white precipitate, which is kept out of the cuvette, so the reading measures the blue Cu²⁺ left. More glucose leaves less blue. The AQA handbook warns that students may wrongly discard these results if they expect absorbance to rise.",
+  extra:'<p class="note"><span class="badge">Beyond the spec</span> Quantitative Benedict\'s contains thiocyanate, which forms white copper(I) thiocyanate.</p>'},
+ {id:"q3",type:"mcq",panel:"methods",title:"Preparing the cuvettes",skill:"Describe how cuvettes are prepared for each method",help:"Ask what each method measures: a suspension, or the liquid around the precipitate?",
+  v:[{q:"How should the cuvettes be prepared for each method?",opts:[K("Qualitative: shake, read at once. Quantitative: settle, take clear liquid."),O("Qualitative: settle, take clear liquid. Quantitative: shake, read at once.","Swapped: the qualitative method measures the suspended precipitate."),O("Both methods: shake each tube well, then read the cuvette at once.","For quantitative Benedict's, precipitate in the cuvette adds to the reading."),O("Both methods: let it settle, then take only the clear liquid.","For qualitative Benedict's, the precipitate is what is being measured.")],
+    why:"Qualitative Benedict's is read as an evenly mixed suspension. Quantitative Benedict's measures the blue left in solution, so the precipitate must be kept out."}]},
+ {id:"q4",type:"num",m:"lab",need:QSTD,filt:full,read:true,line:"curve",title:"Read a falling curve",skill:"Read a concentration from a falling calibration curve",missing:"You need a run with quantitative Benedict's.",unit:"mmol dm⁻³",tol:.35,
+  q:r=>`From the curve of best fit, read Dick's concentration (absorbance ${f2(uA(r,"Dick"))}). 1 decimal place.`,
+  ans:r=>rdC(r,"Dick"),errs:r=>[[rdC(r,"Harry"),"That is Harry's sample."],[rdC(r,"Dick")!=null?10-rdC(r,"Dick"):null,"The curve falls here: lower absorbance means more glucose."]],
+  help:"Same method: across to the curve, then down. This curve slopes the other way.",why:r=>`Dick reads ${f1(rdC(r,"Dick"))} mmol dm⁻³ with quantitative Benedict's.`},
+ {id:"q5",type:"mcq",title:"Limitations",skill:"Identify a limitation of each Benedict's method",
+  v:[{q:"Which limitation applies to the qualitative method but not the quantitative one?",opts:[K("Readings change as the suspended precipitate settles"),O("It needs a water bath kept at 90 °C for every tube","Both methods are heated in the same way."),O("It needs a full set of glucose standards to be made","Both methods need a calibration curve."),O("It only detects reducing sugars, such as glucose here","Both methods depend on reducing sugars.")],
+    why:"The qualitative method reads a suspension, which settles over time; the quantitative method reads the clear liquid."},
+   {q:"Fresh question: which limitation applies to the quantitative method?",opts:[K("Any precipitate in the cuvette raises the reading"),O("Absorbance falls, so it cannot be calibrated at all","A falling line is read in the same way."),O("It needs a different glucose standard","Both use the same standards."),O("It cannot measure below 10 mmol dm⁻³","It works across the same range.")],
+    why:"The precipitate scatters light, which the colorimeter reads as absorbance, so it must be separated: settle, pipette carefully or centrifuge."}]}]},
+
+{id:"dil",area:"explore",name:"Proportional or serial dilutions",card:"Make standards two ways, and see how a single mistake spreads.",start:N({dil:"serial"}),model:"lab",help:true,intro:"Proportional: each standard made directly from the stock. Serial: each made from the one before.",tasks:[
+ {id:"s1",type:"num",title:"A serial dilution",skill:"Calculate concentrations in a serial dilution",unit:"mmol dm⁻³",tol:.006,
+  worked:"<p>1 in 2 serial dilution: equal volumes of the previous solution and water, so each step halves the concentration: 10 → 5 → 2.5 …</p>",
+  v:[{q:"Starting from 10 mmol dm⁻³, what is the concentration after 3 steps of a 1 in 2 serial dilution?",ans:()=>1.25,errs:()=>[[2.5,"That is after 2 steps."],[.625,"That is after 4 steps."],[3.33,"Each step halves the concentration; it is not 10 ÷ 3."]],why:()=>"10 → 5 → 2.5 → 1.25 mmol dm⁻³."},
+   {q:"Fresh question: a 1 in 10 serial dilution starts at 10 mmol dm⁻³. Concentration after 2 steps?",help:"Each 1 in 10 step divides the concentration by 10.",ans:()=>.1,errs:()=>[[1,"That is after 1 step."],[5,"Each step divides by 10."]],why:()=>"10 → 1 → 0.1 mmol dm⁻³."}],
+  help:"Each 1 in 2 step halves the concentration."},
+ {id:"s2",type:"run",m:"lab",need:N({dil:"serial"}),title:"Run serial standards",text:"Run the method with serial dilutions, then look at where the points sit on the graph.",
+  res:r=>`Your standards: 0, 0.63, 1.25, 2.5, 5 and 10 mmol dm⁻³. Four of the six are below 3, so the low end of the curve is well defined but there are few points near Dick (5) and Harry (8).`},
+ {id:"s3",type:"mcq",panel:{pair:"dil"},title:"One mistake, two methods",skill:"Explain how an error spreads in a serial dilution",help:"In a serial dilution, where does each tube's glucose come from?",
+  v:[{q:"Both sets had one volume wrong. Why does B have several low points but A only one?",opts:[K("Each serial tube is made from the one before it"),O("Serial dilutions were heated for less time","Both sets were heated the same way."),O("Serial standards use a weaker glucose stock","Both start from the same 10 mmol dm⁻³ stock."),O("Serial dilutions always contain more mistakes overall","Each set had exactly one mistake.")],
+    why:"In a serial dilution an error in one tube is carried into every tube made from it. A proportional error affects only its own tube."}]},
+ {id:"s4",type:"mcq",title:"Why choose serial?",skill:"Give an advantage and a disadvantage of a serial dilution",
+  v:[{q:"Which is an advantage of a serial dilution?",opts:[K("It makes very dilute standards without tiny volumes"),O("A mistake in one tube cannot affect any of the others","The opposite: errors are carried on."),O("Every standard is made directly from the stock","That describes proportional dilution."),O("It always gives evenly spaced concentrations","Halving gives uneven spacing: 10, 5, 2.5 …")],
+    why:"Each step uses manageable volumes, so very dilute standards can be made across a wide range; errors can still accumulate."},
+   {q:"Fresh question: which is a disadvantage of a serial dilution?",opts:[K("An error in one step is carried into later tubes"),O("It cannot make any concentrations below 1 mmol dm⁻³","It can make very low ones."),O("It needs a separate stock for every tube","One stock is enough."),O("It gives evenly spaced standards only","Halving does not give even spacing.")],
+    why:"Each tube depends on the one before, so one mistake affects every later standard."}]}]},
+
+{id:"filt",area:"explore",name:"Choosing a filter",card:"Why each method uses a different filter, and how the filter changes sensitivity.",start:QSTD,model:"lab",help:true,intro:"The filter selects the colour of light passed through the sample. The best choice depends on what the method measures.",tasks:[
+ {id:"f1",type:"mcq",panel:"light",ls:{samp:"zero",filt:"680"},title:"What blue Cu²⁺ absorbs",skill:"Explain the choice of filter for quantitative Benedict's",help:"In the light close-up, compare how much the beam dims through the heated 0 tube with each filter.",
+  v:[{q:"Why does quantitative Benedict's use a red (680 nm) filter?",opts:[K("Blue Cu²⁺ absorbs red light more than orange"),O("Blue Cu²⁺ absorbs blue light most strongly","A solution looks blue because blue light passes through it."),O("Red light passes through the glass cuvette more easily","The cuvette lets all these colours through."),O("The red filter makes the solution look red","The filter only chooses which light is used.")],
+    why:"A blue solution absorbs red and orange light and lets blue through. Using the light it absorbs most gives the biggest change in reading."}]},
+ {id:"f2",type:"predict",m:"lab",need:NQ2({filt:"600"}),title:"The orange filter",skill:"Predict the effect of filter choice on a calibration curve",
+  q:"Quantitative Benedict's with the orange (600 nm) filter instead. Predict the calibration line compared with 680 nm.",
+  out:[K("It still falls, but less steeply"),O("It rises instead of falling","The method still measures the blue that is left."),O("It is exactly the same as at 680 nm","Compare the 0 standard's reading.")],
+  why:[K("Blue Cu²⁺ absorbs less orange light than red light"),O("The white precipitate absorbs most of the orange light","The precipitate is kept out of the cuvette."),O("Glucose absorbs orange light, but not red light","Glucose solution is colourless.")],
+  res:r=>`absorbance fell from ${f2(sA(r,0))} to ${f2(sA(r,10))}; at 680 nm it falls from about ${f2(sA(QBASE,0))} to ${f2(sA(QBASE,10))}.`,
+  because:"The line falls for the same reason, but each mmol dm⁻³ changes the reading less, so 600 nm is less sensitive for this method."},
+ {id:"f3",type:"mcq",panel:{pair:"filt"},title:"Sensitivity",skill:"Explain how filter choice affects sensitivity",
+  v:[{q:"Which filter gives the more sensitive calibration for quantitative Benedict's?",opts:[K("680 nm: absorbance changes more per mmol dm⁻³"),O("600 nm: smaller readings mean smaller errors","Smaller changes are harder to tell apart."),O("Neither: both lines have the same shape","Compare the scales on the two graphs."),O("600 nm: its line is closer to a straight line","Both are close to straight; compare how steep they are.")],
+    why:"With comparable measurement uncertainty, a steeper calibration line separates concentrations better. The AQA handbook suggests 680 nm for quantitative and 600 nm for qualitative Benedict's; other procedures may differ."}]}]},
+
+{id:"blank",area:"explore",name:"Choosing a blank",card:"Zero the colorimeter two ways. Neither blank is always right: it depends on the procedure.",start:N({blank:"water"}),model:"lab",help:true,intro:"The blank sets what counts as zero absorbance. Every standard and sample must be read against the same blank.",tasks:[
+ {id:"k1",type:"predict",m:"lab",need:N({blank:"water"}),title:"Zero with water",skill:"Predict the effect of zeroing with water instead of the heated blank",
+  q:"Qualitative Benedict's, zeroed with distilled water. Predict the readings compared with the heated 0 tube as the blank.",
+  out:[K("Every reading is higher by a similar amount"),O("Every reading is lower by about the same amount","Water absorbs less light than Benedict's, not more."),O("The readings are unchanged","Is water the same colour as Benedict's?")],
+  why:[K("The blue reagent in every tube now adds to each reading"),O("Water absorbs more of the light than Benedict's does","Water is almost transparent."),O("Glucose absorbs more of the light when water is the blank","The blank does not change what glucose does.")],
+  res:r=>`the 0 tube read ${f2(sA(r,0))} instead of 0.00, and the other readings rose by a similar amount.`,
+  because:"Benedict's itself absorbs some light. Zeroing with the heated 0 tube cancels that; zeroing with water includes it in every reading, so the curve no longer starts at zero."},
+ {id:"k2",type:"mcq",panel:{pair:"blank"},title:"Is one blank wrong?",skill:"Explain why the choice of blank depends on the procedure",
+  v:[{q:"Which statement about A and B is correct?",opts:[K("Both work if every reading uses the same blank"),O("Only A is valid: water is never a suitable blank","Some procedures zero with water."),O("Only B is valid: a blank must contain no reagent","The AQA handbook uses the heated 0 tube."),O("B is more sensitive because its readings are larger","The differences between standards are the same.")],
+    why:"The heated 0 tube cancels Benedict's own absorbance; distilled water is a different reference that leaves it in every reading. Either way, read every standard and sample against the same blank and the calibration works."}]},
+ {id:"k3",type:"predict",m:"lab",need:NQ2({blank:"zero"}),title:"Quantitative, zeroed on the 0 tube",skill:"Predict readings when the blank absorbs more than the samples",
+  q:"Quantitative Benedict's, zeroed with the heated 0 mmol dm⁻³ tube. Predict the other readings.",
+  out:[K("Negative, and lower as glucose rises"),O("Positive, and higher as glucose rises","Is a sample bluer or less blue than the 0 tube?"),O("Zero for every tube","Different tubes have different amounts of blue.")],
+  why:[K("Every sample is less blue than the blank"),O("Glucose turns the samples darker than the blank","Glucose removes blue here."),O("The blank has no Benedict's in it","The heated 0 tube contains Benedict's.")],
+  res:r=>`the 10 standard read ${f2(sA(r,10))}; the samples read below zero.`,
+  because:"The 0 tube is the bluest tube, so every other tube absorbs less than the blank and reads below zero. The calibration still works, because standards and samples share the blank; some procedures use water instead to keep readings positive."}]},
+
+{id:"prep",area:"explore",name:"Preparing the sample",card:"Shaking, settling, precipitate, fingerprints and heating time: what each does to the readings.",start:N({tech:"bad"}),model:"lab",help:true,intro:"Small differences in handling change the readings. Each task sets up one change.",tasks:[
+ {id:"p1",type:"predict",m:"lab",need:N({tech:"bad"}),title:"Not shaking (qualitative)",skill:"Explain why qualitative Benedict's tubes are shaken and read at once",
+  q:"Qualitative Benedict's, tubes not shaken before sampling. Predict the readings.",
+  out:[K("Lower, especially in tubes read later"),O("Higher, especially in tubes read later","Where does the precipitate go if nobody shakes the tube?"),O("No different from shaken tubes","Watch the bottom of the tubes after heating.")],
+  why:[K("The precipitate settles, so less reaches the cuvette"),O("Shaking adds energy, so it makes more precipitate form","Shaking only mixes what is already there."),O("Settling makes the blue colour stronger","Settling removes precipitate from the liquid; it adds no blue.")],
+  res:r=>`the 10 standard read ${f2(sA(r,10))}; a shaken run gives about ${f2(sA(BASE,10))}.`,
+  because:"The qualitative reading depends on suspended precipitate, which settles over time. Shake each tube just before sampling and read it at once."},
+ {id:"p2",type:"predict",m:"lab",need:NQ2({tech:"bad"}),title:"Precipitate in the cuvette (quantitative)",skill:"Explain why the precipitate is kept out in quantitative Benedict's",
+  q:"Quantitative Benedict's, with the white precipitate poured into each cuvette. Predict the readings.",
+  out:[K("Higher than with clear liquid"),O("Lower than with clear liquid","Does precipitate let more light through, or less?"),O("The same as with clear liquid","Light hitting particles does not reach the detector.")],
+  why:[K("Precipitate scatters light, read as absorbance"),O("The white precipitate adds more blue Cu²⁺ ions","The precipitate is copper(I), which is not blue."),O("The precipitate takes glucose back out of the liquid","The glucose has already reacted.")],
+  res:r=>`the 10 standard read ${f2(sA(r,10))}; with clear liquid it reads about ${f2(sA(QBASE,10))}.`,
+  because:"Scattered light does not reach the detector, so it counts as absorbance. Let the precipitate settle and pipette the clear liquid, or centrifuge."},
+ {id:"p3",type:"mcq",title:"Fingerprints",skill:"Explain how to handle cuvettes",
+  v:[{q:"Why should cuvettes be held only by their ridged sides?",opts:[K("Marks on clear sides scatter light, adding absorbance"),O("Warm fingers would speed up the Benedict's reaction","The reaction has finished by the time of reading."),O("The ridged sides are where the light beam passes through","The light passes through the clear sides."),O("Traces of glucose from skin would raise the readings","The cuvette's outside never touches the liquid.")],
+    why:"Light passes through the clear sides. Fingerprints there scatter light, so less reaches the detector and the reading rises."}]},
+ {id:"p4",type:"predict",m:"lab",need:N({heat:"late"}),title:"Samples heated for less time",skill:"Predict the effect of heating samples for less time than the standards",
+  q:"The urine tubes go into the bath 2 minutes after the standards. Predict the urine concentrations read from the curve.",
+  out:[K("Too low"),O("Too high","Less time in the bath means less reaction."),O("Unchanged","The standards had 4 minutes; the urine only 2.")],
+  why:[K("The samples react for less time than the standards did"),O("The urine tubes cool the bath and slow the standards","The bath stays at 90 °C."),O("Late tubes collect extra glucose from the bath","Nothing enters the tubes from the bath.")],
+  res:r=>`Dick (made at 5.0 mmol dm⁻³) has absorbance ${f2(uA(r,"Dick"))}; a matched four-minute run gives about ${f2(uA(BASE,"Dick"))}. The mismatch makes the concentration estimate unreliable.`,
+  because:"Less Cu²⁺ is reduced in 2 minutes, so the samples' absorbance is lower than standards of the same concentration. Heat everything together for the same time."}]},
+
+{id:"trans",area:"explore",name:"Absorbance or % transmission",card:"Plot the same readings as % transmission, and read a sample from that graph.",start:N({}),graph:{Y:"T",line:"curve"},model:"lab",help:true,intro:"A colorimeter can show absorbance or % transmission. They describe the same light, in opposite directions.",tasks:[
+ {id:"t1",type:"mcq",panel:{pair:"trans"},title:"The same data, two ways",skill:"Interpret a calibration curve plotted as % transmission",
+  v:[{q:"Why does B fall while A rises?",opts:[K("More light absorbed means less light transmitted"),O("Graph B was measured using a different set of tubes","It is the same data."),O("Transmission is measured at another wavelength","Same filter, same readings."),O("Transmission measures glucose, not the light","Both describe the light reaching the detector.")],
+    why:"Transmission is the light that gets through the sample; absorbance rises as transmission falls."}],
+  extra:'<p class="note"><span class="badge">Beyond the spec</span> Absorbance = log₁₀(100 ÷ % transmission).</p>'},
+ {id:"t2",type:"num",m:"lab",need:N({}),filt:full,read:true,line:"curve",gy:"T",title:"Read from % transmission",skill:"Read a concentration from a % transmission calibration curve",missing:"You need a run with the AQA set-up.",unit:"mmol dm⁻³",tol:.35,
+  q:r=>`The graph now shows % transmission. Read Dick's concentration from the curve of best fit (his transmission: ${gT(uA(r,"Dick")).toFixed(0)}%). 1 decimal place.`,
+  ans:r=>rdC(r,"Dick","curve","T"),errs:r=>[[rdC(r,"Harry","curve","T"),"That is Harry's sample."]],
+  help:"Find Dick's % transmission on the y-axis, go across to the curve, then down.",why:r=>`About ${f1(rdC(r,"Dick","curve","T"))} mmol dm⁻³, the same as from absorbance, within reading error.`},
+ {id:"t3",type:"mcq",title:"Which has more glucose?",skill:"Compare samples using % transmission",
+  v:[{q:"Qualitative Benedict's: sample P has a lower % transmission than sample Q. Which contains more glucose?",opts:[K("P: it lets less light through"),O("Q: it lets more light through","More glucose means more precipitate, which blocks light."),O("Neither: transmission ignores glucose","Transmission depends on the precipitate glucose made."),O("You can't tell without absorbance","% transmission carries the same information.")],
+    why:"More glucose makes more precipitate, so less light is transmitted."},
+   {q:"Fresh question: quantitative Benedict's. Sample P has a lower % transmission than sample Q. Which contains more glucose?",opts:[K("Q: more blue was used up in Q"),O("P: more precipitate formed in P","The precipitate is kept out of the cuvette."),O("Both: transmission does not depend on glucose","Glucose changes how much blue is left."),O("P: it absorbs more of the light","Here more absorbance means more blue left: less glucose.")],
+    why:"Here the reading measures blue Cu²⁺ left. Q transmits more light, so it has less blue left: more glucose reacted."}]}]},
+
+{id:"line",area:"explore",name:"Lines of best fit",card:"A curve of best fit, a straight line and joined points, on the same data.",start:N({}),graph:{line:"straight"},model:"lab",help:true,intro:"The line you draw decides the concentrations you read.",tasks:[
+ {id:"l1",type:"num",panel:{pair:"line"},title:"Read the curve",skill:"Read the same data from different lines",unit:"mmol dm⁻³",tol:.3,
+  v:[{q:"Read Dick's concentration from the curve of best fit in A. 1 decimal place.",ans:()=>rdC(PL,"Dick"),errs:()=>[[rdC(PL,"Dick","straight","A",true),"That is from the straight line in B."]],why:()=>`About ${f1(rdC(PL,"Dick"))} mmol dm⁻³ from the curve; the straight line gives ${f1(rdC(PL,"Dick","straight","A",true))}.`}],
+  help:"Follow A's construction line for Dick down to the concentration axis. The displayed guide counts as support."},
+ {id:"l2",type:"mcq",panel:{pair:"line"},title:"Why they differ",skill:"Explain why a straight line is a poor fit to curved data",
+  v:[{q:"Why does B give a different reading for Dick?",opts:[K("The straight line misses the curved pattern of points"),O("Dick's sample was measured again for graph B","Same data, different line."),O("A straight line is always the more accurate choice","Only when the points lie on a straight line."),O("B's points were plotted on a different scale","Both use the same axes.")],
+    why:"The straight line runs above some points and below others, so readings from it are too high in some places and too low in others."}]},
+ {id:"l3",type:"mcq",title:"Joining the points",skill:"Explain why points are not joined dot to dot",
+  v:[{q:"Why not join the points with straight lines from point to point?",opts:[K("It follows every small error in each reading"),O("It makes the concentrations too hard to read","Joined points are easy to read; that is not the problem."),O("It always gives values that are too low","It can be too high or too low."),O("It is only allowed for straight-line data","A fitted line can show a trend without copying every point. Local interpolation may be useful when justified.")],
+    why:"A fitted trend can reduce the effect of random errors; joining the points follows each reading. Local interpolation can still be useful when justified."}]}]},
+
+{id:"range",area:"explore",name:"Samples outside the range",card:"Find the glucose in a sample that reads above the top standard.",start:N({urine:"x"}),model:"lab",help:true,intro:"A calibration curve can only be used between its lowest and highest standards.",tasks:[
+ {id:"o1",type:"predict",m:"lab",need:N({urine:"x"}),title:"A very high sample",skill:"Explain why a sample beyond the standards cannot be read reliably",
+  q:"Run the method with patient X, whose urine is very high in glucose. Predict what you can read for X.",
+  out:[K("Nothing reliable"),O("A normal reading from the curve","Where does X's reading sit, compared with the 10 standard?"),O("A reading of zero","X has a lot of glucose.")],
+  why:[K("It is beyond the top standard, where Cu²⁺ runs out"),O("Benedict's does not react at very high glucose concentrations","It reacts until the Cu²⁺ is used up."),O("The colorimeter cannot read brick-red tubes","It reads them; the problem is the curve.")],
+  res:r=>`X read ${f2(uA(r,"X"))}; the 10 standard read ${f2(sA(r,10))}.`,
+  because:"In this model the reagent capacity limits the response around 11 mmol dm⁻³, so very different concentrations can give almost the same reading. The observed standards do not support extrapolation."},
+ {id:"o2",type:"num",m:"lab",need:N({urine:"x2"}),filt:r=>uA(r,"X ÷ 2")!=null,read:true,line:"curve",title:"Dilute, then multiply",skill:"Use a dilution factor to find a concentration beyond the standards",missing:"You need a run with patient X diluted 1 in 2.",unit:"mmol dm⁻³",tol:.7,
+  q:r=>`X was diluted 1 in 2 (equal volumes of urine and water). Read "X ÷ 2" from the curve (absorbance ${f2(uA(r,"X ÷ 2"))}), then calculate X's concentration. 1 decimal place.`,
+  ans:r=>{const v=rdC(r,"X ÷ 2");return v==null?null:2*v;},errs:r=>[[rdC(r,"X ÷ 2"),"That is the diluted sample. Multiply by the dilution factor, 2."]],
+  help:"Check the diluted sample lies within the standards, read it from the curve, then multiply by 2.",why:r=>`The diluted sample reads ${f1(rdC(r,"X ÷ 2"))}, inside the 0 to 10 standards, so X contains about ${f1(2*rdC(r,"X ÷ 2"))} mmol dm⁻³.`},
+ {id:"o3",type:"mcq",title:"How much to dilute",skill:"Choose a sensible dilution factor",
+  v:[{q:"Why would a 1 in 100 dilution of X be a poor choice?",opts:[K("Any small reading error would be multiplied by 100"),O("Diluting X changes how much glucose it contains","The dilution factor corrects for that."),O("Benedict's cannot react with dilute glucose","It reacts at low concentrations too."),O("A 1 in 100 dilution cannot be made accurately","It can, for example by serial dilution.")],
+    why:"X would read close to zero, and multiplying by 100 magnifies any error. Choose a dilution that should put the sample within the standards, then check that it actually does."}]}]},
+
+{id:"chal",area:"explore",name:"Challenge: choose and justify a design",card:"Choose between given designs of standards and dilution for two new patients, then justify your choices.",start:N({urine:"yz"}),model:"lab",help:false,intro:"Less help here: you choose between given designs, each choice gets feedback, and the runs you make are saved as your evidence.",tasks:[
+ {id:"h1",type:"run",m:"lab",need:N({urine:"yz"}),title:"Screen the samples",text:"Run the AQA method (0 to 10 standards) with patients Y and Z.",
+  res:r=>`Y read ${f2(uA(r,"Y"))}: between the 0 and 2 standards. Z read ${f2(uA(r,"Z"))}: ${uA(r,"Z")>sA(r,10)?"above":"about level with"} the 10 standard (${f2(sA(r,10))}).`},
+ {id:"h2",type:"mcq",title:"Standards for Y",skill:"Choose a suitable range of standards for a sample",
+  v:[{q:"A preliminary estimate puts Y at about 1.3 mmol dm⁻³. Which standards put more points around that estimate?",opts:[K("0, 0.5, 1.0, 1.5, 2.0, 2.5"),O("0, 2, 4, 6, 8, 10","Only two of these standards bracket Y; more nearby points can help define the local curve."),O("0, 4, 8, 12, 16, 20","Standards above 10 cannot be made by diluting a 10 mmol dm⁻³ stock, and above about 11 the Cu²⁺ runs out."),O("0, 1, 2, 3, 4, 5","Better than 0 to 10, but only three standards are near Y. A narrower set puts more points around it."),O("0, 0.25, 0.5, 0.75, 1.0, 1.25","Too narrow: the estimate of 1.3 is beyond the top standard of 1.25.")],
+    why:"Several standards around Y can better define the local curve if they are prepared accurately and the measurements are repeatable. A narrower range does not automatically remove systematic error. Your next run uses them."}]},
+ {id:"h3",type:"num",m:"lab",need:N({dil:"custom",urine:"yz"}),filt:full,read:true,line:"curve",title:"Read Y from your standards",skill:"Read a sample from a calibration curve you designed",missing:"Run the method with the narrow range of standards (0 to 2.5 mmol dm⁻³).",unit:"mmol dm⁻³",tol:.15,
+  q:r=>`Read Y's concentration from your new curve of best fit (absorbance ${f2(uA(r,"Y"))}). 1 decimal place.`,
+  ans:r=>rdC(r,"Y"),errs:r=>[],
+  why:r=>{const w=ST.refs&&ST.refs.h3;const o=w?rdC(w,"Y"):null;return`Y contains about ${f1(rdC(r,"Y"))} mmol dm⁻³.${o!=null?` From the 0 to 10 curve it read ${f1(o)}: with only two standards near it, that reading depended on the line's shape between them.`:""}`;}},
+ {id:"h4",type:"mcq",title:"Z is out of range",skill:"Decide how to measure a sample above the standards",
+  v:[{q:"Z reads above the top standard. What should you do?",opts:[K("Dilute Z by a known factor, then multiply"),O("Make extra standards of 12 to 20 mmol dm⁻³","They cannot be made by diluting a 10 mmol dm⁻³ stock, and the Cu²⁺ runs out above about 11."),O("Extend the curve and read Z from that","That is extrapolating beyond your evidence."),O("Use twice the volume of Benedict's for Z","Z would then be treated differently from the standards.")],
+    why:"Diluting brings Z into the range of the standards; the dilution factor converts the reading back."}]},
+ {id:"h5",type:"mcq",title:"Which dilution?",skill:"Choose a dilution factor when the concentration is unknown",
+  v:[{q:"You do not know how far above 10 mmol dm⁻³ Z is. Which dilution is the best first choice?",opts:[K("1 in 4: covers samples up to about 40"),O("1 in 2: covers samples up to about 20","It works only if Z is below 20, and it lands on the flattest part of the curve."),O("1 in 100: covers anything at all","Z would read close to zero, and errors are multiplied by 100."),O("No dilution: read Z twice instead","Repeats do not bring Z within the standards.")],
+    why:"A 1 in 4 dilution is a sensible first attempt: it would bring anything from 10 to 40 mmol dm⁻³ into 2.5 to 10. It is only a first attempt: after the run, check that Z ÷ 4 really falls within the standards, and dilute further if it does not. Your next run uses it."}]},
+ {id:"h6",type:"num",m:"lab",need:N({urine:"yz4"}),filt:r=>uA(r,"Z ÷ 4")!=null,read:true,line:"curve",title:"Calculate Z",skill:"Use a dilution factor to find a concentration",missing:"Run the method with Z diluted 1 in 4.",unit:"mmol dm⁻³",tol:1.2,
+  q:r=>`Read "Z ÷ 4" from the curve (absorbance ${f2(uA(r,"Z ÷ 4"))}), then calculate Z's concentration. 1 decimal place.`,
+  ans:r=>{const v=rdC(r,"Z ÷ 4");return v==null?null:4*v;},errs:r=>{const v=rdC(r,"Z ÷ 4");return v==null?[]:[[v,"That is the diluted sample. Multiply by 4."],[2*v,"The dilution was 1 in 4, so multiply by 4, not 2."]];},
+  why:r=>`Z ÷ 4 reads ${f1(rdC(r,"Z ÷ 4"))}: inside the 0 to 10 standards, so the dilution worked. Z contains about ${f1(4*rdC(r,"Z ÷ 4"))} mmol dm⁻³.`},
+ {id:"h7",type:"write",title:"Justify your plan",skill:"Justify the choice of standards and dilution",
+  q:"Explain your choice of standards for Y, and your plan for Z.",
+  crit:[{t:"Y: standards closely spaced around Y, so the curve is well defined where it is read"},{t:"Z: above the top standard, so it cannot be read or extrapolated"},{t:"Standards above 10 cannot be made from the stock, and the Cu²⁺ runs out above about 11"},{t:"Dilute Z by a known factor into the range of the standards, then multiply by that factor"}],
+  model:"Y lay between 0 and 2 mmol dm⁻³, where the 0 to 10 standards gave only two points, so I chose standards of 0 to 2.5 in 0.5 steps to define the curve around Y. Z read above the top standard, so it could not be read or extrapolated; standards above 10 cannot be made from the 10 mmol dm⁻³ stock, and the Cu²⁺ runs out above about 11. As a first attempt I diluted Z 1 in 4, which should bring anything up to about 40 into range; the diluted reading did fall within the standards, so I read it and multiplied by 4."}]},
+
+/* ---------------- Apply: no runs needed ---------------- */
+{id:"apply",area:"apply",name:"Unfamiliar data and methods",model:"lab",help:false,intro:"New graphs, methods and plans, with less support. No simulation runs are needed.",tasks:[
+ {id:"a1",type:"num",panel:{diag:"cent"},title:"Supernatant readings",skill:"Read an unfamiliar calibration graph",unit:"mmol dm⁻³",tol:.2,
+  v:[{q:"Use the calibration line to find the glucose concentration of sample S. 1 decimal place.",ans:()=>Math.round(readOff(DCENT,.42,"straight","A")*10)/10,errs:()=>[[10-Math.round(readOff(DCENT,.42,"straight","A")*10)/10,"Absorbance falls as concentration rises on this graph."]],why:()=>`About ${readOff(DCENT,.42,"straight","A").toFixed(1)} mmol dm⁻³.`}]},
+ {id:"a2",type:"mcq",panel:{diag:"cent"},title:"Why centrifuge?",skill:"Explain a method variant",
+  v:[{q:"Why did the student centrifuge the tubes and measure the supernatant?",opts:[K("To remove precipitate that would scatter the light"),O("To mix the precipitate evenly through the liquid","Centrifuging separates; it does not mix."),O("To speed up the reaction with the glucose","The reaction happened in the water bath."),O("To cool the tubes down before they are read","That is not what a centrifuge does.")],
+    why:"Centrifuging packs the precipitate at the bottom, so the supernatant holds only the blue Cu²⁺ left in solution."}]},
+ {id:"a3",type:"num",panel:{diag:"trans"},title:"Reading % transmission",skill:"Read a calibration curve plotted as % transmission",unit:"mmol dm⁻³",tol:.4,
+  v:[{q:"Sample W has 50% transmission. Use the curve to find its glucose concentration. 1 decimal place.",ans:()=>Math.round(readOff(DTRANS,DTRANS.unk[0].A,"curve","T")*10)/10,errs:()=>[],why:()=>`About ${readOff(DTRANS,DTRANS.unk[0].A,"curve","T").toFixed(1)} mmol dm⁻³.`}]},
+ {id:"a4",type:"multi",panel:{diag:"flawed"},title:"Diagnose a method",skill:"Identify errors in an unfamiliar method",
+  q:"Which steps would make the urine results unreliable? Select all that apply.",
+  opts:[{t:"Different volumes of Benedict's for urine and standards",ok:true,fb:"Different amounts of Cu²⁺."},{t:"Urine tubes heated for 2 minutes less",ok:true,fb:"Less reaction than the standards had."},{t:"Holding cuvettes by the clear sides",ok:true,fb:"Fingerprints scatter light."},{t:"Leaving the urine tubes to stand for 30 minutes",ok:true,fb:"The precipitate settles."},{t:"Zeroing with the heated 0 mmol dm⁻³ tube",ok:false,fb:"That is the AQA handbook's blank."},{t:"Using a 600 nm filter",ok:false,fb:"The handbook's filter for qualitative Benedict's."}],
+  why:"Four steps treat the urine differently from the standards, or add error to the readings."},
+ {id:"a5",type:"num",title:"Another serial dilution",skill:"Calculate concentrations in an unfamiliar serial dilution",unit:"mmol dm⁻³",tol:.0011,
+  v:[{q:"A 20 mmol dm⁻³ stock is diluted 1 in 10 three times in a row. What is the final concentration?",ans:()=>.02,errs:()=>[[.2,"That is after 2 steps."],[2,"That is after 1 step."],[6.67,"Each step divides by 10."]],why:()=>"20 → 2 → 0.2 → 0.02 mmol dm⁻³."}]},
+ {id:"a6",type:"mcq",title:"Glucose in urine",skill:"Link the practical to kidney function",
+  v:[{q:"Why can the urine of a person with untreated diabetes contain glucose?",opts:[K("Filtrate glucose exceeds what PCT carriers can reabsorb"),O("Glucose molecules are too large to pass into the filtrate","Glucose is small enough to be filtered."),O("Insulin is needed to filter glucose out of the blood","Filtration does not need insulin."),O("The loop of Henle secretes extra glucose","Glucose is normally all reabsorbed in the PCT.")],
+    why:"Blood glucose is so high that the co-transport proteins in the proximal convoluted tubule are saturated, so some glucose stays in the filtrate."}]},
+ {id:"a7",type:"mcq",title:"A different test",skill:"Apply the idea of a reagent blank to a new context",
+  v:[{q:"Biuret reagent and a colorimeter are used to find the protein concentration in urine. Which blank cancels the reagent's own colour?",opts:[K("Water plus biuret reagent, treated like the standards"),O("Distilled water on its own, in a clean and dry cuvette","Water does not cancel the reagent's colour; that is included in every reading, though a calibration can still work if all readings share it."),O("The most concentrated of the protein standards","That would make the standards read below zero; it is not a reference for protein-free solution."),O("An empty cuvette, with no liquid in it at all","Air is not like the samples, and it cancels nothing.")],
+    why:"A reagent blank (water plus biuret, treated like the standards) cancels the reagent's own colour, as the heated 0 tube does for Benedict's. Distilled water is a different reference: it leaves the reagent's colour in every reading."}]},
+ {id:"a8",type:"multi",title:"Plan an investigation",skill:"Plan a reliable calibration for an unfamiliar sample",
+  q:"A sample is expected to contain 20 to 40 mmol dm⁻³ glucose. Which steps belong in a reliable plan? Select all that apply.",
+  opts:[{t:"Dilute the sample 1 in 4 as a first attempt",ok:true,fb:"20 to 40 should become 5 to 10; check the reading really is within the standards."},{t:"Treat the diluted sample exactly like the standards",ok:true,fb:"Same volumes, heating and reading."},{t:"Check the diluted reading is within the standards, then multiply by the dilution factor",ok:true,fb:"Converts back to the original sample, once you know the reading can be trusted."},{t:"Repeat the test and use a mean",ok:true,fb:"Repeats reduce the effect of random error."},{t:"Make standards up to 40 from the 10 mmol dm⁻³ stock",ok:false,fb:"Dilution cannot make anything above 10."},{t:"Read the undiluted sample by extending the curve",ok:false,fb:"That is extrapolating beyond the standards."}],
+  why:"Dilute into range, treat identically, convert back and repeat."},
+ {id:"a9",type:"write",title:"Evaluate a conclusion",skill:"Evaluate a conclusion drawn from calibration data",
+  q:"In a hypothetical case, a student uses qualitative Benedict's to estimate a urine sample at 7.0 mmol dm⁻³. The calibration curve flattens at higher concentrations. The student concludes that the person has diabetes. Evaluate this conclusion.",
+  crit:[{t:"Glucose in urine may be consistent with diabetes, but there are other possible causes"},{t:"It is one sample: repeat it"},{t:"The reading is uncertain (the curve is flatter here; method errors)"},{t:"Benedict’s also responds to other reducing sugars"},{t:"Diagnosis needs further tests, such as blood glucose"}],
+  model:"Glucose in urine may be consistent with diabetes but can have other causes, so it warrants further investigation rather than a diagnosis. Benedict’s also detects other reducing sugars. It is one sample, and the reading is uncertain because the curve is flatter at higher concentrations and the method has errors. Repeats and further tests, such as blood glucose measurements, would be needed before diagnosing diabetes."}]}];
+
+window.__rp11.SECTIONS=SECTIONS;
+
+/* ================= Animation loop and start-up ================= */
+let lastT=performance.now();
+function frame(now){const dt=Math.min(.05,(now-lastT)/1000);lastT=now;cStep(dt);
+ if(panel==="rx"&&!RM.matches){zStep(dt);zDraw();}if(panel==="light"&&!RM.matches){lStep(dt);lDraw();}syncZoom();requestAnimationFrame(frame);}
+validateEvidence();cSync();$$("#gctrls input").forEach(i=>i.checked=(i.name==="gline"?gLine:gY)===i.value);zSync();lSync();cNew();zReset();lReset();
+if(ST.live){cr.note="Your last experiment was interrupted (the page was closed or reloaded) before it finished, so nothing from it was saved. Start a new run.";delete ST.live;save();cText();}
+renderTasks();requestAnimationFrame(frame);
+
+}
+</script>
+</body>
+</html>
