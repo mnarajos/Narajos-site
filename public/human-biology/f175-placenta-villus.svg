@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="280" height="434" viewBox="0 0 280 434" role="img" aria-labelledby="title desc">
   <title id="title">Inside the placenta: exchange at a chorionic villus</title>
-  <desc id="desc">A simplified enlargement of the placenta from the first figure. A chorionic villus projects from placental tissue into surrounding maternal blood. A foetal capillary inside the villus connects with vessels in the placental tissue. Thick arrows show net oxygen transfer from maternal blood, through the placental barrier, into foetal blood and net carbon dioxide transfer in the opposite direction. Fine lines ending in dots label structures; they are not movement arrows. The barrier is exaggerated and the drawing is not to scale. Maternal and foetal blood are normally separate.</desc>
+  <desc id="desc">A simplified enlargement of the marked villus in figure 2. A chorionic villus projects from placental tissue into surrounding maternal blood. A foetal capillary inside the villus connects with vessels in the placental tissue. Thick arrows show net oxygen transfer from maternal blood, through the placental barrier, into foetal blood and net carbon dioxide transfer in the opposite direction. Fine lines ending in dots label structures; they are not movement arrows. The barrier is exaggerated and the drawing is not to scale. Maternal and foetal blood are normally separate.</desc>
   <defs><marker id="movement" viewBox="-2 -2 14 14" refX="9" refY="5" markerWidth="12" markerHeight="12" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0 0 L10 5 L0 10 Z" fill="#243c81" stroke="#fff" stroke-width="1.5" paint-order="stroke"/></marker></defs>
   <rect width="280" height="434" rx="12" fill="#faf8f7"/>
   <g font-family="system-ui,sans-serif" fill="#243c48">
-    <text x="14" y="25" font-size="17" font-weight="700">2. Zoom in: one villus</text>
+    <text x="14" y="25" font-size="17" font-weight="700">3. Zoom in: one villus</text>
     <text x="14" y="47" font-size="16">Foetal side links to cord</text>
     <text x="14" y="69" font-size="16">Maternal blood around villus</text>
     <g transform="translate(0 24)">

@@ -4,7 +4,7 @@ This review classifies the reachable recap lines that had no entry in the figure
 
 | Route | Classification and evidence |
 | --- | --- |
-| F175/a2 · 1–2 | The previous schematics were withheld in Phase 1. Phase 2 adds a pregnancy-orientation view and a linked villus exchange view to both recap lines. The one-villus schematic does not itself show the contribution of many villi to surface area; that remains explained in text. See the [block review](catchup-visual-coverage-human-steps.md). |
+| F175/a2 · 1–2 | The previous schematics were withheld in Phase 1. Phase 2 adds pregnancy orientation, a turned section showing several villi, and a linked enlarged villus exchange view to both recap lines. The schematic omits most branching and does not quantify surface area. See the [block review](catchup-visual-coverage-human-steps.md). |
 | F170/2.1.4.graft · 1 | The focused recap has a separate inline `kidney-graft` visual supplied by `KeystoneCatchupVisuals` at step 0. It is not in the recap registry, so the registry count excludes it. |
 | F171/1.2.1 · 2 | One short reasoning reminder: symptoms can have multiple causes and measured function should be compared with affected tissue. No separate figure is mapped to this sentence. |
 | F171/4.1 · 2 | One short interpretation reminder about measurement conditions and clinical conclusions. No separate figure is mapped to this sentence. |

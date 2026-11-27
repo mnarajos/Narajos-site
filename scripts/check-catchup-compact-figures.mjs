@@ -100,13 +100,20 @@ export async function checkCompactCatchupFigures(browser, base) {
       assert.equal(await soluteFigure.count(), 0, 'solute teaching figure should not remain in the independent question view');
 
       await page.goto(base + '/human-biology/#catchup/f175/a2');
-      // Both structural figures are deferred until they have anatomical context.
-      // The Phase 1 teaching remains present and fits without the figures.
+      // The old structural figures remain deferred; the replacement gives
+      // orientation, an intermediate section and a single-villus enlargement.
       const placentaExplanation = page.locator('.hb-teach-explain');
       await placentaExplanation.waitFor();
       assert.match(await placentaExplanation.innerText(), /placenta is attached to the wall of the uterus.*umbilical cord.*foetal blood/is);
       assert.match(await placentaExplanation.innerText(), /Chorionic villi contain foetal vessels.*maternal blood/is);
       assert.equal(await page.locator('img[src="/human-biology/placental-exchange.svg"], img[src="/human-biology/f175-many-villi.svg"]').count(), 0);
+      const orderedPlacentaFigures = await placentaExplanation.locator('img[src*="/f175-placenta-"]').evaluateAll(images => images.map(image => image.getAttribute('src').split('/').at(-1)));
+      assert.deepEqual(orderedPlacentaFigures, ['f175-placenta-orientation.svg','f175-placenta-many-villi.svg','f175-placenta-villus.svg']);
+      for (const image of await placentaExplanation.locator('img[src*="/f175-placenta-"]').all()) {
+        await image.evaluate(node => node.decode());
+        assert(await image.evaluate(node => node.getBoundingClientRect().width <= node.parentElement.getBoundingClientRect().width + 1), 'placental figure should fit its container');
+        assert((await image.getAttribute('alt'))?.trim().length > 50, 'placental figure needs a meaningful alternative');
+      }
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 3), 'placental teaching should fit the viewport');
 
       // The same feedback figure appears in both courses. Check the actual

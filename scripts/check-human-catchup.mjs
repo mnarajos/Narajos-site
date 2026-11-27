@@ -1099,19 +1099,28 @@ export async function checkHumanCatchup(browser, base) {
     const placentaModel = page.locator("[data-hb-model-step]");
     await expand(placentaModel);
     // The retired figures stay withheld; the replacement starts with whole-
-    // pregnancy orientation before showing the enlarged villus.
+    // pregnancy orientation, a many-villi section, then the enlarged villus.
     const deferredPlacenta = 'img[src="/human-biology/placental-exchange.svg"], img[src="/human-biology/f175-many-villi.svg"]';
     assert.equal(await page.locator(deferredPlacenta).count(), 0, "deferred placental figures must not be rendered in teaching or recap");
     const placentaExplanation = page.locator(".hb-teach-explain");
     assert.match(await placentaExplanation.innerText(), /placenta is attached to the wall of the uterus.*foetus is connected to the placenta by the umbilical cord.*foetal blood/is);
     assert.match(await placentaExplanation.innerText(), /Chorionic villi contain foetal vessels.*maternal blood.*large area and short diffusion distances/is);
     const orientationSelector = 'img[src="/human-biology/f175-placenta-orientation.svg"]';
+    const manySelector = 'img[src="/human-biology/f175-placenta-many-villi.svg"]';
     const villusSelector = 'img[src="/human-biology/f175-placenta-villus.svg"]';
     assert.equal(await placentaExplanation.locator(orientationSelector).count(), 1);
+    assert.equal(await placentaExplanation.locator(manySelector).count(), 1);
     assert.equal(await placentaExplanation.locator(villusSelector).count(), 1);
+    const placentaFiles = ["f175-placenta-orientation.svg", "f175-placenta-many-villi.svg", "f175-placenta-villus.svg"];
+    const orderedFiles = scope => scope.locator('img[src*="/f175-placenta-"]').evaluateAll(images => images.map(img => img.getAttribute('src').split('/').at(-1)));
+    assert.deepEqual(await orderedFiles(placentaExplanation), placentaFiles, 'teaching zooms from pregnancy to several villi to one villus');
+    assert.match(await placentaExplanation.locator(orientationSelector).getAttribute('alt'), /pregnant female.*dashed box.*figure 2/i);
+    assert.match(await placentaExplanation.locator(manySelector).getAttribute('alt'), /turned.*foetal side.*maternal blood.*anchors.*villus.*figure 3/i);
     const firstPlacentaStep = placentaModel.locator('li:nth-child(1)');
     assert(await firstPlacentaStep.locator(orientationSelector).isVisible(), 'direct worked-example entry has an orientation view');
+    assert(await firstPlacentaStep.locator(manySelector).isVisible(), 'direct worked-example entry includes the intermediate view');
     assert(await firstPlacentaStep.locator(villusSelector).isVisible(), 'the worked example includes the linked villus view');
+    assert.deepEqual(await orderedFiles(firstPlacentaStep), placentaFiles, 'worked example preserves the three-view order');
     assert.match(await firstPlacentaStep.locator(villusSelector).getAttribute('alt'), /maternal blood.*foetal blood.*carbon dioxide/i);
     const placentaSteps = [
       /Oxygen reaches the spaces around the villi in maternal blood\./,
@@ -1133,7 +1142,7 @@ export async function checkHumanCatchup(browser, base) {
     assert(await stage("independent").isVisible(), "independent practice remains available");
     assert.equal(await page.locator(deferredPlacenta).count(), 0);
     await expand(placentaExplanation);
-    for (const selector of [orientationSelector, villusSelector]) {
+    for (const selector of [orientationSelector, manySelector, villusSelector]) {
       const sensitive = page.locator(`figure[data-hb-assessment-sensitive]:has(${selector})`);
       assert(await sensitive.count(), 'the replacement has assessment-sensitive figures to hide');
       for (const figure of await sensitive.all()) assert(await figure.isHidden(), 'placental teaching and recap copies must be hidden in independent practice');
@@ -1142,7 +1151,9 @@ export async function checkHumanCatchup(browser, base) {
     assert.match(await page.locator("section.paper.panel").innerText(), /Maternal and foetal blood are normally separated by the placental barrier\./);
     assert.equal(await page.locator(deferredPlacenta).count(), 0, "deferred figures must not reappear in the recap");
     assert.equal(await page.locator(orientationSelector).count(), 1, 'the recap retains orientation');
+    assert.equal(await page.locator(manySelector).count(), 1, 'the recap retains the intermediate view');
     assert.equal(await page.locator(villusSelector).count(), 1, 'the recap retains the exchange view');
+    assert.deepEqual(await orderedFiles(page.locator('section.paper.panel')), placentaFiles, 'recap preserves the three-view order');
 
     // Additional figures remain in the first paragraph's own figure group.
     for (const [route, filename] of [["f170/1.1.1.signals", "f170-cone-sensitivity.svg"], ["f170/1.1.2.counting", "f170-chamber-sampling.svg"], ["f171/2.3", "f171-screen-diagnose-monitor.svg"]]) {
