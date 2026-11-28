@@ -73,12 +73,12 @@ export async function checkTeachingArticle(browser,base,{screenshots=true,audit=
    style.textContent=`text { font-family: "${font}" !important; }`;
    document.querySelector("svg").append(style);
   },font);
-  const errors=await page.evaluate(({mode})=>{
+  const errors=await page.evaluate(({mode,slug})=>{
    const svg=document.querySelector("svg"),view=svg.viewBox.baseVal;
    const scale=mode==="desktop"?Math.min(1,800/view.width):Math.min(1,288/view.width);
    const b=el=>{const r=el.getBBox();return {x:r.x,y:r.y,w:r.width,h:r.height};};
    const texts=[...svg.querySelectorAll("text")].map(el=>({label:el.textContent,box:b(el),node:el.closest("[data-node]")?.getAttribute("data-node")}));
-   const nodes=[...svg.querySelectorAll(".diagram-node")].map(el=>({id:el.getAttribute("data-node"),box:b(el.querySelector("rect"))}));
+   const nodes=[...svg.querySelectorAll(".diagram-node")].map(el=>({id:el.getAttribute("data-node"),group:el.getAttribute("data-related-group"),box:b(el.querySelector("rect"))}));
    const errors=[];
    const overlaps=(a,c)=>a.x<c.x+c.w&&a.x+a.w>c.x&&a.y<c.y+c.h&&a.y+a.h>c.y;
    const expand=(r,n)=>({x:r.x-n,y:r.y-n,w:r.w+2*n,h:r.h+2*n});
@@ -93,7 +93,9 @@ export async function checkTeachingArticle(browser,base,{screenshots=true,audit=
     const a=nodes[i].box,c=nodes[j].box;
     const dx=Math.max(c.x-(a.x+a.w),a.x-(c.x+c.w),0),dy=Math.max(c.y-(a.y+a.h),a.y-(c.y+c.h),0);
     if(dx===0&&dy===0)errors.push(`Overlapping nodes: ${nodes[i].id} / ${nodes[j].id}`);
-    else if((dx===0||dy===0)&&Math.max(dx,dy)*scale<23.5)errors.push(`Node spacing: ${nodes[i].id} / ${nodes[j].id}`);
+    // Related cells in the mobile matrix share axes and remain at least 12px apart.
+    const relatedMatrix=slug==="challenge-support"&&mode==="mobile"&&nodes[i].group==="matrix"&&nodes[j].group==="matrix";
+    if((dx!==0||dy!==0)&&(dx===0||dy===0)&&Math.max(dx,dy)*scale<(relatedMatrix?11.5:23.5))errors.push(`Node spacing: ${nodes[i].id} / ${nodes[j].id}`);
    }
    // The figures use explicitly positioned orthogonal M/H/V paths.
    const edges=[...svg.querySelectorAll(".diagram-edge")].map(path=>{
@@ -103,12 +105,14 @@ export async function checkTeachingArticle(browser,base,{screenshots=true,audit=
    });
    const lineHits=(s,r)=>s.x1===s.x2?s.x1>r.x&&s.x1<r.x+r.w&&Math.max(s.y1,s.y2)>r.y&&Math.min(s.y1,s.y2)<r.y+r.h:s.y1>r.y&&s.y1<r.y+r.h&&Math.max(s.x1,s.x2)>r.x&&Math.min(s.x1,s.x2)<r.x+r.w;
    const onBoundary=(x,y,r)=>((Math.abs(x-r.x)<.1||Math.abs(x-r.x-r.w)<.1)&&y>=r.y&&y<=r.y+r.h)||((Math.abs(y-r.y)<.1||Math.abs(y-r.y-r.h)<.1)&&x>=r.x&&x<=r.x+r.w);
+   const relations=[];
    for(const edge of edges){
     if(!edge.length)continue;
     const start=nodes.find(n=>onBoundary(edge[0].x1,edge[0].y1,n.box));
     if(!start)errors.push("Connector starts away from a node");
     const last=edge.at(-1),end=nodes.find(n=>onBoundary(last.x2,last.y2,n.box));
     if(!end)errors.push("Arrow ends away from a node");
+    if(start&&end)relations.push(`${start.id}->${end.id}`);
     for(const seg of edge){
      for(const n of nodes){
       if(lineHits(seg,{x:n.box.x+.1,y:n.box.y+.1,w:n.box.w-.2,h:n.box.h-.2}))errors.push(`Connector crosses node: ${n.id}`);
@@ -123,8 +127,20 @@ export async function checkTeachingArticle(browser,base,{screenshots=true,audit=
     else if(ah&&a.y1===c.y1&&Math.min(Math.max(a.x1,a.x2),Math.max(c.x1,c.x2))>Math.max(Math.min(a.x1,a.x2),Math.min(c.x1,c.x2)))errors.push("Connectors overlap");
     else if(!ah&&a.x1===c.x1&&Math.min(Math.max(a.y1,a.y2),Math.max(c.y1,c.y2))>Math.max(Math.min(a.y1,a.y2),Math.min(c.y1,c.y2)))errors.push("Connectors overlap");
    }
+   if(slug==="framework"){
+    for(const relation of ["prior->developed","developed->prior","instruction->developed","instruction->performance","developed->performance","developed->competence","performance->teacher","teacher->instruction"]){
+     if(!relations.includes(relation))errors.push(`Missing framework relationship: ${relation}`);
+    }
+    if(relations.includes("prior->instruction")||relations.includes("prior->teacher"))errors.push("Prior knowledge incorrectly shown as direct teacher access");
+    for(const label of ["Accessibility","Learner influences throughout:","Motivation","Self-regulation"])if(!svg.textContent.includes(label))errors.push(`Missing framework label: ${label}`);
+   }
+   if(slug==="challenge-support"&&mode==="mobile"){
+    const get=id=>nodes.find(n=>n.id===id)?.box;
+    const a=get("independent-stretch"),b=get("supported-stretch"),c=get("independent-consolidation"),d=get("supported-foundations");
+    if(!a||!b||!c||!d||a.x!==c.x||b.x!==d.x||a.y!==b.y||c.y!==d.y||a.x>=b.x||a.y>=c.y)errors.push("Challenge and support are not arranged as a two-dimensional matrix");
+   }
    return errors;
-  },{mode});
+  },{mode,slug});
   assert.deepEqual(errors,[],`${slug} ${mode} ${font??"default font"} geometry`);
  }
  await page.close();
