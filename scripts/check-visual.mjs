@@ -1,3 +1,4 @@
+import {checkTeachingArticle} from "./check-teaching-article.mjs";
 import {checkLearningNavigation} from "./check-learning-navigation.mjs";
 import {checkHumanAssessment} from "./check-human-assessment.mjs";
 import {checkHumanReliability} from "./check-human-reliability.mjs";
@@ -13,7 +14,7 @@ import { servePublic } from "./browser-test-site.mjs";
 const browser = await chromium.launch();
 const { server, base } = await servePublic();
 const pages = [
-  "/", "/about/", "/science-catch-up/?year=9", "/science-catch-up/lesson/?topic=osmosis",
+  "/", "/about/", "/teaching-for-lasting-learning/", "/science-catch-up/?year=9", "/science-catch-up/lesson/?topic=osmosis",
   "/gcse/", "/alevel/#catchup-a1-enzfactors", "/human-biology/",
   "/human-biology/#challenge/f171", "/human-biology/#challenge/f175",
   "/human-biology/#catchup/f171/4.2.1",
@@ -22,6 +23,7 @@ const pages = [
 ];
 
 try {
+  await checkTeachingArticle(browser,base,{audit:axe.source});
   await checkCompactCatchupFigures(browser,base);
   await checkLearningNavigation(browser,base);
   await checkALevelExam(browser,base);

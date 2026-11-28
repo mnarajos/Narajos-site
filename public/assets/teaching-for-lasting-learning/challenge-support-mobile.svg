@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="288" height="700" viewBox="0 0 288 700" role="img" aria-labelledby="title description">
+<title id="title">Challenge and instructional support</title><desc id="description">A matrix compares challenge and instructional support. Higher challenge with lower support is independent stretch; higher challenge with higher support is supported stretch; lower challenge with lower support is independent consolidation; lower challenge with higher support is supported foundations. All four can be useful.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M 0 0 L 9 4.5 L 0 9 Z" fill="#435763"/></marker></defs>
+<style>text{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;} @media print{*{print-color-adjust:exact}}</style>
+<rect width="288" height="700" fill="#fff"/>
+<text x="20" y="35" fill="#24323e" font-size="18" font-weight="700" text-anchor="start" dominant-baseline="middle" >Challenge and</text>
+<text x="20" y="60" fill="#24323e" font-size="18" font-weight="700" text-anchor="start" dominant-baseline="middle" >instructional support</text>
+<text x="71" y="115" fill="#53646c" font-size="14" font-weight="700" text-anchor="middle" dominant-baseline="middle" >LOWER</text>
+<text x="71" y="135" fill="#53646c" font-size="14" font-weight="700" text-anchor="middle" dominant-baseline="middle" >SUPPORT</text>
+<text x="217" y="115" fill="#53646c" font-size="14" font-weight="700" text-anchor="middle" dominant-baseline="middle" >HIGHER</text>
+<text x="217" y="135" fill="#53646c" font-size="14" font-weight="700" text-anchor="middle" dominant-baseline="middle" >SUPPORT</text>
+<text x="144" y="180" fill="#53646c" font-size="14" font-weight="700" text-anchor="middle" dominant-baseline="middle" >HIGHER CHALLENGE</text>
+<g class="diagram-node" data-node="independent-stretch">
+<rect x="10" y="205" width="122" height="110" rx="12" fill="#e8f3ef" stroke="#39786c" stroke-width="1.5" />
+<text x="71.0" y="248.5" fill="#24323e" font-size="15" font-weight="700" text-anchor="middle" dominant-baseline="middle" class="node-label">Independent</text>
+<text x="71.0" y="271.5" fill="#24323e" font-size="15" font-weight="500" text-anchor="middle" dominant-baseline="middle" class="node-label">stretch</text>
+</g>
+<g class="diagram-node" data-node="supported-stretch">
+<rect x="156" y="205" width="122" height="110" rx="12" fill="#fff2e8" stroke="#ad6536" stroke-width="1.5" />
+<text x="217.0" y="248.5" fill="#24323e" font-size="15" font-weight="700" text-anchor="middle" dominant-baseline="middle" class="node-label">Supported</text>
+<text x="217.0" y="271.5" fill="#24323e" font-size="15" font-weight="500" text-anchor="middle" dominant-baseline="middle" class="node-label">stretch</text>
+</g>
+<text x="144" y="380" fill="#53646c" font-size="14" font-weight="700" text-anchor="middle" dominant-baseline="middle" >LOWER CHALLENGE</text>
+<g class="diagram-node" data-node="independent-consolidation">
+<rect x="10" y="405" width="122" height="110" rx="12" fill="#e8f3ef" stroke="#39786c" stroke-width="1.5" />
+<text x="71.0" y="448.5" fill="#24323e" font-size="15" font-weight="700" text-anchor="middle" dominant-baseline="middle" class="node-label">Independent</text>
+<text x="71.0" y="471.5" fill="#24323e" font-size="15" font-weight="500" text-anchor="middle" dominant-baseline="middle" class="node-label">consolidation</text>
+</g>
+<g class="diagram-node" data-node="supported-foundations">
+<rect x="156" y="405" width="122" height="110" rx="12" fill="#fff2e8" stroke="#ad6536" stroke-width="1.5" />
+<text x="217.0" y="448.5" fill="#24323e" font-size="15" font-weight="700" text-anchor="middle" dominant-baseline="middle" class="node-label">Supported</text>
+<text x="217.0" y="471.5" fill="#24323e" font-size="15" font-weight="500" text-anchor="middle" dominant-baseline="middle" class="node-label">foundations</text>
+</g>
+<text x="144" y="575" fill="#24323e" font-size="15" font-weight="600" text-anchor="middle" dominant-baseline="middle" >Each can be useful for</text>
+<text x="144" y="598" fill="#24323e" font-size="15" font-weight="600" text-anchor="middle" dominant-baseline="middle" >a different purpose.</text>
+<text x="144.0" y="670" fill="#53646c" font-size="14" font-weight="400" text-anchor="middle" dominant-baseline="middle" >Narajos · narajos.com</text>
+</svg>

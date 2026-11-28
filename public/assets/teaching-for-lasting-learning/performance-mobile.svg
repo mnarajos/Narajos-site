@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="288" height="620" viewBox="0 0 288 620" role="img" aria-labelledby="title description">
+<title id="title">Learning and performance</title><desc id="description">Learning and the task, cues, timing, and support can each influence observable performance. Performance is evidence from which learning is inferred, not a direct measure of learning.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M 0 0 L 9 4.5 L 0 9 Z" fill="#435763"/></marker></defs>
+<style>text{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;} @media print{*{print-color-adjust:exact}}</style>
+<rect width="288" height="620" fill="#fff"/>
+<text x="20" y="37" fill="#24323e" font-size="18" font-weight="700" text-anchor="start" dominant-baseline="middle" >Learning and</text>
+<text x="20" y="62" fill="#24323e" font-size="18" font-weight="700" text-anchor="start" dominant-baseline="middle" >performance</text>
+<path class="diagram-edge" d="M 38 155 H 18 V 415 H 38" fill="none" stroke="#435763" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path class="diagram-edge" d="M 144 320 V 375" fill="none" stroke="#435763" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<g class="diagram-node" data-node="learning">
+<rect x="38" y="120" width="212" height="70" rx="12" fill="#e8f3ef" stroke="#39786c" stroke-width="1.5" />
+<text x="144.0" y="155.0" fill="#24323e" font-size="16" font-weight="700" text-anchor="middle" dominant-baseline="middle" class="node-label">Learning over time</text>
+</g>
+<g class="diagram-node" data-node="conditions">
+<rect x="38" y="230" width="212" height="90" rx="12" fill="#f8f9f7" stroke="#899891" stroke-width="1.5" />
+<text x="144.0" y="263.5" fill="#24323e" font-size="16" font-weight="700" text-anchor="middle" dominant-baseline="middle" class="node-label">Task, cues, timing,</text>
+<text x="144.0" y="286.5" fill="#24323e" font-size="16" font-weight="500" text-anchor="middle" dominant-baseline="middle" class="node-label">and support</text>
+</g>
+<g class="diagram-node" data-node="performance">
+<rect x="38" y="375" width="212" height="80" rx="12" fill="#edf1f6" stroke="#667b8e" stroke-width="1.5" />
+<text x="144.0" y="403.5" fill="#24323e" font-size="16" font-weight="700" text-anchor="middle" dominant-baseline="middle" class="node-label">Observable</text>
+<text x="144.0" y="426.5" fill="#24323e" font-size="16" font-weight="500" text-anchor="middle" dominant-baseline="middle" class="node-label">performance</text>
+</g>
+<text x="144" y="510" fill="#24323e" font-size="15" font-weight="600" text-anchor="middle" dominant-baseline="middle" >Performance is evidence,</text>
+<text x="144" y="535" fill="#24323e" font-size="15" font-weight="600" text-anchor="middle" dominant-baseline="middle" >not direct access to learning.</text>
+<text x="144.0" y="590" fill="#53646c" font-size="14" font-weight="400" text-anchor="middle" dominant-baseline="middle" >Narajos · narajos.com</text>
+</svg>

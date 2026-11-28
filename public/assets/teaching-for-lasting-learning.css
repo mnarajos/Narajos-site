@@ -1,0 +1,38 @@
+/* An editorial article using the site's existing type, colours, and controls. */
+.teaching-article .article-body { max-width: 800px; padding-block: 2.75rem 4rem; }
+.teaching-article .breadcrumb { margin-bottom: 1.75rem; }
+.teaching-article .article-header h1 { font-size: clamp(2.15rem, 5vw, 3rem); margin-bottom: 1.5rem; }
+.teaching-article .article-body > section { margin-block-start: 3.1rem; scroll-margin-top: 1rem; }
+.teaching-article .article-body h2 { font-size: clamp(1.6rem, 3.3vw, 2rem); margin-bottom: 1rem; }
+.teaching-article .article-body p { line-height: 1.75; }
+.teaching-article .article-body a { overflow-wrap: anywhere; }
+.article-contents, .diagnostic-scenario { border-block-start: 1px solid var(--line); }
+.article-contents { margin-block: 2.5rem; border-block-end: 1px solid var(--line); }
+.article-contents summary, .diagnostic-scenario summary { cursor: pointer; min-height: 44px; padding-block: .8rem; font-weight: 650; line-height: 1.5; }
+.article-contents summary:focus-visible, .diagnostic-scenario summary:focus-visible { outline: 3px solid var(--narajos-focus-ring, var(--accent)); outline-offset: 3px; border-radius: 4px; }
+.article-contents ol { margin-block: 0 1.25rem; padding-inline-start: 1.5rem; }
+.article-contents li { margin-block: .35rem; }
+.article-figure { margin: 2.3rem 0 2.6rem; }
+.article-figure picture, .article-figure img { display: block; width: 100%; height: auto; }
+.article-figure img { background: #fff; }
+.article-figure figcaption { color: var(--muted); font-size: .9rem; line-height: 1.65; margin-top: .7rem; }
+.article-figure figcaption strong { color: var(--ink); }
+.diagnostic-scenario:last-child { border-block-end: 1px solid var(--line); }
+.diagnostic-scenario > div { padding: .2rem 0 1rem 1.35rem; }
+.diagnostic-scenario > div p:last-child { margin-bottom: 0; }
+.article-references { padding-inline-start: 1.5rem; }
+.article-references li { margin-block: 0 .8rem; overflow-wrap: anywhere; }
+.article-references li:target { background: var(--accent-light); outline: .35rem solid var(--accent-light); }
+@media (max-width: 600px) {
+ .teaching-article .article-body { padding-block: 1.75rem 3rem; }
+ .teaching-article .article-body > section { margin-block-start: 2.5rem; }
+ .article-figure { margin-block: 1.8rem 2.2rem; }
+ .diagnostic-scenario > div { padding-inline-start: .5rem; }
+}
+@media print {
+ .teaching-article .topbar, .teaching-article .footer, .article-contents { display: none; }
+ .teaching-article .article-body { max-width: none; padding: 0; }
+ .article-figure { break-inside: avoid; }
+ .article-figure img { max-height: 21cm; width: auto; max-width: 100%; margin-inline: auto; }
+ .diagnostic-scenario { break-inside: avoid; }
+}

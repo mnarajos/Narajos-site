@@ -109,6 +109,14 @@ jobs:
         run: node scripts/check-alevel-paper-practice.mjs chromium
       - name: Audit representative pages and touch journeys
         run: node scripts/check-visual.mjs
+      - name: Retain teaching article and diagram screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: teaching-article-screenshots
+          path: /tmp/narajos-teaching-*.png
+          if-no-files-found: ignore
+          retention-days: 7
 
   performance-sample:
     name: Synthetic performance sample
