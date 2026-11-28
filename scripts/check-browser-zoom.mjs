@@ -40,6 +40,13 @@ export async function checkBrowserZoom(base) {
     await page.keyboard.press("Escape");
     assert(await inspect.evaluate(el=>el===document.activeElement));
 
+    await page.goto(base+"/teaching-for-lasting-learning/");
+    await page.evaluate(()=>Promise.all([...document.images].map(img=>img.decode())));
+    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+3),"Teaching article overflows at 200% zoom");
+    for(const image of await page.locator(".article-figure img").all())assert(await image.evaluate(img=>img.getBoundingClientRect().width<=innerWidth),"Figure exceeds the zoomed viewport");
+    await page.locator(".diagnostic-scenario summary").first().press("Enter");
+    assert(await page.locator(".diagnostic-scenario").first().evaluate(el=>el.open),"Diagnostic disclosure did not open with keyboard at 200% zoom");
+
     assert(await page.evaluate(old=>devicePixelRatio>=old*1.95,before.ratio));
   }finally{
     await context?.close();

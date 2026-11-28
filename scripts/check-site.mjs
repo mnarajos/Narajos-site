@@ -96,7 +96,7 @@ walk(root);
 const htmlFiles=fileList.filter(f=>f.endsWith(".html"));
 const required=[
  "index.html","gcse/index.html","alevel/index.html","human-biology/index.html","teacher/index.html",
- "teaching/index.html","teaching/simulations/index.html","privacy/index.html","about/index.html"
+ "teaching/index.html","teaching/simulations/index.html","privacy/index.html","about/index.html","teaching-for-lasting-learning/index.html"
 ];
 for(const p of required)requireTrue(existsSync(path.join(root,p)),"Missing public page: "+p);
 const simSlugs=["enzyme-kinetics","enzyme-inhibition","molecular-biology","bioenergetics","cardiac-cycle"];
@@ -159,6 +159,17 @@ for(const p of sharedHeaderPages){
 }
 
 const about=read("about/index.html"), sharedNav=read("assets/site-nav.js");
+const teachingArticle=read("teaching-for-lasting-learning/index.html");
+requireTrue(about.includes('href="/teaching-for-lasting-learning/">Teaching and learning</a>'),"About article link missing");
+requireTrue(read("sitemap.xml").includes("https://narajos.com/teaching-for-lasting-learning/"),"Teaching article missing from sitemap");
+requireTrue(!sharedNav.includes('/teaching-for-lasting-learning/'),"Teaching article should not be added to the main navigation");
+requireTrue((teachingArticle.match(/class="article-figure"/g)||[]).length===5,"Teaching article needs five diagrams");
+requireTrue((teachingArticle.match(/class="diagnostic-scenario"/g)||[]).length===8,"Teaching article needs eight diagnostic scenarios");
+for(const slug of ["framework","performance","challenge-support","responsive-teaching","success-motivation"])for(const mode of ["desktop","mobile"]){
+ const figure="assets/teaching-for-lasting-learning/"+slug+"-"+mode+".svg";
+ requireTrue(existsSync(path.join(root,figure)),"Teaching diagram missing: "+figure);
+ if(existsSync(path.join(root,figure)))requireTrue(/<title\b/.test(read(figure))&&/<desc\b/.test(read(figure)),"Accessible SVG title or description missing: "+figure);
+}
 requireTrue(read("sitemap.xml").includes("https://narajos.com/about/"),"About missing from sitemap");
 requireTrue(about.includes('id="feedback"') && about.includes('href="mailto:support@narajos.com"'),"About feedback anchor or email missing");
 for(const href of ["https://my.chartered.college/impact_article/feedback-is-not-a-gift/","https://www.sagepub.com/shop/buy-a-book/teaching-hacks-fixing-everyday-classroom-issues-with-metacognition-1-285877"]){
