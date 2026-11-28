@@ -35,7 +35,7 @@ export async function checkTeachingArticle(browser,base,{screenshots=true,audit=
    "I consider four characteristics of knowledge particularly important: how much pupils know, how accurate their knowledge is, how readily they can retrieve it, and how well they can connect different ideas.",
    "Alongside developing knowledge, I believe teachers have an important role in helping pupils become more independent learners. This involves teaching pupils how to evaluate their understanding, recognise gaps in their knowledge, and make better decisions about how they study.",
    "Drawing on educational research and my experiences as a teacher, I have brought these ideas together to help me think about how different aspects of learning and teaching interact. I am particularly interested in identifying what is limiting pupils’ learning and where teachers can make the greatest difference.",
-   "The eight principles presented here inform both my classroom practice and the design of the learning resources on this website. Although many of the same principles apply to independent learning, a website cannot replicate the professional judgement of a classroom teacher."
+   "The eight principles presented here inform both my classroom practice and the design of the learning resources on Narajos.com. Although many of the same principles apply to independent learning, Narajos.com cannot replicate the professional judgement of a classroom teacher."
   ],"The approved opening changed");
   assert.equal(await page.locator(".site-nav details").count(),2);
   assert.equal(await page.locator(".article-figure").count(),5);
