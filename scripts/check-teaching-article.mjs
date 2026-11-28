@@ -65,8 +65,14 @@ export async function checkTeachingArticle(browser,base,{screenshots=true,audit=
  await noScript.close();
 
  const page=await browser.newPage();
- for(const slug of slugs)for(const mode of ["desktop","mobile"]) {
+ for(const slug of slugs)for(const mode of ["desktop","mobile"])for(const font of [null,"DejaVu Sans"]) {
   await page.goto(base+`/assets/teaching-for-lasting-learning/${slug}-${mode}.svg`);
+  // Check a common wider fallback as well as the browser's default system font.
+  if(font)await page.evaluate(font=>{
+   const style=document.createElementNS("http://www.w3.org/2000/svg","style");
+   style.textContent=`text { font-family: "${font}" !important; }`;
+   document.querySelector("svg").append(style);
+  },font);
   const errors=await page.evaluate(({mode})=>{
    const svg=document.querySelector("svg"),view=svg.viewBox.baseVal;
    const scale=mode==="desktop"?Math.min(1,800/view.width):Math.min(1,288/view.width);
@@ -119,7 +125,7 @@ export async function checkTeachingArticle(browser,base,{screenshots=true,audit=
    }
    return errors;
   },{mode});
-  assert.deepEqual(errors,[],`${slug} ${mode} geometry`);
+  assert.deepEqual(errors,[],`${slug} ${mode} ${font??"default font"} geometry`);
  }
  await page.close();
  console.log("Teaching article: responsive diagrams, geometry, disclosures, links, privacy, and screenshots passed.");

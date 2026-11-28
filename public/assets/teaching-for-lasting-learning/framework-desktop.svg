@@ -12,7 +12,7 @@
 <path class="diagram-edge" d="M 415 645 V 750" fill="none" stroke="#435763" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
 <path class="diagram-edge" d="M 580 575 H 625" fill="none" stroke="#435763" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
 <path class="diagram-edge" d="M 580 340 H 725 V 525" fill="none" stroke="#435763" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
-<path class="diagram-edge" d="M 725 625 V 750" fill="none" stroke="#435763" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path class="diagram-edge" d="M 725 625 V 740" fill="none" stroke="#435763" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
 <path class="diagram-edge" d="M 825 815 H 846 V 250 H 520 V 290" fill="none" stroke="#435763" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
 <path class="diagram-edge" d="M 250 570 H 75 V 175 H 270" fill="none" stroke="#435763" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
 <text x="96" y="430" fill="#24323e" font-size="17" font-weight="600" text-anchor="start" dominant-baseline="middle" >Becomes prior</text>
@@ -44,10 +44,11 @@
 <text x="725.0" y="591.0" fill="#24323e" font-size="20" font-weight="500" text-anchor="middle" dominant-baseline="middle" class="node-label">performance</text>
 </g>
 <g class="diagram-node" data-node="teacher">
-<rect x="615" y="750" width="210" height="130" rx="12" fill="#fff2e8" stroke="#ad6536" stroke-width="1.5" />
-<text x="720.0" y="788.0" fill="#24323e" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="middle" class="node-label">Teacher interprets</text>
-<text x="720.0" y="815.0" fill="#24323e" font-size="18" font-weight="500" text-anchor="middle" dominant-baseline="middle" class="node-label">evidence and adapts</text>
-<text x="720.0" y="842.0" fill="#24323e" font-size="18" font-weight="500" text-anchor="middle" dominant-baseline="middle" class="node-label">instruction</text>
+<rect x="615" y="740" width="210" height="150" rx="12" fill="#fff2e8" stroke="#ad6536" stroke-width="1.5" />
+<text x="720.0" y="774.5" fill="#24323e" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="middle" class="node-label">Teacher</text>
+<text x="720.0" y="801.5" fill="#24323e" font-size="18" font-weight="500" text-anchor="middle" dominant-baseline="middle" class="node-label">interprets evidence</text>
+<text x="720.0" y="828.5" fill="#24323e" font-size="18" font-weight="500" text-anchor="middle" dominant-baseline="middle" class="node-label">and adapts</text>
+<text x="720.0" y="855.5" fill="#24323e" font-size="18" font-weight="500" text-anchor="middle" dominant-baseline="middle" class="node-label">instruction</text>
 </g>
 <text x="40" y="940" fill="#53646c" font-size="18" font-weight="600" text-anchor="start" dominant-baseline="middle" >Distinct learner factors can influence participation throughout</text>
 <g class="diagram-node" data-node="motivation">
