@@ -3,6 +3,20 @@ import assert from "node:assert/strict";
 
 const slugs=["framework","performance","challenge-support","responsive-teaching","success-motivation"];
 const route="/teaching-for-lasting-learning/";
+const figureSources={
+ framework:["ausubel","soderstrom","black"],
+ performance:["soderstrom"],
+ "challenge-support":["wood","kalyuga"],
+ "responsive-teaching":["black"],
+ "success-motivation":["bandura"]
+};
+const descriptionSources={
+ framework:["Ausubel","Soderstrom and Bjork","Black and Wiliam","Bandura","Zimmerman"],
+ performance:["Soderstrom and Bjork"],
+ "challenge-support":["Wood, Bruner, and Ross","Kalyuga"],
+ "responsive-teaching":["Black and Wiliam"],
+ "success-motivation":["Bandura"]
+};
 
 export async function checkTeachingArticle(browser,base,{screenshots=true,audit=null}={}) {
  for(const width of [1280,320]) {
@@ -20,8 +34,8 @@ export async function checkTeachingArticle(browser,base,{screenshots=true,audit=
    "An important distinction is that between learning and performance (Soderstrom and Bjork, 2015). Pupils may complete a task successfully during a lesson but struggle to do something similar a week later. Equally, pupils who find an activity difficult may still be learning from it.",
    "I consider four characteristics of knowledge particularly important: how much pupils know, how accurate their knowledge is, how readily they can retrieve it, and how well they can connect different ideas.",
    "Alongside developing knowledge, I believe teachers have an important role in helping pupils become more independent learners. This involves teaching pupils how to evaluate their understanding, recognise gaps in their knowledge, and make better decisions about how they study.",
-   "Drawing on educational research and my experiences as a teacher, I have developed a framework for understanding how these aspects of learning and teaching interact. I am particularly interested in identifying what is limiting pupils’ learning and where teachers can make the greatest difference.",
-   "The principles presented here inform both my classroom practice and the design of the learning resources on this website. Although many of the same principles apply to independent learning, a website cannot replicate the professional judgement of a classroom teacher."
+   "Drawing on educational research and my experiences as a teacher, I have brought these ideas together to help me think about how different aspects of learning and teaching interact. I am particularly interested in identifying what is limiting pupils’ learning and where teachers can make the greatest difference.",
+   "The eight principles presented here inform both my classroom practice and the design of the learning resources on this website. Although many of the same principles apply to independent learning, a website cannot replicate the professional judgement of a classroom teacher."
   ],"The approved opening changed");
   assert.equal(await page.locator(".site-nav details").count(),2);
   assert.equal(await page.locator(".article-figure").count(),5);
@@ -36,6 +50,7 @@ export async function checkTeachingArticle(browser,base,{screenshots=true,audit=
   }
   for(const slug of slugs){
    const figure=page.locator("#figure-"+slug);
+   for(const source of figureSources[slug])assert.equal(await figure.locator(`figcaption a[href="#ref-${source}"]`).count(),1,`Missing figure source: ${slug} / ${source}`);
    const current=await figure.locator("img").evaluate(img=>img.currentSrc);
    assert(current.endsWith(`${slug}-${width===320?"mobile":"desktop"}.svg`),"Incorrect responsive diagram: "+current);
    if(screenshots)await figure.screenshot({path:`/tmp/narajos-teaching-${slug}-${width}.png`});
@@ -67,6 +82,8 @@ export async function checkTeachingArticle(browser,base,{screenshots=true,audit=
  const page=await browser.newPage();
  for(const slug of slugs)for(const mode of ["desktop","mobile"])for(const font of [null,"DejaVu Sans"]) {
   await page.goto(base+`/assets/teaching-for-lasting-learning/${slug}-${mode}.svg`);
+  const description=await page.locator("desc#description").textContent();
+  for(const source of descriptionSources[slug])assert(description.includes(source),`Missing accessible source: ${slug} ${mode} / ${source}`);
   // Check a common wider fallback as well as the browser's default system font.
   if(font)await page.evaluate(font=>{
    const style=document.createElementNS("http://www.w3.org/2000/svg","style");
@@ -128,6 +145,9 @@ export async function checkTeachingArticle(browser,base,{screenshots=true,audit=
     else if(!ah&&a.x1===c.x1&&Math.min(Math.max(a.y1,a.y2),Math.max(c.y1,c.y2))>Math.max(Math.min(a.y1,a.y2),Math.min(c.y1,c.y2)))errors.push("Connectors overlap");
    }
    if(slug==="framework"){
+    if(svg.querySelector("title")?.textContent!=="Bringing together ideas about learning and teaching")errors.push("The central figure title is inconsistent");
+    const titleLines=mode==="desktop"?["Bringing together ideas about learning and teaching"]:["Bringing together ideas","about learning and teaching"];
+    for(const line of titleLines)if(!texts.some(t=>t.label===line))errors.push(`Missing visible title: ${line}`);
     for(const relation of ["prior->developed","developed->prior","instruction->developed","instruction->performance","developed->performance","developed->competence","performance->teacher","teacher->instruction"]){
      if(!relations.includes(relation))errors.push(`Missing framework relationship: ${relation}`);
     }
