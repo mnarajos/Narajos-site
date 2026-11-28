@@ -78,8 +78,9 @@ header.brand > h1 > .eyebrow { text-transform:lowercase; }
 /* Keep the orange wordmark legible on both application palettes. */
 .keystone-lockup .keystone-type .keystone-second{color:#a4470d}
 @media(prefers-color-scheme:dark){
-  :root:has(header.top .top-inner,header.brand .eyebrow) .keystone-lockup .keystone-type .keystone-second{color:#ff9b54}
+  :root:not([data-theme=light]):has(header.top .top-inner,header.brand .eyebrow) .keystone-lockup .keystone-type .keystone-second{color:#ff9b54}
 }
+:root[data-theme=dark]:has(header.top .top-inner,header.brand .eyebrow) .keystone-lockup .keystone-type .keystone-second{color:#ff9b54}
 
 /* Keep the GCSE and A-level footer below the phone viewport while the app starts. */
 @media(max-width:768px){

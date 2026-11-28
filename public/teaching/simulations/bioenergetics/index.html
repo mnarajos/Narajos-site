@@ -26,7 +26,7 @@
 <style>
   :root{
     --bg:#eef1f4; --card:#ffffff; --ink:#13202b; --muted:#5b6f7e; --line:#d6dee5;
-    --photo:#2f9e5f; --resp:#c85a2b; --anaer:#8a5cc8;
+    --photo:#237a49; --resp:#b74d20; --anaer:#8a5cc8;
     --atp:#e0a021; --nad:#7b57d6; --fad:#159b8a; --co2:#7a8a96; --o2:#3d8fd6; --carbon:#38566a;
     --radius:14px; --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;
   }
@@ -78,11 +78,12 @@
   .tally{display:flex;flex-direction:column;gap:7px}
   .trow{display:flex;align-items:center;gap:9px;font-size:13px}
   .trow .ic{width:26px;height:26px;border-radius:7px;flex:none;display:flex;align-items:center;justify-content:center;
-    font-size:11px;font-weight:800;color:#fff}
+    font-size:11px;font-weight:800;color:#fff;background:#26323a;
+    background:color-mix(in srgb,var(--tally-color) 45%,#000)}
   .trow .nm{font-weight:600;flex:1}
   .trow .ct{font-family:var(--mono);font-weight:700;font-size:16px;min-width:34px;text-align:right}
   .trow.spent .ct{color:var(--muted)}
-  .trow.zero{opacity:.32}
+  .trow.zero{color:var(--muted)}
   .summary{background:#f6f9fb;border:1px solid var(--line);border-radius:12px;padding:11px 12px;
     font-size:12.5px;line-height:1.5;color:#2a3d4a}
   .summary b{color:var(--ink)}
@@ -2066,7 +2067,7 @@ function renderTally(){
       [isP?"Et":"La",(isP?"ethanol":"lactate")+" made",anaCfg().prodCol,A.cum.prod],
       ["N","NAD regenerated","#cfc6e6",A.cum.nad]];
     if(isP) rows.push(["C","CO\u2082 made","#7a8a96",A.cum.co2]);
-    box.innerHTML=rows.map(([ic,nm,col,v])=>'<div class="trow"><span class="ic" style="background:'+col+'">'+ic+'</span><span class="nm">'+nm+'</span><span class="ct">'+v+'</span></div>').join("");
+    box.innerHTML=rows.map(([ic,nm,col,v])=>'<div class="trow"><span class="ic" style="--tally-color:'+col+'">'+ic+'</span><span class="nm">'+nm+'</span><span class="ct">'+v+'</span></div>').join("");
     return;
   }
   if(st.type==="krebs"){
@@ -2076,7 +2077,7 @@ function renderTally(){
       ["C","CO\u2082 made","#7a8a96",K.cum.co2],
       ["N","reduced NAD made","#6b21a8",K.cum.rnad],
       ["\u26a1","ATP made","#8b5cf6",K.cum.atp]];
-    box.innerHTML=rows.map(([ic,nm,col,v])=>'<div class="trow"><span class="ic" style="background:'+col+'">'+ic+'</span><span class="nm">'+nm+'</span><span class="ct">'+v+'</span></div>').join("");
+    box.innerHTML=rows.map(([ic,nm,col,v])=>'<div class="trow"><span class="ic" style="--tally-color:'+col+'">'+ic+'</span><span class="nm">'+nm+'</span><span class="ct">'+v+'</span></div>').join("");
     return;
   }
   if(st.type==="linkr"){
@@ -2084,7 +2085,7 @@ function renderTally(){
     const rows=[["C","CO\u2082 released","#7a8a96",t.co2],["N","reduced NAD","#6b21a8",t.rnad],
       ["Ac","acetyl CoA","#6d28d9",t.acoa],["\u26a1","ATP","#7d8f9c",0],
       ["\u03a3","pyruvate completed","#e0a021",K.cum.done]];
-    box.innerHTML=rows.map(([ic,nm,col,v])=>'<div class="trow"><span class="ic" style="background:'+col+'">'+ic+'</span><span class="nm">'+nm+'</span><span class="ct">'+v+'</span></div>').join("");
+    box.innerHTML=rows.map(([ic,nm,col,v])=>'<div class="trow"><span class="ic" style="--tally-color:'+col+'">'+ic+'</span><span class="nm">'+nm+'</span><span class="ct">'+v+'</span></div>').join("");
     return;
   }
   if(st.type==="glyco"){
@@ -2092,7 +2093,7 @@ function renderTally(){
     const rows=[["\u26a1","ATP used","#8098a6",t.used],["\u26a1","ATP made","#8fd3f4",t.made],
       ["=","net ATP gain","#e0a021","+"+(t.made-t.used)],
       ["N","reduced NAD","#4c1d95",t.rnad],["P","pyruvate","#7c3aed",t.pyr]];
-    box.innerHTML=rows.map(([ic,nm,col,v])=>'<div class="trow"><span class="ic" style="background:'+col+'">'+ic+'</span><span class="nm">'+nm+'</span><span class="ct">'+v+'</span></div>').join("");
+    box.innerHTML=rows.map(([ic,nm,col,v])=>'<div class="trow"><span class="ic" style="--tally-color:'+col+'">'+ic+'</span><span class="nm">'+nm+'</span><span class="ct">'+v+'</span></div>').join("");
     return;
   }
   if(st.type==="calvin"){
@@ -2101,7 +2102,7 @@ function renderTally(){
       ["R","RuBP (5C)","#159b8a",P.rubp],["G","GP (3C)","#e0a021",P.gp],
       ["T","triose phosphate","#7c3aed",P.tp],["\u2b50","glucose made","#2f9e5f",P.glucose],
       ["\u26a1","ATP available","#7c3aed",P.atp],["N","reduced NADP available","#4c1d95",P.nadph]];
-    box.innerHTML=rows.map(([ic,nm,col,v])=>'<div class="trow"><span class="ic" style="background:'+col+'">'+ic+'</span><span class="nm">'+nm+'</span><span class="ct">'+v+'</span></div>').join("");
+    box.innerHTML=rows.map(([ic,nm,col,v])=>'<div class="trow"><span class="ic" style="--tally-color:'+col+'">'+ic+'</span><span class="nm">'+nm+'</span><span class="ct">'+v+'</span></div>').join("");
     return;
   }
   if(st.type==="chemi"){
@@ -2109,7 +2110,7 @@ function renderTally(){
     const val={atp:C.totals.atp, term:C.totals.term, byp:C.totals.byp,
                lum:C.protons.filter(p=>p.state==="high").length};
     const ic={atp:"⚡",term:"★",byp:"○",lum:"H⁺"};
-    box.innerHTML=cfg.tally.map(([k,nm,col])=>'<div class="trow"><span class="ic" style="background:'+col+'">'+ic[k]+'</span><span class="nm">'+nm+'</span><span class="ct">'+val[k]+'</span></div>').join("");
+    box.innerHTML=cfg.tally.map(([k,nm,col])=>'<div class="trow"><span class="ic" style="--tally-color:'+col+'">'+ic[k]+'</span><span class="nm">'+nm+'</span><span class="ct">'+val[k]+'</span></div>').join("");
     return;
   }
   let data;
@@ -2141,7 +2142,7 @@ function renderTally(){
     const nm = (st===STAGES.calvin && k==="nadp") ? "reduced NADP (used)" :
                (k==="nad" && st.steps && spent) ? "NAD regenerated" : name;
     rows.push('<div class="trow '+(spent?"spent":"")+' '+((st.type!=="membrane"&&(!v))?"zero":"")+'">'
-      +'<span class="ic" style="background:'+col+'">'+iconFor(k)+'</span>'
+      +'<span class="ic" style="--tally-color:'+col+'">'+iconFor(k)+'</span>'
       +'<span class="nm">'+nm+'</span><span class="ct">'+display+'</span></div>');
   }
   box.innerHTML=rows.join("") || '<div class="fact">Watch the animation — this stage is about the mechanism, not a product count.</div>';

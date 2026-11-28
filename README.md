@@ -54,6 +54,8 @@ The Human Biology app has ten answer formats, a confidence-first Quick Mix, prog
 
 These checks are not a replacement for browser testing.
 
+`node scripts/check-dark-mode.mjs` runs browser contrast checks with a dark device preference across the site's pages, representative learning routes and interactive states. It also checks phone and desktop views and explicit theme overrides. It requires the same Playwright and axe-core dependencies as the other browser checks.
+
 ### Manual release checks
 
 1. On mobile and desktop, navigate between the homepage, the revision applications, Focused Questions and the simulation catalogue.

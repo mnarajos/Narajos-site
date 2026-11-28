@@ -1,8 +1,8 @@
-.dp-practice{display:block;max-width:46rem;margin:1.25rem 0;color:#203643}
+.dp-practice{display:block;max-width:46rem;margin:1.25rem 0;color:var(--ink,#203643)}
 .dp-practice [hidden]{display:none!important}
 .dp-overview h2,.dp-course h2{font-size:clamp(1.13rem,2.5vw,1.35rem);margin:.3rem 0}
 .dp-overview p{margin:.35rem 0 .8rem;max-width:62ch}
-.dp-study,.dp-question{margin:.55rem 0;border:1px solid #b4c9c6;border-radius:.65rem;background:#fdfefe}
+.dp-study,.dp-question{margin:.55rem 0;border:1px solid #b4c9c6;border-radius:.65rem;background:#fdfefe;color:#203643}
 .dp-study>summary,.dp-question>summary{min-height:44px;padding:.62rem .8rem;cursor:pointer;font-weight:650;color:#203643;line-height:1.45}
 .dp-study[open]>summary,.dp-question[open]>summary{border-bottom:1px solid #d8e4e1}
 .dp-model,.dp-question-body{padding:.65rem .8rem .85rem}
